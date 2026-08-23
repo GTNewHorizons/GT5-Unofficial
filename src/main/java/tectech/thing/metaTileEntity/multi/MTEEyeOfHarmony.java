@@ -65,6 +65,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -79,6 +80,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
@@ -890,7 +892,16 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.stocking_input_bus_not_allowed"));
             }
         }
-        checkHatchExact(errors, InputHatch, 2);
+
+        if (mInputHatches.size() != 2) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, InputHatch, mInputHatches.size(), 2));
+        }
+        for (MTEHatchInput inputHatch : mInputHatches) {
+            if (inputHatch instanceof MTEHatchInputME) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.stocking_input_hatch_not_allowed"));
+                break;
+            }
+        }
         checkOneOutputBus(errors);
         checkOneOutputHatch(errors);
     }

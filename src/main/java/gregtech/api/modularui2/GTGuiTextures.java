@@ -216,6 +216,8 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_COMPUTATION_LOSS = UITexture
         .fullImage(GregTech.ID, "gui/icons/stalled_computation");
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
+    public static final UITexture OVERLAY_ROTOR = UITexture.fullImage(GregTech.ID, "gui/picture/noRotor");
+    public static final UITexture OVERLAY_WIND = UITexture.fullImage(GregTech.ID, "gui/picture/wind");
 
     public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture
         .fullImage(GregTech.ID, "gui/icons/maintenance_none");
@@ -1062,6 +1064,11 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
     public static final UITexture PROGRESSBAR_ARROW_BBF = fullImageColorableGT("progressbar/arrow_bbf");
+    public static final UITexture PROGRESSBAR_WINDMILL_GRINDSTONE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/windmill_grindstone")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_WINDMILL_GRINDSTONE)
+        .build();
     public static final UITexture PROGRESSBAR_BOILER_HEAT = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/boiler_heat")
         .fullImage()

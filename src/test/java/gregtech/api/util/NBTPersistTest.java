@@ -27,4 +27,16 @@ public class NBTPersistTest {
 
         assertEquals(list, NBTPersist.toNbtExact(NBTPersist.toJsonObjectExact(list)));
     }
+
+    @Test
+    void exactJsonSortsCompoundKeys() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("z", "last");
+        tag.setString("a", "first");
+
+        assertEquals(
+            "{\"a\":\"sfirst\",\"z\":\"slast\"}",
+            NBTPersist.toJsonObjectExact(tag)
+                .toString());
+    }
 }

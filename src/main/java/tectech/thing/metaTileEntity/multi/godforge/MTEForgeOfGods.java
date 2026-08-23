@@ -450,8 +450,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                         if (allowModuleConnection(module, data)) {
                             module.connect();
                             calculateMaxHeatForModules(module, data);
-                            calculateSpeedBonusForModules(module, data);
+                            // parallel depend on heat
                             calculateMaxParallelForModules(module, data);
+                            // speed bonus depend on max parallel and heat
+                            calculateSpeedBonusForModules(module, data);
                             calculateEnergyDiscountForModules(module, data);
                             setMiscModuleParameters(module, data);
                             queryMilestoneStats(module, data);
@@ -806,8 +808,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addMarkdown(new ResourceLocation("gregtech", "forge-of-gods"))
             .beginStructureBlock(127, 29, 186, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_15th_layer"))
-            .addInputHatch("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.hatch-pos"), 1)
-            .addInputBus("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.hatch-pos"), 1)
+            .addInputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
+            .addInputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
             .addOutputBus("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.output-bus-pos"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
