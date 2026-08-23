@@ -550,6 +550,7 @@ public class MechArmorAugmentRegistries {
             .setId("VectoredJetpack")
             .setItemId("augmentvectoredjetpack")
             .fitsInto(ArmorType.Chestplate)
+            .setTexture(ArmorType.Chestplate, () -> jetpackAugment)
             .providesBehaviors(JetpackBehavior.VECTORED_JETPACK, JetpackHoverBehavior.INSTANCE)
             .incompatibleBehaviors(BehaviorName.CreativeFlight)
             .incompatibleAugments(ItemList.Augment_Jetpack)
