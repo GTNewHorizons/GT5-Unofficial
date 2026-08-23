@@ -22,7 +22,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTENeutronSensor extends MTEHatchRedstoneBase implements IDataCopyable{
+public class MTENeutronSensor extends MTEHatchRedstoneBase implements IDataCopyable {
 
     public static final String COPIED_DATA_IDENTIFIER = "neutronSensor";
 
