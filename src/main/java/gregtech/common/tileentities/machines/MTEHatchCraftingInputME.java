@@ -1143,8 +1143,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         if (hasCustomName()) return Collections.singletonList(getCustomName());
 
         List<String> lines = new ArrayList<>();
-        StringBuilder head = new StringBuilder(
-            getCrafterIcon() != null ? getCrafterIcon().getDisplayName() : getLocalName());
+        String head = getCrafterIcon() != null ? getCrafterIcon().getDisplayName() : getLocalName();
 
         List<Integer> circuitNumbers = new ArrayList<>();
         ItemStack ghostCircuit = getStackInSlot(getCircuitSlot());
@@ -1154,15 +1153,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         circuitNumbers.addAll(getPhysicalCircuitNumbers());
         if (!circuitNumbers.isEmpty()) {
             try {
-                head.append(
-                    String.format(
-                        Gregtech.machines.ghostCircuitSuffixFormat,
-                        circuitNumbers.stream()
-                            .map(String::valueOf)
-                            .collect(Collectors.joining(", "))));
+                head += String.format(
+                    Gregtech.machines.ghostCircuitSuffixFormat,
+                    circuitNumbers.stream()
+                        .map(String::valueOf)
+                        .collect(Collectors.joining(", ")));
             } catch (IllegalFormatException ignored) {}
         }
-        lines.add(head.toString());
+        lines.add(head);
 
         for (ItemStack item : getNonConsumedInputDisplayItems()) {
             lines.add(item.getDisplayName());
