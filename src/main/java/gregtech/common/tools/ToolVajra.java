@@ -12,20 +12,27 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.items.ItemTool;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import thaumcraft.common.tiles.TileOwned;
+import xonin.backhand.api.core.BackhandUtils;
 
 public class ToolVajra extends ItemTool implements IElectricItem {
 
@@ -138,33 +145,67 @@ public class ToolVajra extends ItemTool implements IElectricItem {
 
     @Override
     public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
-        // By default GTGenericItem sneak-use will trigger block activation. We don't want that since shift-right click
-        // of vajra should be handled by the vajra and we don't want to open any gui.
+        // GTGenericItem overrode this to true, we return false here so that sneak right click never trigger any block
+        // activations, as shift right click should always break the target block, and not any sneaky right click
+        // interactions.
         return false;
     }
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
+        Block target = world.getBlock(x, y, z);
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        int metaData = world.getBlockMetadata(x, y, z);
+
+        if (target.blockHardness < 0) return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (!ElectricItem.manager.canUse(stack, baseCost))
             return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        if (blockThaumcraftHarvest(tileEntity, player))
+            return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+
         if (world.isRemote) {
-            // This sends a packet to server, break on server side is handled by packet handler
-            Minecraft.getMinecraft().playerController.clickBlock(x, y, z, side);
+            Minecraft.getMinecraft().playerController.onPlayerDestroyBlock(x, y, z, side);
             player.swingItem();
+        } else {
+            target.onBlockHarvested(world, x, y, z, metaData, player);
+            if (target.removedByPlayer(world, player, x, y, z, true)) {
+                target.onBlockDestroyedByPlayer(world, x, y, z, metaData);
+                target.harvestBlock(world, player, x, y, z, metaData);
+            }
         }
-        stack.getTagCompound()
-            .setBoolean("harvested", true); // prevent onItemRightClick from going through
-        // This allows offhand to be used, since returning false will continue to try to process offhand
-        return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        // FMP & Backhand interaction: don't place if removal doesn't actually succeed
+        if (Mods.Backhand.isModLoaded() && world.isAirBlock(x, y, z)) {
+            BackhandUtils.useOffhandItem(player, () -> {
+                ItemStack offhand = player.getHeldItem();
+                if (offhand != null && offhand.getItem() instanceof ItemBlock itemBlock) {
+                    int damage = offhand.getItemDamage();
+                    int stackSize = offhand.stackSize;
+                    itemBlock.onItemUse(offhand, player, world, x, y, z, side, hitX, hitY, hitZ);
+                    if (player.capabilities.isCreativeMode) {
+                        offhand.setItemDamage(damage);
+                        offhand.stackSize = stackSize;
+                    } else {
+                        if (offhand.stackSize <= 0) {
+                            MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, offhand));
+                            player.inventory.mainInventory[player.inventory.currentItem] = null;
+                        }
+                    }
+                }
+            });
+        }
+        ElectricItem.manager.use(stack, baseCost, player);
+        return true;
+    }
+
+    private boolean blockThaumcraftHarvest(TileEntity tileEntity, EntityPlayer player) {
+        if (!Mods.Thaumcraft.isModLoaded()) return false;
+        if (!(tileEntity instanceof TileOwned owned)) return false;
+        return !owned.owner.equals(player.getDisplayName());
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player) {
-        if (ItemStackNBT.getBoolean(stack, "harvested")) {
-            ItemStackNBT.removeTag(stack, "harvested");
-            return super.onItemRightClick(stack, worldIn, player);
-        }
         if (!worldIn.isRemote && player.isSneaking()) {
             if (ItemStackNBT.hasKey(stack, "ench")) {
                 ItemStackNBT.removeTag(stack, "ench");

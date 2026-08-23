@@ -1,6 +1,6 @@
 package gregtech.api.covers;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
