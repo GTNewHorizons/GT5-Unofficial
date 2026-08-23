@@ -15,6 +15,8 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
 
     public static final InertiaCancelingBehavior INSTANCE = new InertiaCancelingBehavior();
 
+    private static final double DAMPING_FACTOR = 0.5;
+
     @Override
     public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
         if (!isDown) return;
@@ -37,12 +39,17 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
         if (!context.isRemote()) return;
 
         EntityPlayer player = context.getPlayer();
+        boolean creativeFlight = player.capabilities.isFlying;
+        boolean jetpackHovering = context.isBehaviorActive(BehaviorName.JetpackHover) && !player.onGround;
 
-        if (context.isBehaviorActive(BehaviorName.InertiaCanceling) && player.moveForward == 0
-            && player.moveStrafing == 0
-            && player.capabilities.isFlying) {
-            player.motionX *= 0.5;
-            player.motionZ *= 0.5;
+        if (!context.isBehaviorActive(BehaviorName.InertiaCanceling) || player.moveForward != 0
+            || player.moveStrafing != 0
+            || !(creativeFlight || jetpackHovering)) {
+            return;
         }
+
+        double retained = 1.0 - DAMPING_FACTOR;
+        player.motionX *= retained;
+        player.motionZ *= retained;
     }
 }
