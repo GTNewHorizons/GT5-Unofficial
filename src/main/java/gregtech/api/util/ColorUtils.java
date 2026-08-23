@@ -17,6 +17,12 @@ public class ColorUtils {
         networkAnalyzerSeverityWarning = color.rgb("networkAnalyzerSeverityWarning", "0xE9C46A"),
         networkAnalyzerSeverityAlert   = color.rgb("networkAnalyzerSeverityAlert",   "0xD62828"),
 
-        networkAnalyzerLabelBackground = color.argb("networkAnalyzerLabelBackground", "0x80000000");
+        networkAnalyzerLabelBackground = color.argb("networkAnalyzerLabelBackground", "0x80000000"),
+
+        progressBarTop                 = color.argb("progressBarTop", "0xFFFF0000"),
+        progressBarBottom              = color.argb("progressBarBottom", "0xFF8B0000"),
+
+        euBarTop                       = color.argb("euBarTop", "0xFFF5E32C"),
+        euBarBottom                    = color.argb("euBarBottom", "0xFF9C7E00");
     // spotless:on
 }

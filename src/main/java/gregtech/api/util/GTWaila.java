@@ -53,6 +53,10 @@ public abstract class GTWaila {
                 formatNumber(maxProgressTime / 20));
         }
 
-        return TTRenderBar.create(progressText, 0xFFFF0000, 0xFF8B0000, (double) progressTime / maxProgressTime);
+        return TTRenderBar.create(
+            progressText,
+            ColorUtils.progressBarTop.getColor(),
+            ColorUtils.progressBarBottom.getColor(),
+            (double) progressTime / maxProgressTime);
     }
 }

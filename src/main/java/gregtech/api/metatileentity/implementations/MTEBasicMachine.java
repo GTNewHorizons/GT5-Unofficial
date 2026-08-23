@@ -89,6 +89,7 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.ColorUtils;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTItemTransfer;
@@ -1215,7 +1216,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             Comparator.<ItemStack, Boolean>comparing(stack -> !(stack.getItem() instanceof ItemIntegratedCircuit))
                 .thenComparingInt(ItemStack::getItemDamage));
 
-        currenttip.add(TTRenderBar.create(euText, 0xFFF5E32C, 0xFF9C7E00, (double) eu / maxEu));
+        currenttip.add(
+            TTRenderBar.create(
+                euText,
+                ColorUtils.euBarTop.getColor(),
+                ColorUtils.euBarBottom.getColor(),
+                (double) eu / maxEu));
 
         if (tag.getBoolean("stutteringSingleBlock")) {
             currenttip.add(translateToLocal(getWailaStutteringLine(tag)));
