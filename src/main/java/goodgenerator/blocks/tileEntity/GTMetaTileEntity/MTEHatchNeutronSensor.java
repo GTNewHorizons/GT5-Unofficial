@@ -19,7 +19,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
+import gregtech.common.gui.modularui.hatch.MTEHatchNeutronSensorGui;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
 public class MTEHatchNeutronSensor extends MTEHatchRedstoneBase implements IDataCopyable {
@@ -156,7 +156,7 @@ public class MTEHatchNeutronSensor extends MTEHatchRedstoneBase implements IData
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTENeutronSensorGui(this).build(data, syncManager, uiSettings);
+        return new MTEHatchNeutronSensorGui(this).build(data, syncManager, uiSettings);
     }
 
     public int getThreshold() {

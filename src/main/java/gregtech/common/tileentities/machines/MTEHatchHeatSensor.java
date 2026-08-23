@@ -20,7 +20,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHeatProducer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.IGTHatchAdder;
-import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
+import gregtech.common.gui.modularui.hatch.MTEHatchHeatSensorGui;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
 public class MTEHatchHeatSensor extends MTEHatchRedstoneBase {
@@ -89,7 +89,7 @@ public class MTEHatchHeatSensor extends MTEHatchRedstoneBase {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEHeatSensorGui(this).build(data, syncManager, uiSettings);
+        return new MTEHatchHeatSensorGui(this).build(data, syncManager, uiSettings);
     }
 
     public enum HeatSensorHatchElement implements IHatchElement<IHeatProducer> {

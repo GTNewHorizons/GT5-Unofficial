@@ -17,7 +17,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
-import kubatech.tileentity.gregtech.gui.MTEElectrodeDetectorHatchGui;
+import kubatech.tileentity.gregtech.gui.MTEHatchElectrodeDetectorGui;
 
 public class MTEHatchElectrodeDetector extends MTEHatchRedstoneBase {
 
@@ -81,7 +81,7 @@ public class MTEHatchElectrodeDetector extends MTEHatchRedstoneBase {
 
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEElectrodeDetectorHatchGui(this).build(guiData, syncManager, uiSettings);
+        return new MTEHatchElectrodeDetectorGui(this).build(guiData, syncManager, uiSettings);
     }
 
     @Override

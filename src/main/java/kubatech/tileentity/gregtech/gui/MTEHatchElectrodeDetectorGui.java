@@ -16,9 +16,9 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
 
-public class MTEElectrodeDetectorHatchGui extends MTEHatchBaseGui<MTEHatchElectrodeDetector> {
+public class MTEHatchElectrodeDetectorGui extends MTEHatchBaseGui<MTEHatchElectrodeDetector> {
 
-    public MTEElectrodeDetectorHatchGui(MTEHatchElectrodeDetector detector) {
+    public MTEHatchElectrodeDetectorGui(MTEHatchElectrodeDetector detector) {
         super(detector);
     }
 

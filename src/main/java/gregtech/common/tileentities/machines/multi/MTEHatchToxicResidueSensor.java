@@ -14,7 +14,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.modularui.hatch.MTEToxicResidueSensorGui;
+import gregtech.common.gui.modularui.hatch.MTEHatchToxicResidueSensorGui;
 
 public class MTEHatchToxicResidueSensor extends MTEHatchRedstoneBase {
 
@@ -93,7 +93,7 @@ public class MTEHatchToxicResidueSensor extends MTEHatchRedstoneBase {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEToxicResidueSensorGui(this).build(data, syncManager, uiSettings);
+        return new MTEHatchToxicResidueSensorGui(this).build(data, syncManager, uiSettings);
     }
 
     public ThresholdType getThresholdType() {
