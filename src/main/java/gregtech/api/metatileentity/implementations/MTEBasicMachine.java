@@ -1209,7 +1209,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         List<ItemStack> outputItems = new ArrayList<>();
 
         getWailaItemsWithNBTTag(getAllInputs(), "inputItems", inputItems, tag);
-        getWailaItemsWithNBTTag(mOutputItems, "outputItems", outputItems, tag);
+        getWailaItemsWithNBTTag(getAllOutputs(), "outputItems", outputItems, tag);
 
         inputItems.sort(
             Comparator.<ItemStack, Boolean>comparing(stack -> !(stack.getItem() instanceof ItemIntegratedCircuit))
