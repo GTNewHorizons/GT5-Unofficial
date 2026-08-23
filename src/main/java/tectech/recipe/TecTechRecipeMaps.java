@@ -33,7 +33,7 @@ public class TecTechRecipeMaps {
 
         public TTResearchStationALRecipe(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage,
             ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt,
-            long aComputation, int aAmperage, int aComputationRequiredPerSec) {
+            long aComputation, int aAmperage, long aComputationRequiredPerSec) {
             super(aResearchItem, aResearchTime, aResearchVoltage, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
             this.mComputation = aComputation;
             this.mAmperage = aAmperage;
@@ -42,7 +42,7 @@ public class TecTechRecipeMaps {
 
         public TTResearchStationALRecipe(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage,
             ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt,
-            ItemStack[][] aAlt, long aComputation, int aAmperage, int aComputationRequiredPerSec) {
+            ItemStack[][] aAlt, long aComputation, int aAmperage, long aComputationRequiredPerSec) {
             super(
                 aResearchItem,
                 aResearchTime,

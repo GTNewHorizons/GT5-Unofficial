@@ -642,6 +642,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity instanceof MTEHatchBulkCatalystHousing catalystHousing) {
+            addIfSmartInput(catalystHousing);
             catalystHousing.updateTexture(baseCasingIndex);
             this.catalystHousings.add(catalystHousing);
             return true;

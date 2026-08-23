@@ -1,6 +1,6 @@
 package tectech.mechanics.dataTransport;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -22,7 +22,8 @@ public class ALRecipeDataPacket extends DataPacket<RecipeAssemblyLine[]> {
         int count = nbt.getInteger("count");
 
         if (count > 0) {
-            ArrayList<RecipeAssemblyLine> recipes = new ArrayList<>();
+            // loadRecipe returns every recipe sharing the saved output and lists don't dedupe
+            LinkedHashSet<RecipeAssemblyLine> recipes = new LinkedHashSet<>();
 
             for (int i = 0; i < count; i++) {
                 recipes.addAll(AssemblyLineUtils.loadRecipe(nbt.getCompoundTag(Integer.toString(i))));

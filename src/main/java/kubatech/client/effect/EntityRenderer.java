@@ -49,14 +49,14 @@ import com.kuba6000.mobsinfo.api.utils.MobUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
-import kubatech.Tags;
 import kubatech.config.Config;
 
 @SideOnly(Side.CLIENT)
 public class EntityRenderer extends EntityFX {
 
-    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Entity Renderer]");
+    private static final Logger LOG = LogManager.getLogger(Mods.ModIDs.KUBA_TECH + "[Entity Renderer]");
     private Vector3f verticalAxis;
     private Vector3f horizontalAxis;
     private EntityLiving entityToRender = null;

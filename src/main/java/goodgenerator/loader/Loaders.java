@@ -117,140 +117,144 @@ public class Loaders {
     public static final Item fluidCore = new GGItem(
         "fluidCore",
         GoodGenerator.GG,
-        new String[] { GoodGenerator.MOD_ID + ":fluidCore/1", GoodGenerator.MOD_ID + ":fluidCore/2",
-            GoodGenerator.MOD_ID + ":fluidCore/3", GoodGenerator.MOD_ID + ":fluidCore/4",
-            GoodGenerator.MOD_ID + ":fluidCore/5", GoodGenerator.MOD_ID + ":fluidCore/6",
-            GoodGenerator.MOD_ID + ":fluidCore/7", GoodGenerator.MOD_ID + ":fluidCore/8",
-            GoodGenerator.MOD_ID + ":fluidCore/9", GoodGenerator.MOD_ID + ":fluidCore/10" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":fluidCore/1", Mods.ModIDs.GOOD_GENERATOR + ":fluidCore/2",
+            Mods.ModIDs.GOOD_GENERATOR + ":fluidCore/3", Mods.ModIDs.GOOD_GENERATOR + ":fluidCore/4",
+            Mods.ModIDs.GOOD_GENERATOR + ":fluidCore/5", Mods.ModIDs.GOOD_GENERATOR + ":fluidCore/6",
+            Mods.ModIDs.GOOD_GENERATOR + ":fluidCore/7", Mods.ModIDs.GOOD_GENERATOR + ":fluidCore/8",
+            Mods.ModIDs.GOOD_GENERATOR + ":fluidCore/9", Mods.ModIDs.GOOD_GENERATOR + ":fluidCore/10" });
     public static final Item highEnergyMixture = new GGItem(
         "highEnergyMixture",
         GoodGenerator.GG,
-        new String[] { GoodGenerator.MOD_ID + ":highEnergyMixture" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":highEnergyMixture" });
     public static final Item huiCircuit = new GGItem(
         "huiCircuit",
         addText("huiCircuit.tooltip", 5),
         GoodGenerator.GG,
-        new String[] { GoodGenerator.MOD_ID + ":ciruits/1", GoodGenerator.MOD_ID + ":ciruits/2",
-            GoodGenerator.MOD_ID + ":ciruits/3", GoodGenerator.MOD_ID + ":ciruits/4",
-            GoodGenerator.MOD_ID + ":ciruits/5", });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":ciruits/1", Mods.ModIDs.GOOD_GENERATOR + ":ciruits/2",
+            Mods.ModIDs.GOOD_GENERATOR + ":ciruits/3", Mods.ModIDs.GOOD_GENERATOR + ":ciruits/4",
+            Mods.ModIDs.GOOD_GENERATOR + ":ciruits/5", });
 
     public static final Item circuitWrap = new GGItem(
         "circuitWrap",
         GoodGenerator.GG,
-        new String[] { GoodGenerator.MOD_ID + ":wraps/0", GoodGenerator.MOD_ID + ":wraps/1",
-            GoodGenerator.MOD_ID + ":wraps/2", GoodGenerator.MOD_ID + ":wraps/3", GoodGenerator.MOD_ID + ":wraps/4",
-            GoodGenerator.MOD_ID + ":wraps/5", GoodGenerator.MOD_ID + ":wraps/6", GoodGenerator.MOD_ID + ":wraps/7",
-            GoodGenerator.MOD_ID + ":wraps/8", GoodGenerator.MOD_ID + ":wraps/9", GoodGenerator.MOD_ID + ":wraps/10",
-            GoodGenerator.MOD_ID + ":wraps/11", GoodGenerator.MOD_ID + ":wraps/12", GoodGenerator.MOD_ID + ":wraps/13",
-            GoodGenerator.MOD_ID + ":wraps/14" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":wraps/0", Mods.ModIDs.GOOD_GENERATOR + ":wraps/1",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/2", Mods.ModIDs.GOOD_GENERATOR + ":wraps/3",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/4", Mods.ModIDs.GOOD_GENERATOR + ":wraps/5",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/6", Mods.ModIDs.GOOD_GENERATOR + ":wraps/7",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/8", Mods.ModIDs.GOOD_GENERATOR + ":wraps/9",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/10", Mods.ModIDs.GOOD_GENERATOR + ":wraps/11",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/12", Mods.ModIDs.GOOD_GENERATOR + ":wraps/13",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/14" });
 
     public static final Block MAR_Casing = new BlockCasing(
         "MAR_Casing",
-        new String[] { GoodGenerator.MOD_ID + ":MAR_Casing" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":MAR_Casing" });
     public static final Block FRF_Casings = new BlockCasing(
         "FRF_Casing",
         new String[] { "gregtech:iconsets/MACHINE_CASING_MINING_BLACKPLUTONIUM" });
     public static final Block FRF_Coil_1 = new BlockCasing(
         "FRF_Coil_1",
-        new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/1" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":FRF_Coils/1" });
     public static final Block FRF_Coil_2 = new BlockCasing(
         "FRF_Coil_2",
-        new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/2" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":FRF_Coils/2" });
     public static final Block FRF_Coil_3 = new BlockCasing(
         "FRF_Coil_3",
-        new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/3" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":FRF_Coils/3" });
     public static final Block FRF_Coil_4 = new BlockCasing(
         "FRF_Coil_4",
-        new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/4" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":FRF_Coils/4" });
     public static final Block radiationProtectionSteelFrame = new BlockFrame(
         "radiationProtectionSteelFrame",
-        new String[] { GoodGenerator.MOD_ID + ":radiationProtectionSteelFrame" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":radiationProtectionSteelFrame" });
     public static final Block fieldRestrictingGlass = new BlockFrame(
         "fieldRestrictingGlass",
-        new String[] { GoodGenerator.MOD_ID + ":fieldRestrictingGlass" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":fieldRestrictingGlass" });
     public static final Block rawCylinder = new BlockCasing(
         "rawCylinder",
-        new String[] { GoodGenerator.MOD_ID + ":rawCylinder" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":rawCylinder" });
     public static final Block titaniumPlatedCylinder = new BlockCasing(
         "titaniumPlatedCylinder",
-        new String[] { GoodGenerator.MOD_ID + ":titaniumPlatedCylinder" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":titaniumPlatedCylinder" });
     public static final Block magicCasing = new BlockCasing(
         "magicCasing",
-        new String[] { GoodGenerator.MOD_ID + ":MagicCasing" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":MagicCasing" });
     public static final Block essentiaCell = new BlockCasing(
         "essentiaCell",
-        new String[] { GoodGenerator.MOD_ID + ":essentiaCell/1", GoodGenerator.MOD_ID + ":essentiaCell/2",
-            GoodGenerator.MOD_ID + ":essentiaCell/3", GoodGenerator.MOD_ID + ":essentiaCell/4" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":essentiaCell/1", Mods.ModIDs.GOOD_GENERATOR + ":essentiaCell/2",
+            Mods.ModIDs.GOOD_GENERATOR + ":essentiaCell/3", Mods.ModIDs.GOOD_GENERATOR + ":essentiaCell/4" });
     public static final Block speedingPipe = new BlockComplexTextureCasing(
         "speedingPipe",
-        new String[] { GoodGenerator.MOD_ID + ":speedingPipe_SIDE" },
-        new String[] { GoodGenerator.MOD_ID + ":speedingPipe_TOP" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":speedingPipe_SIDE" },
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":speedingPipe_TOP" });
     public static final Block yottaFluidTankCell = new BlockCasing(
         "yottaFluidTankCell",
-        new String[] { GoodGenerator.MOD_ID + ":yottaFluidTankCell/1", GoodGenerator.MOD_ID + ":yottaFluidTankCell/2",
-            GoodGenerator.MOD_ID + ":yottaFluidTankCell/3", GoodGenerator.MOD_ID + ":yottaFluidTankCell/4",
-            GoodGenerator.MOD_ID + ":yottaFluidTankCell/5", GoodGenerator.MOD_ID + ":yottaFluidTankCell/6",
-            GoodGenerator.MOD_ID + ":yottaFluidTankCell/7", GoodGenerator.MOD_ID + ":yottaFluidTankCell/8",
-            GoodGenerator.MOD_ID + ":yottaFluidTankCell/9", GoodGenerator.MOD_ID + ":yottaFluidTankCell/10", });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/1",
+            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/2", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/3",
+            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/4", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/5",
+            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/6", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/7",
+            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/8", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/9",
+            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/10", });
     public static final Block yottaFluidTankCasing = new BlockComplexTextureCasing(
         "yottaFluidTankCasing",
-        new String[] { GoodGenerator.MOD_ID + ":yottaFluidTankCasing_SIDE" },
-        new String[] { GoodGenerator.MOD_ID + ":yottaFluidTankCasing_TOP" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCasing_SIDE" },
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCasing_TOP" });
     public static final Block supercriticalFluidTurbineCasing = new BlockTurbineCasing(
         "supercriticalFluidTurbineCasing",
         "supercriticalFluidTurbineCasing");
     public static final Block pressureResistantWalls = new BlockCasing(
         "pressureResistantWalls",
-        new String[] { GoodGenerator.MOD_ID + ":pressureResistantWalls" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":pressureResistantWalls" });
     public static final Block impreciseUnitCasing = new BlockCasing(
         "impreciseUnitCasing",
-        new String[] { GoodGenerator.MOD_ID + ":preciseUnitCasing/0" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/0" });
     public static final Block preciseUnitCasing = new BlockCasing(
         "preciseUnitCasing",
-        new String[] { GoodGenerator.MOD_ID + ":preciseUnitCasing/1", GoodGenerator.MOD_ID + ":preciseUnitCasing/2",
-            GoodGenerator.MOD_ID + ":preciseUnitCasing/3", GoodGenerator.MOD_ID + ":preciseUnitCasing/4" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/1",
+            Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/2", Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/3",
+            Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/4" });
     public static final Block compactFusionCoil = new BlockCasing(
         "compactFusionCoil",
-        new String[] { GoodGenerator.MOD_ID + ":fuison/1", GoodGenerator.MOD_ID + ":fuison/2",
-            GoodGenerator.MOD_ID + ":fuison/3", GoodGenerator.MOD_ID + ":fuison/4",
-            GoodGenerator.MOD_ID + ":fuison/5" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":fuison/1", Mods.ModIDs.GOOD_GENERATOR + ":fuison/2",
+            Mods.ModIDs.GOOD_GENERATOR + ":fuison/3", Mods.ModIDs.GOOD_GENERATOR + ":fuison/4",
+            Mods.ModIDs.GOOD_GENERATOR + ":fuison/5" });
     public static final Block antimatterContainmentCasing = new BlockFrame(
         "antimatterContainmentCasing",
-        new String[] { GoodGenerator.MOD_ID + ":antimatterContainmentCasing" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":antimatterContainmentCasing" });
     public static final Block magneticFluxCasing = new BlockCasing(
         "magneticFluxCasing",
-        new String[] { GoodGenerator.MOD_ID + ":magneticFluxCasing" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":magneticFluxCasing" });
     public static final Block gravityStabilizationCasing = new BlockCasing(
         "gravityStabilizationCasing",
-        new String[] { GoodGenerator.MOD_ID + ":gravityStabilizationCasing" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":gravityStabilizationCasing" });
     public static final Block protomatterActivationCoil = new BlockCasing(
         "protomatterActivationCoil",
-        new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":protomatterActivationCoil" });
     public static final Block antimatterAnnihilationMatrix = new BlockCasing(
         "antimatterAnnihilationMatrix",
-        new String[] { GoodGenerator.MOD_ID + ":antimatterAnnihilationMatrix" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":antimatterAnnihilationMatrix" });
     public static final Block antimatterRenderBlock = new AntimatterRenderBlock();
     public static final Block essentiaFilterCasing = new BlockCasing(
         "essentiaFilterCasing",
-        new String[] { GoodGenerator.MOD_ID + ":essentiaFilterCasing" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":essentiaFilterCasing" });
     public static Block essentiaOutputHatch;
     public static Block essentiaOutputHatch_ME;
     public static final Block componentAssemblylineCasing = new BlockCasing(
         "componentAssemblyLineCasing",
-        new String[] { GoodGenerator.MOD_ID + ":compAsslineCasing/0", // LV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/1", // MV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/2", // HV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/3", // EV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/4", // IV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/5", // LuV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/6", // ZPM
-            GoodGenerator.MOD_ID + ":compAsslineCasing/7", // UV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/8", // UHV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/9", // UEV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/10", // UIV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/11", // UMV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/12", // UXV
-            GoodGenerator.MOD_ID + ":compAsslineCasing/13" // MAX
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/0", // LV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/1", // MV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/2", // HV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/3", // EV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/4", // IV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/5", // LuV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/6", // ZPM
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/7", // UV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/8", // UHV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/9", // UEV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/10", // UIV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/11", // UMV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/12", // UXV
+            Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/13" // MAX
         });
     public static ItemStack MAR;
     public static ItemStack FRF;
@@ -381,7 +385,7 @@ public class Loaders {
 
     public static void Register() {
 
-        GameRegistry.registerItem(_null_, "_null_", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(_null_, "_null_", Mods.ModIDs.GOOD_GENERATOR);
         NEIConfig.hide(_null_);
 
         GameRegistry.registerBlock(MAR_Casing, GGItemBlocks.class, "MAR_Casing");
@@ -410,37 +414,40 @@ public class Loaders {
         GameRegistry.registerBlock(antimatterAnnihilationMatrix, GGItemBlocks.class, "antimatterAnnihilationMatrix");
         GameRegistry.registerBlock(gravityStabilizationCasing, GGItemBlocks.class, "gravityStabilizationCasing");
         GameRegistry.registerBlock(antimatterRenderBlock, "antimatterRenderBlock");
-        GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(highDensityUranium, "highDensityUranium", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(wrappedThoriumIngot, "wrappedThoriumIngot", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(highDensityThoriumNugget, "highDensityThoriumNugget", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(highDensityThorium, "highDensityThorium", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(wrappedPlutoniumIngot, "wrappedPlutoniumIngot", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(highDensityPlutoniumNugget, "highDensityPlutoniumNugget", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(highDensityPlutonium, "highDensityPlutonium", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(rawAtomicSeparationCatalyst, "rawAtomicSeparationCatalyst", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(highDensityUranium, "highDensityUranium", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(wrappedThoriumIngot, "wrappedThoriumIngot", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(highDensityThoriumNugget, "highDensityThoriumNugget", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(highDensityThorium, "highDensityThorium", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(wrappedPlutoniumIngot, "wrappedPlutoniumIngot", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(highDensityPlutoniumNugget, "highDensityPlutoniumNugget", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(highDensityPlutonium, "highDensityPlutonium", Mods.ModIDs.GOOD_GENERATOR);
         GameRegistry
-            .registerItem(advancedRadiationProtectionPlate, "advancedRadiationProtectionPlate", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(aluminumNitride, "aluminumNitride", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(specialCeramics, "specialCeramics", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(specialCeramicsPlate, "specialCeramicsPlate", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(radioactiveWaste, "radioactiveWaste", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(plasticCase, "plasticCase", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(quartzWafer, "quartzWafer", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(microHeater, "microHeater", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(quartzCrystalResonator, "quartzCrystalResonator", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(inverter, "inverter", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(neutronSource, "neutronSource", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(naquadahMass, "naquadahMass", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(enrichedNaquadahMass, "enrichedNaquadahMass", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(naquadriaMass, "naquadriaMass", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(advancedFuelRod, "advancedFuelRod", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(fluidCore, "fluidCore", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(highEnergyMixture, "highEnergyMixture", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(huiCircuit, "huiCircuit", GoodGenerator.MOD_ID);
-        GameRegistry.registerItem(circuitWrap, "circuitWrap", GoodGenerator.MOD_ID);
+            .registerItem(rawAtomicSeparationCatalyst, "rawAtomicSeparationCatalyst", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(
+            advancedRadiationProtectionPlate,
+            "advancedRadiationProtectionPlate",
+            Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(aluminumNitride, "aluminumNitride", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(specialCeramics, "specialCeramics", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(specialCeramicsPlate, "specialCeramicsPlate", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(radioactiveWaste, "radioactiveWaste", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(plasticCase, "plasticCase", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(quartzWafer, "quartzWafer", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(microHeater, "microHeater", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(quartzCrystalResonator, "quartzCrystalResonator", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(inverter, "inverter", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(neutronSource, "neutronSource", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(naquadahMass, "naquadahMass", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(enrichedNaquadahMass, "enrichedNaquadahMass", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(naquadriaMass, "naquadriaMass", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(advancedFuelRod, "advancedFuelRod", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(fluidCore, "fluidCore", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(highEnergyMixture, "highEnergyMixture", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(huiCircuit, "huiCircuit", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(circuitWrap, "circuitWrap", Mods.ModIDs.GOOD_GENERATOR);
         GameRegistry.registerTileEntity(TileAntimatter.class, "AntimatterRender");
 
         GTStructureChannels.PRASS_UNIT_CASING.registerAsIndicator(new ItemStack(impreciseUnitCasing), 1);
@@ -464,11 +471,11 @@ public class Loaders {
             "Large Essentia Smeltery").getStackForm(1L);
         essentiaOutputHatch = new BlockTEContainer(
             "essentiaOutputHatch",
-            new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch" },
+            new String[] { Mods.ModIDs.GOOD_GENERATOR + ":essentiaOutputHatch" },
             2);
         essentiaOutputHatch_ME = new BlockTEContainer(
             "essentiaOutputHatch_ME",
-            new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch_ME" },
+            new String[] { Mods.ModIDs.GOOD_GENERATOR + ":essentiaOutputHatch_ME" },
             3);
         GameRegistry.registerBlock(magicCasing, GGItemBlocks.class, "magicCasing");
         GameRegistry.registerBlock(essentiaCell, GGItemBlocks.class, "essentiaCell");

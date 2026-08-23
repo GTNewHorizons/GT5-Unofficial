@@ -902,6 +902,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity == null) return false;
             if (aMetaTileEntity instanceof MTEHatchInput) {
+                addIfSmartInput(aMetaTileEntity);
                 ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
                 compatMode.coolantHatch = (MTEHatchInput) aMetaTileEntity;
@@ -920,6 +921,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity instanceof MTEHatchNanite naniteBus) {
+            addIfSmartInput(naniteBus);
             naniteBus.updateTexture(baseCasingIndex);
             this.naniteBuses.add(naniteBus);
             return true;

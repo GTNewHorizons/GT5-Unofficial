@@ -88,6 +88,10 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        if (!baseMetaTileEntity.isServerSide()) {
+            super.onPostTick(baseMetaTileEntity, tick);
+            return;
+        }
         if (isOn) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 baseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 15);

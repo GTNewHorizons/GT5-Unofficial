@@ -38,11 +38,12 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
 
 public abstract class MTEHatchNonConsumableBase extends MTEHatch
-    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, ISmartInputHatch {
 
     private ItemStack itemStack = null;
     private int itemCount = 0;
@@ -286,7 +287,10 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
             }
 
             meInventoryHandler.notifyListeners(count - savedCount, stack);
-            if (count != savedCount) getBaseMetaTileEntity().markDirty();
+            if (count != savedCount) {
+                getBaseMetaTileEntity().markDirty();
+                notifyWatchers();
+            }
         }
     }
 

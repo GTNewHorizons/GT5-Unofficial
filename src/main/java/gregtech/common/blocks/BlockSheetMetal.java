@@ -30,6 +30,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.DynamicLangManager;
 import gregtech.common.render.GTRendererBlock;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
@@ -52,6 +53,8 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
 
                 if (material == null) continue;
                 if (!material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
+
+                DynamicLangManager.addStack(new ItemStack(this, 1, i));
 
                 OreDictionary.registerOre(
                     OrePrefixes.sheetmetal.get(material.getInternalName())

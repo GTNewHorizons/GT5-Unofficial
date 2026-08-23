@@ -185,4 +185,17 @@ public class GTUtilityTest {
         assertEquals(1L, GTUtility.getAmperageForTier(TierEU.UIV, (byte) VoltageIndex.UIV));
         assertEquals(274877906944L, GTUtility.getAmperageForTier(Long.MAX_VALUE, (byte) VoltageIndex.UIV));
     }
+
+    @Test
+    public void testProcessFormatStacks() {
+        // The example from the processFormatStacks javadoc
+        assertEquals("§a§lHello §eWorld§a§l!", GTUtility.processFormatStacks("§a§lHello §s§eWorld§t!"));
+
+        // A pop at the very end has nothing left to format and must not be emitted
+        assertEquals("§7§m---", GTUtility.processFormatStacks("§7§s§m---§t"));
+        assertEquals("§7§8§m---", GTUtility.processFormatStacks("§7§s§8§s§m---§t§t"));
+
+        // Text is untouched, and so are format codes that still have something after them
+        assertEquals("§7Liquid §aXP§7 per operation", GTUtility.processFormatStacks("§7Liquid §s§aXP§t per operation"));
+    }
 }

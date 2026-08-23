@@ -20,10 +20,11 @@ import galacticgreg.command.WorldgenCommand;
 import galacticgreg.registry.GalacticGregRegistry;
 import galacticgreg.schematics.SpaceSchematicHandler;
 import gregtech.GT_Version;
+import gregtech.api.enums.Mods;
 import gregtech.api.world.GTWorldgen;
 
 @Mod(
-    modid = GalacticGreg.MODID,
+    modid = Mods.ModIDs.GALACTI_GREG,
     name = GalacticGreg.MODNAME,
     version = GalacticGreg.VERSION,
     dependencies = "after:GalacticraftCore; required-after:gregtech@5.09.32.30;",
@@ -34,7 +35,6 @@ public class GalacticGreg {
     public static final List<GTWorldgen> oreVeinWorldgenList = new ArrayList<>();
 
     public static final String NICE_MODID = "GalacticGreg";
-    public static final String MODID = "galacticgreg";
     public static final String MODNAME = "Galactic Greg";
 
     public static final String VERSION = GT_Version.VERSION;

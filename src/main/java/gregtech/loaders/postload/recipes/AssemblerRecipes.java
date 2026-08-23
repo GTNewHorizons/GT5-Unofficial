@@ -153,7 +153,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Chrome, 4L),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.plateDouble, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 4),
                     GTOreDictUnificator.get(OrePrefixes.ring, Materials.Palladium, 4L))
                 .circuit(1)
                 .itemOutputs(ItemList.Large_Fluid_Cell_Chrome.get(1L))

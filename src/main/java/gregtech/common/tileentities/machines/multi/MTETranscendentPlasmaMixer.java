@@ -296,13 +296,13 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
                 EnumChatFormatting.GREEN + formatNumber(mProgresstime / 20) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.usage",
+                "GT5U.multiblock.usage.fmt",
                 EnumChatFormatting.RED
                     + (mMaxProgresstime == 0 ? "0"
                         : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
                     + EnumChatFormatting.RESET),
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.multiblock.recipes_done",
+                "GT5U.multiblock.recipesDone.fmt",
                 EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET) };
     }
 

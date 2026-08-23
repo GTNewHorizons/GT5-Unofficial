@@ -102,7 +102,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
                     HEATING_COIL_EU_MULTIPLIER,
                     EnumChatFormatting.GRAY))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 8, 5, false)
+            .beginStructureBlock(5, 8, 6, false)
             .addController("Front bottom center")
             .addCasing("85-92", "Thermal Processing Casing", false)
             .addCasing("20", "Red Steel Frame Box", false)

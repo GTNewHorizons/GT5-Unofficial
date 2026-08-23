@@ -116,6 +116,16 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
     }
 
     @Override
+    public Block getGlassBlock2() {
+        return ItemRegistry.bw_realglas2;
+    }
+
+    @Override
+    public int getGlassMeta2() {
+        return 1;
+    }
+
+    @Override
     public int energyHatchTier() {
         return 9;
     }

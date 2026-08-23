@@ -34,7 +34,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -159,20 +158,18 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {}
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
+    public void onClientSoundStateChanged() {}
+
+    @Override
     public void onPreTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     @Override
-    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
-            /*
-             * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
-             * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related
-             * work and network traffic on different ticks, until it reaches 0.
-             */
-            baseMetaTileEntity.issueTextureUpdate();
-        }
-    }
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     public void onTickFail(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 

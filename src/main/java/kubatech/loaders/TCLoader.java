@@ -22,6 +22,7 @@ package kubatech.loaders;
 
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.util.GTModHandler.getModItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +33,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility.ItemId;
 import kubatech.api.enums.ItemList;
 import kubatech.loaders.item.kubaitem.items.ItemTeaUltimate;
@@ -96,7 +96,7 @@ public class TCLoader {
                         .add(Aspect.HEAL, 100)
                         .add(Aspect.PLANT, 100)
                         .add(Aspect.EXCHANGE, 100),
-                    GameRegistry.findItemStack("DraconicEvolution", "dezilsMarshmallow", 1),
+                    getModItem(DraconicEvolution.ID, "dezilsMarshmallow", 1),
                     components) {
 
                     @Override

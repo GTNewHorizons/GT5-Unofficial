@@ -10,4 +10,8 @@ public interface ISmartInputHatch {
 
     void removeWatcher(IHatchWatcher watcher);
 
+    default boolean needsPeriodicChecks() {
+        return false;
+    }
+
 }

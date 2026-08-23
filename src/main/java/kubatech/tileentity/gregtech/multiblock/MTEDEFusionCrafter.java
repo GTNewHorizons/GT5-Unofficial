@@ -26,6 +26,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -149,8 +150,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.machine_type"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.desc1"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.desc2"))
+            .addMarkdown(new ResourceLocation("gregtech", "fusion-crafter-defc"))
             .beginStructureBlock(5, 10, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("19-45", StatCollector.translateToLocal("defc.casing.7.name"), false)

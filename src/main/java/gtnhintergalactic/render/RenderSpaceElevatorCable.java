@@ -27,6 +27,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import gregtech.api.enums.Mods;
 import gtnhintergalactic.GTNHIntergalactic;
 import gtnhintergalactic.block.BlockSpaceElevatorCable;
 import gtnhintergalactic.config.IGConfig;
@@ -175,7 +176,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
             final float glowMaxV = Math.lerp(minV, maxV, 9f / 16f);
 
             cableProgram = new ShaderProgram(
-                "gtnhintergalactic",
+                Mods.ModIDs.G_T_N_H_INTERGALACTIC,
                 "shaders/spacecable.vert.glsl",
                 "shaders/spacecable.frag.glsl");
             cableProgram.use();

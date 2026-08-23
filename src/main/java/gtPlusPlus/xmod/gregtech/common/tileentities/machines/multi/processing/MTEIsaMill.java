@@ -225,9 +225,9 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
                 this.mMillingBallBuses.clear();
             }
-        }
-        if (aTick % 20 == 0 && isMachineRunning()) {
-            checkForEntities(aBaseMetaTileEntity, aTick);
+            if (aTick % 20 == 0 && isMachineRunning()) {
+                checkForEntities(aBaseMetaTileEntity, aTick);
+            }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }

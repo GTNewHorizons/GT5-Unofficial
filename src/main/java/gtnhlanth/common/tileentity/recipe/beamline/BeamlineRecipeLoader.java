@@ -263,7 +263,7 @@ public class BeamlineRecipeLoader {
                 TARGET_CHAMBER_METADATA,
                 TargetChamberMetadata.builder(focusItem)
                     .particleID(PHOTON.getId())
-                    .amount(24)
+                    .amount(MaskList.CSOC.getBaselineAmount() * MaskList.CSOC.getMaxUses() * 3)
                     .energy(5, 12, 1)
                     .minFocus(60)
                     .build())
@@ -284,7 +284,7 @@ public class BeamlineRecipeLoader {
                 TARGET_CHAMBER_METADATA,
                 TargetChamberMetadata.builder(focusItem)
                     .particleID(PHOTON.getId())
-                    .amount(36)
+                    .amount(MaskList.ACC.getBaselineAmount() * MaskList.ACC.getMaxUses() * 3)
                     .energy(6, 14, 1)
                     .minFocus(70)
                     .build())

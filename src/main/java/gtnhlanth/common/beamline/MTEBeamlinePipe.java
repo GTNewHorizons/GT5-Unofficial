@@ -12,7 +12,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
@@ -37,6 +36,11 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
 
     public MTEBeamlinePipe(String name) {
         super(name, 0);
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return false;
     }
 
     @Override
@@ -65,10 +69,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
                     }
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
-                aBaseMetaTileEntity.issueTextureUpdate();
-            }
+        }
     }
 
     @Override

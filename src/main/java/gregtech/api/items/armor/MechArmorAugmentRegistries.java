@@ -41,6 +41,7 @@ import gregtech.api.items.armor.behaviors.JetpackHoverBehavior;
 import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
 import gregtech.api.items.armor.behaviors.JumpBoostBehavior;
 import gregtech.api.items.armor.behaviors.KnockbackResistBehavior;
+import gregtech.api.items.armor.behaviors.LevitationBehavior;
 import gregtech.api.items.armor.behaviors.MilkInfusionBehavior;
 import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import gregtech.api.items.armor.behaviors.OmniMovementBehavior;
@@ -632,7 +633,10 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentcreativeflight")
             .fitsInto(ArmorType.Chestplate)
             .setTexture(ArmorType.Chestplate, () -> creativeFlightAugment)
-            .providesBehaviors(CreativeFlightBehavior.INSTANCE)
+            .providesBehaviors(
+                CreativeFlightBehavior.INSTANCE,
+                LevitationBehavior.INSTANCE
+            )
             .incompatibleBehaviors(BehaviorName.Jetpack)
             .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)

@@ -128,6 +128,10 @@ public class MTEBlackHoleUtility extends MTEHatch {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (!aBaseMetaTileEntity.isServerSide()) {
+            super.onPostTick(aBaseMetaTileEntity, aTick);
+            return;
+        }
         if (isOn) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 15);

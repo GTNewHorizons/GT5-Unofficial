@@ -634,7 +634,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             IGregTechDeviceInformation.encode("GT5U.infodata.air_filter.has_filter", isFilterLoaded),
             IGregTechDeviceInformation.encode("GT5U.infodata.air_filter.remaining_cycles", filterUsageRemaining),
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.multiblock.recipes_done",
+                "GT5U.multiblock.recipesDone.fmt",
                 EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET) };
     }
 

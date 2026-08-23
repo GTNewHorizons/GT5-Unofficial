@@ -72,6 +72,8 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
+import gtPlusPlus.core.item.base.BaseItemComponent;
+import gtPlusPlus.core.material.Material;
 
 public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
@@ -238,17 +240,33 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(ItemStack aResult) {
-        ItemData tPrefixMaterial = GTOreDictUnificator.getAssociation(aResult);
-
         ArrayList<ItemStack> tResults = new ArrayList<>();
         tResults.add(aResult);
         tResults.add(GTOreDictUnificator.get(true, aResult));
+
+        // Handle familiar prefixes for GT items
+        ItemData tPrefixMaterial = GTOreDictUnificator.getAssociation(aResult);
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mBlackListed)
             && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                 tResults.add(GTOreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
         }
+
+        // Handle familiar prefixes for GT++ items
+        if (aResult != null && aResult.getItem() instanceof BaseItemComponent bic) {
+            OrePrefixes prefix = bic.componentType.getGtOrePrefix();
+            Material material = bic.componentMaterial;
+            if (prefix != null && material != null && !prefix.mFamiliarPrefixes.isEmpty()) {
+                for (OrePrefixes tPrefix : prefix.mFamiliarPrefixes) {
+                    ItemStack stack = material.getComponentByPrefix(tPrefix, 1);
+                    if (stack != null) {
+                        tResults.add(stack);
+                    }
+                }
+            }
+        }
+
         if (aResult != null) {
             List<ItemStack> ccRepresentations = CCNEIRepresentation.NEI_RECIPE_ASSOCIATIONS.get(aResult);
             if (ccRepresentations != null) {

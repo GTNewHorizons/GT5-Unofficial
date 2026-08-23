@@ -11,7 +11,6 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -118,10 +117,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         protected IStructureDefinition<AntimatterForge> computeValue(Class<?> type) {
             return StructureDefinition.<AntimatterForge>builder()
                 .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_FORGE)
-                .addElement('A', lazy(x -> ofBlock(x.getFrameBlock(), x.getFrameMeta())))
-                .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
-                .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta(2))))
-                .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCasingMeta(1))))
+                .addElement('A', lazy(() -> ofBlock(Loaders.antimatterContainmentCasing, 0)))
+                .addElement('B', lazy(() -> ofBlock(Loaders.protomatterActivationCoil, 0)))
+                .addElement('C', lazy(() -> ofBlock(Loaders.gravityStabilizationCasing, 0)))
+                .addElement('D', lazy(() -> ofBlock(Loaders.magneticFluxCasing, 0)))
                 .addElement(
                     'F',
                     lazy(
@@ -130,7 +129,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             .adder(AntimatterForge::addFluidIO)
                             .casingIndex(x.textureIndex(2))
                             .hint(1)
-                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
+                            .buildAndChain(ofBlock(Loaders.gravityStabilizationCasing, 0))))
                 .addElement(
                     'E',
                     lazy(
@@ -149,7 +148,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             .adder(AntimatterForge::addEnergyInjector)
                             .casingIndex(x.textureIndex(2))
                             .hint(2)
-                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
+                            .buildAndChain(ofBlock(Loaders.gravityStabilizationCasing, 0))))
                 .build();
         }
     };
@@ -341,33 +340,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     @Override
     public boolean supportsPowerPanel() {
         return false;
-    }
-
-    public Block getCasingBlock(int type) {
-        if (type == 2) {
-            return Loaders.gravityStabilizationCasing;
-        }
-        return Loaders.magneticFluxCasing;
-    }
-
-    public int getCasingMeta(int type) {
-        return 0;
-    }
-
-    public Block getCoilBlock() {
-        return Loaders.protomatterActivationCoil;
-    }
-
-    public int getCoilMeta() {
-        return 0;
-    }
-
-    public Block getFrameBlock() {
-        return Loaders.antimatterContainmentCasing;
-    }
-
-    public int getFrameMeta() {
-        return 0;
     }
 
     public int textureIndex(int type) {

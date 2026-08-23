@@ -13,7 +13,7 @@ import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtnhlanth.Tags;
+import gregtech.api.enums.Mods;
 import gtnhlanth.common.beamline.Particle;
 
 public class ItemParticle extends Item {
@@ -63,7 +63,7 @@ public class ItemParticle extends Item {
     public void registerIcons(IIconRegister register) {
         this.iconArray = new IIcon[NUMBER_OF_SUBTYPES];
         for (int i = 0; i < NUMBER_OF_SUBTYPES; ++i) {
-            this.iconArray[i] = register.registerIcon(Tags.MODID + ":" + "particle/" + names[i]);
+            this.iconArray[i] = register.registerIcon(Mods.ModIDs.G_T_N_H_LANTHANIDES + ":" + "particle/" + names[i]);
         }
     }
 

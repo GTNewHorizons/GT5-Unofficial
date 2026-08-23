@@ -33,6 +33,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -143,7 +144,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         StructureWrapperTooltipBuilder<MTEBECStorage> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Storage, Entangled Condensate Storage")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-storage"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-storage"))
             .addSupportAny();
 
         tt.beginStructureBlock(45, 17, 45, true)
@@ -217,6 +218,10 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         }
 
         return sum;
+    }
+
+    public void refreshContentForHatch() {
+        contentsChanged = true;
     }
 
     @Override
@@ -393,7 +398,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 if (imte instanceof MTEHatchCondensateDetector hatch) {
                     hatch.updateTexture(texture);
                     hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.bindBECStorage(self);
                     self.condensateDetectors.add(hatch);
+                    self.contentsChanged = true;
                     return true;
                 } else {
                     return false;

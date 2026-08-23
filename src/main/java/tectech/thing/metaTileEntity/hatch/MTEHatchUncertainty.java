@@ -28,6 +28,7 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchUncertaintyGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.util.CommonValues;
@@ -35,7 +36,7 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class MTEHatchUncertainty extends MTEHatch {
+public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
 
     private static IIconContainer ScreenON;
     private static IIconContainer ScreenOFF;
@@ -115,10 +116,15 @@ public class MTEHatchUncertainty extends MTEHatch {
                 status = (byte) 0b11111111;
             } else {
                 aBaseMetaTileEntity.setActive(true);
+
+                int oldStatus = status;
+
                 if (!stopChecking) { // No point in making calculations if the entire matrix has faded to 0
                     shift();
                     compute();
                 }
+
+                if (status == 0 && oldStatus != status) notifyWatchers();
             }
         }
     }

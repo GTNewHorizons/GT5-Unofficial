@@ -81,7 +81,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .eut(calculateRecipeEU(aMaterial, 1))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(alloySmelterRecipes);
-            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aMaterial != Materials.Unstable) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial, 8L),
                     GTModHandler.RecipeBits.BUFFERED,

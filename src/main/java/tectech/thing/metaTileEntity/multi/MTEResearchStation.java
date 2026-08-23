@@ -152,6 +152,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchObjectHolder) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eHolders.add((MTEHatchObjectHolder) aMetaTileEntity);
         }
