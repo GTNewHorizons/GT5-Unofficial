@@ -14,7 +14,7 @@ public enum BehaviorName {
     OmniMovement(EnumRarity.rare),
     Jetpack(EnumRarity.uncommon),
     JetpackHover(EnumRarity.uncommon),
-    JetpackPerfectHover(EnumRarity.rare),
+    VectoredJetpack(EnumRarity.rare),
     FireImmunity(EnumRarity.common),
     StepAssist(EnumRarity.common),
     GogglesOfRevealing(EnumRarity.uncommon),

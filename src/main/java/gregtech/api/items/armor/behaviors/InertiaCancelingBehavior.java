@@ -41,7 +41,9 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
 
         EntityPlayer player = context.getPlayer();
         boolean creativeFlight = player.capabilities.isFlying;
-        boolean jetpackHovering = context.isBehaviorActive(BehaviorName.JetpackHover) && !player.onGround;
+        boolean jetpackHovering = context.hasBehavior(BehaviorName.VectoredJetpack)
+            && context.isBehaviorActive(BehaviorName.JetpackHover)
+            && !player.onGround;
 
         if (!context.isBehaviorActive(BehaviorName.InertiaCanceling) || player.moveForward != 0
             || player.moveStrafing != 0

@@ -38,7 +38,6 @@ import gregtech.api.items.armor.behaviors.InertiaCancelingBehavior;
 import gregtech.api.items.armor.behaviors.InfiniteEnergyBehavior;
 import gregtech.api.items.armor.behaviors.JetpackBehavior;
 import gregtech.api.items.armor.behaviors.JetpackHoverBehavior;
-import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
 import gregtech.api.items.armor.behaviors.JumpBoostBehavior;
 import gregtech.api.items.armor.behaviors.KnockbackResistBehavior;
 import gregtech.api.items.armor.behaviors.LevitationBehavior;
@@ -50,6 +49,7 @@ import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
 import gregtech.api.items.armor.behaviors.StepAssistBehavior;
 import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
 import gregtech.api.items.armor.behaviors.TerrasteelBehavior;
+import gregtech.api.items.armor.behaviors.VectoredJetpackBehavior;
 import gregtech.api.items.armor.behaviors.VisDiscountBehavior;
 import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
 
@@ -236,6 +236,11 @@ public class MechArmorAugmentRegistries {
         }
 
         @Override
+        public Collection<BehaviorName> getRequiredBehaviorsOr() {
+            return this.builder.getRequiredBehaviorsOr();
+        }
+
+        @Override
         public Collection<BehaviorName> getIncompatibleBehaviors() {
             return this.builder.getIncompatibleBehaviors();
         }
@@ -370,6 +375,11 @@ public class MechArmorAugmentRegistries {
         }
 
         @Override
+        public Collection<BehaviorName> getRequiredBehaviorsOr() {
+            return this.builder.getRequiredBehaviorsOr();
+        }
+
+        @Override
         public Collection<BehaviorName> getIncompatibleBehaviors() {
             return this.builder.getIncompatibleBehaviors();
         }
@@ -442,8 +452,9 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentjetpack")
             .fitsInto(ArmorType.Chestplate)
             .setTexture(ArmorType.Chestplate, () -> jetpackAugment)
-            .providesBehaviors(JetpackBehavior.INSTANCE, JetpackHoverBehavior.INSTANCE)
+            .providesBehaviors(JetpackBehavior.JETPACK, JetpackHoverBehavior.INSTANCE)
             .incompatibleBehaviors(BehaviorName.CreativeFlight)
+            .incompatibleAugments(ItemList.Augment_VectoredJetpack)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -536,12 +547,13 @@ public class MechArmorAugmentRegistries {
         ),
 
         // Tier 2 - Movement
-        JetpackPerfectHover(ItemList.Augment_Jetpack_PerfectHover, new AugmentBuilder()
-            .setId("JetpackPerfectHover")
-            .setItemId("augmentjetpackperfecthover")
+        VectoredJetpack(ItemList.Augment_VectoredJetpack, new AugmentBuilder()
+            .setId("VectoredJetpack")
+            .setItemId("augmentvectoredjetpack")
             .fitsInto(ArmorType.Chestplate)
-            .providesBehaviors(JetpackPerfectHoverBehavior.INSTANCE)
-            .requiresBehaviors(BehaviorName.Jetpack)
+            .providesBehaviors(JetpackBehavior.VECTORED_JETPACK, JetpackHoverBehavior.INSTANCE, VectoredJetpackBehavior.INSTANCE)
+            .incompatibleBehaviors(BehaviorName.CreativeFlight)
+            .incompatibleAugments(ItemList.Augment_Jetpack)
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -641,13 +653,12 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)
         ),
-        // No requiresBehaviors: it's usable with either CreativeFlight or Jetpack (JetpackHover), and the builder
-        // only supports AND-ing requirements, not OR. Gating happens at runtime in InertiaCancelingBehavior instead.
         InertiaCanceling(ItemList.Augment_InertiaCanceling, new AugmentBuilder()
             .setId("InertiaCanceling")
             .setItemId("augmentinertiacanceling")
             .fitsInto(ArmorType.Chestplate)
             .providesBehaviors(InertiaCancelingBehavior.INSTANCE)
+            .requiresOr(BehaviorName.VectoredJetpack, BehaviorName.CreativeFlight)
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -736,6 +747,11 @@ public class MechArmorAugmentRegistries {
         @Override
         public Collection<BehaviorName> getRequiredBehaviors() {
             return this.builder.getRequiredBehaviors();
+        }
+
+        @Override
+        public Collection<BehaviorName> getRequiredBehaviorsOr() {
+            return this.builder.getRequiredBehaviorsOr();
         }
 
         @Override

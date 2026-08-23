@@ -14,9 +14,14 @@ import gregtech.api.items.armor.JetpackStats;
 
 public class JetpackBehavior implements IArmorBehavior {
 
-    public static final JetpackBehavior INSTANCE = new JetpackBehavior();
+    public static final JetpackBehavior JETPACK = new JetpackBehavior(JetpackStats.JETPACK);
+    public static final JetpackBehavior VECTORED_JETPACK = new JetpackBehavior(JetpackStats.VECTORED_JETPACK);
 
-    protected JetpackBehavior() {}
+    private final JetpackStats jetpackStats;
+
+    protected JetpackBehavior(JetpackStats jetpackStats) {
+        this.jetpackStats = jetpackStats;
+    }
 
     @Override
     public BehaviorName getName() {
@@ -50,9 +55,6 @@ public class JetpackBehavior implements IArmorBehavior {
      */
     private void performFlying(@NotNull ArmorContext context) {
         EntityPlayer player = context.getPlayer();
-        JetpackStats jetpackStats = context.hasBehavior(BehaviorName.JetpackPerfectHover)
-            ? JetpackStats.ADVANCED_PERFECT_HOVER
-            : JetpackStats.ADVANCED;
 
         double currentAccel = jetpackStats.getVerticalAcceleration() * (player.motionY < 0.3D ? 2.5D : 1.0D);
         double currentSpeedVertical = jetpackStats.getVerticalSpeed() * (player.isInWater() ? 0.4D : 1.0D);
