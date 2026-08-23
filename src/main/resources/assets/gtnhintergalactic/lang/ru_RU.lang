@@ -120,6 +120,7 @@ item.NtNanoparticles.name=Наночастицы из нейтрония
 item.droneCase.name=Короностойкий корпус дрона
 item.femtocontroller.name=Фемтоконтроллер с магнитной защитой
 item.fuelPellet.name=Сверхтонкая TrNq+ радиоизомер Пеллета
+item.solarSail.name=Ultra-Durable Solar Sail
 
 # Blocks
 gt.blockcasingsSE.name=Часть космического лифта
