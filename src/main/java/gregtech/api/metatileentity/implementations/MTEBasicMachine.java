@@ -1331,6 +1331,17 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         }
     }
 
+    private void getWailaNBTTagWithItems(ItemStack[] itemStacks, String nameTag, NBTTagCompound tag) {
+        for (int i = 0; i < itemStacks.length; i++) {
+            ItemStack itemStack = itemStacks[i];
+            if (itemStack != null) {
+                NBTTagCompound itemTag = new NBTTagCompound();
+                itemStack.writeToNBT(itemTag);
+                tag.setTag(nameTag + i, itemTag);
+            }
+        }
+    }
+
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
@@ -1359,24 +1370,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             }
         }
 
-        for (int i = 0; i < inputs.length; i++) {
-            ItemStack itemStack = inputs[i];
-            if (itemStack != null) {
-                NBTTagCompound itemTag = new NBTTagCompound();
-                inputs[i].writeToNBT(itemTag);
-                tag.setTag("inputItems" + i, itemTag);
-            }
-
-        }
-
-        for (int i = 0; i < outputs.length; i++) {
-            ItemStack itemStack = outputs[i];
-            if (itemStack != null) {
-                NBTTagCompound itemTag = new NBTTagCompound();
-                itemStack.writeToNBT(itemTag);
-                tag.setTag("outputItems" + i, itemTag);
-            }
-        }
+        getWailaNBTTagWithItems(inputs, "inputItems", tag);
+        getWailaNBTTagWithItems(outputs, "outputItems", tag);
     }
 
     @Nonnull
