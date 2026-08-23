@@ -1113,11 +1113,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("nameLines")) {
             NBTTagList nameLines = tag.getTagList("nameLines", Constants.NBT.TAG_STRING);
-            for (int i = 0; i < nameLines.tagCount(); i++) {
+            if (nameLines.tagCount() > 0) {
+                currenttip.add(EnumChatFormatting.AQUA + nameLines.getStringTagAt(0) + EnumChatFormatting.RESET);
                 // Indent everything below the machine name, so the listed items read as one block
-                String prefix = i == 0 ? "" : "  ";
-                currenttip
-                    .add(EnumChatFormatting.AQUA + prefix + nameLines.getStringTagAt(i) + EnumChatFormatting.RESET);
+                for (int i = 1; i < nameLines.tagCount(); i++) {
+                    currenttip
+                        .add(EnumChatFormatting.AQUA + "  " + nameLines.getStringTagAt(i) + EnumChatFormatting.RESET);
+                }
             }
         }
         currenttip.add(
