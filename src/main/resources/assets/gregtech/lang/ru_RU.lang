@@ -1692,6 +1692,10 @@ gt.mbtt.structure.any_tiered_glass=Стекло любого тира
 gt.mbtt.structure.min_tiered_glass=Стекло тира %s+
 gt.mbtt.structure.any_bottom_casing=Любой нижний блок корпуса
 gt.mbtt.structure.back_center_casing=Сзади посередине
+gt.mbtt.structure.front_left_2nd_layer=Спереди слева, 2-й слой
+gt.mbtt.structure.interior_and_top_center=Внутри структуры и сверху по центру
+gt.mbtt.structure.any_bottom_edge_casing=Любой блок корпуса по нижнему краю
+gt.mbtt.machine_type.restorer=Восстановитель
 
 gt.mbtt.machine_type.spacetime_manipulator=Пространственно-временной манипулятор, EOH
 GT5U.MBTT.HatchInfo=Любой %s

@@ -2794,6 +2794,7 @@ public enum ItemList implements IItemContainer {
     DroneCase,
     Femtocontroller,
     FuelPellet,
+    SolarSail,
 
     PrecisionFieldSyncCasing,
     MagneticAnchorCasing,
@@ -3274,6 +3275,21 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_ToffeeButter,
     Ice_Cream_Unicorn,
     Ice_Cream_Vanilla,
+    Ice_Cream_Concrete,
+    Ice_Cream_Rubber,
+    Ice_Cream_Diesel,
+    Ice_Cream_Snowcone,
+    Ice_Cream_IceSlush,
+    Ice_Cream_Sorbet_Pineapple,
+    Ice_Cream_Orange,
+    Ice_Cream_Jelly,
+    Ice_Cream_MatchaSnake,
+    Ice_Cream_Popsicle_Freeze,
+    Ice_Cream_HoneyBeeBowl,
+    Ice_Cream_IlluminatiCone,
+    Ice_Cream_ConfettiQuestbook,
+    Ice_Cream_PitOfDoomAndDespair,
+    Ice_Cream_MasterOfDreams,
 
     // semicolon after the comment to reduce merge conflicts
     ;
