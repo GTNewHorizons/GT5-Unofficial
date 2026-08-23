@@ -127,6 +127,7 @@ item.NtNanoparticles.name=Neutronium Nanoparticles
 item.droneCase.name=Corona-Resistant Drone Case
 item.femtocontroller.name=Magnetically Shielded Femtocontroller
 item.fuelPellet.name=Hyperfine TrNq+ Radioisomer Pellet
+item.solarSail.name=Ultra-Durable Solar Sail
 
 # Blocks
 gt.blockcasingsSE.name=Space Elevator Part
