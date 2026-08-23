@@ -87,14 +87,6 @@ public class MTEHatchHeatSensor extends MTEHatchRedstoneBase {
         this.threshold = threshold;
     }
 
-    public boolean isInverted() {
-        return inverted;
-    }
-
-    public void setInverted(boolean inverted) {
-        this.inverted = inverted;
-    }
-
     @Override
     protected boolean useMui2() {
         return true;
