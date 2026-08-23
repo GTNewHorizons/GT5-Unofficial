@@ -203,7 +203,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
-            .metadata(FUEL_MODIFICATOR, Triple.of(1d, 1.1d, 1.1d))
+            .metadata(FUEL_MODIFICATOR, Triple.of(1.1d, 1.1d, 1.1d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -355,7 +355,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
-            .metadata(FUEL_MODIFICATOR, Triple.of(2d, 1.2d, 1.1d))
+            .metadata(FUEL_MODIFICATOR, Triple.of(0.65d, 1.2d, 1.1d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
