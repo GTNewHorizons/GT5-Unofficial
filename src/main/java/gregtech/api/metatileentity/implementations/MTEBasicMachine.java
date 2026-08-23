@@ -1231,19 +1231,19 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             Comparator.<ItemStack, Boolean>comparing(stack -> !(stack.getItem() instanceof ItemIntegratedCircuit))
                 .thenComparingInt(ItemStack::getItemDamage));
 
+        if (!isSteampowered() && maxEu > 0) {
+            currenttip.add(
+                TTRenderBar.create(
+                    euText,
+                    ColorUtils.euBarTop.getColor(),
+                    ColorUtils.euBarBottom.getColor(),
+                    (double) eu / maxEu));
+        }
+
         if (tag.getBoolean("stutteringSingleBlock")) {
             currenttip.add(translateToLocal(getWailaStutteringLine(tag)));
         } else {
             if (isActive) {
-                if (!isSteampowered()) {
-                    currenttip.add(
-                        TTRenderBar.create(
-                            euText,
-                            ColorUtils.euBarTop.getColor(),
-                            ColorUtils.euBarBottom.getColor(),
-                            (double) eu / maxEu));
-                }
-
                 currenttip.add(
                     GTWaila.getMachineProgressString(
                         true,
@@ -1254,13 +1254,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 if (!isSteampowered()) {
                     if (euT > 0) {
                         double exactAmps = GTUtility.getExactAmperageForTier(euT, (byte) getInputTier());
-                        String ampString = String.format("%.2f", exactAmps);
 
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GT5U.waila.energy.use_with_amperage",
                                 formatNumber(euT),
-                                ampString,
+                                String.format("%.2f", exactAmps),
                                 GTUtility.getColoredTierNameFromTier((byte) getInputTier())));
                     } else if (euT < 0) {
                         currenttip.add(
