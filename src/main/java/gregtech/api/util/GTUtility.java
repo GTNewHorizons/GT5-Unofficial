@@ -466,6 +466,14 @@ public class GTUtility {
         return ceilDiv(voltage, GTValues.V[tier]);
     }
 
+    public static double getExactAmperageForTier(long voltage, byte tier) {
+        if (GTValues.V[tier] <= 0) {
+            return 0.0D;
+        }
+
+        return (double) voltage / (double) GTValues.V[tier];
+    }
+
     /**
      * Rounds up partial voltage that exceeds tiered voltage, e.g. 4,096 -> 8,192(IV)
      */
