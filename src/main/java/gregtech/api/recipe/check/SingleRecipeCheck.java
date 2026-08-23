@@ -130,7 +130,7 @@ public class SingleRecipeCheck {
         FluidStack[] fluidInputs) {
         int currentParallel = maxParallel;
 
-        if (totalItemCost >= 0 && !itemCost.isEmpty()) {
+        if (!itemCost.isEmpty()) {
             // Create a map for items to their stored amounts.
             Map<ItemId, Integer> itemMap = new HashMap<>();
             for (ItemStack itemStack : itemInputs) {
@@ -143,7 +143,7 @@ public class SingleRecipeCheck {
                 if (costEntry.getValue() > 0) {
                     currentParallel = Math
                         .min(currentParallel, itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
-                } else { // Likely a non-consumable in itemCost. Check if machine has this non-consumable
+                } else { // Non-consumable in itemCost. Check if machine has this non-consumable
                     if (!itemMap.containsKey(costEntry.getKey())) currentParallel = 0;
                 }
                 if (currentParallel <= 0) {
