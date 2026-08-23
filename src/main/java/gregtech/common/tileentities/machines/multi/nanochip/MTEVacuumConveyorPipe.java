@@ -38,6 +38,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     private static IIconContainer CCBarOverlay, CCBarOverlayActive;
     public VacuumFactoryNetwork network;
     private boolean clientRenderState;
+    private boolean registered = false;
 
     public MTEVacuumConveyorPipe(int aID, String aName) {
         super(aID, aName);
@@ -102,6 +103,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         super.onFirstTick(aBaseMetaTileEntity);
         VacuumFactoryGrid.INSTANCE.updateElement(this);
         if (aBaseMetaTileEntity.isClientSide()) {
+            registered = true;
             VacuumConveyorPipeClientStateManager.INSTANCE.register(this);
         }
     }
@@ -109,7 +111,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     @Override
     public void onUnload() {
         VacuumFactoryGrid.INSTANCE.removeElement(this);
-        if (getBaseMetaTileEntity().isClientSide()) {
+        if (getBaseMetaTileEntity().isClientSide() && registered) {
             VacuumConveyorPipeClientStateManager.INSTANCE.unregister(this);
         }
         super.onUnload();
@@ -278,7 +280,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     public void onRemoval() {
         super.onRemoval();
         VacuumFactoryGrid.INSTANCE.removeElement(this);
-        if (getBaseMetaTileEntity().isClientSide()) {
+        if (getBaseMetaTileEntity().isClientSide() && registered) {
             VacuumConveyorPipeClientStateManager.INSTANCE.unregister(this);
         }
     }
