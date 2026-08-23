@@ -50,7 +50,6 @@ import gregtech.common.items.behaviors.BehaviourDataOrb;
 public class CellLoader implements IWerkstoffRunnable {
 
     @Override
-    @SuppressWarnings("unchecked")
     public void run(Werkstoff werkstoff) {
         if (!werkstoff.hasItemType(cell)) return;
 
@@ -69,8 +68,7 @@ public class CellLoader implements IWerkstoffRunnable {
                 HashMap<ISubTagContainer, Pair<Integer, Integer>> tracker = new HashMap<>();
                 int cells = 0;
                 for (Pair<ISubTagContainer, Integer> container : werkstoff.getContents()
-                    .getValue()
-                    .toArray(new Pair[0])) {
+                    .getValue()) {
                     if (container.getKey() instanceof Materials) {
                         if ((((Materials) container.getKey()).getGas(1) != null
                             || ((Materials) container.getKey()).getFluid(1) != null

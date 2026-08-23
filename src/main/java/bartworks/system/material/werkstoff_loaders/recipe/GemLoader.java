@@ -89,19 +89,19 @@ public class GemLoader implements IWerkstoffRunnable {
                 .getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gemFlawless, 2),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemExquisite) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gem, 2),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawless) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gemFlawed, 2),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "h  ", "W  ", 'W', werkstoff.get(gem) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gemChipped, 2),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawed) });
             }
 

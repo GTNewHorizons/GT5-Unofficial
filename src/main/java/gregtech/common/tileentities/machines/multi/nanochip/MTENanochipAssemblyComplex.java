@@ -613,7 +613,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         BigInteger drainedEnergy = BigInteger.ZERO;
                         // iterate over the modules, sending EU to fill their internal buffers
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
+                            // Connect first, since a module only runs its own structure check while connected.
                             module.connect(this);
+                            // But do not fill the buffer of a module whose own structure is incomplete.
+                            if (!module.mMachine) continue;
 
                             BigInteger moduleCapacity = module.getBufferSize();
                             BigInteger moduleStored = module.getCurrentEUStored();

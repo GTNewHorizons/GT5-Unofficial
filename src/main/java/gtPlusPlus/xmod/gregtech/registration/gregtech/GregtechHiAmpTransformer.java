@@ -61,46 +61,46 @@ public class GregtechHiAmpTransformer {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_LV_ULV.get(1L),
-            GTModHandler.RecipeBits.BITS,
+            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " BB", "CM ", " BB", 'M', ItemList.Transformer_LV_ULV, 'C',
                 OrePrefixes.wireGt04.get(Materials.Tin), 'B', OrePrefixes.wireGt04.get(Materials.Lead) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_MV_LV.get(1L),
-            GTModHandler.RecipeBits.BITS,
+            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " BB", "CM ", " BB", 'M', ItemList.Transformer_MV_LV, 'C',
                 OrePrefixes.wireGt04.get(Materials.AnyCopper), 'B', OrePrefixes.wireGt04.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_HV_MV.get(1L),
-            GTModHandler.RecipeBits.BITS,
+            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " BB", "CM ", " BB", 'M', ItemList.Transformer_HV_MV, 'C',
                 OrePrefixes.wireGt04.get(Materials.Gold), 'B', OrePrefixes.wireGt04.get(Materials.AnyCopper) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_EV_HV.get(1L),
-            GTModHandler.RecipeBits.BITS,
+            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Transformer_EV_HV, 'C',
                 OrePrefixes.wireGt04.get(Materials.Aluminium), 'B', OrePrefixes.wireGt04.get(Materials.Gold), 'K',
                 ItemList.Casing_Coil_Cupronickel });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_IV_EV.get(1L),
-            GTModHandler.RecipeBits.BITS,
+            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Transformer_IV_EV, 'C',
                 OrePrefixes.wireGt04.get(Materials.Tungsten), 'B', OrePrefixes.wireGt04.get(Materials.Aluminium), 'K',
                 ItemList.Casing_Coil_Kanthal });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_LuV_IV.get(1L),
-            GTModHandler.RecipeBits.BITS,
+            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Transformer_LuV_IV, 'C',
                 OrePrefixes.wireGt04.get(Materials.VanadiumGallium), 'B', OrePrefixes.wireGt04.get(Materials.Tungsten),
                 'K', ItemList.Casing_Coil_Nichrome });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_ZPM_LuV.get(1L),
-            GTModHandler.RecipeBits.BITS,
+            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Transformer_ZPM_LuV, 'C',
                 OrePrefixes.wireGt04.get(Materials.Naquadah), 'B', OrePrefixes.wireGt04.get(Materials.VanadiumGallium),
                 'K', mItem_1 });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_UV_ZPM.get(1L),
-            GTModHandler.RecipeBits.BITS,
+            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Transformer_UV_ZPM, 'C',
                 OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), 'B', OrePrefixes.wireGt04.get(Materials.Naquadah),
                 'K', mItem_2 });
