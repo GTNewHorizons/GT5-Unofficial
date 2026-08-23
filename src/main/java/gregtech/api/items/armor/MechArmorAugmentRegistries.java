@@ -49,7 +49,6 @@ import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
 import gregtech.api.items.armor.behaviors.StepAssistBehavior;
 import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
 import gregtech.api.items.armor.behaviors.TerrasteelBehavior;
-import gregtech.api.items.armor.behaviors.VectoredJetpackBehavior;
 import gregtech.api.items.armor.behaviors.VisDiscountBehavior;
 import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
 
@@ -551,7 +550,7 @@ public class MechArmorAugmentRegistries {
             .setId("VectoredJetpack")
             .setItemId("augmentvectoredjetpack")
             .fitsInto(ArmorType.Chestplate)
-            .providesBehaviors(JetpackBehavior.VECTORED_JETPACK, JetpackHoverBehavior.INSTANCE, VectoredJetpackBehavior.INSTANCE)
+            .providesBehaviors(JetpackBehavior.VECTORED_JETPACK, JetpackHoverBehavior.INSTANCE)
             .incompatibleBehaviors(BehaviorName.CreativeFlight)
             .incompatibleAugments(ItemList.Augment_Jetpack)
             .setMinimumCoreTier(2)
@@ -658,7 +657,7 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentinertiacanceling")
             .fitsInto(ArmorType.Chestplate)
             .providesBehaviors(InertiaCancelingBehavior.INSTANCE)
-            .requiresOr(BehaviorName.VectoredJetpack, BehaviorName.CreativeFlight)
+            .requiresOr(BehaviorName.Jetpack, BehaviorName.CreativeFlight)
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
