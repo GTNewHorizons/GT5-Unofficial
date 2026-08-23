@@ -1208,13 +1208,24 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         String euText = formatNumber(eu) + " / " + formatNumber(maxEu);
         List<ItemStack> inputItems = new ArrayList<>();
         List<ItemStack> outputItems = new ArrayList<>();
-        FluidStack inputFluid = null;
-        FluidStack outputFluid = null;
+        FluidStack inputFluid;
+        FluidStack outputFluid;
+        FluidStack outputRecipeFluid;
 
         getWailaItemsWithNBTTag(getAllInputs(), "inputItems", inputItems, tag);
         getWailaItemsWithNBTTag(getAllOutputs(), "outputItems", outputItems, tag);
+        getWailaItemsWithNBTTag(mOutputItems, "outputRecipeItems", outputItems, tag);
+
         inputFluid = getWailaFluidWithNBTTag("inputFluid", tag);
         outputFluid = getWailaFluidWithNBTTag("outputFluid", tag);
+        outputRecipeFluid = getWailaFluidWithNBTTag("outputRecipeFluid", tag);
+
+        if (outputRecipeFluid != null && outputFluid != null && outputRecipeFluid.isFluidEqual(outputFluid)) {
+            outputFluid.amount += outputRecipeFluid.amount;
+        }
+
+        inputItems = GTUtility.mergeAndSortItemStacks(inputItems);
+        outputItems = GTUtility.mergeAndSortItemStacks(outputItems);
 
         inputItems.sort(
             Comparator.<ItemStack, Boolean>comparing(stack -> !(stack.getItem() instanceof ItemIntegratedCircuit))
@@ -1292,7 +1303,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             getWailaRenderItems(currenttip, outputItems);
         }
 
-        getWailaRenderFluid(currenttip, outputFluid);
+        if (outputFluid != null) {
+            getWailaRenderFluid(currenttip, outputFluid);
+        } else {
+            getWailaRenderFluid(currenttip, outputRecipeFluid);
+        }
 
         if (Client.waila.showFacing) {
             if (gte != null) {
@@ -1424,6 +1439,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
         getWailaNBTTagWithFluid(fluidInput, "inputFluid", tag);
         getWailaNBTTagWithFluid(fluidOutput, "outputFluid", tag);
+
+        getWailaNBTTagWithItems(mOutputItems, "outputRecipeItems", tag);
+        getWailaNBTTagWithFluid(mOutputFluid, "outputRecipeFluid", tag);
     }
 
     @Nonnull
