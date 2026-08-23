@@ -1187,7 +1187,11 @@ public class GTModHandler {
                 !aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT,
                 aRemoveAllOtherShapedsWithSameOutput,
                 aRemoveAllOtherNativeRecipes) || tThereWasARecipe;
-            else removeRecipeByOutputDelayed(aResult);
+            else removeRecipeByOutputDelayed(
+                aResult,
+                !aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT,
+                aRemoveAllOtherShapedsWithSameOutput,
+                aRemoveAllOtherNativeRecipes);
         }
 
         if (aOnlyAddIfThereIsAnyRecipeOutputtingThis && !tDoWeCareIfThereWasARecipe && !tThereWasARecipe) {
