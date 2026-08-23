@@ -1351,7 +1351,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             TTRenderStack.create(GTUtility.getFluidDisplayStack(fluidStack, false), true)
                 + StatCollector.translateToLocalFormatted(
                     "GT5U.waila.machine.render_item",
-                    fluidStack.amount,
+                    formatNumber(fluidStack.amount),
                     fluidStack.getLocalizedName()));
     }
 
