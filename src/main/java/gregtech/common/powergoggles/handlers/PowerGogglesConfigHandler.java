@@ -1,11 +1,10 @@
 package gregtech.common.powergoggles.handlers;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.gtnewhorizons.modularui.api.math.Color;
 
@@ -45,7 +44,6 @@ public class PowerGogglesConfigHandler {
     public static int textBadColor;
     public static int textOkColor;
     public static int textGoodColor;
-    public static final Logger GOGGLES_LOGGER = LogManager.getLogger("GT5U Power Goggles");
 
     private static final int DEFAULT_GRADIENT_BAD_COLOR = Color.rgb(255, 50, 50);
     private static final int DEFAULT_GRADIENT_OK_COLOR = Color.rgb(50, 255, 50);
@@ -139,8 +137,8 @@ public class PowerGogglesConfigHandler {
             textGoodColor = getColorSetting("Good Text", DEFAULT_TEXT_GOOD_COLOR);
 
         } catch (Exception e) {
-            GOGGLES_LOGGER.error("Couldn't load goggles config.");
-            GOGGLES_LOGGER.debug(e);
+            GT_FML_LOGGER.error("Couldn't load goggles config.");
+            GT_FML_LOGGER.error(e);
         } finally {
             if (config.hasChanged()) config.save();
         }

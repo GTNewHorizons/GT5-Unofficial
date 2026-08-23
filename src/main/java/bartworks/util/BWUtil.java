@@ -13,6 +13,7 @@
 
 package bartworks.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
@@ -52,7 +53,6 @@ import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;
@@ -514,10 +514,8 @@ public class BWUtil {
         for (; idx < aRecipe.length; idx += 2) {
             if (aRecipe[idx] == null || aRecipe[idx + 1] == null) {
                 if (D1) {
-                    GTLog.err.println(
-                        "WARNING: Missing Item for shaped Recipe: "
-                            + (aResult == null ? "null" : aResult.getDisplayName()));
-                    for (Object tContent : aRecipe) GTLog.err.println(tContent);
+                    GT_FML_LOGGER.error("WARNING: Missing Item for shaped Recipe: {}", aResult == null ? "null" : aResult.getDisplayName());
+                    for (Object tContent : aRecipe) GT_FML_LOGGER.error(tContent);
                 }
                 return null;
             }
@@ -639,6 +637,63 @@ public class BWUtil {
             aEnchantmentsAdded,
             aEnchantmentLevelsAdded,
             aRecipe).setMirrored(aMirrored);
+    }
+
+    public static boolean areCraftingInputsOnlyMaterial(Object input, Materials material) {
+        if (!(input instanceof List<?>) && !(input instanceof Object[])) {
+            return false;
+        }
+
+        ArrayList<List<?>> lists = new ArrayList<>();
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+
+        if (input instanceof List<?>listInput) {
+            for (Object entry : listInput) {
+                if (entry instanceof List<?>list) {
+                    lists.add(list);
+                } else if (entry instanceof ItemStack stack) {
+                    stacks.add(stack);
+                }
+            }
+        } else if (input instanceof Object[]arrayInput) {
+            for (Object entry : arrayInput) {
+                if (entry instanceof List<?>list) {
+                    lists.add(list);
+                } else if (entry instanceof ItemStack stack) {
+                    stacks.add(stack);
+                }
+            }
+        }
+
+        for (List<?> list : lists) {
+            if (list.isEmpty()) {
+                continue;
+            }
+
+            Object first = list.get(0);
+            if (!(first instanceof ItemStack stack)) {
+                return false;
+            }
+
+            stacks.add(stack);
+        }
+
+        if (stacks.isEmpty()) {
+            return false;
+        }
+
+        for (ItemStack stack : stacks) {
+            ItemData association = GTOreDictUnificator.getAssociation(stack);
+            if (!BWUtil.checkStackAndPrefix(association)) {
+                return false;
+            }
+
+            if (association.mMaterial.mMaterial != material) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static void shortSleep(long nanos) {
