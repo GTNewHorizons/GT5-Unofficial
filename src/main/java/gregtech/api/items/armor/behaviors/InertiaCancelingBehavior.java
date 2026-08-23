@@ -15,8 +15,7 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
 
     public static final InertiaCancelingBehavior INSTANCE = new InertiaCancelingBehavior();
 
-    private static final double CREATIVE_FLIGHT_DAMPING_FACTOR = 0.5;
-    private static final double JETPACK_DAMPING_FACTOR = 0.175;
+    private static final double DAMPING_FACTOR = 0.5;
 
     @Override
     public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
@@ -49,8 +48,7 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
             return;
         }
 
-        double dampingFactor = creativeFlight ? CREATIVE_FLIGHT_DAMPING_FACTOR : JETPACK_DAMPING_FACTOR;
-        double retained = 1.0 - dampingFactor;
+        double retained = 1.0 - DAMPING_FACTOR;
         player.motionX *= retained;
         player.motionZ *= retained;
     }
