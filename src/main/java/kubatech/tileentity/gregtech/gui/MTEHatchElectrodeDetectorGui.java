@@ -14,9 +14,10 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchRedstoneBaseGui;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
 
-public class MTEHatchElectrodeDetectorGui extends MTEHatchBaseGui<MTEHatchElectrodeDetector> {
+public class MTEHatchElectrodeDetectorGui extends MTEHatchRedstoneBaseGui<MTEHatchElectrodeDetector> {
 
     public MTEHatchElectrodeDetectorGui(MTEHatchElectrodeDetector detector) {
         super(detector);

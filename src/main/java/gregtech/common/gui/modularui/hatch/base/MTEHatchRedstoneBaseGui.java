@@ -12,9 +12,9 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTEHatchRedstoneBaseGui extends MTEHatchBaseGui<MTEHatchRedstoneBase> {
+public class MTEHatchRedstoneBaseGui<T extends MTEHatchRedstoneBase> extends MTEHatchBaseGui<T> {
 
-    public MTEHatchRedstoneBaseGui(MTEHatchRedstoneBase machine) {
+    public MTEHatchRedstoneBaseGui(T machine) {
         super(machine);
     }
 
@@ -30,7 +30,7 @@ public class MTEHatchRedstoneBaseGui extends MTEHatchBaseGui<MTEHatchRedstoneBas
     }
 
     protected Flow createDirectionalButtonRow() {
-        BooleanSyncValue directionalSyncer = new BooleanSyncValue(machine::isDirectional, machine::setDirectional);
+        BooleanSyncValue directionalSyncer = new BooleanSyncValue(machine::isDirectional, machine::setDirectional).allowC2S();
         return Flow.row()
             .child(
                 new ToggleButton().overlay(true, GTGuiTextures.OVERLAY_BUTTON_DIRECTIONAL_ON)

@@ -10,9 +10,10 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchRedstoneBaseGui;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchPHSensor;
 
-public class MTEHatchPHSensorGui extends MTEHatchBaseGui<MTEHatchPHSensor> {
+public class MTEHatchPHSensorGui extends MTEHatchRedstoneBaseGui<MTEHatchPHSensor> {
 
     public MTEHatchPHSensorGui(MTEHatchPHSensor sensor) {
         super(sensor);
