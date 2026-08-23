@@ -6139,8 +6139,8 @@ GT5U.waila.facing.east=EAST
 GT5U.waila.facing.unknown=UNKNOWN
 GT5U.waila.machine.progress_tick=%st / %st
 GT5U.waila.machine.progress_second=%ss / %ss
-GT5U.waila.machine.recipe_inputs=§6Recipe Inputs:
-GT5U.waila.machine.recipe_outputs=§bRecipe Outputs: §e%s
+GT5U.waila.machine.input=§6Input:
+GT5U.waila.machine.output=§bOutput: §e%s
 GT5U.waila.machine.render_item=§a%s§7x %s
 GT5U.waila.machine.more_items=And %s more...
 
