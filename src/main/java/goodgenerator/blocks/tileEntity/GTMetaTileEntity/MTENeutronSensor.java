@@ -3,6 +3,7 @@ package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
