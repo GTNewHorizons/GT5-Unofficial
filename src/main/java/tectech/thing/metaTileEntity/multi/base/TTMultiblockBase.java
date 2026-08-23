@@ -57,7 +57,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.SoundResource;
@@ -193,6 +193,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     /** Flag if the new long power variable should be used */
     protected boolean useLongPower = false;
+
+    private Vec3Impl pos;
 
     // Locale-aware formatting of numbers.
     protected static NumberFormatMUI numberFormat;
@@ -825,7 +827,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             try {
                 parametersStatusesWrite_EM(busy);
             } catch (NoSuchMethodError e) {
-                GTMod.GT_FML_LOGGER.info("Caught exception that was probably thrown because of a hotswap", e);
+                GTLoggers.GT_FML_LOGGER.info("Caught exception that was probably thrown because of a hotswap", e);
 
                 Arrays.fill(parametrization.groups, null);
                 parametrization.parameterInArrayList.clear();
@@ -853,6 +855,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
+        pos = new Vec3Impl(
+            aBaseMetaTileEntity.getXCoord(),
+            aBaseMetaTileEntity.getYCoord(),
+            aBaseMetaTileEntity.getZCoord());
         onFirstTick_EM(aBaseMetaTileEntity);
     }
 
@@ -1248,6 +1254,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public int getRepairStatus() {
         return super.getRepairStatus() + (eCertainStatus == 0 ? 1 : 0) + (eParameters ? 1 : 0);
+    }
+
+    public Vec3Impl getPos() {
+        return pos;
     }
 
     // endregion

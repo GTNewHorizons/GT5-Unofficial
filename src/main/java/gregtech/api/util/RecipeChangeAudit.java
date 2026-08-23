@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -35,42 +37,98 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 
-/** Dumps recipe state before and after a change, plus their difference, as JSON Lines. */
+/**
+ * Optional recipe-state dumper for auditing a recipe mutation.
+ *
+ * <p>
+ * Usage: call {@link #run(String, String, Runnable)} around the mutation:
+ * </p>
+ *
+ * <pre>
+ * RecipeChangeAudit.run("audit-name", "Audit description", recipeLoader::applyChanges);
+ * RecipeChangeAudit.dump("snapshot-name", "Snapshot description");
+ * </pre>
+ *
+ * <p>
+ * Writes mutation audits or a single {@code recipes.jsonl} snapshot below the instance
+ * {@code dumps/outputDirectory} directory.
+ * </p>
+ */
+@SuppressWarnings("unused")
 public final class RecipeChangeAudit {
 
     private static final Gson GSON = new Gson();
 
     private RecipeChangeAudit() {}
 
+    public static void dump(String outputDirectory, String description) {
+        try {
+            writeSnapshot(createOutputDirectory(outputDirectory), "recipes.jsonl", capture());
+        } catch (IOException | RuntimeException e) {
+            logDumpFailure(description, "recipes", e);
+        }
+    }
+
     public static void run(String outputDirectory, String description, Runnable change) {
-        Snapshot before;
+        Snapshot before = null;
         try {
             before = capture();
         } catch (RuntimeException e) {
-            GTLog.err.println("Failed to capture recipes before " + description + "; running change without dump");
-            e.printStackTrace(GTLog.err);
-            change.run();
-            return;
+            GT_FML_LOGGER.error("Failed to capture recipes before {}; running change without dump", description);
+            GT_FML_LOGGER.error(e);
         }
 
-        change.run();
+        long started = System.nanoTime();
+        try {
+            change.run();
+        } finally {
+            writeTiming(outputDirectory, description, System.nanoTime() - started);
+        }
+
+        if (before == null) return;
 
         try {
             Snapshot after = capture();
-            Path output = Loader.instance()
-                .getConfigDir()
-                .toPath()
-                .getParent()
-                .resolve("dumps")
-                .resolve(outputDirectory);
-            Files.createDirectories(output);
-            write(output.resolve("before.jsonl"), before.records.values());
-            write(output.resolve("after.jsonl"), after.records.values());
+            Path output = createOutputDirectory(outputDirectory);
+            writeSnapshot(output, "before.jsonl", before);
+            writeSnapshot(output, "after.jsonl", after);
             write(output.resolve("changes.jsonl"), changes(before, after));
         } catch (IOException | RuntimeException e) {
-            GTLog.err.println("Failed to dump " + description + " recipes");
-            e.printStackTrace(GTLog.err);
+            logDumpFailure(description, "recipes", e);
         }
+    }
+
+    private static void writeTiming(String outputDirectory, String description, long elapsedNanos) {
+        try {
+            Path output = createOutputDirectory(outputDirectory);
+            JsonObject timing = new JsonObject();
+            timing.addProperty("description", description);
+            timing.addProperty("elapsedNanos", elapsedNanos);
+            timing.addProperty("elapsedMillis", elapsedNanos / 1_000_000.0);
+            Files.writeString(output.resolve("timing.json"), GSON.toJson(timing), StandardCharsets.UTF_8);
+        } catch (IOException | RuntimeException e) {
+            logDumpFailure(description, "timing", e);
+        }
+    }
+
+    private static Path createOutputDirectory(String outputDirectory) throws IOException {
+        Path output = Loader.instance()
+            .getConfigDir()
+            .toPath()
+            .getParent()
+            .resolve("dumps")
+            .resolve(outputDirectory);
+        Files.createDirectories(output);
+        return output;
+    }
+
+    private static void writeSnapshot(Path output, String filename, Snapshot snapshot) throws IOException {
+        write(output.resolve(filename), snapshot.records.values());
+    }
+
+    private static void logDumpFailure(String description, String artifact, Exception exception) {
+        GT_FML_LOGGER.error("Failed to dump {} {}", description, artifact);
+        GT_FML_LOGGER.error(exception);
     }
 
     private static Snapshot capture() {

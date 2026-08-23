@@ -2,6 +2,7 @@ package gregtech.loaders.preload;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.Forestry;
@@ -79,7 +80,6 @@ import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTLog;
 import gregtech.common.tileentities.automation.MTEChestBuffer;
 import gregtech.common.tileentities.automation.MTEFilter;
 import gregtech.common.tileentities.automation.MTEItemDistributor;
@@ -118,6 +118,7 @@ import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
 import gregtech.common.tileentities.machines.basic.MTEDrawerFramer;
+import gregtech.common.tileentities.machines.basic.MTEIceCreamMachine;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
@@ -10062,6 +10063,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTENameRemover(NAME_REMOVER.ID, "fix.name.remover", "Name Remover", 0).getStackForm(1L));
     }
 
+    private static void registerIceCreamMachine() {
+        ItemList.Ice_Cream_Machine.set(
+            new MTEIceCreamMachine(ICE_CREAM_MACHINE.ID, "gt.icecreammachine", "Ice Cream Machine", 2)
+                .getStackForm(1L));
+    }
+
     private static void registerModificationTable() {
         ItemList.ModificationTable.set(
             new MTEModificationTable(MODIFICATION_TABLE.ID, "modificationtable", "Modification Table")
@@ -10120,7 +10127,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Registering MetaTileEntities.");
+        GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntities.");
         registerMachineHull();
         registerTransformer();
         registerDynamoHatch();
@@ -10231,6 +10238,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerPrinter();
         registerOven();
         registerNameRemover();
+        registerIceCreamMachine();
         registerModificationTable();
         registerAirFilters();
         registerNacHatches();

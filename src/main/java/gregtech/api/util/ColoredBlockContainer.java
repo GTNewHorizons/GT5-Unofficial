@@ -25,7 +25,11 @@ import appeng.integration.IntegrationRegistry;
 import appeng.integration.IntegrationType;
 import appeng.integration.abstraction.IFMP;
 import appeng.tile.networking.TileCableBus;
+import codechicken.enderstorage.api.EnderStorageManager;
+import codechicken.enderstorage.common.TileFrequencyOwner;
+import codechicken.lib.raytracer.RayTracer;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 
 /**
@@ -108,6 +112,13 @@ public abstract class ColoredBlockContainer {
                     return new AE2ColorableTileContainer(colorableTile, side, player);
                 } else if (tileEntity instanceof final IColoredTileEntity coloredTileEntity) {
                     return new GTColoredBlockContainer(coloredTileEntity);
+                }
+
+                if (Mods.EnderStorage.isModLoaded()) {
+                    if (tileEntity instanceof final TileFrequencyOwner freqOwner) {
+                        final MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
+                        return new EnderStorageContainer(freqOwner, hit.subHit);
+                    }
                 }
             }
         }
@@ -315,6 +326,40 @@ public abstract class ColoredBlockContainer {
                 return Optional.empty();
             }
             return Optional.of(colorization);
+        }
+    }
+
+    private static class EnderStorageContainer extends ColoredBlockContainer {
+
+        private final TileFrequencyOwner freqOwner;
+        private final int subHit;
+
+        private EnderStorageContainer(final TileFrequencyOwner freqOwner, final int subHit) {
+            this.freqOwner = freqOwner;
+            this.subHit = subHit;
+        }
+
+        @Override
+        public boolean setColor(final int newColor) {
+            // Ender Storage block colors are set in its onBlockActivated section, so nothing to do here.
+            return false;
+        }
+
+        @Override
+        public boolean removeColor() {
+            // There is no colorless state for Ender Storage blocks.
+            return false;
+        }
+
+        @Override
+        public Optional<Integer> getColor() {
+            final int[] colors = EnderStorageManager.getColoursFromFreq(freqOwner.freq);
+            return Optional.of(Dyes.transformDyeIndex(colors[subHit - 1]));
+        }
+
+        @Override
+        public boolean isValid() {
+            return subHit >= 1 && subHit <= 3;
         }
     }
 

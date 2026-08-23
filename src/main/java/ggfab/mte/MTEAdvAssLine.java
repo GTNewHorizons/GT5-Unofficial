@@ -9,7 +9,7 @@ import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW;
 import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_GLOW;
 import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_STUCK;
 import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
