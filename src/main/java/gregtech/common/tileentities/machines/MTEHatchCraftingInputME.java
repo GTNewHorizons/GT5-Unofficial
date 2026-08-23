@@ -1114,7 +1114,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         if (tag.hasKey("nameLines")) {
             NBTTagList nameLines = tag.getTagList("nameLines", Constants.NBT.TAG_STRING);
             for (int i = 0; i < nameLines.tagCount(); i++) {
-                currenttip.add(EnumChatFormatting.AQUA + nameLines.getStringTagAt(i) + EnumChatFormatting.RESET);
+                // Indent everything below the machine name, so the listed items read as one block
+                String prefix = i == 0 ? "" : "  ";
+                currenttip
+                    .add(EnumChatFormatting.AQUA + prefix + nameLines.getStringTagAt(i) + EnumChatFormatting.RESET);
             }
         }
         currenttip.add(
@@ -1139,10 +1142,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     /**
      * Same content as {@link #getName()}, but with the circuit numbers and every displayed item on separate lines.
      */
-    private List<String> getWailaNameLines() {
-        if (hasCustomName()) return Collections.singletonList(getCustomName());
+    private NBTTagList getWailaNameLines() {
+        NBTTagList lines = new NBTTagList();
+        if (hasCustomName()) {
+            lines.appendTag(new NBTTagString(getCustomName()));
+            return lines;
+        }
 
-        List<String> lines = new ArrayList<>();
         String head = getCrafterIcon() != null ? getCrafterIcon().getDisplayName() : getLocalName();
 
         List<Integer> circuitNumbers = new ArrayList<>();
@@ -1160,14 +1166,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                         .collect(Collectors.joining(", ")));
             } catch (IllegalFormatException ignored) {}
         }
-        lines.add(head);
+        lines.appendTag(new NBTTagString(head));
 
         for (ItemStack item : getNonConsumedInputDisplayItems()) {
-            lines.add(item.getDisplayName());
+            lines.appendTag(new NBTTagString(item.getDisplayName()));
         }
         for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
             if (mInventory[i] != null) {
-                lines.add(mInventory[i].getDisplayName());
+                lines.appendTag(new NBTTagString(mInventory[i].getDisplayName()));
             }
         }
         return lines;
@@ -1204,11 +1210,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         tag.setTag("inventory", inventory);
         if (!Objects.equals(getName(), getLocalName())) {
             // Send the name split into parts, so WAILA can put each one on its own line
-            NBTTagList nameLines = new NBTTagList();
-            for (String line : getWailaNameLines()) {
-                nameLines.appendTag(new NBTTagString(line));
-            }
-            tag.setTag("nameLines", nameLines);
+            tag.setTag("nameLines", getWailaNameLines());
         }
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
