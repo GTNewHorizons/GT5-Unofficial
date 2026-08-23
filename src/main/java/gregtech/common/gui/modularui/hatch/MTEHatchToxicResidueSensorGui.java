@@ -3,17 +3,12 @@ package gregtech.common.gui.modularui.hatch;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CYCLIC;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchRedstoneBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEHatchToxicResidueSensor;
 
@@ -24,9 +19,8 @@ public class MTEHatchToxicResidueSensorGui extends MTEHatchRedstoneBaseGui<MTEHa
     }
 
     @Override
-    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow col = Flow.column()
-            .child(createThresholdTypeButtonRow())
+    protected Flow createContentColumn() {
+        return super.createContentColumn().child(createThresholdTypeButtonRow())
             .child(
                 IKey.lang("GT5U.gui.text.toxic_residue_sensor")
                     .asWidget())
@@ -37,11 +31,7 @@ public class MTEHatchToxicResidueSensorGui extends MTEHatchRedstoneBaseGui<MTEHa
                         machine.getThresholdType()
                             .getMaxCapacity())
                     .size(77, 12)
-                    .setFocusOnGuiOpen(true))
-            .coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .childPadding(2);
-        return super.createContentSection(panel, syncManager).child(col);
+                    .setFocusOnGuiOpen(true));
     }
 
     public Flow createThresholdTypeButtonRow() {
