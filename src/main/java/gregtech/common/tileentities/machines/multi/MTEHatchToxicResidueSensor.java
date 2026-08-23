@@ -19,7 +19,6 @@ import gregtech.common.gui.modularui.hatch.MTEToxicResidueSensorGui;
 public class MTEHatchToxicResidueSensor extends MTEHatchRedstoneBase {
 
     private int threshold = 0;
-    private boolean inverted = false;
     private ThresholdType thresholdType;
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_TOXIC_RESIDUE_SENSOR;
@@ -44,7 +43,6 @@ public class MTEHatchToxicResidueSensor extends MTEHatchRedstoneBase {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getInteger("mThreshold");
-        inverted = aNBT.getBoolean("mInverted");
         thresholdType = ThresholdType.values()[Math
             .max(Math.min(aNBT.getInteger("thresholdType"), ThresholdType.values().length - 1), 0)];
         super.loadNBTData(aNBT);
@@ -53,7 +51,6 @@ public class MTEHatchToxicResidueSensor extends MTEHatchRedstoneBase {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mThreshold", threshold);
-        aNBT.setBoolean("mInverted", inverted);
         aNBT.setInteger("thresholdType", thresholdType.ordinal());
         super.saveNBTData(aNBT);
     }
@@ -65,12 +62,7 @@ public class MTEHatchToxicResidueSensor extends MTEHatchRedstoneBase {
         if (thresholdType == ThresholdType.PERCENTAGE) {
             toxicResidue = (capacity == 0) ? 0 : (int) (((float) toxicResidue / capacity) * 100);
         }
-        setFacingSideRedstoneSignal(toxicResidue > threshold, true);
-    }
-
-    @Override
-    public void setRedstoneSignalOnFace(int facing, byte signal, boolean turnOtherFacesOff) {
-        super.setRedstoneSignalOnFace(facing, redstoneSignalFromOn((signal > 0) ^ inverted), turnOtherFacesOff);
+        setRedstoneSignal(toxicResidue > threshold);
     }
 
     @Override

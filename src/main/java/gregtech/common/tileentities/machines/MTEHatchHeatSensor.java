@@ -29,7 +29,6 @@ public class MTEHatchHeatSensor extends MTEHatchRedstoneBase {
     protected static final IIconContainer TEXTURE_FRONT_GLOW = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
 
     protected double threshold = 0;
-    protected boolean inverted = false;
 
     public MTEHatchHeatSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Reads heat from a machine.");
@@ -49,24 +48,17 @@ public class MTEHatchHeatSensor extends MTEHatchRedstoneBase {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getDouble("mThreshold");
-        inverted = aNBT.getBoolean("mInverted");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setDouble("mThreshold", threshold);
-        aNBT.setBoolean("mInverted", inverted);
         super.saveNBTData(aNBT);
     }
 
     public void updateRedstoneOutput(float heat) {
-        setFacingSideRedstoneSignal(heat > threshold, true);
-    }
-
-    @Override
-    public void setRedstoneSignalOnFace(int facing, byte signal, boolean turnOtherFacesOff) {
-        super.setRedstoneSignalOnFace(facing, redstoneSignalFromOn((signal > 0) ^ inverted), turnOtherFacesOff);
+        setRedstoneSignal(heat > threshold);
     }
 
     @Override

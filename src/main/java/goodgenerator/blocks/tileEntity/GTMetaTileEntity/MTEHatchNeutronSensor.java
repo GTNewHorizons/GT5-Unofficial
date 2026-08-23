@@ -31,7 +31,6 @@ public class MTEHatchNeutronSensor extends MTEHatchRedstoneBase implements IData
         .customOptional("icons/NeutronSensorFont_GLOW");
 
     protected int threshold = 0;
-    protected boolean inverted = false;
 
     public MTEHatchNeutronSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Detect Neutron Kinetic Energy.");
@@ -55,7 +54,6 @@ public class MTEHatchNeutronSensor extends MTEHatchRedstoneBase implements IData
             setThresholdFromString(aNBT.getString("mBoxContext"));
         } else {
             threshold = aNBT.getInteger("mThreshold");
-            inverted = aNBT.getBoolean("mInverted");
         }
         super.loadNBTData(aNBT);
     }
@@ -126,7 +124,6 @@ public class MTEHatchNeutronSensor extends MTEHatchRedstoneBase implements IData
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mThreshold", threshold);
-        aNBT.setBoolean("mInverted", inverted);
         super.saveNBTData(aNBT);
     }
 
@@ -136,12 +133,7 @@ public class MTEHatchNeutronSensor extends MTEHatchRedstoneBase implements IData
      * @param eV Amount of eV to compare.
      */
     public void updateRedstoneOutput(int eV) {
-        setFacingSideRedstoneSignal(eV >= threshold, true);
-    }
-
-    @Override
-    public void setRedstoneSignalOnFace(int facing, byte signal, boolean turnOtherFacesOff) {
-        super.setRedstoneSignalOnFace(facing, redstoneSignalFromOn((signal > 0) ^ inverted), turnOtherFacesOff);
+        setRedstoneSignal(eV >= threshold);
     }
 
     @Override
@@ -178,14 +170,6 @@ public class MTEHatchNeutronSensor extends MTEHatchRedstoneBase implements IData
 
     public void setThreshold(int threshold) {
         this.threshold = threshold;
-    }
-
-    public boolean isInverted() {
-        return inverted;
-    }
-
-    public void setInverted(boolean inverted) {
-        this.inverted = inverted;
     }
 
     @Override

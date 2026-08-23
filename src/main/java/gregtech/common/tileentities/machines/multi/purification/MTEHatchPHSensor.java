@@ -21,7 +21,6 @@ public class MTEHatchPHSensor extends MTEHatchRedstoneBase {
     // This implementation was largely copied from the neutron sensor hatch
 
     protected double threshold = 0;
-    protected boolean inverted = false;
     private boolean isOn = false;
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_PH_SENSOR;
@@ -45,14 +44,12 @@ public class MTEHatchPHSensor extends MTEHatchRedstoneBase {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getDouble("mThreshold");
-        inverted = aNBT.getBoolean("mInverted");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setDouble("mThreshold", threshold);
-        aNBT.setBoolean("mInverted", inverted);
         super.saveNBTData(aNBT);
     }
 
@@ -60,12 +57,7 @@ public class MTEHatchPHSensor extends MTEHatchRedstoneBase {
      * Updates redstone output strength based on the pH of the multiblock.
      */
     public void updateRedstoneOutput(double pH) {
-        setFacingSideRedstoneSignal(pH > threshold, true);
-    }
-
-    @Override
-    public void setRedstoneSignalOnFace(int facing, byte signal, boolean turnOtherFacesOff) {
-        super.setRedstoneSignalOnFace(facing, redstoneSignalFromOn((signal > 0) ^ inverted), turnOtherFacesOff);
+        setRedstoneSignal(pH > threshold);
     }
 
     @Override
@@ -92,14 +84,6 @@ public class MTEHatchPHSensor extends MTEHatchRedstoneBase {
 
     public void setThreshold(double threshold) {
         this.threshold = threshold;
-    }
-
-    public boolean isInverted() {
-        return inverted;
-    }
-
-    public void setInverted(boolean inverted) {
-        this.inverted = inverted;
     }
 
     @Override

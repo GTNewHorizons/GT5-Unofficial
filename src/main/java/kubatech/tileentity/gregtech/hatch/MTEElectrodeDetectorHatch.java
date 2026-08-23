@@ -25,7 +25,6 @@ public class MTEElectrodeDetectorHatch extends MTEHatchRedstoneBase {
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
 
     private int threshold = 0;
-    private boolean inverted = false;
     private ThresholdType thresholdType = ThresholdType.DURABILITY;
 
     public MTEElectrodeDetectorHatch(int aID, String aName, String aNameRegional) {
@@ -52,7 +51,6 @@ public class MTEElectrodeDetectorHatch extends MTEHatchRedstoneBase {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getInteger("mThreshold");
-        inverted = aNBT.getBoolean("mInverted");
         thresholdType = ThresholdType.values[aNBT.getInteger("mThresholdType")];
         super.loadNBTData(aNBT);
     }
@@ -60,18 +58,12 @@ public class MTEElectrodeDetectorHatch extends MTEHatchRedstoneBase {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mThreshold", threshold);
-        aNBT.setBoolean("mInverted", inverted);
         aNBT.setInteger("mThresholdType", thresholdType.ordinal());
         super.saveNBTData(aNBT);
     }
 
     public void updateRedstoneOutput(int durability, int maxDurability) {
-        setFacingSideRedstoneSignal(getComparatorValue(durability, maxDurability) >= threshold, true);
-    }
-
-    @Override
-    public void setRedstoneSignalOnFace(int facing, byte signal, boolean turnOtherFacesOff) {
-        super.setRedstoneSignalOnFace(facing, redstoneSignalFromOn((signal > 0) ^ inverted), turnOtherFacesOff);
+        setRedstoneSignal(getComparatorValue(durability, maxDurability) >= threshold);
     }
 
     public int getComparatorValue(int durability, int maxDurability) {

@@ -15,6 +15,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 public abstract class MTEHatchRedstoneBase extends MTEHatch {
 
     private final byte[] redstoneSignal = { 0, 0, 0, 0, 0, 0 };
+    private boolean directional = true;
+    protected boolean inverted = false;
 
     public MTEHatchRedstoneBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String aDescription, ITexture... aTextures) {
@@ -31,49 +33,42 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    protected static byte redstoneSignalFromOn(boolean on) {
-        return (byte) (on ? 15 : 0);
+    private static boolean supportsInvertedSignal() {
+        return true;
     }
 
     /**
-     * This should be the only method that directly changes redstoneSignal, override for invert logic etc.
+     * This method changes the redstone signal of the hatch. If directional is true, it only affects the side it's
+     * facing while turning all other faces off, but if directional is false, it affects all faces.
+     *
+     * @param on Whether to turn the hatch on/off
      */
-    public void setRedstoneSignalOnFace(int facing, byte signal, boolean turnOtherFacesOff) {
-        if (facing < 0 || facing > ForgeDirection.VALID_DIRECTIONS.length) return;
-        if (!turnOtherFacesOff) {
-            redstoneSignal[facing] = signal;
-            return;
+    public void setRedstoneSignal(boolean on) {
+        if (supportsInvertedSignal()) {
+            on = on ^ inverted;
         }
+        byte signal = (byte) (on?15:0);
+        if (!directional) {
+            setAllFacesRedstoneSignal(signal);
+        }
+        else{
+            setFacingSideRedstoneSignal(signal);
+        }
+    }
+
+    private void setAllFacesRedstoneSignal(byte signal) {
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            redstoneSignal[i] = (i == facing) ? signal : 0;
+            redstoneSignal[i] = signal;
         }
     }
 
-    public void setRedstoneSignalOnFace(int facing, boolean on, boolean turnOtherFacesOff) {
-        setRedstoneSignalOnFace(facing, redstoneSignalFromOn(on), turnOtherFacesOff);
-    }
-
-    public void setAllFacesRedstoneSignal(byte signal) {
-        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            setRedstoneSignalOnFace(i, signal, false);
-        }
-    }
-
-    public void setAllFacesRedstoneSignal(boolean on) {
-        setAllFacesRedstoneSignal(redstoneSignalFromOn(on));
-    }
-
-    public void setFacingSideRedstoneSignal(byte signal, boolean turnOtherFacesOff) {
+    private void setFacingSideRedstoneSignal(byte signal){
         if (this.getBaseMetaTileEntity() == null) return;
-        this.setRedstoneSignalOnFace(
-            getBaseMetaTileEntity().getFrontFacing()
-                .ordinal(),
-            signal,
-            turnOtherFacesOff);
-    }
-
-    public void setFacingSideRedstoneSignal(boolean on, boolean turnOtherFacesOff) {
-        setFacingSideRedstoneSignal(redstoneSignalFromOn(on), turnOtherFacesOff);
+        int facingSide = getBaseMetaTileEntity().getFrontFacing()
+            .ordinal();
+        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+            redstoneSignal[i] = (i == facingSide) ? signal : 0;
+        }
     }
 
     @Override
@@ -120,10 +115,36 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
         getBaseMetaTileEntity().setActive(true);
     }
 
+    public boolean isInverted() {
+        return inverted;
+    }
+
+    public void setInverted(boolean inverted) {
+        this.inverted = inverted;
+    }
+
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
         openGui(aPlayer);
         return true;
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        directional = aNBT.getBoolean("directional");
+        if (supportsInvertedSignal()) {
+            inverted = aNBT.getBoolean("inverted");
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("directional", directional);
+        if (supportsInvertedSignal()) {
+            aNBT.setBoolean("inverted", inverted);
+        }
     }
 }
