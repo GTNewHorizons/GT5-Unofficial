@@ -80,8 +80,7 @@ public class JetpackBehavior implements IArmorBehavior {
                 } else if (descend && !isGuiOpen) {
                     player.motionY = Math.min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSpeed());
                 } else {
-                    player.motionY = Math
-                        .min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSlowSpeed());
+                    player.motionY = Math.min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSlowSpeed());
                 }
                 float speedSideways = (float) (player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f
                     : jetpackStats.getSidewaysSpeed());
