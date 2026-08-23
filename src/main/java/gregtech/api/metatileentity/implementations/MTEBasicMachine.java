@@ -1317,8 +1317,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         for (int i = 0; i < itemStacks.size(); i++) {
             if (i == 5) {
                 list.add(
-                    StatCollector
-                        .translateToLocalFormatted("GT5U.waila.machine.more_items", itemStacks.size() - i));
+                    StatCollector.translateToLocalFormatted("GT5U.waila.machine.more_items", itemStacks.size() - i));
                 break;
             }
 
