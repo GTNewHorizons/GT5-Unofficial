@@ -99,7 +99,7 @@ import kubatech.api.arcfurnace.ArcFurnaceContext;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.ArcFurnaceElectrode;
-import kubatech.tileentity.gregtech.hatch.MTEElectrodeDetectorHatch;
+import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
 import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
 
 public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustrialArcFurnace>
@@ -129,7 +129,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     private int mCasing = 0;
     private MTEElectrodeHatch electrodeHatch;
-    private final List<MTEElectrodeDetectorHatch> electrodeDetectorHatch = new ArrayList<>();
+    private final List<MTEHatchElectrodeDetector> electrodeDetectorHatch = new ArrayList<>();
 
     enum ArcFurnaceMode {
 
@@ -305,7 +305,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEElectrodeDetectorHatch hatch) {
+        if (aMetaTileEntity instanceof MTEHatchElectrodeDetector hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             electrodeDetectorHatch.add(hatch);
@@ -1051,7 +1051,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             }
         },
         ElectrodeDetectorHatch(MTEIndustrialArcFurnace::addElectrodeDetectorHatchToMachineList,
-            MTEElectrodeDetectorHatch.class) {
+            MTEHatchElectrodeDetector.class) {
 
             @Override
             public long count(MTEIndustrialArcFurnace t) {

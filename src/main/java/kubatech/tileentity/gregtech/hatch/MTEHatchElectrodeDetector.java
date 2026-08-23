@@ -19,7 +19,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 import kubatech.tileentity.gregtech.gui.MTEElectrodeDetectorHatchGui;
 
-public class MTEElectrodeDetectorHatch extends MTEHatchRedstoneBase {
+public class MTEHatchElectrodeDetector extends MTEHatchRedstoneBase {
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
@@ -27,7 +27,7 @@ public class MTEElectrodeDetectorHatch extends MTEHatchRedstoneBase {
     private int threshold = 0;
     private ThresholdType thresholdType = ThresholdType.DURABILITY;
 
-    public MTEElectrodeDetectorHatch(int aID, String aName, String aNameRegional) {
+    public MTEHatchElectrodeDetector(int aID, String aName, String aNameRegional) {
         super(
             aID,
             aName,
@@ -39,13 +39,13 @@ public class MTEElectrodeDetectorHatch extends MTEHatchRedstoneBase {
                 "Right click to open the GUI and setting." });
     }
 
-    public MTEElectrodeDetectorHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchElectrodeDetector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEElectrodeDetectorHatch(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new MTEHatchElectrodeDetector(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
