@@ -5,7 +5,11 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 import gregtech.common.GTProxy;
 
-@Config(modid = Mods.ModIDs.GREG_TECH, category = "gregtech", configSubDirectory = "GregTech", filename = "GregTech")
+@Config(
+    modid = Mods.ModIDs.GREG_TECH,
+    category = Mods.ModIDs.GREG_TECH,
+    configSubDirectory = "GregTech",
+    filename = "GregTech")
 @Config.LangKey("GT5U.gui.config.gregtech")
 public class Gregtech {
 
@@ -380,7 +384,7 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean loggingOreDict;
 
-        @Config.Comment("if true, logs all the explosions in logs/Explosion.log.")
+        @Config.Comment("if true, logs all the explosions in logs/explosions.log.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean loggingExplosions;
@@ -541,12 +545,12 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean machineThunderExplosions;
 
-        @Config.Comment("If true, enable the guis of the machines to get a tint and it will be of the color of the dye applied to the machine.")
+        @Config.Comment("If true, show the color of the dye applied to the machine as a swatch next to the GUI title.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean coloredGUI;
 
-        @Config.Comment("If true and if the machine tint is activated, the guis will have a uniform metallic tint no matter what color is applied to the machines.")
+        @Config.Comment("If true and if coloredGUI is enabled, hide the color swatch and show a uniform metallic tint no matter what color is applied to the machines.")
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean machineMetalGUI;
@@ -566,11 +570,11 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public String ghostCircuitSuffixFormat = " [%s]";
 
-        @Config.Comment("Format template for the manual slots suffix in Crafting Input Bus/Buffer display name. Use %s as placeholder for comma-separated item names.")
+        @Config.Comment("Format template for the item slots suffix in AE2 terminal display names. Use %s as placeholder for comma-separated item names. Applies to Crafting Input Bus/Buffer manual slots and non-consumed recipe inputs (e.g. molds).")
         @Config.DefaultString(" {%s}")
-        @Config.Name("CIB Manual Slots Suffix Format")
+        @Config.Name("Item Slots Suffix Format")
         @Config.RequiresMcRestart
-        public String cibManualSlotsSuffixFormat = " {%s}";
+        public String itemSlotsSuffixFormat = " {%s}";
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")

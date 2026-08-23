@@ -260,7 +260,7 @@ public class GTRecipeRegistrator {
             || aMaterialAmount <= 0
             || aMaterial.contains(SubTag.NO_SMELTING)
             || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL))
-            || (aMaterial.getProcessingMaterialTierEU() > TierEU.IV)) return;
+            || (aMaterial.getProcessingMaterialTierEU() >= TierEU.IV)) return;
         if (aMaterial == Materials.Naquadah || aMaterial == Materials.NaquadahEnriched) return;
 
         aMaterialAmount /= aStack.stackSize;
@@ -559,14 +559,14 @@ public class GTRecipeRegistrator {
                             tCrafted,
                             new ItemData(aItemData.mMaterial.mMaterial, aItemData.mMaterial.mAmount * tRecipe.amount1));
                         //
-                        // GTLog.out.println("###################################################################################");
-                        // GTLog.out.println("registerUsagesForMaterials used aPlate: "+aPlate);
-                        // GTLog.out.println("registerUsagesForMaterials used aPlate:
+                        // GT_FML_LOGGER.debug("###################################################################################");
+                        // GT_FML_LOGGER.debug("registerUsagesForMaterials used aPlate: "+aPlate);
+                        // GT_FML_LOGGER.debug("registerUsagesForMaterials used aPlate:
                         // "+aMat.getUnlocalizedName());
-                        // GTLog.out.println("registerUsagesForMaterials used aPlate:
+                        // GT_FML_LOGGER.debug("registerUsagesForMaterials used aPlate:
                         // "+aMat.getDisplayName());
                         //
-                        // GTLog.out.println("###################################################################################");
+                        // GT_FML_LOGGER.debug("###################################################################################");
                     }
                 }
             }
@@ -675,6 +675,8 @@ public class GTRecipeRegistrator {
     }
 
     private static synchronized void registerStickStuff(String aPlate, ItemData aItemData, boolean aRecipeReplacing) {
+        IdentityHashMap<IRecipe, Boolean> tKnownMatches = aRecipeReplacing && aPlate != null ? new IdentityHashMap<>()
+            : null;
         for (Materials tMaterial : sRodMaterialList) {
             ItemStack tMt2 = GTOreDictUnificator.get(OrePrefixes.stick, tMaterial, 1);
             if (tMt2 == null) {
@@ -687,8 +689,17 @@ public class GTRecipeRegistrator {
 
             for (int i = 0; i < sShapes.length; i++) {
                 RecipeShape tRecipe = sShapes[i];
+                boolean tCanReplace = aRecipeReplacing && aPlate != null
+                    && sShapesA[i] != null
+                    && sShapesA[i].length > 1;
+                if (tCanReplace) tKnownMatches.clear();
+                boolean tRemovalAttempted = false;
 
-                for (ItemStack tCrafted : GTModHandler.getRecipeOutputs(getRecipeList(tRecipe), true, tRecipe.shape)) {
+                for (ItemStack tCrafted : GTModHandler.getRecipeOutputs(
+                    getRecipeList(tRecipe),
+                    true,
+                    tRecipe.shape,
+                    tCanReplace ? tKnownMatches : null)) {
                     if (aItemData != null && aItemData.hasValidPrefixMaterialData()) {
                         GTOreDictUnificator.addItemData(
                             tCrafted,
@@ -698,10 +709,11 @@ public class GTRecipeRegistrator {
                                 new MaterialStack(tMaterial, OrePrefixes.stick.getMaterialAmount() * tRecipe.amount2)));
                     }
 
-                    if (aRecipeReplacing && aPlate != null && sShapesA[i] != null && sShapesA[i].length > 1) {
+                    if (tCanReplace && !tRemovalAttempted) {
+                        tRemovalAttempted = true;
                         assert aItemData != null;
 
-                        ItemStack tStack = GTModHandler.removeRecipe(tRecipe.shape);
+                        ItemStack tStack = GTModHandler.removeRecipe(tRecipe.shape, tKnownMatches);
                         if (tStack == null) {
                             continue;
                         }
@@ -714,12 +726,12 @@ public class GTRecipeRegistrator {
                                     OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
                             case 3 -> GTModHandler.addCraftingRecipe(
                                 tStack,
-                                GTModHandler.RecipeBits.BUFFERED,
+                                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                                 new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate, s_R.charAt(0),
                                     OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
                             default -> GTModHandler.addCraftingRecipe(
                                 tStack,
-                                GTModHandler.RecipeBits.BUFFERED,
+                                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                                 new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3], s_P.charAt(0), aPlate,
                                     s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
                         }

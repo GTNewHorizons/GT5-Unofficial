@@ -106,6 +106,22 @@ public class MachineStats {
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean forceFreeFace;
+
+        @Config.Comment({
+            "Minimum ticks an idle multiblock waits after a failed recipe check before a throttleable push may run another one.",
+            "Only throttleable sources are affected (ME stocking inputs restocking, power trickling into a buffer); new inputs,",
+            "drained outputs and user actions are immediate and ignore this entirely.",
+            "0 (default) keeps every check instant. Raise this only if a heavily loaded ME network makes recipe checks expensive",
+            "(for reference, the legacy behaviour was roughly equivalent to 100 ticks)." })
+        @Config.DefaultInt(0)
+        public int recipeCheckFailCooldown;
+
+        @Config.Comment({ "Use StackWatcher for Stocking Inputs (ME).",
+            "If this option is off, periodic recipe check will be enabled if stocking input is attached." })
+        @Config.DefaultBoolean(false)
+        @Config.Sync
+        @Config.RequiresWorldRestart
+        public boolean useStackWatcher;
     }
 
     @Config.LangKey("GT5U.gui.config.machine_stats.mass_fabricator")

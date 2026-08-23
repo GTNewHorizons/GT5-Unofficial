@@ -10,6 +10,8 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.Iterables;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -79,14 +81,13 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
 
     @Override
     public boolean drainEnergyInput(long aEU) {
-        return ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
+        return ExoticEnergyInputHelper.drainEnergy(aEU, Iterables.concat(mEnergyHatches, mExoticEnergyHatches));
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             if (tileEntity.isActive()) {

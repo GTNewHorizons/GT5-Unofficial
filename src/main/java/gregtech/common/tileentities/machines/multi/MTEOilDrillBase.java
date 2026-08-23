@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.GTValues.debugDriller;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -51,12 +52,12 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ValidationResult;
@@ -176,9 +177,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     @Override
     protected void checkHatches(List<StructureError> errors) {
-        checkHasOutputHatch(errors);
-        checkHasMaintenanceHatch(errors);
         checkOneEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -305,13 +306,14 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                         : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch("1x " + VN[getMinTier()] + "+, any base Casing", 1)
-            .addMaintenanceHatch("Any base Casing", 1)
-            .addInputBus("Mining Pipes or Circuits, optional, any base Casing", 1)
-            .addOutputHatch("Any base Casing", 1)
+            .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
+            .addCasing("7-8", casings, false)
+            .addEnergyHatch("1", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputBus("0-1", "Any bottom casing", 1)
+            .addOutputHatch("1", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
             .toolTipFinisher();
         return tt;
     }
@@ -335,20 +337,15 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     public String[] getInfoData() {
         List<String> l = new ArrayList<>(
             Arrays.asList(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.oilfluidpump")
-                    + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-                    + EnumChatFormatting.GREEN
-                    + formatNumber(chunkRangeConfig)
-                    + " x "
-                    + formatNumber(chunkRangeConfig)
-                    + EnumChatFormatting.RESET
-                    + " "
-                    + StatCollector.translateToLocal("GT5U.machines.chunks"),
-                StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.oil_drill.title",
+                IGregTechDeviceInformation.encode(
+                    "GT5U.infodata.oil_drill.work_area",
+                    formatNumber(chunkRangeConfig),
+                    formatNumber(chunkRangeConfig)),
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.oil_drill.drilling_fluid",
                     EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET),
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.oil_drill.drilling_flow",
                     EnumChatFormatting.GREEN + formatNumber(getFlowRatePerTick()) + EnumChatFormatting.RESET)));
         l.addAll(Arrays.asList(super.getInfoData()));
@@ -517,11 +514,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             ChunkCoordIntPair tChunk = iterator.next();
             FluidStack pumped = undergroundOil(world, tChunk.chunkXPos, tChunk.chunkZPos, coefficient);
             if (debugDriller) {
-                GTLog.out.println(" chunkX = " + tChunk.chunkXPos + " chunkZ = " + tChunk.chunkZPos);
+                GT_FML_LOGGER.debug(" chunkX = {} chunkZ = {}", tChunk.chunkXPos, tChunk.chunkZPos);
                 if (pumped != null) {
-                    GTLog.out.println("     Fluid pumped = " + pumped.amount);
+                    GT_FML_LOGGER.debug("     Fluid pumped = {}", pumped.amount);
                 } else {
-                    GTLog.out.println("     No fluid pumped ");
+                    GT_FML_LOGGER.debug("     No fluid pumped ");
                 }
             }
             if (pumped == null || pumped.amount < 1) {
@@ -660,7 +657,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             mOil = tFluid.getFluid();
         }
         if (debugDriller) {
-            GTLog.out.println(mOil == null ? null : " Driller on  fluid = " + mOil.getName());
+            GT_FML_LOGGER.debug(mOil == null ? null : " Driller on  fluid = " + mOil.getName());
         }
 
         tOil = new FluidStack(mOil, 0);
@@ -672,33 +669,31 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             // towards zero.
             int zChunk = Math.floorDiv(tChunk.chunkZPos, range) * range;
             if (debugDriller) {
-                GTLog.out.println(
-                    "tChunk.chunkXPos = " + tChunk.chunkXPos
-                        + " tChunk.chunkZPos = "
-                        + tChunk.chunkZPos
-                        + " xChunk = "
-                        + xChunk
-                        + " zChunk = "
-                        + zChunk);
+                GT_FML_LOGGER.debug(
+                    "tChunk.chunkXPos = {} tChunk.chunkZPos = {} xChunk = {} zChunk = {}",
+                    tChunk.chunkXPos,
+                    tChunk.chunkZPos,
+                    xChunk,
+                    zChunk);
             }
 
             for (int i = 0; i < range; i++) {
                 for (int j = 0; j < range; j++) {
                     if (debugDriller) {
-                        GTLog.out.println(" getChunkX = " + (xChunk + i) + " getChunkZ = " + (zChunk + j));
+                        GT_FML_LOGGER.debug(" getChunkX = {} getChunkZ = {}", xChunk + i, zChunk + j);
                     }
                     tChunk = new ChunkCoordIntPair(xChunk + i, zChunk + j);
                     tFluid = undergroundOil(base.getWorld(), xChunk + i, zChunk + j, -1);
                     if (debugDriller) {
                         String fluidName = tFluid != null ? tFluid.getFluid()
                             .getName() : null;
-                        GTLog.out.println(" Fluid in chunk = " + fluidName);
+                        GT_FML_LOGGER.debug(" Fluid in chunk = {}", fluidName);
                     }
                     if (tFluid != null && tOil.isFluidEqual(tFluid) && tFluid.amount > 0) {
                         mOilFieldChunks.add(tChunk);
                         activeOilFieldChunkKeys.add(packChunkKey(tChunk.chunkXPos, tChunk.chunkZPos));
                         if (debugDriller) {
-                            GTLog.out.println(" Matching fluid, quantity = " + tFluid.amount);
+                            GT_FML_LOGGER.debug(" Matching fluid, quantity = {}", tFluid.amount);
                         }
                     }
                 }
@@ -706,7 +701,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
 
         if (debugDriller) {
-            GTLog.out.println("mOilFieldChunks.size = " + mOilFieldChunks.size());
+            GT_FML_LOGGER.debug("mOilFieldChunks.size = {}", mOilFieldChunks.size());
         }
 
         return !mOilFieldChunks.isEmpty();
@@ -725,7 +720,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
 
         if (debugDriller) {
-            GTLog.out.println(" pump speed = " + speed);
+            GT_FML_LOGGER.debug(" pump speed = {}", speed);
         }
 
         // Even though it works fine without this check,

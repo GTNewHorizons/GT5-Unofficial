@@ -42,6 +42,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -63,7 +64,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -72,6 +73,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -82,7 +84,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
@@ -94,13 +95,17 @@ import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.gui.modularui.multiblock.MTEExoFoundryGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.IMTERenderer;
+import gregtech.common.render.shader.ShaderHandle;
+import gregtech.common.render.shader.ShaderRecipe;
+import gregtech.common.render.shader.Uniform;
+import gregtech.common.render.shader.VertexAttribute;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
-    implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer {
+    implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer, ICasingTextureProvider {
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
@@ -423,42 +428,23 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_EXOFOUNDRY,
+            OVERLAY_FRONT_EXOFOUNDRY_GLOW,
+            OVERLAY_FRONT_EXOFOUNDRY_ACTIVE,
+            OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0));
     }
 
     @Override
@@ -507,62 +493,26 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     + EnumChatFormatting.GRAY
                     + " stats are shown in NEI and the Controller")
             .addInfo("Toggle Render with Screwdriver")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
             .beginStructureBlock(15, 55, 15, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMinColored(
-                "Primary Exo-Foundry Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASINGS,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Exo-Foundry Containment Glass",
-                EnumChatFormatting.GRAY,
-                548,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Inner Foundry Siphon Casing",
-                EnumChatFormatting.GRAY,
-                282,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Central Magnetic Chassis",
-                EnumChatFormatting.GRAY,
-                260,
-                EnumChatFormatting.GOLD,
-                true)
-            .addCasingInfoExactlyColored(
-                "Netherite Frame Box",
-                EnumChatFormatting.GRAY,
-                224,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Central Exo-Foundry Regulation Casing",
-                EnumChatFormatting.GRAY,
-                196,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Black Plutonium Item Pipe Casing",
-                EnumChatFormatting.GRAY,
-                173,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Foundry Casing", 1)
-            .addOutputBus("Any Foundry Casing", 1)
-            .addInputHatch("Any Foundry Casing", 1)
-            .addEnergyHatch("Any Foundry Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.MAGNETIC_CHASSIS)
-            .addStructureInfoSeparator()
-            .addStructureInfo("Check NEI for Module structure costs");
-
-        tt.toolTipFinisher();
+            .addCasing("548", "Exo-Foundry Containment Glass", false)
+            .addCasing(MIN_CASINGS + "-485", "Primary Exo-Foundry Casing", false)
+            .addCasing("282", "Inner Exo-Foundry Siphon Casing", false)
+            .addCasing("260", "Magnetic Chassis", true)
+            .addCasing("224", "Netherite Frame Box", false)
+            .addCasing("196", "Central Exo-Foundry Regulation Casing", false)
+            .addCasing("173", "Black Plutonium Item Pipe Casing", false)
+            .addEnergyHatch("1+", "Any primary casing", 1)
+            .addInputBus("0+", "Any primary casing", 1)
+            .addInputHatch("1+", "Any primary casing", 1)
+            .addOutputBus("1+", "Any primary casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Check NEI for module costs")
+            .addSubChannel(GTStructureChannels.MAGNETIC_CHASSIS)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -651,9 +601,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             checkModules(errors);
             int requiredCasings = MIN_CASINGS + (foundryData.universalCollapserPresent ? 15 : 0);
             checkCasingMin(errors, casingAmount, requiredCasings);
+            checkHasAnyEnergy(errors);
             checkHasInputHatch(errors);
             checkHasOutputBus(errors);
-            checkHasAnyEnergy(errors);
         } else {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
         }
@@ -696,6 +646,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput inp) {
+            addIfSmartInput(inp);
             inp.updateTexture(aBaseCasingIndex);
             coolantHatches.add(inp);
             return true;
@@ -837,11 +788,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
@@ -859,7 +805,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.EXOFOUNDRY;
     }
 
@@ -891,34 +837,62 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     // Render code
     private boolean shouldRender = true;
-    private boolean renderInitialized;
+    private static boolean renderInitialized;
+    private static IVertexArrayObject ffpRing; // The universium path draws via FFP
     private static IVertexArrayObject ring;
-    private static ShaderProgram ringProgram;
-    private int uRingColor;
 
-    private void initializeRender() {
+    private static final ShaderRecipe FOUNDRY = ShaderRecipe.of(GregTech.resourceDomain, "foundry")
+        .required("u_Color")
+        .modelUniform("u_ModelMatrix")
+        .attribute("a_Position", VertexAttribute.POSITION);
+
+    private static final Uniform RING_COLOR = FOUNDRY.uniform("u_Color");
+
+    private static ShaderHandle ringShader;
+
+    private static final Matrix4f ringMatrix = new Matrix4f();
+
+    public static void reloadRender() {
+        renderInitialized = false;
+        releaseRender();
         // spotless:off
-        ring = WavefrontVBOBuilder.compileToVBO(
-            new ResourceLocation(
-                GregTech.resourceDomain,
-                "textures/model/foundry_ring.obj"
-            )
-        );
-
-
-        try {
-            ringProgram = new ShaderProgram(
-                GregTech.resourceDomain,
-                "shaders/foundry.vert.glsl",
-                "shaders/foundry.frag.glsl"
-            );
-            uRingColor = ringProgram.getUniformLocation("u_Color");
-        } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error(e.getMessage());
+        ringShader = FOUNDRY.bake();
+        if (!ringShader.isValid()) {
+            GTLoggers.GT_FML_LOGGER.error("Failed to initialize exo foundry shader");
+            releaseRender();
             return;
         }
+
+        try {
+            final ResourceLocation model = new ResourceLocation(
+                GregTech.resourceDomain,
+                "textures/model/foundry_ring.obj"
+            );
+            ring = WavefrontVBOBuilder.compileToVBO(model, ringShader.vertexFormat());
+            ffpRing = WavefrontVBOBuilder.compileToVBO(model);
+        } catch (RuntimeException e) {
+            GTLoggers.GT_FML_LOGGER.error("Failed to load exo foundry ring model", e);
+            releaseRender();
+            return;
+        }
+
         renderInitialized = true;
         // spotless:on
+    }
+
+    private static void releaseRender() {
+        if (ringShader != null) {
+            ringShader.release();
+            ringShader = null;
+        }
+        if (ring != null) {
+            ring.delete();
+            ring = null;
+        }
+        if (ffpRing != null) {
+            ffpRing.delete();
+            ffpRing = null;
+        }
     }
 
     @Override
@@ -927,10 +901,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             return;
         }
 
-        if (!renderInitialized) {
-            initializeRender();
-            if (!renderInitialized) return;
-        }
+        if (!renderInitialized) return;
+
         ForgeDirection dir = getDirection();
         PostProcessingManager.getInstance()
             .addDelayedRenderer(this, x + 0.5f - dir.offsetX * 7, y + 0.5f, z + 0.5f - dir.offsetZ * 7);
@@ -951,7 +923,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     private void renderRings(boolean bloom) {
         int i = 0;
-        GL11.glColor4f(1, 1, 1, 1);
         for (FoundryModule module : foundryData.modules) {
             if (i == foundryData.tier + 1) return;
             if (module == FoundryModule.UNSET) {
@@ -978,13 +949,17 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         }
     }
 
-    private void renderStandardRing(int index, float red, float green, float blue) {
-        ringProgram.use();
-        GL20.glUniform3f(uRingColor, red, green, blue);
-        renderRing(index);
+    private static void renderStandardRing(int index, float red, float green, float blue) {
+        ringShader.use();
+        GL20.glUniform3f(ringShader.loc(RING_COLOR), red, green, blue);
+
+        ringMatrix.translation(0, ringHeight(index), 0)
+            .scale(0.8f, 1.2f, 0.8f);
+        ringShader.uploadModel(ringMatrix);
+        ring.render();
     }
 
-    private void renderUniversiumRing(int index, boolean bloom) {
+    private static void renderUniversiumRing(int index, boolean bloom) {
         final UniversiumShader shader = UniversiumShader.getInstance();
         if (bloom) {
             shader
@@ -1004,18 +979,23 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GL11.glColor4f(1, 1, 1, 1);
 
-        renderRing(index);
+        renderFFPRing(index);
 
         UniversiumShader.clear();
         GL11.glEnable(GL11.GL_ALPHA_TEST);
     }
 
-    private void renderRing(int index) {
+    private static float ringHeight(int index) {
+        return 9 + index * 8 + (index > 1 ? 10 : 0);
+    }
+
+    private static void renderFFPRing(int index) {
         GL11.glPushMatrix();
-        GL11.glTranslatef(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
+        GL11.glTranslatef(0, ringHeight(index), 0);
         GL11.glScalef(0.8f, 1.2f, 0.8f);
-        ring.render();
+        ffpRing.render();
         GL11.glPopMatrix();
     }
 

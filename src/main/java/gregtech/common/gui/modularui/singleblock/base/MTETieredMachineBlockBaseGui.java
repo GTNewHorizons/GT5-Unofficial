@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -273,9 +275,9 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     protected void createTooltipForChargerSlot(RichTooltip tooltip) {
         final byte machineTier = machine.mTier;
         String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
-        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip"))
-            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.1", tierName))
-            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.2", tierName));
+        tooltip.addLine(StatCollector.translateToLocal("GT5U.machines.battery_slot.tooltip"))
+            .addLine(StatCollector.translateToLocalFormatted("GT5U.machines.battery_slot.tooltip.1", tierName))
+            .addLine(StatCollector.translateToLocalFormatted("GT5U.machines.battery_slot.tooltip.2", tierName));
     }
 
     /// Sets a static tooltip using the machine's tooltip cache. This means the tooltip **can not** change while the Gui
@@ -284,7 +286,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     /// Accounts for extended tooltips shown when shift is held down.
     protected Consumer<RichTooltip> configureTooltip(String key, Object... args) {
         GTTooltipDataCache.TooltipData data = machine.mTooltipCache.getData(key, args);
-        return addToRichTooltip(() -> data);
+        return addTooltipDataToRichTooltip(() -> data);
     }
 
     /// Sets a dynamic tooltip without saving it to the machine's tooltip cache. This means the tooltip **can** change
@@ -293,7 +295,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     /// Accounts for extended tooltips shown when shift is held down.
     @SafeVarargs
     protected final Consumer<RichTooltip> configureDynamicTooltip(String key, Supplier<Object>... args) {
-        return addToRichTooltip(
+        return addTooltipDataToRichTooltip(
             () -> machine.mTooltipCache.getUncachedTooltipData(
                 key,
                 Arrays.stream(args)
@@ -301,7 +303,8 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
                     .toArray()));
     }
 
-    protected static @NotNull Consumer<RichTooltip> addToRichTooltip(Supplier<GTTooltipDataCache.TooltipData> data) {
+    protected static @NotNull Consumer<RichTooltip> addTooltipDataToRichTooltip(
+        Supplier<GTTooltipDataCache.TooltipData> data) {
         return t -> t.addStringLines(Interactable.hasShiftDown() ? data.get().shiftText : data.get().text)
             .titleMargin(2);
     }

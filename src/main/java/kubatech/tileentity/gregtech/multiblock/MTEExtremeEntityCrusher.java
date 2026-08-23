@@ -63,6 +63,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -101,6 +102,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -108,13 +110,14 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
@@ -132,8 +135,9 @@ import kubatech.network.CustomTileEntityPacket;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtremeEntityCrusher>
-    implements CustomTileEntityPacketHandler, ISurvivalConstructable {
+    implements CustomTileEntityPacketHandler, ISurvivalConstructable, ICasingTextureProvider {
 
     // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
     public static final int MOB_SPAWN_INTERVAL = 55;
@@ -336,63 +340,28 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Powered Spawner, EEC")
-            .addInfo("Spawns and kills monsters for you!")
-            .addInfo(
-                "Produces " + EnumChatFormatting.GREEN + "120 Liquid XP" + EnumChatFormatting.GRAY + " per operation")
-            .addInfo("Powered Spawner goes in Controller Slot")
-            .addInfo("Base energy usage: " + EnumChatFormatting.AQUA + "1920" + EnumChatFormatting.GRAY + " EU/t")
-            .addInfo("Supports " + EnumChatFormatting.LIGHT_PURPLE + "perfect OC!")
-            .addSeparator()
-            .addInfo("Has a minimum recipe time of 20 ticks, further overclocks multiply outputs by 4x")
-            .addInfo("Recipe time is based on mob health")
-            .addInfo("You can additionally put a weapon inside the GUI")
-            .addInfo(
-                "It will speed up the process and apply the looting level from the weapon (maximum " + MAX_LOOTING_LEVEL
-                    + " levels)")
-            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on it's last hit")
-            .addInfo(
-                "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output")
-            .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
-            .addSeparator()
-            .addInfo(
-                "If the mob spawns " + EnumChatFormatting.RED
-                    + "infernal"
-                    + EnumChatFormatting.GRAY
-                    + ", it will drain 8 times more power!")
-            .addInfo(
-                "You can prevent " + EnumChatFormatting.RED
-                    + "infernal"
-                    + EnumChatFormatting.GRAY
-                    + " spawns by shift clicking with a screwdriver")
-            .addInfo(
-                "Mobs who are always " + EnumChatFormatting.RED
-                    + "infernal"
-                    + EnumChatFormatting.GRAY
-                    + " will ignore this factor")
-            .addSeparator()
-            .addInfo("You can enable ritual mode with a screwdriver")
-            .addInfo("When in ritual mode, can link to above Well of Suffering rituals")
-            .addInfo("The Ritual must be built directly centered above the machine")
-            .addInfo("When linked, mobs will start to buffer and die very slowly, providing blood to the linked altar")
-            .addSeparator()
-            .addInfo("You can disable mob animation with a soldering iron")
-            .addInfo(
-                "You can enable batch mode with wire cutters. Providing " + EnumChatFormatting.BLUE
-                    + " 16x Time, Output, Weapon Damage")
+        tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.machine_type"))
+            .addMarkdown(new ResourceLocation("gregtech", "extreme-entity-crusher"))
             .addGlassEnergyLimitInfo()
             .beginStructureBlock(5, 7, 5, true)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
-            .addCasingInfoExactly("Any Tiered Glass", 60, false)
-            .addCasingInfoExactly("Steel Frame Box", 20, false)
-            .addCasingInfoExactly("Diamond Spike", 9, false)
-            .addInputBus("Any bottom Casing (optional, for weapon with Looting)", 1)
-            .addOutputBus("Any bottom Casing", 1)
-            .addOutputHatch("Any bottom Casing", 1)
-            .addEnergyHatch("Any bottom Casing", 1)
-            .addMaintenanceHatch("Any bottom Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("60", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("35-46", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing(
+                "20",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.steel_frame_box"),
+                false)
+            .addCasing(
+                "9",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.diamond_spike"),
+                false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorKuba);
         return tt;
     }
@@ -413,30 +382,22 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_DISTILLATION_TOWER,
+            OVERLAY_FRONT_DISTILLATION_TOWER_GLOW,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @SideOnly(Side.CLIENT)
@@ -457,6 +418,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             entityRenderer = new EntityRenderer(entityRenderer, time);
         }
         Minecraft.getMinecraft().effectRenderer.addEffect(entityRenderer);
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override
@@ -972,8 +938,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         for (MTEHatchEnergy hatch : mEnergyHatches) {
-            if (hatch.mTier > glassTier) {
-                errors.add(StructureErrors.glassTierNotEnough(hatch.mTier));
+            if (hatch.getTierForStructure() > glassTier) {
+                errors.add(StructureErrors.glassTierNotEnough(hatch.getTierForStructure()));
                 break;
             }
         }
@@ -993,50 +959,46 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         String mobName = getCurrentMob();
         info.add(
-            mobName != null ? StatCollector.translateToLocalFormatted("kubatech.infodata.eec.current_mob", mobName)
-                : StatCollector.translateToLocal("kubatech.infodata.eec.current_mob.none"));
+            mobName != null ? IGregTechDeviceInformation.encode("kubatech.infodata.eec.current_mob", mobName)
+                : "kubatech.infodata.eec.current_mob.none");
         info.add(
-            mAnimationEnabled ? StatCollector.translateToLocal("kubatech.infodata.eec.animations.enabled")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.animations.disabled"));
+            mAnimationEnabled ? "kubatech.infodata.eec.animations.enabled"
+                : "kubatech.infodata.eec.animations.disabled");
         info.add(
-            mIsProducingInfernalDrops
-                ? StatCollector.translateToLocal("kubatech.infodata.eec.produce_infernal_drops.allowed")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.produce_infernal_drops.not_allowed"));
+            mIsProducingInfernalDrops ? "kubatech.infodata.eec.produce_infernal_drops.allowed"
+                : "kubatech.infodata.eec.produce_infernal_drops.not_allowed");
         info.add(
-            voidAllDamagedAndEnchantedItems ? StatCollector.translateToLocal("kubatech.infodata.eec.void_damaged.yes")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.void_damaged.no"));
+            voidAllDamagedAndEnchantedItems ? "kubatech.infodata.eec.void_damaged.yes"
+                : "kubatech.infodata.eec.void_damaged.no");
         info.add(
-            isInRitualMode ? StatCollector.translateToLocal("kubatech.infodata.eec.in_ritual_mode.yes")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.in_ritual_mode.no"));
+            isInRitualMode ? "kubatech.infodata.eec.in_ritual_mode.yes" : "kubatech.infodata.eec.in_ritual_mode.no");
         if (isInRitualMode) info.add(
-            mIsRitualValid ? StatCollector.translateToLocal("kubatech.infodata.eec.connected_to_ritual.yes")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.connected_to_ritual.no"));
+            mIsRitualValid ? "kubatech.infodata.eec.connected_to_ritual.yes"
+                : "kubatech.infodata.eec.connected_to_ritual.no");
         else {
             info.add(
-                mCycleWeapons ? StatCollector.translateToLocal("kubatech.infodata.eec.cycle_weapons.yes")
-                    : StatCollector.translateToLocal("kubatech.infodata.eec.cycle_weapons.no"));
+                mCycleWeapons ? "kubatech.infodata.eec.cycle_weapons.yes" : "kubatech.infodata.eec.cycle_weapons.no");
 
             info.add(
-                mPreserveWeapon ? StatCollector.translateToLocal("kubatech.infodata.eec.weapon_preservation.yes")
-                    : StatCollector.translateToLocal("kubatech.infodata.eec.weapon_preservation.no"));
+                mPreserveWeapon ? "kubatech.infodata.eec.weapon_preservation.yes"
+                    : "kubatech.infodata.eec.weapon_preservation.no");
 
             info.add(
-                weaponCache.isValid ? StatCollector.translateToLocal("kubatech.infodata.eec.inserted_weapon.yes")
-                    : StatCollector.translateToLocal("kubatech.infodata.eec.inserted_weapon.no"));
+                weaponCache.isValid ? "kubatech.infodata.eec.inserted_weapon.yes"
+                    : "kubatech.infodata.eec.inserted_weapon.no");
 
             double tAttackDamage = DIAMOND_SPIKES_DAMAGE;
 
             if (weaponCache.isValid) {
                 tAttackDamage += weaponCache.attackDamage;
                 info.add(
-                    StatCollector
-                        .translateToLocalFormatted("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
+                    IGregTechDeviceInformation.encode("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
                 info.add(
-                    StatCollector
-                        .translateToLocalFormatted("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
+                    IGregTechDeviceInformation
+                        .encode("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
             }
 
-            info.add(StatCollector.translateToLocalFormatted("kubatech.infodata.eec.total_damage", tAttackDamage));
+            info.add(IGregTechDeviceInformation.encode("kubatech.infodata.eec.total_damage", tAttackDamage));
         }
         return info.toArray(new String[0]);
     }
@@ -1057,9 +1019,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         String mob = getCurrentMob();
         if (mob != null) {
             tag.setString("eecMobType", mob);
@@ -1071,24 +1032,22 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         if (tag.hasKey("eecMobType", Constants.NBT.TAG_STRING)) {
             String mob = tag.getString("eecMobType");
             String mobKey = "entity." + mob + ".name";
             if (StatCollector.canTranslate(mobKey)) {
-                currentTip.add(
+                list.add(
                     StatCollector.translateToLocalFormatted(
                         "kubatech.waila.eec.mob_type",
                         StatCollector.translateToLocal(mobKey)));
             } else {
-                currentTip.add(StatCollector.translateToLocalFormatted("kubatech.waila.eec.mob_type", mob));
+                list.add(StatCollector.translateToLocalFormatted("kubatech.waila.eec.mob_type", mob));
             }
         } else {
-            currentTip.add(
+            list.add(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.waila.eec.mob_type",
                     StatCollector.translateToLocal("kubatech.waila.eec.no_mob")));
@@ -1096,11 +1055,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
         if (tag.hasKey("isInRitualMode") && tag.getBoolean("isInRitualMode")) {
             if (tag.hasKey("isRitualValid") && tag.getBoolean("isRitualValid")) {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.GREEN
                         + StatCollector.translateToLocal("kubatech.waila.eec.ritual_mode_connected"));
             } else {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.RED + StatCollector.translateToLocal("kubatech.waila.eec.ritual_mode_error"));
             }
         }

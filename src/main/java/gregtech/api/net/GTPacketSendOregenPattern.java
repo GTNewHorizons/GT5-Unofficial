@@ -1,10 +1,11 @@
 package gregtech.api.net;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.util.GTLog;
 import gregtech.common.GTWorldgenerator;
 import gregtech.common.GTWorldgenerator.OregenPattern;
 import io.netty.buffer.ByteBuf;
@@ -35,8 +36,8 @@ public class GTPacketSendOregenPattern extends GTPacket {
             return new GTPacketSendOregenPattern(OregenPattern.values()[ordinal]);
         }
         // invalid data, default to AXISSYMMETRICAL:
-        GTLog.err.printf(
-            "Received invalid data! Received %d but value must be between 0 and %d! Default (0) will be used.%n",
+        GT_FML_LOGGER.error(
+            "Received invalid data! Received {} but value must be between 0 and {}! Default (0) will be used.",
             ordinal,
             OregenPattern.values().length - 1);
         return new GTPacketSendOregenPattern();
@@ -49,7 +50,7 @@ public class GTPacketSendOregenPattern extends GTPacket {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        GTWorldgenerator.oregenPattern = this.pattern;
+        GTWorldgenerator.setClientOregenPattern(this.pattern);
     }
 
 }

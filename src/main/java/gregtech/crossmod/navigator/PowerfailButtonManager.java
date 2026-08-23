@@ -1,12 +1,12 @@
 package gregtech.crossmod.navigator;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.navigator.api.model.SupportedMods;
 import com.gtnewhorizons.navigator.api.model.buttons.ButtonManager;
 
 import gregtech.api.enums.Mods;
-import gregtech.api.util.GTUtility;
 
 public class PowerfailButtonManager extends ButtonManager {
 
@@ -17,6 +17,6 @@ public class PowerfailButtonManager extends ButtonManager {
 
     @Override
     public String getButtonText() {
-        return GTUtility.translate("GT5U.gui.text.show-powerfail-layer");
+        return StatCollector.translateToLocal("GT5U.gui.text.show-powerfail-layer");
     }
 }

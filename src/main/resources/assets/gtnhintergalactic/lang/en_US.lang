@@ -124,6 +124,10 @@ item.NtNanofibers.name=Neutronium Nanofibers
 item.UHTResistantMesh.name=Ultra High Temperature Resistant Mesh
 item.TaHfNanoparticles.name=Tantalum Hafnium Carbide Nanoparticles
 item.NtNanoparticles.name=Neutronium Nanoparticles
+item.droneCase.name=Corona-Resistant Drone Case
+item.femtocontroller.name=Magnetically Shielded Femtocontroller
+item.fuelPellet.name=Hyperfine TrNq+ Radioisomer Pellet
+item.solarSail.name=Ultra-Durable Solar Sail
 
 # Blocks
 gt.blockcasingsSE.name=Space Elevator Part
@@ -190,10 +194,11 @@ ig.button.projects=Projects
 # Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.name=Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.type=Pump, PGS
+gt.blockmachines.multimachine.ig.siphon.desc0=Every coil tier gives a §a+%s%%§7 speed bonus per coil tier
 gt.blockmachines.multimachine.ig.siphon.desc1=Build on a Space Station orbiting a Gas Planet
 gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set to the depth you want to pump from (1 - 4)
 gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
-gt.blockmachines.multimachine.ig.siphon.desc4=EU/t: d*4^(t+2), t is the Space Station's tier and d the depth
+gt.blockmachines.multimachine.ig.siphon.desc4=Power cost depends on planet tier and depth. See NEI page for more details.
 gt.blockmachines.multimachine.ig.siphon.desc5=Can load the chunk it is in (toggle using a Soldering Iron)
 gt.blockmachines.multimachine.ig.siphon.lore0=Taking Space-Mining to another Level!
 gt.blockmachines.multimachine.ig.siphon.lore1=It's time to SUCC!
@@ -218,13 +223,6 @@ gt.blockmachines.multimachine.ig.dyson.lore4=Invented by a free man.
 
 # Space Elevator
 gt.blockmachines.multimachine.ig.elevator.name=Space Elevator
-gt.blockmachines.multimachine.ig.elevator.desc2=Can be equipped with up to §a12 §7Space Elevator Modules
-gt.blockmachines.multimachine.ig.elevator.desc3=Motor tier limits module tier and amount of possible modules
-gt.blockmachines.multimachine.ig.elevator.desc4=Each module has its own space for IO, except energy
-gt.blockmachines.multimachine.ig.elevator.desc5=Energy is supplied to this controller and gets distributed
-gt.blockmachines.multimachine.ig.elevator.desc6=Starting from §dMotor MK-III §7the structure can be expanded to fit §a24 §7modules
-gt.blockmachines.multimachine.ig.elevator.desc7=Max module amount is §a6§7/§912§7/§d15§7/§618§7/§c24§7 for §aMK-I§7/§9MK-II§7/§dMK-III§7/§6MK-IV§7/§cMK-V§7 motors correspondingly
-gt.blockmachines.multimachine.ig.elevator.desc8=Disabling this controller also pauses all modules
 gt.blockmachines.multimachine.ig.elevator.lore0=10:Elevates to space
 gt.blockmachines.multimachine.ig.elevator.lore1=10:What's your favorite thing about space? Mine is space.
 gt.blockmachines.multimachine.ig.elevator.lore2=10:Putting all those VMs out of jobs
@@ -251,20 +249,12 @@ gt.blockmachines.multimachine.project.ig.motorT5=Needs at least §cMotor MK-V§7
 gt.blockmachines.multimachine.project.ig.assembler.t1.name=Space Assembler Module MK-I
 gt.blockmachines.multimachine.project.ig.assembler.t2.name=Space Assembler Module MK-II
 gt.blockmachines.multimachine.project.ig.assembler.t3.name=Space Assembler Module MK-III
-gt.blockmachines.multimachine.project.ig.assembler.desc0=Module that adds the Space Assembler to the Space Elevator
-gt.blockmachines.multimachine.project.ig.assembler.t1.desc1=Why do I need to assemble stuff in space again?
-gt.blockmachines.multimachine.project.ig.assembler.t2.desc1=Is this really necessary?
-gt.blockmachines.multimachine.project.ig.assembler.t3.desc1=I guess we'll never know.
-gt.blockmachines.multimachine.project.ig.assembler.t1.desc2=Runs at UHV with up to §a4 §7parallels
-gt.blockmachines.multimachine.project.ig.assembler.t2.desc2=Runs at UIV with up to §a16 §7parallels
-gt.blockmachines.multimachine.project.ig.assembler.t3.desc2=Runs at UXV with up to §a64 §7parallels
 gt.blockmachines.multimachine.project.ig.assembler.cfgi.0=Max parallels
 
 # Module Miner
 gt.blockmachines.multimachine.project.ig.miner.t1.name=Space Mining Module MK-I
 gt.blockmachines.multimachine.project.ig.miner.t2.name=Space Mining Module MK-II
 gt.blockmachines.multimachine.project.ig.miner.t3.name=Space Mining Module MK-III
-gt.blockmachines.multimachine.project.ig.miner.desc0=Module that adds Space Mining Operations to the Space Elevator
 gt.blockmachines.multimachine.project.ig.miner.cfgi.0=Distance
 gt.blockmachines.multimachine.project.ig.miner.cfgi.1=Max parallels
 gt.blockmachines.multimachine.project.ig.miner.cfgi.2=Overdrive
@@ -274,18 +264,6 @@ gt.blockmachines.multimachine.project.ig.miner.cfgi.4.2=Cycle
 gt.blockmachines.multimachine.project.ig.miner.cfgi.5=Range
 gt.blockmachines.multimachine.project.ig.miner.cfgi.6=Step
 gt.blockmachines.multimachine.project.ig.cfgo.0=Stored Energy
-gt.blockmachines.multimachine.project.ig.miner.t1.desc1=Great treasures beyond your imagination await!
-gt.blockmachines.multimachine.project.ig.miner.t2.desc1=Does this violate drone rights?
-gt.blockmachines.multimachine.project.ig.miner.t3.desc1=This definitely violates drone rights.
-gt.blockmachines.multimachine.project.ig.miner.desc3=Requires a plasma to operate (§e825L Helium §7/ §3550L Bismuth §7/ §9375L Radon §7/ §f250L Technetium §7/ §c150L Plutonium 241§7).
-gt.blockmachines.multimachine.project.ig.miner.desc4=Higher tier plasmas increase the chances of mining bigger asteroids, and improves mining operation time.
-gt.blockmachines.multimachine.project.ig.miner.desc5=Needs to be fed with computation to work.
-gt.blockmachines.multimachine.project.ig.miner.desc5.1=Computation is consumed per parallel
-gt.blockmachines.multimachine.project.ig.miner.desc5.2=Mining Drones must be placed in a regular input bus (neither linked nor stocking bus).
-gt.blockmachines.multimachine.project.ig.miner.t1.desc5=Runs at UV with up to §a2§7 parallels
-gt.blockmachines.multimachine.project.ig.miner.t2.desc5=Runs at UHV with up to §a4§7 parallels
-gt.blockmachines.multimachine.project.ig.miner.t3.desc5=Runs at UEV with up to §a8§7 parallels
-gt.blockmachines.multimachine.project.ig.miner.desc6=Ores can be black-/whitelisted by putting them in an input bus
 gt.blockmachines.multimachine.project.ig.miner.activedronetiers=Active drone tiers
 gt.blockmachines.multimachine.project.ig.miner.asteroidsummaries.0=Possible asteroids for current distance and drones
 gt.blockmachines.multimachine.project.ig.miner.asteroidchance=operation
@@ -296,16 +274,6 @@ gt.blockmachines.multimachine.project.ig.miner.asteroidmaxparallels=up to
 gt.blockmachines.multimachine.project.ig.pump.t1.name=Space Pumping Module MK-I
 gt.blockmachines.multimachine.project.ig.pump.t2.name=Space Pumping Module MK-II
 gt.blockmachines.multimachine.project.ig.pump.t3.name=Space Pumping Module MK-III
-gt.blockmachines.multimachine.project.ig.pump.desc0=Module that adds Space Pumping Operations to the Space Elevator
-gt.blockmachines.multimachine.project.ig.pump.t1.desc1=Sucking up entire gas planets was never easier
-gt.blockmachines.multimachine.project.ig.pump.t2.desc1=Literally sucks
-gt.blockmachines.multimachine.project.ig.pump.t3.desc1=S U C C
-gt.blockmachines.multimachine.project.ig.pump.desc3=Set Planet and Gas Type determine pumped fluid
-gt.blockmachines.multimachine.project.ig.pump.desc4=Can be void protected by locking output hatches
-gt.blockmachines.multimachine.project.ig.pump.t1.desc5=Runs at UHV with up to §a4 §7parallels
-gt.blockmachines.multimachine.project.ig.pump.t2.desc5=Runs at UEV with up to §a4 §7parallels per recipe
-gt.blockmachines.multimachine.project.ig.pump.t3.desc5=Runs at UXV with up to §a64 §7parallels per recipe
-gt.blockmachines.multimachine.project.ig.pump.t2.desc6=Processes up to §a4 §7different recipes at once
 gt.blockmachines.multimachine.project.ig.pump.cfgi.0=Planet Type
 gt.blockmachines.multimachine.project.ig.pump.cfgi.1=Gas Type
 gt.blockmachines.multimachine.project.ig.pump.cfgi.2=Parallels
@@ -314,13 +282,9 @@ gt.blockmachines.multimachine.project.ig.pump.cfgi.recipe=Recipe %d
 
 # Module Manager
 gt.blockmachines.multimachine.project.ig.manager.t1.name=Space Project Manager
-gt.blockmachines.multimachine.project.ig.manager.desc0=Module that allows you to manage your space projects
-gt.blockmachines.multimachine.project.ig.manager.desc1=The start of something big
 
 # Module Research
 gt.blockmachines.multimachine.project.ig.research.t1.name=Space Research Module
-gt.blockmachines.multimachine.project.ig.research.desc0=Module that allows you to research stellar objects
-gt.blockmachines.multimachine.project.ig.research.desc1=Don't look directly into the sun
 
 # RecipeMaps
 gt.recipe.spaceMining=Space Mining
@@ -339,6 +303,7 @@ ig.nei.elevatorpump.name=Space Pumping Module
 ig.nei.elevatorpump.planettype=Planet
 ig.nei.elevatorpump.gastype=Gas
 ig.nei.elevatorpump.amount=Amount
+ig.nei.elevatorpump.eut=EU/t
 ig.nei.elevatorpump.see_all=See All
 ig.nei.spaceproject.name=Space Projects
 ig.nei.spaceproject.stages=Stages:
@@ -347,10 +312,10 @@ ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth
 
 # Structure and Tooltip
-ig.siphon.structure.ControllerPos=Front center of the middle structure
+ig.siphon.structure.ControllerPos=Front center of the main body, 16th layer
 ig.siphon.structure.ControllerPos2=Front bottom center
 ig.siphon.structure.HatchRequirement=Must have exactly §61§7 of each hatch!
-ig.siphon.structure.AnySiphonCasing=Any Planetary Siphon Casing
+ig.siphon.structure.AnySiphonCasing=Any siphon casing
 ig.siphon.structure.PillarMiddle=1x4x1 pillar in the middle
 ig.siphon.structure.Sides=Each pillar's side and 1x3x1 on top
 ig.siphon.structure.Base=3x1x3 base (hollow), needs §63§7
@@ -361,11 +326,13 @@ ig.elevator.structure.ProjectModule=Project Modules
 ig.elevator.structure.Motor=Space Elevator Motor
 ig.elevator.structure.FrameNeutronium=Neutronium Frame Box
 ig.elevator.structure.Parametrizer=Parametrizer
-ig.elevator.structure.DataInputHatch=Data Input Hatch
-ig.elevator.structure.OpticalConnector=Optical Connector
+ig.elevator.structure.DataInputHatch=Optical Reception Connector
 ig.elevator.structure.AnyBaseCasingWithHintNumber1=Any Space Elevator Base Casing With Hint Number 1
 ig.elevator.structure.AnyBaseCasingWithHintNumber2=Any Space Elevator Base Casing With Hint Number 2
 ig.elevator.structure.AnyBaseCasingWithHintNumber3=Any Space Elevator Base Casing With Hint Number 3
+ig.elevator.structure.SwitchToExtended=Switch to extended in the controller
+ig.elevator.structure.SharedPower=Receives power from the base structure
+ig.elevator.structure.SharedResources=Receives power, plasma, and computation from the base structure
 ig.structure.contributors=Contributors
 ig.structure.programming=Programming
 ig.structure.design=Design
@@ -373,6 +340,11 @@ ig.structure.specialThanks=Special Thanks to
 ig.structure.author=Added by
 ig.structure.and= and
 
+ig.dyson.structure.controller=Front bottom center of receiver, 2nd layer
+ig.dyson.structure.control.any_casing=Any center side casing on control center
+ig.dyson.structure.receiver.any_casing=Any center side casing on receiver
+ig.dyson.structure.deployment.any_casing=Any center side casing on deployment unit
+ig.dyson.structure.air=All eight layers above the receiver dish
 ig.dyson.structure.dynamo=Can use Single- and/or Multi-Amp Dynamo Hatches and/or Laser Source Hatches (1 - 12)
 ig.dyson.structure.optical=Optical Reception Connector
 ig.dyson.structure.additionally=Additionally needed:
@@ -457,3 +429,16 @@ gt.blockcasingsSEMotor.1.name=Space Elevator Motor MK-II
 gt.blockcasingsSEMotor.2.name=Space Elevator Motor MK-III
 gt.blockcasingsSEMotor.3.name=Space Elevator Motor MK-IV
 gt.blockcasingsSEMotor.4.name=Space Elevator Motor MK-V
+
+# info data
+ig.infodata.hdr.operational_data=§5Operational Data:§r
+ig.infodata.maintenance.ok=Maintenance Status: §aWorking perfectly§r
+ig.infodata.maintenance.problems=Maintenance Status: §cHas problems§r
+ig.infodata.dyson_swarm.modules.fmt=Modules: §e%s§r
+ig.infodata.dyson_swarm.power_factor.fmt=Power Factor: %s
+ig.infodata.dyson_swarm.theoretical_output.fmt=Theoretical Output: §e%s§r EU/t
+ig.infodata.dyson_swarm.current_output.fmt=Current Output: §e%s§r EU/t
+ig.infodata.dyson_swarm.computation.fmt=Computation required: §e%s§r/t
+ig.infodata.gas_siphon.depth.fmt=Depth: §e%s§r
+ig.infodata.gas_siphon.fluid.fmt=Fluid: §e%s§rL/s §9%s§r
+ig.infodata.gas_siphon.eu_required.fmt=EU/t required: §e%s§r EU/t

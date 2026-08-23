@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
@@ -24,9 +25,12 @@ import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UNKNOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -37,6 +41,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -66,14 +71,16 @@ import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
@@ -85,7 +92,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTItemTransfer;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTTooltipDataCache;
@@ -93,9 +99,13 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.client.GTSoundLoop;
+import gregtech.common.config.Client;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.items.ItemIntegratedCircuit;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.overlay.tooltiprenderers.TTRenderBar;
+import mcp.mobius.waila.overlay.tooltiprenderers.TTRenderStack;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -103,8 +113,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
-public abstract class MTEBasicMachine extends MTEBasicTank
-    implements RecipeMapWorkable, IConfigurationCircuitSupport, IOverclockDescriptionProvider, IAddGregtechLogo {
+public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapWorkable, IConfigurationCircuitSupport,
+    IOverclockDescriptionProvider, IAddGregtechLogo, INonConsumedItemDisplay {
 
     /**
      * return values for checkRecipe()
@@ -372,6 +382,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     }
 
     @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        if (mLastRecipe == null || mLastRecipe.mInputs == null) return Collections.emptyList();
+        return Arrays.stream(mLastRecipe.mInputs)
+            .filter(s -> s != null && s.stackSize == 0)
+            .collect(Collectors.toList());
+    }
+
+    @Override
     public int getInputSlot() {
         return OTHER_SLOT_COUNT;
     }
@@ -551,6 +569,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     }
 
     @Override
+    public void onClientSoundStateChanged() {
+        if (activitySoundLoop != null && activitySoundLoop.isDonePlaying()) {
+            activitySoundLoop = null;
+        }
+        updateSounds(getActivitySoundLoop());
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
@@ -667,8 +693,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
                     mStuttering = true;
                 }
             }
-        } else {
-            updateSounds(getActivitySoundLoop());
         }
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
@@ -889,17 +913,17 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     @Override
     public String[] getInfoData() {
         return new String[] {
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.progress",
                 EnumChatFormatting.GREEN + formatNumber((mProgresstime / 20)) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.energy",
                 EnumChatFormatting.GREEN + formatNumber(getBaseMetaTileEntity().getStoredEU())
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(getBaseMetaTileEntity().getEUCapacity())
                     + EnumChatFormatting.RESET),
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.currently_uses",
                 EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET,
                 EnumChatFormatting.RED + formatNumber(mEUt == 0 ? 0 : mAmperage) + EnumChatFormatting.RESET) };
@@ -1091,17 +1115,15 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         }
         if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        for (int i = 0; i < mOutputItems.length; i++)
-            if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
-                mOutputItems[i] = tRecipe.getOutput(i);
+        for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = tRecipe.rollOutput(getBaseMetaTileEntity(), i);
         if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300) {
             assert cleanroom != null;
             for (int i = 0; i < mOutputItems.length; i++) if (mOutputItems[i] != null
                 && getBaseMetaTileEntity().getRandomNumber(10000) > cleanroom.getCleanness()) {
                     if (debugCleanroom) {
-                        GTLog.out.println(
-                            "BasicMachine: Voiding output due to cleanness failure. Cleanness = "
-                                + cleanroom.getCleanness());
+                        GT_FML_LOGGER.debug(
+                            "BasicMachine: Voiding output due to cleanness failure. Cleanness = {}",
+                            cleanroom.getCleanness());
                     }
                     mOutputItems[i] = null;
                 }
@@ -1177,62 +1199,94 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
+        final IGregTechTileEntity gte = getBaseMetaTileEntity();
+        long eu = tag.getLong("Eu");
+        long maxEu = tag.getLong("MaxEu");
+        int euT = tag.getInteger("eut");
+        boolean isActive = tag.getBoolean("isActiveSingleBlock");
+        String euText = formatNumber(eu) + " / " + formatNumber(maxEu);
+        List<ItemStack> inputItems = new ArrayList<>();
+        List<ItemStack> outputItems = new ArrayList<>();
+
+        getWailaItemsWithNBTTag(getAllInputs(), "inputItems", inputItems, tag);
+        getWailaItemsWithNBTTag(getAllOutputs(), "outputItems", outputItems, tag);
+
+        inputItems.sort(
+            Comparator.<ItemStack, Boolean>comparing(stack -> !(stack.getItem() instanceof ItemIntegratedCircuit))
+                .thenComparingInt(ItemStack::getItemDamage));
+
+        currenttip.add(TTRenderBar.create(euText, 0xFFF5E32C, 0xFF9C7E00, (double) eu / maxEu));
 
         if (tag.getBoolean("stutteringSingleBlock")) {
             currenttip.add(translateToLocal(getWailaStutteringLine(tag)));
         } else {
-            boolean isActive = tag.getBoolean("isActiveSingleBlock");
             if (isActive) {
-                int mEUt = tag.getInteger("eut");
+                currenttip.add(
+                    GTWaila.getMachineProgressString(
+                        true,
+                        tag.getBoolean("isAllowedToWorkSingleBlock"),
+                        tag.getInteger("maxProgressSingleBlock"),
+                        tag.getInteger("progressSingleBlock")));
+
                 if (!isSteampowered()) {
-                    if (mEUt > 0) {
+                    if (euT > 0) {
+                        double exactAmps = GTUtility.getExactAmperageForTier(euT, (byte) getInputTier());
+                        String ampString = String.format("%.2f", exactAmps);
+
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GT5U.waila.energy.use_with_amperage",
-                                formatNumber(mEUt),
-                                GTUtility.getAmperageForTier(mEUt, (byte) getInputTier()),
+                                formatNumber(euT),
+                                ampString,
                                 GTUtility.getColoredTierNameFromTier((byte) getInputTier())));
-                    } else if (mEUt < 0) {
+                    } else if (euT < 0) {
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GT5U.waila.energy.produce_with_amperage",
-                                formatNumber(-mEUt),
-                                GTUtility.getAmperageForTier(-mEUt, (byte) getOutputTier()),
+                                formatNumber(-euT),
+                                GTUtility.getAmperageForTier(-euT, (byte) getOutputTier()),
                                 GTUtility.getColoredTierNameFromTier((byte) getOutputTier())));
                     }
                 } else {
-                    if (mEUt > 0) {
+                    if (euT > 0) {
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GTPP.waila.steam.use",
-                                formatNumber(mEUt * 40L),
-                                GTUtility.getColoredTierNameFromVoltage(mEUt)));
-                    } else if (mEUt < 0) {
+                                formatNumber(euT * 40L),
+                                GTUtility.getColoredTierNameFromVoltage(euT)));
+                    } else if (euT < 0) {
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GTPP.waila.steam.use",
-                                formatNumber(-mEUt * 40L),
-                                GTUtility.getColoredTierNameFromVoltage(-mEUt)));
+                                formatNumber(-euT * 40L),
+                                GTUtility.getColoredTierNameFromVoltage(-euT)));
                     }
                 }
             }
-            currenttip.add(
-                GTWaila.getMachineProgressString(
-                    isActive,
-                    tag.getBoolean("isAllowedToWorkSingleBlock"),
-                    tag.getInteger("maxProgressSingleBlock"),
-                    tag.getInteger("progressSingleBlock")));
+        }
+
+        if (!inputItems.isEmpty()) {
+            currenttip.add(StatCollector.translateToLocal("GT5U.waila.machine.recipe_inputs"));
+            getWailaRenderItems(currenttip, inputItems);
         }
 
         currenttip.add(
-            translateToLocalFormatted(
-                "GT5U.waila.machine_facing",
-                getFacingNameLocalized(tag.getInteger("mainFacingSingleBlock"))));
-
-        currenttip.add(
-            translateToLocalFormatted(
-                "GT5U.waila.output_facing",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.machine.recipe_outputs",
                 getFacingNameLocalized(tag.getInteger("outputFacingSingleBlock"))));
+
+        if (!outputItems.isEmpty()) {
+            getWailaRenderItems(currenttip, outputItems);
+        }
+
+        if (Client.waila.showFacing) {
+            if (gte != null) {
+                currenttip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.facing",
+                        getFacingNameLocalized(tag.getInteger("mainFacingSingleBlock"))));
+            }
+        }
     }
 
     private static @NotNull String getWailaStutteringLine(NBTTagCompound tag) {
@@ -1240,10 +1294,61 @@ public abstract class MTEBasicMachine extends MTEBasicTank
             : "GT5U.waila.status.insufficient_energy";
     }
 
+    private void getWailaItemsWithNBTTag(ItemStack[] itemStacks, String tag, List<ItemStack> itemStackList,
+        NBTTagCompound nbtTagCompound) {
+        for (int i = 0; i < itemStacks.length; i++) {
+            if (nbtTagCompound.hasKey(tag + i)) {
+                ItemStack inputStack = ItemStack.loadItemStackFromNBT(nbtTagCompound.getCompoundTag(tag + i));
+
+                if (inputStack == null) {
+                    continue;
+                }
+
+                if (inputStack.stackSize == 0) {
+                    inputStack.stackSize = 1;
+                }
+
+                itemStackList.add(inputStack);
+            }
+        }
+    }
+
+    private void getWailaRenderItems(List<String> list, List<ItemStack> itemStacks) {
+        for (int i = 0; i < itemStacks.size(); i++) {
+            if (i == 5) {
+                list.add(
+                    StatCollector.translateToLocalFormatted("GT5U.waila.machine.more_items", itemStacks.size() - i));
+                break;
+            }
+
+            ItemStack item = itemStacks.get(i);
+
+            list.add(
+                TTRenderStack.create(item, true) + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.machine.render_item",
+                    item.stackSize,
+                    item.getDisplayName()));
+        }
+    }
+
+    private void getWailaNBTTagWithItems(ItemStack[] itemStacks, String nameTag, NBTTagCompound tag) {
+        for (int i = 0; i < itemStacks.length; i++) {
+            ItemStack itemStack = itemStacks[i];
+            if (itemStack != null) {
+                NBTTagCompound itemTag = new NBTTagCompound();
+                itemStack.writeToNBT(itemTag);
+                tag.setTag(nameTag + i, itemTag);
+            }
+        }
+    }
+
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        final IGregTechTileEntity gte = getBaseMetaTileEntity();
+        ItemStack[] inputs = getAllInputs();
+        ItemStack[] outputs = getAllOutputs();
 
         tag.setInteger("progressSingleBlock", mProgresstime);
         tag.setInteger("maxProgressSingleBlock", mMaxProgresstime);
@@ -1251,16 +1356,22 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         tag.setBoolean("stutteringSingleBlock", mStuttering);
         tag.setBoolean("blockedSteamVentSingleBlock", cannotVentSteam());
 
-        final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
-        if (tileEntity != null) {
-            tag.setBoolean("isActiveSingleBlock", tileEntity.isActive());
-            tag.setBoolean("isAllowedToWorkSingleBlock", tileEntity.isAllowedToWork());
+        if (gte != null) {
+            tag.setBoolean("isActiveSingleBlock", gte.isActive());
+            tag.setBoolean("isAllowedToWorkSingleBlock", gte.isAllowedToWork());
+            tag.setLong("Eu", gte.getStoredEU());
+            tag.setLong("MaxEu", gte.getEUCapacity());
             tag.setInteger(
                 "outputFacingSingleBlock",
-                tileEntity.getFrontFacing()
+                gte.getFrontFacing()
                     .ordinal());
-            if (tileEntity.isActive()) tag.setInteger("eut", mEUt);
+            if (gte.isActive()) {
+                tag.setInteger("eut", mEUt);
+            }
         }
+
+        getWailaNBTTagWithItems(inputs, "inputItems", tag);
+        getWailaNBTTagWithItems(outputs, "outputItems", tag);
     }
 
     @Nonnull
@@ -1357,7 +1468,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
             uiProperties.maxItemOutputs,
             uiProperties.maxFluidInputs,
             uiProperties.maxFluidOutputs,
-            getSteamVariant(),
+            getTieredVariant(),
             Pos2d.ZERO);
     }
 
@@ -1385,7 +1496,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
                 new ProgressBar()
                     .setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
                     .setTexture(
-                        isSteamPowered ? uiProperties.progressBarTextureSteam.get(getSteamVariant())
+                        isSteamPowered ? uiProperties.progressBarTextureSteam.get(getTieredVariant())
                             : uiProperties.progressBarTexture.get(),
                         uiProperties.progressBarImageSize)
                     .setDirection(uiProperties.progressBarDirection)
@@ -1473,7 +1584,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     protected Widget createSteamProgressBar(ModularWindow.Builder builder) {
         builder.widget(new FakeSyncWidget.LongSyncer(this::getSteamVar, val -> getSteamVar = val));
 
-        boolean isSteel = getSteamVariant() == SteamVariant.STEEL;
+        boolean isSteel = getTieredVariant() == TieredVariant.STEEL;
         builder.widget(
             new DrawableWidget().setDrawable(isSteel ? GTUITextures.STEAM_GAUGE_BG_STEEL : GTUITextures.STEAM_GAUGE_BG)
                 .dynamicTooltip(
@@ -1516,7 +1627,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
                 builder.widget(
                     new DrawableWidget().setDrawable(
                         specialTexture.getLeft()
-                            .get(getSteamVariant()))
+                            .get(getTieredVariant()))
                         .setSize(
                             specialTexture.getRight()
                                 .getLeft())

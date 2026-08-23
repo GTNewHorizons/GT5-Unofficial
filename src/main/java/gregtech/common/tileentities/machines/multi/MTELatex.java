@@ -25,6 +25,7 @@ import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -50,12 +51,12 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
@@ -66,7 +67,8 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implements ISurvivalConstructable {
+public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int CASING_INDEX = 176;
@@ -150,10 +152,10 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
         .build();
 
     private int itemPipeTier = -1;
-    private double discount = 0.0625 * itemPipeTier;
     private int base_parallel = 8;
     private static final FluidStack[] valid_rubbers = { Materials.Rubber.getMolten(1L),
         Materials.RubberSilicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L) };
+    private static ItemStack SINGULARITY;
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
@@ -162,6 +164,32 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             @Override
             protected @NotNull ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 return super.createParallelHelper(Objects.requireNonNull(recipeAfterAdjustments(recipe)));
+            }
+
+            @Nonnull
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                if (map == null) {
+                    return Stream.empty();
+                }
+                return map.findRecipeQuery()
+                    .caching(recipeCaching)
+                    .items(inputItems)
+                    .fluids(fluidsAfterAdjustments(inputFluids))
+                    .specialSlot(specialSlotItem)
+                    .cachedRecipe(lastRecipe)
+                    .findAll();
+            }
+
+            private FluidStack[] fluidsAfterAdjustments(FluidStack[] inputFluids) {
+                FluidStack[] copy = new FluidStack[inputFluids.length];
+
+                for (int i = 0; i < inputFluids.length; i++) {
+                    if (inputFluids[i] == null) continue;
+                    copy[i] = inputFluids[i].copy();
+                    copy[i].amount = (int) (Math.ceil((copy[i].amount + 0.5D) / getRubberCostMult()) - 1D);
+                }
+
+                return copy;
             }
         }.setSpeedBonus(1F / 2F)
             .setMaxParallelSupplier(this::getTrueParallel)
@@ -188,22 +216,39 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
         for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             for (FluidStack rubber : valid_rubbers) {
                 if (tRecipe.mFluidInputs[i].isFluidEqual(rubber)) {
-                    ItemStack controllerStack = this.getControllerSlot();
-                    discount = 0.0625 * itemPipeTier;
-                    base_parallel = 8;
-                    if (controllerStack != null && controllerStack.isItemEqual(
-                        UniversalSingularities.isModLoaded()
-                            ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
-                            : ItemList.Tool_DataStick.get(1))) {
-                        discount = discount + 0.25;
-                        base_parallel = 16;
-                    }
-                    tRecipe.mFluidInputs[i].amount = (int) Math.round(tRecipe.mFluidInputs[i].amount * (1 - discount));
+                    tRecipe.mFluidInputs[i].amount = (int) Math
+                        .round(tRecipe.mFluidInputs[i].amount * getRubberCostMult());
                     return tRecipe;
                 }
             }
         }
         return tRecipe;
+    }
+
+    private double getRubberCostMult() {
+        double discount = 0.0625 * itemPipeTier;
+        base_parallel = 8;
+        if (hasSingularity()) {
+            discount += 0.25;
+            base_parallel = 16;
+        }
+        return 1 - discount;
+    }
+
+    private boolean hasSingularity() {
+        ItemStack controllerStack = this.getControllerSlot();
+        if (controllerStack == null) return false;
+        ItemStack result;
+        if (!UniversalSingularities.isModLoaded()) {
+            result = ItemList.Tool_DataStick.get(1);
+        } else {
+            if (SINGULARITY == null) {
+                SINGULARITY = getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5);
+            }
+            result = SINGULARITY;
+        }
+        assert result != null;
+        return controllerStack.isItemEqual(result);
     }
 
     public MTELatex(final int aID, final String aName, final String aNameRegional) {
@@ -225,42 +270,23 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATEX_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATEX_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATEX)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATEX_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 0)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_LATEX,
+            OVERLAY_FRONT_MULTI_LATEX_GLOW,
+            OVERLAY_FRONT_MULTI_LATEX_ACTIVE,
+            OVERLAY_FRONT_MULTI_LATEX_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 0));
     }
 
     @Override
@@ -284,16 +310,18 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             .addInfo(DARK_AQUA + "Make sure to cover up!")
             .beginStructureBlock(5, 8, 5, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
-            .addCasingInfoExactly("Any Tiered Glass", 24, false)
-            .addCasingInfoExactly("Polyvinyl Chloride Frame Box", 16, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
+            .addCasing("14-36", "Chemically Inert Casing", false)
+            .addCasing("32", "Any Tiered Glass", false)
+            .addCasing("16", "Polyvinyl Chloride Frame Box", false)
+            .addCasing("6", "Item Pipe Casing", true)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addInputHatch("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
         return tt;
     }
@@ -321,17 +349,12 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
         mCasingAmount = 0;
         clearHatches();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 7, 0, errors)) return;
-        ItemStack controllerStack = this.getControllerSlot();
-        boolean singularityPresent = controllerStack != null && controllerStack.isItemEqual(
-            UniversalSingularities.isModLoaded()
-                ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
-                : ItemList.Tool_DataStick.get(1));
+        checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
-        checkHasAnyEnergy(errors);
-        if (!mExoticEnergyHatches.isEmpty() && !singularityPresent) {
+        if (!mExoticEnergyHatches.isEmpty() && !hasSingularity()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.latex_singularity"));
         }
         checkCasingMin(errors, mCasingAmount, 14);
@@ -360,12 +383,6 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     @Override
     public boolean supportsInputSeparation() {
         return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-
     }
 
 }

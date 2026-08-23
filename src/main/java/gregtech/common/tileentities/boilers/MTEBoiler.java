@@ -2,11 +2,17 @@ package gregtech.common.tileentities.boilers;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -29,21 +35,24 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTWaila;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.singleblock.MTEBoilerGui;
 import gregtech.common.pollution.Pollution;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
 
@@ -228,11 +237,18 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            updateSoundLoops(playBoiling);
+    public void onClientSoundStateChanged() {
+        if (mBoilingSound != null && mBoilingSound.isDonePlaying()) {
+            mBoilingSound = null;
         }
+        if (mHeatingSound != null && mHeatingSound.isDonePlaying()) {
+            mHeatingSound = null;
+        }
+        updateSoundLoops(playBoiling);
+    }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         pollute(aTick);
 
         if (isNotAllowedToWork(aBaseMetaTileEntity, aTick)) return;
@@ -468,7 +484,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
     @Override
-    protected abstract GTGuiTheme getGuiTheme();
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
+    }
 
     // this is the mui1 fluid tank, but mui2 has compat with it
     public FluidStackTank getFluidStackTank() {
@@ -504,11 +522,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST);
     }
 
-    @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.BRONZE;
-    }
-
     public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
         return GTUtility.fillFluidContainer(Materials.Steam.getGas(getSteamCapacity()), stack, false, true) != null
             || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
@@ -519,18 +532,43 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
-    }
-
-    @Override
     public int getTitleColor() {
-        return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
+        return getTieredVariant() == TieredVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
     }
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
         return (index == 0 && isValidFluidInputSlotItem(itemStack) || index == 2 && isItemValidFuel(itemStack))
             && super.isItemValidForSlot(index, itemStack);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
+        int fuel = tag.getInteger("fuel") * 20;
+        int fuelMax = tag.getInteger("fuelMax") * 20;
+        int temperature = tag.getInteger("temperature");
+
+        if (fuel > 0) {
+            currenttip.add(GTWaila.getMachineProgressString(fuelMax, fuelMax - fuel));
+        }
+
+        if (fuel == 0) {
+            currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.fuel_empty"));
+        }
+
+        currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.temperature", temperature));
+
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("fuel", mProcessingEnergy);
+        tag.setInteger("temperature", mTemperature);
+        tag.setInteger("fuelMax", fuelMaxEnergy);
     }
 }

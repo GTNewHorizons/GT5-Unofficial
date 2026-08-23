@@ -3,6 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -13,12 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -37,6 +40,7 @@ import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -61,7 +65,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     protected int times = 1;
     private UUID owner_uuid;
     private boolean wirelessEnabled = false;
-    private boolean canUseWireless = true;
+    private long lastCycleTick = 0;
+
     private long euLastCycle = 0;
     private float annihilationEfficiency = 0f;
     public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
@@ -73,13 +78,13 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         protected IStructureDefinition<AntimatterGenerator> computeValue(@NotNull Class<?> type) {
             return StructureDefinition.<AntimatterGenerator>builder()
                 .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_GENERATOR)
-                .addElement('F', lazy(x -> ofFrame(Materials.Naquadria))) // Naquadria Frame Box
-                .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCasingMeta(1)))) // Black Casing
-                .addElement('G', lazy(x -> ofBlock(x.getCoilBlock(1), x.getCoilMeta(1)))) // Annihilation Coil
-                .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(2), x.getCoilMeta(2)))) // Containment Coil
-                .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta(2)))) // White Casing
-                .addElement('A', lazy(x -> ofBlock(x.getGlassBlock(), x.getGlassMeta()))) // Glass
-                .addElement('E', lazy(x -> ofBlock(GregTechAPI.sBlockCasings9, 1))) // Filter Casing
+                .addElement('F', ofFrame(Materials.Naquadria)) // Naquadria Frame Box
+                .addElement('D', lazy(() -> ofBlock(Loaders.magneticFluxCasing, 0))) // Black Casing
+                .addElement('G', lazy(() -> ofBlock(Loaders.antimatterAnnihilationMatrix, 0))) // Annihilation Coil
+                .addElement('B', lazy(() -> ofBlock(Loaders.protomatterActivationCoil, 0))) // Containment Coil
+                .addElement('C', lazy(() -> ofBlock(Loaders.gravityStabilizationCasing, 0))) // White Casing
+                .addElement('A', ofChain(ofBlock(ItemRegistry.bw_realglas, 8), ofBlock(ItemRegistry.bw_realglas2, 3))) // Glass
+                .addElement('E', ofBlock(GregTechAPI.sBlockCasings9, 1)) // Filter Casing
                 .addElement(
                     'H',
                     lazy(
@@ -87,14 +92,14 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
                             .anyOf(HatchElement.ExoticDynamo)
                             .casingIndex(x.textureIndex(2))
                             .hint(2)
-                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
+                            .buildAndChain(Loaders.gravityStabilizationCasing, 0)))
                 .addElement(
                     'I',
                     lazy(
                         x -> buildHatchAdder(AntimatterGenerator.class).atLeast(HatchElement.InputHatch)
                             .casingIndex(x.textureIndex(1))
                             .hint(1)
-                            .buildAndChain(x.getCasingBlock(1), x.getCasingMeta(1))))
+                            .buildAndChain(Loaders.magneticFluxCasing, 0)))
                 .build();
         }
     };
@@ -105,6 +110,15 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
     public AntimatterGenerator(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+    }
+
+    @Override
+    public boolean shouldCheckRecipeThisTick(long tick) {
+        if (tick - lastCycleTick >= 100) {
+            lastCycleTick = tick;
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -375,20 +389,21 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             .addInfo("Switch the power destination to your wireless network with a screwdriver")
             .addInfo("Wireless mode requires Superconductor Base UMV to work")
             .addInfo("Wireless mode is still limited by hatch capacity")
-            .beginStructureBlock(35, 43, 35, false)
+            .beginStructureBlock(35, 43, 35, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
-            .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
-            .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
-            .addCasingInfoMin("Protomatter Activation Coil", 32, false)
-            .addCasingInfoMin("Antimatter Annihilation Matrix", 600, false)
-            .addCasingInfoMin("Naquadria Frame Box", 293, false)
-            .addCasingInfoMin("Advanced Filter Casing", 209, false)
-            .addInputHatch("2, Hint block number 1", 1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.laser_source_hatch"),
-                "1-64, Hint block number 2",
+            .addCasing("4127-4128", "Magnetic Flux Casing", false)
+            .addCasing("2481-2544", "Gravity Stabilization Casing", false)
+            .addCasing("1008", "Any Transcendentally Reinforced Borosilicate Glass Block", false)
+            .addCasing("600", "Antimatter Annihilation Matrix", false)
+            .addCasing("292", "Naquadria Frame Box", false)
+            .addCasing("209", "Advanced Filter Casing", false)
+            .addCasing("32", "Protomatter Activation Coil", false)
+            .addMiscHatch(
+                "1-64",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
+                "Any bottom leg casing",
                 2)
+            .addInputHatch("1-2", "Either center side casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -399,19 +414,18 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
     @Override
     public void getExtraInfoData(List<String> info) {
+        info.add("gg.infodata.antimatter_generator.header");
         info.add(
-            StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.0.s", formatNumber(this.euLastCycle)));
-
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_generator.eu_produced", formatNumber(this.euLastCycle)));
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "gui.AntimatterGenerator.1.s",
+            IGregTechDeviceInformation.encode(
+                "gg.infodata.antimatter_generator.efficiency",
                 formatNumber(Math.ceil(this.annihilationEfficiency * 100))));
-
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "gui.AntimatterGenerator.2.s",
+            IGregTechDeviceInformation.encode(
+                "gg.infodata.antimatter_generator.efficiency.avg",
                 formatNumber(Math.ceil(this.avgEffCache * 100))));
-
     }
 
     public long getEnergyProduced() {
@@ -444,8 +458,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         return this.avgEffCache;
     }
 
-    protected long energyProducedCache;
-    protected float efficiencyCache;
     protected float avgEffCache;
 
     @Override
@@ -454,20 +466,27 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector
-                .translateToLocalFormatted("gui.AntimatterGenerator.0.s", formatNumber(this.energyProducedCache)));
-        currentTip.add(
+                .translateToLocalFormatted("gui.AntimatterGenerator.0.s", formatNumber(tag.getLong("curProducedEU"))));
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "gui.AntimatterGenerator.1.s",
-                formatNumber(Math.ceil(this.efficiencyCache * 100))));
-        currentTip.add(
+                formatNumber(Math.ceil(tag.getFloat("curEff") * 100))));
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "gui.AntimatterGenerator.2.s",
-                formatNumber(Math.ceil(this.avgEffCache * 100))));
+                formatNumber(Math.ceil(tag.getFloat("avgEff") * 100))));
+    }
+
+    @Override
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        tag.setLong("curProducedEU", euLastCycle);
+        tag.setFloat("curEff", annihilationEfficiency);
+        tag.setFloat("avgEff", avgEffCache);
     }
 
     @Override
@@ -499,42 +518,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
             .build() };
-    }
-
-    public Block getCoilBlock(int type) {
-        if (type == 2) {
-            return Loaders.protomatterActivationCoil;
-        }
-        return Loaders.antimatterAnnihilationMatrix;
-    }
-
-    public int getCoilMeta(int type) {
-        return 0;
-    }
-
-    public Block getCasingBlock(int type) {
-        if (type == 2) return Loaders.gravityStabilizationCasing;
-        return Loaders.magneticFluxCasing;
-    }
-
-    public int getCasingMeta(int type) {
-        return 0;
-    }
-
-    public Block getFrameBlock() {
-        return Loaders.antimatterContainmentCasing;
-    }
-
-    public int getFrameMeta() {
-        return 0;
-    }
-
-    public Block getGlassBlock() {
-        return ItemRegistry.bw_realglas;
-    }
-
-    public int getGlassMeta() {
-        return 8;
     }
 
     public int textureIndex(int type) {

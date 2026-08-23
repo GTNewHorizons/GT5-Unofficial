@@ -43,7 +43,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
@@ -52,6 +51,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -158,7 +158,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
         } else if (getTurbineType().contains("Steam")) {
             tt.addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow");
         }
-        tt.addTecTechHatchInfo();
+        tt.addSupportAny();
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, false)
             .addController("Top center")
@@ -255,8 +255,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
             updateTexture(aTileEntity, aBaseCasingIndex);
             IGregTechTileEntity g = this.getBaseMetaTileEntity();
             if (aTurbineHatch.setController(new BlockPos(g.getXCoord(), g.getYCoord(), g.getZCoord(), g.getWorld()))) {
-                boolean aDidAdd = this.mTurbineRotorHatches.add(aTurbineHatch);
-                return aDidAdd;
+                return this.mTurbineRotorHatches.add(aTurbineHatch);
             }
         }
         return false;
@@ -490,7 +489,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
                 return CheckRecipeResultRegistry.GENERATING;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
@@ -572,24 +571,22 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
     }
 
     @Override
-    public final ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side,
-        ForgeDirection facing, int aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1],
-            facing == side ? getFrontFacingTurbineTexture(aActive)
-                : Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Glow,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active_Glow);
     }
 
-    protected ITexture getFrontFacingTurbineTexture(boolean isActive) {
-        if (isActive) {
-            return TextureFactory.builder()
-                .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
-                .extFacing()
-                .build();
-        }
-        return TextureFactory.builder()
-            .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
-            .extFacing()
-            .build();
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex());
     }
 
     @Override

@@ -74,9 +74,15 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER };
     private byte validCoversMask;
 
+    // Whether block update is needed because of redstone changes.
+    protected boolean mNeedsBlockUpdate = true;
+    // The actual redstone signal per side, direct modifiers of this are required to issue block update for change.
+    // Use `setOutputRedstoneSignal` to modify the redstone output and issue block update on the server if changed.
     protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
-    protected byte mStrongRedstone = 0;
-    protected byte oldStrongRedstone = 0;
+    // Use `setStrongRedstone` to automatically send block update on change
+    private byte mStrongRedstone = 0;
+    // To only issue update to sides that has strong redstone set either previously or currently
+    private byte oldStrongRedstone = 0;
 
     protected short mID = 0;
     public long mTickTimer = 0;
@@ -330,6 +336,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
+    /**
+     * Used on client side, no need to issue block update
+     */
     protected void setRedstoneOutput(int packedRedstoneValue) {
         mSidedRedstone[0] = (byte) ((packedRedstoneValue & 1) == 1 ? 15 : 0);
         mSidedRedstone[1] = (byte) ((packedRedstoneValue & 2) == 2 ? 15 : 0);
@@ -349,13 +358,54 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return redstone;
     }
 
+    public final byte getStrongRedstone() {
+        return mStrongRedstone;
+    }
+
+    /**
+     * Sets a new value for strong redstone. If the value is changed, block update is issued automatically.
+     */
+    public final void setStrongRedstone(byte newStrongRedstone) {
+        if (newStrongRedstone != mStrongRedstone) {
+            mStrongRedstone = newStrongRedstone;
+            markDirty();
+            issueBlockUpdate();
+        }
+    }
+
+    /**
+     * Toggles the specified side for strong redstone
+     *
+     * @return whether the side is emitting strong redstone
+     */
+    public final boolean toggleStrongRedstone(ForgeDirection side) {
+        mStrongRedstone ^= (byte) side.flag;
+        markDirty();
+        issueBlockUpdate();
+        return (mStrongRedstone & side.flag) != 0;
+    }
+
+    @Override
+    public void issueBlockUpdate() {
+        mNeedsBlockUpdate = true;
+        if (isTickDisabled()) {
+            doBlockUpdateServer();
+        }
+    }
+
+    public final void doBlockUpdateServer() {
+        updateNeighbours(mStrongRedstone, oldStrongRedstone);
+        oldStrongRedstone = mStrongRedstone;
+        mNeedsBlockUpdate = false;
+    }
+
     @Override
     public void setOutputRedstoneSignal(ForgeDirection side, byte strength) {
         final byte cappedStrength = (byte) Math.min(Math.max(0, strength), 15);
         if (side == ForgeDirection.UNKNOWN) return;
 
         final int ordinalSide = side.ordinal();
-        if (mSidedRedstone[ordinalSide] != cappedStrength || (mStrongRedstone & (1 << ordinalSide)) > 0) {
+        if (mSidedRedstone[ordinalSide] != cappedStrength) {
             mSidedRedstone[ordinalSide] = cappedStrength;
             issueBlockUpdate();
             scheduleTexturePacket();
@@ -364,16 +414,16 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void setStrongOutputRedstoneSignal(ForgeDirection side, byte strength) {
-        mStrongRedstone |= (byte) side.flag;
+        setStrongRedstone((byte) (mStrongRedstone | side.flag));
         setOutputRedstoneSignal(side, strength);
     }
 
     @Override
     public void setRedstoneOutputStrength(ForgeDirection side, boolean isStrong) {
         if (isStrong) {
-            mStrongRedstone |= (byte) side.flag;
+            setStrongRedstone((byte) (mStrongRedstone | side.flag));
         } else {
-            mStrongRedstone &= ~(byte) side.flag;
+            setStrongRedstone((byte) (mStrongRedstone & (~side.flag)));
         }
         setOutputRedstoneSignal(side, mSidedRedstone[side.ordinal()]);
     }

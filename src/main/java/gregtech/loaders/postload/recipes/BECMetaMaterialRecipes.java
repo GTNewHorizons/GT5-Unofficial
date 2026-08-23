@@ -2,12 +2,8 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.NANITE_TIERS;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,7 +20,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsElements;
 import tectech.recipe.TecTechRecipeMaps;
 
@@ -41,6 +36,7 @@ public class BECMetaMaterialRecipes implements Runnable {
         NaniteTier.Universium, NaniteTier.Eternity, NaniteTier.MagMatter };
 
     private static final int[] baseAmounts = { 1, 2, 4, 8 };
+    private static final int baseDuration = 300 * SECONDS;
 
     private static final Materials[] other3Tier = { Materials.ProtoHalkonite, Materials.Hexanite, Materials.MHDCSM };
     private static final Object[] black3Tier = { GGMaterial.tairitsu, Materials.TranscendentMetal,
@@ -95,22 +91,7 @@ public class BECMetaMaterialRecipes implements Runnable {
 
             CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.TranscendentMetal };
             int[] becAmounts = { condensateAmounts[t], condensateAmounts[t] };
-            if (t == 0) {
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(condensateAmounts[t] * INGOTS),
-                    Materials.TranscendentMetal.getMolten(condensateAmounts[t] * INGOTS) };
-                addBecAndAal(
-                    outputs[t].get(1),
-                    inputs,
-                    nanites,
-                    becCondensates,
-                    becAmounts,
-                    aalFluids,
-                    300 * SECONDS,
-                    euts[t]);
-            } else {
-                addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, 300 * SECONDS, euts[t]);
-            }
+            addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, baseDuration, euts[t]);
         }
     }
 
@@ -129,27 +110,10 @@ public class BECMetaMaterialRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.screw, white3Tier[t], 8) };
             NaniteTier[] nanites = { nanite(4 + 2 * t), nanite(1 + 2 * t), nanite(1 + 2 * t), nanite(3 + 2 * t),
                 nanite(1 + 2 * t) };
-
-            if (t == 0) {
-                CondensateType[] becCondensates = new CondensateType[] { CondensateType.ChromaticGlass };
-                int[] becAmounts = new int[] { chromaticAmts[t] };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromaticAmts[t] * INGOTS) };
-                addBecAndAal(
-                    outputs[t].get(1),
-                    inputs,
-                    nanites,
-                    becCondensates,
-                    becAmounts,
-                    aalFluids,
-                    300 * SECONDS,
-                    euts[t]);
-            } else {
-                CondensateType[] becCondensates = new CondensateType[] { CondensateType.ChromaticGlass,
-                    CondensateType.Hypogen };
-                int[] becAmounts = new int[] { chromaticAmts[t], hypogenAmts[t] };
-                addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, 300 * SECONDS, euts[t]);
-            }
+            CondensateType[] becCondensates = new CondensateType[] { CondensateType.ChromaticGlass,
+                CondensateType.Hypogen };
+            int[] becAmounts = new int[] { chromaticAmts[t], hypogenAmts[t] };
+            addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, baseDuration, euts[t]);
         }
     }
 
@@ -170,27 +134,10 @@ public class BECMetaMaterialRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.screw, white3Tier[t], 8) };
             NaniteTier[] nanites = { nanite(4 + 2 * t), nanite(1 + 2 * t), nanite(1 + 2 * t), nanite(3 + 2 * t),
                 nanite(1 + 2 * t) };
-
-            if (t == 0) {
-                CondensateType[] becCondensates = new CondensateType[] { CondensateType.ChromaticGlass };
-                int[] becAmounts = new int[] { chromaticAmts[t] };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromaticAmts[t] * INGOTS) };
-                addBecAndAal(
-                    outputs[t].get(1),
-                    inputs,
-                    nanites,
-                    becCondensates,
-                    becAmounts,
-                    aalFluids,
-                    300 * SECONDS,
-                    euts[t]);
-            } else {
-                CondensateType[] becCondensates = new CondensateType[] { CondensateType.ChromaticGlass,
-                    CondensateType.SpaceTime };
-                int[] becAmounts = new int[] { chromaticAmts[t], spacetimeAmts[t] };
-                addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, 300 * SECONDS, euts[t]);
-            }
+            CondensateType[] becCondensates = new CondensateType[] { CondensateType.ChromaticGlass,
+                CondensateType.SpaceTime };
+            int[] becAmounts = new int[] { chromaticAmts[t], spacetimeAmts[t] };
+            addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, baseDuration, euts[t]);
         }
     }
 
@@ -199,7 +146,7 @@ public class BECMetaMaterialRecipes implements Runnable {
         ItemList[] outputs = { ItemList.MetaMaterial_ElectrograviticValve1, ItemList.MetaMaterial_ElectrograviticValve2,
             ItemList.MetaMaterial_ElectrograviticValve3 };
         int[] chromaticAmts = { 4, 8, 16 };
-        int[] dimShiftedAmts = { 2, 4, 8 };
+        int[] dimShiftedAmts = { 1, 2, 4 };
         long[] euts = { TierEU.RECIPE_UIV, TierEU.RECIPE_UMV, TierEU.RECIPE_UXV };
 
         for (int t = 0; t < 3; t++) {
@@ -213,22 +160,7 @@ public class BECMetaMaterialRecipes implements Runnable {
             CondensateType[] becCondensates = { CondensateType.ChromaticGlass,
                 CondensateType.DimensionallyShiftedSuperfluid };
             int[] becAmounts = { chromaticAmts[t], dimShiftedAmts[t] };
-            if (t == 0) {
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromaticAmts[t] * INGOTS),
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(dimShiftedAmts[t] * INGOTS) };
-                addBecAndAal(
-                    outputs[t].get(1),
-                    inputs,
-                    nanites,
-                    becCondensates,
-                    becAmounts,
-                    aalFluids,
-                    300 * SECONDS,
-                    euts[t]);
-            } else {
-                addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, 300 * SECONDS, euts[t]);
-            }
+            addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, baseDuration, euts[t]);
         }
     }
 
@@ -239,34 +171,14 @@ public class BECMetaMaterialRecipes implements Runnable {
         long[] euts = { TierEU.RECIPE_UEV, TierEU.RECIPE_UIV, TierEU.RECIPE_UMV, TierEU.RECIPE_UXV };
 
         for (int t = 0; t < 4; t++) {
-            ItemStack[] inputs = { ItemList.Gravitational_Lens.get(baseAmounts[t]), ringPart(black4Tier[t], 2),
+            ItemStack[] inputs = { ItemList.Gravitational_Lens.get(1), ringPart(black4Tier[t], 2),
                 GTOreDictUnificator.get(OrePrefixes.ring, gray4Tier[t], 1),
                 GTOreDictUnificator.get(OrePrefixes.screw, white4Tier[t], 2) };
             NaniteTier[] nanites = { nanite(4 + t), nanite(1 + t), nanite(2 + t), nanite(1 + t) };
-
-            if (t == 0) {
-                CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
-                    CondensateType.TranscendentMetal };
-                int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], 1 };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
-                    Materials.Infinity.getMolten(infinity4TierAmts[t] * INGOTS),
-                    Materials.TranscendentMetal.getMolten(INGOTS) };
-                addBecAndAal(
-                    outputs[t].get(1),
-                    inputs,
-                    nanites,
-                    becCondensates,
-                    becAmounts,
-                    aalFluids,
-                    300 * SECONDS,
-                    euts[t]);
-            } else {
-                CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
-                    CondensateType.BoundlessCosmicSolder };
-                int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], solder4TierAmts[t] };
-                addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, 300 * SECONDS, euts[t]);
-            }
+            CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
+                CondensateType.BoundlessCosmicSolder };
+            int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], solder4TierAmts[t] };
+            addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, baseDuration, euts[t]);
         }
     }
 
@@ -274,36 +186,18 @@ public class BECMetaMaterialRecipes implements Runnable {
         // 4-tier UEV/UIV/UMV/UXV 300s. Nanites: T3 T2 T4 T2, +1 per tier
         ItemList[] outputs = { ItemList.MetaMaterial_ResonanceChamber1, ItemList.MetaMaterial_ResonanceChamber2,
             ItemList.MetaMaterial_ResonanceChamber3, ItemList.MetaMaterial_ResonanceChamber4 };
+        ItemList[] emitters = { ItemList.Emitter_UHV, ItemList.Emitter_UEV, ItemList.Emitter_UIV,
+            ItemList.Emitter_UMV };
         long[] euts = { TierEU.RECIPE_UEV, TierEU.RECIPE_UIV, TierEU.RECIPE_UMV, TierEU.RECIPE_UXV };
 
         for (int t = 0; t < 4; t++) {
-            ItemStack[] inputs = { ItemList.Relativistic_Heat_Capacitor.get(baseAmounts[t]), rodPart(black4Tier[t], 2),
-                foilPart(gray4Tier[t], 1), GTOreDictUnificator.get(OrePrefixes.plate, white4Tier[t], 1) };
+            ItemStack[] inputs = { emitters[t].get(2), rodPart(black4Tier[t], 2), foilPart(gray4Tier[t], 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, white4Tier[t], 1) };
             NaniteTier[] nanites = { nanite(4 + t), nanite(1 + t), nanite(2 + t), nanite(1 + t) };
-
-            if (t == 0) {
-                CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
-                    CondensateType.TranscendentMetal };
-                int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], 1 };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
-                    Materials.Infinity.getMolten(infinity4TierAmts[t] * INGOTS),
-                    Materials.TranscendentMetal.getMolten(INGOTS) };
-                addBecAndAal(
-                    outputs[t].get(1),
-                    inputs,
-                    nanites,
-                    becCondensates,
-                    becAmounts,
-                    aalFluids,
-                    300 * SECONDS,
-                    euts[t]);
-            } else {
-                CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
-                    CondensateType.BoundlessCosmicSolder };
-                int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], solder4TierAmts[t] };
-                addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, 300 * SECONDS, euts[t]);
-            }
+            CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
+                CondensateType.BoundlessCosmicSolder };
+            int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], solder4TierAmts[t] };
+            addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, baseDuration, euts[t]);
         }
     }
 
@@ -319,30 +213,10 @@ public class BECMetaMaterialRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, gray4Tier[t], 1),
                 GTOreDictUnificator.get(OrePrefixes.bolt, white4Tier[t], 16) };
             NaniteTier[] nanites = { nanite(4 + t), nanite(1 + t), nanite(2 + t), nanite(1 + t) };
-
-            if (t == 0) {
-                CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
-                    CondensateType.TranscendentMetal };
-                int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], 1 };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
-                    Materials.Infinity.getMolten(infinity4TierAmts[t] * INGOTS),
-                    Materials.TranscendentMetal.getMolten(INGOTS) };
-                addBecAndAal(
-                    outputs[t].get(1),
-                    inputs,
-                    nanites,
-                    becCondensates,
-                    becAmounts,
-                    aalFluids,
-                    300 * SECONDS,
-                    euts[t]);
-            } else {
-                CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
-                    CondensateType.BoundlessCosmicSolder };
-                int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], solder4TierAmts[t] };
-                addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, 300 * SECONDS, euts[t]);
-            }
+            CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
+                CondensateType.BoundlessCosmicSolder };
+            int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], solder4TierAmts[t] };
+            addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, baseDuration, euts[t]);
         }
     }
 
@@ -362,61 +236,11 @@ public class BECMetaMaterialRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.ring, gray4Tier[t], 1),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, white4Tier[t], 2) };
             NaniteTier[] nanites = { nanite(4 + t), nanite(1 + t), nanite(2 + t), nanite(1 + t) };
-
-            if (t == 0) {
-                CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
-                    CondensateType.TranscendentMetal };
-                int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], 1 };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
-                    Materials.Infinity.getMolten(infinity4TierAmts[t] * INGOTS),
-                    Materials.TranscendentMetal.getMolten(INGOTS) };
-                addBecAndAal(
-                    outputs[t].get(1),
-                    inputs,
-                    nanites,
-                    becCondensates,
-                    becAmounts,
-                    aalFluids,
-                    300 * SECONDS,
-                    euts[t]);
-            } else {
-                CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
-                    CondensateType.BoundlessCosmicSolder };
-                int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], solder4TierAmts[t] };
-                addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, 300 * SECONDS, euts[t]);
-            }
+            CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
+                CondensateType.BoundlessCosmicSolder };
+            int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], solder4TierAmts[t] };
+            addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, baseDuration, euts[t]);
         }
-    }
-
-    /// Builds and registers both the BEC Assembler variant (using entangled condensates + nanite-tier metadata) and
-    /// the AAL variant (3× ingredients).
-    private void addBecAndAal(ItemStack output, ItemStack[] inputs, NaniteTier[] nanites, CondensateType[] condensates,
-        int[] condensateIngots, FluidStack[] fluids, int duration, long eut) {
-        addBec(output, inputs, nanites, condensates, condensateIngots, duration, eut);
-
-        ItemStack[] aalInputs = new ItemStack[inputs.length];
-        for (int i = 0; i < inputs.length; i++) {
-            aalInputs[i] = inputs[i].copy();
-            aalInputs[i].stackSize *= 3;
-        }
-        FluidStack[] aalFluids = new FluidStack[fluids.length];
-        for (int i = 0; i < fluids.length; i++) {
-            aalFluids[i] = fluids[i].copy();
-            aalFluids[i].amount *= 3;
-        }
-        ItemStack researchItem = inputs[0].copy();
-        researchItem.stackSize = 1;
-
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, researchItem)
-            .metadata(SCANNING, new Scanning(2 * SECONDS, eut))
-            .itemInputs(aalInputs)
-            .fluidInputs(aalFluids)
-            .itemOutputs(output)
-            .duration(duration / 10)
-            .eut(eut)
-            .addTo(AssemblyLine);
     }
 
     /// Builds and registers both the BEC Assembler variant (using entangled condensates + nanite-tier metadata)
@@ -433,7 +257,8 @@ public class BECMetaMaterialRecipes implements Runnable {
         }
         FluidStack[] entangled = new FluidStack[condensates.length];
         for (int i = 0; i < condensates.length; i++) {
-            entangled[i] = condensates[i].getEntangled(condensateIngots[i] * INGOTS);
+            CondensateType condensateType = condensates[i];
+            entangled[i] = condensateType.getEntangled(condensateIngots[i] * condensateType.getUnit());
         }
 
         GTValues.RA.stdBuilder()

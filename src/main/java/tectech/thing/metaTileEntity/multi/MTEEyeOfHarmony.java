@@ -16,12 +16,8 @@ import static java.lang.Math.exp;
 import static kekztech.util.Util.toStandardForm;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
-import static net.minecraft.util.EnumChatFormatting.GOLD;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
-import static net.minecraft.util.EnumChatFormatting.STRIKETHROUGH;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.math.BigInteger;
@@ -40,9 +36,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -52,6 +48,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -66,7 +63,9 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -81,6 +80,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
@@ -98,6 +99,7 @@ import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 
 @SuppressWarnings("SpellCheckingInspection")
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstructable {
 
     public static final boolean EOH_DEBUG_MODE = false;
@@ -749,7 +751,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         .addElement('D', ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10))
         .addElement(
             'H',
-            buildHatchAdder(MTEEyeOfHarmony.class).atLeast(InputHatch, OutputHatch, InputBus, OutputBus)
+            buildHatchAdder(MTEEyeOfHarmony.class).atLeast(InputBus, InputHatch, InputHatch, OutputBus, OutputHatch)
                 .casingIndex(Casings.InfiniteSpacetimeEnergyBoundaryCasing.getTextureId())
                 .hint(1)
                 .buildAndChain(Casings.InfiniteSpacetimeEnergyBoundaryCasing.asElement()))
@@ -877,11 +879,10 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.crib_not_allowed"));
         }
 
-        // Check if there are output buses
-        checkHasOutputBus(errors);
-
-        // Check if there is 1 output hatch
-        checkOneOutputHatch(errors);
+        // Make sure there are no energy hatches.
+        if (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
+        }
 
         // Check there is 1 input bus, and it is not a stocking input bus.
         {
@@ -892,13 +893,17 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             }
         }
 
-        // Make sure there are no energy hatches.
-        if (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
+        if (mInputHatches.size() != 2) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, InputHatch, mInputHatches.size(), 2));
         }
-
-        // Make sure there are 2 input hatches.
-        checkHatchExact(errors, InputHatch, 2);
+        for (MTEHatchInput inputHatch : mInputHatches) {
+            if (inputHatch instanceof MTEHatchInputME) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.stocking_input_hatch_not_allowed"));
+                break;
+            }
+        }
+        checkOneOutputBus(errors);
+        checkOneOutputHatch(errors);
     }
 
     private boolean animationsEnabled = true;
@@ -907,8 +912,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         animationsEnabled = !animationsEnabled;
-        aPlayer.addChatMessage(
-            new ChatComponentText("Animations are now " + (animationsEnabled ? "enabled" : "disabled") + "."));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.animations." + (animationsEnabled ? "enabled" : "disabled"));
     }
 
     @Override
@@ -933,11 +937,10 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                     astralArrayAmount = 0;
                 }
                 if (originalAmount - astralArrayAmount > 0) {
-                    GTUtility.sendChatToPlayer(
+                    GTUtility.sendChatTrans(
                         aPlayer,
-                        StatCollector.translateToLocalFormatted(
-                            "eoh.rightclick.wirecutter.2",
-                            formatNumber(originalAmount - astralArrayAmount)));
+                        "eoh.rightclick.wirecutter.2",
+                        new ChatComponentNumber(originalAmount - astralArrayAmount));
                 }
             }
         }
@@ -961,152 +964,27 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Spacetime Manipulator, EOH")
-            .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
-            .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
-            .addInfo("to be handled with conventional means. All EU requirements are handled directly by")
-            .addInfo("your wireless EU network")
-            .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("This multiblock will constantly consume hydrogen and helium when it is not running a")
-            .addInfo("recipe once per second. It will store this internally, you can see the totals by")
-            .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + 9 + GRAY + " tiers")
-            .addInfo("each. They are as follows and have the associated effects on the multi:")
-            .addInfo(BLUE + "Spacetime Compression Field Generator:")
-            .addInfo("- The tier of this block determines what recipes can be run. If the multiblocks")
-            .addInfo("  spacetime compression field block exceeds the requirements of the recipe it")
-            .addInfo(
-                "  will decrease the processing time by " + RED
-                    + formatNumber(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier over the requirement (multiplicative)")
-            .addInfo(BLUE + "Time Dilation Field Generator:")
-            .addInfo(
-                "- Decreases the time required for a recipe by " + RED
-                    + "50%"
-                    + GRAY
-                    + " per tier of block (multiplicative)")
-            .addInfo(
-                "  Decreases the probability of a recipe succeeding by " + RED
-                    + formatNumber(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive)")
-            .addInfo(BLUE + "Stabilisation Field Generator:")
-            .addInfo(
-                "- Increases the probability of a recipe succeeding by " + RED
-                    + formatNumber(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive)")
-            .addInfo(
-                "  Decreases the yield of a recipe by " + RED
-                    + formatNumber(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive). ")
-            .addInfo("  > Low tier stabilisation field generators have a power output penalty")
-            .addInfo(
-                "     The power output penalty for using Crude Stabilisation Field Generators is " + RED
-                    + formatNumber(
-                        STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * TOTAL_CASING_TIERS_WITH_POWER_PENALTY
-                            * 100)
-                    + "%")
-            .addInfo(
-                "     This penalty decreases by " + RED
-                    + formatNumber(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
-                    + "%"
-                    + GRAY
-                    + " per tier (additive)")
-            .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance")
-            .addInfo("All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
-            .addInfo(GREEN + "Overflow ratio = (Stored fluid / Recipe requirement) - 1")
-            .addInfo(GREEN + "Adjustment value = 1 - exp(-(30 * Overflow ratio)^2)")
-            .addInfo("The Adjustment value is then subtracted from the total yield and recipe chance")
-            .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
-            .addInfo("at 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the")
-            .addInfo("yield. Failure fluid is exempt")
-            .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("This multiblock can only output to ME output buses/hatches")
-            .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus")
-            .addInfo("E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected")
-            .addInfo("All outputs are equal. All item and fluid output chances & amounts per recipe are unaffected")
-            .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo(
-                "If a recipe fails the EOH will output " + GREEN
-                    + "Success chance * "
-                    + formatNumber(MOLTEN_SPACETIME_PER_FAILURE_TIER)
-                    + " * ("
-                    + SPACETIME_FAILURE_BASE
-                    + ")^(Recipe tier)"
-                    + GRAY
-                    + "L of molten")
-            .addInfo(
-                Materials.SpaceTime.getLocalizedNameForItem("%material")
-                    + " instead of fluid/item outputs and output as much EU as a successful recipe")
-            .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo(
-                "This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus")
-            .addInfo(
-                "They are stored internally and can be retrieved via right-clicking the controller with a wire cutter")
-            .addInfo(
-                "The maximum amount of stored Astral Arrays is " + formatNumber(ASTRAL_ARRAY_LIMIT)
-                    + ". Parallel amount is calculated via these formulas:")
-            .addInfo(
-                GREEN + "Parallel exponent = floor(log("
-                    + formatNumber(PARALLEL_FOR_FIRST_ASTRAL_ARRAY)
-                    + " * Astral Array amount) / log("
-                    + formatNumber(CONSTANT_FOR_LOG)
-                    + "))")
-            .addInfo(GREEN + "Parallel = 2^(Parallel exponent)")
-            .addInfo("If the EOH is running parallel recipes, the power calculation changes")
-            .addInfo("The power needed for parallel processing is calculated as follows:")
-            .addInfo(
-                GREEN + "total EU = ((EU output - EU input * "
-                    + formatNumber(PARALLEL_MULTIPLIER_CONSTANT)
-                    + ") / "
-                    + formatNumber(POWER_DIVISION_CONSTANT)
-                    + ") * "
-                    + formatNumber(POWER_INCREASE_CONSTANT)
-                    + "^(Parallel exponent)")
-            .addInfo(
-                "Furthermore, if parallel recipes are run, the recipes consume "
-                    + Materials.RawStarMatter.getLocalizedNameForItem("%material"))
-            .addInfo("instead of helium and hydrogen. Overflow penalties still apply")
-            .addInfo(
-                "The required amount of fluid to start a recipe is " + GREEN + "12.4 / 10^6 * Helium amount * Parallel")
-            .addInfo("The success or failure of each parallel is determined independently")
-            .addSeparator(EnumChatFormatting.GOLD, 87)
-            .addInfo("Animations can be disabled by using a screwdriver on the multiblock")
-            .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.spacetime_manipulator"))
+            .addMarkdown(new ResourceLocation("gregtech", "eye-of-harmony"))
             .beginStructureBlock(33, 33, 33, false)
-            .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Reinforced Spatial Structure Casing.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "534" + EnumChatFormatting.GRAY + " Reinforced Temporal Structure Casing.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "31"
-                    + EnumChatFormatting.GRAY
-                    + " Infinite SpaceTime Energy Boundary Casing.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "168" + EnumChatFormatting.GRAY + " Time Dilation Field Generator.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Stabilisation Field Generator.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "138" + EnumChatFormatting.GRAY + " Spacetime Compression Field Generator.")
-            .addStructureInfoSeparator()
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 2 + EnumChatFormatting.GRAY + " input hatches.")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output hatch.")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input bus.")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
-            .addSubChannelUsage(GTStructureChannels.EOH_STABILISATION)
-            .addSubChannelUsage(GTStructureChannels.EOH_DILATION)
-            .addSubChannelUsage(GTStructureChannels.EOH_COMPRESSION)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_17th_layer"))
+            .addCasing("896", new ItemStack(TTCasingsContainer.sBlockCasingsBA0, 1, 11).getDisplayName(), false)
+            .addCasing("534", new ItemStack(TTCasingsContainer.sBlockCasingsBA0, 1, 10).getDisplayName(), false)
+            .addCasing("168", TTCasingsContainer.TimeAccelerationFieldGenerator.getLocalizedName(), true)
+            .addCasing("138", TTCasingsContainer.SpacetimeCompressionFieldGenerators.getLocalizedName(), true)
+            .addCasing("48", TTCasingsContainer.StabilisationFieldGenerators.getLocalizedName(), true)
+            .addCasing("31", Casings.InfiniteSpacetimeEnergyBoundaryCasing.getLocalizedName(), false)
+            .addInputBus("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.boundary-no-stocking-bus"), 1)
+            .addInputHatch("2", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.boundary-no-stocking-hatch"), 1)
+            .addOutputBus("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.any-boundary-casing"), 1)
+            .addOutputHatch("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.any-boundary-casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.EOH_STABILISATION)
+            .addSubChannel(GTStructureChannels.EOH_DILATION)
+            .addSubChannel(GTStructureChannels.EOH_COMPRESSION)
             .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTAuthors.AuthorColen);
+        // spotless:on
         return tt;
     }
 
@@ -1163,11 +1041,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
     private EyeOfHarmonyRecipe currentRecipe;
 
-    // Counter for lag prevention.
-    private long lagPreventer = 0;
-
-    // Check for recipe every recipeCheckInterval ticks.
-    private static final long RECIPE_CHECK_INTERVAL = 3 * 20;
+    private boolean shouldDrainHatches = true;
+    private boolean justDrainedHatches = false;
     private long currentCircuitMultiplier = 0;
     private long astralArrayAmount = 0;
     private long parallelAmount = 1;
@@ -1178,6 +1053,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     private FluidStackLong starMatter;
 
     @Override
+    public void scheduleRecipeCheck(RecipeCheckReason reason) {
+        super.scheduleRecipeCheck(reason);
+        // Input hatch sends a recipe check schedule
+        // we will reschedule again when the fluids are drained from the hatches
+        shouldDrainHatches = true;
+    }
+
+    @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
         ItemStack controllerStack = getControllerSlot();
@@ -1185,20 +1068,20 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             return SimpleCheckRecipeResult.ofFailure("no_planet_block");
         }
 
-        lagPreventer++;
-        if (lagPreventer < RECIPE_CHECK_INTERVAL) {
-            lagPreventer = 0;
-            // No item in multi gui slot.
-
-            currentRecipe = TecTech.eyeOfHarmonyRecipeStorage.recipeLookUp(controllerStack);
-            if (currentRecipe == null) {
-                return CheckRecipeResultRegistry.NO_RECIPE;
-            }
-            CheckRecipeResult result = processRecipe(currentRecipe);
-            if (!result.wasSuccessful()) currentRecipe = null;
-            return result;
+        // Delay recipe-check until hatches are drained
+        if (!justDrainedHatches) {
+            return checkRecipeResult;
         }
-        return CheckRecipeResultRegistry.NO_RECIPE;
+
+        justDrainedHatches = false;
+
+        currentRecipe = TecTech.eyeOfHarmonyRecipeStorage.recipeLookUp(controllerStack);
+        if (currentRecipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        CheckRecipeResult result = processRecipe(currentRecipe);
+        if (!result.wasSuccessful()) currentRecipe = null;
+        return result;
     }
 
     private long getHydrogenStored() {
@@ -1499,6 +1382,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
         // Do other stuff from TT superclasses. E.g. outputting fluids.
         super.outputAfterRecipe_EM();
+
+        // Schedule drain after output
+        shouldDrainHatches = true;
     }
 
     @Override
@@ -1511,8 +1397,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         }
 
         if (!recipeRunning && mMachine) {
-            if ((aTick % TICKS_BETWEEN_HATCH_DRAIN) == 0) {
+            if ((aTick % TICKS_BETWEEN_HATCH_DRAIN) == 0 && shouldDrainHatches) {
                 drainFluidFromHatchesAndStoreInternally();
+                scheduleRecipeCheckImmediate();
+                shouldDrainHatches = false;
+                justDrainedHatches = true;
             }
         }
     }
@@ -1542,98 +1431,68 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     @Override
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        str.add(
-            GOLD.toString() + STRIKETHROUGH
-                + "-------------"
-                + RESET
-                + GOLD
-                + " "
-                + StatCollector.translateToLocal("tt.infodata.eoh.control_block_statistics")
-                + " "
-                + STRIKETHROUGH
-                + "-------------");
+        str.add("tt.infodata.eoh.control_block_statistics.header");
         if (spacetimeCompressionFieldMetadata < 0) {
-            str.add(StatCollector.translateToLocal("tt.infodata.eoh.spacetime_compression.grade.none"));
+            str.add("tt.infodata.eoh.spacetime_compression.grade.none");
         } else {
             str.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "tt.infodata.eoh.spacetime_compression.grade",
                     CommonValues.getLocalizedEohTierFancyNames(spacetimeCompressionFieldMetadata) + RESET,
                     "" + YELLOW + (spacetimeCompressionFieldMetadata + 1) + RESET));
         }
         if (timeAccelerationFieldMetadata < 0) {
-            str.add(StatCollector.translateToLocal("tt.infodata.eoh.time_dilation.grade.none"));
+            str.add("tt.infodata.eoh.time_dilation.grade.none");
         } else {
             str.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "tt.infodata.eoh.time_dilation.grade",
                     CommonValues.getLocalizedEohTierFancyNames(timeAccelerationFieldMetadata) + RESET,
                     "" + YELLOW + (timeAccelerationFieldMetadata + 1) + RESET));
         }
         if (stabilisationFieldMetadata < 0) {
-            str.add(StatCollector.translateToLocal("tt.infodata.eoh.stabilisation.grade.none"));
+            str.add("tt.infodata.eoh.stabilisation.grade.none");
         } else {
             str.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "tt.infodata.eoh.stabilisation.grade",
                     CommonValues.getLocalizedEohTierFancyNames(stabilisationFieldMetadata) + RESET,
                     "" + YELLOW + (stabilisationFieldMetadata + 1) + RESET));
         }
-        str.add(
-            GOLD.toString() + STRIKETHROUGH
-                + "-----------------"
-                + RESET
-                + GOLD
-                + " "
-                + StatCollector.translateToLocal("tt.infodata.eoh.internal_storage")
-                + " "
-                + STRIKETHROUGH
-                + "----------------");
+        str.add("tt.infodata.eoh.internal_storage.header");
         validFluidMap.forEach(
             (key, value) -> str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumber(value)));
         str.add(
-            BLUE + StatCollector.translateToLocal(
-                "tt.infodata.eoh.astral_array_fabricators") + RESET + " : " + RED + formatNumber(astralArrayAmount));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.eoh.astral_array_fabricators.count", formatNumber(astralArrayAmount)));
         if (recipeRunning) {
+            str.add("tt.infodata.eoh.other_stats.header");
             str.add(
-                GOLD.toString() + STRIKETHROUGH
-                    + "-----------------"
-                    + RESET
-                    + GOLD
-                    + " "
-                    + StatCollector.translateToLocal("tt.infodata.eoh.other_stats")
-                    + " "
-                    + STRIKETHROUGH
-                    + "-----------------");
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.success_chance", RED + formatNumber(100 * successChance) + RESET + "%"));
             str.add(
-                StatCollector.translateToLocalFormatted(
-                    "tt.infodata.eoh.success_chance",
-                    RED + formatNumber(100 * successChance) + RESET + "%"));
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.recipe_yield", RED + formatNumber(100 * yield) + RESET + "%"));
             str.add(
-                StatCollector.translateToLocalFormatted(
-                    "tt.infodata.eoh.recipe_yield",
-                    RED + formatNumber(100 * yield) + RESET + "%"));
-            str.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "tt.infodata.eoh.effective_astral_array_fabricators",
                     RED + formatNumber(Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT))));
             str.add(
-                StatCollector
-                    .translateToLocalFormatted("tt.infodata.eoh.total_parallel", RED + formatNumber(parallelAmount)));
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.total_parallel", RED + formatNumber(parallelAmount)));
             str.add(
-                StatCollector.translateToLocalFormatted(
-                    "tt.infodata.eoh.eu_output",
-                    RED + toStandardForm(outputEU_BigInt) + RESET));
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.eu_output", RED + toStandardForm(outputEU_BigInt) + RESET));
             str.add(
-                StatCollector
-                    .translateToLocalFormatted("tt.infodata.eoh.eu_input", RED + toStandardForm(usedEU.abs()) + RESET));
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.eu_input", RED + toStandardForm(usedEU.abs()) + RESET));
             int currentMaxProgresstime = Math.max(maxProgresstime(), 1);
             if (starMatter != null && starMatter.fluidStack != null) {
                 FluidStackLong starMatterOutput = new FluidStackLong(
                     starMatter.fluidStack,
                     (long) (starMatter.amount * yield * successChance * parallelAmount));
                 str.add(
-                    StatCollector.translateToLocalFormatted(
+                    IGregTechDeviceInformation.encode(
                         "tt.infodata.eoh.avg_output",
                         starMatterOutput.fluidStack.getLocalizedName(),
                         RED + formatNumber(starMatterOutput.amount) + RESET,
@@ -1643,7 +1502,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                     Materials.RawStarMatter.getFluid(0),
                     (long) (stellarPlasma.amount * yield * successChance * parallelAmount));
                 str.add(
-                    StatCollector.translateToLocalFormatted(
+                    IGregTechDeviceInformation.encode(
                         "tt.infodata.eoh.avg_output",
                         stellarPlasmaOutput.fluidStack.getLocalizedName(),
                         RED + formatNumber(stellarPlasmaOutput.amount) + RESET,
@@ -1653,11 +1512,10 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                 .divide(BigInteger.valueOf(currentMaxProgresstime));
 
             str.add(
-                StatCollector.translateToLocalFormatted(
-                    "tt.infodata.eoh.estimated_eu",
-                    RED + toStandardForm(euPerTick) + RESET));
+                IGregTechDeviceInformation
+                    .encode("tt.infodata.eoh.estimated_eu", RED + toStandardForm(euPerTick) + RESET));
         }
-        str.add(GOLD.toString() + STRIKETHROUGH + "-----------------------------------------------------");
+        str.add("tt.infodata.eoh.divider");
         return str.toArray(new String[0]);
     }
 

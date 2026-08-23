@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,8 +21,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTSplit;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.tileentities.machines.IHatchWatcher;
 
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
@@ -39,6 +40,12 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
 
     private ItemStack ae2CraftingIcon;
 
+    /**
+     * Controllers watching this hatch for new ingredients (see {@link ISmartInputHatch}). When this hatch's contents
+     * change we notify them so they can run an immediate recipe check instead of waiting for their periodic poll.
+     */
+    protected final List<IHatchWatcher> watchers = new ArrayList<>();
+
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
         ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
@@ -55,6 +62,43 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
 
     public static int getSlots(int aTier) {
         return (aTier + 1) * (aTier + 1);
+    }
+
+    /**
+     * Registers a controller to be notified when this hatch's contents/config change. Hatches that want to push an
+     * immediate recipe check implement {@link ISmartInputHatch}, and the controller registers itself here when the
+     * hatch is added to the structure. A hatch belongs to a multiblock exactly once, so this does not guard against
+     * duplicate watchers - a duplicate registration would indicate a structure bug.
+     */
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
+    }
+
+    /** Asks every registered controller to run a recipe check on its next tick. */
+    protected void notifyWatchers() {
+        for (int i = 0; i < watchers.size(); i++) {
+            watchers.get(i)
+                .scheduleRecipeCheckImmediate();
+        }
+    }
+
+    /**
+     * Notifies watchers when this hatch's inventory or tank changed this tick. Relies on
+     * {@link IGregTechTileEntity#hasInventoryBeenModified()}, which every relevant insertion path sets (item slots via
+     * {@code setInventorySlotContents}/{@code decrStackSize}, the GUI/AE handler via
+     * {@link MetaTileEntity#onContentsChanged(int)}, and fluids via {@code fill}). Consuming ingredients also sets the
+     * flag, but that only ever costs a single redundant idle check at the tail of a run. Input hatches/busses should
+     * call this from {@code onPostTick}.
+     */
+    protected void detectInventoryChange() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null && base.hasInventoryBeenModified()) {
+            notifyWatchers();
+        }
     }
 
     private int getOffsetTier() {
@@ -245,14 +289,15 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
             Collections.addAll(additionalTooltips, suffixTooltip);
         }
         additionalTooltips.add(
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 "gt.tileentity.throughput",
                 EnumChatFormatting.YELLOW + formatNumber(amp * GTValues.V[tier]) + EnumChatFormatting.RESET + " EU/t"));
         additionalTooltips.add(
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",
                 TooltipHelper.voltageText(GTValues.V[tier])));
-        additionalTooltips.add(GTUtility.translate("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
+        additionalTooltips
+            .add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
         if (author != null) {
             additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
         }

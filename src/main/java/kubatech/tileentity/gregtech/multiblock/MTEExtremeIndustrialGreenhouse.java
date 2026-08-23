@@ -59,6 +59,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -68,6 +69,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -86,6 +88,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -113,6 +116,7 @@ import kubatech.gui.modularui2.MTEExtremeIndustrialGreenhouseGui;
 import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
 
 @SuppressWarnings("unused")
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTEExtremeIndustrialGreenhouse>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -328,15 +332,15 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         }
 
         for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
-            if (this.glassTier < hatchEnergy.mTier) {
+            if (this.glassTier < hatchEnergy.getTierForStructure()) {
                 errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
                 break;
             }
         }
 
-        checkOneMaintenanceHatch(errors);
-        checkHasEnergyHatch(errors);
         checkCasingMin(errors, mCasing, 70);
+        checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasOutputBus(errors);
 
@@ -379,43 +383,40 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
-        tt.addMachineType("Crop Farm, EIG")
-            .addInfo("Grow your crops like a chad!")
-            .addInfo("Use screwdriver to enable/change/disable setup mode")
-            .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
-            .addInfo("Use wire cutters to give incoming IC2 seeds 0 humidity")
-            .addInfo("Uses " + EIG_BALANCE_WATER_USAGE_PER_SEED + "L of water per seed per operation")
-            .addInfo(
-                "Uses 1L of " + new FluidStack(WEEDEX_FLUID, 1).getLocalizedName()
-                    + " per operation per seed if it contains more than "
-                    + EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT
-                    + " seeds")
-            .addInfo("Otherwise, around 1% of seeds will be voided each operation")
-            .addInfo("You can insert fertilizer each operation to get more drops (max + " + fertilizerBoostMax + ")")
-            .addGlassEnergyLimitInfo()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Setup Mode:")
-            .addInfo("Does not take power")
-            .addInfo("There are two modes: input / output")
-            .addInfo("Input mode: machine will take seeds from input bus and plant them")
-            .addInfo("[IC2] You need to also input block that is required under the crop")
-            .addInfo("Output mode: machine will take planted seeds and output them");
+        tt.addMachineType(
+            StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.machine_type"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "extreme-industrial-greenhouse"),
+                ImmutableMap.of("weedexName", new FluidStack(WEEDEX_FLUID, 1).getLocalizedName()));
         EIGModes.addTooltipInfo(tt);
-        tt.beginStructureBlock(7, 7, 9, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Sterile Farm Casing", 70, false)
-            .addStructureInfo("Tiered Glass")
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addStructureInfo("The dirt is from RandomThings, must be tilled")
-            .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
-            .addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted")
-            .addMaintenanceHatch("Any Casing", 1)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+        tt.addGlassEnergyLimitInfo()
+            .beginStructureBlock(7, 7, 9, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("102", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing(
+                "70-86",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.sterile_farm_casing"),
+                false)
+            .addCasing(
+                "33",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.frame_box"),
+                false)
+            .addCasing(
+                "21",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt"),
+                false)
+            .addCasing(
+                "3",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp"),
+                false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.footer"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addAuthors(GTAuthors.AuthorKuba)
             .addStructureAuthors("HydroCN")
             .toolTipFinisher();
@@ -705,6 +706,11 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         boolean isOldStructure) {
         CropRenderer crop = new CropRenderer(world, x, y, z, facing, age, isOldStructure);
         Minecraft.getMinecraft().effectRenderer.addEffect(crop);
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override
@@ -1061,37 +1067,27 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(
-            Arrays
-                .asList(
-                    StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
-                        + EnumChatFormatting.GREEN
-                        + (this.setupPhase == 0 ? this.mode.getName()
-                            : (this.setupPhase == 1
-                                ? StatCollector.translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.input")
-                                : StatCollector
-                                    .translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.output")))
-                        + EnumChatFormatting.RESET,
-                    StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.water", waterUsage),
-                    StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.weedex", weedEXUsage),
-                    StatCollector.translateToLocal("kubatech.infodata.eig.max_slots") + EnumChatFormatting.GREEN
-                        + this.maxSeedTypes
-                        + EnumChatFormatting.RESET,
-                    StatCollector.translateToLocal("kubatech.infodata.eig.used_slots")
-                        + ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
-                        + this.buckets.size()
-                        + EnumChatFormatting.RESET));
+            Arrays.asList(
+                this.setupPhase == 0
+                    ? IGregTechDeviceInformation.encode("kubatech.infodata.running_mode.fmt", this.mode.getName())
+                    : (this.setupPhase == 1 ? "kubatech.infodata.eig.running_mode.setup_mode.input"
+                        : "kubatech.infodata.eig.running_mode.setup_mode.output"),
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.uses.water", waterUsage),
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.uses.weedex", weedEXUsage),
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.max_slots", this.maxSeedTypes),
+                IGregTechDeviceInformation.encode(
+                    "kubatech.infodata.eig.used_slots",
+                    ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
+                        + Integer.toString(this.buckets.size())
+                        + EnumChatFormatting.RESET)));
         for (EIGBucket bucket : buckets) {
             info.add(bucket.getInfoData());
         }
         if (this.buckets.size() > this.maxSeedTypes) {
-            info.add(
-                EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("kubatech.infodata.eig.too_many_types")
-                    + EnumChatFormatting.RESET);
+            info.add("kubatech.infodata.eig.too_many_types");
         }
         if (this.getTotalSeedCount() > this.maxSeedCount) {
-            info.add(
-                EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("kubatech.infodata.eig.too_many_seeds")
-                    + EnumChatFormatting.RESET);
+            info.add("kubatech.infodata.eig.too_many_seeds");
         }
         info.addAll(Arrays.asList(super.getInfoData()));
         return info.toArray(new String[0]);

@@ -324,10 +324,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
         if (getItemStack() == null) {
             return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
-                EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty")
-                    + EnumChatFormatting.RESET,
+                "GT5U.infodata.digital_chest.stored_items", "GT5U.infodata.digital_chest.stored_items.empty",
                 EnumChatFormatting.GREEN + "0"
                     + EnumChatFormatting.RESET
                     + " "
@@ -336,7 +333,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     + EnumChatFormatting.RESET };
         }
         return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
+            "GT5U.infodata.digital_chest.stored_items",
             EnumChatFormatting.GOLD + getItemStack().getDisplayName() + EnumChatFormatting.RESET,
             EnumChatFormatting.GREEN + formatNumber(getItemCount())
                 + EnumChatFormatting.RESET

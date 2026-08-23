@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 
+import gregtech.GTLoggers;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreMaterial;
@@ -31,7 +32,6 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTInflectionManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.config.Gregtech;
@@ -1694,6 +1694,7 @@ public class OrePrefixes {
         .build();
 
     public static final OrePrefixes frameGt = new OrePrefixBuilder("frameGt").withDefaultLocalName("Frame Boxes")
+        .withSuffix(" Frame Box")
         .unifiable()
         .materialBased()
         .skipActiveUnification()
@@ -3060,14 +3061,12 @@ public class OrePrefixes {
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
             if (D2) {
-                GTLog.ore.println(
-                    "Processing '" + aOreDictName
-                        + "' with the Prefix '"
-                        + name
-                        + "' and the Material '"
-                        + aMaterial.mName
-                        + "' at "
-                        + GTUtility.getClassName(tRegistrator));
+                GTLoggers.GT_ORE_DICT_LOGGER.info(
+                    "Processing '{}' with the Prefix '{}' and the Material '{}' at {}",
+                    aOreDictName,
+                    name,
+                    aMaterial.mName,
+                    GTUtility.getClassName(tRegistrator));
             }
             tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
         }

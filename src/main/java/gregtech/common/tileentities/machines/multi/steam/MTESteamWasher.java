@@ -69,7 +69,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -182,6 +181,16 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
     }
 
     @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_GLOW;
+    }
+
+    @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_ACTIVE_GLOW;
+    }
+
+    @Override
     public IStructureDefinition<MTESteamWasher> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
 
@@ -286,7 +295,7 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
     @Override
     public RecipeMap<?> getRecipeMap() {
         if (machineMode == MACHINEMODE_SIMPLEWASH) {
-            return GTPPRecipeMaps.simpleWasherRecipes;
+            return RecipeMaps.simpleWasherRecipes;
         }
         return RecipeMaps.oreWasherRecipes;
     }
@@ -294,7 +303,7 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
     @NotNull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(GTPPRecipeMaps.simpleWasherRecipes, RecipeMaps.oreWasherRecipes);
+        return Arrays.asList(RecipeMaps.simpleWasherRecipes, RecipeMaps.oreWasherRecipes);
     }
 
     @Override
@@ -338,31 +347,26 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .addInfo("Mode can be switched by using a screwdriver on the controller")
             .beginStructureBlock(9, 6, 5, false)
-            .addController("Front center of the 3x3x3 section")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any Casing")
+            .addController("Front center of the small cube, 2nd layer")
+            .addSteamHatch("1", "Any normal casing", 1)
+            .addSteamInputBus("1+", "Any normal casing", 1)
+            .addInputHatch("1+", "Any normal casing", 1)
+            .addSteamOutputBus("1+", "Any normal casing", 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "55-59x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "24x" + EnumChatFormatting.GRAY + " Any Tiered Glass")
-            .addStructureInfo(EnumChatFormatting.GOLD + "12x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
+            .addCasing("55-59", "Bronze Plated Bricks", false)
+            .addCasing("24", "Any Tiered Glass", false)
+            .addCasing("12", "Bronze Pipe Casing", false)
+            .addCasing("8", "Bronze Gear Box Casing", false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "55-59x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "24x" + EnumChatFormatting.GRAY + " Any Tiered Glass")
-            .addStructureInfo(EnumChatFormatting.GOLD + "12x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
+            .addCasing("55-59", "Solid Steel Machine Casing", false)
+            .addCasing("24", "Any Tiered Glass", false)
+            .addCasing("12", "Steel Pipe Casing", false)
+            .addCasing("8", "Steel Gear Box Casing", false)
             .addStructureInfo("")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
         return tt;
     }
@@ -380,21 +384,19 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
                 + EnumChatFormatting.WHITE
                 + tag.getString("mode")
                 + EnumChatFormatting.RESET);
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
                 + getSteamTierTextForWaila(tag)
                 + EnumChatFormatting.RESET);
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("parallel")
@@ -402,9 +404,8 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
         tag.setInteger("parallel", getTrueParallel());
         tag.setString("mode", getMachineModeName());

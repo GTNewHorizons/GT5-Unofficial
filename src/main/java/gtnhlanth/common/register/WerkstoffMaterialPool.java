@@ -11,6 +11,7 @@ import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 
 public class WerkstoffMaterialPool implements Runnable {
 
@@ -1823,7 +1824,8 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.Stats().setBlastFurnace(true)
             .setCentrifuge(true)
             .setMass(180)
-            .setSpeedOverride(3),
+            .setSpeedOverride(3)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()

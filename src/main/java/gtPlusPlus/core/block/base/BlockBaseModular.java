@@ -10,12 +10,14 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -56,7 +58,7 @@ public class BlockBaseModular extends BasicBlock {
             net.minecraft.block.material.Material.iron,
             blockType,
             colour,
-            Math.min(Math.max(material.vTier, 1), 6));
+            Math.min(Math.max(material.tier, 1), 6));
         this.material = material;
         registerComponent();
         BLOCK_CACHE.put(material.getUnlocalizedName() + "." + blockType.name(), this);
@@ -81,8 +83,20 @@ public class BlockBaseModular extends BasicBlock {
                 .registerOre("block" + unifyMaterialName(materialName), new ItemStack(this));
             case FRAME, ORE -> GTOreDictUnificator
                 .registerOre("frameGt" + unifyMaterialName(materialName), new ItemStack(this));
-
         }
+        if (blockType == BlockTypes.FRAME) GregTechAPI.registerMachineBlock(this, -1);
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        if (blockType == BlockTypes.FRAME) GregTechAPI.causeMachineUpdate(world, x, y, z);
+        super.breakBlock(world, x, y, z, block, meta);
+    }
+
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        if (blockType == BlockTypes.FRAME) GregTechAPI.causeMachineUpdate(world, x, y, z);
+        super.onBlockAdded(world, x, y, z);
     }
 
     public static String unifyMaterialName(String rawMaterName) {
@@ -169,7 +183,7 @@ public class BlockBaseModular extends BasicBlock {
         }
 
         String metType = this.material.getTextureSet() != null ? this.material.getTextureSet().mSetName : "METALLIC";
-        int tier = this.material.vTier;
+        int tier = this.material.tier;
         String aType = (this.blockType == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");
 
         this.blockIcon = Textures.BlockIcons.textureSetWithRegister(metType, "/" + aType, iIcon)

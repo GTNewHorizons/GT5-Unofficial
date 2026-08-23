@@ -200,7 +200,7 @@ gt.voltage.tier=-тир
 gt.blockmachines.cable.desc=Макс. вольтаж: %s\nМакс. ампераж: %s\nПотеря на блок/ампер: %s
 gt.blockmachines.gt_frame.desc.format=Просто что-то, на что можно надеть модуль.
 gt.blockmachines.transformer.desc=%s -> %s (Используй Киянку для инвертации)
-gt.blockmachines.transformer_advanced.desc=Преобразует %sА в %sА\nПереключение полу-режима 2A/8A с помощью отвёртки
+gt.blockmachines.transformer_advanced.desc=Преобразует %sА в %sА\nПереключение полу-режима %sA/%sA с помощью отвёртки
 gt.blockmachines.bronze_hull.desc=Для ваших первых паровых машин
 gt.blockmachines.highpressure_hull.desc=Для улучшенных паровых машин
 gt.blockmachines.basic_hull.desc=§rВоспользуйтесь §5В§dо§4о§cб§eр§aа§bж§3е§9н§1и§5е§rм§r для его использования.
@@ -260,10 +260,10 @@ gt.blockmachines.itempipe.rounting_value=Значение маршрутизац
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Диапазон поглощения: %s блоков
 
-gt.hatch_element_or= или
-gt.hatch_element_of_type=of type
-gt.hatch_element_of_class=of class
-gt.hatch_element_of_id=of id
+gt.hatch_element_or= или 
+gt.hatch_element_of_type=of type 
+gt.hatch_element_of_class=of class %s
+gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Базовый мировой ускоритель
@@ -1670,6 +1670,7 @@ GT5U.MBTT.Tiers.Glass=Стекло
 GT5U.MBTT.Tiers.ComponentAssemblyLineCasing=Корпус компонентной сборочной линии
 GT5U.MBTT.Steam.Speed=На %s быстрее, чем при использовании одноблочных паровых машин того же давления
 GT5U.MBTT.Steam.Eff=Расход пара составляет %s от обычно требуемого расхода
+GT5U.MBTT.Structure.Projector=§fЧтобы увидеть/построить структуру, используйте §9голограммный §1проектор§f мультиблочных структур!
 GT5U.MBTT.Structure.SeeStructure1=Чтобы увидеть структуру, используйте
 GT5U.MBTT.Structure.SeeStructure2=голограммный проект на контроллере!
 GT5U.MBTT.Structure.MinGlassForLaser=-тировое §fстекло§7 требуется для §9Tec§1Tech§7 лазеров
@@ -1678,8 +1679,25 @@ GT5U.MBTT.Structure.GlassEnergyLimitTier=-тир разблокирует всё
 GT5U.MBTT.Structure.NoTierSkips=Этот механизм может выполнять только те рецепты, которые соответствуют ее среднему тиру энерговвода
 GT5U.MBTT.Structure.MaxTierSkips=Этот механизм может выполнять рецепты на %d тиров выше своего среднего тира энерговвода
 GT5U.MBTT.Structure.UnlimitedTierSkips=Этот механизм может выполнять рецепты независимо от тира, если ей дать достаточно энергии
-gt.mbtt.structure.front_center=Спереди в центре
+
 gt.mbtt.structure.back_center=Сзади посередине
+gt.mbtt.structure.front_bottom_center=Спереди внизу
+gt.mbtt.structure.front_center=Спереди в центре
+gt.mbtt.structure.front_center_2nd_layer=Спереди в центре, 2-й слой
+gt.mbtt.structure.front_center_9th_layer=Спереди в центре, 9-й слой
+gt.mbtt.structure.front_center_17th_layer=Спереди в центре, 17-й слой
+gt.mbtt.structure.any_casing=Любой блок корпуса
+gt.mbtt.structure.interior=Внутри структуры
+gt.mbtt.structure.any_tiered_glass=Стекло любого тира
+gt.mbtt.structure.min_tiered_glass=Стекло тира %s+
+gt.mbtt.structure.any_bottom_casing=Любой нижний блок корпуса
+gt.mbtt.structure.back_center_casing=Сзади посередине
+gt.mbtt.structure.front_left_2nd_layer=Спереди слева, 2-й слой
+gt.mbtt.structure.interior_and_top_center=Внутри структуры и сверху по центру
+gt.mbtt.structure.any_bottom_edge_casing=Любой блок корпуса по нижнему краю
+gt.mbtt.machine_type.restorer=Восстановитель
+
+gt.mbtt.machine_type.spacetime_manipulator=Пространственно-временной манипулятор, EOH
 GT5U.MBTT.HatchInfo=Любой %s
 GT5U.MBTT.HatchHint= (Подсказка: %s)
 GT5U.MBTT.BoroGlassAny=Боросиликатное стекло (любое, смешанное)
@@ -1793,6 +1811,9 @@ gt.multiblock.NeutralizationEngine.decay_boost.3=Insert §dmultiple §7(§f16 §
 gt.multiblock.NeutralizationEngine.decay_boost.4=Every §fminute§7, §dRobot Arm Amount§7/(§f45§7*(§f1§7+§dRobot Arm Tier§7)) chance for §fone §7used robot arm to §cvoid
 gt.multiblock.NeutralizationEngine.structure_tiers=Structure has §f3 Tiers§7, §fTier §7determines §9Base Decay §7and §3Capacity§7:
 gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : §3%s
+
+gt.multiblock.VacuumFreezer.machine_type=Вакуумный морозильник, VF
+gt.multiblock.VacuumFreezer.desc1=Охлаждает раскалённые слитки и капсулы
 
 GT5U.MBTT.subchannel=Использует подканал §6%s§r§7 для §6%s
 
@@ -1918,6 +1939,7 @@ gt.recipe.compressor=Компрессор
 gt.recipe.compressor.description=Сожми до чёрной дыры C77
 gt.recipe.cuttingsaw=Режущий станок
 gt.recipe.cuttingsaw.description=Режет вдоль и поперёк!
+gt.recipe.fakecuttingsaw=Режущий станок
 gt.recipe.distillery=Дистилятор
 gt.recipe.distillery.description=Извлечение наиболее важных частей жидкостей
 gt.recipe.furnace=Печь
@@ -2054,6 +2076,74 @@ gt.recipe.category.alloy_smelter_molding=Формовка в сплавопла�
 gt.recipe.category.forge_hammer_recycling=Переработка в кузнечном молоте
 gt.recipe.category.tic_part_extruding=Экструдирование TiC деталей
 gt.recipe.category.tic_bolt_molding=Формовка TiC болтов
+
+gt.recipe.industrialcokeoven=Промышленная коксовая печь
+gt.recipe.matterfab2=Генератор материи
+gt.recipe.rocketenginefuel=Топливо для ракетного двигателя
+gt.recipe.quantumforcesmelter=Квантовый силовой преобразователь
+gt.recipe.chemicaldehydrator=Дегидратор
+gt.recipe.vacfurnace=Вакуумная печь
+gt.recipe.alloyblastsmelter=Плавильная доменная печь
+gt.recipe.lftr=Жидкостный фтористо-ториевый реактор
+gt.recipe.lftr.sparging=Барботирование газа ЖФТР
+gt.recipe.nuclearsaltprocessingplant=Завод по переработке ядерной соли
+gt.recipe.oremill=Измельчение
+gt.recipe.fissionfuel=Переработка ядерного топлива
+gt.recipe.coldtrap=Холодная ловушка
+gt.recipe.reactorprocessingunit=Реакторное процессорное устройство
+gt.recipe.simplewasher=Простая мойка пыли
+gt.recipe.moleculartransformer=Молекулярный преобразователь
+gt.recipe.fluidchemicaleactor=Химический завод
+gt.recipe.RTGgenerators=RTG
+gt.recipe.thermalboiler=Тепловой бойлер
+gt.recipe.solartower=Солнечная башня
+gt.recipe.cyclotron=КОМЕТА - Компактный циклотрон
+gt.recipe.fishpond=Чжухай - Рыбный порт
+gt.recipe.multicentrifuge=Мультиблоковая центрифуга
+gt.recipe.multielectro=Мультиблоковый электролизер
+gt.recipe.multimixer=Мультиблоковый миксер
+gt.recipe.multidehydrator=Мультиблоковый дегидратор
+gt.recipe.semifluidgeneratorfuels=Топливо полужидкостного генератора
+gt.recipe.flotationcell=Флотационная камера
+gt.recipe.treefarm=Симулятор роста деревьев
+gt.recipe.category.abs_non_alloy_recipes=Рецепты ABS без сплавов
+
+gt.nei.lftr.power=Power: %s EU/t per Dynamo
+gt.nei.lftr.dynamo=Dynamo: %s EU
+gt.nei.lftr.total=Всего: %s EU
+gt.nei.milling.not_consumed=Не всегда расходуется в процессе работы
+gt.nei.chemical_plant.not_consumed=Не всегда расходуется в процессе работы
+gt.nei.chemical_plant.higher_tier_casing=Корпуса труб более высокого уровня позволяют этому предмету служить дольше
+gt.nei.chemplant.tier.1=Бронза
+gt.nei.chemplant.tier.2=Сталь
+gt.nei.chemplant.tier.3=Алюминий
+gt.nei.chemplant.tier.4=Нержавеющая сталь
+gt.nei.chemplant.tier.5=Титан
+gt.nei.chemplant.tier.6=Вольфрамовая сталь
+gt.nei.chemplant.tier.7=Лаурений
+gt.nei.chemplant.tier.8=Ботмий
+gt.nei.rtg.days=Стоимость топлива: %s Minecraft дней
+gt.nei.solar_tower.1=Solar Heater rings boost tier
+gt.nei.solar_tower.2=R1:T1, R2:T2, R3:T4, R4:T8, R5:T16
+gt.nei.solar_tower.3=Input Amount = 1000 x T
+gt.nei.tgs.1=Саженец не расходуется.
+gt.nei.tgs.2=Если указан %s,
+gt.nei.tgs.3=Вместо этого выращивают саженцы.
+gt.nei.tgs.sapling=Выводится, если указан %s
+gt.nei.tgs.tooltip.sapling=Поместите в слот контроллера механизма
+gt.nei.tgs.tooltip.saw=Поместите в входной люк для сбора брёвен
+gt.nei.tgs.tooltip.needsSaw=Для сбора урожая требуется пила
+gt.nei.tgs.tooltip.cutter=Поместите в входной люк для сбора саженцев
+gt.nei.tgs.tooltip.needsCutter=Для сбора урожая требуется секатор
+gt.nei.tgs.tooltip.shears=Поместите в входной люк для сбора листвы
+gt.nei.tgs.tooltip.needsShears=Для сбора урожая требуется ножницы
+gt.nei.tgs.tooltip.knife=Поместите в входной люк для сбора фруктов
+gt.nei.tgs.tooltip.needsKnife=Для сбора урожая требуется нож
+gt.nei.tgs.tooltip.multiplier=Выходной множитель:
+gt.nei.tgs.info-1=Производительность дополнительно повышается
+gt.nei.tgs.info-2=за счет тира механизма
+gt.nei.tgs.info-3=и типа инструмента
+gt.nei.ap.tier=Algae Pond Tier: %s
 
 GT5U.recipes.recipe_by.original=Исходный рецепт: %s
 GT5U.recipes.recipe_by.modified=Изменено: %s
@@ -2378,7 +2468,7 @@ channels.gregtech.spacetime_compression=Определяет тир Генера
 channels.gregtech.stabilisation=Определяет тир Генератора поля стабилизации. Начинается с §6ГГрубый генератор поля стабилизации§r со значением 1 и заканчивается §6Галлифрейский генератор поля стабилизации§r со значением 9.
 channels.gregtech.time_dilation=Определяет тир Генератора поля замедления времени. Начинается с §6Грубый генератор поля замедления времени§r со значением 1 и заканчивается §6Галлифрейский генератор поля замедления времени§r со значением 9.
 channels.gregtech.gt_hatch=Enables automatic hatch placement
-channels.gregtech.field=Определяет тир T.F.F.T блока хранения жидкостей.
+channels.gregtech.field=Определяет тир TFFT блока хранения жидкостей.
 channels.gregtech.component_casing=Определяет тир корпуса компонентной сборочной линии. Начинается с §6LV§r со значением 1 и заканчивается на §6MAX§r со значением 14.
 
 GT5U.gui.select.current=§8Состояние:
@@ -2389,6 +2479,7 @@ GT5U.gui.button.voiding_mode_none=§7Ничего не удалять
 GT5U.gui.button.voiding_mode_item=§7Уничтожение излишек §6предметов
 GT5U.gui.button.voiding_mode_fluid=§7Уничтожение излишек §9жидкостей
 GT5U.gui.button.voiding_mode_all=§7Уничтожение излишек §6предметов §7и §9жидкостей
+GT5U.chat.voiding_mode_set=Режим уничтожения излишков: %s
 GT5U.gui.button.input_separation=Разделение входов
 GT5U.gui.button.mode_switch=Переключить режим
 GT5U.gui.button.batch_mode=Пакетный режим
@@ -2448,6 +2539,13 @@ GT5U.gui.text.per_second=§fВ секунду:
 GT5U.gui.text.per_minute=§fВ минуту:
 GT5U.gui.text.per_hour=§fВ час:
 GT5U.gui.text.per_day=§fВ день:
+GT5U.gui.text.progress_recipe=§fПрогресс: %ss / %ss (%s%%)
+GT5U.gui.text.progress_detail=§fПрогресс: %s%% §7(§f%ss§7/§f%ss§7)§r
+GT5U.gui.text.rate_short=(§7%s/s§f)
+GT5U.gui.text.rate_short_slow=(§7%ss/каждый§f)
+GT5U.gui.text.rate_large_suffix=§f[§7%s§f]
+GT5U.gui.text.item_amount_display=§b%s§f x §6%s§f
+GT5U.gui.text.fluid_amount_display=§b%s§f x §6%sL§f
 GT5U.gui.text.recipe_result.generating=§aGenerating power
 GT5U.gui.text.recipe_result.no_recipe=§7No valid recipe found
 GT5U.gui.text.recipe_result.item_output_full=§7Недостаточно пространства для вывода предмета
@@ -2499,7 +2597,7 @@ GT5U.gui.text.backfiller_working=§aЗаливка бетона
 GT5U.gui.text.recipe_result.backfiller_working=§aPouring concrete
 GT5U.gui.text.recipe_result.backfiller_no_concrete=§7No liquid concrete
 GT5U.gui.text.backfiller_current_area=§7Заливка на уровне высоты: §a%s
-GT5U.gui.text.shutdown_reason.overheated=§7HIP Unit overheated!
+GT5U.gui.text.shutdown_reason.overheat_fail=Shut down due to §coverheat
 GT5U.gui.text.pump_fluid_type=Жидкость: §a%s
 GT5U.gui.text.pump_rate.1=Скорость откачки: %s§r
 GT5U.gui.text.pump_rate.2= Л/тик
@@ -2618,7 +2716,6 @@ GT5U.gui.text.structure_error.manual_transformer_dynamo=Dynamo hatches must be o
 GT5U.gui.text.structure_error.solar_factory_precise=Casing not precise enough
 GT5U.gui.text.structure_error.synchrotron_antenna=Antenna tier not detected
 GT5U.gui.text.structure_error.tfft_too_many_hatch=Too many hatches
-GT5U.gui.text.structure_error.sofc_missing_input_hatches=Missing Input Hatches: requires 1 for Fuel and 1 for Oxygen, found %s
 GT5U.gui.text.structure_error.htgr_missing_helium_hatch=Missing Input Hatch for Helium
 GT5U.gui.text.pulse_mode=Импульсный режим
 GT5U.gui.text.recipe_result.no_wafer=No wafer was found
@@ -2802,10 +2899,10 @@ GT5U.tooltip.nac.interface.nac_module=Модуль NAC
 GT5U.tooltip.nac.interface.cc=§eCC§7
 GT5U.tooltip.nac.interface.ccs=§eCC§7
 GT5U.tooltip.nac.interface.vci=§eVCI§7
-GT5U.tooltip.nac.interface.vci_long=§fВход вакуумного конвейера:§7
+GT5U.tooltip.nac.interface.vci_long=§fВход вакуумного конвейера§7
 GT5U.tooltip.nac.interface.vcis=§eVCI§7
 GT5U.tooltip.nac.interface.vco=§eVCO§7
-GT5U.tooltip.nac.interface.vco_long=§fВыход вакуумного конвейера:§7
+GT5U.tooltip.nac.interface.vco_long=§fВыход вакуумного конвейера§7
 GT5U.tooltip.nac.interface.vcos=§eVCO§7
 GT5U.tooltip.nac.interface.vc_hatches=§fШлюз вакуумного конвейера§7
 GT5U.tooltip.nac.interface.color=§cc§eo§al§bo§dr§7
@@ -3281,7 +3378,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in 
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §9Beam Energy§7 by §3EU Consumed in cycle§7 * §f0.1eV§7 / §6Beam Rate§7,
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=until the §9Target Beam Energy§7 is reached, or the §dmaximum number of cycles§7 is reached
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §9Target Beam Energy§7 is reached, add §f0.3§7 * §6Beam Rate§7 to the current §6Beam Rate§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f2000§7, add (§f0.3§7 * §6Beam Rate§7)^§f0.5§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f5000§7, add (§f0.3§7 * §6Beam Rate§7)^§f0.5§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=to the current §6Beam Rate§7 instead
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aP§7 = §f(1A UV)§7 * §cR§7 * §dN§7^2
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=with the §dnumber of completed cycles§7
@@ -3526,135 +3623,141 @@ GT5U.item.pipe.gas_proof.yes=Да
 GT5U.item.pipe.gas_proof.no=Нет
 GT5U.item.pipe.amount=Количество труб
 GT5U.item.pipe.empty=Пусто
-GT5U.item.pipe.swap.s=Pipe swapped: %s
+GT5U.item.pipe.swap.s=Труба заменена: %s
+GT5U.item.pipe.swap.items=предметов
+GT5U.item.pipe.swap.routing=маршрутизация
+GT5U.item.pipe.swap.now_gas_proof=Теперь газонепроницаема
+GT5U.item.pipe.swap.no_longer_gas_proof=Больше не газонепроницаема
+GT5U.item.pipe.swap.now_restrictive=Теперь ограничительная
+GT5U.item.pipe.swap.no_longer_restrictive=Больше не ограничительная
 
 # Modular Armor
 
-item.itemHelmetMech.name=Mechanical Helmet
-item.itemChestplateMech.name=Mechanical Chestplate
-item.itemLeggingsMech.name=Mechanical Leggings
-item.itemBootsMech.name=Mechanical Boots
+item.itemHelmetMech.name=Механический шлем
+item.itemChestplateMech.name=Механический нагрудник
+item.itemLeggingsMech.name=Механические поножи
+item.itemBootsMech.name=Механические сапоги
 
-GT5U.armor.part.name.Light=Light Mechanical Armor Frame
-GT5U.armor.part.name.Medium=Medium Mechanical Armor Frame
-GT5U.armor.part.name.Heavy=Heavy Mechanical Armor Frame
-GT5U.armor.part.name.Nimble=Nimble Mechanical Armor Frame
-GT5U.armor.part.name.Adaptive=Adaptive Mechanical Armor Frame
-GT5U.armor.part.name.Tough=Tough Mechanical Armor Frame
-GT5U.armor.part.name.Lightning=Lightning Mechanical Armor Frame
-GT5U.armor.part.name.Morphic=Morphic Mechanical Armor Frame
-GT5U.armor.part.name.Bulwark=Bulwark Mechanical Armor Frame
-GT5U.armor.part.name.Infinity=Infinitely Adaptive Armor Frame
+GT5U.armor.part.name.Light=Лёгкий механический каркас брони
+GT5U.armor.part.name.Medium=Средний механический каркас брони
+GT5U.armor.part.name.Heavy=Тяжёлый механический каркас брони
+GT5U.armor.part.name.Nimble=Проворный механический каркас брони
+GT5U.armor.part.name.Adaptive=Адаптивный механический каркас брони
+GT5U.armor.part.name.Tough=Прочный механический каркас брони
+GT5U.armor.part.name.Lightning=Молниеносный механический каркас брони
+GT5U.armor.part.name.Morphic=Морфический механический каркас брони
+GT5U.armor.part.name.Bulwark=Бастионный механический каркас брони
+GT5U.armor.part.name.Infinity=Бесконечно адаптивный каркас брони
 
 GT5U.armor.part.name.Nano=Ядро брони (Нано)
-GT5U.armor.part.name.Quantum=Ядро брони (Квантум)
+GT5U.armor.part.name.Quantum=Ядро брони (Квантовое)
 GT5U.armor.part.name.Living=Ядро брони (Живое)
-GT5U.armor.part.name.Singularity=Ядро брони (Сингулярное)
+GT5U.armor.part.name.Singularity=Ядро брони (Сингулярность)
 
-GT5U.armor.part.tooltip.Nano=Базовое ядро для механической брони
-GT5U.armor.part.tooltip.Quantum=Продвинутое ядро для механической брони
-GT5U.armor.part.tooltip.Living=Суприм ядро для механической брони
-GT5U.armor.part.tooltip.Singularity=Совершенное ядро для механической брони
+GT5U.armor.part.tooltip.Nano=Базовое ядро механической брони
+GT5U.armor.part.tooltip.Quantum=Продвинутое ядро механической брони
+GT5U.armor.part.tooltip.Living=Высшее ядро механической брони
+GT5U.armor.part.tooltip.Singularity=Совершенное ядро механической брони
 
-GT5U.armor.part.name.NightVision=Аугмент: Регулировка оптической яркости
-GT5U.armor.part.name.CreativeFlight=Аугмент: Модуль управления гравитацией
-GT5U.armor.part.name.Jetpack=Augment: Electric Jetpack
-GT5U.armor.part.name.JetpackPerfectHover=Augment: Adaptive Jetpack Stabilizers
-GT5U.armor.part.name.FireImmunity=Augment: Heat Dispersion System
-GT5U.armor.part.name.StepAssist=Augment: Elevation Calibrators
-GT5U.armor.part.name.GogglesOfRevealing=Augment: Integrated Revealing Lens
-GT5U.armor.part.name.InertiaCanceling=Augment: Inertial Dampeners
-GT5U.armor.part.name.Hazmat=Augment: Protective Lining
-GT5U.armor.part.name.Apiarist=Augment: Bee Pacifier
-GT5U.armor.part.name.SwimSpeed=Augment: Aquatic Jets
-GT5U.armor.part.name.KnockbackResistance=Augment: Shock Absorbers
-GT5U.armor.part.name.SpeedBoost=Augment: Sprint Boosters
-GT5U.armor.part.name.JumpBoost=Augment: Pneumatic Jump Assist
-GT5U.armor.part.name.FallProtection=Augment: Landing Gear
-GT5U.armor.part.name.SpaceSuit=Augment: Astronaut's Equipment
-GT5U.armor.part.name.ForceField=Augment: Energy Grid Defense
-GT5U.armor.part.name.OmniMovement=Augment: Rotational Movement Adjusters
-GT5U.armor.part.name.WaterBreathing=Augment: Rebreather
-GT5U.armor.part.name.MilkInfusion=Augment: Milk Infusion
-GT5U.armor.part.name.HoloInventory=Augment: Holographic Inventory
-GT5U.armor.part.name.Travelers=Augment: Thaumic Accelerators
+GT5U.armor.part.name.NightVision=Аугмент: регулятор оптической яркости
+GT5U.armor.part.name.CreativeFlight=Аугмент: модуль гравитационного контроля
+GT5U.armor.part.name.Jetpack=Аугмент: электрический джетпак
+GT5U.armor.part.name.JetpackPerfectHover=Аугмент: адаптивные стабилизаторы джетпака
+GT5U.armor.part.name.FireImmunity=Аугмент: система рассеивания тепла
+GT5U.armor.part.name.StepAssist=Аугмент: калибраторы высоты шага
+GT5U.armor.part.name.GogglesOfRevealing=Аугмент: встроенная линза открытия
+GT5U.armor.part.name.InertiaCanceling=Аугмент: инерционные демпферы
+GT5U.armor.part.name.Hazmat=Аугмент: защитная подкладка
+GT5U.armor.part.name.Apiarist=Аугмент: пчелиный умиротворитель
+GT5U.armor.part.name.SwimSpeed=Аугмент: гидравлические ускорители
+GT5U.armor.part.name.KnockbackResistance=Аугмент: амортизаторы удара
+GT5U.armor.part.name.SpeedBoost=Аугмент: ускорители бега
+GT5U.armor.part.name.JumpBoost=Аугмент: пневматический усилитель прыжка
+GT5U.armor.part.name.FallProtection=Аугмент: шасси посадки
+GT5U.armor.part.name.SpaceSuit=Аугмент: снаряжение астронавта
+GT5U.armor.part.name.ForceField=Аугмент: энергетическая защитная сетка
+GT5U.armor.part.name.OmniMovement=Аугмент: регуляторы всенаправленного движения
+GT5U.armor.part.name.WaterBreathing=Аугмент: ребризер
+GT5U.armor.part.name.MilkInfusion=Аугмент: молочная инфузия
+GT5U.armor.part.name.HoloInventory=Аугмент: голографический инвентарь
+GT5U.armor.part.name.Travelers=Аугмент: таумические ускорители
 
-GT5U.armor.part.tooltip.NightVision=Allows user to see clearly at night and in the dark
-GT5U.armor.part.tooltip.CreativeFlight=Grants the user creative flight
-GT5U.armor.part.tooltip.Jetpack=Allows user to jet upwards and hover in midair
-GT5U.armor.part.tooltip.JetpackPerfectHover=Prevents user from slowly descending while in hover mode
-GT5U.armor.part.tooltip.FireImmunity=Renders user entirely immune to fire and lava
-GT5U.armor.part.tooltip.StepAssist=Allows user to walk up a single block effortlessly
-GT5U.armor.part.tooltip.GogglesOfRevealing=Allows user to see elements of the arcane, such as aura nodes
-GT5U.armor.part.tooltip.InertiaCanceling=Prevents momentum from acting on the user while flying
-GT5U.armor.part.tooltip.Hazmat=Grants the user hazmat protection. Only needs to be applied to one armor piece
-GT5U.armor.part.tooltip.Apiarist=Prevents negative bee effects, as if the user were wearing Apiarist's armor
-GT5U.armor.part.tooltip.SwimSpeed=Improves the user's speed in water
-GT5U.armor.part.tooltip.KnockbackResistance=Protects the user from knockback effects
-GT5U.armor.part.tooltip.SpeedBoost=Allows the user to move faster. Can be applied multiple times
-GT5U.armor.part.tooltip.JumpBoost=Allows the user to jump higher
-GT5U.armor.part.tooltip.FallProtection=Converts the user's fall damage into EU usage
-GT5U.armor.part.tooltip.SpaceSuit=Adds Spacesuit capability. Only needs to be applied to one armor piece
-GT5U.armor.part.tooltip.ForceField=Allows user to deploy a powerful forcefield which will block any damage for huge amounts of EU
-GT5U.armor.part.tooltip.OmniMovement=Allows user to move at increased speed in all directions
-GT5U.armor.part.tooltip.WaterBreathing=Restores the user's air if they run out underwater
-GT5U.armor.part.tooltip.MilkInfusion=Removes bad potion effects
-GT5U.armor.part.tooltip.HoloInventory=Opens a holographic view of nearby inventories
-GT5U.armor.part.tooltip.Travelers=Grants the user a more powerful version of Boots of the Traveler
+GT5U.armor.part.tooltip.NightVision=Позволяет видеть чётко ночью и в темноте
+GT5U.armor.part.tooltip.CreativeFlight=Предоставляет пользователю полёт в режиме творчества
+GT5U.armor.part.tooltip.Jetpack=Позволяет взлетать вверх и зависать в воздухе
+GT5U.armor.part.tooltip.JetpackPerfectHover=Предотвращает медленное снижение в режиме зависания
+GT5U.armor.part.tooltip.FireImmunity=Делает пользователя полностью невосприимчивым к огню и лаве
+GT5U.armor.part.tooltip.StepAssist=Позволяет без усилий взбираться на один блок
+GT5U.armor.part.tooltip.GogglesOfRevealing=Позволяет видеть магические элементы, такие как узлы ауры
+GT5U.armor.part.tooltip.InertiaCanceling=Нейтрализует инерцию во время полёта
+GT5U.armor.part.tooltip.Hazmat=Обеспечивает защиту от опасных веществ. Необходимо установить на все четыре части брони
+GT5U.armor.part.tooltip.Apiarist=Нейтрализует негативные эффекты пчёл, как при ношении брони пасечника
+GT5U.armor.part.tooltip.SwimSpeed=Увеличивает скорость плавания
+GT5U.armor.part.tooltip.KnockbackResistance=Защищает от отбрасывания
+GT5U.armor.part.tooltip.SpeedBoost=Позволяет двигаться быстрее. Можно устанавливать несколько раз
+GT5U.armor.part.tooltip.JumpBoost=Позволяет прыгать выше
+GT5U.armor.part.tooltip.FallProtection=Преобразует урон от падения в расход ЕЭ
+GT5U.armor.part.tooltip.SpaceSuit=Добавляет функцию скафандра. Необходимо установить на все четыре части брони
+GT5U.armor.part.tooltip.ForceField=Позволяет развернуть мощный силовой щит, поглощающий любой урон за огромное количество ЕЭ
+GT5U.armor.part.tooltip.OmniMovement=Позволяет двигаться с повышенной скоростью во всех направлениях
+GT5U.armor.part.tooltip.WaterBreathing=Восстанавливает запас воздуха при нахождении под водой
+GT5U.armor.part.tooltip.MilkInfusion=Снимает негативные эффекты зелий
+GT5U.armor.part.tooltip.HoloInventory=Открывает голографический вид соседних инвентарей
+GT5U.armor.part.tooltip.Travelers=Предоставляет пользователю более мощную версию сапог путешественника
 
 GT5U.armor.behavior.NightVision=Ночное зрение
-GT5U.armor.behavior.GogglesOfRevealing=Таумический взор
-GT5U.armor.behavior.CreativeFlight=Манипулирование гравитацией
+GT5U.armor.behavior.GogglesOfRevealing=Тауматическое зрение
+GT5U.armor.behavior.CreativeFlight=Манипуляция гравитацией
 GT5U.armor.behavior.Jetpack=Джетпак
-GT5U.armor.behavior.JetpackHover=Jetpack Hover
-GT5U.armor.behavior.JetpackPerfectHover=Jetpack Stabilization
+GT5U.armor.behavior.JetpackHover=Зависание джетпака
+GT5U.armor.behavior.JetpackPerfectHover=Стабилизация джетпака
 GT5U.armor.behavior.FireImmunity=Иммунитет к огню
-GT5U.armor.behavior.StepAssist=Шаг вверх
-GT5U.armor.behavior.InertiaCanceling=Отмена инерции
-GT5U.armor.behavior.OmniMovement=Omni Movement
-GT5U.armor.behavior.HazmatProtection=Hazmat Armor
-GT5U.armor.behavior.Apiarist=Apiarist Protection
-GT5U.armor.behavior.SwimSpeed=Enhanced Swimming
-GT5U.armor.behavior.KnockbackResistance=Knockback Resistance
-GT5U.armor.behavior.SpeedBoost=Увеличение скорости
-GT5U.armor.behavior.JumpBoost=Прыгучесть
+GT5U.armor.behavior.StepAssist=Помощь при подъёме
+GT5U.armor.behavior.InertiaCanceling=Нейтрализация инерции
+GT5U.armor.behavior.OmniMovement=Всенаправленное движение
+GT5U.armor.behavior.HazmatProtection=Защита от опасных веществ
+GT5U.armor.behavior.Apiarist=Защита от пчёл
+GT5U.armor.behavior.SwimSpeed=Усиленное плавание
+GT5U.armor.behavior.KnockbackResistance=Устойчивость к отбрасыванию
+GT5U.armor.behavior.SpeedBoost=Ускорение
+GT5U.armor.behavior.JumpBoost=Усиление прыжка
 GT5U.armor.behavior.FallProtection=Защита от падения
-GT5U.armor.behavior.SpaceSuit=Космический костюм
+GT5U.armor.behavior.SpaceSuit=Скафандр
 GT5U.armor.behavior.InfiniteEnergy=Бесконечная энергия
 GT5U.armor.behavior.ForceField=Силовое поле
-GT5U.armor.behavior.WaterBreathing=Подводное дыхание
-GT5U.armor.behavior.Teleporter=Персональный телепортатор
-GT5U.armor.behavior.MilkInfusion=Milk Infusion
+GT5U.armor.behavior.WaterBreathing=Дыхание под водой
+GT5U.armor.behavior.Teleporter=Личный телепорт
+GT5U.armor.behavior.MilkInfusion=Молочная инфузия
 GT5U.armor.behavior.HoloInventory=Голографический инвентарь
 
-GT5U.armor.message.enabled=%s включён
-GT5U.armor.message.disabled=%s отключён
+GT5U.armor.message.enabled=%s: вкл.
+GT5U.armor.message.disabled=%s: откл.
 GT5U.armor.message.installed=%s установлен
-GT5U.armor.message.systems_online=Системы брони онлайн... Активные сочетания клавиш:
+GT5U.armor.message.systems_online=Системы брони онлайн... Активные клавиши:
 GT5U.armor.message.speed_set=Новая скорость: %s%%
 
-GT5U.armor.tooltip.hold_shift=Удерживайте shift для дополнительной информации
-GT5U.armor.tooltip.armorframe=Armor Frame: %s
-GT5U.armor.tooltip.energycorelabel=Энергетическое ядро: %s
+GT5U.armor.tooltip.hold_shift=Удерживайте Shift для подробностей
+GT5U.armor.tooltip.armorframe=Каркас брони: %s
+GT5U.armor.tooltip.energycorelabel=Ядро энергии: %s
 GT5U.armor.tooltip.installed_augments=Установленные аугменты:
 GT5U.armor.tooltip.active_augments=Активные аугменты:
-GT5U.armor.tooltip.energycoreminimum=Минимальный тир энергетического ядра: %s
-GT5U.armor.tooltip.energycore=Тир энергетического ядра: %s
-GT5U.armor.tooltip.chargetier=Тир зарядки: %s
-GT5U.armor.tooltip.maxenergy=Максимум энергии: %s
+GT5U.armor.tooltip.energycoreminimum=Минимальный уровень ядра энергии: %s
+GT5U.armor.tooltip.energycore=Уровень ядра энергии: %s
+GT5U.armor.tooltip.chargetier=Уровень заряда: %s
+GT5U.armor.tooltip.maxenergy=Максимальная энергия: %s
 GT5U.armor.tooltip.applicable=Применимо к:
 GT5U.armor.tooltip.effects=Добавляет эффект:
-GT5U.armor.tooltip.requires=Требуется эффект:
+GT5U.armor.tooltip.requires=Требует эффект:
 GT5U.armor.tooltip.incompatible=Несовместимо с:
-GT5U.armor.tooltip.stackable= (стакается)
+GT5U.armor.tooltip.stackable= (Стакается)
 GT5U.armor.tooltip.category=Категория: %s
 GT5U.armor.tooltip.slots=Слоты брони:
 GT5U.armor.tooltip.armorvalue=Защита: %s
-GT5U.armor.tooltip.protection=§6Protection§r
-GT5U.armor.tooltip.movement=§aMovement§r
-GT5U.armor.tooltip.utility=§dUtility§r
-GT5U.armor.tooltip.prismatic=§6Pri§asma§dtic§r
-GT5U.armor.tooltip.maxstack=Max Installed: %d
+GT5U.armor.tooltip.protection=§6Защита§r
+GT5U.armor.tooltip.movement=§aДвижение§r
+GT5U.armor.tooltip.utility=§dУтилиты§r
+GT5U.armor.tooltip.prismatic=§6Пр§aиз§dма§r
+GT5U.armor.tooltip.maxstack=Максимум установок: %d
 GT5U.item.toolbox.name_template=%s (%s)
 GT5U.item.toolbox.name_template.mode=%s (%s, %s)
 
@@ -3721,6 +3824,17 @@ GT5U.bus.filterTooltip.full=§aНажмите, чтобы очистить вы�
 GT5U.multiblock.pollution=Загрязнение снижено до
 GT5U.multiblock.energy=Энергии накоплено
 GT5U.multiblock.Progress=Прогресс
+GT5U.multiblock.recipesDone.fmt=Завершено рецептов: §a%s§r
+GT5U.multiblock.Progress.fmt.s=Прогресс: §a%s§r с / §e%s§r с
+GT5U.multiblock.Progress.fmt.t=Прогресс: §a%s§r т / §e%s§r т
+GT5U.multiblock.energy.fmt=Накоплено энергии: §a%s§r EU / §e%s§r EU
+GT5U.multiblock.usage.fmt=Потребление: §c%s§r EU/t
+GT5U.multiblock.mei.fmt.2A=Макс. входная энергия: §e%s§r EU/t(*2A) Уровень: §e%s§r
+GT5U.multiblock.mei.fmt.xA=Макс. входная энергия: §e%s§r EU/t(*§e%s§rA) Уровень: §e%s§r
+GT5U.multiblock.mei.fmt.mega=Макс. входная энергия: §e%s§r EU/t(*%sA) = §e%s§r
+GT5U.machines.tier.fmt=Уровень: §e%s§r
+GT5U.multiblock.pollution.fmt=Загрязнение снижено до: §a%s§r %%
+GT5U.multiblock.problems.efficiency.fmt=Проблемы: §c%s§r  Эффективность: §e%s
 GT5U.multiblock.efficiency=Эффективность
 GT5U.multiblock.problems=Проблем
 GT5U.multiblock.mei=Предел подачи энергии
@@ -3762,7 +3876,8 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
-GT5U.nei.heat_capacity=Теплоёмкость: %s K (%s)
+GT5U.nei.heat_capacity=Нагрев: %s K
+GT5U.nei.heat_capacity.material=Катушка: %s
 GT5U.nei.tier=Тир: %s
 GT5U.nei.start_eu=Запуск: %s EU (MK %s)
 GT5U.nei.stages=Этапы: %s
@@ -4224,7 +4339,7 @@ gt.item.large_fluid_cell.stainless_steel.name=Большая жидкостна�
 gt.item.large_fluid_cell.stainless_steel.tooltip=
 gt.item.large_fluid_cell.titanium.name=Большая титановая жидкостная капсула
 gt.item.large_fluid_cell.titanium.tooltip=
-gt.item.large_fluid_cell.chrome.name=Большая хромовая жидкостная капсула
+gt.item.large_fluid_cell.chrome.name=Большая палладия покрытый родием жидкостная капсула
 gt.item.large_fluid_cell.chrome.tooltip=
 gt.item.large_fluid_cell.iridium.name=Большая иридиевая жидкостная капсула
 gt.item.large_fluid_cell.iridium.tooltip=
@@ -5702,9 +5817,8 @@ GT5U.waila.status.obstructed_steam_vent=Статус: Засорен выход 
 GT5U.waila.machine.working_disabled=Работа остановлена
 GT5U.waila.machine.idle=Простой
 GT5U.waila.machine.in_progress=%,.1fs / %,.1fs (%,.1f%%)
-GT5U.waila.machine_facing=Лицевая сторона механизма: %s
 GT5U.waila.output_facing=Выходная сторона: %s
-GT5U.waila.facing=Сторона: %s
+GT5U.waila.facing=§bСторона: §7%s
 GT5U.waila.facing.down=СНИЗУ
 GT5U.waila.facing.up=СВЕРХУ
 GT5U.waila.facing.north=СЕВЕР
@@ -6208,15 +6322,16 @@ gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the
 
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor=Raised Boundary
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows for §1§nUIV+§7 Recipes to be processed
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Grants benefits when paired with other §dHeliocast Reinforcement§7 modules
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- §f2+ Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=   - Increases Base Speed by %s75%%§7 per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=   - Subtracts %s10%%§7 from Initial EU Cost per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=- §f3+ Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Adds %s6§7 Parallels per %sVoltage§7 tier per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Increases Overclock Factor by §d0.1
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=- §f4 Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=   - Grants 2 maximum§d overclocks
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Grants extra effects when paired with at least 2 other §dHeliocast Reinforcement§7 modules
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- Randomly increases processing values by a factor of Entropy which is rolled independently per value
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=- Entropy is rolled between 0 and the number of §dHeliocast Reinforcement§7 Modules present (inclusive)
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=- §f3+ Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=   - Increases Base Speed by %s100%% * Entropy
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Subtracts %s15%% * Entropy§7 from Initial EU Cost
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Adds %s8 * Entropy§7 Parallels per %sVoltage§7 tier
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=   - Increases Overclock Factor by §d0.05 * Entropy
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=- §f4 Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11=   - Increases Maximum Overclocks by Entropy
 
 gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
 gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
@@ -6257,17 +6372,18 @@ GT5U.gui.text.foundry.pairings.harmonicefficiency.required=Requires §aProto-Vol
 GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip1=§d+0.1§r OC Factor
 GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip2=%s-50%%§r Initial EU Cost
 
-GT5U.gui.text.foundry.pairings.superstablecore.title=§dSuperstable Core
-GT5U.gui.text.foundry.pairings.superstablecore.required=Requires 2+ §dHeliocast Reinforcement§r Modules
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip1=This pairings bonuses scale with the amount of §dHeliocast Reinforcement§r Modules
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip2=When §f2 or more§r §dHeliocast Reinforcement§r modules are present:
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip3=Increases Base Speed by %s75%%§r per module
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip4=Subtracts %s10%%§r from Initial EU Cost per module
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip5=When §f3 or more§r §dHeliocast Reinforcement§r modules are present:
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip6=Adds %s6§r parallels per %sVoltage§r Tier per module
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip7=Increases Overclock Factor by §d0.1
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip8=§fWhen §f4§r §dHeliocast Reinforcement§r modules are present:
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip9=Grants 2 maximum §doverclocks
+GT5U.gui.text.foundry.pairings.entropiccore.title=§dEntropic Core
+GT5U.gui.text.foundry.pairings.entropiccore.required=Requires 3+ §dHeliocast Reinforcement§r Modules
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip1=This pairings bonuses scale with the amount of §dHeliocast Reinforcement§r Modules
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip2=Randomly increases processing values by a factor of Entropy which is rolled independently per value
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip3=Entropy is rolled between 0 and the number of §dHeliocast Reinforcement§r Modules present (inclusive)
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip4=When §f3 or more§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip5=%s+100%% * Entropy§r Speed
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip6=%s-15%% * Entropy§r Initial EU Cost
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip7=%s+8 * Entropy§r parallels per %sVoltage§r tier
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip8=§d+0.05 * Entropy§r OC Factor
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip9=§fWhen §f4§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip10=Increases Maximum Overclocks by Entropy
 
 GT5U.gui.text.foundry.pairings.realizedpotential.title=§5§k0§r§4Realized Potential§5§k0
 GT5U.gui.text.foundry.pairings.realizedpotential.required=Requires §bHypercooler§r and §5Universal Collapser§r Modules
@@ -7165,6 +7281,7 @@ GT5U.tooltip.drone_remote_disconnected=Shift-right-click an active Drone Centre 
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 GT5U.tooltip.drone_remote_not_found=Дрон-станция: x: %s y: %s z: %s в dim%s не найдена!
 
+
 # info data
 GT5U.infodata.no_network=Нет сети
 GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU
@@ -7184,7 +7301,7 @@ GT5U.infodata.cable.avg_amperage=Ср. ампераж (20t): %s A
 GT5U.infodata.cable.avg_output=Ср. выход (20t): %s EU/t
 
 GT5U.infodata.hatch.output=Выходной шлюз
-GT5U.infodata.hatch.output.fluid=Хранящаяся жидкость: %s
+GT5U.infodata.hatch.output.fluid=Хранящаяся жидкость: §6%s§r
 GT5U.infodata.hatch.output.fluid.none=Нет жидкости
 GT5U.infodata.hatch.output.fluid.locked_to.none=Не заблокировано
 GT5U.infodata.hatch.output.fluid.locked_to=Заблокировано на %s
@@ -7254,6 +7371,26 @@ GT5U.infodata.air_filter.remaining_cycles=оставшиеся циклы для
 GT5U.infodata.diesel_engine=Дизельный двигатель
 GT5U.infodata.extreme_diesel_engine=Экстремальный дизельный двигатель
 GT5U.infodata.fusion_reactor_mk=Термоядерный реактор MK
+GT5U.infodata.engine.diesel_title=§9Дизельный двигатель§r
+GT5U.infodata.engine.extreme_diesel_title=§9Экстремальный дизельный двигатель§r
+GT5U.infodata.engine.maintenance.ok=§aМеханизм исправен§r
+GT5U.infodata.engine.maintenance.needed=§cНуждается в техобслуживании§r
+GT5U.infodata.engine.output=Текущий выход: §c%s§r EU/t
+GT5U.infodata.engine.consumption=Расход топлива: §e%s§r L/t
+GT5U.infodata.engine.value=Стоимость топлива: §e%s§r EU/L
+GT5U.infodata.engine.fuel_remaining=Остаток топлива: §6%s§r L
+GT5U.infodata.engine.efficiency=Текущая эффективность: §e%s§r %%
+GT5U.infodata.ebf.heat=Температура в печи: §a%s§r K
+GT5U.infodata.ms.multismelting=Мультиплавка: §a%s§r
+GT5U.infodata.lhe.steam=Сейчас используется (в паре): %s EU/t
+GT5U.infodata.lhe.superheated=Перегретый: %s
+GT5U.infodata.lhe.threshold=Порог перегрева: §a%s§r
+GT5U.infodata.fusion.mk_tier=§9Термоядерный реактор MK§r %s
+GT5U.infodata.fusion.req=EU требуется: §c%s§rEU/t
+GT5U.infodata.fusion.plasma=Выход плазмы: §e%s§rL/t
+GT5U.infodata.naquadah_refinery.coil_tier=Тир катушки: %s
+
+GT5U.infodata.large_neutralization_engine=Большой нейтрализационный двигатель
 
 GT5U.infodata.large_fluid_extractor.max_parallels=Макс. параллелей: %s%d%s
 GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Бонус нагревательной катушки к скорости: +%s%.0f%s %%
@@ -7262,10 +7399,27 @@ GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Общий множит�
 
 GT5U.infodata.large_neutralization_engine=Большой двигатель сгорания
 
+GT5U.infodata.oil_drill.title=§9Oil/Fluid Pump§r
+GT5U.infodata.oil_drill.work_area=Рабочая область: §a%s x %s§r чанков
 GT5U.infodata.oil_drill.drilling_fluid=Буровой раствор: %s
 GT5U.infodata.oil_drill.drilling_flow=Поток бурения: %s Л/тик
 
+GT5U.infodata.ore_drill.title=§9Мультиблочный шахтёр§r
+GT5U.infodata.ore_drill.work_area=Рабочая область: §a%sx%s§r чанков
+
+GT5U.infodata.engine.large_neutralization_title=§9Большой нейтрализационный двигатель§r
+
+GT5U.infodata.integrated_ore_factory.parallelism=Макс параллель: §9%s§r
+
+GT5U.infodata.pcb_factory.mei=Макс. доход энергии: §e%s§r EU/т(*%s А) Уровень: §e%s§r
+GT5U.infodata.pcb_factory.parallel=Макс параллель: §a%s§r, Текущая параллель: §a%s§r
+GT5U.infodata.pcb_factory.upgrades=Улучшения: %s
+
+GT5U.infodata.pcb_upgrade_base.linked_at=Привязан к: %s, %s, %s
+GT5U.infodata.pcb_upgrade_base.not_linked=Не привязан
+
 GT5U.infodata.critical_info=Важнейшая информация
+GT5U.infodata.critical_info.hdr=§m------------§r §lВажнейшая информация§r §m------------
 GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s (Extra catalyst use: %sL)
 GT5U.infodata.plasma_forge.fuel_discount=Fuel Discount: %s
 GT5U.infodata.plasma_forge.convergence=Конвергенция: %s
@@ -7948,15 +8102,15 @@ achievement.gt.blockmachines.voidminer3=Пустотный шахтёр III
 achievement.gt.blockmachines.voidminer3.desc=Просто посмотри рецепт в NEI
 achievement.gt.blockmachines.electricimplosioncompressor=Электрический имплозионный компрессор
 achievement.gt.blockmachines.electricimplosioncompressor.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_tfftstoragefield_block.6=T.F.F.T Блок хранения жидкостей (T6)
+achievement.tile.kekztech_tfftstoragefield_block.6=TFFT Блок хранения жидкостей (T6)
 achievement.tile.kekztech_tfftstoragefield_block.6.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_tfftstoragefield_block.7=T.F.F.T Блок хранения жидкостей (T7)
+achievement.tile.kekztech_tfftstoragefield_block.7=TFFT Блок хранения жидкостей (T7)
 achievement.tile.kekztech_tfftstoragefield_block.7.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_tfftstoragefield_block.8=T.F.F.T Блок хранения жидкостей (T8)
+achievement.tile.kekztech_tfftstoragefield_block.8=TFFT Блок хранения жидкостей (T8)
 achievement.tile.kekztech_tfftstoragefield_block.8.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_tfftstoragefield_block.9=T.F.F.T Блок хранения жидкостей (T9)
+achievement.tile.kekztech_tfftstoragefield_block.9=TFFT Блок хранения жидкостей (T9)
 achievement.tile.kekztech_tfftstoragefield_block.9.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_tfftstoragefield_block.10=T.F.F.T Блок хранения жидкостей (T10)
+achievement.tile.kekztech_tfftstoragefield_block.10=TFFT Блок хранения жидкостей (T10)
 achievement.tile.kekztech_tfftstoragefield_block.10.desc=Просто посмотри рецепт в NEI
 achievement.gt.blockmachines.multimachine.extremeapiary=Промышленный акклиматизатор для пчеловодства и станция приручения трутней
 achievement.gt.blockmachines.multimachine.extremeapiary.desc=Просто посмотри рецепт в NEI
@@ -8738,7 +8892,7 @@ GT5U.gui.text.bec-speed-divisor=Speed Divisor
 
 # Misc BEC Tooltips
 gt.tooltip.nanite-tier=Тир нанита: %s
-gt.tooltip.max-nanite=Макс. тир нанита: %s
+gt.tooltip.max-nanite=Макс. тир нанита:
 GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when it receives a redstone signal
 GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
 
@@ -8748,7 +8902,7 @@ GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Arra
 GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 
 # BEC Waila
-GT5U.chat.bec-processing-speed=Processing Speed: x%s
+GT5U.chat.bec-processing-speed=Processing Speed: %s points per tick
 GT5U.chat.bec-slowdowns=Slowdowns: %s
 
 # BEC Structure
@@ -8808,3 +8962,80 @@ GT5U.scanner.debug.needs_power=§cВНИМАНИЕ: Устройству не х
 GT5U.scanner.debug.ic2_enet=Подключён к IC2 ENet
 GT5U.gui.text.shutdown_reason.fluid_output_failed=§4Не удалось вывести все жидкости.
 GT5U.gui.text.shutdown_reason.item_output_failed=§4Не удалось вывести все предметы.
+
+# Basic Generators - Shared
+gt.blockmachines.basicgenerator.fuel_efficiency=Эффективность топлива: %s%%
+
+# Basic Generators - Combustion
+gt.blockmachines.basicgenerator.diesel.tier.01.name=Базовый генератор внутреннего сгорания
+gt.blockmachines.basicgenerator.diesel.tier.02.name=Продвинутый генератор внутреннего сгорания
+gt.blockmachines.basicgenerator.diesel.tier.03.name=Турбо генератор внутреннего сгорания
+gt.blockmachines.basicgenerator.diesel.tooltip=Требует жидкое топливо\nПроизводит %d загрязнения в секунду
+
+# Basic Generators - Gas Turbine
+gt.blockmachines.basicgenerator.gasturbine.tier.01.name=Базовая газовая турбина
+gt.blockmachines.basicgenerator.gasturbine.tier.02.name=Продвинутая газовая турбина
+gt.blockmachines.basicgenerator.gasturbine.tier.03.name=Турбогазовая турбина
+gt.blockmachines.basicgenerator.gasturbine.tier.04.name=Турбогазовая турбина II
+gt.blockmachines.basicgenerator.gasturbine.tier.05.name=Турбогазовая турбина III
+gt.blockmachines.basicgenerator.gasturbine.tooltip=Требуются легковоспламеняющиеся газы\nПроизводит %d загрязнения в секунду
+
+# Basic Generators - Steam Turbine
+gt.blockmachines.basicgenerator.steamturbine.tier.01.name=Базовая паровая турбина
+gt.blockmachines.basicgenerator.steamturbine.tier.02.name=Продвинутая паровая турбина
+gt.blockmachines.basicgenerator.steamturbine.tier.03.name=Турбопаровая турбина
+gt.blockmachines.basicgenerator.steamturbine.tooltip=Преобразует пар в EU\nБазовая ставка: 2Л Пара -> 1 EU\nЭффективность топлива: %s%%\nПотребляет до %sЛ пара в секунду
+
+# Basic Generators - Naquadah Reactor
+gt.blockmachines.basicgenerator.naquadah.tier.04.name=Наквадаховый реактор MK I
+gt.blockmachines.basicgenerator.naquadah.tier.04.tooltip=Требует болты из обогащённого наквадаха
+gt.blockmachines.basicgenerator.naquadah.tier.05.name=Наквадаховый реактор MK II
+gt.blockmachines.basicgenerator.naquadah.tier.05.tooltip=Требует стержни из обогащённого наквадаха
+gt.blockmachines.basicgenerator.naquadah.tier.06.name=Наквадаховый реактор MK III
+gt.blockmachines.basicgenerator.naquadah.tier.06.tooltip=Требует длинные стержни из обогащённого наквадаха
+gt.blockmachines.basicgenerator.naquadah.tier.07.name=Наквадаховый реактор MK IV
+gt.blockmachines.basicgenerator.naquadah.tier.07.tooltip=Требует болты из наквадрии
+gt.blockmachines.basicgenerator.naquadah.tier.08.name=Наквадаховый реактор MK V
+gt.blockmachines.basicgenerator.naquadah.tier.08.tooltip=Требует стержни из наквадрии
+
+# Basic Generators - Plasma Generator
+gt.blockmachines.basicgenerator.plasmagenerator.tier.05.name=Плазма генератор MK I
+gt.blockmachines.basicgenerator.plasmagenerator.tier.06.name=Плазма генератор MK II
+gt.blockmachines.basicgenerator.plasmagenerator.tier.07.name=Плазма генератор MK III
+gt.blockmachines.basicgenerator.plasmagenerator.tier.08.name=Плазма генератор MK IV
+gt.blockmachines.basicgenerator.plasmagenerator.tier.09.name=Совершенный плазма генератор
+gt.blockmachines.basicgenerator.plasmagenerator.tooltip=Плазма в энергию
+
+# Basic Generators - Magic Energy Converter
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.01.name=Преобразователь магической энергии для новичков
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.02.name=Преобразователь магической энергии для адептов
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.03.name=Преобразователь магической энергии для мастеров
+gt.blockmachines.basicgenerator.magicenergyconverter.tooltip=Клади сюда свои странные вещи
+
+# Basic Generators - Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.01.name=Поглотитель магической энергии для новичков
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.02.name=Поглотитель магической энергии для адептов
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03.name=Поглотитель магической энергии для мастеров
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.04.name=Поглотитель магической энергии для гроссмейстеров
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip=§nПоглощает §d§nмагию§7§n вблизи себя:\n- %s\n- %sEU за каждый §dКристалл Края§7 в радиусе действия\n§r \n§nРадиус поиска (используйте Отвёртку для изменения):\nПо-умолч.: §a%s\nМакс.: §a%s\n§r \n§nРаботает на §d§nзачарованиях§7§n на входе:\n- Предмет: %sEU за вес §dзачара§7 × уровень / макс\n- Книга: 10000EU за вес §dзачара§7 × уровень / макс\n§r \nЭффективность: §a%s%%
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.shared=§7§dЯйцо Дракона§7 сверху
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.exclusive=§e§nИСКЛЮЧИТЕЛЬНОЕ§r§7 §dЯйцо Дракона§7 сверху
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.thaumcraft=- %sCV/t из §dВозбуждённого узла§7\n- %sEU за §dEssentia§7 Aspect-Value из контейнеров в радиусе действия
+
+# Basic Generators - Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.00.name=1-вольтная солнечная панель
+gt.blockmachines.basicgenerator.solarpanel.01.name=Базовая солнечная панель
+gt.blockmachines.basicgenerator.solarpanel.02.name=Улучшенная солнечная панель
+gt.blockmachines.basicgenerator.solarpanel.03.name=Улучшенная солнечная панель II
+gt.blockmachines.basicgenerator.solarpanel.04.name=Улучшенная солнечная панель III
+gt.blockmachines.basicgenerator.solarpanel.05.name=Улучшенная солнечная панель IV
+gt.blockmachines.basicgenerator.solarpanel.06.name=Элитная солнечная панель
+gt.blockmachines.basicgenerator.solarpanel.07.name=Элитная солнечная панель II
+gt.blockmachines.basicgenerator.solarpanel.08.name=Совершенная солнечная панель
+gt.blockmachines.basicgenerator.solarpanel.tooltip=Генерирует EU от солнечной энергии\nНе вырабатывает энергию во время дождя\nСамоочищается автоматически\nНе взрывается под дождём!
+
+# Basic Generators - Lightning Rod
+gt.blockmachines.basicgenerator.lightningrod.03.name=Молниеотвод
+gt.blockmachines.basicgenerator.lightningrod.04.name=Молниеотвод II
+gt.blockmachines.basicgenerator.lightningrod.05.name=Молниеотвод III
+gt.blockmachines.basicgenerator.lightningrod.tooltip=Генерирует EU от ударов молнии

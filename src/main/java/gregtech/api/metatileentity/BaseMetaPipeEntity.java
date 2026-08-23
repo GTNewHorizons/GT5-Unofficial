@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -170,6 +171,12 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             }
             if (!isServerSide) {
                 handleBlockUpdateClient();
+
+                if (!mNeedsClientTick) {
+                    mWorkUpdate = mInventoryChanged = false;
+                    tryDisableTicking();
+                    return;
+                }
             } else {
                 if (mTickTimer > 10) {
                     if (!doCoverThings()) {
@@ -211,6 +218,15 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             }
         }
         mWorkUpdate = mInventoryChanged = false;
+    }
+
+    @Override
+    public void onUnload() {
+        if (canAccessData()) {
+            onCoverUnload();
+            mMetaTileEntity.onUnload();
+        }
+        super.onUnload();
     }
 
     public void updateConnections() {
@@ -302,7 +318,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         }
 
         if (isClientSide()) {
-            issueTextureUpdate();
             switch (aEventID) {
                 case GregTechTileClientEvents.CHANGE_COMMON_DATA -> mConnections = (byte) aValue;
                 case GregTechTileClientEvents.CHANGE_CUSTOM_DATA -> {
@@ -314,18 +329,19 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 }
                 case GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT -> setRedstoneOutput(aValue);
                 case GregTechTileClientEvents.DO_SOUND -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.doSound((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
                 case GregTechTileClientEvents.START_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.startSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
                 case GregTechTileClientEvents.STOP_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.stopSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
             }
+            issueTextureUpdate();
         }
         return true;
     }
@@ -348,12 +364,12 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             addProfilingInformation(tList);
             if (mMetaTileEntity != null) {
                 tList.add(
-                    GTUtility.translate(
+                    StatCollector.translateToLocal(
                         mMetaTileEntity.isAccessAllowed(aPlayer) ? "GT5U.scanner.debug.accessible"
                             : "GT5U.scanner.debug.not_accessible"));
             }
         }
-        if (joinedIc2Enet) tList.add(GTUtility.translate("GT5U.scanner.debug.ic2_enet"));
+        if (joinedIc2Enet) tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.ic2_enet"));
 
         return mMetaTileEntity != null ? mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList)
             : new ArrayList<>();
@@ -684,8 +700,9 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    protected final boolean hasValidMetaTileEntity() {
-        return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
+    void refreshMetaTileEntityValidity() {
+        mMetaTileEntityValid = mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
+        mNeedsClientTick = mMetaTileEntity == null || mMetaTileEntity.needsClientTick();
     }
 
     @Override
@@ -771,8 +788,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         mMetaTileEntity.markDirty();
                         GTUtility.sendChatTrans(
                             aPlayer,
-                            isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
-                                : "GT5U.chat.machine.processing.disable");
+                            isAllowedToWork() ? "GT5U.chat.pipe.processing.enable"
+                                : "GT5U.chat.pipe.processing.disable");
                         sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
                     }
                     return true;
@@ -796,15 +813,12 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         // logic handled internally
                         sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, -1);
                     } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
-                        mMetaTileEntity.markDirty();
-                        mStrongRedstone ^= wrenchingSide.flag;
                         GTUtility.sendChatTrans(
                             aPlayer,
-                            (mStrongRedstone & wrenchingSide.flag) != 0 ? "GT5U.chat.machine.redstone_output_set.strong"
+                            toggleStrongRedstone(wrenchingSide) ? "GT5U.chat.machine.redstone_output_set.strong"
                                 : "GT5U.chat.machine.redstone_output_set.weak",
                             new ChatComponentTranslation(GTUtility.getUnlocalizedSideName(wrenchingSide)));
                         sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
-                        issueBlockUpdate();
                     }
                     doEnetUpdate();
                     return true;
@@ -939,8 +953,9 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public void setMetaTileEntity(IMetaTileEntity aMetaTileEntity) {
+    public final void setMetaTileEntity(IMetaTileEntity aMetaTileEntity) {
         mMetaTileEntity = (MetaPipeEntity) aMetaTileEntity;
+        refreshMetaTileEntityValidity();
     }
 
     @Override

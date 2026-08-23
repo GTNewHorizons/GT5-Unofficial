@@ -1,13 +1,14 @@
 package gregtech.common;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugOrevein;
 import static gregtech.api.enums.GTValues.debugWorldGen;
 import static gregtech.api.enums.GTValues.oreveinAttempts;
 import static gregtech.api.enums.GTValues.oreveinMaxPlacementAttempts;
 import static gregtech.api.enums.GTValues.profileWorldGen;
 
+import java.lang.ref.WeakReference;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -22,24 +23,26 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizon.gtnhlib.hash.Fnv1a64;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.events.VeinGenerateEvent;
 import gregtech.api.net.GTPacketSendOregenPattern;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.worldgen.WorldgenQuery;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 public class GTWorldgenerator implements IWorldGenerator {
 
@@ -61,22 +64,59 @@ public class GTWorldgenerator implements IWorldGenerator {
             .inBetween(Materials.Aluminium)
             .sporadic(Materials.Aluminium));
 
-    public static Hashtable<Long, WorldgenGTOreLayer> validOreveins = new Hashtable<>(1024);
+    /**
+     * Caches the resolved layer and placement so all chunks of an oreseed use the same vein geometry.
+     * A null placement marks a cached empty vein that should fall back to NoOresInVein handling.
+     */
+    public record CachedOreVein(WorldgenGTOreLayer layer, long placementSeed,
+        @Nullable WorldgenGTOreLayer.VeinPlacement placement) {}
+
+    public static Long2ObjectOpenHashMap<CachedOreVein> validOreveins = new Long2ObjectOpenHashMap<>(1024);
     public boolean mIsGenerating = false;
-    public static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
+    private static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
+
+    /** Returns the oregen pattern used by the current world. */
+    public static OregenPattern getOregenPattern() {
+        return oregenPattern;
+    }
+
+    /** @deprecated Use {@link #getOregenPattern()}. */
+    @Deprecated
+    public static OregenPattern getClientOregenPattern() {
+        return getOregenPattern();
+    }
+
+    /** @deprecated Use {@link #getOregenPattern()}. */
+    @Deprecated
+    public static OregenPattern getServerOregenPattern() {
+        return getOregenPattern();
+    }
+
+    /** Called when the server syncs its pattern to the client; no-op when a local server is authoritative. */
+    public static void setClientOregenPattern(OregenPattern pattern) {
+        if (FMLCommonHandler.instance()
+            .getMinecraftServerInstance() == null) {
+            oregenPattern = pattern;
+        }
+    }
 
     public GTWorldgenerator() {
         // The weight here is irrelevant since the code in GameRegistryMixin forces GTWorldgenerator to the end of the
         // list.
         GameRegistry.registerWorldGenerator(this, Integer.MAX_VALUE);
         if (debugWorldGen) {
-            GTLog.out.println("GTWorldgenerator created");
+            GT_FML_LOGGER.debug("GTWorldgenerator created");
         }
     }
 
     @Override
     public void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator,
         IChunkProvider aChunkProvider) {
+
+        if (!aWorld.isRemote && aWorld.provider.dimensionId == 0) {
+            // Spawn search can populate chunks before WorldEvent.Load initializes the saved oregen pattern.
+            OregenPatternSavedData.ensureLoaded(aWorld);
+        }
 
         ModDimensionDef def = DimensionDef.getEffectiveDefForChunk(aWorld, aX, aZ);
 
@@ -93,16 +133,13 @@ public class GTWorldgenerator implements IWorldGenerator {
                 aChunkGenerator,
                 aChunkProvider,
                 aWorld.getBiomeGenForCoords(aX * 16 + 8, aZ * 16 + 8).biomeName));
-        if (debugWorldGen) GTLog.out.println(
-            "ADD WorldSeed:" + aWorld.getSeed()
-                + " DimName"
-                + aWorld.provider.getDimensionName()
-                + " chunk x:"
-                + aX
-                + " z:"
-                + aZ
-                + " SIZE: "
-                + PENDING_TASKS.size());
+        if (debugWorldGen) GT_FML_LOGGER.debug(
+            "ADD WorldSeed:{} DimName{} chunk x:{} z:{} SIZE: {}",
+            aWorld.getSeed(),
+            aWorld.provider.getDimensionName(),
+            aX,
+            aZ,
+            PENDING_TASKS.size());
 
         // Hack to prevent cascading worldgen lag
         if (!this.mIsGenerating) {
@@ -110,20 +147,16 @@ public class GTWorldgenerator implements IWorldGenerator {
 
             // Run a maximum of 5 chunks at a time through worldgen. Extra chunks get done later.
             for (int i = 0; i < Math.min(PENDING_TASKS.size(), 5); i++) {
-                WorldGenContainer task = PENDING_TASKS.remove(0);
+                WorldGenContainer task = PENDING_TASKS.removeFirst();
 
-                if (debugWorldGen) GTLog.out.println(
-                    "RUN WorldSeed:" + aWorld.getSeed()
-                        + " DimId"
-                        + aWorld.provider.dimensionId
-                        + " chunk x:"
-                        + task.mX
-                        + " z:"
-                        + task.mZ
-                        + " SIZE: "
-                        + PENDING_TASKS.size()
-                        + " i: "
-                        + i);
+                if (debugWorldGen) GT_FML_LOGGER.debug(
+                    "RUN WorldSeed:{} DimId{} chunk x:{} z:{} SIZE: {} i: {}",
+                    aWorld.getSeed(),
+                    aWorld.provider.dimensionId,
+                    task.mX,
+                    task.mZ,
+                    PENDING_TASKS.size(),
+                    i);
 
                 task.run();
             }
@@ -132,7 +165,7 @@ public class GTWorldgenerator implements IWorldGenerator {
     }
 
     public static boolean isOreChunk(int chunkX, int chunkZ) {
-        if (oregenPattern == OregenPattern.EQUAL_SPACING) {
+        if (getOregenPattern() == OregenPattern.EQUAL_SPACING) {
             return Math.floorMod(chunkX, 3) == 1 && Math.floorMod(chunkZ, 3) == 1;
         }
         // add next if statement here or convert to switch when expanding OregenPattern enum
@@ -145,9 +178,16 @@ public class GTWorldgenerator implements IWorldGenerator {
 
         private static final String NAME = "GregTech_OregenPattern";
         private static final String KEY = "oregenPattern";
+        private static WeakReference<World> loadedWorld = new WeakReference<>(null);
 
         public OregenPatternSavedData(String p_i2141_1_) {
             super(p_i2141_1_);
+        }
+
+        public static void ensureLoaded(World world) {
+            if (loadedWorld.get() != world) {
+                loadData(world);
+            }
         }
 
         public static void loadData(World world) {
@@ -169,6 +209,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 world.mapStorage.setData(OregenPatternSavedData.NAME, instance);
             }
             instance.markDirty();
+            loadedWorld = new WeakReference<>(world);
         }
 
         @SubscribeEvent
@@ -279,54 +320,22 @@ public class GTWorldgenerator implements IWorldGenerator {
 
             String dimensionName = DimensionDef.getDimensionName(this.mWorld);
 
-            if (debugOrevein) GTLog.out.println(
-                " Finding oreveins for oreveinSeed=" + oreveinSeed
-                    + " mX="
-                    + this.mX
-                    + " mZ="
-                    + this.mZ
-                    + " oreseedX="
-                    + oreseedX
-                    + " oreseedZ="
-                    + oreseedZ
-                    + " worldSeed="
-                    + this.mWorld.getSeed());
+            if (debugOrevein) GT_FML_LOGGER.debug(
+                " Finding oreveins for oreveinSeed={} mX={} mZ={} oreseedX={} oreseedZ={} worldSeed={}",
+                oreveinSeed,
+                this.mX,
+                this.mZ,
+                oreseedX,
+                oreseedZ,
+                this.mWorld.getSeed());
 
             // Search for a valid orevein for this dimension
 
             if (validOreveins.containsKey(oreveinSeed)) {
                 // Oreseed is located in the previously processed table
-                if (debugOrevein) GTLog.out
-                    .print(" Valid oreveinSeed=" + oreveinSeed + " validOreveins.size()=" + validOreveins.size() + " ");
-                WorldgenGTOreLayer tWorldGen = validOreveins.get(oreveinSeed);
-
-                // Reset RNG to only be based on oreseed X/Z and type of vein
-                oreveinRNG.setSeed(oreveinSeed ^ tWorldGen.mPrimary.getId());
-
-                int placementResult = tWorldGen.executeWorldgenChunkified(
-                    this.mWorld,
-                    oreveinRNG,
-                    this.mBiome,
-                    this.mX * 16,
-                    this.mZ * 16,
-                    oreseedX * 16,
-                    oreseedZ * 16,
-                    this.mChunkGenerator,
-                    this.mChunkProvider);
-
-                VeinGenerateEvent event = new VeinGenerateEvent(
-                    mWorld,
-                    mX,
-                    mZ,
-                    oreseedX,
-                    oreseedZ,
-                    tWorldGen,
-                    placementResult);
-                MinecraftForge.EVENT_BUS.post(event);
-
-                if (placementResult == WorldgenGTOreLayer.NO_OVERLAP && debugOrevein) {
-                    GTLog.out.println(" No overlap");
-                }
+                if (debugOrevein) GT_FML_LOGGER
+                    .debug(" Valid oreveinSeed={} validOreveins.size()={} ", oreveinSeed, validOreveins.size());
+                generateCachedVein(oreveinRNG, validOreveins.get(oreveinSeed), oreseedX, oreseedZ);
 
                 return;
             }
@@ -337,11 +346,12 @@ public class GTWorldgenerator implements IWorldGenerator {
                 int placementAttempts = 0;
                 boolean oreveinFound = false;
                 int i = 0;
+                CachedOreVein cachedOreVein = null;
 
                 // Used for outputting orevein weights and bins
                 /*
-                 * if( test==0 ) { test = 1; GTLog.out.println( "sWeight = " + GT_Worldgen_GT_Ore_Layer.sWeight );
-                 * for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList) { GTLog.out.println( (
+                 * if( test==0 ) { test = 1; GT_FML_LOGGER.debug( "sWeight = " + GT_Worldgen_GT_Ore_Layer.sWeight );
+                 * for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList) { GT_FML_LOGGER.debug( (
                  * tWorldGen).mWorldGenName + " mWeight = " + ( tWorldGen).mWeight + " mSize = " + (tWorldGen).mSize
                  * ); } }
                  */
@@ -365,16 +375,21 @@ public class GTWorldgenerator implements IWorldGenerator {
 
                     int placementResult = 0;
 
+                    // Resolve the exact placement seed using the first processed chunk, then cache it so every chunk
+                    // in this vein regenerates the same geometry.
+                    long placementSeed = Fnv1a64.hashStep(seed, oreLayer.mPrimary.getId());
+
                     try {
-                        seed = Fnv1a64.hashStep(seed, oreLayer.mPrimary.getId());
+                        veinRNG.setSeed(placementSeed);
+                        WorldgenGTOreLayer.VeinPlacement placement = oreLayer.resolveVeinPlacement(
+                            this.mWorld,
+                            veinRNG,
+                            this.mX * 16,
+                            this.mZ * 16,
+                            oreseedX * 16,
+                            oreseedZ * 16);
 
-                        veinRNG.setSeed(seed);
-
-                        // Adjust the seed so that this layer has a series of unique random numbers.
-                        // Otherwise multiple attempts at this same oreseed will get the same offset and X/Z values.
-                        // If an orevein failed, any orevein with the same minimum heights would fail as well. This
-                        // prevents that, giving each orevein a unique height each pass through here.
-                        placementResult = oreLayer.executeWorldgenChunkified(
+                        placementResult = oreLayer.testWorldgenChunkified(
                             this.mWorld,
                             veinRNG,
                             this.mBiome,
@@ -382,120 +397,121 @@ public class GTWorldgenerator implements IWorldGenerator {
                             this.mZ * 16,
                             oreseedX * 16,
                             oreseedZ * 16,
-                            this.mChunkGenerator,
-                            this.mChunkProvider);
+                            placement);
 
-                        VeinGenerateEvent event = new VeinGenerateEvent(
-                            mWorld,
-                            mX,
-                            mZ,
-                            oreseedX,
-                            oreseedZ,
-                            oreLayer,
-                            placementResult);
-                        MinecraftForge.EVENT_BUS.post(event);
+                        if (placementResult == WorldgenGTOreLayer.ORE_PLACED
+                            || placementResult == WorldgenGTOreLayer.NO_OVERLAP) {
+                            cachedOreVein = new CachedOreVein(oreLayer, placementSeed, placement);
+                        }
                     } catch (Exception e) {
-                        if (debugOrevein) GTLog.out.println(
-                            "Exception occurred on oreVein" + oreLayer
-                                + " oreveinSeed="
-                                + oreveinSeed
-                                + " mX="
-                                + this.mX
-                                + " mZ="
-                                + this.mZ
-                                + " oreseedX="
-                                + oreseedX
-                                + " oreseedZ="
-                                + oreseedZ);
-                        e.printStackTrace(GTLog.err);
+                        if (debugOrevein) GT_FML_LOGGER.debug(
+                            "Exception occurred on oreVein{} oreveinSeed={} mX={} mZ={} oreseedX={} oreseedZ={}",
+                            oreLayer,
+                            oreveinSeed,
+                            this.mX,
+                            this.mZ,
+                            oreseedX,
+                            oreseedZ);
+                        GT_FML_LOGGER.error(e);
                     }
 
                     switch (placementResult) {
                         case WorldgenGTOreLayer.ORE_PLACED -> {
-                            if (debugOrevein) GTLog.out.println(
-                                " Added near oreveinSeed=" + oreveinSeed
-                                    + " "
-                                    + oreLayer.mWorldGenName
-                                    + " tries at oremix="
-                                    + i
-                                    + " placementAttempts="
-                                    + placementAttempts
-                                    + " dimensionName="
-                                    + dimensionName);
-                            validOreveins.put(oreveinSeed, oreLayer);
+                            if (debugOrevein) GT_FML_LOGGER.debug(
+                                " Added near oreveinSeed={} {} tries at oremix={} placementAttempts={} dimensionName={}",
+                                oreveinSeed,
+                                oreLayer.mWorldGenName,
+                                i,
+                                placementAttempts,
+                                dimensionName);
+                            validOreveins.put(oreveinSeed, cachedOreVein);
                             oreveinFound = true;
                         }
 
                         // Should retry in this case until out of chances
                         case WorldgenGTOreLayer.NO_OVERLAP -> {
-                            if (debugOrevein) GTLog.out.println(
-                                " Added far oreveinSeed=" + oreveinSeed
-                                    + " "
-                                    + oreLayer.mWorldGenName
-                                    + " tries at oremix="
-                                    + i
-                                    + " placementAttempts="
-                                    + placementAttempts
-                                    + " dimensionName="
-                                    + dimensionName);
-                            validOreveins.put(oreveinSeed, oreLayer);
+                            if (debugOrevein) GT_FML_LOGGER.debug(
+                                " Added far oreveinSeed={} {} tries at oremix={} placementAttempts={} dimensionName={}",
+                                oreveinSeed,
+                                oreLayer.mWorldGenName,
+                                i,
+                                placementAttempts,
+                                dimensionName);
+                            validOreveins.put(oreveinSeed, cachedOreVein);
                             oreveinFound = true;
                         }
                         case WorldgenGTOreLayer.NO_OVERLAP_AIR_BLOCK -> {
-                            if (debugOrevein) GTLog.out.println(
-                                " No overlap and air block in test spot=" + oreveinSeed
-                                    + " "
-                                    + oreLayer.mWorldGenName
-                                    + " tries at oremix="
-                                    + i
-                                    + " placementAttempts="
-                                    + placementAttempts
-                                    + " dimensionName="
-                                    + dimensionName);
+                            if (debugOrevein) GT_FML_LOGGER.debug(
+                                " No overlap and air block in test spot={} {} tries at oremix={} placementAttempts={} dimensionName={}",
+                                oreveinSeed,
+                                oreLayer.mWorldGenName,
+                                i,
+                                placementAttempts,
+                                dimensionName);
                             // Should retry in this case until out of chances
                             placementAttempts++;
                         }
                     }
                 }
 
-                // Only add an empty orevein if unable to place a vein at the oreseed chunk.
-                if (!oreveinFound && this.mX == oreseedX && this.mZ == oreseedZ) {
-                    if (debugOrevein) GTLog.out.println(
-                        " Empty oreveinSeed=" + oreveinSeed
-                            + " mX="
-                            + this.mX
-                            + " mZ="
-                            + this.mZ
-                            + " oreseedX="
-                            + oreseedX
-                            + " oreseedZ="
-                            + oreseedZ
-                            + " tries at oremix="
-                            + i
-                            + " placementAttempts="
-                            + placementAttempts
-                            + " dimensionName="
-                            + dimensionName);
-                    validOreveins.put(oreveinSeed, noOresInVein);
+                if (oreveinFound) {
+                    generateCachedVein(oreveinRNG, cachedOreVein, oreseedX, oreseedZ);
+                    return;
                 }
+
+                // Only add an empty orevein once placement has failed from the first processed chunk.
+                if (debugOrevein) GT_FML_LOGGER.debug(
+                    " Empty oreveinSeed={} mX={} mZ={} oreseedX={} oreseedZ={} tries at oremix={} placementAttempts={} dimensionName={}",
+                    oreveinSeed,
+                    this.mX,
+                    this.mZ,
+                    oreseedX,
+                    oreseedZ,
+                    i,
+                    placementAttempts,
+                    dimensionName);
+                validOreveins.put(oreveinSeed, new CachedOreVein(noOresInVein, oreveinSeed, null));
             } else if (oreveinPercentageRoll >= dimensionDef.getOreVeinChance()) {
-                if (debugOrevein) GTLog.out.println(
-                    " Skipped oreveinSeed=" + oreveinSeed
-                        + " mX="
-                        + this.mX
-                        + " mZ="
-                        + this.mZ
-                        + " oreseedX="
-                        + oreseedX
-                        + " oreseedZ="
-                        + oreseedZ
-                        + " RNG="
-                        + oreveinPercentageRoll
-                        + " %="
-                        + dimensionDef.getOreVeinChance()
-                        + " dimensionName="
-                        + dimensionName);
-                validOreveins.put(oreveinSeed, noOresInVein);
+                if (debugOrevein) GT_FML_LOGGER.debug(
+                    " Skipped oreveinSeed={} mX={} mZ={} oreseedX={} oreseedZ={} RNG={} %={} dimensionName={}",
+                    oreveinSeed,
+                    this.mX,
+                    this.mZ,
+                    oreseedX,
+                    oreseedZ,
+                    oreveinPercentageRoll,
+                    dimensionDef.getOreVeinChance(),
+                    dimensionName);
+                validOreveins.put(oreveinSeed, new CachedOreVein(noOresInVein, oreveinSeed, null));
+            }
+        }
+
+        private void generateCachedVein(XSTR oreveinRNG, CachedOreVein cachedOreVein, int oreseedX, int oreseedZ) {
+            WorldgenGTOreLayer tWorldGen = cachedOreVein.layer();
+            oreveinRNG.setSeed(cachedOreVein.placementSeed());
+
+            int placementResult = tWorldGen.executeWorldgenChunkified(
+                this.mWorld,
+                oreveinRNG,
+                this.mBiome,
+                this.mX * 16,
+                this.mZ * 16,
+                oreseedX * 16,
+                oreseedZ * 16,
+                cachedOreVein.placement());
+
+            VeinGenerateEvent event = new VeinGenerateEvent(
+                mWorld,
+                mX,
+                mZ,
+                oreseedX,
+                oreseedZ,
+                tWorldGen,
+                placementResult);
+            MinecraftForge.EVENT_BUS.post(event);
+
+            if (placementResult == WorldgenGTOreLayer.NO_OVERLAP && debugOrevein) {
+                GT_FML_LOGGER.debug(" No overlap");
             }
         }
 
@@ -508,7 +524,7 @@ public class GTWorldgenerator implements IWorldGenerator {
             try {
                 for (GTWorldgen tWorldGen : GregTechAPI.sWorldgenList) {
                     /*
-                     * if (debugWorldGen) GTLog.out.println( "tWorldGen.mWorldGenName="+tWorldGen.mWorldGenName );
+                     * if (debugWorldGen) GT_FML_LOGGER.debug( "tWorldGen.mWorldGenName="+tWorldGen.mWorldGenName );
                      */
                     tWorldGen.executeWorldgen(
                         this.mWorld,
@@ -520,7 +536,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                         this.mChunkProvider);
                 }
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
 
             long stonegenTime = System.nanoTime();
@@ -535,7 +551,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 for (int z = chunkMinZ; z < chunkMaxZ; z++) {
                     // Determine if this X/Z is an orevein seed
                     if (isOreChunk(x, z)) {
-                        if (debugWorldGen) GTLog.out.println("Processing seed x=" + x + " z=" + z);
+                        if (debugWorldGen) GT_FML_LOGGER.debug("Processing seed x={} z={}", x, z);
                         generateVein(x, z);
                     }
                 }
@@ -550,13 +566,11 @@ public class GTWorldgenerator implements IWorldGenerator {
             long endTime = System.nanoTime();
 
             if (debugWorldGen || profileWorldGen) {
-                GTMod.GT_FML_LOGGER.info(
-                    " Oregen took " + (oregenTime - stonegenTime) / 1e3
-                        + "us Stonegen took "
-                        + (stonegenTime - startTime) / 1e3
-                        + "us Worldgen took "
-                        + (endTime - startTime) / 1e3
-                        + "us");
+                GT_FML_LOGGER.info(
+                    " Oregen took {}us Stonegen took {}us Worldgen took {}us",
+                    (oregenTime - stonegenTime) / 1e3,
+                    (stonegenTime - startTime) / 1e3,
+                    (endTime - startTime) / 1e3);
             }
         }
     }

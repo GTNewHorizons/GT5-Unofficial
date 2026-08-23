@@ -31,9 +31,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
@@ -128,6 +130,31 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
             return BWOreAdapter.INSTANCE
                 .getOreDrops(ThreadLocalRandom.current(), info, doSilktouch, doFortune ? fortune : 0);
         }
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX,
+        float subY, float subZ) {
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
+
+        return false;
+    }
+
+    @Override
+    public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+        super.onBlockClicked(world, x, y, z, player);
+
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
+    }
+
+    @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
+        super.onBlockHarvested(world, x, y, z, meta, player);
+
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
     }
 
     @Override

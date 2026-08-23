@@ -217,6 +217,7 @@ public enum Mods implements IMod {
     ToroHealth(ModIDs.TORO_HEALTH),
     Translocator(ModIDs.TRANSLOCATOR),
     UniversalSingularities(ModIDs.UNIVERSAL_SINGULARITIES),
+    VariableHorizons(ModIDs.VARIABLE_HORIZONS),
     VendingMachine(ModIDs.VENDING_MACHINE),
     VisualProspecting(ModIDs.VISUAL_PROSPECTING),
     WailaPlugins(ModIDs.WAILA_PLUGINS),
@@ -273,6 +274,7 @@ public enum Mods implements IMod {
     TinkersGregworks(ModIDs.TINKERS_GREGWORKS),
     UniLib(ModIDs.UNI_LIB),
     UniMixins(ModIDs.UNI_MIXINS),
+    UtilitiesInExcess(ModIDs.UTILITIES_IN_EXCESS),
     Witchery(ModIDs.WITCHERY),
     ZTones(ModIDs.Z_TONES),
 
@@ -558,6 +560,7 @@ public enum Mods implements IMod {
         public static final String TORO_HEALTH = "torohealthmod";
         public static final String TRANSLOCATOR = "Translocator";
         public static final String UNIVERSAL_SINGULARITIES = "universalsingularities";
+        public static final String VARIABLE_HORIZONS = "variablehorizons";
         public static final String VENDING_MACHINE = "vendingmachine";
         public static final String VISUAL_PROSPECTING = "visualprospecting";
         public static final String WAILA_PLUGINS = "wailaplugins";
@@ -618,6 +621,7 @@ public enum Mods implements IMod {
         public static final String TINKERS_GREGWORKS = "TGregworks";
         public static final String UNI_LIB = "unilib";
         public static final String UNI_MIXINS = "unimixins";
+        public static final String UTILITIES_IN_EXCESS = "utilitiesinexcess";
         public static final String WITCHERY = "witchery";
         public static final String Z_TONES = "Ztones";
 

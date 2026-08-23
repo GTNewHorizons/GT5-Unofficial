@@ -46,10 +46,12 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -59,7 +61,6 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTModHandler;
@@ -71,7 +72,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrillerBase>
-    implements IChunkLoader, ISurvivalConstructable {
+    implements IChunkLoader, ISurvivalConstructable, ICasingTextureProvider {
 
     private static final ItemStack MINING_PIPE = GTModHandler.getIC2Item("miningPipe", 0);
     private static final ItemStack MINING_PIPE_TIP = GTModHandler.getIC2Item("miningPipeTip", 0);
@@ -192,29 +193,22 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ORE_DRILL)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_DRILL_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTextureForId(casingTextureIndex) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_ORE_DRILL,
+            OVERLAY_FRONT_ORE_DRILL_GLOW,
+            OVERLAY_FRONT_ORE_DRILL_ACTIVE,
+            OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(casingTextureIndex);
     }
 
     @Override

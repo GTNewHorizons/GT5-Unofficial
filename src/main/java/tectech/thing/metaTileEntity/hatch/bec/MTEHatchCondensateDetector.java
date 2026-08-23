@@ -29,15 +29,17 @@ import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import tectech.mechanics.boseEinsteinCondensate.BECInventory;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECStorage;
 
 public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
 
     private Fluid condensateFilter;
     private long requestedAmount, actualAmount;
     private Comparison comparison = Comparison.EQ;
+    private MTEBECStorage becStorage;
 
     public MTEHatchCondensateDetector(int aID, String aName) {
-        super(aID, aName, VoltageIndex.UEV, null);
+        super(aID, aName, VoltageIndex.UIV, null);
     }
 
     protected MTEHatchCondensateDetector(MTEHatchCondensateDetector prototype) {
@@ -60,6 +62,20 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
             .addIcon(Textures.BlockIcons.OVERLAY_HATCH_NANITE_DETECTOR_GLOW)
             .glow()
             .build() };
+    }
+
+    public void bindBECStorage(MTEBECStorage becStorage) {
+        this.becStorage = becStorage;
+    }
+
+    public void refreshOutput() {
+        if (this.becStorage != null) {
+            if (this.becStorage.isValid()) {
+                this.becStorage.refreshContentForHatch();
+            } else {
+                this.becStorage = null;
+            }
+        }
     }
 
     public void updateAmount(BECInventory inv) {
@@ -104,6 +120,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         }
         comparison = Comparison.values()[aNBT == null ? 0 : aNBT.getInteger("comparison")];
         requestedAmount = aNBT == null ? 0 : aNBT.getLong("requestedAmount");
+        refreshOutput();
     }
 
     @Override
@@ -117,7 +134,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
     }
 
@@ -142,31 +159,36 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
             // spotless:off
             return super.createContentSection(panel, syncManager)
                 .child(SettingsPanel.builder()
-                    .setDividerPosition(60)
                     .addPhantomFluidSlot(
                         IKey.lang("GT5U.gui.text.bec-filter"),
                         () -> condensateFilter,
-                        f -> condensateFilter = f,
+                        f -> {
+                            condensateFilter = f;
+                            refreshOutput();
+                        },
                         null)
                     .addEnumCycleButton(
                         IKey.lang("GT5U.gui.text.bec-operation"),
                         Comparison.class,
                         () -> comparison,
-                        v -> comparison = v)
+                        v -> {
+                            comparison = v;
+                            refreshOutput();
+                        })
                     .addLongEditor(
                         IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> requestedAmount,
-                        l -> requestedAmount = (long) l,
-                        (panel1, syncManager1, widget) -> {
-                            widget.numbersLong(() -> 1L, () -> Long.MAX_VALUE);
-                        })
+                        l -> {
+                            requestedAmount = l;
+                            refreshOutput();
+                        },
+                        l -> Math.clamp(l, 1L, Long.MAX_VALUE))
                     .addReadout(
                         IKey.lang("GT5U.gui.text.bec-current"),
                         new LongSyncValue(() -> actualAmount),
                         amount -> IKey.str(NumberFormatUtil.formatFluid(amount)))
-                    .build(panel, syncManager)
-                    .widthRel(1)
-                    .height(getContentHolderHeight()));
+                    .build(panel, syncManager, getContentHolderHeight())
+                    .horizontalCenter());
             // spotless:on
         }
     }

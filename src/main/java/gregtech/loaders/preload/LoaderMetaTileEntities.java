@@ -2,6 +2,7 @@ package gregtech.loaders.preload;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.Forestry;
@@ -79,7 +80,6 @@ import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTLog;
 import gregtech.common.tileentities.automation.MTEChestBuffer;
 import gregtech.common.tileentities.automation.MTEFilter;
 import gregtech.common.tileentities.automation.MTEItemDistributor;
@@ -111,12 +111,14 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
+import gregtech.common.tileentities.machines.MTEHeatSensor;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
 import gregtech.common.tileentities.machines.basic.MTEDrawerFramer;
+import gregtech.common.tileentities.machines.basic.MTEIceCreamMachine;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
@@ -253,7 +255,6 @@ import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCo
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
-import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
@@ -10062,6 +10063,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTENameRemover(NAME_REMOVER.ID, "fix.name.remover", "Name Remover", 0).getStackForm(1L));
     }
 
+    private static void registerIceCreamMachine() {
+        ItemList.Ice_Cream_Machine.set(
+            new MTEIceCreamMachine(ICE_CREAM_MACHINE.ID, "gt.icecreammachine", "Ice Cream Machine", 2)
+                .getStackForm(1L));
+    }
+
     private static void registerModificationTable() {
         ItemList.ModificationTable.set(
             new MTEModificationTable(MODIFICATION_TABLE.ID, "modificationtable", "Modification Table")
@@ -10120,7 +10127,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Registering MetaTileEntities.");
+        GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntities.");
         registerMachineHull();
         registerTransformer();
         registerDynamoHatch();
@@ -10231,6 +10238,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerPrinter();
         registerOven();
         registerNameRemover();
+        registerIceCreamMachine();
         registerModificationTable();
         registerAirFilters();
         registerNacHatches();
@@ -10289,6 +10297,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
         ItemList.Hatch_Nanite.set(
             new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Bus", 9, 2048).getStackForm(1));
+        ItemList.Hatch_Nanite_Singularity.set(
+            new MTEHatchNanite(
+                HATCH_NANITE_SINGULARITY.ID,
+                "hatch.nanite.singularity",
+                "Singularity Nanite Containment Bus",
+                11,
+                Integer.MAX_VALUE).getStackForm(1));
         ItemList.Hatch_Catalyst_Bulk.set(
             new MTEHatchBulkCatalystHousing(
                 HATCH_CATALYST_BULK.ID,

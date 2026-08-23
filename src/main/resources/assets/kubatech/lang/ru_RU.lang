@@ -40,6 +40,7 @@ GT5U.gui.text.EIG_ic2glass=Недостаточный тир стекла!
 # info data
 ## general
 kubatech.infodata.running_mode=Работает в режиме:
+kubatech.infodata.running_mode.fmt=Работает в режиме: §a%s§r
 
 ## Extreme Entity Crusher
 kubatech.infodata.eec.current_mob=Текущий моб: §e%s
@@ -61,25 +62,35 @@ kubatech.infodata.eec.weapon.looting_level=Уровень добычи оруж�
 kubatech.infodata.eec.total_damage=Общий урон от атаки: §e%f
 
 ## Exreme Industrial Greenhouse
-kubatech.infodata.eig.running_mode.setup_mode.input=Режим настройки (загрузка)
-kubatech.infodata.eig.running_mode.setup_mode.output=Режим настройки (выгрузка)
+kubatech.infodata.eig.running_mode.setup_mode.input=Работает в режиме: §aРежим настройки (загрузка)§r
+kubatech.infodata.eig.running_mode.setup_mode.output=Работает в режиме: §aРежим настройки (выгрузка)§r
 kubatech.infodata.eig.uses.water=Использует %dЛ воды за операцию
 kubatech.infodata.eig.uses.weedex=Использует %dЛ/секунду Анти-сорняка 9000
-kubatech.infodata.eig.max_slots=Макс. слотов:
-kubatech.infodata.eig.used_slots=Используется слотов:
+kubatech.infodata.eig.max_slots=Макс. слотов: §a%d§r
+kubatech.infodata.eig.used_slots=Используется слотов: %s
 kubatech.infodata.bucket.humidity=Влажность:
 kubatech.infodata.bucket.humidity.on=Вкл.
 kubatech.infodata.bucket.humidity.off=Откл.
-kubatech.infodata.eig.too_many_types=Внутри слишком много видов семян для запуска!
-kubatech.infodata.eig.too_many_seeds=Внутри слишком много семян для запуска!
+kubatech.infodata.eig.too_many_types=§4Внутри слишком много видов семян для запуска!§r
+kubatech.infodata.eig.too_many_seeds=§4Внутри слишком много семян для запуска!§r
 
 ## Mega Industrial Apiary
-kubatech.infodata.mia.running_mode.input=Режим загрузки
-kubatech.infodata.mia.running_mode.output=Режим выгрузки
-kubatech.infodata.mia.running_mode.operating.normal=Режим работы (НОРМАЛЬНЫЙ)
-kubatech.infodata.mia.running_mode.operating.swarmer=Режим работы (РОЕНИЕ)
+kubatech.infodata.mia.running_mode.input=Работает в режиме: §6Загрузка§r
+kubatech.infodata.mia.running_mode.output=Работает в режиме: §6Выгрузка§r
+kubatech.infodata.mia.running_mode.operating.normal=Работает в режиме: §6Работа (НОРМАЛЬНЫЙ)§r
+kubatech.infodata.mia.running_mode.operating.swarmer=Работает в режиме: §6Работа (РОЕНИЕ)§r
 kubatech.infodata.mia.running_mode.bee_storage=Хранилище пчел (%s/%s):
 
+#HTGR
+kubatech.infodata.htgr.stored_fuel=§fХранимое топливо:
+kubatech.infodata.htgr.stored_fuel_entry=§f- §b%s §fx §6%s (%s, %s, %s)
+kubatech.infodata.htgr.burned_fuel=§fСожжённое топливо:
+kubatech.infodata.htgr.burned_fuel_entry=§f- §b%s §fx §6%s%% на выходе
+kubatech.infodata.htgr.helium_supply=§fЗапас гелия: §6%sЛ
+kubatech.infodata.htgr.coolant_per_tick=§fХладагент за тик: §6%sЛ
+kubatech.infodata.htgr.water_per_tick=§fВода за тик: §6%sЛ
+kubatech.infodata.htgr.fuel_supply=§fЗаполнение %s из %s
+kubatech.infodata.htgr.fuel_properties=§fСвойства: %s, %s, %s
 
 #Waila
 kubatech.waila.eec.mob_type=Вид существа: %s
@@ -190,3 +201,38 @@ kubatech.tooltip.tea_storage.0=Расширяет хранилище чая на
 kubatech.tooltip.tea_ingredient.0=Это ингредиент чая
 
 kubatech.tooltip.structure.flowers=Цветы
+
+kubatech.arcfurnace.mode.normal=Обычный
+kubatech.arcfurnace.mode.blast=Доменный
+kubatech.arcfurnace.mode.ore=Рудный
+kubatech.multiblock.DEFusionCrafter.machine_type=Термоядерный крафтер, DEFC
+kubatech.multiblock.DEFusionCrafter.fusion_casing=Термоядерный корпус
+kubatech.multiblock.DEFusionCrafter.fusion_machine_casing=Корпус термоядерного реактора
+kubatech.multiblock.DEFusionCrafter.footer=§cИзначальная жемчужина расходуется в рецепте контроллера!
+
+kubatech.multiblock.ExtremeEntityCrusher.machine_type=Электроспаунер, EEC
+kubatech.multiblock.ExtremeEntityCrusher.steel_frame_box=Стальной каркас
+kubatech.multiblock.ExtremeEntityCrusher.diamond_spike=Алмазные шипы
+
+kubatech.multiblock.ExtremeIndustrialGreenhouse.machine_type=Растениеводческая ферма, EIG
+kubatech.multiblock.ExtremeIndustrialGreenhouse.sterile_farm_casing=Корпус стерильной фермы
+kubatech.multiblock.ExtremeIndustrialGreenhouse.frame_box=Вольфрамостальной каркас
+kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt=Удобренная земля (RandomThings)
+kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp=Фиолетовая лампа (ProjectRed Illumination, обычная или инвертированная)
+kubatech.multiblock.ExtremeIndustrialGreenhouse.footer=Земля вспахивается, а вода появляется бесплатно после формирования структуры
+
+
+kubatech.multiblock.MegaIndustrialApiary.machine_type=Мега пасека, Mapiary
+kubatech.multiblock.MegaIndustrialApiary.dirt_or_grass=Земля или трава
+kubatech.multiblock.MegaIndustrialApiary.wood_plank=Деревянная доска
+kubatech.multiblock.MegaIndustrialApiary.water=Вода
+kubatech.multiblock.MegaIndustrialApiary.alveary_fan=Улей-вентилятор
+kubatech.multiblock.MegaIndustrialApiary.alveary_heater=Улей-обогреватель
+kubatech.multiblock.MegaIndustrialApiary.alveary_hygroregulator=Улей-гигрорегулятор
+kubatech.multiblock.MegaIndustrialApiary.alveary=Улей
+kubatech.multiblock.MegaIndustrialApiary.alveary_stabiliser=Улей-стабилизатор
+kubatech.multiblock.MegaIndustrialApiary.apiary=Пасека
+kubatech.multiblock.MegaIndustrialApiary.wood_slab=Деревянная плита
+kubatech.multiblock.MegaIndustrialApiary.flower=Цветок (зависит от пчелы)
+kubatech.multiblock.MegaIndustrialApiary.any_casing_luv=Любой блок корпуса (LuV+)
+kubatech.multiblock.MegaIndustrialApiary.footer=Используйте обычную или дистиллированную воду, размещается вручную

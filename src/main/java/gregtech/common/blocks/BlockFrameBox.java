@@ -81,21 +81,19 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         return new ItemStack(this, amount, meta & MATERIAL_MASK);
     }
 
-    public static String getLocalizedNameFormat(Materials aMaterial) {
-        return switch (aMaterial.mName) {
-            case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
-            case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
-            default -> "%material" + " Frame Box";
-        };
-    }
-
     @Override
     public String getUnlocalizedName() {
         return mUnlocalizedName;
     }
 
     public static String getLocalizedName(Materials materials) {
-        return OrePrefixes.getLocalizedNameForItem(getLocalizedNameFormat(materials), materials);
+        return switch (materials.mName) {
+            case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> OrePrefixes
+                .getLocalizedNameForItem("%material Infused Stone", materials);
+            case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> OrePrefixes
+                .getLocalizedNameForItem("%material", materials);
+            default -> OrePrefixes.frameGt.getLocalizedNameForItem(materials);
+        };
     }
 
     public static String getLocalizedName(int meta) {
@@ -414,9 +412,8 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         drops.add(getStackForm(1, metadata & MATERIAL_MASK));
         // If there is one, grab all attached covers and drop them
         if (tempTe != null) {
-            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-                ItemStack cover = tempTe.getCoverItemAtSide(direction);
-                if (cover != null) drops.add(cover);
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (tempTe.hasCoverAtSide(side)) tempTe.dropCover(side, side);
             }
         }
         // Make sure to clear the temporary TE

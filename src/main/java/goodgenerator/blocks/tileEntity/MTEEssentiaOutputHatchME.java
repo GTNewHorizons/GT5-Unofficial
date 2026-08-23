@@ -52,7 +52,7 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
         super.readFromNBT(aNBT);
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
     }
 
     @Override

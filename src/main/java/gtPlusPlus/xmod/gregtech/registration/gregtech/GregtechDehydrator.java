@@ -18,10 +18,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -41,7 +41,7 @@ public class GregtechDehydrator {
                 .setName("machine.dehydrator.tier.00", "Basic Dehydrator I")
                 .setTier(2)
                 .setDescription(new String[] { "This dehydrates your Grapes into Raisins.", GTPPCore.GT_Tooltip.get() })
-                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setRecipes(RecipeMaps.chemicalDehydratorRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
                 .setOverlays("DEHYDRATOR")
@@ -55,7 +55,7 @@ public class GregtechDehydrator {
                 .setName("machine.dehydrator.tier.01", "Basic Dehydrator II")
                 .setTier(3)
                 .setDescription(new String[] { "This dehydrates your Grapes into Raisins.", GTPPCore.GT_Tooltip.get() })
-                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setRecipes(RecipeMaps.chemicalDehydratorRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
                 .setOverlays("DEHYDRATOR")
@@ -72,7 +72,7 @@ public class GregtechDehydrator {
                 .setDescription(
                     new String[] { "A hangover is the way your body reacts to dehydration.",
                         GTPPCore.GT_Tooltip.get() })
-                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setRecipes(RecipeMaps.chemicalDehydratorRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
                 .setOverlays("DEHYDRATOR")
@@ -88,7 +88,7 @@ public class GregtechDehydrator {
                 .setDescription(
                     new String[] { "A hangover is the way your body reacts to dehydration.",
                         GTPPCore.GT_Tooltip.get() })
-                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setRecipes(RecipeMaps.chemicalDehydratorRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
                 .setOverlays("DEHYDRATOR")
@@ -103,7 +103,7 @@ public class GregtechDehydrator {
                 .setTier(6)
                 .setDescription(
                     new String[] { "You could probably make space icecream with this..", GTPPCore.GT_Tooltip.get() })
-                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setRecipes(RecipeMaps.chemicalDehydratorRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
                 .setOverlays("DEHYDRATOR")
@@ -118,7 +118,7 @@ public class GregtechDehydrator {
                 .setTier(7)
                 .setDescription(
                     new String[] { "You can definitely make space icecream with this..", GTPPCore.GT_Tooltip.get() })
-                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setRecipes(RecipeMaps.chemicalDehydratorRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
                 .setOverlays("DEHYDRATOR")

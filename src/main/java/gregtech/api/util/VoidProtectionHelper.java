@@ -193,7 +193,8 @@ public class VoidProtectionHelper {
                 // flag
                 ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(
                     machine.getOutputBusses(),
-                    protectExcessItem);
+                    protectExcessItem,
+                    true);
 
                 maxParallel = ejectionHelper.ejectItems(maxItemOutputs, maxParallel);
 
@@ -204,10 +205,13 @@ public class VoidProtectionHelper {
             }
         }
 
-        if (protectExcessFluid && fluidOutputs.length > 0 && !machine.canDumpFluidToME()) {
-            maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
-            if (maxParallel <= 0) {
-                isFluidFull = true;
+        if (protectExcessFluid && fluidOutputs.length > 0) {
+            List<GTUtility.FluidId> outputIds = GTDataUtils.mapToList(fluidOutputs, GTUtility.FluidId::create);
+            if (!machine.canDumpFluidToME(outputIds)) {
+                maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
+                if (maxParallel <= 0) {
+                    isFluidFull = true;
+                }
             }
         }
     }
@@ -234,7 +238,10 @@ public class VoidProtectionHelper {
 
         // Pass the VP helper's protectExcessFluid flag to the ejection helper instead of using the machine's
         // flag
-        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(machine.getOutputHatches(), protectExcessFluid);
+        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(
+            machine.getOutputHatches(fluidOutputs),
+            protectExcessFluid,
+            true);
 
         return ejectionHelper.ejectFluids(maxFluidOutputs, maxParallel);
     }

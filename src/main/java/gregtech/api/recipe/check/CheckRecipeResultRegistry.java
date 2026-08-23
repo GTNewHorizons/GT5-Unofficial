@@ -123,6 +123,8 @@ public final class CheckRecipeResultRegistry {
 
     public static final CheckRecipeResult LOW_ENERGY = SimpleCheckRecipeResult.ofFailure("gtnhlanth.toolowenergy");
 
+    public static final CheckRecipeResult HIGH_ENERGY = SimpleCheckRecipeResult.ofFailure("gtnhlanth.toohighenergy");
+
     /**
      * Board Module has no fluid stored
      */
@@ -180,6 +182,11 @@ public final class CheckRecipeResultRegistry {
     @Nonnull
     public static CheckRecipeResult insufficientStartupPower(int required) {
         return new ResultInsufficientStartupPower(required);
+    }
+
+    @Nonnull
+    public static CheckRecipeResult insufficientStartupPower(int required, int machineTier) {
+        return new ResultInsufficientStartupPower(required, machineTier);
     }
 
     @Nonnull

@@ -3,6 +3,7 @@ package gregtech.overclock;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.stream.Stream;
 
@@ -597,5 +598,173 @@ class GT_OverclockCalculator_UnitTest {
         calculator.setCurrentParallel(maxParallel)
             .calculate();
         assertEquals(expectedEUt, calculator.getConsumption());
+    }
+
+    @Test
+    void laserOverclockAppliesEscalatingPenalty() {
+        // 30 EU/t, 2 regular OCs then 2 laser OCs at 4.3x and 4.6x
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(30)
+            .setEUt(10_000)
+            .setDuration(100)
+            .setLaserOC(true)
+            .setMaxRegularOverclocks(2)
+            .calculate();
+        assertEquals((int) (100 / GTUtility.powInt(2, 4)), calculator.getDuration(), messageDuration);
+        assertEquals(
+            (long) Math.ceil(30 * GTUtility.powInt(4, 2) * 4.3 * 4.6),
+            calculator.getConsumption(),
+            messageEUt);
+        assertEquals(9495, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void maxRegularOverclocksShiftsMixTowardsLaserOverclocks() {
+        OverclockCalculator laserOnly = new OverclockCalculator().setRecipeEUt(VP[4])
+            .setEUt(V[9])
+            .setDuration(100)
+            .setLaserOC(true)
+            .setMaxRegularOverclocks(0)
+            .calculate();
+        OverclockCalculator mixed = new OverclockCalculator().setRecipeEUt(VP[4])
+            .setEUt(V[9])
+            .setDuration(100)
+            .setLaserOC(true)
+            .setMaxRegularOverclocks(3)
+            .calculate();
+
+        // Same total overclocks, but laser ones cost strictly more EU
+        assertEquals((int) (100 / GTUtility.powInt(2, 4)), laserOnly.getDuration(), messageDuration);
+        assertEquals((int) (100 / GTUtility.powInt(2, 4)), mixed.getDuration(), messageDuration);
+        assertEquals(967_670, laserOnly.getConsumption(), messageEUt);
+        assertEquals(528_384, mixed.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void noLaserOverclockWithoutPowerHeadroom() {
+        OverclockCalculator tooLittle = new OverclockCalculator().setRecipeEUt(1000)
+            .setEUt(4299)
+            .setDuration(100)
+            .setLaserOC(true)
+            .setMaxRegularOverclocks(0)
+            .calculate();
+        assertEquals(100, tooLittle.getDuration(), messageDuration);
+        assertEquals(1000, tooLittle.getConsumption(), messageEUt);
+
+        OverclockCalculator justEnough = new OverclockCalculator().setRecipeEUt(1000)
+            .setEUt(4400)
+            .setDuration(100)
+            .setLaserOC(true)
+            .setMaxRegularOverclocks(0)
+            .calculate();
+        assertEquals(50, justEnough.getDuration(), messageDuration);
+        assertEquals(4300, justEnough.getConsumption(), messageEUt);
+    }
+
+    static Stream<Arguments> laserSubLvRecipeParameters() {
+        return Stream.of(
+            // The 32 EU/t floor applies to the tier ratio only, never to the consumption base
+            Arguments.arguments(8, 131_072L),
+            Arguments.arguments(16, 262_144L),
+            Arguments.arguments(30, 491_520L));
+    }
+
+    @ParameterizedTest
+    @MethodSource("laserSubLvRecipeParameters")
+    void laserOverclockDoesNotOverchargeSubLvRecipes(int recipeEUt, long expectedEUt) {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipeEUt)
+            .setEUt(V[8])
+            .setDuration(100)
+            .setLaserOC(true)
+            .calculate();
+        assertEquals(recipeEUt * GTUtility.powInt(4, 7), calculator.getConsumption(), messageEUt);
+        assertEquals(expectedEUt, calculator.getConsumption(), messageEUt);
+    }
+
+    static Stream<Arguments> laserUnderOneTickParameters() {
+        return Stream.of(
+            Arguments.arguments(12.5, 328.0),
+            Arguments.arguments(25.0, 164.0),
+            Arguments.arguments(100.0, 41.0),
+            Arguments.arguments(1.25, 3277.0));
+    }
+
+    @ParameterizedTest
+    @MethodSource("laserUnderOneTickParameters")
+    void laserOverclockUnderOneTickMatchesNonLaserClosedForm(double durationPerSlice, double expectedMultiplier) {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(30)
+            .setEUt(V[9] * 1024)
+            .setLaserOC(true)
+            .setMaxRegularOverclocks(8)
+            .setDurationUnderOneTickSupplier(() -> durationPerSlice);
+        assertEquals(expectedMultiplier, calculator.calculateMultiplierUnderOneTick());
+        assertEquals(
+            Math.ceil(GTUtility.powInt(2, 12) / durationPerSlice),
+            calculator.calculateMultiplierUnderOneTick());
+    }
+
+    static Stream<Arguments> laserSubTwoTickParameters() {
+        return Stream.of(
+            // neededOverclocks goes negative/zero here, which must not clamp the multiplier
+            Arguments.arguments(0.5, 4096.0),
+            Arguments.arguments(1.0, 2048.0),
+            Arguments.arguments(1.25, 1639.0));
+    }
+
+    @ParameterizedTest
+    @MethodSource("laserSubTwoTickParameters")
+    void laserOverclockHandlesSubTwoTickDuration(double durationPerSlice, double expectedMultiplier) {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(30)
+            .setEUt(V[9] * 256)
+            .setLaserOC(true)
+            .setMaxRegularOverclocks(8)
+            .setDurationUnderOneTickSupplier(() -> durationPerSlice);
+        assertEquals(expectedMultiplier, calculator.calculateMultiplierUnderOneTick());
+        assertEquals(
+            Math.ceil(GTUtility.powInt(2, 11) / durationPerSlice),
+            calculator.calculateMultiplierUnderOneTick());
+    }
+
+    static Stream<Arguments> laserWithinBudgetParameters() {
+        return Stream.of(
+            Arguments.arguments(30L, V[9] * 1024, 8),
+            Arguments.arguments(VP[4], V[9], 4),
+            Arguments.arguments(1920L, V[10] * 4096, 6),
+            Arguments.arguments(VP[1], V[12], 0),
+            Arguments.arguments(500_000L, V[11] * 64, 12));
+    }
+
+    @ParameterizedTest
+    @MethodSource("laserWithinBudgetParameters")
+    void laserOverclockNeverExceedsMachinePower(long recipeEUt, long machineEUt, int maxRegularOverclocks) {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipeEUt)
+            .setEUt(machineEUt)
+            .setDuration(100)
+            .setLaserOC(true)
+            .setMaxRegularOverclocks(maxRegularOverclocks)
+            .calculate();
+        assertTrue(
+            calculator.getConsumption() <= machineEUt,
+            "Consumption " + calculator.getConsumption() + " exceeds machine power " + machineEUt);
+    }
+
+    @Test
+    void laserOverclockUnderOneTickMatchesAdvAssemblyLineUsage() {
+        final int slices = 8;
+        final int recipeDuration = 200;
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(30)
+            .setDurationUnderOneTickSupplier(() -> (double) recipeDuration / slices)
+            .setParallel(1)
+            .setEUt(V[9] * 1024 / slices)
+            .setLaserOC(true)
+            .setMaxRegularOverclocks(8);
+
+        int maxParallel = GTUtility.safeInt((long) calculator.calculateMultiplierUnderOneTick(), 0);
+        assertEquals(82, maxParallel);
+
+        calculator.setCurrentParallel(maxParallel)
+            .calculate();
+        assertEquals(1, calculator.getDuration(), messageDuration);
+        assertEquals(190_556_406L, calculator.getConsumption(), messageEUt);
+        assertTrue(calculator.getConsumption() <= V[9] * 1024 / slices);
     }
 }

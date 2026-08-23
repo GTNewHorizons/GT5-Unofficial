@@ -27,7 +27,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
@@ -112,8 +111,7 @@ public class GTStructureUtility {
                 boolean isWater = isWater(block);
                 boolean isFlowing = isFlowingWater(block, world, x, y, z);
                 if (isWater && !isFlowing) return true;
-                if (allowFlowing && isFlowing) return true;
-                return false;
+                return allowFlowing && isFlowing;
             }
 
             @Override
@@ -894,18 +892,92 @@ public class GTStructureUtility {
         return chainAllGlasses(-1, (te, t) -> {}, te -> -1);
     }
 
+    private static ItemStack capGlassStack(ItemStack stack) {
+        ItemStack wrapper = new ItemStack(stack.getItem(), stack.stackSize, stack.getItemDamage());
+        wrapper.stackSize = Math.min(stack.stackSize, GlassTier.getMaxTierIndex());
+        wrapper.setTagCompound(stack.getTagCompound());
+        return wrapper;
+    }
+
     /** support all Bart, Botania, Ic2, Thaumcraft glasses for multiblock structure **/
     public static <T> IStructureElement<T> chainAllGlasses(int notSet, BiConsumer<T, Integer> setter,
         Function<T, Integer> getter) {
-        return GTStructureChannels.BOROGLASS.use(
-            lazy(
-                t -> ofBlocksTiered(
-                    GlassTier::getGlassBlockTier,
-                    GlassTier.getGlassList(),
-                    notSet,
-                    setter,
-                    getter,
-                    Collections.singletonList("GT5U.structure.tiered_glass"))));
+        return triggerItemTransform(
+            GTStructureUtility::capGlassStack,
+            GTStructureChannels.BOROGLASS.use(lazy(t -> chainAllGlassesImpl(notSet, setter, getter))));
+    }
+
+    private static <T> IStructureElement<T> chainAllGlassesImpl(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        IStructureElement<T> inner = ofBlocksTiered(
+            GlassTier::getGlassBlockTier,
+            GlassTier.getGlassList(),
+            notSet,
+            setter,
+            getter);
+        return new ProxyStructureElement<>(inner) {
+
+            @Override
+            public List<String> getDescription(T context) {
+                int tier = getter.apply(context);
+                if (tier == notSet) {
+                    return Collections.singletonList("GT5U.structure.tiered_glass");
+                }
+                return Collections.singletonList(
+                    GlassTier.getTierLangKeys()
+                        .get(tier));
+            }
+        };
+    }
+
+    /**
+     * Apply transformation on the trigger item stack before passing to the underlying structure element.
+     */
+    public static <T> IStructureElement<T> triggerItemTransform(Function<ItemStack, ItemStack> transform,
+        IStructureElement<T> backing) {
+        return new IStructureElement<>() {
+
+            public boolean check(T t, World world, int x, int y, int z) {
+                return backing.check(t, world, x, y, z);
+            }
+
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return backing.couldBeValid(t, world, x, y, z, transform.apply(trigger));
+            }
+
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return backing.spawnHint(t, world, x, y, z, transform.apply(trigger));
+            }
+
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return backing.placeBlock(t, world, x, y, z, transform.apply(trigger));
+            }
+
+            @Nullable
+            @Override
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                return backing.getBlocksToPlace(t, world, x, y, z, transform.apply(trigger), env);
+            }
+
+            @Deprecated
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                return backing.survivalPlaceBlock(t, world, x, y, z, transform.apply(trigger), s, actor, chatter);
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                return backing.survivalPlaceBlock(t, world, x, y, z, transform.apply(trigger), env);
+            }
+
+            @Nullable
+            @Override
+            public List<String> getDescription(T context) {
+                return backing.getDescription(context);
+            }
+        };
     }
 
     private static Integer getItemPipeCasingTier(Block block, int meta) {
@@ -1146,7 +1218,7 @@ public class GTStructureUtility {
                     .addAll(
                         IntStream.rangeClosed(0, 15)
                             .boxed()
-                            .collect(Collectors.toList()));
+                            .toList());
             } else {
                 map.computeIfAbsent(block, k -> new ArrayList<>())
                     .add(meta);
@@ -1286,6 +1358,11 @@ public class GTStructureUtility {
         @Override
         public long count(T t) {
             return proxiedHatch.count(t);
+        }
+
+        @Override
+        public boolean matchesHatch(IMetaTileEntity mte) {
+            return proxiedHatch.matchesHatch(mte);
         }
     }
 }

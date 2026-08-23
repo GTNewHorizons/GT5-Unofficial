@@ -3,8 +3,11 @@ package gregtech.common.gui.modularui.cover;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MAX;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MIN;
 
+import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -16,12 +19,11 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
 
@@ -59,9 +61,9 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
         return Flow.row()
             .child(
                 new ParentWidget<>().child(
-                    new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
+                    new EnumSeriesBuilder<>(TransferMode.class).value(ioModeSyncValue)
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
-                        .build())
+                        .build(GuiAxis.X))
                     .width(80))
             .child(
                 IKey.lang("gt.interact.desc.fluid_regulator.ExpImp")
@@ -74,12 +76,12 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
             .child(
                 new ParentWidget<>()
                     .child(
-                        new EnumRowBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
+                        new EnumSeriesBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
                             .overlay(
                                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                                 GTGuiTextures.OVERLAY_BUTTON_USE_PROCESSING_STATE,
                                 GTGuiTextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-                            .build())
+                            .build(GuiAxis.X))
                     .width(80))
             .child(
                 IKey.lang("gt.interact.desc.fluid_regulator.Conditional")
@@ -135,9 +137,9 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
     }
 
     private @NotNull String getAverageSpeedText() {
-        return GTUtility.translate("gt.interact.desc.fluid_regulator.Average") + " "
+        return StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Average") + " "
             + numberFormat.format(cover.getTickRateForUi() == 0 ? 0 : cover.getSpeed() * 20d / cover.getTickRateForUi())
             + " "
-            + GTUtility.translate("gt.interact.desc.fluid_regulator.L_Sec");
+            + StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.L_Sec");
     }
 }

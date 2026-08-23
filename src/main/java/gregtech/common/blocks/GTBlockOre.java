@@ -41,6 +41,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
@@ -208,26 +209,23 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         Materials mat = getMaterial(metadata);
         boolean small = isSmallOre(metadata);
 
-        ITexture[] textures;
-
-        if (stoneType == null) stoneType = StoneType.Stone;
+        final ITextureBuilder fgBuilder;
 
         if (mat != null) {
-            ITexture iTexture = TextureFactory.builder()
-                .addIcon(
-                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
-                        : OrePrefixes.ore.getTextureIndex()])
+            fgBuilder = TextureFactory.builder()
+                .addIcon(mat.mIconSet.getOreTexture(stoneType == null ? StoneType.Stone : stoneType, small))
                 .setRGBA(mat.mRGBa)
-                .stdOrient()
-                .build();
-
-            textures = new ITexture[] { stoneType.getTexture(0), iTexture };
+                .glow(mat.hasGlowingOre());
         } else {
-            textures = new ITexture[] { stoneType.getTexture(0), TextureFactory.builder()
-                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.getTextureIndex()])
-                .stdOrient()
-                .build() };
+            fgBuilder = TextureFactory.builder()
+                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.getTextureIndex()]);
         }
+
+        final ITexture bg = (stoneType == null ? StoneType.Stone : stoneType).getTexture(0);
+        final ITexture fg = fgBuilder.stdOrient()
+            .build();
+
+        final ITexture[] textures = new ITexture[] { bg, fg };
 
         return new ITexture[][] { textures, textures, textures, textures, textures, textures };
     }
@@ -365,7 +363,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         float subY, float subZ) {
         if (!world.isRemote) {
             if (player.capabilities.isCreativeMode && player.isSneaking() && player.getHeldItem() == null) {
-                try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
+                try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
                     info.isNatural = !info.isNatural;
 
                     world.setBlockMetadataWithNotify(

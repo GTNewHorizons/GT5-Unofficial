@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -51,6 +50,7 @@ import bartworks.API.ITileHasDifferentTextureSides;
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
 import bartworks.common.configs.Configuration;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionConfig;
@@ -350,13 +350,10 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " "
-                + formatNumber(Configuration.singleBlocks.mbWaterperSec)
-                + StatCollector.translateToLocalFormatted(
-                    "tooltip.tile.waterpump.1.name",
-                    PollutionConfig.pollutionHeatedWaterPumpSecond),
-            StatCollector.translateToLocal("tooltip.tile.waterpump.2.name") };
+        return new String[] { IGregTechDeviceInformation.encode(
+            "tooltip.tile.waterpump.fmt",
+            formatNumber(Configuration.singleBlocks.mbWaterperSec),
+            PollutionConfig.pollutionHeatedWaterPumpSecond), "tooltip.tile.waterpump.2.name" };
     }
 
     @Override

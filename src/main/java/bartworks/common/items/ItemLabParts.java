@@ -13,6 +13,7 @@
 
 package bartworks.common.items;
 
+import java.awt.Color;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -23,16 +24,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
-
+import bartworks.API.enums.BioCultureEnum;
+import bartworks.API.enums.BioDataEnum;
 import bartworks.MainMod;
-import bartworks.common.loaders.BioItemList;
-import bartworks.util.BWColorUtil;
-import bartworks.util.BWUtil;
+import bartworks.util.BioCulture;
+import bartworks.util.BioData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemLabParts extends SimpleSubItemClass {
+
+    public static final int PETRI_DISH = 0;
+    public static final int DNA_FLASK = 1;
+    public static final int PLASMID_CELL = 2;
+    public static final int DETERGENT = 3;
+    public static final int AGAROSE = 4;
+    public static final int PLASMA_MEMBRANE = 5;
 
     public ItemLabParts(String[] tex) {
         super(tex);
@@ -45,13 +52,14 @@ public class ItemLabParts extends SimpleSubItemClass {
         if (itemStack == null || itemStack.getTagCompound() == null) return EnumRarity.common;
 
         return switch (itemStack.getItemDamage()) {
-            case 0 -> BWUtil.getRarityFromByte(
+            case PETRI_DISH -> BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(
                 itemStack.getTagCompound()
-                    .getCompoundTag("DNA")
-                    .getByte("Rarity"));
-            case 1, 2 -> BWUtil.getRarityFromByte(
+                    .getString("Name"),
+                BioCultureEnum.NullBioCulture).rarity;
+            case DNA_FLASK, PLASMID_CELL -> BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(
                 itemStack.getTagCompound()
-                    .getByte("Rarity"));
+                    .getString("Name"),
+                BioDataEnum.NullBioData).rarity;
             default -> EnumRarity.common;
         };
     }
@@ -59,11 +67,12 @@ public class ItemLabParts extends SimpleSubItemClass {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        if (stack.getItemDamage() == 0) {
-            final int[] colors = ItemStackNBT.getIntArray(stack, "Color");
-            if (colors != null && colors.length > 0) {
-                return BWColorUtil.getColorFromRGBArray(colors);
-            }
+        if (stack.getItemDamage() == PETRI_DISH && stack.getTagCompound() != null) {
+            Color color = BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(
+                stack.getTagCompound()
+                    .getString("Name"),
+                BioCultureEnum.NullBioCulture).color;
+            return color.getRGB();
         }
         return super.getColorFromItemStack(stack, p_82790_2_);
     }
@@ -74,19 +83,19 @@ public class ItemLabParts extends SimpleSubItemClass {
 
         if (itemStack.getTagCompound() == null) {
             switch (itemStack.getItemDamage()) {
-                case 0:
+                case PETRI_DISH:
                     list.add(StatCollector.translateToLocal("tooltip.labparts.0.name"));
                     break;
-                case 1:
+                case DNA_FLASK:
                     list.add(StatCollector.translateToLocal("tooltip.labparts.1.name"));
                     break;
-                case 2:
+                case PLASMID_CELL:
                     list.add(StatCollector.translateToLocal("tooltip.labparts.2.name"));
                     break;
-                case 3:
+                case DETERGENT:
                     list.add(StatCollector.translateToLocal("tooltip.labparts.3.name"));
                     break;
-                case 4:
+                case AGAROSE:
                     list.add(StatCollector.translateToLocal("tooltip.labparts.4.name"));
                     break;
                 default:
@@ -96,19 +105,29 @@ public class ItemLabParts extends SimpleSubItemClass {
             return;
         }
 
+        String name = itemStack.getTagCompound()
+            .getString("Name");
         switch (itemStack.getItemDamage()) {
-            case 0:
-                list.add(getTooltip(5, itemStack));
-                if (!itemStack.getTagCompound()
-                    .getBoolean("Breedable")) {
+            case PETRI_DISH:
+                BioCulture culture = BioCultureEnum.LOOKUPS_BY_NAME
+                    .getOrDefault(name, BioCultureEnum.NullBioCulture).bioCulture;
+                list.add(
+                    StatCollector.translateToLocalFormatted("tooltip.labparts.5.name", culture.getLocalisedName()));
+                if (!culture.isBreedable()) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
-            case 1:
-                list.add(getTooltip(7, itemStack));
+            case DNA_FLASK:
+                BioData DNAFlask = BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioDataEnum.NullBioData)
+                    .getBioData();
+                list.add(
+                    StatCollector.translateToLocalFormatted("tooltip.labparts.7.name", DNAFlask.getLocalisedName()));
                 break;
-            case 2:
-                list.add(getTooltip(8, itemStack));
+            case PLASMID_CELL:
+                BioData plasmidCell = BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioDataEnum.NullBioData)
+                    .getBioData();
+                list.add(
+                    StatCollector.translateToLocalFormatted("tooltip.labparts.8.name", plasmidCell.getLocalisedName()));
                 break;
             default:
                 break;
@@ -118,9 +137,9 @@ public class ItemLabParts extends SimpleSubItemClass {
 
     @Override
     public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
-        list.addAll(BioItemList.getAllPetriDishes());
-        list.addAll(BioItemList.getAllDNASampleFlasks());
-        list.addAll(BioItemList.getAllPlasmidCells());
+        list.addAll(BioCultureEnum.getAllPetriDishes());
+        list.addAll(BioDataEnum.getAllDNASampleFlasks());
+        list.addAll(BioDataEnum.getAllPlasmidCells());
         super.getSubItems(item, creativeTabs, list);
     }
 

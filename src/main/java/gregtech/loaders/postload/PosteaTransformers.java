@@ -14,13 +14,13 @@ import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.common.blocks.BlockFrameBox;
-import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
 
@@ -36,10 +36,23 @@ public class PosteaTransformers implements Runnable {
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
+        registerIC2BlocksTransformer();
+        registerBartworksLabPartTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
         return tag;
+    }
+
+    private void registerIC2BlocksTransformer() {
+        // These are used to convert ic2 blocks to their new counterparts.
+        // I.e. Reinforced glass, iron fences, etc.
+
+        BlockReplacementManager.addSimpleReplacement("IC2:blockAlloyGlass", GregTechAPI.sBlockGlass1, 10);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockRubber", ItemList.PadBouncy.getBlock(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
     }
 
     private void registerFrameboxTransformers() {
@@ -87,7 +100,7 @@ public class PosteaTransformers implements Runnable {
             if (!GregTechAPI.sGeneratedMaterials[indexInMaterialList].hasMetalItems()) {
                 return false;
             }
-            Item frameItem = GameRegistry.findItem(Mods.GregTech, "gt.blockframes");
+            Item frameItem = Item.getItemFromBlock(GregTechAPI.sBlockFrames);
             int itemId = Item.getIdFromItem(frameItem);
             // Change this item into the correct frame item (make sure to keep amount)
             tag.setInteger("id", itemId);
@@ -98,14 +111,10 @@ public class PosteaTransformers implements Runnable {
 
     // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
     private void registerProgrammedCircuitTransformers() {
-        ItemStackReplacementManager.addSimpleReplacement(
-            "miscutils:item.BioRecipeSelector",
-            GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
-            true);
-        ItemStackReplacementManager.addSimpleReplacement(
-            "miscutils:item.T3RecipeSelector",
-            GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
-            true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
     }
 
     private void registerPotassiumHydroxideTransformer() {
@@ -268,5 +277,21 @@ public class PosteaTransformers implements Runnable {
             }
             return false;
         });
+    }
+
+    private static void registerBartworksLabPartTransformer() {
+        ItemStackReplacementManager.addTransformationHandler("bartworks:BioLabParts", (name, nbt) -> {
+            // ensure it has the extra tag
+            if (nbt.hasKey("tag")) {
+                var tag = nbt.getCompoundTag("tag");
+                // skip special NEI recipe item for BioLab Clonal Cellular Synthesis
+                if (tag.hasKey("NEI")) return false;
+                for (String key : tag.func_150296_c()) {
+                    if (!key.equals("Name")) tag.removeTag(key);
+                }
+            }
+            return true;
+        });
+
     }
 }
