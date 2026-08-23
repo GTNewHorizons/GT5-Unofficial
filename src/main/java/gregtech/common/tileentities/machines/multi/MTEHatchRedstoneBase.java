@@ -126,19 +126,4 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
         openGui(aPlayer);
         return true;
     }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            redstoneSignal[i] = aNBT.getByte("signal" + i);
-        }
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            aNBT.setByte("signal" + i, redstoneSignal[i]);
-        }
-    }
 }
