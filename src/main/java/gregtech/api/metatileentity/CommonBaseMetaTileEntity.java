@@ -484,16 +484,30 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         }
     }
 
+    public final void writeDescriptionBuffer(ByteBuf buffer) {
+        tileWriteToStream(buffer);
+        IMetaTileEntity imte = getMetaTileEntity();
+        if (imte != null) {
+            imte.writeToStream(buffer);
+        }
+    }
+
+    public final void readDescriptionBuffer(ByteBuf buffer) {
+        // Receive and create the mte first if it doesn't exist
+        tileReadFromStream(buffer);
+        IMetaTileEntity mte = getMetaTileEntity();
+        if (mte != null) {
+            mte.readFromStream(buffer);
+            mte.onClientSoundStateChanged();
+        }
+        issueTextureUpdate();
+    }
+
     @Override
     public final Packet getDescriptionPacket() {
         ByteBuf buffer = PooledByteBufAllocator.DEFAULT.directBuffer();
         try {
-            tileWriteToStream(buffer);
-            IMetaTileEntity imte = getMetaTileEntity();
-            if (imte != null) {
-                imte.writeToStream(buffer);
-            }
-
+            writeDescriptionBuffer(buffer);
             byte[] result = new byte[buffer.readableBytes()];
             buffer.readBytes(result);
 
@@ -505,26 +519,15 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         }
     }
 
-    public final void onDescriptionArray(byte[] array) {
-        ByteBuf buffer = Unpooled.wrappedBuffer(array);
-        try {
-            // Receive and create the mte first if it doesn't exist
-            tileReadFromStream(buffer);
-            IMetaTileEntity mte = getMetaTileEntity();
-            if (mte != null) {
-                mte.readFromStream(buffer);
-                mte.onClientSoundStateChanged();
-            }
-            issueTextureUpdate();
-        } finally {
-            buffer.release();
-        }
-    }
-
     @Override
     public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         NBTTagCompound nbt = pkt.func_148857_g();
-        onDescriptionArray(nbt.getByteArray("X"));
+        ByteBuf buffer = Unpooled.wrappedBuffer(nbt.getByteArray("X"));
+        try {
+            readDescriptionBuffer(buffer);
+        } finally {
+            buffer.release();
+        }
     }
 
     @Override
