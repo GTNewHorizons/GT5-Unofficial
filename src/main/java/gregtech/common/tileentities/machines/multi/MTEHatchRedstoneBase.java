@@ -37,6 +37,11 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
         return true;
     }
 
+    @Override
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return false;
+    }
+
     /**
      * This method changes the redstone signal of the hatch. If directional is true, it only affects the side it's
      * facing while turning all other faces off, but if directional is false, it affects all faces.
@@ -47,11 +52,10 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
         if (supportsInvertedSignal()) {
             on = on ^ inverted;
         }
-        byte signal = (byte) (on?15:0);
+        byte signal = (byte) (on ? 15 : 0);
         if (!directional) {
             setAllFacesRedstoneSignal(signal);
-        }
-        else{
+        } else {
             setFacingSideRedstoneSignal(signal);
         }
     }
@@ -62,7 +66,7 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
         }
     }
 
-    private void setFacingSideRedstoneSignal(byte signal){
+    private void setFacingSideRedstoneSignal(byte signal) {
         if (this.getBaseMetaTileEntity() == null) return;
         int facingSide = getBaseMetaTileEntity().getFrontFacing()
             .ordinal();
