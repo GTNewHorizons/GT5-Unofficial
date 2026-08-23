@@ -31,6 +31,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
@@ -65,6 +66,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolboxSlot;
@@ -246,6 +248,10 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(ItemList.ToolBox.getItem(), new ToolboxRenderer());
 
         MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
+
+        MinecraftForgeClient.registerItemRenderer(
+            ItemList.Ice_Cream_Machine.getItem(),
+            (IItemRenderer) GregTechAPI.METATILEENTITIES[MetaTileEntityIDs.ICE_CREAM_MACHINE.ID]);
 
         final MechanicalArmorRenderer mechanicalArmorRenderer = new MechanicalArmorRenderer();
         MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Helmet.getItem(), mechanicalArmorRenderer);

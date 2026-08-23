@@ -1371,8 +1371,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     @Override
     public void doExplosion(long aAmount) {
         if (canAccessData()) {
+            // Keep a reference: a chained explosion can invalidate this TE mid-call and null out mMetaTileEntity.
+            final MetaTileEntity tMetaTileEntity = mMetaTileEntity;
             // This is only for Electric Machines
-            if (GregTechAPI.sMachineWireFire && mMetaTileEntity.isElectric()) {
+            if (GregTechAPI.sMachineWireFire && tMetaTileEntity.isElectric()) {
                 try {
                     mReleaseEnergy = true;
                     IEnergyConnected.Util.emitEnergyToNetwork(V[5], Math.max(1, getStoredEU() / V[5]), this);
@@ -1380,7 +1382,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             }
             mReleaseEnergy = false;
             // Normal Explosion Code
-            mMetaTileEntity.onExplosion();
+            tMetaTileEntity.onExplosion();
             if (GTMod.proxy.mExplosionItemDrop) {
                 for (int i = 0; i < this.getSizeInventory(); i++) {
                     final ItemStack tItem = this.getStackInSlot(i);
@@ -1391,7 +1393,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 }
             }
             Pollution.addPollution((TileEntity) this, GTMod.proxy.mPollutionOnExplosion);
-            mMetaTileEntity.doExplosion(aAmount);
+            tMetaTileEntity.doExplosion(aAmount);
         }
     }
 
