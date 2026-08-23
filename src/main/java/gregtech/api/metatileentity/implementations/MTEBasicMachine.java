@@ -1205,7 +1205,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         long maxEu = tag.getLong("MaxEu");
         int euT = tag.getInteger("eut");
         boolean isActive = tag.getBoolean("isActiveSingleBlock");
-        String euText = formatNumber(eu) + " / " + formatNumber(maxEu);
+        String euText = StatCollector.translateToLocalFormatted(
+            "GT5U.waila.machine.eu_bar",
+            maxEu > 0 ? Math.clamp((int) ((double) eu / maxEu * 100), 0, 100) : 0);
+
         List<ItemStack> inputItems = new ArrayList<>();
         List<ItemStack> outputItems = new ArrayList<>();
         FluidStack inputFluid;
@@ -1231,15 +1234,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             Comparator.<ItemStack, Boolean>comparing(stack -> !(stack.getItem() instanceof ItemIntegratedCircuit))
                 .thenComparingInt(ItemStack::getItemDamage));
 
-        if (!isSteampowered() && maxEu > 0) {
-            currenttip.add(
-                TTRenderBar.create(
-                    euText,
-                    ColorUtils.euBarTop.getColor(),
-                    ColorUtils.euBarBottom.getColor(),
-                    (double) eu / maxEu));
-        }
-
         if (tag.getBoolean("stutteringSingleBlock")) {
             currenttip.add(translateToLocal(getWailaStutteringLine(tag)));
         } else {
@@ -1250,7 +1244,18 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         tag.getBoolean("isAllowedToWorkSingleBlock"),
                         tag.getInteger("maxProgressSingleBlock"),
                         tag.getInteger("progressSingleBlock")));
+            }
 
+            if (!isSteampowered()) {
+                currenttip.add(
+                    TTRenderBar.create(
+                        euText,
+                        ColorUtils.euBarTop.getColor(),
+                        ColorUtils.euBarBottom.getColor(),
+                        (double) eu / maxEu));
+            }
+
+            if (isActive) {
                 if (!isSteampowered()) {
                     if (euT > 0) {
                         double exactAmps = GTUtility.getExactAmperageForTier(euT, (byte) getInputTier());
@@ -1270,12 +1275,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                                 GTUtility.getColoredTierNameFromTier((byte) getOutputTier())));
                     }
                 } else {
-                    if (euT > 0) {
-                        currenttip
-                            .add(translateToLocalFormatted("GT5U.waila.machine.use_steam", formatNumber(euT * 40L)));
-                    } else if (euT < 0) {
-                        currenttip
-                            .add(translateToLocalFormatted("GT5U.waila.machine.use_steam", formatNumber(-euT * 40L)));
+                    if (euT != 0) {
+                        currenttip.add(
+                            translateToLocalFormatted(
+                                "GT5U.waila.machine.use_steam",
+                                formatNumber(Math.abs(euT) * 40L)));
                     }
                 }
             }

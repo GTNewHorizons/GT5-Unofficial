@@ -19,10 +19,10 @@ public class ColorUtils {
 
         networkAnalyzerLabelBackground = color.argb("networkAnalyzerLabelBackground", "0x80000000"),
 
-        progressBarTop                 = color.argb("progressBarTop", "0xFFFF0000"),
-        progressBarBottom              = color.argb("progressBarBottom", "0xFF8B0000"),
+        progressBarTop                 = color.argb("progressBarTop", "0xFF69BF3D"),
+        progressBarBottom              = color.argb("progressBarBottom", "0xFF4B8230"),
 
-        euBarTop                       = color.argb("euBarTop", "0xFFF5E32C"),
-        euBarBottom                    = color.argb("euBarBottom", "0xFF9C7E00");
+        euBarTop                       = color.argb("euBarTop", "0xFFE6C920"),
+        euBarBottom                    = color.argb("euBarBottom", "0xFF8A6E00");
     // spotless:on
 }
