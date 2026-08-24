@@ -446,8 +446,9 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
 
                 transfer.setMaxTotalTransferred(toTransfer);
             } else {
-                transfer.setFilter(stack -> stack.getStackSize() >= mTargetStackSize
-                    && hasTargetRoomForTransfer(igte, stack.toStack()));
+                transfer.setFilter(
+                    stack -> stack.getStackSize() >= mTargetStackSize
+                        && hasTargetRoomForTransfer(igte, stack.toStack()));
                 transfer.setMaxItemsPerTransfer(mTargetStackSize);
             }
         }
@@ -499,10 +500,10 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
 
         if (existing == null) {
             return maxSlotCap;
-        } else if (existing.isItemEqual(stackToTransfer)
-            && ItemStack.areItemStackTagsEqual(existing, stackToTransfer)) {
-            return Math.max(0, maxSlotCap - existing.stackSize);
-        }
+        } else
+            if (existing.isItemEqual(stackToTransfer) && ItemStack.areItemStackTagsEqual(existing, stackToTransfer)) {
+                return Math.max(0, maxSlotCap - existing.stackSize);
+            }
         return 0;
     }
 
