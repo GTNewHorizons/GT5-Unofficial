@@ -52,12 +52,9 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-fusion-computer-mk4"),
                 ImmutableMap.of(
-                    "power",
-                    formatNumber(getSingleHatchPower()),
-                    "capacity",
-                    formatNumber(capableStartupCanonical() / 32 / M),
-                    "tier",
-                    GTUtility.getColoredTierNameFromTier((byte) tier())))
+                    "power", formatNumber(getSingleHatchPower()),
+                    "capacity", formatNumber(capableStartupCanonical() / 32 / M),
+                    "tier", GTUtility.getColoredTierNameFromTier((byte) tier())))
             .addSupportAny()
             .beginStructureBlock(47, 7, 47, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_center_4th_layer"))
@@ -65,12 +62,7 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
             .addCasing("560", new ItemStack(getCoilBlock(), 1, getCoilMeta()).getDisplayName(), false)
             .addCasing("128", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameBox()), false)
             .addCasing("63-93", new ItemStack(getGlassBlock(), 1, getGlassMeta()).getDisplayName(), false)
-            .addEnergyHatch(
-                "1-32",
-                StatCollector.translateToLocalFormatted(
-                    "gt.mbtt.structure.specific_casings_on_each_curve",
-                    GTValues.VN[energyHatchTier()]),
-                2)
+            .addEnergyHatch("1-32", StatCollector.translateToLocalFormatted("gt.mbtt.structure.specific_casings_on_each_curve", GTValues.VN[energyHatchTier()]), 2)
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.specific_glass_on_each_side"), 1)
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.specific_glass_on_each_side"), 1)
             .addStructureInfo("")
