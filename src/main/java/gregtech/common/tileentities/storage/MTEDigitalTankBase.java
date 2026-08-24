@@ -407,8 +407,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             } else if ((sideDirection == ForgeDirection.NORTH || sideDirection == ForgeDirection.SOUTH
                 || sideDirection == ForgeDirection.WEST || sideDirection == ForgeDirection.EAST)
                 && (baseMetaTileEntity == null || !baseMetaTileEntity.hasCoverAtSide(sideDirection))) {
-                return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
-                    TextureFactory.of(OVERLAY_SCREEN_GLASS) };
+                return new ITexture[] { TextureFactory.of(OVERLAY_SCREEN_GLASS) };
             } else return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
         }
         return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_QTANK),

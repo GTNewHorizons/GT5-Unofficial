@@ -47,7 +47,6 @@ public final class DigitalStorageRenderer {
     private static final double COVER_DIF = 0.001D;
     private static final double FLUID_MIN = 3 / 16.0;
     private static final double FLUID_MAX = 13 / 16.0;
-    private static final double FLUID_DEPTH = 0.001D;
     private static final double TEXT_DEPTH = 0.002D;
     private static final int FLUID_LEVELS = 64;
     private static final double[] GLASS_BOX = { 1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0,
@@ -235,11 +234,7 @@ public final class DigitalStorageRenderer {
                         (color & 0xFF) / 255.0F,
                         1.0F);
                     TextureUtils.bindAtlas(fluid.getSpriteNumber());
-                    for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
-                        if (isTankWindowSide(side, outputFacing, base)) {
-                            renderTankFluidFace(x, y, z, side, icon, fillLevel);
-                        }
-                    }
+                    renderTankFluidVolume(x, y, z, icon, fillLevel);
                 }
             }
 
@@ -255,8 +250,7 @@ public final class DigitalStorageRenderer {
         }
     }
 
-    private static void renderTankFluidFace(double x, double y, double z, ForgeDirection side,
-        IIcon icon, int fillLevel) {
+    private static void renderTankFluidVolume(double x, double y, double z, IIcon icon, int fillLevel) {
         double fill = fillLevel / (double) FLUID_LEVELS;
         double top = FLUID_MIN + (FLUID_MAX - FLUID_MIN) * fill;
         double uMin = icon.getMinU();
@@ -266,38 +260,69 @@ public final class DigitalStorageRenderer {
         double vTop = vMax - (vMax - vMin) * fill;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        switch (side) {
-            case NORTH -> {
-                double face = z - FLUID_DEPTH;
-                tessellator.addVertexWithUV(x + FLUID_MIN, y + FLUID_MIN, face, uMin, vMax);
-                tessellator.addVertexWithUV(x + FLUID_MAX, y + FLUID_MIN, face, uMax, vMax);
-                tessellator.addVertexWithUV(x + FLUID_MAX, y + top, face, uMax, vTop);
-                tessellator.addVertexWithUV(x + FLUID_MIN, y + top, face, uMin, vTop);
-            }
-            case SOUTH -> {
-                double face = z + 1 + FLUID_DEPTH;
-                tessellator.addVertexWithUV(x + FLUID_MAX, y + FLUID_MIN, face, uMin, vMax);
-                tessellator.addVertexWithUV(x + FLUID_MIN, y + FLUID_MIN, face, uMax, vMax);
-                tessellator.addVertexWithUV(x + FLUID_MIN, y + top, face, uMax, vTop);
-                tessellator.addVertexWithUV(x + FLUID_MAX, y + top, face, uMin, vTop);
-            }
-            case WEST -> {
-                double face = x - FLUID_DEPTH;
-                tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MAX, uMin, vMax);
-                tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MIN, uMax, vMax);
-                tessellator.addVertexWithUV(face, y + top, z + FLUID_MIN, uMax, vTop);
-                tessellator.addVertexWithUV(face, y + top, z + FLUID_MAX, uMin, vTop);
-            }
-            case EAST -> {
-                double face = x + 1 + FLUID_DEPTH;
-                tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MIN, uMin, vMax);
-                tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MAX, uMax, vMax);
-                tessellator.addVertexWithUV(face, y + top, z + FLUID_MAX, uMax, vTop);
-                tessellator.addVertexWithUV(face, y + top, z + FLUID_MIN, uMin, vTop);
-            }
-            default -> {}
-        }
+
+        addFluidFaceNorth(tessellator, x, y, z, top, uMin, uMax, vTop, vMax);
+        addFluidFaceSouth(tessellator, x, y, z, top, uMin, uMax, vTop, vMax);
+        addFluidFaceWest(tessellator, x, y, z, top, uMin, uMax, vTop, vMax);
+        addFluidFaceEast(tessellator, x, y, z, top, uMin, uMax, vTop, vMax);
+
+        addFluidFaceBottom(tessellator, x, y, z, uMin, uMax, vMin, vMax);
+        addFluidFaceTop(tessellator, x, y, z, top, uMin, uMax, vMin, vMax);
         tessellator.draw();
+    }
+
+    private static void addFluidFaceNorth(Tessellator tessellator, double x, double y, double z, double top,
+        double uMin, double uMax, double vTop, double vMax) {
+        double face = z + FLUID_MIN;
+        tessellator.addVertexWithUV(x + FLUID_MIN, y + FLUID_MIN, face, uMin, vMax);
+        tessellator.addVertexWithUV(x + FLUID_MAX, y + FLUID_MIN, face, uMax, vMax);
+        tessellator.addVertexWithUV(x + FLUID_MAX, y + top, face, uMax, vTop);
+        tessellator.addVertexWithUV(x + FLUID_MIN, y + top, face, uMin, vTop);
+    }
+
+    private static void addFluidFaceSouth(Tessellator tessellator, double x, double y, double z, double top,
+        double uMin, double uMax, double vTop, double vMax) {
+        double face = z + FLUID_MAX;
+        tessellator.addVertexWithUV(x + FLUID_MAX, y + FLUID_MIN, face, uMin, vMax);
+        tessellator.addVertexWithUV(x + FLUID_MIN, y + FLUID_MIN, face, uMax, vMax);
+        tessellator.addVertexWithUV(x + FLUID_MIN, y + top, face, uMax, vTop);
+        tessellator.addVertexWithUV(x + FLUID_MAX, y + top, face, uMin, vTop);
+    }
+
+    private static void addFluidFaceWest(Tessellator tessellator, double x, double y, double z, double top,
+        double uMin, double uMax, double vTop, double vMax) {
+        double face = x + FLUID_MIN;
+        tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MAX, uMin, vMax);
+        tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MIN, uMax, vMax);
+        tessellator.addVertexWithUV(face, y + top, z + FLUID_MIN, uMax, vTop);
+        tessellator.addVertexWithUV(face, y + top, z + FLUID_MAX, uMin, vTop);
+    }
+
+    private static void addFluidFaceEast(Tessellator tessellator, double x, double y, double z, double top,
+        double uMin, double uMax, double vTop, double vMax) {
+        double face = x + FLUID_MAX;
+        tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MIN, uMin, vMax);
+        tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MAX, uMax, vMax);
+        tessellator.addVertexWithUV(face, y + top, z + FLUID_MAX, uMax, vTop);
+        tessellator.addVertexWithUV(face, y + top, z + FLUID_MIN, uMin, vTop);
+    }
+
+    private static void addFluidFaceBottom(Tessellator tessellator, double x, double y, double z, double uMin,
+        double uMax, double vMin, double vMax) {
+        double face = y + FLUID_MIN;
+        tessellator.addVertexWithUV(x + FLUID_MIN, face, z + FLUID_MIN, uMin, vMin);
+        tessellator.addVertexWithUV(x + FLUID_MAX, face, z + FLUID_MIN, uMax, vMin);
+        tessellator.addVertexWithUV(x + FLUID_MAX, face, z + FLUID_MAX, uMax, vMax);
+        tessellator.addVertexWithUV(x + FLUID_MIN, face, z + FLUID_MAX, uMin, vMax);
+    }
+
+    private static void addFluidFaceTop(Tessellator tessellator, double x, double y, double z, double top,
+        double uMin, double uMax, double vMin, double vMax) {
+        double face = y + top;
+        tessellator.addVertexWithUV(x + FLUID_MIN, face, z + FLUID_MAX, uMin, vMax);
+        tessellator.addVertexWithUV(x + FLUID_MAX, face, z + FLUID_MAX, uMax, vMax);
+        tessellator.addVertexWithUV(x + FLUID_MAX, face, z + FLUID_MIN, uMax, vMin);
+        tessellator.addVertexWithUV(x + FLUID_MIN, face, z + FLUID_MIN, uMin, vMin);
     }
 
     public static void renderChestStack(MTEDigitalChestBase mte, double x, double y, double z,
