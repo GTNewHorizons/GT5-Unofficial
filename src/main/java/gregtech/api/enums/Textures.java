@@ -120,6 +120,7 @@ public class Textures {
 
             OVERLAY_SCHEST = createOptional("OVERLAY_SCHEST"),
             OVERLAY_SCHEST_GLOW = createOptional("OVERLAY_SCHEST_GLOW"),
+            OVERLAY_SCREEN_GLASS = createOptional("OVERLAY_SCREEN_GLASS"),
             OVERLAY_STANK = createOptional("OVERLAY_STANK"),
             OVERLAY_STANK_GLOW = createOptional("OVERLAY_STANK_GLOW"),
 
