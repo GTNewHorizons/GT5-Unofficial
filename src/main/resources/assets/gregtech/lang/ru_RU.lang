@@ -1695,7 +1695,12 @@ gt.mbtt.structure.back_center_casing=Сзади посередине
 gt.mbtt.structure.front_left_2nd_layer=Спереди слева, 2-й слой
 gt.mbtt.structure.interior_and_top_center=Внутри структуры и сверху по центру
 gt.mbtt.structure.any_bottom_edge_casing=Любой блок корпуса по нижнему краю
+gt.mbtt.structure.middle_center_4th_layer=По центру, 4-й слой
+gt.mbtt.structure.specific_casings_on_each_curve=Определённые корпуса на каждой дуге (%s+)
+gt.mbtt.structure.specific_glass_on_each_side=Определённое стекло с каждой стороны
+gt.mbtt.structure.supports_crafting_input_buffers=Поддерживает входные буферы для крафта
 gt.mbtt.machine_type.restorer=Восстановитель
+gt.mbtt.machine_type.fusion_reactor=Термоядерный реактор
 
 gt.mbtt.machine_type.spacetime_manipulator=Пространственно-временной манипулятор, EOH
 GT5U.MBTT.HatchInfo=Любой %s

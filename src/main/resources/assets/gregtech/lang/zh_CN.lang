@@ -42,6 +42,12 @@ GT5U.MBTT.Air=必须留空
 
 GT5U.MBTT.subchannel=子信道 §6%s§r 将被用于 %s
 
+gt.mbtt.structure.middle_center_4th_layer=正中心，第4层
+gt.mbtt.structure.specific_casings_on_each_curve=指定机械方块处（%s+）
+gt.mbtt.structure.specific_glass_on_each_side=每侧的指定玻璃处
+gt.mbtt.structure.supports_crafting_input_buffers=支持样板输入总成
+gt.mbtt.machine_type.fusion_reactor=聚变反应堆
+
 GT5U.cracker.io_side=输入/输出仓必须处在对侧！
 
 GT5U.turbine.running.true=涡轮运行
