@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -101,7 +102,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GorgeModuleProcessingLogic() {
 
             @NotNull
             @Override
@@ -120,8 +121,7 @@ public class MTEExoticModule extends MTEBaseModule {
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (!recipeInProgress || recipeRegenerated) {
-                    powerForRecipe = BigInteger.valueOf(getSafeProcessingVoltage())
-                        .multiply(BigInteger.valueOf(recipe.mDuration * actualParallel));
+                    powerForRecipe = predictDrainedEnergy(recipe).multiply(BigInteger.valueOf(actualParallel));
                     if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
                         setPlasmaRecipe(null);
                         return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
@@ -164,6 +164,7 @@ public class MTEExoticModule extends MTEBaseModule {
                     .multiply(BigInteger.valueOf(duration * actualParallel));
 
                 if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
+                    stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
 
