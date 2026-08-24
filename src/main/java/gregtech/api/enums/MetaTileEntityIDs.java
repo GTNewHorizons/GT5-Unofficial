@@ -2083,7 +2083,30 @@ public enum MetaTileEntityIDs {
     Hatch_Air_Intake_Atmospheric(32765),
     GT_Framer_LV(32050),
     GT_Framer_MV(32051),
-    GT_Framer_HV(32052);
+    GT_Framer_HV(32052),
+
+    // Voidcraft (EoH rework, parallel machine to the legacy Eye of Harmony)
+    // NOTE: id allocation constraints:
+    // - ids must stay <= 32765 (GregTechAPI.METATILEENTITIES has Short.MAX_VALUE - 1 entries; 32766+ throws
+    // ArrayIndexOutOfBoundsException in CommonMetaTileEntity).
+    // - 32737..32760 are taken at runtime by goodgenerator's dynamic wire/cable registration
+    // (WireLumiium 32737+11, WireSignalium 32749+11 in CrackRecipeAdder.registerWire).
+    // Hence these live right after the GT_Framer block (32050-32052), in the large free gap below 32737.
+    VoidcraftAssembler(32053),
+    VoidcraftGateway(32054),
+    VoidcraftStorageBay(32055),
+    VoidcraftExtractor(32056),
+    UnstableSolarSystem(32057),
+    // Voidcraft component blocks (machine-block MTEs, one per VoidcraftComponent, same order):
+    VoidcraftComponent_Controller(32058),
+    VoidcraftComponent_Engine(32059),
+    VoidcraftComponent_Utility(32060),
+    VoidcraftComponent_CargoBay(32061),
+    VoidcraftComponent_MiningCentre(32062),
+    VoidcraftComponent_StarlifterArray(32063),
+    VoidcraftComponent_SpacetimeScanner(32064),
+    VoidcraftComponent_ConstructionArm(32065),
+    VoidcraftComponent_Reactor(32066);
 
     public final int ID;
 

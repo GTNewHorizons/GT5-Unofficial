@@ -8,9 +8,13 @@ import static tectech.rendering.EOH.EOHTileEntitySR.STAR_LAYER_2;
 import java.awt.Color;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
@@ -35,6 +39,7 @@ import gregtech.common.render.shader.ShaderRecipe;
 import gregtech.common.render.shader.SharedShaders;
 import gregtech.common.render.shader.Uniform;
 import gregtech.common.render.shader.VertexAttribute;
+import gtneioreplugin.plugin.block.ModBlocks;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.block.TileEntityEyeOfHarmony;
@@ -189,6 +194,11 @@ public abstract class EOHRenderingUtils {
             orbitShader = null;
         }
         releaseOrbitMesh();
+        // The USS planet cubes were built against the old shader's layout — they go with the orbit meshes.
+        for (IVertexArrayObject vao : USS_PLANET_CUBES.values()) {
+            vao.delete();
+        }
+        USS_PLANET_CUBES.clear();
     }
 
     private static void releaseOrbitMesh() {
@@ -197,6 +207,134 @@ public abstract class EOHRenderingUtils {
         }
         ORBIT_MESHES.clear();
     }
+
+    /**
+     * The USS planet system — one TEXTURED CUBE per planet (pass 9, user request): the same proven block-cube
+     * pipeline the legacy orbit render uses ({@code addRenderedBlockInWorld} + the shared textured shader), but
+     * with the USS orbit math the ships track — so no dependency on the legacy orbit shader, and the cubes orbit
+     * EXACTLY where {@code USSFleetOrbit.planetAnchorPosition} resolves the ship's hover/beam (radius
+     * {@code 0.2 + distance + 0.2·starSize}, angle {@code orbitSpeed·0.1·time}, tilts xAngle/zAngle — do not
+     * "clean up" the orbit chain without re-pointing the hover/beam).
+     *
+     * <p>
+     * Each cube is the planet's own dimension-display block ({@code spec.dimension} via the IORE
+     * {@code ModBlocks} map — the type IS its texture, no tint multiply), sized {@code spec.scale} (a unit cube
+     * of ±0.5·scale — the same size the legacy orbit cubes used), and spun on its local axis at
+     * {@code spec.rotationSpeed·0.1·time} (the legacy cube look). A spec whose dimension key does not resolve to
+     * a registered block (mod absent / renamed) falls back to the pass-5.1 tinted sphere (USSPlanetColor) so the
+     * planet still renders.
+     *
+     * @param base     the star-center model matrix (already translated to the TE position, see {@code EOHTileEntitySR})
+     * @param specs    the explicit planet system (colors are the sphere-fallback tint; 0 → white)
+     * @param time     world time + partial ticks (the shared animation clock)
+     * @param starSize the star size factor (as used for the legacy orbit offset)
+     */
+    public static void renderUSSOrbits(Matrix4fc base, List<TileEntityEyeOfHarmony.PlanetSpec> specs, float time,
+        float starSize) {
+        if (!shadersReady() || specs == null || specs.isEmpty()) return;
+
+        final int count = Math.min(specs.size(), MAX_USS_PLANETS);
+
+        final boolean blendWas = GL11.glGetBoolean(GL11.GL_BLEND);
+        final long blendFuncWas = RenderState.savedBlendFunc();
+
+        GL11.glEnable(GL11.GL_BLEND);
+
+        final ShaderHandle shader = texturedShader();
+        shader.use();
+        for (int i = 0; i < count; i++) {
+            final TileEntityEyeOfHarmony.PlanetSpec spec = specs.get(i);
+            final float orbitAngle = (spec.orbitSpeed * USS_ORBIT_SPEED_SCALE * time) % 360f;
+            final float spinAngle = (spec.rotationSpeed * USS_ORBIT_SPEED_SCALE * time) % 360f;
+            final float radius = 0.2f + spec.distance + 0.2f * starSize;
+            final float scale = Math.max(0.05f, spec.scale);
+
+            planetMatrix.set(base)
+                .rotate((float) Math.toRadians(spec.xAngle), 1f, 0f, 0f)
+                .rotate((float) Math.toRadians(spec.zAngle), 0f, 0f, 1f)
+                .rotate((float) Math.toRadians(orbitAngle), 0f, 1f, 0f)
+                .translate(radius, 0f, 0f)
+                .rotate((float) Math.toRadians(spinAngle), 0f, 1f, 0f)
+                .scale(scale);
+
+            // Null-guard: a missing/empty IORE map (mod absent / very early frame) must fall back to the sphere,
+            // never crash the render thread.
+            final Block block = (spec.dimension == null || ModBlocks.blocks == null) ? null
+                : ModBlocks.blocks.get(spec.dimension);
+            if (block != null) {
+                // Textured cube (the user's cube look): its per-face UVs live in the block atlas, and the
+                // texture IS the planet type — no tint multiply. The cube's faces are outward-wound, so the
+                // world's default cull state (cull BACK, CCW front) is correct — do NOT wrap this in
+                // beginSphereCull (that flips the convention for the inverted-wound sphere and would cull the
+                // cube's near faces).
+                bindTexture(TextureMap.locationBlocksTexture);
+                GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), 1f, 1f, 1f, 1f);
+                shader.uploadModel(planetMatrix);
+                ussCubeFor(block).render();
+            } else {
+                // Unresolvable dimension key (mod absent / renamed): the proven pass-5.1 tinted-sphere fallback
+                // keeps the planet visible — star layer under the tint for a little surface variation.
+                bindTexture(STAR_LAYER_0);
+                final int argb = spec.color != 0 ? spec.color : 0xFFFFFFFF;
+                GL20.glUniform4f(
+                    shader.loc(SharedShaders.U_TINT),
+                    ((argb >> 16) & 0xFF) / 255f,
+                    ((argb >> 8) & 0xFF) / 255f,
+                    (argb & 0xFF) / 255f,
+                    1f);
+                shader.uploadModel(planetMatrix);
+                final long cullWas = beginSphereCull(false);
+                eohSphere.render();
+                endSphereCull(cullWas);
+            }
+        }
+        ShaderProgram.clear();
+
+        RenderState.restore(GL11.GL_BLEND, blendWas);
+        RenderState.restoreBlendFunc(blendFuncWas);
+    }
+
+    private static void bindTexture(ResourceLocation location) {
+        FMLClientHandler.instance()
+            .getClient()
+            .getTextureManager()
+            .bindTexture(location);
+    }
+
+    /** One cube mesh per drawn dimension block (the textured USS planet) — cached like the legacy ORBIT_MESHES. */
+    private static final Map<Block, IVertexArrayObject> USS_PLANET_CUBES = new LinkedHashMap<>();
+
+    private static final int MAX_USS_PLANET_CUBES = 16;
+
+    private static IVertexArrayObject ussCubeFor(Block block) {
+        IVertexArrayObject cached = USS_PLANET_CUBES.get(block);
+        if (cached != null) {
+            return cached;
+        }
+        IVertexArrayObject built;
+        try (MeshBuilder mesh = MeshBuilder.of(texturedShader(), VERTICES_PER_BLOCK)) {
+            addRenderedBlockInWorld(mesh, block, 0, IDENTITY);
+            built = mesh.build();
+        }
+        if (USS_PLANET_CUBES.size() >= MAX_USS_PLANET_CUBES) {
+            final Iterator<Block> oldest = USS_PLANET_CUBES.keySet()
+                .iterator();
+            if (oldest.hasNext()) {
+                USS_PLANET_CUBES.get(oldest.next())
+                    .delete();
+                oldest.remove();
+            }
+        }
+        USS_PLANET_CUBES.put(block, built);
+        return built;
+    }
+
+    private static final int MAX_USS_PLANETS = 8;
+
+    /** Orbit angular speed scale (matches the legacy {@code SPEED_SCALE} so USS planets spin at a similar pace). */
+    private static final float USS_ORBIT_SPEED_SCALE = 0.1f;
+
+    private static final Matrix4f planetMatrix = new Matrix4f();
 
     public static void renderOrbits(Matrix4fc base, List<TileEntityEyeOfHarmony.OrbitingObject> objects, float time,
         float starSize, float speedScale, float starRescale) {

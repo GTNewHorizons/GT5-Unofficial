@@ -57,6 +57,14 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
 
     private void renderOrbitObjects(TileEntityEyeOfHarmony te, float time) {
 
+        // Phase 4 pass 5.1: an EXPLICIT planet system (USS) renders as self-contained tinted spheres — it never
+        // falls back to the legacy lazy random fill, and does not depend on the legacy orbit shader or the IORE
+        // dimension blocks resolving (the USS planet colors carry the look).
+        if (te.hasExplicitPlanets()) {
+            EOHRenderingUtils.renderUSSOrbits(eyeModel, te.getPlanetSpecs(), time, (float) te.getStarSize());
+            return;
+        }
+
         var objects = te.getOrbitingObjects();
 
         if (objects == null || objects.isEmpty()) {

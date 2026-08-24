@@ -32,6 +32,8 @@ import tectech.thing.block.RenderForgeOfGods;
 import tectech.thing.block.TileEntityEyeOfHarmony;
 import tectech.thing.block.TileEntityForgeOfGods;
 import tectech.thing.item.ItemRenderForgeOfGods;
+import tectech.voidcraft.render.RenderVoidcraftShip;
+import tectech.voidcraft.render.TileEntityVoidcraftShip;
 
 public class ClientProxy extends CommonProxy {
 
@@ -42,6 +44,9 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new ItemRenderEOH());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEyeOfHarmony.class, new EOHTileEntitySR());
+
+        // Voidcraft (EoH rework, Phase 3) — the ship hologram: the actual digitized ship rendered as a 3D model
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityVoidcraftShip.class, new RenderVoidcraftShip());
 
         RenderingRegistry.registerBlockHandler(
             new RenderDoubleSidedGlass(() -> BlockGodforgeGlass.Icon, BlockGodforgeGlass.renderID));

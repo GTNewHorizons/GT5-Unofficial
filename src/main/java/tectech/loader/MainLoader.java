@@ -34,6 +34,10 @@ public final class MainLoader {
         new ThingsLoader().run();
         LOGGER.info("Block/Item Init Done");
 
+        // Voidcraft (EoH rework, parallel machine) — components + ship item
+        tectech.voidcraft.loader.VoidcraftLoader.preLoad();
+        LOGGER.info("Voidcraft Things Init Done");
+
         ProgressManager.pop(progressBarPreload);
     }
 
@@ -43,6 +47,10 @@ public final class MainLoader {
         progressBarLoad.step("Machine Things");
         new MachineLoader().run();
         LOGGER.info("Machine Init Done");
+
+        // Voidcraft (EoH rework, parallel machine) — assembler multiblock
+        tectech.voidcraft.loader.VoidcraftLoader.load();
+        LOGGER.info("Voidcraft Machine Init Done");
 
         progressBarLoad.step("Cover Things");
         new CoverLoader().run();

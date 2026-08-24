@@ -306,6 +306,10 @@ public enum CustomItemList implements IItemContainer {
     Machine_Multi_Decay,
     Machine_Multi_Annihilation,
     Machine_Multi_EyeOfHarmony,
+    Machine_Multi_UnstableSolarSystem,
+    Machine_Multi_VoidcraftAssembler,
+    Machine_Multi_VoidcraftGateway,
+    Machine_Multi_VoidcraftStorageBay,
     Machine_Multi_ForgeOfGods,
     Machine_Multi_SmeltingModule,
     Machine_Multi_MoltenModule,
@@ -403,6 +407,20 @@ public enum CustomItemList implements IItemContainer {
     Godforge_GravitonFlowModulatorTier3,
     Godforge_HarmonicPhononTransmissionConduit,
     Godforge_FakeItemQGP,
+
+    // Voidcraft (EoH rework, parallel to the legacy Eye of Harmony)
+    Voidcraft,
+    UssController,
+
+    VoidcraftComponent_Controller,
+    VoidcraftComponent_Engine,
+    VoidcraftComponent_Utility,
+    VoidcraftComponent_CargoBay,
+    VoidcraftComponent_MiningCentre,
+    VoidcraftComponent_StarlifterArray,
+    VoidcraftComponent_SpacetimeScanner,
+    VoidcraftComponent_ConstructionArm,
+    VoidcraftComponent_Reactor,
 
     astralArrayFabricator;
 

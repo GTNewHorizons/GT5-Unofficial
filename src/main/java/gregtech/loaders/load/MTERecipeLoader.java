@@ -1812,10 +1812,9 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { " B ", "   ", "   ", 'B', GregtechItemList.Industrial_PlatePress });
 
         // Planetary Gas Siphon Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.PlanetarySiphon.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.PlanetaryGasSiphonController });
+        // Registered by gtnhintergalactic.loader.RecipeLoader instead: this loader runs during gregtech's
+        // init phase, but the siphon item is only set by gtnhintergalactic during its own init (later in
+        // the FML event order), so ItemList.sanityCheck throws here. Do not move back.
 
         // Large Boilers Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(

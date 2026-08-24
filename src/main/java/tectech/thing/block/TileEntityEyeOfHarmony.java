@@ -13,6 +13,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -114,6 +115,109 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     }
 
     private final ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
+
+    // --- Explicit planet system (Voidcraft, Phase 4 pass 3) ---------------------------------------------
+    //
+    // The Voidcraft USS owns a DETERMINISTIC planet system (a pure function of the star's type and ignition
+    // timestamp — see USSPlanets) that must render identically on every client and match the miner's cargo. It
+    // injects that system here via setPlanets(); while an explicit system is present the legacy lazy random
+    // generateImportantInfo() path is bypassed entirely. A legacy star (no explicit system) keeps the old
+    // behaviour, so the classic Eye of Harmony is unaffected.
+
+    private static final String PLANETS_NBT_TAG = "vc_planets";
+
+    private boolean explicitPlanets = false;
+
+    /** The explicit system as received (kept for the lossless NBT round-trip, even for unresolvable dimension keys). */
+    private final List<PlanetSpec> planetSpecs = new ArrayList<>();
+
+    /**
+     * One serializable planet description (dimension key + orbit parameters). The dimension key is the
+     * {@code gtneioreplugin.ModBlocks} abbreviation of the dimension-display block drawn as the hologram.
+     */
+    public static final class PlanetSpec {
+
+        public PlanetSpec(String dimension, float distance, float scale, float orbitSpeed, float rotationSpeed,
+            float xAngle, float zAngle) {
+            this(dimension, distance, scale, orbitSpeed, rotationSpeed, xAngle, zAngle, 0);
+        }
+
+        public PlanetSpec(String dimension, float distance, float scale, float orbitSpeed, float rotationSpeed,
+            float xAngle, float zAngle, int color) {
+            this.dimension = dimension;
+            this.distance = distance;
+            this.scale = scale;
+            this.orbitSpeed = orbitSpeed;
+            this.rotationSpeed = rotationSpeed;
+            this.xAngle = xAngle;
+            this.zAngle = zAngle;
+            this.color = color;
+        }
+
+        public final String dimension;
+        public final float distance;
+        public final float scale;
+        public final float orbitSpeed;
+        public final float rotationSpeed;
+        public final float xAngle;
+        public final float zAngle;
+
+        /**
+         * Tint (ARGB) for the USS self-contained tinted-sphere orbit render; 0 = unset (the legacy block-hologram
+         * path draws the dimension block instead).
+         */
+        public final int color;
+    }
+
+    /**
+     * Install an explicit planet system (replacing anything present, including the legacy lazy list). A null or
+     * empty list clears the explicit system — the legacy lazy-random path applies again.
+     *
+     * <p>
+     * Dimension keys that do not resolve to a registered block (mod not loaded / renamed) are skipped for the
+     * render list but kept in the specs (the NBT round-trip stays lossless).
+     *
+     * @param specs the explicit planet system (null allowed)
+     */
+    public void setPlanets(List<PlanetSpec> specs) {
+        orbitingObjects.clear();
+        planetSpecs.clear();
+        this.explicitPlanets = false;
+        if (specs == null || specs.isEmpty()) {
+            return;
+        }
+        planetSpecs.addAll(specs);
+        for (PlanetSpec spec : specs) {
+            Block block = ModBlocks.blocks.get(spec.dimension);
+            if (block != null) {
+                orbitingObjects.add(
+                    new OrbitingObject(
+                        block,
+                        spec.distance,
+                        spec.rotationSpeed,
+                        spec.orbitSpeed,
+                        spec.xAngle,
+                        spec.zAngle,
+                        spec.scale));
+            }
+        }
+        this.explicitPlanets = true;
+    }
+
+    /**
+     * @return the explicit system as installed (empty when none — the legacy lazy path applies).
+     */
+    public List<PlanetSpec> getPlanetSpecs() {
+        return planetSpecs;
+    }
+
+    /**
+     * @return true when an explicit (Voidcraft) planet system is installed.
+     */
+    public boolean hasExplicitPlanets() {
+        return explicitPlanets;
+    }
+
     private static final Set<String> BLACKLISTED_PLANETS = Collections
         .unmodifiableSet(new HashSet<>(Arrays.asList("Tf", "Ow", "ED", "EA", "VA")));
     // Map of strings to blocks
@@ -132,6 +236,10 @@ public class TileEntityEyeOfHarmony extends TileEntity {
 
     // This must be set last.
     public void generateImportantInfo() {
+        // An explicit planet system (Voidcraft) wins over the legacy lazy random fill — and never mix the two.
+        if (explicitPlanets || !orbitingObjects.isEmpty()) {
+            return;
+        }
 
         int index = 1;
         for (Block block : selectNRandomElements(PLANETS.values(), tier + 1)) {
@@ -161,6 +269,27 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         // Save other stats.
         compound.setDouble(SIZE_NBT_TAG, starSize);
         compound.setLong(TIER_NBT_TAG, tier);
+
+        // Explicit planet system (Voidcraft) — persisted so chunk reloads and description packets carry it (the
+        // tag is omitted entirely for legacy stars, which keep the lazy random path).
+        if (explicitPlanets) {
+            NBTTagList list = new NBTTagList();
+            for (PlanetSpec spec : planetSpecs) {
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setString("dim", spec.dimension);
+                tag.setFloat("distance", spec.distance);
+                tag.setFloat("scale", spec.scale);
+                tag.setFloat("orbitSpeed", spec.orbitSpeed);
+                tag.setFloat("rotationSpeed", spec.rotationSpeed);
+                tag.setFloat("xAngle", spec.xAngle);
+                tag.setFloat("zAngle", spec.zAngle);
+                if (spec.color != 0) {
+                    tag.setInteger("color", spec.color);
+                }
+                list.appendTag(tag);
+            }
+            compound.setTag(PLANETS_NBT_TAG, list);
+        }
     }
 
     @Override
@@ -170,6 +299,32 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         // Load other stats.
         starSize = compound.getDouble(SIZE_NBT_TAG);
         tier = compound.getLong(TIER_NBT_TAG);
+
+        // Explicit planet system (Voidcraft): restore it (re-resolving the hologram blocks), or clear a stale one
+        // when a legacy star NBT arrives over the description-packet wire.
+        if (compound.hasKey(PLANETS_NBT_TAG)) {
+            NBTTagList list = compound.getTagList(PLANETS_NBT_TAG, 10);
+            List<PlanetSpec> specs = new ArrayList<>();
+            for (int i = 0; i < list.tagCount(); i++) {
+                NBTTagCompound tag = list.getCompoundTagAt(i);
+                if (tag == null) {
+                    continue;
+                }
+                specs.add(
+                    new PlanetSpec(
+                        tag.getString("dim"),
+                        tag.getFloat("distance"),
+                        tag.getFloat("scale"),
+                        tag.getFloat("orbitSpeed"),
+                        tag.getFloat("rotationSpeed"),
+                        tag.getFloat("xAngle"),
+                        tag.getFloat("zAngle"),
+                        tag.hasKey("color") ? tag.getInteger("color") : 0));
+            }
+            setPlanets(specs);
+        } else if (explicitPlanets) {
+            setPlanets(null);
+        }
     }
 
     @Override
