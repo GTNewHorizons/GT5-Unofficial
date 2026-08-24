@@ -14,7 +14,7 @@ import gtnhintergalactic.GTNHIntergalactic;
 public class ItemDysonSwarmParts extends Item {
 
     private static final String[] names = { "dysonSwarmModule", "TaHfCNanofibers", "NtNanofibers", "UHTResistantMesh",
-        "TaHfNanoparticles", "NtNanoparticles", "droneCase", "femtocontroller", "fuelPellet" };
+        "TaHfNanoparticles", "NtNanoparticles", "droneCase", "femtocontroller", "fuelPellet", "solarSail" };
     private static final IIcon[] icons = new IIcon[names.length];
 
     public ItemDysonSwarmParts() {
@@ -31,6 +31,7 @@ public class ItemDysonSwarmParts extends Item {
         ItemList.DroneCase.set(new ItemStack(this, 1, 6));
         ItemList.Femtocontroller.set(new ItemStack(this, 1, 7));
         ItemList.FuelPellet.set(new ItemStack(this, 1, 8));
+        ItemList.SolarSail.set(new ItemStack(this, 1, 9));
 
     }
 

@@ -24,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -76,6 +77,7 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 17.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalConstructable {
 
     // region variables
@@ -366,61 +368,35 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.machinetype")) // Machine Type:
-                                                                                                     // Quantum
-            // Computer
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.0")) // Controller block of
-                                                                                           // the Quantum Computer
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.1")) // Used to generate
-                                                                                           // computation (and heat)
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.2")) // Use screwdriver to
-                                                                                           // toggle
-                                                                                           // wireless mode
+        // spotless:off
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.machinetype"))
+            .addMarkdown(new ResourceLocation("gregtech", "quantum-computer"))
             .addSupportAny()
             .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
-            .addController("Front left, 2nd layer")
-            .addMiscHatch(
-                "1",
-                translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                1)
-            .addMiscHatch(
-                "1+",
-                "Optical Transmission Connector",
-                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                1)
-            .addMiscHatch(
-                "0+",
-                "Optical Reception Connector",
-                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                1)
+            .addController(translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
+            .addMiscHatch("1", translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
+            .addMiscHatch("0+", translateToLocal("tt.keyword.Structure.DataInput"), translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
-            .addAir("In front of each computer heat vent")
+            .addAir(translateToLocal("tt.keyword.Structure.InFrontOfEachComputerHeatVent"))
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("6-17", "Computer Casing", false)
-            .addCasing("10", "Advanced Computer Casing", false)
-            .addCasing("6", "Computer Heat Vent", false)
-            .addMiscHatch(
-                "2",
-                translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"),
-                translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"),
-                2)
+            .addCasing("6-17", translateToLocal("gt.blockcasingsTT.1.name"), false)
+            .addCasing("10", translateToLocal("gt.blockcasingsTT.3.name"), false)
+            .addCasing("6", translateToLocal("gt.blockcasingsTT.2.name"), false)
+            .addMiscHatch("2", translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"), 2)
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addCasing("2", "Computer Casing", false)
-            .addCasing("2", "Advanced Computer Casing", false)
-            .addCasing("2", "Computer Heat Vent", false)
-            .addMiscHatch(
-                "2",
-                translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"),
-                translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"),
-                2)
+            .addCasing("2", translateToLocal("gt.blockcasingsTT.1.name"), false)
+            .addCasing("2", translateToLocal("gt.blockcasingsTT.3.name"), false)
+            .addCasing("2", translateToLocal("gt.blockcasingsTT.2.name"), false)
+            .addMiscHatch("2", translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"), 2)
             .addStructureInfo("")
-            .addStructureFooter("Use an optical reception connector to daisy-chain machines")
+            .addStructureFooter(translateToLocal("tt.keyword.Structure.DaisyChainOptical"))
             .addMasterChannel(translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
