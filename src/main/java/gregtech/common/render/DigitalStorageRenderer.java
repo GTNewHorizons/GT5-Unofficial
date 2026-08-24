@@ -45,8 +45,10 @@ import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 public final class DigitalStorageRenderer {
 
     private static final double COVER_DIF = 0.001D;
-    private static final double FLUID_MIN = 3 / 16.0;
-    private static final double FLUID_MAX = 13 / 16.0;
+    private static final double FLUID_SIDE_MIN = 1 / 16.0 + COVER_DIF;
+    private static final double FLUID_SIDE_MAX = 15 / 16.0 - COVER_DIF;
+    private static final double FLUID_MIN_Y = 2 / 16.0;
+    private static final double FLUID_MAX_Y = 14 / 16.0;
     private static final double TEXT_DEPTH = 0.002D;
     private static final int FLUID_LEVELS = 64;
     private static final double[] GLASS_BOX = { 1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0,
@@ -108,6 +110,60 @@ public final class DigitalStorageRenderer {
         return true;
     }
 
+    public static boolean renderTankInWorld(MTEDigitalTankBase mte, ISBRWorldContext ctx) {
+        IGregTechTileEntity base = mte.getBaseMetaTileEntity();
+        ForgeDirection outputFacing = validDisplayFacing(base.getFrontFacing());
+        ITexture[][] textures = new ITexture[6][];
+        ITexture[] casingTextures = new ITexture[6];
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            ITexture[] sideTextures = base.getTexture(ctx.getBlock(), side);
+            textures[side.ordinal()] = sideTextures == null ? EMPTY_TEXTURES : sideTextures;
+            if (isTankWindowSide(side, outputFacing, base)) {
+                casingTextures[side.ordinal()] = sideTextures[0];
+                textures[side.ordinal()] = EMPTY_TEXTURES;
+            }
+        }
+
+        STANDARD_RENDERER.get()
+            .renderStandardBlock(ctx, textures);
+        renderTankWindows(ctx, casingTextures);
+        restoreFullBounds(ctx);
+        return true;
+    }
+
+    public static boolean renderTankInInventory(MTEDigitalTankBase mte, ISBRInventoryContext ctx) {
+        ForgeDirection outputFacing = WEST;
+        ITexture[][] textures = new ITexture[6][];
+        ITexture[] casingTextures = new ITexture[6];
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            ITexture[] sideTextures = mte.getTexture(null, side, outputFacing, -1, true, false);
+            textures[side.ordinal()] = sideTextures == null ? EMPTY_TEXTURES : sideTextures;
+            if (isTankWindowSide(side, outputFacing, null)) {
+                casingTextures[side.ordinal()] = sideTextures[0];
+                textures[side.ordinal()] = EMPTY_TEXTURES;
+            }
+        }
+
+        renderInventoryFaces(ctx, textures);
+        renderTankWindows(ctx, casingTextures);
+        restoreFullBounds(ctx);
+        return true;
+    }
+
+    private static void renderTankWindows(ISBRContext ctx, ITexture[] casingTextures) {
+        ITexture casing = null;
+        for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
+            if (casingTextures[side.ordinal()] != null) {
+                renderTankWindow(ctx, side, casingTextures[side.ordinal()]);
+                casing = casingTextures[side.ordinal()];
+            }
+        }
+        if (casing != null) {
+            renderFace(ctx, UP, FRAME_BOXES.get(DOWN), casing);
+            renderFace(ctx, DOWN, FRAME_BOXES.get(UP), casing);
+        }
+    }
+
     private static boolean isTankWindowSide(ForgeDirection side, ForgeDirection outputFacing,
         @Nullable IGregTechTileEntity base) {
         return isHorizontal(side) && side != outputFacing && (base == null || !base.hasCoverAtSide(side));
@@ -159,6 +215,41 @@ public final class DigitalStorageRenderer {
             renderFace(ctx, displayFacing, FRAME_BOXES.get(perpendicular), casing);
             renderFace(ctx, displayFacing, FRAME_BOXES.get(perpendicular.getOpposite()), casing);
         }
+    }
+
+    private static void renderTankWindow(ISBRContext ctx, ForgeDirection side, ITexture casing) {
+        renderFace(ctx, side, GLASS_BOX, GLASS_TEXTURE);
+
+        double minX = side == EAST ? 15 : 0;
+        double maxX = side == WEST ? 1 : 16;
+        double minZ = side == SOUTH ? 15 : 0;
+        double maxZ = side == NORTH ? 1 : 16;
+        double[] bottom = box(minX, 0, minZ, maxX, 2, maxZ);
+        double[] top = box(minX, 14, minZ, maxX, 16, maxZ);
+        double[] left;
+        double[] right;
+        ForgeDirection leftFacing;
+        ForgeDirection rightFacing;
+        if (side == NORTH || side == SOUTH) {
+            left = box(0, 0, minZ, 2, 16, maxZ);
+            right = box(14, 0, minZ, 16, 16, maxZ);
+            leftFacing = EAST;
+            rightFacing = WEST;
+        } else {
+            left = box(minX, 0, 0, maxX, 16, 2);
+            right = box(minX, 0, 14, maxX, 16, 16);
+            leftFacing = SOUTH;
+            rightFacing = NORTH;
+        }
+
+        renderFace(ctx, side, bottom, casing);
+        renderFace(ctx, side, top, casing);
+        renderFace(ctx, side, left, casing);
+        renderFace(ctx, side, right, casing);
+        renderFace(ctx, UP, bottom, casing);
+        renderFace(ctx, DOWN, top, casing);
+        renderFace(ctx, leftFacing, left, casing);
+        renderFace(ctx, rightFacing, right, casing);
     }
 
     private static void renderFace(ISBRContext ctx, ForgeDirection face, double[] bounds, ITexture texture) {
@@ -252,77 +343,51 @@ public final class DigitalStorageRenderer {
 
     private static void renderTankFluidVolume(double x, double y, double z, IIcon icon, int fillLevel) {
         double fill = fillLevel / (double) FLUID_LEVELS;
-        double top = FLUID_MIN + (FLUID_MAX - FLUID_MIN) * fill;
+        double top = FLUID_MIN_Y + (FLUID_MAX_Y - FLUID_MIN_Y) * fill;
         double uMin = icon.getMinU();
         double uMax = icon.getMaxU();
         double vMin = icon.getMinV();
         double vMax = icon.getMaxV();
         double vTop = vMax - (vMax - vMin) * fill;
+        double minX = x + FLUID_SIDE_MIN;
+        double maxX = x + FLUID_SIDE_MAX;
+        double minY = y + FLUID_MIN_Y;
+        double maxY = y + top;
+        double minZ = z + FLUID_SIDE_MIN;
+        double maxZ = z + FLUID_SIDE_MAX;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
 
-        addFluidFaceNorth(tessellator, x, y, z, top, uMin, uMax, vTop, vMax);
-        addFluidFaceSouth(tessellator, x, y, z, top, uMin, uMax, vTop, vMax);
-        addFluidFaceWest(tessellator, x, y, z, top, uMin, uMax, vTop, vMax);
-        addFluidFaceEast(tessellator, x, y, z, top, uMin, uMax, vTop, vMax);
+        tessellator.addVertexWithUV(minX, minY, minZ, uMin, vMax);
+        tessellator.addVertexWithUV(maxX, minY, minZ, uMax, vMax);
+        tessellator.addVertexWithUV(maxX, maxY, minZ, uMax, vTop);
+        tessellator.addVertexWithUV(minX, maxY, minZ, uMin, vTop);
 
-        addFluidFaceBottom(tessellator, x, y, z, uMin, uMax, vMin, vMax);
-        addFluidFaceTop(tessellator, x, y, z, top, uMin, uMax, vMin, vMax);
+        tessellator.addVertexWithUV(maxX, minY, maxZ, uMin, vMax);
+        tessellator.addVertexWithUV(minX, minY, maxZ, uMax, vMax);
+        tessellator.addVertexWithUV(minX, maxY, maxZ, uMax, vTop);
+        tessellator.addVertexWithUV(maxX, maxY, maxZ, uMin, vTop);
+
+        tessellator.addVertexWithUV(minX, minY, maxZ, uMin, vMax);
+        tessellator.addVertexWithUV(minX, minY, minZ, uMax, vMax);
+        tessellator.addVertexWithUV(minX, maxY, minZ, uMax, vTop);
+        tessellator.addVertexWithUV(minX, maxY, maxZ, uMin, vTop);
+
+        tessellator.addVertexWithUV(maxX, minY, minZ, uMin, vMax);
+        tessellator.addVertexWithUV(maxX, minY, maxZ, uMax, vMax);
+        tessellator.addVertexWithUV(maxX, maxY, maxZ, uMax, vTop);
+        tessellator.addVertexWithUV(maxX, maxY, minZ, uMin, vTop);
+
+        tessellator.addVertexWithUV(minX, minY, minZ, uMin, vMin);
+        tessellator.addVertexWithUV(maxX, minY, minZ, uMax, vMin);
+        tessellator.addVertexWithUV(maxX, minY, maxZ, uMax, vMax);
+        tessellator.addVertexWithUV(minX, minY, maxZ, uMin, vMax);
+
+        tessellator.addVertexWithUV(minX, maxY, maxZ, uMin, vMax);
+        tessellator.addVertexWithUV(maxX, maxY, maxZ, uMax, vMax);
+        tessellator.addVertexWithUV(maxX, maxY, minZ, uMax, vMin);
+        tessellator.addVertexWithUV(minX, maxY, minZ, uMin, vMin);
         tessellator.draw();
-    }
-
-    private static void addFluidFaceNorth(Tessellator tessellator, double x, double y, double z, double top,
-        double uMin, double uMax, double vTop, double vMax) {
-        double face = z + FLUID_MIN;
-        tessellator.addVertexWithUV(x + FLUID_MIN, y + FLUID_MIN, face, uMin, vMax);
-        tessellator.addVertexWithUV(x + FLUID_MAX, y + FLUID_MIN, face, uMax, vMax);
-        tessellator.addVertexWithUV(x + FLUID_MAX, y + top, face, uMax, vTop);
-        tessellator.addVertexWithUV(x + FLUID_MIN, y + top, face, uMin, vTop);
-    }
-
-    private static void addFluidFaceSouth(Tessellator tessellator, double x, double y, double z, double top,
-        double uMin, double uMax, double vTop, double vMax) {
-        double face = z + FLUID_MAX;
-        tessellator.addVertexWithUV(x + FLUID_MAX, y + FLUID_MIN, face, uMin, vMax);
-        tessellator.addVertexWithUV(x + FLUID_MIN, y + FLUID_MIN, face, uMax, vMax);
-        tessellator.addVertexWithUV(x + FLUID_MIN, y + top, face, uMax, vTop);
-        tessellator.addVertexWithUV(x + FLUID_MAX, y + top, face, uMin, vTop);
-    }
-
-    private static void addFluidFaceWest(Tessellator tessellator, double x, double y, double z, double top,
-        double uMin, double uMax, double vTop, double vMax) {
-        double face = x + FLUID_MIN;
-        tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MAX, uMin, vMax);
-        tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MIN, uMax, vMax);
-        tessellator.addVertexWithUV(face, y + top, z + FLUID_MIN, uMax, vTop);
-        tessellator.addVertexWithUV(face, y + top, z + FLUID_MAX, uMin, vTop);
-    }
-
-    private static void addFluidFaceEast(Tessellator tessellator, double x, double y, double z, double top,
-        double uMin, double uMax, double vTop, double vMax) {
-        double face = x + FLUID_MAX;
-        tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MIN, uMin, vMax);
-        tessellator.addVertexWithUV(face, y + FLUID_MIN, z + FLUID_MAX, uMax, vMax);
-        tessellator.addVertexWithUV(face, y + top, z + FLUID_MAX, uMax, vTop);
-        tessellator.addVertexWithUV(face, y + top, z + FLUID_MIN, uMin, vTop);
-    }
-
-    private static void addFluidFaceBottom(Tessellator tessellator, double x, double y, double z, double uMin,
-        double uMax, double vMin, double vMax) {
-        double face = y + FLUID_MIN;
-        tessellator.addVertexWithUV(x + FLUID_MIN, face, z + FLUID_MIN, uMin, vMin);
-        tessellator.addVertexWithUV(x + FLUID_MAX, face, z + FLUID_MIN, uMax, vMin);
-        tessellator.addVertexWithUV(x + FLUID_MAX, face, z + FLUID_MAX, uMax, vMax);
-        tessellator.addVertexWithUV(x + FLUID_MIN, face, z + FLUID_MAX, uMin, vMax);
-    }
-
-    private static void addFluidFaceTop(Tessellator tessellator, double x, double y, double z, double top,
-        double uMin, double uMax, double vMin, double vMax) {
-        double face = y + top;
-        tessellator.addVertexWithUV(x + FLUID_MIN, face, z + FLUID_MAX, uMin, vMax);
-        tessellator.addVertexWithUV(x + FLUID_MAX, face, z + FLUID_MAX, uMax, vMax);
-        tessellator.addVertexWithUV(x + FLUID_MAX, face, z + FLUID_MIN, uMax, vMin);
-        tessellator.addVertexWithUV(x + FLUID_MIN, face, z + FLUID_MIN, uMin, vMin);
     }
 
     public static void renderChestStack(MTEDigitalChestBase mte, double x, double y, double z,

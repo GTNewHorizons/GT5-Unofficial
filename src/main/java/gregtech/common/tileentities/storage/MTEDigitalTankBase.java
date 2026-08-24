@@ -37,11 +37,15 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTByteBuffer;
 import gregtech.api.util.GTUtility;
@@ -113,6 +117,18 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
     public MTEDigitalTankBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean renderInWorld(ISBRWorldContext ctx) {
+        return DigitalStorageRenderer.renderTankInWorld(this, ctx);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean renderInInventory(ISBRInventoryContext ctx) {
+        return DigitalStorageRenderer.renderTankInInventory(this, ctx);
     }
 
     @Override
@@ -407,7 +423,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             } else if ((sideDirection == ForgeDirection.NORTH || sideDirection == ForgeDirection.SOUTH
                 || sideDirection == ForgeDirection.WEST || sideDirection == ForgeDirection.EAST)
                 && (baseMetaTileEntity == null || !baseMetaTileEntity.hasCoverAtSide(sideDirection))) {
-                return new ITexture[] { TextureFactory.of(OVERLAY_SCREEN_GLASS) };
+                return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
+                    TextureFactory.of(OVERLAY_SCREEN_GLASS) };
             } else return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
         }
         return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_QTANK),
