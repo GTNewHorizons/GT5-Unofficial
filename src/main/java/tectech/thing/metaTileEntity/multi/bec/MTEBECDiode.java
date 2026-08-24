@@ -19,11 +19,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
+import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
@@ -56,7 +58,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
 
     private MTEHatchBEC inputHatch;
     private boolean wasWorking;
-    private FluidParameter condensateParameter;
+    private FluidParameter[] filterParameters;
 
     public MTEBECDiode(int aID, String aName) {
         super(aID, aName);
@@ -137,8 +139,16 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
 
     @Override
     public boolean allowsCondensateThrough(Fluid condensate) {
-        Fluid condensateFilter = condensateParameter.getValue();
-        return condensateFilter == null || condensate == condensateFilter;
+        boolean hasFilter = false;
+
+        for (FluidParameter filter : filterParameters) {
+            Fluid value = filter.getValue();
+            if (value == null) continue;
+            if (value == condensate) return true;
+            hasFilter = true;
+        }
+
+        return !hasFilter;
     }
 
     @Override
@@ -188,12 +198,12 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
 
     @OCMethod
     public Fluid getCondensateFilter() {
-        return condensateParameter.getValue();
+        return filterParameters[0].getValue();
     }
 
     @OCMethod
     public void setCondensateFilter(Fluid condensateFilter) {
-        condensateParameter.setValue(condensateFilter);
+        filterParameters[0].setValue(condensateFilter);
     }
 
     @Override
@@ -227,14 +237,29 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
 
     @Override
     public void initParameters() {
-        condensateParameter = new FluidParameter(null, "GT5U.gui.text.bec-filter", "condensate");
+        filterParameters = new FluidParameter[CondensateType.VALUES.length];
+
+        for (int i = 0; i < filterParameters.length; i++) {
+            filterParameters[i] = new FluidParameter(null, "GT5U.gui.text.bec-filter-n", "filter" + i, i + 1);
+        }
     }
 
     @Override
     public void loadLegacyParameters(NBTTagCompound nbt) {}
 
     @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+
+        // Legacy saves stored a single filter under "condensate"
+        NBTTagCompound parameterTag = aNBT.getCompoundTag("parameters");
+        if (parameterTag.hasKey("condensate")) {
+            filterParameters[0].setValue(FluidRegistry.getFluid(parameterTag.getString("condensate")));
+        }
+    }
+
+    @Override
     public List<Parameter<?, ?>> getParameters() {
-        return List.of(condensateParameter);
+        return List.<Parameter<?, ?>>of(filterParameters);
     }
 }

@@ -9350,6 +9350,7 @@ GT5U.tooltip.bec-assembler.los-hatch-pos=Center side casing of each ring
 
 # BEC Settings
 GT5U.gui.text.bec-filter=Filter
+GT5U.gui.text.bec-filter-n=Filter %s
 GT5U.gui.text.bec-operation=Operation
 GT5U.gui.text.bec-threshold=Threshold
 GT5U.gui.text.bec-current=Current:
