@@ -123,12 +123,21 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         return SoundResource.GTCEU_LOOP_MIXER;
     }
 
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return false;
+    }
+
     /** Chance out of 100 that the machine works on that day */
     private static final int WORK_CHANCE_PERCENT = 30;
     /** Chance out of 100 that it also asks for a repair item */
     private static final int REPAIR_REQUEST_CHANCE_PERCENT = 40;
     private static final int BROKEN_TOOLTIP_COUNT = 12;
     private static final long TICKS_PER_DAY = 24000L;
+    /** Minimum/maximum number of successful crafts allowed per day before the machine is set as broken */
+    private static final int MIN_DAILY_CRAFTS = 1;
+    private static final int MAX_DAILY_CRAFTS = 8;
 
     private static ItemStack[] sRepairItems;
 
@@ -147,6 +156,8 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
     private boolean mBrokenToday = true;
     private int mRepairItemIndex = -1;
     private int mBrokenTooltipIndex = 0;
+    private int mDailyCraftLimit = MIN_DAILY_CRAFTS;
+    private int mCraftsToday = 0;
 
     public boolean isBrokenToday() {
         return mBrokenToday;
@@ -164,6 +175,14 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         return mBrokenTooltipIndex;
     }
 
+    public int getDailyCraftLimit() {
+        return mDailyCraftLimit;
+    }
+
+    public int getCraftsToday() {
+        return mCraftsToday;
+    }
+
     /** Rolls whether the machine is broken today */
     private void rollDailyMalfunctionIfNeeded() {
         final long day = getBaseMetaTileEntity().getWorld()
@@ -176,6 +195,9 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
                 ? getBaseMetaTileEntity().getRandomNumber(getRepairItems().length)
                 : -1;
         mBrokenTooltipIndex = getBaseMetaTileEntity().getRandomNumber(BROKEN_TOOLTIP_COUNT);
+        mDailyCraftLimit = MIN_DAILY_CRAFTS
+            + getBaseMetaTileEntity().getRandomNumber(MAX_DAILY_CRAFTS - MIN_DAILY_CRAFTS + 1);
+        mCraftsToday = 0;
     }
 
     /** Requested repair item logic - Consumes on SpecialSlot and fixes the machine */
@@ -200,6 +222,8 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         aNBT.setBoolean("mBrokenToday", mBrokenToday);
         aNBT.setInteger("mRepairItemIndex", mRepairItemIndex);
         aNBT.setInteger("mBrokenTooltipIndex", mBrokenTooltipIndex);
+        aNBT.setInteger("mDailyCraftLimit", mDailyCraftLimit);
+        aNBT.setInteger("mCraftsToday", mCraftsToday);
     }
 
     @Override
@@ -209,6 +233,8 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         mBrokenToday = aNBT.getBoolean("mBrokenToday");
         mRepairItemIndex = aNBT.getInteger("mRepairItemIndex");
         mBrokenTooltipIndex = aNBT.getInteger("mBrokenTooltipIndex");
+        mDailyCraftLimit = aNBT.getInteger("mDailyCraftLimit");
+        mCraftsToday = aNBT.getInteger("mCraftsToday");
     }
 
     @Override
@@ -218,10 +244,13 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         aNBT.setBoolean("mBrokenToday", mBrokenToday);
         aNBT.setInteger("mRepairItemIndex", mRepairItemIndex);
         aNBT.setInteger("mBrokenTooltipIndex", mBrokenTooltipIndex);
+        aNBT.setInteger("mDailyCraftLimit", mDailyCraftLimit);
+        aNBT.setInteger("mCraftsToday", mCraftsToday);
     }
 
     @Override
     public int checkRecipe() {
+        rollDailyMalfunctionIfNeeded();
         if (mBrokenToday) {
             tryRepair();
             if (mBrokenToday) return DID_NOT_FIND_RECIPE;
@@ -245,11 +274,21 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
 
+        // Hit today's craft limit: consume the input, produce nothing, play the powerfail sound and break the machine
+        // for the rest of the day
+        if (mCraftsToday >= mDailyCraftLimit) {
+            input.stackSize -= recipe.mInputs[0].stackSize;
+            mBrokenToday = true;
+            this.stutterProcess();
+            return DID_NOT_FIND_RECIPE;
+        }
+
         input.stackSize -= recipe.mInputs[0].stackSize;
         mOutputItems[0] = recipe.getOutput(0)
             .copy();
         mEUt = 0;
         mMaxProgresstime = recipe.mDuration;
+        mCraftsToday++;
         return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
     }
 
