@@ -82,13 +82,9 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     private int lastRenderCount;
     private long lastRenderPacketTick = Long.MIN_VALUE;
 
-    @SideOnly(Side.CLIENT)
     private ItemStack displayItem;
-    @SideOnly(Side.CLIENT)
-    private int displayItemCount;
-    @SideOnly(Side.CLIENT)
+    private String displayItemCountText;
     private EntityItem displayEntity;
-    @SideOnly(Side.CLIENT)
     private ItemStack displayEntityStack;
 
     public MTEDigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
@@ -135,7 +131,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         DigitalStorageRenderer.renderChestStack(this, x, y, z, timeSinceLastTick);
     }
@@ -158,12 +153,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public void readFromStream(ByteBuf buffer) {
         super.readFromStream(buffer);
         int count = buffer.readInt();
-        displayItem = ByteBufUtils.readItemStack(buffer);
-        displayItemCount = displayItem == null ? 0 : count;
-        if (displayItem == null) {
-            displayEntity = null;
-            displayEntityStack = null;
-        }
+        ItemStack stack = ByteBufUtils.readItemStack(buffer);
+        updateClientDisplay(stack, stack == null ? 0 : count);
     }
 
     @Override
@@ -178,13 +169,13 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public void decodeRenderData(ByteArrayDataInput buffer) {
-        displayItemCount = buffer.readInt();
+        int count = buffer.readInt();
         if (buffer.readBoolean()) {
-            displayItem = ItemStack.loadItemStackFromNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(buffer));
+            updateClientDisplay(
+                ItemStack.loadItemStackFromNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(buffer)),
+                count);
         } else {
-            displayItem = null;
-            displayEntity = null;
-            displayEntityStack = null;
+            updateClientDisplay(null, 0);
         }
     }
 
@@ -204,17 +195,23 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         return (int) Math.min(Integer.MAX_VALUE, Math.max(0, count));
     }
 
-    @SideOnly(Side.CLIENT)
     public ItemStack getClientDisplayItem() {
         return displayItem;
     }
 
-    @SideOnly(Side.CLIENT)
-    public int getClientDisplayItemCount() {
-        return displayItemCount;
+    public String getClientDisplayItemCountText() {
+        return displayItemCountText;
     }
 
-    @SideOnly(Side.CLIENT)
+    private void updateClientDisplay(ItemStack stack, int count) {
+        displayItem = stack;
+        displayItemCountText = formatNumber(count);
+        if (stack == null) {
+            displayEntity = null;
+            displayEntityStack = null;
+        }
+    }
+
     public EntityItem getClientDisplayEntity() {
         if (displayItem == null) return null;
         if (displayEntity == null || !GTUtility.areStacksEqual(displayEntityStack, displayItem)) {

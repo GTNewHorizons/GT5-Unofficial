@@ -37,9 +37,6 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
@@ -68,13 +65,9 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     private int lastRenderAmount;
     private long lastRenderPacketTick = Long.MIN_VALUE;
 
-    @SideOnly(Side.CLIENT)
     private FluidStack displayFluidStack;
-    @SideOnly(Side.CLIENT)
     private int displayFluidAmount;
-    @SideOnly(Side.CLIENT)
     private int displayFillLevel;
-    @SideOnly(Side.CLIENT)
     private String displayAmountText;
 
     public MTEDigitalTankBase(int aID, String aName, String aNameRegional, int aTier) {
@@ -123,7 +116,6 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         DigitalStorageRenderer.renderTankStack(this, x, y, z, timeSinceLastTick);
     }
@@ -160,25 +152,22 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         updateClientDisplay(fluid);
     }
 
-    @SideOnly(Side.CLIENT)
     public FluidStack getClientDisplayFluidStack() {
         return displayFluidStack;
     }
 
-    @SideOnly(Side.CLIENT)
     public int getClientDisplayFillLevel() {
         return displayFillLevel;
     }
 
-    @SideOnly(Side.CLIENT)
     public String getClientDisplayAmountText() {
         if (displayAmountText == null) {
-            displayAmountText = formatNumberCompact(displayFluidAmount) + " / " + formatNumberCompact(getRealCapacity());
+            displayAmountText = formatNumberCompact(displayFluidAmount) + " / "
+                + formatNumberCompact(getRealCapacity());
         }
         return displayAmountText;
     }
 
-    @SideOnly(Side.CLIENT)
     private void updateClientDisplay(FluidStack fluid) {
         if (fluid == null || fluid.amount <= 0 || fluid.getFluid() == null) fluid = null;
         int amount = fluid == null ? 0 : fluid.amount;
