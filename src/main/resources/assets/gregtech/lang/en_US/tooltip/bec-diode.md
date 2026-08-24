@@ -8,3 +8,5 @@ Consumes {green:1A UIV} while active, regardless of the network's status.
 {dark_gray:{hr}}
 Condensate can be filtered in the parameters window, with one filter slot per condensate type.
 When no filters are set, all condensate is allowed through.
+Attaching fluid input hatches overrides the filters, mapping each contained fluid to its condensate.
+Stocking input hatches use their configured fluids.

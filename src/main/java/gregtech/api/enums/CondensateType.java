@@ -2,6 +2,8 @@ package gregtech.api.enums;
 
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import net.minecraft.util.ResourceLocation;
@@ -165,6 +167,11 @@ public enum CondensateType {
         return new FluidStack(entangledFluid, amount);
     }
 
+    /// The entangled fluid itself, without the unit divisibility check `getEntangled` enforces.
+    public Fluid getEntangledFluid() {
+        return entangledFluid;
+    }
+
     public int getUnit() {
         return unit;
     }
@@ -215,6 +222,27 @@ public enum CondensateType {
                 .eut(type.eut)
                 .addTo(TecTechRecipeMaps.condensateGeneratorRecipes);
         }
+    }
+
+    /*
+     * Built lazily rather than in registerFluids, where the GTPP-material sources cannot yet be resolved -- see the
+     * GTPP fluid registration comment there.
+     */
+    private static final Lazy<Map<Fluid, CondensateType>> BY_SOURCE_FLUID = new Lazy<>(() -> {
+        Map<Fluid, CondensateType> map = new HashMap<>();
+
+        for (CondensateType type : VALUES) {
+            FluidStack stack = type.source.get();
+            if (stack != null) map.put(stack.getFluid(), type);
+        }
+
+        return map;
+    });
+
+    /// Maps a source fluid (e.g. molten neutronium) to its condensate type. Returns null for unmapped fluids.
+    public static CondensateType getCondensateTypeBySource(Fluid fluid) {
+        return BY_SOURCE_FLUID.get()
+            .get(fluid);
     }
 
     public static CondensateType getCondensateType(Fluid fluid) {

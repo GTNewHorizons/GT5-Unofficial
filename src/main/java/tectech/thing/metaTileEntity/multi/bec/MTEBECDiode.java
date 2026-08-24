@@ -10,9 +10,11 @@ import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
 import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputHatch;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -82,7 +85,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
     public IStructureDefinition<MTEBECDiode> compile(String[][] definition) {
         structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 8, Arrays.asList(Energy, ExoticEnergy));
+            .withHatches(1, 16, Arrays.asList(InputHatch, Energy, ExoticEnergy));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
@@ -90,7 +93,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
         structure.addCasing('G', CondensateGuidanceCoil);
         structure.addCasing('H', ElectromagneticWaveguide);
         structure.addCasing('1', FineStructureConstantManipulator)
-            .withHatches(2, 1, Arrays.asList(INPUT_HATCH));
+            .withHatches(2, 1, Arrays.asList(BEC_INPUT_HATCH));
         structure.addCasing('2', FineStructureConstantManipulator)
             .withHatches(3, 1, Arrays.asList(BECHatches.Hatch));
 
@@ -124,6 +127,43 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
         super.clearHatches();
 
         inputHatch = null;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        if (aBaseMetaTileEntity.isServerSide() && mMachine && !mInputHatches.isEmpty()) {
+            deriveFiltersFromInputHatches();
+        }
+    }
+
+    /*
+     * Each fluid found in the input hatches is resolved to a condensate type, accepting either the type's source fluid
+     * or the entangled fluid itself, and the entangled fluids of the resulting set are written into the filter slots in
+     * ordinal order. Any remaining slots are cleared, so removing a fluid from a hatch drops its filter.
+     */
+    private void deriveFiltersFromInputHatches() {
+        EnumSet<CondensateType> present = EnumSet.noneOf(CondensateType.class);
+
+        for (FluidStack stack : getStoredFluids()) {
+            Fluid fluid = stack.getFluid();
+            CondensateType type = CondensateType.getCondensateTypeBySource(fluid);
+            if (type == null) type = CondensateType.getCondensateType(fluid);
+            if (type != null) present.add(type);
+        }
+
+        int slot = 0;
+
+        for (CondensateType type : present) {
+            Fluid entangled = type.getEntangledFluid();
+            if (filterParameters[slot].getValue() != entangled) filterParameters[slot].setValue(entangled);
+            slot++;
+        }
+
+        for (; slot < filterParameters.length; slot++) {
+            if (filterParameters[slot].getValue() != null) filterParameters[slot].setValue(null);
+        }
     }
 
     @Override
@@ -170,6 +210,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
             .addCasing("40", CondensateTransformativeCoil.getLocalizedName(), false)
             .addCasing("24", CondensateGuidanceCoil.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
             .addMiscHatch(
                 "2",
                 "Bose-Einstein Condensate Hatch",
@@ -216,7 +257,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
         return new MTEBECDiodeGui(this);
     }
 
-    private static final IHatchElement<MTEBECMultiblockBase<?>> INPUT_HATCH = new GTStructureUtility.ProxyHatchElement<>(
+    private static final IHatchElement<MTEBECMultiblockBase<?>> BEC_INPUT_HATCH = new GTStructureUtility.ProxyHatchElement<>(
         BECHatches.Hatch) {
 
         @Override
