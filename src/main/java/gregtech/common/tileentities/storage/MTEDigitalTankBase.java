@@ -1,10 +1,12 @@
 package gregtech.common.tileentities.storage;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumberCompact;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCREEN_GLASS;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -31,7 +33,12 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
@@ -39,19 +46,36 @@ import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTByteBuffer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEDigitalTankBaseGui;
+import gregtech.common.render.DigitalStorageRenderer;
+import gregtech.common.render.IMTERenderer;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.SpecialChars;
 
 public abstract class MTEDigitalTankBase extends MTEBasicTank
-    implements IFluidLockableMui2, IFluidContainerItemMetaTile {
+    implements IFluidLockableMui2, IFluidContainerItemMetaTile, IMTERenderer {
 
     protected boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected Fluid lockedFluid = null;
     protected boolean mAllowInputFromOutputSide = false;
     protected boolean mDisableFilter = true;
+
+    private FluidStack lastRenderFluid;
+    private int lastRenderAmount;
+    private long lastRenderPacketTick = Long.MIN_VALUE;
+
+    @SideOnly(Side.CLIENT)
+    private FluidStack displayFluidStack;
+    @SideOnly(Side.CLIENT)
+    private int displayFluidAmount;
+    @SideOnly(Side.CLIENT)
+    private int displayFillLevel;
+    @SideOnly(Side.CLIENT)
+    private String displayAmountText;
 
     public MTEDigitalTankBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -96,6 +120,79 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
     public MTEDigitalTankBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+        DigitalStorageRenderer.renderTankStack(this, x, y, z, timeSinceLastTick);
+    }
+
+    @Override
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        FluidStack fluid = getFluid();
+        boolean hasFluid = fluid != null && fluid.amount > 0 && fluid.getFluid() != null;
+        buffer.writeBoolean(hasFluid);
+        if (hasFluid) ByteBufUtils.writeTag(buffer, fluid.writeToNBT(new NBTTagCompound()));
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        FluidStack fluid = buffer.readBoolean() ? FluidStack.loadFluidStackFromNBT(ByteBufUtils.readTag(buffer)) : null;
+        updateClientDisplay(fluid);
+    }
+
+    @Override
+    public void encodeRenderData(ByteBuf buffer) {
+        FluidStack fluid = getFluid();
+        boolean hasFluid = fluid != null && fluid.amount > 0 && fluid.getFluid() != null;
+        buffer.writeBoolean(hasFluid);
+        if (hasFluid) ByteBufUtils.writeTag(buffer, fluid.writeToNBT(new NBTTagCompound()));
+    }
+
+    @Override
+    public void decodeRenderData(ByteArrayDataInput buffer) {
+        FluidStack fluid = buffer.readBoolean()
+            ? FluidStack.loadFluidStackFromNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(buffer))
+            : null;
+        updateClientDisplay(fluid);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public FluidStack getClientDisplayFluidStack() {
+        return displayFluidStack;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getClientDisplayFillLevel() {
+        return displayFillLevel;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public String getClientDisplayAmountText() {
+        if (displayAmountText == null) {
+            displayAmountText = formatNumberCompact(displayFluidAmount) + " / " + formatNumberCompact(getRealCapacity());
+        }
+        return displayAmountText;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void updateClientDisplay(FluidStack fluid) {
+        if (fluid == null || fluid.amount <= 0 || fluid.getFluid() == null) fluid = null;
+        int amount = fluid == null ? 0 : fluid.amount;
+        if (displayFluidStack != null && fluid != null && displayFluidStack.isFluidEqual(fluid)
+            && displayFluidAmount == amount) return;
+        if (displayFluidStack == null && fluid == null && displayFluidAmount == amount) return;
+
+        displayFluidStack = fluid == null ? null : fluid.copy();
+        displayFluidAmount = amount;
+        int capacity = getRealCapacity();
+        displayFillLevel = capacity <= 0 ? 0
+            : Math.min(64, (int) (((long) amount * 64 + capacity / 2L) / capacity));
+        if (amount > 0 && displayFillLevel == 0) displayFillLevel = 1;
+        displayAmountText = formatNumberCompact(amount) + " / " + formatNumberCompact(capacity);
     }
 
     @Override
@@ -314,8 +411,15 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection != ForgeDirection.UP) {
-            if (sideDirection == baseMetaTileEntity.getFrontFacing()) {
+            ForgeDirection outputSide = baseMetaTileEntity == null ? facingDirection
+                : baseMetaTileEntity.getFrontFacing();
+            if (sideDirection == outputSide) {
                 return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_PIPE) };
+            } else if ((sideDirection == ForgeDirection.NORTH || sideDirection == ForgeDirection.SOUTH
+                || sideDirection == ForgeDirection.WEST || sideDirection == ForgeDirection.EAST)
+                && (baseMetaTileEntity == null || !baseMetaTileEntity.hasCoverAtSide(sideDirection))) {
+                return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
+                    TextureFactory.of(OVERLAY_SCREEN_GLASS) };
             } else return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
         }
         return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_QTANK),
@@ -457,16 +561,34 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
         if (mOutputFluid && getDrainableStack() != null && (aTick % 20 == 0)) {
             IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
-            if (tTank == null) return;
-
-            FluidStack tDrained = drain(20 * (1 << (3 + 2 * tierPump(mTier))), false);
-            if (tDrained == null) return;
-
-            int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
-            if (tFilledAmount > 0) {
-                tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
+            if (tTank != null) {
+                FluidStack tDrained = drain(20 * (1 << (3 + 2 * tierPump(mTier))), false);
+                if (tDrained != null) {
+                    int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
+                    if (tFilledAmount > 0) {
+                        tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
+                    }
+                }
             }
         }
+
+        updateRenderData(aTick);
+    }
+
+    private void updateRenderData(long aTick) {
+        FluidStack fluid = getFluid();
+        if (fluid == null || fluid.amount <= 0 || fluid.getFluid() == null) fluid = null;
+        int amount = fluid == null ? 0 : fluid.amount;
+        boolean identityChanged = lastRenderFluid == null ? fluid != null
+            : fluid == null || !lastRenderFluid.isFluidEqual(fluid);
+        boolean amountChanged = amount != lastRenderAmount;
+        if (!identityChanged && !amountChanged) return;
+        if (!identityChanged && lastRenderPacketTick != Long.MIN_VALUE && aTick - lastRenderPacketTick < 20) return;
+
+        lastRenderFluid = fluid == null ? null : fluid.copy();
+        lastRenderAmount = amount;
+        lastRenderPacketTick = aTick;
+        sendRenderDataToClient(this);
     }
 
     @Override
