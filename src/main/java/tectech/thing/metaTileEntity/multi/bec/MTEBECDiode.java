@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputHatch;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -239,12 +240,43 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
 
     @OCMethod
     public Fluid getCondensateFilter() {
-        return filterParameters[0].getValue();
+        return getCondensateFilterAt(0);
     }
 
     @OCMethod
     public void setCondensateFilter(Fluid condensateFilter) {
-        filterParameters[0].setValue(condensateFilter);
+        setCondensateFilterAt(0, condensateFilter);
+    }
+
+    @OCMethod
+    public int getCondensateFilterCount() {
+        return filterParameters.length;
+    }
+
+    @OCMethod
+    public Fluid getCondensateFilterAt(int slot) {
+        return filterParameters[slot].getValue();
+    }
+
+    @OCMethod
+    public void setCondensateFilterAt(int slot, Fluid condensateFilter) {
+        filterParameters[slot].setValue(condensateFilter);
+    }
+
+    @OCMethod
+    public List<Fluid> getCondensateFilters() {
+        List<Fluid> filters = new ArrayList<>(filterParameters.length);
+
+        for (FluidParameter parameter : filterParameters) filters.add(parameter.getValue());
+
+        return filters;
+    }
+
+    @OCMethod
+    public void setCondensateFilters(List<Fluid> filters) {
+        for (int i = 0; i < filterParameters.length; i++) {
+            filterParameters[i].setValue(filters != null && i < filters.size() ? filters.get(i) : null);
+        }
     }
 
     @Override
