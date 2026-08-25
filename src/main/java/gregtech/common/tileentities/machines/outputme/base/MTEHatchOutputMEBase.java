@@ -74,6 +74,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
@@ -690,12 +691,12 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         return true;
     }
 
-    public void writeToClientPacket(NBTTagCompound tag) {
-        tag.setLong("baseCapacity", baseCapacity);
+    public void writeToClientPacket(ByteBuf buffer) {
+        buffer.writeLong(baseCapacity);
     }
 
-    public void readFromClientPacket(NBTTagCompound data) {
-        baseCapacity = data.getLong("baseCapacity");
+    public void readFromClientPacket(ByteBuf buffer) {
+        baseCapacity = buffer.readLong();
     }
 
     public List<T> getCacheList() {
