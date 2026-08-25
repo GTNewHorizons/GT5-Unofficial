@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -78,6 +78,7 @@ import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.INonConsumedItemDisplay;
+import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -114,7 +115,7 @@ import mcp.mobius.waila.overlay.tooltiprenderers.TTRenderStack;
  * Machine
  */
 public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapWorkable, IConfigurationCircuitSupport,
-    IOverclockDescriptionProvider, IAddGregtechLogo, INonConsumedItemDisplay {
+    IOverclockDescriptionProvider, IAddGregtechLogo, INonConsumedItemDisplay, IPhysicalCircuitDisplay {
 
     /**
      * return values for checkRecipe()
@@ -383,10 +384,32 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public List<ItemStack> getNonConsumedInputDisplayItems() {
-        if (mLastRecipe == null || mLastRecipe.mInputs == null) return Collections.emptyList();
-        return Arrays.stream(mLastRecipe.mInputs)
-            .filter(s -> s != null && s.stackSize == 0)
-            .collect(Collectors.toList());
+        RecipeMap<?> recipeMap = getRecipeMap();
+        if (recipeMap == null) return Collections.emptyList();
+        Set<GTUtility.ItemId> nonConsumedIds = recipeMap.getNonConsumedInputItemIds();
+        if (nonConsumedIds.isEmpty()) return Collections.emptyList();
+
+        List<ItemStack> result = new ArrayList<>();
+        for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {
+            ItemStack stack = getStackInSlot(i);
+            if (stack == null || GTUtility.isAnyIntegratedCircuit(stack)) continue;
+            if (nonConsumedIds.contains(GTUtility.ItemId.create(stack))) {
+                result.add(stack);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Integer> getPhysicalCircuitNumbers() {
+        List<Integer> numbers = new ArrayList<>();
+        for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {
+            ItemStack stack = getStackInSlot(i);
+            if (GTUtility.isAnyIntegratedCircuit(stack)) {
+                numbers.add(stack.getItemDamage());
+            }
+        }
+        return numbers;
     }
 
     @Override
