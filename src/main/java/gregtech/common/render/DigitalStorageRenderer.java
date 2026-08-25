@@ -326,7 +326,7 @@ public final class DigitalStorageRenderer {
         String amountText = mte.getClientDisplayAmountText();
         for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
             if (isTankWindowSide(side, outputFacing, base)) {
-                renderAmountText(x, y, z, amountText, side, (float) TEXT_DEPTH, 4, true, 38);
+                renderAmountText(x, y, z, amountText, side, (float) TEXT_DEPTH, 2, true, 38);
             }
         }
     }
