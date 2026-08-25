@@ -14,6 +14,8 @@ import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Laser_Lens_Woo
 
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizon.gtnhlib.chat.ChatComponentCustomRegistry;
+
 import appeng.api.AEApi;
 import appeng.api.features.IBlockingModeIgnoreItemRegistry;
 import appeng.api.features.IInterfaceTerminalRegistry;
@@ -32,6 +34,8 @@ import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 public final class AE2Compat {
 
     public static void onPreInit() {
+        ChatComponentCustomRegistry.register(ChatComponentItemDisplayName::new);
+
         IInterfaceTerminalRegistry reg = AEApi.instance()
             .registries()
             .interfaceTerminal();

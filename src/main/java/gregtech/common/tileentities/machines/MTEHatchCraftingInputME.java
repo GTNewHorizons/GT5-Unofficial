@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -40,6 +39,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -711,30 +711,31 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     }
 
     @Override
-    public String getNameSuffix() {
-        if (hasCustomName()) return "";
+    public IChatComponent getNameSuffix() {
+        if (hasCustomName()) return null;
 
-        StringBuilder suffix = new StringBuilder();
+        IChatComponent suffix = null;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base instanceof IInterfaceNameProvider nameProvider) {
-            String circuitSuffix = nameProvider.getInterfaceNameSuffix();
-            if (circuitSuffix != null) suffix.append(circuitSuffix);
+            suffix = nameProvider.getInterfaceNameSuffix();
         }
 
-        StringJoiner manualSlots = new StringJoiner(", ");
+        List<ItemStack> manualSlots = new ArrayList<>();
         for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
             if (mInventory[i] != null) {
-                manualSlots.add(CommonBaseMetaTileEntity.getShortItemDisplayName(mInventory[i]));
+                manualSlots.add(mInventory[i]);
             }
         }
-        if (manualSlots.length() > 0) {
-            try {
-                suffix.append(String.format(Gregtech.machines.itemSlotsSuffixFormat, manualSlots));
-            } catch (IllegalFormatException ignored) {}
+        if (!manualSlots.isEmpty()) {
+            IChatComponent manualSuffix = CommonBaseMetaTileEntity
+                .formatSuffix(Gregtech.machines.itemSlotsSuffixFormat, CommonBaseMetaTileEntity.itemNames(manualSlots));
+            if (manualSuffix != null) {
+                suffix = suffix == null ? manualSuffix : suffix.appendSibling(manualSuffix);
+            }
         }
 
-        return suffix.toString();
+        return suffix;
     }
 
     @Override
