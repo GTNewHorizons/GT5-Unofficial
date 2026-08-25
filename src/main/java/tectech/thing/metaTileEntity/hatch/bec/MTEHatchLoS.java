@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
@@ -36,6 +35,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
+import io.netty.buffer.ByteBuf;
 import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
 
 /// Line of sight connector hatch for observation arrays + teleportation nodes
@@ -289,34 +289,31 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = super.getDescriptionData();
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
 
-        tag.setBoolean("connected", connection != null);
-        tag.setBoolean("isRenderer", isRenderer);
-
+        buffer.writeBoolean(isRenderer);
         var other = getConnectedHatch();
+        buffer.writeBoolean(this.hasOwner() && other != null && other.hasOwner());
 
-        tag.setBoolean("canRender", this.hasOwner() && other != null && other.hasOwner());
-
+        buffer.writeBoolean(connection != null);
         if (connection != null) {
-            tag.setInteger("connX", connection.getX());
-            tag.setInteger("connY", connection.getY());
-            tag.setInteger("connZ", connection.getZ());
+            buffer.writeInt(connection.getX());
+            buffer.writeInt(connection.getY());
+            buffer.writeInt(connection.getZ());
         }
-
-        return tag;
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
 
-        isRenderer = data.getBoolean("isRenderer");
-        canRender = data.getBoolean("canRender");
+        isRenderer = buffer.readBoolean();
+        canRender = buffer.readBoolean();
 
-        if (data.getBoolean("connected")) {
-            connection = new BlockPos(data.getInteger("connX"), data.getInteger("connY"), data.getInteger("connZ"));
+        boolean connected = buffer.readBoolean();
+        if (connected) {
+            connection = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
         } else {
             connection = null;
         }
