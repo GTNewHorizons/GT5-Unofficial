@@ -237,6 +237,14 @@ public class Client {
         @Config.DefaultBoolean(true)
         public boolean renderItemChargeBar;
 
+        @Config.Comment("if true, renders stored item counts on digital chests.")
+        @Config.DefaultBoolean(true)
+        public boolean renderDigitalChestText;
+
+        @Config.Comment("if true, renders stored fluid amounts on digital tanks.")
+        @Config.DefaultBoolean(false)
+        public boolean renderDigitalTankText;
+
         @Config.Comment("enables BaseMetaTileEntity block updates handled by BlockUpdateHandler.")
         @Config.DefaultBoolean(false)
         public boolean useBlockUpdateHandler;

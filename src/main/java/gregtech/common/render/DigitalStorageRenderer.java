@@ -40,6 +40,7 @@ import gregtech.api.render.ISBRContext;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.config.Client;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 
@@ -328,10 +329,12 @@ public final class DigitalStorageRenderer {
         int fillLevel = mte.getClientDisplayFillLevel();
         renderTankFluid(fluidStack, fillLevel, x, y, z);
 
-        String amountText = mte.getClientDisplayAmountText();
-        for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
-            if (isTankWindowSide(side, outputFacing, base)) {
-                renderAmountText(x, y, z, amountText, side, (float) TEXT_DEPTH, 2, true, 38);
+        if (Client.render.renderDigitalTankText) {
+            String amountText = mte.getClientDisplayAmountText();
+            for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
+                if (isTankWindowSide(side, outputFacing, base)) {
+                    renderAmountText(x, y, z, amountText, side, (float) TEXT_DEPTH, 2, true, 38);
+                }
             }
         }
     }
@@ -462,16 +465,18 @@ public final class DigitalStorageRenderer {
                 }
             }
         }
-        renderAmountText(
-            x,
-            y,
-            z,
-            mte.getClientDisplayItemCountText(),
-            mte.getDisplayFacing(),
-            -1 / 16f,
-            40,
-            false,
-            54);
+        if (Client.render.renderDigitalChestText) {
+            renderAmountText(
+                x,
+                y,
+                z,
+                mte.getClientDisplayItemCountText(),
+                mte.getDisplayFacing(),
+                -1 / 16f,
+                40,
+                false,
+                54);
+        }
     }
 
     private static void renderAmountText(double x, double y, double z, String amountText,
