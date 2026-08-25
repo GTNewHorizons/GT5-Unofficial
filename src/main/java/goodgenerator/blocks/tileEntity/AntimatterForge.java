@@ -186,11 +186,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addCasing("126", new ItemStack(Loaders.protomatterActivationCoil, 1).getDisplayName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.back_left_or_right_side"), 2)
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.top_or_bottom_side"), 1)
-            .addMiscHatch(
-                "16",
-                StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
-                StatCollector.translateToLocal("gt.mbtt.structure.around_inner_ring"),
-                3)
+            .addMiscHatch("16", StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.around_inner_ring"), 3)
             .toolTipFinisher();
         // spotless:on
         return tt;

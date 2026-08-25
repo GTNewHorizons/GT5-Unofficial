@@ -294,21 +294,12 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("4127-4128", new ItemStack(Loaders.magneticFluxCasing, 1).getDisplayName(), false)
             .addCasing("2481-2544", new ItemStack(Loaders.gravityStabilizationCasing, 1).getDisplayName(), false)
-            .addCasing(
-                "1008",
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.MBTT.HatchInfo",
-                    new ItemStack(ItemRegistry.bw_realglas, 1, 8).getDisplayName()),
-                false)
+            .addCasing("1008", StatCollector.translateToLocalFormatted("GT5U.MBTT.HatchInfo", new ItemStack(ItemRegistry.bw_realglas, 1, 8).getDisplayName()), false)
             .addCasing("600", new ItemStack(Loaders.antimatterAnnihilationMatrix, 1).getDisplayName(), false)
             .addCasing("292", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Naquadria), false)
             .addCasing("209", new ItemStack(GregTechAPI.sBlockCasings9, 1, 1).getDisplayName(), false)
             .addCasing("32", new ItemStack(Loaders.protomatterActivationCoil, 1).getDisplayName(), false)
-            .addMiscHatch(
-                "1-64",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
-                StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_leg_casing"),
-                2)
+            .addMiscHatch("1-64", StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_leg_casing"), 2)
             .addInputHatch("1-2", StatCollector.translateToLocal("gt.mbtt.structure.either_center_side_casing"), 1)
             .toolTipFinisher();
         // spotless:on
