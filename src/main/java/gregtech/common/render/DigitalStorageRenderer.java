@@ -14,6 +14,7 @@ import java.util.EnumMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
@@ -32,6 +33,7 @@ import codechicken.lib.render.TextureUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.ISBRContext;
@@ -58,6 +60,7 @@ public final class DigitalStorageRenderer {
     private static final ITexture[] EMPTY_TEXTURES = new ITexture[0];
     private static final ITexture GLASS_TEXTURE = TextureFactory.of(OVERLAY_SCREEN_GLASS);
     private static final ThreadLocal<GTRendererBlock> STANDARD_RENDERER = ThreadLocal.withInitial(GTRendererBlock::new);
+    private static final ThreadLocal<FluidStack> INVENTORY_FLUID = new ThreadLocal<>();
 
     static {
         FRAME_BOXES.put(UP, box(0, 14, 0, 16, 16, 16));
@@ -132,7 +135,7 @@ public final class DigitalStorageRenderer {
     }
 
     public static boolean renderTankInInventory(MTEDigitalTankBase mte, ISBRInventoryContext ctx) {
-        ForgeDirection outputFacing = WEST;
+        ForgeDirection outputFacing = DOWN;
         ITexture[][] textures = new ITexture[6][];
         ITexture[] casingTextures = new ITexture[6];
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -146,8 +149,27 @@ public final class DigitalStorageRenderer {
 
         renderInventoryFaces(ctx, textures);
         renderTankWindows(ctx, casingTextures);
+        FluidStack fluidStack = INVENTORY_FLUID.get();
+        if (fluidStack != null) {
+            renderTankFluid(fluidStack, mte.getDisplayFillLevel(fluidStack.amount), 0, 0, 0);
+        }
         restoreFullBounds(ctx);
         return true;
+    }
+
+    public static void renderTankItem(ItemStack stack, MTEDigitalTankBase mte) {
+        FluidStack fluidStack = stack.hasTagCompound()
+            ? FluidStack.loadFluidStackFromNBT(stack.getTagCompound()
+                .getCompoundTag("mFluid"))
+            : null;
+        INVENTORY_FLUID.set(fluidStack);
+        try {
+            RenderBlocks renderBlocks = new RenderBlocks();
+            renderBlocks.useInventoryTint = true;
+            renderBlocks.renderBlockAsItem(GregTechAPI.sBlockMachines, stack.getItemDamage(), 1.0F);
+        } finally {
+            INVENTORY_FLUID.remove();
+        }
     }
 
     private static void renderTankWindows(ISBRContext ctx, ITexture[] casingTextures) {
@@ -298,8 +320,22 @@ public final class DigitalStorageRenderer {
 
         ForgeDirection outputFacing = validDisplayFacing(base.getFrontFacing());
         FluidStack fluidStack = mte.getClientDisplayFluidStack();
-        Fluid fluid = fluidStack == null ? null : fluidStack.getFluid();
         int fillLevel = mte.getClientDisplayFillLevel();
+        renderTankFluid(fluidStack, fillLevel, x, y, z);
+
+        String amountText = mte.getClientDisplayAmountText();
+        for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
+            if (isTankWindowSide(side, outputFacing, base)) {
+                renderAmountText(x, y, z, amountText, side, (float) TEXT_DEPTH, 4, true, 38);
+            }
+        }
+    }
+
+    private static void renderTankFluid(FluidStack fluidStack, int fillLevel, double x, double y, double z) {
+        if (fluidStack == null || fillLevel <= 0) return;
+        Fluid fluid = fluidStack.getFluid();
+        if (fluid == null) return;
+
         float lastBrightnessX = OpenGlHelper.lastBrightnessX;
         float lastBrightnessY = OpenGlHelper.lastBrightnessY;
         GL11.glPushAttrib(
@@ -311,29 +347,20 @@ public final class DigitalStorageRenderer {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
-            if (fluid != null && fluid.getLuminosity() > 0) {
+            if (fluid.getLuminosity() > 0) {
                 OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
             }
 
-            if (fluidStack != null && fluid != null && fillLevel > 0) {
-                IIcon icon = fluid.getIcon(fluidStack);
-                if (icon != null) {
-                    int color = fluid.getColor(fluidStack);
-                    GL11.glColor4f(
-                        (color >> 16 & 0xFF) / 255.0F,
-                        (color >> 8 & 0xFF) / 255.0F,
-                        (color & 0xFF) / 255.0F,
-                        1.0F);
-                    TextureUtils.bindAtlas(fluid.getSpriteNumber());
-                    renderTankFluidVolume(x, y, z, icon, fillLevel);
-                }
-            }
-
-            String amountText = mte.getClientDisplayAmountText();
-            for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
-                if (isTankWindowSide(side, outputFacing, base)) {
-                    renderAmountText(x, y, z, amountText, side, (float) TEXT_DEPTH, 4, true, 38);
-                }
+            IIcon icon = fluid.getIcon(fluidStack);
+            if (icon != null) {
+                int color = fluid.getColor(fluidStack);
+                GL11.glColor4f(
+                    (color >> 16 & 0xFF) / 255.0F,
+                    (color >> 8 & 0xFF) / 255.0F,
+                    (color & 0xFF) / 255.0F,
+                    1.0F);
+                TextureUtils.bindAtlas(fluid.getSpriteNumber());
+                renderTankFluidVolume(x, y, z, icon, fillLevel);
             }
         } finally {
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);

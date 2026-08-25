@@ -194,10 +194,15 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         displayFluidStack = fluid == null ? null : fluid.copy();
         displayFluidAmount = amount;
         int capacity = getRealCapacity();
-        displayFillLevel = capacity <= 0 ? 0
-            : Math.min(64, (int) (((long) amount * 64 + capacity / 2L) / capacity));
-        if (amount > 0 && displayFillLevel == 0) displayFillLevel = 1;
+        displayFillLevel = getDisplayFillLevel(amount);
         displayAmountText = formatNumberCompact(amount) + " / " + formatNumberCompact(capacity);
+    }
+
+    public int getDisplayFillLevel(int amount) {
+        int capacity = getRealCapacity();
+        int fillLevel = capacity <= 0 ? 0
+            : Math.min(64, (int) (((long) amount * 64 + capacity / 2L) / capacity));
+        return amount > 0 && fillLevel == 0 ? 1 : fillLevel;
     }
 
     @Override
