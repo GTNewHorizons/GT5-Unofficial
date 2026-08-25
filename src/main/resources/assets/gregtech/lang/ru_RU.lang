@@ -1793,7 +1793,7 @@ gt.multiblock.ExtremeHeatExchanger.lava=§cЛава§7 | порог ПГ §d80,0
 gt.multiblock.ExtremeHeatExchanger.hotcoolant=§cГорячий хладагент§7 | порог ПГ §d8,000 %s/с§7 | макс. ввод §c128,000 %s/с§7 | макс. выход §r1,280,000 %s/t ПГ пара
 gt.multiblock.ExtremeHeatExchanger.hotsolarsalt=§cГорячая солнечная соль§7 | Порог СК §d1,600 %s/с§7 | Макс. ввод §c3,200 %s/с§7 | Макс. вывод §r160,000 %s/t СК пара
 gt.multiblock.ExtremeHeatExchanger.plasma1=§cПлазма всегда производит §rСжатый СК пар§7 независимо от скорости ввода
-gt.multiblock.ExtremeHeatExchanger.plasma2=Максимальные скорости ввода и вывода зависят от плотности плазмы (EU/L)
+gt.multiblock.ExtremeHeatExchanger.plasma2=Максимальные скорости ввода и вывода зависят от плотности плазмы (EU/Л)
 gt.multiblock.ExtremeHeatExchanger.throttle1=Схема в контроллере снижает порог и эффективность ПГ пара
 gt.multiblock.ExtremeHeatExchanger.throttle2=§d-150 %s/s§7 к порогу SC и §r-1.5%%§7 к выходу пара за каждую схему свыше 1
 
@@ -1801,8 +1801,8 @@ gt.multiblock.NeutralizationEngine.efficiency=Может §fиспользова
 gt.multiblock.NeutralizationEngine.alkali_text=§b%s§7 : §d%d%%§7 : §f%d§7/§fминуту
 gt.multiblock.NeutralizationEngine.toxic_residue.1=Производит §cтоксичный остаток §7при сжигании кислот
 gt.multiblock.NeutralizationEngine.toxic_residue.2=Если §cтоксичный остаток §7превысит §3вместимость§7, мультиблок §4ВЗОРВЁТСЯ!
-gt.multiblock.NeutralizationEngine.toxic_residue.3=Каждый §fтик§7 §cтоксичный остаток §7§fрастёт §7на §6скорость остатка§7*§eрасход топлива (L)§7*rand(§f%.1f§7,§f%.1f§7)
-gt.multiblock.NeutralizationEngine.toxic_residue.4=§6Скорость остатка §7считается как §f0.05§7*§dбазовая ценность топлива (EU/L)§7^§f0.8
+gt.multiblock.NeutralizationEngine.toxic_residue.3=Каждый §fтик§7 §cтоксичный остаток §7§fрастёт §7на §6скорость остатка§7*§eрасход топлива (Л)§7*rand(§f%.1f§7,§f%.1f§7)
+gt.multiblock.NeutralizationEngine.toxic_residue.4=§6Скорость остатка §7считается как §f0.05§7*§dбазовая ценность топлива (EU/Л)§7^§f0.8
 gt.multiblock.NeutralizationEngine.toxic_residue.5=Каждый §fтик§7 §cтоксичный остаток §7§fубывает §7на §9базовый распад§7*§eускорение распада§7*(§cтоксичный остаток§7^§f0.08§7)
 gt.multiblock.NeutralizationEngine.toxic_residue.6=При выключенном мультиблоке остаток распадается в §f10 §7раз медленнее
 gt.multiblock.NeutralizationEngine.decay_boost.1=Вставьте §dроборуки§7, чтобы повысить §eускорение распада§7:
@@ -2429,12 +2429,12 @@ GT5U.machines.antimatter_forge.disableRender=Отключить рендерин
 GT5U.machines.coke_oven_hatch.mode.input=Люк теперь принимает предметы
 GT5U.machines.coke_oven_hatch.mode.output=Люк теперь выдаёт предметы
 GT5U.machines.coke_oven_hatch.mode.output_fluid=Люк теперь выдаёт жидкости
-GT5U.machines.large_boiler.info.tooltip.1.sh=Производит %sL перегретого пара из 1 угля со скоростью %sL/s
-GT5U.machines.large_boiler.info.tooltip.1.normal=Производит %sL пара из 1 угля со скоростью %sL/s
+GT5U.machines.large_boiler.info.tooltip.1.sh=Производит %sЛ перегретого пара из 1 угля со скоростью %sЛ/сек
+GT5U.machines.large_boiler.info.tooltip.1.normal=Производит %sЛ пара из 1 угля со скоростью %sЛ/сек
 GT5U.machines.large_boiler.info.tooltip.2.sh=Подходит не любое топливо (подробности во вкладке NEI большого котла)
 GT5U.machines.large_boiler.info.tooltip.2.normal=Топливо со слишком низкой теплотворностью не работает
 GT5U.machines.large_boiler.info.tooltip.3=Для долго горящего топлива применяется формула 1+log(BurnTime/10)*0.025
-GT5U.machines.large_boiler.info.tooltip.4=Программируемая схема в основном блоке ограничивает котёл (-1000L/s за единицу)
+GT5U.machines.large_boiler.info.tooltip.4=Программируемая схема в основном блоке ограничивает котёл (-1000Л/сек за единицу)
 GT5U.machines.large_boiler.info.tooltip.5=Позволяет одновременно сжигать твердое и жидкое топливо, обеспечивая увеличение скорости на 25%
 GT5U.machines.large_boiler.info.tooltip.6=Прогрев занимает %s секунд
 GT5U.machines.large_boiler.gui.production=Производит §7%s§r: §7%s §rЛ/t
@@ -2521,7 +2521,7 @@ GT5U.gui.button.drone_key_panel=Откройте панель ключей по�
 GT5U.gui.button.toggle_output_slot_lock=Переключить выходной слот
 GT5U.gui.button.power_panel=Открыть панель энергии
 GT5U.gui.button.fluid_regulation_panel=Открыть панель регулировки жидкости
-GT5U.gui.button.max_fluid=Максимальный расход жидкости (L/t)
+GT5U.gui.button.max_fluid=Максимальный расход жидкости (Л/t)
 GT5U.gui.button.turbinemenu=Открыть контроллер камеры
 GT5U.gui.button.machineinfo=Отображение информации о механизме
 GT5U.gui.button.max_parallel=Всегда использовать максимум
@@ -2918,7 +2918,7 @@ GT5U.gui.text.nac.info.calibration.special.effect3=§3Тир 3§r - §2Поро�
 # NAC Module Tooltip Keys
 GT5U.tooltip.nac.interface.machine_info=%s, %s
 GT5U.tooltip.nac.interface.delete_stored=Удалить компоненты сохраненной электросхемы
-GT5U.tooltip.nac.interface.empty_stored=Выгрузить хранимые компоненты электросхем в ячейку AE2
+GT5U.tooltip.nac.interface.empty_stored=Переместить хранимые компоненты электросхем в ячейку AE2
 GT5U.tooltip.nac.interface.nac_module=Модуль NAC
 GT5U.tooltip.nac.interface.cc=§eCC§7
 GT5U.tooltip.nac.interface.ccs=§eCC§7
@@ -2975,7 +2975,7 @@ GT5U.tooltip.nac.module.board_processor.name=Устройство для пог�
 GT5U.tooltip.nac.module.board_processor.flavor.1=Их надо как следует промочить
 GT5U.tooltip.nac.module.board_processor.action=Обрабатывает ваши платные %s, отмывая их в §b«жидкости погружения»§7
 GT5U.tooltip.nac.module.board_processor.body.1=Каждую секунду пытается заполнить внутренний бак поданными §b«жидкостями погружения»§7
-GT5U.tooltip.nac.module.board_processor.body.2=Внутренний бак вмещает §31 000 000L§7 и должен быть заполнен минимум наполовину для работы машины
+GT5U.tooltip.nac.module.board_processor.body.2=Внутренний бак вмещает §31 000 000Л§7 и должен быть заполнен минимум наполовину для работы машины
 GT5U.tooltip.nac.module.board_processor.body.3=Работа рецептов постепенно повышает загрязнённость жидкости, причём больший объём загрязняется дольше
 GT5U.tooltip.nac.module.board_processor.body.4=Задайте порог слива в интерфейсе, чтобы жидкость автоматически уходила на обработку, по умолчанию §b100%%§7
 GT5U.tooltip.nac.module.board_processor.body.5=Процент загрязнения §b(y%%)§7 влияет на эффективность модуля:
@@ -3000,7 +3000,7 @@ GT5U.tooltip.nac.module.optical_organizer.name=Оптически оптимиз
 GT5U.tooltip.nac.module.optical_organizer.flavor.1=Имеет ли вообще смысл смешивать воду?
 GT5U.tooltip.nac.module.optical_organizer.action=Оптимизирует ваши оптические %s
 GT5U.tooltip.nac.module.optical_organizer.body.1=Требует подачи 2 §bочищенных вод§7
-GT5U.tooltip.nac.module.optical_organizer.body.2=Во время работы §2расходует §oX§r§2 L/s§7 §bвод§7, давая §fбонусы
+GT5U.tooltip.nac.module.optical_organizer.body.2=Во время работы §2расходует §oX§r§2 Л/сек§7 §bвод§7, давая §fбонусы
 GT5U.tooltip.nac.module.optical_organizer.body.3=§fБонусы§7 одной категории складываются
 GT5U.tooltip.nac.module.optical_organizer.body.4=В полностью откалиброванном NAC каждый §fбонус§7 от §bводы§7 применяется дважды
 GT5U.tooltip.nac.module.optical_organizer.body.water=Grade §b%s§7 / §2%s§7 / %s%s§7
@@ -3095,10 +3095,10 @@ gt.circuitcomponent.processed.chipnand=Вырезаем NAND-чипы памят
 gt.circuitcomponent.processed.chipasoc=Вырезаем продвинутую систему на чипе
 gt.circuitcomponent.processed.chippikopic=Вырезаем чипы пико интегральной электросхемы
 gt.circuitcomponent.processed.chipquantumpic=Вырезаем чипы квантовой интегральной электросхемы
-gt.circuitcomponent.processed.chipattopic=Нарезанные чипы атто-силовой ИС
-gt.circuitcomponent.processed.chipzeptopic=Нарезанные чипы зепто-силовой ИС
-gt.circuitcomponent.processed.chipyoctopic=Нарезанные чипы йокто-силовой ИС
-gt.circuitcomponent.processed.chipplanckpic=Нарезанные чипы планк-силовой ИС
+gt.circuitcomponent.processed.chipattopic=Вырезаем чипы атто интегральной электросхемы
+gt.circuitcomponent.processed.chipzeptopic=Вырезаем чипы зепто интегральной электросхемы
+gt.circuitcomponent.processed.chipyoctopic=Вырезаем чипы йокто интегральной электросхемы
+gt.circuitcomponent.processed.chipplanckpic=Вырезаем чипы планковской интегральной электросхемы
 
 gt.circuitcomponent.processed.chipcrystalcpu=Протравленный кристаллический процессор
 gt.circuitcomponent.processed.chipcrystalsoc=Протравленный кристаллический SoC
@@ -3116,11 +3116,11 @@ gt.circuitcomponent.processed.superconductoruev=Настроенный пров�
 gt.circuitcomponent.processed.superconductoruiv=Настроенный провод сверхпроводника UIV
 gt.circuitcomponent.processed.superconductorumv=Настроенный провод сверхпроводника UMV
 
-gt.circuitcomponent.processed.frame.aluminium=Склеенный алюминиевый каркас
-gt.circuitcomponent.processed.frame.tritanium=Склеенный каркас из тритания
-gt.circuitcomponent.processed.frame.celestialtungsten=Склеенный каркас из небесного вольфрама
-gt.circuitcomponent.processed.frame.hypogen=Склеенный каркас из гипогена
-gt.circuitcomponent.processed.frame.magmatter=Склеенный каркас из магматерии
+gt.circuitcomponent.processed.frame.aluminium=Сращённый алюминиевый каркас
+gt.circuitcomponent.processed.frame.tritanium=Сращённый каркас из тритания
+gt.circuitcomponent.processed.frame.celestialtungsten=Сращённый каркас из небесного вольфрама
+gt.circuitcomponent.processed.frame.hypogen=Сращённый каркас из гипогена
+gt.circuitcomponent.processed.frame.magmatter=Сращённый каркас из магматерии
 
 gt.circuitcomponent.sheet.processed.siliconerubber=Катушка обёртки из силиконовой резины
 gt.circuitcomponent.sheet.processed.polybenzimidazole=Катушка обёртки из полибензимидозола
@@ -3451,8 +3451,8 @@ GT5U.gui.text.contributors.textures=Текстуры
 GT5U.gui.text.contributors.rendering=Рендеринг
 GT5U.gui.text.contributors.structure=Структура
 GT5U.gui.text.contributors.playtesting=Игровое тестирование
-GT5U.gui.tooltip.behaviour.cover_tool.data=Сохранённые данные крышки:
-GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste=Может копировать и вставлять данные крышек.
+GT5U.gui.tooltip.behaviour.cover_tool.data=Сохранённые данные модуля:
+GT5U.gui.tooltip.behaviour.cover_tool.cover_copy_paste=Может копировать и вставлять данные модулей.
 
 GT5U.gui.chat.bindcentre=Успешно привязано к центру дронов.
 GT5U.gui.chat.drone_level_low=Улучшите дрона до T4, чтобы активировать телепортацию
@@ -3502,9 +3502,9 @@ GT5U.chat.wet_transformer.half_mode.enable=Трансформатор работ
 GT5U.chat.wet_transformer.half_mode.disable=Трансформатор работает в соотношении 16A:64A ввод/вывод.
 
 GT5U.chat.soldering_iron.not_enough=Недостаточно паяльного материала!
-GT5U.chat.ore.set_ore_natural_flag=Признак природной руды установлен в %s
+GT5U.chat.ore.set_ore_natural_flag=Установлен признак природной руды: %s
 
-GT5U.gui.text.toolbox.title=Ящик полевого инженера
+GT5U.gui.text.toolbox.title=Ящик для инструментов полевого инженера
 GT5U.gui.text.toolbox.slot_title.wrench=Ключ
 GT5U.gui.text.toolbox.slot_title.wire_cutter=Кусачки
 GT5U.gui.text.toolbox.slot_title.screwdriver=Отвёртка
@@ -3534,7 +3534,7 @@ GT5U.gui.text.toolbox.error.no_tools=§eВ ящике нет инструмен�
 
 GT5U.item.toolbox.tooltip.select_tool=%s: выбрать активный инструмент
 GT5U.item.toolbox.tooltip.deselect_tool=%s (в присяде): снять выбор инструмента
-GT5U.item.toolbox.tooltip.open_toolbox=%s: открыть ящик
+GT5U.item.toolbox.tooltip.open_toolbox=%s: открыть ящик с инструментами
 # This inserts gt.item.desc.durability into the %s
 GT5U.item.toolbox.tooltip.tool_durability=Инструмент %s
 
@@ -3563,7 +3563,7 @@ GT5U.chat.cover.fluid_filter=Фильтр жидкости: %s
 GT5U.chat.cover.fluid_limiter=Порог: %s
 GT5U.chat.cover.fluid_regulator.max=Достигнут предел скорости насоса!
 GT5U.chat.cover.fluid_regulator.rate_1=Скорость насоса: %sЛ/тик %sЛ/сек
-GT5U.chat.cover.fluid_regulator.speed=Скорость насоса: %sL каждые %s тиков, в среднем %s L/сек
+GT5U.chat.cover.fluid_regulator.speed=Скорость насоса: %sЛ каждые %s тиков, в среднем %s Л/сек
 GT5U.chat.cover.fluid_storage_monitor.side=Сторона: %s
 GT5U.chat.cover.slot=Слот: %s
 GT5U.chat.cover.slot.all=Слот: Все
@@ -3914,7 +3914,7 @@ GT5U.nei.large_boiler.steel_boiler.ban=Стальной бойлер: запре
 GT5U.nei.large_boiler.titanium_boiler=Титановый бойлер: %s
 GT5U.nei.large_boiler.titanium_boiler.ban=Титановый бойлер: запрещён
 GT5U.nei.large_boiler.tungstensteel_boiler=Бойлер из вольфрамовой стали: %s
-GT5U.nei.large_boiler.tungstensteel_boiler.ban=Вольфрамост. бойлер: запрещён
+GT5U.nei.large_boiler.tungstensteel_boiler.ban=Вольфрамовый бойлер: запрещён
 GT5U.nei.large_boiler.solid=Перечислены не все виды твёрдого топлива.\nЛюбой горючий материал со временем\n горения не менее %d / %d\nбудет гореть в большом бронзовом\n/ стальном бойлере соответственно.
 GT5U.nei.nuclear.model.mox=MOX модель
 GT5U.nei.nuclear.model.uranium=Урановая модель
@@ -3947,10 +3947,10 @@ GT5U.config.colormodulation.machine_metal.B=Синий
 GT5U.config.colormodulation.machine_metal.G=Зелёный
 GT5U.config.colormodulation.machine_metal.R=Красный
 GT5U.config.interface=Интерфейс
-GT5U.config.interface.DisplayCoverTabs=Показывать вкладки крышек
-GT5U.config.interface.DisplayCoverTabs.tooltip=Показывает вкладки крышек на всех машинах Gregtech
-GT5U.config.interface.FlipCoverTabs=Отразить вкладки крышек
-GT5U.config.interface.FlipCoverTabs.tooltip=Показывает вкладки крышек справа, а не слева
+GT5U.config.interface.DisplayCoverTabs=Показывать вкладки модулей
+GT5U.config.interface.DisplayCoverTabs.tooltip=Показывает вкладки модулей на всех машинах Gregtech
+GT5U.config.interface.FlipCoverTabs=Отразить вкладки модулей
+GT5U.config.interface.FlipCoverTabs.tooltip=Показывает вкладки модулей справа, а не слева
 GT5U.config.interface.TooltipVerbosity=Подробности подсказки (см. подробности)
 GT5U.config.interface.TooltipVerbosity.tooltip=Насколько подробными должны быть подсказки интерфейса GregTech?\n0: Нет подсказок\n1: Только однострочные подсказки\n2: Обычные подсказки\n3+: Расширенные подсказки [ПО УМОЛЧАНИЮ]
 GT5U.config.interface.TooltipShiftVerbosity=Подробность подсказок (при зажатом LSHIFT)
@@ -6362,10 +6362,10 @@ gt.blockmachines.multimachine.foundry.parallel.tooltip4=   паре с моду�
 
 gt.blockmachines.multimachine.foundry.hypercooler.flavor=Укрощённая ярость
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Расходует §bохлаждающую жидкость §7ради §dдополнительных разгонов
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Тратит %s L/s %s, чтобы получить %s к максимуму разгонов
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Тратит %s Л/сек %s, чтобы получить %s к максимуму разгонов
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Тратит §bохлаждающую жидкость §7только когда §6литейная §7работает
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Нужен входной шлюз на любом криогенном корпусе, откуда брать жидкость!
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Может использовать §aвечность §7по §a25 §7L/s ради §a3 §7к максимуму разгонов в
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Может использовать §aвечность §7по §a25 §7Л/сек ради §a3 §7к максимуму разгонов в
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   паре с модулем §5Универсальный коллапсер§7
 
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Время ведьм!
@@ -7087,7 +7087,7 @@ GT5U.gui.text.recipe_result.no_output_for_sapling=§7Этот саженец н�
 GT5U.gui.text.recipe_result.no_tools=§7Отсутствуют применимые инструменты
 
 # Cover Overflow Valve
-GTPP.chat.text.cover_overflow_valve_overflow_point=Порог переполнения: %d L
+GTPP.chat.text.cover_overflow_valve_overflow_point=Порог переполнения: %d Л
 GTPP.gui.text.cover_overflow_valve_overflow_point=§8Порог переполнения
 GTPP.gui.text.cover_overflow_valve_voiding_rate=§8Скорость уничтожения
 GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§8Разрешить ввод жидкости
@@ -7441,7 +7441,7 @@ GT5U.infodata.pcb_upgrade_base.not_linked=Не привязан
 
 GT5U.infodata.critical_info=Важнейшая информация
 GT5U.infodata.critical_info.hdr=§m------------§r §lВажнейшая информация§r §m------------
-GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Отработано тиков: %s, скидка на топливо: %s (дополнительный расход катализатора: %sL)
+GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Отработано тиков: %s, скидка на топливо: %s (дополнительный расход катализатора: %sЛ)
 GT5U.infodata.plasma_forge.fuel_discount=Скидка на топливо: %s
 GT5U.infodata.plasma_forge.convergence=Конвергенция: %s
 GT5U.infodata.plasma_forge.convergence.progress=, идеальная конвергенция достигнута за %s мин.
@@ -8779,7 +8779,7 @@ gt.book.punch_card_manual_v0.page00=В этом руководстве буду�
 gt.book.punch_card_manual_v0.page01=(i1&&i2)?o1=15:o1=0;=10
 gt.book.punch_card_manual_v0.page02=игнорировать все пробельные символы, используйте длинные для сохранения чисел
 gt.book.punch_card_manual_v0.page03=&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F
-gt.book.punch_card_manual_v0.page04=«0» = ложь, «всё, кроме 0» = истина, «!» превращает «0» в «1», а всё остальное в «0»
+gt.book.punch_card_manual_v0.page04="0" = ложь, "всё, кроме 0" = истина, "!" превращает "0" в "1", а всё остальное в "0"
 gt.book.punch_card_manual_v0.page05=',' является просто разделителем для нескольких исполняемых кодов в строке.
 gt.book.punch_card_manual_v0.page06=';' означает, что Программа ожидает следующего тика до продолжения. ';=10' и ';=10;' оба означают, что он будет ждать 10 тиков вместо 1. И '; = 0' или что-либо < 0 по умолчанию будет 0.
 gt.book.punch_card_manual_v0.page07=Если оператор '=' используется внутри скобок, он возвращает значение, установленное для переменной.
