@@ -12,12 +12,13 @@ import tectech.voidcraft.ship.VoidcraftCoverComponent;
 import tectech.voidcraft.ship.VoidcraftCoverRegistry;
 
 /**
- * A Voidcraft component cover: a compact part mounted on a face of a Voidcraft component block.
+ * A Voidcraft component cover: a compact part mounted on a face of a Voidcraft hull block.
  *
  * <p>
- * Renders the component's icon as a full-face texture over the hull. Carries its
+ * Renders the cover part's own 16×16 icon as a full-face texture over the hull (pass 24: each cover has a
+ * dedicated icon — the old mirrored-block icon shared the framebox/planet-sheet art). Carries its
  * {@link VoidcraftCoverComponent} so the assembler scan and the stat math can see it (covers count toward the ship's
- * stats, and thruster covers push the ship away from their mounting face).
+ * stats, and thruster covers count toward thrust only on the ship's REAR face, the assembler side — pass 24 flip).
  */
 public class CoverVoidcraftComponent extends Cover {
 
@@ -30,8 +31,7 @@ public class CoverVoidcraftComponent extends Cover {
         this.component = VoidcraftCoverRegistry.byStack(context.getCoverItem());
         // Cover instances are constructed at mount time — long after the icon phase — so the texture must come
         // from the load-phase cache (VoidcraftTextures), never re-resolved by name here.
-        this.faceTexture = component == null ? null
-            : VoidcraftTextures.componentTexture(component.getMirroredComponent());
+        this.faceTexture = component == null ? null : VoidcraftTextures.coverTexture(component);
     }
 
     /** Full-face texture so the mounted part replaces the face art. */

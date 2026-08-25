@@ -90,8 +90,9 @@ import tectech.voidcraft.ship.VoidcraftRole;
  *
  * <p>
  * A new machine parallel to the legacy Eye of Harmony (the legacy code stays untouched, plan §1.1): the shell is
- * identical (33×33×33, same casings and field generators, same hatch rules, same anchor) — but instead of mining
- * planets for star matter it hosts an <em>ignitable star</em>:
+ * the legacy sphere scaled 2× about its center (pass 12: 65×65×65 — same casings and field generators, same hatch
+ * rules, same per-type block counts, anchor at the scaled {@code ~} slot 32,32,0) — but instead of mining planets
+ * for star matter it hosts an <em>ignitable star</em>:
  * <ul>
  * <li>COLD until a {@link ItemUSSController} is inserted into the controller slot;</li>
  * <li>IGNITED — the star burns: the render block is placed and the lifespan from {@link USSConstants} is counted
@@ -113,7 +114,7 @@ import tectech.voidcraft.ship.VoidcraftRole;
  */
 @SuppressWarnings("SpellCheckingInspection")
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurvivalConstructable, USSPilotWorld {
 
     /** Structure piece name (same as the legacy EoH — the shell is identical). */
     protected static final String STRUCTURE_PIECE_MAIN = "main";
@@ -149,6 +150,13 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     private final List<VoidcraftActiveShip> activeShips = new ArrayList<>();
 
     /**
+     * The pilots — one per in-flight ship (programming framework, Phase C), index-parallel to {@link #activeShips}.
+     * Each pilot runs its ship's program (the controller's instruction list) against this MTE (the
+     * {@link USSPilotWorld} game seam) and decides the ship's legs; the ships themselves are passive leg drivers.
+     */
+    private final List<USSShipPilot> pilots = new ArrayList<>();
+
+    /**
      * The state id last pushed to each slot's ship render TE (avoids per-tick description packets). Starts at -1
      * ("nothing pushed yet"); on NBT load it is set to each restored ship's current state — the slot's render TE
      * already holds it (it is a separate world block with its own NBT), so no re-push is needed after a reload.
@@ -159,6 +167,20 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         int[] states = new int[USSConstants.MAX_SHIPS_PER_USS];
         Arrays.fill(states, -1);
         return states;
+    }
+
+    /**
+     * The leg id last pushed to each slot's ship render TE (programming framework, Phase C): the leg ID
+     * ({@link VoidcraftActiveShip#getLegId()}) is pushed alongside the state so a leg of the SAME state as the
+     * previous one (a program doing MOVE → MOVE) still animates from its own start — the client resets its
+     * leg-progress phase when the leg id changes.
+     */
+    private final int[] lastPushedLegIds = initLastPushedLegIds();
+
+    private static int[] initLastPushedLegIds() {
+        int[] ids = new int[USSConstants.MAX_SHIPS_PER_USS];
+        Arrays.fill(ids, -1);
+        return ids;
     }
 
     /**
@@ -179,6 +201,13 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      */
     private static final Logger LOGGER = LogManager.getLogger("Voidcraft USS");
 
+    /**
+     * Pass 26 (user: "add logging for the different missions and movements, that displays the calculated times and
+     * progress"): the interval in WORLD TICKS between per-ship progress heartbeats (200 ticks = 10 in-game
+     * seconds). Keeps the game log informative (a line per in-flight ship every 10 s) without per-tick spam.
+     */
+    private static final long PROGRESS_LOG_INTERVAL = 200L;
+
     // endregion
 
     // NBT tag names (voidcraft "vc_" naming convention).
@@ -189,573 +218,584 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     private static final String INFRASTRUCTURE_NBT_TAG = "vc_uss_infrastructure";
 
     // Multiblock structure.
+    /**
+     * The legacy 33×33×33 EoH sphere (transposed into the structurelib layout) — the base shape for pass 12.
+     */
+    private static final String[][] LEGACY_EOH_SHAPE = transpose(
+        new String[][] {
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "               C C               ", "               C C               ",
+                "               C C               ", "            CCCCCCCCC            ",
+                "               C C               ", "            CCCCCCCCC            ",
+                "               C C               ", "               C C               ",
+                "               C C               ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "               C C               ",
+                "               C C               ", "               C C               ",
+                "               C C               ", "              DDDDD              ",
+                "             DDCDCDD             ", "         CCCCDCCDCCDCCCC         ",
+                "             DDDDDDD             ", "         CCCCDCCDCCDCCCC         ",
+                "             DDCDCDD             ", "              DDDDD              ",
+                "               C C               ", "               C C               ",
+                "               C C               ", "               C C               ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "               C C               ",
+                "               C C               ", "               C C               ",
+                "                D                ", "                D                ",
+                "             DDDDDDD             ", "            DD     DD            ",
+                "            D  EEE  D            ", "       CCC  D EAAAE D  CCC       ",
+                "          DDD EAAAE DDD          ", "       CCC  D EAAAE D  CCC       ",
+                "            D  EEE  D            ", "            DD     DD            ",
+                "             DDDDDDD             ", "                D                ",
+                "                D                ", "               C C               ",
+                "               C C               ", "               C C               ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "               C C               ", "               C C               ",
+                "                D                ", "                D                ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "      CC                 CC      ",
+                "        DD             DD        ", "      CC                 CC      ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                D                ",
+                "                D                ", "               C C               ",
+                "               C C               ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "               C C               ",
+                "              CCCCC              ", "                D                ",
+                "                A                ", "                A                ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "      C                   C      ", "     CC                   CC     ",
+                "      CDAA             AADC      ", "     CC                   CC     ",
+                "      C                   C      ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                A                ",
+                "                A                ", "                D                ",
+                "              CCCCC              ", "               C C               ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "               C C               ", "               C C               ",
+                "                D                ", "             SEEAEES             ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "       S                 S       ",
+                "       E                 E       ", "    CC E                 E CC    ",
+                "      DA                 AD      ", "    CC E                 E CC    ",
+                "       E                 E       ", "       S                 S       ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "             SEEAEES             ",
+                "                D                ", "               C C               ",
+                "               C C               ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "               C C               ",
+                "              CCCCC              ", "                D                ",
+                "                A                ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "    C                       C    ", "   CC                       CC   ",
+                "    CDA                   ADC    ", "   CC                       CC   ",
+                "    C                       C    ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                A                ", "                D                ",
+                "              CCCCC              ", "               C C               ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "               C C               ", "               C C               ",
+                "                D                ", "             SEEAEES             ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "     S                     S     ",
+                "     E                     E     ", "  CC E                     E CC  ",
+                "    DA                     AD    ", "  CC E                     E CC  ",
+                "     E                     E     ", "     S                     S     ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "             SEEAEES             ",
+                "                D                ", "               C C               ",
+                "               C C               ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "               C C               ", "                D                ",
+                "                A                ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "  C                           C  ",
+                "   DA                       AD   ", "  C                           C  ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                A                ", "                D                ",
+                "               C C               ", "                                 ",
+                "                                 " },
+            { "                                 ", "               C C               ",
+                "               C C               ", "                D                ",
+                "                A                ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", " CC                           CC ",
+                "   DA                       AD   ", " CC                           CC ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                A                ", "                D                ",
+                "               C C               ", "               C C               ",
+                "                                 " },
+            { "                                 ", "               C C               ",
+                "                D                ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", " C                             C ",
+                "  D                           D  ", " C                             C ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                D                ", "               C C               ",
+                "                                 " },
+            { "                                 ", "               C C               ",
+                "                D                ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", " C                             C ",
+                "  D                           D  ", " C                             C ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                D                ", "               C C               ",
+                "                                 " },
+            { "             CCCCCCC             ", "               C C               ",
+                "             DDDDDDD             ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "  D                           D  ",
+                "  D                           D  ", "CCD                           DCC",
+                "  D                           D  ", "CCD                           DCC",
+                "  D                           D  ", "  D                           D  ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "             DDDDDDD             ", "               C C               ",
+                "               C C               " },
+            { "            CCHHHHHCC            ", "              DDDDD              ",
+                "            DD     DD            ", "                                 ",
+                "                                 ", "       S                 S       ",
+                "                                 ", "     S                     S     ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "  D                           D  ", "  D                           D  ",
+                " D                             D ", "CD                             DC",
+                " D                             D ", "CD                             DC",
+                " D                             D ", "  D                           D  ",
+                "  D                           D  ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "     S                     S     ",
+                "                                 ", "       S                 S       ",
+                "                                 ", "                                 ",
+                "            DD     DD            ", "              DDDDD              ",
+                "               C C               " },
+            { "            CHHHHHHHC            ", "             DDCDCDD             ",
+                "            D  EEE  D            ", "                                 ",
+                "      C                   C      ", "       E                 E       ",
+                "    C                       C    ", "     E                     E     ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "  D                           D  ", " D                             D ",
+                " D                             D ", "CCE                           ECC",
+                " DE                           ED ", "CCE                           ECC",
+                " D                             D ", " D                             D ",
+                "  D                           D  ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "     E                     E     ",
+                "    C                       C    ", "       E                 E       ",
+                "      C                   C      ", "                                 ",
+                "            D  EEE  D            ", "             DDCDCDD             ",
+                "               C C               " },
+            { "            CHHCCCHHC            ", "         CCCCDCCDCCDCCCC         ",
+                "       CCC  D EAAAE D  CCC       ", "      CC                 CC      ",
+                "     CC                   CC     ", "    CC E                 E CC    ",
+                "   CC                       CC   ", "  CC E                     E CC  ",
+                "  C                           C  ", " CC                           CC ",
+                " C                             C ", " C                             C ",
+                "CCD                           DCC", "CD                             DC",
+                "CCE                           ECC", "CCA                           ACC",
+                "CDA                           ADC", "CCA                           ACC",
+                "CCE                           ECC", "CD                             DC",
+                "CCD                           DCC", " C                             C ",
+                " C                             C ", " CC                           CC ",
+                "  C                           C  ", "  CC E                     E CC  ",
+                "   CC                       CC   ", "    CC E                 E CC    ",
+                "     CC                   CC     ", "      CC                 CC      ",
+                "       CCC  D EAAAE D  CCC       ", "         CCCCDCCDCCDCCCC         ",
+                "            CCCCCCCCC            " },
+            { "            CHHC~CHHC            ", "             DDDDDDD             ",
+                "          DDD EAAAE DDD          ", "        DD             DD        ",
+                "      CDAA             AADC      ", "      DA                 AD      ",
+                "    CDA                   ADC    ", "    DA                     AD    ",
+                "   DA                       AD   ", "   DA                       AD   ",
+                "  D                           D  ", "  D                           D  ",
+                "  D                           D  ", " D                             D ",
+                " DE                           ED ", "CDA                           ADC",
+                " DA                           AD ", "CDA                           ADC",
+                " DE                           ED ", " D                             D ",
+                "  D                           D  ", "  D                           D  ",
+                "  D                           D  ", "   DA                       AD   ",
+                "   DA                       AD   ", "    DA                     AD    ",
+                "    CDA                   ADC    ", "      DA                 AD      ",
+                "      CDAA             AADC      ", "        DD             DD        ",
+                "          DDD EAAAE DDD          ", "             DDDDDDD             ",
+                "               C C               " },
+            { "            CHHCCCHHC            ", "         CCCCDCCDCCDCCCC         ",
+                "       CCC  D EAAAE D  CCC       ", "      CC                 CC      ",
+                "     CC                   CC     ", "    CC E                 E CC    ",
+                "   CC                       CC   ", "  CC E                     E CC  ",
+                "  C                           C  ", " CC                           CC ",
+                " C                             C ", " C                             C ",
+                "CCD                           DCC", "CD                             DC",
+                "CCE                           ECC", "CCA                           ACC",
+                "CDA                           ADC", "CCA                           ACC",
+                "CCE                           ECC", "CD                             DC",
+                "CCD                           DCC", " C                             C ",
+                " C                             C ", " CC                           CC ",
+                "  C                           C  ", "  CC E                     E CC  ",
+                "   CC                       CC   ", "    CC E                 E CC    ",
+                "     CC                   CC     ", "      CC                 CC      ",
+                "       CCC  D EAAAE D  CCC       ", "         CCCCDCCDCCDCCCC         ",
+                "            CCCCCCCCC            " },
+            { "            CHHHHHHHC            ", "             DDCDCDD             ",
+                "            D  EEE  D            ", "                                 ",
+                "      C                   C      ", "       E                 E       ",
+                "    C                       C    ", "     E                     E     ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "  D                           D  ", " D                             D ",
+                " D                             D ", "CCE                           ECC",
+                " DE                           ED ", "CCE                           ECC",
+                " D                             D ", " D                             D ",
+                "  D                           D  ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "     E                     E     ",
+                "    C                       C    ", "       E                 E       ",
+                "      C                   C      ", "                                 ",
+                "            D  EEE  D            ", "             DDCDCDD             ",
+                "               C C               " },
+            { "            CCHHHHHCC            ", "              DDDDD              ",
+                "            DD     DD            ", "                                 ",
+                "                                 ", "       S                 S       ",
+                "                                 ", "     S                     S     ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "  D                           D  ", "  D                           D  ",
+                " D                             D ", "CD                             DC",
+                " D                             D ", "CD                             DC",
+                " D                             D ", "  D                           D  ",
+                "  D                           D  ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "     S                     S     ",
+                "                                 ", "       S                 S       ",
+                "                                 ", "                                 ",
+                "            DD     DD            ", "              DDDDD              ",
+                "               C C               " },
+            { "             CCCCCCC             ", "               C C               ",
+                "             DDDDDDD             ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "  D                           D  ",
+                "  D                           D  ", "CCD                           DCC",
+                "  D                           D  ", "CCD                           DCC",
+                "  D                           D  ", "  D                           D  ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "             DDDDDDD             ", "               C C               ",
+                "               C C               " },
+            { "                                 ", "               C C               ",
+                "                D                ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", " C                             C ",
+                "  D                           D  ", " C                             C ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                D                ", "               C C               ",
+                "                                 " },
+            { "                                 ", "               C C               ",
+                "                D                ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", " C                             C ",
+                "  D                           D  ", " C                             C ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                D                ", "               C C               ",
+                "                                 " },
+            { "                                 ", "               C C               ",
+                "               C C               ", "                D                ",
+                "                A                ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", " CC                           CC ",
+                "   DA                       AD   ", " CC                           CC ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                A                ", "                D                ",
+                "               C C               ", "               C C               ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "               C C               ", "                D                ",
+                "                A                ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "  C                           C  ",
+                "   DA                       AD   ", "  C                           C  ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                A                ", "                D                ",
+                "               C C               ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "               C C               ", "               C C               ",
+                "                D                ", "             SEEAEES             ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "     S                     S     ",
+                "     E                     E     ", "  CC E                     E CC  ",
+                "    DA                     AD    ", "  CC E                     E CC  ",
+                "     E                     E     ", "     S                     S     ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "             SEEAEES             ",
+                "                D                ", "               C C               ",
+                "               C C               ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "               C C               ",
+                "              CCCCC              ", "                D                ",
+                "                A                ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "    C                       C    ", "   CC                       CC   ",
+                "    CDA                   ADC    ", "   CC                       CC   ",
+                "    C                       C    ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                A                ", "                D                ",
+                "              CCCCC              ", "               C C               ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "               C C               ", "               C C               ",
+                "                D                ", "             SEEAEES             ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "       S                 S       ",
+                "       E                 E       ", "    CC E                 E CC    ",
+                "      DA                 AD      ", "    CC E                 E CC    ",
+                "       E                 E       ", "       S                 S       ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "             SEEAEES             ",
+                "                D                ", "               C C               ",
+                "               C C               ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "               C C               ",
+                "              CCCCC              ", "                D                ",
+                "                A                ", "                A                ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "      C                   C      ", "     CC                   CC     ",
+                "      CDAA             AADC      ", "     CC                   CC     ",
+                "      C                   C      ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                A                ",
+                "                A                ", "                D                ",
+                "              CCCCC              ", "               C C               ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "               C C               ", "               C C               ",
+                "                D                ", "                D                ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "      CC                 CC      ",
+                "        DD             DD        ", "      CC                 CC      ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                D                ",
+                "                D                ", "               C C               ",
+                "               C C               ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "               C C               ",
+                "               C C               ", "               C C               ",
+                "                D                ", "                D                ",
+                "             DDDDDDD             ", "            DD     DD            ",
+                "            D  EEE  D            ", "       CCC  D EAAAE D  CCC       ",
+                "          DDD EAAAE DDD          ", "       CCC  D EAAAE D  CCC       ",
+                "            D  EEE  D            ", "            DD     DD            ",
+                "             DDDDDDD             ", "                D                ",
+                "                D                ", "               C C               ",
+                "               C C               ", "               C C               ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "               C C               ",
+                "               C C               ", "               C C               ",
+                "               C C               ", "              DDDDD              ",
+                "             DDCDCDD             ", "         CCCCDCCDCCDCCCC         ",
+                "             DDDDDDD             ", "         CCCCDCCDCCDCCCC         ",
+                "             DDCDCDD             ", "              DDDDD              ",
+                "               C C               ", "               C C               ",
+                "               C C               ", "               C C               ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " },
+            { "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "               C C               ", "               C C               ",
+                "               C C               ", "            CCCCCCCCC            ",
+                "               C C               ", "            CCCCCCCCC            ",
+                "               C C               ", "               C C               ",
+                "               C C               ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 ", "                                 ",
+                "                                 " } });
+
+    /**
+     * Pass 12 (user: "the old EoH structure is a bit small for the increased scope of Voidcraft — 2× bigger
+     * radius"): the Voidcraft structure — the legacy sphere scaled uniformly 2× about its center (65×65×65). Same
+     * shape and block composition — every block simply moves to 2× its distance from the sphere center, so the
+     * per-type counts are unchanged — and the `~` controller slot lands at (32,32,0), the new anchor.
+     */
+    private static final String[][] STRUCTURE_SHAPE = scaleShape2x(LEGACY_EOH_SHAPE);
+
     private static final IStructureDefinition<MTEUnstableSolarSystem> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEUnstableSolarSystem>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] {
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "               C C               ", "               C C               ",
-                        "               C C               ", "            CCCCCCCCC            ",
-                        "               C C               ", "            CCCCCCCCC            ",
-                        "               C C               ", "               C C               ",
-                        "               C C               ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "               C C               ",
-                        "               C C               ", "               C C               ",
-                        "               C C               ", "              DDDDD              ",
-                        "             DDCDCDD             ", "         CCCCDCCDCCDCCCC         ",
-                        "             DDDDDDD             ", "         CCCCDCCDCCDCCCC         ",
-                        "             DDCDCDD             ", "              DDDDD              ",
-                        "               C C               ", "               C C               ",
-                        "               C C               ", "               C C               ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "               C C               ",
-                        "               C C               ", "               C C               ",
-                        "                D                ", "                D                ",
-                        "             DDDDDDD             ", "            DD     DD            ",
-                        "            D  EEE  D            ", "       CCC  D EAAAE D  CCC       ",
-                        "          DDD EAAAE DDD          ", "       CCC  D EAAAE D  CCC       ",
-                        "            D  EEE  D            ", "            DD     DD            ",
-                        "             DDDDDDD             ", "                D                ",
-                        "                D                ", "               C C               ",
-                        "               C C               ", "               C C               ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "               C C               ", "               C C               ",
-                        "                D                ", "                D                ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "      CC                 CC      ",
-                        "        DD             DD        ", "      CC                 CC      ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                D                ",
-                        "                D                ", "               C C               ",
-                        "               C C               ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "               C C               ",
-                        "              CCCCC              ", "                D                ",
-                        "                A                ", "                A                ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "      C                   C      ", "     CC                   CC     ",
-                        "      CDAA             AADC      ", "     CC                   CC     ",
-                        "      C                   C      ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                A                ",
-                        "                A                ", "                D                ",
-                        "              CCCCC              ", "               C C               ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "               C C               ", "               C C               ",
-                        "                D                ", "             SEEAEES             ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "       S                 S       ",
-                        "       E                 E       ", "    CC E                 E CC    ",
-                        "      DA                 AD      ", "    CC E                 E CC    ",
-                        "       E                 E       ", "       S                 S       ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "             SEEAEES             ",
-                        "                D                ", "               C C               ",
-                        "               C C               ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "               C C               ",
-                        "              CCCCC              ", "                D                ",
-                        "                A                ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "    C                       C    ", "   CC                       CC   ",
-                        "    CDA                   ADC    ", "   CC                       CC   ",
-                        "    C                       C    ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                A                ", "                D                ",
-                        "              CCCCC              ", "               C C               ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "               C C               ", "               C C               ",
-                        "                D                ", "             SEEAEES             ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "     S                     S     ",
-                        "     E                     E     ", "  CC E                     E CC  ",
-                        "    DA                     AD    ", "  CC E                     E CC  ",
-                        "     E                     E     ", "     S                     S     ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "             SEEAEES             ",
-                        "                D                ", "               C C               ",
-                        "               C C               ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "               C C               ", "                D                ",
-                        "                A                ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "  C                           C  ",
-                        "   DA                       AD   ", "  C                           C  ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                A                ", "                D                ",
-                        "               C C               ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "               C C               ",
-                        "               C C               ", "                D                ",
-                        "                A                ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", " CC                           CC ",
-                        "   DA                       AD   ", " CC                           CC ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                A                ", "                D                ",
-                        "               C C               ", "               C C               ",
-                        "                                 " },
-                    { "                                 ", "               C C               ",
-                        "                D                ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", " C                             C ",
-                        "  D                           D  ", " C                             C ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                D                ", "               C C               ",
-                        "                                 " },
-                    { "                                 ", "               C C               ",
-                        "                D                ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", " C                             C ",
-                        "  D                           D  ", " C                             C ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                D                ", "               C C               ",
-                        "                                 " },
-                    { "             CCCCCCC             ", "               C C               ",
-                        "             DDDDDDD             ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "  D                           D  ",
-                        "  D                           D  ", "CCD                           DCC",
-                        "  D                           D  ", "CCD                           DCC",
-                        "  D                           D  ", "  D                           D  ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "             DDDDDDD             ", "               C C               ",
-                        "               C C               " },
-                    { "            CCHHHHHCC            ", "              DDDDD              ",
-                        "            DD     DD            ", "                                 ",
-                        "                                 ", "       S                 S       ",
-                        "                                 ", "     S                     S     ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "  D                           D  ", "  D                           D  ",
-                        " D                             D ", "CD                             DC",
-                        " D                             D ", "CD                             DC",
-                        " D                             D ", "  D                           D  ",
-                        "  D                           D  ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "     S                     S     ",
-                        "                                 ", "       S                 S       ",
-                        "                                 ", "                                 ",
-                        "            DD     DD            ", "              DDDDD              ",
-                        "               C C               " },
-                    { "            CHHHHHHHC            ", "             DDCDCDD             ",
-                        "            D  EEE  D            ", "                                 ",
-                        "      C                   C      ", "       E                 E       ",
-                        "    C                       C    ", "     E                     E     ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "  D                           D  ", " D                             D ",
-                        " D                             D ", "CCE                           ECC",
-                        " DE                           ED ", "CCE                           ECC",
-                        " D                             D ", " D                             D ",
-                        "  D                           D  ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "     E                     E     ",
-                        "    C                       C    ", "       E                 E       ",
-                        "      C                   C      ", "                                 ",
-                        "            D  EEE  D            ", "             DDCDCDD             ",
-                        "               C C               " },
-                    { "            CHHCCCHHC            ", "         CCCCDCCDCCDCCCC         ",
-                        "       CCC  D EAAAE D  CCC       ", "      CC                 CC      ",
-                        "     CC                   CC     ", "    CC E                 E CC    ",
-                        "   CC                       CC   ", "  CC E                     E CC  ",
-                        "  C                           C  ", " CC                           CC ",
-                        " C                             C ", " C                             C ",
-                        "CCD                           DCC", "CD                             DC",
-                        "CCE                           ECC", "CCA                           ACC",
-                        "CDA                           ADC", "CCA                           ACC",
-                        "CCE                           ECC", "CD                             DC",
-                        "CCD                           DCC", " C                             C ",
-                        " C                             C ", " CC                           CC ",
-                        "  C                           C  ", "  CC E                     E CC  ",
-                        "   CC                       CC   ", "    CC E                 E CC    ",
-                        "     CC                   CC     ", "      CC                 CC      ",
-                        "       CCC  D EAAAE D  CCC       ", "         CCCCDCCDCCDCCCC         ",
-                        "            CCCCCCCCC            " },
-                    { "            CHHC~CHHC            ", "             DDDDDDD             ",
-                        "          DDD EAAAE DDD          ", "        DD             DD        ",
-                        "      CDAA             AADC      ", "      DA                 AD      ",
-                        "    CDA                   ADC    ", "    DA                     AD    ",
-                        "   DA                       AD   ", "   DA                       AD   ",
-                        "  D                           D  ", "  D                           D  ",
-                        "  D                           D  ", " D                             D ",
-                        " DE                           ED ", "CDA                           ADC",
-                        " DA                           AD ", "CDA                           ADC",
-                        " DE                           ED ", " D                             D ",
-                        "  D                           D  ", "  D                           D  ",
-                        "  D                           D  ", "   DA                       AD   ",
-                        "   DA                       AD   ", "    DA                     AD    ",
-                        "    CDA                   ADC    ", "      DA                 AD      ",
-                        "      CDAA             AADC      ", "        DD             DD        ",
-                        "          DDD EAAAE DDD          ", "             DDDDDDD             ",
-                        "               C C               " },
-                    { "            CHHCCCHHC            ", "         CCCCDCCDCCDCCCC         ",
-                        "       CCC  D EAAAE D  CCC       ", "      CC                 CC      ",
-                        "     CC                   CC     ", "    CC E                 E CC    ",
-                        "   CC                       CC   ", "  CC E                     E CC  ",
-                        "  C                           C  ", " CC                           CC ",
-                        " C                             C ", " C                             C ",
-                        "CCD                           DCC", "CD                             DC",
-                        "CCE                           ECC", "CCA                           ACC",
-                        "CDA                           ADC", "CCA                           ACC",
-                        "CCE                           ECC", "CD                             DC",
-                        "CCD                           DCC", " C                             C ",
-                        " C                             C ", " CC                           CC ",
-                        "  C                           C  ", "  CC E                     E CC  ",
-                        "   CC                       CC   ", "    CC E                 E CC    ",
-                        "     CC                   CC     ", "      CC                 CC      ",
-                        "       CCC  D EAAAE D  CCC       ", "         CCCCDCCDCCDCCCC         ",
-                        "            CCCCCCCCC            " },
-                    { "            CHHHHHHHC            ", "             DDCDCDD             ",
-                        "            D  EEE  D            ", "                                 ",
-                        "      C                   C      ", "       E                 E       ",
-                        "    C                       C    ", "     E                     E     ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "  D                           D  ", " D                             D ",
-                        " D                             D ", "CCE                           ECC",
-                        " DE                           ED ", "CCE                           ECC",
-                        " D                             D ", " D                             D ",
-                        "  D                           D  ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "     E                     E     ",
-                        "    C                       C    ", "       E                 E       ",
-                        "      C                   C      ", "                                 ",
-                        "            D  EEE  D            ", "             DDCDCDD             ",
-                        "               C C               " },
-                    { "            CCHHHHHCC            ", "              DDDDD              ",
-                        "            DD     DD            ", "                                 ",
-                        "                                 ", "       S                 S       ",
-                        "                                 ", "     S                     S     ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "  D                           D  ", "  D                           D  ",
-                        " D                             D ", "CD                             DC",
-                        " D                             D ", "CD                             DC",
-                        " D                             D ", "  D                           D  ",
-                        "  D                           D  ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "     S                     S     ",
-                        "                                 ", "       S                 S       ",
-                        "                                 ", "                                 ",
-                        "            DD     DD            ", "              DDDDD              ",
-                        "               C C               " },
-                    { "             CCCCCCC             ", "               C C               ",
-                        "             DDDDDDD             ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "  D                           D  ",
-                        "  D                           D  ", "CCD                           DCC",
-                        "  D                           D  ", "CCD                           DCC",
-                        "  D                           D  ", "  D                           D  ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "             DDDDDDD             ", "               C C               ",
-                        "               C C               " },
-                    { "                                 ", "               C C               ",
-                        "                D                ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", " C                             C ",
-                        "  D                           D  ", " C                             C ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                D                ", "               C C               ",
-                        "                                 " },
-                    { "                                 ", "               C C               ",
-                        "                D                ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", " C                             C ",
-                        "  D                           D  ", " C                             C ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                D                ", "               C C               ",
-                        "                                 " },
-                    { "                                 ", "               C C               ",
-                        "               C C               ", "                D                ",
-                        "                A                ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", " CC                           CC ",
-                        "   DA                       AD   ", " CC                           CC ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                A                ", "                D                ",
-                        "               C C               ", "               C C               ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "               C C               ", "                D                ",
-                        "                A                ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "  C                           C  ",
-                        "   DA                       AD   ", "  C                           C  ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                A                ", "                D                ",
-                        "               C C               ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "               C C               ", "               C C               ",
-                        "                D                ", "             SEEAEES             ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "     S                     S     ",
-                        "     E                     E     ", "  CC E                     E CC  ",
-                        "    DA                     AD    ", "  CC E                     E CC  ",
-                        "     E                     E     ", "     S                     S     ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "             SEEAEES             ",
-                        "                D                ", "               C C               ",
-                        "               C C               ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "               C C               ",
-                        "              CCCCC              ", "                D                ",
-                        "                A                ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "    C                       C    ", "   CC                       CC   ",
-                        "    CDA                   ADC    ", "   CC                       CC   ",
-                        "    C                       C    ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                A                ", "                D                ",
-                        "              CCCCC              ", "               C C               ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "               C C               ", "               C C               ",
-                        "                D                ", "             SEEAEES             ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "       S                 S       ",
-                        "       E                 E       ", "    CC E                 E CC    ",
-                        "      DA                 AD      ", "    CC E                 E CC    ",
-                        "       E                 E       ", "       S                 S       ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "             SEEAEES             ",
-                        "                D                ", "               C C               ",
-                        "               C C               ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "               C C               ",
-                        "              CCCCC              ", "                D                ",
-                        "                A                ", "                A                ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "      C                   C      ", "     CC                   CC     ",
-                        "      CDAA             AADC      ", "     CC                   CC     ",
-                        "      C                   C      ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                A                ",
-                        "                A                ", "                D                ",
-                        "              CCCCC              ", "               C C               ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "               C C               ", "               C C               ",
-                        "                D                ", "                D                ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "      CC                 CC      ",
-                        "        DD             DD        ", "      CC                 CC      ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                D                ",
-                        "                D                ", "               C C               ",
-                        "               C C               ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "               C C               ",
-                        "               C C               ", "               C C               ",
-                        "                D                ", "                D                ",
-                        "             DDDDDDD             ", "            DD     DD            ",
-                        "            D  EEE  D            ", "       CCC  D EAAAE D  CCC       ",
-                        "          DDD EAAAE DDD          ", "       CCC  D EAAAE D  CCC       ",
-                        "            D  EEE  D            ", "            DD     DD            ",
-                        "             DDDDDDD             ", "                D                ",
-                        "                D                ", "               C C               ",
-                        "               C C               ", "               C C               ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "               C C               ",
-                        "               C C               ", "               C C               ",
-                        "               C C               ", "              DDDDD              ",
-                        "             DDCDCDD             ", "         CCCCDCCDCCDCCCC         ",
-                        "             DDDDDDD             ", "         CCCCDCCDCCDCCCC         ",
-                        "             DDCDCDD             ", "              DDDDD              ",
-                        "               C C               ", "               C C               ",
-                        "               C C               ", "               C C               ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " },
-                    { "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "               C C               ", "               C C               ",
-                        "               C C               ", "            CCCCCCCCC            ",
-                        "               C C               ", "            CCCCCCCCC            ",
-                        "               C C               ", "               C C               ",
-                        "               C C               ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 ", "                                 ",
-                        "                                 " } }))
+        .addShape(STRUCTURE_PIECE_MAIN, STRUCTURE_SHAPE)
         .addElement(
             'A',
             GTStructureChannels.EOH_COMPRESSION.use(
@@ -820,6 +860,59 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                     (t, meta) -> t.timeAccelerationFieldMetadata = meta,
                     t -> t.timeAccelerationFieldMetadata)))
         .build();
+
+    /**
+     * Pass 12 (user: "2x bigger radius"): uniform 2x point-scale of the legacy 33x33x33 shape about its center.
+     *
+     * <p>
+     * Every non-space character at (i, j, k) is re-placed at (2i, 2j, 2k) of the output 65x65x65 grid: the shape
+     * center maps 16 -&gt; 32, the {@code ~} controller slot maps (16,16,0) -&gt; (32,32,0), and every per-type block
+     * count is unchanged - this is a point-scale (same one-block-thick shell, twice the radius), not a thickening.
+     * The output grid is space-filled; the scaling commutes with {@code transpose}, so the legacy literal stays
+     * readable and only the derived constant grows.
+     */
+    private static String[][] scaleShape2x(String[][] shape) {
+        final int n = shape.length;
+        if (n != 33) {
+            throw new IllegalArgumentException("scaleShape2x expects a 33x33x33 shape, got " + n + "x...");
+        }
+        // A 33-cell axis (indices 0–32) scales to indices 0–64 = 65 cells, NOT 66 (2·33 would add a phantom space
+        // slice).
+        final int m = 2 * n - 1;
+        final char[][][] grid = new char[m][m][m];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
+                Arrays.fill(grid[i][j], ' ');
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            final String[] rows = shape[i];
+            if (rows.length != n) {
+                throw new IllegalArgumentException(
+                    "scaleShape2x expects 33x33x33, got " + n + "x" + rows.length + "x...");
+            }
+            for (int j = 0; j < n; j++) {
+                final String row = rows[j];
+                if (row.length() != n) {
+                    throw new IllegalArgumentException("scaleShape2x expects 33-char rows, got " + row.length());
+                }
+                for (int k = 0; k < n; k++) {
+                    final char ch = row.charAt(k);
+                    if (ch != ' ') {
+                        grid[2 * i][2 * j][2 * k] = ch;
+                    }
+                }
+            }
+        }
+        final String[][] out = new String[m][m];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
+                out[i][j] = new String(grid[i][j]);
+            }
+        }
+        return out;
+    }
+
     // Region machine logic.
 
     @Override
@@ -841,8 +934,9 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * Same structural rules as the legacy EoH (copied verbatim): 16,16,0 anchor, no CRIb, no energy hatches,
-     * exactly 1 non-stocking input bus, 2 non-stocking input hatches, 1 output bus, 1 output hatch.
+     * Same structural rules as the legacy EoH (copied verbatim): 32,32,0 anchor (pass 12: the legacy 16,16,0 scaled
+     * 2× with the 65×65×65 shape), no CRIb, no energy hatches, exactly 1 non-stocking input bus, 2 non-stocking
+     * input hatches, 1 output bus, 1 output hatch.
      */
     @Override
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
@@ -852,7 +946,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         stabilisationFieldMetadata = -1;
 
         // Check structure of multi.
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 16, 0, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 32, 32, 0, errors)) return;
 
         // Make sure there are no Crafting Input Buffers/Buses/Slaves.
         if (!mDualInputHatches.isEmpty()) {
@@ -1002,8 +1096,9 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     // endregion
 
     /**
-     * Place the render block 16 blocks behind the controller (same geometry as the legacy EoH — the shared
-     * {@link TileEntityEyeOfHarmony} render TE is used as-is, configured for the star tier).
+     * Place the render block 32 blocks behind the controller (pass 12: the legacy 16-block star offset scaled 2×
+     * with the 65×65×65 shape). The shared {@link TileEntityEyeOfHarmony} render TE is used as-is, configured for
+     * the star tier AND for the doubled space-shell radius (legacy EoH keeps the 12.95 default).
      */
     private void createRenderBlock(int tier) {
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
@@ -1013,9 +1108,9 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         int y = gregTechTileEntity.getYCoord();
         int z = gregTechTileEntity.getZCoord();
 
-        double xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        double xOffset = 32 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double zOffset = 32 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = 32 * getExtendedFacing().getRelativeBackInWorld().offsetY;
 
         gregTechTileEntity.getWorld()
             .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
@@ -1030,8 +1125,12 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
 
         if (rendererTileEntity != null) {
             rendererTileEntity.setTier(tier);
-            // Star is a larger size depending on the spacetime tier.
-            rendererTileEntity.setStarSize(starSizeFor(tier));
+            // Star size: 0.5·√(sampled size), a pure function of the star type + ignition timestamp (the
+            // mechanics pass — see starSizeFor).
+            rendererTileEntity.setStarSize(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+            // Pass 12: the Voidcraft structure is 2× the legacy radius, so the space shell doubles with it
+            // (star and planet sizes stay unchanged).
+            rendererTileEntity.setDomeRadius(USSConstants.SPACE_SHELL_RADIUS);
             // Phase 4 pass 3: the system's PLANETS — deterministic (star type + ignition timestamp), so the legacy
             // orbit renderer draws exactly the bodies the miner works (see getPlanets / USSPlanets).
             rendererTileEntity.setPlanets(planetSpecsFor(getPlanets()));
@@ -1058,30 +1157,32 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         for (USSPlanets.USSPlanet planet : planets) {
             specs.add(
                 new TileEntityEyeOfHarmony.PlanetSpec(
-                    planet.type.getVisual(),
+                    planet.definition.getTexture(),
                     (float) planet.distance,
                     (float) planet.scale,
                     (float) planet.orbitSpeed,
                     (float) planet.rotationSpeed,
                     (float) planet.xAngle,
                     (float) planet.zAngle,
-                    USSPlanetColor.colorFor(planet.type)));
+                    USSPlanetColor.colorFor(planet.definition)));
         }
         return specs;
     }
 
     /**
-     * The star's rendered size (the tier mapping the star render TE uses — see {@link #createRenderBlock}).
-     * Pass 7: the fleet TE carries this value so the client computes the planet orbit radii EXACTLY like
-     * {@code EOHRenderingUtils.renderUSSOrbits} (radius = 0.2 + distance + 0.2·starSize) — ships hover precisely
-     * above the rendered planets.
+     * The star's rendered size (the mechanics pass: 0.5·√(sampled size), the sampled size being a pure function of
+     * the star type + ignition timestamp — see {@link USSPlanets#starRenderSize(double)} and
+     * {@link USSPlanets#sampleStarSize(USSStarType, long)}). Pass 7: the fleet TE carries this value so the client
+     * computes the planet orbit radii EXACTLY like {@code EOHRenderingUtils.renderUSSOrbits} (radius = 0.2 +
+     * distance + 0.2·starSize) — ships hover precisely above the rendered planets.
      */
-    private static float starSizeFor(int tier) {
-        return 0.4f + tier / 8.0f;
+    private static float starSizeFor(USSStarType starType, long seed) {
+        return USSPlanets.starRenderSize(USSPlanets.sampleStarSize(starType, seed));
     }
 
     /**
-     * Remove the render block (if present) at the standard offset.
+     * Remove the render block (if present) at the standard offset — pass 12: both the new 32-block offset and the
+     * legacy 16-block offset (one-time cleanup of render blocks left by pre-pass-12 33×33×33 builds).
      */
     private void destroyRenderBlock() {
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
@@ -1091,12 +1192,14 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         int y = gregTechTileEntity.getYCoord();
         int z = gregTechTileEntity.getZCoord();
 
-        double xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        for (int offset : new int[] { 16, 32 }) {
+            double xOffset = offset * getExtendedFacing().getRelativeBackInWorld().offsetX;
+            double zOffset = offset * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+            double yOffset = offset * getExtendedFacing().getRelativeBackInWorld().offsetY;
 
-        gregTechTileEntity.getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+            gregTechTileEntity.getWorld()
+                .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+        }
     }
 
     // Region mining mission (Phase 3).
@@ -1156,11 +1259,56 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * Launch a mining mission with the given ship payload (called by the {@code MTEVoidcraftGateway} after
-     * validating the ship).
+     * The system's spacetime-ripple FIELD (the Explorer pass): a deterministic pure function of the star's TYPE and
+     * ignition timestamp — the same 343-point grid the Explorers scan (mechanics) and the client renders (the three
+     * shells). The SCAN STATE (which points are revealed) lives on the {@link VoidcraftUSS} model (see
+     * {@link #uss}), not here. Null while the star is COLD.
+     *
+     * @see USSRipples#generate(USSStarType, long)
+     */
+    public USSRippleField getRippleField() {
+        if (uss == null || !uss.isIgnited()) {
+            return null;
+        }
+        return USSRipples.generate(uss.getStarType(), uss.getIgnitedAt());
+    }
+
+    /**
+     * The REVEALED spacetime-ripple positions (the Explorer pass): the ripple points that have been SCANNED (revealed)
+     * and ARE ripples, as {@code [x, y, z]} in fleet-anchor blocks (the same frame the client star/ship renderer
+     * draws in). Hidden ripples (not yet scanned) and revealed NON-ripples are absent — only revealed ripples render.
+     *
+     * @return the revealed ripple positions (never null; empty when nothing is revealed)
+     */
+    private List<float[]> revealedRipplePositions() {
+        List<float[]> out = new ArrayList<>();
+        USSRippleField field = getRippleField();
+        if (field == null || uss == null) {
+            return out;
+        }
+        for (int index : uss.getScannedRipples()) {
+            if (index >= 0 && index < field.size() && field.isRipple(index)) {
+                USSPosition p = field.positionOf(index);
+                out.add(new float[] { (float) p.x(), (float) p.y(), (float) p.z() });
+            }
+        }
+        return out;
+    }
+
+    /**
+     * Launch a mission with the given ship payload (called by the {@code MTEVoidcraftGateway} after validating the
+     * ship).
+     *
+     * <p>
+     * Programming framework (Phase C): the ship no longer gets a mission TARGET at launch — it gets a PILOT that
+     * runs the ship's PROGRAM (the controller's instruction list, carried in the payload's
+     * {@code vc_program} tag). The ship starts HOLDING at its launch origin (the gateway, in fleet-anchor
+     * coordinates) and moves only when its program tells it to. A ship without a program holds forever (the
+     * program UI is the next pass).
      *
      * @param payload    the ship payload — the item's tag compound (blueprint + denormalized stats, vc_* keys at its
-     *                   top level), as written by the Assembler and read back by {@code VoidcraftNbt}
+     *                   top level, + the optional vc_program), as written by the Assembler and read back by
+     *                   {@code VoidcraftNbt}
      * @param gatewayPos gateway world position (the OUTBOUND/RETURNING endpoint + the recoverable ship's
      *                   re-emission target) — carried by the SHIP, so each mission routes back to its own launcher
      * @param bayPos     storage-bay world position (the cargo delivery target) — carried by the SHIP
@@ -1183,28 +1331,59 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         int slot = activeShips.size();
         // Pass 5.1: a fresh per-launch identity seed — duplicated ship items share the item UUID, so the client's
         // per-ship animation phases + swarm spread must be keyed on this (unique per flight), not the UUID.
-        // Pass 7: the mission target — Starlifters work the star; everything else works ONE random planet of the
-        // system (the client hovers 0.5 blocks above that planet's rendered position).
-        activeShips.add(
-            VoidcraftActiveShip.launch(
-                uuid,
+        int seed = new Random().nextInt();
+        // Phase C: the launch origin — the gateway in fleet-anchor coordinates (the same rel() the client's
+        // TAG_ENTRY_GW_REL uses, so the client draws the fresh ship exactly where the server has it). A null
+        // gateway (defensive) degrades to the anchor itself.
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        int[] anchor = (base != null) ? shipAnchorPos(base) : new int[] { 0, 0, 0 };
+        int[] gatewayWorld = (gatewayPos != null) ? gatewayPos : anchor;
+        int[] gwRel = rel(anchor, gatewayWorld);
+        USSPosition origin = USSPosition.of(gwRel[0], gwRel[1], gwRel[2]);
+        VoidcraftActiveShip ship = VoidcraftActiveShip
+            .launch(uuid, name, speed, mining, recoverable, payload, gatewayPos, bayPos, seed, origin);
+        // Phase C: the ship's program (the controller's instruction list) + the pilot that runs it. A corrupt
+        // program degrades to an empty one (the ship HOLDS at the origin — never a half-run).
+        NBTTagList programTag = payload.hasKey(VoidcraftNbt.TAG_PROGRAM)
+            ? payload.getTagList(VoidcraftNbt.TAG_PROGRAM, 10)
+            : null;
+        USSProgram program = USSProgram.readFromNBT(programTag);
+        USSShipPilot pilot = USSShipPilot.create(ship, program, this, seed);
+        activeShips.add(ship);
+        pilots.add(pilot);
+        // Pass 26 (user: "add logging for the different missions and movements, that displays the calculated times
+        // and progress"): one line at launch with the ship's identity and its program — the leg durations are
+        // calculated per leg by the pilot (the legs no longer exist at launch; they are the program's).
+        try {
+            int roles = VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES);
+            int instructions = program == null ? 0 : program.nodeCount();
+            LOGGER.info(
+                "[Voidcraft] LAUNCH {} — roles=0x{}, origin={} blocks, speed={}, program={} instruction(s)",
                 name,
-                speed,
-                mining,
-                recoverable,
-                payload,
-                gatewayPos,
-                bayPos,
-                new Random().nextInt(),
-                pickMissionTarget(payload)));
+                Integer.toHexString(roles),
+                String.format("%.3f", origin.x()) + ","
+                    + String.format("%.3f", origin.y())
+                    + ","
+                    + String.format("%.3f", origin.z()),
+                String.format("%.3f", speed),
+                instructions);
+        } catch (Throwable ignored) {}
         lastPushedShipStates[slot] = -1;
+        lastPushedLegIds[slot] = -1;
         syncFleetRenderBlock(); // Phase 4 pass 5: the whole fleet (now including this ship) goes into ONE anchor block
         return true;
     }
 
     /**
      * Advance every ship in flight one tick (called from {@link #onPostTick} while the star is ignited). Completed
-     * ships are finished AFTER the tick loop (list removals batched, in reverse slot order).
+     * ships (their program's HOME leg just finished) are finished AFTER the tick loop (list removals batched, in
+     * reverse slot order).
+     *
+     * <p>
+     * Programming framework (Phase C): the loop is now a PILOT loop — each pilot ticks its ship (the ship's leg
+     * countdown + the program executor) and reports when a HOME leg completes (the mission is over —
+     * {@link #completeShip} delivers). The work leg's yield (cargo / the Explorer reveal) is applied by the pilot
+     * exactly once, through {@link #onWorkComplete}.
      */
     private void tickShips() {
         if (activeShips.isEmpty()) {
@@ -1212,35 +1391,20 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         }
         List<Integer> completed = new ArrayList<>();
         for (int slot = 0; slot < activeShips.size(); slot++) {
-            VoidcraftActiveShip ship = activeShips.get(slot);
-            if (!ship.tick()) {
+            USSShipPilot pilot = pilots.get(slot);
+            if (pilot.tick()) {
+                // HOME leg complete — the mission is over (delivery + re-emission below).
                 completed.add(slot);
                 continue;
             }
-            // Mining just finished (state moved to RETURNING): build THIS ship's cargo exactly once.
-            // Phase 4 pass 1: a STARLIFTER mines the star itself — cargo depends on the star's TYPE (dwarf-matter
-            // dust + Stellar Plasma fluid). Phase 4 pass 3: a MINER works the star's PLANETS — cargo is the union
-            // of the planets' ore materials (planet types determine what can be mined; the star type determined
-            // which planets exist). Phase 4 pass 2: a CONSTRUCTOR MISSION carries no star cargo — its loadout was
-            // computed at the gateway (in the payload) and is applied to the infrastructure project at completion.
-            if (ship.getState() == USSShipState.RETURNING && ship.getCargo() == null) {
-                NBTTagCompound cargo = null;
-                if (isConstructorMission(ship)) {
-                    // no-op: the constructor "mines" (builds) during this leg; nothing to deliver
-                } else if (VoidcraftRole.STARLIFTER.isActive(ship.getRoles())) {
-                    cargo = USSShipCargo.buildForStarlifter(uss.getStarType(), ship.getMiningPower());
-                } else {
-                    cargo = USSShipCargo.buildForMiner(getPlanets(), ship.getMiningPower());
-                }
-                if (cargo != null) {
-                    ship.setCargo(cargo);
-                }
-            }
-            // Mark the fleet dirty when a ship's state changes — pushed ONCE per tick at the end (no per-tick
-            // packets, and one full-fleet push instead of one per ship — Phase 4 pass 5).
+            VoidcraftActiveShip ship = activeShips.get(slot);
+            // Mark the fleet dirty when a ship's state OR leg id changes — pushed ONCE per tick at the end (no
+            // per-tick packets, and one full-fleet push instead of one per ship — Phase 4 pass 5). The leg id
+            // (Phase C) makes consecutive legs of the SAME state (MOVE → MOVE) animate from their own start.
             int stateId = ship.getState()
                 .getId();
-            if (lastPushedShipStates[slot] != stateId) {
+            int legId = ship.getLegId();
+            if (lastPushedShipStates[slot] != stateId || lastPushedLegIds[slot] != legId) {
                 // Diagnostic (pass 7): one line per state transition. If a ship appears to "turn back without
                 // mining", the server's truth is right here — OUTBOUND → MINING → RETURNING in order, with the
                 // MINING leg's duration in ticks (a long gap before RETURNING = the mission logic ran correctly).
@@ -1254,8 +1418,40 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                         ship.getTargetPlanet());
                 } catch (Throwable ignored) {}
                 lastPushedShipStates[slot] = stateId;
+                lastPushedLegIds[slot] = legId;
                 fleetDirty = true;
             }
+            // Pass 26 (user: "…displays the calculated times and progress"): a periodic heartbeat — every
+            // PROGRESS_LOG_INTERVAL world ticks, one line per in-flight ship showing the current leg and its
+            // PROGRESS fraction (the ship's ticks-remaining against the leg's total calculated duration), so the
+            // movement's progress is visible in the game log. The state-transition log above already prints the
+            // leg's total (its "ticks left" at the transition); this adds the running progress in between.
+            try {
+                IGregTechTileEntity progressBase = getBaseMetaTileEntity();
+                if (progressBase != null && progressBase.getWorld() != null) {
+                    long worldTick = progressBase.getWorld()
+                        .getWorldTime();
+                    if (worldTick % PROGRESS_LOG_INTERVAL == 0L) {
+                        long legTotal = USSConstants.legTicks(
+                            ship.getState(),
+                            ship.getTravelDistance(),
+                            ship.getSpeed(),
+                            ship.getMiningPower(),
+                            ship.getRoles(),
+                            ship.getScanPower());
+                        double progress = legTotal > 0 ? (1.0 - (double) ship.getTicksRemaining() / (double) legTotal)
+                            : 1.0;
+                        LOGGER.info(
+                            "[Voidcraft] PROGRESS {} — {} {}% ({} ticks left of {})",
+                            ship.getName(),
+                            ship.getState()
+                                .name(),
+                            String.format("%.0f", progress * 100.0),
+                            ship.getTicksRemaining(),
+                            legTotal);
+                    }
+                }
+            } catch (Throwable ignored) {}
         }
         for (int i = completed.size() - 1; i >= 0; i--) {
             completeShip(completed.get(i));
@@ -1279,6 +1475,235 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
+     * Build the cargo of a completed MINER mission (the mechanics pass): the ship mines its ONE target planet
+     * (pass 7 — {@link VoidcraftActiveShip#getTargetPlanet()}), and the cargo is that planet's registered ores,
+     * weighed by their weights, each capped by the planet's remaining reserve. The reserve is initialized from the
+     * planet definition on the first mine ({@code ore.amount × planetSize²}) and then decremented — so ores deplete
+     * over the planet's lifetime (the reserve lives on the {@link VoidcraftUSS} model and is persisted).
+     *
+     * @param ship the miner ship (its target planet + mining power)
+     * @return the cargo compound (never null; empty when the planet is absent or fully depleted)
+     */
+    private NBTTagCompound buildMinerCargo(VoidcraftActiveShip ship, int target) {
+        List<USSPlanets.USSPlanet> planets = getPlanets();
+        if (ship == null || planets.isEmpty() || target < 0 || target >= planets.size()) {
+            return new NBTTagCompound(); // no planet to mine (defensive)
+        }
+        USSPlanets.USSPlanet planet = planets.get(target);
+        VoidcraftUSS.PlanetReserve currentReserve = uss.getPlanetReserve(target);
+        USSShipCargo.MinerResult result = USSShipCargo.minePlanet(planet, ship.getMiningPower(), currentReserve);
+        // Persist the updated reserve (the planet depletes).
+        uss = uss.withPlanetReserve(target, result.newReserve);
+        return result.cargo;
+    }
+
+    // region USSPilotWorld (programming framework, Phase C — the game seam the pilots run against)
+
+    /**
+     * A ship's WORK leg just completed (the pilot calls this EXACTLY ONCE per work leg — its side-effect fires
+     * here). The yield depends on the body the ship worked (the MOVE target that preceded the WORK):
+     * <ul>
+     * <li>a RIPPLE point (an Explorer scan) — the point is REVEALED (the yield is the reveal itself, not cargo);</li>
+     * <li>the STAR with a STARLIFTER role — star cargo (dwarf-matter dust + Stellar Plasma);</li>
+     * <li>a PLANET — that planet's registered ores (the reserve depletes), clamped by the ship's hold;</li>
+     * <li>anything else (a SHIP rendezvous, a STAR worked by a non-starlifter, a WORK with no MOVE) — no cargo.</li>
+     * </ul>
+     * A Constructor mission carries no cargo either (its loadout is applied to the infrastructure project at
+     * completion).
+     */
+    @Override
+    public void onWorkComplete(VoidcraftActiveShip ship, String targetKind, int targetIndex) {
+        NBTTagCompound cargo = null;
+        boolean rippleScan = USSProgramDefaults.TARGET_RIPPLE.equals(targetKind)
+            || USSProgramDefaults.TARGET_RIPPLE_UNSCANNED.equals(targetKind);
+        boolean star = USSProgramDefaults.TARGET_STAR.equals(targetKind);
+        boolean planet = USSProgramDefaults.TARGET_PLANET.equals(targetKind)
+            || USSProgramDefaults.TARGET_NEAREST_PLANET.equals(targetKind)
+            || USSProgramDefaults.TARGET_RANDOM_PLANET.equals(targetKind);
+        if (rippleScan) {
+            // EXPLORER: the scan leg finished — mark the ripple point as REVEALED. The point is marked exactly once
+            // (a re-scanned point is a no-op) and the fleet is resynced so the client starts rendering it.
+            if (targetIndex >= 0 && uss != null && !uss.isRippleScanned(targetIndex)) {
+                uss = uss.withRippleScanned(targetIndex);
+                boolean isRipple = getRippleField() != null && getRippleField().isRipple(targetIndex);
+                try {
+                    LOGGER.info(
+                        "[Voidcraft] Explorer {} revealed ripple point {} (ripple={})",
+                        ship.getName(),
+                        targetIndex,
+                        isRipple);
+                } catch (Throwable ignored) {}
+                syncFleetRenderBlock();
+            }
+            return; // no cargo for a scan (the reveal is the yield)
+        }
+        if (isConstructorMission(ship)) {
+            return; // no-op: the constructor "mines" (builds) during the leg; the loadout applies at completion
+        }
+        if (star) {
+            if (VoidcraftRole.STARLIFTER.isActive(ship.getRoles())) {
+                cargo = USSShipCargo.buildForStarlifter(uss.getStarType(), ship.getMiningPower(), uss.getIgnitedAt());
+            }
+        } else if (planet) {
+            cargo = buildMinerCargo(ship, targetIndex);
+        }
+        if (cargo == null) {
+            return;
+        }
+        // CARGO CAPACITY (the cargo-capacity pass): the ship's internal hold is filled with the yield, clamped by
+        // the hold's capacity — "mining fills their internal cargo capacity, and they cannot mine if it is full"
+        // (a full hold simply accepts 0 more). The deliverable cargo is then derived from the hold (the source of
+        // truth).
+        CargoHold hold = USSShipCargo.fillHold(ship.getHold(), cargo);
+        ship.setHold(hold);
+        ship.setCargo(USSShipCargo.cargoFromHold(hold));
+    }
+
+    @Override
+    public String readVar(int slot) {
+        if (uss == null) {
+            return "";
+        }
+        return uss.getVariables()
+            .get(slot);
+    }
+
+    @Override
+    public void writeVar(int slot, String value) {
+        if (uss == null) {
+            return;
+        }
+        // The variable space is fleet-SHARED data (ships' in/out channel) — immutable update on the model.
+        uss = uss.withVariables(
+            uss.getVariables()
+                .set(slot, value));
+    }
+
+    @Override
+    public int unscannedRipples() {
+        USSRippleField field = getRippleField();
+        if (field == null || uss == null) {
+            return 0;
+        }
+        int count = 0;
+        for (int i = 0; i < field.size(); i++) {
+            if (!uss.isRippleScanned(i)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public USSTargetResult resolveTarget(String target, int index, VoidcraftActiveShip ship) {
+        if (target == null || ship == null) {
+            return null;
+        }
+        if (USSProgramDefaults.TARGET_STAR.equals(target)) {
+            return new USSTargetResult(USSFleetOrbit.starPosition(), USSTargetResult.INDEX_STAR);
+        }
+        if (USSProgramDefaults.TARGET_PLANET.equals(target)) {
+            if (index < 0) {
+                return null;
+            }
+            USSPosition dest = destinationFor(index, ship.getSeed());
+            if (dest == null) {
+                return null; // out of range / no planets
+            }
+            return new USSTargetResult(dest, index);
+        }
+        if (USSProgramDefaults.TARGET_NEAREST_PLANET.equals(target)) {
+            List<USSPlanets.USSPlanet> planets = getPlanets();
+            if (planets == null || planets.isEmpty()) {
+                return null;
+            }
+            USSPosition shipPos = ship.getPosition();
+            float time = worldTimeSeconds();
+            float starSize = starSizeFor(uss.getStarType(), uss.getIgnitedAt());
+            int nearest = -1;
+            double best = Double.MAX_VALUE;
+            for (int i = 0; i < planets.size(); i++) {
+                USSPosition center = USSFleetOrbit.planetPosition(planets.get(i), starSize, time);
+                double d = (shipPos == null) ? 0.0 : shipPos.distanceTo(center);
+                if (d < best) {
+                    best = d;
+                    nearest = i;
+                }
+            }
+            USSPosition dest = destinationFor(nearest, ship.getSeed());
+            return (dest == null) ? null : new USSTargetResult(dest, nearest);
+        }
+        if (USSProgramDefaults.TARGET_RANDOM_PLANET.equals(target)) {
+            // A random planet of THIS USS (pass-33 UI helper): one-shot pick at resolution (the same pattern as
+            // RIPPLE_UNSCANNED); the RESOLVED index is what the WORK leg then mines.
+            List<USSPlanets.USSPlanet> planets = getPlanets();
+            if (planets == null || planets.isEmpty()) {
+                return null;
+            }
+            int idx = new Random().nextInt(planets.size());
+            USSPosition dest = destinationFor(idx, ship.getSeed());
+            return (dest == null) ? null : new USSTargetResult(dest, idx);
+        }
+        if (USSProgramDefaults.TARGET_RIPPLE.equals(target)) {
+            USSRippleField field = getRippleField();
+            if (field == null || index < 0 || index >= field.size()) {
+                return null;
+            }
+            // Fixed point (the points do not orbit) — the client hovers here exactly.
+            return new USSTargetResult(field.positionOf(index), index, true);
+        }
+        if (USSProgramDefaults.TARGET_RIPPLE_UNSCANNED.equals(target)) {
+            int point = pickUnscannedRipplePoint();
+            if (point >= 0) {
+                USSRippleField field = getRippleField();
+                if (field != null) {
+                    return new USSTargetResult(field.positionOf(point), point, true);
+                }
+            }
+            // Nothing left to scan — the ship works the star instead (the old pickMissionTarget fallback).
+            return new USSTargetResult(USSFleetOrbit.starPosition(), USSTargetResult.INDEX_STAR);
+        }
+        if (USSProgramDefaults.TARGET_SHIP.equals(target)) {
+            if (index < 0 || index >= activeShips.size()) {
+                return null;
+            }
+            USSPosition base = activeShips.get(index)
+                .getPosition();
+            if (base == null) {
+                return null;
+            }
+            // A small deterministic offset (per the waiting ship's seed) so two ships never occupy the same point.
+            return new USSTargetResult(
+                USSFleetOrbit.nudge(base, 2.0, ship.getSeed()),
+                USSTargetResult.INDEX_SHIP,
+                true);
+        }
+        // TARGET_HOME is resolved by the pilot itself (its launch origin) — it never reaches this seam.
+        return null;
+    }
+
+    @Override
+    public long legTicks(boolean work, VoidcraftActiveShip ship, double distance) {
+        if (ship == null) {
+            return 0L;
+        }
+        // The same tables the client animates with (USSConstants) — server and client agree on every leg's length.
+        USSShipState state = work ? USSShipState.MINING : USSShipState.OUTBOUND;
+        long ticks = USSConstants
+            .legTicks(state, distance, ship.getSpeed(), ship.getMiningPower(), ship.getRoles(), ship.getScanPower());
+        return ticks > 0 ? ticks : 1L;
+    }
+
+    @Override
+    public void log(VoidcraftActiveShip ship, String message) {
+        try {
+            LOGGER.info("[Voidcraft] {} — {}", ship != null ? ship.getName() : "ship", message);
+        } catch (Throwable ignored) {}
+    }
+
+    // endregion
+
+    /**
      * Mission complete for ONE ship (slot): a Constructor mission applies its loadout to the infrastructure
      * project; any other mission delivers the cargo to ITS OWN bay (captured at launch). Then: re-emit a
      * recoverable ship into ITS OWN gateway slot (or drop it). The fleet anchor is resynced by the CALLER
@@ -1290,7 +1715,11 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         }
         VoidcraftActiveShip completedShip = activeShips.get(slot);
         activeShips.remove(slot);
+        if (slot < pilots.size()) {
+            pilots.remove(slot);
+        }
         lastPushedShipStates[slot] = -1;
+        lastPushedLegIds[slot] = -1;
 
         String shipName = completedShip.getName();
         boolean constructorMission = isConstructorMission(completedShip);
@@ -1488,37 +1917,82 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * The mission target (pass 7): Starlifters work the STAR itself ({@code -1} — they hover 2.5 blocks above the
-     * star center); every other mission (Miner, Constructor) works ONE random planet of the system — an index
-     * into {@link #getPlanets()}, picked at launch so a fleet fans out over the different worlds (the client then
-     * hovers 0.5 blocks above that planet's rendered position — dynamic, since the planet keeps orbiting).
+     * Pick a still-hidden (unscanned) ripple point for an Explorer (the Explorer pass): a random point index (0..342)
+     * that is NOT yet in the system's scanned set. {@code -1} when every point is already revealed (nothing left to
+     * scan) or the field is absent.
      *
-     * @param payload the ship payload (carries the role bitmask)
-     * @return a planet index, or {@code -1} for the star
+     * @return an unscanned ripple point index, or {@code -1} when none remain
      */
-    private int pickMissionTarget(NBTTagCompound payload) {
-        if (payload != null
-            && VoidcraftRole.STARLIFTER.isActive(VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES))) {
+    private int pickUnscannedRipplePoint() {
+        USSRippleField field = getRippleField();
+        if (field == null || uss == null) {
             return -1;
         }
-        List<USSPlanets.USSPlanet> planets = getPlanets();
-        if (planets.isEmpty()) {
-            return -1; // no planets (defensive) — work the star
+        int size = field.size();
+        // Collect the unscanned indices (all-but-the-revealed) and pick one at random.
+        java.util.List<Integer> unscanned = new java.util.ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            if (!uss.isRippleScanned(i)) {
+                unscanned.add(i);
+            }
         }
-        return new Random().nextInt(planets.size());
+        if (unscanned.isEmpty()) {
+            return -1;
+        }
+        return unscanned.get(new Random().nextInt(unscanned.size()));
     }
 
     /**
-     * The fleet-hologram anchor (Phase 4 pass 5 — ONE per USS, not per ship): the EoH render position, 16 behind
-     * the controller, plus two blocks up so it does not collide with the star render block. The WHOLE fleet
-     * (dozens–hundreds of ships) lives in this one block's TE as an entry list; the ships themselves hover at
-     * their per-mission target CLIENT-side (see {@link USSFleetOrbit}), so no per-ship world blocks are needed
-     * anymore.
+     * A planet's work point in the solar system (programming framework, Phase C — used by
+     * {@link #resolveTarget}): a random SPHERICAL-SHELL point around the planet's LIVE position ("a random target
+     * position around the orbit of the planet, within a spherical shell — not only above it, but on any side").
+     *
+     * <p>
+     * Deterministic in {@code seed} (the ship's per-launch seed) — the server's destination and the client's
+     * render agree on the same point.
+     *
+     * @param planet the planet index into {@link #getPlanets()}
+     * @param seed   the ship's per-launch seed
+     * @return the destination, or null when the planet is absent
+     */
+    private USSPosition destinationFor(int planet, int seed) {
+        List<USSPlanets.USSPlanet> planets = getPlanets();
+        if (planets == null || planet < 0 || planet >= planets.size()) {
+            return null; // out of range (defensive) — the caller reports an unresolvable target
+        }
+        USSPlanets.USSPlanet world = planets.get(planet);
+        float time = worldTimeSeconds();
+        float starSize = starSizeFor(uss.getStarType(), uss.getIgnitedAt());
+        USSPosition planetCenter = USSFleetOrbit.planetPosition(world, starSize, time);
+        // The hover distance: the planet's rendered radius (scale · 0.375, the legacy EoH body half) + 0.5, so the
+        // ship hovers just off the planet's surface on ANY side (the shell radius).
+        double hoverRadius = 0.5 + 0.375 * world.scale;
+        return USSFleetOrbit.shellPoint(planetCenter, hoverRadius, seed);
+    }
+
+    /** The shared render clock in seconds (world time in ticks / 20), for the orbit math. */
+    private float worldTimeSeconds() {
+        try {
+            IGregTechTileEntity base = getBaseMetaTileEntity();
+            if (base != null && base.getWorld() != null) {
+                return (float) (base.getWorld()
+                    .getWorldTime() / 20.0);
+            }
+        } catch (Throwable ignored) {}
+        return 0.0f;
+    }
+
+    /**
+     * The fleet-hologram anchor (Phase 4 pass 5 — ONE per USS, not per ship): the EoH render position, 32 behind
+     * the controller (pass 12: the legacy 16 offset scaled 2× with the 65×65×65 shape), plus two blocks up so it
+     * does not collide with the star render block. The WHOLE fleet (dozens–hundreds of ships) lives in this one
+     * block's TE as an entry list; the ships themselves hover at their per-mission target CLIENT-side (see
+     * {@link USSFleetOrbit}), so no per-ship world blocks are needed anymore.
      */
     private int[] shipAnchorPos(IGregTechTileEntity base) {
         ForgeDirection back = getExtendedFacing().getRelativeBackInWorld();
-        return new int[] { (int) (base.getXCoord() + 16 * back.offsetX),
-            (int) (base.getYCoord() + 16 * back.offsetY) + 2, (int) (base.getZCoord() + 16 * back.offsetZ) };
+        return new int[] { (int) (base.getXCoord() + 32 * back.offsetX),
+            (int) (base.getYCoord() + 32 * back.offsetY) + 2, (int) (base.getZCoord() + 32 * back.offsetZ) };
     }
 
     private static int[] rel(int[] from, int[] to) {
@@ -1561,9 +2035,37 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             // Pass 5.1: per-launch identity — the client keys this ship's animation phase + swarm spread on it
             // (duplicated ship items share the item UUID; the seed does not).
             entry.setInteger(TileEntityVoidcraftShip.TAG_ENTRY_SEED, ship.getSeed());
-            // Pass 7: the mission target — a planet index or -1 (the star). The client resolves it against the
-            // system specs this TE carries.
+            // Pass 7: the mission target — a planet index, a ripple-point index (the Explorer pass), or -1 (the
+            // star). The client resolves it against the system specs this TE carries.
             entry.setInteger(TileEntityVoidcraftShip.TAG_ENTRY_TARGET, ship.getTargetPlanet());
+            // The Explorer pass: the ship's RESOLVED destination (the planet shell point, the star center, or the
+            // ripple point's position). The client uses it directly — an Explorer's target is a ripple-point index,
+            // not a planet index, so the client's targetBody() cannot resolve it (the server already did).
+            if (ship.getDestination() != null) {
+                NBTTagCompound destTag = new NBTTagCompound();
+                ship.getDestination()
+                    .writeToNBT(destTag);
+                entry.setTag(TileEntityVoidcraftShip.TAG_ENTRY_DEST, destTag);
+            }
+            // Pass 26 (the travel-time rendering fix): the ACTUAL travel distance, so the client animates each
+            // OUTBOUND/RETURNING leg for the ship's real duration instead of the minimum floor (the client used to
+            // read vc_tdist off the payload, where it was never written → distance 0 → minimum time).
+            entry.setDouble(TileEntityVoidcraftShip.TAG_ENTRY_TDIST, ship.getTravelDistance());
+            // Phase C (the programming framework): the ship's CURRENT position (fleet-anchor coordinates — its
+            // launch origin, then the last leg's endpoint). The client renders the ship EXACTLY here while it
+            // HOLDS (a fresh ship at the gateway, or a finished program at its last body).
+            if (ship.getPosition() != null) {
+                NBTTagCompound posTag = new NBTTagCompound();
+                ship.getPosition()
+                    .writeToNBT(posTag);
+                entry.setTag(TileEntityVoidcraftShip.TAG_ENTRY_POS, posTag);
+            }
+            // Phase C: static hover — true when the ship's hover body is a FIXED point (ripple / ship rendezvous)
+            // and the client must hover the resolved DESTINATION exactly (not the body's live position).
+            entry.setBoolean(TileEntityVoidcraftShip.TAG_ENTRY_STATIC, ship.isBodyStatic());
+            // Phase C: the leg identity — the client resets its leg-progress phase when this changes, so legs of
+            // the SAME state (MOVE → MOVE) animate from their own start.
+            entry.setInteger(TileEntityVoidcraftShip.TAG_ENTRY_LEG_ID, ship.getLegId());
             int[] gatewayWorld = ship.getGatewayPos() != null ? ship.getGatewayPos()
                 : new int[] { anchor[0], anchor[1], anchor[2] };
             entry.setIntArray(TileEntityVoidcraftShip.TAG_ENTRY_GW_REL, rel(anchor, gatewayWorld));
@@ -1613,7 +2115,11 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         fleetTe.setShips(buildFleetEntries(base));
         // Pass 7: the system's planet specs + star size ride with the fleet so the client can resolve each ship's
         // mission target to the planet's live rendered position (no world lookups client-side).
-        fleetTe.setSystem(planetSpecsFor(getPlanets()), starSizeFor(uss.getTier()));
+        fleetTe.setSystem(planetSpecsFor(getPlanets()), starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+        // The Explorer pass: the REVEALED ripple positions (the ripple field ∩ the scanned set) — the client renders
+        // each as a pulsating dark-blue transparent triangle. Only ripples that have been scanned ride here (hidden
+        // ripples + revealed non-ripples stay absent).
+        fleetTe.setRevealedRipples(revealedRipplePositions());
         // 1.7.10: updateEntity() is a tick hook — the real client push is markBlockForUpdate (see syncToClient).
         fleetTe.syncToClient();
     }
@@ -1625,6 +2131,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      * still present in older test worlds; pass 5 uses ONE fleet anchor at the old slot-0 position), and any
      * stray anchor left with the fleet empty (older builds could leave one behind with stale state, rendering
      * a frozen ship forever and blocking future launches);</li>
+     * <li>pass 12: the fleet anchor moved 16 → 32 behind the controller (the structure doubled) — clear the
+     * old 16-offset anchor and its lateral slots from pre-pass-12 test worlds;</li>
      * <li>make sure the fleet anchor EXISTS and holds the current fleet when ships are in flight (covers a
      * load-time edge case where the anchor block was lost while the MTE's NBT survived).</li>
      * </ul>
@@ -1645,6 +2153,27 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         int sideZ = -getExtendedFacing().getRelativeBackInWorld().offsetX;
         if (sideX == 0 && sideZ == 0) {
             sideX = 1; // back is parallel to up (facing straight down) — any fixed horizontal axis works
+        }
+        // Pass 12: the fleet anchor now sits 32 behind the controller; pre-pass-12 test worlds have the old
+        // 16-offset anchor (and its lateral slots) orphaned — clear them (one-time, idempotent).
+        ForgeDirection back = getExtendedFacing().getRelativeBackInWorld();
+        int oldAnchorX = (int) (base.getXCoord() + 16 * back.offsetX);
+        int oldAnchorY = (int) (base.getYCoord() + 16 * back.offsetY) + 2;
+        int oldAnchorZ = (int) (base.getZCoord() + 16 * back.offsetZ);
+        for (int slot = 0; slot <= 2; slot++) {
+            int px = oldAnchorX + sideX * 2 * slot;
+            int pz = oldAnchorZ + sideZ * 2 * slot;
+            if (world.getBlock(px, oldAnchorY, pz) == VoidcraftLoader.sBlockVoidcraftShipRender) {
+                world.setBlockToAir(px, oldAnchorY, pz);
+                try {
+                    LOGGER.info(
+                        "[Voidcraft] USS removed pre-pass-12 ship-render anchor (slot {}) @ {},{},{}",
+                        slot,
+                        px,
+                        oldAnchorY,
+                        pz);
+                } catch (Throwable ignored) {}
+            }
         }
         for (int slot = 1; slot <= 2; slot++) {
             int px = anchor[0] + sideX * 2 * slot;
@@ -1702,20 +2231,22 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             str.add(
                 IGregTechDeviceInformation
                     .encode("tt.voidcraft_uss.lifespan.label", "" + YELLOW + model.getLifespanRemaining() + RESET));
-            // Phase 4 pass 3: the system's PLANETS — what a Miner can work here (planet type → ore materials).
+            // Phase 4 pass 3: the system's PLANETS — what a Miner can work here (planet → its registered ores).
             str.add("tt.voidcraft_uss.planets.header");
             for (USSPlanets.USSPlanet planet : getPlanets()) {
                 StringBuilder oreList = new StringBuilder();
-                for (Materials ore : planet.type.getMaterials()) {
+                for (USSPlanetOre ore : planet.definition.getOres()) {
                     if (oreList.length() > 0) {
                         oreList.append(", ");
                     }
-                    oreList.append(displayNameForMaterial(ore));
+                    oreList.append(displayNameForMaterial(ore.getOreType()));
                 }
                 str.add(
                     IGregTechDeviceInformation.encode(
                         "tt.voidcraft_uss.planet.line",
-                        IGregTechDeviceInformation.translatable(planet.type.getLangKey()) + " — " + oreList));
+                        IGregTechDeviceInformation.translatable("tt.voidcraft_uss.planet." + planet.definition.getId())
+                            + " — "
+                            + oreList));
             }
         }
         str.add(
@@ -1825,7 +2356,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.spacetime_manipulator"))
             .addMarkdown(new ResourceLocation("gregtech", "unstable-solar-system"))
-            .beginStructureBlock(33, 33, 33, false)
+            .beginStructureBlock(65, 65, 65, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_17th_layer"))
             .addCasing("896", new ItemStack(TTCasingsContainer.sBlockCasingsBA0, 1, 11).getDisplayName(), false)
             .addCasing("534", new ItemStack(TTCasingsContainer.sBlockCasingsBA0, 1, 10).getDisplayName(), false)
@@ -1888,7 +2419,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 16, 16, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 32, 32, 0);
     }
 
     @Override
@@ -1896,7 +2427,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5); // 200 blocks max
                                                                                                   // per placement.
-        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 16, 0, realBudget, source, actor, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 32, 32, 0, realBudget, source, actor, false, true);
     }
 
     // Region NBT.
@@ -1911,8 +2442,18 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         aNBT.setBoolean(ANIMATIONS_ENABLED_NBT_TAG, animationsEnabled);
         if (!activeShips.isEmpty()) {
             NBTTagList ships = new NBTTagList();
-            for (VoidcraftActiveShip ship : activeShips) {
-                ships.appendTag(ship.writeToNBT());
+            for (int i = 0; i < activeShips.size(); i++) {
+                NBTTagCompound shipTag = activeShips.get(i)
+                    .writeToNBT();
+                // Phase C: the pilot's state (the executor's cursor + the in-flight leg's bookkeeping) nests
+                // under the SHIP's tag — a ship saved mid-leg / mid-loop resumes exactly once after a reload.
+                if (i < pilots.size()) {
+                    shipTag.setTag(
+                        USSShipPilot.TAG_PILOT,
+                        pilots.get(i)
+                            .writeToNBT());
+                }
+                ships.appendTag(shipTag);
             }
             aNBT.setTag(ACTIVE_SHIPS_NBT_TAG, ships);
         }
@@ -1937,16 +2478,24 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         // The fleet render anchor is a pure function of (block position, facing), so nothing else to restore —
         // the fleet TE persists itself in the world (and the one-time cleanup re-creates it if it was lost).
         activeShips.clear();
+        pilots.clear();
         Arrays.fill(lastPushedShipStates, -1);
+        Arrays.fill(lastPushedLegIds, -1);
         if (aNBT.hasKey(ACTIVE_SHIPS_NBT_TAG)) {
             NBTTagList ships = aNBT.getTagList(ACTIVE_SHIPS_NBT_TAG, 10);
             for (int i = 0; i < ships.tagCount() && activeShips.size() < USSConstants.MAX_SHIPS_PER_USS; i++) {
-                VoidcraftActiveShip ship = VoidcraftActiveShip.readFromNBT(ships.getCompoundTagAt(i));
+                NBTTagCompound shipTag = ships.getCompoundTagAt(i);
+                VoidcraftActiveShip ship = VoidcraftActiveShip.readFromNBT(shipTag);
                 if (ship != null) {
                     activeShips.add(ship);
+                    // Phase C: re-attach the pilot (its program comes from the ship's payload; its cursor + leg
+                    // bookkeeping from the nested vc_pilot tag — a missing one degrades to a fresh pilot, a corrupt
+                    // one fails safe to a COMPLETED program → the ship holds).
+                    pilots.add(USSShipPilot.attach(ship, this, shipTag));
                     // The slot's render TE already holds the state (its own NBT) — mark it pushed, no re-push.
                     lastPushedShipStates[activeShips.size() - 1] = ship.getState()
                         .getId();
+                    lastPushedLegIds[activeShips.size() - 1] = ship.getLegId();
                 }
             }
         }

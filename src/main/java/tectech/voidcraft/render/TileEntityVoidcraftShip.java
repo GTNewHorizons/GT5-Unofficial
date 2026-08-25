@@ -51,11 +51,32 @@ public class TileEntityVoidcraftShip extends TileEntity {
 
     /**
      * Entry tag (pass 7): the ship's mission target — a planet index into {@link #getSystemPlanets()} (the ship
-     * hovers 0.5 blocks above that planet's rendered position) or {@code -1} for the star itself (Starlifters
-     * hover 2.5 above the star center). The destination is resolved CLIENT-side against the system below — the
-     * pass-5 static role hover point ({@code vc_orbit_rel}) is gone.
+     * hovers 0.5 blocks above that planet's rendered position), a RIPPLE-POINT index (0..342, the Explorer pass)
+     * for Explorers, or {@code -1} for the star itself (Starlifters hover 2.5 above the star center). The
+     * destination is resolved CLIENT-side against the system below — the pass-5 static role hover point
+     * ({@code vc_orbit_rel}) is gone.
      */
     public static final String TAG_ENTRY_TARGET = "vc_target";
+
+    /**
+     * Entry tag (the Explorer pass): the ship's RESOLVED destination in fleet-anchor blocks (the server resolved it
+     * at launch — the planet shell point, the star center, or the ripple point's position). Present when the ship
+     * has a destination; the client uses it directly (the ripple point index in {@link #TAG_ENTRY_TARGET} is NOT a
+     * planet index, so {@code targetBody} cannot resolve it). Absent for legacy entries → the client falls back to
+     * {@code targetBody(target)}.
+     */
+    public static final String TAG_ENTRY_DEST = "vc_dest";
+
+    /**
+     * Entry tag (pass 26 — the travel-time rendering fix): the ship's TRAVEL DISTANCE in fleet-anchor blocks
+     * (the server's {@code VoidcraftActiveShip.travelDistance}, the block-separation between the launch origin and
+     * the destination). Written by the USS MTE, read by the client's leg-progress math. The client USED to read
+     * {@code vc_tdist} off the ship PAYLOAD, where it was never written — so every travel leg animated at the
+     * minimum floor (the ship "zipped" across the system in 1 s regardless of the server's real minutes-long
+     * duration, and the working-state beam/scan never had a visible window). Now the ACTUAL distance rides along
+     * in the entry and the client animates each leg for its true length.
+     */
+    public static final String TAG_ENTRY_TDIST = "vc_tdist";
 
     /**
      * System tags (pass 7): the planet specs + star size the client renders the planets AND the ships' dynamic
@@ -65,11 +86,41 @@ public class TileEntityVoidcraftShip extends TileEntity {
     public static final String TAG_STAR_SIZE = "vc_star_size";
 
     /**
+     * System tag (the Explorer pass): the REVEALED spacetime-ripple positions — one entry per ripple point that has
+     * been scanned (revealed) and IS a ripple. Each entry is {@code [x, y, z]} in fleet-anchor blocks (the same
+     * coordinate frame the ships + star use). The client renders each as a pulsating dark-blue transparent triangle.
+     * Hidden ripples (not yet scanned) and revealed NON-ripples are absent — only revealed ripples render.
+     */
+    public static final String TAG_RIPPLES = "vc_ripples";
+
+    /**
      * Pass 5.1: the per-launch identity seed (unique per flight even for duplicated ship items, which share the
      * item's {@code vc_uuid}). The client keys this ship's animation phase and swarm spread on it (0 = legacy →
      * item-UUID fallback).
      */
     public static final String TAG_ENTRY_SEED = "vc_seed";
+
+    /**
+     * Entry tag (programming framework, Phase C): the ship's CURRENT position in fleet-anchor coordinates (its
+     * launch origin — the gateway — then the last leg's endpoint). A HOLDING ship (state {@code HOVERING}, and a
+     * fresh ship at launch) renders EXACTLY here (+ swarm spread) — the body below is irrelevant for a hold.
+     * Written by the USS MTE, read by the client renderer.
+     */
+    public static final String TAG_ENTRY_POS = "vc_pos";
+
+    /**
+     * Entry tag (programming framework, Phase C): static hover — true when the ship's hover body is a FIXED point
+     * (a ripple point, a ship rendezvous) and the client must hover the resolved DESTINATION exactly; false when
+     * the client should track the body's LIVE position (a planet keeps orbiting; the star is static either way).
+     */
+    public static final String TAG_ENTRY_STATIC = "vc_static";
+
+    /**
+     * Entry tag (programming framework, Phase C): the leg identity — the ship's monotonic leg counter. The client
+     * resets its leg-progress phase when this changes, so consecutive legs of the SAME state (a program doing
+     * MOVE → MOVE) animate from their own start instead of continuing the previous leg's progress.
+     */
+    public static final String TAG_ENTRY_LEG_ID = "vc_leg_id";
 
     /**
      * Render bounding-box half-extent (covers the flight path from gateway to hover point + swarm spread): the
@@ -85,6 +136,10 @@ public class TileEntityVoidcraftShip extends TileEntity {
     // ship's mission target (TAG_ENTRY_TARGET) against these to hover above the planet's RENDERED position.
     private final List<TileEntityEyeOfHarmony.PlanetSpec> systemPlanets = new ArrayList<TileEntityEyeOfHarmony.PlanetSpec>();
     private float starSize = 0.4f;
+
+    // The Explorer pass: the revealed ripple positions ([x, y, z] in fleet-anchor blocks) — the client renders each
+    // as a pulsating dark-blue transparent triangle. Only revealed ripples are present (hidden + non-ripple absent).
+    private final List<float[]> revealedRipples = new ArrayList<float[]>();
 
     private AxisAlignedBB boundingBox;
 
@@ -160,6 +215,28 @@ public class TileEntityVoidcraftShip extends TileEntity {
         return starSize;
     }
 
+    /**
+     * Install the revealed spacetime-ripple positions (the Explorer pass). Each entry is {@code [x, y, z]} in
+     * fleet-anchor blocks. The client renders each as a pulsating dark-blue transparent triangle.
+     */
+    public void setRevealedRipples(List<float[]> ripples) {
+        revealedRipples.clear();
+        if (ripples != null) {
+            for (float[] r : ripples) {
+                if (r != null && r.length == 3) {
+                    revealedRipples.add(r);
+                }
+            }
+        }
+    }
+
+    /**
+     * @return the revealed ripple positions ({@code [x, y, z]} in fleet-anchor blocks), in reveal order (never null)
+     */
+    public List<float[]> getRevealedRipples() {
+        return Collections.unmodifiableList(revealedRipples);
+    }
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
@@ -186,6 +263,18 @@ public class TileEntityVoidcraftShip extends TileEntity {
         }
         compound.setTag(TAG_SYSTEM_PLANETS, planets);
         compound.setFloat(TAG_STAR_SIZE, starSize);
+        // The Explorer pass: the revealed ripple positions (one compound per [x, y, z]).
+        if (!revealedRipples.isEmpty()) {
+            NBTTagList rippleList = new NBTTagList();
+            for (float[] r : revealedRipples) {
+                NBTTagCompound entry = new NBTTagCompound();
+                entry.setFloat("x", r[0]);
+                entry.setFloat("y", r[1]);
+                entry.setFloat("z", r[2]);
+                rippleList.appendTag(entry);
+            }
+            compound.setTag(TAG_RIPPLES, rippleList);
+        }
     }
 
     @Override
@@ -217,6 +306,16 @@ public class TileEntityVoidcraftShip extends TileEntity {
         starSize = compound.hasKey(TAG_STAR_SIZE) ? compound.getFloat(TAG_STAR_SIZE) : 0.4f;
         if (starSize <= 0) {
             starSize = 0.4f;
+        }
+        // The Explorer pass: the revealed ripple positions.
+        revealedRipples.clear();
+        NBTTagList ripples = compound.getTagList(TAG_RIPPLES, 10);
+        for (int i = 0; i < ripples.tagCount(); i++) {
+            NBTTagCompound tag = ripples.getCompoundTagAt(i);
+            if (tag == null) {
+                continue;
+            }
+            revealedRipples.add(new float[] { tag.getFloat("x"), tag.getFloat("y"), tag.getFloat("z") });
         }
     }
 

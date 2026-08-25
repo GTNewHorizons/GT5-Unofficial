@@ -1,19 +1,26 @@
 package tectech.voidcraft.ship;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
- * Lookup facade over the registered Voidcraft components.
+ * Lookup facade over the Voidcraft component catalog.
  *
  * <p>
- * The 9 components are declared once in {@link VoidcraftComponent}; this registry centralizes meta-value lookups
- * (the world-scanning code in the Voidcraft Assembler only ever talks to this class) and the assembler-circuit →
+ * The catalog is declared once in {@link VoidcraftComponent} (pass 23: two placeable full blocks — controller and
+ * frame — plus seven cover-only function definitions); this registry centralizes meta-value lookups (the
+ * world-scanning code in the Voidcraft Assembler only ever talks to this class) and the assembler-circuit →
  * max-component-tier gate.
  */
 public final class VoidcraftComponentRegistry {
 
-    /** Number of registered components (also the number of block metas the component block uses). */
+    /** Number of catalog entries (the grid-value space: 1..COUNT). */
     public static final int COUNT = VoidcraftComponent.ALL.length;
+
+    /**
+     * PASS 23: the only placeable full blocks (controller + frame). Everything else is a cover-only function.
+     */
+    public static final List<VoidcraftComponent> FULL_BLOCKS = VoidcraftComponent.PLACEABLE;
 
     /** Highest component tier in the registry (used to clamp the circuit gate). */
     public static final int MAX_TIER = maxTier();

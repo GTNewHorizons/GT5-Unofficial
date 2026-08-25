@@ -1,0 +1,225 @@
+package tectech.voidcraft.uss;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import net.minecraft.nbt.NBTTagCompound;
+
+import org.junit.jupiter.api.Test;
+
+/**
+ * Phase B: the six built-in command handlers against the fake context.
+ */
+final class USSCommandTest {
+
+    private static USSNode command(int id, NBTTagCompound params) {
+        return USSNode.command(id, params);
+    }
+
+    private static NBTTagCompound writeParams(String value, int slot) {
+        NBTTagCompound p = new NBTTagCompound();
+        p.setString(USSCommandWrite.PARAM_VALUE, value);
+        p.setInteger(USSCommandWrite.PARAM_SLOT, slot);
+        return p;
+    }
+
+    // region MOVE
+
+    @Test
+    void testMoveWithoutTargetFails() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        USSCommandMove move = new USSCommandMove();
+        assertEquals(
+            USSCommandStatus.FAILED,
+            move.begin(ctx, command(USSCommand.MOVE, new NBTTagCompound()), new NBTTagCompound()));
+        assertTrue(ctx.loggedContains("missing target"));
+    }
+
+    @Test
+    void testMoveUnresolvableTargetFails() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        NBTTagCompound p = new NBTTagCompound();
+        p.setString(USSProgramDefaults.PARAM_TARGET, USSProgramDefaults.TARGET_STAR);
+        USSCommandMove move = new USSCommandMove();
+        assertEquals(USSCommandStatus.FAILED, move.begin(ctx, command(USSCommand.MOVE, p), new NBTTagCompound()));
+        assertTrue(ctx.loggedContains("unresolvable"));
+        assertEquals(0, ctx.travelLegs);
+    }
+
+    @Test
+    void testMoveStartsTravelLegThenDoneOnArrival() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        ctx.setTarget(USSProgramDefaults.TARGET_NEAREST_PLANET, 0, USSPosition.of(3, 4, 0));
+        NBTTagCompound p = new NBTTagCompound();
+        p.setString(USSProgramDefaults.PARAM_TARGET, USSProgramDefaults.TARGET_NEAREST_PLANET);
+        NBTTagCompound state = new NBTTagCompound();
+        USSCommandMove move = new USSCommandMove();
+
+        assertEquals(USSCommandStatus.RUNNING, move.begin(ctx, command(USSCommand.MOVE, p), state));
+        assertEquals(1, ctx.travelLegs);
+        assertEquals(USSPosition.of(3, 4, 0), ctx.lastLegDest);
+        assertEquals(5.0, ctx.lastLegDist, 0.0001); // 3-4-5 triangle
+        assertFalse(ctx.lastLegWork);
+
+        assertEquals(USSCommandStatus.RUNNING, move.tick(ctx, null, state)); // still flying
+        ctx.legComplete = true;
+        assertEquals(USSCommandStatus.DONE, move.tick(ctx, null, state));
+    }
+
+    @Test
+    void testMoveWithIndexUsesIt() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        ctx.setTarget(USSProgramDefaults.TARGET_PLANET, 2, USSPosition.of(10, 0, 0));
+        NBTTagCompound p = new NBTTagCompound();
+        p.setString(USSProgramDefaults.PARAM_TARGET, USSProgramDefaults.TARGET_PLANET);
+        p.setInteger(USSProgramDefaults.PARAM_INDEX, 2);
+        USSCommandMove move = new USSCommandMove();
+        assertEquals(USSCommandStatus.RUNNING, move.begin(ctx, command(USSCommand.MOVE, p), new NBTTagCompound()));
+        assertEquals(1, ctx.travelLegs);
+    }
+
+    // endregion
+
+    // region WORK
+
+    @Test
+    void testWorkStartsWorkLegAtPositionThenDone() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        USSCommandWork work = new USSCommandWork();
+        assertEquals(
+            USSCommandStatus.RUNNING,
+            work.begin(ctx, command(USSCommand.WORK, new NBTTagCompound()), new NBTTagCompound()));
+        assertEquals(1, ctx.workLegs);
+        assertTrue(ctx.lastLegWork);
+        assertEquals(USSPosition.zero(), ctx.lastLegDest);
+        assertEquals(0.0, ctx.lastLegDist, 0.0001);
+        assertEquals(USSCommandStatus.RUNNING, work.tick(ctx, null, new NBTTagCompound()));
+        ctx.legComplete = true;
+        assertEquals(USSCommandStatus.DONE, work.tick(ctx, null, new NBTTagCompound()));
+    }
+
+    // endregion
+
+    // region WRITE / READ
+
+    @Test
+    void testWritePlainStringValue() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        USSCommandWrite write = new USSCommandWrite();
+        assertEquals(
+            USSCommandStatus.DONE,
+            write.begin(ctx, command(USSCommand.WRITE, writeParams("hello", 7)), new NBTTagCompound()));
+        assertEquals("hello", ctx.vars.get(7));
+    }
+
+    @Test
+    void testWriteValueAsVariableReference() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        ctx.vars = ctx.vars.set(3, "sourced");
+        NBTTagCompound p = new NBTTagCompound();
+        p.setTag(
+            USSCommandWrite.PARAM_VALUE,
+            USSValue.variable(3)
+                .writeToNBT());
+        p.setInteger(USSCommandWrite.PARAM_SLOT, 9);
+        USSCommandWrite write = new USSCommandWrite();
+        assertEquals(USSCommandStatus.DONE, write.begin(ctx, command(USSCommand.WRITE, p), new NBTTagCompound()));
+        assertEquals("sourced", ctx.vars.get(9));
+    }
+
+    @Test
+    void testWriteMissingSlotDefaultsToZero() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        NBTTagCompound p = new NBTTagCompound();
+        p.setString(USSCommandWrite.PARAM_VALUE, "slotless");
+        USSCommandWrite write = new USSCommandWrite();
+        write.begin(ctx, command(USSCommand.WRITE, p), new NBTTagCompound());
+        assertEquals("slotless", ctx.vars.get(0));
+    }
+
+    @Test
+    void testReadCopiesSlotToSlot() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        ctx.vars = ctx.vars.set(5, "data");
+        NBTTagCompound p = new NBTTagCompound();
+        p.setInteger(USSCommandRead.PARAM_FROM, 5);
+        p.setInteger(USSCommandRead.PARAM_TO, 11);
+        USSCommandRead read = new USSCommandRead();
+        assertEquals(USSCommandStatus.DONE, read.begin(ctx, command(USSCommand.READ, p), new NBTTagCompound()));
+        assertEquals("data", ctx.vars.get(11));
+        assertEquals("data", ctx.vars.get(5)); // source untouched
+    }
+
+    // endregion
+
+    // region WAIT
+
+    @Test
+    void testWaitZeroIsImmediate() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        NBTTagCompound p = new NBTTagCompound();
+        p.setLong(USSCommandWait.PARAM_TICKS, 0L);
+        assertEquals(
+            USSCommandStatus.DONE,
+            new USSCommandWait().begin(ctx, command(USSCommand.WAIT, p), new NBTTagCompound()));
+    }
+
+    @Test
+    void testWaitCountsDownOnePerTick() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        NBTTagCompound p = new NBTTagCompound();
+        p.setLong(USSCommandWait.PARAM_TICKS, 5L);
+        USSCommandWait wait = new USSCommandWait();
+        NBTTagCompound state = new NBTTagCompound();
+        assertEquals(USSCommandStatus.RUNNING, wait.begin(ctx, command(USSCommand.WAIT, p), state));
+        assertEquals(5L, state.getLong(USSCommandWait.STATE_REMAINING));
+        for (int i = 0; i < 4; i++) {
+            assertEquals(USSCommandStatus.RUNNING, wait.tick(ctx, null, state), "tick " + (i + 1) + " of 5");
+        }
+        assertEquals(USSCommandStatus.DONE, wait.tick(ctx, null, state), "the 5th tick completes the wait");
+    }
+
+    @Test
+    void testWaitClampsGarbageDuration() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        NBTTagCompound p = new NBTTagCompound();
+        p.setLong(USSCommandWait.PARAM_TICKS, Long.MAX_VALUE);
+        USSCommandWait wait = new USSCommandWait();
+        NBTTagCompound state = new NBTTagCompound();
+        assertEquals(USSCommandStatus.RUNNING, wait.begin(ctx, command(USSCommand.WAIT, p), state));
+        assertEquals(USSCommandWait.MAX_WAIT_TICKS, state.getLong(USSCommandWait.STATE_REMAINING));
+    }
+
+    // endregion
+
+    // region STOP / registry
+
+    @Test
+    void testStopTerminates() {
+        assertEquals(
+            USSCommandStatus.STOP,
+            new USSCommandStop()
+                .begin(new FakeUSSContext(), command(USSCommand.STOP, new NBTTagCompound()), new NBTTagCompound()));
+    }
+
+    @Test
+    void testRegistryHasAllSixBuiltIns() {
+        assertTrue(USSCommandRegistry.has(USSCommand.MOVE));
+        assertTrue(USSCommandRegistry.has(USSCommand.WORK));
+        assertTrue(USSCommandRegistry.has(USSCommand.WRITE));
+        assertTrue(USSCommandRegistry.has(USSCommand.READ));
+        assertTrue(USSCommandRegistry.has(USSCommand.WAIT));
+        assertTrue(USSCommandRegistry.has(USSCommand.STOP));
+        assertSame(
+            USSCommand.MOVE,
+            USSCommandRegistry.handler(USSCommand.MOVE)
+                .commandId());
+        assertNull(USSCommandRegistry.handler(99));
+        assertFalse(USSCommandRegistry.has(99));
+    }
+
+    // endregion
+}

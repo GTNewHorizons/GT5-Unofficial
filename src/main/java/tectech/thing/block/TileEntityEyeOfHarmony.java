@@ -40,15 +40,13 @@ public class TileEntityEyeOfHarmony extends TileEntity {
             double x = this.xCoord;
             double y = this.yCoord;
             double z = this.zCoord;
+            // Pass 12: the space-shell radius is per-machine (legacy EoH 12.95, Voidcraft USS 27.1 since pass 15)
+            // — the box MUST cover the dome (ceil(27.1) = 28 > 13) or the client culls the shell.
+            double radius = Math.max(EOH_STAR_FIELD_RADIUS, Math.ceil(domeRadius));
 
             // Create a bounding box that extends 'size' blocks in all directions from the block.
-            boundingBox = AxisAlignedBB.getBoundingBox(
-                x - EOH_STAR_FIELD_RADIUS,
-                y - EOH_STAR_FIELD_RADIUS,
-                z - EOH_STAR_FIELD_RADIUS,
-                x + EOH_STAR_FIELD_RADIUS + 1,
-                y + EOH_STAR_FIELD_RADIUS + 1,
-                z + EOH_STAR_FIELD_RADIUS + 1);
+            boundingBox = AxisAlignedBB
+                .getBoundingBox(x - radius, y - radius, z - radius, x + radius + 1, y + radius + 1, z + radius + 1);
         }
         return boundingBox;
     }
@@ -58,6 +56,24 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     }
 
     private double starSize = 1;
+
+    /**
+     * Radius of the space-shell dome in blocks. Pass 12 — a per-machine parameter instead of the renderer's old
+     * hardcoded scale: legacy Eye of Harmony keeps the historical 12.95 (0.01·17.5·74); the Voidcraft Unstable
+     * Solar System sets 27.1 (pass 12's 2× = 25.9, +1.5 blocks in pass 13, −0.3 in pass 15; its structure
+     * doubled to 65³ in pass 12) — star and planet sizes are unaffected.
+     */
+    private double domeRadius = 12.95;
+
+    public double getDomeRadius() {
+        return domeRadius;
+    }
+
+    public void setDomeRadius(double radius) {
+        this.domeRadius = radius;
+        // The render bounding box is cached — a radius change must invalidate it or the new dome gets culled.
+        boundingBox = null;
+    }
 
     public static List<Block> selectNRandomElements(Collection<Block> input, long n) {
         if (n > input.size()) {
@@ -261,6 +277,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     private static final String EOH_NBT_TAG = "EOH:";
     private static final String SIZE_NBT_TAG = EOH_NBT_TAG + "size";
     private static final String TIER_NBT_TAG = EOH_NBT_TAG + "tier";
+    private static final String DOME_NBT_TAG = EOH_NBT_TAG + "dome";
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -269,6 +286,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         // Save other stats.
         compound.setDouble(SIZE_NBT_TAG, starSize);
         compound.setLong(TIER_NBT_TAG, tier);
+        compound.setDouble(DOME_NBT_TAG, domeRadius);
 
         // Explicit planet system (Voidcraft) — persisted so chunk reloads and description packets carry it (the
         // tag is omitted entirely for legacy stars, which keep the lazy random path).
@@ -299,6 +317,9 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         // Load other stats.
         starSize = compound.getDouble(SIZE_NBT_TAG);
         tier = compound.getLong(TIER_NBT_TAG);
+        if (compound.hasKey(DOME_NBT_TAG)) {
+            domeRadius = compound.getDouble(DOME_NBT_TAG);
+        }
 
         // Explicit planet system (Voidcraft): restore it (re-resolving the hologram blocks), or clear a stale one
         // when a legacy star NBT arrives over the description-packet wire.

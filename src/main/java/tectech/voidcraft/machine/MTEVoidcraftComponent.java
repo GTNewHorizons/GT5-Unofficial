@@ -6,8 +6,12 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
@@ -15,25 +19,33 @@ import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.covers.Cover;
 import tectech.voidcraft.VoidcraftTextures;
+import tectech.voidcraft.cover.CoverVoidcraftComponent;
 import tectech.voidcraft.ship.VoidcraftComponent;
+import tectech.voidcraft.ship.VoidcraftCoverComponent;
 import tectech.voidcraft.ship.VoidcraftCoverRegistry;
+import tectech.voidcraft.ship.VoidcraftNbt;
+import tectech.voidcraft.uss.USSProgram;
+import tectech.voidcraft.uss.USSProgramDefaults;
 
 /**
- * A Voidcraft component block, as a machine-block meta tile entity.
+ * A Voidcraft full-block component, as a machine-block meta tile entity.
  *
  * <p>
- * Components live on the standard machine block (like every other GT machine), which means they can be
- * <b>wrenched to a facing</b>, <b>render different textures per face</b>, and — the important part —
- * <b>accept Voidcraft covers</b> on any of their six faces. Covers are the compact way to add more parts to a
- * ship: a hull block with six covers carries up to six components worth of stats.
+ * PASS 23 (user spec): covers are the PRIMARY components — all ship functionality comes from the covers. The ONLY
+ * placeable full blocks are the <b>Voidcraft Controller</b> (the brain, exactly one per ship) and the
+ * <b>Voidcraft Frame</b> (the renamed Utility Block: a mostly-transparent framebox whose purpose is to accept the
+ * Voidcraft component covers on its faces). Both live on the standard machine block, so they can be
+ * <b>wrenched to a facing</b> and <b>accept Voidcraft covers</b> on any of their six faces.
  *
  * <p>
- * Engines are directional: the exhaust leaves the <em>front</em> face, so the thrust pushes the ship in the
- * opposite direction (see {@link tectech.voidcraft.ship.VoidcraftBlueprint#computeStats()}). Wrench a hull block to
- * aim its engine; thruster covers push away from the face they are mounted on.
+ * Thrust is back-facing (pass 18/23, pass 24 flip): the ship's nose is the FAR end (grid +Z, away from the
+ * assembler), so a {@code THRUSTER_NOZZLE} cover counts toward the ship's single thrust value only when mounted on
+ * a cell's BACK face (−Z, the assembler side) (see {@link tectech.voidcraft.ship.VoidcraftBlueprint#computeStats()}).
  *
  * <p>
  * Non-electric, no inventory, no client tick — a pure hull part. Only Voidcraft cover items can be mounted on it.
@@ -43,6 +55,14 @@ public class MTEVoidcraftComponent extends MetaTileEntity {
 
     private final VoidcraftComponent component;
     private final ITexture texture;
+
+    /**
+     * The CONTROLLER's stored program (programming framework, Phase C): the instruction-list NBT
+     * ({@link USSProgram#writeToNBT()} format — a node list). Frames never carry one. Persisted in the block NBT
+     * (the assembler copies it into the digitized ship item at build time; see
+     * {@code MTEVoidcraftAssembler#outputAfterRecipe_EM}).
+     */
+    private NBTTagList program;
 
     public MTEVoidcraftComponent(int id, String name, String nameRegional, VoidcraftComponent component) {
         super(id, name, nameRegional, 0);
@@ -122,12 +142,118 @@ public class MTEVoidcraftComponent extends MetaTileEntity {
         return HarvestTool.WrenchLevel2.toTileEntityBaseType();
     }
 
-    /** Static hull part — no custom NBT payload. */
+    /** Static hull part — the controller's program is the only payload (Phase C). */
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {}
+    public void loadNBTData(NBTTagCompound aNBT) {
+        program = null;
+        if (component == VoidcraftComponent.CONTROLLER && aNBT.hasKey(VoidcraftNbt.TAG_PROGRAM)) {
+            NBTBase tag = aNBT.getTag(VoidcraftNbt.TAG_PROGRAM);
+            if (tag instanceof NBTTagList) {
+                // Validate on load: a corrupt list is dropped (the ship holds at the origin rather than running it).
+                program = (USSProgram.readFromNBT((NBTTagList) tag) == null) ? null : (NBTTagList) tag;
+            }
+        }
+    }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {}
+    public void saveNBTData(NBTTagCompound aNBT) {
+        if (component == VoidcraftComponent.CONTROLLER && program != null) {
+            NBTBase copy = program.copy();
+            if (copy instanceof NBTTagList) {
+                aNBT.setTag(VoidcraftNbt.TAG_PROGRAM, (NBTTagList) copy);
+            }
+        }
+    }
+
+    // region program (programming framework, Phase C — controller only)
+
+    /**
+     * @return the stored program node list, or null when this block has no program (frames / a fresh controller)
+     */
+    public NBTTagList getProgramTag() {
+        return program;
+    }
+
+    /**
+     * Replace the stored program (controller only).
+     *
+     * @param list the node list (validated: a corrupt / over-cap list is rejected and the previous program kept);
+     *             null clears it
+     * @return true when the program was stored (or cleared)
+     */
+    public boolean setProgramTag(NBTTagList list) {
+        if (component != VoidcraftComponent.CONTROLLER) {
+            return false;
+        }
+        if (list == null) {
+            program = null;
+            return true;
+        }
+        if (USSProgram.readFromNBT(list) == null) {
+            return false;
+        }
+        NBTBase copy = list.copy();
+        program = (copy instanceof NBTTagList) ? (NBTTagList) copy : null;
+        return program != null;
+    }
+
+    /**
+     * Derive the default chip from the covers mounted on THIS block (user spec: "default program chips that apply
+     * a basic program to the controller when right-clicking the controller. For miner, starlifter, explorer") —
+     * the block's covers declare what the ship IS.
+     *
+     * @return true when any of the chip covers is mounted
+     */
+    public boolean hasCover(VoidcraftCoverComponent cover) {
+        if (!(getBaseMetaTileEntity() instanceof ICoverable)) {
+            return false;
+        }
+        ICoverable coverable = (ICoverable) getBaseMetaTileEntity();
+        for (int side = 0; side < 6; side++) {
+            Cover c = coverable.getCoverAtSide(ForgeDirection.getOrientation(side));
+            if (c instanceof CoverVoidcraftComponent vc && vc.getComponent() == cover) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // endregion
+
+    // region right-click — default program chips (controller only)
+
+    /**
+     * Right-click (controller only): applies the default program chip derived from this block's covers
+     * (SCANNER_DISH → Explorer, STAR_SIPHON → Starlifter, else Miner — user spec: "chips that apply a basic
+     * program to the controller when right-clicking").
+     *
+     * <p>
+     * The clear is a TOGGLE (GT's plumbing never delivers a sneaking tool-less right-click to the MTE — see
+     * {@code BaseMetaPipeEntity#onRightclick}): when the block already holds exactly that chip, a right-click
+     * removes it again (a ship built from it HOLDS at the launch origin), otherwise it applies it.
+     */
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (component != VoidcraftComponent.CONTROLLER) {
+            return false;
+        }
+        USSProgram chip = USSProgramDefaults.chip(
+            hasCover(VoidcraftCoverComponent.SCANNER_DISH),
+            hasCover(VoidcraftCoverComponent.STAR_SIPHON),
+            hasCover(VoidcraftCoverComponent.MINING_ARRAY));
+        USSProgram current = USSProgram.readFromNBT(program);
+        if (current != null && current.equals(chip)) {
+            setProgramTag(null);
+            aPlayer.addChatComponentMessage(
+                new ChatComponentText(translateToLocal("tt.voidcraft.controller.program_cleared")));
+        } else if (setProgramTag(chip.writeToNBT())) {
+            aPlayer.addChatComponentMessage(
+                new ChatComponentText(translateToLocal("tt.voidcraft.controller.program_applied")));
+        }
+        return false;
+    }
+
+    // endregion
 
     /** No inventory on a hull block. */
     @Override
@@ -164,7 +290,10 @@ public class MTEVoidcraftComponent extends MetaTileEntity {
     @Override
     public String[] getDescription() {
         List<String> lines = new ArrayList<>();
-        lines.add(translateToLocal("tt.voidcraft.component.base_hint"));
+        // Pass 23: the frame is the cover-accepting hull; the controller is the brain.
+        lines.add(
+            component == VoidcraftComponent.FRAME ? translateToLocal("tt.voidcraft.component.frame_hint")
+                : translateToLocal("tt.voidcraft.component.controller_hint"));
 
         if (component.getMass() > 0) {
             lines.add(
@@ -232,9 +361,6 @@ public class MTEVoidcraftComponent extends MetaTileEntity {
 
         if (component == VoidcraftComponent.CONTROLLER) {
             lines.add(translateToLocal("tt.voidcraft.component.controller.required"));
-        }
-        if (component == VoidcraftComponent.ENGINE) {
-            lines.add(translateToLocal("tt.voidcraft.component.engine_direction"));
         }
         return lines.toArray(new String[0]);
     }

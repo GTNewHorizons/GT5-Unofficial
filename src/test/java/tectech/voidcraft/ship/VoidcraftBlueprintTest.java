@@ -20,7 +20,8 @@ public class VoidcraftBlueprintTest {
     }
 
     /**
-     * Helper: builds a 1×h×d grid from a list of components (index = y + h*z for x=0).
+     * Helper: builds a 1×h×d grid from a list of components (index = y + h*z for x=0), NO facing data (cells
+     * default to facing DOWN — which, under the pass 18 rule, contributes no thrust).
      */
     private static VoidcraftBlueprint verticalShip(VoidcraftComponent... components) {
         int depth = components.length;
@@ -33,51 +34,54 @@ public class VoidcraftBlueprintTest {
 
     @Test
     public void testMinimalHaulerStats() {
-        VoidcraftBlueprint ship = verticalShip(
-            VoidcraftComponent.CONTROLLER,
-            VoidcraftComponent.ENGINE,
-            VoidcraftComponent.UTILITY);
+        // Pass 24 (corrected): the nose is the FAR end (grid +Z, away from the assembler) and the nozzle mounts on
+        // the BACK (−Z, assembler side). The nozzle sits at the near end, so its exhaust (toward the assembler) is
+        // clear of the hull — the hull on the +Z side never blocks it. Pass 23: controller + frame + nozzle cover.
+        int depth = 8;
+        byte[] grid = new byte[depth];
+        grid[6] = gv(VoidcraftComponent.CONTROLLER);
+        grid[7] = gv(VoidcraftComponent.FRAME);
+        byte[] covers = new byte[depth * 6];
+        covers[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
+        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, depth, grid, null, covers);
         assertEquals(1, ship.width);
         assertEquals(1, ship.height);
-        assertEquals(3, ship.depth);
+        assertEquals(8, ship.depth);
         assertEquals(3, ship.componentCount());
 
         VoidcraftStats stats = ship.computeStats();
-        assertEquals(10L + 8L + 5L, stats.mass);
-        assertEquals(100L, stats.thrust);
-        assertEquals(1.0, stats.speed, 1e-9, "thrust/mass clamped to 1");
-        assertEquals(5L, stats.energyDraw);
-        assertEquals(10L + 10L, stats.integrity);
+        assertEquals(10L + 5L + 3L, stats.mass, "controller + frame + nozzle cover");
+        assertEquals(40L, stats.thrust, "the back-mounted, unblocked nozzle cover counts its full magnitude");
+        assertEquals(40.0 / 18.0, stats.speed, 1e-9, "pass 18: speed = thrust/mass, unclamped at 1");
+        assertEquals(2L, stats.energyDraw, "nozzle draw");
+        assertEquals(10L + 10L, stats.integrity, "controller + frame");
         // below the recoverable threshold
         assertFalse(stats.isRecoverable());
     }
 
     @Test
     public void testRecoverableByIntegrity() {
-        // controller + engine + 2 utility = 30 integrity = threshold
+        // controller (10) + 2 frames (10 each) = 30 integrity = threshold
         VoidcraftBlueprint ship = verticalShip(
             VoidcraftComponent.CONTROLLER,
-            VoidcraftComponent.ENGINE,
-            VoidcraftComponent.UTILITY,
-            VoidcraftComponent.UTILITY);
+            VoidcraftComponent.FRAME,
+            VoidcraftComponent.FRAME);
         VoidcraftStats stats = ship.computeStats();
         assertEquals(VoidcraftConstants.RECOVERABLE_INTEGRITY_THRESHOLD, stats.integrity);
         assertTrue(stats.isRecoverable());
 
-        // one fewer utility falls below
-        VoidcraftBlueprint lighter = verticalShip(
-            VoidcraftComponent.CONTROLLER,
-            VoidcraftComponent.ENGINE,
-            VoidcraftComponent.UTILITY);
+        // one fewer frame falls below
+        VoidcraftBlueprint lighter = verticalShip(VoidcraftComponent.CONTROLLER, VoidcraftComponent.FRAME);
         assertFalse(
             lighter.computeStats()
                 .isRecoverable());
     }
 
     @Test
-    public void testSpeedClamping() {
+    public void testSpeedIsThrustPerMass() {
+        // Pass 18: speed = thrust/mass, clamped at 0 only — a strong engine load exceeds the old [0, 1] scale.
         assertEquals(0.0, VoidcraftStats.speedFor(0, 100), 1e-9);
-        assertEquals(1.0, VoidcraftStats.speedFor(1000, 100), 1e-9);
+        assertEquals(10.0, VoidcraftStats.speedFor(1000, 100), 1e-9, "no longer clamped to 1");
         assertEquals(0.5, VoidcraftStats.speedFor(50, 100), 1e-9);
         assertEquals(0.0, VoidcraftStats.speedFor(50, 0), 1e-9, "zero mass never moves");
         assertEquals(0.0, VoidcraftStats.speedFor(-5, 10), 1e-9, "negative thrust clamped to 0");
@@ -85,20 +89,20 @@ public class VoidcraftBlueprintTest {
 
     @Test
     public void testRoleAndHybridPenalty() {
+        // Pass 23: roles come from the COVERS (mining array / scanner dish) on the controller + frame hull.
         // dedicated miner
-        VoidcraftBlueprint miner = verticalShip(
-            VoidcraftComponent.CONTROLLER,
-            VoidcraftComponent.ENGINE,
-            VoidcraftComponent.MINING_CENTRE);
+        byte[] grid = { gv(VoidcraftComponent.CONTROLLER), gv(VoidcraftComponent.FRAME) };
+        byte[] covers = new byte[grid.length * 6];
+        covers[0 * 6 + 2] = cv(VoidcraftCoverComponent.MINING_ARRAY);
+        VoidcraftBlueprint miner = VoidcraftBlueprint.of(1, 1, 2, grid, null, covers);
         assertEquals(VoidcraftRole.MINER.getBit(), miner.computeRoles());
         assertEquals(1.0, miner.computeEfficiency(), 1e-9);
 
         // miner + explorer hybrid: two roles
-        VoidcraftBlueprint hybrid = verticalShip(
-            VoidcraftComponent.CONTROLLER,
-            VoidcraftComponent.ENGINE,
-            VoidcraftComponent.MINING_CENTRE,
-            VoidcraftComponent.SPACETIME_SCANNER);
+        byte[] hybridCovers = new byte[grid.length * 6];
+        hybridCovers[0 * 6 + 2] = cv(VoidcraftCoverComponent.MINING_ARRAY);
+        hybridCovers[1 * 6 + 2] = cv(VoidcraftCoverComponent.SCANNER_DISH);
+        VoidcraftBlueprint hybrid = VoidcraftBlueprint.of(1, 1, 2, grid, null, hybridCovers);
         int roles = hybrid.computeRoles();
         assertTrue(VoidcraftRole.MINER.isActive(roles));
         assertTrue(VoidcraftRole.EXPLORER.isActive(roles));
@@ -109,13 +113,14 @@ public class VoidcraftBlueprintTest {
 
     @Test
     public void testPureTransportHasNoRole() {
-        VoidcraftBlueprint hauler = verticalShip(
-            VoidcraftComponent.CONTROLLER,
-            VoidcraftComponent.ENGINE,
-            VoidcraftComponent.CARGO_BAY);
+        // Pass 23: cargo now ships as the CARGO_POD cover.
+        byte[] grid = { gv(VoidcraftComponent.CONTROLLER), gv(VoidcraftComponent.FRAME) };
+        byte[] covers = new byte[grid.length * 6];
+        covers[1 * 6 + 2] = cv(VoidcraftCoverComponent.CARGO_POD);
+        VoidcraftBlueprint hauler = VoidcraftBlueprint.of(1, 1, 2, grid, null, covers);
         assertEquals(0, hauler.computeRoles());
         assertEquals(1.0, hauler.computeEfficiency(), 1e-9, "roleless ships are not penalized");
-        assertEquals(50L, hauler.computeStats().cargoSlots);
+        assertEquals(20L, hauler.computeStats().cargoSlots, "one cargo pod = 20 slots");
     }
 
     @Test
@@ -124,31 +129,65 @@ public class VoidcraftBlueprintTest {
         // two controllers: invalid
         VoidcraftBlueprint bad = verticalShip(
             VoidcraftComponent.CONTROLLER,
-            VoidcraftComponent.ENGINE,
+            VoidcraftComponent.FRAME,
             VoidcraftComponent.CONTROLLER);
         assertFalse(bad.validate(2, errors));
         assertTrue(errors.contains("voidcraft_controller_count"));
         assertFalse(errors.isEmpty());
 
         errors.clear();
-        // no controller: invalid
+        // no controller: invalid (frame-only hull)
         VoidcraftBlueprint bad2 = verticalShip(
-            VoidcraftComponent.ENGINE,
-            VoidcraftComponent.UTILITY,
-            VoidcraftComponent.CARGO_BAY);
+            VoidcraftComponent.FRAME,
+            VoidcraftComponent.FRAME,
+            VoidcraftComponent.FRAME);
         assertFalse(bad2.validate(2, errors));
         assertTrue(errors.contains("voidcraft_controller_count"));
     }
 
     @Test
     public void testValidationRequiresEngine() {
+        // Pass 23: a valid hull (controller + frame) with NO thruster cover → voidcraft_no_engine.
         List<String> errors = new ArrayList<>();
         VoidcraftBlueprint engineless = verticalShip(
             VoidcraftComponent.CONTROLLER,
-            VoidcraftComponent.UTILITY,
-            VoidcraftComponent.CARGO_BAY);
+            VoidcraftComponent.FRAME,
+            VoidcraftComponent.FRAME);
         assertFalse(engineless.validate(2, errors));
         assertTrue(errors.contains("voidcraft_no_engine"));
+    }
+
+    @Test
+    public void testValidationRequiresFrame() {
+        // Pass 23: a ship with NO frame hull block → voidcraft_no_frame.
+        List<String> errors = new ArrayList<>();
+        int depth = 8;
+        byte[] grid = new byte[depth];
+        grid[7] = gv(VoidcraftComponent.CONTROLLER);
+        byte[] covers = new byte[depth * 6];
+        covers[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
+        VoidcraftBlueprint frameless = VoidcraftBlueprint.of(1, 1, depth, grid, null, covers);
+        assertFalse(frameless.validate(2, errors));
+        assertTrue(errors.contains("voidcraft_no_frame"), "no frame hull block" + errors);
+    }
+
+    @Test
+    public void testValidationRejectsCoverOnlyBlocks() {
+        // Pass 23: the cover-only functions (engine, cargo bay, ...) can no longer be full blocks — old builds
+        // holding them are rejected with a reason (no backwards compatibility, standing directive).
+        List<String> errors = new ArrayList<>();
+        int depth = 8;
+        byte[] grid = new byte[depth];
+        grid[6] = gv(VoidcraftComponent.CONTROLLER);
+        grid[7] = gv(VoidcraftComponent.FRAME);
+        grid[5] = gv(VoidcraftComponent.ENGINE); // an old-world engine block
+        byte[] covers = new byte[depth * 6];
+        covers[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
+        VoidcraftBlueprint legacy = VoidcraftBlueprint.of(1, 1, depth, grid, null, covers);
+        assertFalse(legacy.validate(2, errors));
+        assertTrue(
+            errors.contains("voidcraft_cover_only_component"),
+            "cover-only part as a full block is the reported reason" + errors);
     }
 
     @Test
@@ -169,26 +208,31 @@ public class VoidcraftBlueprintTest {
     @Test
     public void testValidationTierGate() {
         List<String> errors = new ArrayList<>();
-        // starlifter is tier 2
-        VoidcraftBlueprint starship = verticalShip(
-            VoidcraftComponent.CONTROLLER,
-            VoidcraftComponent.ENGINE,
-            VoidcraftComponent.STARLIFTER_ARRAY);
+        // Pass 23: the STAR_SIPHON cover is tier 2; pass 24 (corrected): nozzle cover at the near end — its
+        // exhaust (toward the assembler) is clear, so it thrusts
+        int depth = 8;
+        byte[] grid = new byte[depth];
+        grid[6] = gv(VoidcraftComponent.CONTROLLER);
+        grid[7] = gv(VoidcraftComponent.FRAME);
+        byte[] covers = new byte[depth * 6];
+        covers[7 * 6 + 1] = cv(VoidcraftCoverComponent.STAR_SIPHON);
+        covers[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
+        VoidcraftBlueprint starship = VoidcraftBlueprint.of(1, 1, depth, grid, null, covers);
 
         assertFalse(starship.validate(0, errors));
         assertTrue(errors.contains("voidcraft_tier_too_high"));
         assertFalse(starship.validate(1, errors));
         errors.clear();
-        assertTrue(starship.validate(2, errors), "tier 2 circuit allows tier 2 components");
+        assertTrue(starship.validate(2, errors), "tier 2 circuit allows tier 2 covers");
         assertTrue(errors.isEmpty());
     }
 
     @Test
     public void testTrimBoundingVolume() {
-        // 5x5x10 grid with a single component at the far corner
+        // 5x5x10 grid with a single frame block at the far corner (trim is independent of validation)
         int w = 5, h = 5, d = 10;
         byte[] grid = new byte[w * h * d];
-        grid[4 + w * (4 + h * 9)] = gv(VoidcraftComponent.ENGINE); // x=4,y=4,z=9
+        grid[4 + w * (4 + h * 9)] = gv(VoidcraftComponent.FRAME); // x=4,y=4,z=9
         VoidcraftBlueprint big = VoidcraftBlueprint.of(w, h, d, grid);
         assertEquals(1, big.componentCount());
         assertEquals(w * h * d, grid.length);
@@ -198,7 +242,7 @@ public class VoidcraftBlueprintTest {
         assertEquals(1, trimmed.height);
         assertEquals(1, trimmed.depth);
         assertEquals(1, trimmed.componentCount());
-        assertEquals(gv(VoidcraftComponent.ENGINE), trimmed.grid[0]);
+        assertEquals(gv(VoidcraftComponent.FRAME), trimmed.grid[0]);
     }
 
     @Test
@@ -214,11 +258,15 @@ public class VoidcraftBlueprintTest {
 
     @Test
     public void testNbtRoundTrip() {
-        VoidcraftBlueprint ship = verticalShip(
-            VoidcraftComponent.CONTROLLER,
-            VoidcraftComponent.ENGINE,
-            VoidcraftComponent.UTILITY,
-            VoidcraftComponent.CARGO_BAY);
+        // Pass 23: controller + frame hull; pass 24 (corrected): nozzle cover at the near end (exhaust toward the
+        // assembler is clear) → real thrust/speed to round-trip through the denormalized NBT fields.
+        int depth = 8;
+        byte[] grid = new byte[depth];
+        grid[6] = gv(VoidcraftComponent.CONTROLLER);
+        grid[7] = gv(VoidcraftComponent.FRAME);
+        byte[] covers = new byte[depth * 6];
+        covers[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
+        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, depth, grid, null, covers);
         NBTTagCompound nbt = new NBTTagCompound();
         VoidcraftNbt.write(nbt, ship, "test-uuid", "Test Ship", 12345L);
 
@@ -246,97 +294,134 @@ public class VoidcraftBlueprintTest {
 
     @Test
     public void testCoverStatsContribute() {
-        byte[] grid = { gv(VoidcraftComponent.CONTROLLER), gv(VoidcraftComponent.ENGINE),
-            gv(VoidcraftComponent.UTILITY) };
-        byte[] covers = new byte[3 * 6];
-        covers[1 * 6 + 3] = cv(VoidcraftCoverComponent.CARGO_POD); // cargo pod on the engine's south face
-        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, 3, grid, null, covers);
+        // Pass 24 (corrected): nozzle cover at the near end (exhaust toward the assembler is clear); cargo pod on
+        // a hull face. Pass 23: covers carry ALL the function stats.
+        int depth = 8;
+        byte[] grid = new byte[depth];
+        grid[6] = gv(VoidcraftComponent.CONTROLLER);
+        grid[7] = gv(VoidcraftComponent.FRAME);
+        byte[] covers = new byte[depth * 6];
+        covers[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
+        covers[7 * 6 + 1] = cv(VoidcraftCoverComponent.CARGO_POD); // cargo pod on the frame's top face
+        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, depth, grid, null, covers);
         assertEquals(4, ship.componentCount(), "blocks + covers all count as parts");
         assertEquals(1, ship.countCover(VoidcraftCoverComponent.CARGO_POD));
 
         VoidcraftStats stats = ship.computeStats();
-        assertEquals(10L + 8L + 5L + 6L, stats.mass);
+        assertEquals(10L + 5L + 3L + 6L, stats.mass, "controller + frame + nozzle + pod");
         assertEquals(20L, stats.cargoSlots, "only the cargo pod contributes cargo");
-        assertEquals(100L, stats.thrust);
+        assertEquals(40L, stats.thrust, "the back-mounted nozzle cover counts");
     }
 
     @Test
-    public void testEngineDefaultFacingIsDown() {
-        // No facing data → treated as facing DOWN (the MTE placement default):
-        // exhaust leaves the bottom, so the ship is pushed +Y.
-        byte[] grid = { gv(VoidcraftComponent.ENGINE) };
-        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, 1, grid);
-        VoidcraftStats stats = ship.computeStats();
-        assertEquals(0, stats.thrustX);
-        assertEquals(100, stats.thrustY);
-        assertEquals(0, stats.thrustZ);
-        assertEquals(100, stats.thrust);
+    public void testThrusterCoverOnBackFaceCounts() {
+        // Pass 18/23/24 (corrected): the nozzle cover on the BACK face (side 2 = NORTH, −Z = the assembler side,
+        // BACK_FACE) counts; on the +Z face (side 3 = SOUTH) it is dead weight. (The old engine-block facing tests
+        // are gone: pass 23 thrust is covers-only.) The nozzle is on the near end, so its exhaust (toward the
+        // assembler) is clear of the hull.
+        int depth = 7;
+        byte[] grid = new byte[depth];
+        grid[6] = gv(VoidcraftComponent.CONTROLLER);
+        byte[] coversBack = new byte[depth * 6];
+        coversBack[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
+        VoidcraftBlueprint shipBack = VoidcraftBlueprint.of(1, 1, depth, grid, null, coversBack);
+        assertEquals(40, shipBack.computeStats().thrust);
+        assertEquals(40, shipBack.totalThrust());
+
+        byte[] coversFront = new byte[depth * 6];
+        coversFront[0 * 6 + 3] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE); // side 3 = SOUTH (+Z) — the nose
+        VoidcraftBlueprint shipFront = VoidcraftBlueprint.of(1, 1, depth, grid, null, coversFront);
+        assertEquals(0, shipFront.computeStats().thrust);
+        assertEquals(0, shipFront.totalThrust());
     }
 
     @Test
-    public void testEngineFacingEastPushesWest() {
-        // Facing EAST (ordinal 5, stored 6): exhaust +X, ship pushed -X.
-        byte[] grid = { gv(VoidcraftComponent.ENGINE) };
-        byte[] facing = { 6 };
-        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, 1, grid, facing, null);
-        VoidcraftStats stats = ship.computeStats();
-        assertEquals(-100, stats.thrustX);
-        assertEquals(0, stats.thrustY);
-        assertEquals(0, stats.thrustZ);
-        assertEquals(100, stats.thrust, "scalar thrust is the best single axis");
-    }
-
-    @Test
-    public void testThrusterCoverDirection() {
-        // Thruster cover on the NORTH face (ordinal 2): exhaust -Z, ship pushed +Z.
-        byte[] grid = { gv(VoidcraftComponent.CONTROLLER) };
-        byte[] covers = new byte[6];
-        covers[2] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
-        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, 1, grid, null, covers);
-        VoidcraftStats stats = ship.computeStats();
-        assertEquals(0, stats.thrustX);
-        assertEquals(0, stats.thrustY);
-        assertEquals(40, stats.thrustZ);
-        assertEquals(40, stats.thrust);
-        assertEquals(40, ship.totalThrust());
-    }
-
-    @Test
-    public void testOpposingEnginesCancel() {
-        // Engine 1 facing DOWN (push +Y), engine 2 facing UP (push -Y) → net zero.
-        byte[] grid = { gv(VoidcraftComponent.ENGINE), gv(VoidcraftComponent.ENGINE) };
-        byte[] facing = { 1, 2 }; // ordinals 0 (down) and 1 (up)
-        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, 2, grid, facing, null);
-        VoidcraftStats stats = ship.computeStats();
-        assertEquals(0, stats.thrust);
-        assertEquals(200, ship.totalThrust(), "magnitudes still exist — they just cancel");
+    public void testThrusterFacingWrongWayFailsValidation() {
+        // Pass 19/23: a nozzle cover mounted on a NON-BACK face BREAKS the digitization — reported with a reason.
+        byte[] grid = { gv(VoidcraftComponent.CONTROLLER), gv(VoidcraftComponent.FRAME) };
+        byte[] covers = new byte[grid.length * 6];
+        covers[1 * 6 + 1] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE); // side 1 = UP — not the back
+        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, 2, grid, null, covers);
+        assertEquals(0, ship.computeStats().thrust);
 
         List<String> errors = new ArrayList<>();
         assertFalse(ship.validate(2, errors));
-        assertTrue(errors.contains("voidcraft_thrusters_cancelled"));
+        assertTrue(
+            errors.contains("voidcraft_thruster_wrong_facing"),
+            "wrong-facing thruster is the reported reason" + errors);
     }
 
     @Test
-    public void testThrusterCoverCountsAsEngine() {
-        // No engine block, but a thruster cover → the ship still has an engine.
-        byte[] grid = { gv(VoidcraftComponent.CONTROLLER), gv(VoidcraftComponent.UTILITY),
-            gv(VoidcraftComponent.CARGO_BAY) };
-        byte[] covers = new byte[3 * 6];
-        covers[1 * 6 + 1] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE); // utility's top face
-        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, 3, grid, null, covers);
+    public void testThrusterCoverOnBackCountsAsEngine() {
+        // Pass 23/24 (corrected): a thruster cover ON THE BACK FACE (−Z, assembler side) of the near cell → thrust
+        // — the nozzle cover is the only engine (pass 23 removed the engine block). The nozzle is on the near end,
+        // so its exhaust (toward the assembler) is clear of the hull on the +Z side.
+        int depth = 8; // z0: the nozzle cell, z6/z7: the hull; the exhaust side (−Z) is open
+        byte[] grid = new byte[depth];
+        grid[6] = gv(VoidcraftComponent.CONTROLLER);
+        grid[7] = gv(VoidcraftComponent.FRAME);
+        byte[] covers = new byte[depth * 6];
+        covers[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
+        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, depth, grid, null, covers);
+        assertEquals(3, ship.componentCount(), "blocks + covers all count as parts");
+        assertEquals(40, ship.computeStats().thrust);
         List<String> errors = new ArrayList<>();
-        assertTrue(ship.validate(2, errors), "thruster cover satisfies the engine requirement" + errors);
+        assertTrue(ship.validate(2, errors), "back-facing thruster cover satisfies the thrust requirement" + errors);
         assertTrue(errors.isEmpty());
     }
 
     @Test
-    public void testCoverTierGate() {
-        // Scanner Dish is a tier-2 cover.
-        byte[] grid = { gv(VoidcraftComponent.CONTROLLER), gv(VoidcraftComponent.ENGINE),
-            gv(VoidcraftComponent.UTILITY) };
+    public void testNozzleBlockedByBlockBehind() {
+        // Pass 24 (corrected): the exhaust comes out the BACK face (−Z, the assembler side). A Voidcraft block on
+        // the nozzle's EXHAUST side (−Z) blocks it → "Engine blocked". Here the controller sits at z0, the nozzle
+        // (on a frame) at z1 — so the controller is on the nozzle's exhaust side and blocks it.
+        byte[] grid = { gv(VoidcraftComponent.CONTROLLER), gv(VoidcraftComponent.FRAME), gv(VoidcraftComponent.FRAME) };
         byte[] covers = new byte[3 * 6];
-        covers[2] = cv(VoidcraftCoverComponent.SCANNER_DISH);
+        covers[1 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
         VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, 3, grid, null, covers);
+        assertEquals(0, ship.computeStats().thrust, "blocked nozzle contributes nothing");
+
+        List<String> errors = new ArrayList<>();
+        assertFalse(ship.validate(2, errors));
+        assertTrue(errors.contains("voidcraft_engine_blocked"), "blocked nozzle is the reported reason" + errors);
+    }
+
+    @Test
+    public void testExhaustClearanceWindowIsFive() {
+        // Pass 24 (corrected): the exhaust comes out the BACK face (−Z, the assembler side); the 5 cells on that
+        // exhaust side must be free of Voidcraft blocks. A nozzle on the NEAR END (z=0) is always clear — its
+        // exhaust points at the assembler, outside the hull — so it thrusts even with the hull directly adjacent
+        // (the user's working layout: [assembler] → [nozzle frame] → [hull]). A nozzle deeper in the ship is
+        // blocked when the hull sits on its exhaust side within 5 cells.
+        //
+        // clear: nozzle on the near end (z=0), hull directly adjacent on the +Z side.
+        byte[] gridClear = { gv(VoidcraftComponent.FRAME), gv(VoidcraftComponent.CONTROLLER) };
+        byte[] coversClear = new byte[2 * 6];
+        coversClear[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
+        VoidcraftBlueprint clear = VoidcraftBlueprint.of(1, 1, 2, gridClear, null, coversClear);
+        assertEquals(40, clear.computeStats().thrust, "near-end nozzle with adjacent hull is clear");
+
+        // blocked: nozzle deeper in the ship (z=2), hull on its exhaust side (z=1, z=0) within 5 cells.
+        byte[] gridBlocked = { gv(VoidcraftComponent.FRAME), gv(VoidcraftComponent.FRAME),
+            gv(VoidcraftComponent.CONTROLLER) };
+        byte[] coversBlocked = new byte[3 * 6];
+        coversBlocked[2 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
+        VoidcraftBlueprint blocked = VoidcraftBlueprint.of(1, 1, 3, gridBlocked, null, coversBlocked);
+        assertEquals(0, blocked.computeStats().thrust, "hull on the exhaust side blocks the thruster");
+    }
+
+    @Test
+    public void testCoverTierGate() {
+        // Scanner Dish is a tier-2 cover. Nozzle cover at the near end (exhaust toward the assembler is clear,
+        // pass 24 corrected).
+        int depth = 8;
+        byte[] grid = new byte[depth];
+        grid[6] = gv(VoidcraftComponent.CONTROLLER);
+        grid[7] = gv(VoidcraftComponent.FRAME);
+        byte[] covers = new byte[depth * 6];
+        covers[6 * 6 + 1] = cv(VoidcraftCoverComponent.SCANNER_DISH); // tier 2
+        covers[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE); // thrust valid
+        VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, depth, grid, null, covers);
         assertEquals(2, ship.maxTier());
 
         List<String> errors = new ArrayList<>();
@@ -354,7 +439,7 @@ public class VoidcraftBlueprintTest {
         byte[] facing = new byte[w * h * d];
         byte[] covers = new byte[w * h * d * 6];
         int center = 1 + w * (1 + h * 1); // x=1,y=1,z=1
-        grid[center] = gv(VoidcraftComponent.ENGINE);
+        grid[center] = gv(VoidcraftComponent.FRAME);
         facing[center] = 6; // facing east
         covers[center * 6 + 4] = cv(VoidcraftCoverComponent.POWER_CELL); // west face
 
@@ -363,10 +448,10 @@ public class VoidcraftBlueprintTest {
         assertEquals(1, trimmed.width);
         assertEquals(1, trimmed.height);
         assertEquals(1, trimmed.depth);
-        assertEquals(gv(VoidcraftComponent.ENGINE), trimmed.grid[0]);
+        assertEquals(gv(VoidcraftComponent.FRAME), trimmed.grid[0]);
         assertEquals(6, trimmed.facingGrid[0]);
         assertEquals(cv(VoidcraftCoverComponent.POWER_CELL), trimmed.coverGrid[4]);
-        assertEquals(2, trimmed.componentCount(), "engine + power cell");
+        assertEquals(2, trimmed.componentCount(), "frame + power cell");
     }
 
     @Test
@@ -390,9 +475,8 @@ public class VoidcraftBlueprintTest {
 
     @Test
     public void testNbtRoundTripWithCovers() {
-        byte[] grid = { gv(VoidcraftComponent.CONTROLLER), gv(VoidcraftComponent.ENGINE),
-            gv(VoidcraftComponent.UTILITY) };
-        byte[] facing = { 1, 5, 6 }; // down, north, east
+        byte[] grid = { gv(VoidcraftComponent.CONTROLLER), gv(VoidcraftComponent.FRAME), gv(VoidcraftComponent.FRAME) };
+        byte[] facing = { 1, (byte) (VoidcraftBlueprint.BACK_FACE + 1), 6 }; // down, back, east
         byte[] covers = new byte[18];
         covers[1 * 6 + 3] = cv(VoidcraftCoverComponent.CARGO_POD);
         covers[2 * 6 + 0] = cv(VoidcraftCoverComponent.ARMOR_PLATE);
@@ -407,9 +491,7 @@ public class VoidcraftBlueprintTest {
         // denormalized stats must match
         VoidcraftStats stats = ship.computeStats();
         assertEquals(stats.thrust, VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_THRUST));
-        assertEquals(stats.thrustX, VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_THRUST_X));
-        assertEquals(stats.thrustY, VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_THRUST_Y));
-        assertEquals(stats.thrustZ, VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_THRUST_Z));
+        assertEquals(stats.speed, VoidcraftNbt.readDouble(nbt, VoidcraftNbt.TAG_SPEED), 1e-9);
     }
 
     @Test

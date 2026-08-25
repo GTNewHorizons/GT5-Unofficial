@@ -23,12 +23,22 @@ public final class VoidcraftShipFx {
 
     /**
      * Beam half-width in blocks — a thin laser rod that is still visible across the system. Pass 10 (user: "quite
-     * wide — ~4× smaller is fine, very narrow is fine"): a quarter of the original 0.045 → 0.01125.
+     * wide — ~4× smaller is fine, very narrow is fine"): a quarter of the original 0.045 → 0.01125. Pass 26 (user:
+     * "the mining beams are no longer rendering for miners that are mining — miners orbiting a planet don't have
+     * any beam on them"): the 0.01125 rod was ~2 cm wide and, for a body-miner, mostly occluded inside the body
+     * (only a short stub above the surface was visible) — so it effectively disappeared. Widened to a clearly
+     * visible ~8 cm rod (0.04) so the mining laser reads again. Pass 28 (user: "the mining laser beam was
+     * previously made thicker, but it was good previously — make it 4 times less thick"): a quarter of 0.04 →
+     * 0.01 (~2 cm rod, close to the pass-10 width the user liked).
      */
-    public static final double BEAM_HALF_WIDTH = 0.01125;
+    public static final double BEAM_HALF_WIDTH = 0.01;
 
-    /** Beam fade ramp as a FRACTION of the mining leg: fully on between the first and last 15% of the leg. */
-    public static final double BEAM_FADE_RAMP = 0.15;
+    /**
+     * Beam fade ramp as a FRACTION of the mining leg: fully on between the first and last {@value} of the leg.
+     * Pass 26: shortened from 0.15 to 0.08 so the beam is at full strength for a wider middle of the leg (the
+     * engage/release fade is kept, just gentler — the beam is visible for longer instead of a narrow window).
+     */
+    public static final double BEAM_FADE_RAMP = 0.08;
 
     private VoidcraftShipFx() {}
 

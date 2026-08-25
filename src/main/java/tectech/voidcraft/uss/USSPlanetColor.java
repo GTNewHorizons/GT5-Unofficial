@@ -23,18 +23,20 @@ public final class USSPlanetColor {
     }
 
     /**
-     * @param type a planet type (null → white fallback)
-     * @return opaque ARGB (alpha 0xFF); white ({@code 0xFFFFFFFF}) when none of the materials carries a usable color
+     * @param definition a registered planet definition (null → white fallback)
+     * @return opaque ARGB (alpha 0xFF); white ({@code 0xFFFFFFFF}) when none of the ore materials carries a usable
+     *         color
      */
-    public static int colorFor(USSPlanetType type) {
-        if (type == null) {
+    public static int colorFor(USSPlanetDefinition definition) {
+        if (definition == null) {
             return 0xFFFFFFFF;
         }
         int r = 0;
         int g = 0;
         int b = 0;
         int n = 0;
-        for (Materials m : type.getMaterials()) {
+        for (USSPlanetOre ore : definition.getOres()) {
+            Materials m = ore.getOreType();
             if (m == null || m == Materials._NULL) {
                 continue;
             }

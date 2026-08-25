@@ -11,9 +11,17 @@ import java.util.Optional;
  * up to six parts. That lets far more complex voidcraft fit into a smaller footprint.
  *
  * <p>
- * Thrust covers ({@link #THRUSTER_NOZZLE}) are directional: a thruster mounted on a face fires out of that face, so
- * it pushes the ship in the <em>opposite</em> direction — see {@link VoidcraftBlueprint#computeStats()} for the
- * net-thrust vector math.
+ * Thrust covers ({@link #THRUSTER_NOZZLE}) count toward the ship's single thrust value only when mounted on the
+ * ship's BACK face (−Z, the assembler side, {@link VoidcraftBlueprint#BACK_FACE}) — exhaust out the rear pushes
+ * the ship forward (the nose is the far end, grid +Z); a nozzle mounted anywhere else is dead weight (see
+ * {@link VoidcraftBlueprint#computeStats()}).
+ *
+ * <p>
+ * PASS 23 (user spec): covers are the PRIMARY components — ALL ship functionality (thrust, cargo, mining, scanning,
+ * construction, starlifting, energy) is delivered by covers mounted on the two placeable full blocks: the
+ * Voidcraft Controller and the Voidcraft Frame (the renamed Utility Block, a mostly-transparent framebox whose
+ * purpose is to accept exactly these covers). The old full-block engines/cargos/... are no longer placeable —
+ * they survive only as the cover definitions' mirror targets.
  *
  * <p>
  * There is intentionally no controller cover: the ship's brain must be a full block.
@@ -26,7 +34,7 @@ public enum VoidcraftCoverComponent {
     THRUSTER_NOZZLE(0, "Voidcraft Thruster Nozzle", "tt.voidcraft.cover.thruster_nozzle", VoidcraftComponent.ENGINE, 0,
         3, 40, 0, 0, 0, 0, 0, 2, 0, 0),
 
-    ARMOR_PLATE(1, "Voidcraft Armor Plate", "tt.voidcraft.cover.armor_plate", VoidcraftComponent.UTILITY, 0, 2, 0, 0, 0,
+    ARMOR_PLATE(1, "Voidcraft Armor Plate", "tt.voidcraft.cover.armor_plate", VoidcraftComponent.FRAME, 0, 2, 0, 0, 0,
         0, 0, 0, 0, 0, 5),
 
     CARGO_POD(2, "Voidcraft Cargo Pod", "tt.voidcraft.cover.cargo_pod", VoidcraftComponent.CARGO_BAY, 0, 6, 0, 20, 0, 0,
@@ -115,7 +123,10 @@ public enum VoidcraftCoverComponent {
         return mass;
     }
 
-    /** Thrust magnitude in the direction opposite the mounted face (0 for non-thrusters). */
+    /**
+     * Thrust magnitude (pass 18/24: counted toward the ship only when mounted on the back face, −Z = the assembler
+     * side; 0 for non-thrusters).
+     */
     public long getThrust() {
         return thrust;
     }

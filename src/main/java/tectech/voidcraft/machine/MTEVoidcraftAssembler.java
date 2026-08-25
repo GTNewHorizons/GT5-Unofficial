@@ -18,7 +18,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -47,8 +49,11 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.voidcraft.cover.CoverVoidcraftComponent;
 import tectech.voidcraft.item.ItemVoidcraft;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
+import tectech.voidcraft.ship.VoidcraftComponent;
 import tectech.voidcraft.ship.VoidcraftComponentRegistry;
 import tectech.voidcraft.ship.VoidcraftConstants;
+import tectech.voidcraft.ship.VoidcraftNbt;
+import tectech.voidcraft.uss.USSProgram;
 
 /**
  * Voidcraft Assembler (EoH rework, Phase 1).
@@ -98,6 +103,13 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
     // Digitized-but-not-yet-output ship (persisted across chunk reloads)
     private @Nullable VoidcraftBlueprint pendingShip;
     private long pendingCreatedAt;
+
+    /**
+     * The controller's stored program (programming framework, Phase C) captured from the scanned build volume —
+     * written into the digitized ship item's NBT ({@link VoidcraftNbt#TAG_PROGRAM}) at output. Null = the controller
+     * had no program (the ship will HOLD at the origin).
+     */
+    private @Nullable NBTTagList pendingProgram;
 
     public MTEVoidcraftAssembler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -167,6 +179,68 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
     }
 
     /**
+     * Pass 24: map a cover's WORLD-facing ordinal into the blueprint's GRID-side ordinal.
+     *
+     * <p>
+     * The blueprint's grid +Z axis is the assembler's FRONT direction (see {@link #scanCell}), while cover ordinals
+     * are world directions — so a cover's meaning relative to the ship (back face, nose face, side face) depends on
+     * how the assembler faces. This maps it into grid space with the same basis as {@link #scanCell} (grid +X = a1,
+     * grid +Y = a2, grid +Z = front), so a cover pointing TOWARD the assembler becomes grid side 2
+     * ({@link tectech.voidcraft.ship.VoidcraftBlueprint#BACK_FACE}) for every assembler orientation.
+     *
+     * @param front     the assembler's front facing
+     * @param worldSide the cover's world-facing ordinal (ForgeDirection)
+     * @return the grid-side ordinal (0..5) of the same direction
+     */
+    private static int toGridSide(ForgeDirection front, int worldSide) {
+        // grid basis in world coordinates (mirrors scanCell's a1/a2; grid +Z is the front itself)
+        final int[] ex, ey;
+        if (front.offsetY != 0) {
+            ex = new int[] { 1, 0, 0 };
+            ey = new int[] { 0, 0, 1 };
+        } else if (front.offsetX != 0) {
+            ex = new int[] { 0, 1, 0 };
+            ey = new int[] { 0, 0, 1 };
+        } else {
+            ex = new int[] { 1, 0, 0 };
+            ey = new int[] { 0, 1, 0 };
+        }
+        final int[] ez = { front.offsetX, front.offsetY, front.offsetZ };
+        // MC world direction of the cover's facing ordinal
+        final int[] d;
+        switch (worldSide) {
+            case 0:
+                d = new int[] { 0, -1, 0 }; // DOWN
+                break;
+            case 1:
+                d = new int[] { 0, 1, 0 }; // UP
+                break;
+            case 2:
+                d = new int[] { 0, 0, -1 }; // NORTH
+                break;
+            case 3:
+                d = new int[] { 0, 0, 1 }; // SOUTH
+                break;
+            case 4:
+                d = new int[] { -1, 0, 0 }; // WEST
+                break;
+            default:
+                d = new int[] { 1, 0, 0 }; // EAST
+                break;
+        }
+        int gx = d[0] * ex[0] + d[1] * ex[1] + d[2] * ex[2];
+        int gy = d[0] * ey[0] + d[1] * ey[1] + d[2] * ey[2];
+        int gz = d[0] * ez[0] + d[1] * ez[1] + d[2] * ez[2];
+        if (gz != 0) {
+            return gz > 0 ? 3 : 2; // +Z (away) / -Z (toward the assembler = the ship's back)
+        }
+        if (gy != 0) {
+            return gy > 0 ? 1 : 0;
+        }
+        return gx > 0 ? 5 : 4;
+    }
+
+    /**
      * Scan the 5×5×10 volume in front of the machine's front face.
      *
      * <p>
@@ -183,6 +257,10 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
         byte[] grid = new byte[cells];
         byte[] facingGrid = new byte[cells];
         byte[] coverGrid = new byte[cells * 6];
+        ForgeDirection front = getBaseMetaTileEntity().getFrontFacing();
+        // Phase C: capture the controller's program as we visit it (exactly one controller per ship, per the
+        // validation that follows).
+        NBTTagList program = null;
         for (int depth = 1; depth <= SCAN_DEPTH; depth++) {
             for (int j = -SCAN_HEIGHT / 2; j <= SCAN_HEIGHT / 2; j++) {
                 for (int i = -SCAN_WIDTH / 2; i <= SCAN_WIDTH / 2; i++) {
@@ -205,12 +283,22 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
                     facingGrid[idx] = (byte) (hull.getBaseMetaTileEntity()
                         .getFrontFacing()
                         .ordinal() + 1);
+                    if (hull.getComponent() == VoidcraftComponent.CONTROLLER) {
+                        NBTTagList p = hull.getProgramTag();
+                        if (p != null) {
+                            NBTBase copy = p.copy();
+                            program = (copy instanceof NBTTagList) ? (NBTTagList) copy : null;
+                        }
+                    }
 
                     if (hull.getBaseMetaTileEntity() instanceof ICoverable coverable) {
-                        for (int side = 0; side < 6; side++) {
-                            Cover cover = coverable.getCoverAtSide(ForgeDirection.getOrientation(side));
+                        for (int worldSide = 0; worldSide < 6; worldSide++) {
+                            Cover cover = coverable.getCoverAtSide(ForgeDirection.getOrientation(worldSide));
                             if (cover instanceof CoverVoidcraftComponent vc && vc.getComponent() != null) {
-                                coverGrid[idx * 6 + side] = (byte) vc.getComponent()
+                                // Pass 24: store the cover's side in GRID space (the blueprint's depth axis is the
+                                // assembler's front, not a world axis), so "back face" is the same grid side no
+                                // matter which way the assembler itself faces.
+                                coverGrid[idx * 6 + toGridSide(front, worldSide)] = (byte) vc.getComponent()
                                     .toGridValue();
                             }
                         }
@@ -219,7 +307,14 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
             }
         }
         try {
-            return VoidcraftBlueprint.of(SCAN_WIDTH, SCAN_HEIGHT, SCAN_DEPTH, grid, facingGrid, coverGrid);
+            VoidcraftBlueprint blueprint = VoidcraftBlueprint
+                .of(SCAN_WIDTH, SCAN_HEIGHT, SCAN_DEPTH, grid, facingGrid, coverGrid);
+            // Publish the captured program (null when the controller has none) — a failed scan below publishes
+            // nothing (the caller resets it).
+            if (blueprint != null) {
+                pendingProgram = (program != null && USSProgram.readFromNBT(program) != null) ? program : null;
+            }
+            return blueprint;
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -254,10 +349,12 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
         int maxTier = readCircuitTier();
         VoidcraftBlueprint scanned = scanRegion();
         if (scanned == null) {
+            pendingProgram = null;
             return SimpleCheckRecipeResult.ofFailure("voidcraft_scan_failed");
         }
         List<String> errors = new ArrayList<>();
         if (!scanned.validate(maxTier, errors)) {
+            pendingProgram = null;
             return SimpleCheckRecipeResult.ofFailure(errors.isEmpty() ? "voidcraft_invalid" : errors.get(0));
         }
 
@@ -281,8 +378,9 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
             afterRecipeCheckFailed();
             return;
         }
+        // Phase C: the controller's program rides the item NBT (vc_program) into the ship's payload.
         ItemStack result = ItemVoidcraft
-            .fromBlueprint(pendingShip, "Voidcraft", ItemVoidcraft.newUuid(), pendingCreatedAt);
+            .fromBlueprint(pendingShip, "Voidcraft", ItemVoidcraft.newUuid(), pendingCreatedAt, pendingProgram);
         if (addOutputAtomic(result)) {
             clearShipBlocks();
         } else {
@@ -290,6 +388,7 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
         }
         pendingShip = null;
         pendingCreatedAt = 0;
+        pendingProgram = null;
     }
 
     // region NBT persistence
@@ -306,6 +405,9 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
             tag.setByteArray("facing", pendingShip.copyFacingGrid());
             tag.setByteArray("covers", pendingShip.copyCoverGrid());
             tag.setLong("created", pendingCreatedAt);
+            if (pendingProgram != null) {
+                tag.setTag(VoidcraftNbt.TAG_PROGRAM, pendingProgram);
+            }
             aNBT.setTag("voidcraft_pending", tag);
         }
     }
@@ -314,6 +416,7 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         pendingShip = null;
+        pendingProgram = null;
         pendingCreatedAt = 0;
         NBTTagCompound tag = aNBT.getCompoundTag("voidcraft_pending");
         if (tag.hasKey("grid")) {
@@ -328,8 +431,15 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
                     facing,
                     covers);
                 pendingCreatedAt = tag.getLong("created");
+                if (tag.hasKey(VoidcraftNbt.TAG_PROGRAM)) {
+                    NBTBase p = tag.getTag(VoidcraftNbt.TAG_PROGRAM);
+                    if (p instanceof NBTTagList && USSProgram.readFromNBT((NBTTagList) p) != null) {
+                        pendingProgram = (NBTTagList) p;
+                    }
+                }
             } catch (IllegalArgumentException ignored) {
                 pendingShip = null;
+                pendingProgram = null;
             }
         }
     }

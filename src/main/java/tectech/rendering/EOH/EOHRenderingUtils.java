@@ -213,8 +213,9 @@ public abstract class EOHRenderingUtils {
      * pipeline the legacy orbit render uses ({@code addRenderedBlockInWorld} + the shared textured shader), but
      * with the USS orbit math the ships track — so no dependency on the legacy orbit shader, and the cubes orbit
      * EXACTLY where {@code USSFleetOrbit.planetAnchorPosition} resolves the ship's hover/beam (radius
-     * {@code 0.2 + distance + 0.2·starSize}, angle {@code orbitSpeed·0.1·time}, tilts xAngle/zAngle — do not
-     * "clean up" the orbit chain without re-pointing the hover/beam).
+     * {@code 0.2 + distance + 0.2·starSize}, angle {@code (0.3·time)/radius} — the pass-30 radius law, a planet
+     * at X blocks taking X minutes to orbit; tilts xAngle/zAngle — do not "clean up" the orbit chain without
+     * re-pointing the hover/beam).
      *
      * <p>
      * Each cube is the planet's own dimension-display block ({@code spec.dimension} via the IORE
@@ -238,15 +239,27 @@ public abstract class EOHRenderingUtils {
         final boolean blendWas = GL11.glGetBoolean(GL11.GL_BLEND);
         final long blendFuncWas = RenderState.savedBlendFunc();
 
-        GL11.glEnable(GL11.GL_BLEND);
+        // PASS 16 (user: "planets render slightly transparent — they should be fully opaque"): draw the planets
+        // UNBLENDED, exactly like the legacy orbit path (rendered with GL_BLEND disabled). Every planet texture
+        // (all 264 IORE dimension blocks + the star-layer fallback, verified alpha 255) is fully opaque, so
+        // blending adds nothing here — but with it ON the planet inherits whatever blend FUNC an earlier
+        // tile-entity renderer in the same pass left active (an additive (SRC_ALPHA, ONE) makes an alpha-1.0
+        // planet read as "slightly transparent": dst = src + dst, the star layer behind bleeds through).
+        // Blend OFF is immune to the function and matches the legacy planet look.
+        GL11.glDisable(GL11.GL_BLEND);
 
         final ShaderHandle shader = texturedShader();
         shader.use();
         for (int i = 0; i < count; i++) {
             final TileEntityEyeOfHarmony.PlanetSpec spec = specs.get(i);
-            final float orbitAngle = (spec.orbitSpeed * USS_ORBIT_SPEED_SCALE * time) % 360f;
-            final float spinAngle = (spec.rotationSpeed * USS_ORBIT_SPEED_SCALE * time) % 360f;
             final float radius = 0.2f + spec.distance + 0.2f * starSize;
+            // Pass 30 (user: "a planet at X blocks should take X minutes to complete one full rotation"): the orbit
+            // angle is the RADIUS law — the SAME law USSFleetOrbit.planetAnchorPosition uses for the ships'
+            // hover/beam, so rendered planets and tracking ships never drift apart. (The old spec.orbitSpeed·0.1·time
+            // was independent of radius: far planets swept the sky as fast as near ones.)
+            final float orbitAngle = (USS_ORBIT_DEG_PER_TICK_PER_BLOCK * time / radius) % 360f;
+            // The planet's own SPIN (rotation on its axis) keeps the legacy pace — pass 30 only re-pins the ORBIT.
+            final float spinAngle = (spec.rotationSpeed * USS_ORBIT_SPEED_SCALE * time) % 360f;
             final float scale = Math.max(0.05f, spec.scale);
 
             planetMatrix.set(base)
@@ -259,6 +272,10 @@ public abstract class EOHRenderingUtils {
 
             // Null-guard: a missing/empty IORE map (mod absent / very early frame) must fall back to the sphere,
             // never crash the render thread.
+            // PASS 17/21: the planet's orbit RING — thin, 25%-opaque (pass 21), in the planet's orbit plane.
+            // Drawn before the planet so the opaque planet overwrites the ring wherever it is in front.
+            renderUSSOrbitRing(base, spec, starSize);
+
             final Block block = (spec.dimension == null || ModBlocks.blocks == null) ? null
                 : ModBlocks.blocks.get(spec.dimension);
             if (block != null) {
@@ -292,6 +309,147 @@ public abstract class EOHRenderingUtils {
 
         RenderState.restore(GL11.GL_BLEND, blendWas);
         RenderState.restoreBlendFunc(blendFuncWas);
+    }
+
+    /**
+     * PASS 17 orbit ring: tube radius (a thin circle). PASS 27 (user: "the orbital rings are a bit too
+     * prominent — make them half as wide"): 0.025 → 0.0125 (ring body 0.05 → 0.025 blocks).
+     */
+    private static final float RING_TUBE_RADIUS = 0.0125f;
+
+    /**
+     * PASS 21 (user: "make the segment sizes around 8x longer to save vertices") then PASS 22 (user: "4x shorter —
+     * they became too blocky"): circumference segments 96 → 12 → 48 (4× shorter than pass 21). The tube
+     * cross-section stays 8 so the ring keeps a sliver of presence when viewed edge-on (the pass-11 coplanar
+     * orbits are seen nearly edge-on from the ground).
+     */
+    private static final int RING_SEGMENTS = 48;
+
+    private static final int RING_TUBE_SEGMENTS = 8;
+
+    private static final Matrix4f ringMatrix = new Matrix4f();
+
+    /**
+     * PASS 21 ring color: the textured fragment shader is {@code texture × u_Tint}, so the ring samples a 1×1
+     * pure-white texture and gets the planet's tint (and alpha) exactly — no atlas pixel to fight.
+     */
+    private static final ResourceLocation RING_TEXTURE = new ResourceLocation(MODID, "textures/misc/white.png");
+
+    /**
+     * One ring mesh per distinct orbit radius — the radius is stable per planet (same expression every frame,
+     * like the cube's {@code Block} key), so a cache works like {@link #USS_PLANET_CUBES}.
+     */
+    private static final Map<Float, IVertexArrayObject> USS_ORBIT_RINGS = new LinkedHashMap<>();
+
+    /**
+     * PASS 17 (user request) + PASS 21 (user playtest: the ring "followed the camera"): one thin orbit RING per
+     * USS planet — a circle in the EXACT plane the planet orbits in: the same {@code base · rotX(xAngle) ·
+     * rotZ(zAngle)} chain and the same radius {@code 0.2 + distance + 0.2·starSize} that {@link #renderUSSOrbits}
+     * uses for the planet, so the ring passes through the planet's orbit. A thin torus (not a flat annulus) so
+     * it keeps a sliver of presence when viewed edge-on.
+     *
+     * <p>
+     * <b>PASS 21 root cause:</b> the ring was raw Tessellator quads, but at that moment the shared textured GLSL
+     * program was STILL BOUND ({@code shader.use()} at the top of {@link #renderUSSOrbits} stays bound until
+     * {@code ShaderProgram.clear()}, and a {@code Tessellator.draw()} carries no program of its own) — so the
+     * ring's vertices ran through that vertex shader ({@code gl_ModelViewProjectionMatrix * u_ModelMatrix *
+     * a_Position}) with the PREVIOUS object's stale {@code u_ModelMatrix} (for the first ring: the dome shell's
+     * matrix) — misplaced, and swinging around the scene as that stale planet's orbit angle advanced.
+     *
+     * <p>
+     * <b>Fix:</b> draw the ring through the EXACT textured-shader VAO path the planet's cube uses — the vertices
+     * are the local torus (orbit radius baked in), the model uniform carries {@code base · rotX · rotZ}, and the
+     * color is {@code u_Tint} over the 1×1 white texture. The ring now sits in the same space as the cube BY
+     * CONSTRUCTION — no raw vertex path left in this renderer.
+     *
+     * <p>
+     * The ring is tinted with the planet's own color (its ore average, {@code spec.color}; unset → white), and
+     * PASS 21 (user: "25% — more transparent"): alpha 0.25, down from 0.5.
+     *
+     * @param base     the star-center model matrix (as in {@link #renderUSSOrbits})
+     * @param spec     the planet whose orbit to show
+     * @param starSize the star size factor (the radius term, as in {@link #renderUSSOrbits})
+     */
+    public static void renderUSSOrbitRing(Matrix4fc base, TileEntityEyeOfHarmony.PlanetSpec spec, float starSize) {
+        final float radius = 0.2f + spec.distance + 0.2f * starSize; // the planet's orbit radius, exactly
+        ringMatrix.set(base)
+            .rotate((float) Math.toRadians(spec.xAngle), 1f, 0f, 0f)
+            .rotate((float) Math.toRadians(spec.zAngle), 0f, 0f, 1f);
+
+        final int argb = spec.color != 0 ? spec.color : 0xFFFFFFFF;
+
+        final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
+        final long blendFuncWas = RenderState.savedBlendFunc();
+        GL11.glDisable(GL11.GL_CULL_FACE); // mixed torus winding — do not rely on the face convention
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); // pass 16 lesson: never inherit a prior
+                                                                          // renderer's blend function
+        GL11.glDepthMask(false); // pure overlay: depth-tested (planet/star occlude it), depth-WRITE off
+        try {
+            final ShaderHandle shader = texturedShader();
+            bindTexture(RING_TEXTURE);
+            GL20.glUniform4f(
+                shader.loc(SharedShaders.U_TINT),
+                ((argb >> 16) & 0xFF) / 255f,
+                ((argb >> 8) & 0xFF) / 255f,
+                (argb & 0xFF) / 255f,
+                0.125f); // PASS 27 (user: "…drop their [transparency] by 0.5×"): 25% → 12.5%
+            shader.uploadModel(ringMatrix);
+            ussRingFor(radius).render();
+        } finally {
+            GL11.glDepthMask(true);
+            RenderState.restoreBlendFunc(blendFuncWas);
+            RenderState.restore(GL11.GL_BLEND, blendOn);
+            RenderState.restore(GL11.GL_CULL_FACE, cullOn);
+        }
+    }
+
+    /** One ring VAO per distinct orbit radius (baked torus) — cached like {@link #ussCubeFor}. */
+    private static IVertexArrayObject ussRingFor(float radius) {
+        IVertexArrayObject cached = USS_ORBIT_RINGS.get(radius);
+        if (cached != null) {
+            return cached;
+        }
+        final IVertexArrayObject built;
+        // MeshBuilder capacity counts TRIANGLE vertices: 6 per quad (the cube's 36 = 6 faces × 6).
+        try (MeshBuilder mesh = MeshBuilder.of(texturedShader(), RING_SEGMENTS * RING_TUBE_SEGMENTS * 6)) {
+            for (int i = 0; i < RING_SEGMENTS; i++) {
+                final float a0 = i * 2f * (float) Math.PI / RING_SEGMENTS;
+                final float a1 = (i + 1) * 2f * (float) Math.PI / RING_SEGMENTS;
+                for (int j = 0; j < RING_TUBE_SEGMENTS; j++) {
+                    final float b0 = j * 2f * (float) Math.PI / RING_TUBE_SEGMENTS;
+                    final float b1 = (j + 1) * 2f * (float) Math.PI / RING_TUBE_SEGMENTS;
+                    ringVertex(mesh, a0, b0, radius);
+                    ringVertex(mesh, a1, b0, radius);
+                    ringVertex(mesh, a1, b1, radius);
+                    ringVertex(mesh, a0, b1, radius);
+                }
+            }
+            built = mesh.build();
+        }
+        if (USS_ORBIT_RINGS.size() >= MAX_USS_PLANETS) {
+            final Iterator<Float> oldest = USS_ORBIT_RINGS.keySet()
+                .iterator();
+            if (oldest.hasNext()) {
+                USS_ORBIT_RINGS.get(oldest.next())
+                    .delete();
+                oldest.remove();
+            }
+        }
+        USS_ORBIT_RINGS.put(radius, built);
+        return built;
+    }
+
+    /** One torus point (circle angle {@code a}, tube angle {@code b}); the UV is the white-texture center. */
+    private static void ringVertex(MeshBuilder mesh, float a, float b, float radius) {
+        final float rr = radius + RING_TUBE_RADIUS * (float) Math.cos(b);
+        mesh.vertex(
+            rr * (float) Math.cos(a),
+            RING_TUBE_RADIUS * (float) Math.sin(b),
+            rr * (float) Math.sin(a),
+            0.5,
+            0.5);
     }
 
     private static void bindTexture(ResourceLocation location) {
@@ -329,10 +487,20 @@ public abstract class EOHRenderingUtils {
         return built;
     }
 
-    private static final int MAX_USS_PLANETS = 8;
+    // PASS 22: systems now carry up to MAX_PLANETS_PER_SYSTEM (9) planets — the cap must cover every planet,
+    // else the last one of a 9-planet system would be invisible.
+    private static final int MAX_USS_PLANETS = 9;
 
     /** Orbit angular speed scale (matches the legacy {@code SPEED_SCALE} so USS planets spin at a similar pace). */
     private static final float USS_ORBIT_SPEED_SCALE = 0.1f;
+
+    /**
+     * Pass 30 (user: "a planet at X blocks should take X minutes to complete one full rotation"): orbit angular
+     * speed per block of orbit radius — a planet at X blocks takes X minutes (X·1200 ticks) to orbit, so its
+     * angular speed is 360°/(1200·X) = 0.3/X degrees per tick. MUST stay in sync with
+     * {@code USSFleetOrbit.ORBIT_DEG_PER_TICK_PER_BLOCK} (the ships' hover/beam math uses the identical law).
+     */
+    private static final float USS_ORBIT_DEG_PER_TICK_PER_BLOCK = 0.3f;
 
     private static final Matrix4f planetMatrix = new Matrix4f();
 
@@ -619,7 +787,7 @@ public abstract class EOHRenderingUtils {
 
     private static final Matrix4f shellMatrix = new Matrix4f();
 
-    public static void renderOuterSpaceShell(Matrix4fc base, double playerDistance) {
+    public static void renderOuterSpaceShell(Matrix4fc base, double radius) {
         if (!shadersReady()) return;
 
         FMLClientHandler.instance()
@@ -627,7 +795,10 @@ public abstract class EOHRenderingUtils {
             .getTextureManager()
             .bindTexture(SPACE_LAYER_TEXTURE);
 
-        final float scale = 0.01f * 17.5f * 74f;
+        // Pass 12: the dome radius comes from the caller (per-machine: legacy EoH 12.95, Voidcraft USS 27.1 since pass
+        // 15)
+        // instead of the old hardcoded 0.01f * 17.5f * 74f.
+        final float scale = (float) radius;
         shellMatrix.set(base)
             .scale(-scale, scale, scale);
 

@@ -24,24 +24,57 @@ import java.util.Optional;
  * This is the exact payload stored inside an {@code ItemVoidcraft} (see {@link VoidcraftNbt}).
  *
  * <p>
- * <b>Thrust model.</b> Every engine — a full block or a thruster cover — fires out of its mounting face (the block
- * facing, or the face the cover is mounted on) and therefore pushes the ship in the opposite direction. The ship's
- * net thrust is the vector sum {@code Σ -face · magnitude}; {@code stats.thrust} is the best thrust along any single
- * axis. Opposing thrusters cancel out — a fully-cancelled ship fails validation.
+ * <b>Component model (pass 23).</b> Covers are the primary components: the ONLY placeable full blocks are the
+ * {@link VoidcraftComponent#CONTROLLER} and the {@link VoidcraftComponent#FRAME} (Voidcraft Frame); every other
+ * catalog entry is cover-only, and a cell holding one fails validation
+ * ({@code voidcraft_cover_only_component}). A ship also needs at least one frame hull block
+ * ({@code voidcraft_no_frame}) — the block whose faces accept the covers that carry all ship functionality.
+ *
+ * <p>
+ * <b>Thrust model (pass 18/19, pass 23, pass 24 flip).</b> Thrust is a <em>single value</em>, not directional.
+ * The assembler scans the volume in FRONT of its machine, so grid +Z is the FAR end (away from the assembler) and
+ * grid −Z is the assembler side. A player builds the ship pointing away from the machine, so the FAR end (grid +Z)
+ * is the ship's NOSE — in flight the ship travels away from where it was built and the cockpit leads (see
+ * {@code RenderVoidcraftShip.headingFor}). The ship's BACK is the assembler side (grid −Z, {@link #BACK_FACE}).
+ * Thrust comes ONLY from {@link VoidcraftCoverComponent#THRUSTER_NOZZLE} covers mounted on that back face (exhaust
+ * out the rear). Thrust = the plain sum of those magnitudes.
+ *
+ * <p>
+ * (Pass 18/20 had this inverted — nose on the assembler side, nozzle on the far end — which playtested as "the
+ * nozzle has to face the front of the ship". Pass 24 flips the whole convention.)
+ *
+ * <p>
+ * A thruster that does NOT face the back fails validation ({@code voidcraft_thruster_wrong_facing}), and a
+ * back-facing thruster needs the {@link #EXHAUST_CLEARANCE} blocks directly on its exhaust side (grid −Z, toward
+ * the assembler) free of Voidcraft blocks — a Voidcraft block there (the hull between the nozzle and the open
+ * exhaust) blocks the thruster (zero thrust from it) and fails validation ({@code voidcraft_engine_blocked}).
+ * The assembler machine and air on that side are not Voidcraft blocks, so a nozzle on the near end is always clear.
+ * Both reasons surface in the assembler GUI.
  *
  * <p>
  * This class is pure Java (no Minecraft types) so the stat math stays unit-testable outside a game world.
  */
 public final class VoidcraftBlueprint {
 
-    /** ForgeDirection ordinal → outward vector (Minecraft axes: +X east, +Y up, +Z south). */
-    private static final int[][] SIDE_VECTORS = { { 0, -1, 0 }, // 0 = down
-        { 0, 1, 0 }, // 1 = up
-        { 0, 0, -1 }, // 2 = north
-        { 0, 0, 1 }, // 3 = south
-        { -1, 0, 0 }, // 4 = west
-        { 1, 0, 0 } // 5 = east
-    };
+    /**
+     * The ship's BACK face, as a ForgeDirection ordinal: NORTH (ordinal 2, −Z — the assembler side).
+     *
+     * <p>
+     * Pass 24 (flipped): the assembler scans the volume in front of its machine, so grid +Z is the FAR end (away
+     * from the assembler) and grid −Z is the assembler side. A player builds the ship pointing away from the
+     * machine, so the FAR end (grid +Z) is the ship's NOSE — in flight the ship travels away from where it was
+     * built (see {@code RenderVoidcraftShip.headingFor}). The rear is the assembler side, and a thruster fires
+     * the ship forward when mounted on a cell's NORTH (−Z) face.
+     */
+    public static final int BACK_FACE = 2;
+
+    /**
+     * Thruster clearance: a back-facing thruster fires out its BACK face (grid −Z, the assembler side). It needs
+     * the {@code EXHAUST_CLEARANCE} cells directly on that exhaust side (grid −Z, toward the assembler) free of
+     * Voidcraft blocks, otherwise the thruster is blocked and contributes nothing. The assembler machine and air
+     * out there are not Voidcraft blocks, so a nozzle on the near end (z=0) is always clear.
+     */
+    public static final int EXHAUST_CLEARANCE = 5;
 
     public final int width;
     public final int height;
@@ -263,44 +296,75 @@ public final class VoidcraftBlueprint {
     }
 
     /**
-     * @return the sum of engine magnitudes (block engines + thruster covers), regardless of direction
+     * @return the ship's single thrust value (pass 18/20/23): the sum of the thrust of every
+     *         {@link VoidcraftCoverComponent#THRUSTER_NOZZLE} cover mounted on the ship's BACK
+     *         ({@link #BACK_FACE}) that is not blocked ({@link #isExhaustBlocked(int)}). Nozzles mounted on any
+     *         other face, or blocked by the ship's own hull, contribute nothing. (Pass 23: engines are covers
+     *         only — there is no block engine.)
      */
     public long totalThrust() {
         long total = 0;
         for (int cell = 0; cell < grid.length; cell++) {
-            if (grid[cell] != 0) {
-                VoidcraftComponent component = VoidcraftComponent.fromGridValue(grid[cell])
-                    .orElseThrow();
-                if (component == VoidcraftComponent.ENGINE) {
-                    total += component.getThrust();
-                }
-            }
-            for (int side = 0; side < 6; side++) {
-                VoidcraftCoverComponent cover = VoidcraftCoverComponent.fromGridValue(coverGrid[cell * 6 + side])
-                    .orElse(null);
-                if (cover == VoidcraftCoverComponent.THRUSTER_NOZZLE) {
-                    total += cover.getThrust();
-                }
+            VoidcraftCoverComponent cover = VoidcraftCoverComponent.fromGridValue(coverGrid[cell * 6 + BACK_FACE])
+                .orElse(null);
+            if (cover == VoidcraftCoverComponent.THRUSTER_NOZZLE && !isExhaustBlocked(cell)) {
+                total += cover.getThrust();
             }
         }
         return total;
     }
 
     /**
+     * Pass 24: is the thruster at {@code cell} blocked?
+     *
+     * <p>
+     * The thruster fires out its BACK face (grid −Z, the assembler side — {@link #BACK_FACE}). The
+     * {@link #EXHAUST_CLEARANCE} cells directly on that EXHAUST side (grid −Z: z−1…z−5 from the thruster cell —
+     * toward the assembler) must be free of Voidcraft component blocks. "Empty" = no Voidcraft block; the assembler
+     * machine and any air out there are NOT Voidcraft blocks, so they never block the exhaust. A Voidcraft block in
+     * any of those 5 cells (i.e. the hull is between the nozzle and the open exhaust) blocks the thruster.
+     *
+     * <p>
+     * A nozzle on the ship's near end (grid z=0, the assembler end) always has a clear exhaust — its exhaust cells
+     * are outside the hull (toward the assembler), so it contributes thrust with no clearance requirement.
+     *
+     * @param cell the thruster's cell index
+     * @return true if any of the 5 blocks on the thruster's exhaust side is a Voidcraft block
+     */
+    private boolean isExhaustBlocked(int cell) {
+        int x = cell % width;
+        int y = (cell / width) % height;
+        int z = cell / (width * height);
+        for (int dz = 1; dz <= EXHAUST_CLEARANCE; dz++) {
+            int z2 = z - dz;
+            if (z2 < 0) {
+                break; // toward the assembler = air / the assembler machine, which never blocks the exhaust
+            }
+            if (grid[x + width * (y + height * z2)] != 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Compute the ship's stats from the component and cover grids.
      *
      * <p>
-     * Thrust is vectorial: a block engine fires along its facing, a thruster cover along its mounted face, each
-     * pushing the ship opposite the exhaust. The net vector is summed per axis; {@code stats.thrust} is
-     * {@code max(|thrustX|, |thrustY|, |thrustZ|)}.
+     * Thrust (pass 18/20) is a single value: every back-facing engine ({@link #BACK_FACE}) that is not blocked
+     * ({@link #isExhaustBlocked(int)}) counts; anything aimed elsewhere or blocked by the hull contributes
+     * nothing — see {@link #totalThrust()}.
      */
     public VoidcraftStats computeStats() {
         long mass = 0, cargoSlots = 0, miningPower = 0, scanPower = 0, constructionPower = 0, starlifterPower = 0,
             energyBuffer = 0, energyDraw = 0, integrity = 0;
-        long thrustX = 0, thrustY = 0, thrustZ = 0;
+        long thrust = 0;
 
         for (int cell = 0; cell < grid.length; cell++) {
             if (grid[cell] != 0) {
+                // Pass 23: full blocks are the controller and the frame only — structural mass + integrity.
+                // ALL function stats (thrust, cargo, mining, scan, construction, starlifter, energy) come from
+                // the covers mounted on their faces.
                 VoidcraftComponent component = VoidcraftComponent.fromGridValue(grid[cell])
                     .orElseThrow();
                 mass += component.getMass();
@@ -312,12 +376,6 @@ public final class VoidcraftBlueprint {
                 energyBuffer += component.getEnergyBuffer();
                 energyDraw += component.getEnergyDraw();
                 integrity += component.getIntegrity();
-                if (component == VoidcraftComponent.ENGINE && component.getThrust() > 0) {
-                    long[] delta = thrustDelta(facingOf(cell), component.getThrust());
-                    thrustX += delta[0];
-                    thrustY += delta[1];
-                    thrustZ += delta[2];
-                }
             }
             for (int side = 0; side < 6; side++) {
                 int value = coverGrid[cell * 6 + side];
@@ -335,22 +393,15 @@ public final class VoidcraftBlueprint {
                 energyBuffer += cover.getEnergyBuffer();
                 energyDraw += cover.getEnergyDraw();
                 integrity += cover.getIntegrity();
-                if (cover == VoidcraftCoverComponent.THRUSTER_NOZZLE && cover.getThrust() > 0) {
-                    long[] delta = thrustDelta(side, cover.getThrust());
-                    thrustX += delta[0];
-                    thrustY += delta[1];
-                    thrustZ += delta[2];
+                if (cover == VoidcraftCoverComponent.THRUSTER_NOZZLE && side == BACK_FACE && !isExhaustBlocked(cell)) {
+                    thrust += cover.getThrust();
                 }
             }
         }
 
-        long thrust = Math.max(Math.abs(thrustX), Math.max(Math.abs(thrustY), Math.abs(thrustZ)));
         return new VoidcraftStats(
             mass,
             thrust,
-            thrustX,
-            thrustY,
-            thrustZ,
             cargoSlots,
             miningPower,
             scanPower,
@@ -359,19 +410,6 @@ public final class VoidcraftBlueprint {
             energyBuffer,
             energyDraw,
             integrity);
-    }
-
-    /**
-     * Thrust delta pushed on the ship by an engine mounted on the given face.
-     * The exhaust leaves the face; the ship is pushed the opposite way.
-     *
-     * @param face      ForgeDirection ordinal (0..5)
-     * @param magnitude engine thrust
-     * @return signed [dx, dy, dz]
-     */
-    private static long[] thrustDelta(int face, long magnitude) {
-        int[] v = SIDE_VECTORS[face];
-        return new long[] { -v[0] * magnitude, -v[1] * magnitude, -v[2] * magnitude };
     }
 
     /**
@@ -419,6 +457,27 @@ public final class VoidcraftBlueprint {
     /**
      * Validate the blueprint as a digitizable ship.
      *
+     * <p>
+     * Pass 23 rules: only the controller and the frame are placeable full blocks — a cell holding any cover-only
+     * component fails with {@code voidcraft_cover_only_component}, and the ship needs at least one frame hull
+     * block ({@code voidcraft_no_frame}).
+     *
+     * <p>
+     * Thruster rules (pass 18/20, pass 24 flip): every thruster — a {@link VoidcraftCoverComponent#THRUSTER_NOZZLE}
+     * cover — must be mounted on the ship's BACK face ({@link #BACK_FACE}, the assembler side), and a back-facing
+     * thruster needs the {@link #EXHAUST_CLEARANCE} blocks directly on its exhaust side (grid −Z, toward the
+     * assembler) free of Voidcraft blocks. A violation breaks the digitization and is reported in the assembler
+     * GUI:
+     *
+     * <ul>
+     * <li>{@code voidcraft_no_engine} — no thruster at all</li>
+     * <li>{@code voidcraft_thruster_wrong_facing} — a thruster does not face the back</li>
+     * <li>{@code voidcraft_engine_blocked} — a Voidcraft block sits on the exhaust side of a back-facing thruster
+     * (within 5 cells, i.e. the hull is between the nozzle and the open exhaust toward the assembler)</li>
+     * <li>{@code voidcraft_cover_only_component} — a full-block cell holds a cover-only part (pass 23)</li>
+     * <li>{@code voidcraft_no_frame} — no Voidcraft Frame hull block (pass 23)</li>
+     * </ul>
+     *
      * @param maxComponentTier highest component/cover tier the assembler (circuit) may digitize
      * @param errorsOut        receives failure reason keys (e.g. {@code voidcraft_no_engine}); may be null
      * @return true if the blueprint is a valid ship
@@ -437,19 +496,66 @@ public final class VoidcraftBlueprint {
             ok = false;
         }
 
+        // Pass 23: covers are primary — only the controller and the frame are placeable full blocks.
+        boolean coverOnlyPresent = false;
+        for (byte b : grid) {
+            if (b != 0 && VoidcraftComponent.fromGridValue(b)
+                .orElseThrow()
+                .isCoverOnly()) {
+                coverOnlyPresent = true;
+                break;
+            }
+        }
+        if (coverOnlyPresent) {
+            errors.add("voidcraft_cover_only_component");
+            ok = false;
+        }
+
+        if (count(VoidcraftComponent.FRAME) < 1) {
+            errors.add("voidcraft_no_frame");
+            ok = false;
+        }
+
         if (maxTier() > maxComponentTier) {
             errors.add("voidcraft_tier_too_high");
             ok = false;
         }
 
-        if (count(VoidcraftComponent.ENGINE) == 0 && countCover(VoidcraftCoverComponent.THRUSTER_NOZZLE) == 0) {
+        // Thruster audit (pass 18/19, pass 23 covers-only): every nozzle cover must be on the back face with a
+        // clear exhaust path.
+        boolean hasThruster = false;
+        boolean wrongFacing = false;
+        boolean blocked = false;
+        for (int cell = 0; cell < grid.length; cell++) {
+            for (int side = 0; side < 6; side++) {
+                int value = coverGrid[cell * 6 + side];
+                if (value == 0) {
+                    continue;
+                }
+                if (VoidcraftCoverComponent.fromGridValue(value)
+                    .orElseThrow() == VoidcraftCoverComponent.THRUSTER_NOZZLE) {
+                    hasThruster = true;
+                    if (side != BACK_FACE) {
+                        wrongFacing = true;
+                    } else if (isExhaustBlocked(cell)) {
+                        blocked = true;
+                    }
+                }
+            }
+        }
+
+        if (!hasThruster) {
             errors.add("voidcraft_no_engine");
             ok = false;
         }
 
-        // Engines present but every bit of thrust cancels out (e.g. opposing thrusters)
-        if (totalThrust() > 0 && computeStats().thrust == 0) {
-            errors.add("voidcraft_thrusters_cancelled");
+        if (wrongFacing) {
+            errors.add("voidcraft_thruster_wrong_facing");
+            ok = false;
+        }
+
+        if (blocked) {
+            errors.add("voidcraft_engine_blocked");
             ok = false;
         }
 

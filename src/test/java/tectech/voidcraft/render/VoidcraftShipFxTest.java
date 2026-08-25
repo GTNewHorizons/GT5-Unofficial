@@ -47,8 +47,14 @@ public class VoidcraftShipFxTest {
         assertEquals(0.0, VoidcraftShipFx.beamFade(0.0), 1e-12, "off at leg start");
         assertEquals(0.0, VoidcraftShipFx.beamFade(1.0), 1e-12, "off at leg end");
         assertEquals(1.0, VoidcraftShipFx.beamFade(0.5), 1e-12, "fully on mid-leg");
-        assertTrue(VoidcraftShipFx.beamFade(0.08) < 1.0, "still ramping in the first 15%");
-        assertTrue(VoidcraftShipFx.beamFade(0.92) < 1.0, "still ramping in the last 15%");
+        // Strictly INSIDE the fade ramp (at half the ramp width) the beam must still be ramping — expressed in
+        // terms of BEAM_FADE_RAMP so the assertion survives balance changes to the ramp width.
+        double ramp = VoidcraftShipFx.BEAM_FADE_RAMP;
+        assertTrue(VoidcraftShipFx.beamFade(ramp / 2.0) < 1.0, "still ramping in the first ramp region");
+        assertTrue(VoidcraftShipFx.beamFade(1.0 - ramp / 2.0) < 1.0, "still ramping in the last ramp region");
+        // And just past the ramp the beam is fully on.
+        assertEquals(1.0, VoidcraftShipFx.beamFade(ramp), 1e-12, "fully on at the end of the ramp");
+        assertEquals(1.0, VoidcraftShipFx.beamFade(1.0 - ramp), 1e-12, "fully on at the start of the release ramp");
 
         // Monotone rising over the first half.
         double prev = 0.0;

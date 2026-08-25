@@ -11,8 +11,9 @@ import tectech.voidcraft.ship.VoidcraftBlueprint;
  * Client-side LRU cache of built ship holograms, keyed by blueprint identity (dimensions + component grid).
  *
  * <p>
- * A digitized ship's geometry never changes after digitization (covers are the only deferred variation), so
- * the VBO is built once and reused for every render of that ship — docked, in flight, or across re-launches.
+ * A digitized ship's geometry (hull grid + per-face covers) never changes after digitization, so the VBO is
+ * built once and reused for every render of that ship — docked, in flight, or across re-launches. The key is
+ * {@link VoidcraftBlueprint#hashCode()}, which covers the cover grid as well.
  *
  * <p>
  * Client main thread only (built during tile-entity rendering).

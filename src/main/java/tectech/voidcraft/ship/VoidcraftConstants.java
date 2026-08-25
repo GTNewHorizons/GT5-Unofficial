@@ -10,7 +10,10 @@ package tectech.voidcraft.ship;
  */
 public final class VoidcraftConstants {
 
-    /** Minimum number of parts a digitizable Voidcraft needs (blocks + covers; controller + engine + one more). */
+    /**
+     * Minimum number of parts a digitizable Voidcraft needs (blocks + covers; pass 23: controller + frame + at
+     * least one cover).
+     */
     public static final int MIN_COMPONENT_COUNT = 3;
 
     /** Maximum grid dimensions of a Voidcraft (width × height × depth, any orientation of the 5×5×10 volume). */

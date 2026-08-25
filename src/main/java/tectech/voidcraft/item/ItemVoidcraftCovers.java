@@ -19,19 +19,20 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import tectech.TecTech;
+import tectech.voidcraft.VoidcraftTextures;
 import tectech.voidcraft.ship.VoidcraftCoverComponent;
 
 /**
  * The Voidcraft cover parts (8 subtypes, one per {@link VoidcraftCoverComponent}).
  *
  * <p>
- * Use by sneaking + right-click on any face of a Voidcraft component block (standard GT cover interaction,
- * remove with a crowbar). Each cover adds its stats to the ship and — for the thruster nozzle — a directional
- * thrust away from the mounted face.
+ * Use by sneaking + right-click on any face of a Voidcraft hull block (standard GT cover interaction, remove with a
+ * crowbar). Each cover adds its stats to the ship and — for the thruster nozzle — thrust, but only when mounted on
+ * the ship's REAR face (the assembler side, pass 24).
  *
  * <p>
- * Icons reuse the component icon set (cover i mirrors component i+1), so the part and its full-block counterpart
- * share art.
+ * Icons are the dedicated per-cover art (pass 24: {@code tectech:iconsets/VC_COVER_*} — the same icons the mounted
+ * cover face and the in-flight model use).
  */
 public final class ItemVoidcraftCovers extends Item {
 
@@ -143,8 +144,9 @@ public final class ItemVoidcraftCovers extends Item {
     public void registerIcons(IIconRegister iconRegister) {
         icons = new IIcon[VoidcraftCoverComponent.ALL.length];
         for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
-            // cover id + 1 = mirrored component's meta = EM_DIM_<meta>
-            icons[cover.getId()] = iconRegister.registerIcon("gregtech:iconsets/EM_DIM_" + (cover.getId() + 1));
+            // Pass 24: dedicated per-cover icon (same art as the mounted face / in-flight model).
+            icons[cover.getId()] = iconRegister
+                .registerIcon("tectech:iconsets/" + VoidcraftTextures.COVER_ICON_BASE[cover.getId()]);
         }
     }
 

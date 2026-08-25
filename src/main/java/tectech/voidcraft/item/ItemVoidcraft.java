@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
@@ -58,9 +59,29 @@ public class ItemVoidcraft extends Item {
      * @return the item, ready for output
      */
     public static ItemStack fromBlueprint(VoidcraftBlueprint blueprint, String name, String uuid, long createdAt) {
+        return fromBlueprint(blueprint, name, uuid, createdAt, null);
+    }
+
+    /**
+     * Build the voidcraft item for a digitized blueprint, carrying the controller's program (programming framework,
+     * Phase C).
+     *
+     * @param blueprint validated blueprint
+     * @param name      display name stored in the payload
+     * @param uuid      stable identity
+     * @param createdAt epoch millis
+     * @param program   the controller's stored program node list ({@code USSProgram} NBT), or null when the
+     *                  controller had none (the ship HOLDS at the origin on launch)
+     * @return the item, ready for output
+     */
+    public static ItemStack fromBlueprint(VoidcraftBlueprint blueprint, String name, String uuid, long createdAt,
+        NBTTagList program) {
         ItemStack stack = new ItemStack(INSTANCE, 1);
         NBTTagCompound nbt = new NBTTagCompound();
         VoidcraftNbt.write(nbt, blueprint, uuid, name, createdAt);
+        if (program != null) {
+            nbt.setTag(VoidcraftNbt.TAG_PROGRAM, program);
+        }
         stack.setTagCompound(nbt);
         return stack;
     }
@@ -115,6 +136,18 @@ public class ItemVoidcraft extends Item {
             : translateToLocal("item.tm.voidcraft.unnamed");
         aList.add(EnumChatFormatting.YELLOW + translateToLocalFormatted("item.tm.voidcraft.named", name));
 
+        // Programming framework (Phase C): the ship's program (the controller's instruction list).
+        if (nbt.hasKey(VoidcraftNbt.TAG_PROGRAM)) {
+            NBTTagList program = nbt.getTagList(VoidcraftNbt.TAG_PROGRAM, 10);
+            aList.add(
+                EnumChatFormatting.GREEN + translateToLocalFormatted("item.tm.voidcraft.program", program.tagCount())); // 1.7.10:
+                                                                                                                        // tagCount(),
+                                                                                                                        // not
+                                                                                                                        // tagList().size
+        } else {
+            aList.add(EnumChatFormatting.GRAY + translateToLocal("item.tm.voidcraft.program.none"));
+        }
+
         int roles = VoidcraftNbt.readInt(nbt, VoidcraftNbt.TAG_ROLES);
         if (roles == 0) {
             aList.add(EnumChatFormatting.AQUA + translateToLocal("item.tm.voidcraft.role.none"));
@@ -156,17 +189,6 @@ public class ItemVoidcraft extends Item {
                 NumberFormatUtil.formatNumber(thrust),
                 String.format("%.2f", speed),
                 NumberFormatUtil.formatNumber(cargo)));
-        if (thrust > 0) {
-            long thrustX = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_THRUST_X);
-            long thrustY = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_THRUST_Y);
-            long thrustZ = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_THRUST_Z);
-            aList.add(
-                EnumChatFormatting.GRAY + translateToLocalFormatted(
-                    "item.tm.voidcraft.stat.net_thrust",
-                    String.format("%+d", thrustX),
-                    String.format("%+d", thrustY),
-                    String.format("%+d", thrustZ)));
-        }
         if (mining > 0) {
             aList.add(EnumChatFormatting.GRAY + translateToLocalFormatted("item.tm.voidcraft.stat.mining", mining));
         }

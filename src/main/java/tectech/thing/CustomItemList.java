@@ -412,15 +412,11 @@ public enum CustomItemList implements IItemContainer {
     Voidcraft,
     UssController,
 
+    // Pass 23: covers are the primary components — only the two placeable full blocks have items (the engine,
+    // cargo bay, mining centre, starlifter, scanner, fabricator and reactor functions ship as covers: see
+    // ItemVoidcraftCovers).
     VoidcraftComponent_Controller,
-    VoidcraftComponent_Engine,
-    VoidcraftComponent_Utility,
-    VoidcraftComponent_CargoBay,
-    VoidcraftComponent_MiningCentre,
-    VoidcraftComponent_StarlifterArray,
-    VoidcraftComponent_SpacetimeScanner,
-    VoidcraftComponent_ConstructionArm,
-    VoidcraftComponent_Reactor,
+    VoidcraftComponent_Frame,
 
     astralArrayFabricator;
 

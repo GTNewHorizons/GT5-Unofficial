@@ -2097,10 +2097,12 @@ public enum MetaTileEntityIDs {
     VoidcraftStorageBay(32055),
     VoidcraftExtractor(32056),
     UnstableSolarSystem(32057),
-    // Voidcraft component blocks (machine-block MTEs, one per VoidcraftComponent, same order):
+    // Voidcraft component blocks (machine-block MTEs, one per VoidcraftComponent, same order). Pass 23: only the
+    // controller (32058) and the frame (32060, renamed from Utility) are placeable parts — the rest are the
+    // cover-only functions, kept registered for legacy in-flight ship rendering.
     VoidcraftComponent_Controller(32058),
     VoidcraftComponent_Engine(32059),
-    VoidcraftComponent_Utility(32060),
+    VoidcraftComponent_Frame(32060),
     VoidcraftComponent_CargoBay(32061),
     VoidcraftComponent_MiningCentre(32062),
     VoidcraftComponent_StarlifterArray(32063),

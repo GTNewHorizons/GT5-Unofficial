@@ -228,10 +228,12 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         }
         int roles = VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES);
         boolean constructor = VoidcraftRole.CONSTRUCTOR.isActive(roles);
-        boolean regular = VoidcraftRole.MINER.isActive(roles) || VoidcraftRole.STARLIFTER.isActive(roles);
-        // Phase 4 pass 2: MINER / STARLIFTER (mining cargo) or CONSTRUCTOR (infrastructure loadout) may launch.
+        // MINER / STARLIFTER (mining cargo), EXPLORER (spacetime-ripple scanning) or CONSTRUCTOR
+        // (infrastructure loadout) may launch; a ship with none of those roles cannot be sent out.
+        boolean regular = VoidcraftRole.MINER.isActive(roles) || VoidcraftRole.STARLIFTER.isActive(roles)
+            || VoidcraftRole.EXPLORER.isActive(roles);
         if (!constructor && !regular) {
-            reportError(aTick, "not_miner_or_starlifter");
+            reportError(aTick, "no_mission_role");
             return;
         }
         int cx = base.getXCoord();

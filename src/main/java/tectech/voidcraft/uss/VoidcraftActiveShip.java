@@ -5,14 +5,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import tectech.voidcraft.ship.VoidcraftNbt;
 
 /**
- * A Voidcraft in flight inside an Unstable Solar System: a pure tick-driven state machine (no Minecraft world
- * access) so the mission loop is unit-testable.
+ * A Voidcraft in flight inside an Unstable Solar System: a PASSIVE leg driver (no mission state machine — the
+ * ship's PILOT decides its legs, programming framework Phase C).
  *
  * <p>
- * Lifecycle: {@code OUTBOUND} → {@code MINING} → {@code RETURNING} → complete. Leg durations come from
- * {@link USSConstants} (speed / mining power based). Cargo is built externally (see {@link USSShipCargo}) and
- * handed in via {@link #setCargo(NBTTagCompound)} during the MINING leg — this class stays free of
- * {@code Materials} so tests run without a live ore dictionary.
+ * The ship knows ONE thing: its current leg. A leg has a state ({@link USSShipState#OUTBOUND} a travel leg to a
+ * body, {@link USSShipState#MINING} a work leg, {@link USSShipState#RETURNING} the travel leg home), a start
+ * point, an endpoint, a duration, and a countdown. {@link #startLeg} arms it, {@link #tickLeg} counts it down,
+ * {@link #isLegComplete()} latches completion (consumed exactly once via {@link #clearLegComplete()} by the
+ * pilot — its side-effect fires exactly once, even across a save/reload), and {@link #hold()} parks the ship
+ * ({@link USSShipState#HOVERING} — the program finished without a return; user decision: no implicit MOVE HOME).
+ *
+ * <p>
+ * Bare-JVM (NBT + primitives only) so the ship + pilot stay unit-testable without Forge. Cargo is built externally
+ * (see {@link USSShipCargo}) and handed in via {@link #setCargo(NBTTagCompound)} on the WORK leg's completion —
+ * this class stays free of {@code Materials} so tests run without a live ore dictionary.
  *
  * <p>
  * On completion the ship is delivered: {@link #isRecoverable()} ships are re-emitted as items (the gateway puts
@@ -29,11 +36,29 @@ public final class VoidcraftActiveShip {
     private static final String TAG_TICKS = "vc_ticks";
     private static final String TAG_LEG = "vc_leg";
     private static final String TAG_CARGO = "vc_cargo";
+    private static final String TAG_HOLD = "vc_hold";
     private static final String TAG_PAYLOAD = "vc_payload";
     private static final String TAG_GATEWAY = "vc_gateway";
     private static final String TAG_BAY = "vc_bay";
     private static final String TAG_SEED = "vc_seed";
     private static final String TAG_TARGET = "vc_target";
+    private static final String TAG_DEST = "vc_dest";
+    private static final String TAG_TDIST = "vc_tdist";
+    private static final String TAG_POS = "vc_pos";
+    private static final String TAG_LEG_FROM = "vc_leg_from";
+    private static final String TAG_LEG_TOTAL = "vc_leg_total";
+    private static final String TAG_LEG_ID = "vc_leg_id";
+    private static final String TAG_LEG_ACTIVE = "vc_leg_active";
+    private static final String TAG_LEG_DONE = "vc_leg_done";
+    private static final String TAG_BODY_STATIC = "vc_body_static";
+
+    /**
+     * Pass 27 (user: "the cargo hold size should be increased by a factor of 100 — as currently the mining is
+     * basically instant"): the hold capacity is the blueprint's {@code cargoSlots} times this. 100× makes a trip
+     * carry a real haul instead of filling (and thus completing) near-instantly. Applied at the single capacity
+     * source ({@link #cargoCapacity()}) so the hold, its NBT, and the derived delivery cargo all scale together.
+     */
+    public static final long CARGO_UNIT_MULTIPLIER = 100L;
 
     private final String uuid;
     private final String name;
@@ -52,20 +77,68 @@ public final class VoidcraftActiveShip {
     private final int seed;
 
     /**
-     * Mission target (pass 7): the index into the system's planet list the ship works — the client hovers 0.5
-     * blocks above that planet's RENDERED position (dynamic: the planet keeps orbiting). {@code -1} = the star
-     * itself (Starlifters work 2.5 blocks above the star center).
+     * The body descriptor the CLIENT hovers at (programming framework, Phase C): a system planet index, a
+     * ripple-point index, or {@code -1} for the star (no body yet — a fresh ship at the origin). Set by the pilot
+     * when a MOVE target resolves (the ship's hover body for the leg and the work leg that follows).
      */
-    private final int targetPlanet;
+    /** The hover body descriptor (the pilot sets it when a MOVE target resolves). -1 = star / none. */
+    private int targetPlanet = -1;
+
+    /**
+     * True when the hover body is a FIXED point (ripple / ship rendezvous) — the client hovers at the resolved
+     * destination.
+     */
+    private boolean bodyStatic;
 
     private USSShipState state;
+
+    // region the current leg (a passive countdown — the pilot arms + consumes it)
+
     private int ticksRemaining;
+    private int legTotal;
+    private boolean legActive;
+    /** Latched the moment the countdown hits zero — consumed exactly once via {@link #clearLegComplete()}. */
+    private boolean legDone;
+    /**
+     * The current leg's start point (the ship's position when the leg began — the client lerps from it on a
+     * travel leg).
+     */
+    private USSPosition legFrom;
+    /** The current leg's endpoint (the point the ship flies to / works at). */
+    private USSPosition destination;
+    /** The current leg's distance in blocks (the client derives the same leg duration the server ticks). */
+    private double travelDistance;
+    /**
+     * The ship's CURRENT position in the solar system (fleet-anchor coordinates): its launch origin at launch,
+     * then the last leg's endpoint. The client renders the ship here while it HOLDS
+     * ({@link USSShipState#HOVERING}).
+     */
+    private USSPosition position;
+    /**
+     * Monotonic leg counter (per ship, persisted) — the leg ID. The client resets its leg-progress phase when
+     * this changes, so consecutive legs of the SAME state (MOVE → MOVE) animate from their own start instead of
+     * continuing the previous leg's progress.
+     */
+    private int legId;
+
+    // endregion
 
     private NBTTagCompound cargo;
 
+    /**
+     * The ship's internal cargo hold (the cargo-capacity pass): a bounded hold (capacity in cargo units, where
+     * {@code 1 unit = 1 item = 100 mB}) that mining / starlifting / construction fill. The hold is the ship's
+     * STATE — it is empty at launch, filled by the mission (clamped by capacity), and delivered on return. A full
+     * hold means the ship "cannot mine if it is full" (the yield is 0).
+     *
+     * <p>
+     * The {@link #cargo} NBT (the abstract items + fluids for delivery) is DERIVED from this hold — see
+     * {@link #getCargo()} / {@link #setCargo(NBTTagCompound)}.
+     */
+    private CargoHold hold;
+
     private VoidcraftActiveShip(String uuid, String name, double speed, long miningPower, boolean recoverable,
-        NBTTagCompound payload, int[] gatewayPos, int[] bayPos, int seed, int targetPlanet, USSShipState state,
-        int ticksRemaining) {
+        NBTTagCompound payload, int[] gatewayPos, int[] bayPos, int seed) {
         this.uuid = uuid;
         this.name = name;
         this.speed = speed;
@@ -75,13 +148,18 @@ public final class VoidcraftActiveShip {
         this.gatewayPos = gatewayPos;
         this.bayPos = bayPos;
         this.seed = seed;
-        this.targetPlanet = targetPlanet;
-        this.state = state;
-        this.ticksRemaining = ticksRemaining;
+        this.state = USSShipState.HOVERING;
+        // The internal cargo hold (the cargo-capacity pass): empty, capacity from cargoCapacity() (the payload's
+        // vc_cargo × CARGO_UNIT_MULTIPLIER — the pass-27 100× hold).
+        if (payload != null) {
+            this.hold = CargoHold.of(cargoCapacity());
+        }
     }
 
     /**
-     * Create a newly launched ship (OUTBOUND leg started).
+     * Create a newly launched ship: HOLDING at its launch origin (fleet-anchor coordinates — the gateway's
+     * anchor-relative position), legs unarmed. The pilot (programming framework, Phase C) runs the ship's program
+     * and arms its legs; a ship with no program (or an empty one) simply holds.
      *
      * @param uuid        ship identity (the item's {@code vc_uuid})
      * @param name        ship display name
@@ -93,33 +171,12 @@ public final class VoidcraftActiveShip {
      * @param gatewayPos  launching gateway world position (the RETURNING endpoint + where a recoverable ship is
      *                    re-emitted); may be null (drop-at-USS fallback)
      * @param bayPos      storage-bay world position (the cargo delivery target); may be null (drop-at-USS fallback)
+     * @param seed        the per-launch identity seed (the client's per-ship key)
+     * @param origin      the launch origin in fleet-anchor coordinates (null → {@code (0,0,0)})
      */
     public static VoidcraftActiveShip launch(String uuid, String name, double speed, long miningPower,
-        boolean recoverable, NBTTagCompound payload, int[] gatewayPos, int[] bayPos) {
-        // seed 0 = legacy: the client falls back to the item UUID for per-ship identity
-        return launch(uuid, name, speed, miningPower, recoverable, payload, gatewayPos, bayPos, 0, -1);
-    }
-
-    /**
-     * Create a newly launched ship (OUTBOUND leg started) with a per-launch identity seed (see {@link #getSeed()}).
-     *
-     * @param seed unique per launch (the USS assigns a fresh random value) — the client's per-ship key
-     */
-    public static VoidcraftActiveShip launch(String uuid, String name, double speed, long miningPower,
-        boolean recoverable, NBTTagCompound payload, int[] gatewayPos, int[] bayPos, int seed) {
-        return launch(uuid, name, speed, miningPower, recoverable, payload, gatewayPos, bayPos, seed, -1);
-    }
-
-    /**
-     * Create a newly launched ship (OUTBOUND leg started) with the full pass-6/7 identity.
-     *
-     * @param seed         unique per launch (the USS assigns a fresh random value) — the client's per-ship key
-     * @param targetPlanet the mission target: a system planet index (the ship hovers 0.5 above it) or {@code -1}
-     *                     for the star itself (Starlifters hover 2.5 above the star center)
-     */
-    public static VoidcraftActiveShip launch(String uuid, String name, double speed, long miningPower,
-        boolean recoverable, NBTTagCompound payload, int[] gatewayPos, int[] bayPos, int seed, int targetPlanet) {
-        return new VoidcraftActiveShip(
+        boolean recoverable, NBTTagCompound payload, int[] gatewayPos, int[] bayPos, int seed, USSPosition origin) {
+        VoidcraftActiveShip ship = new VoidcraftActiveShip(
             uuid,
             name,
             speed,
@@ -128,10 +185,11 @@ public final class VoidcraftActiveShip {
             payload,
             gatewayPos == null ? null : gatewayPos.clone(),
             bayPos == null ? null : bayPos.clone(),
-            seed,
-            targetPlanet,
-            USSShipState.OUTBOUND,
-            (int) USSConstants.travelTicks(speed));
+            seed);
+        USSPosition o = (origin == null) ? USSPosition.zero() : origin;
+        ship.position = o;
+        ship.legFrom = o;
+        return ship;
     }
 
     public String getUuid() {
@@ -143,9 +201,24 @@ public final class VoidcraftActiveShip {
         return seed;
     }
 
-    /** @return the mission target: a system planet index, or {@code -1} for the star itself. */
+    /** @return the hover body descriptor: a system planet index, a ripple-point index, or {@code -1} (star / none). */
     public int getTargetPlanet() {
         return targetPlanet;
+    }
+
+    /** Set the hover body descriptor (the pilot does this when a MOVE target resolves). */
+    public void setTargetPlanet(int targetPlanet) {
+        this.targetPlanet = targetPlanet;
+    }
+
+    /** @return true when the client hovers the ship at the fixed resolved destination (ripple / ship rendezvous). */
+    public boolean isBodyStatic() {
+        return bodyStatic;
+    }
+
+    /** Set the static-body flag (the pilot sets it when a MOVE target resolves). */
+    public void setBodyStatic(boolean bodyStatic) {
+        this.bodyStatic = bodyStatic;
     }
 
     public String getName() {
@@ -158,6 +231,19 @@ public final class VoidcraftActiveShip {
 
     public long getMiningPower() {
         return miningPower;
+    }
+
+    /**
+     * The ship's scan power (the Explorer pass; from the payload's {@code vc_scan}). 0 when the payload lacks the
+     * tag (a pre-scan ship has no scanning capability).
+     *
+     * @return the total scan power (0 = not an Explorer).
+     */
+    public long getScanPower() {
+        if (payload == null) {
+            return 0L;
+        }
+        return VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_SCAN);
     }
 
     /**
@@ -181,21 +267,179 @@ public final class VoidcraftActiveShip {
         return state;
     }
 
-    /** Ticks left in the current leg. */
+    /** Ticks left in the current leg (0 when no leg is armed). */
     public int getTicksRemaining() {
         return ticksRemaining;
     }
 
-    /** Cargo (null until the MINING leg completes). */
+    /** The current leg's total duration in ticks (the client derives the same duration from the synced state). */
+    public int getLegTotal() {
+        return legTotal;
+    }
+
+    /** @return ticks elapsed in the current leg (the {@code TICKS_IN_LEG} stat; 0 when no leg is armed). */
+    public int getTicksInLeg() {
+        return legTotal - ticksRemaining;
+    }
+
+    /** @return true while a leg is armed (counting down or latched-complete-but-unconsumed). */
+    public boolean isLegActive() {
+        return legActive;
+    }
+
+    /** @return the current leg's start point (the ship's position when the leg began). */
+    public USSPosition getLegFrom() {
+        return legFrom;
+    }
+
+    /** @return the current leg's endpoint (the point the ship flies to / works at) — null when no leg has run. */
+    public USSPosition getDestination() {
+        return destination;
+    }
+
+    /** The current leg's distance in blocks. */
+    public double getTravelDistance() {
+        return travelDistance;
+    }
+
+    /**
+     * @return the ship's CURRENT position in fleet-anchor coordinates (its launch origin, then the last leg's
+     *         endpoint).
+     */
+    public USSPosition getPosition() {
+        return position;
+    }
+
+    /** @return the monotonic leg counter (the client's leg-identity for progress-phase resets). */
+    public int getLegId() {
+        return legId;
+    }
+
+    // region leg driver (the pilot arms, ticks, and consumes)
+
+    /**
+     * Arm a new leg (replaces any previous one).
+     *
+     * @param state    the leg's state (OUTBOUND a travel leg to a body / MINING a work leg / RETURNING the leg home)
+     * @param from     the leg's start point (the ship's current position)
+     * @param to       the leg's endpoint
+     * @param ticks    the leg's duration in ticks (&gt; 0; &le; 0 clamps to 0 — a zero-length leg completes on the
+     *                 next consumption)
+     * @param distance the leg's distance in blocks (&le; 0 clamps to 0)
+     */
+    public void startLeg(USSShipState state, USSPosition from, USSPosition to, int ticks, double distance) {
+        this.state = state;
+        USSPosition f = (from == null) ? USSPosition.zero() : from;
+        this.legFrom = f;
+        this.position = f;
+        this.destination = to;
+        this.travelDistance = Math.max(0.0, distance);
+        this.ticksRemaining = Math.max(0, ticks);
+        this.legTotal = Math.max(0, ticks);
+        this.legActive = true;
+        this.legDone = false;
+        this.legId++;
+    }
+
+    /**
+     * Count the armed leg down by one tick (call every tick — legs tick in REAL time; the pilot's executor pacing
+     * never distorts them). A finished leg latches ({@link #isLegComplete()}) until consumed.
+     */
+    public void tickLeg() {
+        if (!legActive || legDone) {
+            return;
+        }
+        if (ticksRemaining > 0) {
+            ticksRemaining--;
+        }
+        if (ticksRemaining <= 0) {
+            legDone = true;
+        }
+    }
+
+    /**
+     * @return true while a leg is armed AND its countdown has finished (latched; consumed by
+     *         {@link #clearLegComplete()})
+     */
+    public boolean isLegComplete() {
+        return legActive && legDone;
+    }
+
+    /**
+     * Consume the completed leg: the latch is cleared, the leg deactivated, and the ship's position becomes the
+     * leg's endpoint (arrival). The pilot calls this EXACTLY ONCE per leg (its side-effect fires there).
+     */
+    public void clearLegComplete() {
+        legDone = false;
+        legActive = false;
+        if (destination != null) {
+            position = destination;
+        }
+    }
+
+    /**
+     * Park the ship (the program finished — user decision: HOLD, no implicit return). Abandons any in-flight leg
+     * (the countdown stops); the ship stays where it is.
+     */
+    public void hold() {
+        state = USSShipState.HOVERING;
+        legActive = false;
+        legDone = false;
+    }
+
+    // endregion
+
+    /** Cargo (null until a WORK leg's completion sets it). */
     public NBTTagCompound getCargo() {
         return cargo;
     }
 
     /**
-     * Hand the cargo in (the MINING leg sets it when it completes; also used when restoring a ship from NBT).
+     * Hand the cargo in (the WORK leg's completion sets it; also used when restoring a ship from NBT).
      */
     public void setCargo(NBTTagCompound cargo) {
         this.cargo = cargo;
+    }
+
+    /**
+     * @return the ship's internal cargo hold (the cargo-capacity pass) — null until the hold is initialized (at
+     *         launch or NBT restore)
+     */
+    public CargoHold getHold() {
+        return hold;
+    }
+
+    /**
+     * Set the ship's internal cargo hold.
+     *
+     * @param hold the hold (null clears it)
+     */
+    public void setHold(CargoHold hold) {
+        this.hold = hold;
+    }
+
+    /**
+     * The ship's cargo CAPACITY in cargo units (the blueprint's {@code cargoSlots}, from the payload's
+     * {@code vc_cargo} tag). This is the bound the internal hold is created with at launch.
+     *
+     * @return the capacity (0 when the payload lacks the tag)
+     */
+    public long cargoCapacity() {
+        if (payload == null) {
+            return 0L;
+        }
+        // Pass 27: the hold is 100× the blueprint's cargoSlots (see CARGO_UNIT_MULTIPLIER).
+        return VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_CARGO) * CARGO_UNIT_MULTIPLIER;
+    }
+
+    /**
+     * Initialize the ship's internal cargo hold (empty, capacity from the payload's {@code vc_cargo}). Called at
+     * launch and NBT restore so the ship's hold is always present.
+     */
+    public void initializeHold() {
+        if (hold == null) {
+            hold = CargoHold.of(cargoCapacity());
+        }
     }
 
     /** The full ship item NBT captured at launch. */
@@ -213,48 +457,11 @@ public final class VoidcraftActiveShip {
         return bayPos;
     }
 
-    /**
-     * Advance the mission by one tick.
-     *
-     * @return true while the ship is still in flight; false once the RETURNING leg completed (the caller delivers
-     *         the cargo and removes the ship)
-     */
-    public boolean tick() {
-        if (cargo != null && state == USSShipState.RETURNING && ticksRemaining <= 0) {
-            // Defensive: never tick a finished ship twice.
-            return false;
-        }
-        if (ticksRemaining <= 0) {
-            // Transition at the start of the leg's first tick.
-            switch (state) {
-                case OUTBOUND:
-                    state = USSShipState.MINING;
-                    ticksRemaining = (int) USSConstants.mineTicks(miningPower);
-                    break;
-                case MINING:
-                    // Cargo is produced when mining finishes; if the caller did not set it, produce an empty one
-                    // so delivery never sees null.
-                    if (cargo == null) {
-                        cargo = new NBTTagCompound();
-                    }
-                    state = USSShipState.RETURNING;
-                    ticksRemaining = (int) USSConstants.travelTicks(speed);
-                    break;
-                case RETURNING:
-                default:
-                    return false;
-            }
-            return true;
-        }
-        ticksRemaining--;
-        if (state == USSShipState.RETURNING && ticksRemaining <= 0) {
-            return false;
-        }
-        return true;
-    }
+    // region NBT
 
     /**
-     * Serialize the full mission state.
+     * Serialize the full ship state (identity, the leg, the cargo, the payload). The pilot's state is nested by
+     * the MTE under {@code vc_pilot} (see {@link USSShipPilot#writeToNBT()}).
      */
     public NBTTagCompound writeToNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
@@ -265,9 +472,37 @@ public final class VoidcraftActiveShip {
         nbt.setBoolean(TAG_RECOVERABLE, recoverable);
         nbt.setInteger(TAG_STATE, state.getId());
         nbt.setInteger(TAG_TICKS, ticksRemaining);
-        nbt.setInteger(TAG_LEG, (int) USSConstants.legTicks(state, speed, miningPower));
+        nbt.setInteger(TAG_LEG, legTotal);
+        // The leg (Phase C passive driver): start point, endpoint, distance, identity, and the completion latch
+        // (a leg that finished but whose side-effect has not fired yet must resume exactly once after a reload).
+        nbt.setBoolean(TAG_LEG_ACTIVE, legActive);
+        nbt.setBoolean(TAG_LEG_DONE, legDone);
+        nbt.setInteger(TAG_LEG_ID, legId);
+        nbt.setBoolean(TAG_BODY_STATIC, bodyStatic);
+        if (legFrom != null) {
+            NBTTagCompound fromTag = new NBTTagCompound();
+            legFrom.writeToNBT(fromTag);
+            nbt.setTag(TAG_LEG_FROM, fromTag);
+        }
+        nbt.setDouble(TAG_TDIST, travelDistance);
+        if (destination != null) {
+            NBTTagCompound destTag = new NBTTagCompound();
+            destination.writeToNBT(destTag);
+            nbt.setTag(TAG_DEST, destTag);
+        }
+        if (position != null) {
+            NBTTagCompound posTag = new NBTTagCompound();
+            position.writeToNBT(posTag);
+            nbt.setTag(TAG_POS, posTag);
+        }
         if (cargo != null) {
             nbt.setTag(TAG_CARGO, cargo);
+        }
+        // The internal cargo hold (the cargo-capacity pass) — the ship's stateful cargo.
+        if (hold != null) {
+            NBTTagCompound holdTag = new NBTTagCompound();
+            hold.writeToNBT(holdTag);
+            nbt.setTag(TAG_HOLD, holdTag);
         }
         if (payload != null) {
             nbt.setTag(TAG_PAYLOAD, payload);
@@ -304,7 +539,6 @@ public final class VoidcraftActiveShip {
             ? nbt.getIntArray(TAG_GATEWAY)
             : null;
         int[] bayPos = nbt.hasKey(TAG_BAY) && nbt.getIntArray(TAG_BAY).length == 3 ? nbt.getIntArray(TAG_BAY) : null;
-        int leg = nbt.hasKey(TAG_LEG) ? nbt.getInteger(TAG_LEG) : 0;
         int seed = nbt.hasKey(TAG_SEED) ? nbt.getInteger(TAG_SEED) : 0;
         int targetPlanet = nbt.hasKey(TAG_TARGET) ? nbt.getInteger(TAG_TARGET) : -1;
         VoidcraftActiveShip ship = new VoidcraftActiveShip(
@@ -316,13 +550,38 @@ public final class VoidcraftActiveShip {
             payload,
             gatewayPos,
             bayPos,
-            seed,
-            targetPlanet,
-            state,
-            nbt.getInteger(TAG_TICKS));
+            seed);
+        ship.state = state;
+        ship.targetPlanet = targetPlanet;
+        ship.ticksRemaining = nbt.getInteger(TAG_TICKS);
+        ship.legTotal = nbt.hasKey(TAG_LEG) ? nbt.getInteger(TAG_LEG) : ship.ticksRemaining;
+        ship.legActive = nbt.hasKey(TAG_LEG_ACTIVE) && nbt.getBoolean(TAG_LEG_ACTIVE);
+        ship.legDone = nbt.hasKey(TAG_LEG_DONE) && nbt.getBoolean(TAG_LEG_DONE);
+        ship.legId = nbt.hasKey(TAG_LEG_ID) ? nbt.getInteger(TAG_LEG_ID) : 0;
+        ship.bodyStatic = nbt.hasKey(TAG_BODY_STATIC) && nbt.getBoolean(TAG_BODY_STATIC);
+        ship.travelDistance = nbt.hasKey(TAG_TDIST) ? nbt.getDouble(TAG_TDIST) : 0.0;
+        if (nbt.hasKey(TAG_LEG_FROM)) {
+            ship.legFrom = USSPosition.readFromNBT(nbt.getCompoundTag(TAG_LEG_FROM));
+        }
+        if (nbt.hasKey(TAG_DEST)) {
+            ship.destination = USSPosition.readFromNBT(nbt.getCompoundTag(TAG_DEST));
+        }
+        if (nbt.hasKey(TAG_POS)) {
+            ship.position = USSPosition.readFromNBT(nbt.getCompoundTag(TAG_POS));
+        }
+        if (ship.position == null) {
+            ship.position = (ship.legFrom != null) ? ship.legFrom : USSPosition.zero();
+        }
         ship.setCargo(cargo);
+        // The internal cargo hold (the cargo-capacity pass). The constructor created a default hold; replace it
+        // with the persisted one when present (a ship mid-mission may have a partially filled hold).
+        if (nbt.hasKey(TAG_HOLD)) {
+            ship.setHold(CargoHold.readFromNBT(nbt.getCompoundTag(TAG_HOLD)));
+        }
         return ship;
     }
+
+    // endregion
 
     @Override
     public String toString() {
@@ -331,6 +590,12 @@ public final class VoidcraftActiveShip {
             + state
             + " ticks="
             + ticksRemaining
+            + "/"
+            + legTotal
+            + " leg#"
+            + legId
+            + " pos="
+            + position
             + " cargo="
             + (cargo == null ? "none" : "yes")
             + "]";

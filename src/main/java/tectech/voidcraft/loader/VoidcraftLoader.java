@@ -24,6 +24,8 @@ import tectech.voidcraft.ship.VoidcraftComponent;
 import tectech.voidcraft.ship.VoidcraftCoverComponent;
 import tectech.voidcraft.ship.VoidcraftCoverRegistry;
 import tectech.voidcraft.uss.MTEUnstableSolarSystem;
+import tectech.voidcraft.uss.USSPlanetCatalog;
+import tectech.voidcraft.uss.USSStarCatalog;
 
 /**
  * Voidcraft loader (EoH rework, Phase 0+1+1.5+2).
@@ -32,13 +34,15 @@ import tectech.voidcraft.uss.MTEUnstableSolarSystem;
  * Wired into {@code MainLoader}:
  * <ul>
  * <li>preLoad — cover item registration + cover item→component registry</li>
- * <li>load — the 9 component MTEs (machine block), the 8 covers, the Voidcraft Assembler MTE, and the Phase 2
- * Unstable Solar System MTE</li>
+ * <li>load — the two full-block MTEs (controller + frame, pass 23), the 8 covers, the Voidcraft Assembler MTE, and
+ * the Phase 2 Unstable Solar System MTE</li>
  * </ul>
  *
  * <p>
- * Components live on the standard GT machine block (like any other MTE): wrench-facing, per-face texture slots, and
- * six cover slots. Covers are the compact parts mounted on component faces; the assembler scan picks both up.
+ * PASS 23 (user spec): covers are the PRIMARY components — all ship functionality comes from them. The only
+ * placeable full blocks are the Voidcraft Controller and the Voidcraft Frame (renamed Utility Block, a
+ * mostly-transparent framebox). Full blocks live on the standard GT machine block (wrench-facing, per-face
+ * texture slots, six cover slots); the assembler scan picks blocks + covers up.
  *
  * <p>
  * Recipes are intentionally absent: creative-mode testing is the working loop for now (standing user directive —
@@ -59,12 +63,12 @@ public final class VoidcraftLoader {
      */
     public static BlockVoidcraftShipRender sBlockVoidcraftShipRender;
 
-    /** CustomItemList entries in {@link VoidcraftComponent} meta order (0..8). */
-    private static final CustomItemList[] COMPONENT_ENTRIES = { CustomItemList.VoidcraftComponent_Controller,
-        CustomItemList.VoidcraftComponent_Engine, CustomItemList.VoidcraftComponent_Utility,
-        CustomItemList.VoidcraftComponent_CargoBay, CustomItemList.VoidcraftComponent_MiningCentre,
-        CustomItemList.VoidcraftComponent_StarlifterArray, CustomItemList.VoidcraftComponent_SpacetimeScanner,
-        CustomItemList.VoidcraftComponent_ConstructionArm, CustomItemList.VoidcraftComponent_Reactor };
+    /**
+     * PASS 23: only the two placeable full blocks have creative-tab items (controller + frame) — every other
+     * function ships as a cover (see {@link ItemVoidcraftCovers}). The entry array is indexed by component meta.
+     */
+    private static final CustomItemList[] COMPONENT_ENTRIES = { CustomItemList.VoidcraftComponent_Controller, null,
+        CustomItemList.VoidcraftComponent_Frame, null, null, null, null, null, null };
 
     private VoidcraftLoader() {}
 
@@ -90,6 +94,16 @@ public final class VoidcraftLoader {
         }
         VoidcraftCoverRegistry.markReady();
         TecTech.LOGGER.info("Voidcraft covers registered");
+
+        // Star + planet DEFINITION catalogs (the registration-based passes): populate the bare-JVM registries that
+        // USSPlanets.generate / USSPlanets.sampleStarSize / USSRipples.generate / USSShipCargo consult for planet
+        // count, planet pools, star size ranges and ripple ranges. MUST run before any USS is ignited, scanned, or
+        // rendered — an empty USSPlanetRegistry makes USSPlanets.generate throw (no planets) and an empty
+        // USSStarRegistry degrades star size/ripple range to defensive defaults. (The unit tests register these in
+        // setUp; production has to do it here.)
+        USSStarCatalog.registerAll();
+        USSPlanetCatalog.registerAll();
+        TecTech.LOGGER.info("Voidcraft star + planet catalogs registered");
     }
 
     // endregion
@@ -107,7 +121,8 @@ public final class VoidcraftLoader {
         // unregistered containers and NPE at render time.
         VoidcraftTextures.resolveAll();
 
-        // The 9 component MTEs (machine block) — one per VoidcraftComponent, ids 32058..32066
+        // The two full-block MTEs (machine block) — controller (id 32058) + frame (id 32060); pass 23: everything
+        // else is a cover
         registerComponentMTEs();
 
         // The Voidcraft Assembler multiblock
@@ -153,29 +168,26 @@ public final class VoidcraftLoader {
     }
 
     private static void registerComponentMTEs() {
+        // PASS 23 (user spec): covers are the primary components — register ONLY the two placeable full blocks
+        // (controller + frame). The cover-only catalog entries (engine, cargo bay, mining centre, starlifter,
+        // scanner, fabricator, reactor) get NO MTE and NO item: they cannot be placed, and old builds holding
+        // them are rejected at the assembler with voidcraft_cover_only_component (no backwards compatibility —
+        // standing directive).
         int[] ids = { gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Controller.ID,
-            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Engine.ID,
-            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Utility.ID,
-            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_CargoBay.ID,
-            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_MiningCentre.ID,
-            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_StarlifterArray.ID,
-            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_SpacetimeScanner.ID,
-            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_ConstructionArm.ID,
-            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Reactor.ID };
-        String[] names = { "voidcraft_component_controller", "voidcraft_component_engine",
-            "voidcraft_component_utility", "voidcraft_component_cargo_bay", "voidcraft_component_mining_centre",
-            "voidcraft_component_starlifter_array", "voidcraft_component_spacetime_scanner",
-            "voidcraft_component_construction_arm", "voidcraft_component_reactor" };
-        for (VoidcraftComponent component : VoidcraftComponent.ALL) {
-            int meta = component.getMeta();
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Frame.ID };
+        String[] names = { "voidcraft_component_controller", "voidcraft_component_frame" };
+        int i = 0;
+        for (VoidcraftComponent component : VoidcraftComponent.PLACEABLE) {
             MTEVoidcraftComponent mte = new MTEVoidcraftComponent(
-                ids[meta],
-                names[meta],
+                ids[i],
+                names[i],
                 component.getDisplayName(),
                 component);
-            COMPONENT_ENTRIES[meta].set(mte.getStackForm(1L));
+            COMPONENT_ENTRIES[component.getMeta()].set(mte.getStackForm(1L));
+            i++;
         }
-        TecTech.LOGGER.info("Voidcraft component MTEs registered");
+        TecTech.LOGGER
+            .info("Voidcraft full-block MTEs registered (controller + frame only — all other functions are covers)");
     }
 
     private static void registerCovers() {

@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.IIcon;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
@@ -13,7 +14,9 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import tectech.voidcraft.VoidcraftTextures;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
+import tectech.voidcraft.ship.VoidcraftCoverComponent;
 
 /**
  * Builds the ship hologram VBO from a {@link VoidcraftBlueprint} (client only).
@@ -28,6 +31,12 @@ import tectech.voidcraft.ship.VoidcraftBlueprint;
  * <p>
  * Face culling is precomputed from the grid itself: a face touching an occupied neighbor cell is hidden
  * (all ship components are opaque machine blocks), and fully enclosed cells are skipped entirely.
+ *
+ * <p>
+ * Pass 24 (user playtest: "the covers are not rendered for the digitized voidcraft models"): every cover mounted
+ * on a VISIBLE face of a hull cell is drawn as a thin quad just outside that face, textured with the cover's own
+ * 16×16 icon — the same block-atlas texture the mounted face shows in-world, so the in-flight ship reads as the
+ * built one. Cover quads are captured into the same VAO (one draw call, one texture binding).
  *
  * <p>
  * Must be called on the client main thread (texture binding + tessellator capture).
@@ -103,6 +112,7 @@ public final class ShipModelBuilder {
 
         Tessellator tessellator = TessellatorManager.startCapturingDirect(DefaultVertexFormat.POSITION_TEXTURE_NORMAL);
         try {
+            // Pass 1: the hull blocks (real machine textures), in the renderer's default GL state.
             Block machineBlock = GregTechAPI.sBlockMachines;
             for (int x = 0; x < w; x++) {
                 for (int y = 0; y < h; y++) {
@@ -110,10 +120,27 @@ public final class ShipModelBuilder {
                         if (!occupied[x][y][z] || faces[x][y][z].allHidden()) {
                             continue;
                         }
-                        int componentMeta = blueprint.grid[cellIndex(w, h, x, y, z)] - 1;
+                        int cell = cellIndex(w, h, x, y, z);
+                        int componentMeta = blueprint.grid[cell] - 1;
                         renderBlocks.setRenderFacesInfo(faces[x][y][z]);
                         tessellator.setTranslation(x, y, z);
                         renderBlocks.renderBlockAsItem(machineBlock, COMPONENT_MTE_BASE_ID + componentMeta, 1.0f);
+                    }
+                }
+            }
+
+            // Pass 2: the covers — one textured quad per mounted cover on a visible face. The quads are wound
+            // CCW-from-outside (matching the block faces) and float 0.003 outside the hull, so they render
+            // correctly under whatever culling/depth state the ship is drawn with.
+            for (int x = 0; x < w; x++) {
+                for (int y = 0; y < h; y++) {
+                    for (int z = 0; z < d; z++) {
+                        if (!occupied[x][y][z]) {
+                            continue;
+                        }
+                        int cell = cellIndex(w, h, x, y, z);
+                        tessellator.setTranslation(x, y, z);
+                        renderCovers(tessellator, blueprint, cell, faces[x][y][z]);
                     }
                 }
             }
@@ -121,6 +148,85 @@ public final class ShipModelBuilder {
         } finally {
             IVertexArrayObject vao = TessellatorManager.stopCapturingDirectToVBO(VertexBufferType.IMMUTABLE);
             return new ShipModel(vao, w, h, d);
+        }
+    }
+
+    /**
+     * Draw a cover quad on every VISIBLE face of the cell that has a mounted cover (pass 24). The quad sits just
+     * outside the hull face (0.003 offset — no z-fight) and is textured with the cover's own icon, so the
+     * in-flight ship shows exactly what the in-world face shows.
+     */
+    private static void renderCovers(Tessellator tess, VoidcraftBlueprint blueprint, int cell,
+        ShipRenderFacesInfo info) {
+        boolean[] visible = { info.isYNeg(), info.isYPos(), info.isZNeg(), info.isZPos(), info.isXNeg(),
+            info.isXPos() };
+        TextureMap textureMap = (TextureMap) Minecraft.getMinecraft()
+            .getTextureManager()
+            .getTexture(TextureMap.locationBlocksTexture);
+        for (int side = 0; side < 6; side++) {
+            int coverValue = blueprint.coverGrid[cell * 6 + side];
+            if (coverValue == 0 || !visible[side]) {
+                continue; // no cover, or buried in the hull (not an exposed face)
+            }
+            VoidcraftCoverComponent cover = VoidcraftCoverComponent.fromGridValue(coverValue)
+                .orElse(null);
+            if (cover == null) {
+                continue; // corrupt grid value
+            }
+            // the icon lives in the block atlas (GTCustomBlockIconContainer) — read the live IIcon by its
+            // registered name (avoids the BlockIcons dedup-map, which cleanup() clears)
+            IIcon icon = textureMap.getAtlasSprite(VoidcraftTextures.coverIconName(cover));
+            if (icon == null) {
+                continue; // icon never registered — skip rather than NPE
+            }
+            renderCoverFace(tess, side, icon);
+        }
+    }
+
+    /**
+     * One cover quad on the unit cube's {@code side} face (the caller has already translated to the cell), UVs
+     * from the cover icon, upright when the face is viewed from outside (side faces: world +Y up; top/bottom:
+     * arbitrary orientation).
+     */
+    private static void renderCoverFace(Tessellator tess, int side, IIcon icon) {
+        // unit-cube corners of the face, outward, in draw order — (x, y, z)
+        final float[][] C;
+        final float[] N;
+        switch (side) {
+            case 0: // -Y
+                C = new float[][] { { 0, 0, 1 }, { 1, 0, 1 }, { 1, 0, 0 }, { 0, 0, 0 } };
+                N = new float[] { 0, -1, 0 };
+                break;
+            case 1: // +Y
+                C = new float[][] { { 0, 1, 0 }, { 1, 1, 0 }, { 1, 1, 1 }, { 0, 1, 1 } };
+                N = new float[] { 0, 1, 0 };
+                break;
+            case 2: // -Z
+                C = new float[][] { { 1, 0, 0 }, { 0, 0, 0 }, { 0, 1, 0 }, { 1, 1, 0 } };
+                N = new float[] { 0, 0, -1 };
+                break;
+            case 3: // +Z
+                C = new float[][] { { 0, 0, 1 }, { 1, 0, 1 }, { 1, 1, 1 }, { 0, 1, 1 } };
+                N = new float[] { 0, 0, 1 };
+                break;
+            case 4: // -X
+                C = new float[][] { { 0, 0, 0 }, { 0, 0, 1 }, { 0, 1, 1 }, { 0, 1, 0 } };
+                N = new float[] { -1, 0, 0 };
+                break;
+            default: // +X
+                C = new float[][] { { 1, 0, 1 }, { 1, 0, 0 }, { 1, 1, 0 }, { 1, 1, 1 } };
+                N = new float[] { 1, 0, 0 };
+                break;
+        }
+        final float o = 0.003f; // float the quad just outside the hull face
+        float u0 = icon.getMinU();
+        float u1 = icon.getMaxU();
+        float v0 = icon.getMinV(); // icon top
+        float v1 = icon.getMaxV(); // icon bottom
+        float[] UV = { u0, v1, u1, v1, u1, v0, u0, v0 };
+        tess.setNormal(N[0], N[1], N[2]); // all four corners share the flat face normal
+        for (int i = 0; i < 4; i++) {
+            tess.addVertexWithUV(C[i][0] + N[0] * o, C[i][1] + N[1] * o, C[i][2] + N[2] * o, UV[i * 2], UV[i * 2 + 1]);
         }
     }
 

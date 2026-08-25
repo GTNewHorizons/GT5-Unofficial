@@ -1,58 +1,108 @@
 package tectech.voidcraft.ship;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
- * A single Voidcraft component — one block type that can be placed inside the Voidcraft Assembler's build volume.
+ * The Voidcraft component catalog.
  *
  * <p>
- * Each component contributes fixed stats (see the per-field javadoc) to the ship it is part of. The {@code tier}
- * gates which assembler circuit tier may digitize the component (higher tech = more options, per the rework
- * proposal). The grid encoding used in {@link VoidcraftBlueprint} is {@code meta + 1} (0 = empty cell).
+ * PASS 23 (user spec): <b>covers are the primary components — all ship functionality comes from the covers.</b>
+ * Only TWO components are placeable full blocks:
+ *
+ * <ul>
+ * <li>{@link #CONTROLLER} — the ship's brain (required, exactly one per ship).</li>
+ * <li>{@link #FRAME} — the "Voidcraft Frame": a mostly-transparent framebox hull block whose purpose is to
+ * accept the Voidcraft component covers on its faces (renamed from the old Utility Block).</li>
+ * </ul>
+ *
+ * <p>
+ * The other entries ({@link #ENGINE}, {@link #CARGO_BAY}, ...) are <em>cover-only</em>: they are no longer
+ * placeable blocks, they survive in the catalog purely as the function definitions behind their mirror covers
+ * (icon/texture mapping and the stat shapes the covers copy). They are marked {@code placeable=false} — the
+ * assembler refuses to digitize a build volume that still contains them ({@code voidcraft_cover_only_component}).
+ *
+ * <p>
+ * Each entry contributes fixed stats (see the per-field javadoc). The {@code tier} gates which assembler circuit
+ * tier may digitize it (higher tech = more options, per the rework proposal). The grid encoding used in
+ * {@link VoidcraftBlueprint} is {@code meta + 1} (0 = empty cell).
  */
 public enum VoidcraftComponent {
 
     /**
      * Required, exactly one per ship. The Voidcraft's "brain": without it the build is rejected. Contributes base
-     * mass and a little integrity.
+     * mass and a little integrity; every function of the ship comes from its covers.
      */
-    CONTROLLER(0, "Voidcraft Controller", "tt.voidcraft.component.controller", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 10),
+    CONTROLLER(0, "Voidcraft Controller", "tt.voidcraft.component.controller", true, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 10),
 
-    /** Thrust source. Every practical ship needs at least one. */
-    ENGINE(1, "Voidcraft Engine", "tt.voidcraft.component.engine", 0, 8, 100, 0, 0, 0, 0, 0, 0, 5, 0),
+    /**
+     * COVER-ONLY (pass 23): thrust is delivered by the {@link VoidcraftCoverComponent#THRUSTER_NOZZLE} cover.
+     * Kept as the function definition behind that cover (icon + stat shape); not a placeable block.
+     */
+    ENGINE(1, "Voidcraft Engine", "tt.voidcraft.component.engine", false, 0, 8, 100, 0, 0, 0, 0, 0, 5, 0, 0),
 
-    /** Structural bulk: pure mass plus integrity (the recoverable-vs-expendable stat). */
-    UTILITY(2, "Voidcraft Utility Block", "tt.voidcraft.component.utility", 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 10),
+    /**
+     * The "Voidcraft Frame" (pass 23, renamed from the old "Voidcraft Utility Block"): the mostly-transparent
+     * framebox hull block. Structural mass + integrity, no function of its own — its purpose is to accept the
+     * Voidcraft component covers on its faces; all ship functionality comes from those covers.
+     */
+    FRAME(2, "Voidcraft Frame", "tt.voidcraft.component.frame", true, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 10),
 
-    /** Storage for the resources a ship collects inside the USS. */
-    CARGO_BAY(3, "Voidcraft Cargo Bay", "tt.voidcraft.component.cargo_bay", 0, 15, 0, 50, 0, 0, 0, 0, 0, 0, 0),
+    /**
+     * COVER-ONLY (pass 23): cargo is delivered by the {@link VoidcraftCoverComponent#CARGO_POD} cover. Kept as the
+     * function definition behind that cover; not a placeable block.
+     */
+    CARGO_BAY(3, "Voidcraft Cargo Bay", "tt.voidcraft.component.cargo_bay", false, 0, 15, 0, 50, 0, 0, 0, 0, 0, 0, 0),
 
-    /** Mining drone command centre — planetary mining (MINER role). */
-    MINING_CENTRE(4, "Mining Drone Command Centre", "tt.voidcraft.component.mining_centre", 1, 20, 0, 0, 100, 0, 0, 0,
-        0, 20, 0),
+    /**
+     * COVER-ONLY (pass 23): mining is delivered by the {@link VoidcraftCoverComponent#MINING_ARRAY} cover. Kept as
+     * the function definition behind that cover; not a placeable block.
+     */
+    MINING_CENTRE(4, "Mining Drone Command Centre", "tt.voidcraft.component.mining_centre", false, 1, 20, 0, 0, 100, 0,
+        0, 0, 0, 20, 0),
 
-    /** Starlifter array — mines the central star (STARLIFTER role). */
-    STARLIFTER_ARRAY(5, "Starlifter Array", "tt.voidcraft.component.starlifter_array", 2, 40, 0, 0, 0, 0, 100, 0, 0, 40,
-        0),
+    /**
+     * COVER-ONLY (pass 23): starlifting is delivered by the {@link VoidcraftCoverComponent#STAR_SIPHON} cover.
+     * Kept as the function definition behind that cover; not a placeable block.
+     */
+    STARLIFTER_ARRAY(5, "Starlifter Array", "tt.voidcraft.component.starlifter_array", false, 2, 40, 0, 0, 0, 0, 100, 0,
+        0, 40, 0),
 
-    /** Spacetime fabric scanner — surveys ripples (EXPLORER role). */
-    SPACETIME_SCANNER(6, "Spacetime Fabric Scanner", "tt.voidcraft.component.spacetime_scanner", 2, 15, 0, 0, 0, 100, 0,
-        0, 0, 20, 0),
+    /**
+     * COVER-ONLY (pass 23): scanning is delivered by the {@link VoidcraftCoverComponent#SCANNER_DISH} cover. Kept
+     * as the function definition behind that cover; not a placeable block.
+     */
+    SPACETIME_SCANNER(6, "Spacetime Fabric Scanner", "tt.voidcraft.component.spacetime_scanner", false, 2, 15, 0, 0, 0,
+        100, 0, 0, 0, 20, 0),
 
-    /** Construction arm / fabricator — builds USS infrastructure (CONSTRUCTOR role). */
-    CONSTRUCTION_ARM(7, "Construction Fabricator", "tt.voidcraft.component.construction_arm", 2, 25, 0, 0, 0, 0, 100, 0,
-        0, 20, 0),
+    /**
+     * COVER-ONLY (pass 23): construction is delivered by the {@link VoidcraftCoverComponent#FABRICATOR_UNIT} cover.
+     * Kept as the function definition behind that cover; not a placeable block.
+     */
+    CONSTRUCTION_ARM(7, "Construction Fabricator", "tt.voidcraft.component.construction_arm", false, 2, 25, 0, 0, 0, 0,
+        100, 0, 0, 20, 0),
 
-    /** Onboard reactor: large energy buffer, no draw. */
-    REACTOR(8, "Voidcraft Reactor", "tt.voidcraft.component.reactor", 1, 10, 0, 0, 0, 0, 0, 1_000_000L, 0, 0, 0);
+    /**
+     * COVER-ONLY (pass 23): energy storage is delivered by the {@link VoidcraftCoverComponent#POWER_CELL} cover.
+     * Kept as the function definition behind that cover; not a placeable block.
+     */
+    REACTOR(8, "Voidcraft Reactor", "tt.voidcraft.component.reactor", false, 1, 10, 0, 0, 0, 0, 0, 1_000_000L, 0, 0, 0);
 
     /** All components in meta order (index == meta). */
     public static final VoidcraftComponent[] ALL = values();
 
+    /**
+     * PASS 23: the ONLY placeable full-block components (controller + frame). Everything else is cover-only.
+     */
+    public static final List<VoidcraftComponent> PLACEABLE = placeableList();
+
     private final int meta;
     private final String displayName;
     private final String langKey;
+    /** PASS 23: true only for the two full blocks (controller, frame); false = cover-only function definition. */
+    private final boolean placeable;
     private final int tier;
     private final long mass;
     private final long thrust;
@@ -65,12 +115,13 @@ public enum VoidcraftComponent {
     private final long energyDraw;
     private final long integrity;
 
-    VoidcraftComponent(int meta, String displayName, String langKey, int tier, long mass, long thrust, long cargoSlots,
-        long miningPower, long scanPower, long constructionPower, long starlifterPower, long energyBuffer,
-        long energyDraw, long integrity) {
+    VoidcraftComponent(int meta, String displayName, String langKey, boolean placeable, int tier, long mass,
+        long thrust, long cargoSlots, long miningPower, long scanPower, long constructionPower, long starlifterPower,
+        long energyBuffer, long energyDraw, long integrity) {
         this.meta = meta;
         this.displayName = displayName;
         this.langKey = langKey;
+        this.placeable = placeable;
         this.tier = tier;
         this.mass = mass;
         this.thrust = thrust;
@@ -82,6 +133,16 @@ public enum VoidcraftComponent {
         this.energyBuffer = energyBuffer;
         this.energyDraw = energyDraw;
         this.integrity = integrity;
+    }
+
+    private static List<VoidcraftComponent> placeableList() {
+        List<VoidcraftComponent> list = new ArrayList<>();
+        for (VoidcraftComponent component : ALL) {
+            if (component.placeable) {
+                list.add(component);
+            }
+        }
+        return java.util.Collections.unmodifiableList(list);
     }
 
     /** Block meta value; also the index into {@link #ALL}. */
@@ -97,6 +158,19 @@ public enum VoidcraftComponent {
     /** Lang key prefix for display names and tooltips (block names use {@code <key>.name}). */
     public String getLangKey() {
         return langKey;
+    }
+
+    /**
+     * PASS 23: whether this component is a placeable full block (only {@link #CONTROLLER} and {@link #FRAME}).
+     * Cover-only definitions are never placed in the world — their function ships as a cover.
+     */
+    public boolean isPlaceable() {
+        return placeable;
+    }
+
+    /** PASS 23: {@code true} when this component only exists as a cover (not a placeable block). */
+    public boolean isCoverOnly() {
+        return !placeable;
     }
 
     /**
@@ -178,7 +252,7 @@ public enum VoidcraftComponent {
 
     @Override
     public String toString() {
-        return "VoidcraftComponent[" + name() + " meta=" + meta + "]";
+        return "VoidcraftComponent[" + name() + " meta=" + meta + " placeable=" + placeable + "]";
     }
 
     static {
@@ -187,6 +261,10 @@ public enum VoidcraftComponent {
             if (ALL[i].meta != i) {
                 throw new IllegalStateException("VoidcraftComponent meta mismatch at index " + i);
             }
+        }
+        // Pass 23: exactly the controller and the frame are placeable full blocks.
+        if (!CONTROLLER.isPlaceable() || !FRAME.isPlaceable()) {
+            throw new IllegalStateException("Controller and Frame must be placeable full blocks");
         }
         if (Arrays.stream(ALL)
             .anyMatch(

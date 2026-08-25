@@ -2,6 +2,7 @@ package tectech.voidcraft.uss;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -69,74 +70,142 @@ public final class USSShipCargo {
     }
 
     /**
-     * Build the cargo of a completed MINING mission (Phase 4 pass 3 — the miner works the star's planets): one dust
-     * entry per ore material offered by the system's planets (deduplicated, first-seen order) plus one universal
-     * stone dust, each carrying its full amount.
-     *
-     * @param planets     the star's planet system (see {@link USSPlanets#generate(USSStarType, long)}; null or empty →
-     *                    stone dust only, defensive)
-     * @param miningPower the ship's total mining power
-     * @return a cargo compound holding a {@link #TAG_ITEMS} list of abstract entries
+     * The result of mining one planet: the cargo (dust entries) + the new reserve (after this mission's draw).
      */
-    public static NBTTagCompound buildForMiner(List<USSPlanets.USSPlanet> planets, long miningPower) {
-        long oreAmount = USSConstants.minerOreAmount(miningPower);
-        long stoneAmount = USSConstants.minerStoneDustAmount(miningPower);
+    public static final class MinerResult {
 
+        /**
+         * The cargo compound (a {@link #TAG_ITEMS} list of abstract dust entries; empty when the planet yields
+         * nothing).
+         */
+        public final NBTTagCompound cargo;
+
+        /** The planet's reserve after this mission's draw (never null). */
+        public final VoidcraftUSS.PlanetReserve newReserve;
+
+        MinerResult(NBTTagCompound cargo, VoidcraftUSS.PlanetReserve newReserve) {
+            this.cargo = cargo;
+            this.newReserve = newReserve;
+        }
+    }
+
+    /**
+     * Mine ONE planet (the mechanics pass): the planet's registered ores, weighed by their weights, each capped by
+     * the planet's remaining reserve. The reserve is initialized from the planet definition on the first mine
+     * ({@code ore.amount × 1_000_000 × planetSize²}, see {@link VoidcraftUSS.PlanetReserve#fromPlanet}) and then
+     * decremented by the mined amount — so ores deplete over the planet's lifetime.
+     *
+     * <p>
+     * Per-mission yield per ore = {@code min(minerOreAmount(miningPower) × (weight / Σweight),
+     * reserve.remaining(ore))}. The total (when the reserve is sufficient) is {@code minerOreAmount(miningPower)} —
+     * the ship's cargo amount for the mission — split across the ores by their weights.
+     *
+     * @param planet         the planet to mine (null or empty-ore → empty cargo, reserve unchanged)
+     * @param miningPower    the ship's total mining power (the per-mission base amount)
+     * @param currentReserve the planet's current reserve (null → initialized from the planet definition)
+     * @return the cargo + the new reserve (both non-null)
+     */
+    public static MinerResult minePlanet(USSPlanets.USSPlanet planet, long miningPower,
+        VoidcraftUSS.PlanetReserve currentReserve) {
+        if (planet == null || planet.definition == null) {
+            return new MinerResult(
+                new NBTTagCompound(),
+                currentReserve != null ? currentReserve
+                    : new VoidcraftUSS.PlanetReserve(new java.util.LinkedHashMap<>()));
+        }
+        List<USSPlanetOre> ores = planet.definition.getOres();
+        if (ores == null || ores.isEmpty()) {
+            return new MinerResult(
+                new NBTTagCompound(),
+                currentReserve != null ? currentReserve
+                    : new VoidcraftUSS.PlanetReserve(new java.util.LinkedHashMap<>()));
+        }
+
+        // Initialize the reserve from the planet definition (ore.amount × planetSize²) when not present.
+        VoidcraftUSS.PlanetReserve reserve = currentReserve != null ? currentReserve
+            : VoidcraftUSS.PlanetReserve.fromPlanet(planet.definition, planet.scale);
+
+        long base = USSConstants.minerOreAmount(miningPower);
+        double totalWeight = 0.0;
+        for (USSPlanetOre ore : ores) {
+            totalWeight += Math.max(0.0, ore.getWeight());
+        }
+        if (totalWeight <= 0.0) {
+            return new MinerResult(new NBTTagCompound(), reserve);
+        }
+
+        // Per-ore yield: base × (weight / Σweight), capped by the reserve. The reserve decreases by the mined amount.
         NBTTagList items = new NBTTagList();
-        for (Materials ore : USSPlanets.materialsOf(planets)) {
-            NBTTagCompound entry = abstractEntry(ore, oreAmount);
+        for (USSPlanetOre ore : ores) {
+            Materials material = ore.getOreType();
+            if (material == null || material == Materials._NULL || ore.getWeight() <= 0.0) {
+                continue;
+            }
+            long share = (long) (base * (ore.getWeight() / totalWeight));
+            long capped = Math.min(share, reserve.remaining(material));
+            if (capped <= 0L) {
+                continue;
+            }
+            NBTTagCompound entry = abstractEntry(material, capped);
             if (entry != null) {
                 items.appendTag(entry);
             }
-        }
-        NBTTagCompound stone = abstractEntry(Materials.Stone, stoneAmount);
-        if (stone != null) {
-            items.appendTag(stone);
+            reserve = reserve.mine(material, capped);
         }
 
         NBTTagCompound cargo = new NBTTagCompound();
         cargo.setTag(TAG_ITEMS, items);
-        return cargo;
+        return new MinerResult(cargo, reserve);
     }
 
     /**
-     * Build the cargo of a completed Starlifter mission (Phase 4 pass 1 — fluid production on top of the miner's
-     * item cargo), by the star's TYPE:
-     * <ul>
-     * <li>{@link USSStarType#MAIN_SEQUENCE}: Stellar Plasma ({@code RawStarMatter} fluid) only.</li>
-     * <li>{@link USSStarType#WHITE_DWARF}: White Dwarf Matter dust + Stellar Plasma.</li>
-     * <li>{@link USSStarType#SUPERMASSIVE}: Black Dwarf Matter dust + Stellar Plasma.</li>
-     * </ul>
-     * Deterministic, no RNG (same design contract as the miner cargo).
+     * Build the cargo of a completed Starlifter mission (the mechanics pass): the star's three registered
+     * materials, each as a FLUID entry (they are "primarily fluids"), with amount =
+     * {@code starlifterPlasmaAmount(miningPower) × weight × √(star size)}. The weights set the relative split;
+     * the star size (sampled from the star's size range, a pure function of the star type + seed) scales the total.
+     *
+     * <p>
+     * Deterministic: the star size is derived from the seed (no RNG outside {@link USSPlanets#sampleStarSize}).
      *
      * @param starType    the star the ship mined (null → main sequence, defensive).
      * @param miningPower the ship's total mining power.
-     * @return a cargo compound with a {@link #TAG_FLUIDS} list (Stellar Plasma) and, for dwarf-class stars, a
-     *         {@link #TAG_ITEMS} list with one dwarf-matter dust entry.
+     * @param seed        the star's ignition timestamp (the seed for the star-size draw — same as
+     *                    {@link USSPlanets#sampleStarSize(USSStarType, long)}).
+     * @return a cargo compound with a {@link #TAG_FLUIDS} list of the star's 3 materials (defensive: empty when the
+     *         star is unregistered).
      */
-    public static NBTTagCompound buildForStarlifter(USSStarType starType, long miningPower) {
+    public static NBTTagCompound buildForStarlifter(USSStarType starType, long miningPower, long seed) {
         if (starType == null) {
             starType = USSStarType.MAIN_SEQUENCE;
         }
-        long plasma = USSConstants.starlifterPlasmaAmount(miningPower);
-        long matter = USSConstants.starlifterMatterAmount(miningPower);
+        USSStarDefinition star = USSStarRegistry.byType(starType);
+        if (star == null) {
+            return new NBTTagCompound(); // defensive: no registered star → empty cargo
+        }
+        long base = USSConstants.starlifterPlasmaAmount(miningPower);
+        double sizeFactor = Math.sqrt(USSPlanets.sampleStarSize(starType, seed));
 
         NBTTagCompound cargo = new NBTTagCompound();
-
         NBTTagList fluids = new NBTTagList();
-        fluids.appendTag(fluidEntry(Materials.RawStarMatter, plasma));
+        fluids.appendTag(
+            fluidEntry(
+                star.getMain()
+                    .getMaterial(),
+                (long) (base * star.getMain()
+                    .getWeight() * sizeFactor)));
+        fluids.appendTag(
+            fluidEntry(
+                star.getSecondary()
+                    .getMaterial(),
+                (long) (base * star.getSecondary()
+                    .getWeight() * sizeFactor)));
+        fluids.appendTag(
+            fluidEntry(
+                star.getTertiary()
+                    .getMaterial(),
+                (long) (base * star.getTertiary()
+                    .getWeight() * sizeFactor)));
         cargo.setTag(TAG_FLUIDS, fluids);
-
-        if (starType != USSStarType.MAIN_SEQUENCE) {
-            Materials matterMaterial = starType == USSStarType.WHITE_DWARF ? Materials.WhiteDwarfMatter
-                : Materials.BlackDwarfMatter;
-            NBTTagCompound dust = abstractEntry(matterMaterial, matter);
-            if (dust != null) {
-                NBTTagList items = new NBTTagList();
-                items.appendTag(dust);
-                cargo.setTag(TAG_ITEMS, items);
-            }
-        }
         return cargo;
     }
 
@@ -164,7 +233,88 @@ public final class USSShipCargo {
         entry.setShort(ENTRY_ID, (short) Item.getIdFromItem(one.getItem()));
         entry.setShort(ENTRY_DAMAGE, (short) one.getItemDamage());
         entry.setInteger(ENTRY_AMOUNT, (int) Math.max(0L, amount));
+        // The material name — so the cargo hold (the cargo-capacity pass) can resolve the material without a
+        // reverse item lookup (and so a future ship-to-ship transfer keeps the material, not just the item id).
+        entry.setString(ITEM_ENTRY_MATERIAL, material.getName());
         return entry;
+    }
+
+    /**
+     * Fill a cargo hold with a cargo (the abstract items + fluids), clamped by the hold's capacity (the
+     * cargo-capacity pass: "mining fills their internal cargo capacity, and they cannot mine if it is full").
+     *
+     * <p>
+     * The hold is the ship's internal cargo — this method adds the (clamped) cargo to it. Materials are resolved
+     * from each entry's material name (the {@link #ITEM_ENTRY_MATERIAL} / {@link #FLUID_ENTRY_MATERIAL} tags).
+     *
+     * @param hold  the hold to fill (null → null; the caller keeps no cargo)
+     * @param cargo the cargo to add (the abstract items + fluids; null → hold unchanged)
+     * @return the updated hold (never null when the input hold is non-null)
+     */
+    public static CargoHold fillHold(CargoHold hold, NBTTagCompound cargo) {
+        if (hold == null || cargo == null) {
+            return hold;
+        }
+        CargoHold next = hold;
+        // Items: resolve the material from the entry's material name (the abstractEntry writes it).
+        NBTTagList items = readItems(cargo);
+        for (int i = 0; i < items.tagCount(); i++) {
+            NBTTagCompound entry = items.getCompoundTagAt(i);
+            if (entry == null) {
+                continue;
+            }
+            long amount = Math.max(0L, entry.getInteger(ENTRY_AMOUNT));
+            Materials material = Materials.get(entry.getString(ITEM_ENTRY_MATERIAL));
+            if (amount <= 0L || material == null || material == Materials._NULL) {
+                continue;
+            }
+            next = next.addItems(material, amount);
+        }
+        // Fluids: resolve the material from the entry's material name.
+        NBTTagList fluids = readFluids(cargo);
+        for (int i = 0; i < fluids.tagCount(); i++) {
+            NBTTagCompound entry = fluids.getCompoundTagAt(i);
+            if (entry == null) {
+                continue;
+            }
+            long amount = Math.max(0L, entry.getLong(FLUID_ENTRY_AMOUNT));
+            Materials material = Materials.get(entry.getString(FLUID_ENTRY_MATERIAL));
+            if (amount <= 0L || material == null || material == Materials._NULL) {
+                continue;
+            }
+            next = next.addFluids(material, amount);
+        }
+        return next;
+    }
+
+    /**
+     * Derive a cargo (the abstract items + fluids) from a cargo hold — the delivery-boundary conversion (the hold
+     * is the source of truth; this is what the bay receives).
+     *
+     * @param hold the hold to convert (null → an empty cargo compound)
+     * @return a cargo compound with the hold's items ({@link #TAG_ITEMS}) + fluids ({@link #TAG_FLUIDS})
+     */
+    public static NBTTagCompound cargoFromHold(CargoHold hold) {
+        NBTTagCompound cargo = new NBTTagCompound();
+        if (hold == null) {
+            return cargo;
+        }
+        NBTTagList items = new NBTTagList();
+        for (Map.Entry<Materials, Long> e : hold.getItems()
+            .entrySet()) {
+            NBTTagCompound entry = abstractEntry(e.getKey(), e.getValue());
+            if (entry != null) {
+                items.appendTag(entry);
+            }
+        }
+        NBTTagList fluids = new NBTTagList();
+        for (Map.Entry<Materials, Long> e : hold.getFluids()
+            .entrySet()) {
+            fluids.appendTag(fluidEntry(e.getKey(), e.getValue()));
+        }
+        cargo.setTag(TAG_ITEMS, items);
+        cargo.setTag(TAG_FLUIDS, fluids);
+        return cargo;
     }
 
     /**

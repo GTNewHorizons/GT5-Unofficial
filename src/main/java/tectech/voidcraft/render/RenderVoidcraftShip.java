@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -24,8 +25,10 @@ import tectech.thing.block.TileEntityEyeOfHarmony;
 import tectech.voidcraft.loader.VoidcraftLoader;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
 import tectech.voidcraft.ship.VoidcraftNbt;
+import tectech.voidcraft.ship.VoidcraftRole;
 import tectech.voidcraft.uss.USSConstants;
 import tectech.voidcraft.uss.USSFleetOrbit;
+import tectech.voidcraft.uss.USSPosition;
 import tectech.voidcraft.uss.USSShipState;
 
 /**
@@ -62,7 +65,8 @@ import tectech.voidcraft.uss.USSShipState;
  * duplicated ship items; the item UUID is only the legacy fallback).
  *
  * <p>
- * Orientation: the nose (the ship's visual front — the blueprint depth axis, confirmed in playtest) follows the
+ * Orientation: the nose (the ship's visual front — the blueprint's FAR end, grid +Z, the end built AWAY from the
+ * assembler; pass 24 flip) follows the
  * flight: direction of travel on OUTBOUND/RETURNING, and the ship keeps that ARRIVAL heading while MINING (pass
  * 10: it does not rotate to face the body being worked), unrotated while DOCKED. Heading changes are eased per
  * ship (keyed by the per-launch seed), so the flip on the RETURNING leg reads as a deliberate turn (there is no
@@ -94,13 +98,26 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
     private static final class LegPhase {
 
         int lastState = -1;
-        long startTick = -1;
+        // Phase C (programming framework): the leg id last seen — legs of the SAME state (a program doing MOVE →
+        // MOVE) must each animate from their own start, so the progress phase resets on the leg id, not the state.
+        int lastLegId = -1;
+        // Pass 29 (subtick-smooth flight): the tick the state was first seen, as a FRACTIONAL render time
+        // (worldTime + partialTicks) — so leg progress advances smoothly within a tick, like the planets' orbit.
+        double startTick = -1.0;
         double yaw = 0.0;
         double pitch = 0.0;
         boolean headingInit = false;
         double lastFrame = -1.0;
         /** Tick of the last exhaust burst (render runs many frames per tick — one burst per active tick max). */
         long lastExhaustTick = -1;
+        // Pass 32: the ship's last rendered position (fleet-anchor coords) — the visual start point of its next
+        // travel leg. A return leg departs from the LIVE hover above the body the ship just worked, not from the
+        // server's static launch-time-resolved point (a planet that has orbited since launch can sit on the
+        // opposite side of the system — lerping from the stale point read as a teleport). See renderShip.
+        double lastX = 0.0;
+        double lastY = 0.0;
+        double lastZ = 0.0;
+        boolean hasLastPos = false;
     }
 
     /** Per-ship animation phases, keyed by the ship's UUID (stable across fleet pushes and chunk reloads). */
@@ -127,7 +144,10 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         }
         TileEntityVoidcraftShip fleet = (TileEntityVoidcraftShip) tileEntity;
         List<NBTTagCompound> ships = fleet.getShips();
-        if (ships.isEmpty()) {
+        // The Explorer pass: the revealed spacetime ripples render even when NO ship is in flight (the ripples are a
+        // property of the revealed solar system, not of the fleet) — skip only when there is nothing at all to draw.
+        List<float[]> ripples = fleet.getRevealedRipples();
+        if (ships.isEmpty() && ripples.isEmpty()) {
             return;
         }
 
@@ -155,6 +175,15 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             seenUuids.clear();
         }
 
+        // The Explorer pass: the revealed ripples — a pulsating dark-blue transparent TRIANGLE at each point. They
+        // live in the same anchor frame as the star/ships (the centered (x, y, z) above), so they render in the same
+        // pass. Drawn first (behind the ships) so the fleet stays legible.
+        renderRipples(ripples, x, y, z, worldTime);
+
+        if (ships.isEmpty()) {
+            return; // only the ripples were present — done
+        }
+
         // Pass 7: the system the fleet works (specs + star size ride with the fleet TE — no world lookups).
         List<TileEntityEyeOfHarmony.PlanetSpec> planets = fleet.getSystemPlanets();
         float starSize = fleet.getStarSize();
@@ -164,12 +193,142 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         }
     }
 
+    /**
+     * The revealed spacetime ripples (the Explorer pass): each is a camera-facing (billboard) equilateral TRIANGLE in
+     * a pulsating dark blue, semi-transparent — the "spacetime ripple" reading. The pulse (size + alpha) is a function
+     * of world time, so every client animates it identically without any per-tick sync.
+     *
+     * <p>
+     * Same GL discipline as the mining beam ({@link #renderBeam}): texture OFF (color-only quads), lighting OFF
+     * (emissive), culling OFF (billboard winding), blend ON (standard alpha — transparent, NOT additive glow), depth
+     * writes OFF (a pure overlay, still depth-TESTED so opaque geometry correctly occludes it). The triangle is
+     * billboarded using the camera's right/up axes read from the model-view matrix (so it always faces the player,
+     * regardless of where it sits on a shell).
+     *
+     * @param ripples   the revealed ripple positions — each {@code [x, y, z]} in fleet-anchor blocks (never null)
+     * @param x,y,z     the anchor block CENTER in camera-relative coordinates (the ripple positions are added to it)
+     * @param worldTime the world's total tick count (drives the pulse)
+     */
+    private static void renderRipples(List<float[]> ripples, double x, double y, double z, long worldTime) {
+        if (ripples == null || ripples.isEmpty()) {
+            return;
+        }
+        boolean lightingOn = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
+        boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        boolean textureOn = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); // standard alpha (transparent) — NOT additive
+        GL11.glDepthMask(false);
+        try {
+            // Camera-facing basis (billboard): the model-view matrix's first two columns are the camera's right/up
+            // axes in world space (translation lives in column 4, so it does not pollute them).
+            //
+            // The FLOAT matrix overload + org.lwjgl.BufferUtils — the exact pattern GT5U's own FrameMatrices uses
+            // (glGetFloat(GL_MODELVIEW_MATRIX, scratch) with BufferUtils.createFloatBuffer(16)), which is proven
+            // to work in this 1.7.10 modpack. The double variant (GL11.glGetDouble into a java.nio.DoubleBuffer)
+            // threw IllegalArgumentException "DoubleBuffer is not direct" in the user's runtime (LWJGL
+            // 2.9.4-nightly + the lwjgl3ify coremod) — this environment's buffer check rejects it, so avoid it
+            // entirely and read the matrix as floats (plenty of precision for a billboard basis).
+            //
+            // The whole read is additionally guarded: this is a decorative effect — it degrades to a fixed
+            // world-up orientation rather than crashing the game over a GL/environment quirk.
+            // Default = the fixed world-up frame (the fallback); the matrix read overwrites it when it succeeds.
+            double rx = 1.0, ry = 0.0, rz = 0.0, ux = 0.0, uy = 1.0, uz = 0.0;
+            try {
+                java.nio.FloatBuffer mv = BufferUtils.createFloatBuffer(16);
+                GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, mv);
+                mv.rewind();
+                // Pass 26 (user: "the ripples are not properly following/facing the camera"): the model-view
+                // matrix is column-major in memory. The camera's RIGHT and UP axes in WORLD space are the first two
+                // ROWS of the rotation part — (m00,m01,m02) = (buf[0],buf[4],buf[8]) and (m10,m11,m12) =
+                // (buf[1],buf[5],buf[9]) — NOT the first two columns (buf[0..2]/buf[4..6], which are the images of
+                // the world X/Y axes and are only correct for an unrotated camera). Using the columns made the
+                // triangles tilt with the world instead of tracking the camera. Read everything first, commit after
+                // — a partial failure must not leave a mixed frame.
+                double[] m = new double[6];
+                m[0] = mv.get(0); // m00 → right.x
+                m[1] = mv.get(4); // m01 → right.y
+                m[2] = mv.get(8); // m02 → right.z
+                m[3] = mv.get(1); // m10 → up.x
+                m[4] = mv.get(5); // m11 → up.y
+                m[5] = mv.get(9); // m12 → up.z
+                rx = m[0];
+                ry = m[1];
+                rz = m[2];
+                ux = m[3];
+                uy = m[4];
+                uz = m[5];
+            } catch (Throwable t) {
+                // any buffer/GL quirk — keep the fixed frame; the triangle still renders (just world-oriented)
+            }
+
+            // The pulse: a gentle sinusoid over world time (size + alpha breathe together). Pass 26 (user: "the
+            // ripples should be ~20% of their current size, and the pulsating effect should be much smaller"):
+            // circumradius 0.45…0.80 → 0.10…0.13 (~20%), and the breathing amplitude 0.35 → 0.03 (much subtler).
+            double pulse = 0.5 + 0.5 * Math.sin(worldTime / 20.0);
+            double s = 0.10 + 0.03 * pulse; // triangle circumradius in blocks (0.10 … 0.13)
+            float alpha = (float) (0.40 + 0.10 * pulse); // subtle pulsating transparency (0.40 … 0.50)
+
+            Tessellator tessellator = Tessellator.instance;
+            for (float[] r : ripples) {
+                double cx = x + r[0];
+                double cy = y + r[1];
+                double cz = z + r[2];
+                // Equilateral triangle (apex up) in the camera plane: angles 90°, 210°, 330°.
+                double v0x = cx + (ux) * s, v0y = cy + (uy) * s, v0z = cz + (uz) * s;
+                double v1x = cx + (-0.866 * rx - 0.5 * ux) * s, v1y = cy + (-0.866 * ry - 0.5 * uy) * s,
+                    v1z = cz + (-0.866 * rz - 0.5 * uz) * s;
+                double v2x = cx + (0.866 * rx - 0.5 * ux) * s, v2y = cy + (0.866 * ry - 0.5 * uy) * s,
+                    v2z = cz + (0.866 * rz - 0.5 * uz) * s;
+                tessellator.startDrawing(GL11.GL_TRIANGLES);
+                tessellator.setColorRGBA_F(0.08F, 0.22F, 0.95F, alpha); // dark blue
+                tessellator.addVertex(v0x, v0y, v0z);
+                tessellator.addVertex(v1x, v1y, v1z);
+                tessellator.addVertex(v2x, v2y, v2z);
+                tessellator.draw();
+            }
+        } finally {
+            GL11.glDepthMask(true);
+            if (!cullOn) {
+                GL11.glDisable(GL11.GL_CULL_FACE);
+            } else {
+                GL11.glEnable(GL11.GL_CULL_FACE);
+            }
+            if (blendOn) {
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            } else {
+                GL11.glDisable(GL11.GL_BLEND);
+            }
+            if (lightingOn) {
+                GL11.glEnable(GL11.GL_LIGHTING);
+            } else {
+                GL11.glDisable(GL11.GL_LIGHTING);
+            }
+            if (textureOn) {
+                GL11.glEnable(GL11.GL_TEXTURE_2D);
+            } else {
+                GL11.glDisable(GL11.GL_TEXTURE_2D);
+            }
+        }
+    }
+
     private void renderShip(NBTTagCompound entry, int index, double x, double y, double z, long worldTime,
         float partialTicks, List<TileEntityEyeOfHarmony.PlanetSpec> planets, float starSize, World world) {
         NBTTagCompound payload = entry.getCompoundTag(TileEntityVoidcraftShip.TAG_ENTRY_PAYLOAD);
         if (payload == null) {
             return;
         }
+        // Pass 26 (the travel-time rendering fix): the ACTUAL travel distance, now synced by the server in the
+        // entry (TAG_ENTRY_TDIST). The client previously read "vc_tdist" off the PAYLOAD, where it was never
+        // written, so distance was 0 and every travel leg animated at the minimum floor — the ship zipped across
+        // the system in ~1 s while the server ticked its real (minutes-long) duration, and the working-state
+        // beam/scan never had a visible window. getDouble returns 0.0 for a missing tag (legacy entry → minimum,
+        // the old behaviour, kept as the safe fallback).
+        double travelDistance = entry.getDouble(TileEntityVoidcraftShip.TAG_ENTRY_TDIST);
         VoidcraftBlueprint blueprint = VoidcraftNbt.read(payload);
         if (blueprint == null) {
             return;
@@ -213,18 +372,62 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // OUTBOUND/RETURNING legs aim at where the planet IS right now (user: "the target is dynamic based on
         // the planets rendered location").
         float renderTime = (float) worldTime + partialTicks;
-        double[] body = targetBody(target, planets, starSize, renderTime);
-        boolean isPlanet = target >= 0 && planets != null && target < planets.size();
-        // Pass 8: "0.5 blocks above that planet" = 0.5 above the SURFACE. Pass 9: the rendered planet is a unit
-        // CUBE of size spec.scale (±0.5·scale — its surface sits 0.5·scale above its center), so hovering a flat
-        // 0.5 above the CENTER would put the ship INSIDE the planets and depth-occlude the miner beam.
-        double hoverAbove = isPlanet ? USSConstants.HOVER_ABOVE_PLANET + 0.5 * planets.get(target).scale
-            : USSConstants.HOVER_ABOVE_STAR;
+        // Pass 29 (user: "the planet rendering is applying some kind of subtick manipulation to smooth the
+        // movement — can the same thing be used with the Voidcraft rendering to make them fly smoother?"): the
+        // ship's leg progress now uses the SAME fractional render time (worldTime + partialTicks) instead of the
+        // whole-tick worldTime, so the flight glides between per-tick positions exactly like the planets do. A
+        // double (NOT float) so the sub-tick fraction survives large world times (float would drop it).
+        double shipRenderTime = (double) worldTime + partialTicks;
+        // Programming framework (Phase C): the server tells us whether the hover body is a FIXED point (a ripple
+        // point, a ship rendezvous — TAG_ENTRY_STATIC, resolved into TAG_ENTRY_DEST) or a LIVE body (a planet that
+        // keeps orbiting — the client tracks it). The old isExplorer ROLE check is gone: a ship's target is now
+        // decided by its PROGRAM (MOVE target), not by its role.
+        boolean staticBody = entry.getBoolean(TileEntityVoidcraftShip.TAG_ENTRY_STATIC);
+        double[] body;
+        double hoverAbove;
+        if (staticBody && entry.hasKey(TileEntityVoidcraftShip.TAG_ENTRY_DEST)) {
+            NBTTagCompound dest = entry.getCompoundTag(TileEntityVoidcraftShip.TAG_ENTRY_DEST);
+            // The server wrote this with USSPosition.writeToNBT (keys vc_pos_x/vc_pos_y/vc_pos_z) — read it back
+            // with the SAME reader (a bare getDouble("x") silently returns 0.0 for the missing keys, which sent
+            // ships hovering at (0,0,0) instead of their target).
+            USSPosition destPos = USSPosition.readFromNBT(dest);
+            body = new double[] { destPos.x(), destPos.y(), destPos.z() };
+            hoverAbove = 0.0; // hover AT the fixed point (the scan target / rendezvous), no surface offset
+        } else {
+            // Pass 7: the dynamic destination — the body the ship works (fleet-anchor coords): its planet's LIVE
+            // rendered position (the exact orbit math the star renderer draws it with), or the star center for a
+            // star target / legacy entry. Re-evaluated every frame, so the ship tracks the orbiting planet.
+            body = targetBody(target, planets, starSize, renderTime);
+            boolean isPlanet = target >= 0 && planets != null && target < planets.size();
+            // Pass 8: "0.5 blocks above that planet" = 0.5 above the SURFACE. Pass 9: the rendered planet is a unit
+            // CUBE of size spec.scale (±0.5·scale), so hovering a flat 0.5 above the CENTER would put the ship
+            // INSIDE the planets and depth-occlude the miner beam.
+            hoverAbove = isPlanet ? USSConstants.HOVER_ABOVE_PLANET + 0.5 * planets.get(target).scale
+                : USSConstants.HOVER_ABOVE_STAR;
+        }
+
+        // Phase C: the ship's CURRENT position (fleet-anchor coords — the server's truth): its launch origin at
+        // launch, then the last leg's endpoint. On a travel leg this is the leg's START (the client lerps from
+        // it — a fresh ship departs from the gateway exactly as before, a MOVE→MOVE leg departs from the previous
+        // body); while HOLDING (HOVERING) the ship renders here.
+        double[] entryPos = null;
+        if (entry.hasKey(TileEntityVoidcraftShip.TAG_ENTRY_POS)) {
+            USSPosition p = USSPosition.readFromNBT(entry.getCompoundTag(TileEntityVoidcraftShip.TAG_ENTRY_POS));
+            entryPos = new double[] { p.x(), p.y(), p.z() };
+        }
+        // Phase C: the leg identity — the client resets its leg-progress phase when this changes (legs of the SAME
+        // state must each animate from their own start).
+        int legId = entry.hasKey(TileEntityVoidcraftShip.TAG_ENTRY_LEG_ID)
+            ? entry.getInteger(TileEntityVoidcraftShip.TAG_ENTRY_LEG_ID)
+            : -1;
 
         // Swarm spread: each ship hovers at its own stable spot AROUND the shared hover point, so a large fleet
         // reads as a swarm around its target instead of a stack (USSFleetOrbit keeps it inside the space shell).
         double[] gw = { gwArr[0], gwArr[1], gwArr[2] };
         double[] hover = { body[0] + spread[0], body[1] + hoverAbove + spread[1], body[2] + spread[2] };
+        // The leg's start point (Phase C): the ship's current position when the leg is a travel leg, else the
+        // gateway (legacy entry without a position).
+        double[] legFrom = (entryPos != null) ? entryPos : gw;
 
         LegPhase phase = phases.get(key);
         if (phase == null || !seenUuids.contains(key)) {
@@ -234,21 +437,47 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             phases.put(key, phase);
         }
 
+        // Pass 32 (user: "the ships teleport much closer to the gateway when doing the rotation to face the
+        // return leg — the planet they were mining was at the opposite side of the system"): a travel leg departs
+        // from where the ship was LAST SEEN (this key's final rendered position — for a work leg, the live hover
+        // above the orbiting body), not from the server's static entryPos. entryPos is the leg's start point as
+        // RESOLVED AT LAUNCH; a planet keeps orbiting, so by the time the return leg begins the resolved point can
+        // sit on the opposite side of the system from where the ship visibly worked, and lerping from it read as
+        // a teleport. A fresh ship (no last-seen position yet) departs from the gateway, as before.
+        if (phase.hasLastPos) {
+            legFrom = new double[] { phase.lastX, phase.lastY, phase.lastZ };
+        }
+
         // Pass 11 (user: "the bobbing is a bit aggressive now — remove it completely, it doesn't make much sense
         // for the ships to go up and down"): no vertical bob — ships hold a fixed hover altitude.
+        // Phase C: travel legs lerp from the LEG'S START (legFrom — the ship's current position: the gateway for a
+        // fresh ship, the previous body for a MOVE→MOVE leg) to their end point (the body / the gateway).
         double[] pos;
         switch (state) {
             case OUTBOUND:
-                pos = lerp(gw, hover, legProgress(phase, payload, worldTime, USSShipState.OUTBOUND));
+                pos = lerp(
+                    legFrom,
+                    hover,
+                    legProgress(phase, payload, travelDistance, shipRenderTime, USSShipState.OUTBOUND, legId));
                 break;
             case RETURNING:
-                pos = lerp(hover, gw, legProgress(phase, payload, worldTime, USSShipState.RETURNING));
+                pos = lerp(
+                    legFrom,
+                    gw,
+                    legProgress(phase, payload, travelDistance, shipRenderTime, USSShipState.RETURNING, legId));
                 break;
             case MINING:
-                // Work the body: hover just above it (0.5 over the planet SURFACE / 2.5 over the star), fixed
-                // altitude (pass 11: the vertical bob is gone), nose forward (pass 10: the ship keeps its arrival
-                // heading — it does not turn to face the body; headingFor).
+                // Work the body: hover just above it (0.5 over the planet SURFACE / 2.5 over the star / AT the
+                // fixed point), fixed altitude (pass 11: the vertical bob is gone), nose forward (pass 10: the ship
+                // keeps its arrival heading — it does not turn to face the body; headingFor).
                 pos = new double[] { hover[0], hover[1], hover[2] };
+                break;
+            case HOVERING:
+                // Phase C: the program finished (or there is none) — the ship HOLDS at its current position
+                // (a fresh ship: the gateway; a finished one: its last body) + its swarm spread.
+                pos = (entryPos != null)
+                    ? new double[] { entryPos[0] + spread[0], entryPos[1] + spread[1], entryPos[2] + spread[2] }
+                    : new double[] { hover[0], hover[1], hover[2] };
                 break;
             case DOCKED:
             default:
@@ -258,9 +487,20 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 break;
         }
 
+        // Pass 32: remember this frame's rendered position — the ship's next travel leg departs from here, so
+        // MINING→RETURNING and HOVERING→OUTBOUND transitions are seamless (no teleport to a stale resolved
+        // point). On a leg's first frame legProgress returns 0, so the ship starts EXACTLY where it was seen.
+        phase.lastX = pos[0];
+        phase.lastY = pos[1];
+        phase.lastZ = pos[2];
+        phase.hasLastPos = true;
+
         double yaw = 0.0;
         double pitch = 0.0;
-        double[] heading = headingFor(gw, hover, state);
+        // Phase C: the heading is the leg's direction (legFrom → leg end) — OUTBOUND/RETURNING travel it, MINING
+        // keeps the arrival heading, HOVERING holds the current attitude.
+        double[] legTo = (state == USSShipState.RETURNING) ? gw : hover;
+        double[] heading = headingFor(legFrom, legTo, state);
         if (heading != null) {
             double targetYaw = heading[0];
             double targetPitch = heading[1];
@@ -288,15 +528,19 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         }
 
         boolean lightingEnabled = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        boolean cullEnabled = GL11.glIsEnabled(GL11.GL_CULL_FACE);
 
         GL11.glPushMatrix();
         try {
             GL11.glTranslated(x + pos[0], y + pos[1], z + pos[2]);
             GL11.glScalef((float) CELL_SIZE, (float) CELL_SIZE, (float) CELL_SIZE);
-            // Yaw (around +Y) first, then pitch (around +X) — maps the model nose (+Z) onto the target
-            // direction; see headingFor for the derivation.
-            GL11.glRotated((float) yaw, 0.0f, 1.0f, 0.0f);
+            // Orientation: headingFor returns (yaw, pitch) whose derivation applies YAW to the model first, then
+            // PITCH — i.e. the model rotation is R_pitch * R_yaw (yaw on the right, applied to the vertex first).
+            // OpenGL post-multiplies each glRotated, so to get M = R_pitch * R_yaw we must issue PITCH first and
+            // YAW second. (Emitting yaw-then-pitch yields R_yaw * R_pitch, which points the nose off-target for any
+            // diagonal direction — verified empirically; axis-aligned headings are unaffected because one angle is 0.)
             GL11.glRotated((float) pitch, 1.0f, 0.0f, 0.0f);
+            GL11.glRotated((float) yaw, 0.0f, 1.0f, 0.0f);
             // Center the model (cells span 0..n-1 on each axis).
             GL11.glTranslated(-(model.width - 1) / 2.0, -(model.height - 1) / 2.0, -(model.depth - 1) / 2.0);
 
@@ -306,11 +550,20 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            // Culling off for the ship: the hull is a hollow shell of blocks plus thin cover quads, and we cannot
+            // assume every face's winding from the outside — the back sides are depth-occluded by the cube volume,
+            // so disabling culling only guarantees the faces we want (covers included) actually draw.
+            GL11.glDisable(GL11.GL_CULL_FACE);
 
             model.vao.render();
 
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         } finally {
+            if (!cullEnabled) {
+                GL11.glDisable(GL11.GL_CULL_FACE);
+            } else {
+                GL11.glEnable(GL11.GL_CULL_FACE);
+            }
             if (!lightingEnabled) {
                 GL11.glDisable(GL11.GL_LIGHTING);
             }
@@ -322,7 +575,8 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // out over its end (VoidcraftShipFx.beamFade) so OUTBOUND→MINING→RETURNING reads as the beam engaging
         // and releasing.
         if (state == USSShipState.MINING && VoidcraftShipFx.minesWithBeam(payload)) {
-            double fade = VoidcraftShipFx.beamFade(legProgress(phase, payload, worldTime, USSShipState.MINING));
+            double fade = VoidcraftShipFx
+                .beamFade(legProgress(phase, payload, travelDistance, shipRenderTime, USSShipState.MINING, legId));
             if (fade > 0.0) {
                 renderBeam(
                     new double[] { x + pos[0], y + pos[1], z + pos[2] },
@@ -330,6 +584,25 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                     fade,
                     worldTime);
             }
+        }
+
+        // The Explorer pass (user spec: "a small visual effect — maybe a rotating, transparent cube around the ship
+        // while scanning — would help identifying the ships"): a transparent cube surrounds the Explorer during its
+        // work leg — for an Explorer the MINING state IS the scan. Pass 26 (user: "make the rendering only work
+        // during the 'working' state"): the beam and the scan cube are WORKING-state effects; the reason they
+        // previously "only sometimes showed" was the client animating every leg at the minimum travel time (the
+        // ship zipped through states), so the working leg was reached almost instantly and the effect had no
+        // visible window. Now that the client uses the ACTUAL travel time (see legProgress), the ship holds each
+        // leg for its real duration and the working-state effects render for their full length. Role-based (not
+        // target-based) so it also shows for the rare all-points-scanned fallback (target -1). Pass 26 also
+        // de-rotated it (user: "it's a 'twisted' cube, it should be a cube") — see renderScanCube.
+        if (state == USSShipState.MINING
+            && VoidcraftRole.EXPLORER.isActive(VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES))) {
+            // Pass 28 (user: "the cube itself should be half the size") + pass 31 (user: "make the cube half the
+            // size — it can be quite small around the ship"): 0.25× the pass-26/27 wrap radius.
+            double half = (Math.max(0.75, 0.5 * model.maxAxis() * CELL_SIZE + 0.25)) * 0.25;
+            // Pass 31: shipRenderTime (worldTime + partialTicks, FRACTIONAL) drives the size pulse and the spin.
+            renderScanCube(new double[] { x + pos[0], y + pos[1], z + pos[2] }, shipRenderTime, half, seed);
         }
 
         // Pass 8: exhaust — smoke emitted BEHIND the ship, the opposite of its travel direction (user spec),
@@ -340,9 +613,12 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // particles are EntityFX instances added to the effect renderer (the codebase pattern, cf.
         // ClientProxy.em_particle): EntitySmokeFX + Minecraft.effectRenderer.addEffect.
         if (state == USSShipState.OUTBOUND || state == USSShipState.RETURNING) {
-            double dx = state == USSShipState.OUTBOUND ? hover[0] - gw[0] : gw[0] - hover[0];
-            double dy = state == USSShipState.OUTBOUND ? hover[1] - gw[1] : gw[1] - hover[1];
-            double dz = state == USSShipState.OUTBOUND ? hover[2] - gw[2] : gw[2] - hover[2];
+            // Phase C: exhaust is opposite the leg's direction of travel (legFrom → leg end), not the legacy
+            // gateway→hover chord (a MOVE→MOVE leg's gateway is irrelevant to its path).
+            double[] legTo2 = (state == USSShipState.OUTBOUND) ? hover : gw;
+            double dx = legTo2[0] - legFrom[0];
+            double dy = legTo2[1] - legFrom[1];
+            double dz = legTo2[2] - legFrom[2];
             double len = Math.sqrt(dx * dx + dy * dy + dz * dz);
             // The render loop runs MANY frames per tick — the gate is re-evaluated every frame, so without this
             // dedupe each active tick would spawn dozens of puffs per ship. One burst per active tick.
@@ -457,22 +733,199 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         }
     }
 
+    // Pass 31 (user: the scan field "works" but is "visually a bit boring" — add gentle, living motion).
+    /** One full size-BREATH cycle, in ticks — ~3 s per pulse (a slow, gentle breathing, not a strobe). */
+    private static final double SCAN_PULSE_PERIOD_TICKS = 60.0;
+    /** Breathing AMPLITUDE: the half-size oscillates ±10% about the base (user: "pulsate slightly ~10%"). */
+    private static final double SCAN_PULSE_AMPLITUDE = 0.80;
+    /** One full SPIN about the world up (Y) axis, in ticks — ~24 s per revolution (a slow, steady turn). */
+    private static final double SCAN_SPIN_PERIOD_TICKS = 240.0;
+    private static final double SCAN_TWO_PI = 2.0 * Math.PI;
+
+    /**
+     * The Explorer's scanning effect (user spec: "a small visual effect — maybe a rotating, transparent cube
+     * around the ship while scanning — would help identifying the ships"): a translucent cube around the ship.
+     *
+     * <p>
+     * Pass 26 (user: "the scanning texture is some kind of a 'twisted' cube — it should be a cube"): the steady
+     * Y-axis spin made the box read as a twisting solid, so it became a STATIC, axis-aligned cube — the clearest
+     * possible "cube" silhouette. ({@code worldTime}/{@code seed} are retained for signature stability; a static
+     * cube needs neither.)
+     *
+     * <p>
+     * Pass 28 (user: "half the size, half the transparency, no 'wireframe' borders, just the transparent faces,
+     * and rotated 45 degrees on all axis to look like a diamond"): the half-size is halved at the call site, the
+     * face alpha is halved (0.16 → 0.08), the 12-edge outline is GONE (faces only), and a STATIC 45° rotation
+     * about all three axes is applied — the cube is still (a fixed pose, not the removed Y-spin) but corner-up,
+     * reading as a diamond.
+     *
+     * <p>
+     * Pass 30 (user: "the scanning effect seems to not render anymore after the latest changes"): the code was
+     * intact — the pass-28 spec (half size + half alpha + no edge outline) simply left it with almost no visible
+     * ink, and the smaller diamond is mostly swallowed by the planet the ship hovers over (it only clears the
+     * surface by ~0.1 blocks). The faces now render as an ADDITIVE GLOW (the beam's pattern —
+     * {@code GL_SRC_ALPHA, GL_ONE}) at a visible intensity: the scan field reads as an energy halo that glows
+     * against ANY background (space or planet surface), instead of a faint glass box that depth-testing and the
+     * 8% alpha erased.
+     *
+     * <p>
+     * Pass 31 (user: the effect "works now" but is "visually a bit boring" — add life): the field is now a LIVING
+     * halo that (a) gently BREATHES — its size oscillates ±10% around the base on a ~3-second sine
+     * ({@link #SCAN_PULSE_PERIOD_TICKS} / {@link #SCAN_PULSE_AMPLITUDE}), (b) SPINS slowly about the world up (Y)
+     * axis — the pass-26 Y-spin is back, but now on the smaller, translucent, diamond-posed field it reads as a
+     * rotating gem rather than a twisting solid (one revolution per {@link #SCAN_SPIN_PERIOD_TICKS}), and (c) is
+     * both smaller (call site halved again) and more translucent (glow intensity ×0.25). The fractional render
+     * time ({@code worldTime + partialTicks}) drives (a) and (b), so they animate smoothly frame-to-frame.
+     *
+     * <p>
+     * GL discipline mirrors {@link #renderBeam}: texture OFF (a color-only overlay — the block atlas would
+     * modulate it), lighting OFF (emissive), cull OFF (winding-independent), ADDITIVE blend (pass 30), and depth
+     * WRITES off (a pure overlay; it is still depth-TESTED, so the dome/shell occlusion stays correct).
+     *
+     * @param center     the cube center in world coordinates (the ship's current position)
+     * @param renderTime fractional render time in TICKS ({@code worldTime + partialTicks}) — drives the size
+     *                   pulse (pass 31) and the spin about the up axis (pass 31)
+     * @param half       the cube half-size in blocks (the call site already halves it per pass 28/31)
+     * @param seed       the per-launch seed (unused — the field is a pure function of renderTime)
+     */
+    private static void renderScanCube(double[] center, double renderTime, double half, int seed) {
+        boolean lightingOn = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
+        boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        boolean textureOn = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // Pass 30: additive — the scan field GLOWS (the beam's
+                                                          // pattern), visible against any background
+        GL11.glDepthMask(false);
+        try {
+            GL11.glPushMatrix();
+            GL11.glTranslated(center[0], center[1], center[2]);
+            // Pass 31 (user: "make it rotate on the horizontal plane (around the upwards axis)"): spin about the
+            // world UP (Y) axis. GL post-multiplies, so issuing it FIRST (outermost) makes it the WORLD-SPACE
+            // transform: the whole diamond (the static 45/45/45 pose below) turns about the vertical axis, like a
+            // slowly rotating gem. (Pass 26 dropped this spin because it read as a "twisting" SOLID on the big
+            // glass cube; on the small translucent halo it now reads as gentle life, per the pass-31 spec.)
+            double spinDeg = (renderTime * (360.0 / SCAN_SPIN_PERIOD_TICKS)) % 360.0;
+            GL11.glRotated(spinDeg, 0.0, 1.0, 0.0);
+            // Pass 28 (user: "it should be rotated 45 degrees on all axis to look like a diamond"): a STATIC 45°
+            // pose about all three axes — the cube's long diagonal points along the system axes and it reads as a
+            // diamond. (The fixed 45/45/45 pose is the gem shape; the pass-31 spin above turns it.)
+            GL11.glRotated(45.0, 1.0, 0.0, 0.0);
+            GL11.glRotated(45.0, 0.0, 1.0, 0.0);
+            GL11.glRotated(45.0, 0.0, 0.0, 1.0);
+
+            // The 8 corners (±half on each axis). v0..v3 = the z = -h square, v4..v7 = the z = +h square, each
+            // with the same x/y pattern — so the 12 edges / 6 square faces below form a true cube. (Pass 26: the
+            // old vz pattern {-h,h,-h,h,h,h,-h,h} made v1==v5, v2==v6, v3==v7 — only FOUR distinct corners, which
+            // rendered as a tetrahedron: the "prism shape instead of a cube" the user reported.)
+            // Pass 31 (user: "make the size of the cube pulsate slightly up and down (~10%)"): a smooth ±10%
+            // BREATHING driven by the fractional render time (one cycle per SCAN_PULSE_PERIOD_TICKS ≈ 3 s) — the
+            // field reads as alive, not a frozen box. (renderTime % period keeps the sine argument small even for
+            // huge world times.)
+            double phase = (renderTime % SCAN_PULSE_PERIOD_TICKS) / SCAN_PULSE_PERIOD_TICKS;
+            double h = half * (1.0 + SCAN_PULSE_AMPLITUDE * Math.sin(SCAN_TWO_PI * phase));
+            double[] vx = { -h, -h, h, h, -h, -h, h, h };
+            double[] vy = { -h, h, -h, h, -h, h, -h, h };
+            double[] vz = { -h, -h, -h, -h, h, h, h, h };
+
+            // The translucent faces (the "glass" box).
+            int[][] faces = {
+                // z = -h
+                { 0, 1, 3, 2 },
+                // z = +h
+                { 4, 5, 7, 6 },
+                // x = -h
+                { 0, 4, 5, 1 },
+                // x = +h
+                { 2, 6, 7, 3 },
+                // y = -h
+                { 0, 2, 6, 4 },
+                // y = +h
+                { 1, 5, 7, 3 } };
+            Tessellator tess = Tessellator.instance;
+            tess.startDrawingQuads();
+            // Pass 30 made this a VISIBLE additive glow (0.45). Pass 31 (user: "multiply the transparency by
+            // 0.25x"): 0.45 × 0.25 = 0.1125 — a subtle, soft halo. The smaller size + the spin + the breathing
+            // (pass 31) carry the "life", so the lower intensity is fine — it glows gently instead of a neon sign.
+            tess.setColorRGBA_F(0.30F, 0.70F, 1.0F, 0.1125F);
+            for (int[] f : faces) {
+                tess.addVertex(vx[f[0]], vy[f[0]], vz[f[0]]);
+                tess.addVertex(vx[f[1]], vy[f[1]], vz[f[1]]);
+                tess.addVertex(vx[f[2]], vy[f[2]], vz[f[2]]);
+                tess.addVertex(vx[f[3]], vy[f[3]], vz[f[3]]);
+            }
+            tess.draw();
+            // Pass 28 (user: "it should not have the 'wireframe' borders, just the transparent faces"): the
+            // 12-edge outline is gone — the diamond reads by its faces alone (now an additive glow, pass 30/31).
+            GL11.glPopMatrix();
+        } finally {
+            GL11.glDepthMask(true);
+            if (!cullOn) {
+                GL11.glDisable(GL11.GL_CULL_FACE);
+            } else {
+                GL11.glEnable(GL11.GL_CULL_FACE);
+            }
+            if (blendOn) {
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            } else {
+                GL11.glDisable(GL11.GL_BLEND);
+            }
+            if (lightingOn) {
+                GL11.glEnable(GL11.GL_LIGHTING);
+            } else {
+                GL11.glDisable(GL11.GL_LIGHTING);
+            }
+            if (textureOn) {
+                GL11.glEnable(GL11.GL_TEXTURE_2D);
+            } else {
+                GL11.glDisable(GL11.GL_TEXTURE_2D);
+            }
+        }
+    }
+
     /**
      * Local leg progress in [0, 1], derived from the same leg duration the server ticks with.
+     *
+     * @param travelDistance the ship's ACTUAL travel distance in fleet-anchor blocks (the entry's
+     *                       {@code TAG_ENTRY_TDIST}, written by the server). Pass 26: this used to be read off the
+     *                       PAYLOAD as
+     *                       "vc_tdist", where it was never written — so distance was 0 and every travel leg animated at
+     *                       the
+     *                       minimum floor. Now the real distance is passed in and the client animates each leg for its
+     *                       true
+     *                       length (matching the server's tick duration).
+     * @param renderTime     the current render time as a FRACTIONAL tick (worldTime + partialTicks, a double for
+     *                       sub-tick precision). Pass 29 (user: "the planet rendering uses subtick smoothing — use the
+     *                       same for
+     *                       the Voidcraft so they fly smoother"): progress is now a continuous function of frame time
+     *                       instead of
+     *                       whole ticks, so the ship glides between the per-tick positions exactly like the planets'
+     *                       orbit does.
      */
-    private double legProgress(LegPhase phase, NBTTagCompound payload, long worldTime, USSShipState state) {
-        if (phase.lastState != state.getId() || phase.startTick < 0) {
+    private double legProgress(LegPhase phase, NBTTagCompound payload, double travelDistance, double renderTime,
+        USSShipState state, int legId) {
+        // Phase C: a new leg id resets the progress even for the SAME state (MOVE → MOVE legs of one program).
+        if (phase.lastState != state.getId() || phase.lastLegId != legId || phase.startTick < 0) {
             phase.lastState = state.getId();
-            phase.startTick = worldTime;
+            phase.lastLegId = legId;
+            phase.startTick = renderTime;
             return 0.0;
         }
         double speed = VoidcraftNbt.readDouble(payload, VoidcraftNbt.TAG_SPEED);
         long mining = VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_MINING);
-        long leg = USSConstants.legTicks(state, speed, mining);
+        // The Explorer pass: the WORK leg is role-aware — an Explorer SCANS (scanTicks, from vc_scan), everything
+        // else MINES (mineTicks, from vc_mining). The client must match the server's work-leg duration or the
+        // hover/leg progress drifts.
+        int roles = VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES);
+        long scan = VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_SCAN);
+        long leg = USSConstants.legTicks(state, travelDistance, speed, mining, roles, scan);
         if (leg <= 0) {
             return 1.0;
         }
-        return Math.min(1.0, (worldTime - phase.startTick) / (double) leg);
+        return Math.min(1.0, (renderTime - phase.startTick) / (double) leg);
     }
 
     /**
@@ -502,52 +955,39 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
      *
      * <p>
      * The intended facing d (the direction of travel — pass 10: also kept on the MINING leg, the ship does not
-     * turn to face the body) is computed first, then FLIPPED: playtest confirmed the ship's visual nose sits on
-     * the model -Z side (the blueprint depth axis, toward the assembler — not out of it), so aligning +Z with the
-     * path made the ships fly "backwards". Aiming +Z at -d puts the nose along the path. Applying yaw (around +Y)
-     * then pitch (around +X) maps +Z onto -d via: yaw = atan2(dx, dz), pitch = -asin(dy / |d|) — the negation is
-     * applied to the components first.
+     * turn to face the body) is the ship's NOSE direction: pass 24 puts the nose on the model +Z side (the
+     * blueprint's FAR end, away from the assembler — a player builds the ship pointing away from the machine), so
+     * the rotation maps the model +Z axis straight onto d. Applying yaw (around +Y) then pitch (around +X) maps
+     * +Z onto (dx,dy,dz) exactly via: yaw = atan2(dx, sqrt(dy²+dz²)), pitch = −atan2(dy, dz) (derivation:
+     * R_x(φ)·R_y(θ)·ẑ = (sinθ, −cosθ·sinφ, cosθ·cosφ); the pass-10 asin form was only exact for level or vertical
+     * flight).
      */
-    private double[] headingFor(double[] gw, double[] hover, USSShipState state) {
-        double dx, dy, dz;
+    private double[] headingFor(double[] legFrom, double[] legTo, USSShipState state) {
         switch (state) {
             case OUTBOUND:
-                dx = hover[0] - gw[0];
-                dy = hover[1] - gw[1];
-                dz = hover[2] - gw[2];
-                break;
             case RETURNING:
-                dx = gw[0] - hover[0];
-                dy = gw[1] - hover[1];
-                dz = gw[2] - hover[2];
-                break;
             case MINING:
-                // Pass 10 (user: "the ships don't need to rotate to face the object they are mining"): keep the
-                // ARRIVAL heading — the same direction of travel as the OUTBOUND leg — so the ship hovers nose
-                // forward while it works the body instead of pitching down at it. The RETURNING leg's target
-                // heading still flips it around with the eased turn.
-                dx = hover[0] - gw[0];
-                dy = hover[1] - gw[1];
-                dz = hover[2] - gw[2];
+                // The leg's direction of travel (legFrom → legTo). MINING (the work leg) keeps the ARRIVAL
+                // heading — pass 10 (user: "the ships don't need to rotate to face the object they are mining"):
+                // the ship hovers nose forward while it works the body instead of pitching down at it; the
+                // RETURNING leg's target heading still flips it around with the eased turn.
                 break;
             default:
-                return null; // DOCKED: unrotated
+                return null; // HOVERING / DOCKED: hold the current attitude (the ship is not moving)
         }
-        // Ship nose is on the model -Z side (user playtest) — aim +Z at the opposite of the intended facing.
-        dx = -dx;
-        dy = -dy;
-        dz = -dz;
+        double dx = legTo[0] - legFrom[0];
+        double dy = legTo[1] - legFrom[1];
+        double dz = legTo[2] - legFrom[2];
+        // Pass 24: the nose is on the model +Z side (the blueprint's far end, away from the assembler) — aim +Z
+        // straight at the intended facing d. (The pass-10 negation mapped the nose to the assembler end, which
+        // playtested as the nozzle "facing the front".)
         double len = Math.sqrt(dx * dx + dy * dy + dz * dz);
         if (len < 1e-6) {
             return null; // gateway on top of the hover point (degenerate) — no heading
         }
-        double yaw = Math.toDegrees(Math.atan2(dx, dz));
-        double pitch = -Math.toDegrees(Math.asin(clamp(dy / len, -1.0, 1.0)));
+        double yaw = Math.toDegrees(Math.atan2(dx, Math.sqrt(dy * dy + dz * dz)));
+        double pitch = -Math.toDegrees(Math.atan2(dy, dz));
         return new double[] { yaw, pitch };
-    }
-
-    private static double clamp(double v, double lo, double hi) {
-        return v < lo ? lo : (v > hi ? hi : v);
     }
 
     private static double[] lerp(double[] from, double[] to, double t) {

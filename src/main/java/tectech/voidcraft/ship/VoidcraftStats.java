@@ -7,26 +7,23 @@ package tectech.voidcraft.ship;
  * Produced by {@link VoidcraftBlueprint} from the component and cover grid.
  *
  * <p>
- * Thrust is directional: each engine (block or cover) fires out of its mounting face, pushing the ship the other
- * way. {@link #thrustX}/{@link #thrustY}/{@link #thrustZ} are the signed net-thrust vector in ship-local space
- * (positive X = east, positive Y = up, positive Z = south, i.e. Minecraft axes). {@link #thrust} is the best thrust
- * along any single axis, {@code max(|thrustX|, |thrustY|, |thrustZ|)} — opposing thrusters cancel out in the vector
- * sum.
+ * <b>Thrust model (pass 18, pass 23 covers-only, pass 24 flip).</b> Thrust is a <em>single value</em>: the sum of
+ * the thrust of every {@code THRUSTER_NOZZLE} cover that faces the ship's BACK (exhaust out the rear, −Z = the
+ * assembler side; the nose is the far end, grid +Z). Nozzles aimed anywhere else contribute nothing; there is no
+ * net vector and no cancellation.
  *
  * <p>
- * {@code speed} is derived, not additive: {@code clamp(thrust / mass, 0, 1)} — engines raise thrust, everything
- * else adds mass, so heavy ships are slower by construction.
+ * {@code speed} is derived, not additive: {@code max(0, thrust / mass)} — the thrust-to-mass ratio, unclamped.
+ * Travel time to a destination is an actual measure of DISTANCE divided by this ratio:
+ * {@code USSConstants.travelTicks(distance, speed)} = {@code distance · 20 / speed} (clamped to [20, 600] ticks),
+ * so a high thrust/mass ratio (or a closer destination) means a short leg.
  */
 public final class VoidcraftStats {
 
     public final long mass;
-    /** Best thrust along any single axis = max(|thrustX|, |thrustY|, |thrustZ|). */
+    /** Single thrust value: sum of thrust of all back-facing thruster nozzles (pass 23: covers only). */
     public final long thrust;
-    /** Signed net-thrust vector, ship-local (positive X = east, Y = up, Z = south). */
-    public final long thrustX;
-    public final long thrustY;
-    public final long thrustZ;
-    /** Derived: clamp(thrust / mass, 0, 1). */
+    /** Derived: max(0, thrust / mass) — the thrust-to-mass ratio, unclamped. */
     public final double speed;
     public final long cargoSlots;
     public final long miningPower;
@@ -37,33 +34,10 @@ public final class VoidcraftStats {
     public final long energyDraw;
     public final long integrity;
 
-    /** Convenience constructor for directionless stats (net thrust vector all zero). */
     public VoidcraftStats(long mass, long thrust, long cargoSlots, long miningPower, long scanPower,
         long constructionPower, long starlifterPower, long energyBuffer, long energyDraw, long integrity) {
-        this(
-            mass,
-            thrust,
-            0,
-            0,
-            0,
-            cargoSlots,
-            miningPower,
-            scanPower,
-            constructionPower,
-            starlifterPower,
-            energyBuffer,
-            energyDraw,
-            integrity);
-    }
-
-    public VoidcraftStats(long mass, long thrust, long thrustX, long thrustY, long thrustZ, long cargoSlots,
-        long miningPower, long scanPower, long constructionPower, long starlifterPower, long energyBuffer,
-        long energyDraw, long integrity) {
         this.mass = mass;
         this.thrust = thrust;
-        this.thrustX = thrustX;
-        this.thrustY = thrustY;
-        this.thrustZ = thrustZ;
         this.speed = speedFor(thrust, mass);
         this.cargoSlots = cargoSlots;
         this.miningPower = miningPower;
@@ -76,17 +50,20 @@ public final class VoidcraftStats {
     }
 
     /**
-     * Speed derivation shared by all stat math: thrust divided by mass, clamped to [0, 1].
+     * Speed derivation shared by all stat math: thrust divided by mass (the thrust-to-mass ratio), clamped at 0
+     * but NOT at 1 — a strong engine load legitimately out-masses the old scale, and
+     * {@link tectech.voidcraft.uss.USSConstants#travelTicks(double, double)} (the [20, 600] tick window) is what
+     * bounds the resulting travel time.
      *
-     * @param thrust total thrust
+     * @param thrust total thrust (sum of back-facing engines)
      * @param mass   total mass
-     * @return speed in [0, 1]
+     * @return speed = max(0, thrust / mass)
      */
     public static double speedFor(long thrust, long mass) {
         if (mass <= 0) {
             return 0.0;
         }
-        return Math.max(0.0, Math.min(1.0, (double) thrust / (double) mass));
+        return Math.max(0.0, (double) thrust / (double) mass);
     }
 
     /**
@@ -101,13 +78,7 @@ public final class VoidcraftStats {
         return "VoidcraftStats[mass=" + mass
             + ", thrust="
             + thrust
-            + ", thrustXYZ=("
-            + thrustX
-            + ","
-            + thrustY
-            + ","
-            + thrustZ
-            + "], speed="
+            + ", speed="
             + speed
             + ", cargo="
             + cargoSlots

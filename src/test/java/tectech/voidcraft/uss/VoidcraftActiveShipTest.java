@@ -11,124 +11,148 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.junit.jupiter.api.Test;
 
+import tectech.voidcraft.ship.VoidcraftRole;
+
 /**
- * Unit tests for the Phase 3 in-flight ship state machine ({@link VoidcraftActiveShip}) — leg transitions,
- * leg durations from {@link USSConstants}, the completion signal, and the NBT round-trip.
+ * Unit tests for the Phase C PASSIVE leg driver ({@link VoidcraftActiveShip}): launch (holding at the origin),
+ * leg arming / countdown / completion latch (consumed exactly once), holding, and the NBT round-trip (including
+ * the persisted completion latch that makes a leg's side-effect fire exactly once across a save/reload).
  */
 public class VoidcraftActiveShipTest {
 
     private static final double SPEED = 0.5;
     private static final long MINING_POWER = 1000L;
+    private static final double DISTANCE = 10.0;
 
-    private static long travelTicks() {
-        return USSConstants.travelTicks(SPEED);
-    }
+    private static final USSPosition ORIGIN = USSPosition.of(2.0, -1.0, 3.0);
+    private static final USSPosition DEST = USSPosition.of(12.0, 1.0, 13.0);
 
-    private static long mineTicks() {
-        return USSConstants.mineTicks(MINING_POWER);
-    }
-
-    // region launch + leg transitions
-
-    @Test
-    public void testLaunchStartsOutbound() {
+    private static VoidcraftActiveShip ship(String uuid) {
         NBTTagCompound payload = new NBTTagCompound();
-        payload.setString("vc_uuid", "ship-1");
+        payload.setString("vc_uuid", uuid);
+        return VoidcraftActiveShip.launch(uuid, uuid, SPEED, MINING_POWER, true, payload, null, null, 0, ORIGIN);
+    }
 
-        VoidcraftActiveShip ship = VoidcraftActiveShip
-            .launch("ship-1", "Test Ship", SPEED, MINING_POWER, true, payload, null, null);
-        assertEquals(USSShipState.OUTBOUND, ship.getState());
-        assertEquals(travelTicks(), ship.getTicksRemaining(), "OUTBOUND leg uses the travel duration");
-        assertFalse(ship.isRecoverable() != true, "recoverable flag preserved");
-        assertNull(ship.getCargo(), "no cargo until the MINING leg completes");
-        assertEquals(payload, ship.getPayload(), "full ship item NBT captured at launch");
+    // region launch (Phase C: the ship starts HOLDING at its origin, legs unarmed)
+
+    @Test
+    public void testLaunchHoldsAtOrigin() {
+        VoidcraftActiveShip s = ship("ship-1");
+        assertEquals(
+            USSShipState.HOVERING,
+            s.getState(),
+            "a fresh ship holds at the origin (the pilot runs its program)");
+        assertEquals(ORIGIN, s.getPosition(), "position = the launch origin");
+        assertEquals(ORIGIN, s.getLegFrom(), "leg start = the origin (the first leg departs from the gateway)");
+        assertFalse(s.isLegActive(), "no leg is armed at launch");
+        assertEquals(0, s.getLegId(), "no leg has run yet");
+        assertNull(s.getDestination(), "no destination until a leg is armed");
+        assertEquals(0, s.getTicksRemaining());
+        assertFalse(s.isLegComplete());
+        assertEquals(-1, s.getTargetPlanet(), "no hover body yet (the star / none)");
+        assertNull(s.getCargo(), "no cargo until a WORK leg's completion sets it");
     }
 
     @Test
-    public void testFullMissionLoopOutboundMiningReturning() {
-        VoidcraftActiveShip ship = VoidcraftActiveShip
-            .launch("ship-1", "Test Ship", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null);
+    public void testLaunchDefaultsOriginToZero() {
+        VoidcraftActiveShip s = VoidcraftActiveShip
+            .launch("z", "z", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null, 0, null);
+        assertEquals(USSPosition.zero(), s.getPosition(), "null origin → (0,0,0)");
+    }
 
-        long travel = travelTicks();
-        long mine = mineTicks();
-        // Each of the first two legs costs duration + 1 (the +1 is the transition tick); the final leg completes on
-        // its last tick (no extra transition after completion).
-        int expectedTotal = (int) (travel + 1) + (int) (mine + 1) + (int) travel;
+    // endregion
 
-        boolean inFlight = true;
-        int ticks = 0;
-        boolean sawMining = false;
-        boolean sawReturning = false;
-        while (inFlight && ticks < expectedTotal + 10) {
-            if (ship.getState() == USSShipState.MINING) {
-                sawMining = true;
-            }
-            if (ship.getState() == USSShipState.RETURNING) {
-                sawReturning = true;
-            }
-            inFlight = ship.tick();
-            ticks++;
-        }
+    // region leg arming + countdown + completion latch
 
-        assertFalse(inFlight, "the mission must complete");
-        assertEquals(expectedTotal, ticks, "mission length = travel + 1 + mine + 1 + travel (deterministic)");
-        assertTrue(sawMining, "visited the MINING leg");
-        assertTrue(sawReturning, "visited the RETURNING leg");
+    @Test
+    public void testStartLegArmsTheLeg() {
+        VoidcraftActiveShip s = ship("leg-1");
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 100, 14.14);
+        assertEquals(USSShipState.OUTBOUND, s.getState());
+        assertEquals(ORIGIN, s.getLegFrom());
+        assertEquals(ORIGIN, s.getPosition(), "position stays at the leg's start until the leg completes");
+        assertEquals(DEST, s.getDestination());
+        assertEquals(14.14, s.getTravelDistance(), 1e-9);
+        assertEquals(100, s.getTicksRemaining());
+        assertEquals(100, s.getLegTotal());
+        assertEquals(0, s.getTicksInLeg());
+        assertTrue(s.isLegActive());
+        assertEquals(1, s.getLegId(), "the first leg bumps the leg id to 1");
+        assertFalse(s.isLegComplete());
     }
 
     @Test
-    public void testLegDurationsMatchConstants() {
-        VoidcraftActiveShip ship = VoidcraftActiveShip
-            .launch("ship-1", "S", SPEED, MINING_POWER, false, new NBTTagCompound(), null, null);
-        assertEquals(travelTicks(), ship.getTicksRemaining());
-
-        // run to the MINING leg
-        int guard = 0;
-        while (ship.getState() != USSShipState.MINING && ship.tick() && guard++ < 10_000) {
-            // spin
-        }
-        assertEquals(USSShipState.MINING, ship.getState());
-        assertEquals(mineTicks(), ship.getTicksRemaining(), "MINING leg uses the mining duration");
-
-        guard = 0;
-        while (ship.getState() != USSShipState.RETURNING && ship.tick() && guard++ < 10_000) {
-            // spin
-        }
-        assertEquals(USSShipState.RETURNING, ship.getState());
-        assertEquals(travelTicks(), ship.getTicksRemaining(), "RETURNING leg uses the travel duration");
+    public void testCountdownLatchesAtZero() {
+        VoidcraftActiveShip s = ship("leg-2");
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 3, DISTANCE);
+        s.tickLeg();
+        assertEquals(2, s.getTicksRemaining());
+        assertEquals(1, s.getTicksInLeg(), "ticks elapsed = total − remaining");
+        assertFalse(s.isLegComplete(), "not complete before the countdown runs out");
+        s.tickLeg();
+        s.tickLeg();
+        assertEquals(0, s.getTicksRemaining());
+        assertTrue(s.isLegComplete(), "the finished leg latches");
+        assertTrue(s.isLegActive(), "the latch stays armed until consumed");
     }
 
     @Test
-    public void testCompletionIsSticky() {
-        VoidcraftActiveShip ship = VoidcraftActiveShip
-            .launch("ship-1", "S", 1.0, 1000L, false, new NBTTagCompound(), null, null);
-        int guard = 0;
-        boolean inFlight = true;
-        while (inFlight && guard++ < 100_000) {
-            inFlight = ship.tick();
-        }
-        assertFalse(inFlight);
-        // completion must be sticky — the caller delivers once, the ship is gone afterwards
-        assertFalse(ship.tick());
-        assertFalse(ship.tick());
+    public void testCompletionIsConsumedExactlyOnce() {
+        VoidcraftActiveShip s = ship("leg-3");
+        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 2, 0.0);
+        s.tickLeg();
+        s.tickLeg();
+        assertTrue(s.isLegComplete());
+        s.clearLegComplete();
+        assertEquals(DEST, s.getPosition(), "arrival: the position becomes the leg's endpoint");
+        assertFalse(s.isLegComplete(), "the latch is consumed (the side-effect fires exactly once)");
+        assertFalse(s.isLegActive(), "the leg is deactivated");
+        s.tickLeg(); // ticking after consumption is a no-op
+        assertFalse(s.isLegComplete(), "a consumed leg never re-latches");
     }
 
     @Test
-    public void testSpeedAndMiningPowerEdges() {
-        // zero speed → the maximum travel duration (never 0)
-        VoidcraftActiveShip slow = VoidcraftActiveShip
-            .launch("slow", "Slow", 0.0, 0L, false, new NBTTagCompound(), null, null);
-        assertEquals(USSConstants.TRAVEL_TICKS_MAX, slow.getTicksRemaining());
-        assertTrue(slow.getTicksRemaining() > 0);
+    public void testZeroLengthLegCompletesOnTheNextTick() {
+        VoidcraftActiveShip s = ship("leg-4");
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 0, 0.0);
+        assertFalse(s.isLegComplete(), "a zero-length leg is armed but not yet complete");
+        s.tickLeg();
+        assertTrue(s.isLegComplete());
+        s.clearLegComplete();
+        assertEquals(DEST, s.getPosition());
+    }
 
-        // zero mining power → the maximum mining duration (never 0)
-        VoidcraftActiveShip weak = VoidcraftActiveShip
-            .launch("weak", "Weak", 0.5, 0L, false, new NBTTagCompound(), null, null);
-        int guard = 0;
-        while (weak.getState() != USSShipState.MINING && weak.tick() && guard++ < 10_000) {
-            // spin
-        }
-        assertEquals(USSConstants.MINE_TICKS_MAX, weak.getTicksRemaining());
+    @Test
+    public void testHoldParksTheShip() {
+        VoidcraftActiveShip s = ship("hold-1");
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 50, DISTANCE);
+        s.tickLeg();
+        assertEquals(USSShipState.OUTBOUND, s.getState());
+        s.hold();
+        assertEquals(USSShipState.HOVERING, s.getState(), "hold() parks the ship");
+        assertFalse(s.isLegActive(), "hold() abandons the in-flight leg (the countdown stops)");
+        s.tickLeg();
+        assertFalse(s.isLegComplete(), "an abandoned leg cannot complete");
+        assertEquals(ORIGIN, s.getPosition(), "the ship stays where it was (mid-leg)");
+    }
+
+    @Test
+    public void testLegIdIncrementsPerLeg() {
+        VoidcraftActiveShip s = ship("id-1");
+        assertEquals(0, s.getLegId());
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 10, DISTANCE);
+        s.tickLeg();
+        s.tickLeg();
+        s.tickLeg();
+        s.clearLegComplete();
+        assertEquals(1, s.getLegId(), "leg 1 done");
+        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 10, 0.0);
+        assertEquals(
+            2,
+            s.getLegId(),
+            "consecutive legs bump the id even with the same state (the client's MOVE→MOVE fix)");
+        s.startLeg(USSShipState.RETURNING, ORIGIN, ORIGIN, 10, 0.0);
+        assertEquals(3, s.getLegId());
     }
 
     // endregion
@@ -137,18 +161,28 @@ public class VoidcraftActiveShipTest {
 
     @Test
     public void testSetCargo() {
-        VoidcraftActiveShip ship = VoidcraftActiveShip
-            .launch("ship-1", "S", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null);
-        assertNull(ship.getCargo());
-
+        VoidcraftActiveShip s = ship("cargo-1");
+        assertNull(s.getCargo());
         NBTTagCompound cargo = new NBTTagCompound();
         cargo.setString("marker", "xyz");
-        ship.setCargo(cargo);
-        assertNotNull(ship.getCargo());
+        s.setCargo(cargo);
+        assertNotNull(s.getCargo());
         assertEquals(
             "xyz",
-            ship.getCargo()
+            s.getCargo()
                 .getString("marker"));
+    }
+
+    @Test
+    public void testCargoStaysNullUntilTheCallerProducesIt() {
+        // Phase C: the pilot's onWorkComplete is the SOLE producer of the cargo — the ship's leg driver must not
+        // pre-fill anything (that is how a work leg's yield fires exactly once).
+        VoidcraftActiveShip s = ship("cargo-2");
+        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 2, 0.0);
+        s.tickLeg();
+        s.tickLeg();
+        s.clearLegComplete();
+        assertNull(s.getCargo(), "cargo stays NULL until the pilot's world seam produces it");
     }
 
     // endregion
@@ -160,18 +194,17 @@ public class VoidcraftActiveShipTest {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setString("vc_uuid", "rt-1");
         payload.setInteger("vc_format", 1);
-
         int[] gateway = { 10, 64, -20 };
         int[] bay = { 12, 64, -18 };
-        VoidcraftActiveShip ship = VoidcraftActiveShip
-            .launch("rt-1", "Round Trip", SPEED, MINING_POWER, true, payload, gateway, bay);
-        ship.tick();
-        ship.tick();
+        VoidcraftActiveShip s = VoidcraftActiveShip
+            .launch("rt-1", "Round Trip", SPEED, MINING_POWER, true, payload, gateway, bay, 42, ORIGIN);
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 80, DISTANCE);
+        s.tickLeg();
         NBTTagCompound cargo = new NBTTagCompound();
         cargo.setString("marker", "cargo");
-        ship.setCargo(cargo);
+        s.setCargo(cargo);
 
-        NBTTagCompound tag = ship.writeToNBT();
+        NBTTagCompound tag = s.writeToNBT();
         VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(tag);
 
         assertNotNull(restored);
@@ -180,8 +213,16 @@ public class VoidcraftActiveShipTest {
         assertEquals(SPEED, restored.getSpeed(), 0.0);
         assertEquals(MINING_POWER, restored.getMiningPower());
         assertTrue(restored.isRecoverable());
-        assertEquals(ship.getState(), restored.getState());
-        assertEquals(ship.getTicksRemaining(), restored.getTicksRemaining());
+        assertEquals(s.getState(), restored.getState());
+        assertEquals(s.getTicksRemaining(), restored.getTicksRemaining());
+        assertEquals(s.getLegTotal(), restored.getLegTotal());
+        assertTrue(restored.isLegActive());
+        assertEquals(1, restored.getLegId());
+        assertEquals(ORIGIN, restored.getLegFrom(), "the leg's start point round-trips");
+        assertEquals(DEST, restored.getDestination(), "the leg's endpoint round-trips");
+        assertEquals(DISTANCE, restored.getTravelDistance(), 1e-12);
+        assertEquals(ORIGIN, restored.getPosition(), "the ship's current position round-trips");
+        assertEquals(42, restored.getSeed());
         assertNotNull(restored.getCargo());
         assertEquals(
             "cargo",
@@ -195,12 +236,54 @@ public class VoidcraftActiveShipTest {
     @Test
     public void testNbtRoundTripWithoutTargets() {
         // null targets stay null across the round-trip (a drop-at-USS fallback mission)
-        VoidcraftActiveShip ship = VoidcraftActiveShip
-            .launch("rt-2", "No Targets", SPEED, MINING_POWER, false, new NBTTagCompound(), null, null);
-        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(ship.writeToNBT());
+        VoidcraftActiveShip s = VoidcraftActiveShip
+            .launch("rt-2", "No Targets", SPEED, MINING_POWER, false, new NBTTagCompound(), null, null, 0, ORIGIN);
+        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
         assertNotNull(restored);
         assertNull(restored.getGatewayPos());
         assertNull(restored.getBayPos());
+    }
+
+    @Test
+    public void testNbtRoundTripPreservesDestinationAndDistance() {
+        VoidcraftActiveShip s = VoidcraftActiveShip
+            .launch("ship-pos6", "Pos Ship", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null, 7, ORIGIN);
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, USSPosition.of(4.0, -2.0, 7.0), 60, 9.0);
+        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
+        assertNotNull(restored);
+        assertEquals(USSPosition.of(4.0, -2.0, 7.0), restored.getDestination(), "destination survives the round-trip");
+        assertEquals(9.0, restored.getTravelDistance(), 1e-12, "distance survives the round-trip");
+    }
+
+    @Test
+    public void testNbtRoundTripPreservesLegDoneLatch() {
+        // THE Phase C invariant: a leg that finished but whose side-effect has not fired yet (latched complete)
+        // must survive a save/reload and be consumable exactly once AFTER the reload.
+        VoidcraftActiveShip s = ship("latch-1");
+        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 2, 0.0);
+        s.tickLeg();
+        s.tickLeg();
+        assertTrue(s.isLegComplete());
+        // save WITHOUT consuming (the world saved between the latch and the pilot's consumption)
+        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
+        assertNotNull(restored);
+        assertTrue(restored.isLegActive(), "the leg is still armed");
+        assertTrue(restored.isLegComplete(), "the completion latch survives the round-trip");
+        assertNull(restored.getCargo(), "no side-effect yet (it fires on consumption, after the reload)");
+        restored.clearLegComplete();
+        assertEquals(DEST, restored.getPosition());
+        assertFalse(restored.isLegComplete(), "consumed exactly once");
+    }
+
+    @Test
+    public void testNbtRoundTripBodyStaticAndTarget() {
+        VoidcraftActiveShip s = ship("body-1");
+        s.setTargetPlanet(5);
+        s.setBodyStatic(true);
+        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
+        assertNotNull(restored);
+        assertEquals(5, restored.getTargetPlanet(), "the hover body descriptor round-trips");
+        assertTrue(restored.isBodyStatic(), "the static-body flag round-trips");
     }
 
     @Test
@@ -208,18 +291,17 @@ public class VoidcraftActiveShipTest {
         // Pass 5.1: the per-launch identity seed (unique per flight even for duplicated ship items) must survive
         // the mission NBT round-trip — the client keys this ship's animation phase + swarm spot on it.
         int seed = 0x12345678;
-        VoidcraftActiveShip ship = VoidcraftActiveShip
-            .launch("dup-1", "Duplicate", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null, seed);
-        assertEquals(seed, ship.getSeed());
-        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(ship.writeToNBT());
+        VoidcraftActiveShip s = VoidcraftActiveShip
+            .launch("dup-1", "Duplicate", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null, seed, ORIGIN);
+        assertEquals(seed, s.getSeed());
+        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
         assertNotNull(restored);
         assertEquals(seed, restored.getSeed(), "the per-launch seed survives the NBT round-trip");
     }
 
     @Test
-    public void testLegacyShipsReadZeroSeed() {
-        // Pre-pass-5.1 saves carry no vc_seed tag: they must restore with seed 0 (the client's item-UUID fallback)
-        // instead of failing.
+    public void testLegacyShipsReadDefaults() {
+        // Pre-Phase-C saves carry no leg tags: they restore with the safe defaults (no armed leg) instead of failing.
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("vc_uuid", "legacy-1");
         tag.setInteger("vc_state", USSShipState.OUTBOUND.ordinal());
@@ -227,58 +309,22 @@ public class VoidcraftActiveShipTest {
         VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(tag);
         assertNotNull(restored);
         assertEquals(0, restored.getSeed(), "missing vc_seed reads as 0 (legacy)");
-
-        // and the 8-arg launch (no seed) keeps the legacy behavior
-        VoidcraftActiveShip legacy = VoidcraftActiveShip
-            .launch("legacy-2", "Legacy", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null);
-        assertEquals(0, legacy.getSeed());
+        assertEquals(-1, restored.getTargetPlanet(), "missing vc_target reads as -1 (the star / none)");
+        assertFalse(restored.isLegActive(), "a legacy save has no armed leg");
+        assertEquals(0, restored.getLegId());
+        assertNull(restored.getDestination());
+        assertEquals(USSPosition.zero(), restored.getPosition(), "missing vc_pos → the origin");
     }
 
     @Test
-    public void testMissionTargetRoundTrips() {
-        // Pass 7: the mission target (a system planet index; -1 = the star itself) must survive the mission NBT
-        // round-trip — the client resolves it against the fleet TE's planet system.
-        VoidcraftActiveShip miner = VoidcraftActiveShip
-            .launch("t-1", "Miner", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null, 7, 2);
-        assertEquals(2, miner.getTargetPlanet(), "the planet index is captured at launch");
-        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(miner.writeToNBT());
-        assertNotNull(restored);
-        assertEquals(2, restored.getTargetPlanet(), "the planet target survives the NBT round-trip");
-
-        // Starlifter semantics: -1 = work the star (the client hovers 2.5 above the star center).
-        VoidcraftActiveShip starlifter = VoidcraftActiveShip
-            .launch("t-2", "Starlifter", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null, 8, -1);
-        assertEquals(-1, starlifter.getTargetPlanet(), "-1 = the star");
-        assertEquals(
-            -1,
-            VoidcraftActiveShip.readFromNBT(starlifter.writeToNBT())
-                .getTargetPlanet());
-    }
-
-    @Test
-    public void testLegacyLaunchDefaultsToStarTarget() {
-        // The legacy launch overloads (no target) default to -1 (work the star) instead of failing.
-        assertEquals(
-            -1,
-            VoidcraftActiveShip.launch("t-3", "Legacy", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null)
-                .getTargetPlanet());
-        assertEquals(
-            -1,
-            VoidcraftActiveShip
-                .launch("t-4", "Legacy2", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null, 11)
-                .getTargetPlanet());
-    }
-
-    @Test
-    public void testLegacyShipsReadStarTarget() {
-        // Pre-pass-7 saves carry no vc_target tag: they restore with -1 (work the star) instead of failing.
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("vc_uuid", "legacy-3");
-        tag.setInteger("vc_state", USSShipState.OUTBOUND.ordinal());
-        tag.setInteger("vc_ticks", 10);
-        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(tag);
-        assertNotNull(restored);
-        assertEquals(-1, restored.getTargetPlanet(), "missing vc_target reads as -1 (the star)");
+    public void testReadAllowsHoldingShips() {
+        // Phase C: a HOLDING ship (program finished / a fresh one) is a LEGITIMATE in-flight state — the USS must
+        // restore it (it occupies its slot until the player deals with it).
+        VoidcraftActiveShip s = ship("hold-rt");
+        s.hold();
+        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
+        assertNotNull(restored, "a holding ship restores");
+        assertEquals(USSShipState.HOVERING, restored.getState());
     }
 
     @Test
@@ -304,20 +350,18 @@ public class VoidcraftActiveShipTest {
 
     // endregion
 
-    // region legTicks helper
+    // region USSConstants leg-table checks (unchanged invariants the client's animation relies on)
 
     @Test
     public void testMiningLegIsAlwaysVisible() {
-        // Pass 7: for EVERY mining power the MINING leg must be a visible hover. The user's "ships reach their
-        // destination and turn right back without mining anything" was a 10-tick (0.5 s) hover for high-power
-        // ships — invisible at 1/16 scale 10 blocks away. Now the window is 4.5–30 s, always a clear "mining" pose.
+        // For EVERY mining power the MINING leg must be a visible hover (4.5–30 s) — a 10-tick hover would be
+        // invisible at the fleet's scale.
         for (long power = 0; power <= 64; power++) {
             long ticks = USSConstants.mineTicks(power);
             assertTrue(ticks >= USSConstants.MINE_TICKS_MIN, "power " + power + " → " + ticks + " ticks");
             assertTrue(ticks >= 90L, "power " + power + " — the mining hover must be at least 4.5 s");
             assertTrue(ticks <= USSConstants.MINE_TICKS_MAX, "power " + power + " — the hover stays bounded");
         }
-        // more mining power → no LONGER mining (monotone non-increasing)
         for (long power = 1; power < 64; power++) {
             assertTrue(
                 USSConstants.mineTicks(power) >= USSConstants.mineTicks(power + 1),
@@ -328,16 +372,89 @@ public class VoidcraftActiveShipTest {
     @Test
     public void testLegTicksTable() {
         assertEquals(
-            USSConstants.travelTicks(SPEED),
-            USSConstants.legTicks(USSShipState.OUTBOUND, SPEED, MINING_POWER));
+            USSConstants.travelTicks(DISTANCE, SPEED),
+            USSConstants.legTicks(USSShipState.OUTBOUND, DISTANCE, SPEED, MINING_POWER));
         assertEquals(
-            USSConstants.travelTicks(SPEED),
-            USSConstants.legTicks(USSShipState.RETURNING, SPEED, MINING_POWER));
+            USSConstants.travelTicks(DISTANCE, SPEED),
+            USSConstants.legTicks(USSShipState.RETURNING, DISTANCE, SPEED, MINING_POWER));
         assertEquals(
             USSConstants.mineTicks(MINING_POWER),
-            USSConstants.legTicks(USSShipState.MINING, SPEED, MINING_POWER));
-        assertEquals(0L, USSConstants.legTicks(USSShipState.DOCKED, SPEED, MINING_POWER), "docked ships have no leg");
-        assertEquals(0L, USSConstants.legTicks(null, SPEED, MINING_POWER), "null state → 0");
+            USSConstants.legTicks(USSShipState.MINING, DISTANCE, SPEED, MINING_POWER));
+        assertEquals(
+            0L,
+            USSConstants.legTicks(USSShipState.DOCKED, DISTANCE, SPEED, MINING_POWER),
+            "docked ships have no leg");
+        assertEquals(
+            0L,
+            USSConstants.legTicks(USSShipState.HOVERING, DISTANCE, SPEED, MINING_POWER),
+            "a holding ship has no leg");
+        assertEquals(0L, USSConstants.legTicks(null, DISTANCE, SPEED, MINING_POWER), "null state → 0");
+    }
+
+    @Test
+    public void testScanTicksIsAlwaysVisibleAndBounded() {
+        for (long power = 0; power <= 64; power++) {
+            long ticks = USSConstants.scanTicks(power);
+            assertTrue(ticks >= USSConstants.SCAN_TICKS_MIN, "power " + power + " → " + ticks + " ticks");
+            assertTrue(ticks <= USSConstants.SCAN_TICKS_MAX, "power " + power + " — the scan stays bounded");
+        }
+        for (long power = 1; power < 64; power++) {
+            assertTrue(
+                USSConstants.scanTicks(power) >= USSConstants.scanTicks(power + 1),
+                "monotone non-increasing at power " + power);
+        }
+        assertEquals(
+            USSConstants.scanTicks(USSConstants.SCAN_POWER_SATURATION),
+            USSConstants.scanTicks(1_000_000L),
+            "above saturation the scan time stops shrinking");
+    }
+
+    @Test
+    public void testWorkTicksIsRoleAware() {
+        int explorer = VoidcraftRole.EXPLORER.getBit();
+        int miner = VoidcraftRole.MINER.getBit();
+        long scanPower = 8L;
+        assertEquals(
+            USSConstants.scanTicks(scanPower),
+            USSConstants.workTicks(explorer, MINING_POWER, scanPower),
+            "explorer work leg = scanTicks(scanPower)");
+        assertEquals(
+            USSConstants.mineTicks(MINING_POWER),
+            USSConstants.workTicks(miner, MINING_POWER, scanPower),
+            "miner work leg = mineTicks(miningPower)");
+        assertEquals(
+            USSConstants.mineTicks(MINING_POWER),
+            USSConstants.workTicks(0, MINING_POWER, scanPower),
+            "no role (legacy) work leg = mineTicks(miningPower)");
+        assertEquals(
+            USSConstants.scanTicks(scanPower),
+            USSConstants.workTicks(explorer | miner, MINING_POWER, scanPower),
+            "explorer+miner → explorer (scan)");
+        assertEquals(
+            USSConstants.scanTicks(scanPower),
+            USSConstants.legTicks(USSShipState.MINING, DISTANCE, SPEED, MINING_POWER, explorer, scanPower),
+            "legTicks(MINING, explorer) = scanTicks");
+        assertEquals(
+            USSConstants.mineTicks(MINING_POWER),
+            USSConstants.legTicks(USSShipState.MINING, DISTANCE, SPEED, MINING_POWER, miner, scanPower),
+            "legTicks(MINING, miner) = mineTicks");
+        assertEquals(
+            USSConstants.travelTicks(DISTANCE, SPEED),
+            USSConstants.legTicks(USSShipState.OUTBOUND, DISTANCE, SPEED, MINING_POWER, explorer, scanPower),
+            "OUTBOUND leg is distance-based (role-independent)");
+        assertEquals(
+            USSConstants.travelTicks(DISTANCE, SPEED),
+            USSConstants.legTicks(USSShipState.RETURNING, DISTANCE, SPEED, MINING_POWER, explorer, scanPower),
+            "RETURNING leg is distance-based (role-independent)");
+    }
+
+    @Test
+    public void testTravelTimeGrowsWithDistance() {
+        // "The travel time becomes an actual measure of distance divided by speed."
+        long near = USSConstants.travelTicks(1.0, SPEED);
+        long far = USSConstants.travelTicks(100.0, SPEED);
+        assertTrue(far > near, "farther = longer (" + far + " > " + near + ")");
+        assertTrue(near >= USSConstants.TRAVEL_TICKS_MIN && far <= USSConstants.TRAVEL_TICKS_MAX);
     }
 
     // endregion

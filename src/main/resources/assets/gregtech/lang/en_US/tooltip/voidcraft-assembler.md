@@ -4,11 +4,12 @@ digitizes it into a single non-stackable Voidcraft item, and clears the componen
 {gold:{hr:87}}
 {blue}How it works:
 - Build a ship out of Voidcraft components inside the 5x5x10 volume in front of the machine.
-- The ship must contain exactly one Controller and at least one Engine, and be at least 3 components.
+- The ship must contain exactly one Controller and at least one Engine (or Thruster Nozzle cover) facing the ship's BACK (+Z), and be at least 3 components.
 - The Assembler scans the volume, validates the ship, and then digitizes it.
 {blue}Validation:
 - Exactly one Controller (required).
-- At least one Engine (thrust).
+- Every Engine (block or Thruster Nozzle cover) must face the ship's BACK (+Z) — the nose is on the model's −Z side.
+- Exhaust clearance: 5 blocks directly behind each back-facing thruster must be clear of Voidcraft blocks, or the engine is "Engine blocked".
 - At least 3 components total.
 - Component tier must be at or below the Assembler's circuit tier.
 {gold:{hr:87}}

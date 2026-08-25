@@ -25,9 +25,6 @@ public final class VoidcraftNbt {
     // Derived stats are stored denormalized so the item tooltip never needs to recompute them.
     public static final String TAG_MASS = "vc_mass";
     public static final String TAG_THRUST = "vc_thrust";
-    public static final String TAG_THRUST_X = "vc_thrust_x";
-    public static final String TAG_THRUST_Y = "vc_thrust_y";
-    public static final String TAG_THRUST_Z = "vc_thrust_z";
     public static final String TAG_SPEED = "vc_speed";
     public static final String TAG_CARGO = "vc_cargo";
     public static final String TAG_MINING = "vc_mining";
@@ -39,6 +36,15 @@ public final class VoidcraftNbt {
     public static final String TAG_INTEGRITY = "vc_integrity";
     public static final String TAG_ROLES = "vc_roles";
     public static final String TAG_EFFICIENCY = "vc_efficiency";
+
+    // Programming framework (Phase C):
+
+    /**
+     * NBTTagList: the ship's PROGRAM (a {@code USSProgram} node list — the controller's instruction list), carried
+     * in the ship item NBT at its top level (the assembler writes it from the controller block's stored program at
+     * build time; the ship's pilot runs it in flight). Absent = a ship without a program (it HOLDS at the origin).
+     */
+    public static final String TAG_PROGRAM = "vc_program";
 
     // Phase 4 pass 2 — Constructor missions (written by the gateway at launch, read by the USS at completion):
 
@@ -86,9 +92,6 @@ public final class VoidcraftNbt {
 
         nbt.setLong(TAG_MASS, stats.mass);
         nbt.setLong(TAG_THRUST, stats.thrust);
-        nbt.setLong(TAG_THRUST_X, stats.thrustX);
-        nbt.setLong(TAG_THRUST_Y, stats.thrustY);
-        nbt.setLong(TAG_THRUST_Z, stats.thrustZ);
         nbt.setDouble(TAG_SPEED, stats.speed);
         nbt.setLong(TAG_CARGO, stats.cargoSlots);
         nbt.setLong(TAG_MINING, stats.miningPower);

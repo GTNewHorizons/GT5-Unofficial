@@ -3,10 +3,12 @@ package tectech.voidcraft.uss;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 import org.junit.jupiter.api.Test;
 
@@ -124,6 +126,96 @@ public class VoidcraftUSSTest {
 
     // endregion
 
+    // region ripple scan state (the Explorer pass)
+
+    @Test
+    public void testRippleScanStateStartsEmpty() {
+        // All ripples are hidden at USS creation — nothing is scanned yet.
+        VoidcraftUSS uss = VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L);
+        assertTrue(
+            uss.getScannedRipples()
+                .isEmpty(),
+            "a fresh system has no scanned ripples");
+        assertFalse(uss.isRippleScanned(0));
+        assertFalse(uss.isRippleScanned(100));
+        assertFalse(uss.isRippleScanned(342));
+    }
+
+    @Test
+    public void testRippleScanStateAccumulates() {
+        VoidcraftUSS uss = VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L)
+            .withRippleScanned(5)
+            .withRippleScanned(342)
+            .withRippleScanned(120);
+        assertTrue(uss.isRippleScanned(5));
+        assertTrue(uss.isRippleScanned(342));
+        assertTrue(uss.isRippleScanned(120));
+        assertFalse(uss.isRippleScanned(0), "an unmarked point is still hidden");
+        assertEquals(
+            3,
+            uss.getScannedRipples()
+                .size(),
+            "exactly the three marked points");
+        // duplicates are a no-op
+        assertEquals(
+            3,
+            uss.withRippleScanned(5)
+                .getScannedRipples()
+                .size());
+        // negative index is a no-op
+        assertEquals(
+            3,
+            uss.withRippleScanned(-1)
+                .getScannedRipples()
+                .size());
+    }
+
+    @Test
+    public void testRippleScanStateIsImmutable() {
+        VoidcraftUSS base = VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L)
+            .withRippleScanned(10);
+        VoidcraftUSS extended = base.withRippleScanned(20);
+        assertTrue(base.isRippleScanned(10), "the base keeps its own scanned set");
+        assertFalse(base.isRippleScanned(20), "the base is NOT affected by the extension");
+        assertTrue(extended.isRippleScanned(10) && extended.isRippleScanned(20), "the extension has both");
+    }
+
+    @Test
+    public void testNbtRoundTripRippleScanState() {
+        VoidcraftUSS original = VoidcraftUSS.ignite(3, USSStarType.SUPERMASSIVE, 42L)
+            .withRippleScanned(7)
+            .withRippleScanned(100)
+            .withRippleScanned(342);
+        NBTTagCompound nbt = new NBTTagCompound();
+        original.writeToNBT(nbt);
+        VoidcraftUSS loaded = VoidcraftUSS.readFromNBT(nbt);
+        assertNotNull(loaded);
+        assertTrue(loaded.isRippleScanned(7));
+        assertTrue(loaded.isRippleScanned(100));
+        assertTrue(loaded.isRippleScanned(342));
+        assertEquals(
+            3,
+            loaded.getScannedRipples()
+                .size());
+        assertFalse(loaded.isRippleScanned(0), "unmarked points stay hidden");
+    }
+
+    @Test
+    public void testNbtRoundTripEmptyRippleScanState() {
+        // A system with no scanned ripples round-trips with an empty set (the tag is simply absent).
+        VoidcraftUSS original = VoidcraftUSS.ignite(3, USSStarType.SUPERMASSIVE, 42L);
+        NBTTagCompound nbt = new NBTTagCompound();
+        original.writeToNBT(nbt);
+        assertFalse(nbt.hasKey(VoidcraftUSS.TAG_RIPPLE_SCANNED), "no tag when nothing is scanned");
+        VoidcraftUSS loaded = VoidcraftUSS.readFromNBT(nbt);
+        assertNotNull(loaded);
+        assertTrue(
+            loaded.getScannedRipples()
+                .isEmpty());
+    }
+
+    // endregion
+
     // region star tables
 
     @Test
@@ -149,6 +241,128 @@ public class VoidcraftUSSTest {
         assertEquals(0, USSConstants.clampTier(-100));
         assertEquals(8, USSConstants.clampTier(100));
         assertEquals(5, USSConstants.clampTier(5));
+    }
+
+    // endregion
+
+    // region USS variable space (programming framework, Phase C: the 256-slot global variable list)
+
+    @Test
+    public void testVariableSpaceStartsFresh() {
+        VoidcraftUSS uss = VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L);
+        assertNotNull(uss.getVariables(), "every USS carries a variable space");
+        assertEquals(
+            "",
+            uss.getVariables()
+                .get(0),
+            "unwritten slots read as the empty string");
+        assertEquals(
+            0,
+            uss.getVariables()
+                .writtenCount());
+        assertFalse(
+            uss.getVariables()
+                .isWritten(0));
+    }
+
+    @Test
+    public void testWithVariablesIsImmutableAndPreservedByWithChain() {
+        VoidcraftUSS uss = VoidcraftUSS.ignite(2, USSStarType.WHITE_DWARF, 7L);
+        USSVariableSpace written = USSVariableSpace.fresh()
+            .set(0, "hello")
+            .set(255, "edge");
+        VoidcraftUSS v = uss.withVariables(written);
+        assertNotSame(uss, v, "withVariables is copy-on-write");
+        assertEquals(
+            "hello",
+            v.getVariables()
+                .get(0));
+        assertEquals(
+            "edge",
+            v.getVariables()
+                .get(255),
+            "slot 255 is in range");
+        assertEquals(
+            2,
+            v.getVariables()
+                .writtenCount());
+        assertEquals(
+            0,
+            uss.getVariables()
+                .writtenCount(),
+            "the original is unaffected");
+        VoidcraftUSS more = v.withLifespan(11L)
+            .withShip("s1");
+        assertEquals(
+            "hello",
+            more.getVariables()
+                .get(0),
+            "the with* chain preserves the variable space");
+    }
+
+    @Test
+    public void testVariableSpaceNbtRoundTripIsSparse() {
+        VoidcraftUSS uss = VoidcraftUSS.ignite(1, USSStarType.SUPERMASSIVE, 5L)
+            .withVariables(
+                USSVariableSpace.fresh()
+                    .set(10, "a")
+                    .set(200, "b"));
+        NBTTagCompound nbt = new NBTTagCompound();
+        uss.writeToNBT(nbt);
+        NBTTagList list = nbt.getTagList(VoidcraftUSS.TAG_VARIABLES, 10); // a list of compounds is element type 10
+        assertEquals(2, list.tagCount(), "SPARSE — only written slots are serialized (not 256)");
+        VoidcraftUSS loaded = VoidcraftUSS.readFromNBT(nbt);
+        assertNotNull(loaded);
+        assertEquals(
+            "a",
+            loaded.getVariables()
+                .get(10));
+        assertEquals(
+            "b",
+            loaded.getVariables()
+                .get(200));
+        assertEquals(
+            "",
+            loaded.getVariables()
+                .get(11),
+            "an unwritten slot stays empty");
+        assertEquals(
+            2,
+            loaded.getVariables()
+                .writtenCount());
+    }
+
+    @Test
+    public void testVariableSpaceFreshOnColdAndIgnite() {
+        VoidcraftUSS v = VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L)
+            .withVariables(
+                USSVariableSpace.fresh()
+                    .set(3, "x"));
+        assertEquals(
+            "x",
+            v.getVariables()
+                .get(3));
+        assertEquals(
+            0,
+            v.toCold()
+                .getVariables()
+                .writtenCount(),
+            "a cold system starts with a fresh space");
+        assertEquals(
+            0,
+            VoidcraftUSS.ignite(4, USSStarType.WHITE_DWARF, 0L)
+                .getVariables()
+                .writtenCount(),
+            "a fresh ignition starts with a fresh space");
+    }
+
+    @Test
+    public void testFreshSpaceWritesNoVariablesTag() {
+        // A USS whose space is untouched keeps its tag lean (no empty list in the world file).
+        NBTTagCompound nbt = new NBTTagCompound();
+        VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L)
+            .writeToNBT(nbt);
+        assertFalse(nbt.hasKey(VoidcraftUSS.TAG_VARIABLES), "a fresh space writes nothing");
     }
 
     // endregion

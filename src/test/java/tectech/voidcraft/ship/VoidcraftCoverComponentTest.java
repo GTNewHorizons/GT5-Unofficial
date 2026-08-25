@@ -26,7 +26,7 @@ public class VoidcraftCoverComponentTest {
     @Test
     public void testMirroredMapping() {
         assertEquals(VoidcraftComponent.ENGINE, VoidcraftCoverComponent.THRUSTER_NOZZLE.getMirroredComponent());
-        assertEquals(VoidcraftComponent.UTILITY, VoidcraftCoverComponent.ARMOR_PLATE.getMirroredComponent());
+        assertEquals(VoidcraftComponent.FRAME, VoidcraftCoverComponent.ARMOR_PLATE.getMirroredComponent());
         assertEquals(VoidcraftComponent.CARGO_BAY, VoidcraftCoverComponent.CARGO_POD.getMirroredComponent());
         assertEquals(VoidcraftComponent.MINING_CENTRE, VoidcraftCoverComponent.MINING_ARRAY.getMirroredComponent());
         assertEquals(VoidcraftComponent.STARLIFTER_ARRAY, VoidcraftCoverComponent.STAR_SIPHON.getMirroredComponent());

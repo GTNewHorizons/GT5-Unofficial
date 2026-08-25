@@ -55,7 +55,25 @@ public class VoidcraftComponentTest {
                 component -> component.name()
                     .contains("CONTROLLER")));
         assertEquals(1, countComponents(c -> c == VoidcraftComponent.ENGINE));
-        assertTrue(countComponents(c -> c == VoidcraftComponent.UTILITY) >= 1);
+        assertEquals(1, countComponents(c -> c == VoidcraftComponent.FRAME));
+    }
+
+    @Test
+    public void testPass23PlaceableSet() {
+        // Pass 23 (user spec): covers are the primary components — the ONLY placeable full blocks are the
+        // controller and the frame; every other catalog entry is cover-only.
+        assertEquals(2, VoidcraftComponent.PLACEABLE.size(), "exactly two placeable full blocks");
+        assertTrue(VoidcraftComponent.PLACEABLE.contains(VoidcraftComponent.CONTROLLER));
+        assertTrue(VoidcraftComponent.PLACEABLE.contains(VoidcraftComponent.FRAME));
+        for (VoidcraftComponent component : VoidcraftComponent.ALL) {
+            if (component == VoidcraftComponent.CONTROLLER || component == VoidcraftComponent.FRAME) {
+                assertTrue(component.isPlaceable(), component + " must be placeable");
+                assertFalse(component.isCoverOnly());
+            } else {
+                assertFalse(component.isPlaceable(), component + " must be cover-only");
+                assertTrue(component.isCoverOnly());
+            }
+        }
     }
 
     private static int countComponents(java.util.function.Predicate<VoidcraftComponent> predicate) {

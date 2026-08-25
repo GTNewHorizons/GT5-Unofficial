@@ -167,7 +167,9 @@ public class USSFleetOrbitTest {
             double[] actual = USSFleetOrbit.planetAnchorPosition(distance, orbitSpeed, xAngle, zAngle, starSize, time);
 
             float radius = 0.2f + distance + 0.2f * starSize; // float, exactly like the renderer
-            double th = Math.toRadians((orbitSpeed * USSFleetOrbit.ORBIT_SPEED_SCALE * time) % 360f);
+            // Pass 30: the orbit angle is the RADIUS law (0.3·time/radius) — the random orbitSpeed no longer
+            // drives it (it is only passed through for signature stability).
+            double th = Math.toRadians((USSFleetOrbit.ORBIT_DEG_PER_TICK_PER_BLOCK * time / radius) % 360f);
             double ph = Math.toRadians(zAngle);
             double ps = Math.toRadians(xAngle);
             double[] v = rotY(th, new double[] { radius, 0.0, 0.0 });
@@ -192,27 +194,171 @@ public class USSFleetOrbitTest {
     }
 
     @Test
-    public void testHoverStaysInsideTheSpaceShell() {
-        // Shell bound (user rule: everything renders inside the 12.95-block bubble around the star center):
-        // outermost planet (distance 9.0) + the biggest star (tier 8 → size 1.4) + hover + planet half-height +
-        // worst-case swarm spread. Pass 11: the vertical bob is gone, so it no longer enters the bound.
+    public void testPlanetAndStarLifterBoundsRespectTheVoidcraftShell() {
+        // Pass 13/14 (user: "the planets are still very close to the star — orbital distance randomized between
+        // 3 blocks from the star all the way to the edges of the system"; then "ships exiting the dome isn't
+        // good — make the distance from the edge 4 blocks"):
+        // MAX_DISTANCE = USSConstants.SPACE_SHELL_RADIUS − 4 BY CONSTRUCTION, so the planet center always stays
+        // inside the Voidcraft dome (27.1) with the user's 4-block margin. (The legacy 12.95 bound is gone —
+        // the dome is per-machine; the legacy EoH machine keeps its own 12.95 default.)
         float starSize = 0.4f + 8f / 8.0f;
-        double radius = 0.2 + USSPlanets.MAX_DISTANCE + 0.2 * starSize;
-        // Pass 8/9: the miner hovers 0.5 above the planet SURFACE → add the cube's half-height (≤ 0.5·MAX_SCALE —
-        // the rendered planet is a unit cube of size spec.scale, surface at 0.5·scale). Worst case now
-        // 9.48 + 0.5 + 0.375 + 2.0 = 12.355 < 12.95.
-        double minerWorst = radius + USSConstants.HOVER_ABOVE_PLANET
+        double planetWorstCenter = 0.2 + USSPlanets.MAX_DISTANCE + 0.2 * starSize;
+        assertTrue(
+            USSPlanets.MAX_DISTANCE <= USSConstants.SPACE_SHELL_RADIUS - 4.0 + 1e-6,
+            "outermost orbit " + USSPlanets.MAX_DISTANCE
+                + " must be 4 blocks inside the dome "
+                + USSConstants.SPACE_SHELL_RADIUS);
+        assertTrue(
+            planetWorstCenter < USSConstants.SPACE_SHELL_RADIUS,
+            "worst-case planet center " + planetWorstCenter
+                + " must stay inside the dome "
+                + USSConstants.SPACE_SHELL_RADIUS);
+
+        // Pass 14: the 4-block margin now covers hover 0.5 + cube half ≤ 0.375 + spread 2.0 (pass 11 removed the
+        // bob) = 2.875 < 4.0 — even the outermost hovering ship stays INSIDE the dome (≈ 23.58 + 2.875 = 26.46
+        // vs 27.1), restoring the original "ships render inside the bubble" rule.
+        double minerWorst = planetWorstCenter + USSConstants.HOVER_ABOVE_PLANET
             + 0.5 * USSPlanets.MAX_SCALE
             + USSFleetOrbit.MAX_RADIUS;
-        assertTrue(minerWorst < 12.95, "worst-case miner hover " + minerWorst + " must stay inside 12.95");
-
+        assertTrue(
+            minerWorst < USSConstants.SPACE_SHELL_RADIUS,
+            "worst-case miner hover " + minerWorst + " must stay inside the dome " + USSConstants.SPACE_SHELL_RADIUS);
         // Starlifter over the star: 2.5 + spread (the star center is 2 below the anchor — well inside).
         double starWorst = Math.abs(USSFleetOrbit.STAR_CENTER_Y) + USSConstants.HOVER_ABOVE_STAR
             + USSFleetOrbit.MAX_RADIUS;
-        assertTrue(starWorst < 12.95, "worst-case Starlifter hover " + starWorst + " must stay inside 12.95");
+        assertTrue(
+            starWorst < USSConstants.SPACE_SHELL_RADIUS,
+            "worst-case Starlifter hover " + starWorst
+                + " must stay inside the dome "
+                + USSConstants.SPACE_SHELL_RADIUS);
         // and clears the largest star surface (radius ≤ 1.4)
         assertTrue(USSConstants.HOVER_ABOVE_STAR > 1.4, "Starlifter hover must clear the star surface");
     }
+
+    // region stateful-position pass (USSPosition) — the "distance within the solar system" model
+
+    @Test
+    public void testStarPositionIsTheStarCenter() {
+        USSPosition star = USSFleetOrbit.starPosition();
+        assertEquals(0.0, star.x(), 1e-9);
+        assertEquals(USSFleetOrbit.STAR_CENTER_Y, star.y(), 1e-9, "star center at (0,-2,0) in anchor coords");
+        assertEquals(0.0, star.z(), 1e-9);
+        assertEquals(USSPosition.starCenter(), star, "starPosition == USSPosition.starCenter");
+    }
+
+    @Test
+    public void testPlanetPositionMatchesAnchorMath() {
+        // planetPosition is the USSPosition wrapper over planetAnchorPosition — they must agree exactly.
+        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(null, 6.0, 1.4, 1.3, 0.5, 20.0, -12.0);
+        for (float t = 0.0f; t < 300.0f; t += 97.0f) {
+            USSPosition p = USSFleetOrbit.planetPosition(planet, 1.0f, t);
+            double[] a = USSFleetOrbit.planetAnchorPosition(6.0f, 1.3f, 20f, -12f, 1.0f, t);
+            assertEquals(a[0], p.x(), 1e-9, "X at t=" + t);
+            assertEquals(a[1], p.y(), 1e-9, "Y at t=" + t);
+            assertEquals(a[2], p.z(), 1e-9, "Z at t=" + t);
+        }
+    }
+
+    @Test
+    public void testShellPointIsDeterministicAndOnTheSphere() {
+        USSPosition center = USSPosition.of(3.0, -2.0, 5.0);
+        double radius = 1.5;
+        for (int i = 0; i < 200; i++) {
+            long seed = i * 7919 + 1;
+            USSPosition a = USSFleetOrbit.shellPoint(center, radius, seed);
+            USSPosition b = USSFleetOrbit.shellPoint(center, radius, seed);
+            assertEquals(a, b, "same seed → same point (bit-identical, server/client agree)");
+            assertEquals(
+                radius,
+                center.distanceTo(a),
+                1e-9,
+                "point is EXACTLY radius from the center (seed=" + seed + ")");
+        }
+    }
+
+    @Test
+    public void testShellPointSpreadsAroundTheSphere() {
+        // "not only above it, but on any side" — a fleet of shells must occupy points on BOTH the +Y and -Y hemispheres
+        // (and off-axis), not stack on one pole.
+        USSPosition center = USSPosition.zero();
+        boolean sawAbove = false;
+        boolean sawBelow = false;
+        boolean sawOffAxis = false;
+        for (int i = 0; i < 64; i++) {
+            USSPosition p = USSFleetOrbit.shellPoint(center, 1.0, i * 7919 + 1);
+            if (p.y() > 0.1) {
+                sawAbove = true;
+            }
+            if (p.y() < -0.1) {
+                sawBelow = true;
+            }
+            if (Math.abs(p.x()) > 0.1 || Math.abs(p.z()) > 0.1) {
+                sawOffAxis = true;
+            }
+        }
+        assertTrue(sawAbove, "some shell points sit above the center (the +Y hemisphere is used)");
+        assertTrue(sawBelow, "some shell points sit below the center (the -Y hemisphere is used)");
+        assertTrue(sawOffAxis, "some shell points are off the vertical axis (the equator is used)");
+    }
+
+    @Test
+    public void testShellPointRadiusZeroReturnsTheCenter() {
+        USSPosition center = USSPosition.of(1.0, 2.0, 3.0);
+        assertEquals(center, USSFleetOrbit.shellPoint(center, 0.0, 42), "radius 0 → the center itself");
+        assertEquals(center, USSFleetOrbit.shellPoint(center, -1.0, 42), "negative radius → the center itself");
+        // null center defaults to the origin — the point is radius from the origin.
+        assertEquals(
+            1.0,
+            USSFleetOrbit.shellPoint(null, 1.0, 42)
+                .length(),
+            1e-9,
+            "null center → the origin");
+    }
+
+    @Test
+    public void testNudgeIsDeterministicAndBounded() {
+        USSPosition center = USSPosition.of(2.0, -2.0, -3.0);
+        double maxRadius = 1.2;
+        for (int i = 0; i < 200; i++) {
+            long seed = i * 7919 + 1;
+            USSPosition a = USSFleetOrbit.nudge(center, maxRadius, seed);
+            USSPosition b = USSFleetOrbit.nudge(center, maxRadius, seed);
+            assertEquals(a, b, "same seed → same nudge (stable cloud, no flicker)");
+            assertTrue(
+                center.distanceTo(a) <= maxRadius + 1e-9,
+                "nudge stays within maxRadius (seed=" + seed + ", got " + center.distanceTo(a) + ")");
+        }
+    }
+
+    @Test
+    public void testNudgeCreatesCloudsNotOverlaps() {
+        // The user's "clouds of Voidcraft instead of overlapping them all": a swarm targeting one ship must occupy
+        // DISTINCT spots (at least 10 distinct among 50), all within the nudge bound.
+        USSPosition center = USSPosition.zero();
+        int distinct = 0;
+        USSPosition[] seen = new USSPosition[50];
+        for (int i = 0; i < 50; i++) {
+            seen[i] = USSFleetOrbit.nudge(center, USSFleetOrbit.MAX_RADIUS, i * 7919 + 1);
+        }
+        outer: for (int i = 0; i < seen.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (seen[i].distanceTo(seen[j]) > 1e-6) {
+                    distinct++;
+                    continue outer;
+                }
+            }
+        }
+        assertTrue(distinct >= 10, "only " + distinct + " distinct cloud spots among 50 targeting ships");
+    }
+
+    @Test
+    public void testNudgeRadiusZeroReturnsTheCenter() {
+        USSPosition center = USSPosition.of(-1.0, 0.5, 2.0);
+        assertEquals(center, USSFleetOrbit.nudge(center, 0.0, 42), "maxRadius 0 → the center itself");
+        assertEquals(center, USSFleetOrbit.nudge(center, -5.0, 42), "negative maxRadius → the center itself");
+    }
+
+    // endregion
 
     private static double[] rotX(double a, double[] v) {
         double c = Math.cos(a);
