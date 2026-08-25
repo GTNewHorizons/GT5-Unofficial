@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ import ggfab.GGItemList;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -27,7 +29,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchSolidifierGui;
 import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport {
+public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport, INonConsumedItemDisplay {
 
     public static final int moldSlot = 2;
     public static final int circuitSlot = 3;
@@ -103,6 +105,16 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchSolidifier(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        // the circuit is already shown by the ghost circuit suffix
+        ItemStack mold = getStackInSlot(moldSlot);
+        if (mold == null || mRecipeMap == null) return Collections.emptyList();
+        if (!mRecipeMap.getNonConsumedInputItemIds()
+            .contains(GTUtility.ItemId.create(mold))) return Collections.emptyList();
+        return Collections.singletonList(mold);
     }
 
     public List<ItemStack> getNonConsumableItems() {
