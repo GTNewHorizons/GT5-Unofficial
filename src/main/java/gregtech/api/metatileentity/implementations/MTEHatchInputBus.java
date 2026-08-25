@@ -547,34 +547,6 @@ public class MTEHatchInputBus extends MTEHatch
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-
-        NBTTagCompound tag = super.getDescriptionData();
-        for (int i = 0; i < mInventory.length; i++) {
-            ItemStack stack = mInventory[i];
-            if (stack != null) {
-                NBTTagCompound s = new NBTTagCompound();
-                stack.writeToNBT(s);
-                tag.setTag("slot" + i, s);
-            }
-        }
-        return tag;
-    }
-
-    @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        for (int i = 0; i < mInventory.length; i++) {
-            String key = "slot" + i;
-            if (data.hasKey(key)) {
-                mInventory[i] = ItemStack.loadItemStackFromNBT(data.getCompoundTag(key));
-            } else {
-                mInventory[i] = null;
-            }
-        }
-        super.onDescriptionPacket(data);
-    }
-
-    @Override
     public String[] getDescription() {
         return GTSplit.splitLocalizedFormatted(
             getSlots(mTier) >= 2 ? "gt.blockmachines.input_bus.desc" : "gt.blockmachines.input_bus.singular.desc",
