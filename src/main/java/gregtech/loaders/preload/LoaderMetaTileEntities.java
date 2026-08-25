@@ -253,8 +253,8 @@ import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamStabilize
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCollider;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
-import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
+import gregtech.common.tileentities.machines.multi.compressor.MTEHatchBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
@@ -10283,7 +10283,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Toxic Residue Sensor Hatch",
                 7).getStackForm(1));
         ItemList.Hatch_BlackHoleUtility.set(
-            new MTEBlackHoleUtility(
+            new MTEHatchBlackHoleUtility(
                 HATCH_BLACK_HOLE_UTILITY.ID,
                 "hatch.blackholeutility",
                 "Black Hole Utility Hatch",

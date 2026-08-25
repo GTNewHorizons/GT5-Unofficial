@@ -156,7 +156,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private int catalyzingCounter = 0;
     private float blackHoleStability = 100;
     private final ArrayList<MTEHatchInput> spacetimeHatches = new ArrayList<>();
-    private final ArrayList<MTEBlackHoleUtility> utilityHatches = new ArrayList<>();
+    private final ArrayList<MTEHatchBlackHoleUtility> utilityHatches = new ArrayList<>();
 
     /**
      * 1: Off 2: On, stable 3: On, unstable 4: On, superstable
@@ -191,7 +191,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     public boolean addSensorHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEBlackHoleUtility sensor) {
+        if (aMetaTileEntity instanceof MTEHatchBlackHoleUtility sensor) {
             sensor.updateTexture(aBaseCasingIndex);
             return this.utilityHatches.add(sensor);
         }
@@ -200,7 +200,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     private enum SpecialHatchElement implements IHatchElement<MTEBlackHoleCompressor> {
 
-        UtilityHatch(MTEBlackHoleCompressor::addSensorHatchToMachineList, MTEBlackHoleUtility.class) {
+        UtilityHatch(MTEBlackHoleCompressor::addSensorHatchToMachineList, MTEHatchBlackHoleUtility.class) {
 
             @Override
             public long count(MTEBlackHoleCompressor bhc) {
@@ -685,13 +685,13 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         // Update all the utility hatches
         // Redstone pulse will be 5 ticks (0.25s)
         if (aTick % 20 == 5) {
-            for (MTEBlackHoleUtility hatch : utilityHatches) {
+            for (MTEHatchBlackHoleUtility hatch : utilityHatches) {
                 hatch.cycleMiddle();
             }
         }
 
         if (aTick % 20 != 0) return;
-        for (MTEBlackHoleUtility hatch : utilityHatches) {
+        for (MTEHatchBlackHoleUtility hatch : utilityHatches) {
             hatch.cycleStart();
         }
 
@@ -755,7 +755,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         catalyzingCounter = 0;
         if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
         collapseTimer = 40;
-        for (MTEBlackHoleUtility hatch : utilityHatches) {
+        for (MTEHatchBlackHoleUtility hatch : utilityHatches) {
             hatch.blackHoleClosed();
         }
     }

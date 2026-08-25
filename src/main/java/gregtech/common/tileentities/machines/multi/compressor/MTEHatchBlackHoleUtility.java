@@ -1,9 +1,6 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -15,62 +12,21 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.modularui.hatch.MTEBlackHoleUtilityGui;
+import gregtech.common.gui.modularui.hatch.MTEHatchBlackHoleUtilityGui;
+import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTEBlackHoleUtility extends MTEHatch {
-
-    private boolean isOn = false;
+public class MTEHatchBlackHoleUtility extends MTEHatchRedstoneBase {
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
 
-    public MTEBlackHoleUtility(int aID, String aName, String aNameRegional, int aTier) {
+    public MTEHatchBlackHoleUtility(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Optional hatch for Pseudostable Black Hole Containment Field.");
     }
 
-    public MTEBlackHoleUtility(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchBlackHoleUtility(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean allowGeneralRedstoneOutput() {
-        return true;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {
-        getBaseMetaTileEntity().setActive(true);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        openGui(aPlayer);
-        return true;
     }
 
     // 1 -> static
@@ -95,58 +51,42 @@ public class MTEBlackHoleUtility extends MTEHatch {
     }
 
     @Override
+    public boolean supportsInvertedSignal() {
+        return false;
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         mode = aNBT.getInteger("mode");
-        isOn = aNBT.getBoolean("isOn");
-        if (mode == 2) {
-            // pulse off to avoid skipped pulses during restart
-            isOn = false;
-        }
         super.loadNBTData(aNBT);
+        if (mode == 2) {
+            setRedstoneSignal(false);
+        }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mode", mode);
-        aNBT.setBoolean("isOn", isOn);
         super.saveNBTData(aNBT);
     }
 
     public void cycleStart() {
-        isOn = true;
+        setRedstoneSignal(true);
     }
 
     public void cycleMiddle() {
         if (mode == 2) {
-            isOn = false;
+            setRedstoneSignal(false);
         }
     }
 
     public void blackHoleClosed() {
-        isOn = false;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (!aBaseMetaTileEntity.isServerSide()) {
-            super.onPostTick(aBaseMetaTileEntity, aTick);
-            return;
-        }
-        if (isOn) {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 15);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 0);
-            }
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
+        setRedstoneSignal(false);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEBlackHoleUtility(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchBlackHoleUtility(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -163,12 +103,7 @@ public class MTEBlackHoleUtility extends MTEHatch {
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBlackHoleUtilityGui(this).build(data, syncManager, uiSettings);
+        return new MTEHatchBlackHoleUtilityGui(this).build(data, syncManager, uiSettings);
     }
 }
