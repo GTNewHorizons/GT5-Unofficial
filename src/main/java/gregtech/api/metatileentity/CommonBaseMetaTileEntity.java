@@ -633,7 +633,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
      * Shortens item names like "Mold (Ingot)" to just "Ingot", so the interface name stays readable. Names without a
      * trailing parenthesised part are returned unchanged.
      */
-    private static String getShortItemDisplayName(ItemStack stack) {
+    public static String getShortItemDisplayName(ItemStack stack) {
         String name = stack.getDisplayName();
         if (!name.endsWith(")")) return name;
         int open = name.lastIndexOf('(');
