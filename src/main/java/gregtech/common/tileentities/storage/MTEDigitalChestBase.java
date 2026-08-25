@@ -74,6 +74,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IMTERenderer {
 
+    private static final long RENDER_UPDATE_INTERVAL = 20;
+
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
@@ -138,7 +140,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     public ForgeDirection getDisplayFacing() {
         IGregTechTileEntity base = getBaseMetaTileEntity();
-        return base == null ? ForgeDirection.WEST : base.getFrontFacing()
+        if (base == null) return ForgeDirection.WEST;
+        return base.getFrontFacing()
             .getOpposite();
     }
 
@@ -426,7 +429,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         boolean itemChanged = !GTUtility.areStacksEqualOrNull(stack, lastRenderItem);
         boolean countChanged = count != lastRenderCount;
         if (!itemChanged && !countChanged) return;
-        if (!itemChanged && lastRenderPacketTick != Long.MIN_VALUE && aTimer - lastRenderPacketTick < 20) return;
+        if (!itemChanged && lastRenderPacketTick != Long.MIN_VALUE
+            && aTimer - lastRenderPacketTick < RENDER_UPDATE_INTERVAL) return;
 
         lastRenderItem = stack == null ? null : stack.copy();
         lastRenderCount = count;

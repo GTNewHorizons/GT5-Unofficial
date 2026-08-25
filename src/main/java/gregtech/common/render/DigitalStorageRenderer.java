@@ -30,7 +30,6 @@ import org.lwjgl.opengl.GL11;
 import com.cleanroommc.modularui.utils.GlStateManager;
 
 import codechicken.lib.render.TextureUtils;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -47,15 +46,27 @@ import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 @SideOnly(Side.CLIENT)
 public final class DigitalStorageRenderer {
 
-    private static final double COVER_DIF = 0.001D;
-    private static final double FLUID_SIDE_MIN = 1 / 16.0 + COVER_DIF;
-    private static final double FLUID_SIDE_MAX = 15 / 16.0 - COVER_DIF;
+    private static final double RENDER_EPSILON = 0.001D;
+    private static final double DISPLAY_RENDER_DISTANCE = 64;
+
+    private static final double CHEST_ITEM_MIN_RENDER_DISTANCE = 8;
+    private static final double CHEST_ITEM_MAX_RENDER_DISTANCE = 20;
+    private static final double CHEST_ITEM_HEIGHT = 0.25D;
+    private static final float CHEST_ITEM_SCALE = 1.5F;
+    private static final int CHEST_ITEM_ROTATION_TICKS = 40;
+
+    private static final double FLUID_SIDE_MIN = 1 / 16.0 + RENDER_EPSILON;
+    private static final double FLUID_SIDE_MAX = 15 / 16.0 - RENDER_EPSILON;
     private static final double FLUID_MIN_Y = 2 / 16.0;
     private static final double FLUID_MAX_Y = 14 / 16.0;
-    private static final double TEXT_DEPTH = 0.002D;
-    private static final int FLUID_LEVELS = 64;
-    private static final double[] GLASS_BOX = { 1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0,
-        15 / 16.0 };
+
+    private static final float CHEST_TEXT_DEPTH = -1 / 16f;
+    private static final int CHEST_TEXT_Y = 40;
+    private static final int CHEST_TEXT_MAX_WIDTH = 54;
+    private static final float TANK_TEXT_DEPTH = 0.002F;
+    private static final int TANK_TEXT_Y = 2;
+    private static final int TANK_TEXT_MAX_WIDTH = 38;
+    private static final double[] GLASS_BOX = { 1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0, 15 / 16.0 };
     private static final ForgeDirection[] HORIZONTAL_DIRECTIONS = { NORTH, SOUTH, WEST, EAST };
     private static final EnumMap<ForgeDirection, double[]> FRAME_BOXES = new EnumMap<>(ForgeDirection.class);
     private static final ITexture[] EMPTY_TEXTURES = new ITexture[0];
@@ -64,12 +75,12 @@ public final class DigitalStorageRenderer {
     private static final ThreadLocal<FluidStack> INVENTORY_FLUID = new ThreadLocal<>();
 
     static {
-        FRAME_BOXES.put(UP, box(0, 14, 0, 16, 16, 16));
-        FRAME_BOXES.put(DOWN, box(0, 0, 0, 16, 2, 16));
-        FRAME_BOXES.put(WEST, box(0, 0, 0, 2, 16, 16));
-        FRAME_BOXES.put(EAST, box(14, 0, 0, 16, 16, 16));
-        FRAME_BOXES.put(SOUTH, box(0, 0, 14, 16, 16, 16));
-        FRAME_BOXES.put(NORTH, box(0, 0, 0, 16, 16, 2));
+        FRAME_BOXES.put(UP, pixelBox(0, 14, 0, 16, 16, 16));
+        FRAME_BOXES.put(DOWN, pixelBox(0, 0, 0, 16, 2, 16));
+        FRAME_BOXES.put(WEST, pixelBox(0, 0, 0, 2, 16, 16));
+        FRAME_BOXES.put(EAST, pixelBox(14, 0, 0, 16, 16, 16));
+        FRAME_BOXES.put(SOUTH, pixelBox(0, 0, 14, 16, 16, 16));
+        FRAME_BOXES.put(NORTH, pixelBox(0, 0, 0, 16, 16, 2));
     }
 
     private DigitalStorageRenderer() {}
@@ -118,19 +129,19 @@ public final class DigitalStorageRenderer {
         IGregTechTileEntity base = mte.getBaseMetaTileEntity();
         ForgeDirection outputFacing = validDisplayFacing(base.getFrontFacing());
         ITexture[][] textures = new ITexture[6][];
-        ITexture[] casingTextures = new ITexture[6];
+        ITexture[] windowCasings = new ITexture[6];
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             ITexture[] sideTextures = base.getTexture(ctx.getBlock(), side);
             textures[side.ordinal()] = sideTextures == null ? EMPTY_TEXTURES : sideTextures;
             if (isTankWindowSide(side, outputFacing, base)) {
-                casingTextures[side.ordinal()] = sideTextures[0];
+                windowCasings[side.ordinal()] = sideTextures[0];
                 textures[side.ordinal()] = EMPTY_TEXTURES;
             }
         }
 
         STANDARD_RENDERER.get()
             .renderStandardBlock(ctx, textures);
-        renderTankWindows(ctx, casingTextures);
+        renderTankWindows(ctx, windowCasings);
         restoreFullBounds(ctx);
         return true;
     }
@@ -138,18 +149,18 @@ public final class DigitalStorageRenderer {
     public static boolean renderTankInInventory(MTEDigitalTankBase mte, ISBRInventoryContext ctx) {
         ForgeDirection outputFacing = DOWN;
         ITexture[][] textures = new ITexture[6][];
-        ITexture[] casingTextures = new ITexture[6];
+        ITexture[] windowCasings = new ITexture[6];
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             ITexture[] sideTextures = mte.getTexture(null, side, outputFacing, -1, true, false);
             textures[side.ordinal()] = sideTextures == null ? EMPTY_TEXTURES : sideTextures;
             if (isTankWindowSide(side, outputFacing, null)) {
-                casingTextures[side.ordinal()] = sideTextures[0];
+                windowCasings[side.ordinal()] = sideTextures[0];
                 textures[side.ordinal()] = EMPTY_TEXTURES;
             }
         }
 
         renderInventoryFaces(ctx, textures);
-        renderTankWindows(ctx, casingTextures);
+        renderTankWindows(ctx, windowCasings);
         FluidStack fluidStack = INVENTORY_FLUID.get();
         if (fluidStack != null) {
             renderTankFluid(fluidStack, mte.getDisplayFillLevel(fluidStack.amount), 0, 0, 0);
@@ -159,8 +170,8 @@ public final class DigitalStorageRenderer {
     }
 
     public static void renderTankItem(ItemStack stack, MTEDigitalTankBase mte) {
-        FluidStack fluidStack = stack.hasTagCompound()
-            ? FluidStack.loadFluidStackFromNBT(stack.getTagCompound()
+        FluidStack fluidStack = stack.hasTagCompound() ? FluidStack.loadFluidStackFromNBT(
+            stack.getTagCompound()
                 .getCompoundTag("mFluid"))
             : null;
         INVENTORY_FLUID.set(fluidStack);
@@ -173,40 +184,42 @@ public final class DigitalStorageRenderer {
         }
     }
 
-    private static void renderTankWindows(ISBRContext ctx, ITexture[] casingTextures) {
+    private static void renderTankWindows(ISBRContext ctx, ITexture[] windowCasings) {
         ITexture casing = null;
         for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
-            if (casingTextures[side.ordinal()] != null) {
-                renderTankWindow(ctx, side, casingTextures[side.ordinal()]);
-                casing = casingTextures[side.ordinal()];
+            if (windowCasings[side.ordinal()] != null) {
+                renderTankWindow(ctx, side, windowCasings[side.ordinal()]);
+                casing = windowCasings[side.ordinal()];
             }
         }
         if (casing != null) {
-            renderTankCorner(ctx, casingTextures, NORTH, WEST);
-            renderTankCorner(ctx, casingTextures, NORTH, EAST);
-            renderTankCorner(ctx, casingTextures, SOUTH, WEST);
-            renderTankCorner(ctx, casingTextures, SOUTH, EAST);
+            renderTankCorner(ctx, windowCasings, NORTH, WEST);
+            renderTankCorner(ctx, windowCasings, NORTH, EAST);
+            renderTankCorner(ctx, windowCasings, SOUTH, WEST);
+            renderTankCorner(ctx, windowCasings, SOUTH, EAST);
+            // Seal the floor, ceiling, and non-window sides behind translucent fluid.
             renderFace(ctx, UP, FRAME_BOXES.get(DOWN), casing);
             renderFace(ctx, DOWN, FRAME_BOXES.get(UP), casing);
             for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
-                if (casingTextures[side.ordinal()] == null) {
+                if (windowCasings[side.ordinal()] == null) {
                     renderFace(ctx, side.getOpposite(), FRAME_BOXES.get(side), casing);
                 }
             }
         }
     }
 
-    private static void renderTankCorner(ISBRContext ctx, ITexture[] casingTextures, ForgeDirection northSouth,
+    private static void renderTankCorner(ISBRContext ctx, ITexture[] windowCasings, ForgeDirection northSouth,
         ForgeDirection eastWest) {
-        ITexture casing = casingTextures[northSouth.ordinal()];
-        if (casing == null || casingTextures[eastWest.ordinal()] == null) return;
+        ITexture casing = windowCasings[northSouth.ordinal()];
+        if (casing == null || windowCasings[eastWest.ordinal()] == null) return;
         double minX = eastWest == WEST ? 1 : 14;
         double minZ = northSouth == NORTH ? 1 : 14;
-        double[] bounds = box(minX, 0, minZ, minX + 1, 16, minZ + 1);
-        if (eastWest == WEST) bounds[0] -= 2 * COVER_DIF;
-        else bounds[3] += 2 * COVER_DIF;
-        if (northSouth == NORTH) bounds[2] -= 2 * COVER_DIF;
-        else bounds[5] += 2 * COVER_DIF;
+        double[] bounds = pixelBox(minX, 0, minZ, minX + 1, 16, minZ + 1);
+        // Overlap the jamb inset so the z-fighting offset does not leave a seam.
+        if (eastWest == WEST) bounds[0] -= 2 * RENDER_EPSILON;
+        else bounds[3] += 2 * RENDER_EPSILON;
+        if (northSouth == NORTH) bounds[2] -= 2 * RENDER_EPSILON;
+        else bounds[5] += 2 * RENDER_EPSILON;
         renderFace(ctx, northSouth.getOpposite(), bounds, casing);
         renderFace(ctx, eastWest.getOpposite(), bounds, casing);
     }
@@ -222,7 +235,9 @@ public final class DigitalStorageRenderer {
 
     private static ITexture getCasingTexture(@Nullable ITexture[] textures, MTEDigitalChestBase mte) {
         if (textures != null && textures.length > 0 && textures[0] != null) return textures[0];
-        int color = mte.getBaseMetaTileEntity() == null ? 0 : mte.getBaseMetaTileEntity().getColorization() + 1;
+        int color = mte.getBaseMetaTileEntity() == null ? 0
+            : mte.getBaseMetaTileEntity()
+                .getColorization() + 1;
         return MACHINE_CASINGS[mte.mTier][Math.max(0, Math.min(color, MACHINE_CASINGS[mte.mTier].length - 1))];
     }
 
@@ -271,20 +286,20 @@ public final class DigitalStorageRenderer {
         double maxX = side == WEST ? 1 : 16;
         double minZ = side == SOUTH ? 15 : 0;
         double maxZ = side == NORTH ? 1 : 16;
-        double[] bottom = box(minX, 0, minZ, maxX, 2, maxZ);
-        double[] top = box(minX, 14, minZ, maxX, 16, maxZ);
+        double[] bottom = pixelBox(minX, 0, minZ, maxX, 2, maxZ);
+        double[] top = pixelBox(minX, 14, minZ, maxX, 16, maxZ);
         double[] left;
         double[] right;
         ForgeDirection leftFacing;
         ForgeDirection rightFacing;
         if (side == NORTH || side == SOUTH) {
-            left = box(0, 0, minZ, 2, 16, maxZ);
-            right = box(14, 0, minZ, 16, 16, maxZ);
+            left = pixelBox(0, 0, minZ, 2, 16, maxZ);
+            right = pixelBox(14, 0, minZ, 16, 16, maxZ);
             leftFacing = EAST;
             rightFacing = WEST;
         } else {
-            left = box(minX, 0, 0, maxX, 16, 2);
-            right = box(minX, 0, 14, maxX, 16, 16);
+            left = pixelBox(minX, 0, 0, maxX, 16, 2);
+            right = pixelBox(minX, 0, 14, maxX, 16, 16);
             leftFacing = SOUTH;
             rightFacing = NORTH;
         }
@@ -319,9 +334,9 @@ public final class DigitalStorageRenderer {
             .setRenderBounds(0, 0, 0, 1, 1, 1);
     }
 
-    private static double[] box(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
-        return new double[] { minX / 16 + COVER_DIF, minY / 16 + COVER_DIF, minZ / 16 + COVER_DIF,
-            maxX / 16 - COVER_DIF, maxY / 16 - COVER_DIF, maxZ / 16 - COVER_DIF };
+    private static double[] pixelBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        return new double[] { minX / 16 + RENDER_EPSILON, minY / 16 + RENDER_EPSILON, minZ / 16 + RENDER_EPSILON,
+            maxX / 16 - RENDER_EPSILON, maxY / 16 - RENDER_EPSILON, maxZ / 16 - RENDER_EPSILON };
     }
 
     private static ForgeDirection validDisplayFacing(ForgeDirection facing) {
@@ -338,10 +353,9 @@ public final class DigitalStorageRenderer {
         };
     }
 
-    public static void renderTankStack(MTEDigitalTankBase mte, double x, double y, double z,
-        float timeSinceLastTick) {
+    public static void renderTankStack(MTEDigitalTankBase mte, double x, double y, double z, float timeSinceLastTick) {
         IGregTechTileEntity base = mte.getBaseMetaTileEntity();
-        if (base == null || base.getWorld() == null || !canRender(x, y, z, 64)) return;
+        if (base == null || base.getWorld() == null || !canRender(x, y, z, DISPLAY_RENDER_DISTANCE)) return;
 
         ForgeDirection outputFacing = validDisplayFacing(base.getFrontFacing());
         FluidStack fluidStack = mte.getClientDisplayFluidStack();
@@ -352,7 +366,16 @@ public final class DigitalStorageRenderer {
             String amountText = mte.getClientDisplayAmountText();
             for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
                 if (isTankWindowSide(side, outputFacing, base)) {
-                    renderAmountText(x, y, z, amountText, side, (float) TEXT_DEPTH, 2, true, 38);
+                    renderAmountText(
+                        x,
+                        y,
+                        z,
+                        amountText,
+                        side,
+                        TANK_TEXT_DEPTH,
+                        TANK_TEXT_Y,
+                        true,
+                        TANK_TEXT_MAX_WIDTH);
                 }
             }
         }
@@ -366,7 +389,9 @@ public final class DigitalStorageRenderer {
         float lastBrightnessX = OpenGlHelper.lastBrightnessX;
         float lastBrightnessY = OpenGlHelper.lastBrightnessY;
         GL11.glPushAttrib(
-            GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_TEXTURE_BIT | GL11.GL_LIGHTING_BIT
+            GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT
+                | GL11.GL_TEXTURE_BIT
+                | GL11.GL_LIGHTING_BIT
                 | GL11.GL_CURRENT_BIT);
         try {
             GL11.glDisable(GL11.GL_CULL_FACE);
@@ -396,7 +421,7 @@ public final class DigitalStorageRenderer {
     }
 
     private static void renderTankFluidVolume(double x, double y, double z, IIcon icon, int fillLevel) {
-        double fill = fillLevel / (double) FLUID_LEVELS;
+        double fill = fillLevel / (double) MTEDigitalTankBase.DISPLAY_FILL_LEVELS;
         double top = FLUID_MIN_Y + (FLUID_MAX_Y - FLUID_MIN_Y) * fill;
         double uMin = icon.getMinU();
         double uMax = icon.getMaxU();
@@ -412,31 +437,37 @@ public final class DigitalStorageRenderer {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
 
+        // North face, min Z
         tessellator.addVertexWithUV(minX, minY, minZ, uMin, vMax);
         tessellator.addVertexWithUV(maxX, minY, minZ, uMax, vMax);
         tessellator.addVertexWithUV(maxX, maxY, minZ, uMax, vTop);
         tessellator.addVertexWithUV(minX, maxY, minZ, uMin, vTop);
 
+        // South face, max Z
         tessellator.addVertexWithUV(maxX, minY, maxZ, uMin, vMax);
         tessellator.addVertexWithUV(minX, minY, maxZ, uMax, vMax);
         tessellator.addVertexWithUV(minX, maxY, maxZ, uMax, vTop);
         tessellator.addVertexWithUV(maxX, maxY, maxZ, uMin, vTop);
 
+        // West face, min X
         tessellator.addVertexWithUV(minX, minY, maxZ, uMin, vMax);
         tessellator.addVertexWithUV(minX, minY, minZ, uMax, vMax);
         tessellator.addVertexWithUV(minX, maxY, minZ, uMax, vTop);
         tessellator.addVertexWithUV(minX, maxY, maxZ, uMin, vTop);
 
+        // East face, max X
         tessellator.addVertexWithUV(maxX, minY, minZ, uMin, vMax);
         tessellator.addVertexWithUV(maxX, minY, maxZ, uMax, vMax);
         tessellator.addVertexWithUV(maxX, maxY, maxZ, uMax, vTop);
         tessellator.addVertexWithUV(maxX, maxY, minZ, uMin, vTop);
 
+        // Bottom face, min Y
         tessellator.addVertexWithUV(minX, minY, minZ, uMin, vMin);
         tessellator.addVertexWithUV(maxX, minY, minZ, uMax, vMin);
         tessellator.addVertexWithUV(maxX, minY, maxZ, uMax, vMax);
         tessellator.addVertexWithUV(minX, minY, maxZ, uMin, vMax);
 
+        // Top face, max Y
         tessellator.addVertexWithUV(minX, maxY, maxZ, uMin, vMax);
         tessellator.addVertexWithUV(maxX, maxY, maxZ, uMax, vMax);
         tessellator.addVertexWithUV(maxX, maxY, minZ, uMax, vMin);
@@ -455,26 +486,28 @@ public final class DigitalStorageRenderer {
         ItemStack content = mte.getClientDisplayItem();
         if (content == null) return;
 
-        if (canRender(
-            x,
-            y,
-            z,
-            8 * Math.min(Math.max(Minecraft.getMinecraft().gameSettings.renderDistanceChunks / 8.0, 1.0), 2.5))) {
+        double itemRenderDistance = Math.min(
+            Math.max(Minecraft.getMinecraft().gameSettings.renderDistanceChunks, CHEST_ITEM_MIN_RENDER_DISTANCE),
+            CHEST_ITEM_MAX_RENDER_DISTANCE);
+        if (canRender(x, y, z, itemRenderDistance)) {
             EntityItem entityItem = mte.getClientDisplayEntity();
             if (entityItem != null) {
-                float tick = base.getWorld().getTotalWorldTime() + timeSinceLastTick;
+                float tick = base.getWorld()
+                    .getTotalWorldTime() + timeSinceLastTick;
                 float lastBrightnessX = OpenGlHelper.lastBrightnessX;
                 float lastBrightnessY = OpenGlHelper.lastBrightnessY;
                 GL11.glPushAttrib(
-                    GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_CURRENT_BIT | GL11.GL_LIGHTING_BIT
+                    GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT
+                        | GL11.GL_CURRENT_BIT
+                        | GL11.GL_LIGHTING_BIT
                         | GL11.GL_TEXTURE_BIT
                         | GL11.GL_DEPTH_BUFFER_BIT);
                 GlStateManager.pushMatrix();
                 try {
                     GlStateManager.translate(x, y, z);
-                    GlStateManager.translate(0.5D, 0.25D, 0.5D);
-                    GlStateManager.rotate(tick * (float) Math.PI * 2 / 40, 0, 1, 0);
-                    GlStateManager.scale(1.5f, 1.5f, 1.5f);
+                    GlStateManager.translate(0.5D, CHEST_ITEM_HEIGHT, 0.5D);
+                    GlStateManager.rotate(tick * (float) Math.PI * 2 / CHEST_ITEM_ROTATION_TICKS, 0, 1, 0);
+                    GlStateManager.scale(CHEST_ITEM_SCALE, CHEST_ITEM_SCALE, CHEST_ITEM_SCALE);
                     RenderManager.instance.renderEntityWithPosYaw(entityItem, 0, 0, 0, 0, 0);
                 } finally {
                     GlStateManager.popMatrix();
@@ -491,24 +524,23 @@ public final class DigitalStorageRenderer {
                 z,
                 mte.getClientDisplayItemCountText(),
                 mte.getDisplayFacing(),
-                -1 / 16f,
-                40,
+                CHEST_TEXT_DEPTH,
+                CHEST_TEXT_Y,
                 false,
-                54);
+                CHEST_TEXT_MAX_WIDTH);
         }
     }
 
-    private static void renderAmountText(double x, double y, double z, String amountText,
-        ForgeDirection frontFacing, float faceOffset, int textY, boolean shadow, int maxTextWidth) {
-        if (frontFacing == ForgeDirection.UNKNOWN || !canRender(x, y, z, 64)) return;
+    private static void renderAmountText(double x, double y, double z, String amountText, ForgeDirection frontFacing,
+        float faceOffset, int textY, boolean shadow, int maxTextWidth) {
+        if (frontFacing == ForgeDirection.UNKNOWN || !canRender(x, y, z, DISPLAY_RENDER_DISTANCE)) return;
 
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         int textWidth = fontRenderer.getStringWidth(amountText);
         float textScale = Math.min(1, maxTextWidth / (float) textWidth);
         float lastBrightnessX = OpenGlHelper.lastBrightnessX;
         float lastBrightnessY = OpenGlHelper.lastBrightnessY;
-        GL11.glPushAttrib(
-            GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_CURRENT_BIT | GL11.GL_TEXTURE_BIT);
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_CURRENT_BIT | GL11.GL_TEXTURE_BIT);
         GlStateManager.pushMatrix();
         try {
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
@@ -558,11 +590,7 @@ public final class DigitalStorageRenderer {
             case DOWN -> {
                 GlStateManager.scale(1.0f, -1.0f, 1.0f);
                 GlStateManager.rotate(-90.0f, 1.0f, 0.0f, 0.0f);
-                GlStateManager.rotate(
-                    spin == EAST ? 90 : spin == NORTH ? 180 : spin == WEST ? -90 : 0,
-                    0,
-                    0,
-                    1);
+                GlStateManager.rotate(spin == EAST ? 90 : spin == NORTH ? 180 : spin == WEST ? -90 : 0, 0, 0, 1);
             }
             case EAST -> {
                 GlStateManager.scale(-1.0f, -1.0f, -1.0f);

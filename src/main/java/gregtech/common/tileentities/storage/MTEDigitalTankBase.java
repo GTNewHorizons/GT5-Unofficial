@@ -60,6 +60,9 @@ import mcp.mobius.waila.api.SpecialChars;
 public abstract class MTEDigitalTankBase extends MTEBasicTank
     implements IFluidLockableMui2, IFluidContainerItemMetaTile, IMTERenderer {
 
+    public static final int DISPLAY_FILL_LEVELS = 64;
+    private static final long RENDER_UPDATE_INTERVAL = 20;
+
     protected boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected Fluid lockedFluid = null;
     protected boolean mAllowInputFromOutputSide = false;
@@ -187,7 +190,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     private void updateClientDisplay(FluidStack fluid) {
         if (fluid == null || fluid.amount <= 0 || fluid.getFluid() == null) fluid = null;
         int amount = fluid == null ? 0 : fluid.amount;
-        if (displayFluidStack != null && fluid != null && displayFluidStack.isFluidEqual(fluid)
+        if (displayFluidStack != null && fluid != null
+            && displayFluidStack.isFluidEqual(fluid)
             && displayFluidAmount == amount) return;
         if (displayFluidStack == null && fluid == null && displayFluidAmount == amount) return;
 
@@ -201,7 +205,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     public int getDisplayFillLevel(int amount) {
         int capacity = getRealCapacity();
         int fillLevel = capacity <= 0 ? 0
-            : Math.min(64, (int) (((long) amount * 64 + capacity / 2L) / capacity));
+            : Math.min(DISPLAY_FILL_LEVELS, (int) (((long) amount * DISPLAY_FILL_LEVELS + capacity / 2L) / capacity));
         return amount > 0 && fillLevel == 0 ? 1 : fillLevel;
     }
 
@@ -425,12 +429,16 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 : baseMetaTileEntity.getFrontFacing();
             if (sideDirection == outputSide) {
                 return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_PIPE) };
-            } else if ((sideDirection == ForgeDirection.NORTH || sideDirection == ForgeDirection.SOUTH
-                || sideDirection == ForgeDirection.WEST || sideDirection == ForgeDirection.EAST)
-                && (baseMetaTileEntity == null || !baseMetaTileEntity.hasCoverAtSide(sideDirection))) {
+            }
+            boolean hasWindow = (sideDirection == ForgeDirection.NORTH || sideDirection == ForgeDirection.SOUTH
+                || sideDirection == ForgeDirection.WEST
+                || sideDirection == ForgeDirection.EAST)
+                && (baseMetaTileEntity == null || !baseMetaTileEntity.hasCoverAtSide(sideDirection));
+            if (hasWindow) {
                 return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
                     TextureFactory.of(OVERLAY_SCREEN_GLASS) };
-            } else return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
+            }
+            return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
         }
         return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_QTANK),
             TextureFactory.builder()
@@ -593,7 +601,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             : fluid == null || !lastRenderFluid.isFluidEqual(fluid);
         boolean amountChanged = amount != lastRenderAmount;
         if (!identityChanged && !amountChanged) return;
-        if (!identityChanged && lastRenderPacketTick != Long.MIN_VALUE && aTick - lastRenderPacketTick < 20) return;
+        if (!identityChanged && lastRenderPacketTick != Long.MIN_VALUE
+            && aTick - lastRenderPacketTick < RENDER_UPDATE_INTERVAL) return;
 
         lastRenderFluid = fluid == null ? null : fluid.copy();
         lastRenderAmount = amount;
