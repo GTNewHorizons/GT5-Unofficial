@@ -685,11 +685,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return vacuumConveyorOutputs.findAnyColoredHatch(color);
     }
 
-    protected boolean removeItemFromInputByColor(ItemStack stack, byte color) {
+    protected boolean removeItemFromInputByColor(ItemStack stack, byte color, boolean withName) {
         int totalToConsome = stack.stackSize;
         List<MTEHatchVacuumConveyorInput> hatches = vacuumConveyorInputs.findColoredHatches(color);
         for (MTEHatchVacuumConveyorInput inputHatch : hatches) {
-            int amountConsumed = inputHatch.tryConsume(stack);
+            int amountConsumed = inputHatch.tryConsume(stack, withName);
             totalToConsome -= amountConsumed;
             if (totalToConsome <= 0) {
                 return true;
@@ -722,7 +722,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
         // Look up component from this output fake stack and unify it with the packet inside the output hatch
         CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(aStack);
-        CircuitComponentPacket outputPacket = new CircuitComponentPacket(component, aStack.stackSize);
+        String customName = GTUtility.getStackCustomName(aStack);
+        CircuitComponentPacket outputPacket = new CircuitComponentPacket(component, aStack.stackSize, customName);
         hatch.unifyPacket(outputPacket);
     }
 

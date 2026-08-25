@@ -18,6 +18,7 @@ import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.google.common.primitives.Bytes;
 
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 
 public class SplitterRule {
@@ -84,19 +85,23 @@ public class SplitterRule {
     public boolean appliesTo(Byte color, ItemStack item, MTESplitterModule.RedstoneChannelInfo redstoneState) {
         // Requires the given color to be in the set of input colors
         if (!inputColors.contains(color)) return false;
-        // Get all the filters that are actually set
-        var filters = filterStacks.getStacks()
-            .stream()
-            .filter(Objects::nonNull)
-            .toList();
 
         // If no items in the filter set match the given item, do not apply this rule
         // Also try the normal item representation
         ItemStack realStack = CircuitComponent.tryGetRealStack(item);
-        if (!filters.isEmpty() && filters.stream()
-            .noneMatch(stack -> stack.isItemEqual(item) || (realStack != null && stack.isItemEqual(realStack)))) {
-            return false;
+        boolean passed = false;
+        String testDisplayName = GTUtility.getStackCustomName(item);
+        for (ItemStack filterStack : filterStacks.getStacks()) {
+            if (filterStack == null) continue;
+            String filterDisplayName = GTUtility.getStackCustomName(filterStack);
+            if (Objects.equals(testDisplayName, filterDisplayName)
+                && (filterStack.isItemEqual(item) || (realStack != null && filterStack.isItemEqual(realStack)))) {
+                passed = true;
+                break;
+            }
         }
+        if (!passed) return false;
+
         // If a redstone mode is set
         if (redstoneMode != null) {
             // Redstone level in requested channel should be at least the given level
