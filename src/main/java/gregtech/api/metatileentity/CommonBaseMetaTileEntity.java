@@ -480,6 +480,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             if ((coverMask & direction.flag) != 0) {
                 int coverID = buffer.readInt();
                 CoverRegistry.cover(this, direction, coverID);
+            } else {
+                CoverRegistry.cover(this, direction, CoverRegistry.NO_COVER.getCoverID());
             }
         }
     }
