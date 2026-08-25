@@ -184,6 +184,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     @Override
     public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
         buffer.writeInt(chunkRangeConfig);
         buffer.writeBoolean(showWorkArea);
         buffer.writeInt(activeOilFieldChunkKeys.size());
@@ -194,6 +195,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     @Override
     public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
         chunkRangeConfig = buffer.readInt();
         invalidateWorkAreaCache();
 
