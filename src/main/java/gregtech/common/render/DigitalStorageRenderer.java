@@ -60,10 +60,11 @@ public final class DigitalStorageRenderer {
     private static final double FLUID_MIN_Y = 2 / 16.0;
     private static final double FLUID_MAX_Y = 14 / 16.0;
 
-    private static final float CHEST_TEXT_DEPTH = -1 / 16f;
+    private static final float TEXT_FACE_OFFSET = 0.002F;
+    private static final float CHEST_TEXT_DEPTH = -1 / 16f + TEXT_FACE_OFFSET;
     private static final int CHEST_TEXT_Y = 40;
     private static final int CHEST_TEXT_MAX_WIDTH = 54;
-    private static final float TANK_TEXT_DEPTH = 0.002F;
+    private static final float TANK_TEXT_DEPTH = TEXT_FACE_OFFSET;
     private static final int TANK_TEXT_Y = 2;
     private static final int TANK_TEXT_MAX_WIDTH = 38;
     private static final double[] GLASS_BOX = { 1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0, 15 / 16.0 };
