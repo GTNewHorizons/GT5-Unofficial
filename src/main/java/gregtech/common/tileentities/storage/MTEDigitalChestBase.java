@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.storage;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumberCompact;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
@@ -205,7 +206,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     private void updateClientDisplay(ItemStack stack, int count) {
         displayItem = stack;
-        displayItemCountText = formatNumber(count);
+        displayItemCountText = formatNumberCompact(count);
         if (stack == null) {
             displayEntity = null;
             displayEntityStack = null;
