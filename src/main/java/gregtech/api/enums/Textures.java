@@ -1960,6 +1960,8 @@ public class Textures {
             PIPE_RESTRICTOR_DR = create("PIPE_RESTRICTOR_DR"),
             PIPE_RESTRICTOR_LR = create("PIPE_RESTRICTOR_LR"),
 
+            OVERLAY_CLEANROOM_PASSTHROUGH_HULL = createOptional("OVERLAY_CLEANROOM_PASSTHROUGH_HULL"),
+
             OVERLAY_ME_HATCH = createOptional("OVERLAY_ME_HATCH"),
             OVERLAY_ME_HATCH_GLOW = createOptional("OVERLAY_ME_HATCH_GLOW"),
             OVERLAY_ME_HATCH_ACTIVE = createOptional("OVERLAY_ME_HATCH_ACTIVE"),

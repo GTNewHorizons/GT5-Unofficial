@@ -109,6 +109,7 @@ import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.chunkapi.ClientMetaManager;
 import gregtech.crossmod.holoinventory.HoloInventory;
+import gregtech.crossmod.logisticspipes.CleanroomPassthroughLPConnection;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
@@ -142,6 +143,7 @@ import gregtech.loaders.preload.LoaderOreProcessing;
 import gtnhlanth.loader.RecipeLoader;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
+import logisticspipes.proxy.SimpleServiceLocator;
 
 @Mod(
     modid = Mods.ModIDs.GREG_TECH,
@@ -152,6 +154,8 @@ import ic2.api.recipe.RecipeOutput;
         + "required-after:gtnhlib@[0.6.35,);"
         + "required-after:modularui@[1.1.12,);"
         + "required-after:appliedenergistics2@[rv3-beta-258,);"
+        // SpecialTileConnection registry is built in LP's init, we use it in postinit
+        + "required-before:LogisticsPipes;"
         + "after:dreamcraft;"
         + "after:Forestry;"
         + "after:PFAAGeologica;"
@@ -464,6 +468,7 @@ public class GTMod {
         new ScrapboxDropLoader().run();
         new GTWorldgenloader().run();
         new CoverLoader().run();
+        SimpleServiceLocator.specialtileconnection.registerHandler(new CleanroomPassthroughLPConnection());
         StoneType.init();
 
         GTRecipeRegistrator.registerUsagesForMaterials(

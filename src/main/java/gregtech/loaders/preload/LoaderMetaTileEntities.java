@@ -117,6 +117,7 @@ import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuil
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
+import gregtech.common.tileentities.machines.basic.MTECleanroomPassthroughHull;
 import gregtech.common.tileentities.machines.basic.MTEDrawerFramer;
 import gregtech.common.tileentities.machines.basic.MTEIceCreamMachine;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
@@ -2535,6 +2536,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hull_LV.set(new MTEBasicHull(HULL_LV.ID, "hull.tier.01", "LV Machine Hull", 1).getStackForm(1L));
         ItemList.Hull_MV.set(new MTEBasicHull(HULL_MV.ID, "hull.tier.02", "MV Machine Hull", 2).getStackForm(1L));
         ItemList.Hull_HV.set(new MTEBasicHull(HULL_HV.ID, "hull.tier.03", "HV Machine Hull", 3).getStackForm(1L));
+        ItemList.Hull_Cleanroom_Passthrough.set(
+            new MTECleanroomPassthroughHull(
+                CLEANROOM_PASSTHROUGH_HULL.ID,
+                "hull.cleanroom_passthrough",
+                "Cleanroom Pass-Through Hull",
+                3).getStackForm(1L));
         ItemList.Hull_EV.set(new MTEBasicHull(HULL_EV.ID, "hull.tier.04", "EV Machine Hull", 4).getStackForm(1L));
         ItemList.Hull_IV.set(new MTEBasicHull(HULL_IV.ID, "hull.tier.05", "IV Machine Hull", 5).getStackForm(1L));
         ItemList.Hull_LuV.set(new MTEBasicHull(HULL_LuV.ID, "hull.tier.06", "LuV Machine Hull", 6).getStackForm(1L));
