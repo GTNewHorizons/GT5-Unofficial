@@ -182,6 +182,10 @@ public final class DigitalStorageRenderer {
             }
         }
         if (casing != null) {
+            renderTankCorner(ctx, casingTextures, NORTH, WEST);
+            renderTankCorner(ctx, casingTextures, NORTH, EAST);
+            renderTankCorner(ctx, casingTextures, SOUTH, WEST);
+            renderTankCorner(ctx, casingTextures, SOUTH, EAST);
             renderFace(ctx, UP, FRAME_BOXES.get(DOWN), casing);
             renderFace(ctx, DOWN, FRAME_BOXES.get(UP), casing);
             for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
@@ -190,6 +194,21 @@ public final class DigitalStorageRenderer {
                 }
             }
         }
+    }
+
+    private static void renderTankCorner(ISBRContext ctx, ITexture[] casingTextures, ForgeDirection northSouth,
+        ForgeDirection eastWest) {
+        ITexture casing = casingTextures[northSouth.ordinal()];
+        if (casing == null || casingTextures[eastWest.ordinal()] == null) return;
+        double minX = eastWest == WEST ? 1 : 14;
+        double minZ = northSouth == NORTH ? 1 : 14;
+        double[] bounds = box(minX, 0, minZ, minX + 1, 16, minZ + 1);
+        if (eastWest == WEST) bounds[0] -= 2 * COVER_DIF;
+        else bounds[3] += 2 * COVER_DIF;
+        if (northSouth == NORTH) bounds[2] -= 2 * COVER_DIF;
+        else bounds[5] += 2 * COVER_DIF;
+        renderFace(ctx, northSouth.getOpposite(), bounds, casing);
+        renderFace(ctx, eastWest.getOpposite(), bounds, casing);
     }
 
     private static boolean isTankWindowSide(ForgeDirection side, ForgeDirection outputFacing,
