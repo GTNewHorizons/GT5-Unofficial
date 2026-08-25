@@ -206,7 +206,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z, errors)) return;
         // Exactly one energy hatch is accepted
         checkOneEnergyHatchMaybeExotic(errors);
-        checkHasInputBus(errors);
+        checkOneInputBus(errors);
         checkHasOutputBus(errors);
         if (!errors.isEmpty()) return;
 
