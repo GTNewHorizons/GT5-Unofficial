@@ -35,6 +35,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.CompactOptions;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -62,6 +63,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
     public static final int DISPLAY_FILL_LEVELS = 64;
     private static final long RENDER_UPDATE_INTERVAL = 20;
+    public static final CompactOptions DISPLAY_COUNT_FORMAT = new CompactOptions().setDecimalPlaces(1);
 
     protected boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected Fluid lockedFluid = null;
@@ -181,8 +183,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
     public String getClientDisplayAmountText() {
         if (displayAmountText == null) {
-            displayAmountText = formatNumberCompact(displayFluidAmount) + " / "
-                + formatNumberCompact(getRealCapacity());
+            displayAmountText = formatNumberCompact(displayFluidAmount, DISPLAY_COUNT_FORMAT) + " / "
+                + formatNumberCompact(getRealCapacity(), DISPLAY_COUNT_FORMAT);
         }
         return displayAmountText;
     }

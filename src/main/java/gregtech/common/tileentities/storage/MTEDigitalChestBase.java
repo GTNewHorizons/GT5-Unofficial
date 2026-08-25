@@ -33,6 +33,7 @@ import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.item.SimpleItemIO;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.CompactOptions;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -75,6 +76,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IMTERenderer {
 
     private static final long RENDER_UPDATE_INTERVAL = 20;
+    public static final CompactOptions DISPLAY_COUNT_FORMAT = new CompactOptions().setDecimalPlaces(1);
 
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
@@ -196,7 +198,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             if (GTUtility.areStacksEqual(mInventory[0], stack)) count += mInventory[0].stackSize;
             if (GTUtility.areStacksEqual(mInventory[1], stack)) count += mInventory[1].stackSize;
         }
-        return (int) Math.min(Integer.MAX_VALUE, Math.max(0, count));
+        return Math.clamp(count, 0, Integer.MAX_VALUE);
     }
 
     public ItemStack getClientDisplayItem() {
@@ -209,7 +211,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     private void updateClientDisplay(ItemStack stack, int count) {
         displayItem = stack;
-        displayItemCountText = formatNumberCompact(count);
+        displayItemCountText = formatNumberCompact(count, DISPLAY_COUNT_FORMAT);
         if (stack == null) {
             displayEntity = null;
             displayEntityStack = null;

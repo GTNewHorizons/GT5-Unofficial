@@ -127,6 +127,7 @@ public final class DigitalStorageRenderer {
 
     public static boolean renderTankInWorld(MTEDigitalTankBase mte, ISBRWorldContext ctx) {
         IGregTechTileEntity base = mte.getBaseMetaTileEntity();
+        assert base != null;
         ForgeDirection outputFacing = validDisplayFacing(base.getFrontFacing());
         ITexture[][] textures = new ITexture[6][];
         ITexture[] windowCasings = new ITexture[6];
@@ -134,6 +135,7 @@ public final class DigitalStorageRenderer {
             ITexture[] sideTextures = base.getTexture(ctx.getBlock(), side);
             textures[side.ordinal()] = sideTextures == null ? EMPTY_TEXTURES : sideTextures;
             if (isTankWindowSide(side, outputFacing, base)) {
+                assert sideTextures != null;
                 windowCasings[side.ordinal()] = sideTextures[0];
                 textures[side.ordinal()] = EMPTY_TEXTURES;
             }
@@ -238,7 +240,7 @@ public final class DigitalStorageRenderer {
         int color = mte.getBaseMetaTileEntity() == null ? 0
             : mte.getBaseMetaTileEntity()
                 .getColorization() + 1;
-        return MACHINE_CASINGS[mte.mTier][Math.max(0, Math.min(color, MACHINE_CASINGS[mte.mTier].length - 1))];
+        return MACHINE_CASINGS[mte.mTier][Math.clamp(MACHINE_CASINGS[mte.mTier].length - 1, 0, color)];
     }
 
     private static void renderInventoryFaces(ISBRInventoryContext ctx, ITexture[][] textures) {
@@ -486,8 +488,9 @@ public final class DigitalStorageRenderer {
         ItemStack content = mte.getClientDisplayItem();
         if (content == null) return;
 
-        double itemRenderDistance = Math.min(
-            Math.max(Minecraft.getMinecraft().gameSettings.renderDistanceChunks, CHEST_ITEM_MIN_RENDER_DISTANCE),
+        double itemRenderDistance = Math.clamp(
+            Minecraft.getMinecraft().gameSettings.renderDistanceChunks,
+            CHEST_ITEM_MIN_RENDER_DISTANCE,
             CHEST_ITEM_MAX_RENDER_DISTANCE);
         if (canRender(x, y, z, itemRenderDistance)) {
             EntityItem entityItem = mte.getClientDisplayEntity();
