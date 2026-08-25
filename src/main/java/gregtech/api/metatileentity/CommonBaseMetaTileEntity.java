@@ -651,7 +651,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             List<ItemStack> items = provider.getNonConsumedInputDisplayItems();
             if (!items.isEmpty()) {
                 String joined = items.stream()
-                    .map(ItemStack::getDisplayName)
+                    .map(CommonBaseMetaTileEntity::getShortItemDisplayName)
                     .collect(Collectors.joining(", "));
                 try {
                     suffix.append(String.format(Gregtech.machines.itemSlotsSuffixFormat, joined));
@@ -660,6 +660,20 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         }
 
         return !suffix.isEmpty() ? suffix.toString() : null;
+    }
+
+    /**
+     * Shortens item names like "Mold (Ingot)" to just "Ingot", so the interface name stays readable. Names without a
+     * trailing parenthesised part are returned unchanged.
+     */
+    public static String getShortItemDisplayName(ItemStack stack) {
+        String name = stack.getDisplayName();
+        if (!name.endsWith(")")) return name;
+        int open = name.lastIndexOf('(');
+        if (open < 0) return name;
+        String inner = name.substring(open + 1, name.length() - 1)
+            .trim();
+        return inner.isEmpty() ? name : inner;
     }
 
     @Override

@@ -7,9 +7,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -268,29 +266,16 @@ public class MTEHatchInputBus extends MTEHatch
 
     @Override
     public List<Integer> getPhysicalCircuitNumbers() {
-        List<Integer> numbers = new ArrayList<>();
-        for (int i = 0; i < getSizeInventory(); i++) {
-            if (i == getCircuitSlot()) continue;
-            ItemStack stack = getStackInSlot(i);
-            if (GTUtility.isAnyIntegratedCircuit(stack)) {
-                numbers.add(stack.getItemDamage());
-            }
-        }
-        return numbers;
+        return IPhysicalCircuitDisplay.collectCircuitNumbers(this, 0, getSizeInventory(), getCircuitSlot());
     }
 
     @Override
     public List<ItemStack> getNonConsumedInputDisplayItems() {
-        if (mRecipeMap == null) return Collections.emptyList();
-        Set<GTUtility.ItemId> nonConsumedIds = mRecipeMap.getNonConsumedInputItemIds();
-        if (nonConsumedIds.isEmpty()) return Collections.emptyList();
-
         List<ItemStack> result = new ArrayList<>();
         for (int i = 0; i < getSizeInventory(); i++) {
             if (i == getCircuitSlot()) continue;
             ItemStack stack = getStackInSlot(i);
-            if (stack == null || GTUtility.isAnyIntegratedCircuit(stack)) continue;
-            if (nonConsumedIds.contains(GTUtility.ItemId.create(stack))) {
+            if (INonConsumedItemDisplay.isDisplayableItem(mRecipeMap, stack)) {
                 result.add(stack);
             }
         }
