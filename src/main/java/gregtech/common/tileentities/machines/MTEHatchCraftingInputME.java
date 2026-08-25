@@ -1172,11 +1172,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         lines.appendTag(new NBTTagString(head));
 
         for (ItemStack item : getNonConsumedInputDisplayItems()) {
-            lines.appendTag(new NBTTagString(item.getDisplayName()));
+            lines.appendTag(new NBTTagString(CommonBaseMetaTileEntity.getShortItemDisplayName(item)));
         }
         for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
             if (mInventory[i] != null) {
-                lines.appendTag(new NBTTagString(mInventory[i].getDisplayName()));
+                lines.appendTag(new NBTTagString(CommonBaseMetaTileEntity.getShortItemDisplayName(mInventory[i])));
             }
         }
         return lines;

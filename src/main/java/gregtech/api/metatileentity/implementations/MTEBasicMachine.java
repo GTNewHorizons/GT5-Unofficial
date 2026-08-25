@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -384,16 +383,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public List<ItemStack> getNonConsumedInputDisplayItems() {
-        RecipeMap<?> recipeMap = getRecipeMap();
-        if (recipeMap == null) return Collections.emptyList();
-        Set<GTUtility.ItemId> nonConsumedIds = recipeMap.getNonConsumedInputItemIds();
-        if (nonConsumedIds.isEmpty()) return Collections.emptyList();
-
         List<ItemStack> result = new ArrayList<>();
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {
             ItemStack stack = getStackInSlot(i);
-            if (stack == null || GTUtility.isAnyIntegratedCircuit(stack)) continue;
-            if (nonConsumedIds.contains(GTUtility.ItemId.create(stack))) {
+            if (INonConsumedItemDisplay.isDisplayableItem(getRecipeMap(), stack)) {
                 result.add(stack);
             }
         }
@@ -402,14 +395,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public List<Integer> getPhysicalCircuitNumbers() {
-        List<Integer> numbers = new ArrayList<>();
-        for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {
-            ItemStack stack = getStackInSlot(i);
-            if (GTUtility.isAnyIntegratedCircuit(stack)) {
-                numbers.add(stack.getItemDamage());
-            }
-        }
-        return numbers;
+        return IPhysicalCircuitDisplay
+            .collectCircuitNumbers(this, getInputSlot(), getInputSlot() + mInputSlotCount, getCircuitSlot());
     }
 
     @Override

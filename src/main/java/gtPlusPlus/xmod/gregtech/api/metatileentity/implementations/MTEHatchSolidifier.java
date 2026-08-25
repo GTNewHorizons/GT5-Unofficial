@@ -111,10 +111,8 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     public List<ItemStack> getNonConsumedInputDisplayItems() {
         // the circuit is already shown by the ghost circuit suffix
         ItemStack mold = getStackInSlot(moldSlot);
-        if (mold == null || mRecipeMap == null) return Collections.emptyList();
-        if (!mRecipeMap.getNonConsumedInputItemIds()
-            .contains(GTUtility.ItemId.create(mold))) return Collections.emptyList();
-        return Collections.singletonList(mold);
+        return INonConsumedItemDisplay.isDisplayableItem(mRecipeMap, mold) ? Collections.singletonList(mold)
+            : Collections.emptyList();
     }
 
     public List<ItemStack> getNonConsumableItems() {
