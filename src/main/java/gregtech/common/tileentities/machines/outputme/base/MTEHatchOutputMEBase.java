@@ -27,6 +27,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -727,7 +728,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             .forEach(stack -> {
                 NBTTagCompound stackTag = new NBTTagCompound();
                 stack.writeToNBT(stackTag);
-                stackTag.setString("Name", stack.getDisplayName());
                 stackTag.setLong("Amount", stack.getStackSize());
                 tagList.appendTag(stackTag);
             });
@@ -798,6 +798,16 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     @SideOnly(Side.CLIENT)
     public static class WailaHelper {
 
+        @Nullable
+        private static String getLocalizedName(String prefix, NBTTagCompound stackTag) {
+            if ("fluid".equals(prefix)) {
+                FluidStack fluid = FluidStack.loadFluidStackFromNBT(stackTag);
+                return fluid == null ? null : fluid.getLocalizedName();
+            }
+            ItemStack stack = ItemStack.loadItemStackFromNBT(stackTag);
+            return stack == null ? null : stack.getDisplayName();
+        }
+
         private static void processWailaAdvancedBody(String prefix, List<String> ss, String listKey, String countKey,
             NBTTagCompound tag) {
             NBTTagList stacks = tag.getTagList(listKey, 10);
@@ -815,11 +825,14 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
 
             for (int i = 0; i < stacks.tagCount(); i++) {
                 NBTTagCompound stackTag = stacks.getCompoundTagAt(i);
+                // Names must be resolved client-side, otherwise a dedicated server sends its own localization
+                String name = getLocalizedName(prefix, stackTag);
+                if (name == null) continue;
 
                 ss.add(
                     String.format(
                         "%s: %s%s%s",
-                        stackTag.getString("Name"),
+                        name,
                         EnumChatFormatting.GOLD,
                         formatNumber(stackTag.getLong("Amount")),
                         EnumChatFormatting.RESET));
