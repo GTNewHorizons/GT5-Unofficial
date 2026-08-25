@@ -74,6 +74,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
@@ -1145,9 +1146,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
             eMaxAmpereFlow = 0;
             eMaxAmpereGen = 0;
-            // counts only full amps
+            // Regular energy hatches are rated at one amp of their voltage here; the debug hatch instead emulates its
+            // configured amperage, as MTEMultiBlockBase.setProcessingLogicPower also does.
             for (MTEHatchEnergy hatch : validMTEList(mEnergyHatches)) {
-                eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin;
+                long amps = hatch instanceof MTEHatchEnergyDebug ? hatch.maxWorkingAmperesIn() : 1;
+                eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin * amps;
             }
             for (MTEHatchEnergyMulti hatch : validMTEList(eEnergyMulti)) {
                 eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin * hatch.getAmperes();
