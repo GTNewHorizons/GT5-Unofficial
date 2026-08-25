@@ -183,6 +183,11 @@ public final class DigitalStorageRenderer {
         if (casing != null) {
             renderFace(ctx, UP, FRAME_BOXES.get(DOWN), casing);
             renderFace(ctx, DOWN, FRAME_BOXES.get(UP), casing);
+            for (ForgeDirection side : HORIZONTAL_DIRECTIONS) {
+                if (casingTextures[side.ordinal()] == null) {
+                    renderFace(ctx, side.getOpposite(), FRAME_BOXES.get(side), casing);
+                }
+            }
         }
     }
 
