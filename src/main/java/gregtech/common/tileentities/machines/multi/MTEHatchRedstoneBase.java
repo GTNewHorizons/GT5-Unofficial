@@ -33,7 +33,7 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public static boolean supportsInvertedSignal() {
+    public boolean supportsInvertedSignal() {
         return true;
     }
 
@@ -53,20 +53,16 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
             on = on ^ inverted;
         }
         byte signal = (byte) (on ? 15 : 0);
+        setRedstoneSignal(signal);
+    }
+
+    public void setRedstoneSignal(byte signal) {
         if (!directional) {
-            setAllFacesRedstoneSignal(signal);
-        } else {
-            setFacingSideRedstoneSignal(signal);
+            for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+                redstoneSignal[i] = signal;
+            }
+            return;
         }
-    }
-
-    private void setAllFacesRedstoneSignal(byte signal) {
-        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            redstoneSignal[i] = signal;
-        }
-    }
-
-    private void setFacingSideRedstoneSignal(byte signal) {
         if (this.getBaseMetaTileEntity() == null) return;
         int facingSide = getBaseMetaTileEntity().getFrontFacing()
             .ordinal();
@@ -150,6 +146,9 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+            redstoneSignal[i] = aNBT.getByte("signal" + i);
+        }
         directional = aNBT.getBoolean("directional");
         if (supportsInvertedSignal()) {
             inverted = aNBT.getBoolean("inverted");
@@ -159,6 +158,9 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+            aNBT.setByte("signal" + i, redstoneSignal[i]);
+        }
         aNBT.setBoolean("directional", directional);
         if (supportsInvertedSignal()) {
             aNBT.setBoolean("inverted", inverted);

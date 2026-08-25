@@ -35,7 +35,7 @@ public class MTEHatchRedstoneBaseGui<T extends MTEHatchRedstoneBase> extends MTE
         return Flow.column()
             .child(createDirectionalButtonRow())
             .childIf(
-                MTEHatchRedstoneBase.supportsInvertedSignal(),
+                machine.supportsInvertedSignal(),
                 () -> CommonWidgets
                     .createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted).allowC2S()))
             .coverChildren()
