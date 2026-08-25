@@ -23,6 +23,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
@@ -145,64 +146,82 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
 
     public IWidget createRuleManagerRow(GenericListSyncHandler<SplitterRule> rulesSyncer, PanelSyncManager syncManager,
         int index) {
-        IWidget inputColorGrid = createColorGrid(rulesSyncer, index, true);
-        IWidget redstoneSelector = createRedstoneSelector(rulesSyncer, index);
-        IWidget itemFilter = createItemFilter(syncManager, rulesSyncer, index);
-        IWidget outputColorGrid = createColorGrid(rulesSyncer, index, false);
+        Widget<?> inputColorGrid = createColorGrid(rulesSyncer, index, true);
+        Widget<?> redstoneSelector = createRedstoneSelector(rulesSyncer, index);
+        Widget<?> itemFilter = createItemFilter(syncManager, rulesSyncer, index);
+        Widget<?> outputColorGrid = createColorGrid(rulesSyncer, index, false);
 
         // spotless:off
         return new ParentWidget<>()
-            .child(Flow.column()
-                .child(Flow.row()
-                    .child(createSelectorButton(rulesSyncer, index, COLOR)
-                        .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.Color")))
-                        .overlay(new ItemDrawable(Items.dye, 10)))
-                    .child(createSelectorButton(rulesSyncer, index, REDSTONE)
-                        .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.redstone")))
-                        .overlay(new ItemDrawable(Items.redstone)))
-                    .child(createSelectorButton(rulesSyncer, index, ITEM)
-                        .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.item")))
-                        .overlay(IKey.str("I")))
-                    .childPadding(3)
-                    .coverChildren())
-                .child(inputColorGrid)
-                .child(redstoneSelector)
-                .child(itemFilter)
-                .collapseDisabledChild()
-                .childPadding(2)
-                .posRel(0.15F, 0.5F)
-                .size(60, 59))
-            .child(new ParentWidget<>()
-                .child(new ButtonWidget<>()
-                    .onMousePressed(a -> {
-                        multiblock.rules.remove(index);
-                        rulesSyncer.notifyUpdate();
-                        syncManager
-                            .getModularSyncManager()
-                            .getMainPSM()
-                            .callSyncedAction("refresh_dynamic", $ -> {});
-                        return true;
-                    })
-                    .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                    .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.remove")))
-                    .posRel(0.5F, 0.1F)
-                    .size(8))
-                .child(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD.getSubArea(0F, 0F, 1F, 0.5F)
-                    .asWidget()
-                    .topRel(0.5F)
-                    .size(20, 18))
-                .center()
-                .coverChildrenWidth()
-                .heightRel(1F))
-            .child(Flow.column()
-                .child(outputColorGrid)
-                .posRel(0.8F, 0.5F)
-                .marginTop(23)
-                .coverChildren())
             .background(GTGuiTextures.BACKGROUND_NANOCHIP_RULE_POPUP)
             .widthRel(1F)
-            .height(70)
-            .margin(4, 8, 4, 4);
+            .height(84)
+            .margin(4, 8, 4, 4)
+
+            .child(Flow.column()
+                .widthRel(0.9F)
+                .coverChildrenHeight()
+                .marginTop(6)
+                .leftRel(0.5F)
+                .child(Flow.row()
+                    .widthRel(1.0F)
+                    .coverChildrenHeight()
+
+                    // X button
+                    .child(new ButtonWidget<>()
+                        .onMousePressed(a -> {
+                            multiblock.rules.remove(index);
+                            rulesSyncer.notifyUpdate();
+                            syncManager
+                                .getModularSyncManager()
+                                .getMainPSM()
+                                .callSyncedAction("refresh_dynamic", $ -> {});
+                            return true;
+                        })
+                        .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                        .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.remove")))
+                        .leftRel(0.5F)
+                        .size(8))
+
+                    // Color/Redstone/Item selector buttons
+                    .child(Flow.row()
+                        .child(createSelectorButton(rulesSyncer, index, COLOR)
+                            .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.Color")))
+                            .overlay(new ItemDrawable(Items.dye, 10)))
+                        .child(createSelectorButton(rulesSyncer, index, REDSTONE)
+                            .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.redstone")))
+                            .overlay(new ItemDrawable(Items.redstone)))
+                        .child(createSelectorButton(rulesSyncer, index, ITEM)
+                            .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.item")))
+                            .overlay(IKey.str("I")))
+                        .childPadding(3)
+                        .topRel(0.1F)
+                        .marginLeft(8)
+                        .coverChildren()))
+
+                // Input -> Output section
+                .child(Flow.row()
+                    .height(54) // for a 3x3 of item slots
+                    .widthRel(0.9F)
+                    .leftRel(0.5F)
+                    .marginTop(2)
+                    // Input section
+                    .child(new ParentWidget<>()
+                        .size(54)
+                        .child(inputColorGrid.posRel(0.5F, 0.5F))
+                        .child(redstoneSelector.posRel(0.5F, 0.5F))
+                        .child(itemFilter.posRel(0.5F, 0.5F)))
+                    // Middle section (arrow)
+                    .child(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD.getSubArea(0F, 0F, 1F, 0.5F)
+                        .asWidget()
+                        .posRel(0.5F, 0.5F)
+                        .size(20, 18))
+                    // Output section
+                    .child(new ParentWidget<>()
+                        .size(54)
+                        .leftRel(1.0F)
+                        .anchorLeft(1.0F)
+                        .child(outputColorGrid.posRel(0.5F, 0.5F)))));
     }
 
     private ToggleButton createSelectorButton(GenericListSyncHandler<SplitterRule> syncer, int i,
@@ -223,7 +242,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         // spotless:on
     }
 
-    private IWidget createColorGrid(GenericListSyncHandler<SplitterRule> syncer, int index, boolean input) {
+    private Widget<?> createColorGrid(GenericListSyncHandler<SplitterRule> syncer, int index, boolean input) {
         SplitterRule rule = multiblock.rules.get(index);
 
         return new ColorGridWidget().onButtonToggled(selected -> {
@@ -237,7 +256,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
             .setEnabledIf(f -> !input || rule.enabledWidget == COLOR);
     }
 
-    private IWidget createRedstoneSelector(GenericListSyncHandler<SplitterRule> syncer, int index) {
+    private Widget<?> createRedstoneSelector(GenericListSyncHandler<SplitterRule> syncer, int index) {
         SplitterRule rule = multiblock.rules.get(index);
 
         // spotless:off
@@ -268,18 +287,18 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         // spotless:on
     }
 
-    private IWidget createItemFilter(PanelSyncManager syncManager, GenericListSyncHandler<SplitterRule> rulesSyncer,
+    private Widget<?> createItemFilter(PanelSyncManager syncManager, GenericListSyncHandler<SplitterRule> rulesSyncer,
         int index) {
         SplitterRule rule = multiblock.rules.get(index);
 
         return SlotGroupWidget.builder()
-            .matrix("III", "III")
+            .matrix("III", "III", "III")
             .key(
                 'I',
                 i -> new PhantomItemSlot().syncHandler(
                     syncManager.getOrCreateSyncHandler(
                         "items",
-                        (index * 6) + i,
+                        (index * 9) + i,
                         PhantomItemSlotSH.class,
                         () -> new PhantomItemSlotSH(
                             new ModularSlot(rule.filterStacks, i).accessibility(true, false)
@@ -288,7 +307,6 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                                         if (client) rulesSyncer.notifyUpdate();
                                     })))))
             .build()
-            .marginTop(2)
             .setEnabledIf(f -> rule.enabledWidget == ITEM);
     }
 

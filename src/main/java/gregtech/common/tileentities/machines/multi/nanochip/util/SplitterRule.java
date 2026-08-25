@@ -51,6 +51,8 @@ public class SplitterRule {
         FilterType() {}
     }
 
+    private static final int FILTER_STACKS_SIZE = 9;
+
     public List<Byte> inputColors;
     public List<Byte> outputColors;
     // Optional redstone settings for this splitter rule
@@ -65,7 +67,7 @@ public class SplitterRule {
             new ArrayList<>(),
             new ArrayList<>(),
             new SplitterRule.RedstoneMode(0, 0),
-            new LimitingItemStackHandler(6, 1),
+            new LimitingItemStackHandler(FILTER_STACKS_SIZE, 1),
             COLOR);
     }
 
@@ -133,7 +135,12 @@ public class SplitterRule {
             redstoneMode = new RedstoneMode(channel, level);
         }
         rule.redstoneMode = redstoneMode;
-        rule.filterStacks.deserializeNBT(compound.getCompoundTag("filterStacks"));
+
+        // Handle resizing the filter stacks size across saves
+        NBTTagCompound filterStacksTag = compound.getCompoundTag("filterStacks");
+        filterStacksTag.setInteger("Size", FILTER_STACKS_SIZE);
+        rule.filterStacks.deserializeNBT(filterStacksTag);
+
         rule.enabledWidget = FilterType.VALUES[compound.getInteger("enabled")];
         return rule;
     }
