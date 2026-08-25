@@ -87,9 +87,12 @@ public class SplitterRule {
             .stream()
             .filter(Objects::nonNull)
             .toList();
+
         // If no items in the filter set match the given item, do not apply this rule
+        // Also try the normal item representation
+        ItemStack realStack = CircuitComponent.tryGetRealStack(item);
         if (!filters.isEmpty() && filters.stream()
-            .noneMatch(stack -> stack.isItemEqual(item))) {
+            .noneMatch(stack -> stack.isItemEqual(item) || (realStack != null && stack.isItemEqual(realStack)))) {
             return false;
         }
         // If a redstone mode is set
