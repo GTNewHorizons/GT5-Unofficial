@@ -115,6 +115,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.GTDualInputPattern;
@@ -724,7 +725,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         StringJoiner manualSlots = new StringJoiner(", ");
         for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
             if (mInventory[i] != null) {
-                manualSlots.add(mInventory[i].getDisplayName());
+                manualSlots.add(CommonBaseMetaTileEntity.getShortItemDisplayName(mInventory[i]));
             }
         }
         if (manualSlots.length() > 0) {
@@ -1171,11 +1172,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         lines.appendTag(new NBTTagString(head));
 
         for (ItemStack item : getNonConsumedInputDisplayItems()) {
-            lines.appendTag(new NBTTagString(item.getDisplayName()));
+            lines.appendTag(new NBTTagString(CommonBaseMetaTileEntity.getShortItemDisplayName(item)));
         }
         for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
             if (mInventory[i] != null) {
-                lines.appendTag(new NBTTagString(mInventory[i].getDisplayName()));
+                lines.appendTag(new NBTTagString(CommonBaseMetaTileEntity.getShortItemDisplayName(mInventory[i])));
             }
         }
         return lines;

@@ -67,6 +67,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -481,21 +482,19 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = super.getDescriptionData();
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
 
         // Sync the hatch capacity to the client so that MM can show its exchanging preview properly
         // This is only called when the hatch is placed since it will never change over its lifetime
 
-        provider.writeToClientPacket(tag);
-
-        return tag;
+        provider.writeToClientPacket(buffer);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        provider.readFromClientPacket(data);
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        provider.readFromClientPacket(buffer);
     }
 
     @Override
