@@ -410,7 +410,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
                 flipV = true;
             }
 
-            return new GTIconFlipped(icon, flipU, flipV);
+            return flipU || flipV ? new GTIconFlipped(icon, flipU, flipV) : icon;
         }
 
         // certain directions need to be flipped horizontally seemingly randomly
@@ -434,7 +434,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             flipU ^= true;
         }
 
-        return new GTIconFlipped(icon, flipU, flipV);
+        return flipU || flipV ? new GTIconFlipped(icon, flipU, flipV) : icon;
     }
 
     private ExtendedFacing getExtendedFacing(int x, int y, int z) {
