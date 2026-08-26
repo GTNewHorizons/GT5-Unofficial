@@ -138,8 +138,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
 
     @Override
     public @Nullable ITexture[][] getTextures(int metadata) {
-        final int cacheIndex = Math.floorMod(metadata, ACTIVE_OFFSET)
-            + (metadata >= ACTIVE_OFFSET ? ACTIVE_OFFSET : 0);
+        final int cacheIndex = Math.floorMod(metadata, ACTIVE_OFFSET) + (metadata >= ACTIVE_OFFSET ? ACTIVE_OFFSET : 0);
         ITexture[][] cached = textureCache.get(cacheIndex);
         if (cached != null) return cached;
 

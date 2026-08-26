@@ -567,8 +567,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         ITexture[][] textures = inventoryTextureCache;
         if (textures == null) {
             final IGregTechTileEntity base = getBaseMetaTileEntity();
-            textures = new ITexture[][] {
-                getTexture(base, ForgeDirection.DOWN, ForgeDirection.WEST, -1, true, false),
+            textures = new ITexture[][] { getTexture(base, ForgeDirection.DOWN, ForgeDirection.WEST, -1, true, false),
                 getTexture(base, ForgeDirection.UP, ForgeDirection.WEST, -1, true, false),
                 getTexture(base, ForgeDirection.NORTH, ForgeDirection.WEST, -1, true, false),
                 getTexture(base, ForgeDirection.SOUTH, ForgeDirection.WEST, -1, true, false),

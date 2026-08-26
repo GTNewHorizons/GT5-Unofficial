@@ -137,8 +137,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
     @Override
     public @Nullable ITexture[][] getTextures(int metadata) {
         final boolean useOldCoils = Client.render.useOldCoils;
-        final int cacheIndex = Math.floorMod(metadata, ACTIVE_OFFSET)
-            + (metadata >= ACTIVE_OFFSET ? ACTIVE_OFFSET : 0)
+        final int cacheIndex = Math.floorMod(metadata, ACTIVE_OFFSET) + (metadata >= ACTIVE_OFFSET ? ACTIVE_OFFSET : 0)
             + (useOldCoils ? ACTIVE_OFFSET * 2 : 0);
         ITexture[][] cached = textureCache.get(cacheIndex);
         if (cached != null) return cached;

@@ -154,8 +154,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         ITexture[][] textures = inventoryTextureCache;
         if (textures == null) {
             final IGregTechTileEntity mte = getBaseMetaTileEntity();
-            textures = new ITexture[][] {
-                getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false),
+            textures = new ITexture[][] { getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false),
                 getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false) };
             inventoryTextureCache = textures;
         }
