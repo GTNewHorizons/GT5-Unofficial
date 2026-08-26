@@ -28,7 +28,8 @@ public class MTEHatchRedstoneBaseGui<T extends MTEHatchRedstoneBase> extends MTE
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createContentSection(panel, syncManager).child(createContentColumn()).top(5);
+        return super.createContentSection(panel, syncManager).child(createContentColumn())
+            .top(5);
     }
 
     protected Flow createContentColumn() {

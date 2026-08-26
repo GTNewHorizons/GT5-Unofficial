@@ -57,16 +57,11 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
 
     public void setRedstoneSignal(byte signal) {
         if (this.getBaseMetaTileEntity() == null) return;
-        if (!directional) {
-            for (ForgeDirection forgeDirection : ForgeDirection.VALID_DIRECTIONS) {
-                getBaseMetaTileEntity().setStrongOutputRedstoneSignal(forgeDirection, signal);
-            }
-            return;
-        }
         ForgeDirection facingSide = getBaseMetaTileEntity().getFrontFacing();
         for (ForgeDirection forgeDirection : ForgeDirection.VALID_DIRECTIONS) {
-            getBaseMetaTileEntity()
-                .setStrongOutputRedstoneSignal(forgeDirection, forgeDirection == facingSide ? signal : 0);
+            getBaseMetaTileEntity().setStrongOutputRedstoneSignal(
+                forgeDirection,
+                directional ? (forgeDirection == facingSide ? signal : 0) : signal);
         }
     }
 
@@ -113,6 +108,10 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
 
     public void setDirectional(boolean directional) {
         this.directional = directional;
+        if (getBaseMetaTileEntity() == null) return;
+        ForgeDirection facingSide = getBaseMetaTileEntity().getFrontFacing();
+        byte signal = getBaseMetaTileEntity().getStrongOutputRedstoneSignal(facingSide);
+        setRedstoneSignal(signal);
     }
 
     public boolean isInverted() {
