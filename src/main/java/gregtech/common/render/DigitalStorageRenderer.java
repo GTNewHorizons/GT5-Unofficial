@@ -110,8 +110,8 @@ public final class DigitalStorageRenderer {
     }
 
     public static boolean renderChestInInventory(MTEDigitalChestBase mte, ISBRInventoryContext ctx) {
-        ForgeDirection displayFacing = WEST;
-        ForgeDirection outputFacing = EAST;
+        ForgeDirection outputFacing = WEST;
+        ForgeDirection displayFacing = SOUTH;
         ITexture[][] textures = new ITexture[6][];
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             ITexture[] sideTextures = mte.getTexture(null, side, outputFacing, -1, true, false);
