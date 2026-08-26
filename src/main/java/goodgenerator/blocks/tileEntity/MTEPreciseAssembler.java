@@ -31,6 +31,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -75,6 +76,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -281,9 +283,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.precise_assembler"))
-            .addMarkdown(new ResourceLocation("gregtech", "precise-assembler-1"))
-            .addStaticSpeedInfo(2f)
-            .addMarkdown(new ResourceLocation("gregtech", "precise-assembler-2"))
+            .addMarkdown(new ResourceLocation("gregtech", "precise-assembler"), ImmutableMap.of("speed", TooltipHelper.speedText(2f)))
             .addSupportAny()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))

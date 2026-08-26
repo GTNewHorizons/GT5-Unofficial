@@ -8,3 +8,6 @@ Casing Tier determines Maximum Recipe Tier
 Normal Mode allows standard assembler recipes
 {white:Precise Casing} Tier determines {gold:Parallels}
 {green:Imprecise}/{blue:Mk-I}/{light_purple:MK-II}/{gold:MK-III}/{red:MK-IV}->{green:16}/{blue:32}/{light_purple:64}/{gold:128}/{red:256} Parallels
+{lang-eval:GT5U.MBTT.Speed.Base:{var:speed}}
+{gray:{hr}}
+Machine Casing limits the voltage tier the machine can work on, {dark_red:{underline:UHV}}-tier Machine Casing unlocks all.
