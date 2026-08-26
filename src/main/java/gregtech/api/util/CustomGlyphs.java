@@ -30,7 +30,7 @@ public class CustomGlyphs {
     public static final String SUPERSCRIPT7 = registerCustomGlyph("\uE017", '⁷');
     public static final String SUPERSCRIPT8 = registerCustomGlyph("\uE018", '⁸');
     public static final String SUPERSCRIPT9 = registerCustomGlyph("\uE019", '⁹');
-    public static final String SUBSCRIPT0 = "₀";
+    public static final String SUBSCRIPT0 = registerCustomGlyph("\uE01A", '₀');
     public static final String ALEPH = registerCustomGlyph("\uE01B", '\u05D0'); // alternatively "\u2135"
     public static final String OMEGA = registerCustomGlyph("\uE01C", 'ω');
     public static final String FIXED_JAPANESE_OPENING_QUOTE = registerCustomGlyph("\uE01D", '「');
