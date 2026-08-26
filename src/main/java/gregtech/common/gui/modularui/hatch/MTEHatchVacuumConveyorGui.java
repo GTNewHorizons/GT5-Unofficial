@@ -94,9 +94,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .setter(val -> machine.contents = val)
             .deserializer(buf -> new CircuitComponentPacket((NBTTagCompound) NetworkUtils.readNBTBase(buf)))
             .serializer((buf, item) -> NetworkUtils.writeNBTBase(buf, item.writeToNBT()))
-            .equals(
-                (a, b) -> a.getComponents()
-                    .equals(b.getComponents()))
+            .equals(CircuitComponentPacket::equals)
             .build()
             .allowC2S();
         syncManager.syncValue("contents", contentsSyncHandler);

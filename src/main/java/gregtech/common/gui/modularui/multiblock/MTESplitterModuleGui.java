@@ -159,6 +159,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                 SplitterRule rule = multiblock.rules.get(ruleIdx);
                 ItemStack stack = rule.filterStacks.getStacks()
                     .get(slotIdx);
+                if (stack == null) return;
 
                 // Copy and insert to ensure proper code flow for things
                 // like onContentsChanged and similar contracts

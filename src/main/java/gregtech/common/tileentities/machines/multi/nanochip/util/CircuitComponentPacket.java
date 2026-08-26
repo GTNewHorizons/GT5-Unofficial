@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -199,5 +200,24 @@ public class CircuitComponentPacket {
 
     public boolean isEmpty() {
         return components.isEmpty();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof CircuitComponentPacket o)) return false;
+        if (!this.components.keySet()
+            .equals(o.components.keySet())) return false;
+
+        for (var entry : this.components.entrySet()) {
+            var thisAmounts = entry.getValue();
+            var thatAmounts = o.components.get(entry.getKey());
+            if (thisAmounts.size() != thatAmounts.size()) return false;
+
+            var thisAmountsSet = new HashSet<>(thisAmounts);
+            var thatAmountsSet = new HashSet<>(thatAmounts);
+            if (!thisAmountsSet.equals(thatAmountsSet)) return false;
+        }
+        return true;
     }
 }
