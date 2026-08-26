@@ -34,6 +34,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     private final short[] mRGBa;
     private final boolean glow;
     private final boolean useExtFacing;
+    private volatile FlippedIconCache inventoryBaseFlipCache;
+    private volatile FlippedIconCache inventoryOverlayFlipCache;
 
     protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean glow, boolean extFacing) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
@@ -297,7 +299,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     protected void renderFaceYNeg(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.uvRotateBottom = getRotation(extendedFacing);
-        icon = getFlipped(ForgeDirection.DOWN, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.DOWN, extendedFacing, icon);
 
         renderBlocks.renderFaceYNeg(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -311,7 +313,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateTop = getRotation(extendedFacing);
-        icon = getFlipped(ForgeDirection.UP, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.UP, extendedFacing, icon);
 
         renderBlocks.renderFaceYPos(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -326,7 +328,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
 
         renderBlocks.uvRotateEast = getRotation(extendedFacing);
         renderBlocks.field_152631_f = true;
-        icon = getFlipped(ForgeDirection.NORTH, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.NORTH, extendedFacing, icon);
 
         renderBlocks.renderFaceZNeg(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -341,7 +343,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateWest = getRotation(extendedFacing);
-        icon = getFlipped(ForgeDirection.SOUTH, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.SOUTH, extendedFacing, icon);
 
         renderBlocks.renderFaceZPos(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -355,7 +357,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateNorth = getRotation(extendedFacing);
-        icon = getFlipped(ForgeDirection.WEST, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.WEST, extendedFacing, icon);
 
         renderBlocks.renderFaceXNeg(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -370,7 +372,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
 
         renderBlocks.uvRotateSouth = getRotation(extendedFacing);
         renderBlocks.field_152631_f = true;
-        icon = getFlipped(ForgeDirection.EAST, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.EAST, extendedFacing, icon);
 
         renderBlocks.renderFaceXPos(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -395,7 +397,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         };
     }
 
-    private IIcon getFlipped(ForgeDirection side, ExtendedFacing extendedFacing, IIcon icon) {
+    private IIcon getFlipped(ISBRContext ctx, ForgeDirection side, ExtendedFacing extendedFacing, IIcon icon) {
 
         boolean flipU = false, flipV = false;
 
@@ -409,7 +411,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
                 flipV = true;
             }
 
-            return flipU || flipV ? new GTIconFlipped(icon, flipU, flipV) : icon;
+            return getFlipped(ctx, icon, flipU, flipV);
         }
 
         // certain directions need to be flipped horizontally seemingly randomly
@@ -433,7 +435,73 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             flipU ^= true;
         }
 
-        return flipU || flipV ? new GTIconFlipped(icon, flipU, flipV) : icon;
+        return getFlipped(ctx, icon, flipU, flipV);
+    }
+
+    private IIcon getFlipped(ISBRContext ctx, IIcon icon, boolean flipU, boolean flipV) {
+        if (!flipU && !flipV) return icon;
+        if (!(ctx instanceof ISBRInventoryContext)) return new GTIconFlipped(icon, flipU, flipV);
+
+        return getInventoryFlipped(icon, flipU, flipV);
+    }
+
+    IIcon getInventoryFlipped(IIcon icon, boolean flipU, boolean flipV) {
+        if (!flipU && !flipV) return icon;
+
+        final boolean overlay;
+        if (icon == mIconContainer.getIcon()) overlay = false;
+        else if (icon == mIconContainer.getOverlayIcon()) overlay = true;
+        else return new GTIconFlipped(icon, flipU, flipV);
+
+        FlippedIconCache cache = overlay ? inventoryOverlayFlipCache : inventoryBaseFlipCache;
+        if (cache == null) {
+            cache = new FlippedIconCache(mIconContainer, overlay);
+            if (overlay) inventoryOverlayFlipCache = cache;
+            else inventoryBaseFlipCache = cache;
+        }
+        return cache.get(flipU, flipV);
+    }
+
+    private static final class FlippedIconCache {
+
+        private final IIconContainer iconContainer;
+        private final boolean overlay;
+        private volatile IIcon flippedU;
+        private volatile IIcon flippedV;
+        private volatile IIcon flippedUV;
+
+        private FlippedIconCache(IIconContainer iconContainer, boolean overlay) {
+            this.iconContainer = iconContainer;
+            this.overlay = overlay;
+        }
+
+        private IIcon get(boolean flipU, boolean flipV) {
+            IIcon flipped = flipU ? (flipV ? flippedUV : flippedU) : flippedV;
+            if (flipped != null) return flipped;
+
+            flipped = new InventoryIconFlipped(iconContainer, overlay, flipU, flipV);
+            if (flipU && flipV) flippedUV = flipped;
+            else if (flipU) flippedU = flipped;
+            else flippedV = flipped;
+            return flipped;
+        }
+    }
+
+    private static final class InventoryIconFlipped extends GTIconFlipped {
+
+        private final IIconContainer iconContainer;
+        private final boolean overlay;
+
+        private InventoryIconFlipped(IIconContainer iconContainer, boolean overlay, boolean flipU, boolean flipV) {
+            super(null, flipU, flipV);
+            this.iconContainer = iconContainer;
+            this.overlay = overlay;
+        }
+
+        @Override
+        IIcon getBaseIcon() {
+            return overlay ? iconContainer.getOverlayIcon() : iconContainer.getIcon();
+        }
     }
 
     private ExtendedFacing getExtendedFacing(int x, int y, int z) {
