@@ -2119,6 +2119,10 @@ public final class GTGuiTextures {
         .fullImage(MODID, "gui/picture/godforge_module_icon_on");
     public static final UITexture GODFORGE_MODULE_OFF = UITexture
         .fullImage(MODID, "gui/picture/godforge_module_icon_off");
+    public static final UITexture GODFORGE_MODULE_VERTICAL_ON = UITexture
+        .fullImage(MODID, "gui/picture/godforge_module_icon_vertical_on");
+    public static final UITexture GODFORGE_MODULE_VERTICAL_OFF = UITexture
+        .fullImage(MODID, "gui/picture/godforge_module_icon_vertical_off");
     public static final UITexture GODFORGE_MODULE_RING = UITexture
         .fullImage(MODID, "gui/picture/godforge_module_ring_icon");
 

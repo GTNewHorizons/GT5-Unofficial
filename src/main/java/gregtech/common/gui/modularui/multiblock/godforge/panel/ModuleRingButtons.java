@@ -98,20 +98,42 @@ public class ModuleRingButtons {
                     return IDrawable.EMPTY;
                 }
 
-                UITexture texture = GTGuiTextures.GODFORGE_MODULE_OFF;
-                if (igtte.isActive()) {
-                    texture = GTGuiTextures.GODFORGE_MODULE_ON;
-                }
-
+                UITexture texture;
                 int rotation;
-                if (ringLocation == 0) {
-                    rotation = 1;
-                } else if (ringLocation == 1) {
-                    rotation = 0;
-                } else if (ringLocation == 2) {
-                    rotation = 3;
-                } else {
-                    rotation = 2;
+                switch (ringLocation) {
+                    case 0 -> {
+                        rotation = 0;
+                        if (igtte.isActive()) {
+                            texture = GTGuiTextures.GODFORGE_MODULE_VERTICAL_ON;
+                        } else {
+                            texture = GTGuiTextures.GODFORGE_MODULE_VERTICAL_OFF;
+                        }
+                    }
+                    case 1 -> {
+                        rotation = 0;
+                        if (igtte.isActive()) {
+                            texture = GTGuiTextures.GODFORGE_MODULE_ON;
+                        } else {
+                            texture = GTGuiTextures.GODFORGE_MODULE_OFF;
+                        }
+                    }
+                    case 2 -> {
+                        rotation = 2;
+                        if (igtte.isActive()) {
+                            texture = GTGuiTextures.GODFORGE_MODULE_VERTICAL_ON;
+                        } else {
+                            texture = GTGuiTextures.GODFORGE_MODULE_VERTICAL_OFF;
+                        }
+                    }
+                    case 3 -> {
+                        rotation = 2;
+                        if (igtte.isActive()) {
+                            texture = GTGuiTextures.GODFORGE_MODULE_ON;
+                        } else {
+                            texture = GTGuiTextures.GODFORGE_MODULE_OFF;
+                        }
+                    }
+                    default -> throw new IllegalStateException();
                 }
 
                 return new RotatedDrawable(texture).rotationRadian(rotation * (float) (Math.PI / 2));
