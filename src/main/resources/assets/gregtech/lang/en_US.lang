@@ -1729,6 +1729,12 @@ gt.mbtt.structure.middle_center_4th_layer=Middle center, 4th layer
 gt.mbtt.structure.specific_casings_on_each_curve=Specific casings on each curve (%s+)
 gt.mbtt.structure.specific_glass_on_each_side=Specific glass on each side
 gt.mbtt.structure.supports_crafting_input_buffers=Supports crafting input buffers
+gt.mbtt.structure.front_center_27th_layer=Front center, 27th layer
+gt.mbtt.structure.back_left_or_right_side=Back, left, or right side of the structure
+gt.mbtt.structure.top_or_bottom_side=Top or bottom side of the structure
+gt.mbtt.structure.around_inner_ring=Around the inner ring
+gt.mbtt.structure.any_bottom_leg_casing=Any bottom leg casing
+gt.mbtt.structure.either_center_side_casing=Either center side casing
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -1739,6 +1745,8 @@ gt.mbtt.machine_type.plasma_fabricator=Plasma Fabricator
 gt.mbtt.machine_type.stellar_forge=Stellar Forge
 gt.mbtt.machine_type.restorer=Restorer
 gt.mbtt.machine_type.fusion_reactor=Fusion Reactor
+gt.mbtt.machine_type.antimatter_forge=Antimatter Forge, SSASS
+gt.mbtt.machine_type.antimatter_generator=Antimatter Generator, SLAM
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
