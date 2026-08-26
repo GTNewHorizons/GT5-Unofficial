@@ -263,7 +263,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 15))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Olivine, 15))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Asbestos, 18),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnetite, 7))
