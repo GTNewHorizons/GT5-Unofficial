@@ -631,13 +631,15 @@ public class GTClient extends GTProxy {
     public void onWorldUnload(WorldEvent.Unload event) {
         super.onWorldUnload(event);
         RenderOverlay.onWorldUnload(event.world);
+        if (event.world.isRemote) {
+            VacuumConveyorPipeClientStateManager.INSTANCE.clear();
+        }
     }
 
     @SubscribeEvent
     public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         VacuumFactoryGrid.clearAll();
         BECFactoryGrid.clearAll();
-        VacuumConveyorPipeClientStateManager.INSTANCE.clear();
     }
 
     @SubscribeEvent

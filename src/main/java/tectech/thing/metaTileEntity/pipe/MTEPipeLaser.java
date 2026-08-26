@@ -127,8 +127,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
         if (aBaseMetaTileEntity.isClientSide()) return;
 
         computingActivity = true;
-        boolean prevActive = active;
-        active = false;
+        byte prevConnections = mConnections;
 
         updateSelf(aBaseMetaTileEntity);
 
@@ -137,7 +136,8 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
             base.updateConnections();
             base.syncConnectionToClient();
         }
-        if (prevActive != active) {
+        if (prevConnections != mConnections && active) {
+            active = false;
             aBaseMetaTileEntity.issueTileUpdate();
         }
         computingActivity = false;

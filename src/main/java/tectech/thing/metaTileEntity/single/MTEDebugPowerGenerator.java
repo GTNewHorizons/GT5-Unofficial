@@ -26,6 +26,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import io.netty.buffer.ByteBuf;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.gui.MTEDebugPowerGeneratorGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
@@ -138,9 +139,8 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     @Override
     public void onFirstTick(IGregTechTileEntity base) {
         super.onFirstTick(base);
-        IGregTechTileEntity front = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
-        if (front != null && front.getMetaTileEntity() instanceof MTEPipeLaser laser) {
-            laser.setCheckConnections();
+        if (base.isServerSide()) {
+            updateNeighbours(base);
         }
     }
 
@@ -287,27 +287,23 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base == null) return;
         if (base.isServerSide()) {
-            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                IGregTechTileEntity igte = base.getIGregTechTileEntityAtSide(side);
-                if (igte == null) continue;
-                IMetaTileEntity imte = igte.getMetaTileEntity();
-                if (imte instanceof MTEPipeLaser laser) {
-                    laser.updateNetwork(true);
-                }
-            }
+            updateNeighbours(base);
+            base.issueTileUpdate();
         } else {
             base.issueTextureUpdate();
         }
     }
 
     @Override
-    public byte getUpdateData() {
-        return LASER ? (byte) 1 : (byte) 0;
+    public void writeToStream(ByteBuf buf) {
+        super.writeToStream(buf);
+        buf.writeBoolean(LASER);
     }
 
     @Override
-    public void onValueUpdate(byte data) {
-        LASER = data == 1;
+    public void readFromStream(ByteBuf buf) {
+        super.readFromStream(buf);
+        LASER = buf.readBoolean();
     }
 
     public void toggleLaser() {
@@ -330,6 +326,17 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     @Override
     public boolean canConnect(ForgeDirection side) {
         return LASER && side != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    public void updateNeighbours(IGregTechTileEntity base) {
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            IGregTechTileEntity igte = base.getIGregTechTileEntityAtSide(side);
+            if (igte == null) continue;
+            IMetaTileEntity imte = igte.getMetaTileEntity();
+            if (imte instanceof MTEPipeLaser laser) {
+                laser.updateNetwork(true);
+            }
+        }
     }
 
     private void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
