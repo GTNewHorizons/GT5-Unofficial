@@ -312,7 +312,8 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     }
 
     protected ButtonWidget<?> createGeneralInfoPanelButton() {
-        IPanelHandler generalInfoPanel = Panels.GENERAL_INFO.getFrom(getModuleType(), getMainPanel(), hypervisor);
+        IPanelHandler generalInfoPanel = Panels.GENERAL_INFO
+            .getGlobalFrom(getModuleType(), getMainPanel(), hypervisor, isSubpanel);
         return new ButtonWidget<>().overlay(IDrawable.EMPTY)
             .background(GTGuiTextures.PICTURE_GODFORGE_LOGO)
             .disableHoverBackground()

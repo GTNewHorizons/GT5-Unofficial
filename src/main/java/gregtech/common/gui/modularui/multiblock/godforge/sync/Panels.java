@@ -28,6 +28,8 @@ import gregtech.common.gui.modularui.multiblock.godforge.panel.UpgradeTreePanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.VoltageConfigPanel;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 
+// TODO some day, restructure this enough to allow all 16 module subpanels to be open at once,
+// TODO regardless of if they share module types (currently disallowed because it would crash)
 public enum Panels {
 
     // Main panels
@@ -119,6 +121,21 @@ public enum Panels {
 
             return panelSupplier.apply(hypervisor, fromModule);
         });
+    }
+
+    /**
+     * Used for opening a panel on the main gorge UI from a button or similar in a module subpanel.
+     * Prevents things like allowing multiple info panels being open for panels shared between modules and
+     * the main godforge multiblock.
+     */
+    public IPanelHandler getGlobalFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor,
+        boolean isSubpanel) {
+        if (isSubpanel && fromModule != Modules.CORE) {
+            // Open it from main panel instead
+            fromModule = Modules.CORE;
+            fromPanel = Panels.MAIN;
+        }
+        return getFrom(fromModule, fromPanel, hypervisor);
     }
 
     public IPanelHandler getModuleSubpanel(Supplier<MTEBaseModule> module, int moduleIndex, SyncHypervisor hypervisor) {
