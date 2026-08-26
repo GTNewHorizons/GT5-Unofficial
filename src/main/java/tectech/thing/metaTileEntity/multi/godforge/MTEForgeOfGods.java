@@ -300,12 +300,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
         moduleManager.startQueueForRemoval();
-        boolean retVal = checkMachine_FOG();
+        checkMachine_FOG(errors);
         moduleManager.endQueueForRemoval();
-        return retVal;
     }
 
-    private boolean checkMachine_FOG() {
+    private void checkMachine_FOG(List<StructureError> errors) {
         // Check structure of multi
         if (data.isRenderActive()) {
             if (!checkPiece(STRUCTURE_PIECE_SHAFT, 63, 14, 1, errors)

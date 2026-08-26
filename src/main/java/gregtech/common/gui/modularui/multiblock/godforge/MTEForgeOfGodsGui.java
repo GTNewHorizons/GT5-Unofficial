@@ -25,7 +25,6 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
@@ -153,13 +152,16 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .marginTop(2)
-                .alignX(0.5f)
+                .leftRel(0.5f)
+                .anchorLeft(0.5f)
                 .widthRel(1))
             .child(
-                new Row().coverChildren()
+                Flow.row()
+                    .coverChildren()
                     .marginTop(5)
                     .childPadding(7)
-                    .alignX(0.5f)
+                    .leftRel(0.5f)
+                    .anchorLeft(0.5f)
                     .child(ModuleRingButtons.createModuleRing(hypervisor, 0))
                     .child(ModuleRingButtons.createModuleRing(hypervisor, 1))
                     .child(ModuleRingButtons.createModuleRing(hypervisor, 2))

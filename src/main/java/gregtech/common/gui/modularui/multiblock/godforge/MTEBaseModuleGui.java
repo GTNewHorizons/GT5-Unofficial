@@ -27,12 +27,12 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.common.CommonButtons;
-import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
@@ -75,11 +75,15 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
         panel.size(217, 121)
             .child(
-                new Column().padding(4)
-                    .child(createTerminalRow(panel, syncManager).alignX(0))
+                Flow.column()
+                    .padding(4)
+                    .child(
+                        createTerminalRow(panel, syncManager).leftRel(0)
+                            .anchorLeft(0))
                     .child(createMuffleButton())
                     .child(
-                        createPanelGap(panel, syncManager).alignX(0)
+                        createPanelGap(panel, syncManager).leftRel(0)
+                            .anchorLeft(0)
                             .marginLeft(1)))
             .child(createButtonColumn(panel, syncManager).mainAxisAlignment(MainAxis.START));
 
@@ -124,12 +128,20 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
             .child(createPowerSwitchButton())
             .child(createStructureUpdateButton(syncManager))
             .child(createVoltageConfigButton())
-            .childIf(usesExtraButton(), createExtraButton().marginBottom(2));
+            .childIf(usesExtraButton(), () -> createExtraButton().marginBottom(2));
     }
 
     @Override
     protected ItemSlot createControllerSlot() {
-        return super.createControllerSlot().marginTop(2);
+        return new ItemSlot()
+            .slot(
+                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).slotGroup("item_inv"))
+            .background(GuiTextures.SLOT_ITEM, GTGuiTextures.TT_OVERLAY_SLOT_MESH)
+            .overlay(
+                GTGuiTextures.TT_CONTROLLER_SLOT_HEAT_SINK.asIcon()
+                    .size(18, 6)
+                    .marginTop(22))
+            .marginTop(2);
     }
 
     @Override
@@ -156,24 +168,12 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return new Row();
+        return Flow.row();
     }
 
     @Override
     protected int getTextBoxToInventoryGap() {
         return 20;
-    }
-
-    private ItemSlot createControllerSlot() {
-        return new ItemSlot()
-            .slot(
-                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).slotGroup("item_inv"))
-            .background(GuiTextures.SLOT_ITEM, GTGuiTextures.TT_OVERLAY_SLOT_MESH)
-            .overlay(
-                GTGuiTextures.TT_CONTROLLER_SLOT_HEAT_SINK.asIcon()
-                    .size(18, 6)
-                    .marginTop(22))
-            .marginTop(2);
     }
 
     @Override

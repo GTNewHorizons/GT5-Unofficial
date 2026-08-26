@@ -112,7 +112,7 @@ public enum Panels {
 
         PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
 
-        return syncManager.syncedPanel(getPanelId(fromModule, -1), (p_syncManager, syncHandler) -> {
+        return syncManager.syncedPanel(getPanelId(fromModule, -1), true, (p_syncManager, syncHandler) -> {
             ModularPanel panel = createPanel(fromModule, hypervisor, -1);
             hypervisor.setModularPanel(fromModule, this, panel);
             hypervisor.setSyncManager(fromModule, this, p_syncManager);
@@ -130,7 +130,7 @@ public enum Panels {
         Panels fromPanel = hypervisor.getMainPanel();
         PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
 
-        return syncManager.panel(getPanelId(fromModule, moduleIndex), (p_syncManager, syncHandler) -> {
+        return syncManager.syncedPanel(getPanelId(fromModule, moduleIndex), true, (p_syncManager, syncHandler) -> {
             MTEBaseModule multiblock = module.get();
             Modules<?> openingModule = Modules.getModule(multiblock);
 
@@ -142,7 +142,7 @@ public enum Panels {
 
             MTEBaseModuleGui<?> gui = Modules.createSubpanelGui(multiblock, hypervisor);
             return gui.openSubpanel();
-        }, true);
+        });
     }
 
     private ModularPanel createPanel(Modules<?> fromModule, SyncHypervisor hypervisor, int moduleIndex) {
