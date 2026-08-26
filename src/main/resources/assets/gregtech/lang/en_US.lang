@@ -1729,6 +1729,22 @@ gt.mbtt.structure.middle_center_4th_layer=Middle center, 4th layer
 gt.mbtt.structure.specific_casings_on_each_curve=Specific casings on each curve (%s+)
 gt.mbtt.structure.specific_glass_on_each_side=Specific glass on each side
 gt.mbtt.structure.supports_crafting_input_buffers=Supports crafting input buffers
+gt.mbtt.structure.front_center_27th_layer=Front center, 27th layer
+gt.mbtt.structure.back_left_or_right_side=Back, left, or right side of the structure
+gt.mbtt.structure.top_or_bottom_side=Top or bottom side of the structure
+gt.mbtt.structure.around_inner_ring=Around the inner ring
+gt.mbtt.structure.any_bottom_leg_casing=Any bottom leg casing
+gt.mbtt.structure.either_center_side_casing=Either center side casing
+gt.mbtt.structure.front_center_casing_or_any_bottom_casing=Front center casing (hot fluid), any bottom casing (distilled water)
+gt.mbtt.structure.back_center_casing_or_any_top_casing=Back center casing (cool fluid), any top casing (steam)
+gt.mbtt.structure.any_top_edge_casing=Any top edge casing
+gt.mbtt.structure.any_top_center_casing=Any top center casing
+gt.mbtt.structure.any_bottom_center_casing_replaces_other_hatches=Any bottom center casing (replaces other hatches)
+gt.mbtt.structure.any_unit_casing=Any unit casing
+gt.mbtt.structure.neutron_accelerator=Neutron Accelerator
+gt.mbtt.structure.neutron_sensor=Neutron Sensor
+gt.mbtt.structure.yot_hatch=YOTHatch
+gt.mbtt.structure.no_air_gaps_fluid_cells_different_tiers=No air gaps allowed, but the fluid cell blocks can be different tiers
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -1739,6 +1755,12 @@ gt.mbtt.machine_type.plasma_fabricator=Plasma Fabricator
 gt.mbtt.machine_type.stellar_forge=Stellar Forge
 gt.mbtt.machine_type.restorer=Restorer
 gt.mbtt.machine_type.fusion_reactor=Fusion Reactor
+gt.mbtt.machine_type.antimatter_forge=Antimatter Forge, SSASS
+gt.mbtt.machine_type.antimatter_generator=Antimatter Generator, SLAM
+gt.mbtt.machine_type.heat_exchanger_ehe=Heat Exchanger, EHE
+gt.mbtt.machine_type.neutron_activator=Neutron Activator, NA
+gt.mbtt.machine_type.precise_assembler=Precise Assembler, Assembler, PrAss
+gt.mbtt.machine_type.fluid_tank=Fluid Tank
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
@@ -1836,18 +1858,6 @@ gt.multiblock.AdvHeatExchanger.hotsolarsalt=§cHot Solar Salt§7 | SH Threshold 
 gt.multiblock.AdvHeatExchanger.throttle1=A circuit in the controller lowers the SH threshold at the cost of steam
 gt.multiblock.AdvHeatExchanger.throttle2=§d-3.75%§7 SH Threshold and §r-1.5%§7 steam output per circuit over 1
 
-gt.multiblock.ExtremeHeatExchanger.desc1=Inputs are §cLava§7, §cHot Coolant§7, §cHot Solar Salt§7, or §cPlasma
-gt.multiblock.ExtremeHeatExchanger.desc2=Outputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, §9Cold Solar Salt§7, or §9Molten Metal
-gt.multiblock.ExtremeHeatExchanger.desc3=Converts distilled water into §rSH Steam§7 or §rSC Steam§7 in the process
-gt.multiblock.ExtremeHeatExchanger.desc4=Outputs §rSC Steam§7 if the input rate of hot fluid is above a certain §dthreshold
-gt.multiblock.ExtremeHeatExchanger.desc5=Explodes immediately if it runs out of distilled water
-gt.multiblock.ExtremeHeatExchanger.lava=§cLava§7 | SC Threshold §d80,000 %s/s§7 | Max Input §c160,000 %s/s§7 | Max Output §r640,000 %s/t SC Steam
-gt.multiblock.ExtremeHeatExchanger.hotcoolant=§cHot Coolant§7 | SC Threshold §d8,000 %s/s§7 | Max Input §c128,000 %s/s§7 | Max Output §r1,280,000 %s/t SC Steam
-gt.multiblock.ExtremeHeatExchanger.hotsolarsalt=§cHot Solar Salt§7 | SC Threshold §d1,600 %s/s§7 | Max Input §c3,200 %s/s§7 | Max Output §r160,000 %s/t SC Steam
-gt.multiblock.ExtremeHeatExchanger.plasma1=§cPlasma§7 always outputs §rDense SC Steam§7 regardless of input rate
-gt.multiblock.ExtremeHeatExchanger.plasma2=The max input and output rates depend on the plasma's density (EU/L)
-gt.multiblock.ExtremeHeatExchanger.throttle1=A circuit in the controller lowers the SC threshold at the cost of steam
-gt.multiblock.ExtremeHeatExchanger.throttle2=§d-150 %s/s§7 SC Threshold and §r-1.5%%§7 steam output per circuit over 1
 
 gt.multiblock.NeutralizationEngine.efficiency=Can §fuse §7a §bbase §7to boost §defficiency §7(consumes one by one):
 gt.multiblock.NeutralizationEngine.alkali_text=§b%s§7 : §d%d%%§7 : §f%d§7/§fminute
