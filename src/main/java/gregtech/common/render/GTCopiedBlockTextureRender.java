@@ -13,6 +13,7 @@ import com.prupe.mcpatcher.ctm.CTMUtils;
 
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.render.ISBRContext;
+import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
 
 public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockContainer, IIconTexture {
@@ -43,7 +44,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
 
     @Override
     public void renderXPos(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx);
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.field_152631_f = true;
@@ -57,7 +58,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
 
     @Override
     public void renderXNeg(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final boolean startedDrawing = beginDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx);
@@ -69,7 +70,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
 
     @Override
     public void renderYPos(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx);
@@ -81,7 +82,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
 
     @Override
     public void renderYNeg(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx);
@@ -93,7 +94,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
 
     @Override
     public void renderZPos(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx);
@@ -105,7 +106,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
 
     @Override
     public void renderZNeg(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx);
@@ -120,6 +121,10 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
     @Override
     public boolean isValidTexture() {
         return mBlock != null;
+    }
+
+    private boolean canRenderInPass(ISBRContext ctx) {
+        return ctx instanceof ISBRInventoryContext || ctx.canRenderInPass(mBlock::canRenderInPass);
     }
 
     @Override

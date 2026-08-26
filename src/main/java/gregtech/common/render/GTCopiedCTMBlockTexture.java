@@ -7,6 +7,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.render.ISBRContext;
+import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.util.GTRenderingWorld;
 
 class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
@@ -38,7 +39,7 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
     // spotless:off
     @Override
     public void renderYNeg(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
@@ -49,7 +50,7 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
 
     @Override
     public void renderYPos(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
@@ -60,7 +61,7 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
 
     @Override
     public void renderZNeg(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
@@ -73,7 +74,7 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
 
     @Override
     public void renderZPos(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
@@ -84,7 +85,7 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
 
     @Override
     public void renderXNeg(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final boolean startedDrawing = beginDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
@@ -95,7 +96,7 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
 
     @Override
     public void renderXPos(ISBRContext ctx) {
-        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
         renderBlocks.field_152631_f = true;
@@ -110,6 +111,10 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
     @Override
     public boolean isValidTexture() {
         return mBlock != null;
+    }
+
+    private boolean canRenderInPass(ISBRContext ctx) {
+        return ctx instanceof ISBRInventoryContext || ctx.canRenderInPass(mBlock::canRenderInPass);
     }
 
     @Override

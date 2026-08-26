@@ -25,6 +25,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.ISBRContext;
+import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
 
 public class GTRenderedTexture extends GTTextureBase implements IColorModulationContainer, IIconTexture {
@@ -80,13 +81,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.EAST, false, ctx);
-        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.EAST, mRGBa);
             renderFaceXPos(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.EAST, true, ctx);
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
-            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.EAST, 0xffffff);
             renderFaceXPos(ctx, overlayIcon, rotation);
         }
@@ -117,13 +117,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.WEST, false, ctx);
-        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.WEST, mRGBa);
             renderFaceXNeg(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.WEST, true, ctx);
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
-            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.WEST, 0xffffff);
             renderFaceXNeg(ctx, overlayIcon, rotation);
         }
@@ -154,13 +153,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.UP, false, ctx);
-        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.UP, mRGBa);
             renderFaceYPos(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.UP, true, ctx);
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
-            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.UP, 0xffffff);
             renderFaceYPos(ctx, overlayIcon, rotation);
         }
@@ -191,13 +189,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.DOWN, false, ctx);
-        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.DOWN, mRGBa);
             renderFaceYNeg(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.DOWN, true, ctx);
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
-            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.DOWN, 0xffffff);
             renderFaceYNeg(ctx, overlayIcon, rotation);
         }
@@ -228,13 +225,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.SOUTH, false, ctx);
-        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.SOUTH, mRGBa);
             renderFaceZPos(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.SOUTH, true, ctx);
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
-            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.SOUTH, 0xffffff);
             renderFaceZPos(ctx, overlayIcon, rotation);
         }
@@ -265,13 +261,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
         final IIcon icon = getIcon(ForgeDirection.NORTH, false, ctx);
-        if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.NORTH, mRGBa);
             renderFaceZNeg(ctx, mIconContainer.getIcon(), rotation);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.NORTH, true, ctx);
-        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
-            && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
+        if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.NORTH, 0xffffff);
             renderFaceZNeg(ctx, overlayIcon, rotation);
         }
@@ -285,6 +280,10 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public short[] getRGBA() {
         return mRGBa;
+    }
+
+    private boolean canRenderInPass(ISBRContext ctx) {
+        return ctx instanceof ISBRInventoryContext || ctx.canRenderInPass(mIconContainer::canRenderInPass);
     }
 
     @Override
