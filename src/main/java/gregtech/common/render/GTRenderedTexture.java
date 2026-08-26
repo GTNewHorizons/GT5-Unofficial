@@ -63,12 +63,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderXPos(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        startDrawingQuads(renderBlocks, 1.0f, 0.0f, 0.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 1.0f, 0.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(renderBlocks);
+                endDrawingQuads(renderBlocks, startedDrawing);
                 return;
             }
             renderBlocks.enableAO = false;
@@ -91,7 +91,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceXPos(ctx, overlayIcon, rotation);
         }
         renderBlocks.enableAO = enableAO;
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
         if (glow && ctx instanceof ISBRWorldContext worldCtx) {
             worldCtx.tryStartAngelicaLighting();
         }
@@ -100,12 +100,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderXNeg(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        startDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(renderBlocks);
+                endDrawingQuads(renderBlocks, startedDrawing);
                 return;
             }
             renderBlocks.enableAO = false;
@@ -128,7 +128,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceXNeg(ctx, overlayIcon, rotation);
         }
         renderBlocks.enableAO = enableAO;
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
         if (glow && ctx instanceof ISBRWorldContext worldCtx) {
             worldCtx.tryStartAngelicaLighting();
         }
@@ -137,12 +137,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderYPos(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        startDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(renderBlocks);
+                endDrawingQuads(renderBlocks, startedDrawing);
                 return;
             }
             renderBlocks.enableAO = false;
@@ -165,7 +165,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceYPos(ctx, overlayIcon, rotation);
         }
         renderBlocks.enableAO = enableAO;
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
         if (glow && ctx instanceof ISBRWorldContext worldCtx) {
             worldCtx.tryStartAngelicaLighting();
         }
@@ -174,12 +174,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderYNeg(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        startDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(renderBlocks);
+                endDrawingQuads(renderBlocks, startedDrawing);
                 return;
             }
             renderBlocks.enableAO = false;
@@ -202,7 +202,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceYNeg(ctx, overlayIcon, rotation);
         }
         renderBlocks.enableAO = enableAO;
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
         if (glow && ctx instanceof ISBRWorldContext worldCtx) {
             worldCtx.tryStartAngelicaLighting();
         }
@@ -211,12 +211,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderZPos(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        startDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(renderBlocks);
+                endDrawingQuads(renderBlocks, startedDrawing);
                 return;
             }
             renderBlocks.enableAO = false;
@@ -239,7 +239,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceZPos(ctx, overlayIcon, rotation);
         }
         renderBlocks.enableAO = enableAO;
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
         if (glow && ctx instanceof ISBRWorldContext worldCtx) {
             worldCtx.tryStartAngelicaLighting();
         }
@@ -248,12 +248,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderZNeg(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        startDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
             if (!GTMod.proxy.mRenderGlowTextures) {
-                draw(renderBlocks);
+                endDrawingQuads(renderBlocks, startedDrawing);
                 return;
             }
             renderBlocks.enableAO = false;
@@ -276,7 +276,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderFaceZNeg(ctx, overlayIcon, rotation);
         }
         renderBlocks.enableAO = enableAO;
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
         if (glow && ctx instanceof ISBRWorldContext worldCtx) {
             worldCtx.tryStartAngelicaLighting();
         }

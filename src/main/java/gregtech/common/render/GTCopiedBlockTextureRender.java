@@ -47,11 +47,11 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx);
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.field_152631_f = true;
-        startDrawingQuads(renderBlocks, 1.0f, 0.0f, 0.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 1.0f, 0.0f, 0.0f);
         ctx.reset()
             .setupColor(ForgeDirection.EAST, 0xffffff);
         renderBlocks.renderFaceXPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
         renderBlocks.field_152631_f = false;
     }
 
@@ -59,61 +59,61 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
     public void renderXNeg(ISBRContext ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        startDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx);
         ctx.reset()
             .setupColor(ForgeDirection.WEST, 0xffffff);
         renderBlocks.renderFaceXNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
     }
 
     @Override
     public void renderYPos(ISBRContext ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        startDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx);
         ctx.reset()
             .setupColor(ForgeDirection.UP, 0xffffff);
         renderBlocks.renderFaceYPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
     }
 
     @Override
     public void renderYNeg(ISBRContext ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        startDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx);
         ctx.reset()
             .setupColor(ForgeDirection.DOWN, 0xffffff);
         renderBlocks.renderFaceYNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
     }
 
     @Override
     public void renderZPos(ISBRContext ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        startDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx);
         ctx.reset()
             .setupColor(ForgeDirection.SOUTH, 0xffffff);
         renderBlocks.renderFaceZPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
     }
 
     @Override
     public void renderZNeg(ISBRContext ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        startDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
+        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx);
         renderBlocks.field_152631_f = true;
         ctx.reset()
             .setupColor(ForgeDirection.NORTH, 0xffffff);
         renderBlocks.renderFaceZNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
-        draw(renderBlocks);
+        endDrawingQuads(renderBlocks, startedDrawing);
         renderBlocks.field_152631_f = false;
     }
 
