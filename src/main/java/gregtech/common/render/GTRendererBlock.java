@@ -240,6 +240,12 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         block.setBlockBoundsForItemRender();
         ctx.setRenderBoundsFromBlock();
 
+        final ITexture[][] textures = imte.getInventoryTextures();
+        if (textures != null) {
+            renderInventoryTextures(ctx, textures);
+            return;
+        }
+
         final IGregTechTileEntity igte = imte.getBaseMetaTileEntity();
         ctx.renderNegativeYFacing(imte.getTexture(igte, DOWN, WEST, -1, true, false));
         ctx.renderPositiveYFacing(imte.getTexture(igte, UP, WEST, -1, true, false));
@@ -247,6 +253,15 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         ctx.renderPositiveZFacing(imte.getTexture(igte, SOUTH, WEST, -1, true, false));
         ctx.renderNegativeXFacing(imte.getTexture(igte, WEST, WEST, -1, true, false));
         ctx.renderPositiveXFacing(imte.getTexture(igte, EAST, WEST, -1, true, false));
+    }
+
+    private static void renderInventoryTextures(ISBRInventoryContext ctx, ITexture[][] textures) {
+        ctx.renderNegativeYFacing(textures[SIDE_DOWN]);
+        ctx.renderPositiveYFacing(textures[SIDE_UP]);
+        ctx.renderNegativeZFacing(textures[SIDE_NORTH]);
+        ctx.renderPositiveZFacing(textures[SIDE_SOUTH]);
+        ctx.renderNegativeXFacing(textures[SIDE_WEST]);
+        ctx.renderPositiveXFacing(textures[SIDE_EAST]);
     }
 
     @Override
