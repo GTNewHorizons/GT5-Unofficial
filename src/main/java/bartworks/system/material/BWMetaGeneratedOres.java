@@ -44,12 +44,14 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
     public final String blockName;
     public final StoneType stoneType;
     public final boolean isSmall, isNatural;
+    private final Int2ObjectLinkedOpenHashMap<ITexture[][]> textureCache = new Int2ObjectLinkedOpenHashMap<>();
 
     public BWMetaGeneratedOres(String blockName, StoneType stoneType, boolean small, boolean natural) {
         super(Material.rock);
@@ -179,7 +181,10 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
     @Override
     @Nullable
-    public ITexture[][] getTextures(int metadata) {
+    public synchronized ITexture[][] getTextures(int metadata) {
+        ITexture[][] cached = textureCache.getAndMoveToFirst(metadata);
+        if (cached != null) return cached;
+
         Werkstoff material = Werkstoff.werkstoffHashMap.get((short) metadata);
 
         OrePrefixes prefix = getPrefix();
@@ -199,6 +204,8 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
             out[i] = new ITexture[] { stoneType.getTexture(i), oreTexture };
         }
 
+        textureCache.putAndMoveToFirst(metadata, out);
+        while (textureCache.size() > 512) textureCache.removeLast();
         return out;
     }
 

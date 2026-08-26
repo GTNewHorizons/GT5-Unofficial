@@ -40,11 +40,13 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implements IBlockWithTextures {
 
     public static ThreadLocal<TileEntityMetaGeneratedBlock> mTemporaryTileEntity = new ThreadLocal<>();
     protected final OrePrefixes prefix;
+    private final Int2ObjectLinkedOpenHashMap<ITexture[][]> textureCache = new Int2ObjectLinkedOpenHashMap<>();
 
     public BWMetaGeneratedBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName,
         OrePrefixes types) {
@@ -73,7 +75,10 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
     }
 
     @Override
-    public @Nullable ITexture[][] getTextures(int meta) {
+    public synchronized @Nullable ITexture[][] getTextures(int meta) {
+        ITexture[][] cached = textureCache.getAndMoveToFirst(meta);
+        if (cached != null) return cached;
+
         ITexture baseTexture = null;
 
         Werkstoff mat = Werkstoff.werkstoffHashMap.get((short) meta);
@@ -97,7 +102,10 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
 
         ITexture[] texture = new ITexture[] { TextureFactory.of(Blocks.iron_block), baseTexture };
 
-        return new ITexture[][] { texture, texture, texture, texture, texture, texture };
+        cached = new ITexture[][] { texture, texture, texture, texture, texture, texture };
+        textureCache.putAndMoveToFirst(meta, cached);
+        while (textureCache.size() > 512) textureCache.removeLast();
+        return cached;
     }
 
     @Override

@@ -52,10 +52,12 @@ import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.nei.NEIGTConfig;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IBlockWithCustomSound {
 
     public final List<StoneType> stoneTypes;
+    private final Int2ObjectLinkedOpenHashMap<ITexture[][]> textureCache = new Int2ObjectLinkedOpenHashMap<>();
 
     public GTBlockOre(int series, StoneType[] stoneTypes) {
         super(GTItemOre.class, "gt.blockores" + series, Material.rock);
@@ -204,7 +206,10 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     }
 
     @Override
-    public ITexture[][] getTextures(int metadata) {
+    public synchronized ITexture[][] getTextures(int metadata) {
+        ITexture[][] cached = textureCache.getAndMoveToFirst(metadata);
+        if (cached != null) return cached;
+
         StoneType stoneType = getStoneType(metadata);
         Materials mat = getMaterial(metadata);
         boolean small = isSmallOre(metadata);
@@ -227,7 +232,10 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
         final ITexture[] textures = new ITexture[] { bg, fg };
 
-        return new ITexture[][] { textures, textures, textures, textures, textures, textures };
+        cached = new ITexture[][] { textures, textures, textures, textures, textures, textures };
+        textureCache.putAndMoveToFirst(metadata, cached);
+        while (textureCache.size() > 512) textureCache.removeLast();
+        return cached;
     }
 
     @Override

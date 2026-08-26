@@ -19,6 +19,7 @@ import static gregtech.api.enums.HeatingCoilLevel.ZPM;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.function.Supplier;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,6 +60,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
     public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
     public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
+    private final AtomicReferenceArray<ITexture[][]> textureCache = new AtomicReferenceArray<>(ACTIVE_OFFSET * 4);
 
     public BlockCasings5() {
         super(ItemCasings.class, "gt.blockcasings5", MaterialCasings.INSTANCE, 16);
@@ -134,9 +136,16 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
     @Override
     public @Nullable ITexture[][] getTextures(int metadata) {
+        final boolean useOldCoils = Client.render.useOldCoils;
+        final int cacheIndex = Math.floorMod(metadata, ACTIVE_OFFSET)
+            + (metadata >= ACTIVE_OFFSET ? ACTIVE_OFFSET : 0)
+            + (useOldCoils ? ACTIVE_OFFSET * 2 : 0);
+        ITexture[][] cached = textureCache.get(cacheIndex);
+        if (cached != null) return cached;
+
         List<ITexture> textures = new ArrayList<>();
 
-        if (Client.render.useOldCoils) {
+        if (useOldCoils) {
             IIconContainer icon = switch (metadata % ACTIVE_OFFSET) {
                 case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL;
                 case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME;
@@ -203,7 +212,9 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
         ITexture[] layers = textures.toArray(new ITexture[0]);
 
-        return new ITexture[][] { layers, layers, layers, layers, layers, layers };
+        cached = new ITexture[][] { layers, layers, layers, layers, layers, layers };
+        if (textureCache.compareAndSet(cacheIndex, null, cached)) return cached;
+        return textureCache.get(cacheIndex);
     }
 
     @Override
