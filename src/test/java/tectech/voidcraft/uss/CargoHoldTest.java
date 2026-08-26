@@ -333,7 +333,7 @@ public class CargoHoldTest {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setLong(VoidcraftNbt.TAG_CARGO, 500L);
         VoidcraftActiveShip ship = VoidcraftActiveShip
-            .launch("uuid-test", "cap-ship", 1.0, 1000L, true, payload, null, null, 42, null); // null origin → (0,0,0)
+            .launch("uuid-test", "cap-ship", 1.0, 1000L, payload, null, null, 42, null); // null origin → (0,0,0)
         assertEquals(
             500L * VoidcraftActiveShip.CARGO_UNIT_MULTIPLIER,
             ship.cargoCapacity(),

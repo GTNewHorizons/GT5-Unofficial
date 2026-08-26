@@ -1364,8 +1364,7 @@ item.tm.voidcraft.stat.construction=Сила строительства: %s
 item.tm.voidcraft.stat.starlifter=Сила звёздного лифта: %s
 item.tm.voidcraft.stat.buffer=Энергобуфер: %s
 item.tm.voidcraft.stat.draw=Потребление энергии: %s
-item.tm.voidcraft.integrity.recoverable=Целостность %s (восстанавливаемая)
-item.tm.voidcraft.integrity.expendable=Целостность %s (расходуемая)
+item.tm.voidcraft.integrity=Целостность %s (лимит времени в УСС, секунд)
 # Нестабильная Солнечная Система (реворк EoH, фаза 2)
 gt.blockmachines.multimachine.em.unstable_solar_system.name=Нестабильная Солнечная Система
 item.tt.ussController.name=Управляющий УСС (М последовательности)

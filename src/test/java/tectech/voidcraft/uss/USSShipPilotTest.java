@@ -62,7 +62,7 @@ public class USSShipPilotTest {
                 payload.setTag(VoidcraftNbt.TAG_PROGRAM, list);
             }
         }
-        return VoidcraftActiveShip.launch(uuid, uuid, 0.5, 1000L, true, payload, null, null, 0, ORIGIN);
+        return VoidcraftActiveShip.launch(uuid, uuid, 0.5, 1000L, payload, null, null, 0, ORIGIN);
     }
 
     // region creation
@@ -139,6 +139,61 @@ public class USSShipPilotTest {
             p.getShip()
                 .getPosition(),
             "the HOME leg delivered the ship back at its origin");
+        assertEquals(
+            3,
+            p.getShip()
+                .getLegId(),
+            "three legs ran (OUTBOUND, WORK, RETURNING)");
+    }
+
+    @Test
+    public void testRandomPlanetTargetRunsLikeMiner() {
+        // pass-33 UI target: MOVE RANDOM_PLANET → the world picks the planet (here: index 1) → WORK mines it → HOME.
+        FakePilotWorld w = new FakePilotWorld();
+        w.resolve(USSProgramDefaults.TARGET_RANDOM_PLANET, 0, PLANET, 1, false);
+        USSProgram program = USSProgram
+            .of(Arrays.asList(move(USSProgramDefaults.TARGET_RANDOM_PLANET, -1), work(), move("HOME", 0)));
+        USSShipPilot p = USSShipPilot.create(ship("rand-1", program), program, w, SEED);
+
+        int budget = 100;
+        while (p.getShip()
+            .getState() == USSShipState.HOVERING) {
+            assertTrue(budget-- > 0, "the first MOVE must start");
+            p.tick();
+        }
+        assertEquals(
+            USSShipState.OUTBOUND,
+            p.getShip()
+                .getState());
+        assertEquals(
+            PLANET,
+            p.getShip()
+                .getDestination(),
+            "the OUTBOUND leg aims at the resolved random planet");
+        assertEquals(
+            1,
+            p.getShip()
+                .getTargetPlanet(),
+            "the resolved body index drives the client hover target");
+
+        budget = 700;
+        boolean delivered = false;
+        while (!delivered) {
+            assertTrue(budget-- > 0, "the program must end with the HOME delivery");
+            delivered = p.tick();
+        }
+        assertTrue(delivered);
+        assertEquals(1, w.workCalls, "the work leg's side-effect fired EXACTLY ONCE");
+        assertEquals(
+            Arrays.asList(USSProgramDefaults.TARGET_RANDOM_PLANET),
+            w.workKinds,
+            "the WORK leg mines the random planet");
+        assertEquals(Arrays.asList(1), w.workIndices);
+        assertEquals(
+            ORIGIN,
+            p.getShip()
+                .getPosition(),
+            "delivered back at the origin");
         assertEquals(
             3,
             p.getShip()
@@ -358,7 +413,7 @@ public class USSShipPilotTest {
         payload.setString("vc_uuid", "ctx-1");
         payload.setLong("vc_cargo", 10L);
         VoidcraftActiveShip ship = VoidcraftActiveShip
-            .launch("ctx-1", "ctx-1", 0.5, 1000L, true, payload, null, null, 0, ORIGIN);
+            .launch("ctx-1", "ctx-1", 0.5, 1000L, payload, null, null, 0, ORIGIN);
         USSShipPilot p = USSShipPilot.create(ship, null, w, SEED);
 
         p.writeVar(5, "hello");

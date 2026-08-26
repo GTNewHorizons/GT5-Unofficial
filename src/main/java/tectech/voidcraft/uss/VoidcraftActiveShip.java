@@ -22,8 +22,11 @@ import tectech.voidcraft.ship.VoidcraftNbt;
  * this class stays free of {@code Materials} so tests run without a live ore dictionary.
  *
  * <p>
- * On completion the ship is delivered: {@link #isRecoverable()} ships are re-emitted as items (the gateway puts
- * them back in its ship slot); expendable ships are consumed (only the cargo is kept).
+ * The ship's INTEGRITY is its TIME LIMIT: it is set to the ship's maximum (the blueprint's integrity) when the
+ * ship enters the USS, drops by 1 per second while the ship is in the USS ({@link #tickIntegrity()}), and when
+ * it reaches 0 the ship is LOST (removed from the USS, its cargo discarded — no delivery, no re-emission). A
+ * ship that finishes its program before the limit expires survives: its item is re-emitted (the gateway puts it
+ * back in its ship slot), with its integrity back at maximum for the next flight.
  */
 public final class VoidcraftActiveShip {
 
@@ -31,7 +34,8 @@ public final class VoidcraftActiveShip {
     private static final String TAG_NAME = "vc_name";
     private static final String TAG_SPEED = "vc_speed";
     private static final String TAG_MINING = "vc_mining";
-    private static final String TAG_RECOVERABLE = "vc_recoverable";
+    private static final String TAG_INTEGRITY = "vc_integrity";
+    private static final String TAG_INTEG_TICKS = "vc_integ_ticks";
     private static final String TAG_STATE = "vc_state";
     private static final String TAG_TICKS = "vc_ticks";
     private static final String TAG_LEG = "vc_leg";
@@ -60,11 +64,16 @@ public final class VoidcraftActiveShip {
      */
     public static final long CARGO_UNIT_MULTIPLIER = 100L;
 
+    /**
+     * The integrity time limit drops by 1 every {@code TICKS_PER_INTEGRITY} ticks — 20 = ONE game second, so the
+     * ship's integrity is exactly its survival budget in SECONDS while it is in the USS.
+     */
+    public static final int TICKS_PER_INTEGRITY = 20;
+
     private final String uuid;
     private final String name;
     private final double speed;
     private final long miningPower;
-    private final boolean recoverable;
     private final NBTTagCompound payload;
     private final int[] gatewayPos;
     private final int[] bayPos;
@@ -91,6 +100,16 @@ public final class VoidcraftActiveShip {
     private boolean bodyStatic;
 
     private USSShipState state;
+
+    /**
+     * The ship's INTEGRITY (the time-limit pass): its survival budget while in the USS. Set to the ship's maximum
+     * (the blueprint's integrity, from the payload) when the ship enters the USS, then drops by 1 per second
+     * ({@link #tickIntegrity()}). At 0 the ship is lost (removed, cargo discarded).
+     */
+    private long integrity;
+
+    /** Ticks until the next integrity drop (re-armed to {@link #TICKS_PER_INTEGRITY} after each drop). */
+    private int integrityTimer = TICKS_PER_INTEGRITY;
 
     // region the current leg (a passive countdown — the pilot arms + consumes it)
 
@@ -137,13 +156,12 @@ public final class VoidcraftActiveShip {
      */
     private CargoHold hold;
 
-    private VoidcraftActiveShip(String uuid, String name, double speed, long miningPower, boolean recoverable,
-        NBTTagCompound payload, int[] gatewayPos, int[] bayPos, int seed) {
+    private VoidcraftActiveShip(String uuid, String name, double speed, long miningPower, NBTTagCompound payload,
+        int[] gatewayPos, int[] bayPos, int seed) {
         this.uuid = uuid;
         this.name = name;
         this.speed = speed;
         this.miningPower = miningPower;
-        this.recoverable = recoverable;
         this.payload = payload;
         this.gatewayPos = gatewayPos;
         this.bayPos = bayPos;
@@ -154,6 +172,9 @@ public final class VoidcraftActiveShip {
         if (payload != null) {
             this.hold = CargoHold.of(cargoCapacity());
         }
+        // The integrity time limit: the ship enters the USS at its MAXIMUM (the blueprint's total) and counts
+        // down from there (tickIntegrity()).
+        this.integrity = maxIntegrity();
     }
 
     /**
@@ -165,23 +186,21 @@ public final class VoidcraftActiveShip {
      * @param name        ship display name
      * @param speed       ship speed in [0, 1] (denormalized from the item NBT)
      * @param miningPower mining power (denormalized from the item NBT)
-     * @param recoverable true if the ship returns as an item when the mission ends
      * @param payload     the ship payload — the item's tag compound (vc_* keys at its top level), kept so the ship can
      *                    be re-emitted as an item on return and the client can render the ship model
-     * @param gatewayPos  launching gateway world position (the RETURNING endpoint + where a recoverable ship is
+     * @param gatewayPos  launching gateway world position (the RETURNING endpoint + where a surviving ship is
      *                    re-emitted); may be null (drop-at-USS fallback)
      * @param bayPos      storage-bay world position (the cargo delivery target); may be null (drop-at-USS fallback)
      * @param seed        the per-launch identity seed (the client's per-ship key)
      * @param origin      the launch origin in fleet-anchor coordinates (null → {@code (0,0,0)})
      */
     public static VoidcraftActiveShip launch(String uuid, String name, double speed, long miningPower,
-        boolean recoverable, NBTTagCompound payload, int[] gatewayPos, int[] bayPos, int seed, USSPosition origin) {
+        NBTTagCompound payload, int[] gatewayPos, int[] bayPos, int seed, USSPosition origin) {
         VoidcraftActiveShip ship = new VoidcraftActiveShip(
             uuid,
             name,
             speed,
             miningPower,
-            recoverable,
             payload,
             gatewayPos == null ? null : gatewayPos.clone(),
             bayPos == null ? null : bayPos.clone(),
@@ -259,8 +278,44 @@ public final class VoidcraftActiveShip {
         return VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES);
     }
 
-    public boolean isRecoverable() {
-        return recoverable;
+    /**
+     * The ship's remaining INTEGRITY (the time limit, in seconds — it drops 1 per second while the ship is in the
+     * USS). 0 = the ship is lost (the caller removes it and discards its cargo).
+     */
+    public long getIntegrity() {
+        return integrity;
+    }
+
+    /**
+     * The ship's MAXIMUM integrity (the blueprint's total, from the payload's {@code vc_integrity}) — the value
+     * the integrity time limit starts from when the ship enters the USS.
+     */
+    public long maxIntegrity() {
+        if (payload == null) {
+            return 0L;
+        }
+        return Math.max(0L, VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_INTEGRITY));
+    }
+
+    /**
+     * Advance the integrity time limit by ONE world tick (call once per tick while the ship is in the USS — it
+     * counts down even while the ship HOLDS). Integrity drops by 1 every {@link #TICKS_PER_INTEGRITY} ticks
+     * (one game second).
+     *
+     * @return true when the integrity has reached 0 — the ship is LOST (removed from the USS, cargo discarded)
+     */
+    public boolean tickIntegrity() {
+        if (integrity <= 0L) {
+            return true;
+        }
+        if (integrityTimer > 0) {
+            integrityTimer--;
+        }
+        if (integrityTimer <= 0) {
+            integrityTimer = TICKS_PER_INTEGRITY;
+            integrity--;
+        }
+        return integrity <= 0L;
     }
 
     public USSShipState getState() {
@@ -469,7 +524,8 @@ public final class VoidcraftActiveShip {
         nbt.setString(TAG_NAME, name);
         nbt.setDouble(TAG_SPEED, speed);
         nbt.setLong(TAG_MINING, miningPower);
-        nbt.setBoolean(TAG_RECOVERABLE, recoverable);
+        nbt.setLong(TAG_INTEGRITY, integrity);
+        nbt.setInteger(TAG_INTEG_TICKS, integrityTimer);
         nbt.setInteger(TAG_STATE, state.getId());
         nbt.setInteger(TAG_TICKS, ticksRemaining);
         nbt.setInteger(TAG_LEG, legTotal);
@@ -546,13 +602,17 @@ public final class VoidcraftActiveShip {
             nbt.getString(TAG_NAME),
             nbt.getDouble(TAG_SPEED),
             nbt.getLong(TAG_MINING),
-            nbt.getBoolean(TAG_RECOVERABLE),
             payload,
             gatewayPos,
             bayPos,
             seed);
         ship.state = state;
         ship.targetPlanet = targetPlanet;
+        // The integrity time limit: restore the persisted countdown (missing tag → the full maximum, as if the
+        // ship had just entered the USS).
+        ship.integrity = nbt.hasKey(TAG_INTEGRITY) ? Math.max(0L, nbt.getLong(TAG_INTEGRITY)) : ship.maxIntegrity();
+        ship.integrityTimer = nbt.hasKey(TAG_INTEG_TICKS) ? Math.max(1, nbt.getInteger(TAG_INTEG_TICKS))
+            : TICKS_PER_INTEGRITY;
         ship.ticksRemaining = nbt.getInteger(TAG_TICKS);
         ship.legTotal = nbt.hasKey(TAG_LEG) ? nbt.getInteger(TAG_LEG) : ship.ticksRemaining;
         ship.legActive = nbt.hasKey(TAG_LEG_ACTIVE) && nbt.getBoolean(TAG_LEG_ACTIVE);
@@ -596,6 +656,8 @@ public final class VoidcraftActiveShip {
             + legId
             + " pos="
             + position
+            + " integrity="
+            + integrity
             + " cargo="
             + (cargo == null ? "none" : "yes")
             + "]";

@@ -55,26 +55,18 @@ public class VoidcraftBlueprintTest {
         assertEquals(40.0 / 18.0, stats.speed, 1e-9, "pass 18: speed = thrust/mass, unclamped at 1");
         assertEquals(2L, stats.energyDraw, "nozzle draw");
         assertEquals(10L + 10L, stats.integrity, "controller + frame");
-        // below the recoverable threshold
-        assertFalse(stats.isRecoverable());
     }
 
     @Test
-    public void testRecoverableByIntegrity() {
-        // controller (10) + 2 frames (10 each) = 30 integrity = threshold
+    public void testIntegritySumsComponents() {
+        // Integrity is the ship's TIME BUDGET (the time-limit pass): the blueprint sums every part's integrity,
+        // and the total is the number of seconds the ship survives in the USS.
         VoidcraftBlueprint ship = verticalShip(
             VoidcraftComponent.CONTROLLER,
             VoidcraftComponent.FRAME,
             VoidcraftComponent.FRAME);
         VoidcraftStats stats = ship.computeStats();
-        assertEquals(VoidcraftConstants.RECOVERABLE_INTEGRITY_THRESHOLD, stats.integrity);
-        assertTrue(stats.isRecoverable());
-
-        // one fewer frame falls below
-        VoidcraftBlueprint lighter = verticalShip(VoidcraftComponent.CONTROLLER, VoidcraftComponent.FRAME);
-        assertFalse(
-            lighter.computeStats()
-                .isRecoverable());
+        assertEquals(10L + 10L + 10L, stats.integrity, "controller + 2 frames = 30 seconds of USS time");
     }
 
     @Test

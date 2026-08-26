@@ -7,9 +7,10 @@ package tectech.voidcraft.uss;
  * Programming framework (Phase C): the states no longer form a fixed OUTBOUND → MINING → RETURNING loop — the
  * ship's PROGRAM decides its legs. OUTBOUND = a travel leg toward a body, MINING = a work leg at a body,
  * RETURNING = the travel leg home ({@code MOVE HOME}) whose completion delivers the ship, HOVERING = holding in
- * place (program finished without a return — the ship stays). A ship is either <em>recoverable</em> (integrity ≥
- * {@code tectech.voidcraft.ship.VoidcraftConstants#RECOVERABLE_INTEGRITY_THRESHOLD}) — the item reappears at the
- * gateway — or expendable: the item is consumed on return. The state is persisted as a stable id in NBT (see
+ * place (program finished without a return — the ship stays). The ship's INTEGRITY is its time limit: it starts at
+ * the ship's maximum when it enters the USS, drops by 1 per second while it is in the USS, and at 0 the ship is
+ * LOST (removed, cargo discarded). A ship that finishes before the limit expires survives — its item reappears at
+ * the gateway, with its integrity back at maximum. The state is persisted as a stable id in NBT (see
  * {@link VoidcraftActiveShip}).
  */
 public enum USSShipState {

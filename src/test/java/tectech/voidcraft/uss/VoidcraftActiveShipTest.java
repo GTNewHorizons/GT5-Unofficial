@@ -30,7 +30,7 @@ public class VoidcraftActiveShipTest {
     private static VoidcraftActiveShip ship(String uuid) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setString("vc_uuid", uuid);
-        return VoidcraftActiveShip.launch(uuid, uuid, SPEED, MINING_POWER, true, payload, null, null, 0, ORIGIN);
+        return VoidcraftActiveShip.launch(uuid, uuid, SPEED, MINING_POWER, payload, null, null, 0, ORIGIN);
     }
 
     // region launch (Phase C: the ship starts HOLDING at its origin, legs unarmed)
@@ -56,7 +56,7 @@ public class VoidcraftActiveShipTest {
     @Test
     public void testLaunchDefaultsOriginToZero() {
         VoidcraftActiveShip s = VoidcraftActiveShip
-            .launch("z", "z", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null, 0, null);
+            .launch("z", "z", SPEED, MINING_POWER, new NBTTagCompound(), null, null, 0, null);
         assertEquals(USSPosition.zero(), s.getPosition(), "null origin → (0,0,0)");
     }
 
@@ -197,7 +197,7 @@ public class VoidcraftActiveShipTest {
         int[] gateway = { 10, 64, -20 };
         int[] bay = { 12, 64, -18 };
         VoidcraftActiveShip s = VoidcraftActiveShip
-            .launch("rt-1", "Round Trip", SPEED, MINING_POWER, true, payload, gateway, bay, 42, ORIGIN);
+            .launch("rt-1", "Round Trip", SPEED, MINING_POWER, payload, gateway, bay, 42, ORIGIN);
         s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 80, DISTANCE);
         s.tickLeg();
         NBTTagCompound cargo = new NBTTagCompound();
@@ -212,7 +212,7 @@ public class VoidcraftActiveShipTest {
         assertEquals("Round Trip", restored.getName());
         assertEquals(SPEED, restored.getSpeed(), 0.0);
         assertEquals(MINING_POWER, restored.getMiningPower());
-        assertTrue(restored.isRecoverable());
+        assertEquals(0L, restored.getIntegrity(), "no integrity in the payload → 0, and it round-trips");
         assertEquals(s.getState(), restored.getState());
         assertEquals(s.getTicksRemaining(), restored.getTicksRemaining());
         assertEquals(s.getLegTotal(), restored.getLegTotal());
@@ -237,7 +237,7 @@ public class VoidcraftActiveShipTest {
     public void testNbtRoundTripWithoutTargets() {
         // null targets stay null across the round-trip (a drop-at-USS fallback mission)
         VoidcraftActiveShip s = VoidcraftActiveShip
-            .launch("rt-2", "No Targets", SPEED, MINING_POWER, false, new NBTTagCompound(), null, null, 0, ORIGIN);
+            .launch("rt-2", "No Targets", SPEED, MINING_POWER, new NBTTagCompound(), null, null, 0, ORIGIN);
         VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
         assertNotNull(restored);
         assertNull(restored.getGatewayPos());
@@ -247,7 +247,7 @@ public class VoidcraftActiveShipTest {
     @Test
     public void testNbtRoundTripPreservesDestinationAndDistance() {
         VoidcraftActiveShip s = VoidcraftActiveShip
-            .launch("ship-pos6", "Pos Ship", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null, 7, ORIGIN);
+            .launch("ship-pos6", "Pos Ship", SPEED, MINING_POWER, new NBTTagCompound(), null, null, 7, ORIGIN);
         s.startLeg(USSShipState.OUTBOUND, ORIGIN, USSPosition.of(4.0, -2.0, 7.0), 60, 9.0);
         VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
         assertNotNull(restored);
@@ -292,7 +292,7 @@ public class VoidcraftActiveShipTest {
         // the mission NBT round-trip — the client keys this ship's animation phase + swarm spot on it.
         int seed = 0x12345678;
         VoidcraftActiveShip s = VoidcraftActiveShip
-            .launch("dup-1", "Duplicate", SPEED, MINING_POWER, true, new NBTTagCompound(), null, null, seed, ORIGIN);
+            .launch("dup-1", "Duplicate", SPEED, MINING_POWER, new NBTTagCompound(), null, null, seed, ORIGIN);
         assertEquals(seed, s.getSeed());
         VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
         assertNotNull(restored);
@@ -346,6 +346,80 @@ public class VoidcraftActiveShipTest {
         unknown.setString("vc_uuid", "x");
         unknown.setInteger("vc_state", 999);
         assertNull(VoidcraftActiveShip.readFromNBT(unknown), "unknown state id");
+    }
+
+    // endregion
+
+    // region integrity (the time-limit pass: max on entry, -1 per second in the USS, 0 = lost)
+
+    private static VoidcraftActiveShip shipWithIntegrity(long integrity) {
+        NBTTagCompound payload = new NBTTagCompound();
+        payload.setString("vc_uuid", "integ-ship");
+        payload.setLong(tectech.voidcraft.ship.VoidcraftNbt.TAG_INTEGRITY, integrity);
+        return VoidcraftActiveShip.launch("integ-ship", "Integ", SPEED, MINING_POWER, payload, null, null, 0, ORIGIN);
+    }
+
+    @Test
+    public void testIntegrityStartsAtMaximum() {
+        VoidcraftActiveShip s = shipWithIntegrity(300L);
+        assertEquals(300L, s.getIntegrity(), "the ship enters the USS at its MAXIMUM (the blueprint's total)");
+        assertEquals(300L, s.maxIntegrity());
+        VoidcraftActiveShip none = ship("integ-none");
+        assertEquals(0L, none.getIntegrity(), "no integrity in the payload → 0 (lost on the first tick)");
+        assertEquals(0L, none.maxIntegrity());
+    }
+
+    @Test
+    public void testIntegrityDropsOncePerSecond() {
+        VoidcraftActiveShip s = shipWithIntegrity(300L);
+        for (int i = 0; i < 19; i++) {
+            assertFalse(s.tickIntegrity(), "tick " + (i + 1) + " of the first second — no drop yet");
+            assertEquals(300L, s.getIntegrity());
+        }
+        assertFalse(s.tickIntegrity(), "tick 20 = one full second");
+        assertEquals(299L, s.getIntegrity(), "exactly 1 drop per second");
+        for (int i = 0; i < 40; i++) {
+            s.tickIntegrity();
+        }
+        assertEquals(297L, s.getIntegrity(), "40 more ticks = 2 more seconds");
+    }
+
+    @Test
+    public void testIntegrityZeroLosesTheShip() {
+        VoidcraftActiveShip s = shipWithIntegrity(1L);
+        for (int i = 0; i < 19; i++) {
+            assertFalse(s.tickIntegrity());
+        }
+        assertTrue(s.tickIntegrity(), "the 20th tick drops the last point of integrity — the ship is lost");
+        assertEquals(0L, s.getIntegrity());
+        assertTrue(s.tickIntegrity(), "a lost ship stays lost");
+    }
+
+    @Test
+    public void testZeroIntegrityLosesImmediately() {
+        VoidcraftActiveShip s = ship("integ-zero");
+        assertTrue(s.tickIntegrity(), "integrity 0 → lost on the first tick of the USS");
+    }
+
+    @Test
+    public void testIntegrityRoundTripsMidCountdown() {
+        VoidcraftActiveShip s = shipWithIntegrity(120L);
+        for (int i = 0; i < 25; i++) {
+            s.tickIntegrity(); // 1 full second + 5 ticks into the next
+        }
+        assertEquals(119L, s.getIntegrity());
+        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
+        assertNotNull(restored);
+        assertEquals(119L, restored.getIntegrity(), "the mid-countdown integrity survives the round-trip");
+        // the partial second continues where it left off: 15 more ticks → one more drop
+        for (int i = 0; i < 15; i++) {
+            restored.tickIntegrity();
+        }
+        assertEquals(118L, restored.getIntegrity(), "the per-second counter resumes, it does not restart");
+        for (int i = 0; i < 20; i++) {
+            restored.tickIntegrity();
+        }
+        assertEquals(117L, restored.getIntegrity());
     }
 
     // endregion

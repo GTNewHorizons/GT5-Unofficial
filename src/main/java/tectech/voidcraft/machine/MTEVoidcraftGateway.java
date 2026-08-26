@@ -65,7 +65,9 @@ import tectech.voidcraft.uss.USSShipCargo;
  * {@link ItemVoidcraft} and — when a valid Unstable Solar System (star ignited) and a Storage Bay are both within
  * range — the gateway launches the ship
  * on a mining mission: the ship flies out to the star, mines, and returns with cargo, which the USS delivers to the
- * nearest bay. Recoverable ships are re-emitted into the gateway slot; expendable ships are consumed.
+ * nearest bay. A ship's integrity is its time limit (it drops 1 per second while in the USS): a ship that finishes
+ * before it expires is re-emitted into the gateway slot (integrity back at maximum); one that hits 0 is lost with
+ * its cargo.
  *
  * <p>
  * No energy hatches, no recipes — the interaction surface is the ship slot (right-click with the ship item in

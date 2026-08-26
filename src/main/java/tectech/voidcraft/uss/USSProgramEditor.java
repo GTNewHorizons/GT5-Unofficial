@@ -7,9 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagString;
 
 /**
  * The pure program EDITOR (pass-33, programming UI — the bare-JVM core of the Controller's program editor).
@@ -208,6 +206,61 @@ public final class USSProgramEditor {
         return Result.accept(USSProgram.of(rebuildRoots(program, ownerPath, newList)));
     }
 
+    /**
+     * Copy the node at {@code path} (a deep copy of its whole subtree) and insert the copy immediately AFTER the
+     * original in its list.
+     *
+     * @param program the program
+     * @param path    the node address (non-empty)
+     * @return the new program, or a rejection (no node selected, node not found, or the copy breaks the node cap)
+     */
+    public static Result copy(USSProgram program, int[] path) {
+        if (program == null || path == null || path.length == 0) {
+            return Result.reject("no node selected");
+        }
+        USSNode node = nodeAt(program, path);
+        if (node == null) {
+            return Result.reject("node not found");
+        }
+        int[] ownerPath = Arrays.copyOf(path, path.length - 1); // may be empty = root list
+        List<USSNode> list = resolveList(program, ownerPath);
+        if (list == null) {
+            return Result.reject("target has no body");
+        }
+        int i = path[path.length - 1];
+        if (i < 0 || i >= list.size()) {
+            return Result.reject("node not found");
+        }
+        List<USSNode> newList = new ArrayList<USSNode>(list);
+        newList.add(i + 1, copyNode(node));
+        return checkCaps(USSProgram.of(rebuildRoots(program, ownerPath, newList)));
+    }
+
+    /** A deep copy of one node (params defensively copied; condition values are immutable — shared safely). */
+    private static USSNode copyNode(USSNode node) {
+        switch (node.type()) {
+            case IF:
+                return USSNode.ifNode(node.condition(), copyBody(node));
+            case WHILE:
+                return USSNode.whileNode(node.condition(), copyBody(node));
+            case REPEAT:
+                return USSNode.repeat(node.count(), copyBody(node));
+            case COMMAND:
+            default:
+                return USSNode.command(node.cmdId(), node.params()); // the factory copies the params
+        }
+    }
+
+    private static List<USSNode> copyBody(USSNode node) {
+        List<USSNode> out = new ArrayList<USSNode>(
+            node.body()
+                .size());
+        for (USSNode child : node.body()) {
+            out.add(copyNode(child));
+        }
+        return out;
+    }
+
     // endregion
 
     // region content edits (params / count / condition)
@@ -247,9 +300,42 @@ public final class USSProgramEditor {
         if (valueError != null) {
             return Result.reject(valueError);
         }
-        NBTTagCompound params = node.params()
-            .copy();
+        NBTTagCompound params = (NBTTagCompound) node.params()
+            .copy(); // 1.7.10: copy() returns NBTBase
         writeParam(params, node.cmdId(), key, rawValue);
+        USSNode newNode = USSNode.command(node.cmdId(), params);
+        return Result.accept(USSProgram.of(replaceAt(program, path, newNode)));
+    }
+
+    /**
+     * Set ONE parameter of the COMMAND at {@code path} to a USS VALUE REFERENCE (a VAR slot, a literal or a
+     * STAT) — the GUI "assign a global USS value" op (pass 33). Only a WRITE {@code value} param accepts a
+     * reference (the executor resolves it at run time); condition sides take references through
+     * {@link #setConditionSide} instead.
+     *
+     * @return the new program, or a rejection (non-command node, non-WRITE command, non-{@code value} key)
+     */
+    public static Result setParam(USSProgram program, int[] path, String key, USSValue value) {
+        if (program == null || key == null || key.isEmpty()) {
+            return Result.reject("no parameter selected");
+        }
+        if (value == null) {
+            return Result.reject("no value selected");
+        }
+        USSNode node = nodeAt(program, path);
+        if (node == null) {
+            return Result.reject("node not found");
+        }
+        if (!node.isCommand()) {
+            return Result.reject("only commands take parameters");
+        }
+        if (node.cmdId() != USSCommand.WRITE || !USSCommandWrite.PARAM_VALUE.equals(key)) {
+            return Result.reject("only a WRITE value takes a USS reference");
+        }
+        NBTTagCompound params = (NBTTagCompound) node.params()
+            .copy(); // 1.7.10: copy() returns NBTBase
+        params.removeTag(USSCommandWrite.PARAM_VALUE); // replace a previous literal
+        params.setTag(USSCommandWrite.PARAM_VALUE, value.writeToNBT());
         USSNode newNode = USSNode.command(node.cmdId(), params);
         return Result.accept(USSProgram.of(replaceAt(program, path, newNode)));
     }
@@ -423,7 +509,10 @@ public final class USSProgramEditor {
             return newList;
         }
         List<USSNode> roots = new ArrayList<USSNode>(program.nodes());
-        roots.set(listPath[0], replaceInBody(roots.get(listPath[0]), subPath(listPath, 1), newList));
+        USSNode owner = roots.get(listPath[0]);
+        USSNode newOwner = (listPath.length == 1) ? withBody(owner, newList) // the root node's OWN body is the list
+            : replaceInBody(owner, subPath(listPath, 1), newList);
+        roots.set(listPath[0], newOwner);
         return roots;
     }
 
@@ -607,12 +696,14 @@ public final class USSProgramEditor {
                         || p.getInteger(USSCommandWrite.PARAM_SLOT) > USSVariableSpace.SLOT_COUNT - 1)) {
                         return "a WRITE slot must be 0.." + (USSVariableSpace.SLOT_COUNT - 1);
                     }
-                    NBTBase value = p.getTag(USSCommandWrite.PARAM_VALUE);
-                    if (value instanceof NBTTagString && ((NBTTagString) value).getString()
+                    // getString() reads the string for an NBTTagString and "" for a nested USSValue compound
+                    // (allowed — the executor resolves it) or any non-string tag; only a real string can breach the
+                    // cap.
+                    if (p.getString(USSCommandWrite.PARAM_VALUE)
                         .length() > USSProgram.MAX_LITERAL_LENGTH) {
                         return "a WRITE value exceeds " + USSProgram.MAX_LITERAL_LENGTH + " characters";
                     }
-                    return null; // a nested USSValue compound is resolved by the executor — allowed
+                    return null;
                 }
                 case USSCommand.READ: {
                     if (p.hasKey(USSCommandRead.PARAM_FROM) && (p.getInteger(USSCommandRead.PARAM_FROM) < 0

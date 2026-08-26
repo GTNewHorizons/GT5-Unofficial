@@ -21,7 +21,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import tectech.Reference;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
-import tectech.voidcraft.ship.VoidcraftConstants;
 import tectech.voidcraft.ship.VoidcraftNbt;
 import tectech.voidcraft.ship.VoidcraftRole;
 
@@ -210,12 +209,11 @@ public class ItemVoidcraft extends Item {
         if (draw > 0) {
             aList.add(EnumChatFormatting.GRAY + translateToLocalFormatted("item.tm.voidcraft.stat.draw", draw));
         }
+        // Integrity is the ship's TIME LIMIT (the time-limit pass): the seconds it survives in the USS (it drops
+        // by 1 per second, starting at this maximum on entry; at 0 the ship is lost with its cargo).
         aList.add(
-            EnumChatFormatting.GRAY + translateToLocalFormatted(
-                integrity >= VoidcraftConstants.RECOVERABLE_INTEGRITY_THRESHOLD
-                    ? "item.tm.voidcraft.integrity.recoverable"
-                    : "item.tm.voidcraft.integrity.expendable",
-                NumberFormatUtil.formatNumber(integrity)));
+            EnumChatFormatting.GRAY
+                + translateToLocalFormatted("item.tm.voidcraft.integrity", NumberFormatUtil.formatNumber(integrity)));
     }
 
     /**

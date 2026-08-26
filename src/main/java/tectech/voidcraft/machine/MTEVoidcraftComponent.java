@@ -11,26 +11,29 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.common.covers.Cover;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import tectech.voidcraft.VoidcraftTextures;
-import tectech.voidcraft.cover.CoverVoidcraftComponent;
+import tectech.voidcraft.gui.VoidcraftProgramGui;
 import tectech.voidcraft.ship.VoidcraftComponent;
-import tectech.voidcraft.ship.VoidcraftCoverComponent;
 import tectech.voidcraft.ship.VoidcraftCoverRegistry;
 import tectech.voidcraft.ship.VoidcraftNbt;
 import tectech.voidcraft.uss.USSProgram;
-import tectech.voidcraft.uss.USSProgramDefaults;
+import tectech.voidcraft.uss.USSProgramSync;
+import tectech.voidcraft.uss.USSProgramView;
 
 /**
  * A Voidcraft full-block component, as a machine-block meta tile entity.
@@ -198,59 +201,95 @@ public class MTEVoidcraftComponent extends MetaTileEntity {
     }
 
     /**
-     * Derive the default chip from the covers mounted on THIS block (user spec: "default program chips that apply
-     * a basic program to the controller when right-clicking the controller. For miner, starlifter, explorer") —
-     * the block's covers declare what the ship IS.
-     *
-     * @return true when any of the chip covers is mounted
+     * Last server-side note for the GUI footer (a rejection reason from an applied edit, or null) — synced S2C
+     * (pass 33 UI, UI-2).
      */
-    public boolean hasCover(VoidcraftCoverComponent cover) {
-        if (!(getBaseMetaTileEntity() instanceof ICoverable)) {
-            return false;
-        }
-        ICoverable coverable = (ICoverable) getBaseMetaTileEntity();
-        for (int side = 0; side < 6; side++) {
-            Cover c = coverable.getCoverAtSide(ForgeDirection.getOrientation(side));
-            if (c instanceof CoverVoidcraftComponent vc && vc.getComponent() == cover) {
-                return true;
-            }
-        }
-        return false;
-    }
+    private String note;
 
     // endregion
 
-    // region right-click — default program chips (controller only)
+    // region program GUI (pass 33 UI, UI-2 — controller only)
 
     /**
-     * Right-click (controller only): applies the default program chip derived from this block's covers
-     * (SCANNER_DISH → Explorer, STAR_SIPHON → Starlifter, else Miner — user spec: "chips that apply a basic
-     * program to the controller when right-clicking").
+     * @return the stored program (never null — a fresh / program-less controller gives an empty program)
+     */
+    public USSProgram getProgram() {
+        USSProgram p = program == null ? null : USSProgram.readFromNBT(program);
+        return p == null ? USSProgram.empty() : p;
+    }
+
+    /** The stored program as flat ROW wire strings (the GUI list-sync content, see {@link USSProgramView}). */
+    public List<String> getProgramRows() {
+        return USSProgramView.rowsJsonList(getProgram());
+    }
+
+    public String getNote() {
+        return note == null ? "" : note;
+    }
+
+    public void setNote(String note) {
+        this.note = note == null ? "" : note;
+    }
+
+    /**
+     * Server-side: apply one GUI ACTION (JSON, see {@link USSProgramSync}) to the stored program.
      *
      * <p>
-     * The clear is a TOGGLE (GT's plumbing never delivers a sneaking tool-less right-click to the MTE — see
-     * {@code BaseMetaPipeEntity#onRightclick}): when the block already holds exactly that chip, a right-click
-     * removes it again (a ship built from it HOLDS at the launch origin), otherwise it applies it.
+     * Accepted → the new program is stored and the note cleared (callers push the sync updates). Rejected → the
+     * stored program is kept and the rejection reason becomes the note. NEVER throws (bad action → rejection).
+     *
+     * @return the outcome (the resulting program when accepted)
+     */
+    public USSProgramSync.Outcome applyAction(String actionJson) {
+        if (component != VoidcraftComponent.CONTROLLER) {
+            return USSProgramSync.Outcome.rejected("not a controller");
+        }
+        USSProgramSync.Outcome outcome = USSProgramSync.handle(getProgram(), actionJson);
+        if (!outcome.ok) {
+            setNote(outcome.message);
+            return outcome;
+        }
+        setProgramTag(outcome.program.writeToNBT());
+        setNote(null);
+        if (!getBaseMetaTileEntity().isClientSide()) {
+            markDirty();
+        }
+        return outcome;
+    }
+
+    /**
+     * Right-click (controller only): OPEN the programming GUI (pass 33 UI, UI-2 — the chip toggle from Phase C is
+     * replaced by the in-GUI preset buttons Miner / Starlifter / Explorer / Clear).
      */
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (component != VoidcraftComponent.CONTROLLER) {
             return false;
         }
-        USSProgram chip = USSProgramDefaults.chip(
-            hasCover(VoidcraftCoverComponent.SCANNER_DISH),
-            hasCover(VoidcraftCoverComponent.STAR_SIPHON),
-            hasCover(VoidcraftCoverComponent.MINING_ARRAY));
-        USSProgram current = USSProgram.readFromNBT(program);
-        if (current != null && current.equals(chip)) {
-            setProgramTag(null);
-            aPlayer.addChatComponentMessage(
-                new ChatComponentText(translateToLocal("tt.voidcraft.controller.program_cleared")));
-        } else if (setProgramTag(chip.writeToNBT())) {
-            aPlayer.addChatComponentMessage(
-                new ChatComponentText(translateToLocal("tt.voidcraft.controller.program_applied")));
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
         }
-        return false;
+        openGui(aPlayer);
+        return true;
+    }
+
+    // endregion
+
+    // region MUI2 (pass 33 UI, UI-2 — the controller's programming GUI)
+
+    @Override
+    protected boolean useMui2() {
+        return component == VoidcraftComponent.CONTROLLER;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new VoidcraftProgramGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
     }
 
     // endregion

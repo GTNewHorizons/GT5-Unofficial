@@ -66,13 +66,6 @@ public final class VoidcraftStats {
         return Math.max(0.0, (double) thrust / (double) mass);
     }
 
-    /**
-     * @return true if this ship can be recovered (docked and pulled out) when its USS collapses
-     */
-    public boolean isRecoverable() {
-        return integrity >= VoidcraftConstants.RECOVERABLE_INTEGRITY_THRESHOLD;
-    }
-
     @Override
     public String toString() {
         return "VoidcraftStats[mass=" + mass

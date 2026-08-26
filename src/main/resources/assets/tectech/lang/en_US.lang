@@ -1381,8 +1381,7 @@ item.tm.voidcraft.stat.construction=Construction power: %s
 item.tm.voidcraft.stat.starlifter=Starlifter power: %s
 item.tm.voidcraft.stat.buffer=Energy buffer: %s
 item.tm.voidcraft.stat.draw=Energy draw: %s
-item.tm.voidcraft.integrity.recoverable=Integrity %s (recoverable)
-item.tm.voidcraft.integrity.expendable=Integrity %s (expendable)
+item.tm.voidcraft.integrity=Integrity %s (time limit in the USS, seconds)
 # Unstable Solar System (EoH rework, Phase 2 vertical slice)
 gt.blockmachines.multimachine.em.unstable_solar_system.name=Unstable Solar System
 item.tt.ussController.name=USS Controller (Main Sequence)

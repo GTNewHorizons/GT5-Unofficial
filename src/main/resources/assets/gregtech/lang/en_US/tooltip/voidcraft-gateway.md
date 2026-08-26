@@ -16,9 +16,11 @@ of high-power casings with the ship slot at the center of the front face.
 - A nearby Voidcraft Storage Bay receives the mined cargo.
 {gold:{hr:87}}
 {blue}After the mission:
-- A {gold}recoverable{gray} ship (sufficient hull integrity) comes back into the
-  docked slot, ready to fly again.
-- An {gold}expendable{gray} ship is consumed by the burn.
+- A ship's {gold}integrity{gray} is its {gold}time limit{gray}: it drops by 1 every
+  second while the ship is in the system, starting at the ship's maximum.
+- A ship that finishes before its time runs out comes back into the docked slot
+  with its integrity restored, ready to fly again.
+- A ship that runs out of time is lost with its cargo.
 - Mined cargo lands in the Storage Bay's shared pool; pull it off with an output bus.
 {gold:{hr:87}}
 If the star burns out while a ship is away, the ship is lost with its cargo —

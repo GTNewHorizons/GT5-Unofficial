@@ -1,0 +1,801 @@
+package tectech.voidcraft.gui;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import net.minecraft.network.PacketBuffer;
+
+import com.cleanroommc.modularui.api.drawable.IIcon;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.Rectangle;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.StringValue;
+import com.cleanroommc.modularui.value.sync.DynamicLinkedSyncHandler;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
+import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+
+import cpw.mods.fml.relauncher.Side;
+import tectech.voidcraft.machine.MTEVoidcraftComponent;
+import tectech.voidcraft.uss.USSConditionOp;
+import tectech.voidcraft.uss.USSProgramDefaults;
+import tectech.voidcraft.uss.USSProgramView;
+
+/**
+ * The Voidcraft CONTROLLER programming GUI (pass 33 UI, UI-2) — a linear block-based visual programming view
+ * (Scratch-style), opened by right-clicking the controller.
+ *
+ * <p>
+ * LEFT: the current program as horizontal blocks (loops indented one level per depth), each block showing its
+ * arguments as visually distinct SLOTS; a CURSOR (the selected row + slot) drives the slot editor above the list
+ * (text field + Set / VAR); each row has ▲ / ▼ (reorder) and ✕ (delete) buttons; the footer shows the program
+ * caps and the last server rejection.
+ *
+ * <p>
+ * RIGHT: (1) USS VALUES — pick a global USS variable slot (0..255) and assign it as a reference into the
+ * selected slot (SLOT SELECTION ONLY — no live USS value display, user spec UI-2); (2) ARGUMENTS — helpers that
+ * fill the selected MOVE target (Nearest planet / Random planet / Random ripple); (3) COMMANDS — the palette with
+ * an [Add] per command (inserts at the cursor); (4) PRESETS — Miner / Starlifter / Explorer / Clear.
+ *
+ * <p>
+ * Sync (server authoritative): the program lives in the controller MTE; the ROWS sync (S2C list of row JSON)
+ * drives the left list; every edit is one C2S action ({@code uss.action} = one action JSON, see
+ * {@link tectech.voidcraft.uss.USSProgramSync}) — the server runs the editor and pushes the new rows + note.
+ */
+public class VoidcraftProgramGui {
+
+    // command palette node specs (see USSProgramSync#readNode)
+    private static final String SPEC_MOVE = "{\"t\":0,\"c\":0,\"p\":{\"target\":\"HOME\"}}";
+    private static final String SPEC_WORK = "{\"t\":0,\"c\":1}";
+    private static final String SPEC_WRITE = "{\"t\":0,\"c\":2,\"p\":{\"value\":\"\",\"slot\":0}}";
+    private static final String SPEC_READ = "{\"t\":0,\"c\":3,\"p\":{\"from\":0,\"to\":1}}";
+    private static final String SPEC_WAIT = "{\"t\":0,\"c\":4,\"p\":{\"ticks\":20}}";
+    private static final String SPEC_STOP = "{\"t\":0,\"c\":5}";
+    private static final String SPEC_IF = "{\"t\":1,\"l\":{\"k\":0,\"s\":\"\"},\"op\":0,\"r\":{\"k\":0,\"s\":\"\"}}";
+    private static final String SPEC_WHILE = "{\"t\":2,\"l\":{\"k\":0,\"s\":\"\"},\"op\":0,\"r\":{\"k\":0,\"s\":\"\"}}";
+    private static final String SPEC_REPEAT = "{\"t\":3,\"n\":1}";
+
+    private final MTEVoidcraftComponent machine;
+
+    // sync handlers (created in build)
+    private GenericListSyncHandler<String> rowsSyncer;
+    private StringSyncValue noteSyncer;
+    private PanelSyncManager syncManager;
+
+    // client-side CURSOR (selected row + slot)
+    private final AtomicInteger selRow = new AtomicInteger(-1);
+    private final AtomicInteger selSlot = new AtomicInteger(-1);
+    private volatile USSProgramView.Row selectedRow;
+    private final AtomicInteger maxDepth = new AtomicInteger(0);
+
+    // input fields (client-side text; the StringValue binding is the source of truth for the text)
+    private TextFieldWidget slotField;
+    private TextFieldWidget varField;
+    private String slotText = "";
+    private String varText = "";
+
+    // selection highlight (UI-3): per-row button references, rebuilt with the list
+    private final List<ButtonWidget> rowLabelBtns = new ArrayList<ButtonWidget>();
+    private final List<int[]> rowPaths = new ArrayList<int[]>();
+    private final List<List<ButtonWidget>> rowSlotBtns = new ArrayList<List<ButtonWidget>>();
+    private final List<List<Rectangle>> rowSlotDefaults = new ArrayList<List<Rectangle>>();
+
+    // highlight / slot-kind backgrounds (UI-3)
+    private static final Rectangle ROW_HILITE = new Rectangle().color(70, 130, 70, 255);
+    private static final Rectangle SLOT_HILITE = new Rectangle().color(110, 170, 110, 255);
+    private static final Rectangle OP_BG = new Rectangle().color(110, 62, 24, 255);
+    private static final Rectangle VAR_BG = new Rectangle().color(32, 52, 110, 255);
+
+    public VoidcraftProgramGui(MTEVoidcraftComponent machine) {
+        this.machine = machine;
+    }
+
+    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        this.syncManager = syncManager;
+        rowsSyncer = new GenericListSyncHandler<String>(
+            machine::getProgramRows,
+            null,
+            buf -> buf.readStringFromBuffer(32768),
+            PacketBuffer::writeStringToBuffer,
+            String::equals,
+            null);
+        noteSyncer = new StringSyncValue(machine::getNote);
+        syncManager.syncValue("uss.rows", rowsSyncer);
+        syncManager.syncValue("uss.note", noteSyncer);
+        syncManager.registerSyncedAction("uss.action", Side.SERVER, buf -> {
+            String json;
+            try {
+                json = buf.readStringFromBuffer(32768);
+            } catch (IOException e) {
+                json = null; // unreadable payload — ignore the action
+            }
+            if (json != null) {
+                machine.applyAction(json);
+            }
+            rowsSyncer.notifyUpdate();
+            noteSyncer.notifyUpdate();
+        });
+
+        ModularPanel panel = ModularPanel.defaultPanel("voidcraft_program", 440, 280);
+        panel.child(
+            Flow.row()
+                .child(createLeftPanel())
+                .child(createRightPanel())
+                .childPadding(4)
+                .margin(4)
+                .coverChildren());
+        return panel;
+    }
+
+    // region left panel (program block list + cursor + footer)
+
+    private IWidget createLeftPanel() {
+        // The DynamicLinkedSyncHandler is bound to the rows sync value: it rebuilds the list
+        // automatically whenever the rows change (initial S2C push + every server update),
+        // and pushes the initial content when the widget is initialised.
+        DynamicLinkedSyncHandler<GenericListSyncHandler<String>> rowsDynamic = new DynamicLinkedSyncHandler<GenericListSyncHandler<String>>(
+            rowsSyncer).widgetProvider((manager, rows) -> createRowsList(rows.getValue()));
+        return new ParentWidget<>().width(248)
+            .height(268)
+            .child(
+                Flow.column()
+                    .child(createSlotEditor())
+                    .child(
+                        new DynamicSyncedWidget<>().syncHandler(rowsDynamic)
+                            .coverChildren())
+                    .child(createFooter())
+                    .childPadding(2)
+                    .coverChildren())
+            .coverChildren();
+    }
+
+    /** The CURSOR line: the selected row + slot (with its current value), then the text field + Set / VAR. */
+    private IWidget createSlotEditor() {
+        // A bound value is required for the text field to render (bare text fields drop out of the flow)
+        slotField = new TextFieldWidget().value(new StringValue.Dynamic(this::readSlotText, this::writeSlotText))
+            .width(110)
+            .height(14);
+        return new ParentWidget<>().width(244)
+            .height(30)
+            .child(
+                Flow.column()
+                    .child(new TextWidget(IKey.dynamic(this::selectionLabel)).textAlign(Alignment.CenterLeft))
+                    .child(
+                        Flow.row()
+                            .child(slotField)
+                            .child(new ButtonWidget<>().onMousePressed(mb -> {
+                                applySet();
+                                return true;
+                            })
+                                .overlay(IKey.str("Set"))
+                                .width(24)
+                                .height(14))
+                            .child(new ButtonWidget<>().onMousePressed(mb -> {
+                                applyVar();
+                                return true;
+                            })
+                                .overlay(IKey.str("VAR"))
+                                .width(24)
+                                .height(14))
+                            .childPadding(2)
+                            .coverChildren())
+                    .childPadding(1)
+                    .coverChildren())
+            .coverChildren();
+    }
+
+    private String selectionLabel() {
+        USSProgramView.Row row = selectedRow;
+        int si = selSlot.get();
+        if (row == null || si < 0 || si >= row.slots.size()) {
+            return "no slot selected - click a slot inside a block";
+        }
+        USSProgramView.Slot slot = row.slots.get(si);
+        return "row " + (selRow.get() + 1) + " " + slot.label + " = " + slot.display;
+    }
+
+    private String readSlotText() {
+        return slotText == null ? "" : slotText;
+    }
+
+    private void writeSlotText(String text) {
+        slotText = text == null ? "" : text;
+    }
+
+    private String readVarText() {
+        return varText == null ? "" : varText;
+    }
+
+    private void writeVarText(String text) {
+        varText = text == null ? "" : text;
+    }
+
+    private IWidget createRowsList(List<String> rows) {
+        maxDepth.set(0);
+        rowLabelBtns.clear();
+        rowPaths.clear();
+        rowSlotBtns.clear();
+        rowSlotDefaults.clear();
+        List<IWidget> children = new ArrayList<IWidget>();
+        if (rows != null) {
+            for (int i = 0; i < rows.size(); i++) {
+                USSProgramView.Row row = USSProgramView.rowFromJson(rows.get(i));
+                if (row == null) {
+                    continue;
+                }
+                if (row.depth > maxDepth.get()) {
+                    maxDepth.set(row.depth);
+                }
+                children.add(createRow(row, i));
+            }
+        }
+        if (children.isEmpty()) {
+            TextWidget<?> hint = new TextWidget(IKey.str("(empty program - add commands on the right)"));
+            hint.textAlign(Alignment.CenterLeft);
+            children.add(
+                hint.posRel(0.5F, 0.5F)
+                    .center());
+        }
+        refreshHighlight(); // re-apply the selection to the freshly built rows (or clear it if the row is gone)
+        return new ListWidget<>().children(children)
+            .childSeparator(IIcon.EMPTY_2PX)
+            .size(244, 196)
+            .crossAxisAlignment(Alignment.CrossAxis.START);
+    }
+
+    /** One block row: indent, label, argument slots, up / down / delete. */
+    private IWidget createRow(USSProgramView.Row row, int index) {
+        Flow flow = Flow.row()
+            .coverChildren();
+        if (row.depth > 1) {
+            flow.child(new ParentWidget<>().size((row.depth - 1) * 12, 2));
+        }
+        ButtonWidget<?> labelBtn = new ButtonWidget<>().onMousePressed(mb -> {
+            select(index, -1);
+            return true;
+        })
+            .overlay(IKey.str(row.label))
+            .width(row.label.length() * 5 + 8)
+            .height(14)
+            .tooltip(t -> t.add(IKey.str(rowTip(row, index))));
+        flow.child(labelBtn);
+        rowLabelBtns.add(labelBtn);
+        rowPaths.add(row.path);
+        List<ButtonWidget> slotBtns = new ArrayList<ButtonWidget>();
+        List<Rectangle> slotDefs = new ArrayList<Rectangle>();
+        for (int si = 0; si < row.slots.size(); si++) {
+            final int s = si;
+            USSProgramView.Slot slot = row.slots.get(si);
+            Rectangle def = slot.isOp ? OP_BG : (slot.display.startsWith("VAR ") ? VAR_BG : null);
+            ButtonWidget<?> slotBtn = new ButtonWidget<>().onMousePressed(mb -> {
+                if (slot.isOp) {
+                    cycleOp(row, s);
+                } else {
+                    select(index, s);
+                }
+                return true;
+            })
+                .overlay(IKey.str(slot.display))
+                .width(Math.max(14, slot.display.length() * 5 + 8))
+                .height(14)
+                .tooltip(
+                    t -> t.add(
+                        IKey.str(
+                            slot.label + (slot.isOp ? " (click to cycle EQ/NEQ/LT/GT)"
+                                : slot.display.startsWith("VAR ")
+                                    ? " (a USS variable slot - assign a new slot, or a literal, via Set/VAR)"
+                                    : " (click to edit)"))));
+            if (def != null) {
+                slotBtn.disableThemeBackground(true)
+                    .background(def);
+            }
+            slotBtns.add(slotBtn);
+            slotDefs.add(def);
+            flow.child(slotBtn);
+        }
+        rowSlotBtns.add(slotBtns);
+        rowSlotDefaults.add(slotDefs);
+        flow.child(new ButtonWidget<>().onMousePressed(mb -> {
+            sendAction(moveJson(row.path, true));
+            return true;
+        })
+            .overlay(IKey.str("up"))
+            .width(16)
+            .height(14)
+            .tooltip(t -> t.add(IKey.str("move up"))));
+        flow.child(new ButtonWidget<>().onMousePressed(mb -> {
+            sendAction(moveJson(row.path, false));
+            return true;
+        })
+            .overlay(IKey.str("dn"))
+            .width(16)
+            .height(14)
+            .tooltip(t -> t.add(IKey.str("move down"))));
+        flow.child(new ButtonWidget<>().onMousePressed(mb -> {
+            sendAction(copyJson(row.path));
+            return true;
+        })
+            .overlay(IKey.str("cp"))
+            .width(18)
+            .height(14)
+            .tooltip(t -> t.add(IKey.str("copy this block (insert a copy right after it)"))));
+        flow.child(new ButtonWidget<>().onMousePressed(mb -> {
+            sendAction(removeJson(row.path));
+            return true;
+        })
+            .overlay(IKey.str("x"))
+            .width(14)
+            .height(14)
+            .tooltip(t -> t.add(IKey.str("delete"))));
+        return flow.childPadding(2)
+            .margin(1)
+            .height(16);
+    }
+
+    /** A short per-block description for the label tooltip (UI-3). */
+    private static String rowTip(USSProgramView.Row row, int index) {
+        switch (row.label) {
+            case "MOVE":
+                return "row " + (index + 1) + " - fly to a target (HOME / planet / ripple)";
+            case "WORK":
+                return "row " + (index + 1) + " - do work at the current position (mine / starlift / build)";
+            case "WRITE":
+                return "row " + (index + 1) + " - write a value into a USS variable slot";
+            case "READ":
+                return "row " + (index + 1) + " - read a USS variable slot into another slot";
+            case "WAIT":
+                return "row " + (index + 1) + " - wait for N ticks";
+            case "STOP":
+                return "row " + (index + 1) + " - end the program (the ship holds)";
+            case "IF":
+                return "row " + (index + 1) + " - run the block below once, when the condition holds";
+            case "WHILE":
+                return "row " + (index + 1) + " - run the block below, while the condition holds";
+            case "REPEAT":
+                return "row " + (index + 1) + " - run the block below N times";
+            default:
+                return "row " + (index + 1);
+        }
+    }
+
+    private IWidget createFooter() {
+        return new ParentWidget<>().height(20)
+            .child(
+                Flow.column()
+                    .child(
+                        new TextWidget(
+                            IKey.dynamic(() -> "nodes " + rowCount() + " / 255    depth " + maxDepth.get() + " / 8")))
+                    .child(new TextWidget(IKey.dynamic(() -> noteSyncer.getStringValue())))
+                    .childPadding(0)
+                    .coverChildren())
+            .coverChildren();
+    }
+
+    private int rowCount() {
+        List<String> rows = rowsSyncer.getValue();
+        return rows == null ? 0 : rows.size();
+    }
+
+    // endregion
+
+    // region right panel (USS values / arguments / commands / presets)
+
+    private IWidget createRightPanel() {
+        varField = new TextFieldWidget().value(new StringValue.Dynamic(this::readVarText, this::writeVarText))
+            .width(30)
+            .height(14);
+        return new ParentWidget<>().width(172)
+            .height(268)
+            .child(
+                Flow.column()
+                    .child(sectionLabel("USS VALUES"))
+                    .child(
+                        Flow.row()
+                            .child(slotLabel("slot").width(26))
+                            .child(varField)
+                            .child(new ButtonWidget<>().onMousePressed(mb -> {
+                                applyVar();
+                                return true;
+                            })
+                                .overlay(IKey.str("Assign"))
+                                .width(36)
+                                .height(14)
+                                .tooltip(t -> t.add(IKey.str("assign this USS slot to the selected slot"))))
+                            .childPadding(2)
+                            .coverChildren())
+                    .child(sectionLabel("ARGUMENTS"))
+                    .child(argButton("Nearest planet", USSProgramDefaults.TARGET_NEAREST_PLANET))
+                    .child(argButton("Random planet", USSProgramDefaults.TARGET_RANDOM_PLANET))
+                    .child(argButton("Random ripple", USSProgramDefaults.TARGET_RIPPLE_UNSCANNED))
+                    .child(sectionLabel("COMMANDS"))
+                    .child(cmdRow("MOVE", SPEC_MOVE))
+                    .child(cmdRow("WORK", SPEC_WORK))
+                    .child(cmdRow("WRITE", SPEC_WRITE))
+                    .child(cmdRow("READ", SPEC_READ))
+                    .child(cmdRow("WAIT", SPEC_WAIT))
+                    .child(cmdRow("STOP", SPEC_STOP))
+                    .child(cmdRow("IF", SPEC_IF))
+                    .child(cmdRow("WHILE", SPEC_WHILE))
+                    .child(cmdRow("REPEAT", SPEC_REPEAT))
+                    .child(sectionLabel("PRESETS"))
+                    .child(
+                        Flow.row()
+                            .child(presetButton("Miner", "miner"))
+                            .child(presetButton("Star", "starlifter"))
+                            .childPadding(2)
+                            .coverChildren())
+                    .child(
+                        Flow.row()
+                            .child(presetButton("Scan", "explorer"))
+                            .child(presetButton("Clear", "clear"))
+                            .childPadding(2)
+                            .coverChildren())
+                    .childPadding(2)
+                    .coverChildren())
+            .coverChildren();
+    }
+
+    private IWidget sectionLabel(String text) {
+        TextWidget<?> label = new TextWidget(IKey.str(text));
+        label.textAlign(Alignment.CenterLeft);
+        return label.height(12)
+            .marginTop(2);
+    }
+
+    private TextWidget<?> slotLabel(String text) {
+        TextWidget<?> label = new TextWidget(IKey.str(text));
+        label.textAlign(Alignment.CenterLeft);
+        return label;
+    }
+
+    /** A command-palette row: label + [Add] (inserts the command at the cursor). */
+    private IWidget cmdRow(String label, String specJson) {
+        return Flow.row()
+            .child(slotLabel(label).width(56))
+            .child(new ButtonWidget<>().onMousePressed(mb -> {
+                sendAction(insertSpecJson(specJson));
+                return true;
+            })
+                .overlay(IKey.str("Add"))
+                .width(24)
+                .height(14)
+                .tooltip(t -> t.add(IKey.str("insert at cursor"))))
+            .childPadding(2)
+            .coverChildren();
+    }
+
+    /** An ARGUMENT helper: fills the selected MOVE target slot with the given target. */
+    private IWidget argButton(String label, String target) {
+        return new ButtonWidget<>().onMousePressed(mb -> {
+            applyArgument(target);
+            return true;
+        })
+            .overlay(IKey.str(label))
+            .width(120)
+            .height(14)
+            .tooltip(t -> t.add(IKey.str("set the selected MOVE target to " + target)));
+    }
+
+    private IWidget presetButton(String label, String preset) {
+        return new ButtonWidget<>().onMousePressed(mb -> {
+            sendAction(applyPresetJson(preset));
+            return true;
+        })
+            .overlay(IKey.str(label))
+            .width(38)
+            .height(14);
+    }
+
+    // endregion
+
+    // region cursor + actions
+
+    private void select(int rowIndex, int slotIndex) {
+        List<String> rows = rowsSyncer.getValue();
+        if (rows == null || rowIndex < 0 || rowIndex >= rows.size()) {
+            selRow.set(-1);
+            selSlot.set(-1);
+            selectedRow = null;
+            writeSlotText("");
+            if (slotField != null) {
+                slotField.setText("");
+            }
+            refreshHighlight();
+            return;
+        }
+        USSProgramView.Row row = USSProgramView.rowFromJson(rows.get(rowIndex));
+        selRow.set(rowIndex);
+        selSlot.set(slotIndex);
+        selectedRow = row;
+        if (slotField != null) {
+            String text = (row != null && slotIndex >= 0 && slotIndex < row.slots.size())
+                ? row.slots.get(slotIndex).display
+                : "";
+            writeSlotText(text);
+            slotField.setText(text);
+        }
+        refreshHighlight();
+    }
+
+    private boolean hasSelectedSlot() {
+        USSProgramView.Row row = selectedRow;
+        int si = selSlot.get();
+        return row != null && si >= 0 && si < row.slots.size();
+    }
+
+    /** Restore every row button to its default look (theme background / slot-kind background). */
+    private void clearHighlights() {
+        for (ButtonWidget b : rowLabelBtns) {
+            b.disableThemeBackground(false);
+        }
+        for (int i = 0; i < rowSlotBtns.size(); i++) {
+            List<ButtonWidget> btns = rowSlotBtns.get(i);
+            List<Rectangle> defs = rowSlotDefaults.get(i);
+            for (int j = 0; j < btns.size(); j++) {
+                if (defs.get(j) == null) {
+                    btns.get(j)
+                        .disableThemeBackground(false);
+                } else {
+                    btns.get(j)
+                        .disableThemeBackground(true)
+                        .background(defs.get(j));
+                }
+            }
+        }
+    }
+
+    /** (Re)apply the selection highlight to the currently built rows; clears the selection if the row is gone. */
+    private void refreshHighlight() {
+        clearHighlights();
+        USSProgramView.Row sel = selectedRow;
+        if (sel == null) {
+            return;
+        }
+        int idx = -1;
+        for (int i = 0; i < rowPaths.size(); i++) {
+            if (java.util.Arrays.equals(rowPaths.get(i), sel.path)) {
+                idx = i;
+                break;
+            }
+        }
+        if (idx < 0) {
+            // the selected row no longer exists (it was deleted) — drop the selection
+            select(-1, -1);
+            return;
+        }
+        rowLabelBtns.get(idx)
+            .disableThemeBackground(true)
+            .background(ROW_HILITE);
+        int si = selSlot.get();
+        if (si >= 0 && si < rowSlotBtns.get(idx)
+            .size()) {
+            rowSlotBtns.get(idx)
+                .get(si)
+                .disableThemeBackground(true)
+                .background(SLOT_HILITE);
+        }
+    }
+
+    private String selectedSlotLabel() {
+        return selectedRow.slots.get(selSlot.get()).label;
+    }
+
+    /** [Set]: write the text field as a literal into the selected slot (param / count / condition side). */
+    private void applySet() {
+        if (!hasSelectedSlot()) {
+            return;
+        }
+        USSProgramView.Row row = selectedRow;
+        String label = selectedSlotLabel();
+        String text = readSlotText();
+        if ("count".equals(label)) {
+            int n;
+            try {
+                n = Integer.parseInt(text.trim());
+            } catch (NumberFormatException e) {
+                return;
+            }
+            sendAction(countJson(row, n));
+            return;
+        }
+        if ("left".equals(label) || "right".equals(label)) {
+            sendAction(condLitJson(row, "left".equals(label), text));
+            return;
+        }
+        if ("op".equals(label)) {
+            cycleOp(row, selSlot.get());
+            return;
+        }
+        // target / index / value / slot / from / to / ticks
+        sendAction(paramJson(row, label, text));
+    }
+
+    /** [VAR] / [Assign]: assign the selected USS slot as a reference (WRITE value / condition side). */
+    private void applyVar() {
+        if (!hasSelectedSlot() || varField == null) {
+            return;
+        }
+        USSProgramView.Row row = selectedRow;
+        String label = selectedSlotLabel();
+        int slot;
+        try {
+            slot = Integer.parseInt(readVarText().trim());
+        } catch (NumberFormatException e) {
+            slot = 0;
+        }
+        slot = Math.max(0, Math.min(255, slot));
+        if ("left".equals(label) || "right".equals(label)) {
+            sendAction(condVarJson(row, "left".equals(label), slot));
+            return;
+        }
+        if ("value".equals(label)) {
+            sendAction(paramVarJson(row, slot));
+        }
+        // any other slot kind: a USS reference is not valid there — silent no-op
+    }
+
+    /** ARGUMENT helper: set the selected MOVE target slot. */
+    private void applyArgument(String target) {
+        if (!hasSelectedSlot() || !"target".equals(selectedSlotLabel())) {
+            return;
+        }
+        sendAction(paramJson(selectedRow, "target", target));
+    }
+
+    /** Op slot: cycle EQ → NEQ → LT → GT → EQ. */
+    private void cycleOp(USSProgramView.Row row, int slotIndex) {
+        String current = row.slots.get(slotIndex).display;
+        USSConditionOp op;
+        try {
+            op = USSConditionOp.valueOf(current);
+        } catch (IllegalArgumentException e) {
+            op = USSConditionOp.EQ;
+        }
+        USSConditionOp next = op == USSConditionOp.EQ ? USSConditionOp.NEQ
+            : op == USSConditionOp.NEQ ? USSConditionOp.LT
+                : op == USSConditionOp.LT ? USSConditionOp.GT : USSConditionOp.EQ;
+        sendAction(condopJson(row, next.name()));
+    }
+
+    // endregion
+
+    // region action JSON (one C2S action = one edit)
+
+    private void sendAction(String json) {
+        syncManager.callSyncedAction("uss.action", buf -> {
+            try {
+                buf.writeStringToBuffer(json);
+            } catch (IOException e) {
+                // payload too large / bad — the action is dropped
+            }
+        });
+    }
+
+    private static JsonArray pathArray(int[] path) {
+        JsonArray a = new JsonArray();
+        for (int v : path) {
+            a.add(new JsonPrimitive(v));
+        }
+        return a;
+    }
+
+    private String paramJson(USSProgramView.Row row, String key, String value) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "param");
+        o.add("path", pathArray(row.path));
+        o.addProperty("key", key);
+        o.addProperty("value", value);
+        return o.toString();
+    }
+
+    private String paramVarJson(USSProgramView.Row row, int slot) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "param");
+        o.add("path", pathArray(row.path));
+        o.addProperty("key", "value");
+        o.addProperty("var", slot);
+        return o.toString();
+    }
+
+    private String countJson(USSProgramView.Row row, int value) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "count");
+        o.add("path", pathArray(row.path));
+        o.addProperty("value", value);
+        return o.toString();
+    }
+
+    private String condLitJson(USSProgramView.Row row, boolean left, String lit) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "cond");
+        o.add("path", pathArray(row.path));
+        o.addProperty("side", left ? 0 : 1);
+        o.addProperty("lit", lit);
+        return o.toString();
+    }
+
+    private String condVarJson(USSProgramView.Row row, boolean left, int slot) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "cond");
+        o.add("path", pathArray(row.path));
+        o.addProperty("side", left ? 0 : 1);
+        o.addProperty("var", slot);
+        return o.toString();
+    }
+
+    private String condopJson(USSProgramView.Row row, String op) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "condop");
+        o.add("path", pathArray(row.path));
+        o.addProperty("operator", op); // "op" is the action discriminator — the operator goes under "operator"
+        return o.toString();
+    }
+
+    private static String removeJson(int[] path) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "remove");
+        o.add("path", pathArray(path));
+        return o.toString();
+    }
+
+    private static String moveJson(int[] path, boolean up) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "move");
+        o.add("path", pathArray(path));
+        o.addProperty("up", up);
+        return o.toString();
+    }
+
+    private static String copyJson(int[] path) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "copy");
+        o.add("path", pathArray(path));
+        return o.toString();
+    }
+
+    /** INSERT at the cursor: before the selected row (its list, at its index) or at the end of the program. */
+    private String insertSpecJson(String specJson) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "insert");
+        USSProgramView.Row sel = selectedRow;
+        if (sel == null) {
+            o.add("path", new JsonArray());
+            o.addProperty("index", rowCount());
+        } else {
+            int[] p = sel.path;
+            o.add("path", pathArray(java.util.Arrays.copyOf(p, p.length - 1)));
+            o.addProperty("index", p[p.length - 1]);
+        }
+        o.add(
+            "node",
+            new JsonParser().parse(specJson)
+                .getAsJsonObject());
+        return o.toString();
+    }
+
+    private static String applyPresetJson(String preset) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "apply");
+        o.addProperty("preset", preset);
+        return o.toString();
+    }
+
+    // endregion
+}

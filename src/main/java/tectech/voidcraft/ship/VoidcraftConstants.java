@@ -24,12 +24,6 @@ public final class VoidcraftConstants {
     public static final int MAX_CELLS = MAX_DIM_X * MAX_DIM_Y * MAX_DIM_Z;
 
     /**
-     * Minimum integrity a Voidcraft needs to be classified as recoverable (it can dock and be pulled back out of a
-     * collapsed USS). Below this threshold it is expendable and lost with the system.
-     */
-    public static final long RECOVERABLE_INTEGRITY_THRESHOLD = 30L;
-
-    /**
      * Hybrid penalty: efficiency multiplier applied per additional active role beyond the first dedicated one.
      * 1 role = 100%, 2 roles = 85%, 3 roles = 72.25%, 4 roles = 61.41%.
      */

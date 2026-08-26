@@ -81,7 +81,6 @@ import tectech.voidcraft.loader.VoidcraftLoader;
 import tectech.voidcraft.machine.MTEVoidcraftGateway;
 import tectech.voidcraft.machine.MTEVoidcraftStorageBay;
 import tectech.voidcraft.render.TileEntityVoidcraftShip;
-import tectech.voidcraft.ship.VoidcraftConstants;
 import tectech.voidcraft.ship.VoidcraftNbt;
 import tectech.voidcraft.ship.VoidcraftRole;
 
@@ -1309,7 +1308,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      * @param payload    the ship payload — the item's tag compound (blueprint + denormalized stats, vc_* keys at its
      *                   top level, + the optional vc_program), as written by the Assembler and read back by
      *                   {@code VoidcraftNbt}
-     * @param gatewayPos gateway world position (the OUTBOUND/RETURNING endpoint + the recoverable ship's
+     * @param gatewayPos gateway world position (the OUTBOUND/RETURNING endpoint + the surviving ship's
      *                   re-emission target) — carried by the SHIP, so each mission routes back to its own launcher
      * @param bayPos     storage-bay world position (the cargo delivery target) — carried by the SHIP
      * @return true when the ship is in flight; false when the USS rejects the launch (cold star, full, or invalid
@@ -1326,8 +1325,9 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         String name = payload.hasKey(VoidcraftNbt.TAG_NAME) ? payload.getString(VoidcraftNbt.TAG_NAME) : uuid;
         double speed = VoidcraftNbt.readDouble(payload, VoidcraftNbt.TAG_SPEED);
         long mining = VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_MINING);
-        boolean recoverable = VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_INTEGRITY)
-            >= VoidcraftConstants.RECOVERABLE_INTEGRITY_THRESHOLD;
+        // The integrity time limit (user design): the ship enters the USS at its MAXIMUM (the blueprint's total)
+        // and it counts down 1 per second until it is either gone (lost) or back (survived).
+        long integrity = VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_INTEGRITY);
         int slot = activeShips.size();
         // Pass 5.1: a fresh per-launch identity seed — duplicated ship items share the item UUID, so the client's
         // per-ship animation phases + swarm spread must be keyed on this (unique per flight), not the UUID.
@@ -1341,7 +1341,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         int[] gwRel = rel(anchor, gatewayWorld);
         USSPosition origin = USSPosition.of(gwRel[0], gwRel[1], gwRel[2]);
         VoidcraftActiveShip ship = VoidcraftActiveShip
-            .launch(uuid, name, speed, mining, recoverable, payload, gatewayPos, bayPos, seed, origin);
+            .launch(uuid, name, speed, mining, payload, gatewayPos, bayPos, seed, origin);
         // Phase C: the ship's program (the controller's instruction list) + the pilot that runs it. A corrupt
         // program degrades to an empty one (the ship HOLDS at the origin — never a half-run).
         NBTTagList programTag = payload.hasKey(VoidcraftNbt.TAG_PROGRAM)
@@ -1358,7 +1358,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             int roles = VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES);
             int instructions = program == null ? 0 : program.nodeCount();
             LOGGER.info(
-                "[Voidcraft] LAUNCH {} — roles=0x{}, origin={} blocks, speed={}, program={} instruction(s)",
+                "[Voidcraft] LAUNCH {} — roles=0x{}, origin={} blocks, speed={}, program={} instruction(s), "
+                    + "integrity time limit={}s",
                 name,
                 Integer.toHexString(roles),
                 String.format("%.3f", origin.x()) + ","
@@ -1366,7 +1367,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                     + ","
                     + String.format("%.3f", origin.z()),
                 String.format("%.3f", speed),
-                instructions);
+                instructions,
+                integrity);
         } catch (Throwable ignored) {}
         lastPushedShipStates[slot] = -1;
         lastPushedLegIds[slot] = -1;
@@ -1375,29 +1377,42 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * Advance every ship in flight one tick (called from {@link #onPostTick} while the star is ignited). Completed
-     * ships (their program's HOME leg just finished) are finished AFTER the tick loop (list removals batched, in
-     * reverse slot order).
+     * Advance every ship in flight one tick (called from {@link #onPostTick} while the star is ignited). Ships
+     * that end this tick — COMPLETED (their program's HOME leg just finished) or LOST (integrity reached 0) —
+     * are finished AFTER the tick loop, in one index-safe reverse pass (completed → {@link #completeShip}, lost →
+     * {@link #loseShip}).
      *
      * <p>
      * Programming framework (Phase C): the loop is now a PILOT loop — each pilot ticks its ship (the ship's leg
      * countdown + the program executor) and reports when a HOME leg completes (the mission is over —
      * {@link #completeShip} delivers). The work leg's yield (cargo / the Explorer reveal) is applied by the pilot
      * exactly once, through {@link #onWorkComplete}.
+     *
+     * <p>
+     * Integrity time limit (user design): every ship's integrity drops by 1 per second
+     * ({@link VoidcraftActiveShip#tickIntegrity()})
+     * — a ship that hits 0 is removed immediately and its cargo is discarded.
      */
     private void tickShips() {
         if (activeShips.isEmpty()) {
             return;
         }
         List<Integer> completed = new ArrayList<>();
+        List<Integer> lost = new ArrayList<>();
         for (int slot = 0; slot < activeShips.size(); slot++) {
+            VoidcraftActiveShip ship = activeShips.get(slot);
+            // The integrity time limit: 1 per second (the ship counts its own ticks — even while HOLDING). At 0
+            // the ship is LOST: removed below, its cargo discarded (no delivery, no drop, no re-emission).
+            if (ship.tickIntegrity()) {
+                lost.add(slot);
+                continue;
+            }
             USSShipPilot pilot = pilots.get(slot);
             if (pilot.tick()) {
                 // HOME leg complete — the mission is over (delivery + re-emission below).
                 completed.add(slot);
                 continue;
             }
-            VoidcraftActiveShip ship = activeShips.get(slot);
             // Mark the fleet dirty when a ship's state OR leg id changes — pushed ONCE per tick at the end (no
             // per-tick packets, and one full-fleet push instead of one per ship — Phase 4 pass 5). The leg id
             // (Phase C) makes consecutive legs of the SAME state (MOVE → MOVE) animate from their own start.
@@ -1453,12 +1468,50 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 }
             } catch (Throwable ignored) {}
         }
-        for (int i = completed.size() - 1; i >= 0; i--) {
-            completeShip(completed.get(i));
+        // Resolve the tick's endings (completions + losses) in ONE index-safe reverse pass — a ship cannot be
+        // both (a lost ship is skipped before the pilot tick), but the two slot lists must not shift each other's
+        // indices as the lists are mutated.
+        List<Integer> ending = new ArrayList<>(completed);
+        for (Integer s : lost) {
+            if (!ending.contains(s)) {
+                ending.add(s);
+            }
         }
-        if (fleetDirty || !completed.isEmpty()) {
-            syncFleetRenderBlock(); // one push for every state change + completion of this tick
+        ending.sort(java.util.Collections.reverseOrder());
+        for (int slot : ending) {
+            if (completed.contains(slot)) {
+                completeShip(slot);
+            } else {
+                loseShip(slot);
+            }
         }
+        if (fleetDirty || !completed.isEmpty() || !lost.isEmpty()) {
+            syncFleetRenderBlock(); // one push for every state change + ending of this tick
+        }
+    }
+
+    /**
+     * Ship LOST (the integrity time limit hit 0): it is removed from the USS and its cargo is DISCARDED — no
+     * delivery to the bay, no drop at the USS, no re-emission. The fleet anchor is resynced by the CALLER (one
+     * push for the whole fleet).
+     */
+    private void loseShip(int slot) {
+        if (slot < 0 || slot >= activeShips.size()) {
+            return;
+        }
+        VoidcraftActiveShip lostShip = activeShips.get(slot);
+        activeShips.remove(slot);
+        if (slot < pilots.size()) {
+            pilots.remove(slot);
+        }
+        lastPushedShipStates[slot] = -1;
+        lastPushedLegIds[slot] = -1;
+        try {
+            LOGGER.info(
+                "[Voidcraft] LOST {} (slot {}) — integrity reached 0: ship removed, cargo discarded",
+                lostShip.getName(),
+                slot);
+        } catch (Throwable ignored) {}
     }
 
     /**
@@ -1704,10 +1757,12 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     // endregion
 
     /**
-     * Mission complete for ONE ship (slot): a Constructor mission applies its loadout to the infrastructure
-     * project; any other mission delivers the cargo to ITS OWN bay (captured at launch). Then: re-emit a
-     * recoverable ship into ITS OWN gateway slot (or drop it). The fleet anchor is resynced by the CALLER
-     * (one push for the whole fleet — Phase 4 pass 5). Other ships in flight are untouched.
+     * Mission complete for ONE ship (slot) — the ship SURVIVED its integrity time limit (it is here with integrity
+     * still &gt; 0): a Constructor mission applies its loadout to the infrastructure project; any other mission
+     * delivers the cargo to ITS OWN bay (captured at launch). Then: re-emit the surviving ship into ITS OWN
+     * gateway slot (or drop it) — its integrity is back at maximum for the next flight (the item carries the
+     * blueprint's full integrity). The fleet anchor is resynced by the CALLER (one push for the whole fleet —
+     * Phase 4 pass 5). Other ships in flight are untouched.
      */
     private void completeShip(int slot) {
         if (slot < 0 || slot >= activeShips.size()) {
@@ -1726,7 +1781,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         NBTTagCompound cargo = completedShip.getCargo();
         NBTTagList items = cargo != null ? USSShipCargo.readItems(cargo) : new NBTTagList();
         NBTTagList fluids = cargo != null ? USSShipCargo.readFluids(cargo) : new NBTTagList();
-        boolean recoverable = completedShip.isRecoverable();
+        long integrity = completedShip.getIntegrity(); // > 0 — the ship made it back inside its time limit
         ItemStack shipItem = rebuildShipItem(completedShip);
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -1776,8 +1831,9 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             }
         }
 
-        // Recoverable ship → back into the gateway slot (the gateway re-holograms it docked); otherwise consumed.
-        if (recoverable && shipItem != null) {
+        // The ship SURVIVED (integrity > 0 at completion) → back into the gateway slot (the gateway re-holograms
+        // it docked), with its integrity back at maximum for the next flight.
+        if (shipItem != null) {
             MTEVoidcraftGateway gateway = mteAt(world, completedShip.getGatewayPos(), MTEVoidcraftGateway.class);
             if (gateway != null && gateway.mMachine && gateway.getControllerSlot() == null) {
                 gateway.mInventory[gateway.getControllerSlotIndex()] = shipItem;
@@ -1791,10 +1847,10 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         updateSlots();
         try {
             LOGGER.info(
-                "[Voidcraft] USS mission complete (slot {}): ship '{}', recoverable={}, cargo {} items",
+                "[Voidcraft] USS mission complete (slot {}): ship '{}' survived (integrity {}s left), cargo {} items",
                 slot,
                 shipName,
-                recoverable,
+                integrity,
                 items.tagCount());
         } catch (Throwable ignored) {}
     }
