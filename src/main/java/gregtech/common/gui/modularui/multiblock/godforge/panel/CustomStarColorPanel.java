@@ -263,6 +263,7 @@ public class CustomStarColorPanel {
                     return true;
                 })
                 .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
+                .disableHoverThemeBackground(true)
                 .overlay(IKey.dynamic(() -> {
                     if (editingIndex.intValue() >= 0) {
                         return translateToLocal("fog.cosmetics.applycolor");
@@ -298,6 +299,7 @@ public class CustomStarColorPanel {
                     return true;
                 })
                 .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
+                .disableHoverThemeBackground(true)
                 .overlay(
                     IKey.lang("fog.cosmetics.resetcolor")
                         .alignment(Alignment.CENTER))
@@ -371,6 +373,7 @@ public class CustomStarColorPanel {
                     return true;
                 })
                 .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
+                .disableHoverThemeBackground(true)
                 .overlay(
                     IKey.lang("fog.cosmetics.exportcolors")
                         .alignment(Alignment.CENTER))
@@ -388,6 +391,7 @@ public class CustomStarColorPanel {
                     return true;
                 })
                 .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
+                .disableHoverThemeBackground(true)
                 .overlay(
                     IKey.lang("fog.cosmetics.importcolors")
                         .alignment(Alignment.CENTER))
@@ -419,6 +423,7 @@ public class CustomStarColorPanel {
                     return true;
                 })
                 .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
+                .disableHoverThemeBackground(true)
                 .overlay(
                     IKey.lang("fog.cosmetics.deletecolors")
                         .alignment(Alignment.CENTER))
@@ -451,6 +456,7 @@ public class CustomStarColorPanel {
                     return true;
                 })
                 .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
+                .disableHoverThemeBackground(true)
                 .overlay(
                     IKey.lang("fog.cosmetics.savecolors")
                         .alignment(Alignment.CENTER))

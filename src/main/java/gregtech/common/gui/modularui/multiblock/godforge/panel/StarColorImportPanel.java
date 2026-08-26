@@ -178,6 +178,7 @@ public class StarColorImportPanel {
                     return true;
                 })
                 .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
+                .disableHoverThemeBackground(true)
                 .overlay(
                     IKey.lang("fog.cosmetics.importer.reset")
                         .alignment(Alignment.CENTER))
@@ -199,6 +200,7 @@ public class StarColorImportPanel {
                     return true;
                 })
                 .background(GTGuiTextures.BUTTON_OUTLINE_HOLLOW)
+                .disableHoverThemeBackground(true)
                 .overlay(
                     IKey.lang("fog.cosmetics.importer.apply")
                         .alignment(Alignment.CENTER))

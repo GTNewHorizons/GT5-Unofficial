@@ -121,8 +121,10 @@ public class ManualInsertionPanel {
                     .style(EnumChatFormatting.DARK_GRAY)
                     .alignment(Alignment.CENTER)
                     .scale(0.75f))
-                .disableHoverBackground()
                 .disableHoverOverlay()
+                .disableThemeBackground(true)
+                .background(GTGuiTextures.BUTTON_STANDARD)
+                .hoverBackground(GTGuiTextures.BUTTON_STANDARD)
                 .onMousePressed(d -> {
                     SyncActions.PAY_UPGRADE_COST
                         .callFrom(Panels.MANUAL_INSERTION, hypervisor, upgradeSyncer.getValue());

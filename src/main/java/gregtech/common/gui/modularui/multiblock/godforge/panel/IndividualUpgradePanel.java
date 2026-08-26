@@ -217,6 +217,7 @@ public class IndividualUpgradePanel {
                     }
                     return GTGuiTextures.BUTTON_OUTLINE_HOLLOW;
                 }))
+                .disableHoverThemeBackground(true)
                 .overlay(new DynamicDrawable(() -> {
                     ForgeOfGodsData data = hypervisor.getData();
                     if (data.isUpgradeActive(upgrade)) {
