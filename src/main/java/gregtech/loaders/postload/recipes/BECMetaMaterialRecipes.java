@@ -101,7 +101,7 @@ public class BECMetaMaterialRecipes implements Runnable {
             ItemList.MetaMaterial_Waveguide3 };
         ItemList[] coils = { ItemList.UIV_Coil, ItemList.UMV_Coil, ItemList.UXV_Coil };
         int[] chromaticAmts = { 4, 6, 8 };
-        int[] hypogenAmts = { 0, 2, 4 };
+        int[] transcendentMetalAmts = { 0, 2, 4 };
         long[] euts = { TierEU.RECIPE_UIV, TierEU.RECIPE_UMV, TierEU.RECIPE_UXV };
 
         for (int t = 0; t < 3; t++) {
@@ -116,8 +116,9 @@ public class BECMetaMaterialRecipes implements Runnable {
                 becCondensates = new CondensateType[] { CondensateType.ChromaticGlass };
                 becAmounts = new int[] { chromaticAmts[t] };
             } else {
-                becCondensates = new CondensateType[] { CondensateType.ChromaticGlass, CondensateType.Hypogen };
-                becAmounts = new int[] { chromaticAmts[t], hypogenAmts[t] };
+                becCondensates = new CondensateType[] { CondensateType.ChromaticGlass,
+                    CondensateType.TranscendentMetal };
+                becAmounts = new int[] { chromaticAmts[t], transcendentMetalAmts[t] };
             }
             addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, baseDuration, euts[t]);
         }
@@ -131,7 +132,7 @@ public class BECMetaMaterialRecipes implements Runnable {
             GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUMV, 1),
             ItemList.Thermal_Superconductor.get(1) };
         int[] chromaticAmts = { 4, 8, 16 };
-        int[] spacetimeAmts = { 0, 2, 4 };
+        int[] transcendentMetalAmts = { 0, 2, 4 };
         long[] euts = { TierEU.RECIPE_UIV, TierEU.RECIPE_UMV, TierEU.RECIPE_UXV };
 
         for (int t = 0; t < 3; t++) {
@@ -146,8 +147,9 @@ public class BECMetaMaterialRecipes implements Runnable {
                 becCondensates = new CondensateType[] { CondensateType.ChromaticGlass };
                 becAmounts = new int[] { chromaticAmts[t] };
             } else {
-                becCondensates = new CondensateType[] { CondensateType.ChromaticGlass, CondensateType.SpaceTime };
-                becAmounts = new int[] { chromaticAmts[t], spacetimeAmts[t] };
+                becCondensates = new CondensateType[] { CondensateType.ChromaticGlass,
+                    CondensateType.TranscendentMetal };
+                becAmounts = new int[] { chromaticAmts[t], transcendentMetalAmts[t] };
             }
             addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, baseDuration, euts[t]);
         }
