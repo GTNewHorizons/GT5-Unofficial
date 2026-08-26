@@ -149,6 +149,16 @@ public final class SyncHypervisor {
         handler.notifyUpdate($ -> {});
     }
 
+    public void closeAll(Panels panel) {
+        if (panel == mainPanel) throw new IllegalArgumentException("Cannot close main panel!");
+        for (Modules<?> module : Modules.getAll()) {
+            ModularPanel cachedPanel = this.panels.get(module, panel);
+            if (cachedPanel != null) {
+                cachedPanel.closeIfOpen();
+            }
+        }
+    }
+
     public boolean isClient() {
         return syncManagers.get(mainModule, mainPanel)
             .isClient();

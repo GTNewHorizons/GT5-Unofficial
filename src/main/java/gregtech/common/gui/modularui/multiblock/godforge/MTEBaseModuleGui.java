@@ -236,6 +236,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_POWER_PANEL)
             .onMousePressed(d -> {
                 if (!voltageConfigPanel.isPanelOpen()) {
+                    // todo consider calling closeAll on voltage config panel here
                     voltageConfigPanel.openPanel();
                 } else {
                     voltageConfigPanel.closePanel();

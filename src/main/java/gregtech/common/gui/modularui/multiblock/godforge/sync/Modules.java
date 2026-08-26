@@ -1,5 +1,8 @@
 package gregtech.common.gui.modularui.multiblock.godforge.sync;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gregtech.common.gui.modularui.multiblock.godforge.MTEBaseModuleGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEExoticModuleGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEMoltenModuleGui;
@@ -22,6 +25,16 @@ public final class Modules<T extends MTEBaseModule> {
     public static final Modules<MTEMoltenModule> MOLTEN = new Modules<>("molten", Panels.MAIN_MOLTEN, MTEMoltenModule.class);
     public static final Modules<MTEPlasmaModule> PLASMA = new Modules<>("plasma", Panels.MAIN_PLASMA, MTEPlasmaModule.class);
     public static final Modules<MTEExoticModule> EXOTIC = new Modules<>("exotic", Panels.MAIN_EXOTIC, MTEExoticModule.class);
+
+    private static final List<Modules<?>> ALL = new ArrayList<>();
+    static {
+        // skip adding 'ANY'
+        ALL.add(CORE);
+        ALL.add(SMELTING);
+        ALL.add(MOLTEN);
+        ALL.add(PLASMA);
+        ALL.add(EXOTIC);
+    }
 
     // spotless:on
 
@@ -61,5 +74,9 @@ public final class Modules<T extends MTEBaseModule> {
         if (multiblock instanceof MTEPlasmaModule plasma) return new MTEPlasmaModuleGui(plasma, hypervisor);
         if (multiblock instanceof MTEExoticModule exotic) return new MTEExoticModuleGui(exotic, hypervisor);
         return null;
+    }
+
+    public static List<Modules<?>> getAll() {
+        return ALL;
     }
 }
