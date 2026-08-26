@@ -24,6 +24,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
+import io.netty.buffer.ByteBuf;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
 
@@ -295,15 +296,15 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setBoolean("pipeActive", active);
-        return tag;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(active);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound tag) {
-        active = tag.getBoolean("pipeActive");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        active = buffer.readBoolean();
     }
 
 }

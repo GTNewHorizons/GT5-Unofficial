@@ -20,6 +20,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
+import io.netty.buffer.ByteBuf;
 
 public abstract class MTEBaseFactoryPipe extends MetaPipeEntity {
 
@@ -169,14 +170,14 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity {
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setBoolean("pipeActive", mIsActive);
-        return tag;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(mIsActive);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound tag) {
-        mIsActive = tag.getBoolean("pipeActive");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        mIsActive = buffer.readBoolean();
     }
 }
