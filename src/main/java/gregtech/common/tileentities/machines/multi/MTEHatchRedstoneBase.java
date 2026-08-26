@@ -14,7 +14,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
  */
 public abstract class MTEHatchRedstoneBase extends MTEHatch {
 
-    private final byte[] redstoneSignal = { 0, 0, 0, 0, 0, 0 };
     private boolean directional = true;
     protected boolean inverted = false;
 
@@ -57,30 +56,18 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
     }
 
     public void setRedstoneSignal(byte signal) {
+        if (this.getBaseMetaTileEntity() == null) return;
         if (!directional) {
-            for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-                redstoneSignal[i] = signal;
+            for (ForgeDirection forgeDirection : ForgeDirection.VALID_DIRECTIONS) {
+                getBaseMetaTileEntity().setStrongOutputRedstoneSignal(forgeDirection, signal);
             }
             return;
         }
-        if (this.getBaseMetaTileEntity() == null) return;
-        int facingSide = getBaseMetaTileEntity().getFrontFacing()
-            .ordinal();
-        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            redstoneSignal[i] = (i == facingSide) ? signal : 0;
+        ForgeDirection facingSide = getBaseMetaTileEntity().getFrontFacing();
+        for (ForgeDirection forgeDirection : ForgeDirection.VALID_DIRECTIONS) {
+            getBaseMetaTileEntity()
+                .setStrongOutputRedstoneSignal(forgeDirection, forgeDirection == facingSide ? signal : 0);
         }
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (!aBaseMetaTileEntity.isServerSide()) {
-            super.onPostTick(aBaseMetaTileEntity, aTick);
-            return;
-        }
-        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, redstoneSignal[side.ordinal()]);
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -146,9 +133,6 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            redstoneSignal[i] = aNBT.getByte("signal" + i);
-        }
         directional = aNBT.getBoolean("directional");
         if (supportsInvertedSignal()) {
             inverted = aNBT.getBoolean("inverted");
@@ -158,9 +142,6 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            aNBT.setByte("signal" + i, redstoneSignal[i]);
-        }
         aNBT.setBoolean("directional", directional);
         if (supportsInvertedSignal()) {
             aNBT.setBoolean("inverted", inverted);
