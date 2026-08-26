@@ -13,7 +13,6 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -28,7 +27,6 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.common.CommonButtons;
@@ -146,15 +144,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
     @Override
     protected ItemSlot createControllerSlot() {
-        return new ItemSlot()
-            .slot(
-                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).slotGroup("item_inv"))
-            .background(GuiTextures.SLOT_ITEM, GTGuiTextures.TT_OVERLAY_SLOT_MESH)
-            .overlay(
-                GTGuiTextures.TT_CONTROLLER_SLOT_HEAT_SINK.asIcon()
-                    .size(18, 6)
-                    .marginTop(22))
-            .marginTop(2);
+        return super.createControllerSlot().marginTop(2);
     }
 
     @Override
