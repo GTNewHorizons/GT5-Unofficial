@@ -66,6 +66,14 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
     }
 
     @Override
+    public void onFacingChange() {
+        if (getBaseMetaTileEntity() == null) return;
+        ForgeDirection facingSide = getBaseMetaTileEntity().getFrontFacing();
+        byte signal = getBaseMetaTileEntity().getStrongOutputRedstoneSignal(facingSide);
+        setRedstoneSignal(signal);
+    }
+
+    @Override
     protected boolean useMui2() {
         return true;
     }
