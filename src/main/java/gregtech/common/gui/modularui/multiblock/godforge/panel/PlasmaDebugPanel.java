@@ -25,14 +25,14 @@ public class PlasmaDebugPanel {
     private static final int SIZE_W = 78;
     private static final int SIZE_H = 60;
 
-    public static ModularPanel openPanel(SyncHypervisor hypervisor) {
-        ModularPanel panel = hypervisor.getModularPanel(Modules.PLASMA, Panels.PLASMA_DEBUG);
+    public static ModularPanel openPanel(SyncHypervisor hypervisor, Modules<?> module, int moduleIndex) {
+        ModularPanel panel = hypervisor.getModularPanel(Modules.PLASMA, moduleIndex, Panels.PLASMA_DEBUG);
 
-        registerSyncValues(hypervisor);
+        registerSyncValues(hypervisor, moduleIndex);
 
         panel.size(SIZE_W, SIZE_H)
             .padding(4)
-            .relative(hypervisor.getModularPanel(Modules.PLASMA, Panels.MAIN_PLASMA))
+            .relative(hypervisor.getModularPanel(Modules.PLASMA, moduleIndex, Panels.MAIN_PLASMA))
             .topRel(0)
             .leftRelOffset(1, -3);
 
@@ -42,7 +42,7 @@ public class PlasmaDebugPanel {
 
         // Debug max parallel
         IntSyncValue plasmaParallelSyncer = SyncValues.DEBUG_PLASMA_PARALLEL
-            .lookupFrom(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
+            .lookupFrom(Modules.PLASMA, moduleIndex, Panels.PLASMA_DEBUG, hypervisor);
         column.child(
             new TextFieldWidget().formatAsInteger(true)
                 .numbersInt(0, Integer.MAX_VALUE)
@@ -54,7 +54,7 @@ public class PlasmaDebugPanel {
 
         // Debug plasma tier
         IntSyncValue fusionTierSyncer = SyncValues.DEBUG_FUSION_TIER
-            .lookupFrom(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
+            .lookupFrom(Modules.PLASMA, moduleIndex, Panels.PLASMA_DEBUG, hypervisor);
         column.child(
             new TextFieldWidget().formatAsInteger(true)
                 .numbersInt(0, 2)
@@ -66,7 +66,7 @@ public class PlasmaDebugPanel {
 
         // Debug multi-step
         BooleanSyncValue multiStepSyncer = SyncValues.DEBUG_MULTI_STEP
-            .lookupFrom(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
+            .lookupFrom(Modules.PLASMA, moduleIndex, Panels.PLASMA_DEBUG, hypervisor);
         column.child(
             new ButtonWidget<>().size(16)
                 .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
@@ -88,9 +88,9 @@ public class PlasmaDebugPanel {
         return panel;
     }
 
-    private static void registerSyncValues(SyncHypervisor hypervisor) {
-        SyncValues.DEBUG_MULTI_STEP.registerFor(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
-        SyncValues.DEBUG_PLASMA_PARALLEL.registerFor(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
-        SyncValues.DEBUG_FUSION_TIER.registerFor(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
+    private static void registerSyncValues(SyncHypervisor hypervisor, int idx) {
+        SyncValues.DEBUG_MULTI_STEP.registerFor(Modules.PLASMA, idx, Panels.PLASMA_DEBUG, hypervisor);
+        SyncValues.DEBUG_PLASMA_PARALLEL.registerFor(Modules.PLASMA, idx, Panels.PLASMA_DEBUG, hypervisor);
+        SyncValues.DEBUG_FUSION_TIER.registerFor(Modules.PLASMA, idx, Panels.PLASMA_DEBUG, hypervisor);
     }
 }

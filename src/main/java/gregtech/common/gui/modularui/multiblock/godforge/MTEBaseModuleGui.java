@@ -41,33 +41,37 @@ import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultiblockBaseGui<T> {
 
     protected final SyncHypervisor hypervisor;
-    protected final boolean isSubpanel;
+    protected final int moduleIndex;
 
     public MTEBaseModuleGui(T multiblock) {
         super(multiblock);
         this.hypervisor = new SyncHypervisor(getModuleType(), getMainPanel());
-        this.isSubpanel = false;
+        this.moduleIndex = -1;
 
-        hypervisor.setModule(getModuleType(), multiblock);
+        hypervisor.setModule(getModuleType(), this.moduleIndex, multiblock);
     }
 
-    public MTEBaseModuleGui(T multiblock, SyncHypervisor hypervisor) {
+    public MTEBaseModuleGui(T multiblock, int moduleIndex, SyncHypervisor hypervisor) {
         super(multiblock);
         this.hypervisor = hypervisor;
-        this.isSubpanel = true;
+        this.moduleIndex = moduleIndex;
 
-        hypervisor.setModule(getModuleType(), multiblock);
+        hypervisor.setModule(getModuleType(), this.moduleIndex, multiblock);
     }
 
     public abstract Modules<T> getModuleType();
+
+    public boolean isSubpanel() {
+        return moduleIndex >= 0;
+    }
 
     public Panels getMainPanel() {
         return getModuleType().getMainPanel();
     }
 
     public ModularPanel openSubpanel() {
-        ModularPanel panel = hypervisor.getModularPanel(getModuleType(), getMainPanel());
-        PanelSyncManager syncManager = hypervisor.getSyncManager(getModuleType(), getMainPanel());
+        ModularPanel panel = hypervisor.getModularPanel(getModuleType(), moduleIndex, getMainPanel());
+        PanelSyncManager syncManager = hypervisor.getSyncManager(getModuleType(), moduleIndex, getMainPanel());
 
         registerSyncValues(syncManager);
 
@@ -109,7 +113,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         ModularPanel panel = super.getBasePanel(guiData, syncManager, uiSettings);
 
-        if (!isSubpanel) {
+        if (!isSubpanel()) {
             hypervisor.setModularPanel(getMainPanel(), panel);
         }
 
@@ -120,11 +124,11 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        if (!isSubpanel) {
+        if (!isSubpanel()) {
             hypervisor.setSyncManager(getMainPanel(), syncManager);
         }
 
-        SyncValues.CONNECTION_STATUS.registerFor(getModuleType(), getMainPanel(), hypervisor);
+        SyncValues.CONNECTION_STATUS.registerFor(getModuleType(), moduleIndex, getMainPanel(), hypervisor);
     }
 
     @Override
@@ -231,7 +235,8 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     }
 
     protected ButtonWidget<?> createVoltageConfigButton() {
-        IPanelHandler voltageConfigPanel = Panels.VOLTAGE_CONFIG.getFrom(getModuleType(), getMainPanel(), hypervisor);
+        IPanelHandler voltageConfigPanel = Panels.VOLTAGE_CONFIG
+            .getFrom(getModuleType(), moduleIndex, getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_POWER_PANEL)
             .onMousePressed(d -> {
@@ -293,7 +298,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
     protected IWidget createConnectionStatus() {
         BooleanSyncValue connectionSyncer = SyncValues.CONNECTION_STATUS
-            .lookupFrom(getModuleType(), getMainPanel(), hypervisor);
+            .lookupFrom(getModuleType(), moduleIndex, getMainPanel(), hypervisor);
         return IKey.dynamic(() -> {
             EnumChatFormatting color;
             String status;
@@ -314,7 +319,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
     protected ButtonWidget<?> createGeneralInfoPanelButton() {
         IPanelHandler generalInfoPanel = Panels.GENERAL_INFO
-            .getGlobalFrom(getModuleType(), getMainPanel(), hypervisor, isSubpanel);
+            .getGlobalFrom(getModuleType(), moduleIndex, getMainPanel(), hypervisor, isSubpanel());
         return new ButtonWidget<>().overlay(IDrawable.EMPTY)
             .background(GTGuiTextures.PICTURE_GODFORGE_LOGO)
             .disableHoverBackground()

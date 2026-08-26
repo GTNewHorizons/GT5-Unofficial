@@ -20,8 +20,8 @@ public class MTEPlasmaModuleGui extends MTEBaseModuleGui<MTEPlasmaModule> {
         super(multiblock);
     }
 
-    public MTEPlasmaModuleGui(MTEPlasmaModule multiblock, SyncHypervisor hypervisor) {
-        super(multiblock, hypervisor);
+    public MTEPlasmaModuleGui(MTEPlasmaModule multiblock, int moduleIndex, SyncHypervisor hypervisor) {
+        super(multiblock, moduleIndex, hypervisor);
     }
 
     @Override
@@ -36,7 +36,8 @@ public class MTEPlasmaModuleGui extends MTEBaseModuleGui<MTEPlasmaModule> {
 
     @Override
     protected Widget<?> createExtraButton() {
-        IPanelHandler debugPanel = Panels.PLASMA_DEBUG.getFrom(getModuleType(), getMainPanel(), hypervisor);
+        IPanelHandler debugPanel = Panels.PLASMA_DEBUG
+            .getFrom(getModuleType(), moduleIndex, getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_LOAF_MODE)

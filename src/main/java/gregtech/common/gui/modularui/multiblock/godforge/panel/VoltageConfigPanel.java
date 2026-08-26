@@ -32,13 +32,13 @@ public class VoltageConfigPanel {
     private static final int SIZE_W = 138;
     private static final int SIZE_H = 98;
 
-    public static ModularPanel openModulePanel(SyncHypervisor hypervisor, Modules<?> module) {
-        ModularPanel panel = hypervisor.getModularPanel(module, Panels.VOLTAGE_CONFIG);
+    public static ModularPanel openModulePanel(SyncHypervisor hypervisor, Modules<?> module, int moduleIndex) {
+        ModularPanel panel = hypervisor.getModularPanel(module, moduleIndex, Panels.VOLTAGE_CONFIG);
 
-        registerSyncValues(module, hypervisor);
+        registerSyncValues(module, moduleIndex, hypervisor);
 
         panel.size(SIZE_W, SIZE_H)
-            .relative(hypervisor.getModularPanel(module, module.getMainPanel()))
+            .relative(hypervisor.getModularPanel(module, moduleIndex, module.getMainPanel()))
             .topRel(0)
             .leftRel(1);
 
@@ -54,28 +54,28 @@ public class VoltageConfigPanel {
                 .marginTop(7)
                 .marginBottom(5));
 
-        column.child(createMaxParallelGroup(hypervisor, module).marginBottom(5));
-        column.child(createVoltageGroup(hypervisor, module));
+        column.child(createMaxParallelGroup(hypervisor, module, moduleIndex).marginBottom(5));
+        column.child(createVoltageGroup(hypervisor, module, moduleIndex));
         panel.child(column);
 
         return panel;
     }
 
-    private static void registerSyncValues(Modules<?> module, SyncHypervisor hypervisor) {
-        SyncValues.MODULE_CALCULATED_MAX_PARALLEL.registerFor(module, Panels.VOLTAGE_CONFIG, hypervisor);
-        SyncValues.MODULE_SET_MAX_PARALLEL.registerFor(module, Panels.VOLTAGE_CONFIG, hypervisor);
-        SyncValues.MODULE_ALWAYS_MAX_PARALLEL.registerFor(module, Panels.VOLTAGE_CONFIG, hypervisor);
-        SyncValues.MODULE_PROCESSING_VOLTAGE.registerFor(module, Panels.VOLTAGE_CONFIG, hypervisor);
-        SyncValues.MODULE_VOLTAGE_CONFIG.registerFor(module, Panels.VOLTAGE_CONFIG, hypervisor);
+    private static void registerSyncValues(Modules<?> module, int idx, SyncHypervisor hypervisor) {
+        SyncValues.MODULE_CALCULATED_MAX_PARALLEL.registerFor(module, idx, Panels.VOLTAGE_CONFIG, hypervisor);
+        SyncValues.MODULE_SET_MAX_PARALLEL.registerFor(module, idx, Panels.VOLTAGE_CONFIG, hypervisor);
+        SyncValues.MODULE_ALWAYS_MAX_PARALLEL.registerFor(module, idx, Panels.VOLTAGE_CONFIG, hypervisor);
+        SyncValues.MODULE_PROCESSING_VOLTAGE.registerFor(module, idx, Panels.VOLTAGE_CONFIG, hypervisor);
+        SyncValues.MODULE_VOLTAGE_CONFIG.registerFor(module, idx, Panels.VOLTAGE_CONFIG, hypervisor);
     }
 
-    private static Flow createMaxParallelGroup(SyncHypervisor hypervisor, Modules<?> module) {
+    private static Flow createMaxParallelGroup(SyncHypervisor hypervisor, Modules<?> module, int moduleIndex) {
         IntSyncValue maxParallelSyncer = SyncValues.MODULE_CALCULATED_MAX_PARALLEL
-            .lookupFrom(module, Panels.VOLTAGE_CONFIG, hypervisor);
+            .lookupFrom(module, moduleIndex, Panels.VOLTAGE_CONFIG, hypervisor);
         IntSyncValue setMaxParallelSyncer = SyncValues.MODULE_SET_MAX_PARALLEL
-            .lookupFrom(module, Panels.VOLTAGE_CONFIG, hypervisor);
+            .lookupFrom(module, moduleIndex, Panels.VOLTAGE_CONFIG, hypervisor);
         BooleanSyncValue alwaysMaxParallelSyncer = SyncValues.MODULE_ALWAYS_MAX_PARALLEL
-            .lookupFrom(module, Panels.VOLTAGE_CONFIG, hypervisor);
+            .lookupFrom(module, moduleIndex, Panels.VOLTAGE_CONFIG, hypervisor);
 
         Flow column = Flow.column()
             .coverChildren();
@@ -136,11 +136,11 @@ public class VoltageConfigPanel {
         return column;
     }
 
-    private static ParentWidget<?> createVoltageGroup(SyncHypervisor hypervisor, Modules<?> module) {
+    private static ParentWidget<?> createVoltageGroup(SyncHypervisor hypervisor, Modules<?> module, int moduleIndex) {
         LongSyncValue processingVoltageSyncer = SyncValues.MODULE_PROCESSING_VOLTAGE
-            .lookupFrom(module, Panels.VOLTAGE_CONFIG, hypervisor);
+            .lookupFrom(module, moduleIndex, Panels.VOLTAGE_CONFIG, hypervisor);
         BooleanSyncValue voltageConfigSyncer = SyncValues.MODULE_VOLTAGE_CONFIG
-            .lookupFrom(module, Panels.VOLTAGE_CONFIG, hypervisor);
+            .lookupFrom(module, moduleIndex, Panels.VOLTAGE_CONFIG, hypervisor);
 
         ParentWidget<?> parent = new ParentWidget<>().coverChildren();
 

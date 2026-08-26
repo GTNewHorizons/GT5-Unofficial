@@ -92,7 +92,7 @@ public class IndividualMilestonePanel {
 
         // Info texts
         BooleanSyncValue inversionSyncer = SyncValues.INVERSION
-            .lookupFrom(Modules.CORE, Panels.INDIVIDUAL_MILESTONE, hypervisor);
+            .lookupFrom(Modules.CORE, -1, Panels.INDIVIDUAL_MILESTONE, hypervisor);
 
         column.child(
             createInfoWidget(() -> getTotalProgress(milestoneSyncer.getValue(), formatSyncer.getValue(), hypervisor)));
@@ -128,7 +128,7 @@ public class IndividualMilestonePanel {
     }
 
     public static void registerSyncValues(SyncHypervisor hypervisor) {
-        SyncValues.INVERSION.registerFor(Modules.CORE, Panels.INDIVIDUAL_MILESTONE, hypervisor);
+        SyncValues.INVERSION.registerFor(Modules.CORE, -1, Panels.INDIVIDUAL_MILESTONE, hypervisor);
 
         SyncValues.TOTAL_RECIPES_PROCESSED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
         SyncValues.TOTAL_POWER_CONSUMED.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);

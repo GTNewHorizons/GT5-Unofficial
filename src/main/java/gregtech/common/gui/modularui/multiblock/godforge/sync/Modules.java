@@ -68,11 +68,16 @@ public final class Modules<T extends MTEBaseModule> {
         return null;
     }
 
-    public static MTEBaseModuleGui<?> createSubpanelGui(MTEBaseModule multiblock, SyncHypervisor hypervisor) {
-        if (multiblock instanceof MTESmeltingModule smelting) return new MTESmeltingModuleGui(smelting, hypervisor);
-        if (multiblock instanceof MTEMoltenModule molten) return new MTEMoltenModuleGui(molten, hypervisor);
-        if (multiblock instanceof MTEPlasmaModule plasma) return new MTEPlasmaModuleGui(plasma, hypervisor);
-        if (multiblock instanceof MTEExoticModule exotic) return new MTEExoticModuleGui(exotic, hypervisor);
+    public static MTEBaseModuleGui<?> createSubpanelGui(MTEBaseModule multiblock, int moduleIndex,
+        SyncHypervisor hypervisor) {
+        if (multiblock instanceof MTESmeltingModule smelting)
+            return new MTESmeltingModuleGui(smelting, moduleIndex, hypervisor);
+        if (multiblock instanceof MTEMoltenModule molten)
+            return new MTEMoltenModuleGui(molten, moduleIndex, hypervisor);
+        if (multiblock instanceof MTEPlasmaModule plasma)
+            return new MTEPlasmaModuleGui(plasma, moduleIndex, hypervisor);
+        if (multiblock instanceof MTEExoticModule exotic)
+            return new MTEExoticModuleGui(exotic, moduleIndex, hypervisor);
         return null;
     }
 

@@ -35,8 +35,9 @@ public class ExoticPossibleInputsListPanel {
 
     private static final int SIZE_W = ROW_SLOTS_WIDTH * 18 + 12;
 
-    public static ModularPanel openPanel(SyncHypervisor hypervisor) {
-        ModularPanel panel = hypervisor.getModularPanel(Modules.EXOTIC, Panels.EXOTIC_POSSIBLE_INPUTS_LIST);
+    public static ModularPanel openPanel(SyncHypervisor hypervisor, Modules<?> module, int moduleIndex) {
+        ModularPanel panel = hypervisor
+            .getModularPanel(Modules.EXOTIC, moduleIndex, Panels.EXOTIC_POSSIBLE_INPUTS_LIST);
 
         int qgpItemSize = Godforge.exoticModulePlasmaItemMap.size();
         int qgpFluidSize = Godforge.exoticModulePlasmaFluidMap.size();

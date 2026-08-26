@@ -13,8 +13,6 @@ import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
@@ -36,13 +34,14 @@ public final class SyncHypervisor {
 
     private MTEForgeOfGods multiblock;
     private ForgeOfGodsData data;
-    private final Map<Modules<?>, MTEBaseModule> modules = new HashMap<>();
+    private final Map<Submodule, MTEBaseModule> modules = new HashMap<>();
 
     private final Modules<?> mainModule;
+    private final Submodule mainSubmodule;
     private final Panels mainPanel;
-    private final Table<Modules<?>, Panels, ModularPanel> panels = HashBasedTable.create();
-    private final Table<Modules<?>, Panels, PanelSyncManager> syncManagers = HashBasedTable.create();
-    private final Object2IntMap<Modules<?>> openModuleIds = new Object2IntOpenHashMap<>();
+
+    private final Table<Submodule, Panels, ModularPanel> panels = HashBasedTable.create();
+    private final Table<Submodule, Panels, PanelSyncManager> syncManagers = HashBasedTable.create();
 
     public SyncHypervisor(Panels mainPanel) {
         this(Modules.CORE, mainPanel);
@@ -50,6 +49,7 @@ public final class SyncHypervisor {
 
     public SyncHypervisor(Modules<?> mainModule, Panels mainPanel) {
         this.mainModule = mainModule;
+        this.mainSubmodule = new Submodule(mainModule, -1);
         this.mainPanel = mainPanel;
     }
 
@@ -66,11 +66,11 @@ public final class SyncHypervisor {
         return data;
     }
 
-    public <T extends MTEBaseModule> void setModule(Modules<T> module, T moduleMultiblock) {
-        modules.put(module, moduleMultiblock);
+    public <T extends MTEBaseModule> void setModule(Modules<T> module, int moduleIndex, T moduleMultiblock) {
+        modules.put(new Submodule(module, moduleIndex), moduleMultiblock);
     }
 
-    public <T extends MTEBaseModule> T getModule(Modules<T> module) {
+    public <T extends MTEBaseModule> T getModule(Modules<T> module, int moduleIndex) {
         if (module == Modules.ANY) {
             return modules.values()
                 .stream()
@@ -79,7 +79,7 @@ public final class SyncHypervisor {
                 .orElseThrow(IllegalStateException::new); // shouldn't ever happen
         }
 
-        return module.cast(modules.get(module));
+        return module.cast(modules.get(new Submodule(module, moduleIndex)));
     }
 
     public Modules<?> getMainModule() {
@@ -91,52 +91,41 @@ public final class SyncHypervisor {
     }
 
     public void setModularPanel(Panels panel, ModularPanel modularPanel) {
-        setModularPanel(getMainModule(), panel, modularPanel);
+        setModularPanel(getMainModule(), -1, panel, modularPanel);
     }
 
-    public void setModularPanel(Modules<?> module, Panels panel, ModularPanel modularPanel) {
-        panels.put(module, panel, modularPanel);
+    public void setModularPanel(Modules<?> module, int moduleIndex, Panels panel, ModularPanel modularPanel) {
+        panels.put(new Submodule(module, moduleIndex), panel, modularPanel);
     }
 
     public ModularPanel getModularPanel(Panels panel) {
-        return getModularPanel(getMainModule(), panel);
+        return getModularPanel(getMainModule(), -1, panel);
     }
 
-    public ModularPanel getModularPanel(Modules<?> module, Panels panel) {
-        return panels.get(module, panel);
+    public ModularPanel getModularPanel(Modules<?> module, int moduleIndex, Panels panel) {
+        return panels.get(new Submodule(module, moduleIndex), panel);
     }
 
     public void setSyncManager(Panels panel, PanelSyncManager syncManager) {
-        setSyncManager(getMainModule(), panel, syncManager);
+        setSyncManager(getMainModule(), -1, panel, syncManager);
     }
 
-    public void setSyncManager(Modules<?> module, Panels panel, PanelSyncManager syncManager) {
-        syncManagers.put(module, panel, syncManager);
+    public void setSyncManager(Modules<?> module, int moduleIndex, Panels panel, PanelSyncManager syncManager) {
+        syncManagers.put(new Submodule(module, moduleIndex), panel, syncManager);
     }
 
     public PanelSyncManager getSyncManager(Panels panel) {
-        return getSyncManager(getMainModule(), panel);
+        return getSyncManager(getMainModule(), -1, panel);
     }
 
-    public PanelSyncManager getSyncManager(Modules<?> module, Panels panel) {
-        return syncManagers.get(module, panel);
+    public PanelSyncManager getSyncManager(Modules<?> module, int moduleIndex, Panels panel) {
+        return syncManagers.get(new Submodule(module, moduleIndex), panel);
     }
 
-    public void setOpenModuleId(Modules<?> module, int id) {
-        openModuleIds.put(module, id);
-    }
-
-    public void clearOpenModuleId(Modules<?> module) {
-        openModuleIds.removeInt(module);
-    }
-
-    public int getOpenModuleId(Modules<?> module) {
-        return openModuleIds.getInt(module);
-    }
-
-    public void onPanelDispose(Modules<?> module, Panels panel) {
-        panels.remove(module, panel);
-        syncManagers.remove(module, panel);
+    public void onPanelDispose(Modules<?> module, int moduleIndex, Panels panel) {
+        Submodule submodule = new Submodule(module, moduleIndex);
+        panels.remove(submodule, panel);
+        syncManagers.remove(submodule, panel);
     }
 
     public void refreshDynamicWidget(Panels panel) {
@@ -152,20 +141,22 @@ public final class SyncHypervisor {
     public void closeAll(Panels panel) {
         if (panel == mainPanel) throw new IllegalArgumentException("Cannot close main panel!");
         for (Modules<?> module : Modules.getAll()) {
-            ModularPanel cachedPanel = this.panels.get(module, panel);
-            if (cachedPanel != null) {
-                cachedPanel.closeIfOpen();
+            for (int i = 0; i < 16; i++) {
+                ModularPanel cachedPanel = this.panels.get(new Submodule(module, i), panel);
+                if (cachedPanel != null) {
+                    cachedPanel.closeIfOpen();
+                }
             }
         }
     }
 
     public boolean isClient() {
-        return syncManagers.get(mainModule, mainPanel)
+        return syncManagers.get(mainSubmodule, mainPanel)
             .isClient();
     }
 
     public EntityPlayer getPlayer() {
-        return syncManagers.get(mainModule, mainPanel)
+        return syncManagers.get(mainSubmodule, mainPanel)
             .getPlayer();
     }
 }

@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.multiblock.godforge.sync;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -9,6 +8,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.common.gui.modularui.multiblock.godforge.MTEBaseModuleGui;
+import gregtech.common.gui.modularui.multiblock.godforge.data.TriFunction;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.BatteryConfigPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.CustomStarColorPanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.ExoticInputsListPanel;
@@ -28,8 +28,6 @@ import gregtech.common.gui.modularui.multiblock.godforge.panel.UpgradeTreePanel;
 import gregtech.common.gui.modularui.multiblock.godforge.panel.VoltageConfigPanel;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 
-// TODO some day, restructure this enough to allow all 16 module subpanels to be open at once,
-// TODO regardless of if they share module types (currently disallowed because it would crash)
 public enum Panels {
 
     // Main panels
@@ -67,7 +65,7 @@ public enum Panels {
     public static final Panels[] VALUES = values();
 
     private final String panelId = "fog.panel." + name().toLowerCase();
-    private final BiFunction<SyncHypervisor, Modules<?>, ModularPanel> panelSupplier;
+    private final TriFunction<SyncHypervisor, Modules<?>, Integer, ModularPanel> panelSupplier;
 
     private final boolean hasModuleSubpanel;
 
@@ -82,17 +80,17 @@ public enum Panels {
     }
 
     Panels(Function<SyncHypervisor, ModularPanel> panelSupplier) {
-        this.panelSupplier = (hypervisor, module) -> panelSupplier.apply(hypervisor);
+        this.panelSupplier = (hypervisor, module, moduleIndex) -> panelSupplier.apply(hypervisor);
         this.hasModuleSubpanel = false;
     }
 
-    Panels(BiFunction<SyncHypervisor, Modules<?>, ModularPanel> modulePanelSupplier) {
+    Panels(TriFunction<SyncHypervisor, Modules<?>, Integer, ModularPanel> modulePanelSupplier) {
         this.panelSupplier = modulePanelSupplier;
         this.hasModuleSubpanel = false;
     }
 
     public String getPanelId(Modules<?> module, int moduleIndex) {
-        if (hasModuleSubpanel && moduleIndex >= 0) {
+        if (moduleIndex >= 0) {
             return module.getModuleId() + "/" + panelId + "." + moduleIndex;
         }
 
@@ -100,10 +98,10 @@ public enum Panels {
     }
 
     public IPanelHandler getFrom(Panels fromPanel, SyncHypervisor hypervisor) {
-        return getFrom(hypervisor.getMainModule(), fromPanel, hypervisor);
+        return getFrom(hypervisor.getMainModule(), -1, fromPanel, hypervisor);
     }
 
-    public IPanelHandler getFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor) {
+    public IPanelHandler getFrom(Modules<?> fromModule, int moduleIndex, Panels fromPanel, SyncHypervisor hypervisor) {
         if (this == hypervisor.getMainPanel()) {
             throw new IllegalStateException("Cannot get panel handler of main panel!");
         }
@@ -112,14 +110,14 @@ public enum Panels {
             throw new IllegalStateException("Cannot call on module subpanel, call getModuleSubpanel instead!");
         }
 
-        PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
+        PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, moduleIndex, fromPanel);
 
-        return syncManager.syncedPanel(getPanelId(fromModule, -1), true, (p_syncManager, syncHandler) -> {
-            ModularPanel panel = createPanel(fromModule, hypervisor, -1);
-            hypervisor.setModularPanel(fromModule, this, panel);
-            hypervisor.setSyncManager(fromModule, this, p_syncManager);
+        return syncManager.syncedPanel(getPanelId(fromModule, moduleIndex), true, (p_syncManager, panelHandler) -> {
+            ModularPanel panel = createPanel(fromModule, hypervisor, moduleIndex);
+            hypervisor.setModularPanel(fromModule, moduleIndex, this, panel);
+            hypervisor.setSyncManager(fromModule, moduleIndex, this, p_syncManager);
 
-            return panelSupplier.apply(hypervisor, fromModule);
+            return panelSupplier.apply(hypervisor, fromModule, moduleIndex);
         });
     }
 
@@ -128,14 +126,15 @@ public enum Panels {
      * Prevents things like allowing multiple info panels being open for panels shared between modules and
      * the main godforge multiblock.
      */
-    public IPanelHandler getGlobalFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor,
-        boolean isSubpanel) {
+    public IPanelHandler getGlobalFrom(Modules<?> fromModule, int moduleIndex, Panels fromPanel,
+        SyncHypervisor hypervisor, boolean isSubpanel) {
         if (isSubpanel && fromModule != Modules.CORE) {
             // Open it from main panel instead
             fromModule = Modules.CORE;
             fromPanel = Panels.MAIN;
+            moduleIndex = -1;
         }
-        return getFrom(fromModule, fromPanel, hypervisor);
+        return getFrom(fromModule, moduleIndex, fromPanel, hypervisor);
     }
 
     public IPanelHandler getModuleSubpanel(Supplier<MTEBaseModule> module, int moduleIndex, SyncHypervisor hypervisor) {
@@ -145,19 +144,17 @@ public enum Panels {
 
         Modules<?> fromModule = hypervisor.getMainModule();
         Panels fromPanel = hypervisor.getMainPanel();
-        PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
+        PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, -1, fromPanel);
 
-        return syncManager.syncedPanel(getPanelId(fromModule, moduleIndex), true, (p_syncManager, syncHandler) -> {
+        return syncManager.syncedPanel(getPanelId(fromModule, moduleIndex), true, (p_syncManager, panelHandler) -> {
             MTEBaseModule multiblock = module.get();
             Modules<?> openingModule = Modules.getModule(multiblock);
 
             ModularPanel panel = createPanel(openingModule, hypervisor, moduleIndex);
-            hypervisor.setModularPanel(openingModule, this, panel);
-            hypervisor.setSyncManager(openingModule, this, p_syncManager);
-            hypervisor.setOpenModuleId(openingModule, moduleIndex);
-            panel.onCloseAction(() -> hypervisor.clearOpenModuleId(openingModule));
+            hypervisor.setModularPanel(openingModule, moduleIndex, this, panel);
+            hypervisor.setSyncManager(openingModule, moduleIndex, this, p_syncManager);
 
-            MTEBaseModuleGui<?> gui = Modules.createSubpanelGui(multiblock, hypervisor);
+            MTEBaseModuleGui<?> gui = Modules.createSubpanelGui(multiblock, moduleIndex, hypervisor);
             return gui.openSubpanel();
         });
     }
@@ -167,7 +164,7 @@ public enum Panels {
 
             @Override
             public void dispose() {
-                hypervisor.onPanelDispose(fromModule, Panels.this);
+                hypervisor.onPanelDispose(fromModule, moduleIndex, Panels.this);
                 super.dispose();
             }
         };

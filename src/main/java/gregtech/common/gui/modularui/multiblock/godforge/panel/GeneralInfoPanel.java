@@ -29,10 +29,10 @@ public class GeneralInfoPanel {
     private static final int SIZE = 300;
     private static final int OFFSET_SIZE = 280;
 
-    public static ModularPanel openModulePanel(SyncHypervisor hypervisor, Modules<?> module) {
-        ModularPanel panel = hypervisor.getModularPanel(module, Panels.GENERAL_INFO);
+    public static ModularPanel openModulePanel(SyncHypervisor hypervisor, Modules<?> module, int moduleIndex) {
+        ModularPanel panel = hypervisor.getModularPanel(module, moduleIndex, Panels.GENERAL_INFO);
 
-        registerSyncValues(module, hypervisor);
+        registerSyncValues(module, moduleIndex, hypervisor);
 
         panel.size(SIZE)
             .padding(10, 0, 10, 0)
@@ -40,7 +40,8 @@ public class GeneralInfoPanel {
             .disableHoverBackground()
             .child(ForgeOfGodsGuiUtil.panelCloseButton());
 
-        BooleanSyncValue inversionSyncer = SyncValues.INVERSION.lookupFrom(module, Panels.GENERAL_INFO, hypervisor);
+        BooleanSyncValue inversionSyncer = SyncValues.INVERSION
+            .lookupFrom(module, moduleIndex, Panels.GENERAL_INFO, hypervisor);
 
         DynamicSyncHandler handler = new DynamicSyncHandler().widgetProvider(($, $$) -> {
             ListWidget<IWidget, ?> textList = new ListWidget<>().size(OFFSET_SIZE);
@@ -107,8 +108,8 @@ public class GeneralInfoPanel {
         return panel;
     }
 
-    private static void registerSyncValues(Modules<?> module, SyncHypervisor hypervisor) {
-        SyncValues.INVERSION.registerFor(module, Panels.GENERAL_INFO, hypervisor);
+    private static void registerSyncValues(Modules<?> module, int moduleIndex, SyncHypervisor hypervisor) {
+        SyncValues.INVERSION.registerFor(module, moduleIndex, Panels.GENERAL_INFO, hypervisor);
     }
 
     private static TextWidget<?> createHeader(String langKey) {

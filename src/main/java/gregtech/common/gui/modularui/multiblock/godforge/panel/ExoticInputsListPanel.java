@@ -30,13 +30,13 @@ public class ExoticInputsListPanel {
     private static final int SIZE_W = 100;
     private static final int SIZE_H = 60;
 
-    public static ModularPanel openPanel(SyncHypervisor hypervisor) {
-        ModularPanel panel = hypervisor.getModularPanel(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST);
+    public static ModularPanel openPanel(SyncHypervisor hypervisor, Modules<?> module, int moduleIndex) {
+        ModularPanel panel = hypervisor.getModularPanel(Modules.EXOTIC, moduleIndex, Panels.EXOTIC_INPUTS_LIST);
 
-        registerSyncValues(hypervisor);
+        registerSyncValues(hypervisor, moduleIndex);
 
         panel.size(SIZE_W, SIZE_H)
-            .relative(hypervisor.getModularPanel(Modules.EXOTIC, Panels.MAIN_EXOTIC))
+            .relative(hypervisor.getModularPanel(Modules.EXOTIC, moduleIndex, Panels.MAIN_EXOTIC))
             .leftRelOffset(0, -SIZE_W)
             .topRelOffset(0, 47);
 
@@ -56,21 +56,25 @@ public class ExoticInputsListPanel {
         // Create fluid slots
 
         // Panel rows
-        column.child(createFirstRow(hypervisor).marginTop(3));
-        column.child(createSecondRow(hypervisor));
+        column.child(createFirstRow(hypervisor, moduleIndex).marginTop(3));
+        column.child(createSecondRow(hypervisor, moduleIndex));
         panel.child(column);
 
         return panel;
     }
 
-    private static void registerSyncValues(SyncHypervisor hypervisor) {
-        SyncValues.EXOTIC_INPUTS_TICKER.registerFor(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor);
+    private static void registerSyncValues(SyncHypervisor hypervisor, int idx) {
+        SyncValues.EXOTIC_INPUTS_TICKER.registerFor(Modules.EXOTIC, idx, Panels.EXOTIC_INPUTS_LIST, hypervisor);
 
-        SyncActions.REFRESH_EXOTIC_RECIPE
-            .registerFor(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor, hypervisor.getModule(Modules.EXOTIC));
+        SyncActions.REFRESH_EXOTIC_RECIPE.registerFor(
+            Modules.EXOTIC,
+            idx,
+            Panels.EXOTIC_INPUTS_LIST,
+            hypervisor,
+            hypervisor.getModule(Modules.EXOTIC, idx));
     }
 
-    private static Flow createFirstRow(SyncHypervisor hypervisor) {
+    private static Flow createFirstRow(SyncHypervisor hypervisor, int moduleIndex) {
         Flow row = Flow.row()
             .size(72, 18);
 
@@ -81,7 +85,7 @@ public class ExoticInputsListPanel {
                 .key(
                     'S',
                     index -> new FluidSlot().syncHandler(
-                        new FluidSlotSyncHandler(hypervisor.getModule(Modules.EXOTIC).fluidTanks[index])
+                        new FluidSlotSyncHandler(hypervisor.getModule(Modules.EXOTIC, moduleIndex).fluidTanks[index])
                             .canFillSlot(false)
                             .canDrainSlot(false)))
                 .build());
@@ -89,11 +93,11 @@ public class ExoticInputsListPanel {
         return row;
     }
 
-    private static Flow createSecondRow(SyncHypervisor hypervisor) {
+    private static Flow createSecondRow(SyncHypervisor hypervisor, int moduleIndex) {
         IPanelHandler possibleInputsPanel = Panels.EXOTIC_POSSIBLE_INPUTS_LIST
-            .getFrom(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor);
+            .getFrom(Modules.EXOTIC, moduleIndex, Panels.EXOTIC_INPUTS_LIST, hypervisor);
         LongSyncValue tickerSyncer = SyncValues.EXOTIC_INPUTS_TICKER
-            .lookupFrom(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor);
+            .lookupFrom(Modules.EXOTIC, moduleIndex, Panels.EXOTIC_INPUTS_LIST, hypervisor);
 
         Flow row = Flow.row()
             .size(92, 18);
@@ -107,7 +111,7 @@ public class ExoticInputsListPanel {
                 .onMousePressed(d -> {
                     if (tickerSyncer.getLongValue() > RECIPE_REFRESH_LIMIT) {
                         SyncActions.REFRESH_EXOTIC_RECIPE
-                            .callFrom(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor, null);
+                            .callFrom(Modules.EXOTIC, moduleIndex, Panels.EXOTIC_INPUTS_LIST, hypervisor, null);
                     }
                     return true;
                 })
@@ -133,9 +137,9 @@ public class ExoticInputsListPanel {
                 .key(
                     'S',
                     index -> new FluidSlot().syncHandler(
-                        new FluidSlotSyncHandler(hypervisor.getModule(Modules.EXOTIC).fluidTanks[index + 4])
-                            .canFillSlot(false)
-                            .canDrainSlot(false)))
+                        new FluidSlotSyncHandler(
+                            hypervisor.getModule(Modules.EXOTIC, moduleIndex).fluidTanks[index + 4]).canFillSlot(false)
+                                .canDrainSlot(false)))
                 .build());
 
         // All possible inputs panel button

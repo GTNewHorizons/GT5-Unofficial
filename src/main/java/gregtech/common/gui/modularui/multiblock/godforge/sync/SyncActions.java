@@ -106,12 +106,12 @@ public final class SyncActions<T, U> {
 
     /** Registers for the panel with whatever data is required on the server to run the action. */
     public void registerFor(Panels forPanel, SyncHypervisor hypervisor, U data) {
-        registerFor(hypervisor.getMainModule(), forPanel, hypervisor, data);
+        registerFor(hypervisor.getMainModule(), -1, forPanel, hypervisor, data);
     }
 
     /** Registers for the panel with whatever data is required on the server to run the action. */
-    public void registerFor(Modules<?> forModule, Panels forPanel, SyncHypervisor hypervisor, U data) {
-        PanelSyncManager syncManager = hypervisor.getSyncManager(forModule, forPanel);
+    public void registerFor(Modules<?> forModule, int moduleIndex, Panels forPanel, SyncHypervisor hypervisor, U data) {
+        PanelSyncManager syncManager = hypervisor.getSyncManager(forModule, moduleIndex, forPanel);
         syncManager.registerSyncedAction(syncId, buf -> {
             switch (executeSide) {
                 case SERVER -> {
@@ -130,11 +130,11 @@ public final class SyncActions<T, U> {
     }
 
     public void callFrom(Panels fromPanel, SyncHypervisor hypervisor, T data) {
-        callFrom(hypervisor.getMainModule(), fromPanel, hypervisor, data);
+        callFrom(hypervisor.getMainModule(), -1, fromPanel, hypervisor, data);
     }
 
-    public void callFrom(Modules<?> fromModule, Panels fromPanel, SyncHypervisor hypervisor, T data) {
-        PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, fromPanel);
+    public void callFrom(Modules<?> fromModule, int moduleIndex, Panels fromPanel, SyncHypervisor hypervisor, T data) {
+        PanelSyncManager syncManager = hypervisor.getSyncManager(fromModule, moduleIndex, fromPanel);
         syncManager.callSyncedAction(syncId, buf -> writer.accept(buf, data));
     }
 

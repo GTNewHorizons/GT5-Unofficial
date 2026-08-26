@@ -10,8 +10,8 @@ public class MTEMoltenModuleGui extends MTEBaseModuleGui<MTEMoltenModule> {
         super(multiblock);
     }
 
-    public MTEMoltenModuleGui(MTEMoltenModule multiblock, SyncHypervisor hypervisor) {
-        super(multiblock, hypervisor);
+    public MTEMoltenModuleGui(MTEMoltenModule multiblock, int moduleIndex, SyncHypervisor hypervisor) {
+        super(multiblock, moduleIndex, hypervisor);
     }
 
     @Override

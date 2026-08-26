@@ -31,8 +31,8 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
         super(multiblock);
     }
 
-    public MTEExoticModuleGui(MTEExoticModule multiblock, SyncHypervisor hypervisor) {
-        super(multiblock, hypervisor);
+    public MTEExoticModuleGui(MTEExoticModule multiblock, int moduleIndex, SyncHypervisor hypervisor) {
+        super(multiblock, moduleIndex, hypervisor);
     }
 
     @Override
@@ -44,8 +44,8 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        SyncValues.MAGMATTER_CAPABLE.registerFor(getModuleType(), getMainPanel(), hypervisor);
-        SyncValues.MAGMATTER_MODE.registerFor(getModuleType(), getMainPanel(), hypervisor);
+        SyncValues.MAGMATTER_CAPABLE.registerFor(getModuleType(), moduleIndex, getMainPanel(), hypervisor);
+        SyncValues.MAGMATTER_MODE.registerFor(getModuleType(), moduleIndex, getMainPanel(), hypervisor);
     }
 
     @Override
@@ -56,9 +56,9 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
     @Override
     protected Widget<?> createExtraButton() {
         BooleanSyncValue magmatterCapable = SyncValues.MAGMATTER_CAPABLE
-            .lookupFrom(getModuleType(), getMainPanel(), hypervisor);
+            .lookupFrom(getModuleType(), moduleIndex, getMainPanel(), hypervisor);
         BooleanSyncValue magmatterMode = SyncValues.MAGMATTER_MODE
-            .lookupFrom(getModuleType(), getMainPanel(), hypervisor);
+            .lookupFrom(getModuleType(), moduleIndex, getMainPanel(), hypervisor);
 
         return new ButtonWidget<>().size(16)
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
@@ -98,7 +98,7 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
     @Override
     protected IWidget createTerminalLeftButton() {
         IPanelHandler expectedInputsPanel = Panels.EXOTIC_INPUTS_LIST
-            .getFrom(getModuleType(), getMainPanel(), hypervisor);
+            .getFrom(getModuleType(), moduleIndex, getMainPanel(), hypervisor);
         return new ButtonWidget<>().size(16)
             .overlay(GTGuiTextures.PICTURE_INFO)
             .disableThemeBackground(true)
