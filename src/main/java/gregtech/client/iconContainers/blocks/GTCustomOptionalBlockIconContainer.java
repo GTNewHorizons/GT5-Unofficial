@@ -38,6 +38,8 @@ public class GTCustomOptionalBlockIconContainer extends GTCustomBlockIconContain
         // This makes the block _OVERLAY icon totally optional
         if (ResourceUtils.resourceExists(overlayResource)) {
             mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
+        } else {
+            mOverlay = null;
         }
     }
 }

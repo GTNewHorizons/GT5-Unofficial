@@ -85,12 +85,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         final IIcon icon = getIcon(ForgeDirection.EAST, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.EAST, mRGBa);
-            renderFaceXPos(ctx, mIconContainer.getIcon(), rotation);
+            renderFaceXPos(ctx, mIconContainer.getIcon(), rotation, false);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.EAST, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.EAST, 0xffffff);
-            renderFaceXPos(ctx, overlayIcon, rotation);
+            renderFaceXPos(ctx, overlayIcon, rotation, true);
         }
         renderBlocks.enableAO = enableAO;
         endDrawingQuads(renderBlocks, startedDrawing);
@@ -121,12 +121,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         final IIcon icon = getIcon(ForgeDirection.WEST, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.WEST, mRGBa);
-            renderFaceXNeg(ctx, mIconContainer.getIcon(), rotation);
+            renderFaceXNeg(ctx, mIconContainer.getIcon(), rotation, false);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.WEST, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.WEST, 0xffffff);
-            renderFaceXNeg(ctx, overlayIcon, rotation);
+            renderFaceXNeg(ctx, overlayIcon, rotation, true);
         }
         renderBlocks.enableAO = enableAO;
         endDrawingQuads(renderBlocks, startedDrawing);
@@ -157,12 +157,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         final IIcon icon = getIcon(ForgeDirection.UP, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.UP, mRGBa);
-            renderFaceYPos(ctx, mIconContainer.getIcon(), rotation);
+            renderFaceYPos(ctx, mIconContainer.getIcon(), rotation, false);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.UP, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.UP, 0xffffff);
-            renderFaceYPos(ctx, overlayIcon, rotation);
+            renderFaceYPos(ctx, overlayIcon, rotation, true);
         }
         renderBlocks.enableAO = enableAO;
         endDrawingQuads(renderBlocks, startedDrawing);
@@ -193,12 +193,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         final IIcon icon = getIcon(ForgeDirection.DOWN, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.DOWN, mRGBa);
-            renderFaceYNeg(ctx, mIconContainer.getIcon(), rotation);
+            renderFaceYNeg(ctx, mIconContainer.getIcon(), rotation, false);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.DOWN, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.DOWN, 0xffffff);
-            renderFaceYNeg(ctx, overlayIcon, rotation);
+            renderFaceYNeg(ctx, overlayIcon, rotation, true);
         }
         renderBlocks.enableAO = enableAO;
         endDrawingQuads(renderBlocks, startedDrawing);
@@ -229,12 +229,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         final IIcon icon = getIcon(ForgeDirection.SOUTH, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.SOUTH, mRGBa);
-            renderFaceZPos(ctx, mIconContainer.getIcon(), rotation);
+            renderFaceZPos(ctx, mIconContainer.getIcon(), rotation, false);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.SOUTH, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.SOUTH, 0xffffff);
-            renderFaceZPos(ctx, overlayIcon, rotation);
+            renderFaceZPos(ctx, overlayIcon, rotation, true);
         }
         renderBlocks.enableAO = enableAO;
         endDrawingQuads(renderBlocks, startedDrawing);
@@ -265,12 +265,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         final IIcon icon = getIcon(ForgeDirection.NORTH, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.NORTH, mRGBa);
-            renderFaceZNeg(ctx, mIconContainer.getIcon(), rotation);
+            renderFaceZNeg(ctx, mIconContainer.getIcon(), rotation, false);
         }
         final IIcon overlayIcon = getIcon(ForgeDirection.NORTH, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.NORTH, 0xffffff);
-            renderFaceZNeg(ctx, overlayIcon, rotation);
+            renderFaceZNeg(ctx, overlayIcon, rotation, true);
         }
         renderBlocks.enableAO = enableAO;
         endDrawingQuads(renderBlocks, startedDrawing);
@@ -296,10 +296,10 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     /**
      * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceYNeg(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    private void renderFaceYNeg(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing, boolean isOverlay) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.uvRotateBottom = getRotation(extendedFacing);
-        icon = getFlipped(ctx, ForgeDirection.DOWN, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.DOWN, extendedFacing, icon, isOverlay);
 
         renderBlocks.renderFaceYNeg(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -309,11 +309,11 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     /**
      * Renders the given texture to the top face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceYPos(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    private void renderFaceYPos(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing, boolean isOverlay) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateTop = getRotation(extendedFacing);
-        icon = getFlipped(ctx, ForgeDirection.UP, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.UP, extendedFacing, icon, isOverlay);
 
         renderBlocks.renderFaceYPos(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -323,12 +323,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     /**
      * Renders the given texture to the north (z-negative) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceZNeg(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    private void renderFaceZNeg(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing, boolean isOverlay) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateEast = getRotation(extendedFacing);
         renderBlocks.field_152631_f = true;
-        icon = getFlipped(ctx, ForgeDirection.NORTH, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.NORTH, extendedFacing, icon, isOverlay);
 
         renderBlocks.renderFaceZNeg(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -339,11 +339,11 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     /**
      * Renders the given texture to the south (z-positive) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceZPos(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    private void renderFaceZPos(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing, boolean isOverlay) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateWest = getRotation(extendedFacing);
-        icon = getFlipped(ctx, ForgeDirection.SOUTH, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.SOUTH, extendedFacing, icon, isOverlay);
 
         renderBlocks.renderFaceZPos(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -353,11 +353,11 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     /**
      * Renders the given texture to the west (x-negative) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceXNeg(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    private void renderFaceXNeg(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing, boolean isOverlay) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateNorth = getRotation(extendedFacing);
-        icon = getFlipped(ctx, ForgeDirection.WEST, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.WEST, extendedFacing, icon, isOverlay);
 
         renderBlocks.renderFaceXNeg(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -367,12 +367,12 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     /**
      * Renders the given texture to the east (x-positive) face of the block. Args: block, x, y, z, texture
      */
-    protected void renderFaceXPos(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing) {
+    private void renderFaceXPos(ISBRContext ctx, IIcon icon, ExtendedFacing extendedFacing, boolean isOverlay) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
 
         renderBlocks.uvRotateSouth = getRotation(extendedFacing);
         renderBlocks.field_152631_f = true;
-        icon = getFlipped(ctx, ForgeDirection.EAST, extendedFacing, icon);
+        icon = getFlipped(ctx, ForgeDirection.EAST, extendedFacing, icon, isOverlay);
 
         renderBlocks.renderFaceXPos(Blocks.air, ctx.getX(), ctx.getY(), ctx.getZ(), icon);
 
@@ -397,7 +397,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         };
     }
 
-    private IIcon getFlipped(ISBRContext ctx, ForgeDirection side, ExtendedFacing extendedFacing, IIcon icon) {
+    private IIcon getFlipped(ISBRContext ctx, ForgeDirection side, ExtendedFacing extendedFacing, IIcon icon,
+        boolean isOverlay) {
 
         boolean flipU = false, flipV = false;
 
@@ -411,7 +412,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
                 flipV = true;
             }
 
-            return getFlipped(ctx, icon, flipU, flipV);
+            return getFlipped(ctx, icon, flipU, flipV, isOverlay);
         }
 
         // certain directions need to be flipped horizontally seemingly randomly
@@ -435,28 +436,26 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             flipU ^= true;
         }
 
-        return getFlipped(ctx, icon, flipU, flipV);
+        return getFlipped(ctx, icon, flipU, flipV, isOverlay);
     }
 
-    private IIcon getFlipped(ISBRContext ctx, IIcon icon, boolean flipU, boolean flipV) {
+    private IIcon getFlipped(ISBRContext ctx, IIcon icon, boolean flipU, boolean flipV, boolean isOverlay) {
         if (!flipU && !flipV) return icon;
         if (!(ctx instanceof ISBRInventoryContext)) return new GTIconFlipped(icon, flipU, flipV);
 
-        return getInventoryFlipped(icon, flipU, flipV);
+        return getInventoryFlipped(isOverlay, flipU, flipV);
     }
 
-    IIcon getInventoryFlipped(IIcon icon, boolean flipU, boolean flipV) {
-        if (!flipU && !flipV) return icon;
+    private IIcon getInventoryFlipped(boolean isOverlay, boolean flipU, boolean flipV) {
+        if (!flipU && !flipV) {
+            if (isOverlay) return mIconContainer.getOverlayIcon();
+            return mIconContainer.getIcon();
+        }
 
-        final boolean overlay;
-        if (icon == mIconContainer.getIcon()) overlay = false;
-        else if (icon == mIconContainer.getOverlayIcon()) overlay = true;
-        else return new GTIconFlipped(icon, flipU, flipV);
-
-        FlippedIconCache cache = overlay ? inventoryOverlayFlipCache : inventoryBaseFlipCache;
+        FlippedIconCache cache = isOverlay ? inventoryOverlayFlipCache : inventoryBaseFlipCache;
         if (cache == null) {
-            cache = new FlippedIconCache(mIconContainer, overlay);
-            if (overlay) inventoryOverlayFlipCache = cache;
+            cache = new FlippedIconCache(mIconContainer, isOverlay);
+            if (isOverlay) inventoryOverlayFlipCache = cache;
             else inventoryBaseFlipCache = cache;
         }
         return cache.get(flipU, flipV);
