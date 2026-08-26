@@ -101,6 +101,7 @@ import gregtech.common.render.shader.Uniform;
 import gregtech.common.render.shader.VertexAttribute;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
+import io.netty.buffer.ByteBuf;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
@@ -1017,26 +1018,25 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
      * Sends on world load, on module set, on screwdriver right click, and on structure check
      */
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("multiTier", foundryData.tier);
-        tag.setInteger("module1OR", foundryData.modules[0].ordinal());
-        tag.setInteger("module2OR", foundryData.modules[1].ordinal());
-        tag.setInteger("module3OR", foundryData.modules[2].ordinal());
-        tag.setInteger("module4OR", foundryData.modules[3].ordinal());
-        tag.setBoolean("shouldRender", shouldRender);
-        return tag;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(foundryData.tier);
+        buffer.writeInt(foundryData.modules[0].ordinal());
+        buffer.writeInt(foundryData.modules[1].ordinal());
+        buffer.writeInt(foundryData.modules[2].ordinal());
+        buffer.writeInt(foundryData.modules[3].ordinal());
+        buffer.writeBoolean(shouldRender);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        foundryData.tier = data.getInteger("multiTier");
-        foundryData.modules[0] = FoundryModule.values()[data.getInteger("module1OR")];
-        foundryData.modules[1] = FoundryModule.values()[data.getInteger("module2OR")];
-        foundryData.modules[2] = FoundryModule.values()[data.getInteger("module3OR")];
-        foundryData.modules[3] = FoundryModule.values()[data.getInteger("module4OR")];
-        shouldRender = data.getBoolean("shouldRender");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        foundryData.tier = buffer.readInt();
+        foundryData.modules[0] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[1] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[2] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[3] = FoundryModule.values()[buffer.readInt()];
+        shouldRender = buffer.readBoolean();
     }
 
     // data class
