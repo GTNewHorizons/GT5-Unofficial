@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -47,9 +48,11 @@ import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
+import cpw.mods.fml.common.Optional;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
 import fox.spiteful.avaritia.items.ItemStackWrapper;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -70,15 +73,20 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
 
     private int lastTrueCount;
+    private ItemStack lastMatterClusterOutput;
 
-    private static final class MatterClusterContents {
+    private static final class MatterClusterEntry {
 
         private final ItemStack item;
-        private final int itemsPerCluster;
+        private final int itemCount;
+        private final int totalItemCount;
+        private final int entryCount;
 
-        private MatterClusterContents(ItemStack item, int itemsPerCluster) {
+        private MatterClusterEntry(ItemStack item, int itemCount, int totalItemCount, int entryCount) {
             this.item = item;
-            this.itemsPerCluster = itemsPerCluster;
+            this.itemCount = itemCount;
+            this.totalItemCount = totalItemCount;
+            this.entryCount = entryCount;
         }
     }
 
@@ -230,44 +238,168 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     private static boolean isMatterCluster(ItemStack stack) {
+        return Mods.Avaritia.isModLoaded() && isMatterClusterLoaded(stack);
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.AVARITIA)
+    private static boolean isMatterClusterLoaded(ItemStack stack) {
         return stack != null && stack.getItem() instanceof ItemMatterCluster;
     }
 
     private long insertMatterClusters(ItemStack cluster, long clusterCount, boolean simulate, boolean forced) {
         if (clusterCount <= 0) return 0;
 
-        MatterClusterContents contents = getMatterClusterContents(cluster);
-        if (contents == null) return clusterCount;
-
-        ItemStack currentItem = getItemCount() > 0 ? getItemStack() : null;
-        if (currentItem != null && !GTUtility.areStacksEqual(currentItem, contents.item)) return clusterCount;
-
+        ItemStack currentItem = getMatterClusterTargetItem();
+        MatterClusterEntry entry = getMatterClusterEntry(cluster, currentItem);
         long storageLimit = forced ? Integer.MAX_VALUE : getItemCapacity();
-        long availableSpace = Math.max(0, storageLimit - getItemCount());
-        long clustersToConsume = mVoidOverflow ? clusterCount
-            : Math.min(clusterCount, availableSpace / contents.itemsPerCluster);
-        if (clustersToConsume <= 0) return clusterCount;
+        if (entry == null) return passMatterClusterThrough(cluster, clusterCount, currentItem, storageLimit, simulate);
 
-        long itemsToStore = Math.min(availableSpace, saturatedMultiply(clustersToConsume, contents.itemsPerCluster));
-        if (!simulate && itemsToStore > 0) storeMatterClusterContents(currentItem, contents.item, itemsToStore);
-        return clusterCount - clustersToConsume;
+        long storedCount = getItemCount();
+        if (GTUtility.areStacksEqual(mInventory[1], entry.item)) storedCount += mInventory[1].stackSize;
+        long availableSpace = Math.max(0, storageLimit - storedCount);
+
+        long wholeClusters = getWholeClustersToConsume(entry, clusterCount, availableSpace);
+        if (wholeClusters > 0) {
+            long itemsToStore = Math.min(availableSpace, saturatedMultiply(wholeClusters, entry.itemCount));
+            if (!simulate && itemsToStore > 0) storeMatterClusterContents(currentItem, entry.item, itemsToStore);
+            if (!simulate) getBaseMetaTileEntity().markDirty();
+            clusterCount -= wholeClusters;
+            availableSpace -= itemsToStore;
+            if (clusterCount <= 0 || mVoidOverflow) return clusterCount;
+        }
+
+        return insertPartialMatterCluster(
+            cluster,
+            clusterCount,
+            currentItem,
+            entry,
+            availableSpace,
+            storageLimit,
+            simulate);
     }
 
-    private static @Nullable MatterClusterContents getMatterClusterContents(ItemStack cluster) {
-        Map<ItemStackWrapper, Integer> contents = ItemMatterCluster.getClusterData(cluster);
-        if (contents.size() != 1) return null;
+    private long passMatterClusterThrough(ItemStack cluster, long clusterCount, @Nullable ItemStack currentItem,
+        long storageLimit, boolean simulate) {
+        if (currentItem == null || !canReplaceOutputWithMatterCluster(currentItem, storageLimit)) return clusterCount;
+        if (simulate) return clusterCount - 1;
 
-        Map.Entry<ItemStackWrapper, Integer> content = contents.entrySet()
-            .iterator()
-            .next();
-        ItemStack storedItem = content.getKey().stack;
-        int itemsPerCluster = content.getValue();
-        if (storedItem == null || storedItem.getItem() == null
-            || itemsPerCluster <= 0
-            || ItemMatterCluster.getClusterSize(cluster) != itemsPerCluster) {
-            return null;
+        reclaimOutput(currentItem);
+        mInventory[1] = cluster.copy();
+        mInventory[1].stackSize = 1;
+        notifyMatterClusterOutputChange();
+        getBaseMetaTileEntity().markDirty();
+        return clusterCount - 1;
+    }
+
+    private long getWholeClustersToConsume(MatterClusterEntry entry, long clusterCount, long availableSpace) {
+        if (entry.entryCount != 1) return 0;
+        if (mVoidOverflow) return clusterCount;
+        return Math.min(clusterCount, availableSpace / entry.itemCount);
+    }
+
+    private long insertPartialMatterCluster(ItemStack cluster, long clusterCount, @Nullable ItemStack currentItem,
+        MatterClusterEntry entry, long availableSpace, long storageLimit, boolean simulate) {
+        int itemsToConsume = mVoidOverflow ? entry.itemCount : (int) Math.min(entry.itemCount, availableSpace);
+        if (itemsToConsume <= 0) return clusterCount;
+
+        int remainderCount = entry.totalItemCount - itemsToConsume;
+        boolean needsOutput = remainderCount > 0;
+        if (needsOutput && !canReplaceOutputWithMatterCluster(entry.item, storageLimit)) return clusterCount;
+
+        if (simulate) return clusterCount - 1;
+
+        int itemsToStore = (int) Math.min(availableSpace, itemsToConsume);
+        if (itemsToStore > 0) storeMatterClusterContents(currentItem, entry.item, itemsToStore);
+
+        if (needsOutput) {
+            reclaimOutput(currentItem);
+            ItemStack remainder = cluster.copy();
+            remainder.stackSize = 1;
+            removeMatterClusterItems(remainder, entry.item, itemsToConsume, remainderCount);
+            mInventory[1] = remainder;
         }
-        return new MatterClusterContents(storedItem, itemsPerCluster);
+
+        notifyMatterClusterOutputChange();
+        getBaseMetaTileEntity().markDirty();
+        return clusterCount - 1;
+    }
+
+    private boolean canReplaceOutputWithMatterCluster(ItemStack storedItem, long storageLimit) {
+        if (mInventory[1] == null) return true;
+        return GTUtility.areStacksEqual(mInventory[1], storedItem)
+            && (long) getItemCount() + mInventory[1].stackSize <= storageLimit;
+    }
+
+    private void reclaimOutput(@Nullable ItemStack currentItem) {
+        if (mInventory[1] == null) return;
+        storeMatterClusterContents(currentItem, mInventory[1], mInventory[1].stackSize);
+        mInventory[1] = null;
+    }
+
+    private @Nullable ItemStack getMatterClusterTargetItem() {
+        if (getItemCount() > 0 && getItemStack() != null) return getItemStack();
+        if (mInventory[1] != null && !isMatterCluster(mInventory[1])) return mInventory[1];
+        return null;
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.AVARITIA)
+    private static @Nullable MatterClusterEntry getMatterClusterEntry(ItemStack cluster,
+        @Nullable ItemStack targetItem) {
+        Map<ItemStackWrapper, Integer> contents = ItemMatterCluster.getClusterData(cluster);
+        if (contents.isEmpty()) return null;
+
+        Map.Entry<ItemStackWrapper, Integer> selected = null;
+        long totalItemCount = 0;
+        for (Map.Entry<ItemStackWrapper, Integer> content : contents.entrySet()) {
+            ItemStack item = content.getKey().stack;
+            int itemCount = content.getValue();
+            if (item == null || item.getItem() == null || itemCount <= 0) return null;
+
+            totalItemCount += itemCount;
+            if (totalItemCount > Integer.MAX_VALUE) return null;
+
+            if (shouldSelectMatterClusterEntry(content, selected, targetItem)) selected = content;
+        }
+
+        if (selected == null || ItemMatterCluster.getClusterSize(cluster) != totalItemCount) return null;
+        return new MatterClusterEntry(
+            selected.getKey().stack,
+            selected.getValue(),
+            (int) totalItemCount,
+            contents.size());
+    }
+
+    private static boolean shouldSelectMatterClusterEntry(Map.Entry<ItemStackWrapper, Integer> candidate,
+        @Nullable Map.Entry<ItemStackWrapper, Integer> selected, @Nullable ItemStack targetItem) {
+        if (targetItem != null) return GTUtility.areStacksEqual(targetItem, candidate.getKey().stack);
+        return selected == null || candidate.getValue() > selected.getValue();
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.AVARITIA)
+    private static void removeMatterClusterItems(ItemStack cluster, ItemStack item, int amount, int remainderCount) {
+        Map<ItemStackWrapper, Integer> contents = ItemMatterCluster.getClusterData(cluster);
+        for (Iterator<Map.Entry<ItemStackWrapper, Integer>> iterator = contents.entrySet()
+            .iterator(); iterator.hasNext();) {
+            Map.Entry<ItemStackWrapper, Integer> content = iterator.next();
+            if (!GTUtility.areStacksEqual(content.getKey().stack, item)) continue;
+
+            int remaining = content.getValue() - amount;
+            if (remaining > 0) content.setValue(remaining);
+            else iterator.remove();
+            break;
+        }
+        ItemMatterCluster.setClusterData(cluster, contents, remainderCount);
+    }
+
+    private void notifyMatterClusterOutputChange() {
+        ItemStack currentOutput = isMatterCluster(mInventory[1]) ? mInventory[1] : null;
+        if (lastMatterClusterOutput != null && !GTUtility.areStacksEqual(lastMatterClusterOutput, currentOutput)) {
+            meInventoryHandler.notifyListeners(-lastMatterClusterOutput.stackSize, lastMatterClusterOutput);
+        }
+        if (currentOutput != null && !GTUtility.areStacksEqual(currentOutput, lastMatterClusterOutput)) {
+            meInventoryHandler.notifyListeners(currentOutput.stackSize, currentOutput);
+        }
+        lastMatterClusterOutput = GTUtility.copyOrNull(currentOutput);
     }
 
     private static long saturatedMultiply(long left, int right) {
@@ -348,7 +480,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             if (mInventory[1] != null) {
                 if (GTUtility.areStacksEqual(mInventory[1], stack)) {
                     extraCount = mInventory[1].stackSize;
-                } else if (stack == null || stack.stackSize <= 0) {
+                } else if (!isMatterCluster(mInventory[1]) && (stack == null || stack.stackSize <= 0)) {
                     extraCount = mInventory[1].stackSize;
                     stack = mInventory[1];
                 }
@@ -357,6 +489,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             // notifyListeners has a null check on the stack arg
             meInventoryHandler.notifyListeners(count + extraCount - lastTrueCount, stack);
             lastTrueCount = count + extraCount;
+            notifyMatterClusterOutputChange();
             if (count != savedCount) getBaseMetaTileEntity().markDirty();
         }
     }
@@ -462,6 +595,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (GTUtility.areStacksEqual(getItemStack(), mInventory[1])) {
             lastTrueCount += mInventory[1].stackSize;
         }
+        lastMatterClusterOutput = isMatterCluster(mInventory[1]) ? GTUtility.copy(mInventory[1]) : null;
     }
 
     @Override
@@ -476,6 +610,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
         if (aIndex != 0) return false;
+        if (isMatterCluster(aStack)) return mInventory[0] == null;
         if ((mInventory[0] != null && !GTUtility.areStacksEqual(mInventory[0], aStack))) return false;
         if (mDisableFilter) return true;
         if (getItemStack() == null) return mInventory[1] == null || GTUtility.areStacksEqual(mInventory[1], aStack);
@@ -551,7 +686,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 .setPos(7, 16)
                 .setSize(71, 45))
             .widget(
-                new SlotWidget(inventoryHandler, 0).setChangeListener(this::insertInputItems)
+                new SlotWidget(inventoryHandler, 0)
+                    .setChangeListener(() -> { if (!isMatterCluster(mInventory[0])) insertInputItems(); })
                     .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
                     .setPos(79, 16))
             .widget(
