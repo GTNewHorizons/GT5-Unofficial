@@ -128,7 +128,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         return new ListWidget<>().widthRel(1)
-            .align(Alignment.TopCenter)
+            .posRel(0.5f, 0)
             .child(IKey.dynamic(() -> {
                 if (data.getInternalBattery() == 0) {
                     return translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel");

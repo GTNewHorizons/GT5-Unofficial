@@ -9,7 +9,6 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -39,10 +38,14 @@ public class ModuleRingButtons {
 
         Table<Modules<?>, Integer, IPanelHandler> panelHandlers = buildPanelHandlers(hypervisor);
 
-        parent.child(createModuleButton(hypervisor, 0, ringIndex, panelHandlers).align(Alignment.TopCenter));
-        parent.child(createModuleButton(hypervisor, 1, ringIndex, panelHandlers).align(Alignment.CenterRight));
-        parent.child(createModuleButton(hypervisor, 2, ringIndex, panelHandlers).align(Alignment.BottomCenter));
-        parent.child(createModuleButton(hypervisor, 3, ringIndex, panelHandlers).align(Alignment.CenterLeft));
+        parent.child(createModuleButton(hypervisor, 0, ringIndex, panelHandlers).posRel(0.5f, 0));
+        parent.child(
+            createModuleButton(hypervisor, 1, ringIndex, panelHandlers).posRel(1.0f, 0.5f)
+                .anchorLeft(1.0f));
+        parent.child(
+            createModuleButton(hypervisor, 2, ringIndex, panelHandlers).posRel(0.5f, 1.0f)
+                .anchorTop(1.0f));
+        parent.child(createModuleButton(hypervisor, 3, ringIndex, panelHandlers).posRel(0, 0.5f));
 
         return parent;
     }
@@ -141,6 +144,7 @@ public class ModuleRingButtons {
             })
             .tooltipAutoUpdate(true)
             .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .hoverBackground(IDrawable.EMPTY)
             .clickSound(ForgeOfGodsGuiUtil.getButtonSound());
     }
 }

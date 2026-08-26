@@ -74,18 +74,31 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
         registerSyncValues(syncManager);
 
         panel.size(217, 121)
+            .child(ForgeOfGodsGuiUtil.panelCloseButtonStandard())
             .child(
                 Flow.column()
                     .padding(4)
                     .child(
                         createTerminalRow(panel, syncManager).leftRel(0)
                             .anchorLeft(0))
-                    .child(createMuffleButton())
+                    .child(createMuffleButton().right(27))
                     .child(
                         createPanelGap(panel, syncManager).leftRel(0)
                             .anchorLeft(0)
                             .marginLeft(1)))
-            .child(createButtonColumn(panel, syncManager).mainAxisAlignment(MainAxis.START));
+            // manually build the button column since we want to do spacing differently
+            .child(
+                Flow.column()
+                    .width(18)
+                    .leftRel(1, -4, 1)
+                    .childPadding(2)
+                    .mainAxisAlignment(MainAxis.END)
+                    .reverseLayout(true)
+                    .child(createControllerSlot().marginBottom(6))
+                    .child(createPowerSwitchButton())
+                    .child(createStructureUpdateButton(syncManager))
+                    .child(createVoltageConfigButton())
+                    .childIf(usesExtraButton(), this::createExtraButton));
 
         if (NetworkUtils.isClient()) {
             panel.child(CommonWidgets.createMachineTitle(multiblock, 217));
@@ -157,6 +170,16 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     protected Flow createTerminalLeftCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createTerminalLeftCornerColumn(panel, syncManager)
             .childIf(usesTerminalLeftButton(), this::createTerminalLeftButton);
+    }
+
+    @Override
+    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+        return Flow.row()
+            .fullWidth()
+            .paddingRight(2)
+            .paddingLeft(4)
+            .height(getTextBoxToInventoryGap())
+            .child(createLeftPanelGapRow(parent, syncManager));
     }
 
     @Override
