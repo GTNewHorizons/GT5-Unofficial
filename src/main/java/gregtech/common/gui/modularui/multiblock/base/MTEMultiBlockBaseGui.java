@@ -8,7 +8,6 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -66,7 +64,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.github.bsideup.jabel.Desugar;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -80,6 +78,8 @@ import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.util.ExpectedFluidOutput;
+import gregtech.api.util.ExpectedItemOutput;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -431,9 +431,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     private IWidget createRecipeInfoWidget(PanelSyncManager syncManager) {
         IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
-        GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
+        GenericListSyncHandler<ExpectedItemOutput> itemOutputSyncer = (GenericListSyncHandler<ExpectedItemOutput>) syncManager
             .getSyncHandlerFromMapKey("itemOutput:0");
-        GenericListSyncHandler<FluidStack> fluidOutputSyncer = (GenericListSyncHandler<FluidStack>) syncManager
+        GenericListSyncHandler<ExpectedFluidOutput> fluidOutputSyncer = (GenericListSyncHandler<ExpectedFluidOutput>) syncManager
             .getSyncHandlerFromMapKey("fluidOutput:0");
 
         DynamicSyncHandler recipeHandler = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
@@ -459,18 +459,19 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private void notifyRecipeHandler(DynamicSyncHandler recipeHandler,
-        GenericListSyncHandler<ItemStack> itemOutputSyncer, GenericListSyncHandler<FluidStack> fluidOutputSyncer) {
+        GenericListSyncHandler<ExpectedItemOutput> itemOutputSyncer,
+        GenericListSyncHandler<ExpectedFluidOutput> fluidOutputSyncer) {
         recipeHandler.notifyUpdate(packet -> {
-            List<ItemStack> items = itemOutputSyncer.getValue();
+            List<ExpectedItemOutput> items = itemOutputSyncer.getValue();
             packet.writeInt(items.size());
-            for (ItemStack item : items) {
-                NetworkUtils.writeItemStack(packet, item);
+            for (ExpectedItemOutput item : items) {
+                ExpectedItemOutput.write(packet, item);
             }
 
-            List<FluidStack> fluids = fluidOutputSyncer.getValue();
+            List<ExpectedFluidOutput> fluids = fluidOutputSyncer.getValue();
             packet.writeInt(fluids.size());
-            for (FluidStack fluid : fluids) {
-                NetworkUtils.writeFluidStack(packet, fluid);
+            for (ExpectedFluidOutput fluid : fluids) {
+                ExpectedFluidOutput.write(packet, fluid);
             }
         });
     }
@@ -479,53 +480,66 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     private static final int DISPLAY_ROW_RATE_HEIGHT = 6;
     private static final int DISPLAY_ROW_HEIGHT = DISPLAY_ROW_PRODUCT_HEIGHT + DISPLAY_ROW_RATE_HEIGHT + 1;
 
+    @Desugar
+    private record ItemRowKey(ItemDisplayKey key, int chance) {}
+
+    @Desugar
+    private record FluidRowKey(FluidStack stack, int chance) {}
+
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
         Flow column = Flow.column()
             .coverChildren(0);
 
-        Map<ItemDisplayKey, Long> itemDisplayMap = new HashMap<>(size);
+        Map<ItemRowKey, Long> itemDisplayMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
-            ItemStack item = NetworkUtils.readItemStack(packet);
+            ExpectedItemOutput output = ExpectedItemOutput.read(packet);
+            ItemStack item = output.stack();
             // Some multiblocks set outputs to null
             if (item == null) {
                 continue;
             }
             itemDisplayMap.merge(
-                new ItemDisplayKey(item.getItem(), item.getItemDamage(), item.getTagCompound()),
-                (long) item.stackSize,
+                new ItemRowKey(
+                    new ItemDisplayKey(item.getItem(), item.getItemDamage(), item.getTagCompound()),
+                    output.chance()),
+                output.amount(),
                 Long::sum);
         }
-        // a and b comparison swapped for stacksize on purpose to get descending order
-        List<Map.Entry<ItemDisplayKey, Long>> sortedEntries = itemDisplayMap.entrySet()
+        // a and b comparison swapped for the expected value on purpose to get descending order
+        List<Map.Entry<ItemRowKey, Long>> sortedEntries = itemDisplayMap.entrySet()
             .stream()
             .sorted((a, b) -> {
-                ItemDisplayKey itemDisplayA = a.getKey();
-                Long stackSizeA = a.getValue();
-                ItemDisplayKey itemDisplayB = b.getKey();
-                Long stackSizeB = b.getValue();
+                double expectedA = a.getValue() * a.getKey()
+                    .chance() / 10000.0;
+                double expectedB = b.getValue() * b.getKey()
+                    .chance() / 10000.0;
 
-                if (stackSizeA.equals(stackSizeB)) {
+                if (expectedA == expectedB) {
+                    ItemDisplayKey itemDisplayA = a.getKey()
+                        .key();
+                    ItemDisplayKey itemDisplayB = b.getKey()
+                        .key();
                     ItemStack itemA = new ItemStack(itemDisplayA.item(), 1, itemDisplayA.damage());
                     ItemStack itemB = new ItemStack(itemDisplayB.item(), 1, itemDisplayB.damage());
                     return itemA.getDisplayName()
                         .compareTo(itemB.getDisplayName());
                 } else {
-                    return stackSizeB.compareTo(stackSizeA);
+                    return Double.compare(expectedB, expectedA);
                 }
             })
             .toList();
 
         // create row for each entry
-        for (Map.Entry<ItemDisplayKey, Long> entry : sortedEntries) {
-            ItemDisplayKey key = entry.getKey();
+        for (Map.Entry<ItemRowKey, Long> entry : sortedEntries) {
+            ItemRowKey rowKey = entry.getKey();
             long amount = entry.getValue();
             column.child(
                 Flow.row()
                     .fullWidth()
                     .height(DISPLAY_ROW_HEIGHT)
-                    .child(createItemDrawable(key))
-                    .child(createHoverableTextForItem(key, amount, syncManager)));
+                    .child(createItemDrawable(rowKey.key()))
+                    .child(createHoverableTextForItem(rowKey.key(), amount, rowKey.chance(), syncManager)));
         }
 
         return column;
@@ -541,41 +555,54 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .coverChildren(0);
 
         // create merged map of fluidstack to total amount in recipe
-        final Map<FluidStack, Long> fluidDisplayMap = new HashMap<>(size);
+        final Map<FluidRowKey, Long> fluidDisplayMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
-            FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
+            ExpectedFluidOutput output = ExpectedFluidOutput.read(packet);
+            FluidStack fluidStack = output.stack();
             // Some multiblocks set outputs to null
             if (fluidStack == null) {
                 continue;
             }
-            long amount = (long) fluidStack.amount;
             // map.merge requires the objects to be the same. fluidstacks with different stacksizes will be different.
             // set the amount to 1 to ensure fluid stacks of the same fluid get merged together
             fluidStack.amount = 1;
-            fluidDisplayMap.merge(fluidStack, amount, Long::sum);
+            fluidDisplayMap.merge(new FluidRowKey(fluidStack, output.chance()), output.amount(), Long::sum);
         }
 
         // sort map and return as List of Entries
-        final List<Map.Entry<FluidStack, Long>> sortedEntryList = fluidDisplayMap.entrySet()
+        final List<Map.Entry<FluidRowKey, Long>> sortedEntryList = fluidDisplayMap.entrySet()
             .stream()
-            .sorted(
-                Map.Entry.<FluidStack, Long>comparingByValue()
-                    .thenComparing(
-                        entry -> entry.getKey()
-                            .getLocalizedName())
-                    .reversed())
+            .sorted((a, b) -> {
+                double expectedA = a.getValue() * a.getKey()
+                    .chance() / 10000.0;
+                double expectedB = b.getValue() * b.getKey()
+                    .chance() / 10000.0;
+
+                if (expectedA == expectedB) {
+                    return a.getKey()
+                        .stack()
+                        .getLocalizedName()
+                        .compareTo(
+                            b.getKey()
+                                .stack()
+                                .getLocalizedName());
+                }
+                return Double.compare(expectedB, expectedA);
+            })
             .toList();
 
         // create row for each entry
-        for (Map.Entry<FluidStack, Long> entry : sortedEntryList) {
-            FluidStack fluidStack = entry.getKey();
+        for (Map.Entry<FluidRowKey, Long> entry : sortedEntryList) {
+            FluidRowKey rowKey = entry.getKey();
             long amount = entry.getValue();
             column.child(
                 Flow.row()
                     .fullWidth()
                     .height(DISPLAY_ROW_HEIGHT)
-                    .child(createFluidDrawable(fluidStack))
-                    .childIf(showOutputRates(), () -> createHoverableTextForFluid(fluidStack, amount, syncManager)));
+                    .child(createFluidDrawable(rowKey.stack()))
+                    .childIf(
+                        showOutputRates(),
+                        () -> createHoverableTextForFluid(rowKey.stack(), amount, rowKey.chance(), syncManager)));
         }
         return column;
     }
@@ -602,7 +629,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .marginRight(2);
     }
 
-    private IWidget createHoverableTextForItem(ItemDisplayKey key, long amount, PanelSyncManager syncManager) {
+    private IWidget createHoverableTextForItem(ItemDisplayKey key, long amount, int chance,
+        PanelSyncManager syncManager) {
         // Second argument is stacksize, don't care about it
         ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
         itemStack.setTagCompound(key.nbt());
@@ -617,7 +645,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .height(DISPLAY_ROW_PRODUCT_HEIGHT)
                     .scale(0.75f))
             .child(
-                new TextWidget<>(IKey.dynamic(() -> getItemAmountTextLine(amount, maxProgressTimeSyncer)))
+                new TextWidget<>(IKey.dynamic(() -> getItemAmountTextLine(amount, chance, maxProgressTimeSyncer)))
                     .height(DISPLAY_ROW_RATE_HEIGHT)
                     .scale(0.6f))
             .tooltip(t -> {
@@ -625,16 +653,24 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     t.addLine(
                         EnumChatFormatting.AQUA + itemName
                             + "\n"
-                            + GTUtility.appendRate(false, amount, false, maxProgressTimeSyncer.getValue()));
+                            + GTUtility
+                                .appendExpectedRate(false, amount, chance, false, maxProgressTimeSyncer.getValue()));
                 }
             });
     }
 
-    private @NotNull String getItemAmountTextLine(long amount, IntSyncValue maxProgressTimeSyncer) {
+    private @NotNull String getItemAmountTextLine(long amount, int chance, IntSyncValue maxProgressTimeSyncer) {
         String shortenedCount = GTUtility.formatShortenedLong(amount);
         String rateShort = showOutputRates()
-            ? GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue())
+            ? GTUtility.appendExpectedRate(false, amount, chance, true, maxProgressTimeSyncer.getValue())
             : "";
+        if (chance != 10000) {
+            return StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.item_amount_display_chance",
+                "",
+                shortenedCount,
+                GTUtility.formatOutputChance(chance)) + rateShort;
+        }
         return StatCollector.translateToLocalFormatted("GT5U.gui.text.item_amount_display", "", shortenedCount)
             + rateShort;
     }
@@ -649,7 +685,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .marginRight(2);
     }
 
-    private IWidget createHoverableTextForFluid(FluidStack fluidStack, long amount, PanelSyncManager syncManager) {
+    private IWidget createHoverableTextForFluid(FluidStack fluidStack, long amount, int chance,
+        PanelSyncManager syncManager) {
         IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
         String fluidName = fluidStack.getLocalizedName();
 
@@ -662,7 +699,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .scale(0.75f)
                     .textAlign(Alignment.CenterLeft))
             .child(
-                new TextWidget<>(IKey.dynamic(() -> getFluidAmountTextLine(amount, maxProgressSyncer)))
+                new TextWidget<>(IKey.dynamic(() -> getFluidAmountTextLine(amount, chance, maxProgressSyncer)))
                     .height(DISPLAY_ROW_RATE_HEIGHT)
                     .scale(0.6f)
                     .textAlign(Alignment.CenterLeft))
@@ -671,16 +708,24 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     t.addLine(
                         EnumChatFormatting.AQUA + fluidName
                             + "\n"
-                            + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getIntValue()));
+                            + GTUtility
+                                .appendExpectedRate(true, amount, chance, false, maxProgressSyncer.getIntValue()));
                 }
             });
     }
 
-    private @NotNull String getFluidAmountTextLine(long amount, IntSyncValue maxProgressTimeSyncer) {
+    private @NotNull String getFluidAmountTextLine(long amount, int chance, IntSyncValue maxProgressTimeSyncer) {
         String shortenedCount = GTUtility.formatShortenedLong(amount);
         String rateShort = showOutputRates()
-            ? GTUtility.appendRate(true, amount, true, maxProgressTimeSyncer.getValue())
+            ? GTUtility.appendExpectedRate(true, amount, chance, true, maxProgressTimeSyncer.getValue())
             : "";
+        if (chance != 10000) {
+            return StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.fluid_amount_display_chance",
+                "",
+                shortenedCount,
+                GTUtility.formatOutputChance(chance)) + rateShort;
+        }
         return StatCollector.translateToLocalFormatted("GT5U.gui.text.fluid_amount_display", "", shortenedCount)
             + rateShort;
     }
@@ -1242,23 +1287,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 .build());
         syncManager.syncValue(
             "fluidOutput",
-            new GenericListSyncHandler<FluidStack>(
-                () -> multiblock.mOutputFluids != null ? Arrays.stream(multiblock.mOutputFluids)
-                    .map(fluidStack -> {
-                        if (fluidStack == null) return null;
-                        return new FluidStack(fluidStack, fluidStack.amount) {
-
-                            @Override
-                            public boolean isFluidEqual(FluidStack other) {
-                                return super.isFluidEqual(other) && amount == other.amount;
-                            }
-                        };
-                    })
-                    .collect(Collectors.toList()) : Collections.emptyList(),
-                val -> multiblock.mOutputFluids = val.toArray(new FluidStack[0]),
-                NetworkUtils::readFluidStack,
-                NetworkUtils::writeFluidStack,
-                (a, b) -> a.isFluidEqual(b) && a.amount == b.amount,
+            new GenericListSyncHandler<>(
+                multiblock::getDisplayedFluidOutputs,
+                null,
+                ExpectedFluidOutput::read,
+                ExpectedFluidOutput::write,
+                null,
                 null));
 
         syncManager.syncValue(
@@ -1270,12 +1304,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             val -> multiblock.mMaxProgresstime = val);
         syncManager.syncValue("maxProgressTime", maxProgressTimeSyncer);
 
-        GenericListSyncHandler<ItemStack> itemOutputSyncer = new GenericListSyncHandler<>(
-            () -> multiblock.mOutputItems != null ? Arrays.asList(multiblock.mOutputItems) : Collections.emptyList(),
-            val -> multiblock.mOutputItems = val.toArray(new ItemStack[0]),
-            NetworkUtils::readItemStack,
-            NetworkUtils::writeItemStack,
-            (a, b) -> a.isItemEqual(b) && a.stackSize == b.stackSize,
+        GenericListSyncHandler<ExpectedItemOutput> itemOutputSyncer = new GenericListSyncHandler<>(
+            multiblock::getDisplayedItemOutputs,
+            null,
+            ExpectedItemOutput::read,
+            ExpectedItemOutput::write,
+            null,
             null);
         syncManager.syncValue("itemOutput", itemOutputSyncer);
 
