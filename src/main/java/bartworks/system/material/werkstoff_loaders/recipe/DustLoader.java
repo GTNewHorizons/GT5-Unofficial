@@ -61,7 +61,6 @@ import gregtech.api.util.GTUtility;
 public class DustLoader implements IWerkstoffRunnable {
 
     @Override
-    @SuppressWarnings("unchecked")
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(dust)) {
             List<FluidStack> fluidComponents = new ArrayList<>();
@@ -83,8 +82,7 @@ public class DustLoader implements IWerkstoffRunnable {
                     .isEmpty()) {
 
                     for (Pair<ISubTagContainer, Integer> container : werkstoff.getContents()
-                        .getValue()
-                        .toArray(new Pair[0])) {
+                        .getValue()) {
                         final ISubTagContainer key = container.getKey();
                         final int value = container.getValue();
                         if (key instanceof Materials materialKey) {

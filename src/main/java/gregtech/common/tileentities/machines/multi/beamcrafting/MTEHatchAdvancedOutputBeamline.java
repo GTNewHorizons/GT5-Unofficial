@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +98,13 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         return true;
     }
 
+    public List<Particle> getParticleList() {
+        return this.acceptedInputMap.keySet()
+            .stream()
+            .sorted(Comparator.comparingInt(Particle::getId))
+            .toList();
+    }
+
     public Map<Particle, Boolean> getParticleMap() {
         return this.acceptedInputMap;
     }
@@ -108,26 +116,12 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        saveInputMapToNBT(data, acceptedInputMap);
-        return data;
-    }
-
-    @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        loadInputMapFromNBT(data, acceptedInputMap);
-    }
-
-    @Override
     protected boolean useMui2() {
         return true;
     }
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-
         return new MTEHatchAdvancedOutputBeamlineGui(this).build(data, syncManager, uiSettings);
     }
 

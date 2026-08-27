@@ -696,8 +696,6 @@ public enum GregtechItemList implements IItemContainer {
     // Catalyst Carriers
     EmptyCatalystCarrier,
     GreenMetalCatalyst,
-    RedMetalCatalyst,
-    YellowMetalCatalyst,
     BlueMetalCatalyst,
     OrangeMetalCatalyst,
     PurpleMetalCatalyst,

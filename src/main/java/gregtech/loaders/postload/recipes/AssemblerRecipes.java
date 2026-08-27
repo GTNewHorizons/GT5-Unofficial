@@ -2917,7 +2917,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 2),
                 ItemList.Casing_UV.get(1))
             .itemOutputs(ItemList.Hull_UV.get(1))
             .fluidInputs(Materials.Polybenzimidazole.getMolten(2 * INGOTS))
@@ -6700,7 +6700,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 6),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Chrome, 1))
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.frameGt, 1))
             .itemOutputs(ItemList.Casing_Advanced_Rhodium_Palladium.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)

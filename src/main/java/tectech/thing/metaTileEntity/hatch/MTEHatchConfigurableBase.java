@@ -36,18 +36,6 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
     @Override
     public abstract String getCopiedDataIdentifier(EntityPlayer player);
 
-    /// When true, this hatch's config will be synced to the client via description packets. []
-    public boolean needsConfigSync() {
-        return false;
-    }
-
-    /// Syncs this hatch's config at some point in the near future.
-    public void requestConfigSync() {
-        if (getBaseMetaTileEntity() != null) {
-            getBaseMetaTileEntity().issueTileUpdate();
-        }
-    }
-
     public void setOutput(boolean active) {
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
@@ -64,28 +52,6 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
     @Override
     public boolean allowGeneralRedstoneOutput() {
         return true;
-    }
-
-    @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = super.getDescriptionData();
-
-        if (needsConfigSync()) {
-            NBTTagCompound config = new NBTTagCompound();
-            saveConfig(config);
-            tag.setTag("config", config);
-        }
-
-        return tag;
-    }
-
-    @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-
-        if (needsConfigSync()) {
-            loadConfig(data.getCompoundTag("config"));
-        }
     }
 
     @Override
