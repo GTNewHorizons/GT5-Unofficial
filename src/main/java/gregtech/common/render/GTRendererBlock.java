@@ -21,7 +21,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -204,41 +203,44 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
         final ISBRInventoryContext ctx = sbrContextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
+        final boolean enableAO = aRenderer.enableAO;
+        final boolean useInventoryTint = aRenderer.useInventoryTint;
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
 
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        IMetaTileEntity imte = getMTE(aBlock, aMeta);
+        try {
+            IMetaTileEntity imte = getMTE(aBlock, aMeta);
 
-        if (imte != null && !imte.renderInInventory(ctx)) {
-            renderNormalInventoryMetaTileEntity(ctx, imte);
-        } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
-            ITexture[][] texture = texturedBlock.getInventoryTextures(aMeta);
-            if (texture != null) {
-                aBlock.setBlockBoundsForItemRender();
-                aRenderer.setRenderBoundsFromBlock(aBlock);
-                ctx.renderNegativeYFacing(texture[ForgeDirection.DOWN.ordinal()]);
-                ctx.renderPositiveYFacing(texture[ForgeDirection.UP.ordinal()]);
-                ctx.renderNegativeZFacing(texture[ForgeDirection.NORTH.ordinal()]);
-                ctx.renderPositiveZFacing(texture[ForgeDirection.SOUTH.ordinal()]);
-                ctx.renderNegativeXFacing(texture[ForgeDirection.WEST.ordinal()]);
-                ctx.renderPositiveXFacing(texture[ForgeDirection.EAST.ordinal()]);
+            if (imte != null && !imte.renderInInventory(ctx)) {
+                renderNormalInventoryMetaTileEntity(ctx, imte);
+            } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
+                ITexture[][] texture = texturedBlock.getInventoryTextures(aMeta);
+                if (texture != null) {
+                    aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+                    renderInventoryTextures(ctx, texture);
+                }
             }
+        } finally {
+            aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+            aRenderer.enableAO = enableAO;
+            aRenderer.useInventoryTint = useInventoryTint;
+            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+            ctx.doCleanup();
         }
-        aBlock.setBlockBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
-
-        aRenderer.setRenderBoundsFromBlock(aBlock);
-
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        ctx.doCleanup();
     }
 
     private static void renderNormalInventoryMetaTileEntity(ISBRInventoryContext ctx, IMetaTileEntity imte) {
-        final Block block = ctx.getBlock();
-        block.setBlockBoundsForItemRender();
-        ctx.setRenderBoundsFromBlock();
+        ctx.getRenderBlocks()
+            .setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+
+        final ITexture[][] textures = imte.getInventoryTextures();
+        if (textures != null) {
+            renderInventoryTextures(ctx, textures);
+            return;
+        }
 
         final IGregTechTileEntity igte = imte.getBaseMetaTileEntity();
         ctx.renderNegativeYFacing(imte.getTexture(igte, DOWN, WEST, -1, true, false));
@@ -247,6 +249,15 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         ctx.renderPositiveZFacing(imte.getTexture(igte, SOUTH, WEST, -1, true, false));
         ctx.renderNegativeXFacing(imte.getTexture(igte, WEST, WEST, -1, true, false));
         ctx.renderPositiveXFacing(imte.getTexture(igte, EAST, WEST, -1, true, false));
+    }
+
+    private static void renderInventoryTextures(ISBRInventoryContext ctx, ITexture[][] textures) {
+        ctx.renderNegativeYFacing(textures[SIDE_DOWN]);
+        ctx.renderPositiveYFacing(textures[SIDE_UP]);
+        ctx.renderNegativeZFacing(textures[SIDE_NORTH]);
+        ctx.renderPositiveZFacing(textures[SIDE_SOUTH]);
+        ctx.renderNegativeXFacing(textures[SIDE_WEST]);
+        ctx.renderPositiveXFacing(textures[SIDE_EAST]);
     }
 
     @Override

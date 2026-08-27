@@ -153,7 +153,7 @@ dependencies {
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Electro-Magic-Tools:1.7.25:dev") { transitive = false }
 
     // For testing ctm and animation interpolation
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.2.8:dev') { transitive = false }
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.2.8:dev') { transitive = false }
     compileOnly('com.github.GTNewHorizons:Angelica:2.2.8:api')
 
     // Speeds up mod identification and loading in dev
@@ -162,7 +162,7 @@ dependencies {
     // For testing involving the quantum computer
     // runtimeOnlyNonPublishable(deobf('https://forum.industrial-craft.net/core/attachment/4519-gravisuite-1-7-10-2-0-3-jar'))
 
-    devOnlyNonPublishable("com.github.GTNewHorizons:Horizon-QA:0.13.1:dev")
+    devOnlyNonPublishable("com.github.GTNewHorizons:Horizon-QA:0.14.0:dev")
     // jvmDowngrader
     compileOnly 'javax.xml.bind:jaxb-api:2.3.1'
 
