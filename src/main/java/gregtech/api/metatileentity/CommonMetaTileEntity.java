@@ -38,6 +38,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.implementation.items.GTItemSink;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -56,6 +57,8 @@ import gregtech.common.covers.Cover;
  * ({@link MetaPipeEntity}).
  */
 public abstract class CommonMetaTileEntity implements IMetaTileEntity {
+
+    private volatile ITexture[][] inventoryTextureCache;
 
     /**
      * Inventory of this block.
@@ -557,6 +560,26 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @SideOnly(Side.CLIENT)
     public boolean renderInInventory(ISBRInventoryContext ctx) {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected final ITexture[][] getOrCreateInventoryTextures() {
+        ITexture[][] textures = inventoryTextureCache;
+        if (textures == null) {
+            final IGregTechTileEntity base = getBaseMetaTileEntity();
+            textures = new ITexture[][] { getTexture(base, ForgeDirection.DOWN, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.UP, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.NORTH, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.SOUTH, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.WEST, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.EAST, ForgeDirection.WEST, -1, true, false) };
+            inventoryTextureCache = textures;
+        }
+        return textures;
+    }
+
+    public final void clearInventoryTextureCache() {
+        inventoryTextureCache = null;
     }
 
     @Override
