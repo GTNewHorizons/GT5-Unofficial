@@ -1,5 +1,6 @@
 package gregtech.client.iconContainers.items;
 
+import static gregtech.GTLoggers.GT_ICON_LOGGER;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.Map;
@@ -13,9 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.client.ResourceUtils;
-import gregtech.common.config.Gregtech;
 
 public class GTItemIconContainer extends AbstractItemIconContainer implements Runnable {
 
@@ -31,7 +30,7 @@ public class GTItemIconContainer extends AbstractItemIconContainer implements Ru
         mOverlayName = mIconName + "_OVERLAY";
         overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
         GregTechAPI.sGTItemIconload.add(this);
-        if (Gregtech.debug.logRegisterIcons) logRegisterIcon();
+        logRegisterIcon();
     }
 
     public static @NotNull IIconContainer create(@NotNull String aIconName) {
@@ -39,8 +38,8 @@ public class GTItemIconContainer extends AbstractItemIconContainer implements Ru
     }
 
     protected void logRegisterIcon() {
-        GTLog.ico.println("R " + iconResource);
-        GTLog.ico.println("O " + overlayResource);
+        GT_ICON_LOGGER.info("R {}", iconResource);
+        GT_ICON_LOGGER.info("O {}", overlayResource);
     }
 
     @Override

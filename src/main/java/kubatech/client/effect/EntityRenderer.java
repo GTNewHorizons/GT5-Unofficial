@@ -20,6 +20,7 @@
 
 package kubatech.client.effect;
 
+import static kubatech.kubatech.LOG;
 import static net.minecraft.client.renderer.entity.RenderManager.instance;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosX;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosY;
@@ -35,8 +36,6 @@ import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
@@ -50,13 +49,11 @@ import com.kuba6000.mobsinfo.api.utils.MobUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
-import kubatech.Tags;
 import kubatech.config.Config;
 
 @SideOnly(Side.CLIENT)
 public class EntityRenderer extends EntityFX {
 
-    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Entity Renderer]");
     private Vector3f verticalAxis;
     private Vector3f horizontalAxis;
     private EntityLiving entityToRender = null;
@@ -253,6 +250,7 @@ public class EntityRenderer extends EntityFX {
             try {
                 tes.draw();
             } catch (Exception ignored) {}
+            LOG.error("[Renderer] Failed to render entity {}", EntityList.getEntityString(entityToRender), ex);
         }
 
         BossStatus.healthScale = healthScale;
@@ -266,8 +264,8 @@ public class EntityRenderer extends EntityFX {
         if (stackdepth > 0) for (; stackdepth > 0; stackdepth--) GL11.glPushMatrix();
 
         int err;
-        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR) if (Config.Debug.showRenderErrors) LOG.error(
-            EntityList.getEntityString(entityToRender) + " | GL ERROR: " + err + " / " + GLU.gluErrorString(err));
+        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR) if (Config.Debug.showRenderErrors) LOG
+            .error("{} | GL ERROR: {} / {}", EntityList.getEntityString(entityToRender), err, GLU.gluErrorString(err));
 
         GL11.glPopAttrib();
         GL11.glPopMatrix();

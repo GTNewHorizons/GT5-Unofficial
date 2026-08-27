@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import gregtech.api.enums.Mods;
 import gregtech.mixin.hooks.MixinsVariablesHelper;
-import kubatech.Tags;
 
 @Mixin(value = Locale.class)
 public class LocaleMixin {
@@ -37,7 +37,7 @@ public class LocaleMixin {
         require = 1)
     private String gt5u$replaceAll(Matcher matcher, String replace) {
         if (MixinsVariablesHelper.currentlyTranslating != null
-            && MixinsVariablesHelper.currentlyTranslating.equals(Tags.MODID)
+            && MixinsVariablesHelper.currentlyTranslating.equals(Mods.ModIDs.KUBA_TECH)
             && matcher.find()) {
             return matcher.replaceFirst(matcher.group());
         }

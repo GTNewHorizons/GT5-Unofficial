@@ -618,16 +618,8 @@ gt.blockcasingsBA0.8.desc.1=Смертельно опасно!
 gt.blockmachines.multimachine.em.transformer.name=Активный трансформатор
 gt.blockmachines.multimachine.em.transformer.machinetype=Активный трансформатор, AT
 gt.blockmachines.multimachine.em.transformer.hint=1 - Энерговывод/вывод и Высокоэнергетический корпус
-gt.blockmachines.multimachine.em.transformer.desc.1=Может преобразовывать в любой вольтаж и обратно
-gt.blockmachines.multimachine.em.transformer.desc.2=Всего 0.004% энергопотерь, ВАУ!!!
 
 gt.blockmachines.multimachine.tm.microwave.name=Совершенная микроволновая печь
-gt.blockmachines.multimachine.tm.microwave.desc.0=Блок-контроллер Совершенная микроволновая печь
-gt.blockmachines.multimachine.tm.microwave.desc.1=От живого до обугленного за пару секунд!
-gt.blockmachines.multimachine.tm.microwave.desc.2=Я сказала сжечь... Я имела в виду хорошая микроволновка!
-gt.blockmachines.multimachine.tm.microwave.desc.3=Механизм также будет собирать все предметы, находящиеся в ней
-gt.blockmachines.multimachine.tm.microwave.desc.4=Может быть настроен с помощью параметрайзера
-gt.blockmachines.multimachine.tm.microwave.desc.5=(Не вставляйте Иссушителя)
 gt.blockmachines.multimachine.tm.microwave.cfgi.0=Настройки энергии
 gt.blockmachines.multimachine.tm.microwave.power=Энергия
 gt.blockmachines.multimachine.tm.microwave.timer=Время
@@ -636,11 +628,6 @@ gt.blockmachines.multimachine.tm.microwave.cfgo.0=Значение таймер�
 gt.blockmachines.multimachine.tm.microwave.cfgo.1=Оставшееся время
 
 gt.blockmachines.multimachine.tm.teslaCoil.name=Башня теслы
-gt.blockmachines.multimachine.tm.teslaCoil.desc.0=Блок-контроллер башни теслы
-gt.blockmachines.multimachine.tm.teslaCoil.desc.1=Используется для передачи энергии на крышки катушек Тесла и трансиверы Тесла
-gt.blockmachines.multimachine.tm.teslaCoil.desc.2=Может питаться плазмой гелия/азота/радона для увеличения дальности действия
-gt.blockmachines.multimachine.tm.teslaCoil.desc.3=Передаваемый вольтаж зависит от используемого тира Тесла конденсатор
-gt.blockmachines.multimachine.tm.teslaCoil.desc.4=Первичные обмотки Теслы должны быть как минимум того же тира, что и Тесла конденсатор
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=Настройки нижнего порога гистерезиса
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=Настройки верхнего порога гистерезиса
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=Настройки радиуса передачи Башни Теслы
@@ -669,9 +656,6 @@ gt.blockmachines.multimachine.tm.teslaCoil.outputCurrent=Текущий выхо
 gt.blockmachines.multimachine.tm.teslaCoil.scanTime=Время сканирования
 gt.blockmachines.multimachine.tm.teslaCoil.overdrive=Перегрузка
 
-gt.blockmachines.multimachine.em.switch.desc.0=Распределяет вычисления по выходным разъёмам на основе весов.
-gt.blockmachines.multimachine.em.switch.desc.1=Вывод вычислений настраивается путем щелчка ПКМ по выходному разъёму отвёрткой.
-gt.blockmachines.multimachine.em.switch.desc.2=Выходные разъёмы должны быть частью структуры, чтобы их можно было настраивать.
 
 gt.blockmachines.multimachine.em.computer.name=Квантовый компьютер
 gt.blockmachines.multimachine.em.computer.machinetype=Квантовый компьютер, QC
@@ -680,15 +664,8 @@ gt.blockmachines.multimachine.em.computer.cfgi.0=Коэффициент разг
 gt.blockmachines.multimachine.em.computer.cfgi.1=Коэффициент избытка вольтажа
 gt.blockmachines.multimachine.em.computer.cfgo.0=Текущий макс. нагрев
 gt.blockmachines.multimachine.em.computer.cfgo.1=Произведено вычислений
-gt.blockmachines.multimachine.em.computer.desc.0=Блок-контроллер квантового компьютера
-gt.blockmachines.multimachine.em.computer.desc.1=Используется для вычисления (и тепла)
-gt.blockmachines.multimachine.em.computer.desc.2=Используйте отвертку для переключения беспроводного режима
 
 gt.blockmachines.multimachine.em.databank.name=Банк данных
-gt.blockmachines.multimachine.em.databank.desc.0=Блок-контроллер банка данных
-gt.blockmachines.multimachine.em.databank.desc.1=Используется для снабжения Сборочных линий большим кол. флешек
-gt.blockmachines.multimachine.em.databank.desc.2=и предоставить нескольким сборочным линиям доступ к одной и той же флешке
-gt.blockmachines.multimachine.em.databank.desc.3=Используйте отвертку для переключения беспроводного режима
 
 gt.blockmachines.multimachine.em.junction.name=Объединитель материи
 gt.blockmachines.multimachine.em.junction.hint.0=1 - Энерговоды или Высокоэнергетические корпуса
@@ -735,12 +712,6 @@ gt.blockmachines.multimachine.em.scanner.hint.3=4 - Элементный шлю�
 gt.blockmachines.multimachine.em.scanner.desc.0=Блок-контроллер элементного сканера
 
 gt.blockmachines.multimachine.em.research.type=Исследовательская станция, Сканер
-gt.blockmachines.multimachine.em.research.desc.1=Используется для сканирования Рецептов сборочной линии на Флешки
-gt.blockmachines.multimachine.em.research.desc.2=Для работы требуется подавать вычисления
-gt.blockmachines.multimachine.em.research.desc.3=Не потребляет предмет до тех пор, пока не будет записан на флешку
-gt.blockmachines.multimachine.em.research.desc.4=Используйте отвёртку для смены режима
-gt.blockmachines.multimachine.em.research.desc.5=Вычисления, необходимые в режиме сканера, выполняются по формуле:
-gt.blockmachines.multimachine.em.research.desc.6=Продолжительность рецепта в секундах * (2 ^ (тир вольтажа рецепта - 1))
 gt.blockmachines.multimachine.em.research.mode.0=Исследовательская станция
 gt.blockmachines.multimachine.em.research.mode.1=Сканер
 gt.blockmachines.multimachine.em.research.computation=Вычисление: %,d / %,d
@@ -1378,6 +1349,9 @@ tt.keyword.Structure.CenterPillar=Центр передней стойки
 tt.keyword.Structure.Center=Центр
 # Additional structure components
 tt.keyword.Structure.DataAccessHatch=Шлюз доступа к данным
+tt.keyword.Structure.InFrontOfEachComputerHeatVent=Перед каждым компьютерным теплоотводом
+tt.keyword.Structure.DaisyChainAssemblyLine=Используйте входной разъём для сборочной линии, чтобы соединить механизмы в цепочку
+tt.keyword.Structure.DaisyChainOptical=Используйте оптический входной разъём, чтобы соединить механизмы в цепочку
 tt.keyword.Structure.ElementalOutput=Выходной элементный шлюз
 tt.keyword.Structure.Elemental=Элементный шлюз
 tt.keyword.Structure.ElementalOverflow=Элементный шлюз переполнения

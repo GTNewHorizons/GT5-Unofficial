@@ -1,6 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.CharExchanger.formatNumber;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -19,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -47,6 +49,7 @@ import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -73,6 +76,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
@@ -438,31 +442,30 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Tank")
-            .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity")
-            .addInfo("The max fluid cell tier is limited by the glass tier")
-            .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
-            .addInfo("The max height of the cell blocks is 15")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_tank"))
+            .addMarkdown(new ResourceLocation("gregtech", "yottank"))
             .beginVariableStructureBlock(5, 5, 5, 19, 5, 5, false)
-            .addController("Front center, 2nd layer")
-            .addMiscHatch("0-1", "YOTHatch", "Any bottom center casing (replaces other hatches)", 2)
-            .addInputHatch("1+", "Any top center casing", 1)
-            .addOutputHatch("1+", "Any bottom center casing", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addMiscHatch("0-1", StatCollector.translateToLocal("gt.mbtt.structure.yot_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing_replaces_other_hatches"), 2)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_center_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing"), 2)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("25-57", "YOTTank Casing", false)
-            .addCasing("16", "Steel Frame Box", false)
-            .addCasing("16", "Any Tiered Glass", true)
-            .addCasing("9", "Fluid Cell Block", true)
+            .addCasing("25-57", StatCollector.translateToLocal("yottaFluidTankCasing.name"), false)
+            .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("9", StatCollector.translateToLocal("yottaFluidTankCell.name"), true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
-            .addCasing("16", "Any Tiered Glass", true)
-            .addCasing("9", "Fluid Cell Block", true)
+            .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("9", StatCollector.translateToLocal("yottaFluidTankCell.name"), true)
             .addStructureInfo("")
-            .addStructureFooter("No air gaps allowed, but the fluid cell blocks can be different tiers")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.no_air_gaps_fluid_cells_different_tiers"))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -681,8 +684,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
 
         screenElements
             .widget(
-                new TextWidget().setStringSupplier(
-                    () -> StatCollector.translateToLocal("gui.YOTTank.0") + " " + numberFormat.format(mStorage) + " L")
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("gui.YOTTank.0") + " "
+                            + numberFormat.format(mStorage)
+                            + " "
+                            + getFluidUnit())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0))
@@ -700,7 +707,8 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
                         () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
                             + numberFormat.format(mStorageCurrent)
                             + EnumChatFormatting.RESET
-                            + " L"
+                            + " "
+                            + getFluidUnit()
                             + " ("
                             + EnumChatFormatting.GREEN
                             + getPercent()

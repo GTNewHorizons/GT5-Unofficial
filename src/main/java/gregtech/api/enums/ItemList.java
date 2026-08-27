@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
@@ -18,7 +19,6 @@ import com.google.common.collect.ImmutableList;
 import gregtech.GTMod;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -2715,6 +2715,7 @@ public enum ItemList implements IItemContainer {
     Casing_Pyrolyse,
     NameRemover,
     Hatch_Nanite,
+    Hatch_Nanite_Singularity,
     Hatch_Catalyst_Bulk,
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
@@ -2793,6 +2794,7 @@ public enum ItemList implements IItemContainer {
     DroneCase,
     Femtocontroller,
     FuelPellet,
+    SolarSail,
 
     PrecisionFieldSyncCasing,
     MagneticAnchorCasing,
@@ -2862,7 +2864,7 @@ public enum ItemList implements IItemContainer {
     Augment_NightVision,
     Augment_CreativeFlight,
     Augment_Jetpack,
-    Augment_Jetpack_PerfectHover,
+    Augment_VectoredJetpack,
     Augment_FireImmunity,
     Augment_StepAssist,
     Augment_GogglesOfRevealing,
@@ -3219,6 +3221,76 @@ public enum ItemList implements IItemContainer {
     MetaMaterial_FieldManipulator3,
     MetaMaterial_FieldManipulator4,
 
+    Ice_Cream_Machine,
+    Ice_Cream_Random,
+    Ice_Cream_Acid,
+    Ice_Cream_Banana,
+    Ice_Cream_BananaSplit,
+    Ice_Cream_Benzene,
+    Ice_Cream_BlueberryBlastStargate,
+    Ice_Cream_Blueberry,
+    Ice_Cream_Boucream,
+    Ice_Cream_BowlOfHarmony,
+    Ice_Cream_Brownie,
+    Ice_Cream_ButterPecan,
+    Ice_Cream_Butterscotch,
+    Ice_Cream_Caramel,
+    Ice_Cream_CherryParfait,
+    Ice_Cream_ChocoVanilla,
+    Ice_Cream_ChocolateChip,
+    Ice_Cream_Chocolate,
+    Ice_Cream_Sandwich_Chocolate,
+    Ice_Cream_Popsicle_Chocolate,
+    Ice_Cream_ChocolateWalnutFudge,
+    Ice_Cream_Coffee,
+    Ice_Cream_CookieDough,
+    Ice_Cream_CookiesAndCream,
+    Ice_Cream_CottonCandy,
+    Ice_Cream_Popsicle_Double,
+    Ice_Cream_ElectronicBlast,
+    Ice_Cream_Engineers,
+    Ice_Cream_FrenchVanilla,
+    Ice_Cream_Popsicle_Fruit,
+    Ice_Cream_GrapeMatterManipulator,
+    Ice_Cream_HotFudge,
+    Ice_Cream_Sandwich,
+    Ice_Cream_JustCone,
+    Ice_Cream_Lemonade,
+    Ice_Cream_MHDCSM,
+    Ice_Cream_Mango,
+    Ice_Cream_Meat,
+    Ice_Cream_MintChip,
+    Ice_Cream_Neapolitan,
+    Ice_Cream_NoFlavor,
+    Ice_Cream_Peach,
+    Ice_Cream_PeanutButter,
+    Ice_Cream_Pistachio,
+    Ice_Cream_Radioactive,
+    Ice_Cream_Sorbet_RainbowStellar,
+    Ice_Cream_Sorbet_Raspberry,
+    Ice_Cream_SaltedCaramel,
+    Ice_Cream_Spaghetti,
+    Ice_Cream_Sprinkles,
+    Ice_Cream_Strawberry,
+    Ice_Cream_ToffeeButter,
+    Ice_Cream_Unicorn,
+    Ice_Cream_Vanilla,
+    Ice_Cream_Concrete,
+    Ice_Cream_Rubber,
+    Ice_Cream_Diesel,
+    Ice_Cream_Snowcone,
+    Ice_Cream_IceSlush,
+    Ice_Cream_Sorbet_Pineapple,
+    Ice_Cream_Orange,
+    Ice_Cream_Jelly,
+    Ice_Cream_MatchaSnake,
+    Ice_Cream_Popsicle_Freeze,
+    Ice_Cream_HoneyBeeBowl,
+    Ice_Cream_IlluminatiCone,
+    Ice_Cream_ConfettiQuestbook,
+    Ice_Cream_PitOfDoomAndDespair,
+    Ice_Cream_MasterOfDreams,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 
@@ -3346,7 +3418,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT) {
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(new Exception(this + " is now deprecated"));
             // warn only once
             mWarned = true;
         }
@@ -3358,8 +3430,8 @@ public enum ItemList implements IItemContainer {
     public ItemStack get(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) {
-            GTLog.out.println("Object in the ItemList is null at:");
-            new NullPointerException().printStackTrace(GTLog.out);
+            GT_FML_LOGGER.debug("Object in the ItemList is null at:");
+            GT_FML_LOGGER.debug(new NullPointerException());
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
         return GTUtility.copyAmount(aAmount, GTOreDictUnificator.get(mStack));
@@ -3402,7 +3474,7 @@ public enum ItemList implements IItemContainer {
                 tWord.substring(1)
                     .toLowerCase(Locale.US));
         }
-        if (tCamelCasedDisplayNameBuilder.length() == 0) {
+        if (tCamelCasedDisplayNameBuilder.isEmpty()) {
             // CamelCased DisplayName is empty, so use hash of aDisplayName
             tCamelCasedDisplayNameBuilder.append(((Long) (long) aDisplayName.hashCode()));
         }
@@ -3463,7 +3535,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(new Exception(this + " is now deprecated"));
             // warn only once
             mWarned = true;
         }

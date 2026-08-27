@@ -495,28 +495,15 @@ gt.blockcasingsBA0.8.desc.1=谁不想要32k的环氧树脂?
 #Multiblocks
 gt.blockmachines.multimachine.em.transformer.name=有源变压器
 gt.blockmachines.multimachine.em.transformer.hint=1 - 能源仓、动力仓或超能机械方块
-gt.blockmachines.multimachine.em.transformer.desc.1=任意电压间的相互转换!
-gt.blockmachines.multimachine.em.transformer.desc.2=只有0.004%的能量损失, HAYO!
 gt.blockmachines.multimachine.em.transformer.desc.3=运行时被破坏会发生爆炸
 
 gt.blockmachines.multimachine.tm.microwave.name=微波发生仪
-gt.blockmachines.multimachine.tm.microwave.desc.0=微波发生仪的控制器方块
-gt.blockmachines.multimachine.tm.microwave.desc.1=机器启动时开启一个计时器
-gt.blockmachines.multimachine.tm.microwave.desc.2=计时器运行时, 机器中的一切都会受到伤害
-gt.blockmachines.multimachine.tm.microwave.desc.3=机器也会自动收集内部掉落物
-gt.blockmachines.multimachine.tm.microwave.desc.4=可通过参数仪进行配置
-gt.blockmachines.multimachine.tm.microwave.desc.5=(别塞只凋灵进去)
 gt.blockmachines.multimachine.tm.microwave.cfgi.0=功率设置
 gt.blockmachines.multimachine.tm.microwave.cfgi.1=时间设置
 gt.blockmachines.multimachine.tm.microwave.cfgo.0=时间
 gt.blockmachines.multimachine.tm.microwave.cfgo.1=剩余时间
 
 gt.blockmachines.multimachine.tm.teslaCoil.name=特斯拉电塔
-gt.blockmachines.multimachine.tm.teslaCoil.desc.0=特斯拉电塔的控制器方块
-gt.blockmachines.multimachine.tm.teslaCoil.desc.1=用于向特斯拉线圈帽和特斯拉收发器传输电力
-gt.blockmachines.multimachine.tm.teslaCoil.desc.2=可加入氦/氮/氡等离子体增大范围
-gt.blockmachines.multimachine.tm.teslaCoil.desc.3=传输电压取决于使用的特斯拉电容等级
-gt.blockmachines.multimachine.tm.teslaCoil.desc.4=需要至少与特斯拉电容相同等级的初级特斯拉绕组
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=迟滞低设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=迟滞高设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=特斯拉电塔传输半径设置
@@ -539,8 +526,6 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=扫描时间显示
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=最高输出电流显示
 
 gt.blockmachines.multimachine.em.switch.name=QoS网络交换机
-gt.blockmachines.multimachine.em.switch.desc.0=QoS网络交换机的控制器方块
-gt.blockmachines.multimachine.em.switch.desc.1=用于路由和分发算力
 
 
 gt.blockmachines.multimachine.em.computer.name=量子计算机
@@ -549,13 +534,8 @@ gt.blockmachines.multimachine.em.computer.cfgi.0=超频比
 gt.blockmachines.multimachine.em.computer.cfgi.1=过压比
 gt.blockmachines.multimachine.em.computer.cfgo.0=当前最大热量
 gt.blockmachines.multimachine.em.computer.cfgo.1=生成算力
-gt.blockmachines.multimachine.em.computer.desc.0=量子计算机的控制器方块
-gt.blockmachines.multimachine.em.computer.desc.1=用于生成算力(以及热量)
 
 gt.blockmachines.multimachine.em.databank.name=数据库
-gt.blockmachines.multimachine.em.databank.desc.0=数据库的控制器方块
-gt.blockmachines.multimachine.em.databank.desc.1=为装配线提供更多闪存
-gt.blockmachines.multimachine.em.databank.desc.2=还可使多条装配线访问同一闪存
 
 gt.blockmachines.multimachine.em.junction.name=物质流枢纽
 gt.blockmachines.multimachine.em.junction.hint.0=1 - 基础仓室或超能机械方块
@@ -604,9 +584,6 @@ gt.blockmachines.multimachine.em.scanner.desc.0=元物质扫描仪的控制器�
 gt.blockmachines.multimachine.em.research.name=研究站
 gt.blockmachines.multimachine.em.research.hint.0=1 - 基础仓室、光学接口或电子计算机械方块
 gt.blockmachines.multimachine.em.research.hint.1=2 - 物品固定容器
-gt.blockmachines.multimachine.em.research.desc.1=用于扫描物品, 生成装配线配方闪存
-gt.blockmachines.multimachine.em.research.desc.2=需要为其提供算力
-gt.blockmachines.multimachine.em.research.desc.3=在完成闪存写入之前不会消耗物品
 
 gt.blockmachines.multimachine.em.collider.name=物质对撞机
 gt.blockmachines.multimachine.em.collider.hint.0=1 - 基础仓室或超能机械方块

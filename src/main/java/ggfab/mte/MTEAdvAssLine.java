@@ -9,7 +9,7 @@ import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW;
 import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_GLOW;
 import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_STUCK;
 import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -740,7 +740,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
 
         if (GTValues.D1) {
-            GT_FML_LOGGER.info("Stick accepted, " + availableRecipes.size() + " Data Sticks found");
+            GT_FML_LOGGER.info("Stick accepted, {} Data Sticks found", availableRecipes.size());
         }
 
         for (RecipeAssemblyLine recipe : availableRecipes) {
@@ -893,10 +893,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> currentTip, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         String machineProgressString = GTWaila.getMachineProgressString(
             tag.getBoolean("isActive"),
             tag.getBoolean("isAllowedToWork"),
@@ -928,10 +926,11 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        if (currentRecipe == null || !getBaseMetaTileEntity().isActive()) return;
+        if (currentRecipe == null || getBaseMetaTileEntity() == null || !getBaseMetaTileEntity().isActive()) {
+            return;
+        }
         NBTTagList l = new NBTTagList();
         for (int i = 0; i < currentInputLength; i++) {
             l.appendTag(new NBTTagInt(slices[i].progress));

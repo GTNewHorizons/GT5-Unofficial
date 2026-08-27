@@ -503,15 +503,22 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchEnergy tHatch) {
-            if (tHatch.getTierForStructure() < energyHatchTier()) return false;
-            tHatch.updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti tHatch) {
-            if (tHatch.getTierForStructure() < energyHatchTier()) return false;
-            tHatch.updateTexture(aBaseCasingIndex);
-            return eEnergyMulti.add(tHatch);
+        switch (aMetaTileEntity) {
+            case null -> {
+                return false;
+            }
+            case MTEHatchEnergy tHatch -> {
+                if (tHatch.getTierForStructure() < energyHatchTier()) return false;
+                tHatch.updateTexture(aBaseCasingIndex);
+                return mEnergyHatches.add(tHatch);
+            }
+            case MTEHatchEnergyMulti tHatch -> {
+                if (tHatch.getTierForStructure() < energyHatchTier()) return false;
+                tHatch.updateTexture(aBaseCasingIndex);
+                return eEnergyMulti.add(tHatch);
+            }
+            default -> {
+            }
         }
         return false;
     }
@@ -610,21 +617,6 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     @Override
     public boolean getDefaultBatchMode() {
         return true;
-    }
-
-    protected String createParallelText() {
-        return "Has " + EnumChatFormatting.WHITE
-            + "(1 + "
-            + EnumChatFormatting.LIGHT_PURPLE
-            + "Machine Tier"
-            + EnumChatFormatting.WHITE
-            + " - "
-            + EnumChatFormatting.GREEN
-            + "Recipe Tier"
-            + EnumChatFormatting.WHITE
-            + ") * 64"
-            + EnumChatFormatting.GOLD
-            + " Parallels";
     }
 
     @Override

@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.iterate;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -388,7 +388,7 @@ public class DebugWriterHelper {
             customClassifier);
 
         return builder.toString()
-            .replaceAll("\"\"", "E");
+            .replace("\"\"", "E");
     }
 
     private static void appendStructureScanWithCustom(StringBuilder builder, Map<String, Character> mapping,

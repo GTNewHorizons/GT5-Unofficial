@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch.bec;
 
+import java.awt.Color;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +13,6 @@ import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
@@ -23,18 +23,19 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
-import com.gtnewhorizon.gtnhlib.color.HSVColor;
 import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
+import io.netty.buffer.ByteBuf;
 import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
 
 /// Line of sight connector hatch for observation arrays + teleportation nodes
@@ -75,8 +76,9 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
     public String[] getDescription() {
         if (tooltip == null) {
             tooltip = new Lazy<>(
-                () -> MarkdownTooltipLoader.STANDARD
-                    .loadStandardPath(new ResourceLocation("gregtech", "los-connector"), Map.of("range", SCAN_DIST)));
+                () -> MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "los-connector"),
+                    Map.of("range", SCAN_DIST)));
         }
         return ArrayUtils.addAll(
             super.getDescription(),
@@ -287,34 +289,31 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = super.getDescriptionData();
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
 
-        tag.setBoolean("connected", connection != null);
-        tag.setBoolean("isRenderer", isRenderer);
-
+        buffer.writeBoolean(isRenderer);
         var other = getConnectedHatch();
+        buffer.writeBoolean(this.hasOwner() && other != null && other.hasOwner());
 
-        tag.setBoolean("canRender", this.hasOwner() && other != null && other.hasOwner());
-
+        buffer.writeBoolean(connection != null);
         if (connection != null) {
-            tag.setInteger("connX", connection.getX());
-            tag.setInteger("connY", connection.getY());
-            tag.setInteger("connZ", connection.getZ());
+            buffer.writeInt(connection.getX());
+            buffer.writeInt(connection.getY());
+            buffer.writeInt(connection.getZ());
         }
-
-        return tag;
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
 
-        isRenderer = data.getBoolean("isRenderer");
-        canRender = data.getBoolean("canRender");
+        isRenderer = buffer.readBoolean();
+        canRender = buffer.readBoolean();
 
-        if (data.getBoolean("connected")) {
-            connection = new BlockPos(data.getInteger("connX"), data.getInteger("connY"), data.getInteger("connZ"));
+        boolean connected = buffer.readBoolean();
+        if (connected) {
+            connection = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
         } else {
             connection = null;
         }
@@ -343,7 +342,8 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
         double length = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
         GL11.glPushMatrix();
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glPushAttrib(
+            GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_TEXTURE_BIT);
 
         Minecraft.getMinecraft().renderEngine.bindTexture(BEAM_TEXTURE);
         GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, 10497.0F);
@@ -389,10 +389,13 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
 
         float hue = ((System.currentTimeMillis() % 10_000) / 10_000f + hueOffset) % 1f;
 
-        HSVColor color = new HSVColor(hue, 0.5f, 0.75f);
+        final int rgb = Color.HSBtoRGB(hue, 0.5f, 0.75f);
+        final int red = (rgb >> 16) & 0xFF;
+        final int green = (rgb >> 8) & 0xFF;
+        final int blue = rgb & 0xFF;
 
         tess.startDrawingQuads();
-        tess.setColorRGBA(color.getRed(), color.getGreen(), color.getBlue(), 32);
+        tess.setColorRGBA(red, green, blue, 32);
         addBeamQuad(tess, c1x, c1z, c2x, c2z, length, vMin1, vMax1);
         addBeamQuad(tess, c4x, c4z, c3x, c3z, length, vMin1, vMax1);
         addBeamQuad(tess, c2x, c2z, c4x, c4z, length, vMin1, vMax1);
@@ -409,7 +412,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
         double vMax2 = length + vMin2;
 
         tess.startDrawingQuads();
-        tess.setColorRGBA(color.getRed(), color.getGreen(), color.getBlue(), 32);
+        tess.setColorRGBA(red, green, blue, 32);
         addBeamQuad(tess, -inner, -inner, inner, -inner, length, vMin2, vMax2);
         addBeamQuad(tess, inner, inner, -inner, inner, length, vMin2, vMax2);
         addBeamQuad(tess, inner, -inner, inner, inner, length, vMin2, vMax2);

@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -92,7 +92,12 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         .addElement(
             'e',
             ofChain(
-                Energy.newAny(16, 4, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
+                buildHatchAdder(MTEAssemblyLine.class).atLeast(Energy)
+                    .casingIndex(16)
+                    .hint(4)
+                    .allowOnly(ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH)
+                    .continueIfSuccess()
+                    .build(),
                 ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'd',
@@ -232,7 +237,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         }
 
         if (GTValues.D1) {
-            GT_FML_LOGGER.info("Stick accepted, " + availableRecipes.size() + " Data Sticks found");
+            GT_FML_LOGGER.info("Stick accepted, {} Data Sticks found", availableRecipes.size());
         }
 
         int[] tStacks = GTValues.emptyIntArray;

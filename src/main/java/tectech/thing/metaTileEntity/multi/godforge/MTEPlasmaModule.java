@@ -1,6 +1,11 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.casing.Casings.BoundlessGravitationallySeveredStructureCasing;
+import static gregtech.api.casing.Casings.CelestialMatterGuidanceCasing;
+import static gregtech.api.casing.Casings.HarmonicPhononTransmissionConduit;
+import static gregtech.api.casing.Casings.SingularityReinforcedStellarShieldingCasing;
+import static gregtech.api.casing.Casings.StellarEnergySiphonCasing;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -13,7 +18,7 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +34,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEPlasmaModuleGui;
 import tectech.loader.ConfigHandler;
@@ -53,18 +59,16 @@ public class MTEPlasmaModule extends MTEBaseModule {
         return new MTEPlasmaModule(mName);
     }
 
-    long wirelessEUt = 0;
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GorgeModuleProcessingLogic() {
 
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                wirelessEUt = (long) recipe.mEUt * getActualParallel();
-                if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                BigInteger powerForRecipe = predictDrainedEnergy(recipe);
+                if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 if (recipe.getMetadataOrDefault(FOG_PLASMA_TIER, 0) > getPlasmaTier()
                     || (recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false) && !isMultiStepPlasmaCapable)) {
@@ -76,11 +80,11 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                wirelessEUt = (long) recipe.mEUt * maxParallel;
                 BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
                     .multiply(BigInteger.valueOf(duration));
                 if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                    stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 addToPowerTally(powerForRecipe);
                 addToRecipeTally(calculatedParallels);
@@ -178,26 +182,21 @@ public class MTEPlasmaModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Fabricator")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for extreme temperature matter ionization")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
-            .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
-            .addInfo("right away, some of them require certain upgrades to be unlocked")
-            .addInfo("This module is specialized towards energy and overclock efficiency")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.plasma_fabricator"))
+            .addMarkdown(new ResourceLocation("gregtech", "godforge-plasma-module"))
             .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center, 4th layer")
-            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
-            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
-            .addCasing("5", "Celestial Matter Guidance Casing", false)
-            .addCasing("5", "Harmonic Phonon Transmission Conduit", false)
-            .addCasing("1", "Stellar Energy Siphon Casing", false)
-            .addInputBus("0+", "Any front shielding casing", 1)
-            .addInputHatch("0+", "Any front shielding casing", 1)
-            .addOutputHatch("0+", "Any front shielding casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-20", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("20", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addCasing("5", CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("5", HarmonicPhononTransmissionConduit.getLocalizedName(), false)
+            .addCasing("1", StellarEnergySiphonCasing.getLocalizedName(), false)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

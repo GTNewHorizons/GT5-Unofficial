@@ -312,6 +312,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity instanceof MTENanochipAssemblyModuleBase<?>module) {
             module.connect(this);
+            // immediate recheck to prevent module from using outdated hatch during recipe check
+            // delay is already done by the main structure, this does not cause immediate recheck.
+            module.checkStructure(true, aTileEntity);
             return modules.add(module);
         }
         return false;
@@ -610,7 +613,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         BigInteger drainedEnergy = BigInteger.ZERO;
                         // iterate over the modules, sending EU to fill their internal buffers
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
+                            // Connect first, since a module only runs its own structure check while connected.
                             module.connect(this);
+                            // But do not fill the buffer of a module whose own structure is incomplete.
+                            if (!module.mMachine) continue;
 
                             BigInteger moduleCapacity = module.getBufferSize();
                             BigInteger moduleStored = module.getCurrentEUStored();

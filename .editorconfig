@@ -17,3 +17,6 @@ end_of_line = crlf
 
 [*.{dtd,json,mcmeta,md,sh,svg,xml,xsd,xsl,yaml,yml,info}]
 indent_size = 2
+
+[*.lang]
+trim_trailing_whitespace = false
