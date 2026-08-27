@@ -190,7 +190,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         return new ParentWidget<>()
             .background(GTGuiTextures.BACKGROUND_NANOCHIP_RULE_POPUP)
             .widthRel(1F)
-            .height(84)
+            .height(102)
             .margin(4, 8, 4, 4)
 
             .child(Flow.column()
@@ -236,13 +236,13 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
 
                 // Input -> Output section
                 .child(Flow.row()
-                    .height(54) // for a 3x3 of item slots
-                    .widthRel(0.9F)
+                    .height(72) // for a 4x4 of item slots
+                    .widthRel(1.0F)
                     .leftRel(0.5F)
                     .marginTop(2)
                     // Input section
                     .child(new ParentWidget<>()
-                        .size(54)
+                        .size(72)
                         .child(inputColorGrid.posRel(0.5F, 0.5F))
                         .child(redstoneSelector.posRel(0.5F, 0.5F))
                         .child(itemFilter.posRel(0.5F, 0.5F)))
@@ -253,7 +253,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                         .size(20, 18))
                     // Output section
                     .child(new ParentWidget<>()
-                        .size(54)
+                        .size(72)
                         .leftRel(1.0F)
                         .anchorLeft(1.0F)
                         .child(outputColorGrid.posRel(0.5F, 0.5F)))));
@@ -333,7 +333,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         SplitterRule rule = multiblock.rules.get(index);
 
         return SlotGroupWidget.builder()
-            .matrix("III", "III", "III")
+            .matrix("IIII", "IIII", "IIII", "IIII")
             .key('I', i -> new PhantomItemSlot() {
 
                 @Override

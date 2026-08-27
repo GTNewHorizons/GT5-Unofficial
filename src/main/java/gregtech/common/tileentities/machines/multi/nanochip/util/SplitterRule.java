@@ -52,7 +52,7 @@ public class SplitterRule {
         FilterType() {}
     }
 
-    private static final int FILTER_STACKS_SIZE = 9;
+    private static final int FILTER_STACKS_SIZE = 16;
 
     public List<Byte> inputColors;
     public List<Byte> outputColors;
