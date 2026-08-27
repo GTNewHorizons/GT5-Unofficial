@@ -274,7 +274,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"),
                 1)
             .addEnergyHatch("1", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
-            .addInputBus("1+", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
+            .addInputBus("1", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
             .addOutputBus("1+", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
             .addMiscHatch("0+", TOOLTIP_VCI_LONG, TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2, 3)
             .addMiscHatch("0+", TOOLTIP_VCO_LONG, TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2, 3)
