@@ -7786,9 +7786,9 @@ item.gt.depletedRodNaquadria2.name=Сдвоенный топливный сте�
 item.gt.depletedRodNaquadria4.name=Счетверённый топливный стержень (Обеднённый наквадрий)
 
 # Condensate Fluid and Cells
-abbrev.entangled_neutronium.name=Нейтроний
-abbrev.entangled_cosmicneutronium.name=Космический нейтроний
-abbrev.entangled_bedrockium.name=Бедрокий
+abbrev.entangled_neutronium=Нейтроний
+abbrev.entangled_cosmicneutronium=Космический нейтроний
+abbrev.entangled_bedrockium=Бедрокий
 abbrev.entangled_celestialtungsten=Небесный вольфрам
 abbrev.entangled_chromaticglass=Хроматическое стекло
 abbrev.entangled_cosmicsolder=Космический припой
