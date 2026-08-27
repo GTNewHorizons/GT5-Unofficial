@@ -24,9 +24,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -115,6 +117,8 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.ExoticEnergyInputHelper;
+import gregtech.api.util.ExpectedFluidOutput;
+import gregtech.api.util.ExpectedItemOutput;
 import gregtech.api.util.FluidEjectionHelper;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
@@ -192,6 +196,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     private boolean oldMufflerState = false;
     public ItemStack[] mOutputItems = null;
     public FluidStack[] mOutputFluids = null;
+    /// The outputs of the running recipe before their chances were rolled. A projection only describes the rolled
+    /// arrays it was computed against, so it is discarded as soon as `mOutputItems` or `mOutputFluids` is reassigned
+    /// to another instance.
+    protected List<ExpectedItemOutput> mExpectedItemOutputs = null;
+    protected List<ExpectedFluidOutput> mExpectedFluidOutputs = null;
+    private ItemStack[] expectedItemOutputsFor = null;
+    private FluidStack[] expectedFluidOutputsFor = null;
     public String mNEI;
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
@@ -387,6 +398,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 aNBT.setTag("mOutputFluids" + i, tNBT);
             }
         }
+        if (hasExpectedItemOutputs()) {
+            aNBT.setTag("mExpectedItemOutputs", ExpectedItemOutput.writeList(mExpectedItemOutputs));
+        }
+        if (hasExpectedFluidOutputs()) {
+            aNBT.setTag("mExpectedFluidOutputs", ExpectedFluidOutput.writeList(mExpectedFluidOutputs));
+        }
         if (processingLogic != null) {
             aNBT.setInteger("lastParallel", processingLogic.getCurrentParallels());
         }
@@ -467,6 +484,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (int i = 0; i < mOutputFluids.length; i++)
                 mOutputFluids[i] = GTUtility.loadFluid(aNBT, "mOutputFluids" + i);
         }
+
+        setExpectedOutputs(
+            aNBT.hasKey("mExpectedItemOutputs")
+                ? ExpectedItemOutput.readList(aNBT.getTagList("mExpectedItemOutputs", Constants.NBT.TAG_COMPOUND))
+                : null,
+            aNBT.hasKey("mExpectedFluidOutputs")
+                ? ExpectedFluidOutput.readList(aNBT.getTagList("mExpectedFluidOutputs", Constants.NBT.TAG_COMPOUND))
+                : null);
         if (processingLogic != null) {
             lastParallel = aNBT.getInteger("lastParallel");
         }
@@ -840,6 +865,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         boolean isOutputAllFluids = mOutputFluids == null || addFluidOutputs(mOutputFluids);
                         mOutputItems = null;
                         mOutputFluids = null;
+                        clearExpectedOutputs();
                         outputAfterRecipe();
                         mEfficiency = Math.max(
                             0,
@@ -1124,8 +1150,89 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         mOutputItems = processingLogic.getOutputItems();
         mOutputFluids = processingLogic.getOutputFluids();
+        setExpectedOutputs(processingLogic.getExpectedItemOutputs(), processingLogic.getExpectedFluidOutputs());
 
         return result;
+    }
+
+    private void setExpectedOutputs(List<ExpectedItemOutput> items, List<ExpectedFluidOutput> fluids) {
+        mExpectedItemOutputs = items;
+        mExpectedFluidOutputs = fluids;
+        expectedItemOutputsFor = mOutputItems;
+        expectedFluidOutputsFor = mOutputFluids;
+    }
+
+    protected void clearExpectedOutputs() {
+        setExpectedOutputs(null, null);
+    }
+
+    private boolean hasExpectedItemOutputs() {
+        return mExpectedItemOutputs != null && mOutputItems == expectedItemOutputsFor;
+    }
+
+    private boolean hasExpectedFluidOutputs() {
+        return mExpectedFluidOutputs != null && mOutputFluids == expectedFluidOutputsFor;
+    }
+
+    /// The item outputs to show to the player: chanced outputs as projected before the roll, everything else as
+    /// rolled.
+    public List<ExpectedItemOutput> getDisplayedItemOutputs() {
+        Set<GTUtility.ItemId> chancedIds = new HashSet<>();
+        if (hasExpectedItemOutputs()) {
+            for (ExpectedItemOutput output : mExpectedItemOutputs) {
+                if (output.isChanced() && output.stack() != null) {
+                    chancedIds.add(GTUtility.ItemId.createWithoutNBT(output.stack()));
+                }
+            }
+        }
+        List<ExpectedItemOutput> displayed = new ArrayList<>();
+        if (mOutputItems != null) {
+            for (ItemStack stack : mOutputItems) {
+                if (stack == null || stack.stackSize <= 0) continue;
+                if (chancedIds.contains(GTUtility.ItemId.createWithoutNBT(stack))) continue;
+                displayed.add(new ExpectedItemOutput(stack, stack.stackSize, 10000));
+            }
+        }
+        if (!chancedIds.isEmpty()) {
+            for (ExpectedItemOutput output : mExpectedItemOutputs) {
+                if (output.stack() != null && chancedIds.contains(GTUtility.ItemId.createWithoutNBT(output.stack()))) {
+                    displayed.add(output);
+                }
+            }
+        }
+        return displayed;
+    }
+
+    /// The fluid outputs to show to the player, merged the same way as [#getDisplayedItemOutputs()].
+    public List<ExpectedFluidOutput> getDisplayedFluidOutputs() {
+        Set<Fluid> chancedFluids = new HashSet<>();
+        if (hasExpectedFluidOutputs()) {
+            for (ExpectedFluidOutput output : mExpectedFluidOutputs) {
+                if (output.isChanced() && output.stack() != null) {
+                    chancedFluids.add(
+                        output.stack()
+                            .getFluid());
+                }
+            }
+        }
+        List<ExpectedFluidOutput> displayed = new ArrayList<>();
+        if (mOutputFluids != null) {
+            for (FluidStack stack : mOutputFluids) {
+                if (stack == null || stack.amount <= 0) continue;
+                if (chancedFluids.contains(stack.getFluid())) continue;
+                displayed.add(new ExpectedFluidOutput(stack, stack.amount, 10000));
+            }
+        }
+        if (!chancedFluids.isEmpty()) {
+            for (ExpectedFluidOutput output : mExpectedFluidOutputs) {
+                if (output.stack() != null && chancedFluids.contains(
+                    output.stack()
+                        .getFluid())) {
+                    displayed.add(output);
+                }
+            }
+        }
+        return displayed;
     }
 
     /**
@@ -1442,6 +1549,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mLastWorkingTick = mTotalRunTime;
         mOutputItems = null;
         mOutputFluids = null;
+        clearExpectedOutputs();
         mEUt = 0;
         mEfficiency = 0;
         mProgresstime = 0;
