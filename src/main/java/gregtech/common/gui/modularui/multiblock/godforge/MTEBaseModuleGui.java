@@ -7,6 +7,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -29,7 +30,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
@@ -83,7 +83,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
                     .child(
                         createTerminalRow(panel, syncManager).leftRel(0)
                             .anchorLeft(0))
-                    .child(createMuffleButton().right(27))
+                    .child(createMuffleButton(hypervisor).right(27))
                     .child(
                         createPanelGap(panel, syncManager).leftRel(0)
                             .anchorLeft(0)
@@ -97,7 +97,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
                     .mainAxisAlignment(MainAxis.END)
                     .reverseLayout(true)
                     .child(createControllerSlot().marginBottom(6))
-                    .child(createPowerSwitchButton())
+                    .child(createPowerSwitchButton(hypervisor))
                     .child(createStructureUpdateButton(syncManager))
                     .child(createVoltageConfigButton())
                     .childIf(usesExtraButton(), this::createExtraButton));
@@ -132,6 +132,16 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     }
 
     @Override
+    public Flow createMainColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return Flow.column()
+            .padding(4)
+            .child(createTerminalRow(panel, syncManager))
+            .child(createMuffleButton(hypervisor))
+            .child(createPanelGap(panel, syncManager))
+            .childIf(multiblock.supportsInventoryRow(), () -> createInventoryRow(panel, syncManager));
+    }
+
+    @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return Flow.column()
             .width(18)
@@ -140,7 +150,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
             .mainAxisAlignment(MainAxis.END)
             .reverseLayout(true)
             .child(createControllerSlot())
-            .child(createPowerSwitchButton())
+            .child(createPowerSwitchButton(hypervisor))
             .child(createStructureUpdateButton(syncManager))
             .child(createVoltageConfigButton())
             .childIf(usesExtraButton(), () -> createExtraButton().marginBottom(2));
@@ -193,22 +203,39 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
         return 20;
     }
 
-    @Override
-    protected ToggleButton createMuffleButton() {
-        return CommonButtons.createMuffleButton("mufflerSyncer")
-            .size(7)
-            .disableThemeBackground(true)
-            .disableHoverThemeBackground(true)
-            .overlay(true, GTGuiTextures.GODFORGE_SOUND_OFF)
-            .overlay(false, GTGuiTextures.GODFORGE_SOUND_ON)
+    protected ButtonWidget<?> createMuffleButton(SyncHypervisor hypervisor) {
+        PanelSyncManager syncManager = hypervisor.getSyncManager(getModuleType(), moduleIndex, getMainPanel());
+        BooleanSyncValue syncer = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("mufflerSyncer:0");
+
+        return new ButtonWidget<>().size(7)
             .top(8)
             .right(8)
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
+            .overlay(new DynamicDrawable(() -> {
+                if (syncer.getBoolValue()) {
+                    return GTGuiTextures.GODFORGE_SOUND_OFF;
+                }
+                return GTGuiTextures.GODFORGE_SOUND_ON;
+            }))
+            .onMousePressed(d -> {
+                syncer.setBoolValue(!syncer.getBoolValue());
+                return true;
+            })
+            .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.machines.muffled")))
             .clickSound(ForgeOfGodsGuiUtil.getButtonSound());
     }
 
-    @Override
-    protected ToggleButton createPowerSwitchButton() {
-        return super.createPowerSwitchButton().size(16)
+    protected ButtonWidget<?> createPowerSwitchButton(SyncHypervisor hypervisor) {
+        PanelSyncManager syncManager = hypervisor.getSyncManager(getModuleType(), moduleIndex, getMainPanel());
+        BooleanSyncValue syncer = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("powerSwitch:0");
+
+        return new ButtonWidget<>()
+            .tooltip(tooltip -> tooltip.add(StatCollector.translateToLocal("GT5U.gui.button.power_switch")))
+            .onMousePressed(d -> {
+                syncer.setBoolValue(!syncer.getBoolValue());
+                return true;
+            })
             .overlay(new DynamicDrawable(() -> {
                 if (multiblock.isAllowedToWork()) {
                     return GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_ON;
@@ -223,13 +250,20 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
 
     @Override
     protected IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
-        return ((ToggleButton) super.createStructureUpdateButton(syncManager)).size(16)
+        BooleanSyncValue syncer = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("structureUpdateButton:0");
+
+        return new ButtonWidget<>().size(16)
+            .onMousePressed(d -> {
+                syncer.setBoolValue(!syncer.getBoolValue());
+                return true;
+            })
             .overlay(new DynamicDrawable(() -> {
                 if (multiblock.getStructureUpdateTime() > -20) {
                     return GTGuiTextures.TT_OVERLAY_BUTTON_STRUCTURE_CHECK;
                 }
                 return GTGuiTextures.TT_OVERLAY_BUTTON_STRUCTURE_CHECK_OFF;
             }))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.structure_update")))
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .clickSound(ForgeOfGodsGuiUtil.getButtonSound());
     }
