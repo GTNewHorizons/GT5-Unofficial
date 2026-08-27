@@ -207,6 +207,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Override
     public ITexture[][] getTextures(int metadata) {
+        metadata = getTextureCacheKey(metadata);
         ITexture[][] cached = textureCache.get(metadata);
         if (cached != null) return cached;
         return cacheTextures(metadata);
@@ -428,6 +429,11 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     }
 
     public static final int SMALL_ORE_META_OFFSET = 16000, NATURAL_ORE_META_OFFSET = 8000;
+
+    static int getTextureCacheKey(int metadata) {
+        if ((metadata % SMALL_ORE_META_OFFSET) >= NATURAL_ORE_META_OFFSET) metadata -= NATURAL_ORE_META_OFFSET;
+        return metadata;
+    }
 
     public int getMaterialIndex(int meta) {
         if (meta < 0) return 0;
