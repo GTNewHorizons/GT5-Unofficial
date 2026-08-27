@@ -261,7 +261,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         long wholeClusters = getWholeClustersToConsume(entry, clusterCount, availableSpace);
         if (wholeClusters > 0) {
             long itemsToStore = Math.min(availableSpace, saturatedMultiply(wholeClusters, entry.itemCount));
-            if (!simulate && itemsToStore > 0) storeMatterClusterContents(currentItem, entry.item, itemsToStore);
+            if (!simulate && itemsToStore > 0) storeMatterClusterContents(entry.item, itemsToStore);
             if (!simulate) getBaseMetaTileEntity().markDirty();
             clusterCount -= wholeClusters;
             availableSpace -= itemsToStore;
@@ -283,7 +283,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (currentItem == null || !canReplaceOutputWithMatterCluster(currentItem, storageLimit)) return clusterCount;
         if (simulate) return clusterCount - 1;
 
-        reclaimOutput(currentItem);
+        reclaimOutput();
         mInventory[1] = cluster.copy();
         mInventory[1].stackSize = 1;
         notifyMatterClusterOutputChange();
@@ -309,10 +309,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (simulate) return clusterCount - 1;
 
         int itemsToStore = (int) Math.min(availableSpace, itemsToConsume);
-        if (itemsToStore > 0) storeMatterClusterContents(currentItem, entry.item, itemsToStore);
+        if (itemsToStore > 0) storeMatterClusterContents(entry.item, itemsToStore);
 
         if (needsOutput) {
-            reclaimOutput(currentItem);
+            reclaimOutput();
             ItemStack remainder = cluster.copy();
             remainder.stackSize = 1;
             removeMatterClusterItems(remainder, entry.item, itemsToConsume, remainderCount);
@@ -330,9 +330,9 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             && (long) getItemCount() + mInventory[1].stackSize <= storageLimit;
     }
 
-    private void reclaimOutput(@Nullable ItemStack currentItem) {
+    private void reclaimOutput() {
         if (mInventory[1] == null) return;
-        storeMatterClusterContents(currentItem, mInventory[1], mInventory[1].stackSize);
+        storeMatterClusterContents(mInventory[1], mInventory[1].stackSize);
         mInventory[1] = null;
     }
 
@@ -406,8 +406,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         return left > Long.MAX_VALUE / right ? Long.MAX_VALUE : left * right;
     }
 
-    private void storeMatterClusterContents(ItemStack currentItem, ItemStack storedItem, long itemCount) {
-        if (currentItem == null) {
+    private void storeMatterClusterContents(ItemStack storedItem, long itemCount) {
+        if (getItemCount() <= 0) {
             ItemStack storedItemCopy = storedItem.copy();
             storedItemCopy.stackSize = 1;
             setItemStack(storedItemCopy);
