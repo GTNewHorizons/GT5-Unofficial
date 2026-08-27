@@ -38,20 +38,20 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
-import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
     public final String blockName;
     public final StoneType stoneType;
     public final boolean isSmall, isNatural;
-    private final Int2ObjectLinkedOpenHashMap<ITexture[][]> textureCache = new Int2ObjectLinkedOpenHashMap<>();
+    private final BoundedTextureCache textureCache = new BoundedTextureCache();
 
     public BWMetaGeneratedOres(String blockName, StoneType stoneType, boolean small, boolean natural) {
         super(Material.rock);
@@ -181,8 +181,14 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
     @Override
     @Nullable
-    public synchronized ITexture[][] getTextures(int metadata) {
-        ITexture[][] cached = textureCache.getAndMoveToFirst(metadata);
+    public ITexture[][] getTextures(int metadata) {
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+        return cacheTextures(metadata);
+    }
+
+    private synchronized ITexture[][] cacheTextures(int metadata) {
+        ITexture[][] cached = textureCache.get(metadata);
         if (cached != null) return cached;
 
         Werkstoff material = Werkstoff.werkstoffHashMap.get((short) metadata);
@@ -204,8 +210,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
             out[i] = new ITexture[] { stoneType.getTexture(i), oreTexture };
         }
 
-        textureCache.putAndMoveToFirst(metadata, out);
-        while (textureCache.size() > 512) textureCache.removeLast();
+        textureCache.put(metadata, out);
         return out;
     }
 

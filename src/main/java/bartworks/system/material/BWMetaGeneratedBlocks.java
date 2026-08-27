@@ -38,15 +38,15 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
-import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implements IBlockWithTextures {
 
     public static ThreadLocal<TileEntityMetaGeneratedBlock> mTemporaryTileEntity = new ThreadLocal<>();
     protected final OrePrefixes prefix;
-    private final Int2ObjectLinkedOpenHashMap<ITexture[][]> textureCache = new Int2ObjectLinkedOpenHashMap<>();
+    private final BoundedTextureCache textureCache = new BoundedTextureCache();
 
     public BWMetaGeneratedBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName,
         OrePrefixes types) {
@@ -75,8 +75,14 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
     }
 
     @Override
-    public synchronized @Nullable ITexture[][] getTextures(int meta) {
-        ITexture[][] cached = textureCache.getAndMoveToFirst(meta);
+    public @Nullable ITexture[][] getTextures(int meta) {
+        ITexture[][] cached = textureCache.get(meta);
+        if (cached != null) return cached;
+        return cacheTextures(meta);
+    }
+
+    private synchronized ITexture[][] cacheTextures(int meta) {
+        ITexture[][] cached = textureCache.get(meta);
         if (cached != null) return cached;
 
         ITexture baseTexture = null;
@@ -103,8 +109,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
         ITexture[] texture = new ITexture[] { TextureFactory.of(Blocks.iron_block), baseTexture };
 
         cached = new ITexture[][] { texture, texture, texture, texture, texture, texture };
-        textureCache.putAndMoveToFirst(meta, cached);
-        while (textureCache.size() > 512) textureCache.removeLast();
+        textureCache.put(meta, cached);
         return cached;
     }
 

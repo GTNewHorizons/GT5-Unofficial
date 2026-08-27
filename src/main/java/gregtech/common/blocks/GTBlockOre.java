@@ -43,6 +43,7 @@ import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.items.GTGenericBlock;
+import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLanguageManager;
@@ -52,12 +53,11 @@ import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.nei.NEIGTConfig;
-import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IBlockWithCustomSound {
 
     public final List<StoneType> stoneTypes;
-    private final Int2ObjectLinkedOpenHashMap<ITexture[][]> textureCache = new Int2ObjectLinkedOpenHashMap<>();
+    private final BoundedTextureCache textureCache = new BoundedTextureCache();
 
     public GTBlockOre(int series, StoneType[] stoneTypes) {
         super(GTItemOre.class, "gt.blockores" + series, Material.rock);
@@ -206,8 +206,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     }
 
     @Override
-    public synchronized ITexture[][] getTextures(int metadata) {
-        ITexture[][] cached = textureCache.getAndMoveToFirst(metadata);
+    public ITexture[][] getTextures(int metadata) {
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+        return cacheTextures(metadata);
+    }
+
+    private synchronized ITexture[][] cacheTextures(int metadata) {
+        ITexture[][] cached = textureCache.get(metadata);
         if (cached != null) return cached;
 
         StoneType stoneType = getStoneType(metadata);
@@ -233,8 +239,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         final ITexture[] textures = new ITexture[] { bg, fg };
 
         cached = new ITexture[][] { textures, textures, textures, textures, textures, textures };
-        textureCache.putAndMoveToFirst(metadata, cached);
-        while (textureCache.size() > 512) textureCache.removeLast();
+        textureCache.put(metadata, cached);
         return cached;
     }
 
