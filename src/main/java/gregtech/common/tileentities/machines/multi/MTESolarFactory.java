@@ -327,7 +327,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 if (shouldMultiplyOutputs) {
                     // We multiply outputs here since its after parallels are calculated, however this is after void
                     // protection checks so void protection is not supported.
-                    outputItems = calculateNewOutput(outputItems[0], (foundWaferTier - minimumTierForRecipe));
+                    overwriteOutputItems(calculateNewOutput(outputItems[0], (foundWaferTier - minimumTierForRecipe)));
                 }
                 clearVars();
                 return result;
