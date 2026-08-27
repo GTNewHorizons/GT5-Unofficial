@@ -11,11 +11,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -24,6 +26,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -35,6 +38,9 @@ import thaumcraft.common.tiles.TileOwned;
 import xonin.backhand.api.core.BackhandUtils;
 
 public class ToolVajra extends ItemTool implements IElectricItem {
+
+    private static final String SPEED_MODE_KEY = "VajraSpeedMode";
+    private static final SpeedMode[] SPEED_MODES = SpeedMode.values();
 
     public int maxCharge = (int) 1e8;
     public int baseCost = 3333;
@@ -82,7 +88,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         if (!ElectricItem.manager.canUse(stack, baseCost)) {
             return 0.0F;
         }
-        return Integer.MAX_VALUE;
+        return getSpeedMode(stack).digSpeed;
     }
 
     @Override
@@ -110,7 +116,32 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         list.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("gt.vajra.tooltip.flavor"));
         list.add(
             EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.vajra.tooltip.charge", VN[tier]));
+        list.add(
+            EnumChatFormatting.YELLOW + StatCollector.translateToLocalFormatted(
+                "gt.vajra.tooltip.speed",
+                StatCollector.translateToLocal(getSpeedMode(stack).translationKey)));
         list.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.vajra.tooltip.silk_touch"));
+    }
+
+    public static void switchSpeedMode(EntityPlayerMP player, @SuppressWarnings("unused") SyncedKeybind keybind,
+        boolean keyDown) {
+        if (!keyDown) return;
+        ItemStack stack = player.inventory.getCurrentItem();
+        if (stack == null || !(stack.getItem() instanceof ToolVajra)) return;
+
+        SpeedMode currentMode = getSpeedMode(stack);
+        SpeedMode nextMode = SPEED_MODES[(currentMode.ordinal() + 1) % SPEED_MODES.length];
+        ItemStackNBT.setByte(stack, SPEED_MODE_KEY, (byte) nextMode.ordinal());
+        player.addChatMessage(
+            new ChatComponentTranslation(
+                "gt.vajra.message.speed",
+                new ChatComponentTranslation(nextMode.translationKey)));
+    }
+
+    private static SpeedMode getSpeedMode(ItemStack stack) {
+        if (!ItemStackNBT.hasKey(stack, SPEED_MODE_KEY)) return SpeedMode.FAST;
+        int mode = ItemStackNBT.getByte(stack, SPEED_MODE_KEY) & 0xFF;
+        return mode < SPEED_MODES.length ? SPEED_MODES[mode] : SpeedMode.FAST;
     }
 
     @Override
@@ -217,5 +248,20 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             }
         }
         return super.onItemRightClick(stack, worldIn, player);
+    }
+
+    private enum SpeedMode {
+
+        SLOW(8.0F, "gt.vajra.speed.slow"),
+        MEDIUM(64.0F, "gt.vajra.speed.medium"),
+        FAST(Integer.MAX_VALUE, "gt.vajra.speed.fast");
+
+        private final float digSpeed;
+        private final String translationKey;
+
+        SpeedMode(float digSpeed, String translationKey) {
+            this.digSpeed = digSpeed;
+            this.translationKey = translationKey;
+        }
     }
 }

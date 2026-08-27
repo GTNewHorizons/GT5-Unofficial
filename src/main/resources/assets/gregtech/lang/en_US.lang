@@ -7374,6 +7374,7 @@ gt.softmallet.tooltip.mode=Mode Cycles Between Toggle/Activate/Deactivate
 
 #Tool modes
 key.gt.tool_mode_switch=Tool Mode Switch
+key.gt.vajra_speed_switch=Vajra Speed Switch
 gt.wrench.mode.1=Line Mode
 gt.wrench.mode.2=Precise Mode
 gt.softmallet.mode.1=Activation Mode
@@ -7382,7 +7383,12 @@ gt.softmallet.mode.2=Deactivation Mode
 # Tooltip for vajra
 gt.vajra.tooltip.flavor=Your friendly instant block breaker
 gt.vajra.tooltip.charge=Can be charged in any %s machine
+gt.vajra.tooltip.speed=Mining speed: %s
 gt.vajra.tooltip.silk_touch=Shift right click air to toggle silk touch
+gt.vajra.message.speed=Vajra mining speed: %s
+gt.vajra.speed.slow=Slow
+gt.vajra.speed.medium=Medium
+gt.vajra.speed.fast=Fast
 
 # Network Analyzer
 gt.NetworkAnalyzer.name=Network Analyzer
