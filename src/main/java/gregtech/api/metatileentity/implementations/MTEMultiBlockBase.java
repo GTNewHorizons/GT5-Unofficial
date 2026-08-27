@@ -2868,7 +2868,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             + EnumChatFormatting.RESET
                             + " x "
                             + EnumChatFormatting.GOLD
-                            + formatNumber(tag.getInteger("outputItemCount" + i)));
+                            + formatNumber(tag.getLong("outputItemCount" + i))
+                            + (tag.hasKey("outputItemChance" + i)
+                                ? " @ " + EnumChatFormatting.YELLOW
+                                    + GTUtility.formatOutputChance(tag.getInteger("outputItemChance" + i))
+                                : ""));
                 }
                 for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
                     // Localize on the client: the NBT holds the internal fluid name, not the display name
@@ -2882,8 +2886,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             + EnumChatFormatting.RESET
                             + " x "
                             + EnumChatFormatting.GOLD
-                            + formatNumber(tag.getInteger("outputFluidCount" + i))
-                            + "L");
+                            + formatNumber(tag.getLong("outputFluidCount" + i))
+                            + "L"
+                            + (tag.hasKey("outputFluidChance" + i)
+                                ? " @ " + EnumChatFormatting.YELLOW
+                                    + GTUtility.formatOutputChance(tag.getInteger("outputFluidChance" + i))
+                                : ""));
                 }
                 if (totalOutputs > 3) {
                     currentTip.add(
@@ -2968,39 +2976,44 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             tag.setInteger("powerPanelMaxParallel", localPowerPanelParallel);
         }
 
-        if (mOutputItems != null) {
-            int index = 0;
-            for (ItemStack stack : mOutputItems) {
-                if (stack == null) continue;
-                tag.setString("outputItemIcon" + index, TTRenderStack.create(stack, true));
-                // Send the raw stack and localize on the client. getWailaNBTData runs server-side,
-                // where the client language file is not loaded, so localizing here yields English on dedicated servers.
-                NBTTagCompound outputItemStack = new NBTTagCompound();
-                stack.writeToNBT(outputItemStack);
-                tag.setTag("outputItemStack" + index, outputItemStack);
-                tag.setInteger("outputItemCount" + index, stack.stackSize);
-                index++;
+        int itemIndex = 0;
+        for (ExpectedItemOutput output : getDisplayedItemOutputs()) {
+            ItemStack stack = output.stack();
+            if (stack == null) continue;
+            tag.setString("outputItemIcon" + itemIndex, TTRenderStack.create(stack, true));
+            // Send the raw stack and localize on the client. getWailaNBTData runs server-side,
+            // where the client language file is not loaded, so localizing here yields English on dedicated servers.
+            NBTTagCompound outputItemStack = new NBTTagCompound();
+            stack.writeToNBT(outputItemStack);
+            tag.setTag("outputItemStack" + itemIndex, outputItemStack);
+            tag.setLong("outputItemCount" + itemIndex, output.amount());
+            if (output.chance() != 10000) {
+                tag.setInteger("outputItemChance" + itemIndex, output.chance());
             }
-            if (index != 0) tag.setInteger("outputItemLength", index);
+            itemIndex++;
         }
-        if (mOutputFluids != null) {
-            int index = 0;
-            for (FluidStack stack : mOutputFluids) {
-                if (stack == null) continue;
-                tag.setString(
-                    "outputFluidIcon" + index,
-                    TTRenderStack.create(GTUtility.getFluidDisplayStack(stack, false), true));
-                // Store the internal fluid name and localize on the client. getWailaNBTData runs server-side,
-                // where the client language file is not loaded, so localizing here yields English on dedicated servers.
-                tag.setString(
-                    "outputFluidName" + index,
-                    stack.getFluid()
-                        .getName());
-                tag.setInteger("outputFluidCount" + index, stack.amount);
-                index++;
+        if (itemIndex != 0) tag.setInteger("outputItemLength", itemIndex);
+
+        int fluidIndex = 0;
+        for (ExpectedFluidOutput output : getDisplayedFluidOutputs()) {
+            FluidStack stack = output.stack();
+            if (stack == null) continue;
+            tag.setString(
+                "outputFluidIcon" + fluidIndex,
+                TTRenderStack.create(GTUtility.getFluidDisplayStack(stack, false), true));
+            // Store the internal fluid name and localize on the client. getWailaNBTData runs server-side,
+            // where the client language file is not loaded, so localizing here yields English on dedicated servers.
+            tag.setString(
+                "outputFluidName" + fluidIndex,
+                stack.getFluid()
+                    .getName());
+            tag.setLong("outputFluidCount" + fluidIndex, output.amount());
+            if (output.chance() != 10000) {
+                tag.setInteger("outputFluidChance" + fluidIndex, output.chance());
             }
-            if (index != 0) tag.setInteger("outputFluidLength", index);
+            fluidIndex++;
         }
+        if (fluidIndex != 0) tag.setInteger("outputFluidLength", fluidIndex);
 
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
