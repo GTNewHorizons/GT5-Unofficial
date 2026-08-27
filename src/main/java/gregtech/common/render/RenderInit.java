@@ -48,6 +48,7 @@ public final class RenderInit implements IResourceManagerReloadListener {
         onResourceReload(WormholeRenderer::reload);
         onResourceReload(BlackholeRenderer::reload);
         onResourceReload(MTEExoFoundry::reloadRender);
+        onResourceReload(GTRendererBlock::clearInventoryDisplayListCache);
 
         ((IReloadableResourceManager) Minecraft.getMinecraft()
             .getResourceManager()).registerReloadListener(INSTANCE);
