@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.multiblock.godforge;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
@@ -103,7 +104,12 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
                     .childIf(usesExtraButton(), this::createExtraButton));
 
         if (NetworkUtils.isClient()) {
-            panel.child(CommonWidgets.createMachineTitle(multiblock, 217));
+            panel.child(
+                CommonWidgets.createMachineTitle(
+                    multiblock,
+                    EnumChatFormatting.AQUA
+                        + translateToLocalFormatted("fog.text.tooltip.module_number", moduleIndex + 1),
+                    217));
         }
 
         return panel;

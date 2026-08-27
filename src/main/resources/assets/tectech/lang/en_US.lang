@@ -992,6 +992,7 @@ fog.button.seconds=Seconds
 fog.button.thanks.tooltip=List of Contributors
 fog.button.color.tooltip=Cosmetics Menu
 fog.button.statistics.tooltip=Stats Overview
+fog.text.tooltip.module_number=(Module %d)
 fog.text.tooltip.heat=Heat value used for checking if a recipe can run
 fog.text.tooltip.effectiveheat=Heat value used for calculating bonuses
 fog.text.tooltip.parallel=Maximum parallel amount
