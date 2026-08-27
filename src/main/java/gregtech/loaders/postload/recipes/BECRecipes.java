@@ -55,6 +55,9 @@ import tectech.thing.block.BlockQuantumGlass;
 /// | Family 3 | Phononic Medium, Universium, MHDCSM, QGP, MagMatter, Cosmic Solder, Eternity |
 /// | Family 4 | Phononic Medium, Celestial Tungsten, Infinity, Neutronium, Cosmic Neutronium, Hypogen, Bedrockium |
 /// | Family 5 | SpaceTime, Space, MHDCSM, QGP, DSS, Cosmic Solder, Eternity |
+///
+/// Presently, recipes cannot be alternatives that diverge only in condensates. The BEC recipe check only acknowledges
+/// items, then checks condensates present against the _selected_ recipe.
 public class BECRecipes implements Runnable {
 
     private static final NaniteTier[] TIER_TO_NANITE = { NaniteTier.Carbon, NaniteTier.Silver, NaniteTier.Gold,
