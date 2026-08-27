@@ -3648,6 +3648,19 @@ public class GTUtility {
         }
     }
 
+    /// Multiplies two longs, clamping to the min/max for a long if the result overflows.
+    public static long mulSafe(long a, long b) {
+        try {
+            return Math.multiplyExact(a, b);
+        } catch (ArithmeticException ignored) {
+            if (a > 0 == b > 0) {
+                return Long.MAX_VALUE;
+            } else {
+                return Long.MIN_VALUE;
+            }
+        }
+    }
+
     /**
      * Hash an item stack for the purpose of storing hash across launches
      */
