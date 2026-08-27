@@ -12,6 +12,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
@@ -32,6 +33,10 @@ import tectech.thing.block.RenderForgeOfGods;
 import tectech.thing.block.TileEntityEyeOfHarmony;
 import tectech.thing.block.TileEntityForgeOfGods;
 import tectech.thing.item.ItemRenderForgeOfGods;
+import tectech.voidcraft.item.ItemVoidbaseBlueprint;
+import tectech.voidcraft.item.ItemVoidcraft;
+import tectech.voidcraft.render.RenderVoidcraftAssembler;
+import tectech.voidcraft.render.RenderVoidcraftBlueprintItem;
 import tectech.voidcraft.render.RenderVoidcraftShip;
 import tectech.voidcraft.render.TileEntityVoidcraftShip;
 
@@ -47,6 +52,18 @@ public class ClientProxy extends CommonProxy {
 
         // Voidcraft (EoH rework, Phase 3) — the ship hologram: the actual digitized ship rendered as a 3D model
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityVoidcraftShip.class, new RenderVoidcraftShip());
+        // The fleet's mining/construction lasers draw in the world-last pass (after the EoH space shell has
+        // written its depth): the tile-entity pass fills the queue, this handler drains it once per frame.
+        MinecraftForge.EVENT_BUS.register(new RenderVoidcraftShip.BeamWorldLastRenderer());
+        // The assemblers' scan wireframe, scanning planes and preview hologram draw in the same world-last
+        // pass (same ordering guarantees as the fleet beams).
+        MinecraftForge.EVENT_BUS.register(new RenderVoidcraftAssembler());
+
+        // The blueprint items (ship + base) render the actual 3D model of the craft they carry, in inventory,
+        // in hand and when dropped, instead of a single flat texture.
+        MinecraftForgeClient.registerItemRenderer(ItemVoidcraft.INSTANCE, new RenderVoidcraftBlueprintItem(false));
+        MinecraftForgeClient
+            .registerItemRenderer(ItemVoidbaseBlueprint.INSTANCE, new RenderVoidcraftBlueprintItem(true));
 
         RenderingRegistry.registerBlockHandler(
             new RenderDoubleSidedGlass(() -> BlockGodforgeGlass.Icon, BlockGodforgeGlass.renderID));

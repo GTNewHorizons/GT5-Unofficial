@@ -25,6 +25,13 @@ import java.util.Optional;
  * assembler refuses to digitize a build volume that still contains them ({@code voidcraft_cover_only_component}).
  *
  * <p>
+ * <b>Multiblock components</b> (user spec) are a second kind of placeable block, marked {@code multiblock=true}:
+ * a GT multiblock defined as a StructureLib structure (its own controller machine block plus zero-stat casing
+ * blocks). The assemblers digitize the whole structure as a unit when the controller's own structure check
+ * passes; the component's stats apply exactly once, through the controller entry's per-cell contribution (the
+ * casing entries contribute mass only).
+ *
+ * <p>
  * Each entry contributes fixed stats (see the per-field javadoc). The {@code tier} gates which assembler circuit
  * tier may digitize it (higher tech = more options, per the rework proposal). The grid encoding used in
  * {@link VoidcraftBlueprint} is {@code meta + 1} (0 = empty cell).
@@ -36,62 +43,62 @@ public enum VoidcraftComponent {
      * mass and a little integrity; every function of the ship comes from its covers.
      */
     CONTROLLER(0, "Voidcraft Controller", "tt.voidcraft.component.controller", true, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        10),
+        10, false),
 
     /**
      * COVER-ONLY: thrust is delivered by the {@link VoidcraftCoverComponent#THRUSTER_NOZZLE} cover.
      * Kept as the function definition behind that cover (icon + stat shape); not a placeable block.
      */
-    ENGINE(1, "Voidcraft Engine", "tt.voidcraft.component.engine", false, 0, 8, 100, 0, 0, 0, 0, 0, 5, 0, 0, 0),
+    ENGINE(1, "Voidcraft Engine", "tt.voidcraft.component.engine", false, 0, 8, 100, 0, 0, 0, 0, 0, 5, 0, 0, 0, false),
 
     /**
      * The "Voidcraft Frame" (renamed from the old "Voidcraft Utility Block"): the mostly-transparent
      * framebox hull block. Structural mass + integrity, no function of its own â€” its purpose is to accept
      * the Voidcraft component covers on its faces; all ship functionality comes from those covers.
      */
-    FRAME(2, "Voidcraft Frame", "tt.voidcraft.component.frame", true, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10),
+    FRAME(2, "Voidcraft Frame", "tt.voidcraft.component.frame", true, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, false),
 
     /**
      * COVER-ONLY: cargo is delivered by the {@link VoidcraftCoverComponent#CARGO_POD} cover. Kept as the
      * function definition behind that cover (icon + stat shape); not a placeable block.
      */
-    CARGO_BAY(3, "Voidcraft Cargo Bay", "tt.voidcraft.component.cargo_bay", false, 0, 15, 0, 50, 0, 0, 0, 0, 0, 0, 0,
-        0),
+    CARGO_BAY(3, "Voidcraft Cargo Bay", "tt.voidcraft.component.cargo_bay", false, 0, 15, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0,
+        false),
 
     /**
      * COVER-ONLY: mining is delivered by the {@link VoidcraftCoverComponent#MINING_ARRAY} cover. Kept as the
      * function definition behind that cover (icon + stat shape); not a placeable block.
      */
     MINING_CENTRE(4, "Mining Drone Command Centre", "tt.voidcraft.component.mining_centre", false, 1, 20, 0, 0, 100, 0,
-        0, 0, 0, 20, 0, 0),
+        0, 0, 0, 20, 0, 0, false),
 
     /**
      * COVER-ONLY: starlifting is delivered by the {@link VoidcraftCoverComponent#STAR_SIPHON} cover. Kept as the
      * function definition behind that cover (icon + stat shape); not a placeable block.
      */
     STARLIFTER_ARRAY(5, "Starlifter Array", "tt.voidcraft.component.starlifter_array", false, 2, 40, 0, 0, 0, 0, 100, 0,
-        0, 40, 0, 0),
+        0, 40, 0, 0, false),
 
     /**
      * COVER-ONLY: scanning is delivered by the {@link VoidcraftCoverComponent#SCANNER_DISH} cover. Kept as the
      * function definition behind that cover (icon + stat shape); not a placeable block.
      */
     SPACETIME_SCANNER(6, "Spacetime Fabric Scanner", "tt.voidcraft.component.spacetime_scanner", false, 2, 15, 0, 0, 0,
-        100, 0, 0, 0, 20, 0, 0),
+        100, 0, 0, 0, 20, 0, 0, false),
 
     /**
      * COVER-ONLY: construction is delivered by the {@link VoidcraftCoverComponent#FABRICATOR_UNIT} cover. Kept as
      * the function definition behind that cover (icon + stat shape); not a placeable block.
      */
     CONSTRUCTION_ARM(7, "Construction Fabricator", "tt.voidcraft.component.construction_arm", false, 2, 25, 0, 0, 0, 0,
-        100, 0, 0, 20, 0, 0),
+        100, 0, 0, 20, 0, 0, false),
 
     /**
      * COVER-ONLY: energy storage is delivered by the {@link VoidcraftCoverComponent#POWER_CELL} cover. Kept as the
      * function definition behind that cover (icon + stat shape); not a placeable block.
      */
     REACTOR(8, "Voidcraft Reactor", "tt.voidcraft.component.reactor", false, 1, 10, 0, 0, 0, 0, 0, 1_000_000L, 0, 0, 0,
-        0),
+        0, false),
 
     /**
      * COVER-ONLY: hull repair is delivered by the {@link VoidcraftCoverComponent#REPAIR_BAY} cover (the repair work
@@ -99,7 +106,7 @@ public enum VoidcraftComponent {
      * definition behind that cover; not a placeable block.
      */
     REPAIR_BAY(9, "Voidcraft Repair Bay", "tt.voidcraft.component.repair_bay", false, 2, 12, 0, 0, 0, 0, 0, 0, 0, 2_000,
-        0, 0),
+        0, 0, false),
 
     /**
      * COVER-ONLY: energy generation is delivered by the {@link VoidcraftCoverComponent#SOLAR_PANEL} cover (the first
@@ -108,21 +115,50 @@ public enum VoidcraftComponent {
      * placeable block.
      */
     SOLAR_PANEL(10, "Voidcraft Solar Panel", "tt.voidcraft.component.solar_panel", false, 2, 8, 0, 0, 0, 0, 0, 0, 0, 0,
-        2_000, 0);
+        2_000, 0, false),
+
+    /**
+     * MULTIBLOCK CONTROLLER: the Voidcraft Heavy Mining Array — a 3×3×2 GT multiblock (1 controller block + 17 casing
+     * blocks). The assembler digitizes the whole structure as a unit when its controller's own structure check
+     * passes; the component stats apply exactly once, carried by this entry (the casings contribute mass only).
+     * "Heavy" distinguishes it from the small mining cover of the same name.
+     */
+    MINING_ARRAY(11, "Voidcraft Heavy Mining Array", "tt.voidcraft.component.mining_array", true, 2, 25, 0, 0, 1000, 0,
+        0, 0, 0, 200, 0, 0, true),
+
+    /**
+     * MULTIBLOCK CASING: the Mining Array's plain filler block — a "dumb" casing with no stats of its own beyond
+     * mass (it takes no covers). Tolerated as inert mass / decoration when found outside a formed structure.
+     */
+    MINING_ARRAY_CASING(12, "Mining Array Casing", "tt.voidcraft.component.mining_array_casing", true, 0, 5, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, true),
+
+    /**
+     * MULTIBLOCK CASING: the Mining Array's accent panel around the controller's front face (no covers, no stats
+     * beyond mass).
+     */
+    MINING_ARRAY_PANEL(13, "Mining Array Panel", "tt.voidcraft.component.mining_array_panel", true, 0, 5, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, true);
 
     /** All components in meta order (index == meta). */
     public static final VoidcraftComponent[] ALL = values();
 
     /**
-     * PASS 23: the ONLY placeable full-block components (controller + frame). Everything else is cover-only.
+     * All placeable full-block components: the classic hull blocks (controller + frame) and the multiblock
+     * component blocks (each multiblock's controller + its casing blocks). Everything else is cover-only.
      */
     public static final List<VoidcraftComponent> PLACEABLE = placeableList();
 
     private final int meta;
     private final String displayName;
     private final String langKey;
-    /** PASS 23: true only for the two full blocks (controller, frame); false = cover-only function definition. */
+    /** PASS 23: true for the full blocks (controller, frame) and the multiblock component blocks. */
     private final boolean placeable;
+    /**
+     * True when this entry is a block of a GT multiblock component (its controller or one of its casing blocks) —
+     * the assembler audits the owning structure's formation before digitizing it.
+     */
+    private final boolean multiblock;
     private final int tier;
     private final long mass;
     private final long thrust;
@@ -139,11 +175,12 @@ public enum VoidcraftComponent {
 
     VoidcraftComponent(int meta, String displayName, String langKey, boolean placeable, int tier, long mass,
         long thrust, long cargoSlots, long miningPower, long scanPower, long constructionPower, long starlifterPower,
-        long energyBuffer, long energyDraw, long energyGen, long integrity) {
+        long energyBuffer, long energyDraw, long energyGen, long integrity, boolean multiblock) {
         this.meta = meta;
         this.displayName = displayName;
         this.langKey = langKey;
         this.placeable = placeable;
+        this.multiblock = multiblock;
         this.tier = tier;
         this.mass = mass;
         this.thrust = thrust;
@@ -194,6 +231,14 @@ public enum VoidcraftComponent {
     /** PASS 23: {@code true} when this component only exists as a cover (not a placeable block). */
     public boolean isCoverOnly() {
         return !placeable;
+    }
+
+    /**
+     * {@code true} when this entry is a block of a GT multiblock component (the multiblock's controller or one of
+     * its casing blocks). The assembler audits the owning structure before digitizing it.
+     */
+    public boolean isMultiblock() {
+        return multiblock;
     }
 
     /**
@@ -289,9 +334,14 @@ public enum VoidcraftComponent {
                 throw new IllegalStateException("VoidcraftComponent meta mismatch at index " + i);
             }
         }
-        // Pass 23: exactly the controller and the frame are placeable full blocks.
+        // The classic hull blocks must be placeable.
         if (!CONTROLLER.isPlaceable() || !FRAME.isPlaceable()) {
             throw new IllegalStateException("Controller and Frame must be placeable full blocks");
+        }
+        // Every multiblock component block (controller or casing) is a placeable full block.
+        if (Arrays.stream(ALL)
+            .anyMatch(c -> c.multiblock && !c.placeable)) {
+            throw new IllegalStateException("Multiblock component blocks must be placeable");
         }
         if (Arrays.stream(ALL)
             .anyMatch(

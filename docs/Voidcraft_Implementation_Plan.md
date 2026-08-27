@@ -458,6 +458,105 @@ do-not-modify list).
 - **Exit:** visual + info polish complete; system feature-complete and ready for
   the (separate, future) legacy-EoH deprecation decision.
 
+### Feature addendum — Multiblock ship components  (M) — ✅ DONE (framework + Mining Array)
+
+> **Status:** user-spec feature added after the original phase list: ship
+> functionality as GT multiblock components. A multiblock component is a
+> StructureLib multiblock made of one controller machine block plus zero-stat
+> "dumb" casing blocks — no hatches, no buses, no covers. The component is
+> dormant in-world (no recipe, no energy); the assemblers find a controller in
+> the scan volume, force its own structure check, and digitize the whole
+> structure as a unit when formed — the catalog entry of the controller carries
+> the component's stats (per-cell sum workflow, applied exactly once), the
+> casing entries contribute mass only.
+>
+> Delivered (this addendum):
+>
+> - Package `tectech/voidcraft/multiblock/`:
+>   - `MTEVoidcraftMultiblockBase` — dormant `TTMultiblockBase` (own piece
+>     `main`, `checkMachine` = that piece only; no maintenance, no safe-void,
+>     no covers; `ISurvivalConstructable`); each component subclass owns its
+>     `IStructureDefinition` → GT Multiblock Preview / autobuild work for free.
+>   - `MTEVoidcraftMultiblockCasing` — plain machine-block casing MTE (no
+>     inventory, no covers, no payload).
+>   - `MTEVoidcraftMiningArray` — the reference component: 3×3×2 (18 cells),
+>     controller at the front-center-middle, 9 plain casings + 8 accent panels.
+>   - `MiningArrayStructure` — the shape as plain data (bare-JVM testable).
+>   - `VoidcraftMultiblockRegistry` — `register(controllerMTE)` per component
+>     (controller + its casing whitelist + expected cell count); assembler
+>     lookup by MTE instance.
+>   - `MultiblockAudit` — pure scan audit: unformed controller →
+>     `voidcraft_multiblock_incomplete`; formed but too few cells in the volume
+>     → `voidcraft_multiblock_out_of_volume`; stray/extra casings tolerated as
+>     inert mass.
+> - Catalog: `VoidcraftComponent` gains `multiblock` (⇒ placeable) + entries
+>   `MINING_ARRAY` (tier 2, mass 25, mining 1000, draw 200),
+>   `MINING_ARRAY_CASING` / `MINING_ARRAY_PANEL` (mass 5, zero function stats).
+>   Display name "Voidcraft Heavy Mining Array" (the small mining cover keeps
+>   "Voidcraft Mining Array").
+> - Assemblers (both, mirrored): the scan accepts registered multiblock blocks
+>   as hull cells (grid + facing, no cover/program capture), collects the
+>   controller refs, and the processing check audits them before digitizing
+>   (`MultiblockControllerRef` + forced `checkStructure(true, tile)` per
+>   controller). `clearShipBlocks` clears registered multiblock cells too.
+> - IDs: MTE 32069/32070/32071 (controller/casing/panel) — the
+>   `id = 32058 + meta` renderer invariant holds, so the in-flight model renders
+>   them with zero renderer changes; 32068 reserved.
+> - Lang: en_US + ru_RU error keys, component + block names, casing hint; 3
+>   placeholder icons `VC_MBLK_MINING_ARRAY{,_CASING,_PANEL}.png`.
+> - Tests: 18 new (shape data, pure audit, blueprint stats + tier gate,
+>   catalog invariants, MTE-id invariant) — 846 total green.
+>
+> Explicitly out of scope for this addendum: the final component set (Star
+> Siphon, Scanner, Cargo Hold, Solar multiblocks — later), covers on multiblock
+> blocks (forbidden by spec), and any recipe/energy model for the components.
+
+### Feature addendum — Blueprint-item 3D inventory icons  (S) — ✅ DONE (playtest pending)
+
+> **Status:** user-spec feature added after the original phase list: the
+> blueprint items (digitized Voidcraft + Voidbase blueprint) render the ACTUAL
+> 3D model of the craft they carry on the inventory icon — in slots, in hand
+> and when dropped — instead of the single flat `itemVoidcraft` texture
+> (technique reference: Amazing-Trophies).
+>
+> Delivered (this addendum):
+>
+> - New `RenderVoidcraftBlueprintItem` (client,
+>   `tectech/voidcraft/render/`) — implements Forge's `IItemRenderer`,
+>   registered per item via
+>   `MinecraftForgeClient.registerItemRenderer(Item, IItemRenderer)` from
+>   `ClientProxy.registerRenderInfo()` (per-item registration is the API in
+>   this Forge build; there is no global `ClientRegistry.registerItemRenderer`).
+>   - `handleRenderType`: claims `INVENTORY`, `EQUIPPED`,
+>     `EQUIPPED_FIRST_PERSON` and `ENTITY` only while the stack carries a
+>     blueprint grid payload (`vc_grid` present); anything else falls through
+>     to the vanilla flat icon (empty/corrupt payloads keep the old look).
+>   - `shouldUseRenderHelper`: selects the standard 3D transforms —
+>     `INVENTORY_BLOCK` in slots, `EQUIPPED_BLOCK` in hand, `BLOCK_3D` +
+>     `ENTITY_BOBBING` when dropped (no `ENTITY_ROTATION`, stable
+>     presentation).
+>   - `renderItem`: reuses the in-flight model pipeline —
+>     `VoidcraftShipModelCache.get(blueprint)` (built once per distinct
+>     blueprint, shared with the fleet renderer), the model drawn through the
+>     item-box transform (cells 0..n-1 centered on (0.5, 0.5, 0.5), scaled by
+>     `fitScale(maxAxis) = 0.85 / maxAxis`); dropped items are centered on the
+>     entity origin instead. Mandatory blocks-atlas rebind (plain items bind
+>     the ITEMS atlas, `getSpriteNumber() == 1`, while the VAO UVs are baked
+>     from the blocks atlas) + hologram look on the VOIDBASE blueprint item
+>     only (the Voidcraft item renders solid): cyan tint (0.4, 0.9, 1.0) at
+>     50% alpha via `SRC_ALPHA / ONE_MINUS_SRC_ALPHA` blend,
+>     `alphaFunc(GREATER, 0.1)` so the half-alpha fragments survive the alpha
+>     test, and depth writes off (save/restore via
+>     `glGetBoolean(GL_DEPTH_WRITEMASK)`, the `RenderForgeOfGods` pattern) so
+>     the hollow shell is see-through in both directions; the solid Voidcraft
+>     path uses white color, `alphaFunc(GREATER, 0.5)` and blend off. GL
+>     discipline (both): save/restore lighting/cull/blend/depth-mask,
+>     `GL_RESCALE_NORMAL`, lighting on, cull off (hollow shell).
+> - No new model pipeline, no texture work, no item/NBT changes — the existing
+>   hologram VAO is the icon.
+> - Tests: 4 new (claim + helper decision tables, fit scale) — 850 total
+>   green. The GL draw itself is verified by playtest.
+
 ---
 
 ## 6. Key risks & open questions

@@ -703,4 +703,60 @@ public class VoidcraftBlueprintTest {
     }
 
     // endregion
+
+    private static final byte GV_MINING_CONTROLLER = gv(VoidcraftComponent.MINING_ARRAY);
+    private static final byte GV_MINING_CASING = gv(VoidcraftComponent.MINING_ARRAY_CASING);
+    private static final byte GV_MINING_PANEL = gv(VoidcraftComponent.MINING_ARRAY_PANEL);
+
+    /**
+     * Fills the 3×3×2 corner of a grid (x 0..2, y 0..2, z 0..1) with the Mining Array layout: controller at the
+     * front slice's center of the middle layer, panels around it on the front slice, plain casings on the back
+     * slice.
+     */
+    private static void fillMiningArray(byte[] grid, int width, int height) {
+        for (int y = 0; y < 3; y++) {
+            for (int z = 0; z < 2; z++) {
+                for (int x = 0; x < 3; x++) {
+                    grid[x + width * (y + height * z)] = (y == 1 && z == 0 && x == 1) ? GV_MINING_CONTROLLER
+                        : (z == 0 ? GV_MINING_PANEL : GV_MINING_CASING);
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testMiningArrayComponentStats() {
+        // The Mining Array digitized as a unit: its 18 cells carry the component's stats exactly once (the
+        // controller entry), with the casings contributing mass only.
+        byte[] grid = new byte[18];
+        fillMiningArray(grid, 3, 3);
+        VoidcraftBlueprint ship = VoidcraftBlueprint.of(3, 3, 2, grid);
+        assertEquals(18, ship.componentCount());
+        VoidcraftStats stats = ship.computeStats();
+        assertEquals(25L + 17L * 5L, stats.mass, "controller mass + 17 casing masses");
+        assertEquals(1000L, stats.miningPower, "the component's mining power applies exactly once");
+        assertEquals(200L, stats.energyDraw, "the component's energy draw applies exactly once");
+        assertEquals(0L, stats.thrust);
+        assertTrue(VoidcraftRole.MINER.isActive(ship.computeRoles()), "a Mining Array ship is a miner");
+    }
+
+    @Test
+    public void testMiningArrayTierGate() {
+        // The Mining Array is a tier-2 component: a tier-1 circuit rejects the ship, a tier-2 circuit accepts it.
+        int width = 5, height = 5, depth = 4;
+        byte[] grid = new byte[width * height * depth];
+        fillMiningArray(grid, width, height);
+        int controllerCell = width * 3;
+        grid[controllerCell] = gv(VoidcraftComponent.CONTROLLER);
+        grid[controllerCell + 1] = gv(VoidcraftComponent.FRAME);
+        byte[] covers = new byte[grid.length * 6];
+        covers[controllerCell * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
+        VoidcraftBlueprint ship = VoidcraftBlueprint.of(width, height, depth, grid, null, covers);
+        assertEquals(2, ship.maxTier(), "the Mining Array sets the ship's tier");
+        List<String> errors = new ArrayList<>();
+        assertTrue(ship.validate(2, errors), "a tier-2 circuit digitizes it: " + errors);
+        errors.clear();
+        assertFalse(ship.validate(1, errors), "a tier-1 circuit cannot");
+        assertTrue(errors.contains("voidcraft_tier_too_high"), "the tier gate is the failure: " + errors);
+    }
 }

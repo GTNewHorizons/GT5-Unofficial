@@ -1,5 +1,9 @@
 package tectech.voidcraft.loader;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
@@ -20,6 +24,9 @@ import tectech.voidcraft.machine.MTEVoidcraftAssembler;
 import tectech.voidcraft.machine.MTEVoidcraftComponent;
 import tectech.voidcraft.machine.MTEVoidcraftGateway;
 import tectech.voidcraft.machine.MTEVoidcraftStorageBay;
+import tectech.voidcraft.multiblock.MTEVoidcraftMiningArray;
+import tectech.voidcraft.multiblock.MTEVoidcraftMultiblockCasing;
+import tectech.voidcraft.multiblock.VoidcraftMultiblockRegistry;
 import tectech.voidcraft.render.BlockVoidcraftShipRender;
 import tectech.voidcraft.render.TileEntityVoidcraftShip;
 import tectech.voidcraft.ship.VoidcraftComponent;
@@ -67,12 +74,37 @@ public final class VoidcraftLoader {
 
     /**
      * PASS 23: only the two placeable full blocks have creative-tab items (controller + frame) — every other
-     * function ships as a cover (see {@link ItemVoidcraftCovers}). The entry array is indexed by component meta.
+     * classic function ships as a cover (see {@link ItemVoidcraftCovers}). The multiblock component entries
+     * (mining array controller + casings) register in {@link #registerMultiblockMTEs()}. The entry array is
+     * indexed by component meta.
      */
     private static final CustomItemList[] COMPONENT_ENTRIES = { CustomItemList.VoidcraftComponent_Controller, null,
-        CustomItemList.VoidcraftComponent_Frame, null, null, null, null, null, null };
+        CustomItemList.VoidcraftComponent_Frame, null, null, null, null, null, null, null, null,
+        CustomItemList.VoidcraftMiningArray_Controller, CustomItemList.VoidcraftMiningArray_Casing,
+        CustomItemList.VoidcraftMiningArray_Panel };
 
     private VoidcraftLoader() {}
+
+    /**
+     * The machine-block item of a placeable component (the classic full blocks + the multiblock components) —
+     * for the voidbase assembler's parts list (the "block.<entry>" keys).
+     *
+     * @param component the catalog entry
+     * @return the placed block's item, or null for cover-only entries (their parts list keys resolve through the
+     *         cover item instead)
+     */
+    @Nullable
+    public static ItemStack blockItem(VoidcraftComponent component) {
+        if (component == null) {
+            return null;
+        }
+        int meta = component.getMeta();
+        CustomItemList entry = (meta >= 0 && meta < COMPONENT_ENTRIES.length) ? COMPONENT_ENTRIES[meta] : null;
+        if (entry == null) {
+            return null;
+        }
+        return entry.get(1);
+    }
 
     // region things (preLoad)
 
@@ -132,6 +164,9 @@ public final class VoidcraftLoader {
         // else is a cover
         registerComponentMTEs();
 
+        // The multiblock components (GT multiblocks; machine-block MTEs, id = 32058 + catalog meta)
+        registerMultiblockMTEs();
+
         // The Voidcraft Assembler multiblock
         CustomItemList.Machine_Multi_VoidcraftAssembler.set(
             new MTEVoidcraftAssembler(
@@ -183,26 +218,51 @@ public final class VoidcraftLoader {
     }
 
     private static void registerComponentMTEs() {
-        // PASS 23 (user spec): covers are the primary components — register ONLY the two placeable full blocks
-        // (controller + frame). The cover-only catalog entries (engine, cargo bay, mining centre, starlifter,
+        // PASS 23 (user spec): covers are the primary components — the only classic placeable full blocks are the
+        // controller + frame. The cover-only catalog entries (engine, cargo bay, mining centre, starlifter,
         // scanner, fabricator, reactor) get NO MTE and NO item: they cannot be placed, and old builds holding
         // them are rejected at the assembler with voidcraft_cover_only_component (no backwards compatibility —
         // standing directive).
-        int[] ids = { gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Controller.ID,
-            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Frame.ID };
-        String[] names = { "voidcraft_component_controller", "voidcraft_component_frame" };
-        int i = 0;
-        for (VoidcraftComponent component : VoidcraftComponent.PLACEABLE) {
-            MTEVoidcraftComponent mte = new MTEVoidcraftComponent(
-                ids[i],
-                names[i],
-                component.getDisplayName(),
-                component);
-            COMPONENT_ENTRIES[component.getMeta()].set(mte.getStackForm(1L));
-            i++;
-        }
+        MTEVoidcraftComponent controller = new MTEVoidcraftComponent(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Controller.ID,
+            "voidcraft_component_controller",
+            VoidcraftComponent.CONTROLLER.getDisplayName(),
+            VoidcraftComponent.CONTROLLER);
+        COMPONENT_ENTRIES[VoidcraftComponent.CONTROLLER.getMeta()].set(controller.getStackForm(1L));
+        MTEVoidcraftComponent frame = new MTEVoidcraftComponent(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Frame.ID,
+            "voidcraft_component_frame",
+            VoidcraftComponent.FRAME.getDisplayName(),
+            VoidcraftComponent.FRAME);
+        COMPONENT_ENTRIES[VoidcraftComponent.FRAME.getMeta()].set(frame.getStackForm(1L));
         TecTech.LOGGER
             .info("Voidcraft full-block MTEs registered (controller + frame only — all other functions are covers)");
+    }
+
+    private static void registerMultiblockMTEs() {
+        // Multiblock components — each is its own GT multiblock MTE with its own structure definition, and its
+        // catalog entry carries ALL of the component's stats (the existing catalog workflow). Registering one
+        // component: instantiate the MTEs (they self-register by id), set their creative-tab items, and wire the
+        // allowed-components table.
+        MTEVoidcraftMiningArray miningArray = new MTEVoidcraftMiningArray(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftMiningArrayController.ID,
+            "multimachine.em.voidcraft_mining_array",
+            VoidcraftComponent.MINING_ARRAY.getDisplayName());
+        COMPONENT_ENTRIES[VoidcraftComponent.MINING_ARRAY.getMeta()].set(miningArray.getStackForm(1L));
+        MTEVoidcraftMultiblockCasing casing = new MTEVoidcraftMultiblockCasing(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftMiningArrayCasing.ID,
+            "voidcraft_mining_array_casing",
+            VoidcraftComponent.MINING_ARRAY_CASING.getDisplayName(),
+            VoidcraftComponent.MINING_ARRAY_CASING);
+        COMPONENT_ENTRIES[VoidcraftComponent.MINING_ARRAY_CASING.getMeta()].set(casing.getStackForm(1L));
+        MTEVoidcraftMultiblockCasing panel = new MTEVoidcraftMultiblockCasing(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftMiningArrayPanel.ID,
+            "voidcraft_mining_array_panel",
+            VoidcraftComponent.MINING_ARRAY_PANEL.getDisplayName(),
+            VoidcraftComponent.MINING_ARRAY_PANEL);
+        COMPONENT_ENTRIES[VoidcraftComponent.MINING_ARRAY_PANEL.getMeta()].set(panel.getStackForm(1L));
+        VoidcraftMultiblockRegistry.register(miningArray);
+        TecTech.LOGGER.info("Voidcraft multiblock components registered (Mining Array 3x3x2)");
     }
 
     private static void registerCovers() {

@@ -1,5 +1,6 @@
 package tectech.voidcraft.render;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,11 +15,13 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import tectech.thing.block.TileEntityEyeOfHarmony;
@@ -856,11 +859,14 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             double fade = VoidcraftShipFx
                 .beamFade(legProgress(phase, payload, travelDistance, shipRenderTime, USSShipState.MINING, legId));
             if (fade > 0.0) {
-                renderBeam(
+                queueBeam(
                     new double[] { x + pos[0], y + pos[1], z + pos[2] },
                     new double[] { x + body[0], y + body[1], z + body[2] },
                     fade,
-                    worldTime);
+                    worldTime,
+                    0.15,
+                    0.75,
+                    1.0); // the mining cyan
             }
         }
 
@@ -897,7 +903,7 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 double fade = VoidcraftShipFx.beamFade(progress);
                 if (fade > 0.0) {
                     double[] sitePos = anchorHoverPoint(siteEntry, planets, starSize, shipRenderTime);
-                    renderBeam(
+                    queueBeam(
                         new double[] { x + pos[0], y + pos[1], z + pos[2] },
                         new double[] { x + sitePos[0], y + sitePos[1], z + sitePos[2] },
                         fade,
@@ -969,11 +975,74 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
     }
 
     /**
+     * The laser queue: the beam endpoints (mining + construction lasers) are captured here during the tile-entity
+     * pass and drawn once per frame in the {@code RenderWorldLastEvent} pass ({@link BeamWorldLastRenderer}) — the
+     * one moment when all opaque geometry (the world, the planets, the ships and bases, the EoH space shell) has
+     * already rendered and written its depth. A beam drawn there composites over the starfield in any tile-entity
+     * draw order (a beam drawn earlier in the frame is overpainted by a shell that renders later), and, writing no
+     * depth of its own, leaves nothing behind for the shell to fail its depth test against (a depth-writing beam
+     * would leave an unpainted window in the shell). Each entry: start xyz, end xyz, fade, worldTime, r, g, b.
+     */
+    private static final List<double[]> BEAM_QUEUE = new ArrayList<double[]>();
+
+    private static void queueBeam(double[] start, double[] end, double fade, long worldTime, double red, double green,
+        double blue) {
+        BEAM_QUEUE.add(
+            new double[] { start[0], start[1], start[2], end[0], end[1], end[2], fade, (double) worldTime, red, green,
+                blue });
+    }
+
+    /**
+     * Draws the queued lasers ({@link #BEAM_QUEUE}) in the {@code RenderWorldLastEvent} pass, once per frame. The
+     * event fires with the world's modelview still active and the captured endpoints are in the same
+     * camera-relative frame the tile-entity pass used, so no matrix adjustment is needed.
+     */
+    @SideOnly(Side.CLIENT)
+    public static class BeamWorldLastRenderer {
+
+        @SubscribeEvent
+        public void onRenderWorldLast(RenderWorldLastEvent event) {
+            if (BEAM_QUEUE.isEmpty()) {
+                return;
+            }
+            int depthFunc = GL11.glGetInteger(GL11.GL_DEPTH_FUNC);
+            GL11.glPushAttrib(
+                GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT
+                    | GL11.GL_DEPTH_BUFFER_BIT
+                    | GL11.GL_CURRENT_BIT
+                    | GL11.GL_TEXTURE_BIT);
+            GL11.glPushMatrix();
+            try {
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
+                GL11.glDepthFunc(GL11.GL_LEQUAL);
+                for (int i = 0; i < BEAM_QUEUE.size(); i++) {
+                    double[] b = BEAM_QUEUE.get(i);
+                    renderBeam(
+                        new double[] { b[0], b[1], b[2] },
+                        new double[] { b[3], b[4], b[5] },
+                        b[6],
+                        (long) b[7],
+                        b[8],
+                        b[9],
+                        b[10]);
+                }
+            } finally {
+                BEAM_QUEUE.clear();
+                GL11.glDepthFunc(depthFunc);
+                GL11.glPopMatrix();
+                GL11.glPopAttrib();
+            }
+        }
+    }
+
+    /**
      * The mining laser rod between two WORLD points: a thin box (four side quads) in a bright cyan with
      * additive blending and a gentle pulse — the classic "laser" reading. Culling is disabled for the rod (its
-     * winding must not fight the world's GL_CULL_FACE), lighting off (it is emissive), and depth writes off (it is
-     * a pure overlay between the ship and the body, still depth-TESTED so the planet's surface correctly occludes
-     * the part of the rod inside it).
+     * winding must not fight the world's GL_CULL_FACE), lighting off (it is emissive), and depth writes off — the
+     * beam is drawn in the world-last pass (see {@link BeamWorldLastRenderer}), after every opaque geometry has
+     * written its depth, so the depth test alone gives the correct picture (the planet's surface and the hull
+     * occlude the part of the rod behind them, the starfield shows behind it) and no later opaque draw can
+     * overpaint it.
      *
      * <p>
      * <strong>Texture OFF while drawing</strong> (the fix for "no beam showed up"): the ship model pass leaves
@@ -1597,11 +1666,14 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                             ? entry.getInteger(TileEntityVoidcraftShip.TAG_ENTRY_TARGET)
                             : -1;
                         double[] body = targetBody(target, planets, starSize, (float) renderTime);
-                        renderBeam(
+                        queueBeam(
                             new double[] { x + pos[0], y + pos[1], z + pos[2] },
                             new double[] { x + body[0], y + body[1], z + body[2] },
                             fade,
-                            worldTime);
+                            worldTime,
+                            0.15,
+                            0.75,
+                            1.0); // the mining cyan
                     }
                 }
             }

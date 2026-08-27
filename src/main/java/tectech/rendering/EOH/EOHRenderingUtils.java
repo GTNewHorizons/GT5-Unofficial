@@ -422,13 +422,6 @@ public abstract class EOHRenderingUtils {
             // planet. Drawn before the planet so the opaque planet overwrites the ring wherever it is in front.
             renderUSSOrbitRing(base, spec, starSize);
 
-            // The planet's own RING TEXTURE (when this planet has one) — a flat ring image hugging the planet,
-            // centered on it and locked to its spin. Drawn before the planet so the opaque planet overwrites the
-            // ring wherever it is in front.
-            if (spec.ringTexture != null && !spec.ringTexture.isEmpty()) {
-                renderUSSPlanetRing(base, spec, starSize, orbitAngle, spinAngle, scale);
-            }
-
             final String texturePath = spec.texture;
             if (texturePath != null && !texturePath.isEmpty()) {
                 // Textured cube: the planet's own bundled texture (the cross-layout stitched.png) bound over the
@@ -455,6 +448,14 @@ public abstract class EOHRenderingUtils {
                 final long cullWas = beginSphereCull(false);
                 eohSphere.render();
                 endSphereCull(cullWas);
+            }
+
+            // The planet's own RING TEXTURE (when this planet has one) — a flat ring image hugging the planet,
+            // centered on it and locked to its spin. Drawn AFTER the planet, depth-tested with depth writes off:
+            // the near side of the ring blends over the planet, and the far side (behind the planet) is rejected
+            // by the depth test against the planet's written depth.
+            if (spec.ringTexture != null && !spec.ringTexture.isEmpty()) {
+                renderUSSPlanetRing(base, spec, starSize, orbitAngle, spinAngle, scale);
             }
         }
         ShaderProgram.clear();
@@ -560,9 +561,10 @@ public abstract class EOHRenderingUtils {
 
     /**
      * The ring's outer edge world radius as a multiple of the planet's {@code scale}: the planet's cube spans
-     * ±0.5·scale, so 1.2·scale puts the ring's outer edge at 2.4× the planet surface.
+     * ±0.5·scale, so 1.8·scale puts the ring's outer edge at 3.6× the planet surface, leaving a visible gap
+     * between the planet and the ring's inner hole (the image's hole otherwise sits at/below the planet surface).
      */
-    private static final float RING_OUTER_EDGE = 1.2f;
+    private static final float RING_OUTER_EDGE = 1.8f;
 
     /**
      * The planet's own RING TEXTURE (when {@code spec.ringTexture} is set) — a flat ring image in the planet's own
@@ -572,8 +574,9 @@ public abstract class EOHRenderingUtils {
      * image's ~1.38·half-width, see {@link #RING_TEXTURE_OUTER_U}) lands at {@code RING_OUTER_EDGE · scale}.
      *
      * <p>
-     * Drawn before the planet so the opaque planet overwrites the ring wherever it is in front; the image's
-     * transparent center keeps the planet visible through the ring's hole.
+     * Drawn after the planet (depth-tested, depth writes off): the near side of the ring blends over the planet,
+     * the far side is rejected by the planet's written depth; the image's transparent center keeps the planet
+     * visible through the ring's hole.
      *
      * @param base       the star-center model matrix (as in {@link #renderUSSOrbits})
      * @param spec       the ringed planet

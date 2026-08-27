@@ -60,6 +60,9 @@ public final class VoidcraftTextures {
     /** The controller's dedicated block icon (pass 24; was a planet-sheet squashed onto its faces). */
     public static final String CONTROLLER_ICON_NAME = "tectech:iconsets/VC_CONTROLLER";
 
+    /** Multiblock component block icons — one dedicated 16×16 icon per entry: {@code VC_MBLK_<entry name>}. */
+    public static final String MULTIBLOCK_ICON_PREFIX = "tectech:iconsets/VC_MBLK_";
+
     /**
      * The face texture of a cover part — its own dedicated 16×16 icon (also used as the cover ITEM icon, so the
      * inventory, the mounted face, and the in-flight model all show the same art).
@@ -103,6 +106,10 @@ public final class VoidcraftTextures {
         }
         if (c == VoidcraftComponent.FRAME) {
             return TextureFactory.of(Textures.BlockIcons.custom(FRAME_ICON_NAME));
+        }
+        if (c.isMultiblock()) {
+            // Multiblock component block — its own dedicated 16×16 icon (VC_MBLK_<entry name>)
+            return TextureFactory.of(Textures.BlockIcons.custom(MULTIBLOCK_ICON_PREFIX + c.name()));
         }
         // cover-only catalog entry — the icon of the cover part that provides this function
         for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {

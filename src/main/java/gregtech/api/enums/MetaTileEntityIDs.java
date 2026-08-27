@@ -2110,7 +2110,16 @@ public enum MetaTileEntityIDs {
     VoidcraftComponent_ConstructionArm(32065),
     VoidcraftComponent_Reactor(32066),
     // The Voidbase Assembler (15x15x15 scan volume; digitizes immobile stations into reusable blueprints)
-    VoidbaseAssembler(32067);
+    VoidbaseAssembler(32067),
+    // Reserved for the cover-only solar panel entry (32058 + meta 10) — never registered (no MTE), keeps the
+    // 32058 + meta reservation table complete. (Meta 9's slot 32067 is taken by the Voidbase Assembler; the
+    // repair bay is cover-only too, so the collision is harmless.)
+    VoidcraftComponent_SolarPanel(32068),
+    // Voidcraft multiblock components (machine-block MTEs, one per catalog entry; id = 32058 + meta — the
+    // in-flight model's renderer contract). The Mining Array: controller + its two casing blocks.
+    VoidcraftMiningArrayController(32069),
+    VoidcraftMiningArrayCasing(32070),
+    VoidcraftMiningArrayPanel(32071);
 
     public final int ID;
 

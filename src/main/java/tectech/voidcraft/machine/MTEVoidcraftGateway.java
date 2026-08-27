@@ -44,7 +44,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import tectech.thing.CustomItemList;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.voidcraft.item.ItemVoidbaseBlueprint;
@@ -434,8 +433,9 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
     }
 
     /**
-     * The input-bus item for a parts-list key: {@code block.<NAME>} → the component block item (only the two
-     * placeable blocks have one), {@code cover.<NAME>} → the cover item (meta = cover id).
+     * The input-bus item for a parts-list key: {@code block.<NAME>} → the component block item (the classic
+     * placeable blocks + the multiblock components — see {@link VoidcraftLoader#blockItem}), {@code cover.<NAME>}
+     * → the cover item (meta = cover id).
      */
     @Nullable
     public static ItemStack partItem(String key) {
@@ -447,15 +447,7 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         String name = key.substring(sep + 1);
         try {
             if ("block".equals(kind)) {
-                VoidcraftComponent component = VoidcraftComponent.valueOf(name);
-                switch (component) {
-                    case CONTROLLER:
-                        return CustomItemList.VoidcraftComponent_Controller.get(1);
-                    case FRAME:
-                        return CustomItemList.VoidcraftComponent_Frame.get(1);
-                    default:
-                        return null; // cover-only function definitions have no block item
-                }
+                return VoidcraftLoader.blockItem(VoidcraftComponent.valueOf(name));
             }
             if ("cover".equals(kind)) {
                 return ItemVoidcraftCovers.stack(VoidcraftCoverComponent.valueOf(name));

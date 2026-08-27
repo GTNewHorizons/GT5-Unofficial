@@ -60,13 +60,14 @@ public class VoidcraftComponentTest {
 
     @Test
     public void testPass23PlaceableSet() {
-        // Pass 23 (user spec): covers are the primary components — the ONLY placeable full blocks are the
-        // controller and the frame; every other catalog entry is cover-only.
-        assertEquals(2, VoidcraftComponent.PLACEABLE.size(), "exactly two placeable full blocks");
+        // Covers are the primary components — the only CLASSIC placeable full blocks are the controller and the
+        // frame; the multiblock component blocks are the second kind of placeable block.
+        assertEquals(5, VoidcraftComponent.PLACEABLE.size(), "controller + frame + the three Mining Array blocks");
         assertTrue(VoidcraftComponent.PLACEABLE.contains(VoidcraftComponent.CONTROLLER));
         assertTrue(VoidcraftComponent.PLACEABLE.contains(VoidcraftComponent.FRAME));
         for (VoidcraftComponent component : VoidcraftComponent.ALL) {
-            if (component == VoidcraftComponent.CONTROLLER || component == VoidcraftComponent.FRAME) {
+            if (component == VoidcraftComponent.CONTROLLER || component == VoidcraftComponent.FRAME
+                || component.isMultiblock()) {
                 assertTrue(component.isPlaceable(), component + " must be placeable");
                 assertFalse(component.isCoverOnly());
             } else {
@@ -74,6 +75,65 @@ public class VoidcraftComponentTest {
                 assertTrue(component.isCoverOnly());
             }
         }
+    }
+
+    @Test
+    public void testMultiblockEntries() {
+        // The Mining Array multiblock: one stats-carrying controller entry + two zero-stat casing entries.
+        assertTrue(VoidcraftComponent.MINING_ARRAY.isMultiblock(), "the mining array controller is a multiblock block");
+        assertTrue(VoidcraftComponent.MINING_ARRAY.isPlaceable(), "a multiblock controller is a placeable full block");
+        assertTrue(VoidcraftComponent.MINING_ARRAY_CASING.isMultiblock());
+        assertTrue(VoidcraftComponent.MINING_ARRAY_PANEL.isMultiblock());
+        assertEquals(3, countComponents(VoidcraftComponent::isMultiblock), "exactly the three Mining Array blocks");
+        // The controller entry carries the component's stats
+        assertEquals(2, VoidcraftComponent.MINING_ARRAY.getTier());
+        assertEquals(1000L, VoidcraftComponent.MINING_ARRAY.getMiningPower());
+        assertEquals(200L, VoidcraftComponent.MINING_ARRAY.getEnergyDraw());
+        assertEquals(25L, VoidcraftComponent.MINING_ARRAY.getMass());
+        // The casings contribute mass only
+        for (VoidcraftComponent casing : new VoidcraftComponent[] { VoidcraftComponent.MINING_ARRAY_CASING,
+            VoidcraftComponent.MINING_ARRAY_PANEL }) {
+            assertEquals(5L, casing.getMass(), casing + " contributes mass only");
+            assertEquals(0, casing.getTier());
+            assertEquals(0L, casing.getMiningPower());
+            assertEquals(0L, casing.getEnergyDraw());
+            assertEquals(0L, casing.getThrust());
+            assertEquals(0L, casing.getCargoSlots());
+            assertEquals(0L, casing.getScanPower());
+            assertEquals(0L, casing.getConstructionPower());
+            assertEquals(0L, casing.getStarlifterPower());
+            assertEquals(0L, casing.getEnergyBuffer());
+            assertEquals(0L, casing.getIntegrity());
+        }
+        // Meta / grid values: 11, 12, 13 → grid 12, 13, 14
+        assertEquals(11, VoidcraftComponent.MINING_ARRAY.getMeta());
+        assertEquals(12, VoidcraftComponent.MINING_ARRAY_CASING.getMeta());
+        assertEquals(13, VoidcraftComponent.MINING_ARRAY_PANEL.getMeta());
+        assertEquals(12, VoidcraftComponent.MINING_ARRAY.toGridValue());
+        assertEquals(13, VoidcraftComponent.MINING_ARRAY_CASING.toGridValue());
+        assertEquals(14, VoidcraftComponent.MINING_ARRAY_PANEL.toGridValue());
+    }
+
+    @Test
+    public void testMultiblockMteIdsFollowRendererContract() {
+        // In-flight model contract (ShipModelBuilder): the MTE id of every placeable block is 32058 + catalog
+        // meta — the renderer derives the block's texture meta straight from the blueprint's grid values.
+        final int base = 32058;
+        assertEquals(
+            base + VoidcraftComponent.CONTROLLER.getMeta(),
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Controller.ID);
+        assertEquals(
+            base + VoidcraftComponent.FRAME.getMeta(),
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Frame.ID);
+        assertEquals(
+            base + VoidcraftComponent.MINING_ARRAY.getMeta(),
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftMiningArrayController.ID);
+        assertEquals(
+            base + VoidcraftComponent.MINING_ARRAY_CASING.getMeta(),
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftMiningArrayCasing.ID);
+        assertEquals(
+            base + VoidcraftComponent.MINING_ARRAY_PANEL.getMeta(),
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftMiningArrayPanel.ID);
     }
 
     @Test

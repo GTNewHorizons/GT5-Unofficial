@@ -48,6 +48,9 @@ import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.voidcraft.cover.CoverVoidcraftComponent;
 import tectech.voidcraft.item.ItemVoidcraft;
+import tectech.voidcraft.multiblock.MultiblockControllerRef;
+import tectech.voidcraft.multiblock.VoidcraftMultiblockRegistry;
+import tectech.voidcraft.render.AssemblerVisuals;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
 import tectech.voidcraft.ship.VoidcraftComponent;
 import tectech.voidcraft.ship.VoidcraftComponentRegistry;
@@ -110,6 +113,12 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
      * had no program (the ship will HOLD at the origin).
      */
     private @Nullable NBTTagList pendingProgram;
+
+    /**
+     * The multiblock component controllers the last scan found in the volume — the scan audit forces each one's own
+     * structure check, then applies the component's stats only to the formed structures.
+     */
+    private final List<MultiblockControllerRef> multiblockControllers = new ArrayList<>();
 
     public MTEVoidcraftAssembler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -183,7 +192,9 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
      *
      * <p>
      * Captures each component block (and its facing) plus every Voidcraft cover mounted on any of its six faces —
-     * covers are part of the ship and contribute their stats.
+     * covers are part of the ship and contribute their stats. Multiblock component blocks (their own GT
+     * multiblocks) are captured too; each multiblock controller found in the volume is collected for the scan
+     * audit, which applies the component's stats only when the component's own structure is formed.
      *
      * @return the scanned blueprint, or null if the volume contains something that is neither air nor a Voidcraft
      *         component block (or the machine is not built against a clear front)
@@ -199,6 +210,7 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
         // Phase C: capture the controller's program as we visit it (exactly one controller per ship, per the
         // validation that follows).
         NBTTagList program = null;
+        multiblockControllers.clear();
         for (int depth = 1; depth <= SCAN_DEPTH; depth++) {
             for (int j = -SCAN_HEIGHT / 2; j <= SCAN_HEIGHT / 2; j++) {
                 for (int i = -SCAN_WIDTH / 2; i <= SCAN_WIDTH / 2; i++) {
@@ -212,36 +224,48 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
                         continue;
                     }
                     IMetaTileEntity mte = GTUtility.getMetaTileEntity(world.getTileEntity(x, y, z));
-                    if (!(mte instanceof MTEVoidcraftComponent hull)) {
+                    MTEVoidcraftComponent hull = null;
+                    if (mte instanceof MTEVoidcraftComponent component) {
+                        hull = component;
+                    }
+                    VoidcraftComponent scanned = hull != null ? hull.getComponent()
+                        : VoidcraftMultiblockRegistry.componentOf(mte);
+                    if (scanned == null) {
                         return null; // foreign block in the volume
                     }
                     int idx = i + 2 + SCAN_WIDTH * (j + 2 + SCAN_HEIGHT * (depth - 1));
-                    grid[idx] = (byte) hull.getComponent()
-                        .toGridValue();
-                    facingGrid[idx] = (byte) (hull.getBaseMetaTileEntity()
+                    grid[idx] = (byte) scanned.toGridValue();
+                    facingGrid[idx] = (byte) (mte.getBaseMetaTileEntity()
                         .getFrontFacing()
                         .ordinal() + 1);
-                    if (hull.getComponent() == VoidcraftComponent.CONTROLLER) {
-                        NBTTagList p = hull.getProgramTag();
-                        if (p != null) {
-                            NBTBase copy = p.copy();
-                            program = (copy instanceof NBTTagList) ? (NBTTagList) copy : null;
-                        }
-                    }
-
-                    if (hull.getBaseMetaTileEntity() instanceof ICoverable coverable) {
-                        for (int worldSide = 0; worldSide < 6; worldSide++) {
-                            Cover cover = coverable.getCoverAtSide(ForgeDirection.getOrientation(worldSide));
-                            if (cover instanceof CoverVoidcraftComponent vc && vc.getComponent() != null) {
-                                // Pass 24: store the cover's side in GRID space (the blueprint's depth axis is the
-                                // assembler's front, not a world axis), so "back face" is the same grid side no
-                                // matter which way the assembler itself faces.
-                                coverGrid[idx * 6 + VoidcraftBlueprint
-                                    .toGridSide(front.offsetX, front.offsetY, front.offsetZ, worldSide)] = (byte) vc
-                                        .getComponent()
-                                        .toGridValue();
+                    if (hull != null) {
+                        if (hull.getComponent() == VoidcraftComponent.CONTROLLER) {
+                            NBTTagList p = hull.getProgramTag();
+                            if (p != null) {
+                                NBTBase copy = p.copy();
+                                program = (copy instanceof NBTTagList) ? (NBTTagList) copy : null;
                             }
                         }
+
+                        if (hull.getBaseMetaTileEntity() instanceof ICoverable coverable) {
+                            for (int worldSide = 0; worldSide < 6; worldSide++) {
+                                Cover cover = coverable.getCoverAtSide(ForgeDirection.getOrientation(worldSide));
+                                if (cover instanceof CoverVoidcraftComponent vc && vc.getComponent() != null) {
+                                    // Pass 24: store the cover's side in GRID space (the blueprint's depth axis is
+                                    // the assembler's front, not a world axis), so "back face" is the same grid
+                                    // side no matter which way the assembler itself faces.
+                                    coverGrid[idx * 6 + VoidcraftBlueprint
+                                        .toGridSide(front.offsetX, front.offsetY, front.offsetZ, worldSide)] = (byte) vc
+                                            .getComponent()
+                                            .toGridValue();
+                                }
+                            }
+                        }
+                    } else {
+                        // A multiblock component controller — its stats only count when its own structure is
+                        // formed (the audit in checkProcessing_EM forces the structure check).
+                        multiblockControllers
+                            .add(new MultiblockControllerRef(scanned, mte, mte.getBaseMetaTileEntity()));
                     }
                 }
             }
@@ -262,7 +286,8 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
 
     /**
      * Clear the component blocks of a digitized ship from the world (only cells that still hold a Voidcraft
-     * component MTE, so foreign blocks placed meanwhile are never destroyed).
+     * component MTE — classic full blocks or multiblock component blocks — so foreign blocks placed meanwhile are
+     * never destroyed).
      */
     private void clearShipBlocks() {
         World world = getBaseMetaTileEntity().getWorld();
@@ -275,7 +300,7 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
                         continue;
                     }
                     IMetaTileEntity mte = GTUtility.getMetaTileEntity(world.getTileEntity(x, y, z));
-                    if (mte instanceof MTEVoidcraftComponent) {
+                    if (mte instanceof MTEVoidcraftComponent || VoidcraftMultiblockRegistry.componentOf(mte) != null) {
                         world.setBlock(x, y, z, Blocks.air);
                     }
                 }
@@ -291,6 +316,13 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
         if (scanned == null) {
             pendingProgram = null;
             return SimpleCheckRecipeResult.ofFailure("voidcraft_scan_failed");
+        }
+        // The multiblock components found in the volume: force each controller's own structure check, then audit
+        // (unformed structure / structure reaching beyond the volume → the scan fails with that error key).
+        List<String> multiblockErrors = VoidcraftMultiblockRegistry.auditScan(scanned, multiblockControllers);
+        if (!multiblockErrors.isEmpty()) {
+            pendingProgram = null;
+            return SimpleCheckRecipeResult.ofFailure(multiblockErrors.get(0));
         }
         List<String> errors = new ArrayList<>();
         if (!scanned.validate(maxTier, errors)) {
@@ -329,6 +361,35 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
         pendingShip = null;
         pendingCreatedAt = 0;
         pendingProgram = null;
+    }
+
+    // ---- client visuals (scan wireframe / scanning planes / preview hologram — see RenderVoidcraftAssembler)
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            AssemblerVisuals.publish(
+                this,
+                aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord(),
+                aBaseMetaTileEntity.getFrontFacing()
+                    .ordinal(),
+                SCAN_WIDTH,
+                SCAN_HEIGHT,
+                SCAN_DEPTH,
+                false,
+                mMachine,
+                mMaxProgresstime > 0 && mProgresstime < mMaxProgresstime);
+        }
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        AssemblerVisuals.unpublish(this);
     }
 
     // region NBT persistence

@@ -422,6 +422,12 @@ public enum CustomItemList implements IItemContainer {
     VoidcraftComponent_Controller,
     VoidcraftComponent_Frame,
 
+    // Multiblock components (GT multiblocks; machine-block MTEs, id = 32058 + catalog meta): the Mining Array
+    // controller + its two casing blocks.
+    VoidcraftMiningArray_Controller,
+    VoidcraftMiningArray_Casing,
+    VoidcraftMiningArray_Panel,
+
     astralArrayFabricator;
 
     private ItemStack mStack;
