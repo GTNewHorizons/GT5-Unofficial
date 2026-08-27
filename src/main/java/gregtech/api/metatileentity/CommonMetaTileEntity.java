@@ -578,7 +578,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return textures;
     }
 
-    protected final void clearInventoryTextureCache() {
+    public final void clearInventoryTextureCache() {
         inventoryTextureCache = null;
     }
 
