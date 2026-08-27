@@ -8173,9 +8173,9 @@ item.gt.depletedRodNaquadria2.name=Dual Fuel Rod (Depleted Naquadria)
 item.gt.depletedRodNaquadria4.name=Quad Fuel Rod (Depleted Naquadria)
 
 # Condensate Fluid and Cells
-abbrev.entangled_neutronium.name=Neutronium
-abbrev.entangled_cosmicneutronium.name=Cosmic Neutronium
-abbrev.entangled_bedrockium.name=Bedrockium
+abbrev.entangled_neutronium=Neutronium
+abbrev.entangled_cosmicneutronium=Cosmic Neutronium
+abbrev.entangled_bedrockium=Bedrockium
 abbrev.entangled_celestialtungsten=Celestial Tungsten
 abbrev.entangled_chromaticglass=Chromatic Glass
 abbrev.entangled_cosmicsolder=Cosmic Solder
@@ -9365,6 +9365,7 @@ GT5U.tooltip.bec-assembler.los-hatch-pos=Center side casing of each ring
 
 # BEC Settings
 GT5U.gui.text.bec-filter=Filter
+GT5U.gui.text.bec-filter-n=Filter %s
 GT5U.gui.text.bec-operation=Operation
 GT5U.gui.text.bec-threshold=Threshold
 GT5U.gui.text.bec-current=Current:
