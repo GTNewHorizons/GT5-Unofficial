@@ -122,6 +122,27 @@ public class TileEntityVoidcraftShip extends TileEntity {
      */
     public static final String TAG_ENTRY_LEG_ID = "vc_leg_id";
 
+    // Voidbase (Phase D): the in-USS construction sites + standing bases render from this SAME fleet anchor —
+    // each entry carries the anchor target with the SHIP-ENTRY PROTOCOL (TAG_ENTRY_TARGET: -1 star / planet
+    // index; TAG_ENTRY_STATIC + TAG_ENTRY_DEST: a resolved fixed point) plus the tags below.
+    public static final String TAG_SITES = "vc_sites";
+    public static final String TAG_BASES = "vc_bases";
+    public static final String TAG_SITE_PROGRESS = "vc_site_progress";
+    public static final String TAG_SITE_DIMS = "vc_site_dims";
+    public static final String TAG_BASE_INTEGRITY = "vc_base_integrity";
+    public static final String TAG_BASE_INTEGRITY_MAX = "vc_base_integrity_max";
+    /** The base's seed (the client's per-base animation-phase key). */
+    public static final String TAG_BASE_SEED = "vc_base_seed";
+    /** The active mining-leg id (0 = no mining leg; >0 = the base is mining - the client draws the beam). */
+    public static final String TAG_BASE_MINING_LEG = "vc_base_mining_leg";
+
+    // The active CONSTRUCT leg on a construction site (the client's constructor-beam animation): the leg id
+    // (0 = no leg - the beam fades out), the leg's full duration in ticks (the client's fade denominator), and
+    // the executing Constructor's seed (the client pairs the beam's ship endpoint on it).
+    public static final String TAG_SITE_CONSTRUCT_LEG = "vc_site_construct_leg";
+    public static final String TAG_SITE_CONSTRUCT_TOTAL = "vc_site_construct_total";
+    public static final String TAG_SITE_CONSTRUCT_SEED = "vc_site_construct_seed";
+
     /**
      * Render bounding-box half-extent (covers the flight path from gateway to hover point + swarm spread): the
      * gateway scans up to 32 blocks from the USS center and the anchor sits 16 further behind it — 64 covers the
@@ -140,6 +161,10 @@ public class TileEntityVoidcraftShip extends TileEntity {
     // The Explorer pass: the revealed ripple positions ([x, y, z] in fleet-anchor blocks) — the client renders each
     // as a pulsating dark-blue transparent triangle. Only revealed ripples are present (hidden + non-ripple absent).
     private final List<float[]> revealedRipples = new ArrayList<float[]>();
+
+    // Voidbase (Phase D): the in-USS construction sites + standing bases (rendered from this same anchor).
+    private final List<NBTTagCompound> baseSites = new ArrayList<NBTTagCompound>();
+    private final List<NBTTagCompound> bases = new ArrayList<NBTTagCompound>();
 
     private AxisAlignedBB boundingBox;
 
@@ -237,6 +262,49 @@ public class TileEntityVoidcraftShip extends TileEntity {
         return Collections.unmodifiableList(revealedRipples);
     }
 
+    /**
+     * Replace the whole construction-site list (the MTE rebuilds the entries on every site create/fill/complete).
+     * Each entry: the anchor target (ship-entry protocol) + {@link #TAG_SITE_PROGRESS} + {@link #TAG_SITE_DIMS}.
+     */
+    public void setBaseSites(List<NBTTagCompound> entries) {
+        baseSites.clear();
+        if (entries != null) {
+            for (NBTTagCompound entry : entries) {
+                if (entry != null) {
+                    baseSites.add(entry);
+                }
+            }
+        }
+    }
+
+    /** @return the construction-site entries (never null). */
+    public List<NBTTagCompound> getBaseSites() {
+        return Collections.unmodifiableList(baseSites);
+    }
+
+    /**
+     * Replace the whole standing-base list (the MTE rebuilds the entries on every spawn/discard/integrity
+     * change and on a mining-leg start/end). Each entry: the anchor target (ship-entry protocol) +
+     * {@link #TAG_ENTRY_PAYLOAD} + the integrity pair ({@link #TAG_BASE_INTEGRITY} /
+     * {@link #TAG_BASE_INTEGRITY_MAX}) + the seed ({@link #TAG_BASE_SEED}) + the mining-leg id
+     * ({@link #TAG_BASE_MINING_LEG}).
+     */
+    public void setBases(List<NBTTagCompound> entries) {
+        bases.clear();
+        if (entries != null) {
+            for (NBTTagCompound entry : entries) {
+                if (entry != null) {
+                    bases.add(entry);
+                }
+            }
+        }
+    }
+
+    /** @return the standing-base entries (never null). */
+    public List<NBTTagCompound> getBases() {
+        return Collections.unmodifiableList(bases);
+    }
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
@@ -277,6 +345,21 @@ public class TileEntityVoidcraftShip extends TileEntity {
                 rippleList.appendTag(entry);
             }
             compound.setTag(TAG_RIPPLES, rippleList);
+        }
+        // Voidbase (Phase D): the construction sites + standing bases (absent when there are none).
+        if (!baseSites.isEmpty()) {
+            NBTTagList siteList = new NBTTagList();
+            for (NBTTagCompound entry : baseSites) {
+                siteList.appendTag(entry);
+            }
+            compound.setTag(TAG_SITES, siteList);
+        }
+        if (!bases.isEmpty()) {
+            NBTTagList baseList = new NBTTagList();
+            for (NBTTagCompound entry : bases) {
+                baseList.appendTag(entry);
+            }
+            compound.setTag(TAG_BASES, baseList);
         }
     }
 
@@ -320,6 +403,17 @@ public class TileEntityVoidcraftShip extends TileEntity {
                 continue;
             }
             revealedRipples.add(new float[] { tag.getFloat("x"), tag.getFloat("y"), tag.getFloat("z") });
+        }
+        // Voidbase (Phase D): the construction sites + standing bases (absent tags = none).
+        baseSites.clear();
+        NBTTagList siteList = compound.getTagList(TAG_SITES, 10);
+        for (int i = 0; i < siteList.tagCount(); i++) {
+            baseSites.add(siteList.getCompoundTagAt(i));
+        }
+        bases.clear();
+        NBTTagList baseList = compound.getTagList(TAG_BASES, 10);
+        for (int i = 0; i < baseList.tagCount(); i++) {
+            bases.add(baseList.getCompoundTagAt(i));
         }
     }
 

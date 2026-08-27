@@ -193,6 +193,67 @@ final class USSCommandTest {
         assertEquals(USSCommandWait.MAX_WAIT_TICKS, state.getLong(USSCommandWait.STATE_REMAINING));
     }
 
+    // region CONSTRUCT / REPAIR (the Voidbase construction framework)
+
+    @Test
+    void testConstructRunsUntilTheWorldReportsDone() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        ctx.constructStartResult = true;
+        ctx.constructTickResult = true;
+        USSCommandConstruct construct = new USSCommandConstruct();
+        assertEquals(
+            USSCommandStatus.RUNNING,
+            construct.begin(ctx, command(USSCommand.CONSTRUCT, new NBTTagCompound()), new NBTTagCompound()));
+        assertEquals(1, ctx.constructStartCalls);
+        assertEquals(USSCommandStatus.RUNNING, construct.tick(ctx, null, new NBTTagCompound()));
+        assertEquals(1, ctx.constructTickCalls);
+        ctx.constructTickResult = false;
+        assertEquals(USSCommandStatus.DONE, construct.tick(ctx, null, new NBTTagCompound()));
+        assertEquals(2, ctx.constructTickCalls);
+    }
+
+    @Test
+    void testConstructFailsWhenTheWorldRefuses() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        ctx.constructStartResult = false;
+        USSCommandConstruct construct = new USSCommandConstruct();
+        assertEquals(
+            USSCommandStatus.FAILED,
+            construct.begin(ctx, command(USSCommand.CONSTRUCT, new NBTTagCompound()), new NBTTagCompound()));
+        assertEquals(1, ctx.constructStartCalls);
+        assertTrue(ctx.loggedContains("CONSTRUCT"));
+        assertEquals(0, ctx.constructTickCalls);
+    }
+
+    @Test
+    void testRepairRunsUntilTheWorldReportsFull() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        ctx.repairStartResult = true;
+        ctx.repairTickResult = true;
+        USSCommandRepair repair = new USSCommandRepair();
+        assertEquals(
+            USSCommandStatus.RUNNING,
+            repair.begin(ctx, command(USSCommand.REPAIR, new NBTTagCompound()), new NBTTagCompound()));
+        assertEquals(1, ctx.repairStartCalls);
+        assertEquals(USSCommandStatus.RUNNING, repair.tick(ctx, null, new NBTTagCompound()));
+        assertEquals(1, ctx.repairTickCalls);
+        ctx.repairTickResult = false;
+        assertEquals(USSCommandStatus.DONE, repair.tick(ctx, null, new NBTTagCompound()));
+        assertEquals(2, ctx.repairTickCalls);
+    }
+
+    @Test
+    void testRepairFailsWhenNothingIsRepairable() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        ctx.repairStartResult = false;
+        USSCommandRepair repair = new USSCommandRepair();
+        assertEquals(
+            USSCommandStatus.FAILED,
+            repair.begin(ctx, command(USSCommand.REPAIR, new NBTTagCompound()), new NBTTagCompound()));
+        assertTrue(ctx.loggedContains("REPAIR"));
+        assertEquals(0, ctx.repairTickCalls);
+    }
+
     // endregion
 
     // region STOP / registry
@@ -206,13 +267,15 @@ final class USSCommandTest {
     }
 
     @Test
-    void testRegistryHasAllSixBuiltIns() {
+    void testRegistryHasAllBuiltIns() {
         assertTrue(USSCommandRegistry.has(USSCommand.MOVE));
         assertTrue(USSCommandRegistry.has(USSCommand.WORK));
         assertTrue(USSCommandRegistry.has(USSCommand.WRITE));
         assertTrue(USSCommandRegistry.has(USSCommand.READ));
         assertTrue(USSCommandRegistry.has(USSCommand.WAIT));
         assertTrue(USSCommandRegistry.has(USSCommand.STOP));
+        assertTrue(USSCommandRegistry.has(USSCommand.CONSTRUCT));
+        assertTrue(USSCommandRegistry.has(USSCommand.REPAIR));
         assertSame(
             USSCommand.MOVE,
             USSCommandRegistry.handler(USSCommand.MOVE)

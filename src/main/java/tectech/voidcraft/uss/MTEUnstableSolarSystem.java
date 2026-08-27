@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
@@ -33,7 +34,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -76,11 +76,13 @@ import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 import tectech.voidcraft.item.ItemUSSController;
+import tectech.voidcraft.item.ItemVoidbaseBlueprint;
 import tectech.voidcraft.item.ItemVoidcraft;
 import tectech.voidcraft.loader.VoidcraftLoader;
 import tectech.voidcraft.machine.MTEVoidcraftGateway;
 import tectech.voidcraft.machine.MTEVoidcraftStorageBay;
 import tectech.voidcraft.render.TileEntityVoidcraftShip;
+import tectech.voidcraft.ship.VoidcraftBlueprint;
 import tectech.voidcraft.ship.VoidcraftNbt;
 import tectech.voidcraft.ship.VoidcraftRole;
 
@@ -133,10 +135,31 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     private VoidcraftUSS uss = VoidcraftUSS.cold();
 
     /**
-     * Infrastructure build progress (Phase 4 pass 2 — Constructor missions apply their loadouts here). Persists in
-     * NBT across reloads and star burnouts (the infrastructure belongs to the system, not to the current star).
+     * Voidbase construction sites (one per anchor — a Constructor's CONSTRUCT leg creates or fills them; a
+     * completed site spawns the base and is removed). Persists in NBT; discarded on burnout/teardown like the
+     * ships.
      */
-    private USSInfrastructure infrastructure = new USSInfrastructure();
+    private final List<USSBaseSite> baseSites = new ArrayList<USSBaseSite>();
+
+    /**
+     * The completed Voidbases (one per anchor; each ticks itself — integrity decay/repair, anchor hover, energy).
+     * Persisted in NBT; discarded on burnout/teardown like the ships.
+     */
+    private final List<VoidcraftActiveBase> bases = new ArrayList<VoidcraftActiveBase>();
+
+    /**
+     * The base pilots — one per completed Voidbase (index-parallel to {@link #bases}): each base runs its
+     * station program (the digitized controller program) in BASE mode against this MTE (the same seam as the
+     * ships).
+     */
+    private final List<USSBasePilot> basePilots = new ArrayList<>();
+
+    /**
+     * The fleet render signature last pushed to the fleet anchor (Phase D): a hash of the ship count + every
+     * base integrity + every site progress. {@link #tickBases()} resyncs the anchor exactly when it changes
+     * (integrity decay/repair, site fill), so the client tint/fill follows the server without per-tick packets.
+     */
+    private long lastFleetRenderSignature = -1L;
 
     // Region mining mission (Phase 4 pass 5 — up to USSConstants.MAX_SHIPS_PER_USS ships in flight per USS; a large
     // fleet (dozens–hundreds) rendered by ONE fleet anchor block, not one block per ship).
@@ -201,11 +224,17 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     private static final Logger LOGGER = LogManager.getLogger("Voidcraft USS");
 
     /**
-     * Pass 26 (user: "add logging for the different missions and movements, that displays the calculated times and
-     * progress"): the interval in WORLD TICKS between per-ship progress heartbeats (200 ticks = 10 in-game
-     * seconds). Keeps the game log informative (a line per in-flight ship every 10 s) without per-tick spam.
+     * The interval in MTE TICKS between per-ship progress heartbeats (100 ticks = 5 in-game seconds): a line per
+     * in-flight ship at most every 100 ticks keeps the game log informative without per-tick spam.
      */
-    private static final long PROGRESS_LOG_INTERVAL = 200L;
+    private static final long PROGRESS_LOG_INTERVAL = 100L;
+
+    /**
+     * Ticks since the last progress heartbeat — a counter kept by {@link #tickShips()} (advanced once per machine
+     * tick while at least one ship is in flight, reset while none is): the heartbeat is the tick on which it
+     * reaches {@link #PROGRESS_LOG_INTERVAL}.
+     */
+    private long progressLogTicks = 0L;
 
     // endregion
 
@@ -214,7 +243,10 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     private static final String ANIMATIONS_ENABLED_NBT_TAG = "vc_animations_enabled";
     /** Phase 4 pass 4: NBTTagList of in-flight ships (slot order); the render anchors are derived, not stored. */
     private static final String ACTIVE_SHIPS_NBT_TAG = "vc_active_ships";
-    private static final String INFRASTRUCTURE_NBT_TAG = "vc_uss_infrastructure";
+    /** NBTTagList of Voidbase construction sites (anchor + per-part delivered counts). */
+    private static final String BASE_SITES_NBT_TAG = "vc_uss_base_sites";
+    /** NBTTagList of completed Voidbases (the bases themselves, serialized like ships). */
+    private static final String BASES_NBT_TAG = "vc_uss_bases";
 
     // Multiblock structure.
     /**
@@ -1035,6 +1067,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             } else {
                 uss = uss.withLifespan(remaining);
                 tickShips();
+                tickBases();
             }
         } else if (getControllerSlot() != null) {
             // COLD + controller in slot + structure valid → ignite.
@@ -1124,9 +1157,12 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
 
         if (rendererTileEntity != null) {
             rendererTileEntity.setTier(tier);
-            // Star size: 0.5·√(sampled size), a pure function of the star type + ignition timestamp (the
+            // Star size: (2/3)·√(sampled size), a pure function of the star type + ignition timestamp (the
             // mechanics pass — see starSizeFor).
             rendererTileEntity.setStarSize(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+            // Star color: from the star's registered definition (null → the legacy orange fallback) — the shared
+            // star mesh is a single texture, so the color is what distinguishes the star classes visually.
+            rendererTileEntity.setStarColor(USSStarColor.colorFor(USSStarRegistry.byType(uss.getStarType())));
             // Pass 12: the Voidcraft structure is 2× the legacy radius, so the space shell doubles with it
             // (star and planet sizes stay unchanged).
             rendererTileEntity.setDomeRadius(USSConstants.SPACE_SHELL_RADIUS);
@@ -1174,7 +1210,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * The star's rendered size (the mechanics pass: 0.5·√(sampled size), the sampled size being a pure function of
+     * The star's rendered size (the mechanics pass: (2/3)·√(sampled size), the sampled size being a pure function of
      * the star type + ignition timestamp — see {@link USSPlanets#starRenderSize(double)} and
      * {@link USSPlanets#sampleStarSize(USSStarType, long)}). Pass 7: the fleet TE carries this value so the client
      * computes the planet orbit radii EXACTLY like {@code EOHRenderingUtils.renderUSSOrbits} (radius = 0.2 +
@@ -1240,12 +1276,128 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         return Collections.unmodifiableList(activeShips);
     }
 
+    /** @return the Voidbase construction sites (read-only). */
+    public List<USSBaseSite> getBaseSites() {
+        return Collections.unmodifiableList(baseSites);
+    }
+
+    /** @return the construction site at the given anchor, or null when there is no site there yet. */
+    public USSBaseSite getBaseSite(USSBaseAnchor anchor) {
+        if (anchor == null) {
+            return null;
+        }
+        for (USSBaseSite site : baseSites) {
+            if (site.anchor()
+                .equals(anchor)) {
+                return site;
+            }
+        }
+        return null;
+    }
+
     /**
-     * @return the infrastructure build progress (never null; the gateway reads the first incomplete project from
-     *         it when preparing a Constructor launch)
+     * Create (or reuse) the construction site at the anchor from the mission blueprint's parts needs (one site
+     * per anchor). The site carries the FULL requirement — the gateway caps the launch loadout at the site's
+     * remaining needs.
+     *
+     * @return the site (freshly created, or the existing one)
      */
-    public USSInfrastructure getInfrastructure() {
-        return infrastructure != null ? infrastructure : (infrastructure = new USSInfrastructure());
+    public USSBaseSite createOrGetBaseSite(USSBaseAnchor anchor, VoidcraftBlueprint blueprint, String name) {
+        USSBaseSite site = getBaseSite(anchor);
+        if (site != null) {
+            return site;
+        }
+        site = USSBaseSite.create(anchor, name, blueprint, System.currentTimeMillis());
+        baseSites.add(site);
+        syncFleetRenderBlock();
+        return site;
+    }
+
+    /** Remove a completed site (the base spawned in its place). */
+    public void completeBaseSite(USSBaseAnchor anchor) {
+        baseSites.removeIf(
+            site -> site.anchor()
+                .equals(anchor));
+        syncFleetRenderBlock();
+    }
+
+    /** @return the completed Voidbases (their own tick — integrity decay/repair, anchor hover, energy). */
+    public List<VoidcraftActiveBase> getBases() {
+        return Collections.unmodifiableList(bases);
+    }
+
+    /** @return the base standing at the given anchor (one base per anchor), or null. */
+    public VoidcraftActiveBase getBase(USSBaseAnchor anchor) {
+        if (anchor == null) {
+            return null;
+        }
+        for (VoidcraftActiveBase base : bases) {
+            if (base.anchor()
+                .equals(anchor)) {
+                return base;
+            }
+        }
+        return null;
+    }
+
+    /** Spawn a completed base at the anchor (removing its site). No-op when a base already stands there. */
+    public void spawnBase(VoidcraftActiveBase base) {
+        if (base == null || getBase(base.anchor()) != null) {
+            return;
+        }
+        bases.add(base);
+        NBTTagCompound payload = base.payload();
+        NBTTagList list = (payload != null && payload.hasKey(VoidcraftNbt.TAG_PROGRAM))
+            ? payload.getTagList(VoidcraftNbt.TAG_PROGRAM, 10)
+            : null;
+        basePilots.add(USSBasePilot.create(base, USSProgram.readFromNBT(list), this));
+        completeBaseSite(base.anchor());
+        syncFleetRenderBlock();
+    }
+
+    /**
+     * Tick the bases (anchor hover recompute, energy generation, the base program, integrity decay) — driven
+     * from the USS server tick.
+     */
+    public void tickBases() {
+        for (int i = bases.size() - 1; i >= 0; i--) {
+            VoidcraftActiveBase base = bases.get(i);
+            // The base sits at its anchor band point (within ±30° of the orbital plane), recomputed every tick
+            // (a planet anchor orbits).
+            USSPosition hover = anchorHoverPoint(base.anchor());
+            if (hover != null) {
+                base.setPosition(hover);
+            }
+            base.tickEnergy();
+            if (i < basePilots.size()) {
+                basePilots.get(i)
+                    .tick();
+            }
+            // The integrity time limit (the same rule as the in-flight ships): a base that hits 0 decommissions -
+            // removed here, cargo discarded, exactly like a lost ship.
+            if (base.tickIntegrity()) {
+                discardBase(i);
+            }
+        }
+        // Phase D: resync the fleet anchor when the render-visible base/site state changed (integrity decay or
+        // repair, a site advancing) — its signature is the ship count + base integrities + site progress.
+        if (fleetRenderSignature() != lastFleetRenderSignature) {
+            syncFleetRenderBlock();
+        }
+    }
+
+    /** Discard a base whose integrity reached 0 (decommissioned) — log it and remove it. */
+    private void discardBase(int index) {
+        VoidcraftActiveBase base = bases.remove(index);
+        if (index < basePilots.size()) {
+            basePilots.remove(index);
+        }
+        try {
+            LOGGER.info(
+                "[Voidcraft] VOIDBASE {} decommissioned at {} — integrity reached 0, base removed",
+                base.name(),
+                base.anchor());
+        } catch (Throwable ignored) {}
     }
 
     /**
@@ -1400,7 +1552,15 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      */
     private void tickShips() {
         if (activeShips.isEmpty()) {
+            progressLogTicks = 0L;
             return;
+        }
+        // Progress heartbeat pace: the counter advances once per machine tick and the heartbeat is the tick on
+        // which it reaches PROGRESS_LOG_INTERVAL (deterministic — no world-clock dependency).
+        progressLogTicks++;
+        boolean progressTick = progressLogTicks >= PROGRESS_LOG_INTERVAL;
+        if (progressTick) {
+            progressLogTicks = 0L;
         }
         List<Integer> completed = new ArrayList<>();
         List<Integer> lost = new ArrayList<>();
@@ -1441,37 +1601,32 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 lastPushedLegIds[slot] = legId;
                 fleetDirty = true;
             }
-            // Pass 26 (user: "…displays the calculated times and progress"): a periodic heartbeat — every
-            // PROGRESS_LOG_INTERVAL world ticks, one line per in-flight ship showing the current leg and its
-            // PROGRESS fraction (the ship's ticks-remaining against the leg's total calculated duration), so the
-            // movement's progress is visible in the game log. The state-transition log above already prints the
-            // leg's total (its "ticks left" at the transition); this adds the running progress in between.
-            try {
-                IGregTechTileEntity progressBase = getBaseMetaTileEntity();
-                if (progressBase != null && progressBase.getWorld() != null) {
-                    long worldTick = progressBase.getWorld()
-                        .getWorldTime();
-                    if (worldTick % PROGRESS_LOG_INTERVAL == 0L) {
-                        long legTotal = USSConstants.legTicks(
-                            ship.getState(),
-                            ship.getTravelDistance(),
-                            ship.getSpeed(),
-                            ship.getMiningPower(),
-                            ship.getRoles(),
-                            ship.getScanPower());
-                        double progress = legTotal > 0 ? (1.0 - (double) ship.getTicksRemaining() / (double) legTotal)
-                            : 1.0;
-                        LOGGER.info(
-                            "[Voidcraft] PROGRESS {} — {} {}% ({} ticks left of {})",
-                            ship.getName(),
-                            ship.getState()
-                                .name(),
-                            String.format("%.0f", progress * 100.0),
-                            ship.getTicksRemaining(),
-                            legTotal);
-                    }
-                }
-            } catch (Throwable ignored) {}
+            // A periodic progress heartbeat — once per PROGRESS_LOG_INTERVAL machine ticks (the counter advanced
+            // at the top of this method), one line per in-flight ship showing the current leg and its PROGRESS
+            // fraction (the ship's ticks-remaining against the leg's total calculated duration), so the movement's
+            // progress is visible in the game log. The state-transition log above already prints the leg's total
+            // (its "ticks left" at the transition); this adds the running progress in between.
+            if (progressTick) {
+                try {
+                    long legTotal = USSConstants.legTicks(
+                        ship.getState(),
+                        ship.getTravelDistance(),
+                        ship.getSpeed(),
+                        ship.getMiningPower(),
+                        ship.getRoles(),
+                        ship.getScanPower());
+                    double progress = legTotal > 0 ? (1.0 - (double) ship.getTicksRemaining() / (double) legTotal)
+                        : 1.0;
+                    LOGGER.info(
+                        "[Voidcraft] PROGRESS {} — {} {}% ({} ticks left of {})",
+                        ship.getName(),
+                        ship.getState()
+                            .name(),
+                        String.format("%.0f", progress * 100.0),
+                        ship.getTicksRemaining(),
+                        legTotal);
+                } catch (Throwable ignored) {}
+            }
         }
         // Resolve the tick's endings (completions + losses) in ONE index-safe reverse pass — a ship cannot be
         // both (a lost ship is skipped before the pilot tick), but the two slot lists must not shift each other's
@@ -1520,15 +1675,16 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * Whether the given mission is a Phase 4 pass 2 Constructor mission (the gateway set the flag at launch after
-     * loading the ship's payload).
+     * Whether the given mission is a Voidbase construction mission (the gateway set the flag at launch after
+     * writing the blueprint + parts loadout into the ship's payload). Such a ship produces no WORK-leg cargo —
+     * its parts are consumed in flight by the CONSTRUCT leg (create-or-fill the site at the anchor).
      */
-    private boolean isConstructorMission(VoidcraftActiveShip ship) {
+    private boolean isVoidbaseMission(VoidcraftActiveShip ship) {
         if (ship == null || ship.getPayload() == null) {
             return false;
         }
         NBTTagCompound payload = ship.getPayload();
-        return payload.getBoolean(VoidcraftNbt.TAG_CONSTRUCTOR_MISSION)
+        return payload.getBoolean(VoidcraftNbt.TAG_BUILD_MISSION)
             && VoidcraftRole.CONSTRUCTOR.isActive(ship.getRoles());
     }
 
@@ -1566,8 +1722,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      * <li>a PLANET — that planet's registered ores (the reserve depletes), clamped by the ship's hold;</li>
      * <li>anything else (a SHIP rendezvous, a STAR worked by a non-starlifter, a WORK with no MOVE) — no cargo.</li>
      * </ul>
-     * A Constructor mission carries no cargo either (its loadout is applied to the infrastructure project at
-     * completion).
+     * A Voidbase construction mission carries no cargo either (its parts loadout is consumed in flight by the
+     * CONSTRUCT leg).
      */
     @Override
     public void onWorkComplete(VoidcraftActiveShip ship, String targetKind, int targetIndex) {
@@ -1595,8 +1751,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             }
             return; // no cargo for a scan (the reveal is the yield)
         }
-        if (isConstructorMission(ship)) {
-            return; // no-op: the constructor "mines" (builds) during the leg; the loadout applies at completion
+        if (isVoidbaseMission(ship)) {
+            return; // no cargo: the parts loadout is consumed in flight by the CONSTRUCT leg
         }
         if (star) {
             if (VoidcraftRole.STARLIFTER.isActive(ship.getRoles())) {
@@ -1759,15 +1915,233 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         } catch (Throwable ignored) {}
     }
 
+    @Override
+    public boolean constructStart(VoidcraftActiveShip ship, String targetKind, int targetIndex) {
+        if (ship == null) {
+            return false;
+        }
+        // The site is built at the ship hover body (the preceding MOVE).
+        USSBaseAnchor anchor = USSBaseAnchor.fromMoveTarget(targetKind, targetIndex);
+        if (anchor == null) {
+            log(ship, "CONSTRUCT: no build anchor at this hover - skipping");
+            return false;
+        }
+        if (getBase(anchor) != null) {
+            log(ship, "CONSTRUCT: a base already stands at " + anchor + " - skipping");
+            return false;
+        }
+        NBTTagCompound payload = ship.getPayload();
+        if (payload == null || !payload.hasKey(VoidcraftNbt.TAG_BUILD_BLUEPRINT)) {
+            log(ship, "CONSTRUCT: no Voidbase blueprint on board - skipping");
+            return false;
+        }
+        NBTTagCompound bpTag = payload.getCompoundTag(VoidcraftNbt.TAG_BUILD_BLUEPRINT);
+        VoidcraftBlueprint blueprint = VoidcraftNbt.readBase(bpTag);
+        if (blueprint == null) {
+            log(ship, "CONSTRUCT: corrupt Voidbase blueprint on board - skipping");
+            return false;
+        }
+        String name = bpTag.hasKey(VoidcraftNbt.TAG_NAME) ? bpTag.getString(VoidcraftNbt.TAG_NAME) : "Voidbase";
+        USSBaseSite site = createOrGetBaseSite(anchor, blueprint, name);
+        // The parts this ship will actually deposit: per loadout key, the site's remaining need capped at what is
+        // on board (a part already satisfied by another Constructor is skipped and stays on board).
+        long total = 0L;
+        for (String key : new ArrayList<String>(
+            ship.getBuildLoadout()
+                .keySet())) {
+            long need = site.remaining(key);
+            if (need <= 0L) {
+                continue;
+            }
+            Long onBoard = ship.getBuildLoadout()
+                .get(key);
+            total += Math.min(need, onBoard == null ? 0L : onBoard);
+        }
+        if (total <= 0L) {
+            // Nothing to transfer (no loadout, or every part is already delivered): a site that just completed
+            // by another ship spawns now; otherwise the site simply stands.
+            if (site.isComplete()) {
+                spawnBaseFromSite(site, ship);
+            } else {
+                log(
+                    ship,
+                    "CONSTRUCT: nothing to transfer at " + anchor
+                        + " (site "
+                        + (int) (site.progressFraction() * 100)
+                        + "% complete)");
+            }
+            syncFleetRenderBlock();
+            return true; // the command's first tick settles DONE
+        }
+        long power = ship.getConstructionPower();
+        long perItem = USSConstants.constructTicksPerItem(power);
+        site.startConstructLeg(perItem * total, perItem, ship.getSeed());
+        log(
+            ship,
+            "CONSTRUCT: building at " + anchor
+                + " ("
+                + total
+                + " parts, construction power "
+                + power
+                + ", ~"
+                + (perItem * total / 20L)
+                + "s)");
+        syncFleetRenderBlock();
+        return true;
+    }
+
+    @Override
+    public boolean constructTick(VoidcraftActiveShip ship, String targetKind, int targetIndex) {
+        if (ship == null) {
+            return false;
+        }
+        USSBaseAnchor anchor = USSBaseAnchor.fromMoveTarget(targetKind, targetIndex);
+        USSBaseSite site = anchor != null ? getBaseSite(anchor) : null;
+        // No site, or no leg (nothing was transferred, or the site completed and the base took its place): done.
+        if (site == null || site.constructLegId() <= 0) {
+            return false;
+        }
+        if (getBase(anchor) != null || site.isComplete()) {
+            // A leg started between ticks while another Constructor finished the site: spawn (a no-op when a base
+            // already stands) and end this leg.
+            site.finishConstructLeg();
+            spawnBaseFromSite(site, ship);
+            syncFleetRenderBlock();
+            return false;
+        }
+        site.tickConstruct();
+        // One part per ticksPerItem machine ticks: the countdown (total = ticksPerItem * parts) hits a multiple
+        // of the pacing on every deposit tick - including the final 0, so exactly `parts` deposits run.
+        if (site.constructTicksPerItem() > 0L && site.constructTicksLeft() % site.constructTicksPerItem() == 0L) {
+            depositOneBuildPart(ship, site);
+        }
+        if (site.isComplete()) {
+            site.finishConstructLeg();
+            spawnBaseFromSite(site, ship);
+            log(
+                ship,
+                "CONSTRUCT: construction complete at " + anchor
+                    + " - VOIDBASE "
+                    + site.name()
+                    + " standing"
+                    + buildLeftoverLog(ship));
+            syncFleetRenderBlock();
+            return false;
+        }
+        if (site.constructTicksLeft() <= 0L) {
+            // The leg counted down before the site filled (its loadout covered less than the remaining need).
+            site.finishConstructLeg();
+            log(
+                ship,
+                "CONSTRUCT: construction leg over at " + anchor
+                    + " (site "
+                    + (int) (site.progressFraction() * 100)
+                    + "% complete, "
+                    + siteRemainingTotal(site)
+                    + " parts still on the site)"
+                    + buildLeftoverLog(ship));
+            syncFleetRenderBlock();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Deposit ONE part from the ship's loadout into the site: the first key (loadout order) the site still
+     * needs and the ship still carries (unknown / saturated keys are skipped).
+     */
+    private void depositOneBuildPart(VoidcraftActiveShip ship, USSBaseSite site) {
+        for (String key : new ArrayList<String>(
+            ship.getBuildLoadout()
+                .keySet())) {
+            if (site.remaining(key) <= 0L) {
+                continue;
+            }
+            long take = ship.consumeBuildParts(key, 1L);
+            if (take > 0L) {
+                site.add(key, take);
+                return;
+            }
+        }
+    }
+
+    /** @return the site's parts still missing (all keys, 0 when complete) */
+    private long siteRemainingTotal(USSBaseSite site) {
+        long total = 0L;
+        for (java.util.Map.Entry<String, Long> entry : site.blueprint()
+            .partsList()
+            .entrySet()) {
+            total += site.remaining(entry.getKey());
+        }
+        return total;
+    }
+
+    /** @return the " (N parts remain on board)" log suffix ("" when the ship's loadout is empty) */
+    private String buildLeftoverLog(VoidcraftActiveShip ship) {
+        return ship.buildLoadoutTotal() > 0L ? " (" + ship.buildLoadoutTotal() + " parts remain on board)" : "";
+    }
+
+    /**
+     * Spawn the finished Voidbase from a completed site (the base payload is the ship's mission blueprint - the
+     * site's re-encoded blueprint when the ship carries no tag; the base stands at the anchor's band point).
+     */
+    private void spawnBaseFromSite(USSBaseSite site, VoidcraftActiveShip ship) {
+        USSBaseAnchor anchor = site.anchor();
+        NBTTagCompound payload = ship != null ? ship.getPayload() : null;
+        NBTTagCompound bpTag = (payload != null && payload.hasKey(VoidcraftNbt.TAG_BUILD_BLUEPRINT))
+            ? payload.getCompoundTag(VoidcraftNbt.TAG_BUILD_BLUEPRINT)
+            : siteBlueprintPayload(site);
+        String uuid = bpTag.hasKey(VoidcraftNbt.TAG_UUID) ? bpTag.getString(VoidcraftNbt.TAG_UUID)
+            : ItemVoidbaseBlueprint.newUuid();
+        USSPosition hover = anchorHoverPoint(anchor);
+        VoidcraftActiveBase base = VoidcraftActiveBase
+            .launch(uuid, site.name(), anchor, bpTag, ship != null ? ship.getSeed() : 0, hover);
+        spawnBase(base);
+    }
+
+    /** The site's blueprint re-encoded as a base payload tag (the fallback when the completing ship carries none). */
+    private NBTTagCompound siteBlueprintPayload(USSBaseSite site) {
+        NBTTagCompound payload = new NBTTagCompound();
+        VoidcraftNbt.write(payload, site.blueprint(), "site", site.name(), site.createdAt());
+        return payload;
+    }
+
+    @Override
+    public boolean baseRepairStart(VoidcraftActiveBase base) {
+        if (base == null || base.integrity() >= base.maxIntegrity()) {
+            return false; // nothing to restore
+        }
+        return base.energy() >= VoidcraftActiveBase.REPAIR_DRAW || base.energyGen() >= VoidcraftActiveBase.REPAIR_DRAW;
+    }
+
+    @Override
+    public boolean baseRepairTick(VoidcraftActiveBase base) {
+        if (base == null) {
+            return false;
+        }
+        if (base.addRepair()) {
+            logBase(base, "REPAIR: drawing " + VoidcraftActiveBase.REPAIR_DRAW + " EU for station integrity");
+        }
+        return base.integrity() < base.maxIntegrity();
+    }
+
+    @Override
+    public void logBase(VoidcraftActiveBase base, String message) {
+        try {
+            LOGGER.info("[Voidcraft] VOIDBASE {} - {}", base != null ? base.name() : "base", message);
+        } catch (Throwable ignored) {}
+    }
+
     // endregion
 
     /**
-     * Mission complete for ONE ship (slot) — the ship SURVIVED its integrity time limit (it is here with integrity
-     * still &gt; 0): a Constructor mission applies its loadout to the infrastructure project; any other mission
-     * delivers the cargo to ITS OWN bay (captured at launch). Then: re-emit the surviving ship into ITS OWN
-     * gateway slot (or drop it) — its integrity is back at maximum for the next flight (the item carries the
-     * blueprint's full integrity). The fleet anchor is resynced by the CALLER (one push for the whole fleet —
-     * Phase 4 pass 5). Other ships in flight are untouched.
+     * Mission complete for ONE ship (slot) — the ship SURVIVED its integrity time limit (it is here with
+     * integrity still &gt; 0): the mission delivers its cargo to ITS OWN bay (captured at launch) — a Voidbase
+     * construction mission carries no cargo (its parts loadout is consumed in flight by the CONSTRUCT leg).
+     * Then: re-emit the surviving ship into ITS OWN gateway's output bus (or drop it at the USS when the bus
+     * cannot absorb it) — its integrity is back at maximum for the next flight (the item carries the blueprint
+     * full integrity). The fleet anchor is resynced by the CALLER (one push for the whole fleet). Other ships in
+     * flight are untouched.
      */
     private void completeShip(int slot) {
         if (slot < 0 || slot >= activeShips.size()) {
@@ -1782,7 +2156,6 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         lastPushedLegIds[slot] = -1;
 
         String shipName = completedShip.getName();
-        boolean constructorMission = isConstructorMission(completedShip);
         NBTTagCompound cargo = completedShip.getCargo();
         NBTTagList items = cargo != null ? USSShipCargo.readItems(cargo) : new NBTTagList();
         NBTTagList fluids = cargo != null ? USSShipCargo.readFluids(cargo) : new NBTTagList();
@@ -1798,11 +2171,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         float dropY = base.getYCoord() + 0.5f;
         float dropZ = base.getZCoord() + 0.5f;
 
-        if (constructorMission) {
-            // Phase 4 pass 2: the loadout was already pulled from the gateway's input buses/hatches at launch —
-            // apply it to the infrastructure project (the materials are consumed by the build, not delivered).
-            applyConstructorLoadout(completedShip);
-        } else if (items.tagCount() > 0 || fluids.tagCount() > 0) {
+        if (items.tagCount() > 0 || fluids.tagCount() > 0) {
             // Cargo → the bay captured at launch; if the bay is gone, drop the cargo at the USS (no silent loss).
             MTEVoidcraftStorageBay bay = mteAt(world, completedShip.getBayPos(), MTEVoidcraftStorageBay.class);
             if (bay != null && bay.mMachine) {
@@ -1836,116 +2205,80 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             }
         }
 
-        // The ship SURVIVED (integrity > 0 at completion) → back into the gateway slot (the gateway re-holograms
-        // it docked), with its integrity back at maximum for the next flight.
+        MTEVoidcraftGateway gateway = mteAt(world, completedShip.getGatewayPos(), MTEVoidcraftGateway.class);
+
+        // The parts no site took (the constructor's remaining loadout) go to the gateway's output buses -
+        // whatever they cannot absorb (no gateway, no output bus, or a full buffer) drops at the USS instead of
+        // being lost.
+        int returned = 0;
+        List<ItemStack> droppedBack = new ArrayList<>();
+        for (Map.Entry<String, Long> entry : completedShip.getBuildLoadout()
+            .entrySet()) {
+            ItemStack item = MTEVoidcraftGateway.partItem(entry.getKey());
+            if (item == null) {
+                continue;
+            }
+            ItemStack stack = item.copy();
+            stack.stackSize = entry.getValue()
+                .intValue();
+            int inserted = (gateway != null && gateway.mMachine) ? gateway.outputItem(stack) : 0;
+            returned += inserted;
+            if (stack.stackSize > 0) {
+                droppedBack.add(stack);
+            }
+        }
+        if (returned > 0 || !droppedBack.isEmpty()) {
+            if (!droppedBack.isEmpty()) {
+                GTUtility.dropItemsOrClusters(world, dropX, dropY, dropZ, droppedBack);
+            }
+            try {
+                LOGGER.info(
+                    "[Voidcraft] {} returned {} part(s) to the gateway ({} dropped at the USS)",
+                    shipName,
+                    returned,
+                    droppedBack.size());
+            } catch (Throwable ignored) {}
+        }
+
+        // The ship SURVIVED (integrity > 0 at completion) → back into ITS OWN gateway's output bus, with its
+        // integrity back at maximum for the next flight. Whatever the bus cannot absorb (no gateway, no output
+        // bus, or a full buffer) drops at the USS instead of being lost.
         if (shipItem != null) {
-            MTEVoidcraftGateway gateway = mteAt(world, completedShip.getGatewayPos(), MTEVoidcraftGateway.class);
-            if (gateway != null && gateway.mMachine && gateway.getControllerSlot() == null) {
-                gateway.mInventory[gateway.getControllerSlotIndex()] = shipItem;
-                gateway.updateSlots();
-            } else {
+            if (gateway != null && gateway.mMachine) {
+                gateway.outputItem(shipItem);
+            }
+            if (shipItem.stackSize > 0) {
                 GTUtility
                     .dropItemsOrClusters(world, dropX, dropY, dropZ, java.util.Collections.singletonList(shipItem));
             }
         }
 
         updateSlots();
+        String shipOutcome = shipItem == null ? "no ship item to return"
+            : shipItem.stackSize > 0 ? "ship dropped at the USS (output bus full)"
+                : "ship returned to the gateway output bus";
         try {
             LOGGER.info(
-                "[Voidcraft] USS mission complete (slot {}): ship '{}' survived (integrity {}s left), cargo {} items",
+                "[Voidcraft] USS mission complete (slot {}): ship '{}' survived (integrity {}s left), cargo {} items, {}",
                 slot,
                 shipName,
                 integrity,
-                items.tagCount());
-        } catch (Throwable ignored) {}
-    }
-
-    /**
-     * Phase 4 pass 2 — apply a completed Constructor mission's loadout (carried in the ship payload, written by the
-     * gateway at launch) to its infrastructure project. Overflow beyond the project's costs is NOT credited (the
-     * project finishes exactly at its cost table). The progress is permanent and persisted (chunk reloads, star
-     * burnouts).
-     */
-    private void applyConstructorLoadout(VoidcraftActiveShip ship) {
-        NBTTagCompound payload = ship.getPayload();
-        if (payload == null) {
-            return;
-        }
-        int projectId = payload.getInteger(VoidcraftNbt.TAG_PROJECT);
-        USSProject project = USSProject.byId(projectId);
-        if (project == null) {
-            LOGGER.warn(
-                "[Voidcraft] constructor mission finished with an unknown project id {} — loadout dropped",
-                projectId);
-            return;
-        }
-        NBTTagCompound loadout = payload.hasKey(VoidcraftNbt.TAG_LOADOUT)
-            ? payload.getCompoundTag(VoidcraftNbt.TAG_LOADOUT)
-            : null;
-        if (loadout == null) {
-            return; // no loadout (defensive — the gateway always writes one for a Constructor mission)
-        }
-
-        // Each loadout entry carries its own material name (the gateway writes it), so no reverse item → material
-        // lookup is needed; entries that do not belong to the project are simply ignored by the apply below.
-        java.util.Map<String, Long> amounts = new java.util.LinkedHashMap<>();
-        NBTTagList items = USSShipCargo.readItems(loadout);
-        for (int i = 0; i < items.tagCount(); i++) {
-            NBTTagCompound entry = items.getCompoundTagAt(i);
-            if (entry == null) {
-                continue;
-            }
-            String materialName = entry.getString(USSShipCargo.ITEM_ENTRY_MATERIAL);
-            if (materialName.isEmpty()) {
-                continue; // not a constructor loadout entry (defensive)
-            }
-            long amount = entry.getInteger(USSShipCargo.ENTRY_AMOUNT);
-            if (amount > 0L) {
-                amounts.merge(materialName, (long) amount, Long::sum);
-            }
-        }
-        NBTTagList fluids = USSShipCargo.readFluids(loadout);
-        for (int i = 0; i < fluids.tagCount(); i++) {
-            NBTTagCompound entry = fluids.getCompoundTagAt(i);
-            if (entry == null) {
-                continue;
-            }
-            String materialName = entry.getString(USSShipCargo.FLUID_ENTRY_MATERIAL);
-            if (materialName.isEmpty()) {
-                continue;
-            }
-            long amount = entry.getLong(USSShipCargo.FLUID_ENTRY_AMOUNT);
-            if (amount > 0L) {
-                amounts.merge(materialName, amount, Long::sum);
-            }
-        }
-        if (amounts.isEmpty()) {
-            return;
-        }
-
-        long applied = getInfrastructure().apply(projectId, amounts);
-        try {
-            getBaseMetaTileEntity().markDirty();
-        } catch (Throwable ignored) {}
-        try {
-            boolean complete = getInfrastructure().isComplete(projectId);
-            LOGGER.info(
-                "[Voidcraft] constructor mission applied {} units to infrastructure project {} ({}{})",
-                applied,
-                projectId,
-                amounts,
-                complete ? ", project COMPLETE" : "");
+                items.tagCount(),
+                shipOutcome);
         } catch (Throwable ignored) {}
     }
 
     /**
      * Give up ALL missions in flight without delivering (star burnout / structure teardown: every ship is lost,
-     * the fleet anchor removed).
+     * the Voidbases and their construction sites with it, the fleet anchor removed).
      */
     private void discardAllShips() {
         activeShips.clear();
         Arrays.fill(lastPushedShipStates, -1);
         fleetDirty = false;
+        baseSites.clear();
+        bases.clear();
+        basePilots.clear();
         syncFleetRenderBlock(); // empty fleet → the anchor block is cleared
     }
 
@@ -2029,6 +2362,44 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         // ship hovers just off the planet's surface on ANY side (the shell radius).
         double hoverRadius = 0.5 + 0.375 * world.scale;
         return USSFleetOrbit.shellPoint(planetCenter, hoverRadius, seed);
+    }
+
+    /**
+     * The HOVER POINT of the anchor — where a Voidbase (site and base alike) stands: a star is the fixed star
+     * position; a planet i is the deterministic EQUATORIAL-BAND point around its orbit (the station never floats
+     * directly above the planet — it sits within ±30° of the orbital plane at the same hover radius a ship
+     * hovers at, seeded by the planet index so site + base share one point); a ripple j is the fixed grid
+     * point. Ships keep their own hover law ({@link #destinationFor}) — this is the base law.
+     *
+     * @param anchor the anchor
+     * @return the hover point, or null when the anchor is absent (out of range / system cold)
+     */
+    private USSPosition anchorHoverPoint(USSBaseAnchor anchor) {
+        if (anchor == null || uss == null || !uss.isIgnited()) {
+            return null;
+        }
+        if (anchor.isStar()) {
+            return USSFleetOrbit.starPosition();
+        }
+        if (anchor.isPlanet()) {
+            int index = anchor.index();
+            List<USSPlanets.USSPlanet> planets = getPlanets();
+            if (planets == null || index < 0 || index >= planets.size()) {
+                return null; // out of range (defensive) — the caller treats the base as unanchored
+            }
+            USSPlanets.USSPlanet planet = planets.get(index);
+            float starSize = starSizeFor(uss.getStarType(), uss.getIgnitedAt());
+            USSPosition planetCenter = USSFleetOrbit.planetPosition(planet, starSize, worldTimeTicks());
+            double hoverRadius = 0.5 + 0.375 * planet.scale; // the same hover distance a ship keeps off the surface
+            return USSFleetOrbit
+                .orbitalBandPoint(planetCenter, hoverRadius, index, (float) planet.xAngle, (float) planet.zAngle);
+        }
+        // A ripple: the fixed grid point of the field.
+        USSRippleField field = getRippleField();
+        if (field == null || !field.isRipple(anchor.index())) {
+            return null;
+        }
+        return field.positionOf(anchor.index());
     }
 
     /**
@@ -2145,6 +2516,114 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
+     * The construction-site entries for the fleet render anchor (Phase D): each site's anchor target (the
+     * ship-entry protocol — the client resolves the star/planet hover live and renders a ripple site exactly at
+     * the resolved fixed point), the site's fill progress and the blueprint dimensions (the client wireframe
+     * box size), and the active CONSTRUCT leg (leg id / duration / Constructor seed - the client's constructor
+     * beam + its fade).
+     */
+    private List<NBTTagCompound> buildBaseSiteEntries() {
+        List<NBTTagCompound> entries = new ArrayList<NBTTagCompound>();
+        for (USSBaseSite site : baseSites) {
+            if (site == null || site.blueprint() == null) {
+                continue;
+            }
+            NBTTagCompound entry = new NBTTagCompound();
+            writeAnchorTarget(entry, site.anchor());
+            entry.setDouble(TileEntityVoidcraftShip.TAG_SITE_PROGRESS, site.progressFraction());
+            // The active CONSTRUCT leg (the client's constructor beam: leg id 0 = no beam, the seed pairs the
+            // beam's ship endpoint, the total is the beam fade's duration).
+            entry.setInteger(TileEntityVoidcraftShip.TAG_SITE_CONSTRUCT_LEG, site.constructLegId());
+            entry.setLong(TileEntityVoidcraftShip.TAG_SITE_CONSTRUCT_TOTAL, site.constructTotal());
+            entry.setInteger(TileEntityVoidcraftShip.TAG_SITE_CONSTRUCT_SEED, site.constructSeed());
+            VoidcraftBlueprint blueprint = site.blueprint();
+            entry.setIntArray(
+                TileEntityVoidcraftShip.TAG_SITE_DIMS,
+                new int[] { blueprint.width, blueprint.height, blueprint.depth });
+            entries.add(entry);
+        }
+        return entries;
+    }
+
+    /**
+     * The standing-base entries for the fleet render anchor (Phase D): each base's anchor target (the
+     * ship-entry protocol), the full base payload (the client renders its blueprint as a static model from it)
+     * and the current/max integrity (the client tints the model red as integrity drops).
+     */
+    private List<NBTTagCompound> buildBaseEntries() {
+        List<NBTTagCompound> entries = new ArrayList<NBTTagCompound>();
+        for (int i = 0; i < bases.size(); i++) {
+            VoidcraftActiveBase base = bases.get(i);
+            if (base == null || base.payload() == null) {
+                continue;
+            }
+            NBTTagCompound entry = new NBTTagCompound();
+            writeAnchorTarget(entry, base.anchor());
+            entry.setTag(
+                TileEntityVoidcraftShip.TAG_ENTRY_PAYLOAD,
+                base.payload()
+                    .copy());
+            entry.setLong(TileEntityVoidcraftShip.TAG_BASE_INTEGRITY, base.integrity());
+            entry.setLong(TileEntityVoidcraftShip.TAG_BASE_INTEGRITY_MAX, base.maxIntegrity());
+            entry.setInteger(TileEntityVoidcraftShip.TAG_BASE_SEED, base.seed());
+            // The active mining-leg id (0 = not mining) - the client animates the mining beam from it.
+            entry.setInteger(
+                TileEntityVoidcraftShip.TAG_BASE_MINING_LEG,
+                i < basePilots.size() ? basePilots.get(i)
+                    .miningLegId() : 0);
+            entries.add(entry);
+        }
+        return entries;
+    }
+
+    /**
+     * Write the anchor target of a render entry (Phase D, shared by sites and bases): STAR — target -1 (the
+     * client resolves the star center live); PLANET i — target i (the client tracks the planet's live orbit
+     * position); RIPPLE j — the static flag + the server-resolved hover point (the client renders the fixed
+     * point exactly).
+     */
+    private void writeAnchorTarget(NBTTagCompound entry, USSBaseAnchor anchor) {
+        if (anchor != null && anchor.isRipple()) {
+            entry.setBoolean(TileEntityVoidcraftShip.TAG_ENTRY_STATIC, true);
+            entry.setInteger(TileEntityVoidcraftShip.TAG_ENTRY_TARGET, -1);
+            USSPosition hover = anchorHoverPoint(anchor);
+            if (hover != null) {
+                NBTTagCompound dest = new NBTTagCompound();
+                hover.writeToNBT(dest);
+                entry.setTag(TileEntityVoidcraftShip.TAG_ENTRY_DEST, dest);
+            }
+            return;
+        }
+        entry.setInteger(
+            TileEntityVoidcraftShip.TAG_ENTRY_TARGET,
+            anchor != null && anchor.isPlanet() ? anchor.index() : -1);
+    }
+
+    /**
+     * The render-visible fleet signature (Phase D): the ship count + every base integrity + every base mining-leg
+     * id + every site progress (quantized to 0.1%) + every site CONSTRUCT leg identity (leg id + seed).
+     * {@link #tickBases()} resyncs the fleet anchor exactly when it changes (integrity decay or repair, a site
+     * advancing, a mining leg or a construction leg starting or ending) — never per tick (the client animates the
+     * beams locally from the leg ids + durations).
+     */
+    private long fleetRenderSignature() {
+        long sig = activeShips.size();
+        for (int i = 0; i < bases.size(); i++) {
+            VoidcraftActiveBase base = bases.get(i);
+            long mining = (base != null && i < basePilots.size()) ? basePilots.get(i)
+                .miningLegId() : 0L;
+            sig = sig * 31 + (base != null ? base.integrity() : 0L) * 31 + mining;
+        }
+        for (USSBaseSite site : baseSites) {
+            sig = sig * 31 + (long) (site != null ? Math.round(site.progressFraction() * 1000.0) : 0.0);
+            // The CONSTRUCT leg identity (resync exactly when a leg starts or ends; the per-part progress above
+            // already resyncs the deposit ticks).
+            sig = sig * 31 + (site != null ? (long) site.constructLegId() * 31L + site.constructSeed() : 0L);
+        }
+        return sig;
+    }
+
+    /**
      * Push the WHOLE fleet to its one render anchor (Phase 4 pass 5 — replaces pass 4's per-slot blocks): creates
      * or adopts the anchor block, rebuilds its entry list, and syncs it ONCE; with an empty fleet it clears the
      * anchor. Called at most once per MTE tick (launch / state change / completion / discard / one-time cleanup) —
@@ -2160,18 +2639,20 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             return;
         }
         int[] anchor = shipAnchorPos(base);
-        if (activeShips.isEmpty()) {
+        if (activeShips.isEmpty() && bases.isEmpty() && baseSites.isEmpty()) {
             if (world.getBlock(anchor[0], anchor[1], anchor[2]) == VoidcraftLoader.sBlockVoidcraftShipRender) {
                 world.setBlockToAir(anchor[0], anchor[1], anchor[2]);
                 try {
                     LOGGER.info("[Voidcraft] USS fleet anchor removed @ {},{},{}", anchor[0], anchor[1], anchor[2]);
                 } catch (Throwable ignored) {}
             }
+            lastFleetRenderSignature = fleetRenderSignature();
             return;
         }
         Block atAnchor = world.getBlock(anchor[0], anchor[1], anchor[2]);
         if (atAnchor != VoidcraftLoader.sBlockVoidcraftShipRender) {
             if (atAnchor != Blocks.air) {
+                lastFleetRenderSignature = fleetRenderSignature();
                 return; // occupied by something else — the fleet is invisible (rare; missions still run)
             }
             world.setBlock(anchor[0], anchor[1], anchor[2], VoidcraftLoader.sBlockVoidcraftShipRender);
@@ -2179,6 +2660,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         // else: a (possibly stale) fleet anchor from an earlier state already sits here — adopt it below.
         TileEntity te = world.getTileEntity(anchor[0], anchor[1], anchor[2]);
         if (!(te instanceof TileEntityVoidcraftShip)) {
+            lastFleetRenderSignature = fleetRenderSignature();
             return;
         }
         TileEntityVoidcraftShip fleetTe = (TileEntityVoidcraftShip) te;
@@ -2190,6 +2672,11 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         // each as a pulsating dark-blue transparent triangle. Only ripples that have been scanned ride here (hidden
         // ripples + revealed non-ripples stay absent).
         fleetTe.setRevealedRipples(revealedRipplePositions());
+        // Phase D: the Voidbase construction sites (wireframe + fill) and the standing bases (static models) —
+        // rendered by the client from this same anchor.
+        fleetTe.setBaseSites(buildBaseSiteEntries());
+        fleetTe.setBases(buildBaseEntries());
+        lastFleetRenderSignature = fleetRenderSignature();
         // 1.7.10: updateEntity() is a tick hook — the real client push is markBlockForUpdate (see syncToClient).
         fleetTe.syncToClient();
     }
@@ -2352,41 +2839,41 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                             + "t"));
             }
         }
-        // Phase 4 pass 2: infrastructure projects (Constructor build progress — the first incomplete project is
-        // what the next Constructor mission works on).
-        USSInfrastructure infrastructure = getInfrastructure();
-        str.add("tt.voidcraft_uss.infodata.infrastructure.header");
-        for (USSProject project : USSProject.CATALOG) {
-            boolean complete = infrastructure.isComplete(project.id);
-            StringBuilder detail = new StringBuilder();
-            for (USSProject.Cost cost : project.costs) {
-                long consumed = Math.min(cost.amount, infrastructure.consumed(project.id, cost.materialName));
-                if (detail.length() > 0) {
-                    detail.append(", ");
-                }
-                detail.append(displayNameForCost(cost));
-                detail.append(" ")
-                    .append(YELLOW)
-                    .append(consumed)
-                    .append(RESET)
-                    .append('/')
-                    .append(cost.amount);
+        // Voidbases: the construction sites (in progress) and the completed bases.
+        if (!baseSites.isEmpty() || !bases.isEmpty()) {
+            str.add("tt.voidcraft_uss.infodata.bases.header");
+            for (USSBaseSite site : baseSites) {
+                str.add(
+                    IGregTechDeviceInformation.encode(
+                        "tt.voidcraft_uss.infodata.site.line",
+                        anchorName(site.anchor()) + " — "
+                            + site.name()
+                            + " "
+                            + YELLOW
+                            + (int) (site.progressFraction() * 100)
+                            + RESET
+                            + "%"));
             }
-            str.add(
-                IGregTechDeviceInformation.encode(
-                    "tt.voidcraft_uss.project.line",
-                    IGregTechDeviceInformation.translatable(project.langKey) + " — "
-                        + (complete
-                            ? IGregTechDeviceInformation.translatable("tt.voidcraft_uss.project.status.complete")
-                            : IGregTechDeviceInformation.translatable("tt.voidcraft_uss.project.status.in_progress"))
-                        + (detail.length() > 0 ? " (" + detail + ")" : "")));
+            for (VoidcraftActiveBase base : bases) {
+                str.add(
+                    IGregTechDeviceInformation.encode(
+                        "tt.voidcraft_uss.infodata.base.line",
+                        base.name() + " "
+                            + anchorName(base.anchor())
+                            + " — integrity "
+                            + YELLOW
+                            + base.integrity()
+                            + "/"
+                            + base.maxIntegrity()
+                            + RESET));
+            }
         }
         return str.toArray(new String[0]);
     }
 
     /**
-     * The in-game display name of a planet ore material (same convention as {@link #displayNameForCost}: the dust
-     * stack's localized name; the raw material name is the fallback).
+     * The in-game display name of a planet ore material (the dust stack's localized name; the raw material name
+     * is the fallback).
      */
     private static String displayNameForMaterial(Materials material) {
         if (material != null && material != Materials._NULL) {
@@ -2398,26 +2885,15 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         return material == null ? "?" : material.getName();
     }
 
-    /**
-     * The in-game display name of a project cost material (same convention as the storage bay infodata: the dust
-     * stack's / the fluid's localized name; the raw material name is the fallback).
-     */
-    private static String displayNameForCost(USSProject.Cost cost) {
-        Materials material = Materials.get(cost.materialName);
-        if (material != null && material != Materials._NULL) {
-            if (cost.kind == USSProject.Kind.ITEM) {
-                ItemStack dust = material.getDust(1);
-                if (dust != null) {
-                    return dust.getDisplayName();
-                }
-            } else {
-                FluidStack fluid = material.getFluid(1);
-                if (fluid != null) {
-                    return fluid.getLocalizedName();
-                }
-            }
+    /** The localized in-game name of a Voidbase anchor (star / planet i / ripple j). */
+    private static String anchorName(USSBaseAnchor anchor) {
+        if (anchor.isStar()) {
+            return StatCollector.translateToLocal("tt.voidcraft_uss.anchor.star");
         }
-        return cost.materialName;
+        if (anchor.isPlanet()) {
+            return StatCollector.translateToLocal("tt.voidcraft_uss.anchor.planet") + " " + anchor.index();
+        }
+        return StatCollector.translateToLocal("tt.voidcraft_uss.anchor.ripple") + " " + anchor.index();
     }
 
     @Override
@@ -2527,12 +3003,32 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             }
             aNBT.setTag(ACTIVE_SHIPS_NBT_TAG, ships);
         }
-        if (infrastructure != null) {
-            NBTTagCompound infraTag = new NBTTagCompound();
-            infrastructure.writeToNBT(infraTag); // writes nothing when the progress is empty
-            if (infraTag.hasKey(USSInfrastructure.TAG_PROJECTS)) {
-                aNBT.setTag(INFRASTRUCTURE_NBT_TAG, infraTag); // keep a fresh USS lean
+        // Voidbase construction sites + completed bases (a fresh USS with no base omits both tags).
+        if (!baseSites.isEmpty()) {
+            NBTTagList sites = new NBTTagList();
+            for (USSBaseSite site : baseSites) {
+                NBTTagCompound siteTag = new NBTTagCompound();
+                site.writeToNBT(siteTag);
+                sites.appendTag(siteTag);
             }
+            aNBT.setTag(BASE_SITES_NBT_TAG, sites);
+        }
+        if (!bases.isEmpty()) {
+            NBTTagList baseTags = new NBTTagList();
+            for (int i = 0; i < bases.size(); i++) {
+                NBTTagCompound baseTag = bases.get(i)
+                    .writeToNBT();
+                // The pilot state (executor cursor + zero-length leg bookkeeping) nests under the base tag,
+                // like the ships.
+                if (i < basePilots.size()) {
+                    baseTag.setTag(
+                        USSBasePilot.TAG_PILOT,
+                        basePilots.get(i)
+                            .writeToNBT());
+                }
+                baseTags.appendTag(baseTag);
+            }
+            aNBT.setTag(BASES_NBT_TAG, baseTags);
         }
         super.saveNBTData(aNBT);
     }
@@ -2569,11 +3065,40 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 }
             }
         }
-        // Phase 4 pass 2: infrastructure progress (absent tag = fresh/empty; corrupt = dropped, no migration path).
-        if (aNBT.hasKey(INFRASTRUCTURE_NBT_TAG)) {
-            infrastructure = USSInfrastructure.readFromNBT(aNBT.getCompoundTag(INFRASTRUCTURE_NBT_TAG));
-        } else {
-            infrastructure = new USSInfrastructure();
+        // Voidbase construction sites + completed bases (absent tags = fresh/empty; corrupt entries are skipped,
+        // no migration path).
+        baseSites.clear();
+        if (aNBT.hasKey(BASE_SITES_NBT_TAG)) {
+            NBTTagList sites = aNBT.getTagList(BASE_SITES_NBT_TAG, 10);
+            for (int i = 0; i < sites.tagCount(); i++) {
+                NBTTagCompound siteTag = sites.getCompoundTagAt(i);
+                if (siteTag == null) {
+                    continue;
+                }
+                USSBaseSite site = USSBaseSite.readFromNBT(siteTag);
+                if (site != null) {
+                    baseSites.add(site);
+                }
+            }
+        }
+        bases.clear();
+        basePilots.clear();
+        if (aNBT.hasKey(BASES_NBT_TAG)) {
+            NBTTagList baseTags = aNBT.getTagList(BASES_NBT_TAG, 10);
+            for (int i = 0; i < baseTags.tagCount(); i++) {
+                NBTTagCompound baseTag = baseTags.getCompoundTagAt(i);
+                if (baseTag == null) {
+                    continue;
+                }
+                VoidcraftActiveBase base = VoidcraftActiveBase.readFromNBT(baseTag);
+                if (base != null) {
+                    bases.add(base);
+                    // Re-attach the base pilot (program from the base payload; cursor from the nested vc_pilot
+                    // tag — a missing one degrades to a fresh pilot, a corrupt one fails safe to a COMPLETED
+                    // program → the base holds).
+                    basePilots.add(USSBasePilot.attach(base, this, baseTag));
+                }
+            }
         }
         super.loadNBTData(aNBT);
     }

@@ -32,28 +32,42 @@ import java.util.Optional;
 public enum VoidcraftCoverComponent {
 
     THRUSTER_NOZZLE(0, "Voidcraft Thruster Nozzle", "tt.voidcraft.cover.thruster_nozzle", VoidcraftComponent.ENGINE, 0,
-        3, 120, 0, 0, 0, 0, 0, 2, 0, 0),
+        3, 120, 0, 0, 0, 0, 0, 2, 0, 0, 0),
 
     ARMOR_PLATE(1, "Voidcraft Armor Plate", "tt.voidcraft.cover.armor_plate", VoidcraftComponent.FRAME, 0, 2, 0, 0, 0,
-        0, 0, 0, 0, 0, 500),
+        0, 0, 0, 0, 0, 0, 500),
 
     CARGO_POD(2, "Voidcraft Cargo Pod", "tt.voidcraft.cover.cargo_pod", VoidcraftComponent.CARGO_BAY, 0, 6, 0, 200, 0,
-        0, 0, 0, 0, 0, 0),
+        0, 0, 0, 0, 0, 0, 0),
 
     MINING_ARRAY(3, "Voidcraft Mining Array", "tt.voidcraft.cover.mining_array", VoidcraftComponent.MINING_CENTRE, 1, 8,
-        0, 0, 40, 0, 0, 0, 8, 0, 0),
+        0, 0, 40, 0, 0, 0, 8, 0, 0, 0),
 
     STAR_SIPHON(4, "Voidcraft Star Siphon", "tt.voidcraft.cover.star_siphon", VoidcraftComponent.STARLIFTER_ARRAY, 2,
-        16, 0, 0, 0, 0, 0, 40, 16, 0, 0),
+        16, 0, 0, 0, 0, 0, 40, 16, 0, 0, 0),
 
     SCANNER_DISH(5, "Voidcraft Scanner Dish", "tt.voidcraft.cover.scanner_dish", VoidcraftComponent.SPACETIME_SCANNER,
-        2, 6, 0, 0, 0, 40, 0, 0, 8, 0, 0),
+        2, 6, 0, 0, 0, 40, 0, 0, 8, 0, 0, 0),
 
     FABRICATOR_UNIT(6, "Voidcraft Fabricator Unit", "tt.voidcraft.cover.fabricator_unit",
-        VoidcraftComponent.CONSTRUCTION_ARM, 2, 10, 0, 0, 0, 0, 40, 0, 8, 0, 0),
+        VoidcraftComponent.CONSTRUCTION_ARM, 2, 10, 0, 0, 0, 0, 40, 0, 8, 0, 0, 0),
 
     POWER_CELL(7, "Voidcraft Power Cell", "tt.voidcraft.cover.power_cell", VoidcraftComponent.REACTOR, 1, 4, 0, 0, 0, 0,
-        0, 0, 0, 400_000, 0);
+        0, 0, 0, 400_000, 0, 0),
+
+    /**
+     * The repair bay (Voidbase construction framework): the repair work command restores the station's integrity
+     * over time while drawing this cover's energy. A base without a repair bay cannot repair itself.
+     */
+    REPAIR_BAY(8, "Voidcraft Repair Bay", "tt.voidcraft.cover.repair_bay", VoidcraftComponent.REPAIR_BAY, 2, 12, 0, 0,
+        0, 0, 0, 0, 2_000, 0, 0, 0),
+
+    /**
+     * The solar panel — the first energy-generating component: a flat energy generation rate per game tick into
+     * the station's energy buffer (star-independent in this version).
+     */
+    SOLAR_PANEL(9, "Voidcraft Solar Panel", "tt.voidcraft.cover.solar_panel", VoidcraftComponent.SOLAR_PANEL, 2, 8, 0,
+        0, 0, 0, 0, 0, 0, 0, 2_000, 0);
 
     /** All covers, in id order. */
     public static final VoidcraftCoverComponent[] ALL = values();
@@ -72,11 +86,13 @@ public enum VoidcraftCoverComponent {
     private final long starlifterPower;
     private final long energyDraw;
     private final long energyBuffer;
+    /** Energy generated per game tick (the solar panel; 0 for everything else). */
+    private final long energyGen;
     private final long integrity;
 
     VoidcraftCoverComponent(int id, String displayName, String langKey, VoidcraftComponent mirroredComponent, int tier,
         long mass, long thrust, long cargoSlots, long miningPower, long scanPower, long constructionPower,
-        long starlifterPower, long energyDraw, long energyBuffer, long integrity) {
+        long starlifterPower, long energyDraw, long energyBuffer, long energyGen, long integrity) {
         this.id = id;
         this.displayName = displayName;
         this.langKey = langKey;
@@ -91,6 +107,7 @@ public enum VoidcraftCoverComponent {
         this.starlifterPower = starlifterPower;
         this.energyDraw = energyDraw;
         this.energyBuffer = energyBuffer;
+        this.energyGen = energyGen;
         this.integrity = integrity;
     }
 
@@ -159,6 +176,10 @@ public enum VoidcraftCoverComponent {
         return energyBuffer;
     }
 
+    public long getEnergyGen() {
+        return energyGen;
+    }
+
     public long getIntegrity() {
         return integrity;
     }
@@ -190,6 +211,7 @@ public enum VoidcraftCoverComponent {
                 || component.starlifterPower < 0
                 || component.energyDraw < 0
                 || component.energyBuffer < 0
+                || component.energyGen < 0
                 || component.integrity < 0) {
                 throw new IllegalStateException("Cover stats must not be negative: " + component);
             }

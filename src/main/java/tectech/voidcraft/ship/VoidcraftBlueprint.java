@@ -122,11 +122,126 @@ public final class VoidcraftBlueprint {
      */
     public static VoidcraftBlueprint of(int width, int height, int depth, byte[] grid, byte[] facingGrid,
         byte[] coverGrid) {
-        if (width < 1 || width > VoidcraftConstants.MAX_DIM_X
-            || height < 1
-            || height > VoidcraftConstants.MAX_DIM_Y
-            || depth < 1
-            || depth > VoidcraftConstants.MAX_DIM_Z) {
+        return create(
+            width,
+            height,
+            depth,
+            grid,
+            facingGrid,
+            coverGrid,
+            VoidcraftConstants.MAX_DIM_X,
+            VoidcraftConstants.MAX_DIM_Y,
+            VoidcraftConstants.MAX_DIM_Z);
+    }
+
+    /**
+     * Create a Voidbase blueprint from a raw grid (no facing, no covers).
+     *
+     * @param width  grid width (1..MAX_BASE_DIM)
+     * @param height grid height (1..MAX_BASE_DIM)
+     * @param depth  grid depth (1..MAX_BASE_DIM)
+     * @param grid   grid values (0 = empty, 1..11 = component); must be exactly width*height*depth long
+     * @throws IllegalArgumentException if dimensions are out of range or the grid length mismatches
+     */
+    public static VoidcraftBlueprint ofBase(int width, int height, int depth, byte[] grid) {
+        return ofBase(width, height, depth, grid, null, null);
+    }
+
+    /**
+     * Create a Voidbase blueprint from raw grids (the 15×15×15 volume —
+     * {@link VoidcraftConstants#MAX_BASE_DIM}). A base is an immobile station: the ship's structural rules apply,
+     * but the thruster rules do not (see {@link #validateForBase}).
+     *
+     * @param width      grid width (1..MAX_BASE_DIM)
+     * @param height     grid height (1..MAX_BASE_DIM)
+     * @param depth      grid depth (1..MAX_BASE_DIM)
+     * @param grid       grid values (0 = empty, 1..11 = component); must be exactly width*height*depth long
+     * @param facingGrid per-cell facing (null = none, otherwise length cells; 0 = empty cell, 1..6 = ordinal + 1)
+     * @param coverGrid  per-face covers (null = none, otherwise length cells * 6; 0 = none, 1..10 = cover id + 1)
+     * @throws IllegalArgumentException if dimensions, lengths or values are invalid
+     */
+    public static VoidcraftBlueprint ofBase(int width, int height, int depth, byte[] grid, byte[] facingGrid,
+        byte[] coverGrid) {
+        return create(
+            width,
+            height,
+            depth,
+            grid,
+            facingGrid,
+            coverGrid,
+            VoidcraftConstants.MAX_BASE_DIM,
+            VoidcraftConstants.MAX_BASE_DIM,
+            VoidcraftConstants.MAX_BASE_DIM);
+    }
+
+    /**
+     * Map a cover's WORLD-facing ordinal into the blueprint's GRID-side ordinal.
+     *
+     * <p>
+     * The grid's +Z axis is the assembler's FRONT direction, while cover ordinals are world directions — so a
+     * cover's meaning relative to the ship/station depends on how the assembler faces. This maps it into grid
+     * space with the same basis as the assembler scan (grid +X / grid +Y = the scan's in-plane axes, grid +Z =
+     * the front itself), so a cover pointing TOWARD the assembler becomes grid side 2 ({@link #BACK_FACE}) for
+     * every assembler orientation.
+     *
+     * @param frontX    the assembler front direction, x component (one of the six unit axes)
+     * @param frontY    the assembler front direction, y component
+     * @param frontZ    the assembler front direction, z component
+     * @param worldSide the cover's world-facing ordinal (ForgeDirection: 0 DOWN, 1 UP, 2 NORTH, 3 SOUTH, 4
+     *                  WEST, 5 EAST)
+     * @return the grid-side ordinal (0..5) of the same direction
+     */
+    public static int toGridSide(int frontX, int frontY, int frontZ, int worldSide) {
+        // grid basis in world coordinates (mirrors the assembler scan's a1/a2; grid +Z is the front itself)
+        final int[] ex, ey;
+        if (frontY != 0) {
+            ex = new int[] { 1, 0, 0 };
+            ey = new int[] { 0, 0, 1 };
+        } else if (frontX != 0) {
+            ex = new int[] { 0, 1, 0 };
+            ey = new int[] { 0, 0, 1 };
+        } else {
+            ex = new int[] { 1, 0, 0 };
+            ey = new int[] { 0, 1, 0 };
+        }
+        final int[] ez = { frontX, frontY, frontZ };
+        // MC world direction of the cover's facing ordinal
+        final int[] d;
+        switch (worldSide) {
+            case 0:
+                d = new int[] { 0, -1, 0 }; // DOWN
+                break;
+            case 1:
+                d = new int[] { 0, 1, 0 }; // UP
+                break;
+            case 2:
+                d = new int[] { 0, 0, -1 }; // NORTH
+                break;
+            case 3:
+                d = new int[] { 0, 0, 1 }; // SOUTH
+                break;
+            case 4:
+                d = new int[] { -1, 0, 0 }; // WEST
+                break;
+            default:
+                d = new int[] { 1, 0, 0 }; // EAST
+                break;
+        }
+        int gx = d[0] * ex[0] + d[1] * ex[1] + d[2] * ex[2];
+        int gy = d[0] * ey[0] + d[1] * ey[1] + d[2] * ey[2];
+        int gz = d[0] * ez[0] + d[1] * ez[1] + d[2] * ez[2];
+        if (gz != 0) {
+            return gz > 0 ? 3 : 2; // +Z (away) / -Z (toward the assembler = the ship's back)
+        }
+        if (gy != 0) {
+            return gy > 0 ? 1 : 0;
+        }
+        return gx > 0 ? 5 : 4;
+    }
+
+    private static VoidcraftBlueprint create(int width, int height, int depth, byte[] grid, byte[] facingGrid,
+        byte[] coverGrid, int maxW, int maxH, int maxD) {
+        if (width < 1 || width > maxW || height < 1 || height > maxH || depth < 1 || depth > maxD) {
             throw new IllegalArgumentException("Grid dimensions out of bounds: " + width + "x" + height + "x" + depth);
         }
         int cells = width * height * depth;
@@ -357,7 +472,7 @@ public final class VoidcraftBlueprint {
      */
     public VoidcraftStats computeStats() {
         long mass = 0, cargoSlots = 0, miningPower = 0, scanPower = 0, constructionPower = 0, starlifterPower = 0,
-            energyBuffer = 0, energyDraw = 0, integrity = 0;
+            energyBuffer = 0, energyDraw = 0, energyGen = 0, integrity = 0;
         long thrust = 0;
 
         for (int cell = 0; cell < grid.length; cell++) {
@@ -375,6 +490,7 @@ public final class VoidcraftBlueprint {
                 starlifterPower += component.getStarlifterPower();
                 energyBuffer += component.getEnergyBuffer();
                 energyDraw += component.getEnergyDraw();
+                energyGen += component.getEnergyGen();
                 integrity += component.getIntegrity();
             }
             for (int side = 0; side < 6; side++) {
@@ -392,6 +508,7 @@ public final class VoidcraftBlueprint {
                 starlifterPower += cover.getStarlifterPower();
                 energyBuffer += cover.getEnergyBuffer();
                 energyDraw += cover.getEnergyDraw();
+                energyGen += cover.getEnergyGen();
                 integrity += cover.getIntegrity();
                 if (cover == VoidcraftCoverComponent.THRUSTER_NOZZLE && side == BACK_FACE && !isExhaustBlocked(cell)) {
                     thrust += cover.getThrust();
@@ -409,6 +526,7 @@ public final class VoidcraftBlueprint {
             starlifterPower,
             energyBuffer,
             energyDraw,
+            energyGen,
             integrity);
     }
 
@@ -560,6 +678,92 @@ public final class VoidcraftBlueprint {
         }
 
         return ok;
+    }
+
+    /**
+     * Validate the blueprint as a digitizable Voidbase (an immobile station): the ship's structural rules — part
+     * count, exactly one controller, cover-only parts, at least one frame, tier — but WITHOUT the thruster rules,
+     * since a base does not fly. A base may carry thruster covers; they are simply inert.
+     *
+     * <p>
+     * Failure reason keys (assembler GUI):
+     *
+     * <ul>
+     * <li>{@code voidcraft_too_small} — fewer than {@link VoidcraftConstants#MIN_COMPONENT_COUNT} parts</li>
+     * <li>{@code voidcraft_controller_count} — not exactly one controller</li>
+     * <li>{@code voidcraft_cover_only_component} — a full-block cell holds a cover-only part</li>
+     * <li>{@code voidcraft_no_frame} — no Voidcraft Frame hull block</li>
+     * <li>{@code voidcraft_tier_too_high} — a part exceeds the assembler circuit tier</li>
+     * </ul>
+     *
+     * @param maxComponentTier highest component/cover tier the assembler (circuit) may digitize
+     * @param errorsOut        receives failure reason keys; may be null
+     * @return true if the blueprint is a valid base
+     */
+    public boolean validateForBase(int maxComponentTier, List<String> errorsOut) {
+        List<String> errors = errorsOut == null ? new ArrayList<>() : errorsOut;
+        boolean ok = true;
+
+        if (componentCount() < VoidcraftConstants.MIN_COMPONENT_COUNT) {
+            errors.add("voidcraft_too_small");
+            ok = false;
+        }
+
+        if (count(VoidcraftComponent.CONTROLLER) != 1) {
+            errors.add("voidcraft_controller_count");
+            ok = false;
+        }
+
+        boolean coverOnlyPresent = false;
+        for (byte b : grid) {
+            if (b != 0 && VoidcraftComponent.fromGridValue(b)
+                .orElseThrow()
+                .isCoverOnly()) {
+                coverOnlyPresent = true;
+                break;
+            }
+        }
+        if (coverOnlyPresent) {
+            errors.add("voidcraft_cover_only_component");
+            ok = false;
+        }
+
+        if (count(VoidcraftComponent.FRAME) < 1) {
+            errors.add("voidcraft_no_frame");
+            ok = false;
+        }
+
+        if (maxTier() > maxComponentTier) {
+            errors.add("voidcraft_tier_too_high");
+            ok = false;
+        }
+
+        return ok;
+    }
+
+    /**
+     * The base's complete parts list: exactly how many of each part go into constructing it — the placeable blocks
+     * (controller/frame) from the base grid and every cover from the cover grid.
+     *
+     * @return a stable-ordered map (blocks in component meta order, then covers in cover id order);
+     *         key = {@code "block.<component name>"} or {@code "cover.<cover name>"} (the enum name — the stable
+     *         string identity convention), value = required count (≥ 1)
+     */
+    public java.util.Map<String, Long> partsList() {
+        java.util.LinkedHashMap<String, Long> map = new java.util.LinkedHashMap<>();
+        for (VoidcraftComponent component : VoidcraftComponent.ALL) {
+            int count = count(component);
+            if (count > 0) {
+                map.put("block." + component.name(), (long) count);
+            }
+        }
+        for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
+            int count = countCover(cover);
+            if (count > 0) {
+                map.put("cover." + cover.name(), (long) count);
+            }
+        }
+        return java.util.Collections.unmodifiableMap(map);
     }
 
     /**

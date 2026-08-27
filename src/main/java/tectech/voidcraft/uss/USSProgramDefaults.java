@@ -55,6 +55,22 @@ public final class USSProgramDefaults {
         return basic(TARGET_NEAREST_PLANET);
     }
 
+    /**
+     * Constructor chip: go to the anchor target (nearest planet by default — the player edits the target and index
+     * to the build site), construct (create or fill the Voidbase construction site there), come home.
+     */
+    public static USSProgram constructor() {
+        NBTTagCompound to = new NBTTagCompound();
+        to.setString(PARAM_TARGET, TARGET_NEAREST_PLANET);
+        NBTTagCompound home = new NBTTagCompound();
+        home.setString(PARAM_TARGET, TARGET_HOME);
+        return USSProgram.of(
+            Arrays.asList(
+                USSNode.command(USSCommand.MOVE, to),
+                USSNode.command(USSCommand.CONSTRUCT, new NBTTagCompound()),
+                USSNode.command(USSCommand.MOVE, home)));
+    }
+
     /** Starlifter chip: go to the star, work (starlift), come home. */
     public static USSProgram starlifter() {
         return basic(TARGET_STAR);

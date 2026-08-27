@@ -26,6 +26,20 @@ public final class USSCommand {
     public static final int WAIT = 4;
     /** STOP: terminate the program (the ship HOLDS — no implicit return, user decision). */
     public static final int STOP = 5;
+    /**
+     * CONSTRUCT: build a Voidbase at the current hover point (Voidbase construction framework). A constructor
+     * carrying a Voidbase blueprint + parts loadout reaches its target and builds/fills the construction site
+     * there. Params: {@code target} (the anchor body — STAR / PLANET / RIPPLE, with {@code index} for PLANET /
+     * RIPPLE). On a ship this is the CONSTRUCT leg of the Constructor mission; a completed site spawns the base.
+     */
+    public static final int CONSTRUCT = 6;
+    /**
+     * REPAIR: restore the station's integrity over time, drawing its own energy buffer (repair work command).
+     * A Voidbase runs this at its anchor (or a Voidcraft at any hover point) to top up the integrity time limit.
+     * Requires a {@link tectech.voidcraft.ship.VoidcraftCoverComponent#REPAIR_BAY} cover; each second of repair
+     * restores one integrity at the bay's energy draw. Params: none.
+     */
+    public static final int REPAIR = 7;
 
     private USSCommand() {}
 }

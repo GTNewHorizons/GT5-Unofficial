@@ -23,9 +23,11 @@ import net.minecraft.nbt.NBTTagList;
  * <li><b>Failure → SKIP</b> (decision #3) — a FAILED instruction (unresolvable MOVE target, missing params,
  * unknown command id, refused leg) is logged and the program continues with the NEXT node. There is no HALT
  * state.</li>
- * <li><b>Program end → the ship HOLDS</b> (decision #2) — when the root scope exhausts (or a STOP runs) the
- * executor becomes {@link State#COMPLETED}; nothing else happens: no implicit MOVE HOME, no delivery, no
- * re-emission ("programming the ship is part of the challenge").</li>
+ * <li><b>Invisible while — the program repeats</b> — when the root scope exhausts the executor restarts at the
+ * FIRST node (an invisible {@code while(true)} around the whole program): a one-command program (a lone WORK)
+ * runs forever. The program ENDS — the executor becomes {@link State#COMPLETED} — only on a STOP, an empty
+ * program, or a corrupt-cursor fail-safe; at the end nothing else happens: no implicit MOVE HOME, no delivery,
+ * no re-emission.</li>
  * </ul>
  *
  * <p>
@@ -48,7 +50,7 @@ public final class USSProgramExecutor {
 
         /** The program is running (instructions still pending, or an instruction in flight). */
         RUNNING(0),
-        /** The program finished (root exhausted, or STOP) — the ship HOLDS (decision #2). */
+        /** The program ended (a STOP ran, or the program was empty) — the ship/base HOLDS. */
         COMPLETED(1);
 
         private final int id;
@@ -246,7 +248,11 @@ public final class USSProgramExecutor {
     private void handleExhausted(Scope top, USSExecutionContext ctx) {
         scopes.removeLast();
         if (scopes.isEmpty()) {
-            state = State.COMPLETED; // root exhausted — program end (decision #2: the ship holds)
+            if (top.nodes.isEmpty()) {
+                state = State.COMPLETED; // nothing to repeat — the program ends
+            } else {
+                scopes.addLast(new Scope(ScopeKind.ROOT, top.nodes, 0, 0)); // invisible while: the program starts over
+            }
             return;
         }
         Scope parent = scopes.peekLast();
@@ -328,7 +334,7 @@ public final class USSProgramExecutor {
             ctx.log("executor: command " + node.cmdId() + " failed — skipping");
         }
         if (status == USSCommandStatus.STOP) {
-            state = State.COMPLETED; // decision #2: the ship holds
+            state = State.COMPLETED; // STOP — the only way a non-empty program ends
             return;
         }
         advanceParent(scope); // DONE — next node
@@ -368,10 +374,18 @@ public final class USSProgramExecutor {
         checkRootDone(top);
     }
 
+    /**
+     * The invisible-while check: when the ROOT scope exhausts the program restarts at its first node (a lone
+     * command loops forever) — only a STOP / an empty program ends it.
+     */
     private void checkRootDone(Scope scope) {
         if (scopes.size() == 1 && scope == scopes.peekLast() && scope.index >= scope.nodes.size()) {
-            scopes.clear();
-            state = State.COMPLETED; // program end (decision #2: the ship holds)
+            if (scope.nodes.isEmpty()) {
+                scopes.clear();
+                state = State.COMPLETED; // nothing to repeat — the program ends
+            } else {
+                scope.index = 0; // restart the program
+            }
         }
     }
 

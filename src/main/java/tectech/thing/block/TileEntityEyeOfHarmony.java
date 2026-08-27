@@ -21,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
 import gtneioreplugin.plugin.block.ModBlocks;
+import tectech.voidcraft.uss.USSStarColor;
 
 public class TileEntityEyeOfHarmony extends TileEntity {
 
@@ -56,6 +57,17 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     }
 
     private double starSize = 1;
+
+    /** The opaque ARGB color the star mesh is tinted with (from the star's registered definition). */
+    private int starColor = USSStarColor.DEFAULT;
+
+    public int getStarColor() {
+        return starColor;
+    }
+
+    public void setStarColor(int color) {
+        this.starColor = color;
+    }
 
     /**
      * Radius of the space-shell dome in blocks. Pass 12 — a per-machine parameter instead of the renderer's old
@@ -278,6 +290,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     private static final String SIZE_NBT_TAG = EOH_NBT_TAG + "size";
     private static final String TIER_NBT_TAG = EOH_NBT_TAG + "tier";
     private static final String DOME_NBT_TAG = EOH_NBT_TAG + "dome";
+    private static final String COLOR_NBT_TAG = EOH_NBT_TAG + "color";
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -287,6 +300,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         compound.setDouble(SIZE_NBT_TAG, starSize);
         compound.setLong(TIER_NBT_TAG, tier);
         compound.setDouble(DOME_NBT_TAG, domeRadius);
+        compound.setInteger(COLOR_NBT_TAG, starColor);
 
         // Explicit planet system (Voidcraft) — persisted so chunk reloads and description packets carry it (the
         // tag is omitted entirely for legacy stars, which keep the lazy random path).
@@ -322,6 +336,9 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         tier = compound.getLong(TIER_NBT_TAG);
         if (compound.hasKey(DOME_NBT_TAG)) {
             domeRadius = compound.getDouble(DOME_NBT_TAG);
+        }
+        if (compound.hasKey(COLOR_NBT_TAG)) {
+            starColor = compound.getInteger(COLOR_NBT_TAG);
         }
 
         // Explicit planet system (Voidcraft): restore it (re-resolving the hologram blocks), or clear a stale one

@@ -276,15 +276,16 @@ public class USSShipPilotTest {
 
     @Test
     public void testRefusedLegStartIsSkipped() {
-        // The world refuses the leg (legTicks ≤ 0) → the MOVE is SKIPPED (never stuck RUNNING), the program ends,
-        // and the ship HOLDS.
+        // The world refuses the leg (legTicks ≤ 0) → the MOVE is SKIPPED (never stuck RUNNING); the STOP after it
+        // ends the program, and the ship HOLDS.
         FakePilotWorld w = new FakePilotWorld();
         w.refuseLegStarts = true;
-        USSProgram program = USSProgram.of(Arrays.asList(move("HOME", 0)));
+        USSProgram program = USSProgram
+            .of(Arrays.asList(move("HOME", 0), USSNode.command(USSCommand.STOP, new NBTTagCompound())));
         USSShipPilot p = USSShipPilot.create(ship("refuse-1", program), program, w, SEED);
         int budget = 100;
         while (!p.isCompleted()) {
-            assertTrue(budget-- > 0, "a refused leg skips the instruction and ends the program");
+            assertTrue(budget-- > 0, "a refused leg skips the instruction; the STOP ends the program");
             p.tick();
         }
         assertTrue(p.isCompleted());
@@ -354,29 +355,20 @@ public class USSShipPilotTest {
     }
 
     @Test
-    public void testProgramEndHoldsTheShip() {
-        // A program with NO HOME: it ends, and the ship HOLDS where it is (the user-accepted "slot stays occupied").
+    public void testFinishedProgramWrapsAndRunsAgain() {
+        // A program with NO HOME and no STOP: the invisible while — it runs, finishes, and runs again (only a
+        // STOP ends it; the ship keeps flying its loop).
         FakePilotWorld w = worldWithNearestPlanet();
         USSProgram program = USSProgram.of(Arrays.asList(move(USSProgramDefaults.TARGET_NEAREST_PLANET, 0), work()));
         USSShipPilot p = USSShipPilot.create(ship("end-1", program), program, w, SEED);
-        int budget = 600;
-        while (!p.isCompleted()) {
-            assertTrue(budget-- > 0, "the program must finish");
-            p.tick();
+        int budget = 2000;
+        while (w.workCalls < 2) {
+            assertTrue(budget-- > 0, "the program must run a second pass (the wrap)");
+            assertFalse(p.tick(), "only MOVE HOME delivers (this program has none)");
+            assertFalse(p.isCompleted(), "a program without STOP never ends");
         }
-        assertTrue(p.isCompleted());
-        assertEquals(
-            USSShipState.HOVERING,
-            p.getShip()
-                .getState(),
-            "program end → the ship HOLDS (no implicit return)");
-        assertEquals(
-            PLANET,
-            p.getShip()
-                .getPosition(),
-            "…at the last body (the program ended there)");
-        assertFalse(p.tick(), "a finished pilot never delivers");
-        assertEquals(1, w.workCalls);
+        assertEquals(2, w.workCalls, "the finished program restarted and worked again");
+        assertFalse(p.isCompleted());
     }
 
     @Test

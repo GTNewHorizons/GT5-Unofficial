@@ -1393,8 +1393,8 @@ gt.mbtt.machine_type.storage=Хранилище
 gt.blockmachines.multimachine.em.voidcraft_gateway.name=Врата Voidcraft
 gt.blockmachines.multimachine.em.voidcraft_storage_bay.name=Грузовой отсек Voidcraft
 tt.voidcraft.gateway.infodata.header=Врата Voidcraft
-tt.voidcraft.gateway.infodata.ship=Корабль на борту: %s
-tt.voidcraft.gateway.error.invalid_ship=Неверный предмет корабля — данные цифровизации повреждены
+tt.voidcraft.gateway.infodata.blueprint=Чертеж Вайдбейза: %s
+tt.voidcraft.gateway.error.invalid_ship=Неверный предмет корабля во входном шлюзе — данные цифровизации повреждены
 tt.voidcraft.gateway.error.no_mission_role=У корабля нет ни одной миссионной роли (Добытчик, Звездоподъёмник, Исследователь или Строитель) — запуск отменён
 tt.voidcraft.gateway.error.no_uss=В радиусе 32 блоков не найдена зажжённая Нестабильная Солнечная Система
 tt.voidcraft.gateway.error.no_bay=В радиусе 32 блоков не найден Грузовой отсек Voidcraft
@@ -1412,16 +1412,14 @@ tt.voidcraft.ship.state.mining=Добыча
 tt.voidcraft.ship.state.returning=Возвращение
 tt.voidcraft.ship.state.docked=На якоре
 tt.voidcraft.ship.state.hovering=Дрель
-# Миссии Конструктора + проекты инфраструктуры (переделка EoH, фаза 4, проход 2)
-tt.voidcraft.gateway.error.no_materials=Нет материалов для строительства в шине/люке ввода — сначала загрузите погрузку, корабль остаётся на якоре
-tt.voidcraft.gateway.error.nothing_to_build=Все проекты инфраструктуры уже завершены — этому Конструктору строить нечего
-tt.voidcraft_uss.infodata.infrastructure.header=Инфраструктура
-tt.voidcraft_uss.project.line=%s
-tt.voidcraft_uss.project.status.complete=завершён
-tt.voidcraft_uss.project.status.in_progress=в работе
-tt.voidcraft_uss.project.hyperlane=Якорь гиперпути
-tt.voidcraft_uss.project.railgun=Орбитальная рельсовая пушка
-tt.voidcraft_uss.project.dyson=Дизоновская решётка
+# Постройка Вайдбейзов (роль Конструктора строит Вайдбейзы по чертежам)
+tt.voidcraft.gateway.error.no_blueprint=Нет чертежа Вайдбейза в слоте чертежа — кликните правой кнопкой по шлюзу с чертежом в руке, корабль остаётся во входном шлюзе
+tt.voidcraft_uss.infodata.bases.header=Вайдбейзы
+tt.voidcraft_uss.infodata.site.line=Строительная площадка у %s — %s%%
+tt.voidcraft_uss.infodata.base.line=%s у %s — прочность %s
+tt.voidcraft_uss.anchor.star=у звезды
+tt.voidcraft_uss.anchor.planet=планета
+tt.voidcraft_uss.anchor.ripple=рябь
 # Планетные системы — планеты звезды (переделка EoH, фаза 4, проход 3: тип звезды определяет пул планет, тип планеты — добычу)
 tt.voidcraft_uss.planets.header=Планеты
 tt.voidcraft_uss.planet.line=%s

@@ -215,6 +215,61 @@ public final class USSFleetOrbit {
     }
 
     /**
+     * Half-width of the station equatorial band (degrees): a planet-anchored Voidbase stays within this angle of
+     * the planet's orbital plane (its equator) instead of floating directly above the planet.
+     */
+    public static final float ORBITAL_BAND_DEG = 30.0f;
+
+    /**
+     * A deterministic point in a planet's EQUATORIAL BAND (the station hover law): on the shell of radius
+     * {@code radius} around the planet center, at an elevation of at most {@link #ORBITAL_BAND_DEG} from the
+     * planet's orbital plane (the plane through the planet center, parallel to its orbit) and a seeded azimuth
+     * within that plane.
+     *
+     * <p>
+     * The orbital plane's normal follows {@link #planetAnchorPosition} (Ry(θ)·(r,0,0), then Rz(zAngle), then
+     * Rx(xAngle)) — the normal is Rx(xAngle)·Rz(zAngle)·(0,1,0). Deterministic in {@code seed} (the planet
+     * index — one stable point per planet); server and client evaluate this at the synced world time, so they
+     * never drift apart.
+     *
+     * @param center the planet's live position (null → origin)
+     * @param radius the shell radius in blocks (the hover distance; &lt;= 0 → the center itself)
+     * @param seed   the deterministic seed (the planet index)
+     * @param xAngle the orbit tilt about X (degrees)
+     * @param zAngle the orbit tilt about Z (degrees)
+     * @return the band point (never null), exactly {@code radius} from the center
+     */
+    public static USSPosition orbitalBandPoint(USSPosition center, double radius, long seed, float xAngle,
+        float zAngle) {
+        USSPosition origin = (center == null) ? USSPosition.zero() : center;
+        if (radius <= 0.0) {
+            return origin;
+        }
+        java.util.Random rng = new java.util.Random(seed ^ 0x5550535342414E44L); // salt: "USSBAND"
+        double alpha = rng.nextDouble() * 2.0 * Math.PI; // azimuth within the orbital plane
+        double delta = Math.toRadians((rng.nextDouble() * 2.0 - 1.0) * ORBITAL_BAND_DEG); // elevation, [-30°, +30°]
+        double cx = Math.cos(Math.toRadians(xAngle));
+        double sx = Math.sin(Math.toRadians(xAngle));
+        double cz = Math.cos(Math.toRadians(zAngle));
+        double sz = Math.sin(Math.toRadians(zAngle));
+        // The orbital plane normal: Rx(xAngle)·Rz(zAngle)·(0,1,0).
+        double nx = -sz;
+        double ny = cz * cx;
+        double nz = cz * sx;
+        // Orthonormal basis of the plane: m1 = (0, -sin x, cos x) (unit, perpendicular to n); m2 = n × m1.
+        double m1x = 0.0, m1y = -sx, m1z = cx;
+        double m2x = ny * m1z - nz * m1y;
+        double m2y = nz * m1x - nx * m1z;
+        double m2z = nx * m1y - ny * m1x;
+        double inPlane = Math.cos(delta);
+        double outPlane = Math.sin(delta);
+        double dx = inPlane * (Math.cos(alpha) * m1x + Math.sin(alpha) * m2x) + outPlane * nx;
+        double dy = inPlane * (Math.cos(alpha) * m1y + Math.sin(alpha) * m2y) + outPlane * ny;
+        double dz = inPlane * (Math.cos(alpha) * m1z + Math.sin(alpha) * m2z) + outPlane * nz;
+        return origin.add(dx * radius, dy * radius, dz * radius);
+    }
+
+    /**
      * A deterministic, seed-random NUDGE around a center (the stateful-position pass): used when a ship targets
      * ANOTHER ship — "the voidcraft that has the target should visually nudge itself randomly to create 'clouds'
      * of Voidcraft instead of overlapping them all."

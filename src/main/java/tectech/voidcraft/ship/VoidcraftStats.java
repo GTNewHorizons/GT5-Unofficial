@@ -32,10 +32,13 @@ public final class VoidcraftStats {
     public final long starlifterPower;
     public final long energyBuffer;
     public final long energyDraw;
+    /** Energy generated per game tick (the solar panel covers; 0 for a plain ship). */
+    public final long energyGen;
     public final long integrity;
 
     public VoidcraftStats(long mass, long thrust, long cargoSlots, long miningPower, long scanPower,
-        long constructionPower, long starlifterPower, long energyBuffer, long energyDraw, long integrity) {
+        long constructionPower, long starlifterPower, long energyBuffer, long energyDraw, long energyGen,
+        long integrity) {
         this.mass = mass;
         this.thrust = thrust;
         this.speed = speedFor(thrust, mass);
@@ -46,6 +49,7 @@ public final class VoidcraftStats {
         this.starlifterPower = starlifterPower;
         this.energyBuffer = energyBuffer;
         this.energyDraw = energyDraw;
+        this.energyGen = energyGen;
         this.integrity = integrity;
     }
 
@@ -87,6 +91,8 @@ public final class VoidcraftStats {
             + energyBuffer
             + ", draw="
             + energyDraw
+            + ", gen="
+            + energyGen
             + ", integrity="
             + integrity
             + "]";

@@ -8,9 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 import org.junit.jupiter.api.Test;
 
+import tectech.voidcraft.ship.VoidcraftNbt;
 import tectech.voidcraft.ship.VoidcraftRole;
 
 /**
@@ -350,6 +352,113 @@ public class VoidcraftActiveShipTest {
 
     // endregion
 
+    // region constructor loadout (durable ship state: a site consumes only its need, the remainder persists)
+
+    private static NBTTagCompound constructorPayload(String uuid, String... keyAmounts) {
+        NBTTagCompound payload = new NBTTagCompound();
+        payload.setString("vc_uuid", uuid);
+        NBTTagList loadout = new NBTTagList();
+        for (int i = 0; i < keyAmounts.length; i += 2) {
+            NBTTagCompound part = new NBTTagCompound();
+            part.setString("key", keyAmounts[i]);
+            part.setInteger("amount", Integer.parseInt(keyAmounts[i + 1]));
+            loadout.appendTag(part);
+        }
+        payload.setTag(tectech.voidcraft.ship.VoidcraftNbt.TAG_BUILD_LOADOUT, loadout);
+        return payload;
+    }
+
+    @Test
+    public void testConstructorLoadoutInitializesFromPayload() {
+        VoidcraftActiveShip s = VoidcraftActiveShip.launch(
+            "ctor-1",
+            "Ctor",
+            SPEED,
+            MINING_POWER,
+            constructorPayload("ctor-1", "block.FRAME", "5", "block.CONTROLLER", "2"),
+            null,
+            null,
+            0,
+            ORIGIN);
+        assertEquals(
+            2,
+            s.getBuildLoadout()
+                .size(),
+            "one key per loadout entry");
+        assertEquals(
+            5L,
+            s.getBuildLoadout()
+                .get("block.FRAME")
+                .longValue());
+        assertEquals(
+            2L,
+            s.getBuildLoadout()
+                .get("block.CONTROLLER")
+                .longValue());
+        assertEquals(7L, s.buildLoadoutTotal());
+        assertEquals(0L, ship("ctor-none").buildLoadoutTotal(), "a non-constructor ship carries no loadout");
+    }
+
+    @Test
+    public void testConsumeBuildPartsClampsAndDropsEmptyKeys() {
+        VoidcraftActiveShip s = VoidcraftActiveShip.launch(
+            "ctor-2",
+            "Ctor",
+            SPEED,
+            MINING_POWER,
+            constructorPayload("ctor-2", "block.FRAME", "5"),
+            null,
+            null,
+            0,
+            ORIGIN);
+        assertEquals(3L, s.consumeBuildParts("block.FRAME", 3), "take the requested count while it is on board");
+        assertEquals(
+            2L,
+            s.getBuildLoadout()
+                .get("block.FRAME")
+                .longValue(),
+            "the remainder stays on board");
+        assertEquals(2L, s.consumeBuildParts("block.FRAME", 10), "clamped to what is on board");
+        assertFalse(
+            s.getBuildLoadout()
+                .containsKey("block.FRAME"),
+            "an emptied key is dropped");
+        assertEquals(0L, s.buildLoadoutTotal());
+        assertEquals(0L, s.consumeBuildParts("block.FRAME", 1), "nothing left to take");
+        assertEquals(0L, s.consumeBuildParts("block.MISSING", 1), "an unknown key consumes nothing");
+    }
+
+    @Test
+    public void testBuildLoadoutSurvivesNbtRoundTrip() {
+        VoidcraftActiveShip s = VoidcraftActiveShip.launch(
+            "ctor-3",
+            "Ctor",
+            SPEED,
+            MINING_POWER,
+            constructorPayload("ctor-3", "block.FRAME", "5", "block.CONTROLLER", "2"),
+            null,
+            null,
+            0,
+            ORIGIN);
+        s.consumeBuildParts("block.FRAME", 2); // a CONSTRUCT leg took 2 of the 5 frames
+        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
+        assertNotNull(restored);
+        assertEquals(
+            3L,
+            restored.getBuildLoadout()
+                .get("block.FRAME")
+                .longValue(),
+            "the persisted REMAINDER restores (the launch payload snapshot does not re-expand consumed parts)");
+        assertEquals(
+            2L,
+            restored.getBuildLoadout()
+                .get("block.CONTROLLER")
+                .longValue());
+        assertEquals(5L, restored.buildLoadoutTotal());
+    }
+
+    // endregion
+
     // region integrity (the time-limit pass: max on entry, -1 per second in the USS, 0 = lost)
 
     private static VoidcraftActiveShip shipWithIntegrity(long integrity) {
@@ -444,6 +553,38 @@ public class VoidcraftActiveShipTest {
     }
 
     @Test
+    public void testConstructTicksPerItem() {
+        // One part per second per 100 construction power = 2000/power machine ticks per part.
+        assertEquals(20L, USSConstants.constructTicksPerItem(100L), "100 power → one part per 20 ticks (1/s)");
+        assertEquals(10L, USSConstants.constructTicksPerItem(200L), "200 power → two parts per second");
+        assertEquals(1000L, USSConstants.constructTicksPerItem(2L), "2 power → one part per 50 s");
+        assertEquals(1L, USSConstants.constructTicksPerItem(2_000_000L), "a part is never faster than one tick");
+        // Power <= 0 degrades to the base rate (100 power): a blueprint without constructor components still
+        // deposits at one part per second.
+        assertEquals(20L, USSConstants.constructTicksPerItem(0L));
+        assertEquals(20L, USSConstants.constructTicksPerItem(-5L));
+        // Monotone non-increasing in power.
+        for (long power = 1; power < 64; power++) {
+            assertTrue(
+                USSConstants.constructTicksPerItem(power) >= USSConstants.constructTicksPerItem(power + 1),
+                "monotone non-increasing at power " + power);
+        }
+    }
+
+    @Test
+    public void testConstructionPowerReadsFromPayload() {
+        // The construction power is denormalized into the payload at digitization (vc_construction) and read
+        // LIVE by the CONSTRUCT pacing (like the scan power).
+        NBTTagCompound payload = new NBTTagCompound();
+        payload.setString("vc_uuid", "cp-1");
+        VoidcraftActiveShip s = VoidcraftActiveShip
+            .launch("cp-1", "cp-1", SPEED, MINING_POWER, payload, null, null, 0, ORIGIN);
+        assertEquals(0L, s.getConstructionPower(), "no tag → 0 (the pacing degrades to the base rate)");
+        payload.setLong(VoidcraftNbt.TAG_CONSTRUCTION, 240L);
+        assertEquals(240L, s.getConstructionPower(), "the tag is read live (a payload write is visible)");
+    }
+
+    @Test
     public void testLegTicksTable() {
         assertEquals(
             USSConstants.travelTicks(DISTANCE, SPEED),
@@ -529,6 +670,13 @@ public class VoidcraftActiveShipTest {
         long far = USSConstants.travelTicks(100.0, SPEED);
         assertTrue(far > near, "farther = longer (" + far + " > " + near + ")");
         assertTrue(near >= USSConstants.TRAVEL_TICKS_MIN && far <= USSConstants.TRAVEL_TICKS_MAX);
+    }
+
+    @Test
+    public void testTravelSpeedMultiplier() {
+        // The 5× speed test aid: legs divide by speed * SHIP_SPEED_MULTIPLIER — 15 blocks at speed 5 is
+        // 15 * 200 / (5 * 5) = 120 ticks (a fifth of the 600 ticks the same leg takes without the multiplier).
+        assertEquals(120L, USSConstants.travelTicks(15.0, 5.0), "the 5× speed multiplier applies to the travel time");
     }
 
     // endregion

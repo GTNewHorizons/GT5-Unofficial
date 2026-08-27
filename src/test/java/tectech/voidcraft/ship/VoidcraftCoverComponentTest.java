@@ -13,7 +13,7 @@ public class VoidcraftCoverComponentTest {
 
     @Test
     public void testTableShape() {
-        assertEquals(8, VoidcraftCoverComponent.ALL.length);
+        assertEquals(10, VoidcraftCoverComponent.ALL.length);
         for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
             assertEquals(cover.ordinal(), cover.getId(), "id must match ordinal");
             assertNotEquals(
@@ -35,6 +35,8 @@ public class VoidcraftCoverComponentTest {
             VoidcraftComponent.CONSTRUCTION_ARM,
             VoidcraftCoverComponent.FABRICATOR_UNIT.getMirroredComponent());
         assertEquals(VoidcraftComponent.REACTOR, VoidcraftCoverComponent.POWER_CELL.getMirroredComponent());
+        assertEquals(VoidcraftComponent.REPAIR_BAY, VoidcraftCoverComponent.REPAIR_BAY.getMirroredComponent());
+        assertEquals(VoidcraftComponent.SOLAR_PANEL, VoidcraftCoverComponent.SOLAR_PANEL.getMirroredComponent());
     }
 
     @Test
@@ -58,6 +60,33 @@ public class VoidcraftCoverComponentTest {
         assertEquals(2, VoidcraftCoverComponent.STAR_SIPHON.getTier());
         assertEquals(2, VoidcraftCoverComponent.SCANNER_DISH.getTier());
         assertEquals(2, VoidcraftCoverComponent.FABRICATOR_UNIT.getTier());
+        assertEquals(2, VoidcraftCoverComponent.REPAIR_BAY.getTier());
+        assertEquals(2, VoidcraftCoverComponent.SOLAR_PANEL.getTier());
+    }
+
+    @Test
+    public void testEnergyGenerationAndRepairDraw() {
+        // The solar panel is the first energy-generating component; the repair bay draws while repairing
+        assertEquals(2000L, VoidcraftCoverComponent.SOLAR_PANEL.getEnergyGen(), "flat generation rate per panel");
+        for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
+            if (cover == VoidcraftCoverComponent.SOLAR_PANEL) {
+                continue;
+            }
+            assertEquals(0L, cover.getEnergyGen(), cover + " must not generate energy");
+        }
+        assertEquals(2000L, VoidcraftCoverComponent.REPAIR_BAY.getEnergyDraw(), "repair bay draw while active");
+        assertEquals(0L, VoidcraftCoverComponent.SOLAR_PANEL.getEnergyDraw(), "a panel draws nothing");
+        // Grid values: id + 1 (9 and 10 for the new covers)
+        assertEquals(9, VoidcraftCoverComponent.REPAIR_BAY.toGridValue());
+        assertEquals(10, VoidcraftCoverComponent.SOLAR_PANEL.toGridValue());
+        assertEquals(
+            VoidcraftCoverComponent.REPAIR_BAY,
+            VoidcraftCoverComponent.fromGridValue(9)
+                .orElse(null));
+        assertEquals(
+            VoidcraftCoverComponent.SOLAR_PANEL,
+            VoidcraftCoverComponent.fromGridValue(10)
+                .orElse(null));
     }
 
     @Test
@@ -73,9 +102,9 @@ public class VoidcraftCoverComponentTest {
                 .isEmpty(),
             "0 = no cover");
         assertTrue(
-            VoidcraftCoverComponent.fromGridValue(9)
+            VoidcraftCoverComponent.fromGridValue(11)
                 .isEmpty(),
-            "9 is beyond the 8 covers");
+            "11 is beyond the 10 covers");
         assertTrue(
             VoidcraftCoverComponent.fromGridValue(-5)
                 .isEmpty());

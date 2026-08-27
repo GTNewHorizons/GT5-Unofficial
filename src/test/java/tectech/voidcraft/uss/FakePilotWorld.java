@@ -34,6 +34,36 @@ public final class FakePilotWorld implements USSPilotWorld {
     public final List<String> logs = new ArrayList<>();
     public int legStarts = 0;
 
+    /** Recorded CONSTRUCT leg dispatches. */
+    public int constructStartCalls = 0;
+    public final List<String> constructStartKinds = new ArrayList<>();
+    public final List<Integer> constructStartIndices = new ArrayList<>();
+    public int constructTickCalls = 0;
+    public final List<String> constructTickKinds = new ArrayList<>();
+    public final List<Integer> constructTickIndices = new ArrayList<>();
+    /** Recorded base REPAIR dispatches. */
+    public int baseRepairStarts = 0;
+    public int baseRepairTicks = 0;
+    public final List<String> baseLogs = new ArrayList<>();
+
+    // endregion
+
+    // region scripted results (base-mode seam)
+
+    /** The CONSTRUCT leg start result (false = nothing to construct - the command SKIPs). */
+    public boolean constructStartResult = false;
+    /** The CONSTRUCT leg tick result (true = still running). */
+    public boolean constructTickResult = false;
+    /** The base REPAIR start result. */
+    public boolean repairStartResult = true;
+    /** The base REPAIR tick result (true = still below max). */
+    public boolean repairTickResult = true;
+    /**
+     * When &gt;= 0, the base REPAIR tick returns true exactly this many more times and then false (a bounded
+     * repair run); -1 uses {@link #repairTickResult} forever.
+     */
+    public int repairTickTrueLeft = -1;
+
     // endregion
 
     @Override
@@ -75,6 +105,46 @@ public final class FakePilotWorld implements USSPilotWorld {
     @Override
     public void log(VoidcraftActiveShip ship, String message) {
         logs.add(message == null ? "" : message);
+    }
+
+    @Override
+    public boolean constructStart(VoidcraftActiveShip ship, String targetKind, int targetIndex) {
+        constructStartCalls++;
+        constructStartKinds.add(targetKind == null ? "" : targetKind);
+        constructStartIndices.add(targetIndex);
+        return constructStartResult;
+    }
+
+    @Override
+    public boolean constructTick(VoidcraftActiveShip ship, String targetKind, int targetIndex) {
+        constructTickCalls++;
+        constructTickKinds.add(targetKind == null ? "" : targetKind);
+        constructTickIndices.add(targetIndex);
+        return constructTickResult;
+    }
+
+    @Override
+    public boolean baseRepairStart(VoidcraftActiveBase base) {
+        baseRepairStarts++;
+        return repairStartResult;
+    }
+
+    @Override
+    public boolean baseRepairTick(VoidcraftActiveBase base) {
+        baseRepairTicks++;
+        if (repairTickTrueLeft >= 0) {
+            if (repairTickTrueLeft == 0) {
+                return false;
+            }
+            repairTickTrueLeft--;
+            return true;
+        }
+        return repairTickResult;
+    }
+
+    @Override
+    public void logBase(VoidcraftActiveBase base, String message) {
+        baseLogs.add(message == null ? "" : message);
     }
 
     /** Resolve key helper (test readability). */

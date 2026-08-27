@@ -13,6 +13,8 @@ import gregtech.api.enums.Materials;
  * <p>
  * <strong>Placeholder note.</strong> The new fields (name method, size range, materials + weights, luminosity, planet
  * range, texture, evolution target) are set to reasonable, valid starting values to be tuned by game design. The
+ * color follows the visual spec per class (main sequence yellow, white dwarf white, supermassive blue) — the
+ * registered value the shared star mesh is tinted with. The
  * planet range for {@code main_sequence} preserves the legacy 3–9 system; the others are illustrative. The materials
  * are "primarily fluids" (stellar composition). The evolution chain is illustrative (main sequence → white dwarf);
  * the others are terminal for now.
@@ -52,6 +54,7 @@ public final class USSStarCatalog {
                 .rippleRange(8, 32)
                 .texture("star_main")
                 .evolutionTarget("white_dwarf")
+                .color(0xFFFFD640) // yellow (255, 214, 64)
                 .build());
 
         USSStarRegistry.register(
@@ -68,6 +71,7 @@ public final class USSStarCatalog {
                 .rippleRange(16, 64)
                 .texture("star_dwarf")
                 .evolutionTarget(null)
+                .color(0xFFFFFFFF) // white
                 .build());
 
         USSStarRegistry.register(
@@ -84,6 +88,7 @@ public final class USSStarCatalog {
                 .rippleRange(32, 96)
                 .texture("star_supermassive")
                 .evolutionTarget(null)
+                .color(0xFF5A8CFF) // blue (90, 140, 255)
                 .build());
     }
 

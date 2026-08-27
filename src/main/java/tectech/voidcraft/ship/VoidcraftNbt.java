@@ -33,6 +33,7 @@ public final class VoidcraftNbt {
     public static final String TAG_STARLIFTER = "vc_starlifter";
     public static final String TAG_ENERGY_BUFFER = "vc_energy_buffer";
     public static final String TAG_ENERGY_DRAW = "vc_energy_draw";
+    public static final String TAG_ENERGY_GEN = "vc_energy_gen";
     public static final String TAG_INTEGRITY = "vc_integrity";
     public static final String TAG_ROLES = "vc_roles";
     public static final String TAG_EFFICIENCY = "vc_efficiency";
@@ -46,19 +47,25 @@ public final class VoidcraftNbt {
      */
     public static final String TAG_PROGRAM = "vc_program";
 
-    // Phase 4 pass 2 — Constructor missions (written by the gateway at launch, read by the USS at completion):
-
-    /** Boolean: this launch is a Constructor mission (the loadout below is applied to the project, not delivered). */
-    public static final String TAG_CONSTRUCTOR_MISSION = "vc_constructor_mission";
-
-    /** Integer: the {@code USSProject#id} the loadout belongs to (first-incomplete project at launch). */
-    public static final String TAG_PROJECT = "vc_project";
+    // Voidbase construction (written by the gateway at a Constructor launch, read by the USS CONSTRUCT
+    // handler in flight):
 
     /**
-     * Compound: the mission loadout — a {@code vc_items} list (dust) + {@code vc_fluids} list (Stellar Plasma) in
-     * {@code USSShipCargo} abstract entry format.
+     * Compound: the base's blueprint payload — the blueprint ITEM's top-level NBT (a full voidcraft payload for
+     * the 15×15×15 base grid + derived stats + program), read with {@link #readBase}. The blueprint item itself
+     * stays in the gateway's blueprint slot (reusable — the ship carries a data copy).
      */
-    public static final String TAG_LOADOUT = "vc_loadout";
+    public static final String TAG_BUILD_BLUEPRINT = "vc_build_blueprint";
+
+    /**
+     * NBTTagList: the parts loadout — entries {@code {key: String, amount: int}} with the blueprint's
+     * {@code partsList()} keys ({@code block.<NAME>} / {@code cover.<NAME>}). The CONSTRUCT handler credits the
+     * site part by part; whatever the ship carries beyond the site's remaining needs is discarded.
+     */
+    public static final String TAG_BUILD_LOADOUT = "vc_build_loadout";
+
+    /** Boolean: this launch is a Voidbase construction mission (the ship creates or fills a construction site). */
+    public static final String TAG_BUILD_MISSION = "vc_build_mission";
 
     private VoidcraftNbt() {
         throw new AssertionError("Static helpers");
@@ -100,6 +107,7 @@ public final class VoidcraftNbt {
         nbt.setLong(TAG_STARLIFTER, stats.starlifterPower);
         nbt.setLong(TAG_ENERGY_BUFFER, stats.energyBuffer);
         nbt.setLong(TAG_ENERGY_DRAW, stats.energyDraw);
+        nbt.setLong(TAG_ENERGY_GEN, stats.energyGen);
         nbt.setLong(TAG_INTEGRITY, stats.integrity);
         nbt.setInteger(TAG_ROLES, roles);
         nbt.setDouble(TAG_EFFICIENCY, efficiency);
@@ -143,6 +151,49 @@ public final class VoidcraftNbt {
         }
         try {
             return VoidcraftBlueprint.of(width, height, depth, grid, facing, covers);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Read a Voidbase blueprint back from a compound tag (the 15×15×15 base bounds, not the ship's 5×5×10).
+     *
+     * @param nbt source tag
+     * @return the blueprint, or null if the tag is not a valid base payload (wrong version, missing keys, corrupt
+     *         grid)
+     */
+    public static VoidcraftBlueprint readBase(NBTTagCompound nbt) {
+        if (nbt == null || !nbt.hasKey(TAG_FORMAT)) {
+            return null;
+        }
+        if (nbt.getInteger(TAG_FORMAT) != VoidcraftConstants.NBT_FORMAT_VERSION) {
+            return null;
+        }
+        int width = nbt.getInteger(TAG_WIDTH);
+        int height = nbt.getInteger(TAG_HEIGHT);
+        int depth = nbt.getInteger(TAG_DEPTH);
+        byte[] grid = nbt.getByteArray(TAG_GRID);
+        if (width < 1 || height < 1 || depth < 1 || grid.length != width * height * depth) {
+            return null;
+        }
+        int cells = width * height * depth;
+        byte[] facing = null;
+        if (nbt.hasKey(TAG_FACING)) {
+            facing = nbt.getByteArray(TAG_FACING);
+            if (facing.length != cells) {
+                return null;
+            }
+        }
+        byte[] covers = null;
+        if (nbt.hasKey(TAG_COVERS)) {
+            covers = nbt.getByteArray(TAG_COVERS);
+            if (covers.length != cells * 6) {
+                return null;
+            }
+        }
+        try {
+            return VoidcraftBlueprint.ofBase(width, height, depth, grid, facing, covers);
         } catch (IllegalArgumentException e) {
             return null;
         }

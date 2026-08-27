@@ -41,6 +41,15 @@ public final class FakeUSSContext implements USSExecutionContext {
     public final List<String> log = new ArrayList<String>();
     /** nextInt(bound) = bound ≤ 0 ? 0 : randomBase % bound (deterministic). */
     public int randomBase = 7;
+    /** CONSTRUCT / REPAIR seam results (the Voidbase construction framework). */
+    public boolean constructStartResult = true;
+    public int constructStartCalls = 0;
+    public boolean constructTickResult = true;
+    public int constructTickCalls = 0;
+    public boolean repairStartResult = true;
+    public int repairStartCalls = 0;
+    public boolean repairTickResult = true;
+    public int repairTickCalls = 0;
 
     public void setTarget(String target, int index, USSPosition dest) {
         targets.put(target + "#" + index, dest);
@@ -146,6 +155,30 @@ public final class FakeUSSContext implements USSExecutionContext {
     @Override
     public int nextInt(int bound) {
         return bound <= 0 ? 0 : randomBase % bound;
+    }
+
+    @Override
+    public boolean constructStart() {
+        constructStartCalls++;
+        return constructStartResult;
+    }
+
+    @Override
+    public boolean constructTick() {
+        constructTickCalls++;
+        return constructTickResult;
+    }
+
+    @Override
+    public boolean repairStart() {
+        repairStartCalls++;
+        return repairStartResult;
+    }
+
+    @Override
+    public boolean repairTick() {
+        repairTickCalls++;
+        return repairTickResult;
     }
 
     @Override

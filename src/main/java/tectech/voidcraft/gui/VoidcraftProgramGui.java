@@ -11,7 +11,7 @@ import com.cleanroommc.modularui.api.drawable.IIcon;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.Rectangle;
-import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -33,14 +33,14 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 import cpw.mods.fml.relauncher.Side;
-import tectech.voidcraft.machine.MTEVoidcraftComponent;
 import tectech.voidcraft.uss.USSConditionOp;
 import tectech.voidcraft.uss.USSProgramDefaults;
 import tectech.voidcraft.uss.USSProgramView;
 
 /**
- * The Voidcraft CONTROLLER programming GUI (pass 33 UI, UI-2) — a linear block-based visual programming view
- * (Scratch-style), opened by right-clicking the controller.
+ * The Voidcraft programming GUI (pass 33 UI, UI-2) — a linear block-based visual programming view
+ * (Scratch-style), opened by right-clicking the controller block, or by right-clicking a digitized blueprint
+ * item (ship / base) in hand.
  *
  * <p>
  * LEFT: the current program as horizontal blocks (loops indented one level per depth), each block showing its
@@ -55,9 +55,10 @@ import tectech.voidcraft.uss.USSProgramView;
  * an [Add] per command (inserts at the cursor); (4) PRESETS — Miner / Starlifter / Explorer / Clear.
  *
  * <p>
- * Sync (server authoritative): the program lives in the controller MTE; the ROWS sync (S2C list of row JSON)
- * drives the left list; every edit is one C2S action ({@code uss.action} = one action JSON, see
- * {@link tectech.voidcraft.uss.USSProgramSync}) — the server runs the editor and pushes the new rows + note.
+ * Sync (server authoritative): the program lives in the {@link VoidcraftProgramSource} (the controller block
+ * NBT or the blueprint item NBT); the ROWS sync (S2C list of row JSON) drives the left list; every edit is one
+ * C2S action ({@code uss.action} = one action JSON, see {@link tectech.voidcraft.uss.USSProgramSync}) — the
+ * server runs the editor and pushes the new rows + note.
  */
 public class VoidcraftProgramGui {
 
@@ -68,11 +69,13 @@ public class VoidcraftProgramGui {
     private static final String SPEC_READ = "{\"t\":0,\"c\":3,\"p\":{\"from\":0,\"to\":1}}";
     private static final String SPEC_WAIT = "{\"t\":0,\"c\":4,\"p\":{\"ticks\":20}}";
     private static final String SPEC_STOP = "{\"t\":0,\"c\":5}";
+    private static final String SPEC_CONSTRUCT = "{\"t\":0,\"c\":6}";
+    private static final String SPEC_REPAIR = "{\"t\":0,\"c\":7}";
     private static final String SPEC_IF = "{\"t\":1,\"l\":{\"k\":0,\"s\":\"\"},\"op\":0,\"r\":{\"k\":0,\"s\":\"\"}}";
     private static final String SPEC_WHILE = "{\"t\":2,\"l\":{\"k\":0,\"s\":\"\"},\"op\":0,\"r\":{\"k\":0,\"s\":\"\"}}";
     private static final String SPEC_REPEAT = "{\"t\":3,\"n\":1}";
 
-    private final MTEVoidcraftComponent machine;
+    private final VoidcraftProgramSource source;
 
     // sync handlers (created in build)
     private GenericListSyncHandler<String> rowsSyncer;
@@ -103,20 +106,20 @@ public class VoidcraftProgramGui {
     private static final Rectangle OP_BG = new Rectangle().color(110, 62, 24, 255);
     private static final Rectangle VAR_BG = new Rectangle().color(32, 52, 110, 255);
 
-    public VoidcraftProgramGui(MTEVoidcraftComponent machine) {
-        this.machine = machine;
+    public VoidcraftProgramGui(VoidcraftProgramSource source) {
+        this.source = source;
     }
 
-    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+    public ModularPanel build(GuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         this.syncManager = syncManager;
         rowsSyncer = new GenericListSyncHandler<String>(
-            machine::getProgramRows,
+            source::getProgramRows,
             null,
             buf -> buf.readStringFromBuffer(32768),
             PacketBuffer::writeStringToBuffer,
             String::equals,
             null);
-        noteSyncer = new StringSyncValue(machine::getNote);
+        noteSyncer = new StringSyncValue(source::getNote);
         syncManager.syncValue("uss.rows", rowsSyncer);
         syncManager.syncValue("uss.note", noteSyncer);
         syncManager.registerSyncedAction("uss.action", Side.SERVER, buf -> {
@@ -127,7 +130,7 @@ public class VoidcraftProgramGui {
                 json = null; // unreadable payload — ignore the action
             }
             if (json != null) {
-                machine.applyAction(json);
+                source.applyAction(json);
             }
             rowsSyncer.notifyUpdate();
             noteSyncer.notifyUpdate();
@@ -431,6 +434,8 @@ public class VoidcraftProgramGui {
                     .child(cmdRow("READ", SPEC_READ))
                     .child(cmdRow("WAIT", SPEC_WAIT))
                     .child(cmdRow("STOP", SPEC_STOP))
+                    .child(cmdRow("CONSTRUCT", SPEC_CONSTRUCT))
+                    .child(cmdRow("REPAIR", SPEC_REPAIR))
                     .child(cmdRow("IF", SPEC_IF))
                     .child(cmdRow("WHILE", SPEC_WHILE))
                     .child(cmdRow("REPEAT", SPEC_REPEAT))
@@ -445,6 +450,11 @@ public class VoidcraftProgramGui {
                         Flow.row()
                             .child(presetButton("Scan", "explorer"))
                             .child(presetButton("Clear", "clear"))
+                            .childPadding(2)
+                            .coverChildren())
+                    .child(
+                        Flow.row()
+                            .child(presetButton("Build", "constructor"))
                             .childPadding(2)
                             .coverChildren())
                     .childPadding(2)

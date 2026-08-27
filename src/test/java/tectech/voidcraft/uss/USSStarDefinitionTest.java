@@ -99,6 +99,26 @@ public class USSStarDefinitionTest {
         assertEquals(9, star.getPlanetMax());
         assertEquals("star_test", star.getTexture());
         assertNull(star.getEvolutionTarget());
+        assertEquals(0xFFFFFFFF, star.getColor(), "color defaults to white");
+    }
+
+    @Test
+    public void testColorBuilderRoundTrips() {
+        USSStarDefinition star = USSStarDefinition.builder()
+            .id("blue_star")
+            .nameMethod(() -> "Blue Star")
+            .type("Blue Type")
+            .sizeRange(1.0f, 5.0f)
+            .main(Materials.Hydrogen, 3.0)
+            .secondary(Materials.Helium, 2.0)
+            .tertiary(Materials.Oxygen, 1.0)
+            .luminosity(5.0f)
+            .planetRange(3, 9)
+            .texture("star_blue")
+            .evolutionTarget(null)
+            .color(0xFF5A8CFF)
+            .build();
+        assertEquals(0xFF5A8CFF, star.getColor());
     }
 
     @Test

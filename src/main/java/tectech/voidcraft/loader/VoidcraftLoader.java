@@ -12,8 +12,10 @@ import tectech.voidcraft.VoidcraftConfig;
 import tectech.voidcraft.VoidcraftTextures;
 import tectech.voidcraft.cover.CoverVoidcraftComponent;
 import tectech.voidcraft.item.ItemUSSController;
+import tectech.voidcraft.item.ItemVoidbaseBlueprint;
 import tectech.voidcraft.item.ItemVoidcraft;
 import tectech.voidcraft.item.ItemVoidcraftCovers;
+import tectech.voidcraft.machine.MTEVoidbaseAssembler;
 import tectech.voidcraft.machine.MTEVoidcraftAssembler;
 import tectech.voidcraft.machine.MTEVoidcraftComponent;
 import tectech.voidcraft.machine.MTEVoidcraftGateway;
@@ -87,6 +89,11 @@ public final class VoidcraftLoader {
         CustomItemList.Voidcraft.set(ItemVoidcraft.INSTANCE);
         TecTech.LOGGER.info("Voidcraft item registered");
 
+        // The digitized Voidbase blueprint item (non-stackable, REUSABLE, NBT payload)
+        ItemVoidbaseBlueprint.run();
+        CustomItemList.VoidbaseBlueprint.set(ItemVoidbaseBlueprint.INSTANCE);
+        TecTech.LOGGER.info("Voidbase blueprint item registered");
+
         // Cover parts (8 subtypes) + item→component registry (covers are placed on hull blocks in the load phase)
         ItemVoidcraftCovers.run();
         for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
@@ -132,6 +139,14 @@ public final class VoidcraftLoader {
                 "multimachine.em.voidcraft_assembler",
                 "Voidcraft Assembler").getStackForm(1L));
         TecTech.LOGGER.info("Voidcraft Assembler MTE registered");
+
+        // The Voidbase Assembler multiblock (15x15x15 build volume -> reusable Voidbase blueprint item)
+        CustomItemList.Machine_Multi_VoidbaseAssembler.set(
+            new MTEVoidbaseAssembler(
+                gregtech.api.enums.MetaTileEntityIDs.VoidbaseAssembler.ID,
+                "multimachine.em.voidbase_assembler",
+                "Voidbase Assembler").getStackForm(1L));
+        TecTech.LOGGER.info("Voidbase Assembler MTE registered");
 
         // Phase 2 — the Unstable Solar System multiblock (parallel to the legacy Eye of Harmony) + its ignition
         // controller item. Reserved ID 32057 (MetaTileEntityIDs.UnstableSolarSystem).

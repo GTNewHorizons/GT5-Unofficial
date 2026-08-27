@@ -205,6 +205,31 @@ public class USSStarRegistryTest {
     }
 
     @Test
+    public void testCatalogColorsFollowTheVisualSpec() {
+        USSStarCatalog.registerAll();
+        assertEquals(
+            0xFFFFD640,
+            USSStarRegistry.get("main_sequence")
+                .getColor());
+        assertEquals(
+            0xFFFFFFFF,
+            USSStarRegistry.get("white_dwarf")
+                .getColor());
+        assertEquals(
+            0xFF5A8CFF,
+            USSStarRegistry.get("supermassive")
+                .getColor());
+    }
+
+    @Test
+    public void testStarColorHelperResolvesRegisteredAndFallsBack() {
+        USSStarCatalog.registerAll();
+        assertEquals(USSStarColor.DEFAULT, USSStarColor.colorFor(null));
+        assertEquals(0xFFFFD640, USSStarColor.colorFor(USSStarRegistry.byType(USSStarType.MAIN_SEQUENCE)));
+        assertEquals(USSStarColor.DEFAULT, USSStarColor.colorFor(USSStarRegistry.get("unregistered")));
+    }
+
+    @Test
     public void testCatalogEvolutionChain() {
         USSStarCatalog.registerAll();
         // main_sequence evolves into white_dwarf (registered); the others are terminal (null target).

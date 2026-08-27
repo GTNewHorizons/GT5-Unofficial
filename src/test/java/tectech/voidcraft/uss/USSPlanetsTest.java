@@ -155,25 +155,25 @@ public class USSPlanetsTest {
             double band = (USSPlanets.MAX_DISTANCE - USSPlanets.MIN_DISTANCE) / system.size();
             for (int i = 0; i < system.size(); i++) {
                 USSPlanets.USSPlanet planet = system.get(i);
-                // distance: inside its orbital band (bands are disjoint, inner → outer), clear of the star (≤ 1.4)
+                // distance: inside its orbital band (bands are disjoint, inner → outer), clear of the star (≤ 1.9)
                 // and 4 blocks inside the shell edge (MAX_DISTANCE = dome − 4 by construction).
                 assertTrue(
                     planet.distance >= USSPlanets.MIN_DISTANCE + band * i
                         && planet.distance <= USSPlanets.MIN_DISTANCE + band * (i + 1),
                     "seed " + seed + " planet " + i + " distance " + planet.distance + " in band " + i);
-                assertTrue(planet.distance > 1.4, "seed " + seed + " — clear of the star surface");
+                assertTrue(planet.distance > 1.9, "seed " + seed + " — clear of the star surface");
                 assertTrue(
                     planet.distance <= USSConstants.SPACE_SHELL_RADIUS - 4.0 + 1e-6,
                     "seed " + seed + " — inside the shell edge with the 4-block margin");
-                // scale: within the PLANET DEFINITION's size range (sampled from it).
+                // scale: within the PLANET DEFINITION's size range reduced by PLANET_RENDER_SCALE.
                 assertTrue(
-                    planet.scale >= planet.definition.getSizeMin() - 1e-6
-                        && planet.scale <= planet.definition.getSizeMax() + 1e-6,
+                    planet.scale >= planet.definition.getSizeMin() * USSPlanets.PLANET_RENDER_SCALE - 1e-6
+                        && planet.scale <= planet.definition.getSizeMax() * USSPlanets.PLANET_RENDER_SCALE + 1e-6,
                     "seed " + seed
-                        + " — scale in the planet's size range ["
-                        + planet.definition.getSizeMin()
+                        + " — scale in the planet's rendered size range ["
+                        + planet.definition.getSizeMin() * USSPlanets.PLANET_RENDER_SCALE
                         + ","
-                        + planet.definition.getSizeMax()
+                        + planet.definition.getSizeMax() * USSPlanets.PLANET_RENDER_SCALE
                         + "], got "
                         + planet.scale);
                 assertTrue(

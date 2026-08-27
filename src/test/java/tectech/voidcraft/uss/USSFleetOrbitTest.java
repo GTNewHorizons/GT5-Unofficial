@@ -214,8 +214,8 @@ public class USSFleetOrbitTest {
                 + " must stay inside the dome "
                 + USSConstants.SPACE_SHELL_RADIUS);
 
-        // The 4-block margin covers hover 0.5 + cube half ≤ 0.66 (MAX_SCALE 1.32 / 2) + spread 2.0 = 3.16 < 4.0 —
-        // even the outermost hovering ship stays INSIDE the dome (≈ 23.58 + 3.16 = 26.74 vs 27.1), so ships
+        // The 4-block margin covers hover 0.5 + cube half ≤ 0.33 (MAX_SCALE 0.66 / 2) + spread 2.0 = 2.83 < 4.0 —
+        // even the outermost hovering ship stays INSIDE the dome (≈ 23.68 + 2.83 = 26.51 vs 27.1), so ships
         // render inside the bubble.
         double minerWorst = planetWorstCenter + USSConstants.HOVER_ABOVE_PLANET
             + 0.5 * USSPlanets.MAX_SCALE
@@ -231,8 +231,8 @@ public class USSFleetOrbitTest {
             "worst-case Starlifter hover " + starWorst
                 + " must stay inside the dome "
                 + USSConstants.SPACE_SHELL_RADIUS);
-        // and clears the largest star surface (radius ≤ 1.4)
-        assertTrue(USSConstants.HOVER_ABOVE_STAR > 1.4, "Starlifter hover must clear the star surface");
+        // and clears the largest star surface (radius ≤ 1.9)
+        assertTrue(USSConstants.HOVER_ABOVE_STAR > 1.9, "Starlifter hover must clear the star surface");
     }
 
     // region stateful-position pass (USSPosition) — the "distance within the solar system" model
@@ -423,6 +423,99 @@ public class USSFleetOrbitTest {
     }
 
     // endregion
+
+    // region the station equatorial band (the Voidbase hover law) — a planet-anchored base sits within ±30° of
+    // the planet's orbital plane, on the shell at the ship hover radius, seeded by the planet index
+
+    @Test
+    public void testBandPointSitsExactlyOnTheShell() {
+        for (int seed = 0; seed < 200; seed++) {
+            float x = (seed % 41) - 20f;
+            float z = (seed % 29) - 14f;
+            USSPosition c = USSPosition.of(3.0, -2.0, 7.0);
+            USSPosition p = USSFleetOrbit.orbitalBandPoint(c, 1.5, seed, x, z);
+            double d = c.distanceTo(p);
+            assertEquals(1.5, d, 1e-9, "seed " + seed + ": the band point must be exactly on the shell");
+        }
+    }
+
+    @Test
+    public void testBandPointStaysWithinThirtyDegreesOfTheOrbitalPlane() {
+        // The orbital plane through the center has normal Rx(x)·Rz(z)·(0,1,0) (the same chain the orbit law
+        // uses); a point within 30° of the plane has |dot(dir, n)| ≤ cos(60°) = 0.5.
+        for (int seed = 0; seed < 500; seed++) {
+            float x = (seed % 41) - 20f;
+            float z = (seed % 29) - 14f;
+            double[] n = rotX(Math.toRadians(x), rotZ(Math.toRadians(z), new double[] { 0.0, 1.0, 0.0 }));
+            USSPosition c = USSPosition.of(1.0, -2.0, 2.0);
+            USSPosition p = USSFleetOrbit.orbitalBandPoint(c, 1.0, seed, x, z);
+            double[] dir = new double[] { p.x() - c.x(), p.y() - c.y(), p.z() - c.z() };
+            double dot = dir[0] * n[0] + dir[1] * n[1] + dir[2] * n[2];
+            assertTrue(
+                Math.abs(dot) <= 0.5 + 1e-9,
+                "seed " + seed + ": elevation " + Math.toDegrees(Math.asin(dot)) + "° exceeds the 30° band");
+        }
+    }
+
+    @Test
+    public void testBandPointIsDeterministicPerPlanetIndex() {
+        USSPosition c = USSPosition.of(0.0, -2.0, 0.0);
+        USSPosition a = USSFleetOrbit.orbitalBandPoint(c, 1.0, 3, 12f, -5f);
+        USSPosition b = USSFleetOrbit.orbitalBandPoint(c, 1.0, 3, 12f, -5f);
+        assertEquals(a, b, "same planet index → same band point (server and client agree)");
+        USSPosition other = USSFleetOrbit.orbitalBandPoint(c, 1.0, 4, 12f, -5f);
+        assertTrue(
+            c.distanceTo(a) > 0 && a.distanceTo(other) > 1e-9,
+            "different planet indices must not share the same band point");
+    }
+
+    @Test
+    public void testBandPointZeroTiltBandAroundXZ() {
+        // No tilt: the orbital plane is the XZ plane through the center — the band point stays within ±30° of
+        // it (|dy| ≤ radius·sin(30°)).
+        for (int seed = 0; seed < 100; seed++) {
+            USSPosition c = USSPosition.of(5.0, -2.0, 0.0);
+            USSPosition p = USSFleetOrbit.orbitalBandPoint(c, 2.0, seed, 0f, 0f);
+            assertEquals(2.0, c.distanceTo(p), 1e-9);
+            assertTrue(
+                Math.abs(p.y() - c.y()) <= 2.0 * Math.sin(Math.toRadians(30.0)) + 1e-9,
+                "seed " + seed + ": dy " + (p.y() - c.y()) + " outside the zero-tilt band");
+        }
+    }
+
+    @Test
+    public void testBandPointTracksThePlanetAcrossOrbitTimes() {
+        // The band point is anchored to the planet center: as the planet orbits, the point follows (always at
+        // the hover radius from the LIVE center, always inside the band).
+        double[] n = rotX(Math.toRadians(10.0), rotZ(Math.toRadians(-7.0), new double[] { 0.0, 1.0, 0.0 }));
+        USSPosition c0 = USSFleetOrbit.planetPosition(planet(5.0f, 10.0f, -7.0f), 1.0f, 0.0f);
+        USSPosition c1 = USSFleetOrbit.planetPosition(planet(5.0f, 10.0f, -7.0f), 1.0f, 2000.0f);
+        USSPosition p0 = USSFleetOrbit.orbitalBandPoint(c0, 1.0, 0, 10.0f, -7.0f);
+        USSPosition p1 = USSFleetOrbit.orbitalBandPoint(c1, 1.0, 0, 10.0f, -7.0f);
+        assertEquals(1.0, c0.distanceTo(p0), 1e-9);
+        assertEquals(1.0, c1.distanceTo(p1), 1e-9);
+        for (int i = 0; i < 2; i++) {
+            USSPosition c = i == 0 ? c0 : c1;
+            USSPosition p = i == 0 ? p0 : p1;
+            double[] dir = new double[] { p.x() - c.x(), p.y() - c.y(), p.z() - c.z() };
+            double dot = dir[0] * n[0] + dir[1] * n[1] + dir[2] * n[2];
+            assertTrue(Math.abs(dot) <= 0.5 + 1e-9, "the band point follows the orbital plane");
+        }
+        assertTrue(c0.distanceTo(c1) > 0.1, "the planet moved (the two samples are distinct)");
+    }
+
+    @Test
+    public void testBandPointRadiusZeroIsTheCenter() {
+        USSPosition c = USSPosition.of(1.0, 2.0, 3.0);
+        assertEquals(c, USSFleetOrbit.orbitalBandPoint(c, 0.0, 5, 10f, 10f));
+    }
+
+    // endregion
+
+    private static USSPlanets.USSPlanet planet(float distance, float xAngle, float zAngle) {
+        // definition unused by the orbit math (only distance / speed / tilts matter)
+        return new USSPlanets.USSPlanet(null, distance, 0.5, 1.0, 1.0, xAngle, zAngle, false, -1);
+    }
 
     private static double[] rotX(double a, double[] v) {
         double c = Math.cos(a);

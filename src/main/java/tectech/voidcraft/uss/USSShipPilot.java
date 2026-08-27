@@ -26,8 +26,9 @@ import tectech.voidcraft.ship.VoidcraftNbt;
  * HOME leg's delivery — fires here, then the completion is handed to the executor as
  * {@link #legComplete()} on the same tick);</li>
  * <li>the executor steps (it only transitions a node on its 20-tick boundary);</li>
- * <li>when the program completes (root exhausted / STOP / empty program) the ship HOLDS
- * ({@link USSShipState#HOVERING}) — no implicit return (user decision).</li>
+ * <li>when the program ends (a STOP ran — or the program was empty) the ship HOLDS
+ * ({@link USSShipState#HOVERING}) — no implicit return (user decision); a finished program wraps and runs
+ * again (the executor's invisible while), so only STOP ends it.</li>
  * </ol>
  *
  * <p>
@@ -218,11 +219,11 @@ public final class USSShipPilot implements USSExecutionContext {
         // 3) the executor steps (one node transition per 20 ticks; active commands polled every tick).
         executor.tick(this);
 
-        // 4) program finished → the ship HOLDS (no implicit return, user decision).
+        // 4) program over (a STOP ran — or the program was empty) → the ship HOLDS (no implicit return).
         if (executor.isCompleted()) {
             legDoneReported = false;
             ship.hold();
-            world.log(ship, "program complete — holding in place");
+            world.log(ship, "program over — holding in place");
         }
         return false;
     }
@@ -372,6 +373,28 @@ public final class USSShipPilot implements USSExecutionContext {
     @Override
     public int nextInt(int bound) {
         return (bound <= 0) ? 0 : rng.nextInt(bound);
+    }
+
+    @Override
+    public boolean constructStart() {
+        return world.constructStart(ship, lastKind, lastIndex);
+    }
+
+    @Override
+    public boolean constructTick() {
+        return world.constructTick(ship, lastKind, lastIndex);
+    }
+
+    @Override
+    public boolean repairStart() {
+        // v1: a Voidcraft has no repairable station at its hover (repair is a station command - the base runs it
+        // in its own program). The REPAIR instruction SKIPs on a ship.
+        return false;
+    }
+
+    @Override
+    public boolean repairTick() {
+        return false; // repairStart never RUNNING on a ship
     }
 
     @Override

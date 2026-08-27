@@ -156,7 +156,10 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // The Explorer pass: the revealed spacetime ripples render even when NO ship is in flight (the ripples are a
         // property of the revealed solar system, not of the fleet) — skip only when there is nothing at all to draw.
         List<float[]> ripples = fleet.getRevealedRipples();
-        if (ships.isEmpty() && ripples.isEmpty()) {
+        // Phase D: the Voidbase construction sites + standing bases render from this same anchor.
+        List<NBTTagCompound> sites = fleet.getBaseSites();
+        List<NBTTagCompound> bases = fleet.getBases();
+        if (ships.isEmpty() && ripples.isEmpty() && sites.isEmpty() && bases.isEmpty()) {
             return;
         }
 
@@ -189,13 +192,19 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // pass. Drawn first (behind the ships) so the fleet stays legible.
         renderRipples(ripples, x, y, z, worldTime);
 
-        if (ships.isEmpty()) {
-            return; // only the ripples were present — done
-        }
-
-        // Pass 7: the system the fleet works (specs + star size ride with the fleet TE — no world lookups).
+        // Pass 7: the system the fleet works (specs + star size ride with the fleet TE — no world lookups) —
+        // fetched before the Voidbase renders: a PLANET-anchored site/base tracks the planet's live orbit.
         List<TileEntityEyeOfHarmony.PlanetSpec> planets = fleet.getSystemPlanets();
         float starSize = fleet.getStarSize();
+
+        // Phase D: the Voidbase construction sites (gray wireframe + progressive fill) and the standing bases
+        // (static models) — drawn before the ships so the fleet renders on top of them.
+        renderSites(sites, planets, starSize, x, y, z, worldTime, partialTicks);
+        renderBases(bases, planets, starSize, x, y, z, worldTime, partialTicks);
+
+        if (ships.isEmpty()) {
+            return; // only ripples and Voidbase renders were present — done
+        }
 
         // Gateway render pass: a star-facing opaque TUBE (0.1 blocks deep) with a flat 25% cyan event plane in
         // its bore, at the DOME EDGE in each fleet gateway's direction, embedded 0.25 blocks into the shell — the
@@ -216,7 +225,18 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         }
 
         for (int i = 0; i < ships.size(); i++) {
-            renderShip(ships.get(i), i, x, y, z, worldTime, partialTicks, planets, starSize, tileEntity.getWorldObj());
+            renderShip(
+                ships.get(i),
+                i,
+                x,
+                y,
+                z,
+                worldTime,
+                partialTicks,
+                planets,
+                starSize,
+                tileEntity.getWorldObj(),
+                sites);
         }
     }
 
@@ -539,7 +559,8 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
     }
 
     private void renderShip(NBTTagCompound entry, int index, double x, double y, double z, long worldTime,
-        float partialTicks, List<TileEntityEyeOfHarmony.PlanetSpec> planets, float starSize, World world) {
+        float partialTicks, List<TileEntityEyeOfHarmony.PlanetSpec> planets, float starSize, World world,
+        List<NBTTagCompound> sites) {
         NBTTagCompound payload = entry.getCompoundTag(TileEntityVoidcraftShip.TAG_ENTRY_PAYLOAD);
         if (payload == null) {
             return;
@@ -728,7 +749,7 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 pos = new double[] { hover[0], hover[1], hover[2] };
                 break;
             case HOVERING:
-                // Phase C: the program finished (or there is none) — the ship HOLDS at its current position
+                // Phase C: the program ended via STOP (or there is none) — the ship HOLDS at its current position
                 // (a fresh ship: the gateway; a finished one: its last body) + its swarm spread. Gateway render
                 // pass: a fresh ship holds at the DOME-EDGE gateway render (inside the shell), not the actual
                 // (dome-external) gateway block.
@@ -843,6 +864,52 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             }
         }
 
+        // The CONSTRUCTION laser: while a CONSTRUCT leg runs at one of the sites and its Constructor seed is this
+        // ship's per-launch seed, a thin ORANGE rod runs from the ship to the site's wireframe center (the same
+        // rod as the mining beam, in the construction color), fading in over the leg's start and out over its end.
+        // The server paces the leg (constructTicksPerItem * parts) and syncs its total - the client animates that
+        // duration locally (the leg id re-syncs the fleet on start/end).
+        if (seed != 0 && sites != null && !sites.isEmpty()) {
+            // Cheap bounded reset: discard stale phases for Constructors that left the fleet.
+            if (SITE_CONSTRUCT_PHASES.size() > sites.size() * 2 + 64) {
+                SITE_CONSTRUCT_PHASES.clear();
+            }
+            for (int i = 0; i < sites.size(); i++) {
+                NBTTagCompound siteEntry = sites.get(i);
+                if (siteEntry.getInteger(TileEntityVoidcraftShip.TAG_SITE_CONSTRUCT_SEED) != seed) {
+                    continue; // another Constructor owns this site's leg
+                }
+                int constructLeg = siteEntry.getInteger(TileEntityVoidcraftShip.TAG_SITE_CONSTRUCT_LEG);
+                long constructTotal = siteEntry.getLong(TileEntityVoidcraftShip.TAG_SITE_CONSTRUCT_TOTAL);
+                if (constructLeg <= 0 || constructTotal <= 0L) {
+                    continue; // no active leg (the leg finished and the site still stands, or a base took its place)
+                }
+                BasePhase constructPhase = SITE_CONSTRUCT_PHASES.get(seed);
+                if (constructPhase == null) {
+                    constructPhase = new BasePhase();
+                    SITE_CONSTRUCT_PHASES.put(seed, constructPhase);
+                }
+                if (constructPhase.lastLegId != constructLeg || constructPhase.startTick < 0.0) {
+                    constructPhase.lastLegId = constructLeg;
+                    constructPhase.startTick = shipRenderTime;
+                }
+                double progress = Math.min(1.0, (shipRenderTime - constructPhase.startTick) / (double) constructTotal);
+                double fade = VoidcraftShipFx.beamFade(progress);
+                if (fade > 0.0) {
+                    double[] sitePos = anchorHoverPoint(siteEntry, planets, starSize, shipRenderTime);
+                    renderBeam(
+                        new double[] { x + pos[0], y + pos[1], z + pos[2] },
+                        new double[] { x + sitePos[0], y + sitePos[1], z + sitePos[2] },
+                        fade,
+                        worldTime,
+                        1.0,
+                        0.6,
+                        0.15); // the construction orange
+                }
+                break;
+            }
+        }
+
         // The Explorer pass (user spec: "a small visual effect — maybe a rotating, transparent cube around the ship
         // while scanning — would help identifying the ships"): a transparent cube surrounds the Explorer during its
         // work leg — for an Explorer the MINING state IS the scan. Pass 26 (user: "make the rendering only work
@@ -902,7 +969,7 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
     }
 
     /**
-     * The mining laser rod between two WORLD points (pass 8): a thin box (four side quads) in a bright cyan with
+     * The mining laser rod between two WORLD points: a thin box (four side quads) in a bright cyan with
      * additive blending and a gentle pulse — the classic "laser" reading. Culling is disabled for the rod (its
      * winding must not fight the world's GL_CULL_FACE), lighting off (it is emissive), and depth writes off (it is
      * a pure overlay between the ship and the body, still depth-TESTED so the planet's surface correctly occludes
@@ -915,6 +982,23 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
      * ({@code RenderLightningBolt}) does exactly this: disable the texture, draw the color quads, re-enable it.
      */
     private static void renderBeam(double[] start, double[] end, double fade, long worldTime) {
+        renderBeam(start, end, fade, worldTime, 0.15, 0.75, 1.0);
+    }
+
+    /**
+     * One beam of a custom color between two WORLD points (same rod as {@link #renderBeam(double[], double[],
+     * double, long)}: thin box, additive blending, gentle pulse, depth writes off, texture off).
+     *
+     * @param start     the beam's origin (world x/y/z)
+     * @param end       the beam's target (world x/y/z)
+     * @param fade      0..1 — 0 is invisible (the fade ramp); 1 fully bright
+     * @param worldTime the render time (the pulse phase)
+     * @param red       the beam's color (0..1)
+     * @param green     the beam's color (0..1)
+     * @param blue      the beam's color (0..1)
+     */
+    private static void renderBeam(double[] start, double[] end, double fade, long worldTime, double red, double green,
+        double blue) {
         double[] b = VoidcraftShipFx.beamBasis(start, end);
         if (b == null) {
             return; // endpoints coincide — degenerate geometry, nothing to draw
@@ -942,7 +1026,7 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             float alpha = (float) (0.9 * fade * pulse);
             Tessellator tessellator = Tessellator.instance;
             tessellator.startDrawingQuads();
-            tessellator.setColorRGBA_F(0.15F, 0.75F, 1.0F, alpha);
+            tessellator.setColorRGBA_F((float) red, (float) green, (float) blue, alpha);
             double[] sx = { -1.0, 1.0, 1.0, -1.0 };
             double[] sz = { -1.0, -1.0, 1.0, 1.0 };
             for (int i = 0; i < 4; i++) {
@@ -1251,5 +1335,276 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
     private static double[] lerp(double[] from, double[] to, double t) {
         return new double[] { from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t,
             from[2] + (to[2] - from[2]) * t };
+    }
+
+    /**
+     * The anchor hover point of a Voidbase render entry (Phase D, fleet-anchor coords) — the same protocol the
+     * ship entries use: STAR (target -1) and PLANET i (target i) resolve LIVE (a planet keeps orbiting, so a
+     * planet-anchored site/base tracks it), RIPPLE j is a STATIC fixed point (the server resolved it; the
+     * client renders exactly there, no hover offset).
+     */
+    private static double[] anchorHoverPoint(NBTTagCompound entry, List<TileEntityEyeOfHarmony.PlanetSpec> planets,
+        float starSize, double renderTime) {
+        int target = entry.hasKey(TileEntityVoidcraftShip.TAG_ENTRY_TARGET)
+            ? entry.getInteger(TileEntityVoidcraftShip.TAG_ENTRY_TARGET)
+            : -1;
+        if (entry.getBoolean(TileEntityVoidcraftShip.TAG_ENTRY_STATIC)
+            && entry.hasKey(TileEntityVoidcraftShip.TAG_ENTRY_DEST)) {
+            USSPosition p = USSPosition.readFromNBT(entry.getCompoundTag(TileEntityVoidcraftShip.TAG_ENTRY_DEST));
+            return new double[] { p.x(), p.y(), p.z() };
+        }
+        double[] body = targetBody(target, planets, starSize, (float) renderTime);
+        boolean isPlanet = target >= 0 && planets != null && target < planets.size();
+        if (isPlanet) {
+            // The station equatorial band: the same point the server places the base/site at (within ±30° of
+            // the orbital plane, seeded by the planet index — one stable point per planet).
+            TileEntityEyeOfHarmony.PlanetSpec spec = planets.get(target);
+            USSPosition center = USSPosition.of(body[0], body[1], body[2]);
+            double hoverRadius = 0.5 + 0.375 * spec.scale; // the same hover distance the server keeps off the surface
+            USSPosition band = USSFleetOrbit.orbitalBandPoint(center, hoverRadius, target, spec.xAngle, spec.zAngle);
+            return new double[] { band.x(), band.y(), band.z() };
+        }
+        return new double[] { body[0], body[1] + USSConstants.HOVER_ABOVE_STAR, body[2] };
+    }
+
+    /**
+     * The Voidbase CONSTRUCTION SITES (Phase D): each renders a gray WIREFRAME BOX at its anchor hover point
+     * (sized from the site blueprint's dimensions, gently pulsating) with a semi-transparent FILL box that grows
+     * with the site's progress (the parts filling in). Same GL discipline as the ripples: texture OFF (color
+     * only), lighting OFF, culling OFF, standard alpha blend, depth writes OFF (pure overlays, still
+     * depth-TESTED so the bodies occlude them).
+     */
+    private static void renderSites(List<NBTTagCompound> sites, List<TileEntityEyeOfHarmony.PlanetSpec> planets,
+        float starSize, double x, double y, double z, long worldTime, float partialTicks) {
+        if (sites == null || sites.isEmpty()) {
+            return;
+        }
+        double renderTime = (double) worldTime + partialTicks;
+        boolean lightingOn = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
+        boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        boolean textureOn = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDepthMask(false);
+        try {
+            Tessellator tess = Tessellator.instance;
+            for (int i = 0; i < sites.size(); i++) {
+                NBTTagCompound entry = sites.get(i);
+                double[] pos = anchorHoverPoint(entry, planets, starSize, renderTime);
+                double progress = entry.getDouble(TileEntityVoidcraftShip.TAG_SITE_PROGRESS);
+                if (progress < 0.0) {
+                    progress = 0.0;
+                } else if (progress > 1.0) {
+                    progress = 1.0;
+                }
+                int[] dims = entry.getIntArray(TileEntityVoidcraftShip.TAG_SITE_DIMS);
+                double w = (dims != null && dims.length == 3 && dims[0] > 0) ? dims[0] : 8;
+                double h = (dims != null && dims.length == 3 && dims[1] > 0) ? dims[1] : 8;
+                double d = (dims != null && dims.length == 3 && dims[2] > 0) ? dims[2] : 8;
+                double px = x + pos[0];
+                double py = y + pos[1];
+                double pz = z + pos[2];
+                // Box half-extents: the blueprint's cell span at the hologram scale + a small margin, quartered
+                // (0.25x).
+                double sx = 0.25 * (0.5 * w * CELL_SIZE + 0.3);
+                double sy = 0.25 * (0.5 * h * CELL_SIZE + 0.3);
+                double sz = 0.25 * (0.5 * d * CELL_SIZE + 0.3);
+                double[] cx = { px - sx, px + sx, px + sx, px - sx, px - sx, px + sx, px + sx, px - sx };
+                double[] cy = { py - sy, py - sy, py + sy, py + sy, py - sy, py - sy, py + sy, py + sy };
+                double[] cz = { pz - sz, pz - sz, pz - sz, pz - sz, pz + sz, pz + sz, pz + sz, pz + sz };
+                int[] edges = { 0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7 };
+                // Wireframe: a gentle time-driven alpha pulse (deterministic — every client pulses identically).
+                float pulse = (float) Math.sin(worldTime * 0.15 + i * 1.7);
+                float wireAlpha = 0.6F + 0.25F * pulse;
+                tess.startDrawing(GL11.GL_LINES);
+                tess.setColorRGBA_F(0.55F, 0.55F, 0.55F, wireAlpha); // startDrawing resets the color — set it after
+                for (int e = 0; e < edges.length; e++) {
+                    int c = edges[e];
+                    tess.addVertex(cx[c], cy[c], cz[c]);
+                }
+                tess.draw();
+                // Progressive fill: a translucent box scaled by the site's progress (the parts filling in).
+                if (progress > 0.001) {
+                    double fw = sx * progress;
+                    double fh = sy * progress;
+                    double fd = sz * progress;
+                    double ax = px - fw, bx = px + fw, ay = py - fh, by = py + fh, az = pz - fd, bz = pz + fd;
+                    tess.startDrawing(7);
+                    tess.setColorRGBA_F(0.42F, 0.42F, 0.42F, 0.16F);
+                    tess.addVertex(ax, ay, az);
+                    tess.addVertex(bx, ay, az);
+                    tess.addVertex(bx, ay, bz);
+                    tess.addVertex(ax, ay, bz);
+                    tess.addVertex(ax, by, bz);
+                    tess.addVertex(bx, by, bz);
+                    tess.addVertex(bx, by, az);
+                    tess.addVertex(ax, by, az);
+                    tess.addVertex(ax, ay, az);
+                    tess.addVertex(bx, ay, az);
+                    tess.addVertex(bx, by, az);
+                    tess.addVertex(ax, by, az);
+                    tess.addVertex(bx, ay, bz);
+                    tess.addVertex(ax, ay, bz);
+                    tess.addVertex(ax, by, bz);
+                    tess.addVertex(bx, by, bz);
+                    tess.addVertex(ax, ay, bz);
+                    tess.addVertex(ax, ay, az);
+                    tess.addVertex(ax, by, az);
+                    tess.addVertex(ax, by, bz);
+                    tess.addVertex(bx, ay, az);
+                    tess.addVertex(bx, ay, bz);
+                    tess.addVertex(bx, by, bz);
+                    tess.addVertex(bx, by, az);
+                    tess.draw();
+                }
+            }
+        } finally {
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glDepthMask(true);
+            if (!textureOn) {
+                GL11.glDisable(GL11.GL_TEXTURE_2D);
+            } else {
+                GL11.glEnable(GL11.GL_TEXTURE_2D);
+            }
+            if (!lightingOn) {
+                GL11.glDisable(GL11.GL_LIGHTING);
+            } else {
+                GL11.glEnable(GL11.GL_LIGHTING);
+            }
+            if (!cullOn) {
+                GL11.glDisable(GL11.GL_CULL_FACE);
+            } else {
+                GL11.glEnable(GL11.GL_CULL_FACE);
+            }
+            if (!blendOn) {
+                GL11.glDisable(GL11.GL_BLEND);
+            }
+        }
+    }
+
+    /**
+     * The client-side animation phase of one base's mining beam (keyed by the base seed): a new mining-leg id
+     * resets the beam fade's progress (the same pattern as the ships' {@link LegPhase}).
+     */
+    private static final class BasePhase {
+
+        int lastLegId = -1;
+        double startTick = -1.0;
+    }
+
+    // Per-base mining-beam phases (client render thread only).
+    private static final Map<Integer, BasePhase> BASE_PHASES = new HashMap<Integer, BasePhase>();
+
+    /**
+     * Per-Constructor CONSTRUCT-beam phases (client render thread only), keyed by the Constructor's per-launch
+     * seed (the same key the site entry's CONSTRUCT seed pairs on) - a new leg id resets the beam fade's progress.
+     */
+    private static final Map<Integer, BasePhase> SITE_CONSTRUCT_PHASES = new HashMap<Integer, BasePhase>();
+
+    /**
+     * The standing VoidBASES (Phase D): each renders its blueprint as a STATIC hologram model at its anchor
+     * hover point — the same transform pipeline as the ships (hologram scale + model centering), with no travel
+     * animation (a base sits at its anchor). The model is tinted red as its integrity drops (white at full,
+     * deep red near burnout) so a failing station reads from across the system. While the base's program runs
+     * a WORK mining leg (the entry's mining-leg id > 0, the station has mining power), a mining laser is drawn
+     * from the base to the anchor body — the same beam the ships fire, fading in/out over the leg
+     * (VoidcraftShipFx.beamFade).
+     */
+    private static void renderBases(List<NBTTagCompound> bases, List<TileEntityEyeOfHarmony.PlanetSpec> planets,
+        float starSize, double x, double y, double z, long worldTime, float partialTicks) {
+        if (bases == null || bases.isEmpty()) {
+            return;
+        }
+        double renderTime = (double) worldTime + partialTicks;
+        // Cheap bounded reset: discard stale phases for bases that left the fleet (decommissioned mid-mining).
+        if (BASE_PHASES.size() > bases.size() * 2 + 64) {
+            BASE_PHASES.clear();
+        }
+        for (NBTTagCompound entry : bases) {
+            NBTTagCompound payload = entry.getCompoundTag(TileEntityVoidcraftShip.TAG_ENTRY_PAYLOAD);
+            // A BASE payload (15x15x15, cover components included) — the base reader, not the ship reader.
+            VoidcraftBlueprint blueprint = payload != null ? VoidcraftNbt.readBase(payload) : null;
+            if (blueprint == null) {
+                continue;
+            }
+            ShipModel model = VoidcraftShipModelCache.get(blueprint);
+            if (model == null || model.maxAxis() == 0) {
+                continue;
+            }
+            double[] pos = anchorHoverPoint(entry, planets, starSize, renderTime);
+            long integrity = entry.getLong(TileEntityVoidcraftShip.TAG_BASE_INTEGRITY);
+            long maxIntegrity = entry.getLong(TileEntityVoidcraftShip.TAG_BASE_INTEGRITY_MAX);
+            float f = maxIntegrity > 0 ? (float) Math.max(0.0, Math.min(1.0, (double) integrity / maxIntegrity)) : 1.0F;
+            float tint = 0.35F + 0.65F * f;
+            boolean lightingEnabled = GL11.glIsEnabled(GL11.GL_LIGHTING);
+            boolean cullEnabled = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+            GL11.glPushMatrix();
+            try {
+                GL11.glTranslated(x + pos[0], y + pos[1], z + pos[2]);
+                GL11.glScalef((float) CELL_SIZE, (float) CELL_SIZE, (float) CELL_SIZE);
+                // Center the model (cells span 0..n-1 on each axis).
+                GL11.glTranslated(-(model.width - 1) / 2.0, -(model.height - 1) / 2.0, -(model.depth - 1) / 2.0);
+                Minecraft.getMinecraft()
+                    .getTextureManager()
+                    .bindTexture(TextureMap.locationBlocksTexture);
+                GL11.glEnable(GL11.GL_LIGHTING);
+                GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+                GL11.glColor4f(1.0F, tint, tint, 1.0F);
+                GL11.glDisable(GL11.GL_CULL_FACE);
+                model.vao.render();
+            } finally {
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+                if (!cullEnabled) {
+                    GL11.glDisable(GL11.GL_CULL_FACE);
+                } else {
+                    GL11.glEnable(GL11.GL_CULL_FACE);
+                }
+                if (!lightingEnabled) {
+                    GL11.glDisable(GL11.GL_LIGHTING);
+                }
+                GL11.glPopMatrix();
+            }
+
+            // The mining laser (the ship beam, same GL discipline): while the base's program runs a WORK mining
+            // leg (mining-leg id > 0) and the station has mining power, a rod runs from the base to the anchor
+            // body's center (a star anchor: the star center — a static/fixed anchor has no body, no beam).
+            int miningLeg = entry.getInteger(TileEntityVoidcraftShip.TAG_BASE_MINING_LEG);
+            if (miningLeg > 0 && !entry.getBoolean(TileEntityVoidcraftShip.TAG_ENTRY_STATIC)) {
+                long mining = VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_MINING);
+                if (mining > 0) {
+                    int seed = entry.getInteger(TileEntityVoidcraftShip.TAG_BASE_SEED);
+                    BasePhase phase = BASE_PHASES.get(seed);
+                    if (phase == null) {
+                        phase = new BasePhase();
+                        BASE_PHASES.put(seed, phase);
+                    }
+                    if (phase.lastLegId != miningLeg || phase.startTick < 0.0) {
+                        phase.lastLegId = miningLeg;
+                        phase.startTick = renderTime;
+                    }
+                    // The server mines for mineTicks(mining) machine ticks (USSConstants - the shared table);
+                    // the client animates that duration locally (the leg id re-syncs the fleet on start/end).
+                    long leg = USSConstants.mineTicks(mining);
+                    double progress = (leg > 0) ? Math.min(1.0, (renderTime - phase.startTick) / (double) leg) : 1.0;
+                    double fade = VoidcraftShipFx.beamFade(progress);
+                    if (fade > 0.0) {
+                        int target = entry.hasKey(TileEntityVoidcraftShip.TAG_ENTRY_TARGET)
+                            ? entry.getInteger(TileEntityVoidcraftShip.TAG_ENTRY_TARGET)
+                            : -1;
+                        double[] body = targetBody(target, planets, starSize, (float) renderTime);
+                        renderBeam(
+                            new double[] { x + pos[0], y + pos[1], z + pos[2] },
+                            new double[] { x + body[0], y + body[1], z + body[2] },
+                            fade,
+                            worldTime);
+                    }
+                }
+            }
+        }
     }
 }

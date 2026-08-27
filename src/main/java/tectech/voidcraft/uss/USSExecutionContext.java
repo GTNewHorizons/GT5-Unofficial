@@ -86,6 +86,42 @@ public interface USSExecutionContext {
     int nextInt(int bound);
 
     /**
+     * Begin the CONSTRUCT work at the executor hover anchor (the Voidbase construction framework): create or
+     * reuse the construction site there and arm its timed part transfer (one part per second per 100 construction
+     * power of the executor); a site with nothing left to take is settled on the first {@link #constructTick()}.
+     *
+     * @return true when the work started or has nothing to transfer (the command goes RUNNING and polls
+     *         {@link #constructTick()}) / false when there is nothing to construct (no hover anchor, no
+     *         blueprint, or a base already stands there - the command reports FAILED and SKIPs)
+     */
+    boolean constructStart();
+
+    /**
+     * One machine tick of the active CONSTRUCT leg (polled while the command is in flight): advances the pacing
+     * countdown and deposits one part per {@code ticksPerItem}; a completed site spawns the Voidbase.
+     *
+     * @return true when construction is still running (keep polling) / false when the leg is over - completed,
+     *         counted down, or no site/leg at the anchor anymore (the command reports DONE)
+     */
+    boolean constructTick();
+
+    /**
+     * Probe whether a REPAIR can start at the executor (the repair work command): true when the station has
+     * integrity to restore and energy to spend (the command goes RUNNING and the executor polls {@link
+     * #repairTick()}); false - the command reports FAILED and SKIPs (a ship has no repairable station in v1).
+     */
+    boolean repairStart();
+
+    /**
+     * One REPAIR tick (polled while the command is in flight): spends the station energy buffer at the repair
+     * draw and accrues integrity (one integrity per second of repair).
+     *
+     * @return true when repair is still pending (integrity below the maximum - keep polling) / false when the
+     *         station is at full integrity (the command reports DONE)
+     */
+    boolean repairTick();
+
+    /**
      * A framework log line (the game side: LOGGER; tests: a capturing list).
      *
      * @param message the line (never null)

@@ -137,7 +137,7 @@ public final class USSConstants {
     /**
      * Pass 7/8/9 — the mining hover height: 0.5 blocks above the target planet's SURFACE (user spec: "the
      * destination 0.5 blocks above that planet"). Pass 9: the rendered planet is a unit CUBE of size spec.scale
-     * (0.35–1.32 = its edge length; its surface sits 0.5·scale above its center), so the renderer adds HALF that
+     * (0.175–0.66 = its edge length; its surface sits 0.5·scale above its center), so the renderer adds HALF that
      * scale on top of this constant — a flat 0.5 over the center would swallow the ship (and the whole laser
      * beam) inside the planets. The ship tracks the planet's live rendered position while working.
      */
@@ -145,7 +145,7 @@ public final class USSConstants {
 
     /**
      * Pass 7 — the Starlifter hover height: 2.5 blocks above the star's center (user spec). Clears the largest
-     * star (radius ≤ 1.4) with margin.
+     * star (radius ≤ 1.9) with margin.
      */
     public static final double HOVER_ABOVE_STAR = 2.5;
 
@@ -171,11 +171,18 @@ public final class USSConstants {
      * {@code distance · DISTANCE_SCALE / speed} — an ACTUAL measure of distance divided by speed (user spec: "the
      * travel time becomes an actual measure of distance divided by speed"). Pass 26: reverted to the pass-25 value
      * (2000.0 → 200.0) — the "ships are too fast" report was a CLIENT-rendering bug (the client animated every
-     * leg at the minimum because it never received the travel distance), not a balance problem. A 15-block trip
-     * at speed 5 takes {@code 15 · 200 / 5 = 600} ticks (30 s); a 24-block trip at speed 1 takes 4800 ticks
-     * (4 min); a 10-block trip at speed 1 takes 2000 ticks (~3.3 min).
+     * leg at the minimum because it never received the travel distance), not a balance problem. The formula is
+     * distance · scale / (speed · {@link #SHIP_SPEED_MULTIPLIER}): a 15-block trip at speed 5 takes
+     * {@code 15 · 200 / (5 · 5) = 120} ticks (6 s); a 24-block trip at speed 1 takes 2400 ticks (2 min).
      */
     public static final double TRAVEL_DISTANCE_SCALE = 200.0;
+
+    /**
+     * Multiplier applied to every ship's speed in the travel-time math (test aid: ships fly 5× faster, travel
+     * legs complete in a fifth of the normal time). Applied in {@link #travelTicks}, which both the server (leg
+     * durations) and the client (leg animation) use, so both stay in sync.
+     */
+    public static final double SHIP_SPEED_MULTIPLIER = 5.0;
 
     /**
      * One travel leg (USS edge → target, or target → USS edge) in machine ticks, as an ACTUAL measure of distance
@@ -196,7 +203,7 @@ public final class USSConstants {
             return TRAVEL_TICKS_MAX;
         }
         double d = Math.max(0.0, distance);
-        long ticks = (long) (d * TRAVEL_DISTANCE_SCALE / speed);
+        long ticks = (long) (d * TRAVEL_DISTANCE_SCALE / (speed * SHIP_SPEED_MULTIPLIER));
         return Math.max(TRAVEL_TICKS_MIN, Math.min(TRAVEL_TICKS_MAX, ticks));
     }
 
@@ -248,6 +255,27 @@ public final class USSConstants {
      */
     public static long minerStoneDustAmount(long miningPower) {
         return minerOreAmount(miningPower) * USSVeinMath.STONE_DUST_MULTIPLIER;
+    }
+
+    /**
+     * Voidbase construction pacing: the number of construction-power points that deliver ONE part per second
+     * (a Constructor with 100 construction power deposits one part per 20 machine ticks; 200 power, two per second).
+     */
+    public static final long CONSTRUCT_POWER_PER_ITEM_PER_SECOND = 100L;
+
+    /**
+     * Machine ticks per part for the CONSTRUCT leg: one part per second per
+     * {@link #CONSTRUCT_POWER_PER_ITEM_PER_SECOND}
+     * construction power ({@code 2000 / power}). Power &lt;= 0 degrades to 100 (a blueprint without constructor
+     * components still deposits at the base rate), and the per-part time never drops below one tick (a part is
+     * never faster than one machine tick).
+     *
+     * @param constructionPower the ship's total construction power (from the payload's {@code vc_construction})
+     * @return the ticks per part (always &gt; 0)
+     */
+    public static long constructTicksPerItem(long constructionPower) {
+        long power = constructionPower < 1L ? CONSTRUCT_POWER_PER_ITEM_PER_SECOND : constructionPower;
+        return Math.max(1L, 2000L / power);
     }
 
     // region Phase 4 pass 1 Starlifter (fluid production on top of the miner item cargo)

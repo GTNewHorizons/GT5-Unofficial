@@ -223,4 +223,49 @@ public class USSProgramDefaultsTest {
             }
         }
     }
+
+    @Test
+    public void testConstructorChip() {
+        USSProgram program = USSProgramDefaults.constructor();
+        assertEquals(3, program.size(), "constructor chip: exactly three instructions");
+        assertEquals(1, program.depth(), "constructor chip: a flat list");
+
+        // instruction 1 - MOVE to the anchor target (nearest planet by default; the player edits it)
+        USSNode move = program.nodes()
+            .get(0);
+        assertTrue(move.isCommand());
+        assertEquals(USSCommand.MOVE, move.cmdId());
+        assertEquals(
+            USSProgramDefaults.TARGET_NEAREST_PLANET,
+            move.params()
+                .getString(USSProgramDefaults.PARAM_TARGET));
+
+        // instruction 2 - CONSTRUCT (create or fill the construction site at the anchor)
+        USSNode construct = program.nodes()
+            .get(1);
+        assertTrue(construct.isCommand());
+        assertEquals(USSCommand.CONSTRUCT, construct.cmdId());
+        assertTrue(
+            construct.params()
+                .hasNoTags(),
+            "CONSTRUCT takes no params (the anchor is the hover body)");
+
+        // instruction 3 - MOVE HOME
+        USSNode home = program.nodes()
+            .get(2);
+        assertTrue(home.isCommand());
+        assertEquals(USSCommand.MOVE, home.cmdId());
+        assertEquals(
+            USSProgramDefaults.TARGET_HOME,
+            home.params()
+                .getString(USSProgramDefaults.PARAM_TARGET));
+
+        // NBT round-trip
+        USSProgram back = USSProgram.readFromNBT(program.writeToNBT());
+        assertEquals(
+            USSCommand.CONSTRUCT,
+            back.nodes()
+                .get(1)
+                .cmdId());
+    }
 }

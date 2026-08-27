@@ -28,6 +28,7 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import tectech.voidcraft.VoidcraftTextures;
 import tectech.voidcraft.gui.VoidcraftProgramGui;
+import tectech.voidcraft.gui.VoidcraftProgramSource;
 import tectech.voidcraft.ship.VoidcraftComponent;
 import tectech.voidcraft.ship.VoidcraftCoverRegistry;
 import tectech.voidcraft.ship.VoidcraftNbt;
@@ -54,7 +55,7 @@ import tectech.voidcraft.uss.USSProgramView;
  * Non-electric, no inventory, no client tick — a pure hull part. Only Voidcraft cover items can be mounted on it.
  */
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEVoidcraftComponent extends MetaTileEntity {
+public class MTEVoidcraftComponent extends MetaTileEntity implements VoidcraftProgramSource {
 
     private final VoidcraftComponent component;
     private final ITexture texture;
@@ -237,24 +238,23 @@ public class MTEVoidcraftComponent extends MetaTileEntity {
      * <p>
      * Accepted → the new program is stored and the note cleared (callers push the sync updates). Rejected → the
      * stored program is kept and the rejection reason becomes the note. NEVER throws (bad action → rejection).
-     *
-     * @return the outcome (the resulting program when accepted)
      */
-    public USSProgramSync.Outcome applyAction(String actionJson) {
+    @Override
+    public void applyAction(String actionJson) {
         if (component != VoidcraftComponent.CONTROLLER) {
-            return USSProgramSync.Outcome.rejected("not a controller");
+            setNote("not a controller");
+            return;
         }
         USSProgramSync.Outcome outcome = USSProgramSync.handle(getProgram(), actionJson);
         if (!outcome.ok) {
             setNote(outcome.message);
-            return outcome;
+            return;
         }
         setProgramTag(outcome.program.writeToNBT());
         setNote(null);
         if (!getBaseMetaTileEntity().isClientSide()) {
             markDirty();
         }
-        return outcome;
     }
 
     /**

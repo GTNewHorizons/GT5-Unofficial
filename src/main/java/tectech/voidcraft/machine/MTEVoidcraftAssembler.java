@@ -179,68 +179,6 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
     }
 
     /**
-     * Pass 24: map a cover's WORLD-facing ordinal into the blueprint's GRID-side ordinal.
-     *
-     * <p>
-     * The blueprint's grid +Z axis is the assembler's FRONT direction (see {@link #scanCell}), while cover ordinals
-     * are world directions — so a cover's meaning relative to the ship (back face, nose face, side face) depends on
-     * how the assembler faces. This maps it into grid space with the same basis as {@link #scanCell} (grid +X = a1,
-     * grid +Y = a2, grid +Z = front), so a cover pointing TOWARD the assembler becomes grid side 2
-     * ({@link tectech.voidcraft.ship.VoidcraftBlueprint#BACK_FACE}) for every assembler orientation.
-     *
-     * @param front     the assembler's front facing
-     * @param worldSide the cover's world-facing ordinal (ForgeDirection)
-     * @return the grid-side ordinal (0..5) of the same direction
-     */
-    private static int toGridSide(ForgeDirection front, int worldSide) {
-        // grid basis in world coordinates (mirrors scanCell's a1/a2; grid +Z is the front itself)
-        final int[] ex, ey;
-        if (front.offsetY != 0) {
-            ex = new int[] { 1, 0, 0 };
-            ey = new int[] { 0, 0, 1 };
-        } else if (front.offsetX != 0) {
-            ex = new int[] { 0, 1, 0 };
-            ey = new int[] { 0, 0, 1 };
-        } else {
-            ex = new int[] { 1, 0, 0 };
-            ey = new int[] { 0, 1, 0 };
-        }
-        final int[] ez = { front.offsetX, front.offsetY, front.offsetZ };
-        // MC world direction of the cover's facing ordinal
-        final int[] d;
-        switch (worldSide) {
-            case 0:
-                d = new int[] { 0, -1, 0 }; // DOWN
-                break;
-            case 1:
-                d = new int[] { 0, 1, 0 }; // UP
-                break;
-            case 2:
-                d = new int[] { 0, 0, -1 }; // NORTH
-                break;
-            case 3:
-                d = new int[] { 0, 0, 1 }; // SOUTH
-                break;
-            case 4:
-                d = new int[] { -1, 0, 0 }; // WEST
-                break;
-            default:
-                d = new int[] { 1, 0, 0 }; // EAST
-                break;
-        }
-        int gx = d[0] * ex[0] + d[1] * ex[1] + d[2] * ex[2];
-        int gy = d[0] * ey[0] + d[1] * ey[1] + d[2] * ey[2];
-        int gz = d[0] * ez[0] + d[1] * ez[1] + d[2] * ez[2];
-        if (gz != 0) {
-            return gz > 0 ? 3 : 2; // +Z (away) / -Z (toward the assembler = the ship's back)
-        }
-        if (gy != 0) {
-            return gy > 0 ? 1 : 0;
-        }
-        return gx > 0 ? 5 : 4;
-    }
-
-    /**
      * Scan the 5×5×10 volume in front of the machine's front face.
      *
      * <p>
@@ -298,8 +236,10 @@ public class MTEVoidcraftAssembler extends TTMultiblockBase implements ISurvival
                                 // Pass 24: store the cover's side in GRID space (the blueprint's depth axis is the
                                 // assembler's front, not a world axis), so "back face" is the same grid side no
                                 // matter which way the assembler itself faces.
-                                coverGrid[idx * 6 + toGridSide(front, worldSide)] = (byte) vc.getComponent()
-                                    .toGridValue();
+                                coverGrid[idx * 6 + VoidcraftBlueprint
+                                    .toGridSide(front.offsetX, front.offsetY, front.offsetZ, worldSide)] = (byte) vc
+                                        .getComponent()
+                                        .toGridValue();
                             }
                         }
                     }

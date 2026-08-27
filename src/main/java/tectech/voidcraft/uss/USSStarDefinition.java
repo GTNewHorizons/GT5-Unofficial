@@ -26,6 +26,8 @@ import gregtech.api.enums.Materials;
  * type.</li>
  * <li><b>Spacetime ripples</b> — a {@code [min, max]} pair of ints, each in {@code [0, 128]}: the range the system's
  * spacetime-ripple count is sampled from at creation (see {@link USSRipples}; the Explorer ships' target).</li>
+ * <li><b>Color</b> — an opaque ARGB int: the color the star's render mesh is tinted with (what visually
+ * distinguishes the star classes — e.g. main sequence yellow, white dwarf white, supermassive blue).</li>
  * </ol>
  *
  * <p>
@@ -102,6 +104,12 @@ public final class USSStarDefinition {
      */
     private final int rippleMax;
 
+    /**
+     * Opaque ARGB color the star's render mesh is tinted with (field 10) — the per-class visual identity (default
+     * white when unset).
+     */
+    private final int color;
+
     private USSStarDefinition(Builder b) {
         this.id = b.id;
         this.nameMethod = b.nameMethod;
@@ -118,6 +126,7 @@ public final class USSStarDefinition {
         this.evolutionTarget = b.evolutionTarget;
         this.rippleMin = b.rippleMin;
         this.rippleMax = b.rippleMax;
+        this.color = b.color;
     }
 
     /**
@@ -234,6 +243,13 @@ public final class USSStarDefinition {
         return evolutionTarget;
     }
 
+    /**
+     * @return the opaque ARGB color the star's render mesh is tinted with (field 10).
+     */
+    public int getColor() {
+        return color;
+    }
+
     @Override
     public String toString() {
         return "USSStarDefinition[id=" + id
@@ -255,6 +271,8 @@ public final class USSStarDefinition {
             + rippleMax
             + ", evolvesTo="
             + evolutionTarget
+            + ", color=0x"
+            + Integer.toHexString(color)
             + "]";
     }
 
@@ -278,6 +296,7 @@ public final class USSStarDefinition {
         private String evolutionTarget;
         private int rippleMin = MIN_RIPPLES;
         private int rippleMax = MAX_RIPPLES;
+        private int color = 0xFFFFFFFF;
 
         private Builder() {}
 
@@ -396,6 +415,15 @@ public final class USSStarDefinition {
          */
         public Builder evolutionTarget(String evolutionTarget) {
             this.evolutionTarget = evolutionTarget;
+            return this;
+        }
+
+        /**
+         * @param color the opaque ARGB color the star's render mesh is tinted with (field 10; default white)
+         * @return this builder
+         */
+        public Builder color(int color) {
+            this.color = color;
             return this;
         }
 

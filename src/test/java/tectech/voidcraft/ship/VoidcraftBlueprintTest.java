@@ -458,7 +458,7 @@ public class VoidcraftBlueprintTest {
             VoidcraftCoverComponent.fromGridValue(0)
                 .isEmpty());
         assertTrue(
-            VoidcraftCoverComponent.fromGridValue(9)
+            VoidcraftCoverComponent.fromGridValue(11)
                 .isEmpty());
         assertTrue(
             VoidcraftCoverComponent.fromGridValue(-1)
@@ -503,4 +503,204 @@ public class VoidcraftBlueprintTest {
         NBTTagCompound empty = new NBTTagCompound();
         assertEquals(null, VoidcraftNbt.read(empty));
     }
+
+    // region Voidbase (the 15x15x15 base volume + base validation + the parts list)
+
+    @Test
+    public void testBaseBlueprintFifteenCubes() {
+        // ofBase accepts up to 15 in every direction (the 15x15x15 base volume)
+        int d = 15;
+        byte[] grid = new byte[d * d * d];
+        grid[0] = gv(VoidcraftComponent.CONTROLLER);
+        grid[1] = gv(VoidcraftComponent.FRAME);
+        VoidcraftBlueprint base = VoidcraftBlueprint.ofBase(15, 15, 15, grid);
+        assertEquals(15, base.width);
+        assertEquals(15, base.height);
+        assertEquals(15, base.depth);
+        // The ship factory still rejects 15 (ships stay 5x5x10)
+        assertThrows(IllegalArgumentException.class, () -> VoidcraftBlueprint.of(15, 1, 1, new byte[15]));
+        // ofBase rejects 16
+        assertThrows(IllegalArgumentException.class, () -> VoidcraftBlueprint.ofBase(16, 1, 1, new byte[16]));
+    }
+
+    @Test
+    public void testBaseValidationWithoutThrusters() {
+        // A build with no thruster at all: invalid as a ship (voidcraft_no_engine), valid as a base
+        int depth = 4;
+        byte[] grid = new byte[depth];
+        grid[0] = gv(VoidcraftComponent.CONTROLLER);
+        grid[1] = gv(VoidcraftComponent.FRAME);
+        grid[2] = gv(VoidcraftComponent.FRAME);
+        grid[3] = gv(VoidcraftComponent.FRAME);
+        byte[] covers = new byte[depth * 6];
+        covers[1 * 6 + 0] = cv(VoidcraftCoverComponent.POWER_CELL);
+        VoidcraftBlueprint base = VoidcraftBlueprint.ofBase(1, 1, depth, grid, null, covers);
+        List<String> shipErrors = new ArrayList<>();
+        assertFalse(base.validate(2, shipErrors), "a ship without a thruster is invalid");
+        assertTrue(shipErrors.contains("voidcraft_no_engine"));
+        List<String> baseErrors = new ArrayList<>();
+        assertTrue(base.validateForBase(2, baseErrors), "the same build is a valid base (no thruster rule)");
+        assertTrue(baseErrors.isEmpty());
+    }
+
+    @Test
+    public void testBaseValidationStillEnforcesStructure() {
+        // Base validation keeps the ship's structural rules: two controllers, no frame
+        byte[] grid = { gv(VoidcraftComponent.CONTROLLER), gv(VoidcraftComponent.CONTROLLER) };
+        VoidcraftBlueprint bad = VoidcraftBlueprint.ofBase(2, 1, 1, grid);
+        List<String> errors = new ArrayList<>();
+        assertFalse(bad.validateForBase(2, errors));
+        assertTrue(errors.contains("voidcraft_controller_count"));
+        assertTrue(errors.contains("voidcraft_no_frame"));
+        // ... and the tier rule
+        byte[] tierGrid = new byte[4];
+        tierGrid[0] = gv(VoidcraftComponent.CONTROLLER);
+        tierGrid[1] = gv(VoidcraftComponent.FRAME);
+        byte[] tierCovers = new byte[4 * 6];
+        tierCovers[1 * 6 + 0] = cv(VoidcraftCoverComponent.STAR_SIPHON);
+        VoidcraftBlueprint tiered = VoidcraftBlueprint.ofBase(1, 1, 4, tierGrid, null, tierCovers);
+        List<String> tierErrors = new ArrayList<>();
+        assertFalse(tiered.validateForBase(1, tierErrors), "a tier-2 part fails a tier-1 circuit");
+        assertTrue(tierErrors.contains("voidcraft_tier_too_high"));
+    }
+
+    @Test
+    public void testBasePartsList() {
+        int depth = 4;
+        byte[] grid = new byte[depth];
+        grid[0] = gv(VoidcraftComponent.CONTROLLER);
+        grid[1] = gv(VoidcraftComponent.FRAME);
+        grid[2] = gv(VoidcraftComponent.FRAME);
+        grid[3] = gv(VoidcraftComponent.FRAME);
+        byte[] covers = new byte[depth * 6];
+        covers[1 * 6 + 0] = cv(VoidcraftCoverComponent.POWER_CELL);
+        covers[1 * 6 + 1] = cv(VoidcraftCoverComponent.POWER_CELL);
+        covers[2 * 6 + 0] = cv(VoidcraftCoverComponent.SOLAR_PANEL);
+        VoidcraftBlueprint base = VoidcraftBlueprint.ofBase(1, 1, depth, grid, null, covers);
+        java.util.Map<String, Long> parts = base.partsList();
+        assertEquals(1L, parts.get("block.CONTROLLER"));
+        assertEquals(3L, parts.get("block.FRAME"));
+        assertEquals(2L, parts.get("cover.POWER_CELL"));
+        assertEquals(1L, parts.get("cover.SOLAR_PANEL"));
+        assertEquals(4, parts.size());
+        // Stable order: blocks in component meta order, then covers in cover id order
+        List<String> keys = new ArrayList<>(parts.keySet());
+        assertEquals("block.CONTROLLER", keys.get(0));
+        assertEquals("block.FRAME", keys.get(1));
+        assertEquals("cover.POWER_CELL", keys.get(2));
+        assertEquals("cover.SOLAR_PANEL", keys.get(3));
+    }
+
+    @Test
+    public void testEnergyGenSumsIntoStats() {
+        int depth = 4;
+        byte[] grid = new byte[depth];
+        grid[0] = gv(VoidcraftComponent.CONTROLLER);
+        grid[1] = gv(VoidcraftComponent.FRAME);
+        grid[2] = gv(VoidcraftComponent.FRAME);
+        grid[3] = gv(VoidcraftComponent.FRAME);
+        byte[] covers = new byte[depth * 6];
+        covers[1 * 6 + 0] = cv(VoidcraftCoverComponent.SOLAR_PANEL);
+        covers[2 * 6 + 0] = cv(VoidcraftCoverComponent.SOLAR_PANEL);
+        covers[2 * 6 + 1] = cv(VoidcraftCoverComponent.REPAIR_BAY);
+        VoidcraftBlueprint base = VoidcraftBlueprint.ofBase(1, 1, depth, grid, null, covers);
+        VoidcraftStats stats = base.computeStats();
+        assertEquals(4000L, stats.energyGen, "two solar panels at 2000 EU/t each");
+        assertEquals(2000L, stats.energyDraw, "the repair bay draw");
+    }
+
+    // region toGridSide (world-facing cover -> grid-side cover; the assemblers delegate here)
+
+    /** All six assembler front orientations (unit axes). */
+    private static final int[][] FRONTS = { { 0, -1, 0 }, // DOWN
+        { 0, 1, 0 }, // UP
+        { 0, 0, -1 }, // NORTH
+        { 0, 0, 1 }, // SOUTH
+        { -1, 0, 0 }, // WEST
+        { 1, 0, 0 }, // EAST
+    };
+
+    /** The ForgeDirection world-side ordinal of a unit axis (0 DOWN, 1 UP, 2 NORTH, 3 SOUTH, 4 WEST, 5 EAST). */
+    private static int ordinalOf(int x, int y, int z) {
+        if (y < 0) {
+            return 0;
+        }
+        if (y > 0) {
+            return 1;
+        }
+        if (z < 0) {
+            return 2;
+        }
+        if (z > 0) {
+            return 3;
+        }
+        if (x < 0) {
+            return 4;
+        }
+        return 5;
+    }
+
+    /** The world-side ordinal opposite the given one (0<->1, 2<->3, 4<->5). */
+    private static int opposite(int side) {
+        return side ^ 1;
+    }
+
+    @Test
+    public void testToGridSideIsABijectionForEveryAssemblerOrientation() {
+        // The six world directions must map to six DISTINCT grid sides, no matter which way the assembler
+        // faces (a direction landing on an already-used side would silently lose a cover face).
+        for (int[] front : FRONTS) {
+            boolean[] seen = new boolean[6];
+            for (int worldSide = 0; worldSide < 6; worldSide++) {
+                int side = VoidcraftBlueprint.toGridSide(front[0], front[1], front[2], worldSide);
+                assertTrue(side >= 0 && side < 6, "in-range grid side");
+                assertFalse(
+                    seen[side],
+                    "front " + java.util.Arrays
+                        .toString(front) + " maps world side " + worldSide + " to grid side " + side + " twice");
+                seen[side] = true;
+            }
+        }
+    }
+
+    @Test
+    public void testToGridSideTracksTheAssemblerFacing() {
+        // A cover facing AWAY from the assembler is the grid far side (+Z, 3); one facing TOWARD it is the
+        // grid back (2) - for every assembler orientation.
+        for (int[] front : FRONTS) {
+            int away = ordinalOf(front[0], front[1], front[2]);
+            assertEquals(
+                3,
+                VoidcraftBlueprint.toGridSide(front[0], front[1], front[2], away),
+                "away cover -> grid +Z (front " + java.util.Arrays.toString(front) + ")");
+            assertEquals(
+                2,
+                VoidcraftBlueprint.toGridSide(front[0], front[1], front[2], opposite(away)),
+                "toward cover -> grid -Z (front " + java.util.Arrays.toString(front) + ")");
+        }
+    }
+
+    @Test
+    public void testToGridSideHorizontalFront() {
+        // A SOUTH-facing assembler: grid +Y = world UP, grid +X = world EAST, grid +Z = world SOUTH.
+        assertEquals(0, VoidcraftBlueprint.toGridSide(0, 0, 1, 0), "DOWN cover -> grid -Y");
+        assertEquals(1, VoidcraftBlueprint.toGridSide(0, 0, 1, 1), "UP cover -> grid +Y");
+        assertEquals(2, VoidcraftBlueprint.toGridSide(0, 0, 1, 2), "NORTH cover -> grid -Z (toward assembler)");
+        assertEquals(3, VoidcraftBlueprint.toGridSide(0, 0, 1, 3), "SOUTH cover -> grid +Z");
+        assertEquals(4, VoidcraftBlueprint.toGridSide(0, 0, 1, 4), "WEST cover -> grid -X");
+        assertEquals(5, VoidcraftBlueprint.toGridSide(0, 0, 1, 5), "EAST cover -> grid +X");
+    }
+
+    @Test
+    public void testToGridSideVerticalFront() {
+        // An UP-facing assembler: grid +Z = world UP, grid +Y = world SOUTH, grid +X = world EAST.
+        assertEquals(2, VoidcraftBlueprint.toGridSide(0, 1, 0, 0), "DOWN cover -> grid -Z (toward assembler)");
+        assertEquals(3, VoidcraftBlueprint.toGridSide(0, 1, 0, 1), "UP cover -> grid +Z");
+        assertEquals(0, VoidcraftBlueprint.toGridSide(0, 1, 0, 2), "NORTH cover -> grid -Y");
+        assertEquals(1, VoidcraftBlueprint.toGridSide(0, 1, 0, 3), "SOUTH cover -> grid +Y");
+        assertEquals(4, VoidcraftBlueprint.toGridSide(0, 1, 0, 4), "WEST cover -> grid -X");
+        assertEquals(5, VoidcraftBlueprint.toGridSide(0, 1, 0, 5), "EAST cover -> grid +X");
+    }
+
+    // endregion
 }

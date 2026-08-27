@@ -308,6 +308,7 @@ public enum CustomItemList implements IItemContainer {
     Machine_Multi_EyeOfHarmony,
     Machine_Multi_UnstableSolarSystem,
     Machine_Multi_VoidcraftAssembler,
+    Machine_Multi_VoidbaseAssembler,
     Machine_Multi_VoidcraftGateway,
     Machine_Multi_VoidcraftStorageBay,
     Machine_Multi_ForgeOfGods,
@@ -411,6 +412,9 @@ public enum CustomItemList implements IItemContainer {
     // Voidcraft (EoH rework, parallel to the legacy Eye of Harmony)
     Voidcraft,
     UssController,
+
+    // Voidbase: the digitized station blueprint item (Voidbase Assembler output; gateway blueprint slot)
+    VoidbaseBlueprint,
 
     // Pass 23: covers are the primary components — only the two placeable full blocks have items (the engine,
     // cargo bay, mining centre, starlifter, scanner, fabricator and reactor functions ship as covers: see

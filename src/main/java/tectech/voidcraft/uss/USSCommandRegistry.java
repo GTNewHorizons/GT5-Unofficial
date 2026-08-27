@@ -23,6 +23,8 @@ public final class USSCommandRegistry {
         register(new USSCommandRead());
         register(new USSCommandWait());
         register(new USSCommandStop());
+        register(new USSCommandConstruct());
+        register(new USSCommandRepair());
     }
 
     private USSCommandRegistry() {}

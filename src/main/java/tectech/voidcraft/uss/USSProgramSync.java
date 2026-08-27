@@ -29,7 +29,7 @@ import com.google.gson.JsonPrimitive;
  * <li>{@code {"op":"count","path":[0],"value":5}};</li>
  * <li>{@code {"op":"cond","path":[0],"side":0,"lit":"x"}} | {@code …,"var":3} | {@code …,"stat":5};</li>
  * <li>{@code {"op":"condop","path":[0],"operator":"EQ"}} (EQ / NEQ / LT / GT);</li>
- * <li>{@code {"op":"apply","preset":"miner"|"starlifter"|"explorer"|"clear"}}.</li>
+ * <li>{@code {"op":"apply","preset":"miner"|"starlifter"|"explorer"|"constructor"|"clear"}}.</li>
  * </ul>
  *
  * Node spec (the insert {@code node}): {@code {"t":0,"c":<cmdId>,"p":{…}}} |
@@ -165,7 +165,8 @@ public final class USSProgramSync {
                     USSProgram replacement = "miner".equals(preset) ? USSProgramDefaults.miner()
                         : "starlifter".equals(preset) ? USSProgramDefaults.starlifter()
                             : "explorer".equals(preset) ? USSProgramDefaults.explorer()
-                                : "clear".equals(preset) ? USSProgram.empty() : null;
+                                : "constructor".equals(preset) ? USSProgramDefaults.constructor()
+                                    : "clear".equals(preset) ? USSProgram.empty() : null;
                     if (replacement == null) {
                         return Outcome.rejected("unknown preset");
                     }

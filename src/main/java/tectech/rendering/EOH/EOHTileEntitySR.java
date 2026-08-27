@@ -2,6 +2,8 @@ package tectech.rendering.EOH;
 
 import static tectech.rendering.EOH.EOHRenderingUtils.renderOuterSpaceShell;
 
+import java.awt.Color;
+
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -48,7 +50,18 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
         // 15).
         renderOuterSpaceShell(eyeModel, te.getDomeRadius());
         renderOrbitObjects(te, time);
-        EOHRenderingUtils.renderEOHStar(eyeModel, IItemRenderer.ItemRenderType.INVENTORY, time, te.getStarSize());
+        // USS machines (an explicit planet system) render the star over the neutral-gray USS base layers with the
+        // star class's registered color; legacy EoH machines keep the orange legacy layers + default orange tint.
+        if (te.hasExplicitPlanets()) {
+            EOHRenderingUtils.renderUSSStar(
+                eyeModel,
+                IItemRenderer.ItemRenderType.INVENTORY,
+                new Color(te.getStarColor()),
+                time,
+                te.getStarSize());
+        } else {
+            EOHRenderingUtils.renderEOHStar(eyeModel, IItemRenderer.ItemRenderType.INVENTORY, time, te.getStarSize());
+        }
 
         RenderState.restore(GL11.GL_BLEND, blendWas);
     }

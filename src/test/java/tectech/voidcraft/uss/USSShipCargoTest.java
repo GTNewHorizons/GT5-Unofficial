@@ -330,10 +330,10 @@ public class USSShipCargoTest {
     }
 
     @Test
-    public void testStarRenderSizeIsHalfSquareRoot() {
-        // 0.5 × √(size): size 1.0 → 0.5, size 4.0 → 1.0, size 0 → 0.
-        assertEquals(0.5f, USSPlanets.starRenderSize(1.0), 1e-5);
-        assertEquals(1.0f, USSPlanets.starRenderSize(4.0), 1e-5);
+    public void testStarRenderSizeIsTwoThirdsSquareRoot() {
+        // (2/3) × √(size): size 1.0 → 2/3, size 4.0 → 4/3, size 0 → 0.
+        assertEquals(2.0f / 3.0f, USSPlanets.starRenderSize(1.0), 1e-5);
+        assertEquals(4.0f / 3.0f, USSPlanets.starRenderSize(4.0), 1e-5);
         assertEquals(0.0f, USSPlanets.starRenderSize(0.0), 1e-9);
         assertEquals(0.0f, USSPlanets.starRenderSize(-1.0), 1e-9);
     }

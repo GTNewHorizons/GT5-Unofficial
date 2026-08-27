@@ -1,6 +1,7 @@
 package tectech.voidcraft.uss;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 import tectech.voidcraft.ship.VoidcraftNbt;
 
@@ -25,8 +26,9 @@ import tectech.voidcraft.ship.VoidcraftNbt;
  * The ship's INTEGRITY is its TIME LIMIT: it is set to the ship's maximum (the blueprint's integrity) when the
  * ship enters the USS, drops by 1 per second while the ship is in the USS ({@link #tickIntegrity()}), and when
  * it reaches 0 the ship is LOST (removed from the USS, its cargo discarded — no delivery, no re-emission). A
- * ship that finishes its program before the limit expires survives: its item is re-emitted (the gateway puts it
- * back in its ship slot), with its integrity back at maximum for the next flight.
+ * ship that finishes its program before the limit expires survives: its item is re-emitted into the gateway's
+ * output bus (dropped at the USS when the bus cannot absorb it), with its integrity back at maximum for the
+ * next flight.
  */
 public final class VoidcraftActiveShip {
 
@@ -55,6 +57,7 @@ public final class VoidcraftActiveShip {
     private static final String TAG_LEG_ACTIVE = "vc_leg_active";
     private static final String TAG_LEG_DONE = "vc_leg_done";
     private static final String TAG_BODY_STATIC = "vc_body_static";
+    private static final String TAG_BUILD_LOADOUT = "vc_build_parts";
 
     /**
      * Pass 27 (user: "the cargo hold size should be increased by a factor of 100 — as currently the mining is
@@ -156,6 +159,14 @@ public final class VoidcraftActiveShip {
      */
     private CargoHold hold;
 
+    /**
+     * The parts loadout a CONSTRUCTOR carries (parts-list key → count on board): filled by the gateway at launch
+     * (from the payload's {@code vc_build_loadout}), consumed PART-BY-PART by the CONSTRUCT legs — a site takes
+     * only what it needs, and whatever is left stays on board (for the next station, or the return to the gateway
+     * when the mission completes).
+     */
+    private final java.util.LinkedHashMap<String, Long> buildLoadout = new java.util.LinkedHashMap<>();
+
     private VoidcraftActiveShip(String uuid, String name, double speed, long miningPower, NBTTagCompound payload,
         int[] gatewayPos, int[] bayPos, int seed) {
         this.uuid = uuid;
@@ -171,6 +182,7 @@ public final class VoidcraftActiveShip {
         // vc_cargo × CARGO_UNIT_MULTIPLIER — the pass-27 100× hold).
         if (payload != null) {
             this.hold = CargoHold.of(cargoCapacity());
+            readBuildLoadoutFromPayload(payload);
         }
         // The integrity time limit: the ship enters the USS at its MAXIMUM (the blueprint's total) and counts
         // down from there (tickIntegrity()).
@@ -263,6 +275,20 @@ public final class VoidcraftActiveShip {
             return 0L;
         }
         return VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_SCAN);
+    }
+
+    /**
+     * The ship's construction power (the CONSTRUCT pacing: one part per second per 100 power, see
+     * {@link USSConstants#constructTicksPerItem}): from the payload's {@code vc_construction} (denormalized at
+     * digitization). 0 when the payload lacks the tag (the pacing then uses the base rate).
+     *
+     * @return the total construction power (0 = no constructor components)
+     */
+    public long getConstructionPower() {
+        if (payload == null) {
+            return 0L;
+        }
+        return VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_CONSTRUCTION);
     }
 
     /**
@@ -480,10 +506,21 @@ public final class VoidcraftActiveShip {
      * @return the capacity (0 when the payload lacks the tag)
      */
     public long cargoCapacity() {
+        return holdCapacityFor(payload);
+    }
+
+    /**
+     * The cargo hold capacity (in cargo units) implied by a ship payload: the payload's {@code vc_cargo} (the
+     * blueprint's cargoSlots) times {@link #CARGO_UNIT_MULTIPLIER}. Shared with the gateway, which caps the
+     * constructor parts loadout at the same cargo space the ship's hold gets at launch.
+     *
+     * @param payload a ship item NBT (null → 0)
+     * @return the capacity (0 when the payload lacks the tag)
+     */
+    public static long holdCapacityFor(NBTTagCompound payload) {
         if (payload == null) {
             return 0L;
         }
-        // Pass 27: the hold is 100× the blueprint's cargoSlots (see CARGO_UNIT_MULTIPLIER).
         return VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_CARGO) * CARGO_UNIT_MULTIPLIER;
     }
 
@@ -494,6 +531,99 @@ public final class VoidcraftActiveShip {
     public void initializeHold() {
         if (hold == null) {
             hold = CargoHold.of(cargoCapacity());
+        }
+    }
+
+    /**
+     * The parts loadout a CONSTRUCTOR carries (parts-list key to count on board) - an unmodifiable view. Empty
+     * for ships without a constructor mission.
+     */
+    public java.util.Map<String, Long> getBuildLoadout() {
+        return java.util.Collections.unmodifiableMap(buildLoadout);
+    }
+
+    /**
+     * @return the total parts on board over all keys (0 when the ship carries no loadout)
+     */
+    public long buildLoadoutTotal() {
+        long total = 0L;
+        for (Long count : buildLoadout.values()) {
+            total += count;
+        }
+        return total;
+    }
+
+    /**
+     * Consume parts from the loadout: take up to {@code amount} of the given key (clamped to what is on board)
+     * - the key is dropped once it reaches zero.
+     *
+     * @param key    a parts-list key (unknown key to 0)
+     * @param amount the requested count
+     * @return the count actually consumed
+     */
+    public long consumeBuildParts(String key, long amount) {
+        if (key == null || amount <= 0L) {
+            return 0L;
+        }
+        Long onBoard = buildLoadout.get(key);
+        if (onBoard == null) {
+            return 0L;
+        }
+        long take = Math.min(amount, onBoard);
+        if (take <= 0L) {
+            return 0L;
+        }
+        long left = onBoard - take;
+        if (left <= 0L) {
+            buildLoadout.remove(key);
+        } else {
+            buildLoadout.put(key, left);
+        }
+        return take;
+    }
+
+    /**
+     * Load the constructor loadout from the launch payload tag {@code vc_build_loadout} (entries
+     * {@code {key, amount}}) - called by the constructor; zero or negative amounts are skipped.
+     */
+    private void readBuildLoadoutFromPayload(NBTTagCompound payload) {
+        if (!payload.hasKey(VoidcraftNbt.TAG_BUILD_LOADOUT)) {
+            return;
+        }
+        loadBuildLoadoutList(payload.getTagList(VoidcraftNbt.TAG_BUILD_LOADOUT, 10));
+    }
+
+    /**
+     * Replace the loadout with the persisted remainder (a CONSTRUCT leg may have consumed parts in flight) -
+     * the launch-payload copy the constructor made is discarded.
+     *
+     * @param loadout the persisted list (entries {@code {key, amount}})
+     */
+    public void restoreBuildLoadout(NBTTagList loadout) {
+        buildLoadout.clear();
+        loadBuildLoadoutList(loadout);
+    }
+
+    /**
+     * Merge a loadout list (entries {@code {key, amount}}) into the loadout - zero or negative amounts are
+     * skipped, equal keys add up.
+     */
+    private void loadBuildLoadoutList(NBTTagList loadout) {
+        if (loadout == null) {
+            return;
+        }
+        for (int i = 0; i < loadout.tagCount(); i++) {
+            NBTTagCompound part = loadout.getCompoundTagAt(i);
+            if (part == null) {
+                continue;
+            }
+            String key = part.getString("key");
+            long amount = part.hasKey("amount") ? part.getInteger("amount") : 0;
+            if (key.isEmpty() || amount <= 0L) {
+                continue;
+            }
+            Long prev = buildLoadout.get(key);
+            buildLoadout.put(key, (prev == null ? 0L : prev) + amount);
         }
     }
 
@@ -560,6 +690,20 @@ public final class VoidcraftActiveShip {
             hold.writeToNBT(holdTag);
             nbt.setTag(TAG_HOLD, holdTag);
         }
+        // The constructor's remaining parts loadout (the CONSTRUCT legs consume it part by part).
+        if (!buildLoadout.isEmpty()) {
+            NBTTagList loadoutTag = new NBTTagList();
+            for (java.util.Map.Entry<String, Long> entry : buildLoadout.entrySet()) {
+                NBTTagCompound part = new NBTTagCompound();
+                part.setString("key", entry.getKey());
+                part.setInteger(
+                    "amount",
+                    entry.getValue()
+                        .intValue());
+                loadoutTag.appendTag(part);
+            }
+            nbt.setTag(TAG_BUILD_LOADOUT, loadoutTag);
+        }
         if (payload != null) {
             nbt.setTag(TAG_PAYLOAD, payload);
         }
@@ -586,7 +730,7 @@ public final class VoidcraftActiveShip {
         }
         USSShipState state = USSShipState.byId(nbt.getInteger(TAG_STATE));
         if (state == null || state == USSShipState.DOCKED) {
-            // In-flight ships only: docked ships live in the gateway's inventory, not here.
+            // In-flight ships only: docked ships wait in the gateway's input buses, not here.
             return null;
         }
         NBTTagCompound cargo = nbt.hasKey(TAG_CARGO) ? nbt.getCompoundTag(TAG_CARGO) : null;
@@ -637,6 +781,11 @@ public final class VoidcraftActiveShip {
         // with the persisted one when present (a ship mid-mission may have a partially filled hold).
         if (nbt.hasKey(TAG_HOLD)) {
             ship.setHold(CargoHold.readFromNBT(nbt.getCompoundTag(TAG_HOLD)));
+        }
+        // The constructor's remaining parts loadout: the constructor initialized a full copy from the payload;
+        // the persisted remainder (partially consumed in flight) replaces it when present.
+        if (nbt.hasKey(TAG_BUILD_LOADOUT)) {
+            ship.restoreBuildLoadout(nbt.getTagList(TAG_BUILD_LOADOUT, 10));
         }
         return ship;
     }

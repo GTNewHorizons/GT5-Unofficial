@@ -23,6 +23,12 @@ public final class VoidcraftConstants {
 
     public static final int MAX_CELLS = MAX_DIM_X * MAX_DIM_Y * MAX_DIM_Z;
 
+    /** Maximum grid dimension of a Voidbase (width = height = depth — a 15×15×15 volume, any orientation). */
+    public static final int MAX_BASE_DIM = 15;
+
+    /** Maximum cell count of a Voidbase (15³ = 3375). */
+    public static final int MAX_BASE_CELLS = MAX_BASE_DIM * MAX_BASE_DIM * MAX_BASE_DIM;
+
     /**
      * Hybrid penalty: efficiency multiplier applied per additional active role beyond the first dedicated one.
      * 1 role = 100%, 2 roles = 85%, 3 roles = 72.25%, 4 roles = 61.41%.

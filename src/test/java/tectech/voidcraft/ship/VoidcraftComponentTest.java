@@ -76,6 +76,27 @@ public class VoidcraftComponentTest {
         }
     }
 
+    @Test
+    public void testVoidbaseCoversAreCoverOnly() {
+        // The repair bay and solar panel function definitions behind the new covers: cover-only, tier 2
+        assertTrue(VoidcraftComponent.REPAIR_BAY.isCoverOnly(), "the repair bay is a cover, not a block");
+        assertTrue(VoidcraftComponent.SOLAR_PANEL.isCoverOnly(), "the solar panel is a cover, not a block");
+        assertEquals(2, VoidcraftComponent.REPAIR_BAY.getTier());
+        assertEquals(2, VoidcraftComponent.SOLAR_PANEL.getTier());
+        // The solar panel is the first energy-generating component definition
+        assertEquals(2000L, VoidcraftComponent.SOLAR_PANEL.getEnergyGen(), "flat generation rate per panel");
+        for (VoidcraftComponent component : VoidcraftComponent.ALL) {
+            if (component == VoidcraftComponent.SOLAR_PANEL) {
+                continue;
+            }
+            assertEquals(0L, component.getEnergyGen(), component + " must not generate energy");
+        }
+        assertEquals(2000L, VoidcraftComponent.REPAIR_BAY.getEnergyDraw(), "repair bay draw while active");
+        // Grid values: meta + 1 (10 and 11)
+        assertEquals(10, VoidcraftComponent.REPAIR_BAY.toGridValue());
+        assertEquals(11, VoidcraftComponent.SOLAR_PANEL.toGridValue());
+    }
+
     private static int countComponents(java.util.function.Predicate<VoidcraftComponent> predicate) {
         int count = 0;
         for (VoidcraftComponent component : VoidcraftComponent.ALL) {

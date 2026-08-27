@@ -13,7 +13,8 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Phase B: the program executor against the fake context — sequencing, control flow, pacing, the command
- * lifecycles, failure-skip, program-end-holds, STOP, and the NBT cursor (resume mid-program).
+ * lifecycles, failure-skip, the invisible-while wrap (a finished program runs again; only STOP ends it), and
+ * the NBT cursor (resume mid-program).
  */
 final class USSProgramExecutorTest {
 
@@ -48,6 +49,13 @@ final class USSProgramExecutorTest {
         return t;
     }
 
+    /** Tick a fixed number of times (for programs that never end on their own — the wrap tests). */
+    private static void runTicks(USSProgramExecutor executor, FakeUSSContext ctx, int ticks) {
+        for (int i = 0; i < ticks; i++) {
+            executor.tick(ctx);
+        }
+    }
+
     // endregion
 
     // region program end / basics
@@ -65,14 +73,16 @@ final class USSProgramExecutorTest {
     }
 
     @Test
-    void testSequencingRunsNodesInOrderAndCompletes() {
+    void testSequencingRunsNodesInOrderThenWraps() {
         FakeUSSContext ctx = new FakeUSSContext();
         USSProgramExecutor executor = USSProgramExecutor.start(program(writeVar(0, "a"), writeVar(1, "b")));
-        int ticks = runToCompletion(executor, ctx, 1000);
-        assertTrue(executor.isCompleted());
+        runTicks(executor, ctx, 40); // first loop: both nodes
         assertEquals("a", ctx.vars.get(0));
         assertEquals("b", ctx.vars.get(1));
-        assertEquals(40, ticks, "two immediate nodes = 2 node-steps × 20 ticks");
+        assertEquals(2, ctx.writeVarCalls);
+        assertFalse(executor.isCompleted(), "a finished program does not end — it wraps");
+        runTicks(executor, ctx, 40); // second loop
+        assertEquals(4, ctx.writeVarCalls, "the program restarted at its first node");
     }
 
     @Test
@@ -80,18 +90,22 @@ final class USSProgramExecutorTest {
         FakeUSSContext ctx = new FakeUSSContext();
         USSProgramExecutor executor = USSProgramExecutor
             .start(program(writeVar(0, "a"), writeVar(1, "b"), writeVar(2, "c")));
-        int ticks = runToCompletion(executor, ctx, 1000);
-        assertEquals(60, ticks, "decision #6: exactly one node step per 20 ticks (3 nodes = 60)");
+        runTicks(executor, ctx, 60);
+        assertEquals(3, ctx.writeVarCalls, "decision #6: exactly one node step per 20 ticks (3 nodes = 60)");
+        runTicks(executor, ctx, 60);
+        assertEquals(6, ctx.writeVarCalls, "the wrap restarts the same one-step-per-second rhythm");
+        assertFalse(executor.isCompleted());
     }
 
     @Test
-    void testProgramEndHoldsWithNoImplicitHome() {
-        // decision #2: finishing a program must NOT start any leg — the ship just holds
+    void testFinishedProgramWrapsWithNoImplicitLegs() {
+        // the wrap: a finished program restarts at its first node — and starts no implicit leg
         FakeUSSContext ctx = new FakeUSSContext();
         USSProgramExecutor executor = USSProgramExecutor.start(program(writeVar(0, "done")));
-        runToCompletion(executor, ctx, 1000);
-        assertTrue(executor.isCompleted());
-        assertEquals(0, ctx.travelLegs, "no implicit MOVE HOME");
+        runTicks(executor, ctx, 40);
+        assertEquals(2, ctx.writeVarCalls, "the single node ran twice (two loops — one node step per 20 ticks)");
+        assertFalse(executor.isCompleted());
+        assertEquals(0, ctx.travelLegs, "no implicit MOVE HOME at the wrap");
         assertEquals(0, ctx.workLegs);
     }
 
@@ -115,10 +129,11 @@ final class USSProgramExecutorTest {
             USSCondition.of(USSValue.literal("1"), USSConditionOp.EQ, USSValue.literal("1")),
             Arrays.asList(writeVar(0, "in-body")));
         USSProgramExecutor executor = USSProgramExecutor.start(program(ifTrue, writeVar(1, "after")));
-        runToCompletion(executor, ctx, 1000);
-        assertTrue(executor.isCompleted());
+        runTicks(executor, ctx, 80);
         assertEquals("in-body", ctx.vars.get(0));
         assertEquals("after", ctx.vars.get(1));
+        assertEquals(2, ctx.writeVarCalls, "one full loop (IF body + after)");
+        assertFalse(executor.isCompleted(), "the program wraps, it does not end");
     }
 
     @Test
@@ -128,10 +143,11 @@ final class USSProgramExecutorTest {
             USSCondition.of(USSValue.literal("1"), USSConditionOp.EQ, USSValue.literal("2")),
             Arrays.asList(writeVar(0, "in-body")));
         USSProgramExecutor executor = USSProgramExecutor.start(program(ifFalse, writeVar(1, "after")));
-        runToCompletion(executor, ctx, 1000);
-        assertTrue(executor.isCompleted());
-        assertFalse(ctx.vars.isWritten(0), "the body must not run");
+        runTicks(executor, ctx, 80);
+        assertFalse(ctx.vars.isWritten(0), "the body must not run (across two loops)");
         assertEquals("after", ctx.vars.get(1));
+        assertEquals(2, ctx.writeVarCalls, "only the trailing write ran, once per loop");
+        assertFalse(executor.isCompleted());
     }
 
     @Test
@@ -144,11 +160,10 @@ final class USSProgramExecutorTest {
             USSCondition.of(USSValue.stat(USSShipStat.CARGO_FREE.getId()), USSConditionOp.GT, USSValue.literal("0")),
             Arrays.asList(writeVar(0, "loop")));
         USSProgramExecutor executor = USSProgramExecutor.start(program(loop));
-        int ticks = runToCompletion(executor, ctx, 10000);
-        assertTrue(executor.isCompleted());
+        runTicks(executor, ctx, 400);
         assertEquals(5, ctx.writeVarCalls, "one body-run per positive cargo-free reading");
         assertEquals(0, ctx.cargoFree);
-        assertEquals(240, ticks);
+        assertFalse(executor.isCompleted(), "after the last body the program wraps (it never ends on its own)");
     }
 
     @Test
@@ -166,14 +181,14 @@ final class USSProgramExecutorTest {
     }
 
     @Test
-    void testRepeatRunsBodyExactlyNtimes() {
+    void testRepeatRunsBodyExactlyNtimesPerPass() {
+        // a finished REPEAT wraps (the whole program restarts) — two passes of 3 iterations in 280 ticks
         FakeUSSContext ctx = new FakeUSSContext();
         USSProgramExecutor executor = USSProgramExecutor
             .start(program(USSNode.repeat(3, Arrays.asList(writeVar(0, "r")))));
-        int ticks = runToCompletion(executor, ctx, 10000);
-        assertTrue(executor.isCompleted());
-        assertEquals(3, ctx.writeVarCalls);
-        assertEquals(140, ticks);
+        runTicks(executor, ctx, 280);
+        assertEquals(6, ctx.writeVarCalls, "two full passes × 3 iterations (the wrap restarts the REPEAT)");
+        assertFalse(executor.isCompleted());
     }
 
     @Test
@@ -181,12 +196,11 @@ final class USSProgramExecutorTest {
         FakeUSSContext ctx = new FakeUSSContext();
         USSProgramExecutor executor = USSProgramExecutor
             .start(program(USSNode.repeat(0, Arrays.asList(writeVar(0, "r"))), writeVar(1, "after")));
-        int ticks = runToCompletion(executor, ctx, 10000);
-        assertTrue(executor.isCompleted());
-        assertFalse(ctx.vars.isWritten(0), "REPEAT 0 — the body must never run (Phase A contract)");
-        assertTrue(ctx.vars.isWritten(1), "the node after the REPEAT must run");
-        assertEquals(1, ctx.writeVarCalls, "only the trailing write ran (the body write did not)");
-        assertEquals(40, ticks);
+        runTicks(executor, ctx, 80);
+        assertFalse(ctx.vars.isWritten(0), "REPEAT 0 — the body must never run (Phase A contract, across two loops)");
+        assertEquals("after", ctx.vars.get(1), "the node after the REPEAT runs (every loop)");
+        assertEquals(2, ctx.writeVarCalls, "only the trailing write ran (once per loop)");
+        assertFalse(executor.isCompleted());
     }
 
     @Test
@@ -202,9 +216,9 @@ final class USSProgramExecutorTest {
             USSCondition.of(USSValue.stat(USSShipStat.CARGO_FREE.getId()), USSConditionOp.GT, USSValue.literal("0")),
             Arrays.asList(innerIf));
         USSProgramExecutor executor = USSProgramExecutor.start(program(outerWhile));
-        runToCompletion(executor, ctx, 10000);
-        assertTrue(executor.isCompleted());
-        assertEquals(3, ctx.writeVarCalls);
+        runTicks(executor, ctx, 500);
+        assertEquals(3, ctx.writeVarCalls, "the nested body ran exactly 3 times (the stat ended the WHILE)");
+        assertFalse(executor.isCompleted(), "the program wraps after the loop ends");
     }
 
     @Test
@@ -218,10 +232,10 @@ final class USSProgramExecutorTest {
             USSCondition.of(USSValue.variable(0), USSConditionOp.EQ, USSValue.literal("world")),
             Arrays.asList(writeVar(2, "no")));
         USSProgramExecutor executor = USSProgramExecutor.start(program(writeVar(0, "hello"), yes, no));
-        runToCompletion(executor, ctx, 10000);
-        assertTrue(executor.isCompleted());
+        runTicks(executor, ctx, 100);
         assertEquals("yes", ctx.vars.get(1));
         assertFalse(ctx.vars.isWritten(2));
+        assertFalse(executor.isCompleted(), "the program wraps — it never ends on its own");
     }
 
     // endregion
@@ -235,18 +249,22 @@ final class USSProgramExecutorTest {
         USSProgramExecutor executor = USSProgramExecutor
             .start(program(moveTo(USSProgramDefaults.TARGET_NEAREST_PLANET), writeVar(0, "arrived")));
         int ticks = 0;
-        while (!executor.isCompleted() && ticks < 1000) {
+        while (!ctx.vars.isWritten(0) && ticks < 1000) {
             if (ticks >= 39) {
                 ctx.legComplete = true; // the leg (real time on the game side) finishes at tick 40
             }
             executor.tick(ctx);
             ticks++;
         }
-        assertTrue(executor.isCompleted());
         assertEquals(1, ctx.travelLegs);
         assertEquals(10.0, ctx.lastLegDist, 0.0001);
         assertEquals("arrived", ctx.vars.get(0), "the instruction after MOVE runs on arrival");
-        assertEquals(60, ticks);
+        assertFalse(executor.isCompleted(), "the program wraps instead of ending");
+        runTicks(executor, ctx, 200);
+        assertEquals(
+            6,
+            ctx.travelLegs,
+            "the wrapped pass re-arms the same MOVE leg on every loop (5 more passes in 200 ticks)");
     }
 
     @Test
@@ -255,16 +273,21 @@ final class USSProgramExecutorTest {
         USSProgramExecutor executor = USSProgramExecutor
             .start(program(USSNode.command(USSCommand.WORK, new NBTTagCompound()), writeVar(0, "worked")));
         int ticks = 0;
-        while (!executor.isCompleted() && ticks < 1000) {
+        while (!ctx.vars.isWritten(0) && ticks < 1000) {
             if (ticks >= 30) {
                 ctx.legComplete = true; // the work leg finishes after 30 ticks
             }
             executor.tick(ctx);
             ticks++;
         }
-        assertTrue(executor.isCompleted());
         assertEquals(1, ctx.workLegs);
         assertEquals("worked", ctx.vars.get(0));
+        assertFalse(executor.isCompleted(), "the program wraps instead of ending");
+        runTicks(executor, ctx, 200);
+        assertEquals(
+            6,
+            ctx.workLegs,
+            "the wrapped pass re-arms the WORK leg on every loop (5 more passes in 200 ticks)");
     }
 
     // endregion
@@ -276,11 +299,11 @@ final class USSProgramExecutorTest {
         FakeUSSContext ctx = new FakeUSSContext(); // no STAR target registered
         USSProgramExecutor executor = USSProgramExecutor
             .start(program(moveTo(USSProgramDefaults.TARGET_STAR), writeVar(0, "after")));
-        runToCompletion(executor, ctx, 1000);
-        assertTrue(executor.isCompleted());
+        runTicks(executor, ctx, 60);
         assertEquals(0, ctx.travelLegs);
         assertEquals("after", ctx.vars.get(0), "the failure is skipped, the program keeps going");
         assertTrue(ctx.loggedContains("unresolvable"));
+        assertFalse(executor.isCompleted(), "the program wraps — the skip never ends it");
     }
 
     @Test
@@ -288,10 +311,10 @@ final class USSProgramExecutorTest {
         FakeUSSContext ctx = new FakeUSSContext();
         USSProgramExecutor executor = USSProgramExecutor
             .start(program(USSNode.command(99, new NBTTagCompound()), writeVar(0, "after")));
-        runToCompletion(executor, ctx, 1000);
-        assertTrue(executor.isCompleted());
+        runTicks(executor, ctx, 60);
         assertEquals("after", ctx.vars.get(0));
         assertTrue(ctx.loggedContains("unknown command 99"));
+        assertFalse(executor.isCompleted());
     }
 
     @Test
@@ -301,9 +324,9 @@ final class USSProgramExecutorTest {
         ctx.startRefused = true;
         USSProgramExecutor executor = USSProgramExecutor
             .start(program(USSNode.command(USSCommand.WORK, new NBTTagCompound()), writeVar(0, "after")));
-        runToCompletion(executor, ctx, 1000);
-        assertTrue(executor.isCompleted());
+        runTicks(executor, ctx, 60);
         assertEquals("after", ctx.vars.get(0));
+        assertFalse(executor.isCompleted());
     }
 
     // endregion
@@ -318,10 +341,10 @@ final class USSProgramExecutorTest {
         p.setInteger(USSCommandRead.PARAM_TO, 9);
         USSProgramExecutor executor = USSProgramExecutor
             .start(program(writeVar(5, "hello"), USSNode.command(USSCommand.READ, p)));
-        runToCompletion(executor, ctx, 1000);
-        assertTrue(executor.isCompleted());
+        runTicks(executor, ctx, 60);
         assertEquals("hello", ctx.vars.get(5));
         assertEquals("hello", ctx.vars.get(9));
+        assertFalse(executor.isCompleted());
     }
 
     @Test
@@ -336,6 +359,39 @@ final class USSProgramExecutorTest {
         assertTrue(executor.isCompleted());
         assertEquals("before", ctx.vars.get(0));
         assertFalse(ctx.vars.isWritten(1), "nodes after STOP must not run");
+    }
+
+    // endregion
+
+    // region the invisible while (the wrap)
+
+    @Test
+    void testLoneCommandWrapsForever() {
+        // the user's one-command base program: a lone WORK runs, the program restarts at it, forever
+        FakeUSSContext ctx = new FakeUSSContext();
+        ctx.legComplete = true; // legs finish instantly
+        USSProgramExecutor executor = USSProgramExecutor
+            .start(program(USSNode.command(USSCommand.WORK, new NBTTagCompound())));
+        runTicks(executor, ctx, 200);
+        assertTrue(ctx.workLegs >= 2, "the WORK re-armed at least twice (loops: " + ctx.workLegs + ")");
+        assertFalse(executor.isCompleted(), "a lone command never ends the program");
+    }
+
+    @Test
+    void testStopInsideWhileEndsTheProgram() {
+        // a STOP anywhere in the tree ends the whole program (the wrap is transparent to it)
+        FakeUSSContext ctx = new FakeUSSContext();
+        USSNode loop = USSNode.whileNode(
+            USSCondition.of(USSValue.literal("1"), USSConditionOp.EQ, USSValue.literal("1")),
+            Arrays.asList(USSNode.command(USSCommand.STOP, new NBTTagCompound())));
+        USSProgramExecutor executor = USSProgramExecutor.start(program(loop));
+        int ticks = 0;
+        while (!executor.isCompleted() && ticks < 200) {
+            executor.tick(ctx);
+            ticks++;
+        }
+        assertTrue(executor.isCompleted(), "a STOP inside the loop ends the whole program");
+        assertTrue(ticks < 100);
     }
 
     // endregion
@@ -363,10 +419,14 @@ final class USSProgramExecutorTest {
         USSProgramExecutor restored = USSProgramExecutor.readFromNBT(executor.writeToNBT());
         assertFalse(restored.isCompleted());
 
-        int more = runToCompletion(restored, ctx, 10000);
-        assertTrue(restored.isCompleted());
+        int more = 0;
+        while (ctx.writeVarCalls < 5 && more < 10000) { // the loop runs to its stat end (then the program wraps)
+            restored.tick(ctx);
+            more++;
+        }
         assertEquals(5, ctx.writeVarCalls, "the loop continued exactly where it left off (no re-run, no loss)");
         assertTrue(more > 0);
+        assertFalse(restored.isCompleted(), "after the stat ends the program wraps (never ends on its own)");
     }
 
     @Test
@@ -385,10 +445,14 @@ final class USSProgramExecutorTest {
         USSProgramExecutor restored = USSProgramExecutor.readFromNBT(executor.writeToNBT());
         assertTrue(restored.isActive(), "the in-flight WAIT must survive the round trip");
 
-        int total = 20 + runToCompletion(restored, ctx, 10000);
-        assertTrue(restored.isCompleted());
+        int more = 0;
+        while (!ctx.vars.isWritten(0) && more < 10000) {
+            restored.tick(ctx);
+            more++;
+        }
         assertEquals("after-wait", ctx.vars.get(0));
-        assertEquals(45, total, "the wait was not restarted by the round trip");
+        assertEquals(25, more, "the wait was not restarted by the round trip");
+        assertFalse(restored.isCompleted(), "the program wraps after the write");
     }
 
     @Test
@@ -407,10 +471,14 @@ final class USSProgramExecutorTest {
         assertTrue(restored.isActive());
 
         ctx.legComplete = true;
-        runToCompletion(restored, ctx, 10000);
-        assertTrue(restored.isCompleted());
+        int more = 0;
+        while (!ctx.vars.isWritten(0) && more < 10000) {
+            restored.tick(ctx);
+            more++;
+        }
         assertEquals(1, ctx.travelLegs, "the leg must not restart after the round trip");
         assertEquals("arrived", ctx.vars.get(0));
+        assertFalse(restored.isCompleted(), "the program wraps after the write");
     }
 
     // endregion

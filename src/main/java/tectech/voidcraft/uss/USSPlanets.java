@@ -35,8 +35,8 @@ import gregtech.api.enums.Materials;
  * randomized from MIN_DISTANCE (3 blocks from the star) all the way to the system's edge leaving 4 blocks from
  * the shell edge (pass 14, user: "ships exiting the dome isn't good" — the 2-block margin was smaller than hover
  * + planet half + spread = 2.875; MAX_DISTANCE = USSConstants.SPACE_SHELL_RADIUS − 4 = 23.1, dome 27.1), clear
- * of the star surface ≤ 1.4; scale 0.35–1.32 across the texture tiers (huge deliberately exceeds the legacy
- * 0.2–0.9) and orbit/spin speeds 0.5–1.5. The
+ * of the star surface ≤ 1.9; rendered scale 0.175–0.66 across the texture tiers (the definition's size range
+ * 0.35–1.32 reduced by PLANET_RENDER_SCALE) and orbit/spin speeds 0.5–1.5. The
  * distance range is split into COUNT bands (inner → outer), so a 9-planet system still spreads across the dome.
  * Pass 11
  * (user spec):
@@ -57,7 +57,7 @@ public final class USSPlanets {
     public static final int MAX_PLANETS_PER_SYSTEM = 9;
 
     /**
-     * Inner planet distance (blocks from the star center; the star radius is at most 1.4). Pass 13 (user: "planets are
+     * Inner planet distance (blocks from the star center; the star radius is at most 1.9). Pass 13 (user: "planets are
      * still very close to the star"): no closer than 3 blocks.
      */
     public static final double MIN_DISTANCE = 3.0;
@@ -72,11 +72,17 @@ public final class USSPlanets {
     public static final double MAX_DISTANCE = USSConstants.SPACE_SHELL_RADIUS - 4.0;
 
     /**
-     * Planet hologram scale range (the legacy EoH used 0.2–0.9); MAX_SCALE is the HUGE base (1.2) at its +10% band
-     * edge.
+     * The planet hologram's rendered scale range — the definition's size range (0.35–1.32 across the texture tiers)
+     * reduced by {@link #PLANET_RENDER_SCALE}.
      */
-    public static final double MIN_SCALE = 0.35;
-    public static final double MAX_SCALE = 1.32;
+    public static final double MIN_SCALE = 0.175;
+    public static final double MAX_SCALE = 0.66;
+
+    /**
+     * The factor applied to the planet's sampled size for the hologram's rendered scale — planets render half the
+     * size of their definition's size range.
+     */
+    public static final double PLANET_RENDER_SCALE = 0.5;
 
     /** Orbit/spin speed range (the legacy EoH uses 0.5–1.5). */
     public static final double MIN_SPEED = 0.5;
@@ -250,7 +256,8 @@ public final class USSPlanets {
             // The planet's SIZE — sampled from the definition's size range (0.0–5.0). This is both the hologram
             // scale (the render size of the planet cube) and the size used in the miner's ore-amount calculation
             // (ore.amount × planetSize²).
-            double scale = def.getSizeMin() + (def.getSizeMax() - def.getSizeMin()) * rng.nextFloat();
+            double scale = (def.getSizeMin() + (def.getSizeMax() - def.getSizeMin()) * rng.nextFloat())
+                * PLANET_RENDER_SCALE;
             double orbitSpeed = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * rng.nextFloat();
             double rotationSpeed = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * rng.nextFloat();
             // Orbits on the same horizontal xz plane, like real solar systems: the orbit plane is the xz plane
@@ -303,9 +310,8 @@ public final class USSPlanets {
     }
 
     /**
-     * The star's rendered size: a 0.5-block base radius multiplied by the square root of the sampled size (user
-     * spec: "Default size of 0.5 block radius, multiplied by the square root of the size"). Keeps large stars from
-     * ballooning — a size-10 star is 0.5·√10 ≈ 1.58 blocks, a size-1 star is 0.5 blocks.
+     * The star's rendered size: a 2/3-block base radius multiplied by the square root of the sampled size. Keeps
+     * large stars from ballooning — a size-10 star is (2/3)·√10 ≈ 2.11 blocks, a size-1 star is 0.67 blocks.
      *
      * @param size the sampled star size (0.0–10.0; negative clamped to 0)
      * @return the rendered size in blocks (always &ge; 0)
@@ -314,7 +320,7 @@ public final class USSPlanets {
         if (size <= 0.0) {
             return 0.0f;
         }
-        return 0.5f * (float) Math.sqrt(size);
+        return (2.0f / 3.0f) * (float) Math.sqrt(size);
     }
 
     /**

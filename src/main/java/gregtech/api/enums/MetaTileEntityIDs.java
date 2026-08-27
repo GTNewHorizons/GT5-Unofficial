@@ -2108,7 +2108,9 @@ public enum MetaTileEntityIDs {
     VoidcraftComponent_StarlifterArray(32063),
     VoidcraftComponent_SpacetimeScanner(32064),
     VoidcraftComponent_ConstructionArm(32065),
-    VoidcraftComponent_Reactor(32066);
+    VoidcraftComponent_Reactor(32066),
+    // The Voidbase Assembler (15x15x15 scan volume; digitizes immobile stations into reusable blueprints)
+    VoidbaseAssembler(32067);
 
     public final int ID;
 

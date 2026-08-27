@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -13,7 +14,6 @@ import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -22,58 +22,68 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import tectech.thing.CustomItemList;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.voidcraft.item.ItemVoidbaseBlueprint;
 import tectech.voidcraft.item.ItemVoidcraft;
+import tectech.voidcraft.item.ItemVoidcraftCovers;
 import tectech.voidcraft.loader.VoidcraftLoader;
+import tectech.voidcraft.ship.VoidcraftBlueprint;
+import tectech.voidcraft.ship.VoidcraftComponent;
+import tectech.voidcraft.ship.VoidcraftCoverComponent;
 import tectech.voidcraft.ship.VoidcraftNbt;
 import tectech.voidcraft.ship.VoidcraftRole;
 import tectech.voidcraft.uss.MTEUnstableSolarSystem;
-import tectech.voidcraft.uss.USSConstants;
-import tectech.voidcraft.uss.USSInfrastructure;
-import tectech.voidcraft.uss.USSLoadout;
-import tectech.voidcraft.uss.USSProject;
-import tectech.voidcraft.uss.USSShipCargo;
+import tectech.voidcraft.uss.USSBaseAnchor;
+import tectech.voidcraft.uss.USSCommand;
+import tectech.voidcraft.uss.USSNode;
+import tectech.voidcraft.uss.USSProgram;
+import tectech.voidcraft.uss.USSProgramDefaults;
+import tectech.voidcraft.uss.VoidcraftActiveShip;
 
 /**
  * Voidcraft Gateway (EoH rework, Phase 3).
  *
  * <p>
- * A 3×3×3 BA0-cased shell with the controller (and its single ship slot) at the front-face center. Insert a digitized
- * {@link ItemVoidcraft} and — when a valid Unstable Solar System (star ignited) and a Storage Bay are both within
- * range — the gateway launches the ship
- * on a mining mission: the ship flies out to the star, mines, and returns with cargo, which the USS delivers to the
- * nearest bay. A ship's integrity is its time limit (it drops 1 per second while in the USS): a ship that finishes
- * before it expires is re-emitted into the gateway slot (integrity back at maximum); one that hits 0 is lost with
- * its cargo.
+ * A 3×3×3 BA0-cased shell with the controller at the front-face center, ringed by the hatch-capable perimeter.
+ * The INPUT buses are the ship source: feed a digitized
+ * {@link ItemVoidcraft} through them and — when a valid Unstable Solar System (star ignited) and a Storage Bay
+ * are both within range — the gateway launches the ship
+ * on a mining mission: the ship flies out to the star, mines, and returns with cargo, which the USS delivers to
+ * the nearest bay. A ship's integrity is its time limit (it drops 1 per second while in the USS): a ship that
+ * finishes before it expires is re-emitted into the gateway's OUTPUT bus (integrity back at maximum); one that
+ * hits 0 is lost with its cargo.
  *
  * <p>
- * No energy hatches, no recipes — the interaction surface is the ship slot (right-click with the ship item in
- * hand, same pattern as the USS controller slot) plus the front-face hatch ring: input buses (dust for Constructor
- * loadouts) and input hatches (Stellar Plasma) feed the Phase 4 pass 2 Constructor missions — MINER / STARLIFTER
- * ships launch without any inputs at all.
+ * No energy hatches, no recipes — the interaction surface is the BLUEPRINT slot (right-click with a Voidbase
+ * blueprint item in hand — the blueprint is KEPT, the constructor ship carries a data copy) plus the front-face
+ * hatch ring: the input buses feed the ship + the Constructor's parts loadout (component blocks + covers as
+ * items) — MINER / STARLIFTER ships launch with just the ship item, no parts. The output bus is the return path
+ * for the surviving ship and a Constructor's unused parts — the structure check requires an input bus AND an
+ * output bus.
  *
  * <p>
  * The gateway renders nothing itself: a ship's hologram exists only while it is in flight, and that in-flight anchor
@@ -88,14 +98,16 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
     private static final int SCAN_RADIUS = 32;
 
     /**
-     * Minimum interval (ticks) between target scans while a ship is docked. The scan sweeps the whole sphere at
-     * full resolution, so the result is cached instead of re-scanning every tick.
+     * Minimum interval (ticks) between target scans while a ship waits on the input side. The scan sweeps the
+     * whole sphere at full resolution, so the result is cached instead of re-scanning every tick.
      */
     private static final long SCAN_COOLDOWN_TICKS = 20;
 
     /**
      * 3×3×3 shell: the <strong>front face</strong> (z=0) is the controller (center) ringed by the hatch-capable
-     * perimeter 'C' (input buses + input hatches — the Phase 4 pass 2 Constructor loadout inputs; non-hatch ring
+     * perimeter 'C' (input buses + input hatches — the SHIP source, a launch consumes one Voidcraft from them,
+     * plus the Constructor's parts loadout; and the output bus — the return path for the surviving ship and a
+     * Constructor's unused parts on mission complete; non-hatch ring
      * cells render as HighPowerCasing, same family convention as the Storage Bay and the Energy Infuser), the two
      * back planes are BA0 casing meta 10. The controller sits at the front-face center (x=1, y=1, z=0 — the same
      * convention as the Storage Bay and the Assembler; a buried center controller would be unreachable once the
@@ -110,9 +122,11 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         .addElement(
             'C',
             buildHatchAdder(MTEVoidcraftGateway.class)
-                // InputBus: the dust path (Constructor loadout items, incl. ME item buses). InputHatch: the fluid
-                // path (Stellar Plasma). Non-hatch ring cells fall back to the HighPowerCasing render.
-                .atLeast(InputBus, InputHatch)
+                // InputBus: the Constructor parts path (component blocks + covers, incl. ME item buses).
+                // InputHatch slot 0 is also read for items (the standard GT hatch slot).
+                // OutputBus: the return path for a Constructor's unused parts (mission complete).
+                // Non-hatch ring cells fall back to the HighPowerCasing render.
+                .atLeast(InputBus, InputHatch, OutputBus)
                 .casingIndex(Casings.HighPowerCasing.getTextureId())
                 .hint(1)
                 .buildAndChain(Casings.HighPowerCasing.asElement()))
@@ -127,6 +141,13 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
     private MTEUnstableSolarSystem targetUSS;
     private MTEVoidcraftStorageBay targetBay;
     private long lastTargetScan = Long.MIN_VALUE;
+
+    /**
+     * The Voidbase blueprint in the blueprint slot (a single {@code ItemVoidbaseBlueprint} stack — REUSABLE: it
+     * stays here between launches; each Constructor launch copies its data + a parts loadout into the ship
+     * payload). Server-only: the gateway has no GUI and renders nothing of its own, so no client sync.
+     */
+    private ItemStack blueprint;
 
     /** Scan detail buffer (per-sweep diagnostics for failed target searches). */
     private final StringBuilder diag = new StringBuilder();
@@ -158,10 +179,10 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) {
             return;
         }
-        // Phase 4 pass 2: the Constructor loadout needs at least one input bus (dust) and one input hatch
-        // (Stellar Plasma) on the front-face ring.
+        // The input bus is the ship source (and the Constructor parts path); the output bus is the return path
+        // (surviving ships + unused Constructor parts) — both are required.
         checkHasInputBus(errors);
-        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -172,17 +193,44 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        // Insert the ship item into the empty ship slot (same pattern as the USS controller slot).
-        if (getControllerSlot() == null) {
+        // Insert a Voidbase blueprint into the empty blueprint slot (the item is consumed from the hand; the
+        // blueprint is KEPT in the slot for the next launch). Ships are not inserted by hand — the gateway
+        // consumes them from its input buses.
+        if (blueprint == null && aBaseMetaTileEntity.isServerSide()) {
             ItemStack heldItem = aPlayer.getHeldItem();
-            if (heldItem != null && heldItem.getItem() == ItemVoidcraft.INSTANCE) {
-                mInventory[getControllerSlotIndex()] = heldItem.copy();
-                mInventory[getControllerSlotIndex()].stackSize = 1;
+            if (heldItem != null && heldItem.getItem() == ItemVoidbaseBlueprint.INSTANCE
+                && !ItemVoidbaseBlueprint.isEmptyBlueprint(heldItem)) {
+                blueprint = heldItem.copy();
+                blueprint.stackSize = 1;
                 aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem, 1));
                 return true;
             }
         }
         return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+    }
+
+    /** Persist the blueprint slot (ships live in the input buses, nothing of the machine's own to save). */
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if (blueprint != null) {
+            NBTTagCompound stackTag = new NBTTagCompound();
+            blueprint.writeToNBT(stackTag);
+            aNBT.setTag("vc_blueprint", stackTag);
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        blueprint = null;
+        if (aNBT.hasKey("vc_blueprint")) {
+            ItemStack stack = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("vc_blueprint"));
+            if (stack != null && stack.getItem() == ItemVoidbaseBlueprint.INSTANCE
+                && !ItemVoidbaseBlueprint.isEmptyBlueprint(stack)) {
+                blueprint = stack;
+            }
+        }
     }
 
     @Override
@@ -192,22 +240,20 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
             return;
         }
         cleanupLegacyDockAnchor();
+        migrateLegacyShipSlot();
         if (!mMachine) {
             return;
         }
 
-        ItemStack ship = getControllerSlot();
-        if (ship == null || ship.getItem() != ItemVoidcraft.INSTANCE) {
-            return;
-        }
         attemptLaunch(aTick);
     }
 
     // region launch
 
     /**
-     * Try to launch the ship currently in the slot. On success the slot is consumed; on failure the ship stays
-     * docked and the error is reported (rate-limited) to nearby players.
+     * Try to launch a ship from the input side (input hatch slot 0 + input buses). The ship item is consumed
+     * from the input ONLY when the launch succeeds — a rejected launch leaves the ship in the input (and the
+     * error is reported, rate-limited, to nearby players).
      */
     private void attemptLaunch(long aTick) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -215,15 +261,18 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         if (world == null) {
             return;
         }
-        ItemStack ship = getControllerSlot();
+        ItemStack ship = findShipInput();
         if (ship == null) {
-            return; // idle — no ship in the slot
+            return; // idle — no ship on the input side
         }
 
         // The ship payload is the item's tag compound (the vc_* keys sit at its top level — see
         // ItemVoidcraft.getBlueprint). The full ItemStack NBT nests it one level deeper under the vanilla
-        // "tag" key, so writeToNBT must NOT be used here.
-        NBTTagCompound payload = ship.getTagCompound();
+        // "tag" key, so writeToNBT must NOT be used here. It is COPIED before the mission is loaded: the
+        // Constructor path mutates the payload (vc_build_mission + vc_build_loadout), and the input item is
+        // consumed by full-NBT equality against the bus's stack — a mutated payload would never match.
+        NBTTagCompound payload = (NBTTagCompound) ship.getTagCompound()
+            .copy();
         if (payload == null || VoidcraftNbt.read(payload) == null) {
             reportError(aTick, "invalid_ship");
             return;
@@ -231,7 +280,7 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         int roles = VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES);
         boolean constructor = VoidcraftRole.CONSTRUCTOR.isActive(roles);
         // MINER / STARLIFTER (mining cargo), EXPLORER (spacetime-ripple scanning) or CONSTRUCTOR
-        // (infrastructure loadout) may launch; a ship with none of those roles cannot be sent out.
+        // (Voidbase construction) may launch; a ship with none of those roles cannot be sent out.
         boolean regular = VoidcraftRole.MINER.isActive(roles) || VoidcraftRole.STARLIFTER.isActive(roles)
             || VoidcraftRole.EXPLORER.isActive(roles);
         if (!constructor && !regular) {
@@ -252,28 +301,19 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
             return;
         }
 
-        // Phase 4 pass 2: a CONSTRUCTOR with work to do takes priority over its mining roles — the ship leaves
-        // loaded with a loadout of the USS's first incomplete infrastructure project, pulled from this gateway's
-        // input buses (dust) and input hatches (Stellar Plasma). When the whole catalog is already built, a
-        // CONSTRUCTOR+MINER/STARLIFTER hybrid falls back to a regular mining mission; a pure CONSTRUCTOR with
-        // nothing to build is rejected (the ship stays docked, no wasted flights).
+        // A CONSTRUCTOR needs the blueprint in the blueprint slot: the ship leaves loaded with a DATA COPY of
+        // the blueprint (the item stays in the slot — reusable) plus a parts loadout that FILLS its cargo from
+        // the input buses (capped at the ship's cargo space; the CONSTRUCT leg credits the site with what it
+        // needs, the first Constructor creates the construction site, the rest fill it). A CONSTRUCTOR+MINER/
+        // STARLIFTER hybrid without a blueprint falls back to a regular mining mission; a pure CONSTRUCTOR
+        // without one is rejected (the ship stays in the input, no wasted flights).
         if (constructor) {
-            USSInfrastructure infrastructure = targetUSS.getInfrastructure();
-            USSProject project = infrastructure == null ? null : infrastructure.firstIncomplete();
-            if (project != null) {
-                if (!prepareConstructorMission(aTick, payload, infrastructure, project)) {
-                    return; // the launch is aborted (error already reported)
-                }
-                payload.setBoolean(VoidcraftNbt.TAG_CONSTRUCTOR_MISSION, true);
-            } else {
-                payload.setBoolean(VoidcraftNbt.TAG_CONSTRUCTOR_MISSION, false);
-                if (!regular) {
-                    reportError(aTick, "nothing_to_build");
-                    return;
-                }
+            if (prepareVoidbaseMission(aTick, payload)) {
+                payload.setBoolean(VoidcraftNbt.TAG_BUILD_MISSION, true);
+            } else if (!regular) {
+                reportError(aTick, "no_blueprint");
+                return;
             }
-        } else {
-            payload.setBoolean(VoidcraftNbt.TAG_CONSTRUCTOR_MISSION, false);
         }
 
         int[] bayPos = new int[] { targetBay.getBaseMetaTileEntity()
@@ -284,78 +324,167 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
                 .getZCoord() };
 
         if (targetUSS.launchShip(payload, new int[] { cx, cy, cz }, bayPos)) {
-            mInventory[getControllerSlotIndex()] = null;
+            // The launch is in flight — consume the ship from the input side. The pull matches on item +
+            // payload NBT (the consumed ship IS the found ship, even when several ships wait on the input),
+            // and the find + pull run in the same tick, so the found stack cannot vanish in between.
+            if (!pullShipInput(ship)) {
+                try {
+                    LOGGER.warn("[Voidcraft] gateway launched a ship but could not consume its item from the input");
+                } catch (Throwable ignored) {}
+            }
         } else {
             reportError(aTick, "uss_busy");
         }
     }
 
     /**
-     * Phase 4 pass 2 — load a Constructor mission: compute the loadout from the USS's current project, pull exactly
-     * that much material from the input buses / input hatches, and write the loadout (abstract entries) + the
-     * project id into the ship payload.
+     * Load a Voidbase construction mission into the ship payload: copy the blueprint's data (the blueprint item
+     * stays in the slot — reusable) and FILL the ship's cargo with parts from the input buses — for each part of
+     * the parts list (blueprint order), as many as the buses hold, until the ship's cargo space (the hold
+     * capacity, in cargo units) is full or the buses run dry. The CONSTRUCT leg credits the site with what it
+     * needs; whatever is carried beyond the site's needs is discarded there (the site's existing rule). A zero
+     * fill is fine — the first Constructor creates the construction site even without parts, the rest fill it.
      *
-     * <p>
-     * "Take what's there, report what's missing": the take is capped by the remaining project need, the ship's
-     * per-mission capacity (construction-power scaled, same window as the Starlifter), and what is actually in the
-     * inputs. Nothing is voided — whatever is not taken simply stays in the buses/hatch for the next mission.
-     *
-     * @return true when the payload is ready for launch; false when the launch must be aborted (the error was
-     *         reported to the players)
+     * @return true when the payload carries the blueprint + loadout; false when there is no (valid) blueprint in
+     *         the blueprint slot (no error is reported — the caller decides: a hybrid role may still launch as a
+     *         regular mission)
      */
-    private boolean prepareConstructorMission(long aTick, NBTTagCompound payload, USSInfrastructure infrastructure,
-        USSProject project) {
-        // The ship's per-mission caps: its construction power on the Starlifter scale (creative-loop friendly).
-        long constructionPower = Math.max(1L, VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_CONSTRUCTION));
-        long plasmaCap = USSConstants.starlifterPlasmaAmount(constructionPower);
-        long dustCap = USSConstants.starlifterMatterAmount(constructionPower);
-
-        Map<String, Long> consumed = new LinkedHashMap<>();
-        Map<String, Long> available = new LinkedHashMap<>();
-        for (USSProject.Cost cost : project.costs) {
-            consumed.put(cost.materialName, infrastructure.consumed(project.id, cost.materialName));
-            Materials material = Materials.get(cost.materialName);
-            if (material == null || material == Materials._NULL) {
-                available.put(cost.materialName, 0L); // unresolvable material — the entry simply cannot be loaded
-                continue;
-            }
-            if (cost.kind == USSProject.Kind.ITEM) {
-                ItemStack dust = material.getDust(1);
-                available.put(cost.materialName, dust == null ? 0L : countItemInput(dust));
-            } else {
-                FluidStack plasma = material.getFluid(1);
-                available.put(cost.materialName, plasma == null ? 0L : countFluidInput(plasma));
-            }
-        }
-
-        Map<String, Long> take = USSLoadout.compute(project, consumed, plasmaCap, dustCap, available);
-        if (take.isEmpty()) {
-            reportError(aTick, "no_materials");
+    private boolean prepareVoidbaseMission(long aTick, NBTTagCompound payload) {
+        if (blueprint == null || blueprint.getItem() != ItemVoidbaseBlueprint.INSTANCE
+            || ItemVoidbaseBlueprint.isEmptyBlueprint(blueprint)) {
             return false;
         }
+        NBTTagCompound blueprintNbt = blueprint.getTagCompound();
+        if (blueprintNbt == null || VoidcraftNbt.readBase(blueprintNbt) == null) {
+            return false;
+        }
+        VoidcraftBlueprint baseBlueprint = VoidcraftNbt.readBase(blueprintNbt);
 
-        // Deplete exactly the computed loadout (the same slot set the availability scan counted).
-        for (USSProject.Cost cost : project.costs) {
-            Long amount = take.get(cost.materialName);
-            if (amount == null || amount <= 0L) {
+        // The build anchor (launch log only): the program's first static MOVE target, when it resolves.
+        USSBaseAnchor anchor = resolveBuildAnchor(blueprintNbt);
+
+        // Fill the ship's cargo from the input buses: for each part of the parts list (blueprint order), as
+        // many as the buses hold, until the cargo space (the hold capacity, in cargo units) is full.
+        long remaining = VoidcraftActiveShip.holdCapacityFor(payload);
+        Map<String, Long> take = new LinkedHashMap<>();
+        for (Map.Entry<String, Long> part : baseBlueprint.partsList()
+            .entrySet()) {
+            if (remaining <= 0L) {
+                break;
+            }
+            String key = part.getKey();
+            ItemStack item = partItem(key);
+            if (item == null) {
                 continue;
             }
-            Materials material = Materials.get(cost.materialName);
-            if (material == null || material == Materials._NULL) {
-                continue;
-            }
-            if (cost.kind == USSProject.Kind.ITEM) {
-                pullItemInput(material.getDust(1), amount);
-            } else {
-                pullFluidInput(material.getFluid(1), amount);
+            long available = countItemInput(item);
+            long amount = Math.min(available, remaining);
+            if (amount > 0L) {
+                take.put(key, amount);
+                pullItemInput(item, amount);
+                remaining -= amount;
             }
         }
 
-        writeConstructorLoadout(payload, project, take);
+        payload.setTag(VoidcraftNbt.TAG_BUILD_BLUEPRINT, blueprintNbt.copy());
+        writeVoidbaseLoadout(payload, take);
         try {
-            LOGGER.info("[Voidcraft] gateway loaded constructor for project " + project.id + " with " + take);
+            LOGGER.info(
+                "[Voidcraft] gateway loaded constructor for the Voidbase at "
+                    + (anchor != null ? anchor : "?dynamic anchor")
+                    + " with "
+                    + take);
         } catch (Throwable ignored) {}
         return true;
+    }
+
+    /**
+     * The construction anchor implied by the blueprint's stored program: the first MOVE instruction's target,
+     * when it resolves to a STATIC anchor (STAR, a specific PLANET index, a specific RIPPLE index). Dynamic
+     * targets (nearest/random planet, unscanned ripple) and non-anchor targets (HOME, SHIP) cannot be resolved
+     * here — null (the launch log reports the anchor as dynamic).
+     */
+    @Nullable
+    private static USSBaseAnchor resolveBuildAnchor(NBTTagCompound blueprintNbt) {
+        if (!blueprintNbt.hasKey(VoidcraftNbt.TAG_PROGRAM)) {
+            return null;
+        }
+        USSProgram program = USSProgram.readFromNBT(blueprintNbt.getTagList(VoidcraftNbt.TAG_PROGRAM, 10));
+        if (program == null) {
+            return null;
+        }
+        for (USSNode node : program.nodes()) {
+            if (!node.isCommand() || node.cmdId() != USSCommand.MOVE) {
+                continue;
+            }
+            NBTTagCompound params = node.params();
+            String target = params.getString(USSProgramDefaults.PARAM_TARGET);
+            switch (target) {
+                case USSProgramDefaults.TARGET_STAR:
+                    return USSBaseAnchor.star();
+                case USSProgramDefaults.TARGET_PLANET:
+                    return USSBaseAnchor.planet(params.getInteger(USSProgramDefaults.PARAM_INDEX));
+                case USSProgramDefaults.TARGET_RIPPLE:
+                    return USSBaseAnchor.ripple(params.getInteger(USSProgramDefaults.PARAM_INDEX));
+                default:
+                    return null;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * The input-bus item for a parts-list key: {@code block.<NAME>} → the component block item (only the two
+     * placeable blocks have one), {@code cover.<NAME>} → the cover item (meta = cover id).
+     */
+    @Nullable
+    public static ItemStack partItem(String key) {
+        int sep = key.indexOf('.');
+        if (sep <= 0) {
+            return null;
+        }
+        String kind = key.substring(0, sep);
+        String name = key.substring(sep + 1);
+        try {
+            if ("block".equals(kind)) {
+                VoidcraftComponent component = VoidcraftComponent.valueOf(name);
+                switch (component) {
+                    case CONTROLLER:
+                        return CustomItemList.VoidcraftComponent_Controller.get(1);
+                    case FRAME:
+                        return CustomItemList.VoidcraftComponent_Frame.get(1);
+                    default:
+                        return null; // cover-only function definitions have no block item
+                }
+            }
+            if ("cover".equals(kind)) {
+                return ItemVoidcraftCovers.stack(VoidcraftCoverComponent.valueOf(name));
+            }
+        } catch (IllegalArgumentException ignored) {
+            // unknown part name — nothing to pull
+        }
+        return null;
+    }
+
+    /**
+     * Write the parts loadout into the ship payload (entries {@code {key, amount}} in the blueprint's
+     * parts-list key format — the CONSTRUCT handler credits the site part by part).
+     */
+    private static void writeVoidbaseLoadout(NBTTagCompound payload, Map<String, Long> take) {
+        if (take.isEmpty()) {
+            return;
+        }
+        NBTTagList loadout = new NBTTagList();
+        for (Map.Entry<String, Long> entry : take.entrySet()) {
+            NBTTagCompound part = new NBTTagCompound();
+            part.setString("key", entry.getKey());
+            part.setInteger(
+                "amount",
+                entry.getValue()
+                    .intValue());
+            loadout.appendTag(part);
+        }
+        payload.setTag(VoidcraftNbt.TAG_BUILD_LOADOUT, loadout);
     }
 
     /**
@@ -387,23 +516,6 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
                 if (inSlot != null && GTUtility.areStacksEqual(match, inSlot)) {
                     total += inSlot.stackSize;
                 }
-            }
-        }
-        return total;
-    }
-
-    /**
-     * Sum the matching fluid over every input hatch tank (ME input hatch amounts are best-effort — the actual
-     * drain at depletion time is the authoritative amount).
-     */
-    private long countFluidInput(FluidStack match) {
-        long total = 0L;
-        if (match == null) {
-            return 0L;
-        }
-        for (FluidStack stored : getStoredFluids()) {
-            if (stored != null && stored.getFluid() == match.getFluid()) {
-                total += stored.amount;
             }
         }
         return total;
@@ -454,65 +566,100 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
     }
 
     /**
-     * Drain {@code amount} mB of the matching fluid from the input hatches (returns the amount actually drained —
-     * an ME hatch may deliver less than the scanned amount).
+     * The first Voidcraft on the input side (input-hatch slot 0 of every input hatch, then every slot of every
+     * input bus — the same slot set the Constructor loadout pulls from). A copy is returned (the bus's stack
+     * is not touched); null when the input side holds no ship (the gateway idles — no error).
      */
-    private long pullFluidInput(FluidStack match, long amount) {
-        if (match == null || amount <= 0L) {
-            return 0L;
+    @Nullable
+    private ItemStack findShipInput() {
+        for (MTEHatchInput hatch : GTUtility.validMTEList(mInputHatches)) {
+            IGregTechTileEntity base = hatch.getBaseMetaTileEntity();
+            if (base == null) {
+                continue;
+            }
+            ItemStack inSlot = base.getStackInSlot(0);
+            if (inSlot != null && inSlot.getItem() == ItemVoidcraft.INSTANCE) {
+                return inSlot.copy();
+            }
         }
-        FluidStack toDrain = match.copy();
-        toDrain.amount = (int) Math.min(Integer.MAX_VALUE, amount);
-        return depleteInputQuantity(toDrain, false);
+        for (MTEHatchInputBus bus : GTUtility.validMTEList(mInputBusses)) {
+            IGregTechTileEntity base = bus.getBaseMetaTileEntity();
+            if (base == null) {
+                continue;
+            }
+            for (int i = 0; i < base.getSizeInventory(); i++) {
+                ItemStack inSlot = base.getStackInSlot(i);
+                if (inSlot != null && inSlot.getItem() == ItemVoidcraft.INSTANCE) {
+                    return inSlot.copy();
+                }
+            }
+        }
+        return null;
     }
 
     /**
-     * Write the mission loadout into the ship payload in the same abstract entry format as the mining cargo
-     * ({@code USSShipCargo} lists) plus the project id — the USS applies it at mission completion.
+     * Consume one ship from the input side — the stack equal to {@code match} (item + payload NBT, so the
+     * consumed ship IS the found ship even when several ships wait on the input side). Called only on a
+     * successful launch, in the same tick as the find.
+     *
+     * @param match the ship found by {@link #findShipInput()}
+     * @return true when a ship was consumed
      */
-    private void writeConstructorLoadout(NBTTagCompound payload, USSProject project, Map<String, Long> take) {
-        payload.setInteger(VoidcraftNbt.TAG_PROJECT, project.id);
-        NBTTagCompound loadout = new NBTTagCompound();
-        NBTTagList items = new NBTTagList();
-        NBTTagList fluids = new NBTTagList();
-        for (USSProject.Cost cost : project.costs) {
-            Long amount = take.get(cost.materialName);
-            if (amount == null || amount <= 0L) {
+    private boolean pullShipInput(ItemStack match) {
+        for (MTEHatchInput hatch : GTUtility.validMTEList(mInputHatches)) {
+            IGregTechTileEntity base = hatch.getBaseMetaTileEntity();
+            if (base == null) {
                 continue;
             }
-            if (cost.kind == USSProject.Kind.ITEM) {
-                Materials material = Materials.get(cost.materialName);
-                if (material == null || material == Materials._NULL) {
-                    continue;
-                }
-                ItemStack one = material.getDust(1);
-                if (one == null) {
-                    continue;
-                }
-                NBTTagCompound entry = new NBTTagCompound();
-                entry.setShort(USSShipCargo.ENTRY_ID, (short) Item.getIdFromItem(one.getItem()));
-                entry.setShort(USSShipCargo.ENTRY_DAMAGE, (short) one.getItemDamage());
-                entry.setInteger(USSShipCargo.ENTRY_AMOUNT, (int) Math.min(Integer.MAX_VALUE, amount));
-                entry.setString(USSShipCargo.ITEM_ENTRY_MATERIAL, cost.materialName); // self-describing (no reverse
-                                                                                      // lookup at apply time)
-                items.appendTag(entry);
-            } else {
-                NBTTagCompound entry = new NBTTagCompound();
-                entry.setString(USSShipCargo.FLUID_ENTRY_MATERIAL, cost.materialName);
-                entry.setLong(USSShipCargo.FLUID_ENTRY_AMOUNT, Math.min(Integer.MAX_VALUE, amount));
-                fluids.appendTag(entry);
+            ItemStack inSlot = base.getStackInSlot(0);
+            if (inSlot != null && GTUtility.areStacksEqual(match, inSlot)) {
+                base.decrStackSize(0, 1);
+                return true;
             }
         }
-        loadout.setTag(USSShipCargo.TAG_ITEMS, items);
-        loadout.setTag(USSShipCargo.TAG_FLUIDS, fluids);
-        payload.setTag(VoidcraftNbt.TAG_LOADOUT, loadout);
+        for (MTEHatchInputBus bus : GTUtility.validMTEList(mInputBusses)) {
+            IGregTechTileEntity base = bus.getBaseMetaTileEntity();
+            if (base == null) {
+                continue;
+            }
+            for (int i = 0; i < base.getSizeInventory(); i++) {
+                ItemStack inSlot = base.getStackInSlot(i);
+                if (inSlot != null && GTUtility.areStacksEqual(match, inSlot)) {
+                    base.decrStackSize(i, 1);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Output an item stack into the output bus buffers — each bus absorbs as much as it can, and whatever does
+     * not fit stays in the given stack (its {@code stackSize} is reduced by the absorbed amount). Used for the
+     * returned ship and for a Constructor's unused parts.
+     *
+     * @param stack the stack to output (mutated in place: only the absorbed amount is removed)
+     * @return the amount actually absorbed by the output buses (0 when the gateway has none)
+     */
+    public int outputItem(ItemStack stack) {
+        if (stack == null || stack.stackSize <= 0) {
+            return 0;
+        }
+        int before = stack.stackSize;
+        for (MTEHatchOutputBus bus : GTUtility.validMTEList(mOutputBusses)) {
+            bus.storePartial(stack, false);
+            if (stack.stackSize <= 0) {
+                break;
+            }
+        }
+        return before - stack.stackSize;
     }
 
     /**
      * (Re-)scan for the nearest ignited USS and a valid Storage Bay within {@link #SCAN_RADIUS}, at most once every
      * {@link #SCAN_COOLDOWN_TICKS} — the sweep checks every position in the sphere (full resolution), which is too
-     * expensive to repeat every tick while a ship is docked. Between sweeps the cached result (including "not
-     * found") is reused.
+     * expensive to repeat every tick while a ship waits on the input side. Between sweeps the cached result
+     * (including "not found") is reused.
      */
     private void refreshLaunchTargets(long aTick, World world, int cx, int cy, int cz) {
         // NB: the `!= Long.MIN_VALUE` checks are NOT optional — the sentinels start at Long.MIN_VALUE, so
@@ -706,17 +853,57 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         }
     }
 
+    /**
+     * Once per MTE lifetime: a ship still sitting in the old docked slot (the controller's inventory slot) is
+     * unreachable now that ships come from the input buses — hand it to the output bus (drop what does not
+     * fit), so the item is not lost in an existing save.
+     */
+    private boolean legacyShipSlotMigrated;
+
+    private void migrateLegacyShipSlot() {
+        if (legacyShipSlotMigrated) {
+            return;
+        }
+        legacyShipSlotMigrated = true;
+        ItemStack docked = getControllerSlot();
+        if (docked == null) {
+            return;
+        }
+        mInventory[getControllerSlotIndex()] = null;
+        updateSlots();
+        int absorbed = outputItem(docked);
+        if (docked.stackSize > 0) {
+            IGregTechTileEntity base = getBaseMetaTileEntity();
+            World world = base == null ? null : base.getWorld();
+            if (world != null) {
+                GTUtility.dropItemsOrClusters(
+                    world,
+                    base.getXCoord() + 0.5f,
+                    base.getYCoord() + 0.5f,
+                    base.getZCoord() + 0.5f,
+                    java.util.Collections.singletonList(docked));
+            }
+        }
+        try {
+            LOGGER.info(
+                "[Voidcraft] gateway moved the legacy docked ship to the output bus ({} absorbed, {} dropped)",
+                absorbed,
+                docked.stackSize);
+        } catch (Throwable ignored) {}
+    }
+
     // endregion
 
     @Override
     public String[] getInfoData() {
         List<String> str = new java.util.ArrayList<>(java.util.Arrays.asList(super.getInfoData()));
         str.add("tt.voidcraft.gateway.infodata.header");
-        ItemStack ship = getControllerSlot();
-        if (ship != null) {
-            str.add(IGregTechDeviceInformation.encode("tt.voidcraft.gateway.infodata.ship", ship.getDisplayName()));
+        if (blueprint != null) {
+            str.add(
+                IGregTechDeviceInformation
+                    .encode("tt.voidcraft.gateway.infodata.blueprint", blueprint.getDisplayName()));
         } else {
-            str.add(IGregTechDeviceInformation.encode("tt.voidcraft.gateway.infodata.ship", ""));
+            str.add(IGregTechDeviceInformation.encode("tt.voidcraft.gateway.infodata.blueprint", ""));
         }
         return str.toArray(new String[0]);
     }
@@ -732,6 +919,7 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
             .addCasing("18", new ItemStack(TTCasingsContainer.sBlockCasingsBA0, 1, 10).getDisplayName(), false)
             .addInputBus("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             .addInputHatch("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .addOutputBus("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;

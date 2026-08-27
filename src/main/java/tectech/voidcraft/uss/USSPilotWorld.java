@@ -85,5 +85,57 @@ public interface USSPilotWorld {
      */
     void log(VoidcraftActiveShip ship, String message);
 
+    /**
+     * A CONSTRUCT command begins at the ship hover anchor: create or reuse the construction site there (the
+     * Voidbase blueprint + parts loadout from the ship payload) and arm its timed part transfer (one part per
+     * second per 100 construction power of the ship); a site with nothing left to take settles on the first tick.
+     *
+     * @param ship        the executing ship (its payload carries the build blueprint + parts loadout)
+     * @param targetKind  the ship hover target kind (the MOVE target string; see {@link #resolveTarget})
+     * @param targetIndex the RESOLVED hover body index (-1 star)
+     * @return true when the work started or has nothing to transfer (the command goes RUNNING and polls
+     *         {@link #constructTick}) / false when there is nothing to construct (no hover anchor, no blueprint,
+     *         or a base already stands there - the command reports FAILED and SKIPs)
+     */
+    boolean constructStart(VoidcraftActiveShip ship, String targetKind, int targetIndex);
+
+    /**
+     * One machine tick of the ship's CONSTRUCT leg (polled while its CONSTRUCT command is in flight): advances
+     * the site's pacing countdown, deposits one part per ticksPerItem from the ship's loadout (the site takes
+     * only what it still needs), and spawns the Voidbase when the site completes.
+     *
+     * @param ship        the executing ship
+     * @param targetKind  the ship hover target kind (the MOVE target string; see {@link #resolveTarget})
+     * @param targetIndex the RESOLVED hover body index (-1 star)
+     * @return true when construction is still running / false when the leg is over (the command reports DONE)
+     */
+    boolean constructTick(VoidcraftActiveShip ship, String targetKind, int targetIndex);
+
+    /**
+     * Probe whether a base can start repairing (the repair work command at a station): true when the station has
+     * integrity to restore and energy to spend (the command goes RUNNING); false - the command SKIPs.
+     *
+     * @param base the station being repaired (its own program runs REPAIR at its anchor)
+     * @return true when repair can run
+     */
+    boolean baseRepairStart(VoidcraftActiveBase base);
+
+    /**
+     * One REPAIR tick on a station (polled while its REPAIR command is in flight): spend energy buffer at the
+     * repair draw, accrue one integrity per second of repair.
+     *
+     * @param base the station
+     * @return true when integrity is still below the maximum (keep polling) / false when full (the command DONEs)
+     */
+    boolean baseRepairTick(VoidcraftActiveBase base);
+
+    /**
+     * A framework log line for a base (its own program log).
+     *
+     * @param base    the base (for the log identity)
+     * @param message the line (never null)
+     */
+    void logBase(VoidcraftActiveBase base, String message);
+
     // endregion
 }

@@ -8,18 +8,31 @@ import java.util.UUID;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiFactory;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTModularScreen;
 import tectech.Reference;
+import tectech.voidcraft.gui.VoidcraftProgramGui;
+import tectech.voidcraft.gui.VoidcraftProgramItemSource;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
 import tectech.voidcraft.ship.VoidcraftNbt;
 import tectech.voidcraft.ship.VoidcraftRole;
@@ -33,7 +46,7 @@ import tectech.voidcraft.ship.VoidcraftRole;
  * consumes. It is intentionally not a machine item and not placeable: the ship "lives" inside this item's NBT
  * (see {@link VoidcraftNbt}).
  */
-public class ItemVoidcraft extends Item {
+public class ItemVoidcraft extends Item implements IGuiHolder<PlayerInventoryGuiData> {
 
     public static final ItemVoidcraft INSTANCE;
 
@@ -146,6 +159,7 @@ public class ItemVoidcraft extends Item {
         } else {
             aList.add(EnumChatFormatting.GRAY + translateToLocal("item.tm.voidcraft.program.none"));
         }
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.voidcraft.editor"));
 
         int roles = VoidcraftNbt.readInt(nbt, VoidcraftNbt.TAG_ROLES);
         if (roles == 0) {
@@ -215,6 +229,63 @@ public class ItemVoidcraft extends Item {
             EnumChatFormatting.GRAY
                 + translateToLocalFormatted("item.tm.voidcraft.integrity", NumberFormatUtil.formatNumber(integrity)));
     }
+
+    // region program editor GUI — right-clicking the digitized item in hand opens the same editor as the controller
+    // block
+
+    /** Marks a same-tick block right-click (see {@link #openProgramEditor}) on both sides. */
+    private static final String BLOCK_USE_TICK_KEY = "vc_program_editor_block_use_tick";
+
+    @Override
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+        float hitX, float hitY, float hitZ) {
+        player.getEntityData()
+            .setLong(BLOCK_USE_TICK_KEY, world.getTotalWorldTime());
+        return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+    }
+
+    /**
+     * Right-clicking the digitized item in hand (in the AIR, not sneaking) opens the program editor. Block
+     * right-clicks are left untouched (the gateway blueprint flow is block-driven).
+     */
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (openProgramEditor(stack, player, world)) {
+            return stack;
+        }
+        return super.onItemRightClick(stack, world, player);
+    }
+
+    private static boolean openProgramEditor(ItemStack stack, EntityPlayer player, World world) {
+        if (player.isSneaking() || isEmptyFrame(stack)) {
+            return false;
+        }
+        // 1.7.10 sends a second USE_ITEM packet for a block right-click the block did not consume (same tick) —
+        // only an AIR right-click opens the editor.
+        if (world.getTotalWorldTime() == player.getEntityData()
+            .getLong(BLOCK_USE_TICK_KEY)) {
+            return false;
+        }
+        if (world.isRemote) {
+            PlayerInventoryGuiFactory.INSTANCE.openFromMainHandClient();
+        } else if (player instanceof EntityPlayerMP) {
+            PlayerInventoryGuiFactory.INSTANCE.openFromMainHand(player);
+        }
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PlayerInventoryGuiData guiData, PanelSyncManager syncManager, UISettings settings) {
+        return new VoidcraftProgramGui(new VoidcraftProgramItemSource(guiData, INSTANCE))
+            .build(guiData, syncManager, settings);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PlayerInventoryGuiData data, ModularPanel mainPanel) {
+        return new GTModularScreen(mainPanel, GTGuiThemes.TECTECH_STANDARD);
+    }
+    // endregion
 
     /**
      * Register the item with the game registry. Called from the voidcraft loader (pre-load phase).

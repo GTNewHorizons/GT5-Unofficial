@@ -51,9 +51,119 @@ public abstract class EOHRenderingUtils {
     private static final float[] BASE_ROTATIONS = { 130f, -49f, 67f };
     private static final ResourceLocation SPACE_LAYER_TEXTURE = new ResourceLocation(MODID, "models/spaceLayer.png");
 
+    /**
+     * The USS star's base layers — luminance-grayscale versions of the legacy {@code models/StarLayerN.png} (the
+     * legacy texture is orange, which skews the per-class tint): the star's color comes entirely from the tint, so
+     * the base must be neutral gray.
+     */
+    private static final ResourceLocation USS_STAR_LAYER_0 = new ResourceLocation(
+        MODID,
+        "textures/uss/star/StarLayer0.png");
+    private static final ResourceLocation USS_STAR_LAYER_1 = new ResourceLocation(
+        MODID,
+        "textures/uss/star/StarLayer1.png");
+    private static final ResourceLocation USS_STAR_LAYER_2 = new ResourceLocation(
+        MODID,
+        "textures/uss/star/StarLayer2.png");
+
+    private static final ResourceLocation[] LEGACY_STAR_LAYERS = { STAR_LAYER_0, STAR_LAYER_1, STAR_LAYER_2 };
+    private static final ResourceLocation[] USS_STAR_LAYERS = { USS_STAR_LAYER_0, USS_STAR_LAYER_1, USS_STAR_LAYER_2 };
+
+    /**
+     * Per-layer shift of the star's tint toward white (index 0 = the innermost layer, 2 = the outermost halo): the
+     * core keeps the star class's full color while the outer layers fade toward white, so the glow reads as the
+     * star's light scattering out.
+     */
+    private static final float[] USS_STAR_LAYER_WHITEN = { 0.0f, 0.6f, 0.95f };
+    private static final float[] NO_LAYER_WHITEN = { 0.0f, 0.0f, 0.0f };
+
+    /**
+     * Per-layer blend alpha (index 0 = the innermost layer, 2 = the outermost halo): the halo layers carry more
+     * alpha on USS stars so the glow reads as light scattering outward.
+     */
+    private static final float[] LEGACY_STAR_LAYER_ALPHA = { 1.0f, 0.4f, 0.2f };
+    private static final float[] USS_STAR_LAYER_ALPHA = { 1.0f, 0.5f, 0.4f };
+
+    /**
+     * Per-layer brightness gain (index 0 = the innermost layer, 2 = the outermost halo): values above 1.0
+     * overdrive the tint past full-bright — the clipped result reads as a hot glowing core and a blazing halo
+     * (the legacy star uses 1.0f).
+     */
+    private static final float[] NO_LAYER_GAIN = { 1.0f, 1.0f, 1.0f };
+    private static final float[] USS_STAR_LAYER_GAIN = { 1.0f, 1.6f, 2.0f };
+
+    /**
+     * The USS star's surface rotates ten times slower than the legacy star's shimmer (legacy uses 1.0f).
+     */
+    private static final float USS_STAR_ROTATION_SCALE = 0.1f;
+
+    /**
+     * Shift a tint toward white ({@code t} 0 = unchanged, 1 = pure white).
+     */
+    private static Color towardWhite(Color c, float t) {
+        final float r = c.getRed() / 255f, g = c.getGreen() / 255f, b = c.getBlue() / 255f;
+        return new Color(r + (1f - r) * t, g + (1f - g) * t, b + (1f - b) * t, 1.0f);
+    }
+
     public static void renderEOHStar(Matrix4fc base, IItemRenderer.ItemRenderType type, float partialTicks,
         double starRadius) {
-        renderStar(base, type, EOHStarColour, partialTicks, starRadius);
+        renderStar(
+            base,
+            type,
+            EOHStarColour,
+            partialTicks,
+            starRadius,
+            LEGACY_STAR_LAYERS,
+            NO_LAYER_WHITEN,
+            1.0f,
+            LEGACY_STAR_LAYER_ALPHA,
+            NO_LAYER_GAIN);
+    }
+
+    /**
+     * The star tinted with the color the machine's star type carries (the mesh is a shared texture; the tint is what
+     * distinguishes the star classes visually).
+     *
+     * @param color the opaque ARGB color of the star (the registered definition's color)
+     */
+    public static void renderEOHStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color color, float partialTicks,
+        double starRadius) {
+        renderStar(
+            base,
+            type,
+            color,
+            partialTicks,
+            starRadius,
+            LEGACY_STAR_LAYERS,
+            NO_LAYER_WHITEN,
+            1.0f,
+            LEGACY_STAR_LAYER_ALPHA,
+            NO_LAYER_GAIN);
+    }
+
+    /**
+     * The USS star: the three-layer mesh tinted with the star class's registered color over the neutral-gray USS
+     * base layers, so the tint reads true for any class color.
+     *
+     * The outer halo layers are progressively shifted toward white ({@link #USS_STAR_LAYER_WHITEN}) so the glow
+     * fades from the class color to white as it leaves the core, and every layer carries a brightness gain
+     * ({@link #USS_STAR_LAYER_GAIN}) that overdrives the bright spots past full-bright for the hot-glow look.
+     *
+     * @param color the opaque ARGB color of the star (the registered definition's color)
+     */
+    public static void renderUSSStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color color, float partialTicks,
+        double starRadius) {
+        renderStar(
+            base,
+            type,
+            color,
+            partialTicks,
+            starRadius,
+            USS_STAR_LAYERS,
+            USS_STAR_LAYER_WHITEN,
+            USS_STAR_ROTATION_SCALE,
+            USS_STAR_LAYER_ALPHA,
+            USS_STAR_LAYER_GAIN);
     }
 
     // Used for GORGE item renderer only.
@@ -61,13 +171,24 @@ public abstract class EOHRenderingUtils {
 
     public static void renderGORGEStar(Matrix4fc base, IItemRenderer.ItemRenderType type, float partialTicks,
         double starRadius) {
-        renderStar(base, type, GORGEStarColour, partialTicks, starRadius);
+        renderStar(
+            base,
+            type,
+            GORGEStarColour,
+            partialTicks,
+            starRadius,
+            LEGACY_STAR_LAYERS,
+            NO_LAYER_WHITEN,
+            1.0f,
+            LEGACY_STAR_LAYER_ALPHA,
+            NO_LAYER_GAIN);
     }
 
     private static final Matrix4f starBase = new Matrix4f();
 
     private static void renderStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color color, float partialTicks,
-        double starRadius) {
+        double starRadius, ResourceLocation[] layers, float[] towardWhite, float rotationScale, float[] layerAlpha,
+        float[] layerGain) {
         if (!shadersReady()) return;
 
         starBase.set(base);
@@ -87,9 +208,37 @@ public abstract class EOHRenderingUtils {
         texturedShader().use();
         eohSphere.bind();
 
-        renderStarLayer(0, STAR_LAYER_0, color, 1.0f, partialTicks, starRadius);
-        renderStarLayer(1, STAR_LAYER_1, color, 0.4f, partialTicks, starRadius);
-        renderStarLayer(2, STAR_LAYER_2, color, 0.2f, partialTicks, starRadius);
+        final Color[] layerColors = new Color[3];
+        for (int i = 0; i < 3; i++) {
+            layerColors[i] = towardWhite[i] > 0f ? towardWhite(color, towardWhite[i]) : color;
+        }
+        renderStarLayer(
+            0,
+            layers[0],
+            layerColors[0],
+            layerAlpha[0],
+            partialTicks,
+            starRadius,
+            rotationScale,
+            layerGain[0]);
+        renderStarLayer(
+            1,
+            layers[1],
+            layerColors[1],
+            layerAlpha[1],
+            partialTicks,
+            starRadius,
+            rotationScale,
+            layerGain[1]);
+        renderStarLayer(
+            2,
+            layers[2],
+            layerColors[2],
+            layerAlpha[2],
+            partialTicks,
+            starRadius,
+            rotationScale,
+            layerGain[2]);
 
         eohSphere.unbind();
         ShaderProgram.clear();
@@ -105,7 +254,7 @@ public abstract class EOHRenderingUtils {
     private static final Matrix4f layerMatrix = new Matrix4f();
 
     private static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha,
-        float partialTicks, double starRadius) {
+        float partialTicks, double starRadius, float rotationScale, float gain) {
 
         if (layer >= 3) throw new IllegalArgumentException("Star rendering only supports three layers.");
 
@@ -120,7 +269,7 @@ public abstract class EOHRenderingUtils {
             .getTextureManager()
             .bindTexture(texture);
 
-        final float rotation = (BASE_ROTATIONS[layer] + ROTATION_SPEEDS[layer] * partialTicks) % 360f;
+        final float rotation = (BASE_ROTATIONS[layer] + ROTATION_SPEEDS[layer] * rotationScale * partialTicks) % 360f;
         final int maxLayer = 2;
         final float scale = (float) (starRadius * Math.pow(0.95f, maxLayer - layer));
         final Vector3f axis = LAYER_AXIS[layer];
@@ -129,12 +278,14 @@ public abstract class EOHRenderingUtils {
             .rotate((float) Math.toRadians(rotation), axis.x, axis.y, axis.z)
             .scale(scale);
 
+        // The gain may push the tint channels past 1.0: the framebuffer clips them to full-bright, which is the
+        // hot-glow look the overdriven layers want.
         final ShaderHandle shader = texturedShader();
         GL20.glUniform4f(
             shader.loc(SharedShaders.U_TINT),
-            color.getRed() / 255f,
-            color.getGreen() / 255f,
-            color.getBlue() / 255f,
+            color.getRed() / 255f * gain,
+            color.getGreen() / 255f * gain,
+            color.getBlue() / 255f * gain,
             alpha);
         shader.uploadModel(layerMatrix);
         eohSphere.draw();
@@ -290,8 +441,9 @@ public abstract class EOHRenderingUtils {
                 ussStitchedCube().render();
             } else {
                 // Unresolvable dimension key (mod absent / renamed): the proven pass-5.1 tinted-sphere fallback
-                // keeps the planet visible — star layer under the tint for a little surface variation.
-                bindTexture(STAR_LAYER_0);
+                // keeps the planet visible — the neutral-gray USS star layer under the tint for a little surface
+                // variation (the orange legacy layer would skew the planet's tint).
+                bindTexture(USS_STAR_LAYER_0);
                 final int argb = spec.color != 0 ? spec.color : 0xFFFFFFFF;
                 GL20.glUniform4f(
                     shader.loc(SharedShaders.U_TINT),
