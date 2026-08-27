@@ -34,7 +34,8 @@ import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 public final class AE2Compat {
 
     public static void onPreInit() {
-        ChatComponentCustomRegistry.register(ChatComponentItemDisplayName::new);
+        ChatComponentCustomRegistry.register(ChatComponentGhostCircuitSuffix::new);
+        ChatComponentCustomRegistry.register(ChatComponentNonConsumedItemsSuffix::new);
 
         IInterfaceTerminalRegistry reg = AEApi.instance()
             .registries()

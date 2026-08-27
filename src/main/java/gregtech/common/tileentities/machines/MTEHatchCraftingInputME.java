@@ -125,6 +125,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.config.Gregtech;
 import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputMEGui;
+import gregtech.crossmod.ae2.ChatComponentNonConsumedItemsSuffix;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -693,8 +694,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             name.append(getLocalName());
         }
 
-        return name.append(this.getNameSuffix())
-            .toString();
+        IChatComponent suffix = this.getNameSuffix();
+        if (suffix != null) {
+            name.append(suffix.getUnformattedText());
+        }
+        return name.toString();
     }
 
     @Override
@@ -728,11 +732,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             }
         }
         if (!manualSlots.isEmpty()) {
-            IChatComponent manualSuffix = CommonBaseMetaTileEntity
-                .formatSuffix(Gregtech.machines.itemSlotsSuffixFormat, CommonBaseMetaTileEntity.itemNames(manualSlots));
-            if (manualSuffix != null) {
-                suffix = suffix == null ? manualSuffix : suffix.appendSibling(manualSuffix);
-            }
+            IChatComponent manualSuffix = new ChatComponentNonConsumedItemsSuffix(manualSlots);
+            suffix = suffix == null ? manualSuffix : suffix.appendSibling(manualSuffix);
         }
 
         return suffix;

@@ -6,9 +6,7 @@ import static gregtech.GTLoggers.GT_FML_LOGGER;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.IllegalFormatException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +14,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,8 +42,8 @@ import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.Gregtech;
-import gregtech.crossmod.ae2.ChatComponentItemDisplayName;
+import gregtech.crossmod.ae2.ChatComponentGhostCircuitSuffix;
+import gregtech.crossmod.ae2.ChatComponentNonConsumedItemsSuffix;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
@@ -644,71 +641,19 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             circuitNumbers.addAll(provider.getPhysicalCircuitNumbers());
         }
         if (!circuitNumbers.isEmpty()) {
-            String joined = circuitNumbers.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining(", "));
-            suffix = appendSuffixPart(suffix, formatSuffix(Gregtech.machines.ghostCircuitSuffixFormat, joined));
+            suffix = new ChatComponentGhostCircuitSuffix(circuitNumbers);
         }
 
         // Non-consumed items suffix (e.g. molds in Extruder)
         if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof INonConsumedItemDisplay provider) {
             List<ItemStack> items = provider.getNonConsumedInputDisplayItems();
             if (!items.isEmpty()) {
-                suffix = appendSuffixPart(
-                    suffix,
-                    formatSuffix(Gregtech.machines.itemSlotsSuffixFormat, itemNames(items)));
+                IChatComponent itemSuffix = new ChatComponentNonConsumedItemsSuffix(items);
+                suffix = suffix == null ? itemSuffix : suffix.appendSibling(itemSuffix);
             }
         }
 
         return suffix;
-    }
-
-    /**
-     * Builds the display names of non-consumed items as components, so they are localized on the client. Names like
-     * "Mold (Ingot)" are shortened to just "Ingot" there, so the interface name stays readable.
-     */
-    public static IChatComponent itemNames(List<ItemStack> items) {
-        IChatComponent names = null;
-        for (ItemStack stack : items) {
-            if (stack == null) continue;
-            IChatComponent name = new ChatComponentItemDisplayName(stack, true);
-            if (names == null) {
-                names = name;
-            } else {
-                names.appendText(", ")
-                    .appendSibling(name);
-            }
-        }
-        return names;
-    }
-
-    /**
-     * Applies a configurable suffix format to a component. The format is applied to a placeholder first, so that it is
-     * validated and escapes are handled exactly like before, then the placeholder is replaced by the component.
-     */
-    public static IChatComponent formatSuffix(String format, Object content) {
-        if (content == null) return null;
-        final String formatted;
-        try {
-            formatted = String.format(format, SUFFIX_PLACEHOLDER);
-        } catch (IllegalFormatException e) {
-            return null;
-        }
-        final int index = formatted.indexOf(SUFFIX_PLACEHOLDER);
-        if (index < 0) return new ChatComponentText(formatted);
-        final IChatComponent result = new ChatComponentText(formatted.substring(0, index));
-        if (content instanceof IChatComponent component) {
-            result.appendSibling(component);
-        } else {
-            result.appendText(String.valueOf(content));
-        }
-        return result.appendText(formatted.substring(index + SUFFIX_PLACEHOLDER.length()));
-    }
-
-    private static IChatComponent appendSuffixPart(IChatComponent suffix, IChatComponent part) {
-        if (part == null) return suffix;
-        if (suffix == null) return part;
-        return suffix.appendSibling(part);
     }
 
     /**
