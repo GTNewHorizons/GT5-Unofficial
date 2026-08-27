@@ -108,6 +108,8 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
             : iconPair.getLeft();
         if (iconPair.getRight() == overlayPair.getRight() && overlayPair.getRight() != TextureSetIconType.INVISIBLE) {
             mOverlay = overlayPair.getLeft();
+        } else {
+            mOverlay = null;
         }
     }
 
