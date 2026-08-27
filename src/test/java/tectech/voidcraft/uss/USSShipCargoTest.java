@@ -105,7 +105,7 @@ public class USSShipCargoTest {
                     new USSPlanetOre(Materials.Iron, 100L, 2.0),
                     new USSPlanetOre(Materials.Tin, 100L, 3.0)))
             .build();
-        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 0.5, 1.0, 1.0, 10, 10);
+        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 0.5, 1.0, 1.0, 10, 10, false, -1);
 
         long base = USSConstants.minerOreAmount(1000L);
         USSShipCargo.MinerResult result = USSShipCargo.minePlanet(planet, 1000L, null);
@@ -130,7 +130,7 @@ public class USSShipCargoTest {
             .allowedStarType(USSStarType.MAIN_SEQUENCE)
             .ores(Collections.singletonList(new USSPlanetOre(Materials.Copper, 100L, 1.0)))
             .build();
-        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 0.5, 1.0, 1.0, 10, 10);
+        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 0.5, 1.0, 1.0, 10, 10, false, -1);
 
         // A reserve of only 50 items (well below the base×weight share).
         VoidcraftUSS.PlanetReserve reserve = new VoidcraftUSS.PlanetReserve(initialCopper(50L));
@@ -156,7 +156,7 @@ public class USSShipCargoTest {
             .allowedStarType(USSStarType.MAIN_SEQUENCE)
             .ores(Collections.singletonList(new USSPlanetOre(Materials.Copper, 100L, 1.0)))
             .build();
-        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 2.0, 1.0, 1.0, 10, 10);
+        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 2.0, 1.0, 1.0, 10, 10, false, -1);
 
         // planetSize = 2.0 → size² = 4.0 → reserve = 100 × 1_000_000 × 4.0 = 400_000_000.
         VoidcraftUSS.PlanetReserve expected = VoidcraftUSS.PlanetReserve.fromPlanet(def, planet.scale);
@@ -177,7 +177,7 @@ public class USSShipCargoTest {
             .allowedStarType(USSStarType.MAIN_SEQUENCE)
             .ores(Collections.singletonList(new USSPlanetOre(Materials.Copper, 1L, 1.0))) // 1 million items
             .build();
-        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 1.0, 1.0, 1.0, 10, 10);
+        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 1.0, 1.0, 1.0, 10, 10, false, -1);
 
         long base = USSConstants.minerOreAmount(100L);
         USSShipCargo.MinerResult mission1 = USSShipCargo.minePlanet(planet, 100L, null);
@@ -386,7 +386,7 @@ public class USSShipCargoTest {
                 Arrays
                     .asList(new USSPlanetOre(Materials.Copper, 100L, 1.0), new USSPlanetOre(Materials.Iron, 100L, 1.0)))
             .build();
-        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 1.0, 1.0, 1.0, 10, 10);
+        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 1.0, 1.0, 1.0, 10, 10, false, -1);
 
         USSShipCargo.MinerResult result = USSShipCargo.minePlanet(planet, 1000L, null);
         NBTTagList items = USSShipCargo.readItems(result.cargo);

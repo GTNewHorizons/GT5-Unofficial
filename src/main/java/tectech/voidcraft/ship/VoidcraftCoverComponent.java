@@ -32,13 +32,13 @@ import java.util.Optional;
 public enum VoidcraftCoverComponent {
 
     THRUSTER_NOZZLE(0, "Voidcraft Thruster Nozzle", "tt.voidcraft.cover.thruster_nozzle", VoidcraftComponent.ENGINE, 0,
-        3, 40, 0, 0, 0, 0, 0, 2, 0, 0),
+        3, 120, 0, 0, 0, 0, 0, 2, 0, 0),
 
     ARMOR_PLATE(1, "Voidcraft Armor Plate", "tt.voidcraft.cover.armor_plate", VoidcraftComponent.FRAME, 0, 2, 0, 0, 0,
-        0, 0, 0, 0, 0, 5),
+        0, 0, 0, 0, 0, 500),
 
-    CARGO_POD(2, "Voidcraft Cargo Pod", "tt.voidcraft.cover.cargo_pod", VoidcraftComponent.CARGO_BAY, 0, 6, 0, 20, 0, 0,
-        0, 0, 0, 0, 0),
+    CARGO_POD(2, "Voidcraft Cargo Pod", "tt.voidcraft.cover.cargo_pod", VoidcraftComponent.CARGO_BAY, 0, 6, 0, 200, 0,
+        0, 0, 0, 0, 0, 0),
 
     MINING_ARRAY(3, "Voidcraft Mining Array", "tt.voidcraft.cover.mining_array", VoidcraftComponent.MINING_CENTRE, 1, 8,
         0, 0, 40, 0, 0, 0, 8, 0, 0),

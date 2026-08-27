@@ -137,7 +137,7 @@ public final class USSConstants {
     /**
      * Pass 7/8/9 — the mining hover height: 0.5 blocks above the target planet's SURFACE (user spec: "the
      * destination 0.5 blocks above that planet"). Pass 9: the rendered planet is a unit CUBE of size spec.scale
-     * (0.35–0.75 = its edge length; its surface sits 0.5·scale above its center), so the renderer adds HALF that
+     * (0.35–1.32 = its edge length; its surface sits 0.5·scale above its center), so the renderer adds HALF that
      * scale on top of this constant — a flat 0.5 over the center would swallow the ship (and the whole laser
      * beam) inside the planets. The ship tracks the planet's live rendered position while working.
      */

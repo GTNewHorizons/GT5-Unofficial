@@ -1,6 +1,5 @@
 package tectech.voidcraft.uss;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -8,38 +7,36 @@ import java.util.List;
 import gregtech.api.enums.Materials;
 
 /**
- * The initial Voidcraft planet catalog — the existing 12 worlds (previously the fixed {@link USSPlanetType} enum)
- * re-registered into the new registration-based system ({@link USSPlanetRegistry}).
+ * The Voidcraft planet catalog — the 45 rendered planet textures, each registered into {@link USSPlanetRegistry}.
  *
  * <p>
- * <strong>What is preserved vs. placeholder.</strong> The fields that already existed on {@link USSPlanetType} are
- * carried over verbatim — the texture (the IORE dimension abbreviation, was {@code visual}), the allowed star type
- * (was the one-star pool), and the ore elements (was the 3-material set). The fields that are NEW in the rework are
- * set to neutral, valid placeholders to be tuned by game design: the size range uses the current rendered scale band
- * ({@code 0.35–0.75}, inside the user-specified {@code 0.0–5.0} envelope), each ore gets {@code amount = 100}
- * (million) and {@code weight = 1.0}, and no fluids are defined yet.
+ * Every planet is one of the bundled textures (see {@code assets/tectech/textures/uss/planets/}), sized by its
+ * texture tier ({@link PlanetTier}: tiny 8×, small 12×, normal 16×, big 24×, huge 32×), and either a gas giant or a
+ * rocky world. A planet's hologram scale is the tier's base scale with a ±10% variation (set by
+ * {@link USSPlanetDefinition.Builder#tier(PlanetTier)}); its orbit-ring probability follows the gas-giant rule
+ * (gas giants 50%, normal-and-larger non-giants 10%, tiny/small 0% — see
+ * {@link USSPlanetDefinition#ringChance()}).
  *
  * <p>
- * The {@link #register} helper is <em>list-based</em>: it takes the allowed star types, the ore definitions (each an
- * {@link USSPlanetOre} with its own amount + weight), and the available fluids as lists — so per-planet variation
- * (multiple star classes, differing ore amounts/weights, fluid sets) is expressed directly at the call site rather
- * than through parallel scalar parameters.
+ * All planets may orbit any star class; the per-star pool can be refined later (the star-registration reconciliation
+ * pass). The ore sets are placeholders (3 materials each, amount {@value #DEFAULT_ORE_AMOUNT} million, weight
+ * {@value #DEFAULT_ORE_WEIGHT}) to be rebalanced in game design.
  *
  * <p>
  * Call {@link #registerAll()} once (idempotent) to populate the registry. Bare-JVM safe: only
- * {@link Materials}/{@link USSStarType} data.
+ * {@link Materials}/{@link USSStarType}/{@link PlanetTier} data.
  */
 public final class USSPlanetCatalog {
 
-    /** Neutral placeholder ore amount (in millions) for the re-registered catalog — tune per planet as desired. */
+    /** Placeholder ore amount (in millions) for the catalog — rebalanced later. */
     public static final long DEFAULT_ORE_AMOUNT = 100L;
 
-    /** Neutral placeholder ore weight for the re-registered catalog — tune per planet as desired. */
+    /** Placeholder ore weight for the catalog — rebalanced later. */
     public static final double DEFAULT_ORE_WEIGHT = 1.0;
 
-    /** Default size range (preserves the current rendered scale band, inside the 0.0–5.0 envelope). */
-    public static final float DEFAULT_SIZE_MIN = 0.35f;
-    public static final float DEFAULT_SIZE_MAX = 0.75f;
+    /** Every star class (the catalog is star-agnostic; the per-star pool can be refined later). */
+    private static final List<USSStarType> ALL_STARS = Arrays
+        .asList(USSStarType.MAIN_SEQUENCE, USSStarType.WHITE_DWARF, USSStarType.SUPERMASSIVE);
 
     private static boolean registered;
 
@@ -48,7 +45,7 @@ public final class USSPlanetCatalog {
     }
 
     /**
-     * Register the 12 catalog planets into the {@link USSPlanetRegistry}. Idempotent — a second call is a no-op.
+     * Register the 45 catalog planets into the {@link USSPlanetRegistry}. Idempotent — a second call is a no-op.
      */
     public static synchronized void registerAll() {
         if (registered) {
@@ -56,122 +53,89 @@ public final class USSPlanetCatalog {
         }
         registered = true;
 
-        // Main sequence — young star, common elements.
-        register(
-            "rocky_world",
-            "Ma",
-            stars(USSStarType.MAIN_SEQUENCE),
-            ores(Materials.Copper, Materials.Iron, Materials.Tin),
-            Collections.<Materials>emptyList());
-        register(
-            "ocean_world",
-            "Eu",
-            stars(USSStarType.MAIN_SEQUENCE),
-            ores(Materials.Nickel, Materials.Zinc, Materials.Magnesium),
-            Collections.<Materials>emptyList());
-        register(
-            "forest_world",
-            "Eg",
-            stars(USSStarType.MAIN_SEQUENCE),
-            ores(Materials.Aluminium, Materials.Boron, Materials.Silicon),
-            Collections.<Materials>emptyList());
-        register(
-            "moon_world",
-            "Mo",
-            stars(USSStarType.MAIN_SEQUENCE),
-            ores(Materials.Lithium, Materials.Lead, Materials.Silver),
-            Collections.<Materials>emptyList());
+        // TINY (8× faces) — the smallest rocky bodies.
+        register("tiny_rock_1", PlanetTier.TINY, false, Materials.Iron, Materials.Copper, Materials.Tin);
+        register("tiny_rock_2", PlanetTier.TINY, false, Materials.Iron, Materials.Copper, Materials.Tin);
 
-        // White dwarf — ancient dense remnant, dense mid elements.
-        register(
-            "dense_world",
-            "Ce",
-            stars(USSStarType.WHITE_DWARF),
-            ores(Materials.Osmium, Materials.Yttrium, Materials.Platinum),
-            Collections.<Materials>emptyList());
-        register(
-            "crystal_world",
-            "Tr",
-            stars(USSStarType.WHITE_DWARF),
-            ores(Materials.Tantalum, Materials.Molybdenum, Materials.Scandium),
-            Collections.<Materials>emptyList());
-        register(
-            "volcanic_world",
-            "Io",
-            stars(USSStarType.WHITE_DWARF),
-            ores(Materials.Tungsten, Materials.Cobalt, Materials.Bismuth),
-            Collections.<Materials>emptyList());
-        register(
-            "metallic_world",
-            "Ph",
-            stars(USSStarType.WHITE_DWARF),
-            ores(Materials.Niobium, Materials.Titanium, Materials.Vanadium),
-            Collections.<Materials>emptyList());
+        // SMALL (12× faces) — small rocky worlds and the two named inner planets.
+        register("small_rock_1", PlanetTier.SMALL, false, Materials.Iron, Materials.Copper, Materials.Tin);
+        register("small_rock_2", PlanetTier.SMALL, false, Materials.Iron, Materials.Copper, Materials.Tin);
+        register("mars", PlanetTier.SMALL, false, Materials.Iron, Materials.Copper, Materials.Tin);
+        register("mercury", PlanetTier.SMALL, false, Materials.Iron, Materials.Copper, Materials.Tin);
 
-        // Supermassive — extreme star, rare/exotic heavy elements.
-        register(
-            "gas_giant",
-            "Ve",
-            stars(USSStarType.SUPERMASSIVE),
-            ores(Materials.Uranium, Materials.Mercury, Materials.Phosphorus),
-            Collections.<Materials>emptyList());
-        register(
-            "rare_earth_world",
-            "Ga",
-            stars(USSStarType.SUPERMASSIVE),
-            ores(Materials.Indium, Materials.Neodymium, Materials.Tellurium),
-            Collections.<Materials>emptyList());
-        register(
-            "gold_world",
-            "As",
-            stars(USSStarType.SUPERMASSIVE),
-            ores(Materials.Gold, Materials.Palladium, Materials.Iridium),
-            Collections.<Materials>emptyList());
-        register(
-            "heavy_world",
-            "Ra",
-            stars(USSStarType.SUPERMASSIVE),
-            ores(Materials.Rubidium, Materials.Caesium, Materials.Sulfur),
-            Collections.<Materials>emptyList());
-    }
-
-    /**
-     * Register one planet from list-based data.
-     *
-     * @param id               the stable, registry-unique identifier
-     * @param texture          the texture reference (IORE dimension abbreviation for now)
-     * @param allowedStarTypes the star types this planet may orbit (must be non-empty)
-     * @param oreDefinitions   the available ores, each with its own amount (in millions) and weight
-     * @param fluids           the available fluids (materials that yield a fluid; empty when none)
-     */
-    private static void register(String id, String texture, List<USSStarType> allowedStarTypes,
-        List<USSPlanetOre> oreDefinitions, List<Materials> fluids) {
-        USSPlanetDefinition.Builder b = USSPlanetDefinition.builder()
-            .id(id)
-            .texture(texture)
-            .sizeRange(DEFAULT_SIZE_MIN, DEFAULT_SIZE_MAX)
-            .allowedStarTypes(allowedStarTypes)
-            .ores(oreDefinitions)
-            .fluids(fluids);
-        USSPlanetRegistry.register(b.build());
-    }
-
-    /**
-     * Wrap one or more star types into a list (a single-element list for the common one-star case).
-     */
-    private static List<USSStarType> stars(USSStarType... types) {
-        return Arrays.asList(types);
-    }
-
-    /**
-     * Build the ore-definition list from elements, applying the catalog's neutral placeholder amount + weight.
-     */
-    private static List<USSPlanetOre> ores(Materials... materials) {
-        List<USSPlanetOre> result = new ArrayList<>(materials.length);
-        for (Materials material : materials) {
-            result.add(new USSPlanetOre(material, DEFAULT_ORE_AMOUNT, DEFAULT_ORE_WEIGHT));
+        // NORMAL (16× faces) — the common mid-tier worlds.
+        for (int i = 1; i <= 9; i++) {
+            register(
+                "normal_rocky_" + i,
+                PlanetTier.NORMAL,
+                false,
+                Materials.Aluminium,
+                Materials.Nickel,
+                Materials.Zinc);
         }
-        return result;
+        for (int i = 1; i <= 5; i++) {
+            register(
+                "normal_gas_" + i,
+                PlanetTier.NORMAL,
+                true,
+                Materials.Uranium,
+                Materials.Mercury,
+                Materials.Phosphorus);
+        }
+        register("earth", PlanetTier.NORMAL, false, Materials.Aluminium, Materials.Copper, Materials.Tin);
+        register("venus", PlanetTier.NORMAL, false, Materials.Sulfur, Materials.Phosphorus, Materials.Silicon);
+        register("tidal_habit", PlanetTier.NORMAL, false, Materials.Magnesium, Materials.Lithium, Materials.Boron);
+        register("tidal_hot", PlanetTier.NORMAL, false, Materials.Bismuth, Materials.Lead, Materials.Silicon);
+
+        // BIG (24× faces) — large worlds and the mid gas giants.
+        for (int i = 1; i <= 4; i++) {
+            register(
+                "big_rocky_" + i,
+                PlanetTier.BIG,
+                false,
+                Materials.Titanium,
+                Materials.Niobium,
+                Materials.Vanadium);
+        }
+        for (int i = 1; i <= 8; i++) {
+            register("big_gas_" + i, PlanetTier.BIG, true, Materials.Tungsten, Materials.Cobalt, Materials.Bismuth);
+        }
+        register("neptune", PlanetTier.BIG, true, Materials.Osmium, Materials.Platinum, Materials.Palladium);
+        register("uranus", PlanetTier.BIG, true, Materials.Platinum, Materials.Gold, Materials.Silver);
+        register("waterworld", PlanetTier.BIG, false, Materials.Magnesium, Materials.Lithium, Materials.Boron);
+
+        // HUGE (32× faces) — the largest gas giants.
+        for (int i = 1; i <= 4; i++) {
+            register("huge_gas_" + i, PlanetTier.HUGE, true, Materials.Osmium, Materials.Platinum, Materials.Iridium);
+        }
+        register("jupiter", PlanetTier.HUGE, true, Materials.Gold, Materials.Platinum, Materials.Iridium);
+        register("saturn", PlanetTier.HUGE, true, Materials.Platinum, Materials.Gold, Materials.Palladium);
+    }
+
+    /**
+     * Register one planet: its texture is {@code textures/uss/planets/<id>/stitched.png} (relative to the mod's
+     * texture root), sized by its tier, allowed around every star class, carrying the given placeholder ore set.
+     *
+     * @param id        the stable, registry-unique identifier (also the texture folder name)
+     * @param tier      the rendered-size tier (set by the texture resolution)
+     * @param gasGiant  whether this is a gas giant (affects the orbit-ring probability)
+     * @param materials the placeholder ore materials (3)
+     */
+    private static void register(String id, PlanetTier tier, boolean gasGiant, Materials... materials) {
+        final List<USSPlanetOre> ores = new java.util.ArrayList<>(materials.length);
+        for (Materials material : materials) {
+            ores.add(new USSPlanetOre(material, DEFAULT_ORE_AMOUNT, DEFAULT_ORE_WEIGHT));
+        }
+        USSPlanetDefinition definition = USSPlanetDefinition.builder()
+            .id(id)
+            .texture("textures/uss/planets/" + id + "/stitched.png")
+            .tier(tier)
+            .gasGiant(gasGiant)
+            .allowedStarTypes(ALL_STARS)
+            .ores(ores)
+            .fluids(Collections.<Materials>emptyList())
+            .build();
+        USSPlanetRegistry.register(definition);
     }
 
     /**

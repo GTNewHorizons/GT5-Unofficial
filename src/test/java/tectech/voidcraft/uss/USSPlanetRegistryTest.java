@@ -161,10 +161,10 @@ public class USSPlanetRegistryTest {
     // region catalog
 
     @Test
-    public void testCatalogRegistersTwelvePlanets() {
+    public void testCatalogRegistersAllPlanets() {
         assertEquals(0, USSPlanetRegistry.size());
         USSPlanetCatalog.registerAll();
-        assertEquals(12, USSPlanetRegistry.size());
+        assertEquals(45, USSPlanetRegistry.size());
     }
 
     @Test
@@ -173,59 +173,66 @@ public class USSPlanetRegistryTest {
         int first = USSPlanetRegistry.size();
         USSPlanetCatalog.registerAll(); // second call is a no-op
         assertEquals(first, USSPlanetRegistry.size());
-        assertEquals(12, USSPlanetRegistry.size());
+        assertEquals(45, USSPlanetRegistry.size());
     }
 
     @Test
-    public void testCatalogPoolsMatchLegacyFourPerStar() {
+    public void testCatalogPoolsCoverEveryStar() {
+        // The catalog is star-agnostic: every planet may orbit any star class, so each pool is the full set.
         USSPlanetCatalog.registerAll();
         assertEquals(
-            4,
+            45,
             USSPlanetRegistry.pool(USSStarType.MAIN_SEQUENCE)
                 .size());
         assertEquals(
-            4,
+            45,
             USSPlanetRegistry.pool(USSStarType.WHITE_DWARF)
                 .size());
         assertEquals(
-            4,
+            45,
             USSPlanetRegistry.pool(USSStarType.SUPERMASSIVE)
                 .size());
     }
 
     @Test
-    public void testCatalogPreservesLegacyData() {
+    public void testCatalogPlanetData() {
         USSPlanetCatalog.registerAll();
 
-        USSPlanetDefinition rocky = USSPlanetRegistry.get("rocky_world");
-        assertEquals("Ma", rocky.getTexture());
-        assertTrue(rocky.allowsStarType(USSStarType.MAIN_SEQUENCE));
+        // A named rocky world: its texture is the bundled stitched.png path, sized by tier, with a placeholder ore set.
+        USSPlanetDefinition mars = USSPlanetRegistry.get("mars");
+        assertEquals("textures/uss/planets/mars/stitched.png", mars.getTexture());
+        assertEquals(PlanetTier.SMALL, mars.getTier());
+        assertFalse(mars.isGasGiant());
+        assertTrue(mars.allowsStarType(USSStarType.MAIN_SEQUENCE));
         assertEquals(
             3,
-            rocky.getOres()
+            mars.getOres()
                 .size());
         assertEquals(
-            Materials.Copper,
-            rocky.getOres()
+            Materials.Iron,
+            mars.getOres()
                 .get(0)
                 .getOreType());
         assertEquals(
-            Materials.Iron,
-            rocky.getOres()
+            Materials.Copper,
+            mars.getOres()
                 .get(1)
                 .getOreType());
         assertEquals(
             Materials.Tin,
-            rocky.getOres()
+            mars.getOres()
                 .get(2)
                 .getOreType());
 
-        USSPlanetDefinition gas = USSPlanetRegistry.get("gas_giant");
-        assertEquals("Ve", gas.getTexture());
-        assertTrue(gas.allowsStarType(USSStarType.SUPERMASSIVE));
+        // A gas giant: flagged as such (50% ring chance), huge tier, allowed around every star class.
+        USSPlanetDefinition jupiter = USSPlanetRegistry.get("jupiter");
+        assertEquals("textures/uss/planets/jupiter/stitched.png", jupiter.getTexture());
+        assertEquals(PlanetTier.HUGE, jupiter.getTier());
+        assertTrue(jupiter.isGasGiant());
+        assertTrue(jupiter.allowsStarType(USSStarType.SUPERMASSIVE));
         assertEquals(
-            Materials.Uranium,
-            gas.getOres()
+            Materials.Gold,
+            jupiter.getOres()
                 .get(0)
                 .getOreType());
     }
@@ -233,8 +240,8 @@ public class USSPlanetRegistryTest {
     @Test
     public void testCatalogOresCarryPlaceholderAmountAndWeight() {
         USSPlanetCatalog.registerAll();
-        USSPlanetDefinition rocky = USSPlanetRegistry.get("rocky_world");
-        for (USSPlanetOre ore : rocky.getOres()) {
+        USSPlanetDefinition mars = USSPlanetRegistry.get("mars");
+        for (USSPlanetOre ore : mars.getOres()) {
             assertEquals(USSPlanetCatalog.DEFAULT_ORE_AMOUNT, ore.getAmount());
             assertEquals(USSPlanetCatalog.DEFAULT_ORE_WEIGHT, ore.getWeight(), 1e-9);
         }

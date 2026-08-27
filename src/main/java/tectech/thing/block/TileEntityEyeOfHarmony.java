@@ -148,19 +148,25 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     private final List<PlanetSpec> planetSpecs = new ArrayList<>();
 
     /**
-     * One serializable planet description (dimension key + orbit parameters). The dimension key is the
-     * {@code gtneioreplugin.ModBlocks} abbreviation of the dimension-display block drawn as the hologram.
+     * One serializable planet description (texture + orbit parameters). The texture is the resource path of the
+     * planet's {@code stitched.png} (relative to the mod's texture root); the ring texture is the resource path of its
+     * orbit-ring image (relative to the same root, empty when the planet has no ring).
      */
     public static final class PlanetSpec {
 
-        public PlanetSpec(String dimension, float distance, float scale, float orbitSpeed, float rotationSpeed,
+        public PlanetSpec(String texture, float distance, float scale, float orbitSpeed, float rotationSpeed,
             float xAngle, float zAngle) {
-            this(dimension, distance, scale, orbitSpeed, rotationSpeed, xAngle, zAngle, 0);
+            this(texture, distance, scale, orbitSpeed, rotationSpeed, xAngle, zAngle, 0, "");
         }
 
-        public PlanetSpec(String dimension, float distance, float scale, float orbitSpeed, float rotationSpeed,
+        public PlanetSpec(String texture, float distance, float scale, float orbitSpeed, float rotationSpeed,
             float xAngle, float zAngle, int color) {
-            this.dimension = dimension;
+            this(texture, distance, scale, orbitSpeed, rotationSpeed, xAngle, zAngle, color, "");
+        }
+
+        public PlanetSpec(String texture, float distance, float scale, float orbitSpeed, float rotationSpeed,
+            float xAngle, float zAngle, int color, String ringTexture) {
+            this.texture = texture;
             this.distance = distance;
             this.scale = scale;
             this.orbitSpeed = orbitSpeed;
@@ -168,9 +174,11 @@ public class TileEntityEyeOfHarmony extends TileEntity {
             this.xAngle = xAngle;
             this.zAngle = zAngle;
             this.color = color;
+            this.ringTexture = ringTexture;
         }
 
-        public final String dimension;
+        /** The planet's hologram texture (the resource path of its {@code stitched.png}, relative to the mod root). */
+        public final String texture;
         public final float distance;
         public final float scale;
         public final float orbitSpeed;
@@ -179,19 +187,25 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         public final float zAngle;
 
         /**
-         * Tint (ARGB) for the USS self-contained tinted-sphere orbit render; 0 = unset (the legacy block-hologram
-         * path draws the dimension block instead).
+         * Tint (ARGB) for the USS self-contained tinted-sphere fallback render; 0 = unset (white).
          */
         public final int color;
+
+        /**
+         * The orbit-ring texture (the resource path of the ring image, relative to the mod root); empty when the
+         * planet has no ring.
+         */
+        public final String ringTexture;
     }
 
     /**
-     * Install an explicit planet system (replacing anything present, including the legacy lazy list). A null or
-     * empty list clears the explicit system — the legacy lazy-random path applies again.
+     * Install an explicit (Voidcraft) planet system (replacing anything present). A null or empty list clears the
+     * explicit system — the legacy lazy-random path applies again.
      *
      * <p>
-     * Dimension keys that do not resolve to a registered block (mod not loaded / renamed) are skipped for the
-     * render list but kept in the specs (the NBT round-trip stays lossless).
+     * Voidcraft planets are rendered from their bundled textures (see {@link PlanetSpec#texture}), not from the IORE
+     * dimension-display blocks, so the legacy {@code orbitingObjects} render list is left empty for an explicit
+     * system — the USS render path reads {@link #getPlanetSpecs()} directly.
      *
      * @param specs the explicit planet system (null allowed)
      */
@@ -203,20 +217,6 @@ public class TileEntityEyeOfHarmony extends TileEntity {
             return;
         }
         planetSpecs.addAll(specs);
-        for (PlanetSpec spec : specs) {
-            Block block = ModBlocks.blocks.get(spec.dimension);
-            if (block != null) {
-                orbitingObjects.add(
-                    new OrbitingObject(
-                        block,
-                        spec.distance,
-                        spec.rotationSpeed,
-                        spec.orbitSpeed,
-                        spec.xAngle,
-                        spec.zAngle,
-                        spec.scale));
-            }
-        }
         this.explicitPlanets = true;
     }
 
@@ -294,7 +294,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
             NBTTagList list = new NBTTagList();
             for (PlanetSpec spec : planetSpecs) {
                 NBTTagCompound tag = new NBTTagCompound();
-                tag.setString("dim", spec.dimension);
+                tag.setString("tex", spec.texture);
                 tag.setFloat("distance", spec.distance);
                 tag.setFloat("scale", spec.scale);
                 tag.setFloat("orbitSpeed", spec.orbitSpeed);
@@ -303,6 +303,9 @@ public class TileEntityEyeOfHarmony extends TileEntity {
                 tag.setFloat("zAngle", spec.zAngle);
                 if (spec.color != 0) {
                     tag.setInteger("color", spec.color);
+                }
+                if (spec.ringTexture != null && !spec.ringTexture.isEmpty()) {
+                    tag.setString("ring", spec.ringTexture);
                 }
                 list.appendTag(tag);
             }
@@ -333,14 +336,15 @@ public class TileEntityEyeOfHarmony extends TileEntity {
                 }
                 specs.add(
                     new PlanetSpec(
-                        tag.getString("dim"),
+                        tag.getString("tex"),
                         tag.getFloat("distance"),
                         tag.getFloat("scale"),
                         tag.getFloat("orbitSpeed"),
                         tag.getFloat("rotationSpeed"),
                         tag.getFloat("xAngle"),
                         tag.getFloat("zAngle"),
-                        tag.hasKey("color") ? tag.getInteger("color") : 0));
+                        tag.hasKey("color") ? tag.getInteger("color") : 0,
+                        tag.hasKey("ring") ? tag.getString("ring") : ""));
             }
             setPlanets(specs);
         } else if (explicitPlanets) {

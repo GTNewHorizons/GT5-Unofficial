@@ -129,33 +129,23 @@ public class USSPlanetsTest {
     }
 
     @Test
-    public void testDifferentStarTypesGiveDifferentPlanetFamilies() {
-        for (long seed = 1; seed <= 4; seed++) {
-            Set<String> main = new HashSet<>();
-            Set<String> white = new HashSet<>();
-            Set<String> supermassive = new HashSet<>();
-            for (USSPlanets.USSPlanet planet : USSPlanets.generate(USSStarType.MAIN_SEQUENCE, seed)) {
-                main.add(planet.definition.getId());
-            }
-            for (USSPlanets.USSPlanet planet : USSPlanets.generate(USSStarType.WHITE_DWARF, seed)) {
-                white.add(planet.definition.getId());
-            }
-            for (USSPlanets.USSPlanet planet : USSPlanets.generate(USSStarType.SUPERMASSIVE, seed)) {
-                supermassive.add(planet.definition.getId());
-            }
-            assertTrue(isDisjoint(main, white), "seed " + seed + " — main sequence vs white dwarf families");
-            assertTrue(isDisjoint(main, supermassive), "seed " + seed + " — main sequence vs supermassive families");
-            assertTrue(isDisjoint(white, supermassive), "seed " + seed + " — white dwarf vs supermassive families");
-        }
+    public void testAllStarTypesShareOnePlanetPool() {
+        // Every planet may orbit any star class, so each star type's pool is the full catalog — the families are
+        // drawn from the same set rather than partitioned by star type.
+        Set<String> main = poolIds(USSStarType.MAIN_SEQUENCE);
+        Set<String> white = poolIds(USSStarType.WHITE_DWARF);
+        Set<String> supermassive = poolIds(USSStarType.SUPERMASSIVE);
+        assertEquals(45, main.size(), "main-sequence pool is the full catalog");
+        assertEquals(main, white, "white-dwarf pool == main-sequence pool (shared pool)");
+        assertEquals(main, supermassive, "supermassive pool == main-sequence pool (shared pool)");
     }
 
-    private static boolean isDisjoint(Set<String> a, Set<String> b) {
-        for (String id : a) {
-            if (b.contains(id)) {
-                return false;
-            }
+    private static Set<String> poolIds(USSStarType starType) {
+        Set<String> ids = new HashSet<>();
+        for (USSPlanetDefinition def : USSPlanetRegistry.pool(starType)) {
+            ids.add(def.getId());
         }
-        return true;
+        return ids;
     }
 
     @Test
@@ -204,14 +194,14 @@ public class USSPlanetsTest {
     @Test
     public void testMaterialsOfCollectsThePlanetsOres() {
         // Two distinct planets → the union of their ores (first-seen order).
-        USSPlanetDefinition rocky = USSPlanetRegistry.get("rocky_world");
-        USSPlanetDefinition ocean = USSPlanetRegistry.get("ocean_world");
-        assertNotNull(rocky, "rocky_world registered");
-        assertNotNull(ocean, "ocean_world registered");
+        USSPlanetDefinition rocky = USSPlanetRegistry.get("mars");
+        USSPlanetDefinition ocean = USSPlanetRegistry.get("venus");
+        assertNotNull(rocky, "mars registered");
+        assertNotNull(ocean, "venus registered");
 
         List<USSPlanets.USSPlanet> system = new java.util.ArrayList<>();
-        system.add(new USSPlanets.USSPlanet(rocky, 5.0, 0.5, 1.0, 1.0, 0, 0));
-        system.add(new USSPlanets.USSPlanet(ocean, 7.0, 0.5, 1.0, 1.0, 0, 0));
+        system.add(new USSPlanets.USSPlanet(rocky, 5.0, 0.5, 1.0, 1.0, 0, 0, false, -1));
+        system.add(new USSPlanets.USSPlanet(ocean, 7.0, 0.5, 1.0, 1.0, 0, 0, false, -1));
 
         List<Materials> materials = USSPlanets.materialsOf(system);
         int expected = rocky.getOres()

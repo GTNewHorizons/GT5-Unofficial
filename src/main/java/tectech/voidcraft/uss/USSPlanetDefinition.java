@@ -42,11 +42,17 @@ public final class USSPlanetDefinition {
     /** Maximum allowed value of the planet size range (user spec: float 0.0–5.0). */
     public static final float MAX_SIZE = 5.0f;
 
-    /** Stable identifier (unique across the registry, e.g. {@code "rocky_world"}). */
+    /** Stable identifier (unique across the registry, e.g. {@code "earth"}). */
     private final String id;
 
-    /** Texture reference (IORE dimension abbreviation for now — the hologram block key). */
+    /** The planet's texture (the resource path of its {@code stitched.png}, relative to the mod's texture root). */
     private final String texture;
+
+    /** The rendered-size tier, set by the texture resolution (determines base scale and the orbit-ring set). */
+    private final PlanetTier tier;
+
+    /** Whether this is a gas giant (affects the orbit-ring probability). */
+    private final boolean gasGiant;
 
     /** Lower bound of the size range (inclusive, in {@code [0.0, 5.0]}). */
     private final float sizeMin;
@@ -66,6 +72,8 @@ public final class USSPlanetDefinition {
     private USSPlanetDefinition(Builder b) {
         this.id = b.id;
         this.texture = b.texture;
+        this.tier = b.tier;
+        this.gasGiant = b.gasGiant;
         this.sizeMin = b.sizeMin;
         this.sizeMax = b.sizeMax;
         this.allowedStarTypes = Collections.unmodifiableList(new ArrayList<>(b.allowedStarTypes));
@@ -85,10 +93,40 @@ public final class USSPlanetDefinition {
     }
 
     /**
-     * @return the texture reference (IORE dimension abbreviation for now).
+     * @return the planet's texture (the resource path of its {@code stitched.png}, relative to the mod's texture root).
      */
     public String getTexture() {
         return texture;
+    }
+
+    /**
+     * @return the rendered-size tier (set by the texture resolution).
+     */
+    public PlanetTier getTier() {
+        return tier;
+    }
+
+    /**
+     * @return true if this is a gas giant (affects the orbit-ring probability).
+     */
+    public boolean isGasGiant() {
+        return gasGiant;
+    }
+
+    /**
+     * The probability that this planet orbits with a ring, per the signed-off rule: gas giants ring 50% of the time,
+     * normal-and-larger non-giants 10%, and tiny/small never.
+     *
+     * @return the ring probability in {@code [0, 1]}
+     */
+    public float ringChance() {
+        if (gasGiant) {
+            return 0.5f;
+        }
+        if (tier == PlanetTier.TINY || tier == PlanetTier.SMALL) {
+            return 0f;
+        }
+        return 0.1f;
     }
 
     /**
@@ -147,6 +185,9 @@ public final class USSPlanetDefinition {
         return "USSPlanetDefinition[id=" + id
             + ", texture="
             + texture
+            + ", tier="
+            + tier
+            + (gasGiant ? ", gasGiant" : "")
             + ", size="
             + sizeMin
             + "–"
@@ -167,6 +208,8 @@ public final class USSPlanetDefinition {
 
         private String id;
         private String texture;
+        private PlanetTier tier = PlanetTier.NORMAL;
+        private boolean gasGiant = false;
         private float sizeMin = 0.35f;
         private float sizeMax = 0.75f;
         private final List<USSStarType> allowedStarTypes = new ArrayList<>();
@@ -185,11 +228,37 @@ public final class USSPlanetDefinition {
         }
 
         /**
-         * @param texture the texture reference (IORE dimension abbreviation for now)
+         * @param texture the planet's texture (the resource path of its {@code stitched.png}, relative to the mod's
+         *                texture root)
          * @return this builder
          */
         public Builder texture(String texture) {
             this.texture = texture;
+            return this;
+        }
+
+        /**
+         * Sets the size tier and derives the {@code sizeRange} from the tier's base scale with a ±10% variation band.
+         *
+         * @param tier the rendered-size tier (set by the texture resolution)
+         * @return this builder
+         */
+        public Builder tier(PlanetTier tier) {
+            if (tier != null) {
+                this.tier = tier;
+                final float base = tier.baseScale();
+                this.sizeMin = base * 0.9f;
+                this.sizeMax = base * 1.1f;
+            }
+            return this;
+        }
+
+        /**
+         * @param gasGiant whether this is a gas giant (affects the orbit-ring probability)
+         * @return this builder
+         */
+        public Builder gasGiant(boolean gasGiant) {
+            this.gasGiant = gasGiant;
             return this;
         }
 
@@ -297,6 +366,9 @@ public final class USSPlanetDefinition {
             if (texture == null || texture.trim()
                 .isEmpty()) {
                 throw new IllegalArgumentException("texture must be a non-blank string");
+            }
+            if (tier == null) {
+                throw new IllegalArgumentException("tier must not be null");
             }
             if (!Float.isFinite(sizeMin) || sizeMin < MIN_SIZE || sizeMin > MAX_SIZE) {
                 throw new IllegalArgumentException(

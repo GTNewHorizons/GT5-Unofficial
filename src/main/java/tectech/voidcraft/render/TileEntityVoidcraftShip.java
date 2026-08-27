@@ -249,7 +249,7 @@ public class TileEntityVoidcraftShip extends TileEntity {
         NBTTagList planets = new NBTTagList();
         for (TileEntityEyeOfHarmony.PlanetSpec spec : systemPlanets) {
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setString("dim", spec.dimension);
+            tag.setString("tex", spec.texture);
             tag.setFloat("distance", spec.distance);
             tag.setFloat("scale", spec.scale);
             tag.setFloat("orbitSpeed", spec.orbitSpeed);
@@ -258,6 +258,9 @@ public class TileEntityVoidcraftShip extends TileEntity {
             tag.setFloat("zAngle", spec.zAngle);
             if (spec.color != 0) {
                 tag.setInteger("color", spec.color);
+            }
+            if (spec.ringTexture != null && !spec.ringTexture.isEmpty()) {
+                tag.setString("ring", spec.ringTexture);
             }
             planets.appendTag(tag);
         }
@@ -294,14 +297,15 @@ public class TileEntityVoidcraftShip extends TileEntity {
             }
             systemPlanets.add(
                 new TileEntityEyeOfHarmony.PlanetSpec(
-                    tag.getString("dim"),
+                    tag.getString("tex"),
                     tag.getFloat("distance"),
                     tag.getFloat("scale"),
                     tag.getFloat("orbitSpeed"),
                     tag.getFloat("rotationSpeed"),
                     tag.getFloat("xAngle"),
                     tag.getFloat("zAngle"),
-                    tag.hasKey("color") ? tag.getInteger("color") : 0));
+                    tag.hasKey("color") ? tag.getInteger("color") : 0,
+                    tag.hasKey("ring") ? tag.getString("ring") : ""));
         }
         starSize = compound.hasKey(TAG_STAR_SIZE) ? compound.getFloat(TAG_STAR_SIZE) : 0.4f;
         if (starSize <= 0) {

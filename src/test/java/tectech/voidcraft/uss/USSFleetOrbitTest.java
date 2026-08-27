@@ -214,9 +214,9 @@ public class USSFleetOrbitTest {
                 + " must stay inside the dome "
                 + USSConstants.SPACE_SHELL_RADIUS);
 
-        // Pass 14: the 4-block margin now covers hover 0.5 + cube half ≤ 0.375 + spread 2.0 (pass 11 removed the
-        // bob) = 2.875 < 4.0 — even the outermost hovering ship stays INSIDE the dome (≈ 23.58 + 2.875 = 26.46
-        // vs 27.1), restoring the original "ships render inside the bubble" rule.
+        // The 4-block margin covers hover 0.5 + cube half ≤ 0.66 (MAX_SCALE 1.32 / 2) + spread 2.0 = 3.16 < 4.0 —
+        // even the outermost hovering ship stays INSIDE the dome (≈ 23.58 + 3.16 = 26.74 vs 27.1), so ships
+        // render inside the bubble.
         double minerWorst = planetWorstCenter + USSConstants.HOVER_ABOVE_PLANET
             + 0.5 * USSPlanets.MAX_SCALE
             + USSFleetOrbit.MAX_RADIUS;
@@ -249,7 +249,7 @@ public class USSFleetOrbitTest {
     @Test
     public void testPlanetPositionMatchesAnchorMath() {
         // planetPosition is the USSPosition wrapper over planetAnchorPosition — they must agree exactly.
-        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(null, 6.0, 1.4, 1.3, 0.5, 20.0, -12.0);
+        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(null, 6.0, 1.4, 1.3, 0.5, 20.0, -12.0, false, -1);
         for (float t = 0.0f; t < 300.0f; t += 97.0f) {
             USSPosition p = USSFleetOrbit.planetPosition(planet, 1.0f, t);
             double[] a = USSFleetOrbit.planetAnchorPosition(6.0f, 1.3f, 20f, -12f, 1.0f, t);
@@ -356,6 +356,70 @@ public class USSFleetOrbitTest {
         USSPosition center = USSPosition.of(-1.0, 0.5, 2.0);
         assertEquals(center, USSFleetOrbit.nudge(center, 0.0, 42), "maxRadius 0 → the center itself");
         assertEquals(center, USSFleetOrbit.nudge(center, -5.0, 42), "negative maxRadius → the center itself");
+    }
+
+    // endregion
+
+    // region gateway render pass (the dome-edge point in the gateway's direction)
+
+    @Test
+    public void testGatewayEdgeSitsOnTheDomeSurface() {
+        double[][] gates = { { 16, 0, 0 }, { -20, 5, 0 }, { 0, 0, 32 }, { 8, -14, -9 }, { 0.5, 3.25, -1.5 } };
+        for (double[] gw : gates) {
+            double[] edge = USSFleetOrbit.gatewayEdgePoint(gw);
+            double dx = edge[0];
+            double dy = edge[1] - USSFleetOrbit.STAR_CENTER_Y;
+            double dz = edge[2];
+            double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            assertEquals(
+                USSConstants.SPACE_SHELL_RADIUS,
+                dist,
+                1e-9,
+                "the gateway edge must sit exactly on the dome surface (gateway " + gw[0]
+                    + ","
+                    + gw[1]
+                    + ","
+                    + gw[2]
+                    + ")");
+        }
+    }
+
+    @Test
+    public void testGatewayEdgeKeepsTheGatewayDirection() {
+        // The edge point is the dome point CLOSEST to the gateway: it stays on the star-center → gateway ray,
+        // only the radius changes.
+        double[] gw = { 24.0, 3.0, -11.0 };
+        double[] edge = USSFleetOrbit.gatewayEdgePoint(gw);
+        double ax = gw[0], ay = gw[1] - USSFleetOrbit.STAR_CENTER_Y, az = gw[2];
+        double bx = edge[0], by = edge[1] - USSFleetOrbit.STAR_CENTER_Y, bz = edge[2];
+        double cross = Math
+            .sqrt(Math.pow(ay * bz - az * by, 2) + Math.pow(az * bx - ax * bz, 2) + Math.pow(ax * by - ay * bx, 2));
+        assertEquals(0.0, cross, 1e-9, "the edge point must stay on the star-center → gateway ray");
+        assertTrue(
+            ax * bx + ay * by + az * bz > 0.0,
+            "the edge point must be on the SAME side of the star as the gateway");
+    }
+
+    @Test
+    public void testGatewayEdgeIsIdempotentOnTheSurface() {
+        double[] once = USSFleetOrbit.gatewayEdgePoint(new double[] { 16.0, 1.0, 4.0 });
+        assertArrayEquals(once, USSFleetOrbit.gatewayEdgePoint(once), 1e-9, "projecting a surface point keeps it");
+    }
+
+    @Test
+    public void testGatewayEdgeDegenerateAtStarCenter() {
+        double[] gw = { 0.0, USSFleetOrbit.STAR_CENTER_Y, 0.0 };
+        assertArrayEquals(gw, USSFleetOrbit.gatewayEdgePoint(gw), 1e-12, "no direction → the gateway itself");
+    }
+
+    @Test
+    public void testGatewayEdgeSanity() {
+        // 16 blocks out at +X (2 above the star center): the edge point is further along the same ray, at
+        // exactly the dome radius — this is where the ships now spawn/return.
+        double[] edge = USSFleetOrbit.gatewayEdgePoint(new double[] { 16.0, 0.0, 0.0 });
+        double len = Math.sqrt(16.0 * 16.0 + 2.0 * 2.0);
+        double f = USSConstants.SPACE_SHELL_RADIUS / len;
+        assertArrayEquals(new double[] { 16.0 * f, USSFleetOrbit.STAR_CENTER_Y + 2.0 * f, 0.0 }, edge, 1e-12);
     }
 
     // endregion

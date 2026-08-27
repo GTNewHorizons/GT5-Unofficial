@@ -259,7 +259,7 @@ public class CargoHoldTest {
                 Arrays
                     .asList(new USSPlanetOre(Materials.Copper, 100L, 1.0), new USSPlanetOre(Materials.Iron, 100L, 1.0)))
             .build();
-        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 1.0, 1.0, 1.0, 10, 10);
+        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 1.0, 1.0, 1.0, 10, 10, false, -1);
 
         long base = USSConstants.minerOreAmount(1000L);
         USSShipCargo.MinerResult result = USSShipCargo.minePlanet(planet, 1000L, null);
@@ -290,7 +290,7 @@ public class CargoHoldTest {
             .allowedStarType(USSStarType.MAIN_SEQUENCE)
             .ores(Collections.singletonList(new USSPlanetOre(Materials.Copper, 100L, 1.0)))
             .build();
-        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 1.0, 1.0, 1.0, 10, 10);
+        USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 1.0, 1.0, 1.0, 10, 10, false, -1);
 
         long base = USSConstants.minerOreAmount(1000L);
         assertTrue(base > 10L, "the base must exceed the hold capacity for this test");

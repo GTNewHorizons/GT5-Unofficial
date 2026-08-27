@@ -51,8 +51,8 @@ public class VoidcraftBlueprintTest {
 
         VoidcraftStats stats = ship.computeStats();
         assertEquals(10L + 5L + 3L, stats.mass, "controller + frame + nozzle cover");
-        assertEquals(40L, stats.thrust, "the back-mounted, unblocked nozzle cover counts its full magnitude");
-        assertEquals(40.0 / 18.0, stats.speed, 1e-9, "pass 18: speed = thrust/mass, unclamped at 1");
+        assertEquals(120L, stats.thrust, "the back-mounted, unblocked nozzle cover counts its full magnitude");
+        assertEquals(120.0 / 18.0, stats.speed, 1e-9, "pass 18: speed = thrust/mass, unclamped at 1");
         assertEquals(2L, stats.energyDraw, "nozzle draw");
         assertEquals(10L + 10L, stats.integrity, "controller + frame");
     }
@@ -112,7 +112,7 @@ public class VoidcraftBlueprintTest {
         VoidcraftBlueprint hauler = VoidcraftBlueprint.of(1, 1, 2, grid, null, covers);
         assertEquals(0, hauler.computeRoles());
         assertEquals(1.0, hauler.computeEfficiency(), 1e-9, "roleless ships are not penalized");
-        assertEquals(20L, hauler.computeStats().cargoSlots, "one cargo pod = 20 slots");
+        assertEquals(200L, hauler.computeStats().cargoSlots, "one cargo pod = 200 slots");
     }
 
     @Test
@@ -301,8 +301,8 @@ public class VoidcraftBlueprintTest {
 
         VoidcraftStats stats = ship.computeStats();
         assertEquals(10L + 5L + 3L + 6L, stats.mass, "controller + frame + nozzle + pod");
-        assertEquals(20L, stats.cargoSlots, "only the cargo pod contributes cargo");
-        assertEquals(40L, stats.thrust, "the back-mounted nozzle cover counts");
+        assertEquals(200L, stats.cargoSlots, "only the cargo pod contributes cargo");
+        assertEquals(120L, stats.thrust, "the back-mounted nozzle cover counts");
     }
 
     @Test
@@ -317,8 +317,8 @@ public class VoidcraftBlueprintTest {
         byte[] coversBack = new byte[depth * 6];
         coversBack[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
         VoidcraftBlueprint shipBack = VoidcraftBlueprint.of(1, 1, depth, grid, null, coversBack);
-        assertEquals(40, shipBack.computeStats().thrust);
-        assertEquals(40, shipBack.totalThrust());
+        assertEquals(120, shipBack.computeStats().thrust);
+        assertEquals(120, shipBack.totalThrust());
 
         byte[] coversFront = new byte[depth * 6];
         coversFront[0 * 6 + 3] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE); // side 3 = SOUTH (+Z) — the nose
@@ -356,7 +356,7 @@ public class VoidcraftBlueprintTest {
         covers[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
         VoidcraftBlueprint ship = VoidcraftBlueprint.of(1, 1, depth, grid, null, covers);
         assertEquals(3, ship.componentCount(), "blocks + covers all count as parts");
-        assertEquals(40, ship.computeStats().thrust);
+        assertEquals(120, ship.computeStats().thrust);
         List<String> errors = new ArrayList<>();
         assertTrue(ship.validate(2, errors), "back-facing thruster cover satisfies the thrust requirement" + errors);
         assertTrue(errors.isEmpty());
@@ -391,7 +391,7 @@ public class VoidcraftBlueprintTest {
         byte[] coversClear = new byte[2 * 6];
         coversClear[0 * 6 + VoidcraftBlueprint.BACK_FACE] = cv(VoidcraftCoverComponent.THRUSTER_NOZZLE);
         VoidcraftBlueprint clear = VoidcraftBlueprint.of(1, 1, 2, gridClear, null, coversClear);
-        assertEquals(40, clear.computeStats().thrust, "near-end nozzle with adjacent hull is clear");
+        assertEquals(120, clear.computeStats().thrust, "near-end nozzle with adjacent hull is clear");
 
         // blocked: nozzle deeper in the ship (z=2), hull on its exhaust side (z=1, z=0) within 5 cells.
         byte[] gridBlocked = { gv(VoidcraftComponent.FRAME), gv(VoidcraftComponent.FRAME),

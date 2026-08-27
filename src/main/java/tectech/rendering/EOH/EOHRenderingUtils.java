@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
@@ -39,10 +38,10 @@ import gregtech.common.render.shader.ShaderRecipe;
 import gregtech.common.render.shader.SharedShaders;
 import gregtech.common.render.shader.Uniform;
 import gregtech.common.render.shader.VertexAttribute;
-import gtneioreplugin.plugin.block.ModBlocks;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.block.TileEntityEyeOfHarmony;
+import tectech.voidcraft.uss.USSFleetOrbit;
 
 public abstract class EOHRenderingUtils {
 
@@ -209,26 +208,24 @@ public abstract class EOHRenderingUtils {
     }
 
     /**
-     * The USS planet system — one TEXTURED CUBE per planet (pass 9, user request): the same proven block-cube
-     * pipeline the legacy orbit render uses ({@code addRenderedBlockInWorld} + the shared textured shader), but
-     * with the USS orbit math the ships track — so no dependency on the legacy orbit shader, and the cubes orbit
-     * EXACTLY where {@code USSFleetOrbit.planetAnchorPosition} resolves the ship's hover/beam (radius
-     * {@code 0.2 + distance + 0.2·starSize}, angle {@code (0.3·time)/radius} — the pass-30 radius law, a planet
-     * at X blocks taking X minutes to orbit; tilts xAngle/zAngle — do not "clean up" the orbit chain without
-     * re-pointing the hover/beam).
+     * The USS planet system — one TEXTURED CUBE per planet: a shared cube (the cross-layout
+     * {@code stitched.png} UVs, see {@link #ussStitchedCube()}) bound to each planet's own texture
+     * ({@code spec.texture}), with the USS orbit math the ships track — so the cubes orbit EXACTLY where
+     * {@code USSFleetOrbit.planetAnchorPosition} resolves the ship's hover/beam (radius
+     * {@code 0.2 + distance + 0.2·starSize}, angle {@code (0.3·time)/radius} — the shared orbit law, a planet at
+     * X blocks taking X minutes to orbit; tilts xAngle/zAngle — do not change the orbit chain without re-pointing
+     * the hover/beam).
      *
      * <p>
-     * Each cube is the planet's own dimension-display block ({@code spec.dimension} via the IORE
-     * {@code ModBlocks} map — the type IS its texture, no tint multiply), sized {@code spec.scale} (a unit cube
-     * of ±0.5·scale — the same size the legacy orbit cubes used), and spun on its local axis at
-     * {@code spec.rotationSpeed·0.1·time} (the legacy cube look). A spec whose dimension key does not resolve to
-     * a registered block (mod absent / renamed) falls back to the pass-5.1 tinted sphere (USSPlanetColor) so the
-     * planet still renders.
+     * Each cube is sized {@code spec.scale} (a unit cube of ±0.5·scale — the scale the definition's tier sets,
+     * base ±10%), and spun on its local axis at {@code spec.rotationSpeed·0.1·time}. A spec whose texture is
+     * missing (empty) falls back to the tinted sphere ({@code spec.color}, from USSPlanetColor) so the planet
+     * still renders.
      *
      * @param base     the star-center model matrix (already translated to the TE position, see {@code EOHTileEntitySR})
      * @param specs    the explicit planet system (colors are the sphere-fallback tint; 0 → white)
      * @param time     world time + partial ticks (the shared animation clock)
-     * @param starSize the star size factor (as used for the legacy orbit offset)
+     * @param starSize the star size factor (as used for the orbit offset)
      */
     public static void renderUSSOrbits(Matrix4fc base, List<TileEntityEyeOfHarmony.PlanetSpec> specs, float time,
         float starSize) {
@@ -257,7 +254,7 @@ public abstract class EOHRenderingUtils {
             // angle is the RADIUS law — the SAME law USSFleetOrbit.planetAnchorPosition uses for the ships'
             // hover/beam, so rendered planets and tracking ships never drift apart. (The old spec.orbitSpeed·0.1·time
             // was independent of radius: far planets swept the sky as fast as near ones.)
-            final float orbitAngle = (USS_ORBIT_DEG_PER_TICK_PER_BLOCK * time / radius) % 360f;
+            final float orbitAngle = (USSFleetOrbit.ORBIT_DEG_PER_TICK_PER_BLOCK * time / radius) % 360f;
             // The planet's own SPIN (rotation on its axis) keeps the legacy pace — pass 30 only re-pins the ORBIT.
             final float spinAngle = (spec.rotationSpeed * USS_ORBIT_SPEED_SCALE * time) % 360f;
             final float scale = Math.max(0.05f, spec.scale);
@@ -270,24 +267,27 @@ public abstract class EOHRenderingUtils {
                 .rotate((float) Math.toRadians(spinAngle), 0f, 1f, 0f)
                 .scale(scale);
 
-            // Null-guard: a missing/empty IORE map (mod absent / very early frame) must fall back to the sphere,
-            // never crash the render thread.
-            // PASS 17/21: the planet's orbit RING — thin, 25%-opaque (pass 21), in the planet's orbit plane.
-            // Drawn before the planet so the opaque planet overwrites the ring wherever it is in front.
+            // The planet's orbit RING — a thin semi-transparent circle in the planet's orbit plane, drawn for every
+            // planet. Drawn before the planet so the opaque planet overwrites the ring wherever it is in front.
             renderUSSOrbitRing(base, spec, starSize);
 
-            final Block block = (spec.dimension == null || ModBlocks.blocks == null) ? null
-                : ModBlocks.blocks.get(spec.dimension);
-            if (block != null) {
-                // Textured cube (the user's cube look): its per-face UVs live in the block atlas, and the
-                // texture IS the planet type — no tint multiply. The cube's faces are outward-wound, so the
-                // world's default cull state (cull BACK, CCW front) is correct — do NOT wrap this in
-                // beginSphereCull (that flips the convention for the inverted-wound sphere and would cull the
-                // cube's near faces).
-                bindTexture(TextureMap.locationBlocksTexture);
+            // The planet's own RING TEXTURE (when this planet has one) — a flat ring image hugging the planet,
+            // centered on it and locked to its spin. Drawn before the planet so the opaque planet overwrites the
+            // ring wherever it is in front.
+            if (spec.ringTexture != null && !spec.ringTexture.isEmpty()) {
+                renderUSSPlanetRing(base, spec, starSize, orbitAngle, spinAngle, scale);
+            }
+
+            final String texturePath = spec.texture;
+            if (texturePath != null && !texturePath.isEmpty()) {
+                // Textured cube: the planet's own bundled texture (the cross-layout stitched.png) bound over the
+                // shared cube, no tint multiply. The cube's faces are outward-wound, so the world's default cull
+                // state (cull BACK, CCW front) is correct — do NOT wrap this in beginSphereCull (that flips the
+                // convention for the inverted-wound sphere and would cull the cube's near faces).
+                bindTexture(textureLocation(texturePath));
                 GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), 1f, 1f, 1f, 1f);
                 shader.uploadModel(planetMatrix);
-                ussCubeFor(block).render();
+                ussStitchedCube().render();
             } else {
                 // Unresolvable dimension key (mod absent / renamed): the proven pass-5.1 tinted-sphere fallback
                 // keeps the planet visible — star layer under the tint for a little surface variation.
@@ -327,44 +327,38 @@ public abstract class EOHRenderingUtils {
 
     private static final int RING_TUBE_SEGMENTS = 8;
 
-    private static final Matrix4f ringMatrix = new Matrix4f();
-
     /**
-     * PASS 21 ring color: the textured fragment shader is {@code texture × u_Tint}, so the ring samples a 1×1
-     * pure-white texture and gets the planet's tint (and alpha) exactly — no atlas pixel to fight.
+     * 1×1 pure-white orbit-ring tint texture: the textured fragment shader is {@code texture × u_Tint}, so the
+     * orbit ring samples white and gets the planet's tint (and alpha) exactly — no atlas pixel to fight.
      */
     private static final ResourceLocation RING_TEXTURE = new ResourceLocation(MODID, "textures/misc/white.png");
 
+    private static final Matrix4f ringMatrix = new Matrix4f();
+
     /**
-     * One ring mesh per distinct orbit radius — the radius is stable per planet (same expression every frame,
-     * like the cube's {@code Block} key), so a cache works like {@link #USS_PLANET_CUBES}.
+     * One torus mesh per distinct orbit radius — the radius is stable per planet (same expression every frame), so a
+     * cache works like {@link #USS_PLANET_CUBES}.
      */
     private static final Map<Float, IVertexArrayObject> USS_ORBIT_RINGS = new LinkedHashMap<>();
 
     /**
-     * PASS 17 (user request) + PASS 21 (user playtest: the ring "followed the camera"): one thin orbit RING per
-     * USS planet — a circle in the EXACT plane the planet orbits in: the same {@code base · rotX(xAngle) ·
-     * rotZ(zAngle)} chain and the same radius {@code 0.2 + distance + 0.2·starSize} that {@link #renderUSSOrbits}
-     * uses for the planet, so the ring passes through the planet's orbit. A thin torus (not a flat annulus) so
-     * it keeps a sliver of presence when viewed edge-on.
+     * One thin orbit RING per USS planet — a circle in the exact plane the planet orbits in: the same
+     * {@code base · rotX(xAngle) · rotZ(zAngle)} chain and the same radius {@code 0.2 + distance + 0.2·starSize}
+     * that {@link #renderUSSOrbits} uses for the planet, so the ring passes through the planet's orbit. A thin
+     * torus (not a flat annulus) so it keeps a sliver of presence when viewed edge-on (the coplanar orbits are
+     * seen nearly edge-on from the ground).
      *
      * <p>
-     * <b>PASS 21 root cause:</b> the ring was raw Tessellator quads, but at that moment the shared textured GLSL
-     * program was STILL BOUND ({@code shader.use()} at the top of {@link #renderUSSOrbits} stays bound until
-     * {@code ShaderProgram.clear()}, and a {@code Tessellator.draw()} carries no program of its own) — so the
-     * ring's vertices ran through that vertex shader ({@code gl_ModelViewProjectionMatrix * u_ModelMatrix *
-     * a_Position}) with the PREVIOUS object's stale {@code u_ModelMatrix} (for the first ring: the dome shell's
-     * matrix) — misplaced, and swinging around the scene as that stale planet's orbit angle advanced.
+     * Drawn through the exact textured-shader VAO path the planet's cube uses, not raw {@code Tessellator} quads:
+     * at this point the shared textured GLSL program is still bound ({@code shader.use()} at the top of
+     * {@link #renderUSSOrbits} runs until {@code ShaderProgram.clear()}, and a raw draw carries no program of its
+     * own), so raw vertices would run that shader with the previous object's stale {@code u_ModelMatrix} —
+     * misplaced, and swinging around the scene as the camera moves. The torus vertices are local (the orbit radius
+     * is baked in), the model uniform carries {@code base · rotX · rotZ}, and the color is {@code u_Tint} over the
+     * 1×1 white texture — the ring sits in the same space as the cube by construction.
      *
      * <p>
-     * <b>Fix:</b> draw the ring through the EXACT textured-shader VAO path the planet's cube uses — the vertices
-     * are the local torus (orbit radius baked in), the model uniform carries {@code base · rotX · rotZ}, and the
-     * color is {@code u_Tint} over the 1×1 white texture. The ring now sits in the same space as the cube BY
-     * CONSTRUCTION — no raw vertex path left in this renderer.
-     *
-     * <p>
-     * The ring is tinted with the planet's own color (its ore average, {@code spec.color}; unset → white), and
-     * PASS 21 (user: "25% — more transparent"): alpha 0.25, down from 0.5.
+     * Tinted with the planet's own color (its ore average, {@code spec.color}; unset → white) at 12.5% alpha.
      *
      * @param base     the star-center model matrix (as in {@link #renderUSSOrbits})
      * @param spec     the planet whose orbit to show
@@ -383,8 +377,9 @@ public abstract class EOHRenderingUtils {
         final long blendFuncWas = RenderState.savedBlendFunc();
         GL11.glDisable(GL11.GL_CULL_FACE); // mixed torus winding — do not rely on the face convention
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); // pass 16 lesson: never inherit a prior
-                                                                          // renderer's blend function
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); // never inherit a prior renderer's blend
+                                                                          // function (the game loop does not reset
+                                                                          // GL state between tile-entity renderers)
         GL11.glDepthMask(false); // pure overlay: depth-tested (planet/star occlude it), depth-WRITE off
         try {
             final ShaderHandle shader = texturedShader();
@@ -394,9 +389,74 @@ public abstract class EOHRenderingUtils {
                 ((argb >> 16) & 0xFF) / 255f,
                 ((argb >> 8) & 0xFF) / 255f,
                 (argb & 0xFF) / 255f,
-                0.125f); // PASS 27 (user: "…drop their [transparency] by 0.5×"): 25% → 12.5%
+                0.125f);
             shader.uploadModel(ringMatrix);
             ussRingFor(radius).render();
+        } finally {
+            GL11.glDepthMask(true);
+            RenderState.restoreBlendFunc(blendFuncWas);
+            RenderState.restore(GL11.GL_BLEND, blendOn);
+            RenderState.restore(GL11.GL_CULL_FACE, cullOn);
+        }
+    }
+
+    /**
+     * The ring image's outer annulus edge, in units of the image's half-width (1 = the square's edge): every ring
+     * texture places its outer edge at ~1.38 (measured per pixel across the whole set: 1.35–1.40).
+     */
+    private static final float RING_TEXTURE_OUTER_U = 1.38f;
+
+    /**
+     * The ring's outer edge world radius as a multiple of the planet's {@code scale}: the planet's cube spans
+     * ±0.5·scale, so 1.2·scale puts the ring's outer edge at 2.4× the planet surface.
+     */
+    private static final float RING_OUTER_EDGE = 1.2f;
+
+    /**
+     * The planet's own RING TEXTURE (when {@code spec.ringTexture} is set) — a flat ring image in the planet's own
+     * plane: the same {@code base · rotX(xAngle) · rotZ(zAngle) · rotY(orbit) · translate(radius, 0, 0) ·
+     * rotY(spin)} chain the planet's cube uses, so the ring is centered on the planet and locked to its spin. The
+     * shared unit disc maps the image 1:1 onto a square of radius 1 and is scaled so the ring's OUTER edge (the
+     * image's ~1.38·half-width, see {@link #RING_TEXTURE_OUTER_U}) lands at {@code RING_OUTER_EDGE · scale}.
+     *
+     * <p>
+     * Drawn before the planet so the opaque planet overwrites the ring wherever it is in front; the image's
+     * transparent center keeps the planet visible through the ring's hole.
+     *
+     * @param base       the star-center model matrix (as in {@link #renderUSSOrbits})
+     * @param spec       the ringed planet
+     * @param starSize   the star size factor (the orbit-radius term)
+     * @param orbitAngle the planet's current orbit angle (degrees)
+     * @param spinAngle  the planet's current spin angle (degrees)
+     * @param scale      the planet's rendered scale (the cube spans ±0.5·scale)
+     */
+    public static void renderUSSPlanetRing(Matrix4fc base, TileEntityEyeOfHarmony.PlanetSpec spec, float starSize,
+        float orbitAngle, float spinAngle, float scale) {
+        final float radius = 0.2f + spec.distance + 0.2f * starSize; // the planet's orbit radius, exactly
+        final float ringScale = RING_OUTER_EDGE * scale / RING_TEXTURE_OUTER_U;
+        ringMatrix.set(base)
+            .rotate((float) Math.toRadians(spec.xAngle), 1f, 0f, 0f)
+            .rotate((float) Math.toRadians(spec.zAngle), 0f, 0f, 1f)
+            .rotate((float) Math.toRadians(orbitAngle), 0f, 1f, 0f)
+            .translate(radius, 0f, 0f)
+            .rotate((float) Math.toRadians(spinAngle), 0f, 1f, 0f)
+            .scale(ringScale);
+
+        final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
+        final long blendFuncWas = RenderState.savedBlendFunc();
+        GL11.glDisable(GL11.GL_CULL_FACE); // a flat disc is single-wound — do not rely on the face convention
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); // never inherit a prior renderer's blend
+                                                                          // function (the game loop does not reset
+                                                                          // GL state between tile-entity renderers)
+        GL11.glDepthMask(false); // pure overlay: depth-tested (planet/star occlude it), depth-WRITE off
+        try {
+            final ShaderHandle shader = texturedShader();
+            bindTexture(textureLocation(spec.ringTexture));
+            GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), 1f, 1f, 1f, 1f); // the ring image's own alpha shapes it
+            shader.uploadModel(ringMatrix);
+            ussRingDisc().render();
         } finally {
             GL11.glDepthMask(true);
             RenderState.restoreBlendFunc(blendFuncWas);
@@ -452,11 +512,44 @@ public abstract class EOHRenderingUtils {
             0.5);
     }
 
+    /**
+     * Emit a flat unit ring-disc: a square in the xz plane (y = 0) from (-1,-1) to (1,1), mapped 1:1 to the planet's
+     * ring image ({@link #renderUSSPlanetRing} scales it to the planet).
+     */
+    private static void emitRingDisc(QuadSink sink) {
+        sink.vertex(-1f, 0f, -1f, 0f, 0f);
+        sink.vertex(1f, 0f, -1f, 1f, 0f);
+        sink.vertex(1f, 0f, 1f, 1f, 1f);
+        sink.vertex(-1f, 0f, 1f, 0f, 1f);
+    }
+
+    /** The one shared ring-disc VAO (a unit square); the bound ring image and the per-planet scale vary per planet. */
+    private static IVertexArrayObject USS_RING_DISC;
+
+    private static IVertexArrayObject ussRingDisc() {
+        if (USS_RING_DISC != null) {
+            return USS_RING_DISC;
+        }
+        try (MeshBuilder mesh = MeshBuilder.of(texturedShader(), 6)) {
+            emitRingDisc(mesh);
+            USS_RING_DISC = mesh.build();
+        }
+        return USS_RING_DISC;
+    }
+
     private static void bindTexture(ResourceLocation location) {
         FMLClientHandler.instance()
             .getClient()
             .getTextureManager()
             .bindTexture(location);
+    }
+
+    /**
+     * A texture {@link ResourceLocation} for the mod domain. The texture manager looks the location up verbatim, so a
+     * stored path without its {@code .png} extension (old tile data) still resolves.
+     */
+    private static ResourceLocation textureLocation(String path) {
+        return new ResourceLocation(MODID, path.endsWith(".png") ? path : path + ".png");
     }
 
     /** One cube mesh per drawn dimension block (the textured USS planet) — cached like the legacy ORBIT_MESHES. */
@@ -487,6 +580,90 @@ public abstract class EOHRenderingUtils {
         return built;
     }
 
+    // --- The shared textured planet cube (the cross-layout stitched.png) -----------------------------
+    //
+    // Every planet texture uses the same cross layout (verified from the images): the middle row, left to right,
+    // is back, left, front, right; the top face sits above front (column 2, row 0) and the bottom below it
+    // (column 2, row 2). A face cell is 1/4 of the texture width by 1/3 of its height. Because the layout is
+    // identical for every planet, ONE cube mesh is shared by all of them — only the bound texture changes per
+    // planet, so the cube is baked once and reused.
+    private static final int[][] STITCH_FACE_CORNERS = { { 1, 0, 7, 6 }, // left (X = -0.5)
+        { 5, 2, 1, 6 }, // bottom (Y = -0.5)
+        { 6, 7, 4, 5 }, // front (Z = -0.5)
+        { 5, 4, 3, 2 }, // right (X = +0.5)
+        { 3, 4, 7, 0 }, // top (Y = +0.5)
+        { 2, 3, 0, 1 } // back (Z = +0.5)
+    };
+
+    /** The stitched cell (column, row) per face, in the same order as {@link #STITCH_FACE_CORNERS}. */
+    private static final int[][] STITCH_FACE_CELL = { { 1, 1 }, // left
+        { 2, 2 }, // bottom
+        { 2, 1 }, // front
+        { 3, 1 }, // right
+        { 2, 0 }, // top
+        { 0, 1 } // back
+    };
+
+    /**
+     * Per-face, per-vertex U selection (1 = maxU, 0 = minU) in {@link #STITCH_FACE_CORNERS} order. The UVs
+     * place each cell's PHYSICAL image edges on the cube edges they sit on when the cross net is folded, so
+     * the texture wraps the cube exactly as it is laid out: the middle row's physical seams (back|left,
+     * left|front, front|right, right|back) and the front|top / front|bottom seams are the stitched seams of
+     * the image, and the top/bottom cells' remaining edges fold onto the side faces' top/bottom edges.
+     */
+    private static final int[][] STITCH_FACE_U = { { 0, 0, 1, 1 }, // left
+        { 1, 1, 0, 0 }, // bottom
+        { 0, 0, 1, 1 }, // front
+        { 0, 0, 1, 1 }, // right
+        { 1, 1, 0, 0 }, // top
+        { 0, 0, 1, 1 } // back
+    };
+
+    /** Per-face, per-vertex V selection (1 = maxV, 0 = minV) in {@link #STITCH_FACE_CORNERS} order. */
+    private static final int[][] STITCH_FACE_V = { { 1, 0, 0, 1 }, // left
+        { 0, 1, 1, 0 }, // bottom
+        { 1, 0, 0, 1 }, // front
+        { 1, 0, 0, 1 }, // right
+        { 0, 1, 1, 0 }, // top
+        { 1, 0, 0, 1 } // back
+    };
+
+    private static final float[] STITCH_CUBE_X = { -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, -0.5f };
+    private static final float[] STITCH_CUBE_Y = { 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f };
+    private static final float[] STITCH_CUBE_Z = { 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f, -0.5f };
+
+    /** Emit the shared planet cube: six faces, each mapped to its stitched cell (see the layout above). */
+    private static void emitStitchedCube(QuadSink sink) {
+        for (int face = 0; face < 6; face++) {
+            final int col = STITCH_FACE_CELL[face][0];
+            final int row = STITCH_FACE_CELL[face][1];
+            final float minU = col / 4f;
+            final float maxU = (col + 1) / 4f;
+            final float minV = row / 3f;
+            final float maxV = (row + 1) / 3f;
+            final int[] corners = STITCH_FACE_CORNERS[face];
+            for (int i = 0; i < 4; i++) {
+                final float u = STITCH_FACE_U[face][i] == 1 ? maxU : minU;
+                final float v = STITCH_FACE_V[face][i] == 1 ? maxV : minV;
+                sink.vertex(STITCH_CUBE_X[corners[i]], STITCH_CUBE_Y[corners[i]], STITCH_CUBE_Z[corners[i]], u, v);
+            }
+        }
+    }
+
+    /** The one shared cube VAO (identical cross-layout UVs for every planet); the bound texture varies per planet. */
+    private static IVertexArrayObject USS_STITCHED_CUBE;
+
+    private static IVertexArrayObject ussStitchedCube() {
+        if (USS_STITCHED_CUBE != null) {
+            return USS_STITCHED_CUBE;
+        }
+        try (MeshBuilder mesh = MeshBuilder.of(texturedShader(), 6 * 6)) {
+            emitStitchedCube(mesh);
+            USS_STITCHED_CUBE = mesh.build();
+        }
+        return USS_STITCHED_CUBE;
+    }
+
     // PASS 22: systems now carry up to MAX_PLANETS_PER_SYSTEM (9) planets — the cap must cover every planet,
     // else the last one of a 9-planet system would be invisible.
     private static final int MAX_USS_PLANETS = 9;
@@ -494,13 +671,10 @@ public abstract class EOHRenderingUtils {
     /** Orbit angular speed scale (matches the legacy {@code SPEED_SCALE} so USS planets spin at a similar pace). */
     private static final float USS_ORBIT_SPEED_SCALE = 0.1f;
 
-    /**
-     * Pass 30 (user: "a planet at X blocks should take X minutes to complete one full rotation"): orbit angular
-     * speed per block of orbit radius — a planet at X blocks takes X minutes (X·1200 ticks) to orbit, so its
-     * angular speed is 360°/(1200·X) = 0.3/X degrees per tick. MUST stay in sync with
-     * {@code USSFleetOrbit.ORBIT_DEG_PER_TICK_PER_BLOCK} (the ships' hover/beam math uses the identical law).
-     */
-    private static final float USS_ORBIT_DEG_PER_TICK_PER_BLOCK = 0.3f;
+    // Pass 30 (orbit pace) + pass 37 (10x slower): the orbit angular speed per block of radius lives in the SHARED
+    // constant USSFleetOrbit.ORBIT_DEG_PER_TICK_PER_BLOCK (0.03/X deg per tick) — referenced directly above, so the
+    // rendered planets, the ships' hover/beam math and the server's destination math all share ONE law and can
+    // never drift apart. (The old 0.3/X local copy is gone.)
 
     private static final Matrix4f planetMatrix = new Matrix4f();
 

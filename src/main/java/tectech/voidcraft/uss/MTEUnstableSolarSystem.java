@@ -1145,15 +1145,19 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * Convert the system's planets into render specs (dimension key + orbit parameters + ore-material tint) for the
-     * shared EoH render TE. Pass 9: the dimension key is LOAD-BEARING for the render — the EoH renderer resolves
-     * it to the planet's TEXTURED CUBE (its IORE dimension-display block); the color from {@link USSPlanetColor}
-     * is the tinted-sphere fallback tint when a key cannot resolve (mod absent / renamed). The specs keep the exact
-     * orbit math the ship hover/beam track (USSFleetOrbit).
+     * Convert the system's planets into render specs (hologram texture + orbit parameters + fallback tint + ring
+     * texture) for the shared EoH render TE. The texture is the planet's bundled {@code stitched.png} (the renderer
+     * binds it and draws the shared cube); the ring texture is the planet's orbit-ring image when it has one
+     * (empty otherwise). The color from {@link USSPlanetColor} is the tinted-sphere fallback tint if a texture is
+     * missing. The specs keep the exact orbit math the ship hover/beam track (USSFleetOrbit).
      */
     private static List<TileEntityEyeOfHarmony.PlanetSpec> planetSpecsFor(List<USSPlanets.USSPlanet> planets) {
         List<TileEntityEyeOfHarmony.PlanetSpec> specs = new ArrayList<>();
         for (USSPlanets.USSPlanet planet : planets) {
+            final String ringTexture = planet.hasRing && planet.ringVariant > 0
+                ? "textures/uss/rings/" + planet.definition.getTier()
+                    .ringDir() + "/" + planet.ringVariant + ".png"
+                : "";
             specs.add(
                 new TileEntityEyeOfHarmony.PlanetSpec(
                     planet.definition.getTexture(),
@@ -1163,7 +1167,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                     (float) planet.rotationSpeed,
                     (float) planet.xAngle,
                     (float) planet.zAngle,
-                    USSPlanetColor.colorFor(planet.definition)));
+                    USSPlanetColor.colorFor(planet.definition),
+                    ringTexture));
         }
         return specs;
     }
@@ -1671,7 +1676,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 return null;
             }
             USSPosition shipPos = ship.getPosition();
-            float time = worldTimeSeconds();
+            float time = worldTimeTicks();
             float starSize = starSizeFor(uss.getStarType(), uss.getIgnitedAt());
             int nearest = -1;
             double best = Double.MAX_VALUE;
@@ -2017,7 +2022,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             return null; // out of range (defensive) — the caller reports an unresolvable target
         }
         USSPlanets.USSPlanet world = planets.get(planet);
-        float time = worldTimeSeconds();
+        float time = worldTimeTicks();
         float starSize = starSizeFor(uss.getStarType(), uss.getIgnitedAt());
         USSPosition planetCenter = USSFleetOrbit.planetPosition(world, starSize, time);
         // The hover distance: the planet's rendered radius (scale · 0.375, the legacy EoH body half) + 0.5, so the
@@ -2026,13 +2031,22 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         return USSFleetOrbit.shellPoint(planetCenter, hoverRadius, seed);
     }
 
-    /** The shared render clock in seconds (world time in ticks / 20), for the orbit math. */
-    private float worldTimeSeconds() {
+    /**
+     * The shared render clock in TICKS (the world time), for the orbit math — the SAME time base the client render
+     * and {@code USSFleetOrbit.planetAnchorPosition} expect (the client renders at {@code getTotalWorldTime() +
+     * partialTicks}, both in ticks). Pass 37 (server-authoritative planet positions): this used to divide by 20 to
+     * produce "seconds", but {@code planetAnchorPosition} interprets its time argument as TICKS — so the server's
+     * planet positions moved 20x slower than the rendered planets (the "USS treats planets as static / distances
+     * don't match visually" symptom). Returning raw ticks makes the server's planet position and the client's
+     * rendered one agree exactly (same law, same constant, same time base), so a ship's server-resolved
+     * destination and the visual path length are consistent.
+     */
+    private float worldTimeTicks() {
         try {
             IGregTechTileEntity base = getBaseMetaTileEntity();
             if (base != null && base.getWorld() != null) {
-                return (float) (base.getWorld()
-                    .getWorldTime() / 20.0);
+                return (float) base.getWorld()
+                    .getWorldTime();
             }
         } catch (Throwable ignored) {}
         return 0.0f;

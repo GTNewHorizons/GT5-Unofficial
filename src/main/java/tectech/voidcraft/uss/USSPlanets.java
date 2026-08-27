@@ -35,7 +35,8 @@ import gregtech.api.enums.Materials;
  * randomized from MIN_DISTANCE (3 blocks from the star) all the way to the system's edge leaving 4 blocks from
  * the shell edge (pass 14, user: "ships exiting the dome isn't good" — the 2-block margin was smaller than hover
  * + planet half + spread = 2.875; MAX_DISTANCE = USSConstants.SPACE_SHELL_RADIUS − 4 = 23.1, dome 27.1), clear
- * of the star surface ≤ 1.4; scale 0.35–0.75 and orbit/spin speeds 0.5–1.5 keep the legacy EoH ranges. The
+ * of the star surface ≤ 1.4; scale 0.35–1.32 across the texture tiers (huge deliberately exceeds the legacy
+ * 0.2–0.9) and orbit/spin speeds 0.5–1.5. The
  * distance range is split into COUNT bands (inner → outer), so a 9-planet system still spreads across the dome.
  * Pass 11
  * (user spec):
@@ -70,9 +71,12 @@ public final class USSPlanets {
      */
     public static final double MAX_DISTANCE = USSConstants.SPACE_SHELL_RADIUS - 4.0;
 
-    /** Planet hologram scale range (the legacy EoH uses 0.2–0.9). */
+    /**
+     * Planet hologram scale range (the legacy EoH used 0.2–0.9); MAX_SCALE is the HUGE base (1.2) at its +10% band
+     * edge.
+     */
     public static final double MIN_SCALE = 0.35;
-    public static final double MAX_SCALE = 0.75;
+    public static final double MAX_SCALE = 1.32;
 
     /** Orbit/spin speed range (the legacy EoH uses 0.5–1.5). */
     public static final double MIN_SPEED = 0.5;
@@ -121,8 +125,17 @@ public final class USSPlanets {
          */
         public final double zAngle;
 
+        /** Whether this planet orbits with a ring (a seeded draw from the definition's ring probability). */
+        public final boolean hasRing;
+
+        /**
+         * The orbit-ring texture variant for this planet, in {@code 1..tier.ringVariantCount()} (normal/big: 1–8,
+         * small/huge: 1–6); {@code -1} when {@link #hasRing} is false (no ring).
+         */
+        public final int ringVariant;
+
         public USSPlanet(USSPlanetDefinition definition, double distance, double scale, double orbitSpeed,
-            double rotationSpeed, double xAngle, double zAngle) {
+            double rotationSpeed, double xAngle, double zAngle, boolean hasRing, int ringVariant) {
             this.definition = definition;
             this.distance = distance;
             this.scale = scale;
@@ -130,6 +143,8 @@ public final class USSPlanets {
             this.rotationSpeed = rotationSpeed;
             this.xAngle = xAngle;
             this.zAngle = zAngle;
+            this.hasRing = hasRing;
+            this.ringVariant = ringVariant;
         }
 
         @Override
@@ -146,7 +161,9 @@ public final class USSPlanets {
                 && this.orbitSpeed == that.orbitSpeed
                 && this.rotationSpeed == that.rotationSpeed
                 && this.xAngle == that.xAngle
-                && this.zAngle == that.zAngle;
+                && this.zAngle == that.zAngle
+                && this.hasRing == that.hasRing
+                && this.ringVariant == that.ringVariant;
         }
 
         @Override
@@ -158,6 +175,8 @@ public final class USSPlanets {
             h = 31 * h + Double.hashCode(rotationSpeed);
             h = 31 * h + Double.hashCode(xAngle);
             h = 31 * h + Double.hashCode(zAngle);
+            h = 31 * h + Boolean.hashCode(hasRing);
+            h = 31 * h + ringVariant;
             return h;
         }
 
@@ -242,7 +261,23 @@ public final class USSPlanets {
             double nodeRad = Math.toRadians(node);
             double xAngle = Math.toDegrees(incRad * Math.cos(nodeRad));
             double zAngle = Math.toDegrees(incRad * Math.sin(nodeRad));
-            planets.add(new USSPlanet(def, distance, scale, orbitSpeed, rotationSpeed, xAngle, zAngle));
+            // Orbit ring: a seeded draw from the definition's ring probability (gas giants 50%, normal+ non-giants 10%,
+            // tiny/small 0%). The variant is a uniform pick within the planet's tier ring set (1..count); -1 = no ring.
+            // Both draws use the SAME seeded rng, so (starType, seed) yields the identical ring layout on every
+            // consumer.
+            boolean hasRing = false;
+            int ringVariant = -1;
+            final float chance = def.ringChance();
+            if (chance > 0f && rng.nextFloat() < chance) {
+                final int ringCount = def.getTier()
+                    .ringVariantCount();
+                if (ringCount > 0) {
+                    hasRing = true;
+                    ringVariant = 1 + rng.nextInt(ringCount);
+                }
+            }
+            planets.add(
+                new USSPlanet(def, distance, scale, orbitSpeed, rotationSpeed, xAngle, zAngle, hasRing, ringVariant));
         }
         return Collections.unmodifiableList(planets);
     }

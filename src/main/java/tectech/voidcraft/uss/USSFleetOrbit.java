@@ -51,13 +51,15 @@ public final class USSFleetOrbit {
      * faster than planets closer to the sun. It should be calculated to roughly approximate real orbital
      * mechanics, where far out planets move very slowly while closer planets move faster. For pinning the speed to
      * some numbers, a planet at X blocks should take X minutes to complete one full rotation"): the orbit angle is
-     * a pure function of the orbit RADIUS — a planet at X blocks takes X minutes (X·1200 ticks) to orbit, so its
-     * angular speed is 360°/(1200·X) = 0.3/X degrees per tick. Inner planets orbit fast, outer planets very
-     * slowly (the qualitative shape of real orbital mechanics). Mirrored in
-     * {@code EOHRenderingUtils.USS_ORBIT_DEG_PER_TICK_PER_BLOCK} — the SAME law the star renderer draws the
-     * planets with, so ships and rendered planets never drift apart.
+     * a pure function of the orbit RADIUS — inner planets orbit fast, outer planets very slowly (the qualitative
+     * shape of real orbital mechanics). Pass 37 (user: "the planets feel very fast. Make their orbital speed 10x
+     * slower"): the pass-30 pace (a planet at X blocks took X·1200 ticks to orbit, 0.3/X deg per tick) is 10x too
+     * quick, so the constant is 0.03/X deg per tick — a planet at X blocks now takes 10·X minutes (10·X·1200 ticks)
+     * to complete one orbit. The star renderer draws the planets with THIS constant (single source of truth, see
+     * {@code EOHRenderingUtils}), so ships, rendered planets and the server all share one law and never drift
+     * apart.
      */
-    public static final float ORBIT_DEG_PER_TICK_PER_BLOCK = 0.3f;
+    public static final float ORBIT_DEG_PER_TICK_PER_BLOCK = 0.03f;
 
     private USSFleetOrbit() {
         throw new AssertionError("Constants holder");
@@ -66,7 +68,8 @@ public final class USSFleetOrbit {
     /**
      * Pass 7 — the live position of a planet in FLEET-ANCHOR coordinates at the given world time. This is
      * EXACTLY the orbit math {@code EOHRenderingUtils.renderUSSOrbits} uses to draw the planet (radius
-     * {@code 0.2 + distance + 0.2·starSize}; angle {@code (0.3·time)/radius} — the pass-30 radius law; tilts
+     * {@code 0.2 + distance + 0.2·starSize}; angle {@code (0.03·time)/radius} — the pass-30 radius law, slowed 10x in
+     * pass 37; tilts
      * {@code xAngle}/{@code zAngle})
      * plus the anchor's 2-block offset over the star — so a ship hovering
      * {@link USSConstants#HOVER_ABOVE_PLANET} above this point sits precisely above the rendered body.
@@ -84,9 +87,9 @@ public final class USSFleetOrbit {
     public static double[] planetAnchorPosition(float distance, float orbitSpeed, float xAngle, float zAngle,
         float starSize, float time) {
         final float radius = 0.2f + distance + 0.2f * starSize;
-        // Pass 30 (user: "a planet at X blocks should take X minutes to complete one full rotation"): angular
-        // speed 0.3/X degrees per tick — inner fast, outer slow. (The old orbitSpeed·0.1·time was independent of
-        // radius, so outer planets swept the sky as fast as inner ones.)
+        // Pass 30 (user: "a planet at X blocks should take X minutes to complete one full rotation") + pass 37
+        // (10x slower): angular speed 0.03/X degrees per tick — inner fast, outer slow. (The old
+        // orbitSpeed·0.1·time was independent of radius, so outer planets swept the sky as fast as inner ones.)
         final float orbitAngle = (ORBIT_DEG_PER_TICK_PER_BLOCK * time / radius) % 360f;
         // rotX(xAngle) · rotZ(zAngle) · rotY(orbitAngle) applied to (radius, 0, 0) — joml's chain order in
         // renderUSSOrbits (Rx, then Rz, then Ry, then translate).
@@ -114,6 +117,37 @@ public final class USSFleetOrbit {
         return new double[] { 0.0, STAR_CENTER_Y, 0.0 };
     }
 
+    /**
+     * Gateway render pass (user: "make a gateway render (just a simple gray circle) at the edge of the solar
+     * system, closest to the side the gateway is on" — and use it as the start/end point for the ship
+     * animations): the point ON the space-dome surface closest to the given gateway position — the gateway
+     * projected onto the dome along the star-center → gateway direction. The dome is the EoH space shell
+     * (centered on the star center {@code (0, STAR_CENTER_Y, 0)}, radius
+     * {@link USSConstants#SPACE_SHELL_RADIUS}); the actual gateway block sits OUTSIDE the dome and must not be
+     * the animation's visual anchor — ships spawn at (and return to) this dome-edge point instead, so they
+     * spawn inside the shell and leave from a better-looking spot.
+     *
+     * <p>
+     * Pure function (bare-JVM testable): the client draws its gray gateway circle here and starts/ends every
+     * ship animation here.
+     *
+     * @param gateway the ACTUAL gateway position in fleet-anchor coordinates (the entry's {@code vc_gw_rel};
+     *                length 3, never null)
+     * @return {@code double[3]} the dome-surface point in the gateway's direction (a FRESH array; never null)
+     */
+    public static double[] gatewayEdgePoint(double[] gateway) {
+        double cx = gateway[0];
+        double cy = gateway[1] - STAR_CENTER_Y;
+        double cz = gateway[2];
+        double len = Math.sqrt(cx * cx + cy * cy + cz * cz);
+        if (len < 1e-9) {
+            // Degenerate: the gateway sits AT the star center — there is no direction, keep the gateway itself.
+            return new double[] { gateway[0], gateway[1], gateway[2] };
+        }
+        double f = USSConstants.SPACE_SHELL_RADIUS / len;
+        return new double[] { cx * f, STAR_CENTER_Y + cy * f, cz * f };
+    }
+
     // region stateful-position pass (USSPosition — the "distance within the solar system" model)
 
     /**
@@ -132,7 +166,10 @@ public final class USSFleetOrbit {
      *
      * @param planet   the planet (its orbit params)
      * @param starSize the star's rendered size (orbit radius = 0.2 + distance + 0.2·starSize)
-     * @param time     world time in seconds (the shared render clock)
+     * @param time     world time in TICKS (the shared render clock — the SAME time base
+     *                 {@link #planetAnchorPosition} expects; both sides of the server/client split evaluate this
+     *                 function at the synced world time, so the server's planet position and the rendered one can
+     *                 never drift apart)
      * @return the planet's position in anchor coordinates (never null)
      */
     public static USSPosition planetPosition(USSPlanets.USSPlanet planet, float starSize, float time) {

@@ -118,6 +118,15 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         double lastY = 0.0;
         double lastZ = 0.0;
         boolean hasLastPos = false;
+        // FIX (flight desync): a travel leg lerps from a FIXED start point (the ship's position at the leg's
+        // FIRST frame) to its destination, with cumulative progress as t. Using the LIVE lastPos (updated every
+        // frame) as the lerp start made it self-referential — pos_N = lerp(pos_{N-1}, dest, progress_N) with
+        // CUMULATIVE progress — which converged the ship to the destination in a few seconds while the counter
+        // ran the full leg. The start is captured once (see renderShip) and held for the whole leg.
+        double legStartX = 0.0;
+        double legStartY = 0.0;
+        double legStartZ = 0.0;
+        boolean hasLegStart = false;
     }
 
     /** Per-ship animation phases, keyed by the ship's UUID (stable across fleet pushes and chunk reloads). */
@@ -187,6 +196,24 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // Pass 7: the system the fleet works (specs + star size ride with the fleet TE — no world lookups).
         List<TileEntityEyeOfHarmony.PlanetSpec> planets = fleet.getSystemPlanets();
         float starSize = fleet.getStarSize();
+
+        // Gateway render pass: a star-facing opaque TUBE (0.1 blocks deep) with a flat 25% cyan event plane in
+        // its bore, at the DOME EDGE in each fleet gateway's direction, embedded 0.25 blocks into the shell — the
+        // visual spawn/arrival point for the ship animations (the actual gateway block sits outside the dome).
+        // One per unique gateway (a fleet may serve several); drawn before the ships so the fleet renders on top.
+        Set<String> gatewayKeys = new HashSet<String>();
+        for (int i = 0; i < ships.size(); i++) {
+            int[] gwArr = ships.get(i)
+                .getIntArray(TileEntityVoidcraftShip.TAG_ENTRY_GW_REL);
+            if (gwArr == null || gwArr.length != 3) {
+                continue;
+            }
+            String gwKey = gwArr[0] + "," + gwArr[1] + "," + gwArr[2];
+            if (!gatewayKeys.add(gwKey)) {
+                continue;
+            }
+            renderGateway(new double[] { gwArr[0], gwArr[1], gwArr[2] }, x, y, z);
+        }
 
         for (int i = 0; i < ships.size(); i++) {
             renderShip(ships.get(i), i, x, y, z, worldTime, partialTicks, planets, starSize, tileEntity.getWorldObj());
@@ -289,6 +316,201 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 tessellator.addVertex(v0x, v0y, v0z);
                 tessellator.addVertex(v1x, v1y, v1z);
                 tessellator.addVertex(v2x, v2y, v2z);
+                tessellator.draw();
+            }
+        } finally {
+            GL11.glDepthMask(true);
+            if (!cullOn) {
+                GL11.glDisable(GL11.GL_CULL_FACE);
+            } else {
+                GL11.glEnable(GL11.GL_CULL_FACE);
+            }
+            if (blendOn) {
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            } else {
+                GL11.glDisable(GL11.GL_BLEND);
+            }
+            if (lightingOn) {
+                GL11.glEnable(GL11.GL_LIGHTING);
+            } else {
+                GL11.glDisable(GL11.GL_LIGHTING);
+            }
+            if (textureOn) {
+                GL11.glEnable(GL11.GL_TEXTURE_2D);
+            } else {
+                GL11.glDisable(GL11.GL_TEXTURE_2D);
+            }
+        }
+    }
+
+    /**
+     * Offset of the visual gate center along the dome normal, in blocks. NEGATIVE = toward the star center, so
+     * the gate is EMBEDDED in the shell (0.25 blocks inside the surface).
+     */
+    private static final double GATEWAY_INWARD_OFFSET = -0.25;
+
+    /**
+     * The visual gateway center — the dome-surface point in the gateway's direction
+     * ({@link USSFleetOrbit#gatewayEdgePoint}) pushed {@link #GATEWAY_INWARD_OFFSET} along the dome normal
+     * (toward the star). Shared by the gateway render below and the ship-animation anchor in
+     * {@link #renderShip}, so the ships spawn/return exactly at the gate.
+     *
+     * @param gw the ACTUAL gateway position (fleet-anchor blocks)
+     * @return the gate center (a FRESH array; the gateway itself in the degenerate star-center case)
+     */
+    private static double[] gatewayAnchor(double[] gw) {
+        double[] surface = USSFleetOrbit.gatewayEdgePoint(gw);
+        double nx = surface[0], ny = surface[1] - USSFleetOrbit.STAR_CENTER_Y, nz = surface[2];
+        double nlen = Math.sqrt(nx * nx + ny * ny + nz * nz);
+        if (nlen < 1e-9) {
+            // Degenerate: the gateway sits AT the star center — no direction, keep the point as-is.
+            return new double[] { surface[0], surface[1], surface[2] };
+        }
+        return new double[] { surface[0] + (nx / nlen) * GATEWAY_INWARD_OFFSET,
+            surface[1] + (ny / nlen) * GATEWAY_INWARD_OFFSET, surface[2] + (nz / nlen) * GATEWAY_INWARD_OFFSET };
+    }
+
+    /**
+     * A small STARGATE-style gateway at the space-dome edge in the gateway's direction:
+     * <ul>
+     * <li>an OPAQUE TUBE (a short cylinder: outer radius 0.125, bore 0.105 — 0.1 blocks long along the gate
+     * axis, very dark gray 0x060606) — outer wall + bore wall + both end caps — whose axis is the dome
+     * normal, so the gate face POINTS AT THE STAR (a FIXED orientation, NOT a camera billboard);</li>
+     * <li>a FLAT CYAN EVENT PLANE at the tube center, 25% opacity — the "event horizon" the ships pass through.</li>
+     * </ul>
+     * The gate sits {@link #GATEWAY_INWARD_OFFSET} (−0.25) along the dome normal — embedded in the shell, toward
+     * the star.
+     *
+     * <p>
+     * GL discipline: color-only (texture off), unlit (lighting off), culling off (the tube is double-sided).
+     * The cyan plane is a standard-alpha blend (25%), depth-TESTED (real geometry occludes it) with depth
+     * WRITES off (a pure overlay); the tube is a solid draw (blend off, depth writes on). All state is restored
+     * in the finally block.
+     *
+     * @param gw    the ACTUAL gateway position (fleet-anchor blocks) — projected onto the dome here
+     * @param x,y,z the anchor block CENTER in camera-relative coordinates (the gate point is added to it)
+     */
+    private static void renderGateway(double[] gw, double x, double y, double z) {
+        double[] center = gatewayAnchor(gw);
+        // The gate axis = the dome normal at the gateway point (outward from the star center) — the gate face
+        // points at the star. Degenerate (gateway at the star center): any axis is equally valid.
+        double[] surface = USSFleetOrbit.gatewayEdgePoint(gw);
+        double nx = surface[0], ny = surface[1] - USSFleetOrbit.STAR_CENTER_Y, nz = surface[2];
+        double nlen = Math.sqrt(nx * nx + ny * ny + nz * nz);
+        if (nlen < 1e-9) {
+            nx = 0.0;
+            ny = 1.0;
+            nz = 0.0;
+        } else {
+            nx /= nlen;
+            ny /= nlen;
+            nz /= nlen;
+        }
+        double cx = x + center[0], cy = y + center[1], cz = z + center[2];
+
+        final double RO = 0.125; // outer radius — ~0.25 blocks outer diameter
+        final double RI = 0.105; // bore radius (the flat event plane fills it); wall thickness RO − RI = 0.02
+        final double H = 0.05; // half the tube depth — 0.1 blocks long along the star-facing axis
+        final int SEGS = 32;
+
+        // An orthonormal basis (u, v) in the gate plane (perpendicular to the axis n), built with two cross
+        // products from a helper axis that is not parallel to n (world up, or world X when n ≈ ±Y).
+        double ax = 0.0, ay = 1.0, az = 0.0;
+        if (Math.abs(ny) > 0.99) {
+            ax = 1.0;
+            ay = 0.0;
+        }
+        double ux = ay * nz - az * ny, uy = az * nx - ax * nz, uz = ax * ny - ay * nx; // u = a × n
+        double ulen = Math.sqrt(ux * ux + uy * uy + uz * uz);
+        ux /= ulen;
+        uy /= ulen;
+        uz /= ulen;
+        double vx = ny * uz - nz * uy, vy = nz * ux - nx * uz, vz = nx * uy - ny * ux; // v = n × u
+
+        boolean lightingOn = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
+        boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        boolean textureOn = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        try {
+            Tessellator tessellator = Tessellator.instance;
+
+            // 1) The CYAN EVENT PLANE: a flat disc at the tube center, standard alpha at 25% opacity, depth writes
+            // off (a pure overlay, still depth-tested).
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glDepthMask(false);
+            tessellator.startDrawing(GL11.GL_TRIANGLE_FAN);
+            tessellator.setColorRGBA_F(0.0F, 1.0F, 1.0F, 0.25F);
+            tessellator.addVertex(cx, cy, cz);
+            for (int i = 0; i <= SEGS; i++) {
+                double a = (2.0 * Math.PI * i) / SEGS;
+                double ca = Math.cos(a), sa = Math.sin(a);
+                tessellator.addVertex(
+                    cx + (ux * ca + vx * sa) * RI,
+                    cy + (uy * ca + vy * sa) * RI,
+                    cz + (uz * ca + vz * sa) * RI);
+            }
+            tessellator.draw();
+
+            // 2) The OPAQUE TUBE: a short cylinder from −H to +H along the star-facing axis — outer wall + bore wall
+            // + both end caps, one color, a solid draw (blend off, depth writes on) on top of the plane.
+            // Very dark gray (0x060606). The color is set after each startDrawing below: startDrawing resets
+            // the Tessellator's color state, so a color set before it is dropped and the draw renders white.
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glDepthMask(true);
+            final float tube = 6.0F / 255.0F;
+
+            // a) the OUTER WALL (radius RO): a strip around the circle between the two end faces.
+            tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
+            tessellator.setColorRGBA_F(tube, tube, tube, 1.0F);
+            for (int i = 0; i <= SEGS; i++) {
+                double a = (2.0 * Math.PI * i) / SEGS;
+                double ca = Math.cos(a), sa = Math.sin(a);
+                tessellator.addVertex(
+                    cx + (ux * ca + vx * sa) * RO - nx * H,
+                    cy + (uy * ca + vy * sa) * RO - ny * H,
+                    cz + (uz * ca + vz * sa) * RO - nz * H);
+                tessellator.addVertex(
+                    cx + (ux * ca + vx * sa) * RO + nx * H,
+                    cy + (uy * ca + vy * sa) * RO + ny * H,
+                    cz + (uz * ca + vz * sa) * RO + nz * H);
+            }
+            tessellator.draw();
+            // b) the BORE WALL (radius RI): the inner surface of the tube.
+            tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
+            tessellator.setColorRGBA_F(tube, tube, tube, 1.0F);
+            for (int i = 0; i <= SEGS; i++) {
+                double a = (2.0 * Math.PI * i) / SEGS;
+                double ca = Math.cos(a), sa = Math.sin(a);
+                tessellator.addVertex(
+                    cx + (ux * ca + vx * sa) * RI - nx * H,
+                    cy + (uy * ca + vy * sa) * RI - ny * H,
+                    cz + (uz * ca + vz * sa) * RI - nz * H);
+                tessellator.addVertex(
+                    cx + (ux * ca + vx * sa) * RI + nx * H,
+                    cy + (uy * ca + vy * sa) * RI + ny * H,
+                    cz + (uz * ca + vz * sa) * RI + nz * H);
+            }
+            tessellator.draw();
+            // c) the END CAPS: the annulus at each end face (a strip between the bore and outer circles).
+            for (int side = -1; side <= 1; side += 2) {
+                tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
+                tessellator.setColorRGBA_F(tube, tube, tube, 1.0F);
+                for (int i = 0; i <= SEGS; i++) {
+                    double a = (2.0 * Math.PI * i) / SEGS;
+                    double ca = Math.cos(a), sa = Math.sin(a);
+                    tessellator.addVertex(
+                        cx + (ux * ca + vx * sa) * RI + nx * side * H,
+                        cy + (uy * ca + vy * sa) * RI + ny * side * H,
+                        cz + (uz * ca + vz * sa) * RI + nz * side * H);
+                    tessellator.addVertex(
+                        cx + (ux * ca + vx * sa) * RO + nx * side * H,
+                        cy + (uy * ca + vy * sa) * RO + ny * side * H,
+                        cz + (uz * ca + vz * sa) * RO + nz * side * H);
+                }
                 tessellator.draw();
             }
         } finally {
@@ -424,10 +646,22 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // Swarm spread: each ship hovers at its own stable spot AROUND the shared hover point, so a large fleet
         // reads as a swarm around its target instead of a stack (USSFleetOrbit keeps it inside the space shell).
         double[] gw = { gwArr[0], gwArr[1], gwArr[2] };
+        // Gateway render pass (user: the gateway sits OUTSIDE the space dome and is not a good-looking animation
+        // anchor): the VISUAL gateway is the gate center in the gateway's direction — where the dark gray ring
+        // + cyan event plane render and where the ships spawn/return (round 3: the gate sits 0.25 blocks
+        // INSIDE the shell, toward the star). gw stays the server's truth; gwRender is the gate center.
+        double[] gwRender = gatewayAnchor(gw);
         double[] hover = { body[0] + spread[0], body[1] + hoverAbove + spread[1], body[2] + spread[2] };
+        // Gateway render pass: a FRESH ship is still at its launch origin — the server writes the SAME point to
+        // TAG_ENTRY_POS (launch origin) and TAG_ENTRY_GW_REL (gateway) — so it must spawn at, and depart from,
+        // the DOME-EDGE gateway render (inside the shell), not the actual dome-external gateway block. A
+        // finished ship (entryPos = its last body, elsewhere) is unaffected.
+        boolean atGateway = (entryPos == null)
+            || (entryPos[0] - gw[0]) * (entryPos[0] - gw[0]) + (entryPos[1] - gw[1]) * (entryPos[1] - gw[1])
+                + (entryPos[2] - gw[2]) * (entryPos[2] - gw[2]) < 1e-12;
         // The leg's start point (Phase C): the ship's current position when the leg is a travel leg, else the
         // gateway (legacy entry without a position).
-        double[] legFrom = (entryPos != null) ? entryPos : gw;
+        double[] legFrom = (entryPos != null && !atGateway) ? entryPos : gwRender;
 
         LegPhase phase = phases.get(key);
         if (phase == null || !seenUuids.contains(key)) {
@@ -448,22 +682,43 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             legFrom = new double[] { phase.lastX, phase.lastY, phase.lastZ };
         }
 
+        // FIX (flight desync): capture the travel leg's start ONCE — on the leg's first frame — and hold it for
+        // the whole leg. The "new leg" condition is identical to legProgress's `fresh` (and is evaluated BEFORE
+        // legProgress runs this frame, so both see the same previous-frame phase state). This breaks the
+        // self-referential lerp (see the legStart field): the leg now lerps FIXED start → destination with the
+        // cumulative progress as t, advancing at exactly the server's leg rate instead of converging in seconds.
+        // Pass 32 is preserved: a return leg still departs from where the ship was last seen (the live hover
+        // above the body it just worked), because that is exactly legFrom on the leg's first frame.
+        boolean travelLeg = (state == USSShipState.OUTBOUND || state == USSShipState.RETURNING);
+        if (travelLeg && (phase.lastState != state.getId() || phase.lastLegId != legId || phase.startTick < 0)) {
+            phase.legStartX = legFrom[0];
+            phase.legStartY = legFrom[1];
+            phase.legStartZ = legFrom[2];
+            phase.hasLegStart = true;
+        }
+        double[] travelFrom = (travelLeg && phase.hasLegStart)
+            ? new double[] { phase.legStartX, phase.legStartY, phase.legStartZ }
+            : legFrom;
+
         // Pass 11 (user: "the bobbing is a bit aggressive now — remove it completely, it doesn't make much sense
         // for the ships to go up and down"): no vertical bob — ships hold a fixed hover altitude.
-        // Phase C: travel legs lerp from the LEG'S START (legFrom — the ship's current position: the gateway for a
-        // fresh ship, the previous body for a MOVE→MOVE leg) to their end point (the body / the gateway).
+        // Phase C: travel legs lerp from the LEG'S START (travelFrom — the ship's position at the leg's first
+        // frame: the gateway for a fresh ship, the previous body for a MOVE→MOVE leg) to their end point (the
+        // body / the gateway).
         double[] pos;
         switch (state) {
             case OUTBOUND:
                 pos = lerp(
-                    legFrom,
+                    travelFrom,
                     hover,
                     legProgress(phase, payload, travelDistance, shipRenderTime, USSShipState.OUTBOUND, legId));
                 break;
             case RETURNING:
+                // Gateway render pass: the return leg ends at the DOME-EDGE gateway render (the gray circle),
+                // not the actual (dome-external) gateway block.
                 pos = lerp(
-                    legFrom,
-                    gw,
+                    travelFrom,
+                    gwRender,
                     legProgress(phase, payload, travelDistance, shipRenderTime, USSShipState.RETURNING, legId));
                 break;
             case MINING:
@@ -474,10 +729,12 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 break;
             case HOVERING:
                 // Phase C: the program finished (or there is none) — the ship HOLDS at its current position
-                // (a fresh ship: the gateway; a finished one: its last body) + its swarm spread.
-                pos = (entryPos != null)
+                // (a fresh ship: the gateway; a finished one: its last body) + its swarm spread. Gateway render
+                // pass: a fresh ship holds at the DOME-EDGE gateway render (inside the shell), not the actual
+                // (dome-external) gateway block.
+                pos = (entryPos != null && !atGateway)
                     ? new double[] { entryPos[0] + spread[0], entryPos[1] + spread[1], entryPos[2] + spread[2] }
-                    : new double[] { hover[0], hover[1], hover[2] };
+                    : new double[] { gwRender[0] + spread[0], gwRender[1] + spread[1], gwRender[2] + spread[2] };
                 break;
             case DOCKED:
             default:
@@ -499,7 +756,7 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         double pitch = 0.0;
         // Phase C: the heading is the leg's direction (legFrom → leg end) — OUTBOUND/RETURNING travel it, MINING
         // keeps the arrival heading, HOVERING holds the current attitude.
-        double[] legTo = (state == USSShipState.RETURNING) ? gw : hover;
+        double[] legTo = (state == USSShipState.RETURNING) ? gwRender : hover;
         double[] heading = headingFor(legFrom, legTo, state);
         if (heading != null) {
             double targetYaw = heading[0];
@@ -614,8 +871,9 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // ClientProxy.em_particle): EntitySmokeFX + Minecraft.effectRenderer.addEffect.
         if (state == USSShipState.OUTBOUND || state == USSShipState.RETURNING) {
             // Phase C: exhaust is opposite the leg's direction of travel (legFrom → leg end), not the legacy
-            // gateway→hover chord (a MOVE→MOVE leg's gateway is irrelevant to its path).
-            double[] legTo2 = (state == USSShipState.OUTBOUND) ? hover : gw;
+            // gateway→hover chord (a MOVE→MOVE leg's gateway is irrelevant to its path). Gateway render pass:
+            // the return leg travels to the DOME-EDGE gateway render.
+            double[] legTo2 = (state == USSShipState.OUTBOUND) ? hover : gwRender;
             double dx = legTo2[0] - legFrom[0];
             double dy = legTo2[1] - legFrom[1];
             double dz = legTo2[2] - legFrom[2];
@@ -908,11 +1166,11 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
     private double legProgress(LegPhase phase, NBTTagCompound payload, double travelDistance, double renderTime,
         USSShipState state, int legId) {
         // Phase C: a new leg id resets the progress even for the SAME state (MOVE → MOVE legs of one program).
-        if (phase.lastState != state.getId() || phase.lastLegId != legId || phase.startTick < 0) {
+        boolean fresh = phase.lastState != state.getId() || phase.lastLegId != legId || phase.startTick < 0;
+        if (fresh) {
             phase.lastState = state.getId();
             phase.lastLegId = legId;
             phase.startTick = renderTime;
-            return 0.0;
         }
         double speed = VoidcraftNbt.readDouble(payload, VoidcraftNbt.TAG_SPEED);
         long mining = VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_MINING);
