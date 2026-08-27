@@ -2794,6 +2794,7 @@ public enum ItemList implements IItemContainer {
     DroneCase,
     Femtocontroller,
     FuelPellet,
+    SolarSail,
 
     PrecisionFieldSyncCasing,
     MagneticAnchorCasing,
@@ -2863,7 +2864,7 @@ public enum ItemList implements IItemContainer {
     Augment_NightVision,
     Augment_CreativeFlight,
     Augment_Jetpack,
-    Augment_Jetpack_PerfectHover,
+    Augment_VectoredJetpack,
     Augment_FireImmunity,
     Augment_StepAssist,
     Augment_GogglesOfRevealing,

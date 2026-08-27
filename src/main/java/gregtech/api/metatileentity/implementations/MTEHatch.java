@@ -23,6 +23,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.IHatchWatcher;
+import io.netty.buffer.ByteBuf;
 
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
@@ -199,19 +200,17 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = new NBTTagCompound();
-
-        data.setInteger("texturePage", texturePage);
-        data.setInteger("textureIndex", textureIndex);
-
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(texturePage);
+        buffer.writeInt(textureIndex);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        texturePage = data.getInteger("texturePage");
-        textureIndex = data.getInteger("textureIndex");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        texturePage = buffer.readInt();
+        textureIndex = buffer.readInt();
         clearInventoryTextureCache();
     }
 
