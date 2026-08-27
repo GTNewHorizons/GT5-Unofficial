@@ -56,6 +56,8 @@ public class Textures {
         RENDERING_ERROR(null, null),
         VOID(InvisibleIcon.INVISIBLE_ICON, InvisibleIcon.INVISIBLE_ICON);
 
+        // Atlas sprites are replaced during stitching
+        // RenderInit clears this after the block atlas rebuilds
         private static IIcon missingIcon;
 
         private final IIcon mIcon, mOverlay;

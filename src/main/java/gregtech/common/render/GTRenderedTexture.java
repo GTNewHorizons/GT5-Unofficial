@@ -488,6 +488,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
 
     private static final class InventoryIconFlipped extends GTIconFlipped {
 
+        // Resolve through the container so cached wrappers survive atlas sprite replacement
         private final IIconContainer iconContainer;
         private final boolean overlay;
 
