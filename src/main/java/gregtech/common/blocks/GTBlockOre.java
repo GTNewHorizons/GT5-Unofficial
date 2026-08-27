@@ -213,6 +213,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     }
 
     private synchronized ITexture[][] cacheTextures(int metadata) {
+        // Another render thread may have populated the cache while this thread waited for the monitor.
         ITexture[][] cached = textureCache.get(metadata);
         if (cached != null) return cached;
 

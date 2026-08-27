@@ -188,6 +188,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     }
 
     private synchronized ITexture[][] cacheTextures(int metadata) {
+        // Another render thread may have populated the cache while this thread waited for the monitor
         ITexture[][] cached = textureCache.get(metadata);
         if (cached != null) return cached;
 

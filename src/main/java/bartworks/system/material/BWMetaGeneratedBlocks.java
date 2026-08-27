@@ -82,6 +82,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
     }
 
     private synchronized ITexture[][] cacheTextures(int meta) {
+        // Another render thread may have populated the cache while this thread waited for the monitor.
         ITexture[][] cached = textureCache.get(meta);
         if (cached != null) return cached;
 

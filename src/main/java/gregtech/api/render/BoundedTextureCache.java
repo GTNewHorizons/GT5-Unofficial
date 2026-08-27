@@ -6,6 +6,13 @@ import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.interfaces.ITexture;
 
+/**
+ * Fixed-size texture cache optimized for render-thread reads.
+ * <p>
+ * Metadata hashes into one of 64 buckets, each retaining up to eight entries. Reads scan only that bucket and use
+ * atomic references, so cache hits require neither locking nor primitive-key boxing. Writes are synchronized and evict
+ * entries round-robin when a bucket fills. Unlike an LRU cache, reads never mutate shared state.
+ */
 public final class BoundedTextureCache {
 
     private static final int CACHE_SIZE = 512;
