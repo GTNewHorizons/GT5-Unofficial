@@ -113,8 +113,8 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 16),
                 ItemList.MetaMaterial_Shielding1.get(64), ItemList.MetaMaterial_EnergyConduit1.get(64) },
             nanites(1, 1, 3, 3, 3, 2, 2, 1, 4, 4, 2, 2),
-            new FluidStack[] { CondensateType.TranscendentMetal.getEntangled(32 * INGOTS),
-                CondensateType.Space.getEntangled(24 * INGOTS), CondensateType.SpaceTime.getEntangled(12 * INGOTS),
+            new FluidStack[] { CondensateType.Space.getEntangled(24 * INGOTS),
+                CondensateType.SpaceTime.getEntangled(12 * INGOTS),
                 CondensateType.DimensionallyShiftedSuperfluid.getEntangled(10_000) },
             600 * SECONDS,
             TierEU.RECIPE_UMV);
@@ -247,24 +247,6 @@ public class BECRecipes implements Runnable {
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(64 * INGOTS),
                 CondensateType.Infinity.getEntangled(32 * INGOTS),
                 CondensateType.TranscendentMetal.getEntangled(32 * INGOTS), },
-            300 * SECONDS,
-            TierEU.RECIPE_UMV);
-        addBec(
-            CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1),
-            new ItemStack[] { CustomItemList.Godforge_MagneticConfinementCasing.get(1),
-                ItemRefer.Field_Restriction_Coil_T4.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Creon, 8),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Mellion, 4),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 32),
-                GregtechItemList.Battery_Gem_4.get(4), GregtechItemList.Laser_Lens_Special.get(8),
-                ItemList.Emitter_UMV.get(4), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 2),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 2),
-                ItemList.MetaMaterial_Waveguide1.get(4) },
-            nanites(1, 1, 1, 1, 1, 2, 3, 3, 3, 2, 2, 4),
-            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(64 * INGOTS),
-                CondensateType.Infinity.getEntangled(32 * INGOTS),
-                CondensateType.BoundlessCosmicSolder.getEntangled(2_000), },
             300 * SECONDS,
             TierEU.RECIPE_UMV);
 

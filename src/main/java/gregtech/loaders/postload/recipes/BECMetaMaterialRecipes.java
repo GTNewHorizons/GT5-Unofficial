@@ -184,13 +184,9 @@ public class BECMetaMaterialRecipes implements Runnable {
         final int[] becAmounts;
         if (t == 0) {
             becCondensates = new CondensateType[] { CondensateType.ChromaticGlass, CondensateType.Infinity,
-                CondensateType.TranscendentMetal };
-            final CondensateType[] becCondensates2 = new CondensateType[] { CondensateType.ChromaticGlass,
-                CondensateType.Infinity, CondensateType.BoundlessCosmicSolder };
+                CondensateType.TranscendentMetal };;
             becAmounts = new int[] { chromatic4TierAmts[t], infinity4TierAmts[t], 2 };
-            final int[] becAmounts2 = new int[] { chromatic4TierAmts[t], infinity4TierAmts[t], 1 };
             addBec(outputs[t].get(1), inputs, nanites, becCondensates, becAmounts, baseDuration, euts[t]);
-            addBec(outputs[t].get(1), inputs, nanites, becCondensates2, becAmounts2, baseDuration, euts[t]);
         } else {
             becCondensates = new CondensateType[] { CondensateType.ChromaticGlass, CondensateType.Infinity,
                 CondensateType.BoundlessCosmicSolder };
