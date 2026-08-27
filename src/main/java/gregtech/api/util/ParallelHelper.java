@@ -2,10 +2,12 @@ package gregtech.api.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -127,6 +129,14 @@ public class ParallelHelper {
     protected Function<Integer, ItemStack[]> customItemOutputCalculation;
 
     protected Function<Integer, FluidStack[]> customFluidOutputCalculation;
+
+    protected List<ExpectedItemOutput> expectedItemOutputs;
+
+    protected List<ExpectedFluidOutput> expectedFluidOutputs;
+
+    protected Function<Integer, List<ExpectedItemOutput>> customExpectedItemOutputCalculation;
+
+    protected Function<Integer, List<ExpectedFluidOutput>> customExpectedFluidOutputCalculation;
 
     public ParallelHelper() {}
 
@@ -279,6 +289,20 @@ public class ParallelHelper {
         return this;
     }
 
+    /// Describes the outputs a custom item output calculation rolls. Without it the expected outputs are null.
+    @Nonnull
+    public ParallelHelper setCustomExpectedItemOutputCalculation(Function<Integer, List<ExpectedItemOutput>> custom) {
+        customExpectedItemOutputCalculation = custom;
+        return this;
+    }
+
+    /// Describes the outputs a custom fluid output calculation rolls. Without it the expected outputs are null.
+    @Nonnull
+    public ParallelHelper setCustomExpectedFluidOutputCalculation(Function<Integer, List<ExpectedFluidOutput>> custom) {
+        customExpectedFluidOutputCalculation = custom;
+        return this;
+    }
+
     /**
      * Sets method for calculating max parallel from given inputs.
      */
@@ -356,6 +380,28 @@ public class ParallelHelper {
                 "Tried to get fluid outputs before building or without enabling calculation of outputs");
         }
         return fluidOutputs;
+    }
+
+    /// The item outputs of the recipe before their chances were rolled, or null when the calculation does not
+    /// describe them.
+    @Nullable
+    public List<ExpectedItemOutput> getExpectedItemOutputs() {
+        if (!built || !calculateOutputs) {
+            throw new IllegalStateException(
+                "Tried to get expected item outputs before building or without enabling calculation of outputs");
+        }
+        return expectedItemOutputs;
+    }
+
+    /// The fluid outputs of the recipe before their chances were rolled, or null when the calculation does not
+    /// describe them.
+    @Nullable
+    public List<ExpectedFluidOutput> getExpectedFluidOutputs() {
+        if (!built || !calculateOutputs) {
+            throw new IllegalStateException(
+                "Tried to get expected fluid outputs before building or without enabling calculation of outputs");
+        }
+        return expectedFluidOutputs;
     }
 
     /**
@@ -552,8 +598,12 @@ public class ParallelHelper {
     protected void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {
         if (customItemOutputCalculation != null) {
             itemOutputs = customItemOutputCalculation.apply(currentParallel);
+            expectedItemOutputs = customExpectedItemOutputCalculation == null ? null
+                : customExpectedItemOutputCalculation.apply(currentParallel);
             return;
         }
+        ArrayList<ExpectedItemOutput> expectedOutputsList = new ArrayList<>();
+        expectedItemOutputs = expectedOutputsList;
         if (truncatedItemOutputs.length == 0) return;
         ArrayList<ItemStack> itemOutputsList = new ArrayList<>();
         for (int i = 0; i < truncatedItemOutputs.length; i++) {
@@ -561,9 +611,9 @@ public class ParallelHelper {
             ItemStack origin = recipe.getOutput(i)
                 .copy();
             final long itemStackSize = origin.stackSize;
-            long chancedOutputMultiplier = calculateIntegralChancedOutputMultiplier(
-                (int) (recipe.getOutputChance(i) * chanceMultiplier),
-                currentParallel);
+            final int chance = (int) (recipe.getOutputChance(i) * chanceMultiplier);
+            expectedOutputsList.add(new ExpectedItemOutput(origin, itemStackSize * currentParallel, chance));
+            long chancedOutputMultiplier = calculateIntegralChancedOutputMultiplier(chance, currentParallel);
             long items = itemStackSize * chancedOutputMultiplier;
             addItemsLong(itemOutputsList, origin, items);
         }
@@ -573,17 +623,21 @@ public class ParallelHelper {
     protected void calculateFluidOutputs(FluidStack[] truncatedFluidOutputs) {
         if (customFluidOutputCalculation != null) {
             fluidOutputs = customFluidOutputCalculation.apply(currentParallel);
+            expectedFluidOutputs = customExpectedFluidOutputCalculation == null ? null
+                : customExpectedFluidOutputCalculation.apply(currentParallel);
             return;
         }
+        ArrayList<ExpectedFluidOutput> expectedOutputsList = new ArrayList<>();
+        expectedFluidOutputs = expectedOutputsList;
         if (truncatedFluidOutputs.length == 0) return;
         ArrayList<FluidStack> fluidOutputsList = new ArrayList<>();
         for (int i = 0; i < truncatedFluidOutputs.length; i++) {
             if (recipe.getFluidOutput(i) == null) continue;
             FluidStack origin = recipe.getFluidOutput(i)
                 .copy();
-            final long chancedFluidMultiplier = calculateIntegralChancedOutputMultiplier(
-                (int) (recipe.getFluidOutputChance(i) * chanceMultiplier),
-                currentParallel);
+            final int chance = (int) (recipe.getFluidOutputChance(i) * chanceMultiplier);
+            expectedOutputsList.add(new ExpectedFluidOutput(origin, (long) origin.amount * currentParallel, chance));
+            final long chancedFluidMultiplier = calculateIntegralChancedOutputMultiplier(chance, currentParallel);
             long fluids = (long) origin.amount * chancedFluidMultiplier;
             addFluidsLong(fluidOutputsList, origin, fluids);
         }
