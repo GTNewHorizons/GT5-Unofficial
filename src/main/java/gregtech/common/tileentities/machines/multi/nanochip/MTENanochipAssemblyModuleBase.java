@@ -124,7 +124,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     public int getMaxRecipeDuration() {
         return ((NACRecipeMapBackend) (this.getRecipeMap()
-            .getBackend())).getMaxDuration();
+            .getBackend())).getMaxDuration(-1);
     }
 
     protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> vacuumConveyorInputs = new VacuumConveyorHatchMap<>();
