@@ -280,7 +280,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
     private Widget<?> createColorGrid(GenericListSyncHandler<SplitterRule> syncer, int index, boolean input) {
         SplitterRule rule = multiblock.rules.get(index);
 
-        return new ColorGridWidget().onButtonToggled(selected -> {
+        return new ColorGridWidget(input).onButtonToggled(selected -> {
             if (input) {
                 rule.inputColors = selected;
             } else rule.outputColors = selected;

@@ -3188,6 +3188,7 @@ GT5U.tooltip.nac.module.scanner.total_buffer=§aTotal EU Buffer Size: %s
 
 GT5U.tooltip.nac.color_grid.click_select=Click to select
 GT5U.tooltip.nac.color_grid.selected=Selected
+GT5U.tooltip.nac.color_grid.wildcard=No selected color means any color matches this rule
 GT5U.tooltip.nac.structure_error.module_count=Can only have at most one of each module type besides Splitter
 
 # NAC circuit components

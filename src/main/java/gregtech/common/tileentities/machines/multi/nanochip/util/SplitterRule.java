@@ -84,7 +84,8 @@ public class SplitterRule {
     // True if this rule can apply to the given itemstack
     public boolean appliesTo(Byte color, ItemStack item, MTESplitterModule.RedstoneChannelInfo redstoneState) {
         // Requires the given color to be in the set of input colors
-        if (!inputColors.contains(color)) return false;
+        // No input color means wildcard, accept any color
+        if (!inputColors.isEmpty() && !inputColors.contains(color)) return false;
 
         // If no items in the filter set match the given item, do not apply this rule
         // Also try the normal item representation
