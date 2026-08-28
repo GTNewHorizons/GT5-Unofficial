@@ -6123,7 +6123,7 @@ GT5U.waila.energy.stored=Stored: §a%s§r EU / §e%s§r EU
 GT5U.waila.energy.avg_in_with_amperage=Average Input: §a%s§r EU/t (%sA %s)
 GT5U.waila.energy.avg_out_with_amperage=Average Output: §c%s§r EU/t (%sA %s)
 GT5U.waila.energy.use=Currently uses: §e%s§r EU/t (%s)
-GT5U.waila.energy.use_with_amperage=Using §c%s EU/t (§a%s§7 A @ %s§c)
+GT5U.waila.energy.use_with_amperage=Using §e%s EU/t §7(§a%s§7 A @ %s§7)
 GT5U.waila.energy.produce=Currently generates: §a%s§r EU/t (%s)
 GT5U.waila.energy.produce_with_amperage=Currently generates: §a%s§r EU/t (%sA %s)
 GT5U.waila.stocking_bus.auto_pull.enabled=Auto-Pull from ME: Enabled
@@ -6154,10 +6154,12 @@ GT5U.waila.facing.east=EAST
 GT5U.waila.facing.unknown=UNKNOWN
 GT5U.waila.machine.progress_tick=%st / %st
 GT5U.waila.machine.progress_second=%ss / %ss
-GT5U.waila.machine.recipe_inputs=§6Recipe Inputs:
-GT5U.waila.machine.recipe_outputs=§bRecipe Outputs: §e%s
+GT5U.waila.machine.input=§6Input:
+GT5U.waila.machine.output=§bOutput: §e%s
 GT5U.waila.machine.render_item=§a%s§7x %s
 GT5U.waila.machine.more_items=And %s more...
+GT5U.waila.machine.use_steam=Using §e%s Steam L/t
+GT5U.waila.machine.eu_bar=Stored energy: %s%%
 
 GT5U.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
 GT5U.waila.multiblock.status.efficiency=  Efficiency: %f%%
@@ -9473,4 +9475,5 @@ gt.blockmachines.basicgenerator.lightningrod.05.name=Lightning Rod III
 gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning Bolts
 
 # NEI Aliases
+gt.alias.debug=Debug
 gt.alias.mechanical_armor=Mechanical Armor
