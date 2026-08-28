@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +24,9 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -32,6 +36,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -44,6 +49,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEQuadcellTokamakGui;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
 
 public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadcellTokamak>
@@ -54,22 +60,6 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     private static final int WIDTH_OFFSET = 11;
     private static final int HEIGHT_OFFSET = 6;
     private static final int DEPTH_OFFSET = 1;
-
-    private static final int FORCE_DENSITY = 200_000;
-    private static final int RUNITE_DENSITY = 800_000;
-    private static final int CELESTIAL_TUNGSTEN_DENSITY = 3_200_000;
-    private static final int ORIKALKUM_DENSITY = 8_000_000;
-
-    public static final int FORCE_MAX_DR = 10_000;
-    public static final int RUNITE_MAX_DR = 20_000;
-    public static final int CELESTIAL_TUNGSTEN_MAX_DR = 80_000;
-    public static final int ORIKALKUM_MAX_DR = 320_000;
-
-    private static final float FORCE_MAX_BOOST = 0.15f; // up to 15% more EU/L
-    private static final float RUNITE_MAX_BOOST = 0.10f; // up to 10% chance to not consume plasma
-    private static final float CELESTIAL_TUNGSTEN_MAX_BOOST = 0.05f; // up to 5% more EU/L and 5% chance to not consume
-                                                                     // plasma
-    private static final float ORIKALKUM_MAX_BOOST = 1.5f; // up to 50% bonus modifier on top of the others
 
     public int FORCE_CURRENT_DR = 0;
     public int RUNITE_CURRENT_DR = 0;
@@ -181,66 +171,65 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         // It takes 10 full cycles to increment the bonus all the way (10 seconds)
         // The bonus cap is equal to [SET_DR / MAX_DR] * MAX_BONUS
 
-        if (FORCE_CURRENT_BOOST != FORCE_MAX_BOOST) {
-            float FORCE_CURRENT_CAP = FORCE_MAX_BOOST * FORCE_CURRENT_DR / FORCE_MAX_DR;
+        if (FORCE_CURRENT_BOOST != PlasmaType.FORCE.maxBoost) {
+            float FORCE_CURRENT_CAP = PlasmaType.FORCE.maxBoost * FORCE_CURRENT_DR / PlasmaType.FORCE.maxDR;
             float step = FORCE_CURRENT_CAP / 10;
-            FORCE_CURRENT_BOOST = Math.min(FORCE_MAX_BOOST, FORCE_CURRENT_BOOST + step);
+            FORCE_CURRENT_BOOST = Math.min(PlasmaType.FORCE.maxBoost, FORCE_CURRENT_BOOST + step);
         }
 
-        if (RUNITE_CURRENT_BOOST != RUNITE_MAX_BOOST) {
-            float RUNITE_CURRENT_CAP = RUNITE_MAX_BOOST * RUNITE_CURRENT_DR / RUNITE_MAX_DR;
+        if (RUNITE_CURRENT_BOOST != PlasmaType.RUNITE.maxBoost) {
+            float RUNITE_CURRENT_CAP = PlasmaType.RUNITE.maxBoost * RUNITE_CURRENT_DR / PlasmaType.RUNITE.maxDR;
             float step = RUNITE_CURRENT_CAP / 10;
-            RUNITE_CURRENT_BOOST = Math.min(RUNITE_MAX_BOOST, RUNITE_CURRENT_BOOST + step);
+            RUNITE_CURRENT_BOOST = Math.min(PlasmaType.RUNITE.maxBoost, RUNITE_CURRENT_BOOST + step);
         }
 
-        if (CELESTIAL_TUNGSTEN_CURRENT_BOOST != CELESTIAL_TUNGSTEN_MAX_BOOST) {
-            float CELESTIAL_TUNGSTEN_CURRENT_CAP = CELESTIAL_TUNGSTEN_MAX_BOOST * CELESTIAL_TUNGSTEN_CURRENT_DR
-                / CELESTIAL_TUNGSTEN_MAX_DR;
+        if (CELESTIAL_TUNGSTEN_CURRENT_BOOST != PlasmaType.CELESTIAL.maxBoost) {
+            float CELESTIAL_TUNGSTEN_CURRENT_CAP = PlasmaType.CELESTIAL.maxBoost * CELESTIAL_TUNGSTEN_CURRENT_DR
+                / PlasmaType.CELESTIAL.maxDR;
             float step = CELESTIAL_TUNGSTEN_CURRENT_CAP / 10;
             CELESTIAL_TUNGSTEN_CURRENT_BOOST = Math
-                .min(CELESTIAL_TUNGSTEN_MAX_BOOST, CELESTIAL_TUNGSTEN_CURRENT_BOOST + step);
+                .min(PlasmaType.CELESTIAL.maxBoost, CELESTIAL_TUNGSTEN_CURRENT_BOOST + step);
         }
 
-        if (ORIKALKUM_CURRENT_BOOST != ORIKALKUM_MAX_BOOST) {
-            float ORIKALKUM_CURRENT_CAP = ORIKALKUM_MAX_BOOST * ORIKALKUM_CURRENT_DR / ORIKALKUM_MAX_DR;
+        if (ORIKALKUM_CURRENT_BOOST != PlasmaType.ORIKALKUM.maxBoost) {
+            float ORIKALKUM_CURRENT_CAP = PlasmaType.ORIKALKUM.maxBoost * ORIKALKUM_CURRENT_DR
+                / PlasmaType.ORIKALKUM.maxDR;
             float step = ORIKALKUM_CURRENT_CAP / 10;
-            ORIKALKUM_CURRENT_BOOST = Math.min(ORIKALKUM_MAX_BOOST, ORIKALKUM_CURRENT_BOOST + step);
+            ORIKALKUM_CURRENT_BOOST = Math.min(PlasmaType.ORIKALKUM.maxBoost, ORIKALKUM_CURRENT_BOOST + step);
         }
 
         float eutBoost = 1 + ((FORCE_CURRENT_BOOST + CELESTIAL_TUNGSTEN_CURRENT_BOOST) * ORIKALKUM_CURRENT_BOOST); // >1
         float nonDrainChance = (RUNITE_CURRENT_BOOST + CELESTIAL_TUNGSTEN_CURRENT_BOOST) * ORIKALKUM_CURRENT_BOOST; // <1
         lEUt = 0;
         // Try to drain all configured Fluids
-        FluidStack forceStack = new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), FORCE_CURRENT_DR);
+        FluidStack forceStack = PlasmaType.FORCE.getFluid(FORCE_CURRENT_DR);
         if (FORCE_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance && !this.depleteInput(forceStack)) {
             // noinspection ConstantConditions
             crashMachine(forceStack);
         }
-        lEUt += (long) (eutBoost * FORCE_CURRENT_DR * FORCE_DENSITY / 20);
+        lEUt += (long) (eutBoost * FORCE_CURRENT_DR * PlasmaType.FORCE.density / 20);
 
-        FluidStack runiteStack = new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), RUNITE_CURRENT_DR);
+        FluidStack runiteStack = PlasmaType.RUNITE.getFluid(RUNITE_CURRENT_DR);
         if (RUNITE_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance && !this.depleteInput(runiteStack)) {
             // noinspection ConstantConditions
             crashMachine(runiteStack);
         }
-        lEUt += (long) (eutBoost * RUNITE_CURRENT_DR * RUNITE_DENSITY / 20);
+        lEUt += (long) (eutBoost * RUNITE_CURRENT_DR * PlasmaType.RUNITE.density / 20);
 
-        FluidStack celestialtungstenStack = new FluidStack(
-            MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(),
-            CELESTIAL_TUNGSTEN_CURRENT_DR);
+        FluidStack celestialtungstenStack = PlasmaType.CELESTIAL.getFluid(CELESTIAL_TUNGSTEN_CURRENT_DR);
         if (CELESTIAL_TUNGSTEN_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance
             && !this.depleteInput(celestialtungstenStack)) {
             // noinspection ConstantConditions
             crashMachine(celestialtungstenStack);
         }
-        lEUt += (long) (eutBoost * CELESTIAL_TUNGSTEN_CURRENT_DR * CELESTIAL_TUNGSTEN_DENSITY / 20);
+        lEUt += (long) (eutBoost * CELESTIAL_TUNGSTEN_CURRENT_DR * PlasmaType.CELESTIAL.density / 20);
 
-        FluidStack orikalkumStack = Materials.Orikalkum.getPlasma(ORIKALKUM_CURRENT_DR);
+        FluidStack orikalkumStack = PlasmaType.ORIKALKUM.getFluid(ORIKALKUM_CURRENT_DR);
         if (ORIKALKUM_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance && !this.depleteInput(orikalkumStack)) {
             // noinspection ConstantConditions
             crashMachine(orikalkumStack);
         }
-        lEUt += (long) (eutBoost * ORIKALKUM_CURRENT_DR * ORIKALKUM_DENSITY / 20);
+        lEUt += (long) (eutBoost * ORIKALKUM_CURRENT_DR * PlasmaType.ORIKALKUM.density / 20);
 
         // if fluid can't be drained, turn off and clear all bonuses
 
@@ -252,11 +241,15 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         return super.checkProcessing();
     }
 
-    public void crashMachine(FluidStack stack) {
+    public void resetBoosts() {
         FORCE_CURRENT_BOOST = 0;
         RUNITE_CURRENT_BOOST = 0;
         CELESTIAL_TUNGSTEN_CURRENT_BOOST = 0;
         ORIKALKUM_CURRENT_BOOST = 1;
+    }
+
+    public void crashMachine(FluidStack stack) {
+        resetBoosts();
         stopMachine(ShutDownReasonRegistry.outOfFluid(stack));
     }
 
@@ -301,19 +294,27 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        aNBT.setInteger("ForceDR", FORCE_CURRENT_DR);
-        aNBT.setInteger("RuniteDR", RUNITE_CURRENT_DR);
-        aNBT.setInteger("CelestialDR", CELESTIAL_TUNGSTEN_CURRENT_DR);
-        aNBT.setInteger("OrikalkumDR", ORIKALKUM_CURRENT_DR);
+        this.FORCE_CURRENT_DR = aNBT.getInteger("ForceDR");
+        this.RUNITE_CURRENT_DR = aNBT.getInteger("RuniteDR");
+        this.CELESTIAL_TUNGSTEN_CURRENT_DR = aNBT.getInteger("CelestialDR");
+        this.ORIKALKUM_CURRENT_DR = aNBT.getInteger("OrikalkumDR");
+        this.FORCE_CURRENT_BOOST = aNBT.getInteger("ForceBoost");
+        this.RUNITE_CURRENT_BOOST = aNBT.getInteger("RuniteBoost");
+        this.CELESTIAL_TUNGSTEN_CURRENT_BOOST = aNBT.getInteger("CelestialBoost");
+        this.ORIKALKUM_CURRENT_BOOST = aNBT.getInteger("OrikalkumBoost");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        this.FORCE_CURRENT_DR = aNBT.getInteger("ForceDR");
-        this.RUNITE_CURRENT_DR = aNBT.getInteger("RuniteDR");
-        this.CELESTIAL_TUNGSTEN_CURRENT_DR = aNBT.getInteger("CelestialDR");
-        this.ORIKALKUM_CURRENT_DR = aNBT.getInteger("OrikalkumDR");
+        aNBT.setInteger("ForceDR", FORCE_CURRENT_DR);
+        aNBT.setInteger("RuniteDR", RUNITE_CURRENT_DR);
+        aNBT.setInteger("CelestialDR", CELESTIAL_TUNGSTEN_CURRENT_DR);
+        aNBT.setInteger("OrikalkumDR", ORIKALKUM_CURRENT_DR);
+        aNBT.setFloat("ForceBoost", FORCE_CURRENT_BOOST);
+        aNBT.setFloat("RuniteBoost", RUNITE_CURRENT_BOOST);
+        aNBT.setFloat("CelestialBoost", CELESTIAL_TUNGSTEN_CURRENT_BOOST);
+        aNBT.setFloat("OrikalkumBoost", ORIKALKUM_CURRENT_BOOST);
     }
 
     @Override
@@ -324,5 +325,61 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     @Override
     protected @NotNull MTEQuadcellTokamakGui getGui() {
         return new MTEQuadcellTokamakGui(this);
+    }
+
+    public enum PlasmaType {
+
+        FORCE("ForceDR", 10_000, 0.15f, 200_000, () -> MaterialsElements.STANDALONE.FORCE),
+        RUNITE("RuniteDR", 20_000, 0.1f, 800_000, () -> MaterialsElements.STANDALONE.RUNITE),
+        CELESTIAL("CelestialTungstenDR", 80_000, 0.05f, 3_200_000,
+            () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN),
+        ORIKALKUM("OrikalkumDR", 320_000, 1.5f, 8_000_000, () -> Materials.Orikalkum);
+
+        private final String syncKey;
+        private final int maxDR;
+        private final float maxBoost;
+        private final int density;
+        private final Supplier<IOreMaterial> material;
+
+        PlasmaType(String syncKey, int maxDrainRate, float maxBoost, int density, Supplier<IOreMaterial> material) {
+            this.syncKey = syncKey;
+            this.maxDR = maxDrainRate;
+            this.maxBoost = maxBoost;
+            this.density = density;
+            this.material = material;
+        }
+
+        public IntSyncValue getSyncValue(PanelSyncManager syncManager) {
+            return syncManager.findSyncHandler(this.syncKey, IntSyncValue.class);
+        }
+
+        public int getMaxDR() {
+            return maxDR;
+        }
+
+        public int getRGB() {
+            short[] rgba = material.get()
+                .getRGBA();
+            return Color.rgb(rgba[0], rgba[1], rgba[2]);
+        }
+
+        public String getLocalName() {
+            return material.get()
+                .getLocalizedName();
+        }
+
+        public FluidStack getFluid() {
+            return this.getFluid(1);
+        }
+
+        public FluidStack getFluid(int amount) {
+            IOreMaterial m = material.get();
+            if (m instanceof Material gtppMaterial) {
+                return new FluidStack(gtppMaterial.getPlasma(), amount);
+            } else if (m instanceof Materials gtMaterial) {
+                return gtMaterial.getPlasma(amount);
+            } else throw new IllegalStateException();
+        }
+
     }
 }

@@ -1,14 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak.CELESTIAL_TUNGSTEN_MAX_DR;
-import static gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak.FORCE_MAX_DR;
-import static gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak.ORIKALKUM_MAX_DR;
-import static gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak.RUNITE_MAX_DR;
-
-import java.util.function.Supplier;
-
-import net.minecraftforge.fluids.FluidStack;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -29,14 +21,11 @@ import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialsElements;
+import gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak.PlasmaType;
 
 public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokamak> {
 
@@ -48,21 +37,24 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        syncManager.syncValue(
-            "ForceDR",
-            new IntSyncValue(() -> multiblock.FORCE_CURRENT_DR, val -> multiblock.FORCE_CURRENT_DR = val).allowC2S());
-        syncManager.syncValue(
-            "RuniteDR",
-            new IntSyncValue(() -> multiblock.RUNITE_CURRENT_DR, val -> multiblock.RUNITE_CURRENT_DR = val).allowC2S());
-        syncManager.syncValue(
-            "CelestialTungstenDR",
-            new IntSyncValue(
-                () -> multiblock.CELESTIAL_TUNGSTEN_CURRENT_DR,
-                val -> multiblock.CELESTIAL_TUNGSTEN_CURRENT_DR = val).allowC2S());
-        syncManager.syncValue(
-            "OrikalkumDR",
-            new IntSyncValue(() -> multiblock.ORIKALKUM_CURRENT_DR, val -> multiblock.ORIKALKUM_CURRENT_DR = val)
-                .allowC2S());
+        syncManager.syncValue("ForceDR", new IntSyncValue(() -> multiblock.FORCE_CURRENT_DR, val -> {
+            multiblock.FORCE_CURRENT_DR = val;
+            multiblock.resetBoosts();
+        }).allowC2S());
+
+        syncManager.syncValue("RuniteDR", new IntSyncValue(() -> multiblock.RUNITE_CURRENT_DR, val -> {
+            multiblock.RUNITE_CURRENT_DR = val;
+            multiblock.resetBoosts();
+        }).allowC2S());
+        syncManager
+            .syncValue("CelestialTungstenDR", new IntSyncValue(() -> multiblock.CELESTIAL_TUNGSTEN_CURRENT_DR, val -> {
+                multiblock.CELESTIAL_TUNGSTEN_CURRENT_DR = val;
+                multiblock.resetBoosts();
+            }).allowC2S());
+        syncManager.syncValue("OrikalkumDR", new IntSyncValue(() -> multiblock.ORIKALKUM_CURRENT_DR, val -> {
+            multiblock.ORIKALKUM_CURRENT_DR = val;
+            multiblock.resetBoosts();
+        }).allowC2S());
     }
 
     @Override
@@ -131,7 +123,7 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
             .child(createConfigurationRow(PlasmaType.ORIKALKUM, syncManager));
     }
 
-    protected Flow createConfigurationRow(PlasmaType plasma, PanelSyncManager syncManager) {
+    protected Flow createConfigurationRow(MTEQuadcellTokamak.PlasmaType plasma, PanelSyncManager syncManager) {
         IntSyncValue syncValue = plasma.getSyncValue(syncManager);
 
         return Flow.column()
@@ -161,7 +153,7 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
                                 new SliderWidget().size(80, 8)
                                     .margin(1, 1)
                                     .verticalCenter()
-                                    .bounds(0, plasma.getMaxDrainRate())
+                                    .bounds(0, plasma.getMaxDR())
                                     .sliderSize(2, 8)
                                     .sliderTexture(new Rectangle().color(Color.WHITE.main))
                                     .background(IDrawable.EMPTY)
@@ -171,7 +163,7 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
                     .child(
                         new TextFieldWidget().size(48, 16)
                             .formatAsInteger(true)
-                            .numbersInt(0, plasma.getMaxDrainRate())
+                            .numbersInt(0, plasma.getMaxDR())
                             .value(new IntValue.Dynamic(syncValue::getIntValue, syncValue::setIntValue))
                             .setTextAlignment(Alignment.CENTER)
                             .setTextColor(plasma.getRGB())
@@ -190,50 +182,4 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    public enum PlasmaType {
-
-        FORCE("ForceDR", FORCE_MAX_DR, () -> MaterialsElements.STANDALONE.FORCE),
-        RUNITE("RuniteDR", RUNITE_MAX_DR, () -> MaterialsElements.STANDALONE.RUNITE),
-        CELESTIAL("CelestialTungstenDR", CELESTIAL_TUNGSTEN_MAX_DR,
-            () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN),
-        ORIKALKUM("OrikalkumDR", ORIKALKUM_MAX_DR, () -> Materials.Orikalkum);
-
-        private final String syncKey;
-        private final int maxDrainRate;
-        private final Supplier<IOreMaterial> material;
-
-        PlasmaType(String syncKey, int maxDrainRate, Supplier<IOreMaterial> material) {
-            this.syncKey = syncKey;
-            this.maxDrainRate = maxDrainRate;
-            this.material = material;
-        }
-
-        public IntSyncValue getSyncValue(PanelSyncManager syncManager) {
-            return syncManager.findSyncHandler(this.syncKey, IntSyncValue.class);
-        }
-
-        public int getMaxDrainRate() {
-            return maxDrainRate;
-        }
-
-        public int getRGB() {
-            short[] rgba = material.get()
-                .getRGBA();
-            return Color.rgb(rgba[0], rgba[1], rgba[2]);
-        }
-
-        public String getLocalName() {
-            return material.get()
-                .getLocalizedName();
-        }
-
-        public FluidStack getFluid() {
-            IOreMaterial m = material.get();
-            if (m instanceof Material gtppMaterial) {
-                return new FluidStack(gtppMaterial.getPlasma(), 1);
-            } else if (m instanceof Materials gtMaterial) {
-                return gtMaterial.getPlasma(1);
-            } else throw new IllegalStateException();
-        }
-    }
 }
