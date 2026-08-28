@@ -112,8 +112,8 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
             aFacing,
             aActive,
             OVERLAY_DTPF_OFF,
-            OVERLAY_DTPF_ON,
             OVERLAY_DTPF_OFF_GLOW,
+            OVERLAY_DTPF_ON,
             OVERLAY_RAINBOWSCREEN_GLOW);
     }
 
