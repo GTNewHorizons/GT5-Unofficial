@@ -18,6 +18,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,17 +36,20 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEQuadcellTokamakGui;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.core.material.MaterialsElements;
 
 public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadcellTokamak>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-
+    private final XSTR random = XSTR.XSTR_INSTANCE;
     private static final int WIDTH_OFFSET = 11;
     private static final int HEIGHT_OFFSET = 6;
     private static final int DEPTH_OFFSET = 1;
@@ -58,12 +62,23 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     private static final int FORCE_MAX_DR = 10_000;
     private static final int RUNITE_MAX_DR = 20_000;
     private static final int CELESTIAL_TUNGSTEN_MAX_DR = 80_000;
-    private static final int ORIKALKUM_DR = 320_000;
+    private static final int ORIKALKUM_MAX_DR = 320_000;
+
+    private static final float FORCE_MAX_BOOST = 0.15f; // up to 15% more EU/L
+    private static final float RUNITE_MAX_BOOST = 0.10f; // up to 10% chance to not consume plasma
+    private static final float CELESTIAL_TUNGSTEN_MAX_BOOST = 0.05f; // up to 5% more EU/L and 5% chance to not consume
+                                                                     // plasma
+    private static final float ORIKALKUM_MAX_BOOST = 1.5f; // up to 50% bonus modifier on top of the others
 
     public int FORCE_CURRENT_DR = 0;
     public int RUNITE_CURRENT_DR = 0;
     public int CELESTIAL_TUNGSTEN_CURRENT_DR = 0;
     public int ORIKALKUM_CURRENT_DR = 0;
+
+    public float FORCE_CURRENT_BOOST = 0f;
+    public float RUNITE_CURRENT_BOOST = 0f;
+    public float CELESTIAL_TUNGSTEN_CURRENT_BOOST = 0f;
+    public float ORIKALKUM_CURRENT_BOOST = 1f;
 
     private static final IStructureDefinition<MTEQuadcellTokamak> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEQuadcellTokamak>builder()
@@ -152,9 +167,94 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         return tt;
     }
 
+    private static final int CYCLE_TIME = 20;
+
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
+
+        // Increment Bonuses, if needed, up to the cap.
+
+        // Bonuses increment every cycle until they are at the cap of their respective bonus.
+        // It takes 10 full cycles to increment the bonus all the way (10 seconds)
+        // The bonus cap is equal to [SET_DR / MAX_DR] * MAX_BONUS
+
+        if (FORCE_CURRENT_BOOST != FORCE_MAX_BOOST) {
+            float FORCE_CURRENT_CAP = FORCE_MAX_BOOST * FORCE_CURRENT_DR / FORCE_MAX_DR;
+            float step = FORCE_CURRENT_CAP / 10;
+            FORCE_CURRENT_BOOST = Math.min(FORCE_MAX_BOOST, FORCE_CURRENT_BOOST + step);
+        }
+
+        if (RUNITE_CURRENT_BOOST != RUNITE_MAX_BOOST) {
+            float RUNITE_CURRENT_CAP = RUNITE_MAX_BOOST * RUNITE_CURRENT_DR / RUNITE_MAX_DR;
+            float step = RUNITE_CURRENT_CAP / 10;
+            RUNITE_CURRENT_BOOST = Math.min(RUNITE_MAX_BOOST, RUNITE_CURRENT_BOOST + step);
+        }
+
+        if (CELESTIAL_TUNGSTEN_CURRENT_BOOST != CELESTIAL_TUNGSTEN_MAX_BOOST) {
+            float CELESTIAL_TUNGSTEN_CURRENT_CAP = CELESTIAL_TUNGSTEN_MAX_BOOST * CELESTIAL_TUNGSTEN_CURRENT_DR
+                / CELESTIAL_TUNGSTEN_MAX_DR;
+            float step = CELESTIAL_TUNGSTEN_CURRENT_CAP / 10;
+            CELESTIAL_TUNGSTEN_CURRENT_BOOST = Math
+                .min(CELESTIAL_TUNGSTEN_MAX_BOOST, CELESTIAL_TUNGSTEN_CURRENT_BOOST + step);
+        }
+
+        if (ORIKALKUM_CURRENT_BOOST != ORIKALKUM_MAX_BOOST) {
+            float ORIKALKUM_CURRENT_CAP = ORIKALKUM_MAX_BOOST * ORIKALKUM_CURRENT_DR / ORIKALKUM_MAX_DR;
+            float step = ORIKALKUM_CURRENT_CAP / 10;
+            ORIKALKUM_CURRENT_BOOST = Math.min(ORIKALKUM_MAX_BOOST, ORIKALKUM_CURRENT_BOOST + step);
+        }
+
+        float eutBoost = 1 + ((FORCE_CURRENT_BOOST + CELESTIAL_TUNGSTEN_CURRENT_BOOST) * ORIKALKUM_CURRENT_BOOST); // >1
+        float nonDrainChance = (RUNITE_CURRENT_BOOST + CELESTIAL_TUNGSTEN_CURRENT_BOOST) * ORIKALKUM_CURRENT_BOOST; // <1
+        lEUt = 0;
+        // Try to drain all configured Fluids
+        FluidStack forceStack = new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), FORCE_CURRENT_DR);
+        if (FORCE_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance && !this.depleteInput(forceStack)) {
+            // noinspection ConstantConditions
+            crashMachine(forceStack);
+        }
+        lEUt += (long) (eutBoost * FORCE_CURRENT_DR * FORCE_DENSITY / 20);
+
+        FluidStack runiteStack = new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), RUNITE_CURRENT_DR);
+        if (RUNITE_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance && !this.depleteInput(runiteStack)) {
+            // noinspection ConstantConditions
+            crashMachine(runiteStack);
+        }
+        lEUt += (long) (eutBoost * RUNITE_CURRENT_DR * RUNITE_DENSITY / 20);
+
+        FluidStack celestialtungstenStack = new FluidStack(
+            MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(),
+            CELESTIAL_TUNGSTEN_CURRENT_DR);
+        if (CELESTIAL_TUNGSTEN_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance
+            && !this.depleteInput(celestialtungstenStack)) {
+            // noinspection ConstantConditions
+            crashMachine(celestialtungstenStack);
+        }
+        lEUt += (long) (eutBoost * CELESTIAL_TUNGSTEN_CURRENT_DR * CELESTIAL_TUNGSTEN_DENSITY / 20);
+
+        FluidStack orikalkumStack = Materials.Orikalkum.getPlasma(ORIKALKUM_CURRENT_DR);
+        if (ORIKALKUM_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance && !this.depleteInput(orikalkumStack)) {
+            // noinspection ConstantConditions
+            crashMachine(orikalkumStack);
+        }
+        lEUt += (long) (eutBoost * ORIKALKUM_CURRENT_DR * ORIKALKUM_DENSITY / 20);
+
+        // if fluid can't be drained, turn off and clear all bonuses
+
+        mEfficiency = 10000;
+        mEfficiencyIncrease = 10000;
+        mMaxProgresstime = 20;
+        recipesDone++;
+
         return super.checkProcessing();
+    }
+
+    public void crashMachine(FluidStack stack) {
+        FORCE_CURRENT_BOOST = 0;
+        RUNITE_CURRENT_BOOST = 0;
+        CELESTIAL_TUNGSTEN_CURRENT_BOOST = 0;
+        ORIKALKUM_CURRENT_BOOST = 1;
+        stopMachine(ShutDownReasonRegistry.outOfFluid(stack));
     }
 
     @Override
@@ -192,6 +292,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, WIDTH_OFFSET, HEIGHT_OFFSET, DEPTH_OFFSET, errors)) return;
         checkOneDynamoHatchMaybeExotic(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
