@@ -298,7 +298,7 @@ public class FusionReactorRecipes implements Runnable {
                 Materials.TokamakResidue.getFluid(100))
             .fluidOutputs(Materials.Orikalkum.getPlasma(1000))
             .duration(8 * TICKS)
-            .eut(196_608)
+            .eut(1_966_080)
             .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes); // FT4
 
