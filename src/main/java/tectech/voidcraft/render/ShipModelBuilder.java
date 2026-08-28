@@ -10,33 +10,29 @@ import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.VertexBufferType;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
+import com.gtnewhorizon.gtnhlib.client.renderer.vertex.VertexFormat;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.common.render.shader.SharedShaders;
 import tectech.voidcraft.VoidcraftTextures;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
 import tectech.voidcraft.ship.VoidcraftCoverComponent;
 
 /**
- * Builds the ship hologram VBO from a {@link VoidcraftBlueprint} (client only).
+ * Builds the ship hologram VAO from a {@link VoidcraftBlueprint} (client only).
  *
  * <p>
- * Technique (adapted from the Amazing Trophies "complex model" renderer, which renders trophy structures out
- * of real blocks): every occupied blueprint cell is rendered with the vanilla
+ * Every occupied blueprint cell is rendered with the vanilla
  * {@link net.minecraft.client.renderer.RenderBlocks#renderBlockAsItem} pipeline — real block textures, real
- * per-face UVs, ambient occlusion disabled — into a single captured
- * {@link IVertexArrayObject} (gtnhlib {@code TessellatorManager} direct-capture), one draw call at render time.
+ * per-face UVs, ambient occlusion disabled — into a single captured {@link IVertexArrayObject} in the shared
+ * textured shader's vertex format (position + UV), one draw call at render time. Covers mounted on a visible
+ * face are added as thin textured quads just outside that face (the cover's own icon from the block atlas).
  *
  * <p>
  * Face culling is precomputed from the grid itself: a face touching an occupied neighbor cell is hidden
  * (all ship components are opaque machine blocks), and fully enclosed cells are skipped entirely.
- *
- * <p>
- * Pass 24 (user playtest: "the covers are not rendered for the digitized voidcraft models"): every cover mounted
- * on a VISIBLE face of a hull cell is drawn as a thin quad just outside that face, textured with the cover's own
- * 16×16 icon — the same block-atlas texture the mounted face shows in-world, so the in-flight ship reads as the
- * built one. Cover quads are captured into the same VAO (one draw call, one texture binding).
  *
  * <p>
  * Must be called on the client main thread (texture binding + tessellator capture).
@@ -110,7 +106,7 @@ public final class ShipModelBuilder {
         ShipRenderBlocks renderBlocks = new ShipRenderBlocks(mc.theWorld);
         renderBlocks.enableAO = false;
 
-        Tessellator tessellator = TessellatorManager.startCapturingDirect(DefaultVertexFormat.POSITION_TEXTURE_NORMAL);
+        Tessellator tessellator = TessellatorManager.startCapturingDirect(captureFormat());
         try {
             // Pass 1: the hull blocks (real machine textures), in the renderer's default GL state.
             Block machineBlock = GregTechAPI.sBlockMachines;
@@ -152,9 +148,24 @@ public final class ShipModelBuilder {
     }
 
     /**
-     * Draw a cover quad on every VISIBLE face of the cell that has a mounted cover (pass 24). The quad sits just
-     * outside the hull face (0.003 offset — no z-fight) and is textured with the cover's own icon, so the
-     * in-flight ship shows exactly what the in-world face shows.
+     * The vertex format the ship model is captured into: the shared textured shader's format (position + UV,
+     * in that shader's attribute order). The direct tessellator writes only the elements present in the format
+     * (a normal for the hull faces is dropped), and the model is drawn with that shader.
+     */
+    private static VertexFormat captureFormat() {
+        if (SharedShaders.ready()) {
+            return SharedShaders.textured()
+                .vertexFormat();
+        }
+        // The shaders are not (re)loaded yet — capture nothing meaningful; the capture stays a no-op empty VAO
+        // and the next resource reload re-bakes the shader and clears the model cache.
+        return DefaultVertexFormat.POSITION_TEXTURE_NORMAL;
+    }
+
+    /**
+     * Draw a cover quad on every VISIBLE face of the cell that has a mounted cover. The quad sits just outside
+     * the hull face (0.003 offset — no z-fight) and is textured with the cover's own icon, so the in-flight
+     * ship shows exactly what the in-world face shows.
      */
     private static void renderCovers(Tessellator tess, VoidcraftBlueprint blueprint, int cell,
         ShipRenderFacesInfo info) {
@@ -238,7 +249,7 @@ public final class ShipModelBuilder {
      * Build an empty VAO (no vertices) so callers never see null.
      */
     private static IVertexArrayObject emptyVao() {
-        Tessellator tessellator = TessellatorManager.startCapturingDirect(DefaultVertexFormat.POSITION_TEXTURE_NORMAL);
+        Tessellator tessellator = TessellatorManager.startCapturingDirect(captureFormat());
         return TessellatorManager.stopCapturingDirectToVBO(VertexBufferType.IMMUTABLE);
     }
 }

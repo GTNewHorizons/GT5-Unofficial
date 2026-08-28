@@ -1,5 +1,6 @@
 package tectech.voidcraft.render;
 
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,7 +10,6 @@ import java.util.Set;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntitySmokeFX;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,13 +17,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
+import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL20;
+
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.common.render.shader.MeshBuilder;
+import gregtech.common.render.shader.RenderState;
+import gregtech.common.render.shader.ShaderHandle;
+import gregtech.common.render.shader.SharedShaders;
 import tectech.thing.block.TileEntityEyeOfHarmony;
 import tectech.voidcraft.loader.VoidcraftLoader;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
@@ -97,6 +106,35 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
      */
     private static final double HEADING_EASE_TICKS = 8.0;
 
+    /** Scratch model matrix (the render thread is single; one instance serves every per-draw upload). */
+    private static final Matrix4f MODEL_MATRIX = new Matrix4f();
+
+    /**
+     * Cached per-gateway geometry (keyed by the gateway's anchor-relative block coords): the event-plane disc +
+     * the opaque tube, built once per gateway and drawn through the flat-color shader.
+     */
+    private static final class GatewayGeometry {
+
+        final IVertexArrayObject plane;
+        final IVertexArrayObject tube;
+
+        GatewayGeometry(IVertexArrayObject plane, IVertexArrayObject tube) {
+            this.plane = plane;
+            this.tube = tube;
+        }
+    }
+
+    private static final Map<String, GatewayGeometry> GATEWAY_GEOS = new HashMap<String, GatewayGeometry>();
+
+    /** Clears the cached gateway geometry (also called on resource reload, where VAOs are deleted outright). */
+    public static void releaseGeometry() {
+        for (GatewayGeometry geo : GATEWAY_GEOS.values()) {
+            geo.plane.delete();
+            geo.tube.delete();
+        }
+        GATEWAY_GEOS.clear();
+    }
+
     /** Per-ship animation phase (last seen state + the tick it was first seen, plus the eased heading). */
     private static final class LegPhase {
 
@@ -165,6 +203,11 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         if (ships.isEmpty() && ripples.isEmpty() && sites.isEmpty() && bases.isEmpty()) {
             return;
         }
+        // The shaders are (re)baked by the resource-reload hook before the first render pass — a missing bake
+        // (GL context hiccup) simply skips this frame's draw instead of failing the render loop.
+        if (!VoidcraftShaders.ready() || !SharedShaders.ready()) {
+            return;
+        }
 
         long worldTime = tileEntity.getWorldObj()
             .getTotalWorldTime();
@@ -224,7 +267,14 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             if (!gatewayKeys.add(gwKey)) {
                 continue;
             }
-            renderGateway(new double[] { gwArr[0], gwArr[1], gwArr[2] }, x, y, z);
+            renderGateway(
+                new double[] { gwArr[0], gwArr[1], gwArr[2] },
+                x,
+                y,
+                z,
+                fleet.xCoord,
+                fleet.yCoord,
+                fleet.zCoord);
         }
 
         for (int i = 0; i < ships.size(); i++) {
@@ -249,11 +299,11 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
      * of world time, so every client animates it identically without any per-tick sync.
      *
      * <p>
-     * Same GL discipline as the mining beam ({@link #renderBeam}): texture OFF (color-only quads), lighting OFF
-     * (emissive), culling OFF (billboard winding), blend ON (standard alpha — transparent, NOT additive glow), depth
-     * writes OFF (a pure overlay, still depth-TESTED so opaque geometry correctly occludes it). The triangle is
-     * billboarded using the camera's right/up axes read from the model-view matrix (so it always faces the player,
-     * regardless of where it sits on a shell).
+     * Drawn through the ripple shader ({@link VoidcraftShaders#ripple()}): the triangle is billboarded in the
+     * vertex stage with the camera's right/up axes read from the model-view matrix (so it always faces the
+     * player, regardless of where it sits on a shell). Culling is off (billboard winding), blend is standard
+     * alpha (transparent, NOT additive glow), and depth writes are off (a pure overlay, still depth-TESTED so
+     * opaque geometry correctly occludes it).
      *
      * @param ripples   the revealed ripple positions — each {@code [x, y, z]} in fleet-anchor blocks (never null)
      * @param x,y,z     the anchor block CENTER in camera-relative coordinates (the ripple positions are added to it)
@@ -263,42 +313,29 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         if (ripples == null || ripples.isEmpty()) {
             return;
         }
-        boolean lightingOn = GL11.glIsEnabled(GL11.GL_LIGHTING);
-        boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
-        boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-        boolean textureOn = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final long blend = RenderState.savedBlendFunc();
+        final boolean depthMaskOn = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); // standard alpha (transparent) — NOT additive
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); // standard alpha (transparent)
         GL11.glDepthMask(false);
         try {
-            // Camera-facing basis (billboard): the model-view matrix's first two columns are the camera's right/up
-            // axes in world space (translation lives in column 4, so it does not pollute them).
+            // Camera-facing basis (billboard): the camera's RIGHT and UP axes in world space are the first two
+            // ROWS of the model-view matrix's rotation part — (m00,m01,m02) = (buf[0],buf[4],buf[8]) and
+            // (m10,m11,m12) = (buf[1],buf[5],buf[9]). (The first two COLUMNS are the images of the world X/Y
+            // axes, correct only for an unrotated camera — that made the triangles tilt with the world instead
+            // of tracking the camera.)
             //
-            // The FLOAT matrix overload + org.lwjgl.BufferUtils — the exact pattern GT5U's own FrameMatrices uses
-            // (glGetFloat(GL_MODELVIEW_MATRIX, scratch) with BufferUtils.createFloatBuffer(16)), which is proven
-            // to work in this 1.7.10 modpack. The double variant (GL11.glGetDouble into a java.nio.DoubleBuffer)
-            // threw IllegalArgumentException "DoubleBuffer is not direct" in the user's runtime (LWJGL
-            // 2.9.4-nightly + the lwjgl3ify coremod) — this environment's buffer check rejects it, so avoid it
-            // entirely and read the matrix as floats (plenty of precision for a billboard basis).
-            //
-            // The whole read is additionally guarded: this is a decorative effect — it degrades to a fixed
-            // world-up orientation rather than crashing the game over a GL/environment quirk.
-            // Default = the fixed world-up frame (the fallback); the matrix read overwrites it when it succeeds.
+            // The FLOAT matrix overload + org.lwjgl.BufferUtils (the FrameMatrices pattern) — the double variant
+            // (glGetDouble into a java.nio.DoubleBuffer) is rejected by this LWJGL build ("DoubleBuffer is not
+            // direct"). The read is additionally guarded: the effect degrades to a fixed world-up orientation
+            // rather than crashing the game over a GL/environment quirk.
             double rx = 1.0, ry = 0.0, rz = 0.0, ux = 0.0, uy = 1.0, uz = 0.0;
             try {
-                java.nio.FloatBuffer mv = BufferUtils.createFloatBuffer(16);
+                FloatBuffer mv = BufferUtils.createFloatBuffer(16);
                 GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, mv);
                 mv.rewind();
-                // Pass 26 (user: "the ripples are not properly following/facing the camera"): the model-view
-                // matrix is column-major in memory. The camera's RIGHT and UP axes in WORLD space are the first two
-                // ROWS of the rotation part — (m00,m01,m02) = (buf[0],buf[4],buf[8]) and (m10,m11,m12) =
-                // (buf[1],buf[5],buf[9]) — NOT the first two columns (buf[0..2]/buf[4..6], which are the images of
-                // the world X/Y axes and are only correct for an unrotated camera). Using the columns made the
-                // triangles tilt with the world instead of tracking the camera. Read everything first, commit after
-                // — a partial failure must not leave a mixed frame.
                 double[] m = new double[6];
                 m[0] = mv.get(0); // m00 → right.x
                 m[1] = mv.get(4); // m01 → right.y
@@ -316,53 +353,34 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 // any buffer/GL quirk — keep the fixed frame; the triangle still renders (just world-oriented)
             }
 
-            // The pulse: a gentle sinusoid over world time (size + alpha breathe together). Pass 26 (user: "the
-            // ripples should be ~20% of their current size, and the pulsating effect should be much smaller"):
-            // circumradius 0.45…0.80 → 0.10…0.13 (~20%), and the breathing amplitude 0.35 → 0.03 (much subtler).
+            // The pulse: a gentle sinusoid over world time (size + alpha breathe together).
             double pulse = 0.5 + 0.5 * Math.sin(worldTime / 20.0);
             double s = 0.10 + 0.03 * pulse; // triangle circumradius in blocks (0.10 … 0.13)
             float alpha = (float) (0.40 + 0.10 * pulse); // subtle pulsating transparency (0.40 … 0.50)
 
-            Tessellator tessellator = Tessellator.instance;
+            // One draw per ripple: the shared unit triangle (VoidcraftGeometry.rippleTriangle), positioned by the
+            // ripple shader (center + camera axes + scale) in the camera-relative frame of this pass.
+            final ShaderHandle shader = VoidcraftShaders.ripple();
+            shader.use();
+            GL20.glUniform3f(shader.loc(VoidcraftShaders.RIPPLE_RIGHT), (float) rx, (float) ry, (float) rz);
+            GL20.glUniform3f(shader.loc(VoidcraftShaders.RIPPLE_UP), (float) ux, (float) uy, (float) uz);
+            shader.uploadModel(MODEL_MATRIX.identity());
+            final IVertexArrayObject triangle = VoidcraftGeometry.rippleTriangle();
             for (float[] r : ripples) {
-                double cx = x + r[0];
-                double cy = y + r[1];
-                double cz = z + r[2];
-                // Equilateral triangle (apex up) in the camera plane: angles 90°, 210°, 330°.
-                double v0x = cx + (ux) * s, v0y = cy + (uy) * s, v0z = cz + (uz) * s;
-                double v1x = cx + (-0.866 * rx - 0.5 * ux) * s, v1y = cy + (-0.866 * ry - 0.5 * uy) * s,
-                    v1z = cz + (-0.866 * rz - 0.5 * uz) * s;
-                double v2x = cx + (0.866 * rx - 0.5 * ux) * s, v2y = cy + (0.866 * ry - 0.5 * uy) * s,
-                    v2z = cz + (0.866 * rz - 0.5 * uz) * s;
-                tessellator.startDrawing(GL11.GL_TRIANGLES);
-                tessellator.setColorRGBA_F(0.08F, 0.22F, 0.95F, alpha); // dark blue
-                tessellator.addVertex(v0x, v0y, v0z);
-                tessellator.addVertex(v1x, v1y, v1z);
-                tessellator.addVertex(v2x, v2y, v2z);
-                tessellator.draw();
+                GL20.glUniform3f(
+                    shader.loc(VoidcraftShaders.RIPPLE_CENTER),
+                    (float) (x + r[0]),
+                    (float) (y + r[1]),
+                    (float) (z + r[2]));
+                GL20.glUniform1f(shader.loc(VoidcraftShaders.RIPPLE_SCALE), (float) s);
+                GL20.glUniform4f(shader.loc(VoidcraftShaders.RIPPLE_COLOR), 0.08F, 0.22F, 0.95F, alpha); // dark blue
+                triangle.render();
             }
+            ShaderProgram.clear();
         } finally {
-            GL11.glDepthMask(true);
-            if (!cullOn) {
-                GL11.glDisable(GL11.GL_CULL_FACE);
-            } else {
-                GL11.glEnable(GL11.GL_CULL_FACE);
-            }
-            if (blendOn) {
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            } else {
-                GL11.glDisable(GL11.GL_BLEND);
-            }
-            if (lightingOn) {
-                GL11.glEnable(GL11.GL_LIGHTING);
-            } else {
-                GL11.glDisable(GL11.GL_LIGHTING);
-            }
-            if (textureOn) {
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
-            } else {
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-            }
+            GL11.glDepthMask(depthMaskOn);
+            RenderState.restoreBlendFunc(blend);
+            RenderState.restore(GL11.GL_CULL_FACE, cullOn);
         }
     }
 
@@ -371,6 +389,19 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
      * the gate is EMBEDDED in the shell (0.25 blocks inside the surface).
      */
     private static final double GATEWAY_INWARD_OFFSET = -0.25;
+
+    /** Gateway tube outer radius — ~0.25 blocks outer diameter. */
+    public static final double GATEWAY_OUTER_RADIUS = 0.125;
+    /** Gateway tube bore radius (the flat event plane fills it); wall thickness = outer − bore. */
+    public static final double GATEWAY_BORE_RADIUS = 0.105;
+    /** Half the tube depth along the star-facing axis — 0.1 blocks long. */
+    public static final double GATEWAY_TUBE_HALF_DEPTH = 0.05;
+    /** Radial segments of the tube / event-plane circle. */
+    public static final int GATEWAY_SEGMENTS = 32;
+    /** The tube's solid color (0x060606). */
+    public static final float GATEWAY_TUBE_GRAY = 6.0F / 255.0F;
+    /** The event plane's opacity. */
+    public static final float GATEWAY_PLANE_ALPHA = 0.25F;
 
     /**
      * The visual gateway center — the dome-surface point in the gateway's direction
@@ -405,15 +436,66 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
      * the star.
      *
      * <p>
-     * GL discipline: color-only (texture off), unlit (lighting off), culling off (the tube is double-sided).
-     * The cyan plane is a standard-alpha blend (25%), depth-TESTED (real geometry occludes it) with depth
-     * WRITES off (a pure overlay); the tube is a solid draw (blend off, depth writes on). All state is restored
-     * in the finally block.
+     * The geometry (event plane + tube) is static per (anchor block, gateway position) — it is baked once into
+     * VAOs (see {@link #GATEWAY_GEOS}) and drawn through the flat-color shader: the cyan plane first (standard
+     * alpha, 25%, depth writes off — a pure overlay, still depth-TESTED so real geometry occludes it), the
+     * opaque tube second (solid draw, depth writes on). Culling is off (the tube is double-sided).
      *
-     * @param gw    the ACTUAL gateway position (fleet-anchor blocks) — projected onto the dome here
-     * @param x,y,z the anchor block CENTER in camera-relative coordinates (the gate point is added to it)
+     * @param gw       the ACTUAL gateway position (fleet-anchor blocks) — projected onto the dome here
+     * @param x,y,z    the anchor block CENTER in camera-relative coordinates (the gate point is added to it)
+     * @param ax,ay,az the anchor block's block coordinates (part of the geometry cache key — two USS anchors can
+     *                 share a gateway's anchor-relative position without sharing its baked position)
      */
-    private static void renderGateway(double[] gw, double x, double y, double z) {
+    private static void renderGateway(double[] gw, double x, double y, double z, int ax, int ay, int az) {
+        final String key = ax + "," + ay + "," + az + ":" + gw[0] + "," + gw[1] + "," + gw[2];
+        GatewayGeometry geo = GATEWAY_GEOS.get(key);
+        if (geo == null) {
+            // Bound the cache: each anchor carries few gateways (one per fleet gateway direction) — past the cap
+            // the entries are stale (a rebuilt or destroyed anchor) and are discarded with the rest.
+            if (GATEWAY_GEOS.size() > 64) {
+                releaseGeometry();
+            }
+            geo = buildGatewayGeometry(gw, x, y, z);
+            GATEWAY_GEOS.put(key, geo);
+        }
+
+        final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final long blend = RenderState.savedBlendFunc();
+        final boolean depthMaskOn = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        try {
+            final ShaderHandle shader = VoidcraftShaders.color();
+            shader.use();
+            shader.uploadModel(MODEL_MATRIX.identity());
+            // 1) The CYAN EVENT PLANE.
+            GL20.glUniform4f(shader.loc(VoidcraftShaders.COLOR_COLOR), 0.0F, 1.0F, 1.0F, GATEWAY_PLANE_ALPHA);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glDepthMask(false);
+            geo.plane.render();
+            // 2) The OPAQUE TUBE on top of the plane (the world blend state, depth writes on).
+            GL20.glUniform4f(
+                shader.loc(VoidcraftShaders.COLOR_COLOR),
+                GATEWAY_TUBE_GRAY,
+                GATEWAY_TUBE_GRAY,
+                GATEWAY_TUBE_GRAY,
+                1.0F);
+            RenderState.restoreBlendFunc(blend);
+            GL11.glDepthMask(true);
+            geo.tube.render();
+            ShaderProgram.clear();
+        } finally {
+            GL11.glDepthMask(depthMaskOn);
+            RenderState.restoreBlendFunc(blend);
+            RenderState.restore(GL11.GL_CULL_FACE, cullOn);
+        }
+    }
+
+    /**
+     * Bakes the gateway's two meshes (event-plane disc + the opaque tube: outer wall, bore wall, both end caps)
+     * at their anchor-relative camera positions into VAOs.
+     */
+    private static GatewayGeometry buildGatewayGeometry(double[] gw, double x, double y, double z) {
         double[] center = gatewayAnchor(gw);
         // The gate axis = the dome normal at the gateway point (outward from the star center) — the gate face
         // points at the star. Degenerate (gateway at the star center): any axis is equally valid.
@@ -431,10 +513,11 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         }
         double cx = x + center[0], cy = y + center[1], cz = z + center[2];
 
-        final double RO = 0.125; // outer radius — ~0.25 blocks outer diameter
-        final double RI = 0.105; // bore radius (the flat event plane fills it); wall thickness RO − RI = 0.02
-        final double H = 0.05; // half the tube depth — 0.1 blocks long along the star-facing axis
-        final int SEGS = 32;
+        final double RO = GATEWAY_OUTER_RADIUS;
+        final double RI = GATEWAY_BORE_RADIUS;
+        final double H = GATEWAY_TUBE_HALF_DEPTH;
+        final int SEGS = GATEWAY_SEGMENTS;
+        final double TAU = 2.0 * Math.PI;
 
         // An orthonormal basis (u, v) in the gate plane (perpendicular to the axis n), built with two cross
         // products from a helper axis that is not parallel to n (world up, or world X when n ≈ ±Y).
@@ -450,115 +533,68 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         uz /= ulen;
         double vx = ny * uz - nz * uy, vy = nz * ux - nx * uz, vz = nx * uy - ny * ux; // v = n × u
 
-        boolean lightingOn = GL11.glIsEnabled(GL11.GL_LIGHTING);
-        boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
-        boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-        boolean textureOn = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        try {
-            Tessellator tessellator = Tessellator.instance;
+        // 1) The event plane: a flat disc at the tube center — a triangle fan around the center.
+        final MeshBuilder planeMesh = MeshBuilder.of(VoidcraftShaders.color(), SEGS * 3);
+        for (int i = 0; i < SEGS; i++) {
+            planeMesh.triangleVertex(cx, cy, cz, 0, 0);
+            ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RI, 0.0, TAU * i / SEGS, RING);
+            planeMesh.triangleVertex(RING[0], RING[1], RING[2], 0, 0);
+            ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RI, 0.0, TAU * (i + 1) / SEGS, RING);
+            planeMesh.triangleVertex(RING[0], RING[1], RING[2], 0, 0);
+        }
+        final IVertexArrayObject plane = planeMesh.build();
 
-            // 1) The CYAN EVENT PLANE: a flat disc at the tube center, standard alpha at 25% opacity, depth writes
-            // off (a pure overlay, still depth-tested).
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glDepthMask(false);
-            tessellator.startDrawing(GL11.GL_TRIANGLE_FAN);
-            tessellator.setColorRGBA_F(0.0F, 1.0F, 1.0F, 0.25F);
-            tessellator.addVertex(cx, cy, cz);
-            for (int i = 0; i <= SEGS; i++) {
-                double a = (2.0 * Math.PI * i) / SEGS;
-                double ca = Math.cos(a), sa = Math.sin(a);
-                tessellator.addVertex(
-                    cx + (ux * ca + vx * sa) * RI,
-                    cy + (uy * ca + vy * sa) * RI,
-                    cz + (uz * ca + vz * sa) * RI);
-            }
-            tessellator.draw();
-
-            // 2) The OPAQUE TUBE: a short cylinder from −H to +H along the star-facing axis — outer wall + bore wall
-            // + both end caps, one color, a solid draw (blend off, depth writes on) on top of the plane.
-            // Very dark gray (0x060606). The color is set after each startDrawing below: startDrawing resets
-            // the Tessellator's color state, so a color set before it is dropped and the draw renders white.
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glDepthMask(true);
-            final float tube = 6.0F / 255.0F;
-
-            // a) the OUTER WALL (radius RO): a strip around the circle between the two end faces.
-            tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
-            tessellator.setColorRGBA_F(tube, tube, tube, 1.0F);
-            for (int i = 0; i <= SEGS; i++) {
-                double a = (2.0 * Math.PI * i) / SEGS;
-                double ca = Math.cos(a), sa = Math.sin(a);
-                tessellator.addVertex(
-                    cx + (ux * ca + vx * sa) * RO - nx * H,
-                    cy + (uy * ca + vy * sa) * RO - ny * H,
-                    cz + (uz * ca + vz * sa) * RO - nz * H);
-                tessellator.addVertex(
-                    cx + (ux * ca + vx * sa) * RO + nx * H,
-                    cy + (uy * ca + vy * sa) * RO + ny * H,
-                    cz + (uz * ca + vz * sa) * RO + nz * H);
-            }
-            tessellator.draw();
-            // b) the BORE WALL (radius RI): the inner surface of the tube.
-            tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
-            tessellator.setColorRGBA_F(tube, tube, tube, 1.0F);
-            for (int i = 0; i <= SEGS; i++) {
-                double a = (2.0 * Math.PI * i) / SEGS;
-                double ca = Math.cos(a), sa = Math.sin(a);
-                tessellator.addVertex(
-                    cx + (ux * ca + vx * sa) * RI - nx * H,
-                    cy + (uy * ca + vy * sa) * RI - ny * H,
-                    cz + (uz * ca + vz * sa) * RI - nz * H);
-                tessellator.addVertex(
-                    cx + (ux * ca + vx * sa) * RI + nx * H,
-                    cy + (uy * ca + vy * sa) * RI + ny * H,
-                    cz + (uz * ca + vz * sa) * RI + nz * H);
-            }
-            tessellator.draw();
-            // c) the END CAPS: the annulus at each end face (a strip between the bore and outer circles).
-            for (int side = -1; side <= 1; side += 2) {
-                tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
-                tessellator.setColorRGBA_F(tube, tube, tube, 1.0F);
-                for (int i = 0; i <= SEGS; i++) {
-                    double a = (2.0 * Math.PI * i) / SEGS;
-                    double ca = Math.cos(a), sa = Math.sin(a);
-                    tessellator.addVertex(
-                        cx + (ux * ca + vx * sa) * RI + nx * side * H,
-                        cy + (uy * ca + vy * sa) * RI + ny * side * H,
-                        cz + (uz * ca + vz * sa) * RI + nz * side * H);
-                    tessellator.addVertex(
-                        cx + (ux * ca + vx * sa) * RO + nx * side * H,
-                        cy + (uy * ca + vy * sa) * RO + ny * side * H,
-                        cz + (uz * ca + vz * sa) * RO + nz * side * H);
-                }
-                tessellator.draw();
-            }
-        } finally {
-            GL11.glDepthMask(true);
-            if (!cullOn) {
-                GL11.glDisable(GL11.GL_CULL_FACE);
-            } else {
-                GL11.glEnable(GL11.GL_CULL_FACE);
-            }
-            if (blendOn) {
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            } else {
-                GL11.glDisable(GL11.GL_BLEND);
-            }
-            if (lightingOn) {
-                GL11.glEnable(GL11.GL_LIGHTING);
-            } else {
-                GL11.glDisable(GL11.GL_LIGHTING);
-            }
-            if (textureOn) {
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
-            } else {
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
+        // 2) The tube: SEGS quads per ring (outer wall, bore wall) + SEGS quads per end cap annulus.
+        final MeshBuilder tubeMesh = MeshBuilder.of(VoidcraftShaders.color(), (2 * SEGS + 2 * SEGS) * 6);
+        final double[] a = new double[3], b = new double[3], c = new double[3], d = new double[3];
+        // a) the OUTER WALL (radius RO): a ring between the two end faces.
+        for (int i = 0; i < SEGS; i++) {
+            ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RO, -H, TAU * i / SEGS, a);
+            ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RO, +H, TAU * i / SEGS, b);
+            ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RO, +H, TAU * (i + 1) / SEGS, c);
+            ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RO, -H, TAU * (i + 1) / SEGS, d);
+            tubeMesh.vertex(a[0], a[1], a[2], 0, 0);
+            tubeMesh.vertex(b[0], b[1], b[2], 0, 0);
+            tubeMesh.vertex(c[0], c[1], c[2], 0, 0);
+            tubeMesh.vertex(d[0], d[1], d[2], 0, 0);
+        }
+        // b) the BORE WALL (radius RI): the inner surface of the tube.
+        for (int i = 0; i < SEGS; i++) {
+            ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RI, -H, TAU * i / SEGS, a);
+            ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RI, +H, TAU * i / SEGS, b);
+            ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RI, +H, TAU * (i + 1) / SEGS, c);
+            ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RI, -H, TAU * (i + 1) / SEGS, d);
+            tubeMesh.vertex(a[0], a[1], a[2], 0, 0);
+            tubeMesh.vertex(b[0], b[1], b[2], 0, 0);
+            tubeMesh.vertex(c[0], c[1], c[2], 0, 0);
+            tubeMesh.vertex(d[0], d[1], d[2], 0, 0);
+        }
+        // c) the END CAPS: the annulus at each end face (a ring between the bore and outer circles).
+        for (int side = -1; side <= 1; side += 2) {
+            for (int i = 0; i < SEGS; i++) {
+                ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RI, side * H, TAU * i / SEGS, a);
+                ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RI, side * H, TAU * (i + 1) / SEGS, b);
+                ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RO, side * H, TAU * (i + 1) / SEGS, c);
+                ringPoint(cx, cy, cz, ux, uy, uz, vx, vy, vz, nx, ny, nz, RO, side * H, TAU * i / SEGS, d);
+                tubeMesh.vertex(a[0], a[1], a[2], 0, 0);
+                tubeMesh.vertex(b[0], b[1], b[2], 0, 0);
+                tubeMesh.vertex(c[0], c[1], c[2], 0, 0);
+                tubeMesh.vertex(d[0], d[1], d[2], 0, 0);
             }
         }
+        return new GatewayGeometry(plane, tubeMesh.build());
+    }
+
+    /** One point of the gateway ring: {@code center + (u·cos a + v·sin a)·radius + n·axisOffset}. */
+    private static final double[] RING = new double[3];
+
+    private static void ringPoint(double cx, double cy, double cz, double ux, double uy, double uz, double vx,
+        double vy, double vz, double nx, double ny, double nz, double radius, double axisOffset, double angle,
+        double[] out) {
+        double ca = Math.cos(angle), sa = Math.sin(angle);
+        out[0] = cx + (ux * ca + vx * sa) * radius + nx * axisOffset;
+        out[1] = cy + (uy * ca + vy * sa) * radius + ny * axisOffset;
+        out[2] = cz + (uz * ca + vz * sa) * radius + nz * axisOffset;
     }
 
     private void renderShip(NBTTagCompound entry, int index, double x, double y, double z, long worldTime,
@@ -806,49 +842,54 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             phase.lastFrame = frame;
             yaw = phase.yaw;
             pitch = phase.pitch;
+        } else if (phase.headingInit) {
+            // No target heading (HOVERING/DOCKED, or degenerate geometry — the hover point did not move this
+            // frame, so legFrom and legTo coincide and the direction is undefined): HOLD the current attitude.
+            // (Drawing identity here instead would snap the ship to its default facing for that frame.)
+            yaw = phase.yaw;
+            pitch = phase.pitch;
         }
 
-        boolean lightingEnabled = GL11.glIsEnabled(GL11.GL_LIGHTING);
-        boolean cullEnabled = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        // The model matrix: translate to the ship position, scale to hologram cell size, orient, and center (cells
+        // span 0..n-1 on each axis). Orientation: headingFor returns (yaw, pitch) in DEGREES; JOML's rotate()
+        // takes RADIANS (the codebase-wide convention — every other JOML caller wraps its degrees in
+        // Math.toRadians). The derivation applies YAW to the model first, then PITCH, i.e. the model rotation is
+        // R_pitch * R_yaw (yaw on the right, applied to the vertex first). JOML post-multiplies each rotate()
+        // call, so PITCH must be issued first and YAW second (yaw-then-pitch yields R_yaw * R_pitch, which points
+        // the nose off-target for any diagonal direction).
+        final Matrix4f matrix = MODEL_MATRIX.identity()
+            .translate((float) (x + pos[0]), (float) (y + pos[1]), (float) (z + pos[2]))
+            .scale((float) CELL_SIZE)
+            .rotate((float) Math.toRadians(pitch), 1.0F, 0.0F, 0.0F)
+            .rotate((float) Math.toRadians(yaw), 0.0F, 1.0F, 0.0F)
+            .translate(-(model.width - 1) / 2.0F, -(model.height - 1) / 2.0F, -(model.depth - 1) / 2.0F);
 
-        GL11.glPushMatrix();
+        // Culling off for the ship: the hull is a hollow shell of blocks plus thin cover quads, and we cannot
+        // assume every face's winding from the outside — the back sides are depth-occluded by the cube volume,
+        // so disabling culling only guarantees the faces we want (covers included) actually draw. Blending off:
+        // the hull is opaque (every block atlas pixel is fully opaque), and blending would inherit whatever
+        // blend FUNC an earlier tile-entity renderer in the same pass left active (an ambient additive
+        // (SRC_ALPHA, ONE) makes an alpha-1.0 fragment read as "slightly transparent": dst = src + dst, the
+        // star layer behind bleeds through — visible from the camera angles that look at the ship against the
+        // star). Blend OFF is immune to the function and matches the legacy unblended hull look.
+        final boolean cullEnabled = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final boolean blendEnabled = GL11.glIsEnabled(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_BLEND);
         try {
-            GL11.glTranslated(x + pos[0], y + pos[1], z + pos[2]);
-            GL11.glScalef((float) CELL_SIZE, (float) CELL_SIZE, (float) CELL_SIZE);
-            // Orientation: headingFor returns (yaw, pitch) whose derivation applies YAW to the model first, then
-            // PITCH — i.e. the model rotation is R_pitch * R_yaw (yaw on the right, applied to the vertex first).
-            // OpenGL post-multiplies each glRotated, so to get M = R_pitch * R_yaw we must issue PITCH first and
-            // YAW second. (Emitting yaw-then-pitch yields R_yaw * R_pitch, which points the nose off-target for any
-            // diagonal direction — verified empirically; axis-aligned headings are unaffected because one angle is 0.)
-            GL11.glRotated((float) pitch, 1.0f, 0.0f, 0.0f);
-            GL11.glRotated((float) yaw, 0.0f, 1.0f, 0.0f);
-            // Center the model (cells span 0..n-1 on each axis).
-            GL11.glTranslated(-(model.width - 1) / 2.0, -(model.height - 1) / 2.0, -(model.depth - 1) / 2.0);
-
+            GL13.glActiveTexture(GL13.GL_TEXTURE0);
             Minecraft.getMinecraft()
                 .getTextureManager()
                 .bindTexture(TextureMap.locationBlocksTexture);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            // Culling off for the ship: the hull is a hollow shell of blocks plus thin cover quads, and we cannot
-            // assume every face's winding from the outside — the back sides are depth-occluded by the cube volume,
-            // so disabling culling only guarantees the faces we want (covers included) actually draw.
-            GL11.glDisable(GL11.GL_CULL_FACE);
-
+            final ShaderHandle shader = SharedShaders.textured();
+            shader.use();
+            GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), 1.0F, 1.0F, 1.0F, 1.0F);
+            shader.uploadModel(matrix);
             model.vao.render();
-
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            ShaderProgram.clear();
         } finally {
-            if (!cullEnabled) {
-                GL11.glDisable(GL11.GL_CULL_FACE);
-            } else {
-                GL11.glEnable(GL11.GL_CULL_FACE);
-            }
-            if (!lightingEnabled) {
-                GL11.glDisable(GL11.GL_LIGHTING);
-            }
-            GL11.glPopMatrix();
+            RenderState.restore(GL11.GL_BLEND, blendEnabled);
+            RenderState.restore(GL11.GL_CULL_FACE, cullEnabled);
         }
 
         // Pass 8: the mining laser — a thin glowing rod from the MIDDLE of the ship to the MIDDLE of the body it
@@ -995,7 +1036,17 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
     /**
      * Draws the queued lasers ({@link #BEAM_QUEUE}) in the {@code RenderWorldLastEvent} pass, once per frame. The
      * event fires with the world's modelview still active and the captured endpoints are in the same
-     * camera-relative frame the tile-entity pass used, so no matrix adjustment is needed.
+     * camera-relative frame the tile-entity pass used, so the rod shader draws them with the identity model
+     * matrix.
+     *
+     * <p>
+     * Each beam is the shared rod VAO ({@link VoidcraftGeometry#beamRod()}), positioned entirely by the beam
+     * shader (endpoints + cross-section axes + half-width), in a bright cyan with additive blending and a gentle
+     * pulse — the classic "laser" reading. Culling is off (the rod's winding must not fight the world's
+     * GL_CULL_FACE) and depth writes are off — the beams are drawn in the world-last pass, after every opaque
+     * geometry has written its depth, so the depth test alone gives the correct picture (the planet's surface
+     * and the hull occlude the part of the rod behind them, the starfield shows behind it) and no later opaque
+     * draw can overpaint it.
      */
     @SideOnly(Side.CLIENT)
     public static class BeamWorldLastRenderer {
@@ -1005,295 +1056,135 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             if (BEAM_QUEUE.isEmpty()) {
                 return;
             }
-            int depthFunc = GL11.glGetInteger(GL11.GL_DEPTH_FUNC);
-            GL11.glPushAttrib(
-                GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT
-                    | GL11.GL_DEPTH_BUFFER_BIT
-                    | GL11.GL_CURRENT_BIT
-                    | GL11.GL_TEXTURE_BIT);
-            GL11.glPushMatrix();
+            if (!VoidcraftShaders.ready()) {
+                BEAM_QUEUE.clear();
+                return;
+            }
+            final int depthFunc = GL11.glGetInteger(GL11.GL_DEPTH_FUNC);
+            final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+            final boolean depthMaskOn = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
+            final long blend = RenderState.savedBlendFunc();
             try {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 GL11.glDepthFunc(GL11.GL_LEQUAL);
+                GL11.glDisable(GL11.GL_CULL_FACE);
+                GL11.glEnable(GL11.GL_BLEND);
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // additive — the beam glows instead of washing out
+                GL11.glDepthMask(false);
+
+                final ShaderHandle shader = VoidcraftShaders.beam();
+                shader.use();
+                shader.uploadModel(MODEL_MATRIX.identity());
+                GL20.glUniform1f(shader.loc(VoidcraftShaders.BEAM_HALF_WIDTH), (float) VoidcraftShipFx.BEAM_HALF_WIDTH);
+                final IVertexArrayObject rod = VoidcraftGeometry.beamRod();
                 for (int i = 0; i < BEAM_QUEUE.size(); i++) {
-                    double[] b = BEAM_QUEUE.get(i);
-                    renderBeam(
-                        new double[] { b[0], b[1], b[2] },
-                        new double[] { b[3], b[4], b[5] },
-                        b[6],
-                        (long) b[7],
-                        b[8],
-                        b[9],
-                        b[10]);
+                    final double[] b = BEAM_QUEUE.get(i);
+                    final double[] basis = VoidcraftShipFx
+                        .beamBasis(new double[] { b[0], b[1], b[2] }, new double[] { b[3], b[4], b[5] });
+                    if (basis == null) {
+                        continue; // endpoints coincide — degenerate geometry, nothing to draw
+                    }
+                    GL20.glUniform3f(shader.loc(VoidcraftShaders.BEAM_START), (float) b[0], (float) b[1], (float) b[2]);
+                    GL20.glUniform3f(shader.loc(VoidcraftShaders.BEAM_END), (float) b[3], (float) b[4], (float) b[5]);
+                    GL20.glUniform3f(
+                        shader.loc(VoidcraftShaders.BEAM_P1),
+                        (float) basis[3],
+                        (float) basis[4],
+                        (float) basis[5]);
+                    GL20.glUniform3f(
+                        shader.loc(VoidcraftShaders.BEAM_P2),
+                        (float) basis[6],
+                        (float) basis[7],
+                        (float) basis[8]);
+                    final double pulse = 0.85 + 0.15 * Math.sin(b[7] / 2.5);
+                    GL20.glUniform4f(
+                        shader.loc(VoidcraftShaders.BEAM_COLOR),
+                        (float) b[8],
+                        (float) b[9],
+                        (float) b[10],
+                        (float) (0.9 * b[6] * pulse));
+                    rod.render();
                 }
+                ShaderProgram.clear();
             } finally {
                 BEAM_QUEUE.clear();
                 GL11.glDepthFunc(depthFunc);
-                GL11.glPopMatrix();
-                GL11.glPopAttrib();
+                GL11.glDepthMask(depthMaskOn);
+                RenderState.restoreBlendFunc(blend);
+                RenderState.restore(GL11.GL_CULL_FACE, cullOn);
             }
         }
     }
 
-    /**
-     * The mining laser rod between two WORLD points: a thin box (four side quads) in a bright cyan with
-     * additive blending and a gentle pulse — the classic "laser" reading. Culling is disabled for the rod (its
-     * winding must not fight the world's GL_CULL_FACE), lighting off (it is emissive), and depth writes off — the
-     * beam is drawn in the world-last pass (see {@link BeamWorldLastRenderer}), after every opaque geometry has
-     * written its depth, so the depth test alone gives the correct picture (the planet's surface and the hull
-     * occlude the part of the rod behind them, the starfield shows behind it) and no later opaque draw can
-     * overpaint it.
-     *
-     * <p>
-     * <strong>Texture OFF while drawing</strong> (the fix for "no beam showed up"): the ship model pass leaves
-     * the block atlas bound with GL_TEXTURE_2D enabled; color-only Tessellator quads then get modulated by the
-     * atlas pixel at UV (0,0) and render dark/invisible. Vanilla's own thin-bright-rod renderer
-     * ({@code RenderLightningBolt}) does exactly this: disable the texture, draw the color quads, re-enable it.
-     */
-    private static void renderBeam(double[] start, double[] end, double fade, long worldTime) {
-        renderBeam(start, end, fade, worldTime, 0.15, 0.75, 1.0);
-    }
-
-    /**
-     * One beam of a custom color between two WORLD points (same rod as {@link #renderBeam(double[], double[],
-     * double, long)}: thin box, additive blending, gentle pulse, depth writes off, texture off).
-     *
-     * @param start     the beam's origin (world x/y/z)
-     * @param end       the beam's target (world x/y/z)
-     * @param fade      0..1 — 0 is invisible (the fade ramp); 1 fully bright
-     * @param worldTime the render time (the pulse phase)
-     * @param red       the beam's color (0..1)
-     * @param green     the beam's color (0..1)
-     * @param blue      the beam's color (0..1)
-     */
-    private static void renderBeam(double[] start, double[] end, double fade, long worldTime, double red, double green,
-        double blue) {
-        double[] b = VoidcraftShipFx.beamBasis(start, end);
-        if (b == null) {
-            return; // endpoints coincide — degenerate geometry, nothing to draw
-        }
-        double p1x = b[3];
-        double p1y = b[4];
-        double p1z = b[5];
-        double p2x = b[6];
-        double p2y = b[7];
-        double p2z = b[8];
-        double w = VoidcraftShipFx.BEAM_HALF_WIDTH;
-
-        boolean lightingOn = GL11.glIsEnabled(GL11.GL_LIGHTING);
-        boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
-        boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-        boolean textureOn = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_TEXTURE_2D); // see the javadoc — REQUIRED, or the rod samples the block atlas
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // additive — the beam glows instead of washing out
-        GL11.glDepthMask(false);
-        try {
-            double pulse = 0.85 + 0.15 * Math.sin(worldTime / 2.5);
-            float alpha = (float) (0.9 * fade * pulse);
-            Tessellator tessellator = Tessellator.instance;
-            tessellator.startDrawingQuads();
-            tessellator.setColorRGBA_F((float) red, (float) green, (float) blue, alpha);
-            double[] sx = { -1.0, 1.0, 1.0, -1.0 };
-            double[] sz = { -1.0, -1.0, 1.0, 1.0 };
-            for (int i = 0; i < 4; i++) {
-                int j = (i + 1) % 4;
-                tessellator.addVertex(
-                    start[0] + w * (sx[i] * p1x + sz[i] * p2x),
-                    start[1] + w * (sx[i] * p1y + sz[i] * p2y),
-                    start[2] + w * (sx[i] * p1z + sz[i] * p2z));
-                tessellator.addVertex(
-                    end[0] + w * (sx[i] * p1x + sz[i] * p2x),
-                    end[1] + w * (sx[i] * p1y + sz[i] * p2y),
-                    end[2] + w * (sx[i] * p1z + sz[i] * p2z));
-                tessellator.addVertex(
-                    end[0] + w * (sx[j] * p1x + sz[j] * p2x),
-                    end[1] + w * (sx[j] * p1y + sz[j] * p2y),
-                    end[2] + w * (sx[j] * p1z + sz[j] * p2z));
-                tessellator.addVertex(
-                    start[0] + w * (sx[j] * p1x + sz[j] * p2x),
-                    start[1] + w * (sx[j] * p1y + sz[j] * p2y),
-                    start[2] + w * (sx[j] * p1z + sz[j] * p2z));
-            }
-            tessellator.draw();
-        } finally {
-            GL11.glDepthMask(true);
-            if (!cullOn) {
-                GL11.glDisable(GL11.GL_CULL_FACE);
-            } else {
-                GL11.glEnable(GL11.GL_CULL_FACE);
-            }
-            if (blendOn) {
-                // Vanilla's default alpha blend — the additive func above only served the beam.
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            } else {
-                GL11.glDisable(GL11.GL_BLEND);
-            }
-            if (lightingOn) {
-                GL11.glEnable(GL11.GL_LIGHTING);
-            } else {
-                GL11.glDisable(GL11.GL_LIGHTING);
-            }
-            if (textureOn) {
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
-            } else {
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-            }
-        }
-    }
-
-    // Pass 31 (user: the scan field "works" but is "visually a bit boring" — add gentle, living motion).
     /** One full size-BREATH cycle, in ticks — ~3 s per pulse (a slow, gentle breathing, not a strobe). */
     private static final double SCAN_PULSE_PERIOD_TICKS = 60.0;
-    /** Breathing AMPLITUDE: the half-size oscillates ±10% about the base (user: "pulsate slightly ~10%"). */
+    /** Breathing AMPLITUDE: the half-size oscillates ±10% about the base. */
     private static final double SCAN_PULSE_AMPLITUDE = 0.80;
     /** One full SPIN about the world up (Y) axis, in ticks — ~24 s per revolution (a slow, steady turn). */
     private static final double SCAN_SPIN_PERIOD_TICKS = 240.0;
     private static final double SCAN_TWO_PI = 2.0 * Math.PI;
 
     /**
-     * The Explorer's scanning effect (user spec: "a small visual effect — maybe a rotating, transparent cube
-     * around the ship while scanning — would help identifying the ships"): a translucent cube around the ship.
+     * The Explorer's scanning effect: a translucent, additive-glow cube around the ship while it scans — an
+     * energy halo that glows against any background (space or planet surface).
      *
      * <p>
-     * Pass 26 (user: "the scanning texture is some kind of a 'twisted' cube — it should be a cube"): the steady
-     * Y-axis spin made the box read as a twisting solid, so it became a STATIC, axis-aligned cube — the clearest
-     * possible "cube" silhouette. ({@code worldTime}/{@code seed} are retained for signature stability; a static
-     * cube needs neither.)
+     * The field is a LIVING halo: (a) it gently BREATHES — its size oscillates ±10% on a ~3-second sine
+     * ({@link #SCAN_PULSE_PERIOD_TICKS} / {@link #SCAN_PULSE_AMPLITUDE}); (b) it SPINS slowly about the world
+     * up (Y) axis (one revolution per {@link #SCAN_SPIN_PERIOD_TICKS}) in a static 45°-on-all-three-axes pose —
+     * the cube's corner points up, reading as a diamond; the spin is issued first (the world-space transform)
+     * so the whole diamond turns about the vertical axis. The fractional render time drives (a) and (b), so
+     * they animate smoothly frame-to-frame.
      *
      * <p>
-     * Pass 28 (user: "half the size, half the transparency, no 'wireframe' borders, just the transparent faces,
-     * and rotated 45 degrees on all axis to look like a diamond"): the half-size is halved at the call site, the
-     * face alpha is halved (0.16 → 0.08), the 12-edge outline is GONE (faces only), and a STATIC 45° rotation
-     * about all three axes is applied — the cube is still (a fixed pose, not the removed Y-spin) but corner-up,
-     * reading as a diamond.
+     * Drawn through the flat-color shader ({@link VoidcraftShaders#color()}) with the unit cube: cull OFF
+     * (winding-independent), ADDITIVE blend (the glow pattern of the beams), depth WRITES off (a pure
+     * overlay; it is still depth-TESTED, so the dome/shell occlusion stays correct).
      *
-     * <p>
-     * Pass 30 (user: "the scanning effect seems to not render anymore after the latest changes"): the code was
-     * intact — the pass-28 spec (half size + half alpha + no edge outline) simply left it with almost no visible
-     * ink, and the smaller diamond is mostly swallowed by the planet the ship hovers over (it only clears the
-     * surface by ~0.1 blocks). The faces now render as an ADDITIVE GLOW (the beam's pattern —
-     * {@code GL_SRC_ALPHA, GL_ONE}) at a visible intensity: the scan field reads as an energy halo that glows
-     * against ANY background (space or planet surface), instead of a faint glass box that depth-testing and the
-     * 8% alpha erased.
-     *
-     * <p>
-     * Pass 31 (user: the effect "works now" but is "visually a bit boring" — add life): the field is now a LIVING
-     * halo that (a) gently BREATHES — its size oscillates ±10% around the base on a ~3-second sine
-     * ({@link #SCAN_PULSE_PERIOD_TICKS} / {@link #SCAN_PULSE_AMPLITUDE}), (b) SPINS slowly about the world up (Y)
-     * axis — the pass-26 Y-spin is back, but now on the smaller, translucent, diamond-posed field it reads as a
-     * rotating gem rather than a twisting solid (one revolution per {@link #SCAN_SPIN_PERIOD_TICKS}), and (c) is
-     * both smaller (call site halved again) and more translucent (glow intensity ×0.25). The fractional render
-     * time ({@code worldTime + partialTicks}) drives (a) and (b), so they animate smoothly frame-to-frame.
-     *
-     * <p>
-     * GL discipline mirrors {@link #renderBeam}: texture OFF (a color-only overlay — the block atlas would
-     * modulate it), lighting OFF (emissive), cull OFF (winding-independent), ADDITIVE blend (pass 30), and depth
-     * WRITES off (a pure overlay; it is still depth-TESTED, so the dome/shell occlusion stays correct).
-     *
-     * @param center     the cube center in world coordinates (the ship's current position)
+     * @param center     the cube center in the anchor frame (the ship's current position)
      * @param renderTime fractional render time in TICKS ({@code worldTime + partialTicks}) — drives the size
-     *                   pulse (pass 31) and the spin about the up axis (pass 31)
-     * @param half       the cube half-size in blocks (the call site already halves it per pass 28/31)
+     *                   pulse and the spin about the up axis
+     * @param half       the cube half-size in blocks
      * @param seed       the per-launch seed (unused — the field is a pure function of renderTime)
      */
     private static void renderScanCube(double[] center, double renderTime, double half, int seed) {
-        boolean lightingOn = GL11.glIsEnabled(GL11.GL_LIGHTING);
-        boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
-        boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-        boolean textureOn = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final long blend = RenderState.savedBlendFunc();
+        final boolean depthMaskOn = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // Pass 30: additive — the scan field GLOWS (the beam's
-                                                          // pattern), visible against any background
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // additive — the scan field GLOWS, visible against any
+                                                          // background
         GL11.glDepthMask(false);
         try {
-            GL11.glPushMatrix();
-            GL11.glTranslated(center[0], center[1], center[2]);
-            // Pass 31 (user: "make it rotate on the horizontal plane (around the upwards axis)"): spin about the
-            // world UP (Y) axis. GL post-multiplies, so issuing it FIRST (outermost) makes it the WORLD-SPACE
-            // transform: the whole diamond (the static 45/45/45 pose below) turns about the vertical axis, like a
-            // slowly rotating gem. (Pass 26 dropped this spin because it read as a "twisting" SOLID on the big
-            // glass cube; on the small translucent halo it now reads as gentle life, per the pass-31 spec.)
-            double spinDeg = (renderTime * (360.0 / SCAN_SPIN_PERIOD_TICKS)) % 360.0;
-            GL11.glRotated(spinDeg, 0.0, 1.0, 0.0);
-            // Pass 28 (user: "it should be rotated 45 degrees on all axis to look like a diamond"): a STATIC 45°
-            // pose about all three axes — the cube's long diagonal points along the system axes and it reads as a
-            // diamond. (The fixed 45/45/45 pose is the gem shape; the pass-31 spin above turns it.)
-            GL11.glRotated(45.0, 1.0, 0.0, 0.0);
-            GL11.glRotated(45.0, 0.0, 1.0, 0.0);
-            GL11.glRotated(45.0, 0.0, 0.0, 1.0);
+            // The pose: spin about the world UP (Y) axis (issued first — the world-space transform, so the whole
+            // diamond turns about the vertical axis), then the static 45°-on-all-three-axes pose (the gem shape).
+            // JOML's rotate() takes RADIANS (spinDeg is degrees).
+            final double spinDeg = (renderTime * (360.0 / SCAN_SPIN_PERIOD_TICKS)) % 360.0;
+            // The size: a smooth ±10% breathing driven by the fractional render time (one cycle per
+            // SCAN_PULSE_PERIOD_TICKS ≈ 3 s) — the field reads as alive, not a frozen box. (renderTime % period
+            // keeps the sine argument small even for huge world times.)
+            final double phase = (renderTime % SCAN_PULSE_PERIOD_TICKS) / SCAN_PULSE_PERIOD_TICKS;
+            final double h = half * (1.0 + SCAN_PULSE_AMPLITUDE * Math.sin(SCAN_TWO_PI * phase));
+            final Matrix4f matrix = MODEL_MATRIX.identity()
+                .translate((float) center[0], (float) center[1], (float) center[2])
+                .rotate((float) Math.toRadians(spinDeg), 0.0F, 1.0F, 0.0F)
+                .rotate((float) Math.toRadians(45.0), 1.0F, 0.0F, 0.0F)
+                .rotate((float) Math.toRadians(45.0), 0.0F, 1.0F, 0.0F)
+                .rotate((float) Math.toRadians(45.0), 0.0F, 0.0F, 1.0F)
+                .scale((float) h);
 
-            // The 8 corners (±half on each axis). v0..v3 = the z = -h square, v4..v7 = the z = +h square, each
-            // with the same x/y pattern — so the 12 edges / 6 square faces below form a true cube. (Pass 26: the
-            // old vz pattern {-h,h,-h,h,h,h,-h,h} made v1==v5, v2==v6, v3==v7 — only FOUR distinct corners, which
-            // rendered as a tetrahedron: the "prism shape instead of a cube" the user reported.)
-            // Pass 31 (user: "make the size of the cube pulsate slightly up and down (~10%)"): a smooth ±10%
-            // BREATHING driven by the fractional render time (one cycle per SCAN_PULSE_PERIOD_TICKS ≈ 3 s) — the
-            // field reads as alive, not a frozen box. (renderTime % period keeps the sine argument small even for
-            // huge world times.)
-            double phase = (renderTime % SCAN_PULSE_PERIOD_TICKS) / SCAN_PULSE_PERIOD_TICKS;
-            double h = half * (1.0 + SCAN_PULSE_AMPLITUDE * Math.sin(SCAN_TWO_PI * phase));
-            double[] vx = { -h, -h, h, h, -h, -h, h, h };
-            double[] vy = { -h, h, -h, h, -h, h, -h, h };
-            double[] vz = { -h, -h, -h, -h, h, h, h, h };
-
-            // The translucent faces (the "glass" box).
-            int[][] faces = {
-                // z = -h
-                { 0, 1, 3, 2 },
-                // z = +h
-                { 4, 5, 7, 6 },
-                // x = -h
-                { 0, 4, 5, 1 },
-                // x = +h
-                { 2, 6, 7, 3 },
-                // y = -h
-                { 0, 2, 6, 4 },
-                // y = +h
-                { 1, 5, 7, 3 } };
-            Tessellator tess = Tessellator.instance;
-            tess.startDrawingQuads();
-            // Pass 30 made this a VISIBLE additive glow (0.45). Pass 31 (user: "multiply the transparency by
-            // 0.25x"): 0.45 × 0.25 = 0.1125 — a subtle, soft halo. The smaller size + the spin + the breathing
-            // (pass 31) carry the "life", so the lower intensity is fine — it glows gently instead of a neon sign.
-            tess.setColorRGBA_F(0.30F, 0.70F, 1.0F, 0.1125F);
-            for (int[] f : faces) {
-                tess.addVertex(vx[f[0]], vy[f[0]], vz[f[0]]);
-                tess.addVertex(vx[f[1]], vy[f[1]], vz[f[1]]);
-                tess.addVertex(vx[f[2]], vy[f[2]], vz[f[2]]);
-                tess.addVertex(vx[f[3]], vy[f[3]], vz[f[3]]);
-            }
-            tess.draw();
-            // Pass 28 (user: "it should not have the 'wireframe' borders, just the transparent faces"): the
-            // 12-edge outline is gone — the diamond reads by its faces alone (now an additive glow, pass 30/31).
-            GL11.glPopMatrix();
+            final ShaderHandle shader = VoidcraftShaders.color();
+            shader.use();
+            shader.uploadModel(matrix);
+            GL20.glUniform4f(shader.loc(VoidcraftShaders.COLOR_COLOR), 0.30F, 0.70F, 1.0F, 0.1125F);
+            VoidcraftGeometry.unitCube()
+                .render();
+            ShaderProgram.clear();
         } finally {
-            GL11.glDepthMask(true);
-            if (!cullOn) {
-                GL11.glDisable(GL11.GL_CULL_FACE);
-            } else {
-                GL11.glEnable(GL11.GL_CULL_FACE);
-            }
-            if (blendOn) {
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            } else {
-                GL11.glDisable(GL11.GL_BLEND);
-            }
-            if (lightingOn) {
-                GL11.glEnable(GL11.GL_LIGHTING);
-            } else {
-                GL11.glDisable(GL11.GL_LIGHTING);
-            }
-            if (textureOn) {
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
-            } else {
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-            }
+            GL11.glDepthMask(depthMaskOn);
+            RenderState.restoreBlendFunc(blend);
+            RenderState.restore(GL11.GL_CULL_FACE, cullOn);
         }
     }
 
@@ -1439,9 +1330,9 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
     /**
      * The Voidbase CONSTRUCTION SITES (Phase D): each renders a gray WIREFRAME BOX at its anchor hover point
      * (sized from the site blueprint's dimensions, gently pulsating) with a semi-transparent FILL box that grows
-     * with the site's progress (the parts filling in). Same GL discipline as the ripples: texture OFF (color
-     * only), lighting OFF, culling OFF, standard alpha blend, depth writes OFF (pure overlays, still
-     * depth-TESTED so the bodies occlude them).
+     * with the site's progress (the parts filling in). Both are unit geometry (the shared line-box and cube
+     * VAOs) scaled by the model matrix, drawn through the flat-color shader: culling OFF, standard alpha blend,
+     * depth writes OFF (pure overlays, still depth-TESTED so the bodies occlude them).
      */
     private static void renderSites(List<NBTTagCompound> sites, List<TileEntityEyeOfHarmony.PlanetSpec> planets,
         float starSize, double x, double y, double z, long worldTime, float partialTicks) {
@@ -1449,18 +1340,17 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             return;
         }
         double renderTime = (double) worldTime + partialTicks;
-        boolean lightingOn = GL11.glIsEnabled(GL11.GL_LIGHTING);
-        boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
-        boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-        boolean textureOn = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final long blend = RenderState.savedBlendFunc();
+        final boolean depthMaskOn = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDepthMask(false);
+        final ShaderHandle shader = VoidcraftShaders.color();
+        shader.use();
         try {
-            Tessellator tess = Tessellator.instance;
+            final Matrix4f matrix = MODEL_MATRIX;
             for (int i = 0; i < sites.size(); i++) {
                 NBTTagCompound entry = sites.get(i);
                 double[] pos = anchorHoverPoint(entry, planets, starSize, renderTime);
@@ -1482,76 +1372,35 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 double sx = 0.25 * (0.5 * w * CELL_SIZE + 0.3);
                 double sy = 0.25 * (0.5 * h * CELL_SIZE + 0.3);
                 double sz = 0.25 * (0.5 * d * CELL_SIZE + 0.3);
-                double[] cx = { px - sx, px + sx, px + sx, px - sx, px - sx, px + sx, px + sx, px - sx };
-                double[] cy = { py - sy, py - sy, py + sy, py + sy, py - sy, py - sy, py + sy, py + sy };
-                double[] cz = { pz - sz, pz - sz, pz - sz, pz - sz, pz + sz, pz + sz, pz + sz, pz + sz };
-                int[] edges = { 0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7 };
                 // Wireframe: a gentle time-driven alpha pulse (deterministic — every client pulses identically).
-                float pulse = (float) Math.sin(worldTime * 0.15 + i * 1.7);
-                float wireAlpha = 0.6F + 0.25F * pulse;
-                tess.startDrawing(GL11.GL_LINES);
-                tess.setColorRGBA_F(0.55F, 0.55F, 0.55F, wireAlpha); // startDrawing resets the color — set it after
-                for (int e = 0; e < edges.length; e++) {
-                    int c = edges[e];
-                    tess.addVertex(cx[c], cy[c], cz[c]);
-                }
-                tess.draw();
+                GL20.glUniform4f(
+                    shader.loc(VoidcraftShaders.COLOR_COLOR),
+                    0.55F,
+                    0.55F,
+                    0.55F,
+                    (float) (0.6 + 0.25 * Math.sin(worldTime * 0.15 + i * 1.7)));
+                shader.uploadModel(
+                    matrix.identity()
+                        .translate((float) px, (float) py, (float) pz)
+                        .scale((float) sx, (float) sy, (float) sz));
+                VoidcraftGeometry.unitCubeLines()
+                    .render();
                 // Progressive fill: a translucent box scaled by the site's progress (the parts filling in).
                 if (progress > 0.001) {
-                    double fw = sx * progress;
-                    double fh = sy * progress;
-                    double fd = sz * progress;
-                    double ax = px - fw, bx = px + fw, ay = py - fh, by = py + fh, az = pz - fd, bz = pz + fd;
-                    tess.startDrawing(7);
-                    tess.setColorRGBA_F(0.42F, 0.42F, 0.42F, 0.16F);
-                    tess.addVertex(ax, ay, az);
-                    tess.addVertex(bx, ay, az);
-                    tess.addVertex(bx, ay, bz);
-                    tess.addVertex(ax, ay, bz);
-                    tess.addVertex(ax, by, bz);
-                    tess.addVertex(bx, by, bz);
-                    tess.addVertex(bx, by, az);
-                    tess.addVertex(ax, by, az);
-                    tess.addVertex(ax, ay, az);
-                    tess.addVertex(bx, ay, az);
-                    tess.addVertex(bx, by, az);
-                    tess.addVertex(ax, by, az);
-                    tess.addVertex(bx, ay, bz);
-                    tess.addVertex(ax, ay, bz);
-                    tess.addVertex(ax, by, bz);
-                    tess.addVertex(bx, by, bz);
-                    tess.addVertex(ax, ay, bz);
-                    tess.addVertex(ax, ay, az);
-                    tess.addVertex(ax, by, az);
-                    tess.addVertex(ax, by, bz);
-                    tess.addVertex(bx, ay, az);
-                    tess.addVertex(bx, ay, bz);
-                    tess.addVertex(bx, by, bz);
-                    tess.addVertex(bx, by, az);
-                    tess.draw();
+                    GL20.glUniform4f(shader.loc(VoidcraftShaders.COLOR_COLOR), 0.42F, 0.42F, 0.42F, 0.16F);
+                    shader.uploadModel(
+                        matrix.identity()
+                            .translate((float) px, (float) py, (float) pz)
+                            .scale((float) (sx * progress), (float) (sy * progress), (float) (sz * progress)));
+                    VoidcraftGeometry.unitCube()
+                        .render();
                 }
             }
+            ShaderProgram.clear();
         } finally {
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glDepthMask(true);
-            if (!textureOn) {
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-            } else {
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
-            }
-            if (!lightingOn) {
-                GL11.glDisable(GL11.GL_LIGHTING);
-            } else {
-                GL11.glEnable(GL11.GL_LIGHTING);
-            }
-            if (!cullOn) {
-                GL11.glDisable(GL11.GL_CULL_FACE);
-            } else {
-                GL11.glEnable(GL11.GL_CULL_FACE);
-            }
-            if (!blendOn) {
-                GL11.glDisable(GL11.GL_BLEND);
-            }
+            GL11.glDepthMask(depthMaskOn);
+            RenderState.restoreBlendFunc(blend);
+            RenderState.restore(GL11.GL_CULL_FACE, cullOn);
         }
     }
 
@@ -1609,34 +1458,35 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             long maxIntegrity = entry.getLong(TileEntityVoidcraftShip.TAG_BASE_INTEGRITY_MAX);
             float f = maxIntegrity > 0 ? (float) Math.max(0.0, Math.min(1.0, (double) integrity / maxIntegrity)) : 1.0F;
             float tint = 0.35F + 0.65F * f;
-            boolean lightingEnabled = GL11.glIsEnabled(GL11.GL_LIGHTING);
-            boolean cullEnabled = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-            GL11.glPushMatrix();
+            // The model matrix: translate to the base position, scale to hologram cell size, center the model (cells
+            // span
+            // 0..n-1 on each axis) — a base sits at its anchor, no travel rotation.
+            final Matrix4f matrix = MODEL_MATRIX.identity()
+                .translate((float) (x + pos[0]), (float) (y + pos[1]), (float) (z + pos[2]))
+                .scale((float) CELL_SIZE)
+                .translate(-(model.width - 1) / 2.0F, -(model.height - 1) / 2.0F, -(model.depth - 1) / 2.0F);
+            // Culling off for the base (the hull is a hollow shell of blocks plus thin cover quads — the same
+            // reasoning as the ships). Blending off: the base is opaque, and blending would inherit an ambient
+            // (possibly additive) blend FUNC from an earlier tile-entity renderer, making the opaque hull read
+            // as semi-transparent against the star layer.
+            final boolean cullEnabled = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+            final boolean blendEnabled = GL11.glIsEnabled(GL11.GL_BLEND);
+            GL11.glDisable(GL11.GL_CULL_FACE);
+            GL11.glDisable(GL11.GL_BLEND);
             try {
-                GL11.glTranslated(x + pos[0], y + pos[1], z + pos[2]);
-                GL11.glScalef((float) CELL_SIZE, (float) CELL_SIZE, (float) CELL_SIZE);
-                // Center the model (cells span 0..n-1 on each axis).
-                GL11.glTranslated(-(model.width - 1) / 2.0, -(model.height - 1) / 2.0, -(model.depth - 1) / 2.0);
+                GL13.glActiveTexture(GL13.GL_TEXTURE0);
                 Minecraft.getMinecraft()
                     .getTextureManager()
                     .bindTexture(TextureMap.locationBlocksTexture);
-                GL11.glEnable(GL11.GL_LIGHTING);
-                GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-                GL11.glColor4f(1.0F, tint, tint, 1.0F);
-                GL11.glDisable(GL11.GL_CULL_FACE);
+                final ShaderHandle shader = SharedShaders.textured();
+                shader.use();
+                GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), 1.0F, tint, tint, 1.0F);
+                shader.uploadModel(matrix);
                 model.vao.render();
+                ShaderProgram.clear();
             } finally {
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-                if (!cullEnabled) {
-                    GL11.glDisable(GL11.GL_CULL_FACE);
-                } else {
-                    GL11.glEnable(GL11.GL_CULL_FACE);
-                }
-                if (!lightingEnabled) {
-                    GL11.glDisable(GL11.GL_LIGHTING);
-                }
-                GL11.glPopMatrix();
+                RenderState.restore(GL11.GL_BLEND, blendEnabled);
+                RenderState.restore(GL11.GL_CULL_FACE, cullEnabled);
             }
 
             // The mining laser (the ship beam, same GL discipline): while the base's program runs a WORK mining

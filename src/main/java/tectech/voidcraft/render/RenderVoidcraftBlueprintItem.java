@@ -6,11 +6,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.IItemRenderer;
 
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL20;
+
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.common.render.shader.RenderState;
+import gregtech.common.render.shader.ShaderHandle;
+import gregtech.common.render.shader.SharedShaders;
 import tectech.voidcraft.item.ItemVoidbaseBlueprint;
 import tectech.voidcraft.item.ItemVoidcraft;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
@@ -39,6 +46,9 @@ public class RenderVoidcraftBlueprintItem implements IItemRenderer {
 
     /** Fraction of the item box the model is scaled to (leaves a small margin inside the slot). */
     private static final double MODEL_FIT = 0.85;
+
+    /** Scratch for the model-matrix composition (client render thread only). */
+    private static final Matrix4f MODEL_MATRIX = new Matrix4f();
 
     /**
      * The Voidbase blueprint model is drawn as a half-transparent cyan hologram: the tint color and opacity below,
@@ -101,6 +111,9 @@ public class RenderVoidcraftBlueprintItem implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        if (!SharedShaders.ready()) {
+            return;
+        }
         VoidcraftBlueprint blueprint = base ? ItemVoidbaseBlueprint.getBlueprint(item)
             : ItemVoidcraft.getBlueprint(item);
         if (blueprint == null) {
@@ -111,62 +124,59 @@ public class RenderVoidcraftBlueprintItem implements IItemRenderer {
             return;
         }
 
-        boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
-        boolean cull = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-        boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
-        boolean depthMask = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
-        GL11.glPushMatrix();
-        try {
-            double s = fitScale(model.maxAxis());
-            // Fill the item box (centered at (0.5, 0.5, 0.5) in the transform the caller set up) — or, for a
-            // dropped item, center the model on the entity origin, which the caller already placed.
-            if (type != ItemRenderType.ENTITY) {
-                GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-            }
-            GL11.glScalef((float) s, (float) s, (float) s);
-            // The blueprint cells span 0..n-1 on each axis — center them on the origin.
-            GL11.glTranslatef(-(model.width - 1) / 2.0F, -(model.height - 1) / 2.0F, -(model.depth - 1) / 2.0F);
+        // Fill the item box (centered at (0.5, 0.5, 0.5) in the transform the caller set up) — or, for a
+        // dropped item, center the model on the entity origin, which the caller already placed.
+        final Matrix4f matrix = MODEL_MATRIX.identity();
+        if (type != ItemRenderType.ENTITY) {
+            matrix.translate(0.5F, 0.5F, 0.5F);
+        }
+        matrix.scale((float) fitScale(model.maxAxis()));
+        // The blueprint cells span 0..n-1 on each axis — center them on the origin.
+        matrix.translate(-(model.width - 1) / 2.0F, -(model.height - 1) / 2.0F, -(model.depth - 1) / 2.0F);
 
+        // Culling off for the model (the hull is a hollow shell of blocks plus thin cover quads — the back
+        // sides are depth-occluded by the cube volume, so disabling culling only guarantees the faces we want
+        // actually draw).
+        final boolean cull = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final long blend = RenderState.savedBlendFunc();
+        final boolean depthMask = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
+        final int alphaFunc = GL11.glGetInteger(GL11.GL_ALPHA_TEST_FUNC);
+        final float alphaRef = GL11.glGetFloat(GL11.GL_ALPHA_TEST_REF);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        if (base) {
+            // The Voidbase blueprint is drawn as a half-transparent cyan hologram: alpha-blended, alpha test
+            // lowered so the 0.5-alpha fragments survive, depth writes off so the shell is see-through in
+            // both directions.
+            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glDepthMask(false);
+        } else {
+            // The Voidcraft renders solid, like a standard 3D item icon (blend off, the stricter 0.5 alpha
+            // test).
+            GL11.glAlphaFunc(GL11.GL_GREATER, 0.5F);
+            GL11.glDisable(GL11.GL_BLEND);
+        }
+        try {
+            GL13.glActiveTexture(GL13.GL_TEXTURE0);
             Minecraft.getMinecraft()
                 .getTextureManager()
                 .bindTexture(TextureMap.locationBlocksTexture);
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glDisable(GL11.GL_CULL_FACE);
+            final ShaderHandle shader = SharedShaders.textured();
+            shader.use();
             if (base) {
-                // The Voidbase blueprint is drawn as a half-transparent cyan hologram: alpha-blended, alpha
-                // test lowered so the 0.5-alpha fragments survive, depth writes off so the shell is
-                // see-through in both directions.
-                GL11.glColor4f(HOLOGRAM_R, HOLOGRAM_G, HOLOGRAM_B, HOLOGRAM_ALPHA);
-                GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GL11.glDepthMask(false);
+                GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), HOLOGRAM_R, HOLOGRAM_G, HOLOGRAM_B, HOLOGRAM_ALPHA);
             } else {
-                // The Voidcraft renders solid, like a standard 3D item icon.
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glAlphaFunc(GL11.GL_GREATER, 0.5F);
-                GL11.glDisable(GL11.GL_BLEND);
+                GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), 1.0F, 1.0F, 1.0F, 1.0F);
             }
-
+            shader.uploadModel(matrix);
             model.vao.render();
+            ShaderProgram.clear();
         } finally {
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            if (cull) {
-                GL11.glEnable(GL11.GL_CULL_FACE);
-            } else {
-                GL11.glDisable(GL11.GL_CULL_FACE);
-            }
-            if (blend) {
-                GL11.glEnable(GL11.GL_BLEND);
-            } else {
-                GL11.glDisable(GL11.GL_BLEND);
-            }
+            GL11.glAlphaFunc(alphaFunc, alphaRef);
             GL11.glDepthMask(depthMask);
-            if (!lighting) {
-                GL11.glDisable(GL11.GL_LIGHTING);
-            }
-            GL11.glPopMatrix();
+            RenderState.restoreBlendFunc(blend);
+            RenderState.restore(GL11.GL_CULL_FACE, cull);
         }
     }
 }

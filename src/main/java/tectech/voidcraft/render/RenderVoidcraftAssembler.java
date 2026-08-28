@@ -6,7 +6,6 @@ import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -14,9 +13,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL20;
+
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -26,6 +28,9 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
+import gregtech.common.render.shader.RenderState;
+import gregtech.common.render.shader.ShaderHandle;
+import gregtech.common.render.shader.SharedShaders;
 import tectech.voidcraft.cover.CoverVoidcraftComponent;
 import tectech.voidcraft.machine.MTEVoidcraftComponent;
 import tectech.voidcraft.multiblock.VoidcraftMultiblockRegistry;
@@ -48,8 +53,9 @@ import tectech.voidcraft.ship.VoidcraftComponent;
  * Drawn from {@code RenderWorldLastEvent} (like {@link RenderVoidcraftShip.BeamWorldLastRenderer}) — after
  * all opaque geometry (world, planets, hulls, EoH space shell) has rendered and written depth — so nothing
  * can overpaint the overlay; the overlay depth-tests against it (LEQUAL) but never writes depth, so it is
- * see-through and never occludes the world. Geometry is drawn in world coordinates under the
- * camera-interpolated translation (the GTWorkAreaRenderer pattern).
+ * see-through and never occludes the world. All draws are shader-based and camera-relative: the camera-
+ * interpolated translation is folded into each model matrix (the handlers' state block sets up blend /
+ * cull / depth / alpha-test, the shaders are unlit and unfogged).
  */
 @SideOnly(Side.CLIENT)
 public class RenderVoidcraftAssembler {
@@ -102,6 +108,18 @@ public class RenderVoidcraftAssembler {
 
     private static final Map<MetaTileEntity, PreviewState> PREVIEW_STATES = new IdentityHashMap<>();
 
+    /** Scratch for model-matrix composition (client render thread only). */
+    private static final Matrix4f MODEL_MATRIX = new Matrix4f();
+    private static final Matrix4f BASIS = new Matrix4f();
+
+    /**
+     * Drops the per-assembler preview state — called on resource reload (the preview models and the textured
+     * shader are rebaked and their attribute locations may have moved).
+     */
+    public static void releaseGeometry() {
+        PREVIEW_STATES.clear();
+    }
+
     public RenderVoidcraftAssembler() {}
 
     @SubscribeEvent
@@ -118,8 +136,8 @@ public class RenderVoidcraftAssembler {
             return;
         }
 
-        // The camera position the world pass rendered from (interpolated) — under a single translation,
-        // world coordinates then line up with the event's modelview.
+        // The camera position the world pass rendered from (interpolated) — the camera-relative translation
+        // is folded into every model matrix below (the shaders draw camera-relative geometry).
         Entity camera = mc.renderViewEntity;
         if (camera == null) {
             return;
@@ -128,46 +146,40 @@ public class RenderVoidcraftAssembler {
         double camY = camera.lastTickPosY + (camera.posY - camera.lastTickPosY) * event.partialTicks;
         double camZ = camera.lastTickPosZ + (camera.posZ - camera.lastTickPosZ) * event.partialTicks;
 
-        GL11.glPushAttrib(
-            GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT
-                | GL11.GL_DEPTH_BUFFER_BIT
-                | GL11.GL_CURRENT_BIT
-                | GL11.GL_TEXTURE_BIT);
-        GL11.glPushMatrix();
+        if (!VoidcraftShaders.ready() || !SharedShaders.ready()) {
+            return;
+        }
+        final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final long blend = RenderState.savedBlendFunc();
+        final boolean depthMaskOn = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
+        final int depthFunc = GL11.glGetInteger(GL11.GL_DEPTH_FUNC);
+        final float lineWidth = GL11.glGetFloat(GL11.GL_LINE_WIDTH);
+        final int alphaFunc = GL11.glGetInteger(GL11.GL_ALPHA_TEST_FUNC);
+        final float alphaRef = GL11.glGetFloat(GL11.GL_ALPHA_TEST_REF);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDepthMask(false);
+        GL11.glDepthFunc(GL11.GL_LEQUAL);
         try {
-            GL11.glDisable(GL11.GL_LIGHTING);
-            // The overlay draws are color-only — the block and lightmap textures must be off on BOTH units
-            // (a single disable would only act on whichever unit the world pass left active, and the
-            // tessellator's vertices carry no UVs — a live unit would sample the atlas at (0,0) and
-            // multiply the overlay color dark).
-            GL13.glActiveTexture(GL13.GL_TEXTURE0);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL13.glActiveTexture(GL13.GL_TEXTURE1);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL13.glActiveTexture(GL13.GL_TEXTURE0);
-            GL11.glDisable(GL11.GL_CULL_FACE);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            // The game's default alpha test — nothing needs restoring afterwards.
-            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-            GL11.glDepthMask(false);
-            GL11.glDepthFunc(GL11.GL_LEQUAL);
-            GL11.glTranslated(-camX, -camY, -camZ);
-
             for (AssemblerVisuals.Snapshot snap : snapshots) {
                 if (snap.dimensionId != world.provider.dimensionId) {
                     continue; // machine in another dimension
                 }
-                renderAssembler(mc, world, snap, event.partialTicks);
+                renderAssembler(mc, world, snap, event.partialTicks, camX, camY, camZ);
             }
         } finally {
-            GL11.glPopMatrix();
-            GL11.glPopAttrib();
+            GL11.glDepthFunc(depthFunc);
+            GL11.glDepthMask(depthMaskOn);
+            GL11.glLineWidth(lineWidth);
+            GL11.glAlphaFunc(alphaFunc, alphaRef);
+            RenderState.restoreBlendFunc(blend);
+            RenderState.restore(GL11.GL_CULL_FACE, cullOn);
         }
     }
 
-    private static void renderAssembler(Minecraft mc, World world, AssemblerVisuals.Snapshot snap,
-        double partialTicks) {
+    private static void renderAssembler(Minecraft mc, World world, AssemblerVisuals.Snapshot snap, double partialTicks,
+        double camX, double camY, double camZ) {
         ForgeDirection front = ForgeDirection.getOrientation(snap.facing);
         double[] axes = AssemblerVisuals.scanAxes(snap.facing);
         double bx = snap.x + 0.5, by = snap.y + 0.5, bz = snap.z + 0.5; // controller block center
@@ -176,94 +188,89 @@ public class RenderVoidcraftAssembler {
         double worldTime = world.getTotalWorldTime() + partialTicks;
         double pulse = 0.85 + 0.15 * Math.sin(worldTime / 2.5); // the fleet beams' pulse
 
+        // The scan volume's basis: its columns are the volume's i / j / depth axes (the depth axis is the
+        // machine's front direction) — every overlay matrix is built on top of it.
+        final Matrix4f basis = BASIS.identity();
+        basis.setRowColumn(0, 0, (float) axes[0]);
+        basis.setRowColumn(1, 0, (float) axes[1]);
+        basis.setRowColumn(2, 0, (float) axes[2]);
+        basis.setRowColumn(0, 1, (float) axes[3]);
+        basis.setRowColumn(1, 1, (float) axes[4]);
+        basis.setRowColumn(2, 1, (float) axes[5]);
+        basis.setRowColumn(0, 2, front.offsetX);
+        basis.setRowColumn(1, 2, front.offsetY);
+        basis.setRowColumn(2, 2, front.offsetZ);
+
         // The preview first: the wireframe and scan planes are UI overlays and must stay crisp on top of the
         // half-transparent hologram (viewed from behind the machine, the hologram would otherwise veil them).
         if (PREVIEW_ENABLED) {
-            drawPreview(mc, world, snap, axes, worldTime, half, depth);
+            drawPreview(mc, world, snap, axes, worldTime, half, depth, camX, camY, camZ);
         }
         if (snap.scanning) {
             double phase = (worldTime / SCAN_PLANE_SWEEP_TICKS) % 1.0;
             double t = 0.5 - 0.5 * Math.cos(Math.PI * 2.0 * phase); // 0 → 1 → 0
             double[] d = AssemblerVisuals.planeDepths(t, depth);
-            drawScanPlane(bx, by, bz, front, axes, half, d[0], (float) (PLANE_ALPHA * pulse));
-            drawScanPlane(bx, by, bz, front, axes, half, d[1], (float) (PLANE_ALPHA * pulse));
+            drawScanPlane(bx, by, bz, basis, half, d[0], (float) (PLANE_ALPHA * pulse), camX, camY, camZ);
+            drawScanPlane(bx, by, bz, basis, half, d[1], (float) (PLANE_ALPHA * pulse), camX, camY, camZ);
         }
         if (snap.machineValid) {
-            drawWireframe(bx, by, bz, front, axes, half, depth, (float) (WIREFRAME_ALPHA * pulse));
+            drawWireframe(bx, by, bz, basis, half, depth, (float) (WIREFRAME_ALPHA * pulse), camX, camY, camZ);
         }
     }
 
-    /** The scan volume's 12 bounding edges as line segments. */
-    private static void drawWireframe(double bx, double by, double bz, ForgeDirection front, double[] axes, int half,
-        int depth, float alpha) {
-        ensureTextureOff();
+    /** The scan volume's 12 bounding edges as a line box. */
+    private static void drawWireframe(double bx, double by, double bz, Matrix4f basis, int half, int depth, float alpha,
+        double camX, double camY, double camZ) {
         double edge = half + 0.5;
         double near = 0.5, far = depth + 0.5;
-        Tessellator tess = Tessellator.instance;
         GL11.glLineWidth(1.5F);
-        tess.startDrawing(GL11.GL_LINES);
-        tess.setColorRGBA_F(CYAN_R, CYAN_G, CYAN_B, alpha);
-        // the four edges along the front (depth) axis
-        for (int s = -1; s <= 1; s += 2) {
-            for (int t = -1; t <= 1; t += 2) {
-                corner(tess, bx, by, bz, front, axes, s * edge, t * edge, near);
-                corner(tess, bx, by, bz, front, axes, s * edge, t * edge, far);
-            }
-        }
-        // the four near-face edges and the four far-face edges
-        for (double d : new double[] { near, far }) {
-            for (int t = -1; t <= 1; t += 2) {
-                corner(tess, bx, by, bz, front, axes, -edge, t * edge, d);
-                corner(tess, bx, by, bz, front, axes, edge, t * edge, d);
-            }
-            for (int s = -1; s <= 1; s += 2) {
-                corner(tess, bx, by, bz, front, axes, s * edge, -edge, d);
-                corner(tess, bx, by, bz, front, axes, s * edge, edge, d);
-            }
-        }
-        tess.draw();
+        final ShaderHandle shader = VoidcraftShaders.color();
+        shader.use();
+        GL20.glUniform4f(shader.loc(VoidcraftShaders.COLOR_COLOR), CYAN_R, CYAN_G, CYAN_B, alpha);
+        shader.uploadModel(
+            MODEL_MATRIX.identity()
+                .translate((float) -camX, (float) -camY, (float) -camZ)
+                .translate((float) bx, (float) by, (float) bz)
+                .mul(basis)
+                .translate(0.0F, 0.0F, (float) (near + far) / 2.0F)
+                .scale((float) edge, (float) edge, (float) (far - near) / 2.0F));
+        VoidcraftGeometry.unitCubeLines()
+            .render();
+        ShaderProgram.clear();
     }
 
     /** One scan quad (double-sided) perpendicular to the front axis at the given depth. */
-    private static void drawScanPlane(double bx, double by, double bz, ForgeDirection front, double[] axes, int half,
-        double d, float alpha) {
-        ensureTextureOff();
+    private static void drawScanPlane(double bx, double by, double bz, Matrix4f basis, int half, double d, float alpha,
+        double camX, double camY, double camZ) {
         double edge = half + 0.5;
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawing(GL11.GL_QUADS);
-        tess.setColorRGBA_F(CYAN_R, CYAN_G, CYAN_B, alpha);
-        corner(tess, bx, by, bz, front, axes, -edge, -edge, d);
-        corner(tess, bx, by, bz, front, axes, edge, -edge, d);
-        corner(tess, bx, by, bz, front, axes, edge, edge, d);
-        corner(tess, bx, by, bz, front, axes, -edge, edge, d);
-        tess.draw();
-    }
-
-    /** One vertex at scan coordinate (i, j, depth) — the block-corner offset from the controller block. */
-    private static void corner(Tessellator tess, double bx, double by, double bz, ForgeDirection front, double[] axes,
-        double i, double j, double d) {
-        tess.addVertex(
-            bx + front.offsetX * d + axes[0] * i + axes[3] * j,
-            by + front.offsetY * d + axes[1] * i + axes[4] * j,
-            bz + front.offsetZ * d + axes[2] * i + axes[5] * j);
-    }
-
-    /**
-     * Color-only Tessellator draws must not sample a texture: their vertices carry no UVs, so a live texture
-     * unit would sample the atlas at (0,0) and multiply the draw's color by that texel.
-     */
-    private static void ensureTextureOff() {
-        GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        final ShaderHandle shader = VoidcraftShaders.color();
+        shader.use();
+        GL20.glUniform4f(shader.loc(VoidcraftShaders.COLOR_COLOR), CYAN_R, CYAN_G, CYAN_B, alpha);
+        shader.uploadModel(
+            MODEL_MATRIX.identity()
+                .translate((float) -camX, (float) -camY, (float) -camZ)
+                .translate((float) bx, (float) by, (float) bz)
+                .mul(basis)
+                .translate(0.0F, 0.0F, (float) d)
+                .scale((float) edge, (float) edge, 1.0F));
+        VoidcraftGeometry.unitQuad()
+            .render();
+        ShaderProgram.clear();
     }
 
     /**
      * The rotating 1/4-scale cyan hologram of the current build, floating behind the machine. The build is
      * re-scanned (render thread) at a throttled rate; the model rebuilds only when the build's shape
      * actually changed.
+     *
+     * <p>
+     * Drawn through the shared textured shader — the hologram look is a flat unlit cyan tint
+     * ({@code u_Tint}), so the block atlas is bound on texture unit 0 and no lighting / fog / alpha-test
+     * juggling is needed; the overlay state set by the event handler (culling off, standard alpha, depth
+     * writes off) applies as-is.
      */
     private static void drawPreview(Minecraft mc, World world, AssemblerVisuals.Snapshot snap, double[] axes,
-        double worldTime, int half, int depth) {
+        double worldTime, int half, int depth, double camX, double camY, double camZ) {
         PreviewState state = PREVIEW_STATES.get(snap.machine);
         if (state == null) {
             state = new PreviewState();
@@ -314,59 +321,26 @@ public class RenderVoidcraftAssembler {
         double py = snap.y + 0.5 + off[1];
         double pz = snap.z + 0.5 + off[2];
 
-        GL11.glPushMatrix();
-        boolean fogOn = GL11.glIsEnabled(GL11.GL_FOG);
-        boolean lightmapOn = false;
-        boolean blockTexOn = false;
-        try {
-            GL11.glTranslated(px, py, pz);
-            GL11.glRotatef((float) (worldTime * 360.0 / PREVIEW_SPIN_TICKS) % 360.0F, 0F, 1F, 0F);
-            GL11.glScalef((float) PREVIEW_SCALE, (float) PREVIEW_SCALE, (float) PREVIEW_SCALE);
-            // The blueprint cells span 0..n-1 on each axis — center the model on the preview position.
-            GL11.glTranslatef(
-                -(state.model.width - 1) / 2.0F,
-                -(state.model.height - 1) / 2.0F,
-                -(state.model.depth - 1) / 2.0F);
-
-            // The hologram look (the voidbase blueprint hologram): single-texture unit 0 (the VAO has no
-            // lightmap UVs, so the world pass's lightmap unit must be neutral for the duration, and the
-            // block texture must be explicitly re-enabled here — the handler's outer state has texture
-            // 2D off for the wireframe/planes), alpha-blended cyan tint, alpha test lowered so the 0.5-
-            // alpha fragments survive, fog off so the world fog cannot tint the hologram, depth writes off
-            // so it is see-through both ways.
-            GL13.glActiveTexture(GL13.GL_TEXTURE0);
-            blockTexOn = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-            mc.getTextureManager()
-                .bindTexture(TextureMap.locationBlocksTexture);
-            GL13.glActiveTexture(GL13.GL_TEXTURE1);
-            lightmapOn = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            if (fogOn) {
-                GL11.glDisable(GL11.GL_FOG);
-            }
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glColor4f(HOLO_R, HOLO_G, HOLO_B, HOLO_ALPHA);
-            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-            state.model.vao.render();
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        } finally {
-            if (fogOn) {
-                GL11.glEnable(GL11.GL_FOG);
-            }
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL13.glActiveTexture(GL13.GL_TEXTURE1);
-            if (lightmapOn) {
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
-            }
-            GL13.glActiveTexture(GL13.GL_TEXTURE0);
-            if (!blockTexOn) {
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-            }
-            // The active unit is left on unit 0 — the world pass's ambient state.
-            GL11.glPopMatrix();
-        }
+        // The blueprint cells span 0..n-1 on each axis — center the model on the preview position. (JOML's
+        // rotate() takes RADIANS — the spin angle is in degrees.)
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        mc.getTextureManager()
+            .bindTexture(TextureMap.locationBlocksTexture);
+        final ShaderHandle shader = SharedShaders.textured();
+        shader.use();
+        GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), HOLO_R, HOLO_G, HOLO_B, HOLO_ALPHA);
+        shader.uploadModel(
+            MODEL_MATRIX.identity()
+                .translate((float) -camX, (float) -camY, (float) -camZ)
+                .translate((float) px, (float) py, (float) pz)
+                .rotate((float) Math.toRadians((worldTime * 360.0 / PREVIEW_SPIN_TICKS) % 360.0), 0.0F, 1.0F, 0.0F)
+                .scale((float) PREVIEW_SCALE)
+                .translate(
+                    -(state.model.width - 1) / 2.0F,
+                    -(state.model.height - 1) / 2.0F,
+                    -(state.model.depth - 1) / 2.0F));
+        state.model.vao.render();
+        ShaderProgram.clear();
     }
 
     /**

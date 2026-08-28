@@ -39,6 +39,7 @@ import tectech.voidcraft.render.RenderVoidcraftAssembler;
 import tectech.voidcraft.render.RenderVoidcraftBlueprintItem;
 import tectech.voidcraft.render.RenderVoidcraftShip;
 import tectech.voidcraft.render.TileEntityVoidcraftShip;
+import tectech.voidcraft.render.VoidcraftShaders;
 
 public class ClientProxy extends CommonProxy {
 
@@ -74,6 +75,9 @@ public class ClientProxy extends CommonProxy {
 
         RenderInit.onAtlasStitched(RenderForgeOfGods::reload);
         RenderInit.onResourceReload(EOHRenderingUtils::reloadShaders);
+        // The voidcraft shader family (color / beam / ripple) rebakes on resource reload — the model cache and
+        // every baked VAO go with it (VoidcraftShaders.reload cascades the release).
+        RenderInit.onResourceReload(VoidcraftShaders::reload);
     }
 
     @Override
