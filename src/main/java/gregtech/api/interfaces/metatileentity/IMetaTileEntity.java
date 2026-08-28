@@ -468,6 +468,15 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean renderInInventory(ISBRInventoryContext ctx);
 
     /**
+     * Returns a stable, read-only inventory texture model, or {@code null} when textures must be resolved per render.
+     */
+    @Nullable
+    @SideOnly(Side.CLIENT)
+    default ITexture[][] getInventoryTextures() {
+        return null;
+    }
+
+    /**
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)

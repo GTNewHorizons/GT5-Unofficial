@@ -58,6 +58,8 @@ import gregtech.common.covers.Cover;
  */
 public abstract class MetaPipeEntity extends CommonMetaTileEntity implements IConnectable {
 
+    private volatile ITexture[][] inventoryTextureCache;
+
     /**
      * This variable tells, which directions the Block is connected to. It is a Bitmask.
      */
@@ -149,9 +151,15 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.setRenderBounds(BLOCK_MIN, pipeMin, pipeMin, BLOCK_MAX, pipeMax, pipeMax);
 
-        final IGregTechTileEntity mte = getBaseMetaTileEntity();
-        final ITexture[] sideTexture = getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false);
-        final ITexture[] endTexture = getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false);
+        ITexture[][] textures = inventoryTextureCache;
+        if (textures == null) {
+            final IGregTechTileEntity mte = getBaseMetaTileEntity();
+            textures = new ITexture[][] { getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false),
+                getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false) };
+            inventoryTextureCache = textures;
+        }
+        final ITexture[] sideTexture = textures[0];
+        final ITexture[] endTexture = textures[1];
         ctx.renderNegativeYFacing(sideTexture);
         ctx.renderPositiveYFacing(sideTexture);
         ctx.renderNegativeZFacing(sideTexture);
