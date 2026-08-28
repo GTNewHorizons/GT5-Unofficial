@@ -294,10 +294,10 @@ public class FusionReactorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 144),
+                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1000),
                 Materials.TokamakResidue.getFluid(100))
             .fluidOutputs(Materials.Orikalkum.getPlasma(1000))
-            .duration(8 * TICKS)
+            .duration(4 * TICKS)
             .eut(1_966_080)
             .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes); // FT4
