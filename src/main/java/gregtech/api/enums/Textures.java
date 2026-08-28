@@ -840,6 +840,10 @@ public class Textures {
             OVERLAY_QCHEST = createOptional("OVERLAY_QCHEST"),
             OVERLAY_QCHEST_GLOW = createOptional("OVERLAY_QCHEST_GLOW"),
             OVERLAY_SHUTTER = createOptional("OVERLAY_SHUTTER"),
+            OVERLAY_TOKAMAK_OFF = createOptional("OVERLAY_TOKAMAK_OFF"),
+            OVERLAY_TOKAMAK_ON = createOptional("OVERLAY_TOKAMAK_ON"),
+            OVERLAY_TOKAMAK_GLOW = createOptional("OVERLAY_TOKAMAK_GLOW"),
+            OVERLAY_TOKAMAK_GLOW_ON = createOptional("OVERLAY_TOKAMAK_GLOW_ON"),
 
             OVERLAY_CLOSET = createOptional("OVERLAY_CLOSET"),
             OVERLAY_DUCTTAPE = createOptional("OVERLAY_DUCTTAPE"),

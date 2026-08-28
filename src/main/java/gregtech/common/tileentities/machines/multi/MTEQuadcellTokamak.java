@@ -6,10 +6,10 @@ import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.ExoticDynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_RAINBOWSCREEN_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_GLOW_ON;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_OFF;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_ON;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
@@ -18,6 +18,8 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -35,6 +37,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTEQuadcellTokamakGui;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadcellTokamak>
@@ -105,16 +108,15 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        // todo: make own files
         return Textures.BlockIcons.createTextureWithCasing(
             this,
             side,
             aFacing,
             aActive,
-            OVERLAY_DTPF_OFF,
-            OVERLAY_DTPF_OFF_GLOW,
-            OVERLAY_DTPF_ON,
-            OVERLAY_RAINBOWSCREEN_GLOW);
+            OVERLAY_TOKAMAK_OFF,
+            OVERLAY_TOKAMAK_GLOW,
+            OVERLAY_TOKAMAK_ON,
+            OVERLAY_TOKAMAK_GLOW_ON);
     }
 
     @Override
@@ -168,10 +170,16 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, WIDTH_OFFSET, HEIGHT_OFFSET, DEPTH_OFFSET, errors)) return;
+        checkOneDynamoHatchMaybeExotic(errors);
     }
 
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    protected @NotNull MTEQuadcellTokamakGui getGui() {
+        return new MTEQuadcellTokamakGui(this);
     }
 }
