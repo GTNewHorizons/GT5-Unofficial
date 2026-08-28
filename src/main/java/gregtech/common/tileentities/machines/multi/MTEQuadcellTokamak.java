@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -59,10 +60,10 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     private static final int CELESTIAL_TUNGSTEN_DENSITY = 3_200_000;
     private static final int ORIKALKUM_DENSITY = 8_000_000;
 
-    private static final int FORCE_MAX_DR = 10_000;
-    private static final int RUNITE_MAX_DR = 20_000;
-    private static final int CELESTIAL_TUNGSTEN_MAX_DR = 80_000;
-    private static final int ORIKALKUM_MAX_DR = 320_000;
+    public static final int FORCE_MAX_DR = 10_000;
+    public static final int RUNITE_MAX_DR = 20_000;
+    public static final int CELESTIAL_TUNGSTEN_MAX_DR = 80_000;
+    public static final int ORIKALKUM_MAX_DR = 320_000;
 
     private static final float FORCE_MAX_BOOST = 0.15f; // up to 15% more EU/L
     private static final float RUNITE_MAX_BOOST = 0.10f; // up to 10% chance to not consume plasma
@@ -79,6 +80,8 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     public float RUNITE_CURRENT_BOOST = 0f;
     public float CELESTIAL_TUNGSTEN_CURRENT_BOOST = 0f;
     public float ORIKALKUM_CURRENT_BOOST = 1f;
+
+    public boolean terminalSwitch = false;
 
     private static final IStructureDefinition<MTEQuadcellTokamak> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEQuadcellTokamak>builder()
@@ -293,6 +296,24 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         if (!checkPiece(STRUCTURE_PIECE_MAIN, WIDTH_OFFSET, HEIGHT_OFFSET, DEPTH_OFFSET, errors)) return;
         checkOneDynamoHatchMaybeExotic(errors);
         checkHasInputHatch(errors);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        aNBT.setInteger("ForceDR", FORCE_CURRENT_DR);
+        aNBT.setInteger("RuniteDR", RUNITE_CURRENT_DR);
+        aNBT.setInteger("CelestialDR", CELESTIAL_TUNGSTEN_CURRENT_DR);
+        aNBT.setInteger("OrikalkumDR", ORIKALKUM_CURRENT_DR);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        this.FORCE_CURRENT_DR = aNBT.getInteger("ForceDR");
+        this.RUNITE_CURRENT_DR = aNBT.getInteger("RuniteDR");
+        this.CELESTIAL_TUNGSTEN_CURRENT_DR = aNBT.getInteger("CelestialDR");
+        this.ORIKALKUM_CURRENT_DR = aNBT.getInteger("OrikalkumDR");
     }
 
     @Override
