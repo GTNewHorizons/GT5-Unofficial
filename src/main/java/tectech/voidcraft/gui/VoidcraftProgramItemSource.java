@@ -9,18 +9,38 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 
+import tectech.voidcraft.item.ItemVoidbaseBlueprint;
+import tectech.voidcraft.item.ItemVoidcraft;
+import tectech.voidcraft.ship.VoidcraftBlueprint;
+import tectech.voidcraft.ship.VoidcraftCoverComponent;
+import tectech.voidcraft.ship.VoidcraftNbt;
 import tectech.voidcraft.uss.USSBlueprintProgram;
+import tectech.voidcraft.uss.USSCapabilities;
+import tectech.voidcraft.uss.USSCommand;
 
 /**
  * {@link VoidcraftProgramSource} for a digitized blueprint item (ship / base) in the player inventory: the
  * program is loaded from the item NBT at open; every accepted edit is applied on the server and written back
  * to the item in its inventory slot (the slot stack is replaced and the updated slot pushed to the client).
+ *
+ * <p>
+ * The capability set is DERIVED from the item itself (the capability system): a digitized SHIP item carries its
+ * exact denormalized stats (speed / mining / scan / siphon / construction power), so the editor offers exactly
+ * the commands that ship can run; a base item offers MINE (mining power) + REPAIR (a repair bay in the
+ * blueprint).
  */
 public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
 
     private final PlayerInventoryGuiData data;
     private final Item item;
     private final USSBlueprintProgram store;
+    private final USSCapabilities caps;
+    private final long miningPower;
+    private final long scanPower;
+    private final long siphonPower;
+    private final long constructionPower;
+    private final int repairBays;
+    private final double speed;
 
     /**
      * @param data the GUI data (carries the player and the slot index of the blueprint item)
@@ -29,11 +49,69 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
     public VoidcraftProgramItemSource(PlayerInventoryGuiData data, Item item) {
         this.data = data;
         this.item = item;
-        this.store = new USSBlueprintProgram(stackNbt(data.getUsedItemStack()));
+        ItemStack stack = data.getUsedItemStack();
+        NBTTagCompound nbt = stack == null ? null : stack.getTagCompound();
+        this.caps = deriveCaps(item, stack);
+        this.store = new USSBlueprintProgram(nbt, caps);
+        // The stat lines (tooltips) are derived from the same source as the caps — read once here (the item's
+        // stats never change while the GUI is open).
+        if (item instanceof ItemVoidcraft) {
+            this.speed = VoidcraftNbt.readDouble(nbt, VoidcraftNbt.TAG_SPEED);
+            this.miningPower = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_MINING);
+            this.scanPower = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_SCAN);
+            this.siphonPower = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_STARLIFTER);
+            this.constructionPower = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_CONSTRUCTION);
+            this.repairBays = 0;
+        } else {
+            this.speed = 0.0;
+            this.scanPower = 0L;
+            this.siphonPower = 0L;
+            this.constructionPower = 0L;
+            long mining = 0L;
+            int bays = 0;
+            VoidcraftBlueprint blueprint = stack == null ? null : ItemVoidbaseBlueprint.getBlueprint(stack);
+            if (blueprint != null) {
+                mining = blueprint.computeStats().miningPower;
+                bays = blueprint.countCover(VoidcraftCoverComponent.REPAIR_BAY);
+            }
+            this.miningPower = mining;
+            this.repairBays = bays;
+        }
     }
 
-    private static NBTTagCompound stackNbt(ItemStack stack) {
-        return stack == null ? null : stack.getTagCompound();
+    /** The capability set of the blueprint item (ship stats / base mining power + repair bays). */
+    private static USSCapabilities deriveCaps(Item item, ItemStack stack) {
+        NBTTagCompound nbt = stack == null ? null : stack.getTagCompound();
+        int bits = 0;
+        if (item instanceof ItemVoidcraft) {
+            if (VoidcraftNbt.readDouble(nbt, VoidcraftNbt.TAG_SPEED) > 0.0) {
+                bits |= USSCapabilities.MOVE;
+            }
+            if (VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_MINING) > 0L) {
+                bits |= USSCapabilities.MINE;
+            }
+            if (VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_SCAN) > 0L) {
+                bits |= USSCapabilities.SCAN;
+            }
+            if (VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_STARLIFTER) > 0L) {
+                bits |= USSCapabilities.SIPHON;
+            }
+            if (VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_CONSTRUCTION) > 0L) {
+                bits |= USSCapabilities.CONSTRUCT;
+            }
+            // a ship never repairs (a REPAIR on a ship SKIPs)
+        } else if (item instanceof ItemVoidbaseBlueprint && stack != null) {
+            VoidcraftBlueprint blueprint = ItemVoidbaseBlueprint.getBlueprint(stack);
+            if (blueprint != null) {
+                if (blueprint.computeStats().miningPower > 0L) {
+                    bits |= USSCapabilities.MINE;
+                }
+                if (blueprint.countCover(VoidcraftCoverComponent.REPAIR_BAY) > 0) {
+                    bits |= USSCapabilities.REPAIR;
+                }
+            }
+        }
+        return USSCapabilities.of(bits);
     }
 
     @Override
@@ -54,6 +132,38 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
         if (store.applyAction(actionJson).ok) {
             writeBack();
         }
+    }
+
+    @Override
+    public USSCapabilities getCommandCaps() {
+        return caps;
+    }
+
+    @Override
+    public String getCommandStatLine(int commandId) {
+        switch (commandId) {
+            case USSCommand.MOVE:
+                return speed > 0.0 ? "Speed: " + formatSpeed(speed) : "";
+            case USSCommand.MINE:
+                return miningPower > 0L ? "Mining power: " + miningPower : "";
+            case USSCommand.SCAN:
+                return scanPower > 0L ? "Scan power: " + scanPower : "";
+            case USSCommand.SIPHON:
+                return siphonPower > 0L ? "Siphon power: " + siphonPower : "";
+            case USSCommand.CONSTRUCT:
+                return constructionPower > 0L ? "Construction power: " + constructionPower : "";
+            case USSCommand.REPAIR:
+                return repairBays > 0 ? "Repair bays: " + repairBays : "";
+            default:
+                return "";
+        }
+    }
+
+    private static String formatSpeed(double speed) {
+        if (speed == Math.floor(speed)) {
+            return String.valueOf((long) speed);
+        }
+        return String.format("%.1f", speed);
     }
 
     /**

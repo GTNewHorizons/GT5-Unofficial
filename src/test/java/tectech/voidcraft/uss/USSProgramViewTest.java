@@ -28,7 +28,7 @@ public class USSProgramViewTest {
     }
 
     private static USSNode work() {
-        return USSNode.command(USSCommand.WORK, new NBTTagCompound());
+        return USSNode.command(USSCommand.MINE, new NBTTagCompound());
     }
 
     private static USSNode move(String target) {
@@ -83,7 +83,7 @@ public class USSProgramViewTest {
         assertEquals("MOVE", rows.get(0).label);
 
         assertArrayEquals(path(1), rows.get(1).path);
-        assertEquals("WORK", rows.get(1).label);
+        assertEquals("MINE", rows.get(1).label);
         assertTrue(rows.get(1).slots.isEmpty());
         assertFalse(rows.get(1).hasBody);
 
@@ -103,7 +103,7 @@ public class USSProgramViewTest {
 
         assertEquals(2, rows.get(1).depth);
         assertArrayEquals(path(0, 0), rows.get(1).path);
-        assertEquals("WORK", rows.get(1).label);
+        assertEquals("MINE", rows.get(1).label);
 
         assertEquals(2, rows.get(2).depth);
         assertArrayEquals(path(0, 1), rows.get(2).path);

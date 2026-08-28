@@ -674,6 +674,13 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
             cz,
             MTEUnstableSolarSystem.class,
             m -> m.isStarIgnited() && m.hasFreeShipSlot());
+        // Register this gateway with the USS it locked on to: the USS renders the gateway as a permanent part of
+        // the system view (the fleet anchor's gateway list, independent of the fleet's ship list). The client-side
+        // MTE mirror runs the same scan, but its registration is a no-op there (the fleet anchor sync is
+        // server-only).
+        if (!world.isRemote && targetUSS != null) {
+            targetUSS.registerGateway(cx, cy, cz);
+        }
         diag.append(" | ");
         targetBay = findNearest(world, cx, cy, cz, MTEVoidcraftStorageBay.class, b -> b.mMachine);
         if ((targetUSS == null || targetBay == null)

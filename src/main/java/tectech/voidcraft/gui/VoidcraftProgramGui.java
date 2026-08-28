@@ -33,6 +33,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 import cpw.mods.fml.relauncher.Side;
+import tectech.voidcraft.uss.USSCapabilities;
+import tectech.voidcraft.uss.USSCommand;
 import tectech.voidcraft.uss.USSConditionOp;
 import tectech.voidcraft.uss.USSProgramDefaults;
 import tectech.voidcraft.uss.USSProgramView;
@@ -51,8 +53,12 @@ import tectech.voidcraft.uss.USSProgramView;
  * <p>
  * RIGHT: (1) USS VALUES — pick a global USS variable slot (0..255) and assign it as a reference into the
  * selected slot (SLOT SELECTION ONLY — no live USS value display, user spec UI-2); (2) ARGUMENTS — helpers that
- * fill the selected MOVE target (Nearest planet / Random planet / Random ripple); (3) COMMANDS — the palette with
- * an [Add] per command (inserts at the cursor); (4) PRESETS — Miner / Starlifter / Explorer / Clear.
+ * fill the selected MOVE target (Nearest planet / Random planet / Random ripple), shown only when the craft can
+ * MOVE; (3) COMMANDS — the palette with an [Add] per command (inserts at the cursor), gated by the craft's
+ * CAPABILITY SET (a ship without thrusters gets no MOVE row; without mining power no MINE row, etc.) and each
+ * row's tooltip carries the command description + the craft's stat line for it (speed / mining power / scan
+ * power / siphon power / construction power); (4) PRESETS — Miner / Starlifter / Explorer / Build / Clear, each
+ * hidden when the craft lacks the capability the preset needs.
  *
  * <p>
  * Sync (server authoritative): the program lives in the {@link VoidcraftProgramSource} (the controller block
@@ -64,18 +70,24 @@ public class VoidcraftProgramGui {
 
     // command palette node specs (see USSProgramSync#readNode)
     private static final String SPEC_MOVE = "{\"t\":0,\"c\":0,\"p\":{\"target\":\"HOME\"}}";
-    private static final String SPEC_WORK = "{\"t\":0,\"c\":1}";
+    private static final String SPEC_MINE = "{\"t\":0,\"c\":1}";
     private static final String SPEC_WRITE = "{\"t\":0,\"c\":2,\"p\":{\"value\":\"\",\"slot\":0}}";
     private static final String SPEC_READ = "{\"t\":0,\"c\":3,\"p\":{\"from\":0,\"to\":1}}";
     private static final String SPEC_WAIT = "{\"t\":0,\"c\":4,\"p\":{\"ticks\":20}}";
     private static final String SPEC_STOP = "{\"t\":0,\"c\":5}";
     private static final String SPEC_CONSTRUCT = "{\"t\":0,\"c\":6}";
     private static final String SPEC_REPAIR = "{\"t\":0,\"c\":7}";
+    private static final String SPEC_SCAN = "{\"t\":0,\"c\":8}";
+    private static final String SPEC_SIPHON = "{\"t\":0,\"c\":9}";
     private static final String SPEC_IF = "{\"t\":1,\"l\":{\"k\":0,\"s\":\"\"},\"op\":0,\"r\":{\"k\":0,\"s\":\"\"}}";
     private static final String SPEC_WHILE = "{\"t\":2,\"l\":{\"k\":0,\"s\":\"\"},\"op\":0,\"r\":{\"k\":0,\"s\":\"\"}}";
     private static final String SPEC_REPEAT = "{\"t\":3,\"n\":1}";
 
     private final VoidcraftProgramSource source;
+
+    // the craft's capability set (the capability system): which commands the underlying ship / base can run —
+    // read once at build (the caps never change while the GUI is open)
+    private USSCapabilities caps;
 
     // sync handlers (created in build)
     private GenericListSyncHandler<String> rowsSyncer;
@@ -111,6 +123,7 @@ public class VoidcraftProgramGui {
     }
 
     public ModularPanel build(GuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        this.caps = source.getCommandCaps();
         this.syncManager = syncManager;
         rowsSyncer = new GenericListSyncHandler<String>(
             source::getProgramRows,
@@ -136,7 +149,7 @@ public class VoidcraftProgramGui {
             noteSyncer.notifyUpdate();
         });
 
-        ModularPanel panel = ModularPanel.defaultPanel("voidcraft_program", 440, 280);
+        ModularPanel panel = ModularPanel.defaultPanel("voidcraft_program", 440, 312);
         panel.child(
             Flow.row()
                 .child(createLeftPanel())
@@ -156,7 +169,7 @@ public class VoidcraftProgramGui {
         DynamicLinkedSyncHandler<GenericListSyncHandler<String>> rowsDynamic = new DynamicLinkedSyncHandler<GenericListSyncHandler<String>>(
             rowsSyncer).widgetProvider((manager, rows) -> createRowsList(rows.getValue()));
         return new ParentWidget<>().width(248)
-            .height(268)
+            .height(300)
             .child(
                 Flow.column()
                     .child(createSlotEditor())
@@ -404,60 +417,90 @@ public class VoidcraftProgramGui {
         varField = new TextFieldWidget().value(new StringValue.Dynamic(this::readVarText, this::writeVarText))
             .width(30)
             .height(14);
-        return new ParentWidget<>().width(172)
-            .height(268)
+        // The capability system: the palette only offers the commands the craft can run (a ship without
+        // thruster covers gets no MOVE row; the presets needing a missing capability are hidden). WRITE /
+        // READ / WAIT / STOP and the flow commands are always available (they need no ship capability).
+        Flow col = Flow.column()
+            .child(sectionLabel("USS VALUES"))
             .child(
-                Flow.column()
-                    .child(sectionLabel("USS VALUES"))
-                    .child(
-                        Flow.row()
-                            .child(slotLabel("slot").width(26))
-                            .child(varField)
-                            .child(new ButtonWidget<>().onMousePressed(mb -> {
-                                applyVar();
-                                return true;
-                            })
-                                .overlay(IKey.str("Assign"))
-                                .width(36)
-                                .height(14)
-                                .tooltip(t -> t.add(IKey.str("assign this USS slot to the selected slot"))))
-                            .childPadding(2)
-                            .coverChildren())
-                    .child(sectionLabel("ARGUMENTS"))
-                    .child(argButton("Nearest planet", USSProgramDefaults.TARGET_NEAREST_PLANET))
-                    .child(argButton("Random planet", USSProgramDefaults.TARGET_RANDOM_PLANET))
-                    .child(argButton("Random ripple", USSProgramDefaults.TARGET_RIPPLE_UNSCANNED))
-                    .child(sectionLabel("COMMANDS"))
-                    .child(cmdRow("MOVE", SPEC_MOVE))
-                    .child(cmdRow("WORK", SPEC_WORK))
-                    .child(cmdRow("WRITE", SPEC_WRITE))
-                    .child(cmdRow("READ", SPEC_READ))
-                    .child(cmdRow("WAIT", SPEC_WAIT))
-                    .child(cmdRow("STOP", SPEC_STOP))
-                    .child(cmdRow("CONSTRUCT", SPEC_CONSTRUCT))
-                    .child(cmdRow("REPAIR", SPEC_REPAIR))
-                    .child(cmdRow("IF", SPEC_IF))
-                    .child(cmdRow("WHILE", SPEC_WHILE))
-                    .child(cmdRow("REPEAT", SPEC_REPEAT))
-                    .child(sectionLabel("PRESETS"))
-                    .child(
-                        Flow.row()
-                            .child(presetButton("Miner", "miner"))
-                            .child(presetButton("Star", "starlifter"))
-                            .childPadding(2)
-                            .coverChildren())
-                    .child(
-                        Flow.row()
-                            .child(presetButton("Scan", "explorer"))
-                            .child(presetButton("Clear", "clear"))
-                            .childPadding(2)
-                            .coverChildren())
-                    .child(
-                        Flow.row()
-                            .child(presetButton("Build", "constructor"))
-                            .childPadding(2)
-                            .coverChildren())
+                Flow.row()
+                    .child(slotLabel("slot").width(26))
+                    .child(varField)
+                    .child(new ButtonWidget<>().onMousePressed(mb -> {
+                        applyVar();
+                        return true;
+                    })
+                        .overlay(IKey.str("Assign"))
+                        .width(36)
+                        .height(14)
+                        .tooltip(t -> t.add(IKey.str("assign this USS slot to the selected slot"))))
                     .childPadding(2)
+                    .coverChildren());
+        if (caps.has(USSCapabilities.MOVE)) {
+            // the ARGUMENTS helpers fill the MOVE target — only useful when MOVE is available
+            col.child(sectionLabel("ARGUMENTS"))
+                .child(argButton("Nearest planet", USSProgramDefaults.TARGET_NEAREST_PLANET))
+                .child(argButton("Random planet", USSProgramDefaults.TARGET_RANDOM_PLANET))
+                .child(argButton("Random ripple", USSProgramDefaults.TARGET_RIPPLE_UNSCANNED));
+        }
+        col.child(sectionLabel("COMMANDS"));
+        if (caps.has(USSCapabilities.MOVE)) {
+            col.child(cmdRow(USSCommand.MOVE, SPEC_MOVE, "fly to the target body (HOME = the gateway)"));
+        }
+        if (caps.has(USSCapabilities.MINE)) {
+            col.child(cmdRow(USSCommand.MINE, SPEC_MINE, "mine the target body"));
+        }
+        if (caps.has(USSCapabilities.SCAN)) {
+            col.child(cmdRow(USSCommand.SCAN, SPEC_SCAN, "scan the system for new ripple points"));
+        }
+        if (caps.has(USSCapabilities.SIPHON)) {
+            col.child(cmdRow(USSCommand.SIPHON, SPEC_SIPHON, "siphon the target star into fluid cargo"));
+        }
+        col.child(cmdRow(USSCommand.WRITE, SPEC_WRITE, "write a USS slot value into the selected slot"))
+            .child(cmdRow(USSCommand.READ, SPEC_READ, "copy one USS slot into another"))
+            .child(cmdRow(USSCommand.WAIT, SPEC_WAIT, "pause the program for a number of ticks"))
+            .child(cmdRow(USSCommand.STOP, SPEC_STOP, "end the program and return home"));
+        if (caps.has(USSCapabilities.CONSTRUCT)) {
+            col.child(cmdRow(USSCommand.CONSTRUCT, SPEC_CONSTRUCT, "build the stored base at the target site"));
+        }
+        if (caps.has(USSCapabilities.REPAIR)) {
+            col.child(cmdRow(USSCommand.REPAIR, SPEC_REPAIR, "repair the base at the target site"));
+        }
+        col.child(flowRow("IF", SPEC_IF, "run the block when the condition holds"))
+            .child(flowRow("WHILE", SPEC_WHILE, "repeat the block while the condition holds"))
+            .child(flowRow("REPEAT", SPEC_REPEAT, "repeat the block a fixed number of times"));
+        col.child(sectionLabel("PRESETS"));
+        if (caps.has(USSCapabilities.MINE) || caps.has(USSCapabilities.SIPHON)) {
+            Flow row = Flow.row();
+            if (caps.has(USSCapabilities.MINE)) {
+                row.child(presetButton("Miner", "miner"));
+            }
+            if (caps.has(USSCapabilities.SIPHON)) {
+                row.child(presetButton("Star", "starlifter"));
+            }
+            col.child(
+                row.childPadding(2)
+                    .coverChildren());
+        }
+        Flow row2 = Flow.row()
+            .child(presetButton("Clear", "clear"));
+        if (caps.has(USSCapabilities.SCAN)) {
+            row2.child(presetButton("Scan", "explorer"));
+        }
+        col.child(
+            row2.childPadding(2)
+                .coverChildren());
+        if (caps.has(USSCapabilities.CONSTRUCT)) {
+            col.child(
+                Flow.row()
+                    .child(presetButton("Build", "constructor"))
+                    .childPadding(2)
+                    .coverChildren());
+        }
+        return new ParentWidget<>().width(172)
+            .height(300)
+            .child(
+                col.childPadding(2)
                     .coverChildren())
             .coverChildren();
     }
@@ -475,8 +518,12 @@ public class VoidcraftProgramGui {
         return label;
     }
 
-    /** A command-palette row: label + [Add] (inserts the command at the cursor). */
-    private IWidget cmdRow(String label, String specJson) {
+    /**
+     * A palette row: label + [Add] (inserts the node at the cursor). The tooltip carries the description plus an
+     * optional STAT LINE (the craft's stats for the command — the ship's speed for MOVE, its mining power for
+     * MINE, and so on; flow rows carry none).
+     */
+    private IWidget row(String label, String specJson, String description, String stat) {
         return Flow.row()
             .child(slotLabel(label).width(56))
             .child(new ButtonWidget<>().onMousePressed(mb -> {
@@ -486,9 +533,28 @@ public class VoidcraftProgramGui {
                 .overlay(IKey.str("Add"))
                 .width(24)
                 .height(14)
-                .tooltip(t -> t.add(IKey.str("insert at cursor"))))
+                .tooltip(t -> {
+                    t.add(IKey.str(description));
+                    if (!stat.isEmpty()) {
+                        t.newLine();
+                        t.add(IKey.str(stat));
+                    }
+                }))
             .childPadding(2)
             .coverChildren();
+    }
+
+    /**
+     * A COMMAND-palette row: the command's label + [Add], with the craft's STAT LINE for the command in the
+     * tooltip (the capability system: the ship's speed for MOVE, its mining power for MINE, and so on).
+     */
+    private IWidget cmdRow(int commandId, String specJson, String description) {
+        return row(USSCommand.label(commandId), specJson, description, source.getCommandStatLine(commandId));
+    }
+
+    /** A FLOW-block row (IF / WHILE / REPEAT — always available, no stat line). */
+    private IWidget flowRow(String label, String specJson, String description) {
+        return row(label, specJson, description, "");
     }
 
     /** An ARGUMENT helper: fills the selected MOVE target slot with the given target. */

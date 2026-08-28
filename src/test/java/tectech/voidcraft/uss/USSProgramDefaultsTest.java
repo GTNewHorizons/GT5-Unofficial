@@ -18,20 +18,24 @@ public class USSProgramDefaultsTest {
 
     @Test
     public void testMinerChip() {
-        assertChip(USSProgramDefaults.miner(), USSProgramDefaults.TARGET_NEAREST_PLANET, "Miner");
+        assertChip(USSProgramDefaults.miner(), USSProgramDefaults.TARGET_NEAREST_PLANET, USSCommand.MINE, "Miner");
     }
 
     @Test
     public void testStarlifterChip() {
-        assertChip(USSProgramDefaults.starlifter(), USSProgramDefaults.TARGET_STAR, "Starlifter");
+        assertChip(USSProgramDefaults.starlifter(), USSProgramDefaults.TARGET_STAR, USSCommand.SIPHON, "Starlifter");
     }
 
     @Test
     public void testExplorerChip() {
-        assertChip(USSProgramDefaults.explorer(), USSProgramDefaults.TARGET_RIPPLE_UNSCANNED, "Explorer");
+        assertChip(
+            USSProgramDefaults.explorer(),
+            USSProgramDefaults.TARGET_RIPPLE_UNSCANNED,
+            USSCommand.SCAN,
+            "Explorer");
     }
 
-    private static void assertChip(USSProgram program, String expectedFirstTarget, String role) {
+    private static void assertChip(USSProgram program, String expectedFirstTarget, int expectedWork, String role) {
         assertEquals(3, program.size(), role + " chip: exactly three instructions");
         assertEquals(1, program.depth(), role + " chip: a flat list");
 
@@ -46,15 +50,15 @@ public class USSProgramDefaultsTest {
                 .getString(USSProgramDefaults.PARAM_TARGET),
             role + " chip: MOVE target");
 
-        // instruction 2 — WORK
+        // instruction 2 — the role's work command
         USSNode work = program.nodes()
             .get(1);
         assertTrue(work.isCommand());
-        assertEquals(USSCommand.WORK, work.cmdId(), role + " chip: instruction 2 is WORK");
+        assertEquals(expectedWork, work.cmdId(), role + " chip: instruction 2 is the role's work command");
         assertTrue(
             work.params()
                 .hasNoTags(),
-            role + " chip: WORK takes no params");
+            role + " chip: the work command takes no params");
 
         // instruction 3 — MOVE HOME
         USSNode home = program.nodes()

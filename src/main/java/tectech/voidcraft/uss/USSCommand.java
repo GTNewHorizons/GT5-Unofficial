@@ -10,14 +10,20 @@ package tectech.voidcraft.uss;
  */
 public final class USSCommand {
 
+    /** Highest built-in command id (the GUI's stat-line arrays are sized to this + 1). */
+    public static final int MAX_ID = 9;
+
     /**
      * Fly to a target and hover there (the ONE "Go to" — user spec). Params: {@code target} = STAR / PLANET /
      * NEAREST_PLANET / RANDOM_PLANET / RIPPLE / RIPPLE_UNSCANNED / SHIP / HOME (see {@link USSProgramDefaults})
      * plus an optional {@code index} for PLANET / RIPPLE / SHIP.
      */
     public static final int MOVE = 0;
-    /** Work at the current target (mine / starlift / Explorer-scan) until the work leg completes. */
-    public static final int WORK = 1;
+    /**
+     * MINE the current target planet until the work leg completes (the Miner's work command — a work leg of kind
+     * {@link USSWorkKind#MINE}, mined at the ship's mining power).
+     */
+    public static final int MINE = 1;
     /** WRITE: write a string into the USS variable space. Params: {@code value} (string), {@code slot} (0..255). */
     public static final int WRITE = 2;
     /** READ: copy one USS variable slot into another. Params: {@code from} (0..255), {@code to} (0..255). */
@@ -40,6 +46,47 @@ public final class USSCommand {
      * restores one integrity at the bay's energy draw. Params: none.
      */
     public static final int REPAIR = 7;
+    /**
+     * SCAN the current ripple point until the work leg completes (the Explorer's work command — a work leg of
+     * kind {@link USSWorkKind#SCAN}, scanned at the ship's scan power; the yield is the ripple reveal, not cargo).
+     */
+    public static final int SCAN = 8;
+    /**
+     * SIPHON the star until the work leg completes (the Starlifter's work command — a work leg of kind
+     * {@link USSWorkKind#SIPHON}, siphoned at the ship's starlifter power; the yield is the star cargo).
+     */
+    public static final int SIPHON = 9;
 
     private USSCommand() {}
+
+    /**
+     * The block label a command id renders as in the program view ("MOVE" / "MINE" / …); {@code CMD<id>} for an
+     * unknown id (the view's fallback, so a new command is never an empty block).
+     */
+    public static String label(int commandId) {
+        switch (commandId) {
+            case MOVE:
+                return "MOVE";
+            case MINE:
+                return "MINE";
+            case WRITE:
+                return "WRITE";
+            case READ:
+                return "READ";
+            case WAIT:
+                return "WAIT";
+            case STOP:
+                return "STOP";
+            case CONSTRUCT:
+                return "CONSTRUCT";
+            case REPAIR:
+                return "REPAIR";
+            case SCAN:
+                return "SCAN";
+            case SIPHON:
+                return "SIPHON";
+            default:
+                return "CMD" + commandId;
+        }
+    }
 }

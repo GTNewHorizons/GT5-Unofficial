@@ -35,7 +35,7 @@ public final class USSCommandMove implements USSCommandHandler {
             return USSCommandStatus.FAILED;
         }
         double dist = ctx.distanceTo(dest);
-        if (!ctx.startLeg(dest, dist, false)) {
+        if (!ctx.startLeg(dest, dist, USSWorkKind.TRAVEL)) {
             ctx.log("MOVE: leg start refused — skipping");
             return USSCommandStatus.FAILED;
         }

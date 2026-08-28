@@ -20,7 +20,7 @@ import tectech.voidcraft.ship.VoidcraftNbt;
 
 /**
  * Unit tests for the Voidbase pilot (the base-mode bridge between the program executor and the game world):
- * the zero-length leg (a base sits at its anchor), the SKIP rules (other anchors / HOME / SHIP), the WORK
+ * the zero-length leg (a base sits at its anchor), the SKIP rules (other anchors / HOME / SHIP), the MINE
  * no-op, the REPAIR relay, program end = the base keeps standing, and the exactly-once / save-reload invariants
  * through the real (fake-world) bridge.
  */
@@ -39,7 +39,7 @@ public class USSBasePilotTest {
     }
 
     private static USSNode work() {
-        return USSNode.command(USSCommand.WORK, new NBTTagCompound());
+        return USSNode.command(USSCommand.MINE, new NBTTagCompound());
     }
 
     private static USSNode repair() {
@@ -69,11 +69,11 @@ public class USSBasePilotTest {
         return VoidcraftActiveBase.launch(uuid, uuid, anchor, payload, SEED, BASE_POS);
     }
 
-    /** How many times the base WORK ran (its log line is one per completed WORK leg). */
+    /** How many times the base MINE ran (its log line is one per completed MINE leg). */
     private static int workLogCount(FakePilotWorld w) {
         int n = 0;
         for (String l : w.baseLogs) {
-            if (l.contains("WORK")) {
+            if (l.contains("MINE")) {
                 n++;
             }
         }
@@ -93,14 +93,14 @@ public class USSBasePilotTest {
 
     @Test
     public void testLoneWorkProgramLoopsAndTheBaseStands() {
-        // The user's one-command base program: no STOP anywhere — the invisible while re-runs the lone WORK
+        // The user's one-command base program: no STOP anywhere — the invisible while re-runs the lone MINE
         // forever, and the base keeps standing (only integrity decay decommissions it).
         FakePilotWorld w = new FakePilotWorld();
         USSProgram program = USSProgram.of(Arrays.asList(work()));
         USSBasePilot p = USSBasePilot.create(base("end-1", USSBaseAnchor.planet(2), program), program, w);
         int budget = 1000;
         while (workLogCount(w) < 2) {
-            assertTrue(budget-- > 0, "the lone WORK must loop (the wrap)");
+            assertTrue(budget-- > 0, "the lone MINE must loop (the wrap)");
             assertFalse(p.isCompleted(), "a program without STOP never ends");
             p.tick();
         }
@@ -127,7 +127,7 @@ public class USSBasePilotTest {
         }
         assertTrue(
             w.baseLogs.stream()
-                .anyMatch(l -> l.contains("WORK")),
+                .anyMatch(l -> l.contains("MINE")),
             "the program continued past the instant leg");
         assertEquals(
             BASE_POS,
@@ -155,7 +155,7 @@ public class USSBasePilotTest {
             "the skip was logged");
         assertTrue(
             w.baseLogs.stream()
-                .anyMatch(l -> l.contains("WORK")),
+                .anyMatch(l -> l.contains("MINE")),
             "the program continued after the skip");
         assertEquals(0, w.workCalls, "the base WORK never dispatches a ship-side work side-effect");
     }
@@ -174,7 +174,7 @@ public class USSBasePilotTest {
         }
         assertTrue(
             w.baseLogs.stream()
-                .anyMatch(l -> l.contains("WORK")),
+                .anyMatch(l -> l.contains("MINE")),
             "both SKIPs left the program running");
         assertEquals(0, w.workCalls);
     }
@@ -251,7 +251,7 @@ public class USSBasePilotTest {
             "the skip was logged");
         assertTrue(
             w.baseLogs.stream()
-                .anyMatch(l -> l.contains("WORK")),
+                .anyMatch(l -> l.contains("MINE")),
             "the program continued after the skip");
     }
 
@@ -281,7 +281,7 @@ public class USSBasePilotTest {
             "the SKIP was logged");
         assertTrue(
             w.baseLogs.stream()
-                .anyMatch(l -> l.contains("WORK")),
+                .anyMatch(l -> l.contains("MINE")),
             "the SKIP left the program running");
     }
 
@@ -399,7 +399,7 @@ public class USSBasePilotTest {
         }
         assertTrue(
             w.baseLogs.stream()
-                .anyMatch(l -> l.contains("WORK")),
+                .anyMatch(l -> l.contains("MINE")),
             "the re-run program reached the WORK");
     }
 
@@ -420,7 +420,7 @@ public class USSBasePilotTest {
 
     // endregion
 
-    // region mining leg (a WORK on a base with mining power runs a real mining leg)
+    // region mining leg (a MINE on a base with mining power runs a real mining leg)
 
     private static boolean logContains(List<String> logs, String s) {
         for (String l : logs) {
@@ -440,13 +440,13 @@ public class USSBasePilotTest {
             .setLong(VoidcraftNbt.TAG_MINING, 4L); // a station with mining power
         USSBasePilot p = USSBasePilot.create(b, program, w);
 
-        // The executor steps a node every STEP_TICKS (20) ticks: the WORK command starts the leg on its step,
+        // The executor steps a node every STEP_TICKS (20) ticks: the MINE command starts the leg on its step,
         // with the full duration from the ship's table (mineTicks(4) = 150 ticks).
         int ticks = 0;
         while (p.miningLegId() < 1 && ++ticks < 100) {
             p.tick();
         }
-        assertEquals(1, p.miningLegId(), "the first WORK started mining leg 1 (tick " + ticks + ")");
+        assertEquals(1, p.miningLegId(), "the first MINE started mining leg 1 (tick " + ticks + ")");
         assertEquals(
             USSConstants.mineTicks(4L),
             (long) p.miningTicks(),
@@ -477,7 +477,7 @@ public class USSBasePilotTest {
             p.tick();
             ticks++;
         }
-        assertEquals(2, p.miningLegId(), "the invisible-while re-run of WORK starts mining leg 2 (tick " + ticks + ")");
+        assertEquals(2, p.miningLegId(), "the invisible-while re-run of MINE starts mining leg 2 (tick " + ticks + ")");
         assertEquals(USSConstants.mineTicks(4L), (long) p.miningTicks(), "the second leg runs again at full duration");
     }
 
@@ -538,7 +538,7 @@ public class USSBasePilotTest {
             .setLong(VoidcraftNbt.TAG_MINING, 4L);
         USSBasePilot p = USSBasePilot.create(b, null, w);
         assertTrue(p.isCompleted(), "an empty program is done");
-        assertTrue(p.startLeg(BASE_POS, 0.0, true), "a mining leg can still be started");
+        assertTrue(p.startLeg(BASE_POS, 0.0, USSWorkKind.MINE), "a mining leg can still be started");
         assertEquals(1, p.miningLegId());
         p.tick(); // the program-over path abandons the in-flight leg
         assertEquals(0, p.miningTicks(), "the abandoned mining leg is cleared (the beam stops)");

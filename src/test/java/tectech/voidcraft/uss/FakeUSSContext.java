@@ -37,7 +37,7 @@ public final class FakeUSSContext implements USSExecutionContext {
     public int workLegs = 0;
     public USSPosition lastLegDest;
     public double lastLegDist;
-    public boolean lastLegWork;
+    public int lastLegWorkKind;
     public final List<String> log = new ArrayList<String>();
     /** nextInt(bound) = bound ≤ 0 ? 0 : randomBase % bound (deterministic). */
     public int randomBase = 7;
@@ -131,15 +131,15 @@ public final class FakeUSSContext implements USSExecutionContext {
     }
 
     @Override
-    public boolean startLeg(USSPosition dest, double dist, boolean work) {
+    public boolean startLeg(USSPosition dest, double dist, int workKind) {
         if (startRefused) {
             return false;
         }
         legStarted = true;
         lastLegDest = dest;
         lastLegDist = dist;
-        lastLegWork = work;
-        if (work) {
+        lastLegWorkKind = workKind;
+        if (USSWorkKind.isWork(workKind)) {
             workLegs++;
         } else {
             travelLegs++;

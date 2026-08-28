@@ -43,7 +43,7 @@ public class USSNodeTest {
 
     @Test
     public void testCommandNullParamsGivesEmptyCompound() {
-        USSNode node = USSNode.command(USSCommand.WORK, null);
+        USSNode node = USSNode.command(USSCommand.MINE, null);
         assertTrue(
             node.params()
                 .hasNoTags());
@@ -102,7 +102,7 @@ public class USSNodeTest {
 
     @Test
     public void testWhileNode() {
-        USSNode node = USSNode.whileNode(guard(), Arrays.asList(USSNode.command(USSCommand.WORK, null)));
+        USSNode node = USSNode.whileNode(guard(), Arrays.asList(USSNode.command(USSCommand.MINE, null)));
         assertEquals(USSNodeType.WHILE, node.type());
         assertEquals(guard(), node.condition());
         assertEquals(
@@ -169,7 +169,7 @@ public class USSNodeTest {
             guard(),
             Arrays.asList(
                 USSNode.ifNode(guard(), Collections.singletonList(USSNode.command(USSCommand.STOP, null))),
-                USSNode.command(USSCommand.WORK, null)));
+                USSNode.command(USSCommand.MINE, null)));
         assertEquals(3, nested.depth(), "while{if{cmd}, cmd} is three levels deep");
         assertEquals(4, nested.subtreeSize(), "four nodes in the subtree");
     }

@@ -161,20 +161,20 @@ public final class USSShipCargo {
     /**
      * Build the cargo of a completed Starlifter mission (the mechanics pass): the star's three registered
      * materials, each as a FLUID entry (they are "primarily fluids"), with amount =
-     * {@code starlifterPlasmaAmount(miningPower) × weight × √(star size)}. The weights set the relative split;
+     * {@code starlifterPlasmaAmount(siphonPower) × weight × √(star size)}. The weights set the relative split;
      * the star size (sampled from the star's size range, a pure function of the star type + seed) scales the total.
      *
      * <p>
      * Deterministic: the star size is derived from the seed (no RNG outside {@link USSPlanets#sampleStarSize}).
      *
-     * @param starType    the star the ship mined (null → main sequence, defensive).
-     * @param miningPower the ship's total mining power.
+     * @param starType    the star the ship siphoned (null → main sequence, defensive).
+     * @param siphonPower the ship's total siphon (starlifter) power.
      * @param seed        the star's ignition timestamp (the seed for the star-size draw — same as
      *                    {@link USSPlanets#sampleStarSize(USSStarType, long)}).
      * @return a cargo compound with a {@link #TAG_FLUIDS} list of the star's 3 materials (defensive: empty when the
      *         star is unregistered).
      */
-    public static NBTTagCompound buildForStarlifter(USSStarType starType, long miningPower, long seed) {
+    public static NBTTagCompound buildForStarlifter(USSStarType starType, long siphonPower, long seed) {
         if (starType == null) {
             starType = USSStarType.MAIN_SEQUENCE;
         }
@@ -182,7 +182,7 @@ public final class USSShipCargo {
         if (star == null) {
             return new NBTTagCompound(); // defensive: no registered star → empty cargo
         }
-        long base = USSConstants.starlifterPlasmaAmount(miningPower);
+        long base = USSConstants.starlifterPlasmaAmount(siphonPower);
         double sizeFactor = Math.sqrt(USSPlanets.sampleStarSize(starType, seed));
 
         NBTTagCompound cargo = new NBTTagCompound();

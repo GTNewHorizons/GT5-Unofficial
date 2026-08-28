@@ -13,7 +13,6 @@ import net.minecraft.nbt.NBTTagList;
 import org.junit.jupiter.api.Test;
 
 import tectech.voidcraft.ship.VoidcraftNbt;
-import tectech.voidcraft.ship.VoidcraftRole;
 
 /**
  * Unit tests for the Phase C PASSIVE leg driver ({@link VoidcraftActiveShip}): launch (holding at the origin),
@@ -69,7 +68,7 @@ public class VoidcraftActiveShipTest {
     @Test
     public void testStartLegArmsTheLeg() {
         VoidcraftActiveShip s = ship("leg-1");
-        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 100, 14.14);
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 100, 14.14, USSWorkKind.TRAVEL);
         assertEquals(USSShipState.OUTBOUND, s.getState());
         assertEquals(ORIGIN, s.getLegFrom());
         assertEquals(ORIGIN, s.getPosition(), "position stays at the leg's start until the leg completes");
@@ -86,7 +85,7 @@ public class VoidcraftActiveShipTest {
     @Test
     public void testCountdownLatchesAtZero() {
         VoidcraftActiveShip s = ship("leg-2");
-        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 3, DISTANCE);
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 3, DISTANCE, USSWorkKind.TRAVEL);
         s.tickLeg();
         assertEquals(2, s.getTicksRemaining());
         assertEquals(1, s.getTicksInLeg(), "ticks elapsed = total − remaining");
@@ -101,7 +100,7 @@ public class VoidcraftActiveShipTest {
     @Test
     public void testCompletionIsConsumedExactlyOnce() {
         VoidcraftActiveShip s = ship("leg-3");
-        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 2, 0.0);
+        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 2, 0.0, USSWorkKind.MINE);
         s.tickLeg();
         s.tickLeg();
         assertTrue(s.isLegComplete());
@@ -116,7 +115,7 @@ public class VoidcraftActiveShipTest {
     @Test
     public void testZeroLengthLegCompletesOnTheNextTick() {
         VoidcraftActiveShip s = ship("leg-4");
-        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 0, 0.0);
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 0, 0.0, USSWorkKind.TRAVEL);
         assertFalse(s.isLegComplete(), "a zero-length leg is armed but not yet complete");
         s.tickLeg();
         assertTrue(s.isLegComplete());
@@ -127,7 +126,7 @@ public class VoidcraftActiveShipTest {
     @Test
     public void testHoldParksTheShip() {
         VoidcraftActiveShip s = ship("hold-1");
-        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 50, DISTANCE);
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 50, DISTANCE, USSWorkKind.TRAVEL);
         s.tickLeg();
         assertEquals(USSShipState.OUTBOUND, s.getState());
         s.hold();
@@ -142,18 +141,18 @@ public class VoidcraftActiveShipTest {
     public void testLegIdIncrementsPerLeg() {
         VoidcraftActiveShip s = ship("id-1");
         assertEquals(0, s.getLegId());
-        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 10, DISTANCE);
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 10, DISTANCE, USSWorkKind.TRAVEL);
         s.tickLeg();
         s.tickLeg();
         s.tickLeg();
         s.clearLegComplete();
         assertEquals(1, s.getLegId(), "leg 1 done");
-        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 10, 0.0);
+        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 10, 0.0, USSWorkKind.MINE);
         assertEquals(
             2,
             s.getLegId(),
             "consecutive legs bump the id even with the same state (the client's MOVE→MOVE fix)");
-        s.startLeg(USSShipState.RETURNING, ORIGIN, ORIGIN, 10, 0.0);
+        s.startLeg(USSShipState.RETURNING, ORIGIN, ORIGIN, 10, 0.0, USSWorkKind.TRAVEL);
         assertEquals(3, s.getLegId());
     }
 
@@ -180,7 +179,7 @@ public class VoidcraftActiveShipTest {
         // Phase C: the pilot's onWorkComplete is the SOLE producer of the cargo — the ship's leg driver must not
         // pre-fill anything (that is how a work leg's yield fires exactly once).
         VoidcraftActiveShip s = ship("cargo-2");
-        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 2, 0.0);
+        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 2, 0.0, USSWorkKind.MINE);
         s.tickLeg();
         s.tickLeg();
         s.clearLegComplete();
@@ -200,7 +199,7 @@ public class VoidcraftActiveShipTest {
         int[] bay = { 12, 64, -18 };
         VoidcraftActiveShip s = VoidcraftActiveShip
             .launch("rt-1", "Round Trip", SPEED, MINING_POWER, payload, gateway, bay, 42, ORIGIN);
-        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 80, DISTANCE);
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, DEST, 80, DISTANCE, USSWorkKind.TRAVEL);
         s.tickLeg();
         NBTTagCompound cargo = new NBTTagCompound();
         cargo.setString("marker", "cargo");
@@ -250,7 +249,7 @@ public class VoidcraftActiveShipTest {
     public void testNbtRoundTripPreservesDestinationAndDistance() {
         VoidcraftActiveShip s = VoidcraftActiveShip
             .launch("ship-pos6", "Pos Ship", SPEED, MINING_POWER, new NBTTagCompound(), null, null, 7, ORIGIN);
-        s.startLeg(USSShipState.OUTBOUND, ORIGIN, USSPosition.of(4.0, -2.0, 7.0), 60, 9.0);
+        s.startLeg(USSShipState.OUTBOUND, ORIGIN, USSPosition.of(4.0, -2.0, 7.0), 60, 9.0, USSWorkKind.TRAVEL);
         VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
         assertNotNull(restored);
         assertEquals(USSPosition.of(4.0, -2.0, 7.0), restored.getDestination(), "destination survives the round-trip");
@@ -262,7 +261,7 @@ public class VoidcraftActiveShipTest {
         // THE Phase C invariant: a leg that finished but whose side-effect has not fired yet (latched complete)
         // must survive a save/reload and be consumable exactly once AFTER the reload.
         VoidcraftActiveShip s = ship("latch-1");
-        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 2, 0.0);
+        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 2, 0.0, USSWorkKind.MINE);
         s.tickLeg();
         s.tickLeg();
         assertTrue(s.isLegComplete());
@@ -588,22 +587,26 @@ public class VoidcraftActiveShipTest {
     public void testLegTicksTable() {
         assertEquals(
             USSConstants.travelTicks(DISTANCE, SPEED),
-            USSConstants.legTicks(USSShipState.OUTBOUND, DISTANCE, SPEED, MINING_POWER));
+            USSConstants.legTicks(USSShipState.OUTBOUND, DISTANCE, SPEED, USSWorkKind.TRAVEL, MINING_POWER, 0L, 0L));
         assertEquals(
             USSConstants.travelTicks(DISTANCE, SPEED),
-            USSConstants.legTicks(USSShipState.RETURNING, DISTANCE, SPEED, MINING_POWER));
+            USSConstants.legTicks(USSShipState.RETURNING, DISTANCE, SPEED, USSWorkKind.TRAVEL, MINING_POWER, 0L, 0L));
         assertEquals(
             USSConstants.mineTicks(MINING_POWER),
-            USSConstants.legTicks(USSShipState.MINING, DISTANCE, SPEED, MINING_POWER));
+            USSConstants.legTicks(USSShipState.MINING, DISTANCE, SPEED, USSWorkKind.MINE, MINING_POWER, 0L, 0L),
+            "a MINING leg with the MINE kind = mineTicks");
         assertEquals(
             0L,
-            USSConstants.legTicks(USSShipState.DOCKED, DISTANCE, SPEED, MINING_POWER),
+            USSConstants.legTicks(USSShipState.DOCKED, DISTANCE, SPEED, USSWorkKind.TRAVEL, MINING_POWER, 0L, 0L),
             "docked ships have no leg");
         assertEquals(
             0L,
-            USSConstants.legTicks(USSShipState.HOVERING, DISTANCE, SPEED, MINING_POWER),
+            USSConstants.legTicks(USSShipState.HOVERING, DISTANCE, SPEED, USSWorkKind.TRAVEL, MINING_POWER, 0L, 0L),
             "a holding ship has no leg");
-        assertEquals(0L, USSConstants.legTicks(null, DISTANCE, SPEED, MINING_POWER), "null state → 0");
+        assertEquals(
+            0L,
+            USSConstants.legTicks(null, DISTANCE, SPEED, USSWorkKind.TRAVEL, MINING_POWER, 0L, 0L),
+            "null state → 0");
     }
 
     @Test
@@ -625,42 +628,95 @@ public class VoidcraftActiveShipTest {
     }
 
     @Test
-    public void testWorkTicksIsRoleAware() {
-        int explorer = VoidcraftRole.EXPLORER.getBit();
-        int miner = VoidcraftRole.MINER.getBit();
+    public void testWorkTicksIsKindAware() {
         long scanPower = 8L;
-        assertEquals(
-            USSConstants.scanTicks(scanPower),
-            USSConstants.workTicks(explorer, MINING_POWER, scanPower),
-            "explorer work leg = scanTicks(scanPower)");
+        long siphonPower = 40L;
         assertEquals(
             USSConstants.mineTicks(MINING_POWER),
-            USSConstants.workTicks(miner, MINING_POWER, scanPower),
-            "miner work leg = mineTicks(miningPower)");
-        assertEquals(
-            USSConstants.mineTicks(MINING_POWER),
-            USSConstants.workTicks(0, MINING_POWER, scanPower),
-            "no role (legacy) work leg = mineTicks(miningPower)");
+            USSConstants.workTicks(USSWorkKind.MINE, MINING_POWER, scanPower, siphonPower),
+            "a MINE work leg = mineTicks(miningPower)");
         assertEquals(
             USSConstants.scanTicks(scanPower),
-            USSConstants.workTicks(explorer | miner, MINING_POWER, scanPower),
-            "explorer+miner → explorer (scan)");
+            USSConstants.workTicks(USSWorkKind.SCAN, MINING_POWER, scanPower, siphonPower),
+            "a SCAN work leg = scanTicks(scanPower)");
         assertEquals(
-            USSConstants.scanTicks(scanPower),
-            USSConstants.legTicks(USSShipState.MINING, DISTANCE, SPEED, MINING_POWER, explorer, scanPower),
-            "legTicks(MINING, explorer) = scanTicks");
+            USSConstants.starliftTicks(siphonPower),
+            USSConstants.workTicks(USSWorkKind.SIPHON, MINING_POWER, scanPower, siphonPower),
+            "a SIPHON work leg = starliftTicks(siphonPower)");
         assertEquals(
             USSConstants.mineTicks(MINING_POWER),
-            USSConstants.legTicks(USSShipState.MINING, DISTANCE, SPEED, MINING_POWER, miner, scanPower),
-            "legTicks(MINING, miner) = mineTicks");
+            USSConstants.workTicks(USSWorkKind.TRAVEL, MINING_POWER, scanPower, siphonPower),
+            "a travel / unknown kind degrades to the mining table");
+        // the leg's state is MINING for every work kind — the KIND picks the table (a hybrid ship's leg duration
+        // depends on the command that ran it, not on the ship's role)
+        assertEquals(
+            USSConstants.scanTicks(scanPower),
+            USSConstants
+                .legTicks(USSShipState.MINING, DISTANCE, SPEED, USSWorkKind.SCAN, MINING_POWER, scanPower, siphonPower),
+            "legTicks(MINING, SCAN kind) = scanTicks");
+        assertEquals(
+            USSConstants.starliftTicks(siphonPower),
+            USSConstants.legTicks(
+                USSShipState.MINING,
+                DISTANCE,
+                SPEED,
+                USSWorkKind.SIPHON,
+                MINING_POWER,
+                scanPower,
+                siphonPower),
+            "legTicks(MINING, SIPHON kind) = starliftTicks");
         assertEquals(
             USSConstants.travelTicks(DISTANCE, SPEED),
-            USSConstants.legTicks(USSShipState.OUTBOUND, DISTANCE, SPEED, MINING_POWER, explorer, scanPower),
-            "OUTBOUND leg is distance-based (role-independent)");
+            USSConstants.legTicks(
+                USSShipState.OUTBOUND,
+                DISTANCE,
+                SPEED,
+                USSWorkKind.SCAN,
+                MINING_POWER,
+                scanPower,
+                siphonPower),
+            "OUTBOUND legs are distance-based (kind-independent)");
         assertEquals(
             USSConstants.travelTicks(DISTANCE, SPEED),
-            USSConstants.legTicks(USSShipState.RETURNING, DISTANCE, SPEED, MINING_POWER, explorer, scanPower),
-            "RETURNING leg is distance-based (role-independent)");
+            USSConstants.legTicks(
+                USSShipState.RETURNING,
+                DISTANCE,
+                SPEED,
+                USSWorkKind.SCAN,
+                MINING_POWER,
+                scanPower,
+                siphonPower),
+            "RETURNING legs are distance-based (kind-independent)");
+    }
+
+    @Test
+    public void testStarliftTicksIsAlwaysVisibleAndBounded() {
+        for (long power = 0; power <= 64; power++) {
+            long ticks = USSConstants.starliftTicks(power);
+            assertTrue(ticks >= USSConstants.STARLIFT_TICKS_MIN, "power " + power + " → " + ticks + " ticks");
+            assertTrue(ticks <= USSConstants.STARLIFT_TICKS_MAX, "power " + power + " — the siphon stays bounded");
+        }
+        for (long power = 1; power < 40; power++) {
+            assertTrue(
+                USSConstants.starliftTicks(power) >= USSConstants.starliftTicks(power + 1),
+                "monotone non-increasing at power " + power);
+        }
+        assertEquals(
+            USSConstants.starliftTicks(USSConstants.STARLIFT_POWER_SATURATION),
+            USSConstants.starliftTicks(1_000_000L),
+            "above saturation the siphon time stops shrinking");
+    }
+
+    @Test
+    public void testLegWorkKindSurvivesTheNbtRoundTrip() {
+        // The fleet entry writes the ship's leg work kind — a mid-leg reload must keep the SAME kind, or the
+        // client's leg duration desyncs (a SCAN leg would animate at the mining table).
+        VoidcraftActiveShip s = ship("kind-1");
+        s.startLeg(USSShipState.MINING, ORIGIN, DEST, 100, 0.0, USSWorkKind.SCAN);
+        assertEquals(USSWorkKind.SCAN, s.getLegWorkKind());
+        VoidcraftActiveShip restored = VoidcraftActiveShip.readFromNBT(s.writeToNBT());
+        assertNotNull(restored);
+        assertEquals(USSWorkKind.SCAN, restored.getLegWorkKind(), "the work kind survives the round-trip");
     }
 
     @Test

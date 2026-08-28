@@ -30,7 +30,7 @@ public class USSProgramEditorTest {
     }
 
     private static USSNode work() {
-        return USSNode.command(USSCommand.WORK, new NBTTagCompound());
+        return USSNode.command(USSCommand.MINE, new NBTTagCompound());
     }
 
     private static USSNode move(String target) {
@@ -127,7 +127,7 @@ public class USSProgramEditorTest {
         USSProgram afterEnd = accepted(USSProgramEditor.insert(p, path(), 2, work()));
         assertEquals(3, afterEnd.size());
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             afterEnd.nodes()
                 .get(2)
                 .cmdId());
@@ -247,7 +247,7 @@ public class USSProgramEditorTest {
                 .body()
                 .size());
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             next.nodes()
                 .get(0)
                 .body()
@@ -288,13 +288,13 @@ public class USSProgramEditorTest {
                 .params()
                 .getString(USSProgramDefaults.PARAM_TARGET));
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             swapped.nodes()
                 .get(2)
                 .cmdId());
         USSProgram back = accepted(USSProgramEditor.move(p, path(1), true)); // work UP before STAR
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             back.nodes()
                 .get(0)
                 .cmdId());
@@ -318,7 +318,7 @@ public class USSProgramEditorTest {
                 .get(0)
                 .cmdId());
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             next.nodes()
                 .get(0)
                 .body()
@@ -357,7 +357,7 @@ public class USSProgramEditorTest {
                 .params()
                 .getString(USSProgramDefaults.PARAM_TARGET));
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             next.nodes()
                 .get(2)
                 .cmdId());
@@ -402,7 +402,7 @@ public class USSProgramEditorTest {
                 .get(2)
                 .cmdId());
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             next.nodes()
                 .get(0)
                 .body()
@@ -426,7 +426,7 @@ public class USSProgramEditorTest {
             copy.body()
                 .size());
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             copy.body()
                 .get(0)
                 .cmdId());
@@ -616,7 +616,7 @@ public class USSProgramEditorTest {
                 .size(),
             "the body survives the count edit");
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             next.nodes()
                 .get(0)
                 .body()
@@ -806,7 +806,7 @@ public class USSProgramEditorTest {
         assertEquals(beforeSize, p.size(), "the root list is unchanged");
         assertEquals(beforeCount, p.nodeCount(), "the subtree is unchanged");
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             p.nodes()
                 .get(0)
                 .body()
@@ -841,6 +841,54 @@ public class USSProgramEditorTest {
         assertEquals(edited, roundTrip, "the edited program survives an NBT round-trip unchanged");
         // and it passes the whole-program gate
         accepted(USSProgramEditor.apply(roundTrip));
+    }
+
+    // endregion
+
+    // region capability gating (the capability system)
+
+    @Test
+    public void testInsertRejectedOutsideTheCaps() {
+        USSCapabilities miner = USSCapabilities.of(USSCapabilities.MOVE | USSCapabilities.MINE);
+        // a mining-only ship: SCAN / SIPHON / CONSTRUCT rows are not insertable (the GUI hides them; the
+        // editor is the authority the GUI syncs to)
+        USSNode scan = USSNode.command(USSCommand.SCAN, new NBTTagCompound());
+        USSNode siphon = USSNode.command(USSCommand.SIPHON, new NBTTagCompound());
+        USSNode construct = USSNode.command(USSCommand.CONSTRUCT, new NBTTagCompound());
+        assertNotNull(rejected(USSProgramEditor.insert(works(1), path(), 0, scan, miner)), "SCAN rejected");
+        assertNotNull(rejected(USSProgramEditor.insert(works(1), path(), 0, siphon, miner)), "SIPHON rejected");
+        assertNotNull(rejected(USSProgramEditor.insert(works(1), path(), 0, construct, miner)), "CONSTRUCT rejected");
+        // the allowed commands go in (and a null caps means no check at all — the legacy call path)
+        accepted(USSProgramEditor.insert(works(1), path(), 0, work(), miner));
+        accepted(USSProgramEditor.insert(works(1), path(), 0, move("HOME"), miner));
+        accepted(USSProgramEditor.insert(works(1), path(), 0, scan, null));
+    }
+
+    @Test
+    public void testCopyRejectedOutsideTheCaps() {
+        // copying a SCAN row on a mining-only ship is rejected (a copy is a re-insert of the row's command)
+        USSNode scan = USSNode.command(USSCommand.SCAN, new NBTTagCompound());
+        USSProgram withScan = USSProgram.of(Arrays.asList(work(), scan));
+        USSCapabilities miner = USSCapabilities.of(USSCapabilities.MOVE | USSCapabilities.MINE);
+        assertNotNull(rejected(USSProgramEditor.copy(withScan, path(1), miner)), "the SCAN row copy is rejected");
+        accepted(USSProgramEditor.copy(withScan, path(0), miner));
+    }
+
+    @Test
+    public void testApplyRejectedOutsideTheCaps() {
+        // the preset walk: the starlifter preset carries a SIPHON row — applying it on a mining-only ship
+        // is rejected (the pre-walk sees the forbidden command before the program is replaced)
+        USSCapabilities miner = USSCapabilities.of(USSCapabilities.MOVE | USSCapabilities.MINE);
+        assertNotNull(
+            rejected(USSProgramEditor.apply(USSProgramDefaults.starlifter(), miner)),
+            "the walk sees the SIPHON row");
+        // ...and it applies on a ship that has the capability (plus MOVE for the travel legs)
+        accepted(
+            USSProgramEditor.apply(
+                USSProgramDefaults.starlifter(),
+                USSCapabilities.of(USSCapabilities.MOVE | USSCapabilities.SIPHON)));
+        // the miner preset fits the miner caps
+        accepted(USSProgramEditor.apply(USSProgramDefaults.miner(), miner));
     }
 
     // endregion

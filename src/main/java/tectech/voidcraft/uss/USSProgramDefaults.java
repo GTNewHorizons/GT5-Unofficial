@@ -9,12 +9,12 @@ import net.minecraft.nbt.NBTTagCompound;
  * controller when right-clicking the controller. For miner, starlifter, explorer — others come later").
  *
  * <p>
- * Each chip is the same shape — MOVE to the role's target → WORK → MOVE HOME (delivery happens on the return
- * leg) — differing only in the first target:
+ * Each chip is the same shape — MOVE to the role's target → the role's work command → MOVE HOME (delivery
+ * happens on the return leg) — differing in target and work command:
  * <ul>
- * <li>Miner → {@link #TARGET_NEAREST_PLANET}</li>
- * <li>Starlifter → {@link #TARGET_STAR}</li>
- * <li>Explorer → {@link #TARGET_RIPPLE_UNSCANNED}</li>
+ * <li>Miner → {@link #TARGET_NEAREST_PLANET} + MINE</li>
+ * <li>Starlifter → {@link #TARGET_STAR} + SIPHON</li>
+ * <li>Explorer → {@link #TARGET_RIPPLE_UNSCANNED} + SCAN</li>
  * </ul>
  *
  * <p>
@@ -50,9 +50,9 @@ public final class USSProgramDefaults {
     /** Home — the launch origin / gateway anchor ("Leave the USS"; delivery happens on the return leg). */
     public static final String TARGET_HOME = "HOME";
 
-    /** Miner chip: go to the nearest planet, work (mine), come home. */
+    /** Miner chip: go to the nearest planet, mine, come home. */
     public static USSProgram miner() {
-        return basic(TARGET_NEAREST_PLANET);
+        return basic(TARGET_NEAREST_PLANET, USSCommand.MINE);
     }
 
     /**
@@ -71,14 +71,14 @@ public final class USSProgramDefaults {
                 USSNode.command(USSCommand.MOVE, home)));
     }
 
-    /** Starlifter chip: go to the star, work (starlift), come home. */
+    /** Starlifter chip: go to the star, siphon, come home. */
     public static USSProgram starlifter() {
-        return basic(TARGET_STAR);
+        return basic(TARGET_STAR, USSCommand.SIPHON);
     }
 
-    /** Explorer chip: go to a random unscanned ripple, work (scan), come home. */
+    /** Explorer chip: go to a random unscanned ripple, scan, come home. */
     public static USSProgram explorer() {
-        return basic(TARGET_RIPPLE_UNSCANNED);
+        return basic(TARGET_RIPPLE_UNSCANNED, USSCommand.SCAN);
     }
 
     /**
@@ -110,7 +110,7 @@ public final class USSProgramDefaults {
         return miner();
     }
 
-    private static USSProgram basic(String target) {
+    private static USSProgram basic(String target, int workCommand) {
         NBTTagCompound to = new NBTTagCompound();
         to.setString(PARAM_TARGET, target);
         NBTTagCompound home = new NBTTagCompound();
@@ -118,7 +118,7 @@ public final class USSProgramDefaults {
         return USSProgram.of(
             Arrays.asList(
                 USSNode.command(USSCommand.MOVE, to),
-                USSNode.command(USSCommand.WORK, new NBTTagCompound()),
+                USSNode.command(workCommand, new NBTTagCompound()),
                 USSNode.command(USSCommand.MOVE, home)));
     }
 

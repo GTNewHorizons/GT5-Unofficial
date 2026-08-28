@@ -271,7 +271,7 @@ final class USSProgramExecutorTest {
     void testWorkRunsAtPositionThenContinues() {
         FakeUSSContext ctx = new FakeUSSContext();
         USSProgramExecutor executor = USSProgramExecutor
-            .start(program(USSNode.command(USSCommand.WORK, new NBTTagCompound()), writeVar(0, "worked")));
+            .start(program(USSNode.command(USSCommand.MINE, new NBTTagCompound()), writeVar(0, "worked")));
         int ticks = 0;
         while (!ctx.vars.isWritten(0) && ticks < 1000) {
             if (ticks >= 30) {
@@ -323,7 +323,7 @@ final class USSProgramExecutorTest {
         FakeUSSContext ctx = new FakeUSSContext();
         ctx.startRefused = true;
         USSProgramExecutor executor = USSProgramExecutor
-            .start(program(USSNode.command(USSCommand.WORK, new NBTTagCompound()), writeVar(0, "after")));
+            .start(program(USSNode.command(USSCommand.MINE, new NBTTagCompound()), writeVar(0, "after")));
         runTicks(executor, ctx, 60);
         assertEquals("after", ctx.vars.get(0));
         assertFalse(executor.isCompleted());
@@ -371,7 +371,7 @@ final class USSProgramExecutorTest {
         FakeUSSContext ctx = new FakeUSSContext();
         ctx.legComplete = true; // legs finish instantly
         USSProgramExecutor executor = USSProgramExecutor
-            .start(program(USSNode.command(USSCommand.WORK, new NBTTagCompound())));
+            .start(program(USSNode.command(USSCommand.MINE, new NBTTagCompound())));
         runTicks(executor, ctx, 200);
         assertTrue(ctx.workLegs >= 2, "the WORK re-armed at least twice (loops: " + ctx.workLegs + ")");
         assertFalse(executor.isCompleted(), "a lone command never ends the program");

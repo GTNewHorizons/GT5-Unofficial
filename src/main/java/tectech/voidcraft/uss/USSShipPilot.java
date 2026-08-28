@@ -42,7 +42,7 @@ public final class USSShipPilot implements USSExecutionContext {
     /** The tag the MTE nests the pilot under in the ship's NBT. */
     public static final String TAG_PILOT = "vc_pilot";
     private static final String TAG_EXEC = "vc_exec";
-    private static final String TAG_LEG_WORK = "vc_leg_work";
+    private static final String TAG_LEG_WORK_KIND = "vc_leg_work_kind";
     private static final String TAG_LEG_HOME = "vc_leg_home";
     private static final String TAG_LAST_KIND = "vc_last_kind";
     private static final String TAG_LAST_INDEX = "vc_last_index";
@@ -60,8 +60,8 @@ public final class USSShipPilot implements USSExecutionContext {
 
     // region leg bookkeeping (persisted — the leg's side-effect must fire exactly once across a reload)
 
-    /** The leg in flight (or the last one) was a WORK leg. */
-    private boolean legWork;
+    /** The leg in flight (or the last one)'s work kind (see {@link USSWorkKind}; TRAVEL = a travel leg). */
+    private int legWorkKind = USSWorkKind.TRAVEL;
     /** The leg in flight (or the last one) was the HOME leg (MOVE HOME — delivery on completion). */
     private boolean legHome;
     /**
@@ -145,8 +145,8 @@ public final class USSShipPilot implements USSExecutionContext {
                     ? USSProgramExecutor.readFromNBT((NBTTagCompound) execRaw)
                     : USSProgramExecutor.readFromNBT(null); // fail-safe COMPLETED (a missing cursor = the program is
                                                             // over)
-                if (p.hasKey(TAG_LEG_WORK)) {
-                    pilot.legWork = p.getBoolean(TAG_LEG_WORK);
+                if (p.hasKey(TAG_LEG_WORK_KIND)) {
+                    pilot.legWorkKind = p.getInteger(TAG_LEG_WORK_KIND);
                 }
                 if (p.hasKey(TAG_LEG_HOME)) {
                     pilot.legHome = p.getBoolean(TAG_LEG_HOME);
@@ -165,7 +165,7 @@ public final class USSShipPilot implements USSExecutionContext {
                 // A corrupt pilot NBT (wrongly-typed fields, a nested class-cast) must never crash the chunk load:
                 // fail SAFE to a finished program — the ship HOLDS (never a half-run, never a double-run).
                 pilot.executor = USSProgramExecutor.readFromNBT(null);
-                pilot.legWork = false;
+                pilot.legWorkKind = USSWorkKind.TRAVEL;
                 pilot.legHome = false;
                 pilot.lastKind = "";
                 pilot.lastIndex = -1;
@@ -193,7 +193,7 @@ public final class USSShipPilot implements USSExecutionContext {
 
         // 2) consume a just-completed leg EXACTLY ONCE (its side-effect, then the executor observes it).
         if (ship.isLegComplete()) {
-            boolean work = legWork;
+            int kind = legWorkKind;
             boolean home = legHome;
             ship.clearLegComplete(); // position = the leg's endpoint; the latch is cleared
             if (executor.isCompleted()) {
@@ -209,9 +209,10 @@ public final class USSShipPilot implements USSExecutionContext {
                 legDoneReported = false;
                 return true;
             }
-            if (work) {
-                // The WORK leg's yield — cargo / Explorer reveal — EXACTLY ONCE (the latch was just cleared).
-                world.onWorkComplete(ship, lastKind, lastIndex);
+            if (kind != USSWorkKind.TRAVEL) {
+                // The work leg's yield — keyed by the leg's WORK KIND (owned by the work command) — EXACTLY ONCE
+                // (the latch was just cleared).
+                world.onWorkComplete(ship, kind, lastKind, lastIndex);
             }
             legDoneReported = true; // the active MOVE/WORK command observes it on the same tick
         }
@@ -349,17 +350,34 @@ public final class USSShipPilot implements USSExecutionContext {
     }
 
     @Override
-    public boolean startLeg(USSPosition dest, double dist, boolean work) {
-        long ticks = world.legTicks(work, ship, dist);
+    public boolean startLeg(USSPosition dest, double dist, int workKind) {
+        // The power gates (the capability system, runtime truth): a leg the craft cannot do is refused here, so
+        // the command SKIPs and the program continues (a MOVE without thrusters, a MINE without mining power, …).
+        if (!USSWorkKind.isWork(workKind)) {
+            if (ship.getSpeed() <= 0.0) {
+                log("MOVE: no thrusters — skipping");
+                return false;
+            }
+        } else if (workKind == USSWorkKind.MINE && ship.getMiningPower() <= 0) {
+            log("MINE: no mining power — skipping");
+            return false;
+        } else if (workKind == USSWorkKind.SCAN && ship.getScanPower() <= 0) {
+            log("SCAN: no scan power — skipping");
+            return false;
+        } else if (workKind == USSWorkKind.SIPHON && ship.getStarlifterPower() <= 0) {
+            log("SIPHON: no siphon power — skipping");
+            return false;
+        }
+        long ticks = world.legTicks(workKind, ship, dist);
         if (ticks <= 0 || dest == null) {
             return false;
         }
-        USSShipState state = work ? USSShipState.MINING
+        USSShipState state = USSWorkKind.isWork(workKind) ? USSShipState.MINING
             : (pendingHome ? USSShipState.RETURNING : USSShipState.OUTBOUND);
         USSPosition from = ship.getPosition();
-        ship.startLeg(state, from, dest, (int) ticks, Math.max(0.0, dist));
-        legWork = work;
-        legHome = !work && pendingHome;
+        ship.startLeg(state, from, dest, (int) ticks, Math.max(0.0, dist), workKind);
+        legWorkKind = workKind;
+        legHome = !USSWorkKind.isWork(workKind) && pendingHome;
         pendingHome = false;
         legDoneReported = false;
         return true;
@@ -443,7 +461,7 @@ public final class USSShipPilot implements USSExecutionContext {
     public NBTTagCompound writeToNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setTag(TAG_EXEC, executor.writeToNBT());
-        nbt.setBoolean(TAG_LEG_WORK, legWork);
+        nbt.setInteger(TAG_LEG_WORK_KIND, legWorkKind);
         nbt.setBoolean(TAG_LEG_HOME, legHome);
         nbt.setString(TAG_LAST_KIND, lastKind);
         nbt.setInteger(TAG_LAST_INDEX, lastIndex);

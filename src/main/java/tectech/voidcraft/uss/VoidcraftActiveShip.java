@@ -54,6 +54,7 @@ public final class VoidcraftActiveShip {
     private static final String TAG_LEG_FROM = "vc_leg_from";
     private static final String TAG_LEG_TOTAL = "vc_leg_total";
     private static final String TAG_LEG_ID = "vc_leg_id";
+    private static final String TAG_LEG_WORK_KIND = "vc_leg_work_kind";
     private static final String TAG_LEG_ACTIVE = "vc_leg_active";
     private static final String TAG_LEG_DONE = "vc_leg_done";
     private static final String TAG_BODY_STATIC = "vc_body_static";
@@ -292,6 +293,20 @@ public final class VoidcraftActiveShip {
     }
 
     /**
+     * The ship's siphon (starlifter) power (the SIPHON work leg's pacing + yield): from the payload's
+     * {@code vc_starlifter} (denormalized at digitization). 0 when the payload lacks the tag (a pre-starlifter
+     * ship has no siphoning capability).
+     *
+     * @return the total siphon power (0 = no Star Siphon components)
+     */
+    public long getStarlifterPower() {
+        if (payload == null) {
+            return 0L;
+        }
+        return VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_STARLIFTER);
+    }
+
+    /**
      * The ship's role bitmask (from the payload's {@code vc_roles} — see {@code VoidcraftRole}). 0 when the
      * payload lacks the tag (a pre-role ship acts as a pure miner).
      *
@@ -399,6 +414,19 @@ public final class VoidcraftActiveShip {
     // region leg driver (the pilot arms, ticks, and consumes)
 
     /**
+     * The current leg's work kind (see {@link USSWorkKind}): TRAVEL for a travel leg, or the work kind the
+     * work command started (the pilot arms it with the leg). The client reads this (fleet-entry tag) to derive
+     * the SAME leg duration the server ticks — a hybrid ship's leg duration depends on the kind, not on the
+     * role.
+     */
+    private int legWorkKind = USSWorkKind.TRAVEL;
+
+    /** @return the current leg's work kind ({@link USSWorkKind}; TRAVEL when no work leg is armed). */
+    public int getLegWorkKind() {
+        return legWorkKind;
+    }
+
+    /**
      * Arm a new leg (replaces any previous one).
      *
      * @param state    the leg's state (OUTBOUND a travel leg to a body / MINING a work leg / RETURNING the leg home)
@@ -407,8 +435,10 @@ public final class VoidcraftActiveShip {
      * @param ticks    the leg's duration in ticks (&gt; 0; &le; 0 clamps to 0 — a zero-length leg completes on the
      *                 next consumption)
      * @param distance the leg's distance in blocks (&le; 0 clamps to 0)
+     * @param workKind the leg's work kind (see {@link USSWorkKind})
      */
-    public void startLeg(USSShipState state, USSPosition from, USSPosition to, int ticks, double distance) {
+    public void startLeg(USSShipState state, USSPosition from, USSPosition to, int ticks, double distance,
+        int workKind) {
         this.state = state;
         USSPosition f = (from == null) ? USSPosition.zero() : from;
         this.legFrom = f;
@@ -420,6 +450,7 @@ public final class VoidcraftActiveShip {
         this.legActive = true;
         this.legDone = false;
         this.legId++;
+        this.legWorkKind = workKind;
     }
 
     /**
@@ -664,6 +695,7 @@ public final class VoidcraftActiveShip {
         nbt.setBoolean(TAG_LEG_ACTIVE, legActive);
         nbt.setBoolean(TAG_LEG_DONE, legDone);
         nbt.setInteger(TAG_LEG_ID, legId);
+        nbt.setInteger(TAG_LEG_WORK_KIND, legWorkKind);
         nbt.setBoolean(TAG_BODY_STATIC, bodyStatic);
         if (legFrom != null) {
             NBTTagCompound fromTag = new NBTTagCompound();
@@ -762,6 +794,7 @@ public final class VoidcraftActiveShip {
         ship.legActive = nbt.hasKey(TAG_LEG_ACTIVE) && nbt.getBoolean(TAG_LEG_ACTIVE);
         ship.legDone = nbt.hasKey(TAG_LEG_DONE) && nbt.getBoolean(TAG_LEG_DONE);
         ship.legId = nbt.hasKey(TAG_LEG_ID) ? nbt.getInteger(TAG_LEG_ID) : 0;
+        ship.legWorkKind = nbt.hasKey(TAG_LEG_WORK_KIND) ? nbt.getInteger(TAG_LEG_WORK_KIND) : USSWorkKind.TRAVEL;
         ship.bodyStatic = nbt.hasKey(TAG_BODY_STATIC) && nbt.getBoolean(TAG_BODY_STATIC);
         ship.travelDistance = nbt.hasKey(TAG_TDIST) ? nbt.getDouble(TAG_TDIST) : 0.0;
         if (nbt.hasKey(TAG_LEG_FROM)) {

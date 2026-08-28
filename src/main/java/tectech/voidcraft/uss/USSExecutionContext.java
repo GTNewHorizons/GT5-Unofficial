@@ -67,12 +67,14 @@ public interface USSExecutionContext {
     /**
      * Start a leg.
      *
-     * @param dest the destination (the leg's target position)
-     * @param dist the distance in blocks
-     * @param work true = a WORK leg (work in place at the target), false = a TRAVEL leg (MOVE)
+     * @param dest     the destination (the leg's target position)
+     * @param dist     the distance in blocks
+     * @param workKind the leg's work kind (see {@link USSWorkKind}): {@link USSWorkKind#TRAVEL} = a travel leg
+     *                 (MOVE); a work kind = a work leg at the current target (the kind is owned by the work
+     *                 COMMAND that started the leg — MINE / SCAN / SIPHON)
      * @return true when the leg started (false → the executor SKIPS the instruction)
      */
-    boolean startLeg(USSPosition dest, double dist, boolean work);
+    boolean startLeg(USSPosition dest, double dist, int workKind);
 
     /** @return true when the active leg (travel or work) has completed */
     boolean legComplete();

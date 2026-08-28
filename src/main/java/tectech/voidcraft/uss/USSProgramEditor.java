@@ -118,11 +118,31 @@ public final class USSProgramEditor {
      * @return the new program, or a rejection (null inputs, out-of-range index, a node without a body, a cap breach)
      */
     public static Result insert(USSProgram program, int[] listPath, int index, USSNode node) {
+        return insert(program, listPath, index, node, null);
+    }
+
+    /**
+     * Insert a node with a CAPABILITY CHECK (the capability system): a COMMAND node the craft cannot run
+     * (see {@link USSCapabilities#allowsCommand}) is rejected before the caps check, so a program view only
+     * grows with commands the craft can do.
+     *
+     * @param program  the program (null → rejected)
+     * @param listPath the LIST owner address (empty/nil = the root list; a node address = that node's body)
+     * @param index    the insert position (0..listSize)
+     * @param node     the node to insert (null → rejected)
+     * @param caps     the craft's capability set (null = no capability check)
+     * @return the new program, or a rejection (capability breach, null inputs, out-of-range index, a node without
+     *         a body, a cap breach)
+     */
+    public static Result insert(USSProgram program, int[] listPath, int index, USSNode node, USSCapabilities caps) {
         if (program == null) {
             return Result.reject("no program");
         }
         if (node == null) {
             return Result.reject("no node to insert");
+        }
+        if (caps != null && node.isCommand() && !caps.allowsCommand(node.cmdId())) {
+            return Result.reject("this ship cannot " + USSCommand.label(node.cmdId()));
         }
         List<USSNode> list = resolveList(program, listPath);
         if (list == null) {
@@ -215,12 +235,30 @@ public final class USSProgramEditor {
      * @return the new program, or a rejection (no node selected, node not found, or the copy breaks the node cap)
      */
     public static Result copy(USSProgram program, int[] path) {
+        return copy(program, path, null);
+    }
+
+    /**
+     * Copy the node at {@code path} with a CAPABILITY CHECK: a COMMAND node the craft cannot run
+     * (see {@link USSCapabilities#allowsCommand}) is rejected, so a program view cannot grow more of a command
+     * the craft cannot do.
+     *
+     * @param program the program
+     * @param path    the node address (non-empty)
+     * @param caps    the craft's capability set (null = no capability check)
+     * @return the new program, or a rejection (capability breach, no node selected, node not found, or the copy
+     *         breaks the node cap)
+     */
+    public static Result copy(USSProgram program, int[] path, USSCapabilities caps) {
         if (program == null || path == null || path.length == 0) {
             return Result.reject("no node selected");
         }
         USSNode node = nodeAt(program, path);
         if (node == null) {
             return Result.reject("node not found");
+        }
+        if (caps != null && node.isCommand() && !caps.allowsCommand(node.cmdId())) {
+            return Result.reject("this ship cannot " + USSCommand.label(node.cmdId()));
         }
         int[] ownerPath = Arrays.copyOf(path, path.length - 1); // may be empty = root list
         List<USSNode> list = resolveList(program, ownerPath);
@@ -431,8 +469,30 @@ public final class USSProgramEditor {
      *         problem found
      */
     public static Result apply(USSProgram replacement) {
+        return apply(replacement, null);
+    }
+
+    /**
+     * Validate a WHOLE replacement program with a CAPABILITY CHECK (the capability system): every COMMAND node in
+     * the tree (including the bodies of IF / WHILE / REPEAT) must be one the craft can run (see
+     * {@link USSCapabilities#allowsCommand}).
+     *
+     * @param replacement the candidate program (null → rejected)
+     * @param caps        the craft's capability set (null = no capability check)
+     * @return the accepted program (the SAME instance — it is already immutable), or a rejection with the first
+     *         problem found
+     */
+    public static Result apply(USSProgram replacement, USSCapabilities caps) {
         if (replacement == null) {
             return Result.reject("no program");
+        }
+        if (caps != null) {
+            for (USSNode root : replacement.nodes()) {
+                String error = forbiddenCommand(root, caps);
+                if (error != null) {
+                    return Result.reject(error);
+                }
+            }
         }
         if (replacement.nodeCount() > USSProgram.MAX_NODES) {
             return Result.reject("program exceeds the " + USSProgram.MAX_NODES + "-node cap");
@@ -667,6 +727,26 @@ public final class USSProgramEditor {
     }
 
     /**
+     * The first COMMAND node in the tree (node + its flow-node bodies) the craft cannot run under the capability
+     * set, as a rejection message — null when every command node is allowed.
+     */
+    private static String forbiddenCommand(USSNode node, USSCapabilities caps) {
+        if (node == null) {
+            return null;
+        }
+        if (node.isCommand() && !caps.allowsCommand(node.cmdId())) {
+            return "this ship cannot " + USSCommand.label(node.cmdId());
+        }
+        for (USSNode child : node.body()) {
+            String error = forbiddenCommand(child, caps);
+            if (error != null) {
+                return error;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Validate one node's command params (for {@link #apply}); flow-node bodies are validated recursively.
      *
      * @return null when the node is valid, else the first problem found
@@ -722,7 +802,8 @@ public final class USSProgramEditor {
                     }
                     return null;
                 default:
-                    return null; // WORK / STOP (and future commands) — unknown extra keys are ignored by the executor
+                    return null; // STOP / CONSTRUCT / REPAIR / SCAN / SIPHON — unknown extra keys are ignored by the
+                                 // executor
             }
         }
         for (USSNode child : node.body()) {

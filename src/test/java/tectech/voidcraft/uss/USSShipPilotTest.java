@@ -35,7 +35,7 @@ public class USSShipPilotTest {
     }
 
     private static USSNode work() {
-        return USSNode.command(USSCommand.WORK, new NBTTagCompound());
+        return USSNode.command(USSCommand.MINE, new NBTTagCompound());
     }
 
     /** A Miner-style program: MOVE NEAREST_PLANET → WORK → MOVE HOME. */

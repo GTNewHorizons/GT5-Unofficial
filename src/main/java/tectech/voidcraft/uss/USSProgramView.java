@@ -51,9 +51,12 @@ public final class USSProgramView {
         public final int depth;
         /** The node's editor ADDRESS ({@code [i,k,…]}; {@code [i]} = root). */
         public final int[] path;
-        /** Block label: MOVE / WORK / WRITE / READ / WAIT / STOP / IF / WHILE / REPEAT. */
+        /**
+         * Block label: MOVE / MINE / SCAN / SIPHON / WRITE / READ / WAIT / STOP / CONSTRUCT / REPAIR / IF / WHILE /
+         * REPEAT.
+         */
         public final String label;
-        /** The block's argument slots (empty for WORK / STOP). */
+        /** The block's argument slots (empty for the no-argument commands and STOP). */
         public final List<Slot> slots;
         /** True for IF / WHILE / REPEAT (a row that owns a body — the rows below it are its children). */
         public final boolean hasBody;
@@ -109,22 +112,7 @@ public final class USSProgramView {
 
     private static String name(USSNode node) {
         if (node.type() == USSNodeType.COMMAND) {
-            switch (node.cmdId()) {
-                case USSCommand.MOVE:
-                    return "MOVE";
-                case USSCommand.WORK:
-                    return "WORK";
-                case USSCommand.WRITE:
-                    return "WRITE";
-                case USSCommand.READ:
-                    return "READ";
-                case USSCommand.WAIT:
-                    return "WAIT";
-                case USSCommand.STOP:
-                    return "STOP";
-                default:
-                    return "CMD" + node.cmdId();
-            }
+            return USSCommand.label(node.cmdId());
         }
         switch (node.type()) {
             case IF:
@@ -196,7 +184,7 @@ public final class USSProgramView {
                     new Slot(USSCommandWait.PARAM_TICKS, String.valueOf(p.getLong(USSCommandWait.PARAM_TICKS)), false));
                 break;
             default:
-                break; // WORK / STOP take no arguments
+                break; // MINE / SCAN / SIPHON / STOP take no arguments
         }
         return s;
     }

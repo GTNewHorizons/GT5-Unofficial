@@ -67,6 +67,19 @@ public final class USSProgramSync {
      * rejection).
      */
     public static Outcome handle(USSProgram current, String actionJson) {
+        return handle(current, actionJson, null);
+    }
+
+    /**
+     * Apply one action JSON to {@code current} with the craft's CAPABILITY SET (the capability system): inserts
+     * and copies of a command the craft cannot run, and preset applications the craft lacks, are rejected (the
+     * rejection message is user-visible in the GUI).
+     *
+     * @param current    the program being edited (null = empty)
+     * @param actionJson the action JSON (see the class javadoc)
+     * @param caps       the craft's capability set (null = no capability check)
+     */
+    public static Outcome handle(USSProgram current, String actionJson, USSCapabilities caps) {
         try {
             JsonObject a = new JsonParser().parse(actionJson)
                 .getAsJsonObject();
@@ -84,7 +97,8 @@ public final class USSProgramSync {
                             readPath(a.get("path")),
                             a.get("index")
                                 .getAsInt(),
-                            node));
+                            node,
+                            caps));
                 }
                 case "remove":
                     return map(USSProgramEditor.remove(current, readPath(a.get("path"))));
@@ -96,7 +110,7 @@ public final class USSProgramSync {
                             a.get("up")
                                 .getAsBoolean()));
                 case "copy":
-                    return map(USSProgramEditor.copy(current, readPath(a.get("path"))));
+                    return map(USSProgramEditor.copy(current, readPath(a.get("path")), caps));
                 case "param": {
                     String key = a.get("key")
                         .getAsString();
@@ -162,6 +176,9 @@ public final class USSProgramSync {
                 case "apply": {
                     String preset = a.get("preset")
                         .getAsString();
+                    if (caps != null && !caps.allowsPreset(preset)) {
+                        return Outcome.rejected("this ship cannot run the " + preset + " preset");
+                    }
                     USSProgram replacement = "miner".equals(preset) ? USSProgramDefaults.miner()
                         : "starlifter".equals(preset) ? USSProgramDefaults.starlifter()
                             : "explorer".equals(preset) ? USSProgramDefaults.explorer()
@@ -170,7 +187,7 @@ public final class USSProgramSync {
                     if (replacement == null) {
                         return Outcome.rejected("unknown preset");
                     }
-                    return map(USSProgramEditor.apply(replacement));
+                    return map(USSProgramEditor.apply(replacement, caps));
                 }
                 default:
                     return Outcome.rejected("unknown op '" + op + "'");

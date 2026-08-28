@@ -281,8 +281,8 @@ public final class USSConstants {
     // region Phase 4 pass 1 Starlifter (fluid production on top of the miner item cargo)
 
     /**
-     * Starlifter plasma multiplier: a starlifter carries {@code miningPower * STARLIFTER_PLASMA_FACTOR} mB of Stellar
-     * Plasma.
+     * Starlifter plasma multiplier: a starlifter carries {@code siphonPower * STARLIFTER_PLASMA_FACTOR} mB of
+     * Stellar Plasma.
      */
     public static final long STARLIFTER_PLASMA_FACTOR = 1_000L;
 
@@ -290,14 +290,14 @@ public final class USSConstants {
     public static final long STARLIFTER_PLASMA_CAP = 10_000_000L;
 
     /**
-     * Stellar Plasma (mB) a starlifter carries from one mining leg: {@code min(miningPower * factor, cap)} (at
+     * Stellar Plasma (mB) a starlifter carries from one siphon leg: {@code min(siphonPower * factor, cap)} (at
      * least 1). The same magnitude window as the legacy EoH star outputs (1_152–18_432 mB).
      *
-     * @param miningPower the ship's total mining power.
+     * @param siphonPower the ship's total siphon (starlifter) power.
      * @return the plasma amount in mB (always &gt;= 1).
      */
-    public static long starlifterPlasmaAmount(long miningPower) {
-        long amount = Math.max(1L, miningPower) * STARLIFTER_PLASMA_FACTOR;
+    public static long starlifterPlasmaAmount(long siphonPower) {
+        long amount = Math.max(1L, siphonPower) * STARLIFTER_PLASMA_FACTOR;
         return Math.min(amount, STARLIFTER_PLASMA_CAP);
     }
 
@@ -305,30 +305,73 @@ public final class USSConstants {
      * Dwarf-matter dust amount a starlifter carries (white-dwarf or supermassive stars only — the miner's
      * per-ore dust amount, same scale; a main-sequence star yields plasma only).
      *
-     * @param miningPower the ship's total mining power.
+     * @param siphonPower the ship's total siphon (starlifter) power.
      * @return the dust amount (always &gt;= 1).
      */
-    public static long starlifterMatterAmount(long miningPower) {
-        return minerOreAmount(miningPower);
+    public static long starlifterMatterAmount(long siphonPower) {
+        return minerOreAmount(siphonPower);
     }
 
     // endregion
 
     /**
-     * The WORK leg duration (the hover at the destination): a {@code MINING} ship mines ({@link #mineTicks}), an
-     * {@code EXPLORER} scans ({@link #scanTicks}) — the same state ({@code MINING}) is the ship's "work" phase
-     * regardless of role.
+     * Siphon-duration floor in machine ticks (4.5 s): like a mining leg, a siphon leg must be PERCEPTIBLE — the
+     * ship hovers at the star long enough to read as "siphoning", not "touching and leaving".
+     */
+    public static final long STARLIFT_TICKS_MIN = 90L;
+
+    /**
+     * Siphon-duration cap in machine ticks (30 s — the creative loop stays minutes, not hours; the same window as
+     * mining).
+     */
+    public static final long STARLIFT_TICKS_MAX = 600L;
+
+    /**
+     * Siphon power above which siphon time no longer shrinks: one STAR_SIPHON cover (40 power) saturates the
+     * table, so the fastest siphon leg is {@code STARLIFT_TICKS_MAX / STARLIFT_POWER_SATURATION} = 15 ticks,
+     * floored at {@link #STARLIFT_TICKS_MIN} — a single-siphon ship siphons for the 4.5 s floor, exactly like a
+     * saturated miner mines for its floor.
+     */
+    public static final long STARLIFT_POWER_SATURATION = 40L;
+
+    /**
+     * Siphon duration in machine ticks for a given siphon (starlifter) power:
+     * {@code STARLIFT_TICKS_MAX / min(power, saturation)}, clamped to {@link #STARLIFT_TICKS_MIN}–
+     * {@link #STARLIFT_TICKS_MAX} (the same shape as {@link #mineTicks}).
      *
-     * @param roles       the ship's role bitmask (see {@code tectech.voidcraft.ship.VoidcraftRole})
-     * @param miningPower ship mining power (used when the ship is not an Explorer)
-     * @param scanPower   ship scan power (used when the ship IS an Explorer)
+     * @param siphonPower the ship's total siphon power (&lt;= 0 uses the cap — a broken siphon still "siphons"
+     *                    slowly)
+     * @return the siphon time in ticks (always &gt; 0)
+     */
+    public static long starliftTicks(long siphonPower) {
+        long power = Math.max(1L, Math.min(siphonPower, STARLIFT_POWER_SATURATION));
+        long ticks = STARLIFT_TICKS_MAX / power;
+        return Math.max(STARLIFT_TICKS_MIN, Math.min(STARLIFT_TICKS_MAX, ticks));
+    }
+
+    /**
+     * The WORK leg duration for a work kind (the hover at the destination): MINE mines ({@link #mineTicks}), SCAN
+     * scans ({@link #scanTicks}), SIPHON siphons ({@link #starliftTicks}) — the kind is owned by the work COMMAND
+     * (see {@link USSWorkKind}), so the same state ({@code MINING}) serves every work leg. An unknown / travel
+     * kind degrades to the mining table (a program hand-edited to a work leg with no kind still runs).
+     *
+     * @param workKind    the leg's work kind ({@link USSWorkKind})
+     * @param miningPower ship mining power (the MINE leg)
+     * @param scanPower   ship scan power (the SCAN leg)
+     * @param siphonPower ship siphon power (the SIPHON leg)
      * @return the work-leg duration in ticks (always &gt; 0)
      */
-    public static long workTicks(int roles, long miningPower, long scanPower) {
-        if (roles != 0 && tectech.voidcraft.ship.VoidcraftRole.EXPLORER.isActive(roles)) {
-            return scanTicks(scanPower);
+    public static long workTicks(int workKind, long miningPower, long scanPower, long siphonPower) {
+        switch (workKind) {
+            case USSWorkKind.MINE:
+                return mineTicks(miningPower);
+            case USSWorkKind.SCAN:
+                return scanTicks(scanPower);
+            case USSWorkKind.SIPHON:
+                return starliftTicks(siphonPower);
+            default:
+                return mineTicks(miningPower);
         }
-        return mineTicks(miningPower);
     }
 
     /**
@@ -337,28 +380,15 @@ public final class USSConstants {
      * @param state       the leg's state ({@link USSShipState#OUTBOUND}/{@link USSShipState#MINING}/
      *                    {@link USSShipState#RETURNING})
      * @param distance    the travel-leg block-separation (the solar-system distance; used for OUTBOUND/RETURNING)
-     * @param speed       ship speed = thrust/mass (pass 18; unclamped at 1)
+     * @param speed       ship speed = thrust/mass (unclamped)
+     * @param workKind    the leg's work kind ({@link USSWorkKind}; used for the MINING state)
      * @param miningPower ship mining power
+     * @param scanPower   ship scan power
+     * @param siphonPower ship siphon power
      * @return the leg duration in ticks; 0 for unknown states (e.g. {@code DOCKED})
      */
-    public static long legTicks(USSShipState state, double distance, double speed, long miningPower) {
-        return legTicks(state, distance, speed, miningPower, 0, 0L);
-    }
-
-    /**
-     * Role-aware leg duration (the Explorer pass): the WORK leg uses the ship's role — an Explorer scans
-     * ({@link #scanTicks}), everything else mines ({@link #mineTicks}).
-     *
-     * @param state       the leg's state
-     * @param distance    the travel-leg block-separation (used for OUTBOUND/RETURNING)
-     * @param speed       ship speed = thrust/mass
-     * @param miningPower ship mining power
-     * @param roles       the ship's role bitmask (0 = pure miner, the legacy behaviour)
-     * @param scanPower   ship scan power (used when the ship is an Explorer)
-     * @return the leg duration in ticks; 0 for unknown states (e.g. {@code DOCKED})
-     */
-    public static long legTicks(USSShipState state, double distance, double speed, long miningPower, int roles,
-        long scanPower) {
+    public static long legTicks(USSShipState state, double distance, double speed, int workKind, long miningPower,
+        long scanPower, long siphonPower) {
         if (state == null) {
             return 0L;
         }
@@ -367,7 +397,7 @@ public final class USSConstants {
             case RETURNING:
                 return travelTicks(distance, speed);
             case MINING:
-                return workTicks(roles, miningPower, scanPower);
+                return workTicks(workKind, miningPower, scanPower, siphonPower);
             default:
                 return 0L;
         }

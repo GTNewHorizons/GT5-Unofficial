@@ -16,8 +16,9 @@ import tectech.voidcraft.ship.VoidcraftNbt;
  * <ul>
  * <li>MOVE resolves only to the base OWN anchor (an instant leg in place); any other target - and HOME / SHIP -
  * is unresolvable (SKIP).</li>
- * <li>WORK with mining power runs a REAL mining leg (the ship's duration table: {@code mineTicks(mining power)});
- * WORK without mining power is an instant no-op leg (v1: a station produces no cargo).</li>
+ * <li>MINE with mining power runs a REAL mining leg (the ship's duration table: {@code mineTicks(mining power)});
+ * MINE without mining power is an instant no-op leg (v1: a station produces no cargo). SCAN and SIPHON are
+ * instant no-op legs on a base (a station cannot scan or siphon - those yields belong to the ships).</li>
  * <li>REPAIR runs at the station (energy from its own buffer).</li>
  * <li>CONSTRUCT SKIPs (a base carries no parts - a build loadout belongs to the Constructor in flight).</li>
  * <li>a non-empty program runs forever (the executor's invisible while) - it ends only on a STOP (or an empty
@@ -35,7 +36,7 @@ public final class USSBasePilot implements USSExecutionContext {
     private static final String TAG_EXEC = "vc_exec";
     private static final String TAG_LEG_ACTIVE = "vc_leg_active";
     private static final String TAG_LEG_DONE = "vc_leg_done";
-    private static final String TAG_LEG_WORK = "vc_leg_work";
+    private static final String TAG_LEG_WORK_KIND = "vc_leg_work_kind";
     private static final String TAG_MINE_TICKS = "vc_mine_ticks";
     private static final String TAG_MINE_TOTAL = "vc_mine_total";
     private static final String TAG_MINE_ID = "vc_mine_id";
@@ -49,7 +50,8 @@ public final class USSBasePilot implements USSExecutionContext {
     // The leg (zero-length on a base - completes on the next tick; the latch is consumed exactly once).
     private boolean legActive;
     private boolean legDone;
-    private boolean legWork;
+    /** The leg in flight (or the last one)'s work kind (see {@link USSWorkKind}; TRAVEL = a travel leg). */
+    private int legWorkKind = USSWorkKind.TRAVEL;
     private boolean legDoneReported;
 
     // The active mining leg (a WORK on a base with mining power): ticks left, the leg's total, and the leg id
@@ -110,7 +112,7 @@ public final class USSBasePilot implements USSExecutionContext {
                         : USSProgramExecutor.readFromNBT(null);
                     pilot.legActive = p.getBoolean(TAG_LEG_ACTIVE);
                     pilot.legDone = p.getBoolean(TAG_LEG_DONE);
-                    pilot.legWork = p.getBoolean(TAG_LEG_WORK);
+                    pilot.legWorkKind = p.getInteger(TAG_LEG_WORK_KIND);
                     pilot.miningTicks = p.getInteger(TAG_MINE_TICKS);
                     pilot.miningTotal = p.getInteger(TAG_MINE_TOTAL);
                     pilot.miningLegId = p.getInteger(TAG_MINE_ID);
@@ -120,7 +122,7 @@ public final class USSBasePilot implements USSExecutionContext {
                     pilot.executor = USSProgramExecutor.readFromNBT(null);
                     pilot.legActive = false;
                     pilot.legDone = false;
-                    pilot.legWork = false;
+                    pilot.legWorkKind = USSWorkKind.TRAVEL;
                     pilot.miningTicks = 0;
                     pilot.miningTotal = 0;
                     pilot.miningLegId = 0;
@@ -149,8 +151,8 @@ public final class USSBasePilot implements USSExecutionContext {
         if (legActive && legDone) {
             legActive = false;
             legDone = false;
-            boolean work = legWork;
-            legWork = false;
+            int kind = legWorkKind;
+            legWorkKind = USSWorkKind.TRAVEL;
             if (executor.isCompleted()) {
                 world.logBase(base, "leg finished after program end - holding course");
                 legDoneReported = false;
@@ -158,14 +160,25 @@ public final class USSBasePilot implements USSExecutionContext {
                 miningTotal = 0;
                 return;
             }
-            if (work) {
-                if (miningTotal > 0) {
-                    // The mining leg just ran out (v1: a station produces no cargo - the beam is the yield).
-                    world.logBase(base, "WORK mining leg complete (the station produced no cargo)");
-                    miningTotal = 0;
+            if (kind != USSWorkKind.TRAVEL) {
+                if (kind == USSWorkKind.MINE) {
+                    if (miningTotal > 0) {
+                        // The mining leg just ran out (v1: a station produces no cargo - the beam is the yield).
+                        world.logBase(base, "MINE mining leg complete (the station produced no cargo)");
+                        miningTotal = 0;
+                    } else {
+                        // MINE without mining power: an instant no-op (v1 - a station produces no cargo).
+                        world.logBase(base, "MINE: no mining power - the base idles at its anchor");
+                    }
                 } else {
-                    // WORK without mining power: an instant no-op (v1 - a station produces no cargo).
-                    world.logBase(base, "WORK - the base idles at its anchor");
+                    // SCAN / SIPHON on a base: instant no-op (a station cannot scan or siphon - those yields
+                    // belong to the ships).
+                    world.logBase(
+                        base,
+                        USSWorkKind.name(kind) + ": a station cannot "
+                            + USSWorkKind.name(kind)
+                                .toLowerCase()
+                            + " - the base idles at its anchor");
                 }
             }
             legDoneReported = true; // the active MOVE/WORK command observes it on the same tick
@@ -294,24 +307,24 @@ public final class USSBasePilot implements USSExecutionContext {
     }
 
     @Override
-    public boolean startLeg(USSPosition dest, double dist, boolean work) {
+    public boolean startLeg(USSPosition dest, double dist, int workKind) {
         if (dest == null) {
             return false;
         }
         // Zero-length leg: it completes on the next tick (the base does not move).
         legActive = true;
         legDone = false;
-        legWork = work;
+        legWorkKind = workKind;
         legDoneReported = false;
-        if (work) {
-            // WORK with mining power: a REAL mining leg, the same duration table the ship mines with
+        if (workKind == USSWorkKind.MINE) {
+            // MINE with mining power: a REAL mining leg, the same duration table the ship mines with
             // (mineTicks: MINE_TICKS_MAX / min(power, saturation), clamped to the 90..600 tick window).
             long power = VoidcraftNbt.readLong(base.payload(), VoidcraftNbt.TAG_MINING);
             if (power > 0) {
                 miningTotal = (int) USSConstants.mineTicks(power);
                 miningTicks = miningTotal;
                 miningLegId++;
-                world.logBase(base, "WORK - mining leg (mining power " + power + ", ~" + (miningTotal / 20) + "s)");
+                world.logBase(base, "MINE - mining leg (mining power " + power + ", ~" + (miningTotal / 20) + "s)");
             }
         }
         return true;
@@ -395,7 +408,7 @@ public final class USSBasePilot implements USSExecutionContext {
         nbt.setTag(TAG_EXEC, executor.writeToNBT());
         nbt.setBoolean(TAG_LEG_ACTIVE, legActive);
         nbt.setBoolean(TAG_LEG_DONE, legDone);
-        nbt.setBoolean(TAG_LEG_WORK, legWork);
+        nbt.setInteger(TAG_LEG_WORK_KIND, legWorkKind);
         nbt.setInteger(TAG_MINE_TICKS, miningTicks);
         nbt.setInteger(TAG_MINE_TOTAL, miningTotal);
         nbt.setInteger(TAG_MINE_ID, miningLegId);

@@ -29,6 +29,9 @@ public final class FakePilotWorld implements USSPilotWorld {
     // region effect records
 
     public int workCalls = 0;
+    /** The WORK KIND of each completed work leg (the command that ran it). */
+    public final List<Integer> workLegKinds = new ArrayList<>();
+    /** The TARGET kind of each completed work leg (PLANET / STAR / ...). */
     public final List<String> workKinds = new ArrayList<>();
     public final List<Integer> workIndices = new ArrayList<>();
     public final List<String> logs = new ArrayList<>();
@@ -88,16 +91,17 @@ public final class FakePilotWorld implements USSPilotWorld {
     }
 
     @Override
-    public long legTicks(boolean work, VoidcraftActiveShip ship, double distance) {
+    public long legTicks(int workKind, VoidcraftActiveShip ship, double distance) {
         if (refuseLegStarts) {
             return 0L;
         }
-        return work ? workTicks : travelTicks;
+        return USSWorkKind.isWork(workKind) ? workTicks : travelTicks;
     }
 
     @Override
-    public void onWorkComplete(VoidcraftActiveShip ship, String targetKind, int targetIndex) {
+    public void onWorkComplete(VoidcraftActiveShip ship, int workKind, String targetKind, int targetIndex) {
         workCalls++;
+        workLegKinds.add(workKind);
         workKinds.add(targetKind == null ? "" : targetKind);
         workIndices.add(targetIndex);
     }

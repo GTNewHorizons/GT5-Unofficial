@@ -111,7 +111,8 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
 
     /**
      * Cached per-gateway geometry (keyed by the gateway's anchor-relative block coords): the event-plane disc +
-     * the opaque tube, built once per gateway and drawn through the flat-color shader.
+     * the opaque tube, baked ONCE in ANCHOR-LOCAL coordinates and positioned per frame by the model matrix
+     * (translation to the anchor block center) — the same cached-VAO pattern as the ship hulls.
      */
     private static final class GatewayGeometry {
 
@@ -200,7 +201,10 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // Phase D: the Voidbase construction sites + standing bases render from this same anchor.
         List<NBTTagCompound> sites = fleet.getBaseSites();
         List<NBTTagCompound> bases = fleet.getBases();
-        if (ships.isEmpty() && ripples.isEmpty() && sites.isEmpty() && bases.isEmpty()) {
+        // The system's gateways (the MTE registers each locked-on gateway machine): a permanent part of the system
+        // view — they render even when no ship is in flight.
+        List<int[]> gateways = fleet.getGateways();
+        if (ships.isEmpty() && ripples.isEmpty() && sites.isEmpty() && bases.isEmpty() && gateways.isEmpty()) {
             return;
         }
         // The shaders are (re)baked by the resource-reload hook before the first render pass — a missing bake
@@ -248,33 +252,19 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         renderSites(sites, planets, starSize, x, y, z, worldTime, partialTicks);
         renderBases(bases, planets, starSize, x, y, z, worldTime, partialTicks);
 
-        if (ships.isEmpty()) {
-            return; // only ripples and Voidbase renders were present — done
+        // Gateway render pass: a star-facing opaque TUBE (0.1 blocks deep) with a flat 25% cyan event plane in its
+        // bore,
+        // at the DOME EDGE in each system gateway's direction, embedded 0.25 blocks into the shell — the visual
+        // spawn/arrival point for the ship animations (the actual gateway machine sits outside the dome). The
+        // gateways are a permanent part of the system (one per locked-on gateway machine, independent of the fleet
+        // ship list), so they draw here — before the ships-empty early return — so the dome shows its gates even
+        // with no ship in flight. Drawn before the ships so the fleet renders on top.
+        for (int[] gw : gateways) {
+            renderGateway(new double[] { gw[0], gw[1], gw[2] }, x, y, z);
         }
 
-        // Gateway render pass: a star-facing opaque TUBE (0.1 blocks deep) with a flat 25% cyan event plane in
-        // its bore, at the DOME EDGE in each fleet gateway's direction, embedded 0.25 blocks into the shell — the
-        // visual spawn/arrival point for the ship animations (the actual gateway block sits outside the dome).
-        // One per unique gateway (a fleet may serve several); drawn before the ships so the fleet renders on top.
-        Set<String> gatewayKeys = new HashSet<String>();
-        for (int i = 0; i < ships.size(); i++) {
-            int[] gwArr = ships.get(i)
-                .getIntArray(TileEntityVoidcraftShip.TAG_ENTRY_GW_REL);
-            if (gwArr == null || gwArr.length != 3) {
-                continue;
-            }
-            String gwKey = gwArr[0] + "," + gwArr[1] + "," + gwArr[2];
-            if (!gatewayKeys.add(gwKey)) {
-                continue;
-            }
-            renderGateway(
-                new double[] { gwArr[0], gwArr[1], gwArr[2] },
-                x,
-                y,
-                z,
-                fleet.xCoord,
-                fleet.yCoord,
-                fleet.zCoord);
+        if (ships.isEmpty()) {
+            return; // only ripples, Voidbase renders and gateways were present — done
         }
 
         for (int i = 0; i < ships.size(); i++) {
@@ -436,37 +426,46 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
      * the star.
      *
      * <p>
-     * The geometry (event plane + tube) is static per (anchor block, gateway position) — it is baked once into
-     * VAOs (see {@link #GATEWAY_GEOS}) and drawn through the flat-color shader: the cyan plane first (standard
-     * alpha, 25%, depth writes off — a pure overlay, still depth-TESTED so real geometry occludes it), the
-     * opaque tube second (solid draw, depth writes on). Culling is off (the tube is double-sided).
+     * The geometry (event plane + tube) is baked once per gateway position in ANCHOR-LOCAL coordinates into VAOs
+     * (see {@link #GATEWAY_GEOS}) and positioned per frame by the model matrix (translation to the anchor block
+     * center in camera-relative coordinates — the 1.7.10 TE render pass passes a camera-rotation-only modelview,
+     * so the camera-relative translation is the position). Drawn through the flat-color shader: the cyan plane
+     * first (standard alpha, 25%, depth writes off — a pure overlay, still depth-TESTED so real geometry
+     * occludes it), the opaque tube second (solid draw, depth writes on). Culling is off (the tube is
+     * double-sided).
      *
-     * @param gw       the ACTUAL gateway position (fleet-anchor blocks) — projected onto the dome here
-     * @param x,y,z    the anchor block CENTER in camera-relative coordinates (the gate point is added to it)
-     * @param ax,ay,az the anchor block's block coordinates (part of the geometry cache key — two USS anchors can
-     *                 share a gateway's anchor-relative position without sharing its baked position)
+     * @param gw    the ACTUAL gateway position (fleet-anchor blocks) — projected onto the dome here
+     * @param x,y,z the anchor block CENTER in camera-relative coordinates
      */
-    private static void renderGateway(double[] gw, double x, double y, double z, int ax, int ay, int az) {
-        final String key = ax + "," + ay + "," + az + ":" + gw[0] + "," + gw[1] + "," + gw[2];
+    private static void renderGateway(double[] gw, double x, double y, double z) {
+        final String key = gw[0] + "," + gw[1] + "," + gw[2];
         GatewayGeometry geo = GATEWAY_GEOS.get(key);
         if (geo == null) {
-            // Bound the cache: each anchor carries few gateways (one per fleet gateway direction) — past the cap
-            // the entries are stale (a rebuilt or destroyed anchor) and are discarded with the rest.
+            // Bound the cache: each anchor carries few gateways (one per system gateway direction) — past the cap
+            // the entries are stale (a rebuilt or destroyed system) and are discarded with the rest.
             if (GATEWAY_GEOS.size() > 64) {
                 releaseGeometry();
             }
-            geo = buildGatewayGeometry(gw, x, y, z);
+            geo = buildGatewayGeometry(gw);
             GATEWAY_GEOS.put(key, geo);
         }
 
         final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
         final long blend = RenderState.savedBlendFunc();
         final boolean depthMaskOn = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
+        final boolean alphaTestOn = GL11.glIsEnabled(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_CULL_FACE);
+        // The world pass leaves GL_ALPHA_TEST on at a 0.5 GL_GREATER reference (the vanilla block-cutout
+        // state); the 0.25-alpha event plane would be discarded by it, leaving the bore an open hole. The
+        // plane and the flat-color tube are custom blended overlays, not cutout textures: draw them with the
+        // test disabled.
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
         try {
             final ShaderHandle shader = VoidcraftShaders.color();
             shader.use();
-            shader.uploadModel(MODEL_MATRIX.identity());
+            shader.uploadModel(
+                MODEL_MATRIX.identity()
+                    .translate((float) x, (float) y, (float) z));
             // 1) The CYAN EVENT PLANE.
             GL20.glUniform4f(shader.loc(VoidcraftShaders.COLOR_COLOR), 0.0F, 1.0F, 1.0F, GATEWAY_PLANE_ALPHA);
             GL11.glEnable(GL11.GL_BLEND);
@@ -487,15 +486,16 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         } finally {
             GL11.glDepthMask(depthMaskOn);
             RenderState.restoreBlendFunc(blend);
+            RenderState.restore(GL11.GL_ALPHA_TEST, alphaTestOn);
             RenderState.restore(GL11.GL_CULL_FACE, cullOn);
         }
     }
 
     /**
      * Bakes the gateway's two meshes (event-plane disc + the opaque tube: outer wall, bore wall, both end caps)
-     * at their anchor-relative camera positions into VAOs.
+     * in ANCHOR-LOCAL coordinates (the gate point, no anchor-block translation) into VAOs.
      */
-    private static GatewayGeometry buildGatewayGeometry(double[] gw, double x, double y, double z) {
+    private static GatewayGeometry buildGatewayGeometry(double[] gw) {
         double[] center = gatewayAnchor(gw);
         // The gate axis = the dome normal at the gateway point (outward from the star center) — the gate face
         // points at the star. Degenerate (gateway at the star center): any axis is equally valid.
@@ -511,7 +511,8 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             ny /= nlen;
             nz /= nlen;
         }
-        double cx = x + center[0], cy = y + center[1], cz = z + center[2];
+        // Anchor-LOCAL gate center (the anchor-block translation is applied per frame by the model matrix).
+        double cx = center[0], cy = center[1], cz = center[2];
 
         final double RO = GATEWAY_OUTER_RADIUS;
         final double RI = GATEWAY_BORE_RADIUS;
@@ -611,6 +612,10 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // beam/scan never had a visible window. getDouble returns 0.0 for a missing tag (legacy entry → minimum,
         // the old behaviour, kept as the safe fallback).
         double travelDistance = entry.getDouble(TileEntityVoidcraftShip.TAG_ENTRY_TDIST);
+        // The command-split pass: the current leg's WORK KIND (the work command that started it) — a work leg's
+        // duration depends on the KIND (mines at mining power, scans at scan power, siphons at siphon power), so
+        // the client must derive the SAME duration the server ticks for a hybrid ship.
+        int workKind = entry.getInteger(TileEntityVoidcraftShip.TAG_ENTRY_WORK_KIND);
         VoidcraftBlueprint blueprint = VoidcraftNbt.read(payload);
         if (blueprint == null) {
             return;
@@ -771,7 +776,14 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 pos = lerp(
                     travelFrom,
                     hover,
-                    legProgress(phase, payload, travelDistance, shipRenderTime, USSShipState.OUTBOUND, legId));
+                    legProgress(
+                        phase,
+                        payload,
+                        travelDistance,
+                        shipRenderTime,
+                        USSShipState.OUTBOUND,
+                        legId,
+                        workKind));
                 break;
             case RETURNING:
                 // Gateway render pass: the return leg ends at the DOME-EDGE gateway render (the gray circle),
@@ -779,7 +791,14 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 pos = lerp(
                     travelFrom,
                     gwRender,
-                    legProgress(phase, payload, travelDistance, shipRenderTime, USSShipState.RETURNING, legId));
+                    legProgress(
+                        phase,
+                        payload,
+                        travelDistance,
+                        shipRenderTime,
+                        USSShipState.RETURNING,
+                        legId,
+                        workKind));
                 break;
             case MINING:
                 // Work the body: hover just above it (0.5 over the planet SURFACE / 2.5 over the star / AT the
@@ -897,8 +916,8 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // out over its end (VoidcraftShipFx.beamFade) so OUTBOUND→MINING→RETURNING reads as the beam engaging
         // and releasing.
         if (state == USSShipState.MINING && VoidcraftShipFx.minesWithBeam(payload)) {
-            double fade = VoidcraftShipFx
-                .beamFade(legProgress(phase, payload, travelDistance, shipRenderTime, USSShipState.MINING, legId));
+            double fade = VoidcraftShipFx.beamFade(
+                legProgress(phase, payload, travelDistance, shipRenderTime, USSShipState.MINING, legId, workKind));
             if (fade > 0.0) {
                 queueBeam(
                     new double[] { x + pos[0], y + pos[1], z + pos[2] },
@@ -1208,7 +1227,7 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
      *                       orbit does.
      */
     private double legProgress(LegPhase phase, NBTTagCompound payload, double travelDistance, double renderTime,
-        USSShipState state, int legId) {
+        USSShipState state, int legId, int workKind) {
         // Phase C: a new leg id resets the progress even for the SAME state (MOVE → MOVE legs of one program).
         boolean fresh = phase.lastState != state.getId() || phase.lastLegId != legId || phase.startTick < 0;
         if (fresh) {
@@ -1218,12 +1237,11 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         }
         double speed = VoidcraftNbt.readDouble(payload, VoidcraftNbt.TAG_SPEED);
         long mining = VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_MINING);
-        // The Explorer pass: the WORK leg is role-aware — an Explorer SCANS (scanTicks, from vc_scan), everything
-        // else MINES (mineTicks, from vc_mining). The client must match the server's work-leg duration or the
-        // hover/leg progress drifts.
-        int roles = VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES);
         long scan = VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_SCAN);
-        long leg = USSConstants.legTicks(state, travelDistance, speed, mining, roles, scan);
+        long siphon = VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_STARLIFTER);
+        // The command-split pass: the work leg's duration is KIND-AWARE (the work command that started the leg
+        // picks the table) — the client must match the server's duration or the hover/leg progress drifts.
+        long leg = USSConstants.legTicks(state, travelDistance, speed, workKind, mining, scan, siphon);
         if (leg <= 0) {
             return 1.0;
         }

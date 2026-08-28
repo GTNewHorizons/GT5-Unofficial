@@ -30,8 +30,11 @@ import tectech.voidcraft.VoidcraftTextures;
 import tectech.voidcraft.gui.VoidcraftProgramGui;
 import tectech.voidcraft.gui.VoidcraftProgramSource;
 import tectech.voidcraft.ship.VoidcraftComponent;
+import tectech.voidcraft.ship.VoidcraftCoverComponent;
 import tectech.voidcraft.ship.VoidcraftCoverRegistry;
 import tectech.voidcraft.ship.VoidcraftNbt;
+import tectech.voidcraft.uss.USSCapabilities;
+import tectech.voidcraft.uss.USSCommand;
 import tectech.voidcraft.uss.USSProgram;
 import tectech.voidcraft.uss.USSProgramSync;
 import tectech.voidcraft.uss.USSProgramView;
@@ -245,7 +248,7 @@ public class MTEVoidcraftComponent extends MetaTileEntity implements VoidcraftPr
             setNote("not a controller");
             return;
         }
-        USSProgramSync.Outcome outcome = USSProgramSync.handle(getProgram(), actionJson);
+        USSProgramSync.Outcome outcome = USSProgramSync.handle(getProgram(), actionJson, getCommandCaps());
         if (!outcome.ok) {
             setNote(outcome.message);
             return;
@@ -255,6 +258,98 @@ public class MTEVoidcraftComponent extends MetaTileEntity implements VoidcraftPr
         if (!getBaseMetaTileEntity().isClientSide()) {
             markDirty();
         }
+    }
+
+    /**
+     * The controller's COMMAND CAPABILITY SET (the capability system): derived from the covers mounted on the
+     * controller BLOCK ITSELF (the editor cannot see the rest of the hull). A capability cover (thruster / mining
+     * array / scanner dish / star siphon / fabricator / repair bay) adds its bit; a controller with NO capability
+     * covers says nothing about the hull, so it reports {@link USSCapabilities#universal()} (everything is
+     * offered; the runtime gates the truth — a leg the ship cannot do is refused at leg start).
+     */
+    @Override
+    public USSCapabilities getCommandCaps() {
+        if (component != VoidcraftComponent.CONTROLLER) {
+            return USSCapabilities.empty();
+        }
+        long[] stats = mountedCoverStats();
+        int bits = 0;
+        if (stats[0] > 0L) {
+            bits |= USSCapabilities.MOVE;
+        }
+        if (stats[1] > 0L) {
+            bits |= USSCapabilities.MINE;
+        }
+        if (stats[2] > 0L) {
+            bits |= USSCapabilities.SCAN;
+        }
+        if (stats[3] > 0L) {
+            bits |= USSCapabilities.SIPHON;
+        }
+        if (stats[4] > 0L) {
+            bits |= USSCapabilities.CONSTRUCT;
+        }
+        if (stats[5] > 0L) {
+            bits |= USSCapabilities.REPAIR;
+        }
+        return bits == 0 ? USSCapabilities.universal() : USSCapabilities.of(bits);
+    }
+
+    /**
+     * The per-command STAT LINE for a command row's tooltip: the power the covers mounted on this controller
+     * block contribute (thrust / mining / scan / siphon / construction / repair bays).
+     */
+    @Override
+    public String getCommandStatLine(int commandId) {
+        if (component != VoidcraftComponent.CONTROLLER) {
+            return "";
+        }
+        long[] stats = mountedCoverStats();
+        switch (commandId) {
+            case USSCommand.MOVE:
+                return stats[0] > 0L ? "Thrust: " + stats[0] : "";
+            case USSCommand.MINE:
+                return stats[1] > 0L ? "Mining power: " + stats[1] : "";
+            case USSCommand.SCAN:
+                return stats[2] > 0L ? "Scan power: " + stats[2] : "";
+            case USSCommand.SIPHON:
+                return stats[3] > 0L ? "Siphon power: " + stats[3] : "";
+            case USSCommand.CONSTRUCT:
+                return stats[4] > 0L ? "Construction power: " + stats[4] : "";
+            case USSCommand.REPAIR:
+                return stats[5] > 0L ? "Repair bays: " + stats[5] : "";
+            default:
+                return "";
+        }
+    }
+
+    /**
+     * The stats of the covers mounted on this controller's OWN block (all six faces), per
+     * {@link VoidcraftCoverComponent}: {@code [0] thrust [1] mining [2] scan [3] siphon [4] construction
+     * [5] repair bays}. Zeroes when the base TE is not available (a client read before sync).
+     */
+    private long[] mountedCoverStats() {
+        long[] out = new long[6];
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) {
+            return out;
+        }
+        for (int i = 0; i < 6; i++) {
+            VoidcraftCoverComponent cover = VoidcraftCoverRegistry
+                .byStack(base.getCoverItemAtSide(ForgeDirection.getOrientation(i)));
+            if (cover == null) {
+                continue;
+            }
+            out[0] += cover.getThrust();
+            out[1] += cover.getMiningPower();
+            out[2] += cover.getScanPower();
+            out[3] += cover.getStarlifterPower();
+            out[4] += cover.getConstructionPower();
+            if (cover == VoidcraftCoverComponent.REPAIR_BAY) {
+                out[5]++;
+            }
+        }
+        return out;
     }
 
     /**

@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.jupiter.api.Test;
 
 /**
- * Phase B: the six built-in command handlers against the fake context.
+ * Phase B: the ten built-in command handlers against the fake context.
  */
 final class USSCommandTest {
 
@@ -62,7 +62,7 @@ final class USSCommandTest {
         assertEquals(1, ctx.travelLegs);
         assertEquals(USSPosition.of(3, 4, 0), ctx.lastLegDest);
         assertEquals(5.0, ctx.lastLegDist, 0.0001); // 3-4-5 triangle
-        assertFalse(ctx.lastLegWork);
+        assertEquals(USSWorkKind.TRAVEL, ctx.lastLegWorkKind);
 
         assertEquals(USSCommandStatus.RUNNING, move.tick(ctx, null, state)); // still flying
         ctx.legComplete = true;
@@ -83,17 +83,31 @@ final class USSCommandTest {
 
     // endregion
 
-    // region WORK
+    // region MINE / SCAN / SIPHON (the work commands)
 
     @Test
-    void testWorkStartsWorkLegAtPositionThenDone() {
+    void testMineStartsWorkLegAtPositionThenDone() {
+        assertWorkCommand(new USSCommandMine(), USSCommand.MINE, USSWorkKind.MINE);
+    }
+
+    @Test
+    void testScanStartsWorkLegAtPositionThenDone() {
+        assertWorkCommand(new USSCommandScan(), USSCommand.SCAN, USSWorkKind.SCAN);
+    }
+
+    @Test
+    void testSiphonStartsWorkLegAtPositionThenDone() {
+        assertWorkCommand(new USSCommandSiphon(), USSCommand.SIPHON, USSWorkKind.SIPHON);
+    }
+
+    /** A work command starts its KIND's leg at the ship's position (distance 0) and completes when the leg ends. */
+    private static void assertWorkCommand(USSCommandHandler work, int commandId, int workKind) {
         FakeUSSContext ctx = new FakeUSSContext();
-        USSCommandWork work = new USSCommandWork();
         assertEquals(
             USSCommandStatus.RUNNING,
-            work.begin(ctx, command(USSCommand.WORK, new NBTTagCompound()), new NBTTagCompound()));
+            work.begin(ctx, command(commandId, new NBTTagCompound()), new NBTTagCompound()));
         assertEquals(1, ctx.workLegs);
-        assertTrue(ctx.lastLegWork);
+        assertEquals(workKind, ctx.lastLegWorkKind);
         assertEquals(USSPosition.zero(), ctx.lastLegDest);
         assertEquals(0.0, ctx.lastLegDist, 0.0001);
         assertEquals(USSCommandStatus.RUNNING, work.tick(ctx, null, new NBTTagCompound()));
@@ -269,13 +283,15 @@ final class USSCommandTest {
     @Test
     void testRegistryHasAllBuiltIns() {
         assertTrue(USSCommandRegistry.has(USSCommand.MOVE));
-        assertTrue(USSCommandRegistry.has(USSCommand.WORK));
+        assertTrue(USSCommandRegistry.has(USSCommand.MINE));
         assertTrue(USSCommandRegistry.has(USSCommand.WRITE));
         assertTrue(USSCommandRegistry.has(USSCommand.READ));
         assertTrue(USSCommandRegistry.has(USSCommand.WAIT));
         assertTrue(USSCommandRegistry.has(USSCommand.STOP));
         assertTrue(USSCommandRegistry.has(USSCommand.CONSTRUCT));
         assertTrue(USSCommandRegistry.has(USSCommand.REPAIR));
+        assertTrue(USSCommandRegistry.has(USSCommand.SCAN));
+        assertTrue(USSCommandRegistry.has(USSCommand.SIPHON));
         assertSame(
             USSCommand.MOVE,
             USSCommandRegistry.handler(USSCommand.MOVE)

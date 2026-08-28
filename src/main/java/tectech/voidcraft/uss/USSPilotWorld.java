@@ -51,31 +51,35 @@ public interface USSPilotWorld {
     USSTargetResult resolveTarget(String target, int index, VoidcraftActiveShip ship);
 
     /**
-     * The duration of a leg for THIS ship (the game-side version of the Phase B leg start): the same tables the
+     * The duration of a leg for THIS ship (the game-side version of the leg start): the same tables the
      * client uses ({@link USSConstants}) so server and client animate the same duration.
      *
-     * @param work     true = a WORK leg (role-aware: Explorer scans, everything else mines)
-     * @param ship     the ship (speed / mining power / scan power / roles)
+     * @param workKind the leg's work kind (see {@link USSWorkKind}) — TRAVEL = a travel leg (the distance is
+     *                 used); a work kind = a work leg (its table: mining / scan / siphon power)
+     * @param ship     the ship (speed / mining / scan / siphon power)
      * @param distance the leg's distance in blocks (travel legs only; ignored for work legs)
      * @return the leg duration in ticks (always &gt; 0)
      */
-    long legTicks(boolean work, VoidcraftActiveShip ship, double distance);
+    long legTicks(int workKind, VoidcraftActiveShip ship, double distance);
 
     // endregion
 
     // region side-effects (the WORK leg's "done" path — the old tickShips cargo/reveal gate)
 
     /**
-     * A WORK leg just completed. The game side applies the leg's yield EXACTLY ONCE: an Explorer reveal (the
-     * ripple point was scanned), a Starlifter cargo build, or a Miner cargo build (clamped by the ship's hold).
+     * A WORK leg just completed. The game side applies the leg's yield EXACTLY ONCE, keyed by the leg's WORK
+     * KIND (owned by the work command — not by the target): a MINE leg delivers the planet cargo, a SCAN leg
+     * reveals the ripple point, a SIPHON leg delivers the star cargo. A kind/target mismatch (e.g. a MINE leg at
+     * the star) delivers nothing but logs the reason.
      *
      * @param ship        the ship (the cargo is set on its hold / cargo)
+     * @param workKind    the completed leg's work kind (see {@link USSWorkKind})
      * @param targetKind  the kind of body the ship worked — the MOVE {@code target} string that preceded the
-     *                    WORK (e.g. {@code "STAR"}, {@code "PLANET"}); may be null (a WORK with no preceding
-     *                    MOVE — no world-side yield)
+     *                    work command (e.g. {@code "STAR"}, {@code "PLANET"}); may be null (a work command with
+     *                    no preceding MOVE — no world-side yield)
      * @param targetIndex the RESOLVED body index (planet i / ripple i; -1 star; -2 ship; -3 home)
      */
-    void onWorkComplete(VoidcraftActiveShip ship, String targetKind, int targetIndex);
+    void onWorkComplete(VoidcraftActiveShip ship, int workKind, String targetKind, int targetIndex);
 
     /**
      * A framework log line (the game side: LOGGER, pass-26 style; tests: a capturing list).

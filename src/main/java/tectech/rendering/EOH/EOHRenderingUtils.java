@@ -526,6 +526,7 @@ public abstract class EOHRenderingUtils {
         final int argb = spec.color != 0 ? spec.color : 0xFFFFFFFF;
 
         final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final boolean alphaTestOn = GL11.glIsEnabled(GL11.GL_ALPHA_TEST);
         final boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
         final long blendFuncWas = RenderState.savedBlendFunc();
         GL11.glDisable(GL11.GL_CULL_FACE); // mixed torus winding — do not rely on the face convention
@@ -534,6 +535,10 @@ public abstract class EOHRenderingUtils {
                                                                           // function (the game loop does not reset
                                                                           // GL state between tile-entity renderers)
         GL11.glDepthMask(false); // pure overlay: depth-tested (planet/star occlude it), depth-WRITE off
+        // The 0.125-alpha ring tint is below the world pass 0.5 GL_GREATER alpha-test reference (the vanilla
+        // block-cutout state) and would be discarded entirely: the ring is a blended overlay, so it draws with
+        // the test disabled.
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
         try {
             final ShaderHandle shader = texturedShader();
             bindTexture(RING_TEXTURE);
@@ -549,6 +554,7 @@ public abstract class EOHRenderingUtils {
             GL11.glDepthMask(true);
             RenderState.restoreBlendFunc(blendFuncWas);
             RenderState.restore(GL11.GL_BLEND, blendOn);
+            RenderState.restore(GL11.GL_ALPHA_TEST, alphaTestOn);
             RenderState.restore(GL11.GL_CULL_FACE, cullOn);
         }
     }
@@ -598,6 +604,7 @@ public abstract class EOHRenderingUtils {
             .scale(ringScale);
 
         final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final boolean alphaTestOn = GL11.glIsEnabled(GL11.GL_ALPHA_TEST);
         final boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
         final long blendFuncWas = RenderState.savedBlendFunc();
         GL11.glDisable(GL11.GL_CULL_FACE); // a flat disc is single-wound — do not rely on the face convention
@@ -606,6 +613,10 @@ public abstract class EOHRenderingUtils {
                                                                           // function (the game loop does not reset
                                                                           // GL state between tile-entity renderers)
         GL11.glDepthMask(false); // pure overlay: depth-tested (planet/star occlude it), depth-WRITE off
+        // The ring image alpha shapes the ring; its sub-0.5 pixels would be clipped by the world pass 0.5
+        // GL_GREATER alpha-test reference (the vanilla block-cutout state): the ring is a blended overlay, so
+        // it draws with the test disabled.
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
         try {
             final ShaderHandle shader = texturedShader();
             bindTexture(textureLocation(spec.ringTexture));
@@ -616,6 +627,7 @@ public abstract class EOHRenderingUtils {
             GL11.glDepthMask(true);
             RenderState.restoreBlendFunc(blendFuncWas);
             RenderState.restore(GL11.GL_BLEND, blendOn);
+            RenderState.restore(GL11.GL_ALPHA_TEST, alphaTestOn);
             RenderState.restore(GL11.GL_CULL_FACE, cullOn);
         }
     }

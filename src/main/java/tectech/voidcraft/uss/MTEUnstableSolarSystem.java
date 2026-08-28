@@ -14,6 +14,8 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -160,6 +162,15 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      * (integrity decay/repair, site fill), so the client tint/fill follows the server without per-tick packets.
      */
     private long lastFleetRenderSignature = -1L;
+
+    /**
+     * The system's GATEWAYS, registered by the {@code MTEVoidcraftGateway} machines that locked onto this USS (each
+     * re-registers on its launch-target scan). Keyed by world-block coords, value the same coords. This is the
+     * server-side source of the gateway list the fleet anchor renders (a permanent part of the system view, even
+     * with an empty fleet). Pruned of destroyed gateways (see {@link #pruneGateways(int[])}). In-memory: a world
+     * reload simply re-runs the gateways' launch-target scans and re-registers.
+     */
+    private final Map<String, int[]> gatewayBlocks = new LinkedHashMap<String, int[]>();
 
     // Region mining mission (Phase 4 pass 5 — up to USSConstants.MAX_SHIPS_PER_USS ships in flight per USS; a large
     // fleet (dozens–hundreds) rendered by ONE fleet anchor block, not one block per ship).
@@ -1240,6 +1251,10 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             gregTechTileEntity.getWorld()
                 .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
         }
+        // The gateways belong to the dome: without it there is nothing for them to sit in (they re-register on the
+        // gateways' next launch-target scan once the star is ignited again).
+        gatewayBlocks.clear();
+        syncFleetRenderBlock();
     }
 
     // Region mining mission (Phase 3).
@@ -1379,8 +1394,13 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 discardBase(i);
             }
         }
-        // Phase D: resync the fleet anchor when the render-visible base/site state changed (integrity decay or
-        // repair, a site advancing) — its signature is the ship count + base integrities + site progress.
+        // Phase D: resync the fleet anchor when the render-visible fleet state changed (integrity decay or
+        // repair, a site advancing, a gateway registering or being destroyed) — prune dead gateways first so the
+        // signature reflects their removal.
+        IGregTechTileEntity mteBase = getBaseMetaTileEntity();
+        if (mteBase != null) {
+            pruneGateways(shipAnchorPos(mteBase));
+        }
         if (fleetRenderSignature() != lastFleetRenderSignature) {
             syncFleetRenderBlock();
         }
@@ -1608,13 +1628,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             // (its "ticks left" at the transition); this adds the running progress in between.
             if (progressTick) {
                 try {
-                    long legTotal = USSConstants.legTicks(
-                        ship.getState(),
-                        ship.getTravelDistance(),
-                        ship.getSpeed(),
-                        ship.getMiningPower(),
-                        ship.getRoles(),
-                        ship.getScanPower());
+                    long legTotal = ship.getLegTotal();
                     double progress = legTotal > 0 ? (1.0 - (double) ship.getTicksRemaining() / (double) legTotal)
                         : 1.0;
                     LOGGER.info(
@@ -1715,52 +1729,74 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
 
     /**
      * A ship's WORK leg just completed (the pilot calls this EXACTLY ONCE per work leg — its side-effect fires
-     * here). The yield depends on the body the ship worked (the MOVE target that preceded the WORK):
+     * here). The yield is keyed by the leg's WORK KIND (owned by the work command that started the leg):
      * <ul>
-     * <li>a RIPPLE point (an Explorer scan) — the point is REVEALED (the yield is the reveal itself, not cargo);</li>
-     * <li>the STAR with a STARLIFTER role — star cargo (dwarf-matter dust + Stellar Plasma);</li>
-     * <li>a PLANET — that planet's registered ores (the reserve depletes), clamped by the ship's hold;</li>
-     * <li>anything else (a SHIP rendezvous, a STAR worked by a non-starlifter, a WORK with no MOVE) — no cargo.</li>
+     * <li>MINE — the current target planet's registered ores (the reserve depletes), clamped by the ship's hold;
+     * a non-planet target (a MINE at the star / a ripple) delivers nothing but logs the reason;</li>
+     * <li>SCAN — the current ripple point is REVEALED (the yield is the reveal itself, not cargo); a non-ripple
+     * target logs the reason;</li>
+     * <li>SIPHON — the star cargo (dwarf-matter dust + Stellar Plasma) when the target is the star; anything else
+     * logs the reason.</li>
      * </ul>
      * A Voidbase construction mission carries no cargo either (its parts loadout is consumed in flight by the
      * CONSTRUCT leg).
      */
     @Override
-    public void onWorkComplete(VoidcraftActiveShip ship, String targetKind, int targetIndex) {
-        NBTTagCompound cargo = null;
-        boolean rippleScan = USSProgramDefaults.TARGET_RIPPLE.equals(targetKind)
-            || USSProgramDefaults.TARGET_RIPPLE_UNSCANNED.equals(targetKind);
-        boolean star = USSProgramDefaults.TARGET_STAR.equals(targetKind);
-        boolean planet = USSProgramDefaults.TARGET_PLANET.equals(targetKind)
-            || USSProgramDefaults.TARGET_NEAREST_PLANET.equals(targetKind)
-            || USSProgramDefaults.TARGET_RANDOM_PLANET.equals(targetKind);
-        if (rippleScan) {
-            // EXPLORER: the scan leg finished — mark the ripple point as REVEALED. The point is marked exactly once
-            // (a re-scanned point is a no-op) and the fleet is resynced so the client starts rendering it.
-            if (targetIndex >= 0 && uss != null && !uss.isRippleScanned(targetIndex)) {
-                uss = uss.withRippleScanned(targetIndex);
-                boolean isRipple = getRippleField() != null && getRippleField().isRipple(targetIndex);
-                try {
-                    LOGGER.info(
-                        "[Voidcraft] Explorer {} revealed ripple point {} (ripple={})",
-                        ship.getName(),
-                        targetIndex,
-                        isRipple);
-                } catch (Throwable ignored) {}
-                syncFleetRenderBlock();
+    public void onWorkComplete(VoidcraftActiveShip ship, int workKind, String targetKind, int targetIndex) {
+        switch (workKind) {
+            case USSWorkKind.SCAN: {
+                boolean ripple = USSProgramDefaults.TARGET_RIPPLE.equals(targetKind)
+                    || USSProgramDefaults.TARGET_RIPPLE_UNSCANNED.equals(targetKind);
+                if (ripple && targetIndex >= 0 && uss != null && !uss.isRippleScanned(targetIndex)) {
+                    // The scan leg finished — mark the ripple point as REVEALED. The point is marked exactly once
+                    // (a re-scanned point is a no-op) and the fleet is resynced so the client starts rendering it.
+                    uss = uss.withRippleScanned(targetIndex);
+                    boolean isRipple = getRippleField() != null && getRippleField().isRipple(targetIndex);
+                    try {
+                        LOGGER.info(
+                            "[Voidcraft] Explorer {} revealed ripple point {} (ripple={})",
+                            ship.getName(),
+                            targetIndex,
+                            isRipple);
+                    } catch (Throwable ignored) {}
+                    syncFleetRenderBlock();
+                } else if (!ripple || targetIndex < 0) {
+                    log(ship, "SCAN: nothing to scan here");
+                }
+                return; // no cargo for a scan (the reveal is the yield)
             }
-            return; // no cargo for a scan (the reveal is the yield)
-        }
-        if (isVoidbaseMission(ship)) {
-            return; // no cargo: the parts loadout is consumed in flight by the CONSTRUCT leg
-        }
-        if (star) {
-            if (VoidcraftRole.STARLIFTER.isActive(ship.getRoles())) {
-                cargo = USSShipCargo.buildForStarlifter(uss.getStarType(), ship.getMiningPower(), uss.getIgnitedAt());
+            case USSWorkKind.MINE: {
+                if (isVoidbaseMission(ship)) {
+                    return; // no cargo: the parts loadout is consumed in flight by the CONSTRUCT leg
+                }
+                boolean planet = USSProgramDefaults.TARGET_PLANET.equals(targetKind)
+                    || USSProgramDefaults.TARGET_NEAREST_PLANET.equals(targetKind)
+                    || USSProgramDefaults.TARGET_RANDOM_PLANET.equals(targetKind);
+                if (!planet || targetIndex < 0) {
+                    log(ship, "MINE: nothing to mine here");
+                    return;
+                }
+                applyWorkCargo(ship, buildMinerCargo(ship, targetIndex));
+                return;
             }
-        } else if (planet) {
-            cargo = buildMinerCargo(ship, targetIndex);
+            case USSWorkKind.SIPHON: {
+                if (USSProgramDefaults.TARGET_STAR.equals(targetKind)) {
+                    applyWorkCargo(
+                        ship,
+                        USSShipCargo
+                            .buildForStarlifter(uss.getStarType(), ship.getStarlifterPower(), uss.getIgnitedAt()));
+                } else {
+                    log(ship, "SIPHON: nothing to siphon here");
+                }
+                return;
+            }
+            default:
+                return; // a travel leg has no work yield (defensive — the pilot only calls this for work legs)
         }
+    }
+
+    /** Fills the ship's hold with a work yield (clamped by capacity) and derives the deliverable cargo. */
+    private void applyWorkCargo(VoidcraftActiveShip ship, NBTTagCompound cargo) {
         if (cargo == null) {
             return;
         }
@@ -1897,14 +1933,22 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     @Override
-    public long legTicks(boolean work, VoidcraftActiveShip ship, double distance) {
+    public long legTicks(int workKind, VoidcraftActiveShip ship, double distance) {
         if (ship == null) {
             return 0L;
         }
         // The same tables the client animates with (USSConstants) — server and client agree on every leg's length.
-        USSShipState state = work ? USSShipState.MINING : USSShipState.OUTBOUND;
-        long ticks = USSConstants
-            .legTicks(state, distance, ship.getSpeed(), ship.getMiningPower(), ship.getRoles(), ship.getScanPower());
+        // The work KIND (owned by the work command) picks the work table: a hybrid ship's leg depends on the
+        // command, not on the role.
+        USSShipState state = USSWorkKind.isWork(workKind) ? USSShipState.MINING : USSShipState.OUTBOUND;
+        long ticks = USSConstants.legTicks(
+            state,
+            distance,
+            ship.getSpeed(),
+            workKind,
+            ship.getMiningPower(),
+            ship.getScanPower(),
+            ship.getStarlifterPower());
         return ticks > 0 ? ticks : 1L;
     }
 
@@ -2403,21 +2447,20 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * The shared render clock in TICKS (the world time), for the orbit math — the SAME time base the client render
-     * and {@code USSFleetOrbit.planetAnchorPosition} expect (the client renders at {@code getTotalWorldTime() +
-     * partialTicks}, both in ticks). Pass 37 (server-authoritative planet positions): this used to divide by 20 to
-     * produce "seconds", but {@code planetAnchorPosition} interprets its time argument as TICKS — so the server's
-     * planet positions moved 20x slower than the rendered planets (the "USS treats planets as static / distances
-     * don't match visually" symptom). Returning raw ticks makes the server's planet position and the client's
-     * rendered one agree exactly (same law, same constant, same time base), so a ship's server-resolved
-     * destination and the visual path length are consistent.
+     * The shared render clock in TICKS, for the orbit math — the SAME time base the client render and
+     * {@code USSFleetOrbit.planetAnchorPosition} expect (the client renders at {@code getTotalWorldTime() +
+     * partialTicks}). {@code getWorldTime()} is the time-of-day counter (it wraps every 24000 ticks) and would put
+     * the server's planet positions at a different orbit phase than the rendered ones, so the total world tick
+     * count is the correct source: the server's planet position and the client's rendered one agree exactly (same
+     * law, same constant, same time base), so a ship's server-resolved destination and the visual position are
+     * consistent.
      */
     private float worldTimeTicks() {
         try {
             IGregTechTileEntity base = getBaseMetaTileEntity();
             if (base != null && base.getWorld() != null) {
                 return (float) base.getWorld()
-                    .getWorldTime();
+                    .getTotalWorldTime();
             }
         } catch (Throwable ignored) {}
         return 0.0f;
@@ -2507,6 +2550,10 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             // Phase C: the leg identity — the client resets its leg-progress phase when this changes, so legs of
             // the SAME state (MOVE → MOVE) animate from their own start.
             entry.setInteger(TileEntityVoidcraftShip.TAG_ENTRY_LEG_ID, ship.getLegId());
+            // The command-split pass: the current leg's WORK KIND (owned by the work command) — the client
+            // derives the SAME work-leg duration the server ticks (a hybrid ship's duration depends on the
+            // kind, not the role).
+            entry.setInteger(TileEntityVoidcraftShip.TAG_ENTRY_WORK_KIND, ship.getLegWorkKind());
             int[] gatewayWorld = ship.getGatewayPos() != null ? ship.getGatewayPos()
                 : new int[] { anchor[0], anchor[1], anchor[2] };
             entry.setIntArray(TileEntityVoidcraftShip.TAG_ENTRY_GW_REL, rel(anchor, gatewayWorld));
@@ -2601,10 +2648,10 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
 
     /**
      * The render-visible fleet signature (Phase D): the ship count + every base integrity + every base mining-leg
-     * id + every site progress (quantized to 0.1%) + every site CONSTRUCT leg identity (leg id + seed).
-     * {@link #tickBases()} resyncs the fleet anchor exactly when it changes (integrity decay or repair, a site
-     * advancing, a mining leg or a construction leg starting or ending) — never per tick (the client animates the
-     * beams locally from the leg ids + durations).
+     * id + every site progress (quantized to 0.1%) + every site CONSTRUCT leg identity (leg id + seed) + the
+     * system's gateway set. {@link #tickBases()} resyncs the fleet anchor exactly when it changes (integrity decay
+     * or repair, a site advancing, a mining leg or a construction leg starting or ending, a gateway registering or
+     * being destroyed) — never per tick (the client animates the beams locally from the leg ids + durations).
      */
     private long fleetRenderSignature() {
         long sig = activeShips.size();
@@ -2620,7 +2667,53 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             // already resyncs the deposit ticks).
             sig = sig * 31 + (site != null ? (long) site.constructLegId() * 31L + site.constructSeed() : 0L);
         }
+        for (Map.Entry<String, int[]> gw : gatewayBlocks.entrySet()) {
+            sig = sig * 31 + gw.getKey()
+                .hashCode();
+        }
         return sig;
+    }
+
+    /**
+     * Register one of this system's gateways (called by a {@code MTEVoidcraftGateway} after its launch-target scan
+     * resolves to this USS). Idempotent in position — re-registering the same block is a no-op. The gateway renders
+     * as a permanent part of the system view, so it is independent of the fleet's ship list.
+     *
+     * @param x world block x of the gateway
+     * @param y world block y of the gateway
+     * @param z world block z of the gateway
+     */
+    public void registerGateway(int x, int y, int z) {
+        gatewayBlocks.put(x + ":" + y + ":" + z, new int[] { x, y, z });
+    }
+
+    /**
+     * The system's gateways as fleet-anchor-relative positions, pruned of any whose block is no longer a live
+     * {@code MTEVoidcraftGateway} (destroyed / replaced). Pruning also updates the registry in place, so the next
+     * {@link #fleetRenderSignature()} reflects the removal.
+     *
+     * @param anchor the fleet anchor block (see {@link #shipAnchorPos})
+     * @return the live gateways as {@code [x, y, z]} in fleet-anchor blocks (never null; empty when none)
+     */
+    private List<int[]> pruneGateways(int[] anchor) {
+        List<int[]> out = new ArrayList<int[]>();
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        World world = base != null ? base.getWorld() : null;
+        if (world == null) {
+            return out;
+        }
+        Iterator<Map.Entry<String, int[]>> it = gatewayBlocks.entrySet()
+            .iterator();
+        while (it.hasNext()) {
+            int[] pos = it.next()
+                .getValue();
+            if (mteAt(world, pos, MTEVoidcraftGateway.class) == null) {
+                it.remove();
+                continue;
+            }
+            out.add(rel(anchor, pos));
+        }
+        return out;
     }
 
     /**
@@ -2639,7 +2732,9 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             return;
         }
         int[] anchor = shipAnchorPos(base);
-        if (activeShips.isEmpty() && bases.isEmpty() && baseSites.isEmpty()) {
+        // The system's gateways render even with an empty fleet, so a gateway-only system keeps its anchor.
+        List<int[]> gateways = pruneGateways(anchor);
+        if (activeShips.isEmpty() && bases.isEmpty() && baseSites.isEmpty() && gateways.isEmpty()) {
             if (world.getBlock(anchor[0], anchor[1], anchor[2]) == VoidcraftLoader.sBlockVoidcraftShipRender) {
                 world.setBlockToAir(anchor[0], anchor[1], anchor[2]);
                 try {
@@ -2676,6 +2771,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         // rendered by the client from this same anchor.
         fleetTe.setBaseSites(buildBaseSiteEntries());
         fleetTe.setBases(buildBaseEntries());
+        // The system's gateways — a permanent part of the system view (they render even with an empty fleet).
+        fleetTe.setGateways(gateways);
         lastFleetRenderSignature = fleetRenderSignature();
         // 1.7.10: updateEntity() is a tick hook — the real client push is markBlockForUpdate (see syncToClient).
         fleetTe.syncToClient();

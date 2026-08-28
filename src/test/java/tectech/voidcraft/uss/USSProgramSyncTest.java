@@ -26,7 +26,7 @@ public class USSProgramSyncTest {
     }
 
     private static USSNode work() {
-        return USSNode.command(USSCommand.WORK, new NBTTagCompound());
+        return USSNode.command(USSCommand.MINE, new NBTTagCompound());
     }
 
     private static USSNode move(String target) {
@@ -53,14 +53,23 @@ public class USSProgramSyncTest {
     }
 
     private static USSProgramSync.Outcome ok(USSProgram p, String action) {
-        USSProgramSync.Outcome out = USSProgramSync.handle(p, action);
+        return ok(p, action, null);
+    }
+
+    private static USSProgramSync.Outcome ok(USSProgram p, String action, USSCapabilities caps) {
+        USSProgramSync.Outcome out = USSProgramSync.handle(p, action, caps);
         assertTrue(out.ok, "expected accepted, got: " + out.message);
         assertNotNull(out.program);
         return out;
     }
 
     private static USSProgramSync.Outcome rejected(USSProgram p, String action, String messagePart) {
-        USSProgramSync.Outcome out = USSProgramSync.handle(p, action);
+        return rejected(p, action, null, messagePart);
+    }
+
+    private static USSProgramSync.Outcome rejected(USSProgram p, String action, USSCapabilities caps,
+        String messagePart) {
+        USSProgramSync.Outcome out = USSProgramSync.handle(p, action, caps);
         assertFalse(out.ok, "expected rejection");
         assertNull(out.program);
         assertNotNull(out.message);
@@ -142,7 +151,7 @@ public class USSProgramSyncTest {
                 .body()
                 .size());
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             out.nodes()
                 .get(0)
                 .body()
@@ -158,7 +167,7 @@ public class USSProgramSyncTest {
         // the node cap is still enforced through the action path (255 roots + 1 → over cap)
         USSProgram full = USSProgram.of(
             java.util.Collections
-                .nCopies(USSProgram.MAX_NODES, USSNode.command(USSCommand.WORK, new NBTTagCompound())));
+                .nCopies(USSProgram.MAX_NODES, USSNode.command(USSCommand.MINE, new NBTTagCompound())));
         rejected(full, "{\"op\":\"insert\",\"path\":[],\"index\":0,\"node\":{\"t\":0,\"c\":1}}", null);
     }
 
@@ -197,7 +206,7 @@ public class USSProgramSyncTest {
         USSProgram p = program(move("HOME"), work(), write(1, "x"));
         USSProgram out = ok(p, "{\"op\":\"move\",\"path\":[1],\"up\":true}").program;
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             out.nodes()
                 .get(0)
                 .cmdId());
@@ -209,7 +218,7 @@ public class USSProgramSyncTest {
         // middle moves both ways
         out = ok(p, "{\"op\":\"move\",\"path\":[1],\"up\":false}").program;
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             out.nodes()
                 .get(2)
                 .cmdId());
@@ -250,7 +259,7 @@ public class USSProgramSyncTest {
                 .params()
                 .getString(USSProgramDefaults.PARAM_TARGET));
         assertEquals(
-            USSCommand.WORK,
+            USSCommand.MINE,
             out.nodes()
                 .get(2)
                 .cmdId());
@@ -479,6 +488,74 @@ public class USSProgramSyncTest {
         assertEquals(0, out.nodeCount());
 
         rejected(program(work()), "{\"op\":\"apply\",\"preset\":\"warp\"}", "unknown preset");
+    }
+
+    // endregion
+
+    // region capability gating (the capability system)
+
+    @Test
+    public void testInsertRejectedOutsideTheCaps() {
+        // a mining-only ship: the palette offers no SCAN / SIPHON / CONSTRUCT rows, and the server rejects an
+        // insert of one (the GUI's Add buttons never reach it — the server is authoritative)
+        USSCapabilities miner = USSCapabilities.of(USSCapabilities.MOVE | USSCapabilities.MINE);
+        rejected(
+            program(work()),
+            "{\"op\":\"insert\",\"path\":[],\"index\":0,\"node\":{\"t\":0,\"c\":8}}",
+            miner,
+            "SCAN");
+        rejected(
+            program(work()),
+            "{\"op\":\"insert\",\"path\":[],\"index\":0,\"node\":{\"t\":0,\"c\":9}}",
+            miner,
+            "SIPHON");
+        rejected(
+            program(work()),
+            "{\"op\":\"insert\",\"path\":[],\"index\":0,\"node\":{\"t\":0,\"c\":6}}",
+            miner,
+            "CONSTRUCT");
+        // MINE / MOVE / the always-available commands are accepted
+        ok(program(work()), "{\"op\":\"insert\",\"path\":[],\"index\":0,\"node\":{\"t\":0,\"c\":1}}", miner);
+        ok(
+            program(work()),
+            "{\"op\":\"insert\",\"path\":[],\"index\":0,\"node\":{\"t\":0,\"c\":0,\"p\":{\"target\":\"HOME\"}}}",
+            miner);
+        ok(program(work()), "{\"op\":\"insert\",\"path\":[],\"index\":0,\"node\":{\"t\":0,\"c\":5}}", miner);
+        // a null caps = no check at all (legacy call path)
+        ok(program(work()), "{\"op\":\"insert\",\"path\":[],\"index\":0,\"node\":{\"t\":0,\"c\":8}}", null);
+    }
+
+    @Test
+    public void testCopyRejectedOutsideTheCaps() {
+        // copying a SCAN row on a mining-only ship is rejected (the copy is a re-insert)
+        USSCapabilities miner = USSCapabilities.of(USSCapabilities.MOVE | USSCapabilities.MINE);
+        USSProgram withScan = ok(
+            program(work()),
+            "{\"op\":\"insert\",\"path\":[],\"index\":0,\"node\":{\"t\":0,\"c\":8}}",
+            USSCapabilities.universal()).program;
+        rejected(withScan, "{\"op\":\"copy\",\"path\":[0]}", miner, "SCAN");
+    }
+
+    @Test
+    public void testApplyPresetRejectedWithoutTheCapability() {
+        // the preset gate: a mining-only ship cannot apply the Starlifter / Explorer / Constructor presets
+        USSCapabilities miner = USSCapabilities.of(USSCapabilities.MOVE | USSCapabilities.MINE);
+        rejected(program(work()), "{\"op\":\"apply\",\"preset\":\"starlifter\"}", miner, "starlifter");
+        rejected(program(work()), "{\"op\":\"apply\",\"preset\":\"explorer\"}", miner, "explorer");
+        rejected(program(work()), "{\"op\":\"apply\",\"preset\":\"constructor\"}", miner, "constructor");
+        // its own preset and the capability-free clear are fine
+        ok(program(work()), "{\"op\":\"apply\",\"preset\":\"miner\"}", miner);
+        ok(program(work()), "{\"op\":\"apply\",\"preset\":\"clear\"}", USSCapabilities.empty());
+        // the editor walk applies too: a starlifter program needs MOVE + SIPHON for the editor's own check
+        rejected(
+            program(work()),
+            "{\"op\":\"apply\",\"preset\":\"starlifter\"}",
+            USSCapabilities.of(USSCapabilities.SIPHON),
+            "MOVE");
+        ok(
+            program(work()),
+            "{\"op\":\"apply\",\"preset\":\"starlifter\"}",
+            USSCapabilities.of(USSCapabilities.MOVE | USSCapabilities.SIPHON));
     }
 
     // endregion

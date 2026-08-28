@@ -17,13 +17,24 @@ import tectech.voidcraft.ship.VoidcraftNbt;
 public final class USSBlueprintProgram {
 
     private USSProgram program;
+    private final USSCapabilities caps;
     private String note = "";
 
     /**
      * @param nbt the blueprint item NBT (may be null — a program-less item starts empty)
      */
     public USSBlueprintProgram(NBTTagCompound nbt) {
+        this(nbt, null);
+    }
+
+    /**
+     * @param nbt  the blueprint item NBT (may be null — a program-less item starts empty)
+     * @param caps the craft's capability set (the capability system — inserts / copies / presets outside it are
+     *             rejected; null = no capability check)
+     */
+    public USSBlueprintProgram(NBTTagCompound nbt, USSCapabilities caps) {
         this.program = readProgram(nbt);
+        this.caps = caps;
     }
 
     /** The program stored in an item NBT, or the empty program when the tag is absent. */
@@ -74,7 +85,7 @@ public final class USSBlueprintProgram {
      * @return the outcome
      */
     public USSProgramSync.Outcome applyAction(String actionJson) {
-        USSProgramSync.Outcome outcome = USSProgramSync.handle(program, actionJson);
+        USSProgramSync.Outcome outcome = USSProgramSync.handle(program, actionJson, caps);
         if (!outcome.ok) {
             note = outcome.message;
             return outcome;

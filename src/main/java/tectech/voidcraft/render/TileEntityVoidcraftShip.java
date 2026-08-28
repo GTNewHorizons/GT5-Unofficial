@@ -94,6 +94,14 @@ public class TileEntityVoidcraftShip extends TileEntity {
     public static final String TAG_RIPPLES = "vc_ripples";
 
     /**
+     * System tag: the system's GATEWAY positions — each entry is {@code [x, y, z]} in fleet-anchor blocks, one per
+     * gateway machine that is locked onto this USS (the MTE registers them on its launch-target scan). The client
+     * renders each as the space-dome gateway (gray tube + cyan event plane) — the gateways are a permanent part of
+     * the system view, so they ride with the system data and render even when no ship is in flight.
+     */
+    public static final String TAG_GATEWAYS = "vc_gateways";
+
+    /**
      * Pass 5.1: the per-launch identity seed (unique per flight even for duplicated ship items, which share the
      * item's {@code vc_uuid}). The client keys this ship's animation phase and swarm spread on it (0 = legacy →
      * item-UUID fallback).
@@ -121,6 +129,15 @@ public class TileEntityVoidcraftShip extends TileEntity {
      * MOVE → MOVE) animate from their own start instead of continuing the previous leg's progress.
      */
     public static final String TAG_ENTRY_LEG_ID = "vc_leg_id";
+
+    /**
+     * Entry tag (the command-split pass): the ship's CURRENT leg's WORK KIND (see
+     * {@code USSWorkKind}: 0 travel / 1 mine / 2 scan / 3 siphon). A work leg's duration depends on the KIND (the
+     * work command that started it), not the ship's role — a hybrid ship (miner + explorer) mines at its mining
+     * power and scans at its scan power. The client derives the SAME duration the server ticks from this. 0 /
+     * absent → the legacy role-based table.
+     */
+    public static final String TAG_ENTRY_WORK_KIND = "vc_work_kind";
 
     // Voidbase (Phase D): the in-USS construction sites + standing bases render from this SAME fleet anchor —
     // each entry carries the anchor target with the SHIP-ENTRY PROTOCOL (TAG_ENTRY_TARGET: -1 star / planet
@@ -161,6 +178,10 @@ public class TileEntityVoidcraftShip extends TileEntity {
     // The Explorer pass: the revealed ripple positions ([x, y, z] in fleet-anchor blocks) — the client renders each
     // as a pulsating dark-blue transparent triangle. Only revealed ripples are present (hidden + non-ripple absent).
     private final List<float[]> revealedRipples = new ArrayList<float[]>();
+
+    // The system's gateways ([x, y, z] in fleet-anchor blocks, one per locked-on gateway machine) — the client
+    // renders each as the space-dome gateway, always (the gateways render even with an empty fleet).
+    private final List<int[]> gateways = new ArrayList<int[]>();
 
     // Voidbase (Phase D): the in-USS construction sites + standing bases (rendered from this same anchor).
     private final List<NBTTagCompound> baseSites = new ArrayList<NBTTagCompound>();
@@ -263,6 +284,26 @@ public class TileEntityVoidcraftShip extends TileEntity {
     }
 
     /**
+     * Replace the whole system-gateway list (the MTE re-registers on every launch-target scan and prunes destroyed
+     * gateways). Each entry: {@code [x, y, z]} in fleet-anchor blocks.
+     */
+    public void setGateways(List<int[]> rels) {
+        gateways.clear();
+        if (rels != null) {
+            for (int[] rel : rels) {
+                if (rel != null && rel.length == 3) {
+                    gateways.add(rel);
+                }
+            }
+        }
+    }
+
+    /** @return the system's gateway positions ({@code [x, y, z]} in fleet-anchor blocks) (never null) */
+    public List<int[]> getGateways() {
+        return Collections.unmodifiableList(gateways);
+    }
+
+    /**
      * Replace the whole construction-site list (the MTE rebuilds the entries on every site create/fill/complete).
      * Each entry: the anchor target (ship-entry protocol) + {@link #TAG_SITE_PROGRESS} + {@link #TAG_SITE_DIMS}.
      */
@@ -346,6 +387,19 @@ public class TileEntityVoidcraftShip extends TileEntity {
             }
             compound.setTag(TAG_RIPPLES, rippleList);
         }
+        // The system's gateways (one compound per [x, y, z] in fleet-anchor blocks) — always ride so the gateways
+        // render even with an empty fleet.
+        if (!gateways.isEmpty()) {
+            NBTTagList gwList = new NBTTagList();
+            for (int[] gw : gateways) {
+                NBTTagCompound entry = new NBTTagCompound();
+                entry.setInteger("x", gw[0]);
+                entry.setInteger("y", gw[1]);
+                entry.setInteger("z", gw[2]);
+                gwList.appendTag(entry);
+            }
+            compound.setTag(TAG_GATEWAYS, gwList);
+        }
         // Voidbase (Phase D): the construction sites + standing bases (absent when there are none).
         if (!baseSites.isEmpty()) {
             NBTTagList siteList = new NBTTagList();
@@ -403,6 +457,16 @@ public class TileEntityVoidcraftShip extends TileEntity {
                 continue;
             }
             revealedRipples.add(new float[] { tag.getFloat("x"), tag.getFloat("y"), tag.getFloat("z") });
+        }
+        // The system's gateways (absent tag = none).
+        gateways.clear();
+        NBTTagList gwList = compound.getTagList(TAG_GATEWAYS, 10);
+        for (int i = 0; i < gwList.tagCount(); i++) {
+            NBTTagCompound tag = gwList.getCompoundTagAt(i);
+            if (tag == null) {
+                continue;
+            }
+            gateways.add(new int[] { tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z") });
         }
         // Voidbase (Phase D): the construction sites + standing bases (absent tags = none).
         baseSites.clear();
