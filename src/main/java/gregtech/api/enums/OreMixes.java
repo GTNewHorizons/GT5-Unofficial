@@ -1588,6 +1588,38 @@ public enum OreMixes {
         return variants.toArray(new ItemStack[0]);
     }
 
+    // used in coremod, for NEI Planets
+    /**
+     * Give all the stone variants OrePrefixes of an ore.
+     *
+     * @param material  The material of the ore
+     * @param stackSize The stacksize of the variants
+     * @return The array containing all the stone variants OrePrefixes of the given ore
+     */
+    public static OrePrefixes[] getOrePrefixesVariants(IOreMaterial material) {
+        List<ItemStack> variants = new ArrayList<>();
+        List<OrePrefixes> prefixes = new ArrayList<>();
+        int stackSize = 1;
+        Set<StoneType> stoneTypes = getStoneTypesFromMixes(material);
+        for (StoneType stoneType : stoneTypes) {
+            OrePrefixes prefix = stoneType.getPrefix();
+            ItemStack ore = GTOreDictUnificator.get(prefix, material, 1L);
+            if (!GTUtility.isStackValid(ore)) {
+                continue;
+            }
+            for (ItemStack variant : GTOreDictUnificator.getNonUnifiedStacks(ore)) {
+                ItemStack sizedVariant = GTUtility.copyAmount(stackSize, variant);
+                if (!GTUtility.isStackValid(sizedVariant) || containsStack(variants, sizedVariant)) {
+                    continue;
+                }
+                variants.add(sizedVariant);
+                prefixes.add(prefix);
+            }
+        }
+
+        return prefixes.toArray(new OrePrefixes[0]);
+    }
+
     public static boolean containsStack(List<ItemStack> stacks, ItemStack candidate) {
         for (ItemStack stack : stacks) {
             if (GTUtility.areStacksEqual(stack, candidate, true)) {
