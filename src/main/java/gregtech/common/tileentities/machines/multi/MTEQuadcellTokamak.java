@@ -35,6 +35,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEQuadcellTokamakGui;
@@ -48,6 +49,21 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     private static final int WIDTH_OFFSET = 11;
     private static final int HEIGHT_OFFSET = 6;
     private static final int DEPTH_OFFSET = 1;
+
+    private static final int FORCE_DENSITY = 200_000;
+    private static final int RUNITE_DENSITY = 800_000;
+    private static final int CELESTIAL_TUNGSTEN_DENSITY = 3_200_000;
+    private static final int ORIKALKUM_DENSITY = 8_000_000;
+
+    private static final int FORCE_MAX_DR = 10_000;
+    private static final int RUNITE_MAX_DR = 20_000;
+    private static final int CELESTIAL_TUNGSTEN_MAX_DR = 80_000;
+    private static final int ORIKALKUM_DR = 320_000;
+
+    public int FORCE_CURRENT_DR = 0;
+    public int RUNITE_CURRENT_DR = 0;
+    public int CELESTIAL_TUNGSTEN_CURRENT_DR = 0;
+    public int ORIKALKUM_CURRENT_DR = 0;
 
     private static final IStructureDefinition<MTEQuadcellTokamak> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEQuadcellTokamak>builder()
@@ -134,6 +150,11 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        return super.checkProcessing();
     }
 
     @Override
