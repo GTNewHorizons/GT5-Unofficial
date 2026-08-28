@@ -4377,4 +4377,42 @@ public class GTUtility {
         if (!subTag.hasKey("Name", Constants.NBT.TAG_STRING)) return null;
         return subTag.getString("Name");
     }
+
+    public static List<ItemStack> mergeAndSortItemStacks(List<ItemStack> inputItems) {
+        List<ItemStack> result = new ArrayList<>();
+        Map<ItemId, Integer> itemCounts = new HashMap<>();
+
+        for (ItemStack item : inputItems) {
+            if (item == null) {
+                continue;
+            }
+
+            ItemId id = ItemId.create(item);
+
+            int currentCount = itemCounts.getOrDefault(id, 0);
+            itemCounts.put(id, currentCount + item.stackSize);
+        }
+
+        for (Map.Entry<ItemId, Integer> entry : itemCounts.entrySet()) {
+            ItemId id = entry.getKey();
+            int totalCount = entry.getValue();
+            int maxStack = id.getItemStack()
+                .getMaxStackSize();
+
+            while (totalCount > maxStack) {
+                ItemStack stack = id.getItemStack(maxStack);
+                result.add(stack);
+                totalCount -= maxStack;
+            }
+
+            if (totalCount > 0) {
+                ItemStack stack = id.getItemStack(totalCount);
+                result.add(stack);
+            }
+        }
+
+        result.sort((a, b) -> Integer.compare(b.stackSize, a.stackSize));
+
+        return result;
+    }
 }
