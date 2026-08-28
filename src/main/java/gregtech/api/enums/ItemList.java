@@ -3291,6 +3291,8 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_PitOfDoomAndDespair,
     Ice_Cream_MasterOfDreams,
 
+    QuadcellTokamak,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 

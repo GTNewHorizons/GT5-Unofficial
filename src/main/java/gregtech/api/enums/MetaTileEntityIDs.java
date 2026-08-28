@@ -1825,6 +1825,7 @@ public enum MetaTileEntityIDs {
     InfiniteFluidDrillingRig(15567),
     DroneCentre(15568),
     MegaOilCracker(15569),
+    QuadcellTokamak(15570),
     ENTROPIC_PROCESSOR(15750),
     DECAY_WAREHOUSE(15751),
     LATEX(15752),

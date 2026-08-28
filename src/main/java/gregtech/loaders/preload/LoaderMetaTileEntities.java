@@ -236,6 +236,7 @@ import gregtech.common.tileentities.machines.multi.MTEOreWashingPlant;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOvenLegacy;
+import gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
@@ -1103,6 +1104,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.MegaOilCracker.set(
             new MTEMegaOilCracker(MegaOilCracker.ID, "multimachine.mega_oil_cracker", "Mega Oil Cracker")
+                .getStackForm(1));
+
+        ItemList.QuadcellTokamak.set(
+            new MTEQuadcellTokamak(QuadcellTokamak.ID, "multimachine.quadcell_tokamak", "Quadcell Tokamak")
                 .getStackForm(1));
     }
 
