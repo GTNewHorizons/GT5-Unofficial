@@ -152,11 +152,20 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean isPrioritized(IAEItemStack iaeItemStack) {
+        ItemStack stack = iaeItemStack == null ? null : iaeItemStack.getItemStack();
+        if (isMatterCluster(stack)) {
+            ItemStack targetItem = getMatterClusterTargetItem();
+            return targetItem != null && getMatterClusterEntry(stack, targetItem) != null;
+        }
         return meInventoryHandler.isPrioritized(iaeItemStack);
     }
 
     @Override
     public boolean canAccept(IAEItemStack iaeItemStack) {
+        ItemStack stack = iaeItemStack == null ? null : iaeItemStack.getItemStack();
+        if (isMatterCluster(stack)) {
+            return getMatterClusterEntry(stack, getMatterClusterTargetItem()) != null;
+        }
         return meInventoryHandler.canAccept(iaeItemStack);
     }
 
