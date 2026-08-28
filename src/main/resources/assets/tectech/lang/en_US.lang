@@ -1270,6 +1270,7 @@ gt.blockmachines.debug.tt.maintenance.name=Auto-Taping Maintenance Hatch
 gt.blockmachines.debug.tt.maintenance.desc.0=For automatically maintaining Multiblocks
 gt.blockmachines.debug.tt.maintenance.desc.1=Does fix everything but itself.
 gt.blockmachines.debug.tt.maintenance.desc.2=Fixing is for plebs!
+gt.blockmachines.debug.tt.maintenance.desc.3=Less maintenance, more debugging!
 gt.blockmachines.debug.tt.genny.name=Debug Power Generator
 gt.blockmachines.debug.tt.genny.desc.0=Power from nothing
 gt.blockmachines.debug.tt.genny.desc.1=Infinite Producer/Consumer

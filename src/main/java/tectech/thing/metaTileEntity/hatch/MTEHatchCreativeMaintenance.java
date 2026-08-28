@@ -41,6 +41,7 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
             translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.0"), // For automatically maintaining
                                                                               // Multiblocks
             translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.1"), // Does fix everything but itself.
+            translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.3"), // Less maintenance, more debugging!
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.2") // Fixing is
                                                                                                        // for plebs!
         };
