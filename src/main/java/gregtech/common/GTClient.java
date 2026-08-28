@@ -121,6 +121,7 @@ import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.powergoggles.PowerGogglesCommand;
 import gregtech.common.render.BaseMetaTileEntityRenderer;
 import gregtech.common.render.BlackholeRenderer;
+import gregtech.common.render.DigitalStorageItemRenderer;
 import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
 import gregtech.common.render.GTRendererBlock;
@@ -253,7 +254,8 @@ public class GTClient extends GTProxy {
 
         MinecraftForgeClient.registerItemRenderer(
             ItemList.Ice_Cream_Machine.getItem(),
-            (IItemRenderer) GregTechAPI.METATILEENTITIES[MetaTileEntityIDs.ICE_CREAM_MACHINE.ID]);
+            new DigitalStorageItemRenderer(
+                (IItemRenderer) GregTechAPI.METATILEENTITIES[MetaTileEntityIDs.ICE_CREAM_MACHINE.ID]));
 
         final MechanicalArmorRenderer mechanicalArmorRenderer = new MechanicalArmorRenderer();
         MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Helmet.getItem(), mechanicalArmorRenderer);
