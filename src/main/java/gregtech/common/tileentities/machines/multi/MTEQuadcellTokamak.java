@@ -44,6 +44,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -170,7 +171,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         // Bonuses increment every cycle until they are at the cap of their respective bonus.
         // It takes 10 full cycles to increment the bonus all the way (10 seconds)
         // The bonus cap is equal to [SET_DR / MAX_DR] * MAX_BONUS
-
+        lEUt = 0;
         if (FORCE_CURRENT_BOOST != PlasmaType.FORCE.maxBoost) {
             float FORCE_CURRENT_CAP = PlasmaType.FORCE.maxBoost * FORCE_CURRENT_DR / PlasmaType.FORCE.maxDR;
             float step = FORCE_CURRENT_CAP / 10;
@@ -200,45 +201,55 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
 
         float eutBoost = 1 + ((FORCE_CURRENT_BOOST + CELESTIAL_TUNGSTEN_CURRENT_BOOST) * ORIKALKUM_CURRENT_BOOST); // >1
         float nonDrainChance = (RUNITE_CURRENT_BOOST + CELESTIAL_TUNGSTEN_CURRENT_BOOST) * ORIKALKUM_CURRENT_BOOST; // <1
-        lEUt = 0;
-        // Try to drain all configured Fluids
+        long euRate = 0;
+
         FluidStack forceStack = PlasmaType.FORCE.getFluid(FORCE_CURRENT_DR);
-        if (FORCE_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance && !this.depleteInput(forceStack)) {
-            // noinspection ConstantConditions
-            crashMachine(forceStack);
-        }
-        lEUt += (long) (eutBoost * FORCE_CURRENT_DR * PlasmaType.FORCE.density / 20);
-
         FluidStack runiteStack = PlasmaType.RUNITE.getFluid(RUNITE_CURRENT_DR);
-        if (RUNITE_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance && !this.depleteInput(runiteStack)) {
-            // noinspection ConstantConditions
-            crashMachine(runiteStack);
-        }
-        lEUt += (long) (eutBoost * RUNITE_CURRENT_DR * PlasmaType.RUNITE.density / 20);
-
         FluidStack celestialtungstenStack = PlasmaType.CELESTIAL.getFluid(CELESTIAL_TUNGSTEN_CURRENT_DR);
-        if (CELESTIAL_TUNGSTEN_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance
-            && !this.depleteInput(celestialtungstenStack)) {
-            // noinspection ConstantConditions
-            crashMachine(celestialtungstenStack);
-        }
-        lEUt += (long) (eutBoost * CELESTIAL_TUNGSTEN_CURRENT_DR * PlasmaType.CELESTIAL.density / 20);
-
         FluidStack orikalkumStack = PlasmaType.ORIKALKUM.getFluid(ORIKALKUM_CURRENT_DR);
-        if (ORIKALKUM_CURRENT_DR > 0 && random.nextFloat() > nonDrainChance && !this.depleteInput(orikalkumStack)) {
-            // noinspection ConstantConditions
-            crashMachine(orikalkumStack);
-        }
-        lEUt += (long) (eutBoost * ORIKALKUM_CURRENT_DR * PlasmaType.ORIKALKUM.density / 20);
 
+        if (FORCE_CURRENT_DR > 0) {
+            if (!processFluid(forceStack, nonDrainChance)) {
+                return crashMachine(forceStack);
+            }
+            euRate += (long) (eutBoost * FORCE_CURRENT_DR * PlasmaType.FORCE.density / 20);
+        }
+        if (RUNITE_CURRENT_DR > 0) {
+            if (!processFluid(runiteStack, nonDrainChance)) {
+                return crashMachine(runiteStack);
+            }
+            euRate += (long) (eutBoost * RUNITE_CURRENT_DR * PlasmaType.RUNITE.density / 20);
+        }
+        if (CELESTIAL_TUNGSTEN_CURRENT_DR > 0) {
+            if (!processFluid(celestialtungstenStack, nonDrainChance)) {
+                return crashMachine(celestialtungstenStack);
+            }
+            euRate += (long) (eutBoost * CELESTIAL_TUNGSTEN_CURRENT_DR * PlasmaType.CELESTIAL.density / 20);
+        }
+        if (ORIKALKUM_CURRENT_DR > 0) {
+            if (!processFluid(orikalkumStack, nonDrainChance)) {
+                return crashMachine(orikalkumStack);
+            }
+            euRate += (long) (eutBoost * ORIKALKUM_CURRENT_DR * PlasmaType.ORIKALKUM.density / 20);
+        }
         // if fluid can't be drained, turn off and clear all bonuses
 
+        lEUt += euRate;
         mEfficiency = 10000;
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = 20;
         recipesDone++;
 
-        return super.checkProcessing();
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    public boolean processFluid(FluidStack stack, double nonDrainChance) {
+        if (!this.depleteInput(stack, true)) {
+            this.depleteInput(stack);
+            return false; // fluid couldn't be fully processed
+        }
+        if (random.nextFloat() >= nonDrainChance) this.depleteInput(stack);
+        return true;
     }
 
     public void resetBoosts() {
@@ -248,9 +259,11 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         ORIKALKUM_CURRENT_BOOST = 1;
     }
 
-    public void crashMachine(FluidStack stack) {
+    public CheckRecipeResult crashMachine(FluidStack stack) {
         resetBoosts();
+        lEUt = 0;
         stopMachine(ShutDownReasonRegistry.outOfFluid(stack));
+        return CheckRecipeResultRegistry.CRASH;
     }
 
     @Override
