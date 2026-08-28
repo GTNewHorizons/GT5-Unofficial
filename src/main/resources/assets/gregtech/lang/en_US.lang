@@ -9477,4 +9477,5 @@ gt.blockmachines.basicgenerator.lightningrod.05.name=Lightning Rod III
 gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning Bolts
 
 # NEI Aliases
+gt.alias.debug=Debug
 gt.alias.mechanical_armor=Mechanical Armor
