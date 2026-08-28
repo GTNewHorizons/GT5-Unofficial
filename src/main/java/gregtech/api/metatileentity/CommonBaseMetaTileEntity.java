@@ -51,9 +51,6 @@ import io.netty.buffer.Unpooled;
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, IInterfaceNameProvider {
 
-    /** Stands in for the suffix content while the configurable format is applied, see {@link #formatSuffix}. */
-    private static final String SUFFIX_PLACEHOLDER = "\0";
-
     // mNeedsUpdate: Client only, mark the block for rerender
     // mNeedsTileUpdate: Server only, mark the block for sync using `S35PacketUpdateTileEntity`
     // mInventoryChanged: whether the inventory had changed in the previous tick, currently not all code set this
