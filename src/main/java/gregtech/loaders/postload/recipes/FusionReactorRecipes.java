@@ -8,6 +8,8 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -289,6 +291,16 @@ public class FusionReactorRecipes implements Runnable {
             .eut(98304)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
             .addTo(fusionRecipes); // FT3
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 144),
+                Materials.TokamakResidue.getFluid(100))
+            .fluidOutputs(Materials.Orikalkum.getPlasma(1000))
+            .duration(8 * TICKS)
+            .eut(196_608)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
+            .addTo(fusionRecipes); // FT4
 
         GTValues.RA.stdBuilder()
             .fluidInputs(

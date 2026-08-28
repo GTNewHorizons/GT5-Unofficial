@@ -664,6 +664,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(855, Materials.Chalcopyrite);
         r(856, Materials.SiliconSG);
         r(858, Materials.CrudeOil);
+        r(859, Materials.TokamakResidue);
         r(861, Materials.Emery);
         r(862, Materials.Epidote);
         r(865, Materials.Graphite);
@@ -751,7 +752,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(951, Materials.Vyroxeres);
         r(952, Materials.Ceruclase);
         r(956, Materials.Tartarite);
-        r(966, Materials.Orichalcum);
+        r(966, Materials.Orikalkum);
         r(967, Materials.SiliconTetrafluoride);
         r(968, Materials.SiliconTetrachloride);
         r(969, Materials.AluminiumFluoride);
