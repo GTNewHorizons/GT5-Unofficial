@@ -1593,7 +1593,6 @@ public enum OreMixes {
      * Give all the stone variants OrePrefixes of an ore.
      *
      * @param material  The material of the ore
-     * @param stackSize The stacksize of the variants
      * @return The array containing all the stone variants OrePrefixes of the given ore
      */
     public static OrePrefixes[] getOrePrefixesVariants(IOreMaterial material) {
