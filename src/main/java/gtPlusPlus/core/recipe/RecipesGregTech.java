@@ -50,6 +50,7 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import java.util.Arrays;
 import java.util.List;
 
+import gtPlusPlus.core.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -58,6 +59,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -1665,6 +1667,35 @@ public class RecipesGregTech {
             .itemOutputs(MaterialsAlloy.MARAGING250.getDust(24))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_EV)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.StainlessSteel.getDust(10),
+                Materials.TungstenCarbide.getDust(10),
+                Materials.Nichrome.getDust(10),
+                Materials.Bronze.getDust(10),
+                MaterialsAlloy.INCOLOY_MA956.getDust(10),
+                WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 2),
+                MaterialsElements.getInstance().GERMANIUM.getDust(2))
+            .fluidInputs(Materials.Radon.getFluid(2000L))
+            .circuit(8)
+            .itemOutputs(MaterialsAlloy.ABYSSAL.getDust(56))
+            .duration(5 * MINUTES + 36 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialsAlloy.ARCANITE.getDust(6),
+                MaterialsAlloy.TITANSTEEL.getDust(6),
+                MaterialsAlloy.ENERGYCRYSTAL.getDust(1),
+                Materials.BlackSteel.getDust(2),
+                Materials.Thaumium.getDust(5))
+            .circuit(5)
+            .itemOutputs(MaterialsAlloy.OCTIRON.getDust(20))
+            .duration(2 * MINUTES)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(mixerRecipes);
     }
 
