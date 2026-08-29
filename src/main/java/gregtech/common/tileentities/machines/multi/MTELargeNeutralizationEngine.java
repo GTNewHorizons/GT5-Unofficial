@@ -16,7 +16,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -98,6 +97,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int robotArmTier;
     private int robotArmAmount;
     public int residueCapacity;
+    private int robotArmTicksTimer =0; /** Whenever this is at 0, robot arms get used and the timer ticks back up to 1200. Every tick that a robot arm is used, this timer decreases by 1 */
 
     // random number generation
     private int randomFactor;
@@ -503,6 +503,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         aNBT.setInteger("robotArmTier", robotArmTier);
         aNBT.setInteger("robotArmAmount", robotArmAmount);
         aNBT.setInteger("residueCapacity", residueCapacity);
+        aNBT.setInteger("ticksRobotArmUsed", robotArmTicksTimer);
     }
 
     @Override
@@ -526,6 +527,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         robotArmTier = aNBT.getInteger("robotArmTier");
         robotArmAmount = aNBT.getInteger("robotArmAmount");
         residueCapacity = aNBT.getInteger("residueCapacity");
+        robotArmTicksTimer =aNBT.getInteger("ticksRobotArmUsed");
     }
 
     @Override
@@ -613,11 +615,14 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         if (robotArmTier != -1) {
             int amount = Math.min(robotArmAmount, 16);
             this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
-            if (getBaseMetaTileEntity().getWorld()
-                .getTotalWorldTime() % MINUTES == 0) {
+            if (robotArmTicksTimer <= 0) {
                 int random = getBaseMetaTileEntity().getRandomNumber(45 * (2 + robotArmTier));
                 ItemStack robotArmItemStack = ItemList.ROBOT_ARMS[robotArmTier].get(1);
                 if (random < amount) depleteInput(robotArmItemStack);
+                robotArmTicksTimer =1200;
+            }
+            if(this.isAllowedToWork()){
+                robotArmTicksTimer--;
             }
         } else {
             this.robotArmDecayBoost = 1;
