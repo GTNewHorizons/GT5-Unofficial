@@ -1784,51 +1784,36 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerRockBreaker() {
-        ItemList.Machine_LV_RockBreaker.set(
-            new MTERockBreaker(ROCK_BREAKER_LV.ID, "basicmachine.rockbreaker.tier.01", "Basic Rock Breaker", 1)
-                .getStackForm(1L));
-        ItemList.Machine_MV_RockBreaker.set(
-            new MTERockBreaker(ROCK_BREAKER_MV.ID, "basicmachine.rockbreaker.tier.02", "Advanced Rock Breaker", 2)
-                .getStackForm(1L));
-        ItemList.Machine_HV_RockBreaker.set(
-            new MTERockBreaker(ROCK_BREAKER_HV.ID, "basicmachine.rockbreaker.tier.03", "Advanced Rock Breaker II", 3)
-                .getStackForm(1L));
-        ItemList.Machine_EV_RockBreaker.set(
-            new MTERockBreaker(ROCK_BREAKER_EV.ID, "basicmachine.rockbreaker.tier.04", "Advanced Rock Breaker III", 4)
-                .getStackForm(1L));
-        ItemList.Machine_IV_RockBreaker.set(
-            new MTERockBreaker(
-                ROCK_BREAKER_IV.ID,
-                "basicmachine.rockbreaker.tier.05",
-                "Cryogenic Magma Solidifier R-8200",
-                5).getStackForm(1L));
-        ItemList.RockBreakerLuV.set(
-            new MTERockBreaker(ROCK_BREAKER_LuV.ID, "rockbreaker.tier.06", "Cryogenic Magma Solidifier R-9200", 6)
-                .getStackForm(1L));
+        ItemList.Machine_LV_RockBreaker
+            .set(new MTERockBreaker(ROCK_BREAKER_LV.ID, "basicmachine.rockbreaker.tier.01", "", 1).getStackForm(1L));
+        ItemList.Machine_MV_RockBreaker
+            .set(new MTERockBreaker(ROCK_BREAKER_MV.ID, "basicmachine.rockbreaker.tier.02", "", 2).getStackForm(1L));
+        ItemList.Machine_HV_RockBreaker
+            .set(new MTERockBreaker(ROCK_BREAKER_HV.ID, "basicmachine.rockbreaker.tier.03", "", 3).getStackForm(1L));
+        ItemList.Machine_EV_RockBreaker
+            .set(new MTERockBreaker(ROCK_BREAKER_EV.ID, "basicmachine.rockbreaker.tier.04", "", 4).getStackForm(1L));
+        ItemList.Machine_IV_RockBreaker
+            .set(new MTERockBreaker(ROCK_BREAKER_IV.ID, "basicmachine.rockbreaker.tier.05", "", 5).getStackForm(1L));
+        ItemList.RockBreakerLuV
+            .set(new MTERockBreaker(ROCK_BREAKER_LuV.ID, "rockbreaker.tier.06", "", 6).getStackForm(1L));
 
-        ItemList.RockBreakerZPM.set(
-            new MTERockBreaker(ROCK_BREAKER_ZPM.ID, "rockbreaker.tier.07", "Cryogenic Magma Solidifier R-10200", 7)
-                .getStackForm(1L));
+        ItemList.RockBreakerZPM
+            .set(new MTERockBreaker(ROCK_BREAKER_ZPM.ID, "rockbreaker.tier.07", "", 7).getStackForm(1L));
 
-        ItemList.RockBreakerUV.set(
-            new MTERockBreaker(ROCK_BREAKER_UV.ID, "rockbreaker.tier.08", "Cryogenic Magma Solidifier R-11200", 8)
-                .getStackForm(1L));
+        ItemList.RockBreakerUV
+            .set(new MTERockBreaker(ROCK_BREAKER_UV.ID, "rockbreaker.tier.08", "", 8).getStackForm(1L));
 
-        ItemList.RockBreakerUHV.set(
-            new MTERockBreaker(ROCK_BREAKER_UHV.ID, "rockbreaker.tier.09", "Cryogenic Magma Solidifier R-12200", 9)
-                .getStackForm(1L));
+        ItemList.RockBreakerUHV
+            .set(new MTERockBreaker(ROCK_BREAKER_UHV.ID, "rockbreaker.tier.09", "", 9).getStackForm(1L));
 
-        ItemList.RockBreakerUEV.set(
-            new MTERockBreaker(ROCK_BREAKER_UEV.ID, "rockbreaker.tier.10", "Cryogenic Magma Solidifier R-13200", 10)
-                .getStackForm(1L));
+        ItemList.RockBreakerUEV
+            .set(new MTERockBreaker(ROCK_BREAKER_UEV.ID, "rockbreaker.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.RockBreakerUIV.set(
-            new MTERockBreaker(ROCK_BREAKER_UIV.ID, "rockbreaker.tier.11", "Cryogenic Magma Solidifier R-14200", 11)
-                .getStackForm(1L));
+        ItemList.RockBreakerUIV
+            .set(new MTERockBreaker(ROCK_BREAKER_UIV.ID, "rockbreaker.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.RockBreakerUMV.set(
-            new MTERockBreaker(ROCK_BREAKER_UMV.ID, "rockbreaker.tier.12", "Cryogenic Magma Solidifier R-15200", 12)
-                .getStackForm(1L));
+        ItemList.RockBreakerUMV
+            .set(new MTERockBreaker(ROCK_BREAKER_UMV.ID, "rockbreaker.tier.12", "", 12).getStackForm(1L));
     }
 
     private static void registerIndustrialApiary() {

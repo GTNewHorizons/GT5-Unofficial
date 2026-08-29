@@ -1312,6 +1312,7 @@ gt.blockmachines.hatch.comp-input-bus.name=压缩输入总线（%s）
 gt.blockmachines.hatch.comp-output-bus.name=压缩输出总线（%s）
 gt.blockmachines.hatch.muffler.name=消声仓（%s）
 gt.blockmachines.locker.name=%1$s充电箱
+gt.blockmachines.rockbreaker.name=低温岩浆固化者R-%s
 gt.blockmachines.locker.desc=存储装甲并为其充能\n用螺丝刀右键以更改样式
 gt.blockmachines.hatch.multi.input.name=四重输入仓（%s）
 gt.blockmachines.hull.name=%s机器外壳

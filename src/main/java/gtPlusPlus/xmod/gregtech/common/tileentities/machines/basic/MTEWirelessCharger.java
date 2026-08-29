@@ -33,6 +33,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItemManager;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirelessCharger {
 
     private enum ChargeMode {
