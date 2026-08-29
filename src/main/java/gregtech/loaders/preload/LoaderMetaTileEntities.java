@@ -8778,121 +8778,37 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerCharger4x4() {
         ItemList.Battery_Charger_4by4_ULV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_ULV.ID,
-                "batterycharger.16.tier.00",
-                "Ultra Low Voltage Battery Charger",
-                0,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_ULV.ID, "batterycharger.16.tier.00", "", 0, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_LV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_LV.ID,
-                "batterycharger.16.tier.01",
-                "Low Voltage Battery Charger",
-                1,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_LV.ID, "batterycharger.16.tier.01", "", 1, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_MV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_MV.ID,
-                "batterycharger.16.tier.02",
-                "Medium Voltage Battery Charger",
-                2,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_MV.ID, "batterycharger.16.tier.02", "", 2, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_HV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_HV.ID,
-                "batterycharger.16.tier.03",
-                "High Voltage Battery Charger",
-                3,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_HV.ID, "batterycharger.16.tier.03", "", 3, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_EV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_EV.ID,
-                "batterycharger.16.tier.04",
-                "Extreme Voltage Battery Charger",
-                4,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_EV.ID, "batterycharger.16.tier.04", "", 4, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_IV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_IV.ID,
-                "batterycharger.16.tier.05",
-                "Insane Voltage Battery Charger",
-                5,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_IV.ID, "batterycharger.16.tier.05", "", 5, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_LuV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_LuV.ID,
-                "batterycharger.16.tier.06",
-                "Ludicrous Voltage Battery Charger",
-                6,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_LuV.ID, "batterycharger.16.tier.06", "", 6, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_ZPM.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_ZPM.ID,
-                "batterycharger.16.tier.07",
-                "ZPM Voltage Battery Charger",
-                7,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_ZPM.ID, "batterycharger.16.tier.07", "", 7, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_UV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_UV.ID,
-                "batterycharger.16.tier.08",
-                "Ultimate Voltage Battery Charger",
-                8,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_UV.ID, "batterycharger.16.tier.08", "", 8, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_UHV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_UHV.ID,
-                "batterycharger.16.tier.09",
-                "Highly Ultimate Voltage Battery Charger",
-                9,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_UHV.ID, "batterycharger.16.tier.09", "", 9, "", 4).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UEV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_4_UEV.ID,
-                "batterycharger.16.tier.10",
-                "Extremely Ultimate Battery Charger",
-                10,
-                "",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_4_UEV.ID, "batterycharger.16.tier.10", "", 10, "", 4).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UIV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_4_UIV.ID,
-                "batterycharger.16.tier.11",
-                "Insanely Ultimate Battery Charger",
-                11,
-                "",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_4_UIV.ID, "batterycharger.16.tier.11", "", 11, "", 4).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UMV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_4_UMV.ID,
-                "batterycharger.16.tier.12",
-                "Mega Ultimate Battery Charger",
-                12,
-                "",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_4_UMV.ID, "batterycharger.16.tier.12", "", 12, "", 4).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UXV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_4_UXV.ID,
-                "batterycharger.16.tier.13",
-                "Extended Mega Ultimate Battery Charger",
-                13,
-                "",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_4_UXV.ID, "batterycharger.16.tier.13", "", 13, "", 4).getStackForm(1L));
     }
 
     private void registerCircuitAssembler() {
@@ -9160,94 +9076,34 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private void registerTurboCharger4By4() {
         ItemList.Battery_TurboCharger_4by4_ULV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_ULV.ID,
-                "batteryturbocharger.16.tier.00",
-                "Ultra Low Voltage Turbo Charger",
-                0,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_ULV.ID, "batteryturbocharger.16.tier.00", "", 0, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_LV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_LV.ID,
-                "batteryturbocharger.16.tier.01",
-                "Low Voltage Turbo Charger",
-                1,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_LV.ID, "batteryturbocharger.16.tier.01", "", 1, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_MV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_MV.ID,
-                "batteryturbocharger.16.tier.02",
-                "Medium Voltage Turbo Charger",
-                2,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_MV.ID, "batteryturbocharger.16.tier.02", "", 2, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_HV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_HV.ID,
-                "batteryturbocharger.16.tier.03",
-                "High Voltage Turbo Charger",
-                3,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_HV.ID, "batteryturbocharger.16.tier.03", "", 3, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_EV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_EV.ID,
-                "batteryturbocharger.16.tier.04",
-                "Extreme Voltage Turbo Charger",
-                4,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_EV.ID, "batteryturbocharger.16.tier.04", "", 4, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_IV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_IV.ID,
-                "batteryturbocharger.16.tier.05",
-                "Insane Voltage Turbo Charger",
-                5,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_IV.ID, "batteryturbocharger.16.tier.05", "", 5, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_LuV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_LuV.ID,
-                "batteryturbocharger.16.tier.06",
-                "Ludicrous Voltage Turbo Charger",
-                6,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_LuV.ID, "batteryturbocharger.16.tier.06", "", 6, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_ZPM.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_ZPM.ID,
-                "batteryturbocharger.16.tier.07",
-                "ZPM Voltage Turbo Charger",
-                7,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_ZPM.ID, "batteryturbocharger.16.tier.07", "", 7, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_UV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_UV.ID,
-                "batteryturbocharger.16.tier.08",
-                "Ultimate Voltage Turbo Charger",
-                8,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_UV.ID, "batteryturbocharger.16.tier.08", "", 8, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_UHV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_UHV.ID,
-                "batteryturbocharger.16.tier.09",
-                "Highly Ultimate Voltage Turbo Charger",
-                9,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_UHV.ID, "batteryturbocharger.16.tier.09", "", 9, "", 4).getStackForm(1L));
 
     }
 

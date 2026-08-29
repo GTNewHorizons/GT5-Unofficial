@@ -28,7 +28,6 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.MTEBasicBatteryBufferGui;
 import ic2.api.item.IElectricItem;
@@ -66,7 +65,11 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedFormatted("gt.blockmachines.batterybuffer.desc", mInventory.length);
+        String[] desc = new String[mDescriptionArray.length + 1];
+        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
+        desc[mDescriptionArray.length] = StatCollector
+            .translateToLocalFormatted("gt.blockmachines.slot_count.desc", mInventory.length);
+        return desc;
     }
 
     @Override
