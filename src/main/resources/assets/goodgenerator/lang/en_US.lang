@@ -516,3 +516,18 @@ research.ESSENTIA_SMELTERY.page.0=The Advanced Alchemical Furnace is no longer e
 research.ESSENTIA_SMELTERY.page.1=Ignis and Aqua are the basic conditions for the operation of LES. The minimum demand is about the highest Energy Hatch tier^2*1.15cv/work, and the machine can only run after this requirement is satisfied.<BR><BR>Ordo affects the pollution and the generation of Flux Gas (randomly exhaust Flux Gas at the facing of the muffler when smelting Essentia).<BR><BR>Perditio can speed up the machine's work, up to 200% (100cv/5t).
 research.ESSENTIA_SMELTERY.page.2=The Essentia Diffusion Cell tier and structure size only affect the machine parallel, and the max parallel is 64x.<BR><BR>Items without Essentia will be smelted to 1 point of perditio.
 research.ESSENTIA_OUTPUT_HATCH_ME.page.0=Someday you will use it...<BR><BR>Be sure to connect to the network. It has no cache!
+
+# Multiblocks
+gt.blockmachines.antimatterforge.name=Semi-Stable Antimatter Stabilization Sequencer
+gt.blockmachines.antimattergenerator.name=Shielded Lagrangian Annihilation Matrix
+gt.blockmachines.componentassemblyline.name=Component Assembly Line
+gt.blockmachines.coolanttower.name=Coolant Tower
+gt.blockmachines.extremeheatexchanger.name=Extreme Heat Exchanger
+gt.blockmachines.largefusioncomputer1.name=Compact Fusion Computer MK-I Prototype
+gt.blockmachines.largefusioncomputer2.name=Compact Fusion Computer MK-II
+gt.blockmachines.largefusioncomputer3.name=Compact Fusion Computer MK-III
+gt.blockmachines.largefusioncomputer4.name=Compact Fusion Computer MK-IV Prototype
+gt.blockmachines.largefusioncomputer5.name=Compact Fusion Computer MK-V
+gt.blockmachines.neutronactivator.name=Neutron Activator
+gt.blockmachines.preciseassembler.name=Precise Auto-Assembler MT-3662
+gt.blockmachines.yottafluidtank.name=YOTTank

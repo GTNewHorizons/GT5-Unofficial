@@ -90,3 +90,9 @@ achievement.teacollection.red_tea.desc=§c为什么会有人喝这个？
 achievement.teacollection.white_tea.desc=§e最健康的一款
 achievement.teacollection.yellow_tea.desc=§6青草味更浓的绿茶
 achievement.teacollection.ultimate_tea.desc=§4§l一茶饮尽
+
+# Multiblocks
+gt.blockmachines.htgr.name=高温气冷反应堆
+gt.blockmachines.industrialarcfurnace.controller.tier.single.name=工业电弧炉
+gt.blockmachines.multimachine.defusioncrafter.name=龙研聚合装置
+gt.blockmachines.multimachine.extremegreenhouse.name=极限工业温室

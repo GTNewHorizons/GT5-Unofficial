@@ -442,3 +442,19 @@ ig.infodata.dyson_swarm.computation.fmt=Computation required: §e%s§r/t
 ig.infodata.gas_siphon.depth.fmt=Depth: §e%s§r
 ig.infodata.gas_siphon.fluid.fmt=Fluid: §e%s§rL/s §9%s§r
 ig.infodata.gas_siphon.eu_required.fmt=EU/t required: §e%s§r EU/t
+
+# Multiblocks
+gt.blockmachines.dysonswarm.name=Dyson Swarm Ground Unit
+gt.blockmachines.planetarygassiphon.name=Planetary Gas Siphon
+gt.blockmachines.projectmoduleassemblert1.name=Space Assembler Module MK-I
+gt.blockmachines.projectmoduleassemblert2.name=Space Assembler Module MK-II
+gt.blockmachines.projectmoduleassemblert3.name=Space Assembler Module MK-III
+gt.blockmachines.projectmodulemanager.name=Space Project Manager
+gt.blockmachines.projectmoduleminert1.name=Space Mining Module MK-I
+gt.blockmachines.projectmoduleminert2.name=Space Mining Module MK-II
+gt.blockmachines.projectmoduleminert3.name=Space Mining Module MK-III
+gt.blockmachines.projectmodulepumpt1.name=Space Pumping Module MK-I
+gt.blockmachines.projectmodulepumpt2.name=Space Pumping Module MK-II
+gt.blockmachines.projectmodulepumpt3.name=Space Pumping Module MK-III
+gt.blockmachines.projectmoduleresearch.name=Space Research Module
+gt.blockmachines.spaceelevator.name=Space Elevator

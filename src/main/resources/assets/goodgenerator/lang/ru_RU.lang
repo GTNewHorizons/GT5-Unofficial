@@ -516,3 +516,18 @@ research.ESSENTIA_SMELTERY.page.0=Вам больше не хватает улу
 research.ESSENTIA_SMELTERY.page.1=Ignis and Aqua are the basic conditions for the operation of LES. The minimum demand is about the highest Energy Hatch tier^2*1.15cv/work, and the machine can run only after it is satisfied.<BR><BR>Ordo affects the pollution and the generation of Flux Gas (randomly exhaust Flux Gas at the facing of the muffler when smelting Essentia).<BR><BR>Perditio can speed up machine work, up to 200% (100cv/5t).
 research.ESSENTIA_SMELTERY.page.2=Тир диффузионной ячейки эссенции и размер структуры влияют только на параллель механизма и максимальная параллель 64x.<BR><BR>Предметы без эссенции будут переплавлены в 1 очко perditio.
 research.ESSENTIA_OUTPUT_HATCH_ME.page.0=Когда-нибудь вы им воспользуетесь...<BR><BR>Обязательно подключитесь к сети. У него нет кэша!
+
+# Multiblocks
+gt.blockmachines.antimatterforge.name=Секвенсор стабилизации полустабильной антиматерии
+gt.blockmachines.antimattergenerator.name=Экранированная лагранжевая матрица аннигиляции
+gt.blockmachines.componentassemblyline.name=Компонентная сборочная линия
+gt.blockmachines.coolanttower.name=Градирня
+gt.blockmachines.extremeheatexchanger.name=Экстремальный теплообменник
+gt.blockmachines.largefusioncomputer1.name=Компьютер компактного термоядерного реактора MK-I Прототип
+gt.blockmachines.largefusioncomputer2.name=Компьютер компактного термоядерного реактора MK-II
+gt.blockmachines.largefusioncomputer3.name=Компьютер компактного термоядерного реактора MK-III
+gt.blockmachines.largefusioncomputer4.name=Компьютер компактного термоядерного реактора MK-IV Прототип
+gt.blockmachines.largefusioncomputer5.name=Компьютер компактного термоядерного реактора MK-V
+gt.blockmachines.neutronactivator.name=Нейтронный активатор
+gt.blockmachines.preciseassembler.name=Прецизионный авто-сборщик MT-3662
+gt.blockmachines.yottafluidtank.name=YOTТанк

@@ -17,3 +17,11 @@ Digester.hint.2=16x隔热机械方块
 Digester.hint.3=16x线圈方块
 Digester.hint.4=输入总线、输出总线、输入仓、输出仓
 Digester.hint.5=能源仓、维护仓
+
+# Multiblocks
+gt.blockmachines.digester.name=煮解池
+gt.blockmachines.dissolution_tank.name=溶解罐
+gt.blockmachines.linear_accelerator.name=线性加速器
+gt.blockmachines.source_chamber.name=束流源室
+gt.blockmachines.synchrotron.name=同步加速器
+gt.blockmachines.target_chamber.name=束流靶室

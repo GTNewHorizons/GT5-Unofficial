@@ -415,3 +415,19 @@ ig.infodata.dyson_swarm.computation.fmt=Требуется вычислений:
 ig.infodata.gas_siphon.depth.fmt=Глубина: §e%s§r
 ig.infodata.gas_siphon.fluid.fmt=Жидкость: §e%s§rЛ/с §9%s§r
 ig.infodata.gas_siphon.eu_required.fmt=Требуется EU/t: §e%s§r EU/t
+
+# Multiblocks
+gt.blockmachines.dysonswarm.name=Ядро группы роя Дайсона
+gt.blockmachines.planetarygassiphon.name=Планетарный газовый сифон
+gt.blockmachines.projectmoduleassemblert1.name=Космический модуль сборки MK-I
+gt.blockmachines.projectmoduleassemblert2.name=Космический модуль сборки MK-II
+gt.blockmachines.projectmoduleassemblert3.name=Космический модуль сборки MK-III
+gt.blockmachines.projectmodulemanager.name=Менеджер космических проектов
+gt.blockmachines.projectmoduleminert1.name=Космический шахтёрский модуль MK-I
+gt.blockmachines.projectmoduleminert2.name=Космический шахтёрский модуль MK-II
+gt.blockmachines.projectmoduleminert3.name=Космический шахтёрский модуль MK-III
+gt.blockmachines.projectmodulepumpt1.name=Модуль космической помпы MK-I
+gt.blockmachines.projectmodulepumpt2.name=Модуль космической помпы MK-II
+gt.blockmachines.projectmodulepumpt3.name=Модуль космической помпы MK-III
+gt.blockmachines.projectmoduleresearch.name=Модуль космических исследований
+gt.blockmachines.spaceelevator.name=Космический лифт

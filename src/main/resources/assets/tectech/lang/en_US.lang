@@ -2087,3 +2087,13 @@ gt.godforgecasing.5.name=Remote Graviton Flow Modulator
 gt.godforgecasing.6.name=Medial Graviton Flow Modulator
 gt.godforgecasing.7.name=Central Graviton Flow Modulator
 gt.godforgecasing.8.name=Harmonic Phonon Transmission Conduit
+
+# Multiblocks
+gt.blockmachines.multimachine.em.exotic_module.name=Heliofusion Exoticizer
+gt.blockmachines.multimachine.em.eye_of_harmony.name=Eye of Harmony
+gt.blockmachines.multimachine.em.forge_of_gods.name=Forge of the Gods
+gt.blockmachines.multimachine.em.molten_module.name=Helioflux Melting Core
+gt.blockmachines.multimachine.em.plasma_module.name=Heliothermal Plasma Fabricator
+gt.blockmachines.multimachine.em.research.name=Research Station
+gt.blockmachines.multimachine.em.smelting_module.name=Helioflare Power Forge
+gt.blockmachines.multimachine.tm.teslacoil.name=Tesla Tower
