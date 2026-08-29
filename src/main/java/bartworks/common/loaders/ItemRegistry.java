@@ -319,7 +319,7 @@ public class ItemRegistry {
             ItemRegistry.energyDistributor[i] = new MTEEnergyDistributor(
                 EnergyDistributors[i],
                 "energydistributor" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.energydistributor.name") + " " + GTValues.VN[i],
+                "",
                 i).getStackForm(1L);
         }
 
