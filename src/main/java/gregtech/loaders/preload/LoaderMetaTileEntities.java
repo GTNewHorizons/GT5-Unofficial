@@ -8148,7 +8148,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchOutputBusCompressed(
                 HATCH_OUTPUT_BUS_COMPRESSED_1.ID,
                 "hatch.comp-output-bus.tier.00",
-                "Compressed Output Bus (LuV)",
+                "",
                 VoltageIndex.LuV,
                 256).getStackForm(1));
 
@@ -8156,7 +8156,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchOutputBusCompressed(
                 HATCH_OUTPUT_BUS_COMPRESSED_2.ID,
                 "hatch.comp-output-bus.tier.01",
-                "Compressed Output Bus (ZPM)",
+                "",
                 VoltageIndex.ZPM,
                 2048).getStackForm(1));
 
@@ -8164,7 +8164,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchOutputBusCompressed(
                 HATCH_OUTPUT_BUS_COMPRESSED_3.ID,
                 "hatch.comp-output-bus.tier.02",
-                "Compressed Output Bus (UV)",
+                "",
                 VoltageIndex.UV,
                 16384).getStackForm(1));
 
@@ -8172,7 +8172,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchOutputBusCompressed(
                 HATCH_OUTPUT_BUS_COMPRESSED_4.ID,
                 "hatch.comp-output-bus.tier.03",
-                "Compressed Output Bus (UHV)",
+                "",
                 VoltageIndex.UHV,
                 131072).getStackForm(1));
 
@@ -8212,7 +8212,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInputBusCompressed(
                 HATCH_INPUT_BUS_COMPRESSED_1.ID,
                 "hatch.comp-input-bus.tier.00",
-                "Compressed Input Bus (LuV)",
+                "",
                 VoltageIndex.LuV,
                 256).getStackForm(1));
 
@@ -8220,7 +8220,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInputBusCompressed(
                 HATCH_INPUT_BUS_COMPRESSED_2.ID,
                 "hatch.comp-input-bus.tier.01",
-                "Compressed Input Bus (ZPM)",
+                "",
                 VoltageIndex.ZPM,
                 2048).getStackForm(1));
 
@@ -8228,7 +8228,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInputBusCompressed(
                 HATCH_INPUT_BUS_COMPRESSED_3.ID,
                 "hatch.comp-input-bus.tier.02",
-                "Compressed Input Bus (UV)",
+                "",
                 VoltageIndex.UV,
                 16384).getStackForm(1));
 
@@ -8236,7 +8236,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInputBusCompressed(
                 HATCH_INPUT_BUS_COMPRESSED_4.ID,
                 "hatch.comp-input-bus.tier.03",
-                "Compressed Input Bus (UHV)",
+                "",
                 VoltageIndex.UHV,
                 131072).getStackForm(1));
 

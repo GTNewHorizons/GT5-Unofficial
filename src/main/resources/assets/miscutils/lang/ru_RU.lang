@@ -3964,3 +3964,5 @@ gt.blockmachines.muffler_advanced.filter_tier2.desc=Требуется возд�
 gt.blockmachines.muffler_advanced.desc=Выводит загрязнение из мультиблока\nНЕ ЗАГРАЖДАЙТЕ ВЫХОД!\nТребуется 3 воздушных блока перед выхлопной системой.\n%1$s\nМожет брать воздушные фильтры с входного люка мультиблока\nУменьшает загрязнение до %2$s%%
 gt.blockmachines.energybuffer.name=%2$s Энергетический буфер
 gt.blockmachines.energybuffer.desc=По умолчанию 4A Вход/Выход\nИзменение выхода ампеража с помощью отвёртки\nТеперь портативный!
+gt.blockmachines.hatch.superbus.input.name=Супер входной люк (%s)
+gt.blockmachines.hatch.superbus.output.name=Супер выходной люк (%s)

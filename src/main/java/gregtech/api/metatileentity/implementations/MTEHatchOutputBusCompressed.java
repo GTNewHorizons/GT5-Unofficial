@@ -44,8 +44,10 @@ import appeng.api.storage.data.IItemList;
 import appeng.util.InventoryAdaptor;
 import appeng.util.inv.IMEAdaptor;
 import appeng.util.item.AEItemStack;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IOutputBusTransaction;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -54,6 +56,8 @@ import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusCompressedGui;
 import gregtech.common.inventory.AEInventory;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IMEMonitor<IAEItemStack> {
 
     public final int slotCount;
@@ -95,6 +99,13 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
         this.busSlots = prototype.busSlots;
 
         this.inventory = new BusInventory(slotCount);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.hatch.comp-output-bus.name", GTValues.VN[mTier]);
     }
 
     @Override
