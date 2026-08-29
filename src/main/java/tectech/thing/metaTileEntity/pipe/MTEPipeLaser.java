@@ -36,7 +36,6 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     public byte connectionCount = 0;
 
     private boolean active;
-    private boolean computingActivity;
 
     public MTEPipeLaser(int aID, String aName, String aNameRegional) {
         super(aID, aName, 0);
@@ -126,7 +125,6 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
         if (aBaseMetaTileEntity.isClientSide()) return;
 
-        computingActivity = true;
         byte prevConnections = mConnections;
 
         updateSelf(aBaseMetaTileEntity);
@@ -140,7 +138,6 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
             active = false;
             aBaseMetaTileEntity.issueTileUpdate();
         }
-        computingActivity = false;
     }
 
     @Override
@@ -243,9 +240,6 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     public void markUsed() {
         if (active) return;
         active = true;
-        if (!computingActivity) {
-            getBaseMetaTileEntity().issueTileUpdate();
-        }
     }
 
     @Override

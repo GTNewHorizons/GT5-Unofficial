@@ -38,7 +38,6 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     public byte connectionCount = 0;
 
     private boolean active;
-    private boolean computingActivity;
 
     public MTEPipeData(int aID, String aName, String aNameRegional) {
         super(aID, aName, 0);
@@ -170,7 +169,6 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
         if (aBaseMetaTileEntity.isClientSide()) return;
 
-        computingActivity = true;
         boolean prevActive = active;
         active = false;
 
@@ -184,7 +182,6 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
         if (prevActive != active) {
             aBaseMetaTileEntity.issueTileUpdate();
         }
-        computingActivity = false;
     }
 
     @Override
@@ -286,9 +283,6 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     public void markUsed() {
         if (active) return;
         active = true;
-        if (!computingActivity) {
-            getBaseMetaTileEntity().issueTileUpdate();
-        }
     }
 
     public boolean getActive() {
