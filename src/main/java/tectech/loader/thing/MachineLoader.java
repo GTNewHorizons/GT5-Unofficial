@@ -569,6 +569,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 
+import codechicken.nei.api.API;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.VoltageIndex;
@@ -2273,6 +2274,7 @@ public class MachineLoader implements Runnable {
                 "debug.tt.maintenance",
                 "Auto-Taping Maintenance Hatch",
                 8).getStackForm(1L));
+        API.setAliases(hatch_CreativeMaintenance.get(1L), "gt.alias.debug");
         Machine_DebugGenny.set(
             new MTEDebugPowerGenerator(DebugPowerGenerator.ID, "debug.tt.genny", "Debug Power Generator", 14)
                 .getStackForm(1L));
