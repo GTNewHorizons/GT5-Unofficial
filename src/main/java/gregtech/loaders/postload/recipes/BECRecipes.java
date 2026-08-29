@@ -44,6 +44,20 @@ import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.BlockQuantumGlass;
 
 /// Recipes made in the BEC Condensate Assembler.
+///
+/// As a design constraint, recipes should fit into as narrow condensate families as possible. Presently, this is 5
+/// 7-member families, given below.
+///
+/// | Family | Condensates |
+/// |----------|------------------------------------------------------------------------------------------|
+/// | Family 1 | SpaceTime, Space, Time, Neutronium, Cosmic Neutronium, Cosmic Solder, Bedrockium |
+/// | Family 2 | Chromatic Glass, Celestial Tungsten, Infinity, Transcendent Metal, DSS, Cosmic Solder, Eternity |
+/// | Family 3 | Phononic Medium, Universium, MHDCSM, QGP, MagMatter, Cosmic Solder, Eternity |
+/// | Family 4 | Phononic Medium, Celestial Tungsten, Infinity, Neutronium, Cosmic Neutronium, Hypogen, Bedrockium |
+/// | Family 5 | SpaceTime, Space, MHDCSM, QGP, DSS, Cosmic Solder, Eternity |
+///
+/// Presently, recipes cannot be alternatives that diverge only in condensates. The BEC recipe check only acknowledges
+/// items, then checks condensates present against the _selected_ recipe.
 public class BECRecipes implements Runnable {
 
     private static final NaniteTier[] TIER_TO_NANITE = { NaniteTier.Carbon, NaniteTier.Silver, NaniteTier.Gold,
@@ -102,8 +116,8 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 16),
                 ItemList.MetaMaterial_Shielding1.get(64), ItemList.MetaMaterial_EnergyConduit1.get(64) },
             nanites(1, 1, 3, 3, 3, 2, 2, 1, 4, 4, 2, 2),
-            new FluidStack[] { CondensateType.TranscendentMetal.getEntangled(32 * INGOTS),
-                CondensateType.Hypogen.getEntangled(24 * INGOTS), CondensateType.SpaceTime.getEntangled(12 * INGOTS),
+            new FluidStack[] { CondensateType.Space.getEntangled(24 * INGOTS),
+                CondensateType.SpaceTime.getEntangled(12 * INGOTS),
                 CondensateType.DimensionallyShiftedSuperfluid.getEntangled(10_000) },
             600 * SECONDS,
             TierEU.RECIPE_UMV);
@@ -233,9 +247,9 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 2),
                 ItemList.MetaMaterial_Waveguide1.get(4) },
             nanites(1, 1, 1, 1, 1, 2, 3, 3, 3, 2, 2, 4),
-            new FluidStack[] { CondensateType.Bedrockium.getEntangled(64 * INGOTS),
+            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(64 * INGOTS),
                 CondensateType.Infinity.getEntangled(32 * INGOTS),
-                CondensateType.SpaceTime.getEntangled(32 * INGOTS), },
+                CondensateType.TranscendentMetal.getEntangled(32 * INGOTS), },
             300 * SECONDS,
             TierEU.RECIPE_UMV);
 
@@ -256,10 +270,10 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 8) },
             nanites(1, 3, 2, 2, 4, 2, 1, 7, 8, 6, 6, 9, 2, 3, 5, 8),
-            new FluidStack[] { CondensateType.SpaceTime.getEntangled(256 * INGOTS),
+            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(256 * INGOTS),
+                CondensateType.Infinity.getEntangled(32 * INGOTS),
                 CondensateType.BoundlessCosmicSolder.getEntangled(20_000),
-                CondensateType.Eternity.getEntangled(128 * INGOTS),
-                CondensateType.MagMatter.getEntangled(32 * INGOTS) },
+                CondensateType.Eternity.getEntangled(128 * INGOTS) },
             300 * SECONDS,
             TierEU.RECIPE_UXV);
 
@@ -273,7 +287,7 @@ public class BECRecipes implements Runnable {
                 ItemList.Field_Generator_UEV.get(6),
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.SixPhasedCopper, 36) },
             nanites(1, 1, 2, 3, 4, 3, 2, 1),
-            new FluidStack[] { CondensateType.TranscendentMetal.getEntangled(32 * INGOTS),
+            new FluidStack[] { CondensateType.Hypogen.getEntangled(32 * INGOTS),
                 CondensateType.PhononMedium.getEntangled(2_000),
                 CondensateType.CelestialTungsten.getEntangled(16 * INGOTS), },
             300 * SECONDS,
@@ -399,8 +413,7 @@ public class BECRecipes implements Runnable {
             nanites(3, 4, 1, 1),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(512 * INGOTS),
                 CondensateType.Infinity.getEntangled(128 * INGOTS),
-                CondensateType.CelestialTungsten.getEntangled(32 * INGOTS),
-                CondensateType.SpaceTime.getEntangled(16 * INGOTS) },
+                CondensateType.CelestialTungsten.getEntangled(32 * INGOTS) },
             240 * SECONDS,
             TierEU.RECIPE_UIV);
     }
@@ -429,8 +442,9 @@ public class BECRecipes implements Runnable {
                 ItemList.Transdimensional_Alignment_Matrix.get(1), ItemList.MetaMaterial_Shielding3.get(16),
                 ItemList.MetaMaterial_ElectrograviticValve3.get(16), ItemList.MetaMaterial_FieldManipulator4.get(32) },
             nanites(6, 6, 6, 8, 6, 6, 6, 3, 1, 1, 2, 9, 10, 4, 5, 7),
-            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(65_536 * INGOTS),
-                CondensateType.Space.getEntangled(3_640 * INGOTS), CondensateType.Time.getEntangled(3_640 * INGOTS),
+            new FluidStack[] { CondensateType.BoundlessCosmicSolder.getEntangled(1_024_000),
+                CondensateType.Space.getEntangled(3_640 * INGOTS),
+                CondensateType.SpaceTime.getEntangled(3_640 * INGOTS),
                 CondensateType.Eternity.getEntangled(1_820 * INGOTS) },
             7200 * SECONDS,
             TierEU.RECIPE_UXV);
@@ -532,7 +546,7 @@ public class BECRecipes implements Runnable {
             NaniteTier[] nanites = nanitesShifted(BOLT_TIER[t] - 1, 2, 2, 2, 2, 2, 1, 1, 1, 3, 4, 3, 3, 4, 1, 1, 1);
             FluidStack[] condensates = { cosmicSolder(t), CondensateType.Time.getEntangled(10 * tp1 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(10 * INGOTS),
-                CondensateType.DimensionallyShiftedSuperfluid.getEntangled(3_000 * tp1) };
+                CondensateType.CosmicNeutronium.getEntangled(20 * tp1 * INGOTS) };
             addBec(outputs[t].get(1), inputs, nanites, condensates, EOH_TIMES[t], TierEU.RECIPE_UMV);
         }
     }
@@ -557,7 +571,7 @@ public class BECRecipes implements Runnable {
         for (int t = 0; t < 9; t++) {
             int tp1 = t + 1;
             ItemStack[] inputs = { CustomItemList.EOH_Reinforced_Spatial_Casing.get(1),
-                ItemList.Machine_Multi_BlackHoleCompressor.get(tp1),
+                ItemList.Machine_Multi_BlackHoleCompressor.get(1),
                 getModItem(AppliedEnergistics2.ID, "item.ItemExtremeStorageCell.Singularity", 1),
                 getModItem(AE2FluidCraft.ID, "fluid_storage.singularity", 1), manipulators[t / 3].get(t % 3 + 1),
                 ItemList.MetaMaterial_Shielding1.get(4L * tp1),
@@ -574,7 +588,7 @@ public class BECRecipes implements Runnable {
             NaniteTier[] nanites = nanitesShifted(BOLT_TIER[t] - 1, 3, 3, 2, 4, 2, 2, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1);
             FluidStack[] condensates = { cosmicSolder(t), CondensateType.Space.getEntangled(10 * tp1 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(10 * INGOTS),
-                CondensateType.Hypogen.getEntangled(20 * tp1 * INGOTS) };
+                CondensateType.Neutronium.getEntangled(20 * tp1 * INGOTS) };
             addBec(outputs[t].get(1), inputs, nanites, condensates, EOH_TIMES[t], TierEU.RECIPE_UMV);
         }
     }

@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -801,7 +802,7 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_LuV.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.get(Materials.Chrome), 'C',
+            new Object[] { "PCP", "IHI", "PRP", 'P', WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.plate), 'C',
                 new ItemStack(Blocks.crafting_table), 'I', OrePrefixes.circuit.get(Materials.LuV), 'H',
                 ItemList.Hull_LuV, 'R', ItemList.Robot_Arm_LuV });
 

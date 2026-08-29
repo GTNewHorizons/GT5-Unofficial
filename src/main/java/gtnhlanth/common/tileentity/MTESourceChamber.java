@@ -151,7 +151,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addEnergyHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_front_bottom_casing"), 3)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_front_bottom_casing"), 3)
             .addInputAny("1", StatCollector.translateToLocal("gt.mbtt.structure.front_center_casing"), 1)
-            .addOutputAny("1", StatCollector.translateToLocal("gtnhlanth.tt.sc.structure.output_pos"), 2)
+            .addOutputBus("1", StatCollector.translateToLocal("gtnhlanth.tt.sc.structure.output_pos"), 2)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         // spotless:on

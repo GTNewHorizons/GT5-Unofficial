@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -78,6 +77,7 @@ import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.INonConsumedItemDisplay;
+import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -89,6 +89,7 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.ColorUtils;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTItemTransfer;
@@ -114,7 +115,7 @@ import mcp.mobius.waila.overlay.tooltiprenderers.TTRenderStack;
  * Machine
  */
 public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapWorkable, IConfigurationCircuitSupport,
-    IOverclockDescriptionProvider, IAddGregtechLogo, INonConsumedItemDisplay {
+    IOverclockDescriptionProvider, IAddGregtechLogo, INonConsumedItemDisplay, IPhysicalCircuitDisplay {
 
     /**
      * return values for checkRecipe()
@@ -281,6 +282,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
+    public ITexture[][] getInventoryTextures() {
+        return getOrCreateInventoryTextures();
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         final int textureIndex;
@@ -383,10 +389,20 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public List<ItemStack> getNonConsumedInputDisplayItems() {
-        if (mLastRecipe == null || mLastRecipe.mInputs == null) return Collections.emptyList();
-        return Arrays.stream(mLastRecipe.mInputs)
-            .filter(s -> s != null && s.stackSize == 0)
-            .collect(Collectors.toList());
+        List<ItemStack> result = new ArrayList<>();
+        for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {
+            ItemStack stack = getStackInSlot(i);
+            if (INonConsumedItemDisplay.isDisplayableItem(getRecipeMap(), stack)) {
+                result.add(stack);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Integer> getPhysicalCircuitNumbers() {
+        return IPhysicalCircuitDisplay
+            .collectCircuitNumbers(this, getInputSlot(), getInputSlot() + mInputSlotCount, getCircuitSlot());
     }
 
     @Override
@@ -1204,18 +1220,34 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         long maxEu = tag.getLong("MaxEu");
         int euT = tag.getInteger("eut");
         boolean isActive = tag.getBoolean("isActiveSingleBlock");
-        String euText = formatNumber(eu) + " / " + formatNumber(maxEu);
+        String euText = StatCollector.translateToLocalFormatted(
+            "GT5U.waila.machine.eu_bar",
+            maxEu > 0 ? Math.clamp((int) ((double) eu / maxEu * 100), 0, 100) : 0);
+
         List<ItemStack> inputItems = new ArrayList<>();
         List<ItemStack> outputItems = new ArrayList<>();
+        FluidStack inputFluid;
+        FluidStack outputFluid;
+        FluidStack outputRecipeFluid;
 
         getWailaItemsWithNBTTag(getAllInputs(), "inputItems", inputItems, tag);
         getWailaItemsWithNBTTag(getAllOutputs(), "outputItems", outputItems, tag);
+        getWailaItemsWithNBTTag(mOutputItems, "outputRecipeItems", outputItems, tag);
+
+        inputFluid = getWailaFluidWithNBTTag("inputFluid", tag);
+        outputFluid = getWailaFluidWithNBTTag("outputFluid", tag);
+        outputRecipeFluid = getWailaFluidWithNBTTag("outputRecipeFluid", tag);
+
+        if (outputRecipeFluid != null && outputFluid != null && outputRecipeFluid.isFluidEqual(outputFluid)) {
+            outputFluid.amount += outputRecipeFluid.amount;
+        }
+
+        inputItems = GTUtility.mergeAndSortItemStacks(inputItems);
+        outputItems = GTUtility.mergeAndSortItemStacks(outputItems);
 
         inputItems.sort(
             Comparator.<ItemStack, Boolean>comparing(stack -> !(stack.getItem() instanceof ItemIntegratedCircuit))
                 .thenComparingInt(ItemStack::getItemDamage));
-
-        currenttip.add(TTRenderBar.create(euText, 0xFFF5E32C, 0xFF9C7E00, (double) eu / maxEu));
 
         if (tag.getBoolean("stutteringSingleBlock")) {
             currenttip.add(translateToLocal(getWailaStutteringLine(tag)));
@@ -1227,17 +1259,27 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         tag.getBoolean("isAllowedToWorkSingleBlock"),
                         tag.getInteger("maxProgressSingleBlock"),
                         tag.getInteger("progressSingleBlock")));
+            }
 
+            if (!isSteampowered()) {
+                currenttip.add(
+                    TTRenderBar.create(
+                        euText,
+                        ColorUtils.euBarTop.getColor(),
+                        ColorUtils.euBarBottom.getColor(),
+                        (double) eu / maxEu));
+            }
+
+            if (isActive) {
                 if (!isSteampowered()) {
                     if (euT > 0) {
                         double exactAmps = GTUtility.getExactAmperageForTier(euT, (byte) getInputTier());
-                        String ampString = String.format("%.2f", exactAmps);
 
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GT5U.waila.energy.use_with_amperage",
                                 formatNumber(euT),
-                                ampString,
+                                String.format("%.2f", exactAmps),
                                 GTUtility.getColoredTierNameFromTier((byte) getInputTier())));
                     } else if (euT < 0) {
                         currenttip.add(
@@ -1248,35 +1290,35 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                                 GTUtility.getColoredTierNameFromTier((byte) getOutputTier())));
                     }
                 } else {
-                    if (euT > 0) {
+                    if (euT != 0) {
                         currenttip.add(
                             translateToLocalFormatted(
-                                "GTPP.waila.steam.use",
-                                formatNumber(euT * 40L),
-                                GTUtility.getColoredTierNameFromVoltage(euT)));
-                    } else if (euT < 0) {
-                        currenttip.add(
-                            translateToLocalFormatted(
-                                "GTPP.waila.steam.use",
-                                formatNumber(-euT * 40L),
-                                GTUtility.getColoredTierNameFromVoltage(-euT)));
+                                "GT5U.waila.machine.use_steam",
+                                formatNumber(Math.abs(euT) * 40L)));
                     }
                 }
             }
         }
 
-        if (!inputItems.isEmpty()) {
-            currenttip.add(StatCollector.translateToLocal("GT5U.waila.machine.recipe_inputs"));
+        if (!inputItems.isEmpty() || inputFluid != null) {
+            currenttip.add(StatCollector.translateToLocal("GT5U.waila.machine.input"));
             getWailaRenderItems(currenttip, inputItems);
+            getWailaRenderFluid(currenttip, inputFluid);
         }
 
         currenttip.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.waila.machine.recipe_outputs",
+                "GT5U.waila.machine.output",
                 getFacingNameLocalized(tag.getInteger("outputFacingSingleBlock"))));
 
         if (!outputItems.isEmpty()) {
             getWailaRenderItems(currenttip, outputItems);
+        }
+
+        if (outputFluid != null) {
+            getWailaRenderFluid(currenttip, outputFluid);
+        } else {
+            getWailaRenderFluid(currenttip, outputRecipeFluid);
         }
 
         if (Client.waila.showFacing) {
@@ -1292,25 +1334,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     private static @NotNull String getWailaStutteringLine(NBTTagCompound tag) {
         return tag.getBoolean("blockedSteamVentSingleBlock") ? "GT5U.waila.status.obstructed_steam_vent"
             : "GT5U.waila.status.insufficient_energy";
-    }
-
-    private void getWailaItemsWithNBTTag(ItemStack[] itemStacks, String tag, List<ItemStack> itemStackList,
-        NBTTagCompound nbtTagCompound) {
-        for (int i = 0; i < itemStacks.length; i++) {
-            if (nbtTagCompound.hasKey(tag + i)) {
-                ItemStack inputStack = ItemStack.loadItemStackFromNBT(nbtTagCompound.getCompoundTag(tag + i));
-
-                if (inputStack == null) {
-                    continue;
-                }
-
-                if (inputStack.stackSize == 0) {
-                    inputStack.stackSize = 1;
-                }
-
-                itemStackList.add(inputStack);
-            }
-        }
     }
 
     private void getWailaRenderItems(List<String> list, List<ItemStack> itemStacks) {
@@ -1331,6 +1354,38 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         }
     }
 
+    private void getWailaRenderFluid(List<String> list, FluidStack fluidStack) {
+        if (fluidStack == null) {
+            return;
+        }
+
+        list.add(
+            TTRenderStack.create(GTUtility.getFluidDisplayStack(fluidStack, false), true)
+                + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.machine.render_item",
+                    formatNumber(fluidStack.amount),
+                    fluidStack.getLocalizedName()));
+    }
+
+    private void getWailaItemsWithNBTTag(ItemStack[] itemStacks, String nameTag, List<ItemStack> itemStackList,
+        NBTTagCompound tag) {
+        for (int i = 0; i < itemStacks.length; i++) {
+            if (tag.hasKey(nameTag + i)) {
+                ItemStack inputStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag(nameTag + i));
+
+                if (inputStack == null) {
+                    continue;
+                }
+
+                if (inputStack.stackSize == 0) {
+                    inputStack.stackSize = 1;
+                }
+
+                itemStackList.add(inputStack);
+            }
+        }
+    }
+
     private void getWailaNBTTagWithItems(ItemStack[] itemStacks, String nameTag, NBTTagCompound tag) {
         for (int i = 0; i < itemStacks.length; i++) {
             ItemStack itemStack = itemStacks[i];
@@ -1342,13 +1397,34 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         }
     }
 
+    private FluidStack getWailaFluidWithNBTTag(String nameTag, NBTTagCompound tag) {
+        if (tag.hasKey(nameTag)) {
+            return FluidStack.loadFluidStackFromNBT(tag.getCompoundTag(nameTag));
+        }
+
+        return null;
+    }
+
+    private void getWailaNBTTagWithFluid(FluidStack fluid, String nameTag, NBTTagCompound tag) {
+        if (fluid == null) {
+            return;
+        }
+
+        NBTTagCompound fluidTag = new NBTTagCompound();
+
+        fluid.writeToNBT(fluidTag);
+        tag.setTag(nameTag, fluidTag);
+    }
+
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         final IGregTechTileEntity gte = getBaseMetaTileEntity();
-        ItemStack[] inputs = getAllInputs();
-        ItemStack[] outputs = getAllOutputs();
+        ItemStack[] itemInputs = getAllInputs();
+        ItemStack[] itemOutputs = getAllOutputs();
+        FluidStack fluidInput = getFillableStack();
+        FluidStack fluidOutput = getDrainableStack();
 
         tag.setInteger("progressSingleBlock", mProgresstime);
         tag.setInteger("maxProgressSingleBlock", mMaxProgresstime);
@@ -1370,8 +1446,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             }
         }
 
-        getWailaNBTTagWithItems(inputs, "inputItems", tag);
-        getWailaNBTTagWithItems(outputs, "outputItems", tag);
+        getWailaNBTTagWithItems(itemInputs, "inputItems", tag);
+        getWailaNBTTagWithItems(itemOutputs, "outputItems", tag);
+
+        getWailaNBTTagWithFluid(fluidInput, "inputFluid", tag);
+        getWailaNBTTagWithFluid(fluidOutput, "outputFluid", tag);
+
+        getWailaNBTTagWithItems(mOutputItems, "outputRecipeItems", tag);
+        getWailaNBTTagWithFluid(mOutputFluid, "outputRecipeFluid", tag);
     }
 
     @Nonnull
