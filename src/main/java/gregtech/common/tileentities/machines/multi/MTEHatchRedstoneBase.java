@@ -140,18 +140,18 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        directional = aNBT.getBoolean("directional");
+        directional = aNBT.getBoolean("mDirectional");
         if (supportsInvertedSignal()) {
-            inverted = aNBT.getBoolean("inverted");
+            inverted = aNBT.getBoolean("mInverted");
         }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("directional", directional);
+        aNBT.setBoolean("mDirectional", directional);
         if (supportsInvertedSignal()) {
-            aNBT.setBoolean("inverted", inverted);
+            aNBT.setBoolean("mInverted", inverted);
         }
     }
 }
