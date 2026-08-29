@@ -240,6 +240,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     public void markUsed() {
         if (active) return;
         active = true;
+        getBaseMetaTileEntity().issueTileUpdate();
     }
 
     @Override

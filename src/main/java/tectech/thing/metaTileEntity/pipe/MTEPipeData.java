@@ -283,6 +283,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     public void markUsed() {
         if (active) return;
         active = true;
+        getBaseMetaTileEntity().issueTileUpdate();
     }
 
     public boolean getActive() {
