@@ -345,3 +345,5 @@ research.ESSENTIA_SMELTERY.page.0=荒古炼金炉已经不足以支撑你的源�
 research.ESSENTIA_SMELTERY.page.1=Ignis与Aqua是LES运行的基本条件,最低需求约为最高能源仓等级^2*1.15cv/每次工作,满足后机器才能运行.<BR><BR>Ordo影响污染、咒波瓦斯生成概率(冶炼源质时随机在消声仓仓口排出咒波瓦斯).<BR><BR>Perditio可以加速机器工作,最高200%(100cv/5t).
 research.ESSENTIA_SMELTERY.page.2=扩散单元等级及结构大小仅影响机器并行,最大并行为64x.<BR><BR>不含源质的物品会冶炼出1点perditio.
 research.ESSENTIA_OUTPUT_HATCH_ME.page.0=总有一天你会用到它...<BR><BR>务必连接网络使用,它没有缓存！
+gt.blockmachines.neutron_accelerator.name=%s中子加速器
+gt.blockmachines.neutron_accelerator.desc=消耗能量加速中子！\n最大EU消耗：%s EU/t\n每EU转化为10-20eV中子动能。

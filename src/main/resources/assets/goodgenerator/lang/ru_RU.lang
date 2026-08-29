@@ -516,3 +516,5 @@ research.ESSENTIA_SMELTERY.page.0=Вам больше не хватает улу
 research.ESSENTIA_SMELTERY.page.1=Ignis and Aqua are the basic conditions for the operation of LES. The minimum demand is about the highest Energy Hatch tier^2*1.15cv/work, and the machine can run only after it is satisfied.<BR><BR>Ordo affects the pollution and the generation of Flux Gas (randomly exhaust Flux Gas at the facing of the muffler when smelting Essentia).<BR><BR>Perditio can speed up machine work, up to 200% (100cv/5t).
 research.ESSENTIA_SMELTERY.page.2=Тир диффузионной ячейки эссенции и размер структуры влияют только на параллель механизма и максимальная параллель 64x.<BR><BR>Предметы без эссенции будут переплавлены в 1 очко perditio.
 research.ESSENTIA_OUTPUT_HATCH_ME.page.0=Когда-нибудь вы им воспользуетесь...<BR><BR>Обязательно подключитесь к сети. У него нет кэша!
+gt.blockmachines.neutron_accelerator.name=%s Ускоритель нейтронов
+gt.blockmachines.neutron_accelerator.desc=Введите энергию для ускорения нейтронов!\nМакс. потребление: %s EU/t\nEU преобразуется в 10-20 eV кинетическую энергию нейтронов.
