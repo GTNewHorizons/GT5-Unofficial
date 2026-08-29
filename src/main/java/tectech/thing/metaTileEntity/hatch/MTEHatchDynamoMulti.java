@@ -13,6 +13,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ITexture;
@@ -28,6 +29,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Created by danie_000 on 16.12.2016.
  */
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchDynamoMulti extends MTEHatchDynamo implements IHideTooltipEnergyInfo {
 
     public final int maxAmperes;
@@ -55,6 +57,15 @@ public class MTEHatchDynamoMulti extends MTEHatchDynamo implements IHideTooltipE
 
     public void setAmperes(int amperes) {
         Amperes = amperes;
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.hatch.dynamomulti.name",
+            GTValues.VN[mTier],
+            formatNumber(maxAmperes));
     }
 
     @Override
