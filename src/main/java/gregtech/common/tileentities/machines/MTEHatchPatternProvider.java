@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_PATTERN_PROVI
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -13,6 +14,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.items.misc.ItemEncodedPattern;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -23,6 +25,7 @@ import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchPatternProviderGui;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchPatternProvider extends MTEHatchInputBus {
 
     public MTEHatchPatternProvider(int id, String name, String nameRegional, int tier) {
@@ -33,6 +36,13 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
     public MTEHatchPatternProvider(String name, int tier, String[] description, ITexture[][][] textures) {
         super(name, tier, getSlots(tier), description, textures);
         this.disableSort = true;
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.hatch.pattern_provider.name", GTValues.VN[mTier]);
     }
 
     @Override

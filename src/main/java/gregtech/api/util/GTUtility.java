@@ -484,6 +484,16 @@ public class GTUtility {
         return V[GTUtility.getTier(voltage)];
     }
 
+    private static final String[] ROMAN_NUMERALS = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
+
+    /**
+     * Roman numeral of a number from 1 to 10, used by machine families numbered that way. Anything outside that range
+     * is returned as digits.
+     */
+    public static String getRomanNumeral(int number) {
+        return number >= 1 && number <= ROMAN_NUMERALS.length ? ROMAN_NUMERALS[number - 1] : String.valueOf(number);
+    }
+
     public static String getColoredTierNameFromVoltage(long voltage) {
         return getColoredTierNameFromTier(getTier(voltage));
     }

@@ -8260,56 +8260,51 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerQuantumTank() {
         ItemList.Quantum_Tank_LV
-            .set(new MTEQuantumTank(QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));
+            .set(new MTEQuantumTank(QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "", 6).getStackForm(1L));
         ItemList.Quantum_Tank_MV
-            .set(new MTEQuantumTank(QUANTUM_TANK_MV.ID, "quantum.tank.tier.07", "Quantum Tank II", 7).getStackForm(1L));
-        ItemList.Quantum_Tank_HV.set(
-            new MTEQuantumTank(QUANTUM_TANK_HV.ID, "quantum.tank.tier.08", "Quantum Tank III", 8).getStackForm(1L));
+            .set(new MTEQuantumTank(QUANTUM_TANK_MV.ID, "quantum.tank.tier.07", "", 7).getStackForm(1L));
+        ItemList.Quantum_Tank_HV
+            .set(new MTEQuantumTank(QUANTUM_TANK_HV.ID, "quantum.tank.tier.08", "", 8).getStackForm(1L));
         ItemList.Quantum_Tank_EV
-            .set(new MTEQuantumTank(QUANTUM_TANK_EV.ID, "quantum.tank.tier.09", "Quantum Tank IV", 9).getStackForm(1L));
+            .set(new MTEQuantumTank(QUANTUM_TANK_EV.ID, "quantum.tank.tier.09", "", 9).getStackForm(1L));
         ItemList.Quantum_Tank_IV
-            .set(new MTEQuantumTank(QUANTUM_TANK_IV.ID, "quantum.tank.tier.10", "Quantum Tank V", 10).getStackForm(1L));
+            .set(new MTEQuantumTank(QUANTUM_TANK_IV.ID, "quantum.tank.tier.10", "", 10).getStackForm(1L));
         ItemList.Debug_Fluid_Tank
             .set(new MTEDebugTank(DEBUG_FLUID_TANK.ID, "quantum.tank.debug", "Debug Fluid Tank", 10).getStackForm(1L));
     }
 
     private static void registerQuantumChest() {
-        ItemList.Quantum_Chest_LV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_LV.ID, "quantum.chest.tier.06", "Quantum Chest I", 6).getStackForm(1L));
-        ItemList.Quantum_Chest_MV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_MV.ID, "quantum.chest.tier.07", "Quantum Chest II", 7).getStackForm(1L));
-        ItemList.Quantum_Chest_HV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_HV.ID, "quantum.chest.tier.08", "Quantum Chest III", 8).getStackForm(1L));
-        ItemList.Quantum_Chest_EV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_EV.ID, "quantum.chest.tier.09", "Quantum Chest IV", 9).getStackForm(1L));
-        ItemList.Quantum_Chest_IV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_IV.ID, "quantum.chest.tier.10", "Quantum Chest V", 10).getStackForm(1L));
+        ItemList.Quantum_Chest_LV
+            .set(new MTEQuantumChest(QUANTUM_CHEST_LV.ID, "quantum.chest.tier.06", "", 6).getStackForm(1L));
+        ItemList.Quantum_Chest_MV
+            .set(new MTEQuantumChest(QUANTUM_CHEST_MV.ID, "quantum.chest.tier.07", "", 7).getStackForm(1L));
+        ItemList.Quantum_Chest_HV
+            .set(new MTEQuantumChest(QUANTUM_CHEST_HV.ID, "quantum.chest.tier.08", "", 8).getStackForm(1L));
+        ItemList.Quantum_Chest_EV
+            .set(new MTEQuantumChest(QUANTUM_CHEST_EV.ID, "quantum.chest.tier.09", "", 9).getStackForm(1L));
+        ItemList.Quantum_Chest_IV
+            .set(new MTEQuantumChest(QUANTUM_CHEST_IV.ID, "quantum.chest.tier.10", "", 10).getStackForm(1L));
     }
 
     private static void registerSuperTank() {
-        ItemList.Super_Tank_LV
-            .set(new MTESuperTank(SUPER_TANK_LV.ID, "super.tank.tier.01", "Super Tank I", 1).getStackForm(1L));
-        ItemList.Super_Tank_MV
-            .set(new MTESuperTank(SUPER_TANK_MV.ID, "super.tank.tier.02", "Super Tank II", 2).getStackForm(1L));
-        ItemList.Super_Tank_HV
-            .set(new MTESuperTank(SUPER_TANK_HV.ID, "super.tank.tier.03", "Super Tank III", 3).getStackForm(1L));
-        ItemList.Super_Tank_EV
-            .set(new MTESuperTank(SUPER_TANK_EV.ID, "super.tank.tier.04", "Super Tank IV", 4).getStackForm(1L));
-        ItemList.Super_Tank_IV
-            .set(new MTESuperTank(SUPER_TANK_IV.ID, "super.tank.tier.05", "Super Tank V", 5).getStackForm(1L));
+        ItemList.Super_Tank_LV.set(new MTESuperTank(SUPER_TANK_LV.ID, "super.tank.tier.01", "", 1).getStackForm(1L));
+        ItemList.Super_Tank_MV.set(new MTESuperTank(SUPER_TANK_MV.ID, "super.tank.tier.02", "", 2).getStackForm(1L));
+        ItemList.Super_Tank_HV.set(new MTESuperTank(SUPER_TANK_HV.ID, "super.tank.tier.03", "", 3).getStackForm(1L));
+        ItemList.Super_Tank_EV.set(new MTESuperTank(SUPER_TANK_EV.ID, "super.tank.tier.04", "", 4).getStackForm(1L));
+        ItemList.Super_Tank_IV.set(new MTESuperTank(SUPER_TANK_IV.ID, "super.tank.tier.05", "", 5).getStackForm(1L));
     }
 
     private static void registerSuperChest() {
         ItemList.Super_Chest_LV
-            .set(new MTESuperChest(SUPER_CHEST_LV.ID, "super.chest.tier.01", "Super Chest I", 1).getStackForm(1L));
+            .set(new MTESuperChest(SUPER_CHEST_LV.ID, "super.chest.tier.01", "", 1).getStackForm(1L));
         ItemList.Super_Chest_MV
-            .set(new MTESuperChest(SUPER_CHEST_MV.ID, "super.chest.tier.02", "Super Chest II", 2).getStackForm(1L));
+            .set(new MTESuperChest(SUPER_CHEST_MV.ID, "super.chest.tier.02", "", 2).getStackForm(1L));
         ItemList.Super_Chest_HV
-            .set(new MTESuperChest(SUPER_CHEST_HV.ID, "super.chest.tier.03", "Super Chest III", 3).getStackForm(1L));
+            .set(new MTESuperChest(SUPER_CHEST_HV.ID, "super.chest.tier.03", "", 3).getStackForm(1L));
         ItemList.Super_Chest_EV
-            .set(new MTESuperChest(SUPER_CHEST_EV.ID, "super.chest.tier.04", "Super Chest IV", 4).getStackForm(1L));
+            .set(new MTESuperChest(SUPER_CHEST_EV.ID, "super.chest.tier.04", "", 4).getStackForm(1L));
         ItemList.Super_Chest_IV
-            .set(new MTESuperChest(SUPER_CHEST_IV.ID, "super.chest.tier.05", "Super Chest V", 5).getStackForm(1L));
+            .set(new MTESuperChest(SUPER_CHEST_IV.ID, "super.chest.tier.05", "", 5).getStackForm(1L));
     }
 
     private static void registerLongDistancePipe() {
@@ -8373,31 +8368,31 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchPatternProvider(
                 INPUT_BUS_PATTERN_PROVIDER_IV.ID,
                 "hatch.pattern_provider.crafting.tier.05",
-                "Crafting Pattern Provider (IV)",
+                "",
                 5).getStackForm(1L));
         ItemList.Hatch_PatternProvider_Crafting_LuV.set(
             new MTEHatchPatternProvider(
                 INPUT_BUS_PATTERN_PROVIDER_LuV.ID,
                 "hatch.pattern_provider.crafting.tier.06",
-                "Crafting Pattern Provider (LuV)",
+                "",
                 6).getStackForm(1L));
         ItemList.Hatch_PatternProvider_Crafting_ZPM.set(
             new MTEHatchPatternProvider(
                 INPUT_BUS_PATTERN_PROVIDER_ZPM.ID,
                 "hatch.pattern_provider.crafting.tier.07",
-                "Crafting Pattern Provider (ZPM)",
+                "",
                 7).getStackForm(1L));
         ItemList.Hatch_PatternProvider_Crafting_UV.set(
             new MTEHatchPatternProvider(
                 INPUT_BUS_PATTERN_PROVIDER_UV.ID,
                 "hatch.pattern_provider.crafting.tier.08",
-                "Crafting Pattern Provider (UV)",
+                "",
                 8).getStackForm(1L));
         ItemList.Hatch_PatternProvider_Crafting_UHV.set(
             new MTEHatchPatternProvider(
                 INPUT_BUS_PATTERN_PROVIDER_UHV.ID,
                 "hatch.pattern_provider.crafting.tier.09",
-                "Crafting Pattern Provider (UHV)",
+                "",
                 9).getStackForm(1L));
     }
 
@@ -8969,35 +8964,19 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private void registerHighAmpTransformer() {
         ItemList.Transformer_HA_UEV_UHV.set(
-            new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UEV_UHV.ID,
-                "transformer.ha.tier.09",
-                "Highly Ultimate Hi-Amp Transformer",
-                9).getStackForm(1L));
+            new MTETransformerHiAmp(HIGH_AMP_TRANSFORMER_UEV_UHV.ID, "transformer.ha.tier.09", "", 9).getStackForm(1L));
         ItemList.Transformer_HA_UIV_UEV.set(
-            new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UIV_UEV.ID,
-                "transformer.ha.tier.10",
-                "Extremely Ultimate Hi-Amp Transformer",
-                10).getStackForm(1L));
+            new MTETransformerHiAmp(HIGH_AMP_TRANSFORMER_UIV_UEV.ID, "transformer.ha.tier.10", "", 10)
+                .getStackForm(1L));
         ItemList.Transformer_HA_UMV_UIV.set(
-            new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UMV_UIV.ID,
-                "transformer.ha.tier.11",
-                "Insanely Ultimate Hi-Amp Transformer",
-                11).getStackForm(1L));
+            new MTETransformerHiAmp(HIGH_AMP_TRANSFORMER_UMV_UIV.ID, "transformer.ha.tier.11", "", 11)
+                .getStackForm(1L));
         ItemList.Transformer_HA_UXV_UMV.set(
-            new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UXV_UMV.ID,
-                "transformer.ha.tier.12",
-                "Mega Ultimate Hi-Amp Transformer",
-                12).getStackForm(1L));
+            new MTETransformerHiAmp(HIGH_AMP_TRANSFORMER_UXV_UMV.ID, "transformer.ha.tier.12", "", 12)
+                .getStackForm(1L));
         ItemList.Transformer_HA_MAX_UXV.set(
-            new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_MAX_UXV.ID,
-                "transformer.ha.tier.13",
-                "Extended Mega Ultimate Hi-Amp Transformer",
-                13).getStackForm(1L));
+            new MTETransformerHiAmp(HIGH_AMP_TRANSFORMER_MAX_UXV.ID, "transformer.ha.tier.13", "", 13)
+                .getStackForm(1L));
 
     }
 
