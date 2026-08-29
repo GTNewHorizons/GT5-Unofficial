@@ -2555,50 +2555,38 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerTransformer() {
-        ItemList.Transformer_LV_ULV.set(
-            new MTETransformer(transformer_LV_ULV.ID, "transformer.tier.00", "Ultra Low Voltage Transformer", 0)
-                .getStackForm(1L));
-        ItemList.Transformer_MV_LV.set(
-            new MTETransformer(transformer_MV_LV.ID, "transformer.tier.01", "Low Voltage Transformer", 1)
-                .getStackForm(1L));
-        ItemList.Transformer_HV_MV.set(
-            new MTETransformer(transformer_HV_MV.ID, "transformer.tier.02", "Medium Voltage Transformer", 2)
-                .getStackForm(1L));
-        ItemList.Transformer_EV_HV.set(
-            new MTETransformer(transformer_EV_HV.ID, "transformer.tier.03", "High Voltage Transformer", 3)
-                .getStackForm(1L));
-        ItemList.Transformer_IV_EV.set(
-            new MTETransformer(transformer_IV_EV.ID, "transformer.tier.04", "Extreme Transformer", 4).getStackForm(1L));
-        ItemList.Transformer_LuV_IV.set(
-            new MTETransformer(transformer_LuV_IV.ID, "transformer.tier.05", "Insane Transformer", 5).getStackForm(1L));
-        ItemList.Transformer_ZPM_LuV.set(
-            new MTETransformer(transformer_ZPM_LuV.ID, "transformer.tier.06", "Ludicrous Transformer", 6)
-                .getStackForm(1L));
-        ItemList.Transformer_UV_ZPM.set(
-            new MTETransformer(transformer_UV_ZPM.ID, "transformer.tier.07", "ZPM Voltage Transformer", 7)
-                .getStackForm(1L));
-        ItemList.Transformer_MAX_UV.set(
-            new MTETransformer(transformer_UHV_UV.ID, "transformer.tier.08", "Ultimate Transformer", 8)
-                .getStackForm(1L));
-        ItemList.Transformer_UEV_UHV.set(
-            new MTETransformer(TRANSFORMER_UEV_UHV.ID, "transformer.tier.09", "Highly Ultimate Transformer", 9)
-                .getStackForm(1L));
+        ItemList.Transformer_LV_ULV
+            .set(new MTETransformer(transformer_LV_ULV.ID, "transformer.tier.00", "", 0).getStackForm(1L));
+        ItemList.Transformer_MV_LV
+            .set(new MTETransformer(transformer_MV_LV.ID, "transformer.tier.01", "", 1).getStackForm(1L));
+        ItemList.Transformer_HV_MV
+            .set(new MTETransformer(transformer_HV_MV.ID, "transformer.tier.02", "", 2).getStackForm(1L));
+        ItemList.Transformer_EV_HV
+            .set(new MTETransformer(transformer_EV_HV.ID, "transformer.tier.03", "", 3).getStackForm(1L));
+        ItemList.Transformer_IV_EV
+            .set(new MTETransformer(transformer_IV_EV.ID, "transformer.tier.04", "", 4).getStackForm(1L));
+        ItemList.Transformer_LuV_IV
+            .set(new MTETransformer(transformer_LuV_IV.ID, "transformer.tier.05", "", 5).getStackForm(1L));
+        ItemList.Transformer_ZPM_LuV
+            .set(new MTETransformer(transformer_ZPM_LuV.ID, "transformer.tier.06", "", 6).getStackForm(1L));
+        ItemList.Transformer_UV_ZPM
+            .set(new MTETransformer(transformer_UV_ZPM.ID, "transformer.tier.07", "", 7).getStackForm(1L));
+        ItemList.Transformer_MAX_UV
+            .set(new MTETransformer(transformer_UHV_UV.ID, "transformer.tier.08", "", 8).getStackForm(1L));
+        ItemList.Transformer_UEV_UHV
+            .set(new MTETransformer(TRANSFORMER_UEV_UHV.ID, "transformer.tier.09", "", 9).getStackForm(1L));
 
-        ItemList.Transformer_UIV_UEV.set(
-            new MTETransformer(TRANSFORMER_UIV_UEV.ID, "transformer.tier.10", "Extremely Ultimate Transformer", 10)
-                .getStackForm(1L));
+        ItemList.Transformer_UIV_UEV
+            .set(new MTETransformer(TRANSFORMER_UIV_UEV.ID, "transformer.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.Transformer_UMV_UIV.set(
-            new MTETransformer(TRANSFORMER_UMV_UIV.ID, "transformer.tier.11", "Insanely Ultimate Transformer", 11)
-                .getStackForm(1L));
+        ItemList.Transformer_UMV_UIV
+            .set(new MTETransformer(TRANSFORMER_UMV_UIV.ID, "transformer.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.Transformer_UXV_UMV.set(
-            new MTETransformer(TRANSFORMER_UXV_UMV.ID, "transformer.tier.12", "Mega Ultimate Transformer", 12)
-                .getStackForm(1L));
+        ItemList.Transformer_UXV_UMV
+            .set(new MTETransformer(TRANSFORMER_UXV_UMV.ID, "transformer.tier.12", "", 12).getStackForm(1L));
 
-        ItemList.Transformer_MAX_UXV.set(
-            new MTETransformer(TRANSFORMER_MAX_UXV.ID, "transformer.tier.13", "Extended Mega Ultimate Transformer", 13)
-                .getStackForm(1L));
+        ItemList.Transformer_MAX_UXV
+            .set(new MTETransformer(TRANSFORMER_MAX_UXV.ID, "transformer.tier.13", "", 13).getStackForm(1L));
     }
 
     private void registerChemicalBath() {
@@ -9237,91 +9225,48 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private void registerWetTransformer() {
-        ItemList.WetTransformer_LV_ULV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_LV_ULV.ID,
-                "wettransformer.tier.00",
-                "Ultra Low Voltage Power Transformer",
-                0).getStackForm(1L));
+        ItemList.WetTransformer_LV_ULV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_LV_ULV.ID, "wettransformer.tier.00", "", 0).getStackForm(1L));
 
         ItemList.WetTransformer_MV_LV.set(
             new MTEWetTransformer(WET_TRANSFORMER_MV_LV.ID, "wetransformer.tier.01", "Low Voltage Power Transformer", 1)
                 .getStackForm(1L));
 
-        ItemList.WetTransformer_HV_MV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_HV_MV.ID,
-                "wettransformer.tier.02",
-                "Medium Voltage Power Transformer",
-                2).getStackForm(1L));
+        ItemList.WetTransformer_HV_MV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_HV_MV.ID, "wettransformer.tier.02", "", 2).getStackForm(1L));
 
-        ItemList.WetTransformer_EV_HV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_EV_HV.ID,
-                "wettransformer.tier.03",
-                "High Voltage Power Transformer",
-                3).getStackForm(1L));
+        ItemList.WetTransformer_EV_HV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_EV_HV.ID, "wettransformer.tier.03", "", 3).getStackForm(1L));
 
-        ItemList.WetTransformer_IV_EV.set(
-            new MTEWetTransformer(WET_TRANSFORMER_IV_EV.ID, "wettransformer.tier.04", "Extreme Power Transformer", 4)
-                .getStackForm(1L));
+        ItemList.WetTransformer_IV_EV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_IV_EV.ID, "wettransformer.tier.04", "", 4).getStackForm(1L));
 
-        ItemList.WetTransformer_LuV_IV.set(
-            new MTEWetTransformer(WET_TRANSFORMER_LuV_IV.ID, "wettransformer.tier.05", "Insane Power Transformer", 5)
-                .getStackForm(1L));
+        ItemList.WetTransformer_LuV_IV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_LuV_IV.ID, "wettransformer.tier.05", "", 5).getStackForm(1L));
 
-        ItemList.WetTransformer_ZPM_LuV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_ZPM_LuV.ID,
-                "wettransformer.tier.06",
-                "Ludicrous Power Transformer",
-                6).getStackForm(1L));
+        ItemList.WetTransformer_ZPM_LuV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_ZPM_LuV.ID, "wettransformer.tier.06", "", 6).getStackForm(1L));
 
-        ItemList.WetTransformer_UV_ZPM.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_UV_ZPM.ID,
-                "wettransformer.tier.07",
-                "ZPM Voltage Power Transformer",
-                7).getStackForm(1L));
+        ItemList.WetTransformer_UV_ZPM
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UV_ZPM.ID, "wettransformer.tier.07", "", 7).getStackForm(1L));
 
-        ItemList.WetTransformer_UHV_UV.set(
-            new MTEWetTransformer(WET_TRANSFORMER_UHV_UV.ID, "wettransformer.tier.08", "Ultimate Power Transformer", 8)
-                .getStackForm(1L));
+        ItemList.WetTransformer_UHV_UV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UHV_UV.ID, "wettransformer.tier.08", "", 8).getStackForm(1L));
 
-        ItemList.WetTransformer_UEV_UHV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_UEV_UHV.ID,
-                "wettransformer.tier.09",
-                "Highly Ultimate Power Transformer",
-                9).getStackForm(1L));
+        ItemList.WetTransformer_UEV_UHV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UEV_UHV.ID, "wettransformer.tier.09", "", 9).getStackForm(1L));
 
-        ItemList.WetTransformer_UIV_UEV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_UIV_UEV.ID,
-                "wettransformer.tier.10",
-                "Extremely Ultimate Power Transformer",
-                10).getStackForm(1L));
+        ItemList.WetTransformer_UIV_UEV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UIV_UEV.ID, "wettransformer.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.WetTransformer_UMV_UIV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_UMV_UIV.ID,
-                "wettransformer.tier.11",
-                "Insanely Ultimate Power Transformer",
-                11).getStackForm(1L));
+        ItemList.WetTransformer_UMV_UIV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UMV_UIV.ID, "wettransformer.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.WetTransformer_UXV_UMV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_UXV_UMV.ID,
-                "wettransformer.tier.12",
-                "Mega Ultimate Power Transformer",
-                12).getStackForm(1L));
+        ItemList.WetTransformer_UXV_UMV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UXV_UMV.ID, "wettransformer.tier.12", "", 12).getStackForm(1L));
 
-        ItemList.WetTransformer_MAX_UXV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_MAX_UXV.ID,
-                "wettransformer.tier.13",
-                "Extended Mega Ultimate Power Transformer",
-                13).getStackForm(1L));
+        ItemList.WetTransformer_MAX_UXV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_MAX_UXV.ID, "wettransformer.tier.13", "", 13).getStackForm(1L));
     }
 
     private void registerHighAmpTransformer() {

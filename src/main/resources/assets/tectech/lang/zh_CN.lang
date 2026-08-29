@@ -114,46 +114,6 @@ gt.blockmachines.hull.tier.13.name=UXV机器外壳
 gt.blockmachines.hull.tier.14.name=MAX机器外壳
 
 #Transformers
-gt.blockmachines.wetransformer.tier.00.name=ULV高能变压器
-gt.blockmachines.wetransformer.tier.00.desc=LV -> ULV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.01.name=LV高能变压器
-gt.blockmachines.wetransformer.tier.01.desc=MV -> LV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.02.name=MV高能变压器
-gt.blockmachines.wetransformer.tier.02.desc=HV -> MV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.03.name=HV高能变压器
-gt.blockmachines.wetransformer.tier.03.desc=EV -> HV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.04.name=EV高能变压器
-gt.blockmachines.wetransformer.tier.04.desc=IV -> EV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.05.name=IV高能变压器
-gt.blockmachines.wetransformer.tier.05.desc=LuV -> IV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.06.name=LuV高能变压器
-gt.blockmachines.wetransformer.tier.06.desc=ZPM -> LuV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.07.name=ZPM高能变压器
-gt.blockmachines.wetransformer.tier.07.desc=UV -> ZPM (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.08.name=UV高能变压器
-gt.blockmachines.wetransformer.tier.08.desc=UHV -> UV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.09.name=UHV高能变压器
-gt.blockmachines.wetransformer.tier.09.desc=UEV -> UHV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.10.name=UEV高能变压器
-gt.blockmachines.wetransformer.tier.10.desc=UIV -> UEV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.11.name=UIV高能变压器
-gt.blockmachines.wetransformer.tier.11.desc=UMV -> UIV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.12.name=UMV高能变压器
-gt.blockmachines.wetransformer.tier.12.desc=UXV -> UMV (用软锤右击以反转)
-gt.blockmachines.wetransformer.tier.13.name=UXV高能变压器
-gt.blockmachines.wetransformer.tier.13.desc=MAX -> UXV (用软锤右击以反转)
-
-gt.blockmachines.tt.transformer.tier.09.name=UHV变压器
-gt.blockmachines.tt.transformer.tier.09.desc=UEV -> UHV (用软锤右击以反转)
-gt.blockmachines.tt.transformer.tier.10.name=UEV变压器
-gt.blockmachines.tt.transformer.tier.10.desc=UIV -> UEV (用软锤右击以反转)
-gt.blockmachines.tt.transformer.tier.11.name=UIV变压器
-gt.blockmachines.tt.transformer.tier.11.desc=UMV -> UIV (用软锤右击以反转)
-gt.blockmachines.tt.transformer.tier.12.name=UMV变压器
-gt.blockmachines.tt.transformer.tier.12.desc=UXV -> UMV (用软锤右击以反转)
-gt.blockmachines.tt.transformer.tier.13.name=UXV变压器
-gt.blockmachines.tt.transformer.tier.13.desc=MAX -> UXV (用软锤右击以反转)
-
 gt.blockmachines.transformer.ha.tier.09.name=UHV高电流变压器
 gt.blockmachines.transformer.ha.tier.09.desc=UEV -> UHV (用软锤右击以反转
 gt.blockmachines.transformer.ha.tier.10.name=UEV高电流变压器

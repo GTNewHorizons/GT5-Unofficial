@@ -142,46 +142,6 @@ gt.blockmachines.hull.tier.13.name=UXV Корпус механизма
 gt.blockmachines.hull.tier.14.name=MAX Корпус механизма
 
 #Transformers
-gt.blockmachines.wetransformer.tier.00.name=ULV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.00.desc=LV -> ULV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.01.name=LV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.01.desc=MV -> LV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.02.name=MV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.02.desc=HV -> MV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.03.name=HV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.03.desc=EV -> HV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.04.name=EV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.04.desc=IV -> EV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.05.name=IV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.05.desc=LuV -> IV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.06.name=LuV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.06.desc=ZPM -> LuV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.07.name=ZPM Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.07.desc=UV -> ZPM (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.08.name=UV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.08.desc=UHV -> UV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.09.name=UHV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.09.desc=UEV -> UHV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.10.name=UEV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.10.desc=UIV -> UEV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.11.name=UIV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.11.desc=UMV -> UIV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.12.name=UMV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.12.desc=UXV -> UMV (Используй Киянку для инвертации)
-gt.blockmachines.wetransformer.tier.13.name=UXV Сверхмощный трансформатор
-gt.blockmachines.wetransformer.tier.13.desc=MAX -> UXV (Используй Киянку для инвертации)
-
-gt.blockmachines.tt.transformer.tier.09.name=UHV Трансформатор
-gt.blockmachines.tt.transformer.tier.09.desc=UEV -> UHV (Используй Киянку для инвертации)
-gt.blockmachines.tt.transformer.tier.10.name=UEV Трансформатор
-gt.blockmachines.tt.transformer.tier.10.desc=UIV -> UEV (Используй Киянку для инвертации)
-gt.blockmachines.tt.transformer.tier.11.name=UIV Трансформатор
-gt.blockmachines.tt.transformer.tier.11.desc=UMV -> UIV (Используй Киянку для инвертации)
-gt.blockmachines.tt.transformer.tier.12.name=UMV Трансформатор
-gt.blockmachines.tt.transformer.tier.12.desc=UXV -> UMV (Используй Киянку для инвертации)
-gt.blockmachines.tt.transformer.tier.13.name=UXV Трансформатор
-gt.blockmachines.tt.transformer.tier.13.desc=MAX -> UXV (Используй Киянку для инвертации)
-
 gt.blockmachines.transformer.ha.tier.09.name=UHV Высокоамперный трансформатор
 gt.blockmachines.transformer.ha.tier.09.desc=UEV - UHV (Используй Киянку для инвертации)
 gt.blockmachines.transformer.ha.tier.10.name=UEV Высокоамперный трансформатор
