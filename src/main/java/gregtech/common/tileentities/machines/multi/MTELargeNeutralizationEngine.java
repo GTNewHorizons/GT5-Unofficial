@@ -98,7 +98,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int robotArmTier;
     private int robotArmAmount;
     public int residueCapacity;
-    private int robotArmTicksTimer =0; /** Whenever this is at 0, robot arms get used and the timer ticks back up to 1200. Every tick that a robot arm is used, this timer decreases by 1 */
+    private int robotArmTicksTimer = 0;
+    /**
+     * Whenever this is at 0, robot arms get used and the timer ticks back up to 1200. Every tick that a robot arm is
+     * used, this timer decreases by 1
+     */
 
     // random number generation
     private int randomFactor;
@@ -528,7 +532,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         robotArmTier = aNBT.getInteger("robotArmTier");
         robotArmAmount = aNBT.getInteger("robotArmAmount");
         residueCapacity = aNBT.getInteger("residueCapacity");
-        robotArmTicksTimer =aNBT.getInteger("ticksRobotArmUsed");
+        robotArmTicksTimer = aNBT.getInteger("ticksRobotArmUsed");
     }
 
     @Override
@@ -622,7 +626,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 if (random < amount) depleteInput(robotArmItemStack);
                 robotArmTicksTimer = MINUTES;
             }
-            if(this.isAllowedToWork()){
+            if (this.isAllowedToWork()) {
                 robotArmTicksTimer--;
             }
         } else {
