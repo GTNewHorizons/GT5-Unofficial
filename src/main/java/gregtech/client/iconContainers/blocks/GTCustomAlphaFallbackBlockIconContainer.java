@@ -64,10 +64,10 @@ public class GTCustomAlphaFallbackBlockIconContainer extends AbstractBlockIconCo
 
         if (hasIcon) {
             icon = GregTechAPI.sBlockIcons.registerIcon(iconName);
-        }
+        } else icon = null;
         if (hasOverlay) {
             overlay = GregTechAPI.sBlockIcons.registerIcon(overlayName);
-        }
+        } else overlay = null;
     }
 
     @Override
