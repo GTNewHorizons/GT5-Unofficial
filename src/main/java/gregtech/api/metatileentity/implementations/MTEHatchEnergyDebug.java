@@ -35,6 +35,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
 
     @Override
     public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
         return StatCollector.translateToLocal("gt.blockmachines.hatch.energy.debug.name");
     }
 

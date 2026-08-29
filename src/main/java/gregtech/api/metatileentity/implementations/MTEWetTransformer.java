@@ -33,6 +33,7 @@ public class MTEWetTransformer extends MTETransformer {
 
     @Override
     public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
         return StatCollector.translateToLocalFormatted(
             "gt.blockmachines.wettransformer.name",
             GTValues.getLocalizedLongVoltageName(mTier),

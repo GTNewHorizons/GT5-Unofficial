@@ -55,6 +55,7 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
         return StatCollector.translateToLocalFormatted(
             "gt.blockmachines.transformer.name",
             GTValues.getLocalizedLongVoltageName(mTier),

@@ -42,6 +42,7 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     @Override
     public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
         return StatCollector
             .translateToLocalFormatted("gt.blockmachines.hatch.wireless.receiver.name", GTValues.VN[mTier]);
     }

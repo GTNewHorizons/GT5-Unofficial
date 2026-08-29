@@ -57,6 +57,7 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
 
     @Override
     public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
         return StatCollector.translateToLocalFormatted(
             "gt.blockmachines.batterybuffer.name",
             GTValues.getLocalizedLongVoltageName(mTier),

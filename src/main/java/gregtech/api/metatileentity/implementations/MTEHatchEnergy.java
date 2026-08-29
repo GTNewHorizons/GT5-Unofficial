@@ -38,6 +38,7 @@ public class MTEHatchEnergy extends MTEHatch {
 
     @Override
     public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
         return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.energy.name", GTValues.VN[mTier]);
     }
 

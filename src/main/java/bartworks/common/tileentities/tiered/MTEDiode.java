@@ -181,6 +181,7 @@ public class MTEDiode extends MTEBasicHull {
 
     @Override
     public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
         return StatCollector.translateToLocal("tile.diode.name") + " " + this.maxAmps + "A " + GTValues.VN[this.mTier];
     }
 

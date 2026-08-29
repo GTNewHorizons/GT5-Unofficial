@@ -1304,3 +1304,5 @@ gt.blockmachines.hatch.dynamo.name=%s动力仓
 gt.blockmachines.hatch.wireless.receiver.name=%s无线能源仓
 gt.blockmachines.transformer.name=%2$s变压器
 gt.blockmachines.wettransformer.name=%2$s高能变压器
+gt.blockmachines.hatch.input.name=输入仓（%s）
+gt.blockmachines.hatch.output.name=输出仓（%s）

@@ -8172,35 +8172,35 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerInputHatch() {
         ItemList.Hatch_Input_ULV
-            .set(new MTEHatchInput(INPUT_HATCH_ULV.ID, "hatch.input.tier.00", "Input Hatch (ULV)", 0).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_ULV.ID, "hatch.input.tier.00", "", 0).getStackForm(1L));
         ItemList.Hatch_Input_LV
-            .set(new MTEHatchInput(INPUT_HATCH_LV.ID, "hatch.input.tier.01", "Input Hatch (LV)", 1).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_LV.ID, "hatch.input.tier.01", "", 1).getStackForm(1L));
         ItemList.Hatch_Input_MV
-            .set(new MTEHatchInput(INPUT_HATCH_MV.ID, "hatch.input.tier.02", "Input Hatch (MV)", 2).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_MV.ID, "hatch.input.tier.02", "", 2).getStackForm(1L));
         ItemList.Hatch_Input_HV
-            .set(new MTEHatchInput(INPUT_HATCH_HV.ID, "hatch.input.tier.03", "Input Hatch (HV)", 3).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_HV.ID, "hatch.input.tier.03", "", 3).getStackForm(1L));
         ItemList.Hatch_Input_EV
-            .set(new MTEHatchInput(INPUT_HATCH_EV.ID, "hatch.input.tier.04", "Input Hatch (EV)", 4).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_EV.ID, "hatch.input.tier.04", "", 4).getStackForm(1L));
         ItemList.Hatch_Input_IV
-            .set(new MTEHatchInput(INPUT_HATCH_IV.ID, "hatch.input.tier.05", "Input Hatch (IV)", 5).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_IV.ID, "hatch.input.tier.05", "", 5).getStackForm(1L));
         ItemList.Hatch_Input_LuV
-            .set(new MTEHatchInput(INPUT_HATCH_LuV.ID, "hatch.input.tier.06", "Input Hatch (LuV)", 6).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_LuV.ID, "hatch.input.tier.06", "", 6).getStackForm(1L));
         ItemList.Hatch_Input_ZPM
-            .set(new MTEHatchInput(INPUT_HATCH_ZPM.ID, "hatch.input.tier.07", "Input Hatch (ZPM)", 7).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_ZPM.ID, "hatch.input.tier.07", "", 7).getStackForm(1L));
         ItemList.Hatch_Input_UV
-            .set(new MTEHatchInput(INPUT_HATCH_UV.ID, "hatch.input.tier.08", "Input Hatch (UV)", 8).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_UV.ID, "hatch.input.tier.08", "", 8).getStackForm(1L));
         ItemList.Hatch_Input_UHV
-            .set(new MTEHatchInput(INPUT_HATCH_UHV.ID, "hatch.input.tier.09", "Input Hatch (UHV)", 9).getStackForm(1L));
-        ItemList.Hatch_Input_UEV.set(
-            new MTEHatchInput(INPUT_HATCH_UEV.ID, "hatch.input.tier.10", "Input Hatch (UEV)", 10).getStackForm(1L));
-        ItemList.Hatch_Input_UIV.set(
-            new MTEHatchInput(INPUT_HATCH_UIV.ID, "hatch.input.tier.11", "Input Hatch (UIV)", 11).getStackForm(1L));
-        ItemList.Hatch_Input_UMV.set(
-            new MTEHatchInput(INPUT_HATCH_UMV.ID, "hatch.input.tier.12", "Input Hatch (UMV)", 12).getStackForm(1L));
-        ItemList.Hatch_Input_UXV.set(
-            new MTEHatchInput(INPUT_HATCH_UXV.ID, "hatch.input.tier.13", "Input Hatch (UXV)", 13).getStackForm(1L));
-        ItemList.Hatch_Input_MAX.set(
-            new MTEHatchInput(INPUT_HATCH_MAX.ID, "hatch.input.tier.14", "Input Hatch (MAX)", 14).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_UHV.ID, "hatch.input.tier.09", "", 9).getStackForm(1L));
+        ItemList.Hatch_Input_UEV
+            .set(new MTEHatchInput(INPUT_HATCH_UEV.ID, "hatch.input.tier.10", "", 10).getStackForm(1L));
+        ItemList.Hatch_Input_UIV
+            .set(new MTEHatchInput(INPUT_HATCH_UIV.ID, "hatch.input.tier.11", "", 11).getStackForm(1L));
+        ItemList.Hatch_Input_UMV
+            .set(new MTEHatchInput(INPUT_HATCH_UMV.ID, "hatch.input.tier.12", "", 12).getStackForm(1L));
+        ItemList.Hatch_Input_UXV
+            .set(new MTEHatchInput(INPUT_HATCH_UXV.ID, "hatch.input.tier.13", "", 13).getStackForm(1L));
+        ItemList.Hatch_Input_MAX
+            .set(new MTEHatchInput(INPUT_HATCH_MAX.ID, "hatch.input.tier.14", "", 14).getStackForm(1L));
         ItemList.Hatch_Input_Debug.set(
             new MTEHatchInputDebug(INPUT_HATCH_DEBUG.ID, "hatch.input.debug", "Debug Input Hatch", 14)
                 .getStackForm(1L));
@@ -8287,36 +8287,36 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerOutputHatch() {
-        ItemList.Hatch_Output_ULV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_ULV.ID, "hatch.output.tier.00", "Output Hatch (ULV)", 0).getStackForm(1L));
-        ItemList.Hatch_Output_LV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_LV.ID, "hatch.output.tier.01", "Output Hatch (LV)", 1).getStackForm(1L));
-        ItemList.Hatch_Output_MV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_MV.ID, "hatch.output.tier.02", "Output Hatch (MV)", 2).getStackForm(1L));
-        ItemList.Hatch_Output_HV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_HV.ID, "hatch.output.tier.03", "Output Hatch (HV)", 3).getStackForm(1L));
-        ItemList.Hatch_Output_EV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_EV.ID, "hatch.output.tier.04", "Output Hatch (EV)", 4).getStackForm(1L));
-        ItemList.Hatch_Output_IV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_IV.ID, "hatch.output.tier.05", "Output Hatch (IV)", 5).getStackForm(1L));
-        ItemList.Hatch_Output_LuV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_LuV.ID, "hatch.output.tier.06", "Output Hatch (LuV)", 6).getStackForm(1L));
-        ItemList.Hatch_Output_ZPM.set(
-            new MTEHatchOutput(OUTPUT_HATCH_ZPM.ID, "hatch.output.tier.07", "Output Hatch (ZPM)", 7).getStackForm(1L));
-        ItemList.Hatch_Output_UV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UV.ID, "hatch.output.tier.08", "Output Hatch (UV)", 8).getStackForm(1L));
-        ItemList.Hatch_Output_UHV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UHV.ID, "hatch.output.tier.09", "Output Hatch (UHV)", 9).getStackForm(1L));
-        ItemList.Hatch_Output_UEV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UEV.ID, "hatch.output.tier.10", "Output Hatch (UEV)", 10).getStackForm(1L));
-        ItemList.Hatch_Output_UIV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UIV.ID, "hatch.output.tier.11", "Output Hatch (UIV)", 11).getStackForm(1L));
-        ItemList.Hatch_Output_UMV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UMV.ID, "hatch.output.tier.12", "Output Hatch (UMV)", 12).getStackForm(1L));
-        ItemList.Hatch_Output_UXV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UXV.ID, "hatch.output.tier.13", "Output Hatch (UXV)", 13).getStackForm(1L));
-        ItemList.Hatch_Output_MAX.set(
-            new MTEHatchOutput(OUTPUT_HATCH_MAX.ID, "hatch.output.tier.14", "Output Hatch (MAX)", 14).getStackForm(1L));
+        ItemList.Hatch_Output_ULV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_ULV.ID, "hatch.output.tier.00", "", 0).getStackForm(1L));
+        ItemList.Hatch_Output_LV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_LV.ID, "hatch.output.tier.01", "", 1).getStackForm(1L));
+        ItemList.Hatch_Output_MV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_MV.ID, "hatch.output.tier.02", "", 2).getStackForm(1L));
+        ItemList.Hatch_Output_HV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_HV.ID, "hatch.output.tier.03", "", 3).getStackForm(1L));
+        ItemList.Hatch_Output_EV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_EV.ID, "hatch.output.tier.04", "", 4).getStackForm(1L));
+        ItemList.Hatch_Output_IV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_IV.ID, "hatch.output.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Output_LuV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_LuV.ID, "hatch.output.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Output_ZPM
+            .set(new MTEHatchOutput(OUTPUT_HATCH_ZPM.ID, "hatch.output.tier.07", "", 7).getStackForm(1L));
+        ItemList.Hatch_Output_UV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UV.ID, "hatch.output.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Output_UHV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UHV.ID, "hatch.output.tier.09", "", 9).getStackForm(1L));
+        ItemList.Hatch_Output_UEV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UEV.ID, "hatch.output.tier.10", "", 10).getStackForm(1L));
+        ItemList.Hatch_Output_UIV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UIV.ID, "hatch.output.tier.11", "", 11).getStackForm(1L));
+        ItemList.Hatch_Output_UMV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UMV.ID, "hatch.output.tier.12", "", 12).getStackForm(1L));
+        ItemList.Hatch_Output_UXV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UXV.ID, "hatch.output.tier.13", "", 13).getStackForm(1L));
+        ItemList.Hatch_Output_MAX
+            .set(new MTEHatchOutput(OUTPUT_HATCH_MAX.ID, "hatch.output.tier.14", "", 14).getStackForm(1L));
     }
 
     private static void registerVoidHatch() {

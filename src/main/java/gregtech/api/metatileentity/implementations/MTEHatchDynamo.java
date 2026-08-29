@@ -32,6 +32,7 @@ public class MTEHatchDynamo extends MTEHatch {
 
     @Override
     public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
         return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.dynamo.name", GTValues.VN[mTier]);
     }
 

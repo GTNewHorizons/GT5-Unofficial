@@ -99,6 +99,7 @@ public class MTEEnergyDistributor extends MTETransformer {
 
     @Override
     public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
         return StatCollector.translateToLocal("tile.energydistributor.name") + " " + GTValues.VN[this.mTier];
     }
 

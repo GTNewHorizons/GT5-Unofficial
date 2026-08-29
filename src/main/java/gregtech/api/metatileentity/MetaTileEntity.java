@@ -194,6 +194,19 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         return "gt.blockmachines." + mName + ".name";
     }
 
+    /**
+     * Whether this exact class builds its own name, as opposed to reading one key per instance.
+     * <p>
+     * Classes annotated with {@link IMetaTileEntity.SkipGenerateName} format their name from a key shared by the whole
+     * family, which does not fit their subclasses. The annotation is not inherited, so a subclass that does not build
+     * its own name reads its own key instead.
+     *
+     * @see #getLocalName()
+     */
+    protected final boolean hasOwnLocalName() {
+        return getClass().getAnnotation(IMetaTileEntity.SkipGenerateName.class) != null;
+    }
+
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {}
