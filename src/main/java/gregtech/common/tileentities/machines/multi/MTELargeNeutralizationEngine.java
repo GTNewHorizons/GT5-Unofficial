@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -619,7 +620,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 int random = getBaseMetaTileEntity().getRandomNumber(45 * (2 + robotArmTier));
                 ItemStack robotArmItemStack = ItemList.ROBOT_ARMS[robotArmTier].get(1);
                 if (random < amount) depleteInput(robotArmItemStack);
-                robotArmTicksTimer =1200;
+                robotArmTicksTimer = MINUTES;
             }
             if(this.isAllowedToWork()){
                 robotArmTicksTimer--;
