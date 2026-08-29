@@ -14,18 +14,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_ON;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
-import static tectech.rendering.EOH.EOHRenderingUtils.addRenderedBlockInWorld;
 
 import java.util.List;
 import java.util.function.Supplier;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
-import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
-import gregtech.api.enums.GTValues;
-import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockCasingsFoundry;
-import gregtech.common.render.IMTERenderer;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -39,6 +31,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.opengl.GL11;
 
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
@@ -63,15 +56,14 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEQuadcellTokamakGui;
+import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
-import org.joml.AxisAngle4f;
-import org.joml.Matrix4fStack;
-import org.lwjgl.opengl.GL11;
-import tectech.rendering.EOH.EOHRenderingUtils;
+import io.netty.buffer.ByteBuf;
 
 public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadcellTokamak>
     implements ISurvivalConstructable, ICasingTextureProvider, IMTERenderer {
@@ -460,7 +452,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         aNBT.setFloat("RuniteBoost", RUNITE_CURRENT_BOOST);
         aNBT.setFloat("CelestialBoost", CELESTIAL_TUNGSTEN_CURRENT_BOOST);
         aNBT.setFloat("OrikalkumBoost", ORIKALKUM_CURRENT_BOOST);
-        aNBT.setBoolean("shouldRender",shouldRender);
+        aNBT.setBoolean("shouldRender", shouldRender);
     }
 
     @Override
@@ -472,8 +464,6 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     protected @NotNull MTEQuadcellTokamakGui getGui() {
         return new MTEQuadcellTokamakGui(this);
     }
-
-
 
     // render code
     private boolean shouldRender = true;
@@ -507,59 +497,24 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         IGregTechTileEntity gte = getBaseMetaTileEntity();
 
         World world = gte.getWorld();
-        if(world == null) return;
+        if (world == null) return;
 
         GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-        Tessellator tess = Tessellator.instance;
-        GL11.glScalef(3,3,3);
-        GL11.glTranslated(x+2,y+10,z+2);
+        GL11.glTranslated(x + 2, y + 10, z + 2);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_LIGHT0);
-
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_CULL_FACE);
 
-        tess.startDrawingQuads();
-        tess.setColorRGBA(255,0,0,255);
-        tess.addVertex(-0.5,-0.5,-0.5);
-        tess.addVertex(0.5,-0.5,-0.5);
-        tess.addVertex(0.5,0.5,-0.5);
-        tess.addVertex(-0.5,0.5,-0.5);
+        drawCube(PlasmaType.FORCE, world, timeSinceLastTick, 1, -1, 1, 1, 1.4, 1);
+        drawCube(PlasmaType.RUNITE, world, timeSinceLastTick, -1, 1, -1, 1, 1.2, 2);
+        drawCube(PlasmaType.CELESTIAL, world, timeSinceLastTick, -1, -1, 1, 0.8, 1.2, 4);
+        drawCube(PlasmaType.ORIKALKUM, world, timeSinceLastTick, 1, 1, -1, 0.6, 1.2, 8);
 
-        tess.setColorRGBA(128,0,0,255);
-        tess.addVertex(-0.5,-0.5,0.5);
-        tess.addVertex(0.5,-0.5,0.5);
-        tess.addVertex(0.5,0.5,0.5);
-        tess.addVertex(-0.5,0.5,0.5);
-
-        tess.setColorRGBA(0,255,0,255);
-        tess.addVertex(-0.5,-0.5,-0.5);
-        tess.addVertex(-0.5,0.5,-0.5);
-        tess.addVertex(-0.5,0.5,0.5);
-        tess.addVertex(-0.5,-0.5,0.5);
-
-        tess.setColorRGBA(0,128,0,255);
-        tess.addVertex(0.5,-0.5,-0.5);
-        tess.addVertex(0.5,0.5,-0.5);
-        tess.addVertex(0.5,0.5,0.5);
-        tess.addVertex(0.5,-0.5,0.5);
-
-        tess.setColorRGBA(0,0,255,255);
-        tess.addVertex(-0.5,-0.5,-0.5);
-        tess.addVertex(-0.5,-0.5,0.5);
-        tess.addVertex(0.5,-0.5,0.5);
-        tess.addVertex(0.5,-0.5,-0.5);
-
-        tess.setColorRGBA(0,0,128,255);
-        tess.addVertex(-0.5,0.5,-0.5);
-        tess.addVertex(-0.5,0.5,0.5);
-        tess.addVertex(0.5,0.5,0.5);
-        tess.addVertex(0.5,0.5,-0.5);
-
-      tess.draw();
         // scale
 
         // translate
@@ -571,9 +526,68 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
 
     }
 
+    private double lerp(double start, double end, double t) {
+        return start + t * (end - start);
+    }
+
+    public void drawCube(PlasmaType plasma, World world, float timeSinceLastTick, double xMod, double yMod, double zMod,
+        double scaleBottomEnd, double scaleTopEnd, double lerpRate) {
+        GL11.glPushMatrix();
+        double rotationTimer = Math.toRadians(
+            10 * (10 - lerpRate)
+                * world.getWorldInfo()
+                    .getWorldTotalTime()
+                + timeSinceLastTick);
+        GL11.glRotated(rotationTimer, xMod, yMod, zMod);
+        Tessellator tess = Tessellator.instance;
+        short[] rgba = plasma.material.get()
+            .getRGBA();
+        tess.startDrawingQuads();
+        tess.setColorRGBA(rgba[0], rgba[1], rgba[2], rgba[3]);
+        tess.addVertex(-0.5, -0.5, -0.5);
+        tess.addVertex(0.5, -0.5, -0.5);
+        tess.addVertex(0.5, 0.5, -0.5);
+        tess.addVertex(-0.5, 0.5, -0.5);
+
+        tess.addVertex(-0.5, -0.5, 0.5);
+        tess.addVertex(0.5, -0.5, 0.5);
+        tess.addVertex(0.5, 0.5, 0.5);
+        tess.addVertex(-0.5, 0.5, 0.5);
+
+        tess.addVertex(-0.5, -0.5, -0.5);
+        tess.addVertex(-0.5, 0.5, -0.5);
+        tess.addVertex(-0.5, 0.5, 0.5);
+        tess.addVertex(-0.5, -0.5, 0.5);
+
+        tess.addVertex(0.5, -0.5, -0.5);
+        tess.addVertex(0.5, 0.5, -0.5);
+        tess.addVertex(0.5, 0.5, 0.5);
+        tess.addVertex(0.5, -0.5, 0.5);
+
+        tess.addVertex(-0.5, -0.5, -0.5);
+        tess.addVertex(-0.5, -0.5, 0.5);
+        tess.addVertex(0.5, -0.5, 0.5);
+        tess.addVertex(0.5, -0.5, -0.5);
+
+        tess.addVertex(-0.5, 0.5, -0.5);
+        tess.addVertex(-0.5, 0.5, 0.5);
+        tess.addVertex(0.5, 0.5, 0.5);
+        tess.addVertex(0.5, 0.5, -0.5);
+        double val = Math.sin(
+            Math.toRadians(
+                (lerpRate / 2
+                    * world.getWorldInfo()
+                        .getWorldTotalTime())
+                    % 360));
+        double lerped = lerp(scaleBottomEnd, scaleTopEnd, val);
+        GL11.glScaled(lerped, lerped, lerped);
+        tess.draw();
+        GL11.glPopMatrix();
+    }
+
     @Override
     public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
-        return  AxisAlignedBB.getBoundingBox(x-40, y-40, z-40, x + 40, y + 40, z + 40);
+        return AxisAlignedBB.getBoundingBox(x - 40, y - 40, z - 40, x + 40, y + 40, z + 40);
     }
 
     public enum PlasmaType {
