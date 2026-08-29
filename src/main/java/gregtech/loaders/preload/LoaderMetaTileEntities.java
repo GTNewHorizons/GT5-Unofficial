@@ -8612,26 +8612,26 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerInputBus() {
-        ItemList.Hatch_Input_Bus_ULV.set(
-            new MTEHatchInputBus(INPUT_BUS_ULV.ID, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_LV.set(
-            new MTEHatchInputBus(INPUT_BUS_LV.ID, "hatch.input_bus.tier.01", "Input Bus (LV)", 1).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_MV.set(
-            new MTEHatchInputBus(INPUT_BUS_MV.ID, "hatch.input_bus.tier.02", "Input Bus (MV)", 2).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_HV.set(
-            new MTEHatchInputBus(INPUT_BUS_HV.ID, "hatch.input_bus.tier.03", "Input Bus (HV)", 3).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_EV.set(
-            new MTEHatchInputBus(INPUT_BUS_EV.ID, "hatch.input_bus.tier.04", "Input Bus (EV)", 4).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_IV.set(
-            new MTEHatchInputBus(INPUT_BUS_IV.ID, "hatch.input_bus.tier.05", "Input Bus (IV)", 5).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_LuV.set(
-            new MTEHatchInputBus(INPUT_BUS_LuV.ID, "hatch.input_bus.tier.06", "Input Bus (LuV)", 6).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_ZPM.set(
-            new MTEHatchInputBus(INPUT_BUS_ZPM.ID, "hatch.input_bus.tier.07", "Input Bus (ZPM)", 7).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_UV.set(
-            new MTEHatchInputBus(INPUT_BUS_UV.ID, "hatch.input_bus.tier.08", "Input Bus (UV)", 8).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_MAX.set(
-            new MTEHatchInputBus(INPUT_BUS_UHV.ID, "hatch.input_bus.tier.09", "Input Bus (UHV)", 9).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_ULV
+            .set(new MTEHatchInputBus(INPUT_BUS_ULV.ID, "hatch.input_bus.tier.00", "", 0).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_LV
+            .set(new MTEHatchInputBus(INPUT_BUS_LV.ID, "hatch.input_bus.tier.01", "", 1).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_MV
+            .set(new MTEHatchInputBus(INPUT_BUS_MV.ID, "hatch.input_bus.tier.02", "", 2).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_HV
+            .set(new MTEHatchInputBus(INPUT_BUS_HV.ID, "hatch.input_bus.tier.03", "", 3).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_EV
+            .set(new MTEHatchInputBus(INPUT_BUS_EV.ID, "hatch.input_bus.tier.04", "", 4).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_IV
+            .set(new MTEHatchInputBus(INPUT_BUS_IV.ID, "hatch.input_bus.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_LuV
+            .set(new MTEHatchInputBus(INPUT_BUS_LuV.ID, "hatch.input_bus.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_ZPM
+            .set(new MTEHatchInputBus(INPUT_BUS_ZPM.ID, "hatch.input_bus.tier.07", "", 7).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_UV
+            .set(new MTEHatchInputBus(INPUT_BUS_UV.ID, "hatch.input_bus.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_MAX
+            .set(new MTEHatchInputBus(INPUT_BUS_UHV.ID, "hatch.input_bus.tier.09", "", 9).getStackForm(1L));
 
         ItemList.Hatch_Input_Bus_Debug.set(
             new MTEHatchInputBusDebug(INPUT_BUS_DEBUG.ID, "hatch.input_bus.debug", "Debug Input Bus", 9)
@@ -8639,30 +8639,26 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerOutputBus() {
-        ItemList.Hatch_Output_Bus_ULV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_ULV.ID, "hatch.output_bus.tier.00", "Output Bus (ULV)", 0)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_Bus_LV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_LV.ID, "hatch.output_bus.tier.01", "Output Bus (LV)", 1).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_MV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_MV.ID, "hatch.output_bus.tier.02", "Output Bus (MV)", 2).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_HV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_HV.ID, "hatch.output_bus.tier.03", "Output Bus (HV)", 3).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_EV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_EV.ID, "hatch.output_bus.tier.04", "Output Bus (EV)", 4).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_IV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_IV.ID, "hatch.output_bus.tier.05", "Output Bus (IV)", 5).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_LuV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_LuV.ID, "hatch.output_bus.tier.06", "Output Bus (LuV)", 6)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_Bus_ZPM.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_ZPM.ID, "hatch.output_bus.tier.07", "Output Bus (ZPM)", 7)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_Bus_UV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_UV.ID, "hatch.output_bus.tier.08", "Output Bus (UV)", 8).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_MAX.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_UHV.ID, "hatch.output_bus.tier.09", "Output Bus (UHV)", 9)
-                .getStackForm(1L));
+        ItemList.Hatch_Output_Bus_ULV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_ULV.ID, "hatch.output_bus.tier.00", "", 0).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_LV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_LV.ID, "hatch.output_bus.tier.01", "", 1).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_MV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_MV.ID, "hatch.output_bus.tier.02", "", 2).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_HV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_HV.ID, "hatch.output_bus.tier.03", "", 3).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_EV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_EV.ID, "hatch.output_bus.tier.04", "", 4).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_IV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_IV.ID, "hatch.output_bus.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_LuV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_LuV.ID, "hatch.output_bus.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_ZPM
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_ZPM.ID, "hatch.output_bus.tier.07", "", 7).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_UV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_UV.ID, "hatch.output_bus.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_MAX
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_UHV.ID, "hatch.output_bus.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerMufflerHatch() {

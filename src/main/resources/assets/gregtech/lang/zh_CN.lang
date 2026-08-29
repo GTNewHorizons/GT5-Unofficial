@@ -1306,3 +1306,5 @@ gt.blockmachines.transformer.name=%2$s变压器
 gt.blockmachines.wettransformer.name=%2$s高能变压器
 gt.blockmachines.hatch.input.name=输入仓（%s）
 gt.blockmachines.hatch.output.name=输出仓（%s）
+gt.blockmachines.hatch.input_bus.name=输入总线（%s）
+gt.blockmachines.hatch.output_bus.name=输出总线（%s）
