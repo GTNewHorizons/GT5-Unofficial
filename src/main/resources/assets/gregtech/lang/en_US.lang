@@ -197,6 +197,7 @@ gt.authors=Authors: %s
 gt.voltage.tier=-tier
 
 # Tooltip for Block Machines
+gt.blockmachines.batterybuffer.desc=%s Slots
 gt.blockmachines.cable.desc=Max Voltage: %s\nMax Amperage: %s\nLoss/Meter/Ampere: %s
 gt.blockmachines.gt_frame.desc.format=Just something you can put covers on.
 gt.blockmachines.transformer.desc=%s -> %s (Use Soft Mallet to invert)
@@ -266,6 +267,7 @@ gt.hatch_element_of_class=of class %s
 gt.hatch_element_of_id=of id %s
 
 # Basic Machine
+gt.blockmachines.batterybuffer.name=%1$s Battery Buffer
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Basic World Accelerator
 gt.blockmachines.basicmachine.accelerator.tier.02.name=Advanced World Accelerator
 gt.blockmachines.basicmachine.accelerator.tier.03.name=Advanced World Accelerator II

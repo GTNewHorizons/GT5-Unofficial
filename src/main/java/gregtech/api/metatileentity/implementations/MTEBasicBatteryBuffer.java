@@ -20,6 +20,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -27,12 +28,15 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.MTEBasicBatteryBufferGui;
 import ic2.api.item.IElectricItem;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
 
     public boolean mCharge = false, mDecharge = false;
@@ -52,11 +56,16 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
     }
 
     @Override
+    public String getLocalName() {
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.batterybuffer.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
+    }
+
+    @Override
     public String[] getDescription() {
-        String[] desc = new String[mDescriptionArray.length + 1];
-        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = mInventory.length + " Slots";
-        return desc;
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.batterybuffer.desc", mInventory.length);
     }
 
     @Override

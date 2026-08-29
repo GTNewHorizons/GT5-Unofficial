@@ -197,6 +197,7 @@ gt.authors=Авторы: %s
 gt.voltage.tier=-тир
 
 # Tooltip for Block Machines
+gt.blockmachines.batterybuffer.desc=Слотов: %s
 gt.blockmachines.cable.desc=Макс. вольтаж: %s\nМакс. ампераж: %s\nПотеря на блок/ампер: %s
 gt.blockmachines.gt_frame.desc.format=Просто что-то, на что можно надеть модуль.
 gt.blockmachines.transformer.desc=%s -> %s (Используй Киянку для инвертации)
@@ -266,6 +267,7 @@ gt.hatch_element_of_class=класс %s
 gt.hatch_element_of_id=id %s
 
 # Basic Machine
+gt.blockmachines.batterybuffer.name=%2$s Аккумуляторный буфер
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Базовый мировой ускоритель
 gt.blockmachines.basicmachine.accelerator.tier.02.name=Продвинутый мировой ускоритель
 gt.blockmachines.basicmachine.accelerator.tier.03.name=Продвинутый мировой ускоритель II

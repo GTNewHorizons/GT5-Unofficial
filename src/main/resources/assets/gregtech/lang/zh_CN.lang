@@ -1292,3 +1292,9 @@ tc.aspect.help.custom2=扭曲的思想
 tc.aspect.help.custom3=新事物的起始
 tc.aspect.help.custom4=宇宙
 tc.aspect.help.custom5=荣耀
+
+# Tooltip for Block Machines
+gt.blockmachines.batterybuffer.desc=%s格
+
+# Basic Machine
+gt.blockmachines.batterybuffer.name=%1$s电池箱
