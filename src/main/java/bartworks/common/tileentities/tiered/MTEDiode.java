@@ -40,6 +40,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -50,6 +51,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEDiode extends MTEBasicHull {
 
     private long maxAmps;
@@ -131,7 +133,11 @@ public class MTEDiode extends MTEBasicHull {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEDiode(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        MTEDiode diode = new MTEDiode(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        // The name is built from the amperage, so it has to be known before the first tick.
+        diode.maxAmps = this.maxAmps;
+        diode.aAmps = this.maxAmps;
+        return diode;
     }
 
     private long getAmpsfromMeta(int meta) {
@@ -171,6 +177,11 @@ public class MTEDiode extends MTEBasicHull {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("maxEUOutput", maxEUOutput());
         tag.setLong("amps", this.aAmps);
+    }
+
+    @Override
+    public String getLocalName() {
+        return StatCollector.translateToLocal("tile.diode.name") + " " + this.maxAmps + "A " + GTValues.VN[this.mTier];
     }
 
     @Override

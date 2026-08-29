@@ -309,31 +309,13 @@ public class ItemRegistry {
             EnergyDistributor_MAX.ID };
 
         for (int i = 0; i < GTValues.VN.length - 1; i++) {
-            ItemRegistry.diode2A[i] = new MTEDiode(
-                Diode2A[i],
-                "diode" + "2A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 2A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode4A[i] = new MTEDiode(
-                Diode4A[i],
-                "diode" + "4A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 4A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode8A[i] = new MTEDiode(
-                Diode8A[i],
-                "diode" + "8A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 8A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode12A[i] = new MTEDiode(
-                Diode12A[i],
-                "diode" + "12A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 12A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode16A[i] = new MTEDiode(
-                Diode16A[i],
-                "diode" + "16A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 16A " + GTValues.VN[i],
-                i).getStackForm(1L);
+            ItemRegistry.diode2A[i] = new MTEDiode(Diode2A[i], "diode" + "2A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode4A[i] = new MTEDiode(Diode4A[i], "diode" + "4A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode8A[i] = new MTEDiode(Diode8A[i], "diode" + "8A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode12A[i] = new MTEDiode(Diode12A[i], "diode" + "12A" + GTValues.VN[i], "", i)
+                .getStackForm(1L);
+            ItemRegistry.diode16A[i] = new MTEDiode(Diode16A[i], "diode" + "16A" + GTValues.VN[i], "", i)
+                .getStackForm(1L);
             ItemRegistry.energyDistributor[i] = new MTEEnergyDistributor(
                 EnergyDistributors[i],
                 "energydistributor" + GTValues.VN[i],
