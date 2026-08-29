@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.multiblock;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak.RESIDUE_CONVERSION_DIVISOR;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -19,6 +20,7 @@ import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
@@ -78,6 +80,9 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
                 val -> multiblock.ORIKALKUM_CURRENT_BOOST = val));
 
         syncManager.syncValue("EnergyProduced", new LongSyncValue(() -> multiblock.lEUt, val -> multiblock.lEUt = val));
+        syncManager.syncValue(
+            "ResidueOutput",
+            new IntSyncValue(() -> multiblock.drainedSinceLastOutput / Math.max(1, multiblock.residueCycles)));
     }
 
     @Override
@@ -147,7 +152,9 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
         FloatSyncValue celestialBoost = PlasmaType.CELESTIAL.getBoostSyncValue(syncManager);
         FloatSyncValue orikalkumBoost = PlasmaType.ORIKALKUM.getBoostSyncValue(syncManager);
 
+        SyncHandler<?> progress = syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
         LongSyncValue eut = syncManager.findSyncHandler("EnergyProduced", LongSyncValue.class);
+        IntSyncValue residue = syncManager.findSyncHandler("ResidueOutput", IntSyncValue.class);
 
         return super.createTerminalTextWidget(syncManager, parent).child(createRecipeInfoTextWidget(syncManager))
             .child(
@@ -160,8 +167,20 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
                     .alignment(Alignment.CenterLeft)
                     .asWidget()
                     .marginBottom(2)
-                    .fullWidth())
-            // todo Residue output line here
+                    .fullWidth()
+                    .setEnabledIf(_ -> Predicates.isPositive(progress)))
+            .child(
+                IKey.dynamic(
+                    () -> "Producing " + EnumChatFormatting.DARK_AQUA
+                        + formatNumber(Math.floorDiv(residue.getIntValue(), RESIDUE_CONVERSION_DIVISOR))
+                        + EnumChatFormatting.WHITE
+                        + " L/s residue")
+                    .color(Color.WHITE.main)
+                    .alignment(Alignment.CenterLeft)
+                    .asWidget()
+                    .marginBottom(2)
+                    .fullWidth()
+                    .setEnabledIf(_ -> Predicates.arePositive(progress, residue)))
             .child(
                 IKey.lang("Expected drain rates:")
                     .color(Color.WHITE.main)
@@ -169,8 +188,7 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
                     .asWidget()
                     .fullWidth()
                     .marginBottom(2)
-                    .setEnabledIf(
-                        _ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0"))))
+                    .setEnabledIf(_ -> Predicates.isPositive(progress)))
             .child(IKey.dynamic(() -> {
                 float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
                     * orikalkumBoost.getFloatValue()));
@@ -181,7 +199,7 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
                 .asWidget()
                 .marginBottom(2)
                 .marginLeft(2)
-                .setEnabledIf(_ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0"))))
+                .setEnabledIf(_ -> Predicates.isPositive(progress)))
             .child(IKey.dynamic(() -> {
                 float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
                     * orikalkumBoost.getFloatValue()));
@@ -192,7 +210,7 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
                 .asWidget()
                 .marginBottom(2)
                 .marginLeft(2)
-                .setEnabledIf(_ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0"))))
+                .setEnabledIf(_ -> Predicates.isPositive(progress)))
             .child(IKey.dynamic(() -> {
                 float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
                     * orikalkumBoost.getFloatValue()));
@@ -206,7 +224,7 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
                 .asWidget()
                 .marginBottom(2)
                 .marginLeft(2)
-                .setEnabledIf(_ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0"))))
+                .setEnabledIf(_ -> Predicates.isPositive(progress)))
             .child(IKey.dynamic(() -> {
                 float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
                     * orikalkumBoost.getFloatValue()));
@@ -220,7 +238,7 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
                 .asWidget()
                 .marginBottom(2)
                 .marginLeft(3)
-                .setEnabledIf(_ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0"))));
+                .setEnabledIf(_ -> Predicates.isPositive(progress)));
     }
 
     protected Flow createConfigurationTerminalTextWidget(PanelSyncManager syncManager) {

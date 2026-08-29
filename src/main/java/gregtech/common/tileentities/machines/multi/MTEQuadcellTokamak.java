@@ -77,6 +77,11 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     private static final int HEIGHT_OFFSET = 6;
     private static final int DEPTH_OFFSET = 1;
 
+    // How many cycles should it take between outputs of residue
+    public static final int CYCLES_FOR_RESIDUE = 5;
+    // The rate of plasma to residue, X plasma makes 1 residue
+    public static final int RESIDUE_CONVERSION_DIVISOR = 300;
+
     public int FORCE_CURRENT_DR = 0;
     public int RUNITE_CURRENT_DR = 0;
     public int CELESTIAL_TUNGSTEN_CURRENT_DR = 0;
@@ -86,6 +91,9 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     public float RUNITE_CURRENT_BOOST = 0f;
     public float CELESTIAL_TUNGSTEN_CURRENT_BOOST = 0f;
     public float ORIKALKUM_CURRENT_BOOST = 1f;
+
+    public int residueCycles = 0;
+    public int drainedSinceLastOutput = 0;
 
     public boolean terminalSwitch = false;
 
@@ -248,7 +256,9 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
                 "Periodically outputs " + EnumChatFormatting.DARK_AQUA
                     + "Tokamak Residue"
                     + EnumChatFormatting.GRAY
-                    + " at a rate of 1L per 300L of Plasma burned")
+                    + " at a rate of 1L per "
+                    + RESIDUE_CONVERSION_DIVISOR
+                    + "L of Plasma burned")
             .addSupportAny()
             .addStructureInfo("")
             .toolTipFinisher();
@@ -319,6 +329,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         FluidStack celestialtungstenStack = PlasmaType.CELESTIAL.getFluid(CELESTIAL_TUNGSTEN_CURRENT_DR);
         FluidStack orikalkumStack = PlasmaType.ORIKALKUM.getFluid(ORIKALKUM_CURRENT_DR);
 
+        // if fluid can't be drained, turn off and clear all bonuses
         if (FORCE_CURRENT_DR > 0) {
             if (!processFluid(forceStack, nonDrainChance)) {
                 return crashMachine(forceStack);
@@ -343,7 +354,25 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
             }
             euRate += (long) (eutBoost * ORIKALKUM_CURRENT_DR * PlasmaType.ORIKALKUM.density / 20);
         }
-        // if fluid can't be drained, turn off and clear all bonuses
+
+        // if successfully drained all expected fluids, check to output residue
+        if (FORCE_CURRENT_DR > 0 && RUNITE_CURRENT_DR > 0 && CELESTIAL_TUNGSTEN_CURRENT_DR > 0) {
+            if (residueCycles == CYCLES_FOR_RESIDUE) {
+                int residueOutput = Math.floorDiv(drainedSinceLastOutput, RESIDUE_CONVERSION_DIVISOR);
+                addOutput(Materials.TokamakResidue.getFluid(residueOutput));
+                residueCycles = 0;
+                drainedSinceLastOutput = 0;
+            }
+
+            drainedSinceLastOutput += FORCE_CURRENT_DR;
+            drainedSinceLastOutput += RUNITE_CURRENT_DR;
+            drainedSinceLastOutput += CELESTIAL_TUNGSTEN_CURRENT_DR;
+            drainedSinceLastOutput += ORIKALKUM_CURRENT_DR;
+            residueCycles++;
+        } else {
+            residueCycles = 0;
+            drainedSinceLastOutput = 0;
+        }
 
         lEUt += euRate;
         mEfficiency = 10000;
@@ -373,6 +402,8 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     public CheckRecipeResult crashMachine(FluidStack stack) {
         resetBoosts();
         lEUt = 0;
+        residueCycles = 0;
+        drainedSinceLastOutput = 0;
         stopMachine(ShutDownReasonRegistry.outOfFluid(stack));
         return CheckRecipeResultRegistry.CRASH;
     }
