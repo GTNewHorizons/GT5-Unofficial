@@ -2201,324 +2201,183 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerChestBuffer() {
-        ItemList.Automation_ChestBuffer_ULV.set(
-            new MTEChestBuffer(
-                CHEST_BUFFER_ULV.ID,
-                "automation.chestbuffer.tier.00",
-                "Ultra Low Voltage Chest Buffer",
-                0).getStackForm(1L));
-        ItemList.Automation_ChestBuffer_LV.set(
-            new MTEChestBuffer(CHEST_BUFFER_LV.ID, "automation.chestbuffer.tier.01", "Low Voltage Chest Buffer", 1)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_MV.set(
-            new MTEChestBuffer(CHEST_BUFFER_MV.ID, "automation.chestbuffer.tier.02", "Medium Voltage Chest Buffer", 2)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_HV.set(
-            new MTEChestBuffer(CHEST_BUFFER_HV.ID, "automation.chestbuffer.tier.03", "High Voltage Chest Buffer", 3)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_EV.set(
-            new MTEChestBuffer(CHEST_BUFFER_EV.ID, "automation.chestbuffer.tier.04", "Extreme Voltage Chest Buffer", 4)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_IV.set(
-            new MTEChestBuffer(CHEST_BUFFER_IV.ID, "automation.chestbuffer.tier.05", "Insane Voltage Chest Buffer", 5)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_LuV.set(
-            new MTEChestBuffer(
-                CHEST_BUFFER_LuV.ID,
-                "automation.chestbuffer.tier.06",
-                "Ludicrous Voltage Chest Buffer",
-                6).getStackForm(1L));
-        ItemList.Automation_ChestBuffer_ZPM.set(
-            new MTEChestBuffer(CHEST_BUFFER_ZPM.ID, "automation.chestbuffer.tier.07", "ZPM Voltage Chest Buffer", 7)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_UV.set(
-            new MTEChestBuffer(CHEST_BUFFER_UV.ID, "automation.chestbuffer.tier.08", "Ultimate Voltage Chest Buffer", 8)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_UHV.set(
-            new MTEChestBuffer(
-                CHEST_BUFFER_UHV.ID,
-                "automation.chestbuffer.tier.09",
-                "Highly Ultimate Voltage Chest Buffer",
-                9).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_ULV
+            .set(new MTEChestBuffer(CHEST_BUFFER_ULV.ID, "automation.chestbuffer.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_LV
+            .set(new MTEChestBuffer(CHEST_BUFFER_LV.ID, "automation.chestbuffer.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_MV
+            .set(new MTEChestBuffer(CHEST_BUFFER_MV.ID, "automation.chestbuffer.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_HV
+            .set(new MTEChestBuffer(CHEST_BUFFER_HV.ID, "automation.chestbuffer.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_EV
+            .set(new MTEChestBuffer(CHEST_BUFFER_EV.ID, "automation.chestbuffer.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_IV
+            .set(new MTEChestBuffer(CHEST_BUFFER_IV.ID, "automation.chestbuffer.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_LuV
+            .set(new MTEChestBuffer(CHEST_BUFFER_LuV.ID, "automation.chestbuffer.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_ZPM
+            .set(new MTEChestBuffer(CHEST_BUFFER_ZPM.ID, "automation.chestbuffer.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_UV
+            .set(new MTEChestBuffer(CHEST_BUFFER_UV.ID, "automation.chestbuffer.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_UHV
+            .set(new MTEChestBuffer(CHEST_BUFFER_UHV.ID, "automation.chestbuffer.tier.09", "", 9).getStackForm(1L));
 
-        ItemList.Automation_ChestBuffer_UEV.set(
-            new MTEChestBuffer(
-                CHEST_BUFFER_UEV.ID,
-                "automation.chestbuffer.tier.10",
-                "Ultra High Voltage Chest Buffer",
-                10).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_UEV
+            .set(new MTEChestBuffer(CHEST_BUFFER_UEV.ID, "automation.chestbuffer.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.Automation_ChestBuffer_UIV.set(
-            new MTEChestBuffer(CHEST_BUFFER_UIV.ID, "automation.chestbuffer.tier.11", "UIV Voltage Chest Buffer", 11)
-                .getStackForm(1L));
+        ItemList.Automation_ChestBuffer_UIV
+            .set(new MTEChestBuffer(CHEST_BUFFER_UIV.ID, "automation.chestbuffer.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.Automation_ChestBuffer_UMV.set(
-            new MTEChestBuffer(CHEST_BUFFER_UMV.ID, "automation.chestbuffer.tier.12", "UMV Voltage Chest Buffer", 12)
-                .getStackForm(1L));
+        ItemList.Automation_ChestBuffer_UMV
+            .set(new MTEChestBuffer(CHEST_BUFFER_UMV.ID, "automation.chestbuffer.tier.12", "", 12).getStackForm(1L));
     }
 
     private static void registerItemFilter() {
-        ItemList.Automation_Filter_ULV.set(
-            new MTEFilter(ITEM_FILTER_ULV.ID, "automation.filter.tier.00", "Ultra Low Voltage Item Filter", 0)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_LV.set(
-            new MTEFilter(ITEM_FILTER_LV.ID, "automation.filter.tier.01", "Low Voltage Item Filter", 1)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_MV.set(
-            new MTEFilter(ITEM_FILTER_MV.ID, "automation.filter.tier.02", "Medium Voltage Item Filter", 2)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_HV.set(
-            new MTEFilter(ITEM_FILTER_HV.ID, "automation.filter.tier.03", "High Voltage Item Filter", 3)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_EV.set(
-            new MTEFilter(ITEM_FILTER_EV.ID, "automation.filter.tier.04", "Extreme Voltage Item Filter", 4)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_IV.set(
-            new MTEFilter(ITEM_FILTER_IV.ID, "automation.filter.tier.05", "Insane Voltage Item Filter", 5)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_LuV.set(
-            new MTEFilter(ITEM_FILTER_LuV.ID, "automation.filter.tier.06", "Ludicrous Voltage Item Filter", 6)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_ZPM.set(
-            new MTEFilter(ITEM_FILTER_ZPM.ID, "automation.filter.tier.07", "ZPM Voltage Item Filter", 7)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_UV.set(
-            new MTEFilter(ITEM_FILTER_UV.ID, "automation.filter.tier.08", "Ultimate Voltage Item Filter", 8)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_MAX.set(
-            new MTEFilter(ITEM_FILTER_UHV.ID, "automation.filter.tier.09", "Highly Ultimate Voltage Item Filter", 9)
-                .getStackForm(1L));
+        ItemList.Automation_Filter_ULV
+            .set(new MTEFilter(ITEM_FILTER_ULV.ID, "automation.filter.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_Filter_LV
+            .set(new MTEFilter(ITEM_FILTER_LV.ID, "automation.filter.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_Filter_MV
+            .set(new MTEFilter(ITEM_FILTER_MV.ID, "automation.filter.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_Filter_HV
+            .set(new MTEFilter(ITEM_FILTER_HV.ID, "automation.filter.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_Filter_EV
+            .set(new MTEFilter(ITEM_FILTER_EV.ID, "automation.filter.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_Filter_IV
+            .set(new MTEFilter(ITEM_FILTER_IV.ID, "automation.filter.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_Filter_LuV
+            .set(new MTEFilter(ITEM_FILTER_LuV.ID, "automation.filter.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_Filter_ZPM
+            .set(new MTEFilter(ITEM_FILTER_ZPM.ID, "automation.filter.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_Filter_UV
+            .set(new MTEFilter(ITEM_FILTER_UV.ID, "automation.filter.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_Filter_MAX
+            .set(new MTEFilter(ITEM_FILTER_UHV.ID, "automation.filter.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerTypeFilter() {
-        ItemList.Automation_TypeFilter_ULV.set(
-            new MTETypeFilter(TYPE_FILTER_ULV.ID, "automation.typefilter.tier.00", "Ultra Low Voltage Type Filter", 0)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_LV.set(
-            new MTETypeFilter(TYPE_FILTER_LV.ID, "automation.typefilter.tier.01", "Low Voltage Type Filter", 1)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_MV.set(
-            new MTETypeFilter(TYPE_FILTER_MV.ID, "automation.typefilter.tier.02", "Medium Voltage Type Filter", 2)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_HV.set(
-            new MTETypeFilter(TYPE_FILTER_HV.ID, "automation.typefilter.tier.03", "High Voltage Type Filter", 3)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_EV.set(
-            new MTETypeFilter(TYPE_FILTER_EV.ID, "automation.typefilter.tier.04", "Extreme Voltage Type Filter", 4)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_IV.set(
-            new MTETypeFilter(TYPE_FILTER_IV.ID, "automation.typefilter.tier.05", "Insane Voltage Type Filter", 5)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_LuV.set(
-            new MTETypeFilter(TYPE_FILTER_LuV.ID, "automation.typefilter.tier.06", "Ludicrous Voltage Type Filter", 6)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_ZPM.set(
-            new MTETypeFilter(TYPE_FILTER_ZPM.ID, "automation.typefilter.tier.07", "ZPM Voltage Type Filter", 7)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_UV.set(
-            new MTETypeFilter(TYPE_FILTER_UV.ID, "automation.typefilter.tier.08", "Ultimate Voltage Type Filter", 8)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_MAX.set(
-            new MTETypeFilter(
-                TYPE_FILTER_UHV.ID,
-                "automation.typefilter.tier.09",
-                "Highly Ultimate Voltage Type Filter",
-                9).getStackForm(1L));
+        ItemList.Automation_TypeFilter_ULV
+            .set(new MTETypeFilter(TYPE_FILTER_ULV.ID, "automation.typefilter.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_TypeFilter_LV
+            .set(new MTETypeFilter(TYPE_FILTER_LV.ID, "automation.typefilter.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_TypeFilter_MV
+            .set(new MTETypeFilter(TYPE_FILTER_MV.ID, "automation.typefilter.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_TypeFilter_HV
+            .set(new MTETypeFilter(TYPE_FILTER_HV.ID, "automation.typefilter.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_TypeFilter_EV
+            .set(new MTETypeFilter(TYPE_FILTER_EV.ID, "automation.typefilter.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_TypeFilter_IV
+            .set(new MTETypeFilter(TYPE_FILTER_IV.ID, "automation.typefilter.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_TypeFilter_LuV
+            .set(new MTETypeFilter(TYPE_FILTER_LuV.ID, "automation.typefilter.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_TypeFilter_ZPM
+            .set(new MTETypeFilter(TYPE_FILTER_ZPM.ID, "automation.typefilter.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_TypeFilter_UV
+            .set(new MTETypeFilter(TYPE_FILTER_UV.ID, "automation.typefilter.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_TypeFilter_MAX
+            .set(new MTETypeFilter(TYPE_FILTER_UHV.ID, "automation.typefilter.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerRegulator() {
-        ItemList.Automation_Regulator_ULV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_ULV.ID, "automation.regulator.tier.00", "Ultra Low Voltage Regulator", 0)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_LV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_LV.ID, "automation.regulator.tier.01", "Low Voltage Regulator", 1)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_MV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_MV.ID, "automation.regulator.tier.02", "Medium Voltage Regulator", 2)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_HV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_HV.ID, "automation.regulator.tier.03", "High Voltage Regulator", 3)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_EV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_EV.ID, "automation.regulator.tier.04", "Extreme Voltage Regulator", 4)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_IV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_IV.ID, "automation.regulator.tier.05", "Insane Voltage Regulator", 5)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_LuV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_LuV.ID, "automation.regulator.tier.06", "Ludicrous Voltage Regulator", 6)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_ZPM.set(
-            new MTERegulator(VOLTAGE_REGULATOR_ZPM.ID, "automation.regulator.tier.07", "ZPM Voltage Regulator", 7)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_UV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_UV.ID, "automation.regulator.tier.08", "Ultimate Voltage Regulator", 8)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_MAX.set(
-            new MTERegulator(
-                VOLTAGE_REGULATOR_UHV.ID,
-                "automation.regulator.tier.09",
-                "Highly Ultimate Voltage Regulator",
-                9).getStackForm(1L));
+        ItemList.Automation_Regulator_ULV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_ULV.ID, "automation.regulator.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_Regulator_LV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_LV.ID, "automation.regulator.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_Regulator_MV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_MV.ID, "automation.regulator.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_Regulator_HV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_HV.ID, "automation.regulator.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_Regulator_EV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_EV.ID, "automation.regulator.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_Regulator_IV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_IV.ID, "automation.regulator.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_Regulator_LuV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_LuV.ID, "automation.regulator.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_Regulator_ZPM
+            .set(new MTERegulator(VOLTAGE_REGULATOR_ZPM.ID, "automation.regulator.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_Regulator_UV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_UV.ID, "automation.regulator.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_Regulator_MAX
+            .set(new MTERegulator(VOLTAGE_REGULATOR_UHV.ID, "automation.regulator.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerSuperBuffer() {
-        ItemList.Automation_SuperBuffer_ULV.set(
-            new MTESuperBuffer(
-                SUPER_BUFFER_ULV.ID,
-                "automation.superbuffer.tier.00",
-                "Ultra Low Voltage Super Buffer",
-                0).getStackForm(1L));
-        ItemList.Automation_SuperBuffer_LV.set(
-            new MTESuperBuffer(SUPER_BUFFER_LV.ID, "automation.superbuffer.tier.01", "Low Voltage Super Buffer", 1)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_MV.set(
-            new MTESuperBuffer(SUPER_BUFFER_MV.ID, "automation.superbuffer.tier.02", "Medium Voltage Super Buffer", 2)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_HV.set(
-            new MTESuperBuffer(SUPER_BUFFER_HV.ID, "automation.superbuffer.tier.03", "High Voltage Super Buffer", 3)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_EV.set(
-            new MTESuperBuffer(SUPER_BUFFER_EV.ID, "automation.superbuffer.tier.04", "Extreme Voltage Super Buffer", 4)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_IV.set(
-            new MTESuperBuffer(SUPER_BUFFER_IV.ID, "automation.superbuffer.tier.05", "Insane Voltage Super Buffer", 5)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_LuV.set(
-            new MTESuperBuffer(
-                SUPER_BUFFER_LuV.ID,
-                "automation.superbuffer.tier.06",
-                "Ludicrous Voltage Super Buffer",
-                6).getStackForm(1L));
-        ItemList.Automation_SuperBuffer_ZPM.set(
-            new MTESuperBuffer(SUPER_BUFFER_ZPM.ID, "automation.superbuffer.tier.07", "ZPM Voltage Super Buffer", 7)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_UV.set(
-            new MTESuperBuffer(SUPER_BUFFER_UV.ID, "automation.superbuffer.tier.08", "Ultimate Voltage Super Buffer", 8)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_MAX.set(
-            new MTESuperBuffer(
-                SUPER_BUFFER_UHV.ID,
-                "automation.superbuffer.tier.09",
-                "Highly Ultimate Voltage Super Buffer",
-                9).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_ULV
+            .set(new MTESuperBuffer(SUPER_BUFFER_ULV.ID, "automation.superbuffer.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_LV
+            .set(new MTESuperBuffer(SUPER_BUFFER_LV.ID, "automation.superbuffer.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_MV
+            .set(new MTESuperBuffer(SUPER_BUFFER_MV.ID, "automation.superbuffer.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_HV
+            .set(new MTESuperBuffer(SUPER_BUFFER_HV.ID, "automation.superbuffer.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_EV
+            .set(new MTESuperBuffer(SUPER_BUFFER_EV.ID, "automation.superbuffer.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_IV
+            .set(new MTESuperBuffer(SUPER_BUFFER_IV.ID, "automation.superbuffer.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_LuV
+            .set(new MTESuperBuffer(SUPER_BUFFER_LuV.ID, "automation.superbuffer.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_ZPM
+            .set(new MTESuperBuffer(SUPER_BUFFER_ZPM.ID, "automation.superbuffer.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_UV
+            .set(new MTESuperBuffer(SUPER_BUFFER_UV.ID, "automation.superbuffer.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_MAX
+            .set(new MTESuperBuffer(SUPER_BUFFER_UHV.ID, "automation.superbuffer.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerItemDistributor() {
         ItemList.Automation_ItemDistributor_ULV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_ULV.ID,
-                "automation.itemdistributor.tier.00",
-                "Ultra Low Voltage Item Distributor",
-                0).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_ULV.ID, "automation.itemdistributor.tier.00", "", 0)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_LV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_LV.ID,
-                "automation.itemdistributor.tier.01",
-                "Low Voltage Item Distributor",
-                1).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_LV.ID, "automation.itemdistributor.tier.01", "", 1)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_MV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_MV.ID,
-                "automation.itemdistributor.tier.02",
-                "Medium Voltage Item Distributor",
-                2).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_MV.ID, "automation.itemdistributor.tier.02", "", 2)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_HV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_HV.ID,
-                "automation.itemdistributor.tier.03",
-                "High Voltage Item Distributor",
-                3).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_HV.ID, "automation.itemdistributor.tier.03", "", 3)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_EV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_EV.ID,
-                "automation.itemdistributor.tier.04",
-                "Extreme Voltage Item Distributor",
-                4).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_EV.ID, "automation.itemdistributor.tier.04", "", 4)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_IV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_IV.ID,
-                "automation.itemdistributor.tier.05",
-                "Insane Voltage Item Distributor",
-                5).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_IV.ID, "automation.itemdistributor.tier.05", "", 5)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_LuV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_LuV.ID,
-                "automation.itemdistributor.tier.06",
-                "Ludicrous Voltage Item Distributor",
-                6).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_LuV.ID, "automation.itemdistributor.tier.06", "", 6)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_ZPM.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_ZPM.ID,
-                "automation.itemdistributor.tier.07",
-                "ZPM Voltage Item Distributor",
-                7).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_ZPM.ID, "automation.itemdistributor.tier.07", "", 7)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_UV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_UV.ID,
-                "automation.itemdistributor.tier.08",
-                "Ultimate Voltage Item Distributor",
-                8).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_UV.ID, "automation.itemdistributor.tier.08", "", 8)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_MAX.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_UHV.ID,
-                "automation.itemdistributor.tier.09",
-                "Highly Ultimate Voltage Item Distributor",
-                9).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_UHV.ID, "automation.itemdistributor.tier.09", "", 9)
+                .getStackForm(1L));
     }
 
     private static void registerRecipeFilter() {
-        ItemList.Automation_RecipeFilter_ULV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_ULV.ID,
-                "automation.recipefilter.tier.00",
-                "Ultra Low Voltage Recipe Filter",
-                0).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_LV.set(
-            new MTERecipeFilter(RECIPE_FILTER_LV.ID, "automation.recipefilter.tier.01", "Low Voltage Recipe Filter", 1)
-                .getStackForm(1L));
-        ItemList.Automation_RecipeFilter_MV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_MV.ID,
-                "automation.recipefilter.tier.02",
-                "Medium Voltage Recipe Filter",
-                2).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_HV.set(
-            new MTERecipeFilter(RECIPE_FILTER_HV.ID, "automation.recipefilter.tier.03", "High Voltage Recipe Filter", 3)
-                .getStackForm(1L));
-        ItemList.Automation_RecipeFilter_EV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_EV.ID,
-                "automation.recipefilter.tier.04",
-                "Extreme Voltage Recipe Filter",
-                4).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_IV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_IV.ID,
-                "automation.recipefilter.tier.05",
-                "Insane Voltage Recipe Filter",
-                5).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_LuV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_LuV.ID,
-                "automation.recipefilter.tier.06",
-                "Ludicrous Voltage Recipe Filter",
-                6).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_ZPM.set(
-            new MTERecipeFilter(RECIPE_FILTER_ZPM.ID, "automation.recipefilter.tier.07", "ZPM Voltage Recipe Filter", 7)
-                .getStackForm(1L));
-        ItemList.Automation_RecipeFilter_UV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_UV.ID,
-                "automation.recipefilter.tier.08",
-                "Ultimate Voltage Recipe Filter",
-                8).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_MAX.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_UHV.ID,
-                "automation.recipefilter.tier.09",
-                "Highly Ultimate Voltage Recipe Filter",
-                9).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_ULV
+            .set(new MTERecipeFilter(RECIPE_FILTER_ULV.ID, "automation.recipefilter.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_LV
+            .set(new MTERecipeFilter(RECIPE_FILTER_LV.ID, "automation.recipefilter.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_MV
+            .set(new MTERecipeFilter(RECIPE_FILTER_MV.ID, "automation.recipefilter.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_HV
+            .set(new MTERecipeFilter(RECIPE_FILTER_HV.ID, "automation.recipefilter.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_EV
+            .set(new MTERecipeFilter(RECIPE_FILTER_EV.ID, "automation.recipefilter.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_IV
+            .set(new MTERecipeFilter(RECIPE_FILTER_IV.ID, "automation.recipefilter.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_LuV
+            .set(new MTERecipeFilter(RECIPE_FILTER_LuV.ID, "automation.recipefilter.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_ZPM
+            .set(new MTERecipeFilter(RECIPE_FILTER_ZPM.ID, "automation.recipefilter.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_UV
+            .set(new MTERecipeFilter(RECIPE_FILTER_UV.ID, "automation.recipefilter.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_MAX
+            .set(new MTERecipeFilter(RECIPE_FILTER_UHV.ID, "automation.recipefilter.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerMachineHull() {

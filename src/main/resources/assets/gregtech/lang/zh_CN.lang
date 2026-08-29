@@ -1294,7 +1294,7 @@ tc.aspect.help.custom4=宇宙
 tc.aspect.help.custom5=荣耀
 
 # Tooltip for Block Machines
-gt.blockmachines.batterybuffer.desc=%s格
+gt.blockmachines.slot_count.desc=%s格
 
 # Basic Machine
 gt.blockmachines.batterybuffer.name=%1$s电池箱
@@ -1308,3 +1308,22 @@ gt.blockmachines.hatch.input.name=输入仓（%s）
 gt.blockmachines.hatch.output.name=输出仓（%s）
 gt.blockmachines.hatch.input_bus.name=输入总线（%s）
 gt.blockmachines.hatch.output_bus.name=输出总线（%s）
+gt.blockmachines.automation.chestbuffer.name=%1$s缓存器
+gt.blockmachines.automation.superbuffer.name=%1$s超级缓存器
+gt.blockmachines.automation.filter.name=%1$s物品过滤器
+gt.blockmachines.automation.typefilter.name=%1$s类型过滤器
+gt.blockmachines.automation.recipefilter.name=%1$s合成表过滤器
+gt.blockmachines.automation.regulator.name=%1$s校准器
+gt.blockmachines.automation.itemdistributor.name=%1$s物品分配器
+gt.blockmachines.batterycharger.name=%1$s电池充电器
+gt.blockmachines.batteryturbocharger.name=%1$s涡轮充电器
+gt.blockmachines.batteryturbocharger.desc=最大64A输入/16A输出，以120A为每个电池充放电，禁用机器以开启强制充电模式
+gt.blockmachines.batterycharger.desc=每个电池提供8A输入/4A输出（保底4A/2A）
+gt.blockmachines.automation.filter.desc=可以过滤至多9种不同的物品\n用螺丝刀右键以校准输出数目
+gt.blockmachines.automation.typefilter.desc=过滤1类物品\n用螺丝刀右键以校准输出数目
+gt.blockmachines.automation.recipefilter.desc=过滤1种合成表\n用螺丝刀右键以校准输出数目
+gt.blockmachines.automation.regulator.desc=可以过滤至多9种不同的物品\n可为每种物品设定输出数量\n可为每种物品设定输出到的格子
+gt.blockmachines.automation.itemdistributor.desc=向不同方向分配物品\n每个输出侧默认的物品数量：0\n用螺丝刀右键各面以增减物品数量
+gt.blockmachines.automation.buffer.desc=可以缓存至多%1$s组物品\n用螺丝刀右键以校准输出数目\n%2$s
+gt.blockmachines.automation.buffer.rate.desc=每%2$s秒输出%1$s组（64个）物品
+gt.blockmachines.automation.buffer.rate.single.desc=每%2$s秒输出1组（64个）物品
