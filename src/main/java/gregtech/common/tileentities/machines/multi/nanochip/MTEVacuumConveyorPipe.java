@@ -272,11 +272,6 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     }
 
     @Override
-    protected boolean checkActive() {
-        return false;
-    }
-
-    @Override
     public void onRemoval() {
         super.onRemoval();
         VacuumFactoryGrid.INSTANCE.removeElement(this);
