@@ -46,7 +46,15 @@ gt.mbtt.structure.middle_center_4th_layer=正中心，第4层
 gt.mbtt.structure.specific_casings_on_each_curve=指定机械方块处（%s+）
 gt.mbtt.structure.specific_glass_on_each_side=每侧的指定玻璃处
 gt.mbtt.structure.supports_crafting_input_buffers=支持样板输入总成
+gt.mbtt.structure.front_center_27th_layer=正面中央，第27层
+gt.mbtt.structure.back_left_or_right_side=结构背面、左侧或右侧
+gt.mbtt.structure.top_or_bottom_side=结构顶面或底面
+gt.mbtt.structure.around_inner_ring=中心环周围
+gt.mbtt.structure.any_bottom_leg_casing=任意底部立柱机械方块
+gt.mbtt.structure.either_center_side_casing=中央侧面机械方块
 gt.mbtt.machine_type.fusion_reactor=聚变反应堆
+gt.mbtt.machine_type.antimatter_forge=反物质锻炉，SSASS
+gt.mbtt.machine_type.antimatter_generator=反物质发电机，SLAM
 
 GT5U.cracker.io_side=输入/输出仓必须处在对侧！
 
