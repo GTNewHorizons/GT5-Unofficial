@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Dynamo;
@@ -19,6 +20,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -49,7 +51,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEQuadcellTokamakGui;
-import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
 
@@ -155,10 +156,106 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         tt.addMachineType("Tokamak, QT")
             .beginStructureBlock(23, 13, 9, true)
             .addController("Front center, 2nd layer")
+            .addInfo("Burns certain Plasmas to generate power")
+            .addInfo(
+                "Set " + EnumChatFormatting.GREEN
+                    + "Drain Rate (L/s)"
+                    + EnumChatFormatting.GRAY
+                    + " of Plasmas in the Controller")
+            .addSeparator()
+            .addInfo("Will burn Plasmas up to " + EnumChatFormatting.GREEN + "X L/s")
+            .addInfo(
+                "Plasmas have varying " + EnumChatFormatting.AQUA
+                    + "Densities (EU/L)"
+                    + EnumChatFormatting.GRAY
+                    + " and provide "
+                    + EnumChatFormatting.WHITE
+                    + "Buffs"
+                    + EnumChatFormatting.GRAY
+                    + " to all burned Plasmas")
+            .addInfo(
+                "Drain Rate amounts below the maximum will provide proportional " + EnumChatFormatting.WHITE
+                    + "Buffs"
+                    + EnumChatFormatting.GRAY
+                    + " of [Current / "
+                    + EnumChatFormatting.GREEN
+                    + "Max"
+                    + EnumChatFormatting.GRAY
+                    + "]")
+            .addInfo(
+                getPlasmaTextFormatted(
+                    "Force",
+                    EnumChatFormatting.GOLD,
+                    formatNumber(PlasmaType.FORCE.maxDR),
+                    formatNumber(PlasmaType.FORCE.density),
+                    "+20% EU/L"))
+            .addInfo(
+                getPlasmaTextFormatted(
+                    "Runite",
+                    EnumChatFormatting.BLUE,
+                    formatNumber(PlasmaType.RUNITE.maxDR),
+                    formatNumber(PlasmaType.RUNITE.density),
+                    "10% chance to not consume Plasma"))
+            .addInfo(
+                getPlasmaTextFormatted(
+                    "Celestial Tungsten",
+                    EnumChatFormatting.DARK_GREEN,
+                    formatNumber(PlasmaType.CELESTIAL.maxDR),
+                    formatNumber(PlasmaType.CELESTIAL.density),
+                    "+5% EU/L, +5% chance to not consume Plasma"))
+            .addInfo(
+                getPlasmaTextFormatted(
+                    "Orikalkum",
+                    EnumChatFormatting.RED,
+                    formatNumber(PlasmaType.ORIKALKUM.maxDR),
+                    formatNumber(PlasmaType.ORIKALKUM.density),
+                    "+50% to other Plasma Buffs"))
+            .addSeparator()
+            .addInfo(
+                "Consumed Plasmas are " + EnumChatFormatting.BOLD
+                    + "NOT"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
+                    + " returned in molten form")
+            .addInfo(
+                "If " + EnumChatFormatting.GOLD
+                    + "Force"
+                    + EnumChatFormatting.GRAY
+                    + ", "
+                    + EnumChatFormatting.BLUE
+                    + "Runite"
+                    + EnumChatFormatting.GRAY
+                    + ", and "
+                    + EnumChatFormatting.DARK_GREEN
+                    + "Celestial Tungsten"
+                    + EnumChatFormatting.GRAY
+                    + " Plasmas are supplied:")
+            .addInfo(
+                "Periodically outputs " + EnumChatFormatting.DARK_AQUA
+                    + "Tokamak Residue"
+                    + EnumChatFormatting.GRAY
+                    + " at a rate of 1L per 300L of Plasma burned")
+            .addSupportAny()
             .addStructureInfo("")
-            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
+    }
+
+    private String getPlasmaTextFormatted(String plasma, EnumChatFormatting plasmaColor, String dr, String density,
+        String buff) {
+        return String.format(
+            "%s%s%s / %s%s%s / %s%s%s / %s%s ",
+            plasmaColor,
+            plasma,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.GREEN,
+            dr,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.AQUA,
+            density,
+            EnumChatFormatting.GRAY,
+            EnumChatFormatting.WHITE,
+            buff);
     }
 
     private static final int CYCLE_TIME = 20;
@@ -237,7 +334,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         lEUt += euRate;
         mEfficiency = 10000;
         mEfficiencyIncrease = 10000;
-        mMaxProgresstime = 20;
+        mMaxProgresstime = CYCLE_TIME;
         recipesDone++;
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
