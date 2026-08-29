@@ -8521,34 +8521,25 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerMufflerHatch() {
-        ItemList.Hatch_Muffler_LV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_LV.ID, "hatch.muffler.tier.01", "Muffler Hatch (LV)", 1)
-                .getStackForm(1L));
+        ItemList.Hatch_Muffler_LV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_LV.ID, "hatch.muffler.tier.01", "", 1).getStackForm(1L));
         API.setAliases(ItemList.Hatch_Muffler_LV.get(1L), "gt.alias.debug");
-        ItemList.Hatch_Muffler_MV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_MV.ID, "hatch.muffler.tier.02", "Muffler Hatch (MV)", 2)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_HV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_HV.ID, "hatch.muffler.tier.03", "Muffler Hatch (HV)", 3)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_EV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_EV.ID, "hatch.muffler.tier.04", "Muffler Hatch (EV)", 4)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_IV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_IV.ID, "hatch.muffler.tier.05", "Muffler Hatch (IV)", 5)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_LuV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_LuV.ID, "hatch.muffler.tier.06", "Muffler Hatch (LuV)", 6)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_ZPM.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_ZPM.ID, "hatch.muffler.tier.07", "Muffler Hatch (ZPM)", 7)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_UV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_UV.ID, "hatch.muffler.tier.08", "Muffler Hatch (UV)", 8)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_MAX.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_UHV.ID, "hatch.muffler.tier.09", "Muffler Hatch (UHV)", 9)
-                .getStackForm(1L));
+        ItemList.Hatch_Muffler_MV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_MV.ID, "hatch.muffler.tier.02", "", 2).getStackForm(1L));
+        ItemList.Hatch_Muffler_HV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_HV.ID, "hatch.muffler.tier.03", "", 3).getStackForm(1L));
+        ItemList.Hatch_Muffler_EV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_EV.ID, "hatch.muffler.tier.04", "", 4).getStackForm(1L));
+        ItemList.Hatch_Muffler_IV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_IV.ID, "hatch.muffler.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Muffler_LuV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_LuV.ID, "hatch.muffler.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Muffler_ZPM
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_ZPM.ID, "hatch.muffler.tier.07", "", 7).getStackForm(1L));
+        ItemList.Hatch_Muffler_UV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_UV.ID, "hatch.muffler.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Muffler_MAX
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_UHV.ID, "hatch.muffler.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerBoiler() {

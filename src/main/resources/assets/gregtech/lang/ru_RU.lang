@@ -278,6 +278,7 @@ gt.blockmachines.hatch.input.name=Входной шлюз (%s)
 gt.blockmachines.hatch.output.name=Выходной шлюз (%s)
 gt.blockmachines.hatch.input_bus.name=Входной люк (%s)
 gt.blockmachines.hatch.output_bus.name=Выходной люк (%s)
+gt.blockmachines.hatch.muffler.name=Выхлопная система (%s)
 gt.blockmachines.automation.chestbuffer.name=%2$s Буферный сундук
 gt.blockmachines.automation.superbuffer.name=%2$s Супер буфер
 gt.blockmachines.automation.filter.name=%2$s Предметный фильтр

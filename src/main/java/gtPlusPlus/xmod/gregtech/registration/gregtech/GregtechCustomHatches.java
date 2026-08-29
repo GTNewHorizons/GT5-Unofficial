@@ -160,59 +160,32 @@ public class GregtechCustomHatches {
 
     private static void run2() {
         GregtechItemList.Hatch_Muffler_Adv_LV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_LV.ID,
-                "hatch.muffler.adv.tier.01",
-                "Advanced Muffler Hatch (LV)",
-                1)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_LV.ID, "hatch.muffler.adv.tier.01", "", 1))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_MV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_MV.ID,
-                "hatch.muffler.adv.tier.02",
-                "Advanced Muffler Hatch (MV)",
-                2)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_MV.ID, "hatch.muffler.adv.tier.02", "", 2))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_HV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_HV.ID,
-                "hatch.muffler.adv.tier.03",
-                "Advanced Muffler Hatch (HV)",
-                3)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_HV.ID, "hatch.muffler.adv.tier.03", "", 3))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_EV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_EV.ID,
-                "hatch.muffler.adv.tier.04",
-                "Advanced Muffler Hatch (EV)",
-                4)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_EV.ID, "hatch.muffler.adv.tier.04", "", 4))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_IV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_IV.ID,
-                "hatch.muffler.adv.tier.05",
-                "Advanced Muffler Hatch (IV)",
-                5)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_IV.ID, "hatch.muffler.adv.tier.05", "", 5))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_LuV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_LuV.ID,
-                "hatch.muffler.adv.tier.06",
-                "Advanced Muffler Hatch (LuV)",
-                6)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_LuV.ID, "hatch.muffler.adv.tier.06", "", 6))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_ZPM.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_ZPM.ID,
-                "hatch.muffler.adv.tier.07",
-                "Advanced Muffler Hatch (ZPM)",
-                7)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_ZPM.ID, "hatch.muffler.adv.tier.07", "", 7))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_UV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_UV.ID,
-                "hatch.muffler.adv.tier.08",
-                "Advanced Muffler Hatch (UV)",
-                8)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_UV.ID, "hatch.muffler.adv.tier.08", "", 8))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_MAX.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_MAX.ID,
-                "hatch.muffler.adv.tier.09",
-                "Advanced Muffler Hatch (UHV)",
-                9)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_MAX.ID, "hatch.muffler.adv.tier.09", "", 9))
+                .getStackForm(1L));
     }
 
     private static void run3() {

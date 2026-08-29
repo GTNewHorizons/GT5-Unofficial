@@ -1308,6 +1308,7 @@ gt.blockmachines.hatch.input.name=输入仓（%s）
 gt.blockmachines.hatch.output.name=输出仓（%s）
 gt.blockmachines.hatch.input_bus.name=输入总线（%s）
 gt.blockmachines.hatch.output_bus.name=输出总线（%s）
+gt.blockmachines.hatch.muffler.name=消声仓（%s）
 gt.blockmachines.automation.chestbuffer.name=%1$s缓存器
 gt.blockmachines.automation.superbuffer.name=%1$s超级缓存器
 gt.blockmachines.automation.filter.name=%1$s物品过滤器
