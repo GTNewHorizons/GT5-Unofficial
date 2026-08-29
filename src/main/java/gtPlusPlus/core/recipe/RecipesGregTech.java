@@ -1678,7 +1678,7 @@ public class RecipesGregTech {
                 MaterialsAlloy.INCOLOY_MA956.getDust(10),
                 WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 2),
                 MaterialsElements.getInstance().GERMANIUM.getDust(2))
-            .fluidInputs(Materials.Radon.getFluid(2000L))
+            .fluidInputs(Materials.Radon.getGas(2000L))
             .circuit(8)
             .itemOutputs(MaterialsAlloy.ABYSSAL.getDust(56))
             .duration(5 * MINUTES + 36 * SECONDS)
