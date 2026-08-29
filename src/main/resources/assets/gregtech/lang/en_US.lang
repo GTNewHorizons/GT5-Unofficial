@@ -268,6 +268,10 @@ gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.batterybuffer.name=%1$s Battery Buffer
+gt.blockmachines.hatch.energy.name=%s Energy Hatch
+gt.blockmachines.hatch.energy.debug.name=Debug Energy Hatch
+gt.blockmachines.hatch.dynamo.name=%s Dynamo Hatch
+gt.blockmachines.hatch.wireless.receiver.name=%s Wireless Energy Hatch
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Basic World Accelerator
 gt.blockmachines.basicmachine.accelerator.tier.02.name=Advanced World Accelerator
 gt.blockmachines.basicmachine.accelerator.tier.03.name=Advanced World Accelerator II

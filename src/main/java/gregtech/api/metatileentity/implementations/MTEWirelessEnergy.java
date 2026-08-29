@@ -9,8 +9,11 @@ import static java.lang.Long.min;
 import java.math.BigInteger;
 import java.util.UUID;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -20,6 +23,7 @@ import gregtech.api.util.GTSplit;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     private final BigInteger eu_transferred_per_operation = BigInteger
@@ -34,6 +38,12 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     public MTEWirelessEnergy(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.hatch.wireless.receiver.name", GTValues.VN[mTier]);
     }
 
     @Override

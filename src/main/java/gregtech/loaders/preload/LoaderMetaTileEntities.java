@@ -8112,75 +8112,74 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerDynamoHatch() {
-        ItemList.Hatch_Dynamo_ULV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_ULV.ID, "hatch.dynamo.tier.00", "ULV Dynamo Hatch", 0).getStackForm(1L));
+        ItemList.Hatch_Dynamo_ULV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_ULV.ID, "hatch.dynamo.tier.00", "", 0).getStackForm(1L));
         ItemList.Hatch_Dynamo_LV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_LV.ID, "hatch.dynamo.tier.01", "LV Dynamo Hatch", 1).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_LV.ID, "hatch.dynamo.tier.01", "", 1).getStackForm(1L));
         ItemList.Hatch_Dynamo_MV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_MV.ID, "hatch.dynamo.tier.02", "MV Dynamo Hatch", 2).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_MV.ID, "hatch.dynamo.tier.02", "", 2).getStackForm(1L));
         ItemList.Hatch_Dynamo_HV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_HV.ID, "hatch.dynamo.tier.03", "HV Dynamo Hatch", 3).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_HV.ID, "hatch.dynamo.tier.03", "", 3).getStackForm(1L));
         ItemList.Hatch_Dynamo_EV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_EV.ID, "hatch.dynamo.tier.04", "EV Dynamo Hatch", 4).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_EV.ID, "hatch.dynamo.tier.04", "", 4).getStackForm(1L));
         ItemList.Hatch_Dynamo_IV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_IV.ID, "hatch.dynamo.tier.05", "IV Dynamo Hatch", 5).getStackForm(1L));
-        ItemList.Hatch_Dynamo_LuV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_LuV.ID, "hatch.dynamo.tier.06", "LuV Dynamo Hatch", 6).getStackForm(1L));
-        ItemList.Hatch_Dynamo_ZPM.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_ZPM.ID, "hatch.dynamo.tier.07", "ZPM Dynamo Hatch", 7).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_IV.ID, "hatch.dynamo.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Dynamo_LuV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_LuV.ID, "hatch.dynamo.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Dynamo_ZPM
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_ZPM.ID, "hatch.dynamo.tier.07", "", 7).getStackForm(1L));
         ItemList.Hatch_Dynamo_UV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_UV.ID, "hatch.dynamo.tier.08", "UV Dynamo Hatch", 8).getStackForm(1L));
-        ItemList.Hatch_Dynamo_UHV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_UHV.ID, "hatch.dynamo.tier.09", "UHV Dynamo Hatch", 9).getStackForm(1L));
-        ItemList.Hatch_Dynamo_UEV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_UEV.ID, "hatch.dynamo.tier.10", "UEV Dynamo Hatch", 10).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UV.ID, "hatch.dynamo.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UHV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UHV.ID, "hatch.dynamo.tier.09", "", 9).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UEV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UEV.ID, "hatch.dynamo.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.Hatch_Dynamo_UIV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_UIV.ID, "hatch.dynamo.tier.11", "UIV Dynamo Hatch", 11).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UIV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UIV.ID, "hatch.dynamo.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.Hatch_Dynamo_UMV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_UMV.ID, "hatch.dynamo.tier.12", "UMV Dynamo Hatch", 12).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UMV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UMV.ID, "hatch.dynamo.tier.12", "", 12).getStackForm(1L));
 
-        ItemList.Hatch_Dynamo_UXV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_UXV.ID, "hatch.dynamo.tier.13", "UXV Dynamo Hatch", 13).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UXV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UXV.ID, "hatch.dynamo.tier.13", "", 13).getStackForm(1L));
     }
 
     private static void registerEnergyHatch() {
-        ItemList.Hatch_Energy_ULV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_ULV.ID, "hatch.energy.tier.00", "ULV Energy Hatch", 0).getStackForm(1L));
+        ItemList.Hatch_Energy_ULV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_ULV.ID, "hatch.energy.tier.00", "", 0).getStackForm(1L));
         ItemList.Hatch_Energy_LV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_LV.ID, "hatch.energy.tier.01", "LV Energy Hatch", 1).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_LV.ID, "hatch.energy.tier.01", "", 1).getStackForm(1L));
         ItemList.Hatch_Energy_MV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_MV.ID, "hatch.energy.tier.02", "MV Energy Hatch", 2).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_MV.ID, "hatch.energy.tier.02", "", 2).getStackForm(1L));
         ItemList.Hatch_Energy_HV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_HV.ID, "hatch.energy.tier.03", "HV Energy Hatch", 3).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_HV.ID, "hatch.energy.tier.03", "", 3).getStackForm(1L));
         ItemList.Hatch_Energy_EV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_EV.ID, "hatch.energy.tier.04", "EV Energy Hatch", 4).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_EV.ID, "hatch.energy.tier.04", "", 4).getStackForm(1L));
         ItemList.Hatch_Energy_IV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_IV.ID, "hatch.energy.tier.05", "IV Energy Hatch", 5).getStackForm(1L));
-        ItemList.Hatch_Energy_LuV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_LuV.ID, "hatch.energy.tier.06", "LuV Energy Hatch", 6).getStackForm(1L));
-        ItemList.Hatch_Energy_ZPM.set(
-            new MTEHatchEnergy(ENERGY_HATCH_ZPM.ID, "hatch.energy.tier.07", "ZPM Energy Hatch", 7).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_IV.ID, "hatch.energy.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Energy_LuV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_LuV.ID, "hatch.energy.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Energy_ZPM
+            .set(new MTEHatchEnergy(ENERGY_HATCH_ZPM.ID, "hatch.energy.tier.07", "", 7).getStackForm(1L));
         ItemList.Hatch_Energy_UV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_UV.ID, "hatch.energy.tier.08", "UV Energy Hatch", 8).getStackForm(1L));
-        ItemList.Hatch_Energy_UHV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_UHV.ID, "hatch.energy.tier.09", "UHV Energy Hatch", 9).getStackForm(1L));
-        ItemList.Hatch_Energy_UEV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_UEV.ID, "hatch.energy.tier.10", "UEV Energy Hatch", 10).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UV.ID, "hatch.energy.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Energy_UHV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UHV.ID, "hatch.energy.tier.09", "", 9).getStackForm(1L));
+        ItemList.Hatch_Energy_UEV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UEV.ID, "hatch.energy.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.Hatch_Energy_UIV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_UIV.ID, "hatch.energy.tier.11", "UIV Energy Hatch", 11).getStackForm(1L));
+        ItemList.Hatch_Energy_UIV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UIV.ID, "hatch.energy.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.Hatch_Energy_UMV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_UMV.ID, "hatch.energy.tier.12", "UMV Energy Hatch", 12).getStackForm(1L));
+        ItemList.Hatch_Energy_UMV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UMV.ID, "hatch.energy.tier.12", "", 12).getStackForm(1L));
 
-        ItemList.Hatch_Energy_UXV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "UXV Energy Hatch", 13).getStackForm(1L));
+        ItemList.Hatch_Energy_UXV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "", 13).getStackForm(1L));
 
-        ItemList.DebugEnergyHatch.set(
-            new MTEHatchEnergyDebug(ENERGY_HATCH_DEBUG.ID, "hatch.energy.debug", "Debug Energy Hatch", 14)
-                .getStackForm(1L));
+        ItemList.DebugEnergyHatch
+            .set(new MTEHatchEnergyDebug(ENERGY_HATCH_DEBUG.ID, "hatch.energy.debug", "", 14).getStackForm(1L));
     }
 
     private static void registerInputHatch() {
@@ -9454,95 +9453,50 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerWirelessEnergyHatch() {
         ItemList.Wireless_Hatch_Energy_ULV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_ULV.ID,
-                "hatch.wireless.receiver.tier.00",
-                "ULV Wireless Energy Hatch",
-                0).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_ULV.ID, "hatch.wireless.receiver.tier.00", "", 0)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_LV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_LV.ID,
-                "hatch.wireless.receiver.tier.01",
-                "LV Wireless Energy Hatch",
-                1).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_LV.ID, "hatch.wireless.receiver.tier.01", "", 1)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_MV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_MV.ID,
-                "hatch.wireless.receiver.tier.02",
-                "MV Wireless Energy Hatch",
-                2).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_MV.ID, "hatch.wireless.receiver.tier.02", "", 2)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_HV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_HV.ID,
-                "hatch.wireless.receiver.tier.03",
-                "HV Wireless Energy Hatch",
-                3).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_HV.ID, "hatch.wireless.receiver.tier.03", "", 3)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_EV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_EV.ID,
-                "hatch.wireless.receiver.tier.04",
-                "EV Wireless Energy Hatch",
-                4).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_EV.ID, "hatch.wireless.receiver.tier.04", "", 4)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_IV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_IV.ID,
-                "hatch.wireless.receiver.tier.05",
-                "IV Wireless Energy Hatch",
-                5).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_IV.ID, "hatch.wireless.receiver.tier.05", "", 5)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_LuV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_LuV.ID,
-                "hatch.wireless.receiver.tier.06",
-                "LuV Wireless Energy Hatch",
-                6).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_LuV.ID, "hatch.wireless.receiver.tier.06", "", 6)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_ZPM.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_ZPM.ID,
-                "hatch.wireless.receiver.tier.07",
-                "ZPM Wireless Energy Hatch",
-                7).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_ZPM.ID, "hatch.wireless.receiver.tier.07", "", 7)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UV.ID,
-                "hatch.wireless.receiver.tier.08",
-                "UV Wireless Energy Hatch",
-                8).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UV.ID, "hatch.wireless.receiver.tier.08", "", 8)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UHV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UHV.ID,
-                "hatch.wireless.receiver.tier.09",
-                "UHV Wireless Energy Hatch",
-                9).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UHV.ID, "hatch.wireless.receiver.tier.09", "", 9)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UEV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UEV.ID,
-                "hatch.wireless.receiver.tier.10",
-                "UEV Wireless Energy Hatch",
-                10).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UEV.ID, "hatch.wireless.receiver.tier.10", "", 10)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UIV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UIV.ID,
-                "hatch.wireless.receiver.tier.11",
-                "UIV Wireless Energy Hatch",
-                11).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UIV.ID, "hatch.wireless.receiver.tier.11", "", 11)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UMV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UMV.ID,
-                "hatch.wireless.receiver.tier.12",
-                "UMV Wireless Energy Hatch",
-                12).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UMV.ID, "hatch.wireless.receiver.tier.12", "", 12)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UXV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UXV.ID,
-                "hatch.wireless.receiver.tier.13",
-                "UXV Wireless Energy Hatch",
-                13).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UXV.ID, "hatch.wireless.receiver.tier.13", "", 13)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_MAX.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_MAX.ID,
-                "hatch.wireless.receiver.tier.14",
-                "MAX Wireless Energy Hatch",
-                14).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_MAX.ID, "hatch.wireless.receiver.tier.14", "", 14)
+                .getStackForm(1L));
     }
 
     private static void registerLightningRods() {

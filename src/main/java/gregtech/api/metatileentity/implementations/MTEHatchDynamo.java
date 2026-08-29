@@ -3,8 +3,10 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -13,6 +15,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchDynamo extends MTEHatch {
 
     public MTEHatchDynamo(int aID, String aName, String aNameRegional, int aTier) {
@@ -25,6 +28,11 @@ public class MTEHatchDynamo extends MTEHatch {
 
     public MTEHatchDynamo(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.dynamo.name", GTValues.VN[mTier]);
     }
 
     @Override

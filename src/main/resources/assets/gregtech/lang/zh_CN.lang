@@ -1298,3 +1298,7 @@ gt.blockmachines.batterybuffer.desc=%s格
 
 # Basic Machine
 gt.blockmachines.batterybuffer.name=%1$s电池箱
+gt.blockmachines.hatch.energy.name=%s能源仓
+gt.blockmachines.hatch.energy.debug.name=Debug能源仓
+gt.blockmachines.hatch.dynamo.name=%s动力仓
+gt.blockmachines.hatch.wireless.receiver.name=%s无线能源仓

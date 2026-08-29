@@ -3955,3 +3955,6 @@ gtpp.tooltip.frame.decaying=Кому нужна стабильная генет�
 gtpp.tooltip.frame.slowing=Сам путь и есть награда.
 gtpp.tooltip.frame.stabilizing=Если вы хотите, чтобы ваши пчёлы сохранили свою форму.
 gtpp.tooltip.frame.arborists=Зачем нужны пчёлы, если есть деревья?
+
+# Tiered machine names
+gt.blockmachines.hatch.dynamo.buffer.name=%s Энерговывод [Буферизованный]

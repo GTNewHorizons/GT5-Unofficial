@@ -4165,3 +4165,6 @@ gtplusplus.blocktieredcasings.1.6.name=Integral Framework II
 gtplusplus.blocktieredcasings.1.7.name=Integral Framework III
 gtplusplus.blocktieredcasings.1.8.name=Integral Framework IV
 gtplusplus.blocktieredcasings.1.9.name=Integral Framework V
+
+# Tiered machine names
+gt.blockmachines.hatch.dynamo.buffer.name=%s Dynamo Hatch [Buffered]

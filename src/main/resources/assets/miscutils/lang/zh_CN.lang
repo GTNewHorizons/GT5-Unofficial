@@ -3295,3 +3295,6 @@ item.BasicGenericChemItem.14.name=固体酸催化剂
 
 //Added 30/05/22
 item.BasicGenericChemItem.15.name=无尽突变催化剂
+
+# Tiered machine names
+gt.blockmachines.hatch.dynamo.buffer.name=%s动力仓[缓冲]

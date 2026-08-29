@@ -58,6 +58,11 @@ public class MTEHatchDynamoMulti extends MTEHatchDynamo implements IHideTooltipE
     }
 
     @Override
+    public String getLocalName() {
+        return StatCollector.translateToLocal(getLocalNameKey());
+    }
+
+    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         if (maxAmperes > 64) {
             // Laser hatches are separate classes, so detect by type instead of amperage.
