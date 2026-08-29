@@ -91,6 +91,15 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        IGregTechTileEntity front = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
+        if (front != null && front.getMetaTileEntity() instanceof MTEPipeLaser laser) {
+            laser.setCheckConnections();
+        }
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             byte Tick = (byte) (aTick % 20);

@@ -571,7 +571,7 @@ public class BECRecipes implements Runnable {
         for (int t = 0; t < 9; t++) {
             int tp1 = t + 1;
             ItemStack[] inputs = { CustomItemList.EOH_Reinforced_Spatial_Casing.get(1),
-                ItemList.Machine_Multi_BlackHoleCompressor.get(tp1),
+                ItemList.Machine_Multi_BlackHoleCompressor.get(1),
                 getModItem(AppliedEnergistics2.ID, "item.ItemExtremeStorageCell.Singularity", 1),
                 getModItem(AE2FluidCraft.ID, "fluid_storage.singularity", 1), manipulators[t / 3].get(t % 3 + 1),
                 ItemList.MetaMaterial_Shielding1.get(4L * tp1),
