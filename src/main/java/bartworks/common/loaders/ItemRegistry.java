@@ -323,36 +323,16 @@ public class ItemRegistry {
                 i).getStackForm(1L);
         }
 
-        ItemRegistry.acidGens[0] = new MTEAcidGenerator(
-            AcidGeneratorMV.ID,
-            "acidgenerator" + GTValues.VN[2],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[2],
-            2,
-            94).getStackForm(1);
-        ItemRegistry.acidGens[1] = new MTEAcidGenerator(
-            AcidGeneratorHV.ID,
-            "acidgenerator" + GTValues.VN[3],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[3],
-            3,
-            91).getStackForm(1);
-        ItemRegistry.acidGens[2] = new MTEAcidGenerator(
-            AcidGeneratorEV.ID,
-            "acidgenerator" + GTValues.VN[4],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[4],
-            4,
-            88).getStackForm(1);
-        ItemRegistry.acidGens[3] = new MTEAcidGenerator(
-            AcidGeneratorIV.ID,
-            "acidgenerator" + GTValues.VN[5],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[5],
-            5,
-            50).getStackForm(1);
-        ItemRegistry.acidGensLV = new MTEAcidGenerator(
-            AcidGeneratorLV.ID,
-            "acidgenerator" + GTValues.VN[1],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[1],
-            1,
-            97).getStackForm(1L);
+        ItemRegistry.acidGens[0] = new MTEAcidGenerator(AcidGeneratorMV.ID, "acidgenerator" + GTValues.VN[2], "", 2, 94)
+            .getStackForm(1);
+        ItemRegistry.acidGens[1] = new MTEAcidGenerator(AcidGeneratorHV.ID, "acidgenerator" + GTValues.VN[3], "", 3, 91)
+            .getStackForm(1);
+        ItemRegistry.acidGens[2] = new MTEAcidGenerator(AcidGeneratorEV.ID, "acidgenerator" + GTValues.VN[4], "", 4, 88)
+            .getStackForm(1);
+        ItemRegistry.acidGens[3] = new MTEAcidGenerator(AcidGeneratorIV.ID, "acidgenerator" + GTValues.VN[5], "", 5, 50)
+            .getStackForm(1);
+        ItemRegistry.acidGensLV = new MTEAcidGenerator(AcidGeneratorLV.ID, "acidgenerator" + GTValues.VN[1], "", 1, 97)
+            .getStackForm(1L);
 
         ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);
