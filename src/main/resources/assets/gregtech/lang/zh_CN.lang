@@ -1363,3 +1363,9 @@ gt.blockmachines.automation.itemdistributor.desc=向不同方向分配物品\n�
 gt.blockmachines.automation.buffer.desc=可以缓存至多%1$s组物品\n用螺丝刀右键以校准输出数目\n%2$s
 gt.blockmachines.automation.buffer.rate.desc=每%2$s秒输出%1$s组（64个）物品
 gt.blockmachines.automation.buffer.rate.single.desc=每%2$s秒输出1组（64个）物品
+
+# Machine names
+gt.blockmachines.hatch.dataaccess.adv.name=进阶数据访问仓
+gt.blockmachines.hatch.dataaccess.auto.name=自动数据访问仓
+gt.blockmachines.hatch.dataaccess.name=数据访问仓
+gt.blockmachines.hatch.dataaccess.desc=多方块机器的数据访问接口\n增加%s个额外的格子以放置闪存

@@ -9141,3 +9141,9 @@ gt.blockmachines.basicgenerator.lightningrod.03.name=Молниеотвод
 gt.blockmachines.basicgenerator.lightningrod.04.name=Молниеотвод II
 gt.blockmachines.basicgenerator.lightningrod.05.name=Молниеотвод III
 gt.blockmachines.basicgenerator.lightningrod.tooltip=Генерирует EU от ударов молнии
+
+# Machine names
+gt.blockmachines.hatch.dataaccess.adv.name=Продвинутый шлюз доступа к данным
+gt.blockmachines.hatch.dataaccess.auto.name=Автоматизированный шлюз доступа к данным
+gt.blockmachines.hatch.dataaccess.name=Шлюз доступа к данным
+gt.blockmachines.hatch.dataaccess.desc=Доступ к данным для мультиблоков\nДобавляет %s дополнительных слотов для Флешек

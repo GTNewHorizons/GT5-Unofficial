@@ -258,41 +258,33 @@ public class GregtechCustomHatches {
 
     private static void run4() {
         GregtechItemList.ChiselBus_LV
-            .set((makeChiselBus(ChiselBus_LV.ID, "hatch.chisel.tier.01", "Chisel Bus I", 1)).getStackForm(1L));
+            .set((makeChiselBus(ChiselBus_LV.ID, "hatch.chisel.tier.01", "", 1)).getStackForm(1L));
         GregtechItemList.ChiselBus_MV
-            .set((makeChiselBus(ChiselBus_MV.ID, "hatch.chisel.tier.02", "Chisel Bus II", 2)).getStackForm(1L));
+            .set((makeChiselBus(ChiselBus_MV.ID, "hatch.chisel.tier.02", "", 2)).getStackForm(1L));
         GregtechItemList.ChiselBus_HV
-            .set((makeChiselBus(ChiselBus_HV.ID, "hatch.chisel.tier.03", "Chisel Bus III", 3)).getStackForm(1L));
+            .set((makeChiselBus(ChiselBus_HV.ID, "hatch.chisel.tier.03", "", 3)).getStackForm(1L));
 
     }
 
     private static void run6() {
-        GregtechItemList.Hatch_Solidifier_I.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_I.ID, "hatch.solidifier.tier.05", "Solidifier Hatch I", 5)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Solidifier_II.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_II.ID, "hatch.solidifier.tier.06", "Solidifier Hatch II", 6)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Solidifier_III.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_III.ID, "hatch.solidifier.tier.07", "Solidifier Hatch III", 7)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Solidifier_IV.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_IV.ID, "hatch.solidifier.tier.08", "Solidifier Hatch IV", 8)
-                .getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_I
+            .set(new MTEHatchSolidifier(Hatch_Solidifier_I.ID, "hatch.solidifier.tier.05", "", 5).getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_II
+            .set(new MTEHatchSolidifier(Hatch_Solidifier_II.ID, "hatch.solidifier.tier.06", "", 6).getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_III
+            .set(new MTEHatchSolidifier(Hatch_Solidifier_III.ID, "hatch.solidifier.tier.07", "", 7).getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_IV
+            .set(new MTEHatchSolidifier(Hatch_Solidifier_IV.ID, "hatch.solidifier.tier.08", "", 8).getStackForm(1L));
     }
 
     private static void run7() {
-        GregtechItemList.Hatch_Extrusion_I.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_I.ID, "hatch.extrusion.tier.05", "Extrusion Bus I", 5)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Extrusion_II.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_II.ID, "hatch.extrusion.tier.06", "Extrusion Bus II", 6)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Extrusion_III.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_III.ID, "hatch.extrusion.tier.07", "Extrusion Bus III", 7)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Extrusion_IV.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_IV.ID, "hatch.extrusion.tier.08", "Extrusion Bus IV", 8)
-                .getStackForm(1L));
+        GregtechItemList.Hatch_Extrusion_I
+            .set(new MTEHatchExtrusion(Hatch_Extrusion_I.ID, "hatch.extrusion.tier.05", "", 5).getStackForm(1L));
+        GregtechItemList.Hatch_Extrusion_II
+            .set(new MTEHatchExtrusion(Hatch_Extrusion_II.ID, "hatch.extrusion.tier.06", "", 6).getStackForm(1L));
+        GregtechItemList.Hatch_Extrusion_III
+            .set(new MTEHatchExtrusion(Hatch_Extrusion_III.ID, "hatch.extrusion.tier.07", "", 7).getStackForm(1L));
+        GregtechItemList.Hatch_Extrusion_IV
+            .set(new MTEHatchExtrusion(Hatch_Extrusion_IV.ID, "hatch.extrusion.tier.08", "", 8).getStackForm(1L));
     }
 }

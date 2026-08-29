@@ -9543,3 +9543,9 @@ gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning
 # NEI Aliases
 gt.alias.debug=Debug
 gt.alias.mechanical_armor=Mechanical Armor
+
+# Machine names
+gt.blockmachines.hatch.dataaccess.adv.name=Advanced Data Access Hatch
+gt.blockmachines.hatch.dataaccess.auto.name=Automatable Data Access Hatch
+gt.blockmachines.hatch.dataaccess.name=Data Access Hatch
+gt.blockmachines.hatch.dataaccess.desc=Data Access for Multiblocks\nAdds %s extra slots for Data Sticks

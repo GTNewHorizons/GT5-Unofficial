@@ -36,6 +36,7 @@ import gregtech.common.gui.modularui.singleblock.MTETieredTankGui;
 import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMetaTile {
 
     public MTETieredTank(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -53,6 +54,15 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
     public MTETieredTank(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.fluidtank.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override
