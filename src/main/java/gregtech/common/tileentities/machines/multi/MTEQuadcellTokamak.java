@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,6 +38,8 @@ import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -498,29 +501,33 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
 
         World world = gte.getWorld();
         if (world == null) return;
+        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 
         GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
         GL11.glTranslated(x + 2, y + 10, z + 2);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_LIGHT0);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        drawCube(PlasmaType.FORCE, world, timeSinceLastTick, 1, -1, 1, 1, 1.4, 1);
-        drawCube(PlasmaType.RUNITE, world, timeSinceLastTick, -1, 1, -1, 1, 1.2, 2);
-        drawCube(PlasmaType.CELESTIAL, world, timeSinceLastTick, -1, -1, 1, 0.8, 1.2, 4);
-        drawCube(PlasmaType.ORIKALKUM, world, timeSinceLastTick, 1, 1, -1, 0.6, 1.2, 8);
+        drawCube(PlasmaType.FORCE, world, false, timeSinceLastTick, 1, 1, -1, 1, 1.3, 1);
+        drawCube(PlasmaType.RUNITE, world, false, timeSinceLastTick, -1, -1, 1, 1, 1.2, 2);
+        drawCube(PlasmaType.CELESTIAL, world, false, timeSinceLastTick, 1, -1, -1, 0.8, 1.2, 4);
+        drawCube(PlasmaType.ORIKALKUM, world, false, timeSinceLastTick, -1, 1, -1, 0.6, 1.2, 8);
 
-        // scale
+        BloomShader.getInstance()
+            .bindFramebuffer();
+        drawCube(PlasmaType.FORCE, world, true, timeSinceLastTick, 1, 1, -1, 1, 1.3, 1);
+        drawCube(PlasmaType.RUNITE, world, true, timeSinceLastTick, -1, -1, 1, 1, 1.2, 2);
+        drawCube(PlasmaType.CELESTIAL, world, true, timeSinceLastTick, 1, -1, -1, 0.8, 1.2, 4);
+        drawCube(PlasmaType.ORIKALKUM, world, true, timeSinceLastTick, -1, 1, -1, 0.6, 1.2, 8);
+        BloomShader.unbind();
 
-        // translate
-
-        // rotate
-
+        ShaderProgram.clear();
         GL11.glPopAttrib();
         GL11.glPopMatrix();
 
@@ -530,49 +537,68 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         return start + t * (end - start);
     }
 
-    public void drawCube(PlasmaType plasma, World world, float timeSinceLastTick, double xMod, double yMod, double zMod,
-        double scaleBottomEnd, double scaleTopEnd, double lerpRate) {
+    public void drawCube(PlasmaType plasma, World world, boolean bloom, float timeSinceLastTick, double xMod,
+        double yMod, double zMod, double scaleBottomEnd, double scaleTopEnd, double lerpRate) {
+
         GL11.glPushMatrix();
+        // rotation factor is inverse of scale rate.
         double rotationTimer = Math.toRadians(
-            10 * (10 - lerpRate)
+            (10 * (10 - lerpRate)
                 * world.getWorldInfo()
                     .getWorldTotalTime()
-                + timeSinceLastTick);
+                + timeSinceLastTick));
         GL11.glRotated(rotationTimer, xMod, yMod, zMod);
+
         Tessellator tess = Tessellator.instance;
+
+        IIcon icon = plasma.getIcon();
+
         short[] rgba = plasma.material.get()
             .getRGBA();
+        float r = bloom ? rgba[0] / 255f : 0;
+        float g = bloom ? rgba[1] / 255f : 0;
+        float b = bloom ? rgba[2] / 255f : 0;
+
+        GL11.glColor4f(r, g, b, 1);
         tess.startDrawingQuads();
-        tess.setColorRGBA(rgba[0], rgba[1], rgba[2], rgba[3]);
-        tess.addVertex(-0.5, -0.5, -0.5);
-        tess.addVertex(0.5, -0.5, -0.5);
-        tess.addVertex(0.5, 0.5, -0.5);
-        tess.addVertex(-0.5, 0.5, -0.5);
 
-        tess.addVertex(-0.5, -0.5, 0.5);
-        tess.addVertex(0.5, -0.5, 0.5);
-        tess.addVertex(0.5, 0.5, 0.5);
-        tess.addVertex(-0.5, 0.5, 0.5);
+        // draw cube
+        // Front face(z = -0.5)
+        tess.addVertexWithUV(-0.5, 0.5, -0.5, icon.getMinU(), icon.getMaxV());
+        tess.addVertexWithUV(0.5, 0.5, -0.5, icon.getMaxU(), icon.getMaxV());
+        tess.addVertexWithUV(0.5, -0.5, -0.5, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(-0.5, -0.5, -0.5, icon.getMinU(), icon.getMinV());
 
-        tess.addVertex(-0.5, -0.5, -0.5);
-        tess.addVertex(-0.5, 0.5, -0.5);
-        tess.addVertex(-0.5, 0.5, 0.5);
-        tess.addVertex(-0.5, -0.5, 0.5);
+        // Back face (z = 0.5)
+        tess.addVertexWithUV(-0.5, 0.5, 0.5, icon.getMinU(), icon.getMaxV());
+        tess.addVertexWithUV(-0.5, -0.5, 0.5, icon.getMinU(), icon.getMinV());
+        tess.addVertexWithUV(0.5, -0.5, 0.5, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(0.5, 0.5, 0.5, icon.getMaxU(), icon.getMaxV());
 
-        tess.addVertex(0.5, -0.5, -0.5);
-        tess.addVertex(0.5, 0.5, -0.5);
-        tess.addVertex(0.5, 0.5, 0.5);
-        tess.addVertex(0.5, -0.5, 0.5);
+        // Left face (x = -0.5)
+        tess.addVertexWithUV(-0.5, -0.5, -0.5, icon.getMinU(), icon.getMinV());
+        tess.addVertexWithUV(-0.5, -0.5, 0.5, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(-0.5, 0.5, 0.5, icon.getMaxU(), icon.getMaxV());
+        tess.addVertexWithUV(-0.5, 0.5, -0.5, icon.getMinU(), icon.getMaxV());
 
-        tess.addVertex(-0.5, -0.5, -0.5);
-        tess.addVertex(-0.5, -0.5, 0.5);
-        tess.addVertex(0.5, -0.5, 0.5);
-        tess.addVertex(0.5, -0.5, -0.5);
+        // Right face (x = 0.5)
+        tess.addVertexWithUV(0.5, 0.5, -0.5, icon.getMinU(), icon.getMaxV());
+        tess.addVertexWithUV(0.5, 0.5, 0.5, icon.getMaxU(), icon.getMaxV());
+        tess.addVertexWithUV(0.5, -0.5, 0.5, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(0.5, -0.5, -0.5, icon.getMinU(), icon.getMinV());
 
-        tess.addVertex(-0.5, 0.5, -0.5);
-        tess.addVertex(-0.5, 0.5, 0.5);
-        tess.addVertex(0.5, 0.5, 0.5);
-        tess.addVertex(0.5, 0.5, -0.5);
+        // Top face (y = 0.5)
+        tess.addVertexWithUV(-0.5, 0.5, 0.5, icon.getMinU(), icon.getMaxV());
+        tess.addVertexWithUV(0.5, 0.5, 0.5, icon.getMaxU(), icon.getMaxV());
+        tess.addVertexWithUV(0.5, 0.5, -0.5, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(-0.5, 0.5, -0.5, icon.getMinU(), icon.getMinV());
+
+        // Bottom face (y = -0.5)
+        tess.addVertexWithUV(-0.5, -0.5, -0.5, icon.getMinU(), icon.getMinV());
+        tess.addVertexWithUV(0.5, -0.5, -0.5, icon.getMaxU(), icon.getMinV());
+        tess.addVertexWithUV(0.5, -0.5, 0.5, icon.getMaxU(), icon.getMaxV());
+        tess.addVertexWithUV(-0.5, -0.5, 0.5, icon.getMinU(), icon.getMaxV());
+        // lerps scale based on the sin of the total time % 360.
         double val = Math.sin(
             Math.toRadians(
                 (lerpRate / 2
@@ -648,6 +674,17 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
                 return new FluidStack(gtppMaterial.getPlasma(), amount);
             } else if (m instanceof Materials gtMaterial) {
                 return gtMaterial.getPlasma(amount);
+            } else throw new IllegalStateException();
+        }
+
+        public IIcon getIcon() {
+            IOreMaterial m = material.get();
+
+            if (m instanceof Material gtppMat) {
+                return gtppMat.getPlasma()
+                    .getIcon();
+            } else if (m instanceof Materials gtMat) {
+                return gtMat.mPlasma.getIcon();
             } else throw new IllegalStateException();
         }
 
