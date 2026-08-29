@@ -78,6 +78,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import io.netty.buffer.ByteBuf;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<MTEQuantumForceTransformer>
@@ -717,17 +718,15 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        if (data == null) data = new NBTTagCompound();
-        data.setBoolean("renderDisabled", renderDisabled);
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(renderDisabled);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        renderDisabled = data.getBoolean("renderDisabled");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        renderDisabled = buffer.readBoolean();
     }
 
     @Override

@@ -37,6 +37,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
+import io.netty.buffer.ByteBuf;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEWorldAccelerator extends MTETieredMachineBlock {
@@ -368,15 +369,15 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
      * Send the acceleration value to the client
      */
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("acceleration", getSpeedTierOverride());
-        return tag;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(getSpeedTierOverride());
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        this._mSpeedTierOverride = data.getInteger("acceleration");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        this._mSpeedTierOverride = buffer.readInt();
     }
 
     private void doAccelerateTileEntities(IGregTechTileEntity pBaseMetaTileEntity, World pWorld) {
