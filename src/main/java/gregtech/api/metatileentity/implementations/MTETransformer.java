@@ -274,17 +274,19 @@ public class MTETransformer extends MTETieredMachineBlock {
         final byte inputTier = GTUtility.getTier(tag.getLong("maxEUInput"));
         final byte outputTier = GTUtility.getTier(tag.getLong("maxEUOutput"));
 
-        currenttip.add(
-            String.format(
-                "%s %s(%dA) -> %s(%dA)",
-                (allowedToWork ? (GREEN + StatCollector.translateToLocal("GT5U.waila.transformer.step_down"))
-                    : (RED + StatCollector.translateToLocal("GT5U.waila.transformer.step_up"))) + RESET,
-                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
-                    : tag.getLong("maxEUInput"),
-                tag.getLong("displayedAmperesIn"),
-                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
-                    : tag.getLong("maxEUOutput"),
-                tag.getLong("maxAmperesOut")));
+        if (maxEUInput() != maxEUOutput()) {
+            currenttip.add(
+                String.format(
+                    "%s %s(%dA) -> %s(%dA)",
+                    (allowedToWork ? (GREEN + StatCollector.translateToLocal("GT5U.waila.transformer.step_down"))
+                        : (RED + StatCollector.translateToLocal("GT5U.waila.transformer.step_up"))) + RESET,
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
+                        : tag.getLong("maxEUInput"),
+                    tag.getLong("displayedAmperesIn"),
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
+                        : tag.getLong("maxEUOutput"),
+                    tag.getLong("maxAmperesOut")));
+        }
 
         if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
             currenttip.add(
