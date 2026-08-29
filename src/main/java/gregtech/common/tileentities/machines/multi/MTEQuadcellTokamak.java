@@ -14,13 +14,27 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_ON;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
+import static tectech.rendering.EOH.EOHRenderingUtils.addRenderedBlockInWorld;
 
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockCasingsFoundry;
+import gregtech.common.render.IMTERenderer;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -54,9 +68,13 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEQuadcellTokamakGui;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
+import org.joml.AxisAngle4f;
+import org.joml.Matrix4fStack;
+import org.lwjgl.opengl.GL11;
+import tectech.rendering.EOH.EOHRenderingUtils;
 
 public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadcellTokamak>
-    implements ISurvivalConstructable, ICasingTextureProvider {
+    implements ISurvivalConstructable, ICasingTextureProvider, IMTERenderer {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private final XSTR random = XSTR.XSTR_INSTANCE;
@@ -428,6 +446,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         this.RUNITE_CURRENT_BOOST = aNBT.getInteger("RuniteBoost");
         this.CELESTIAL_TUNGSTEN_CURRENT_BOOST = aNBT.getInteger("CelestialBoost");
         this.ORIKALKUM_CURRENT_BOOST = aNBT.getInteger("OrikalkumBoost");
+        this.shouldRender = aNBT.getBoolean("shouldRender");
     }
 
     @Override
@@ -441,6 +460,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         aNBT.setFloat("RuniteBoost", RUNITE_CURRENT_BOOST);
         aNBT.setFloat("CelestialBoost", CELESTIAL_TUNGSTEN_CURRENT_BOOST);
         aNBT.setFloat("OrikalkumBoost", ORIKALKUM_CURRENT_BOOST);
+        aNBT.setBoolean("shouldRender",shouldRender);
     }
 
     @Override
@@ -451,6 +471,109 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     @Override
     protected @NotNull MTEQuadcellTokamakGui getGui() {
         return new MTEQuadcellTokamakGui(this);
+    }
+
+
+
+    // render code
+    private boolean shouldRender = true;
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        shouldRender = !shouldRender;
+        getBaseMetaTileEntity().issueTileUpdate();
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.animations." + (shouldRender ? "enabled" : "disabled"));
+    }
+
+    @Override
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(shouldRender);
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        shouldRender = buffer.readBoolean();
+    }
+
+    @Override
+    public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+        if (!shouldRender || !getBaseMetaTileEntity().isActive()) {
+            return;
+        }
+
+        IGregTechTileEntity gte = getBaseMetaTileEntity();
+
+        World world = gte.getWorld();
+        if(world == null) return;
+
+        GL11.glPushMatrix();
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+        Tessellator tess = Tessellator.instance;
+        GL11.glScalef(3,3,3);
+        GL11.glTranslated(x+2,y+10,z+2);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_LIGHT0);
+
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+
+        tess.startDrawingQuads();
+        tess.setColorRGBA(255,0,0,255);
+        tess.addVertex(-0.5,-0.5,-0.5);
+        tess.addVertex(0.5,-0.5,-0.5);
+        tess.addVertex(0.5,0.5,-0.5);
+        tess.addVertex(-0.5,0.5,-0.5);
+
+        tess.setColorRGBA(128,0,0,255);
+        tess.addVertex(-0.5,-0.5,0.5);
+        tess.addVertex(0.5,-0.5,0.5);
+        tess.addVertex(0.5,0.5,0.5);
+        tess.addVertex(-0.5,0.5,0.5);
+
+        tess.setColorRGBA(0,255,0,255);
+        tess.addVertex(-0.5,-0.5,-0.5);
+        tess.addVertex(-0.5,0.5,-0.5);
+        tess.addVertex(-0.5,0.5,0.5);
+        tess.addVertex(-0.5,-0.5,0.5);
+
+        tess.setColorRGBA(0,128,0,255);
+        tess.addVertex(0.5,-0.5,-0.5);
+        tess.addVertex(0.5,0.5,-0.5);
+        tess.addVertex(0.5,0.5,0.5);
+        tess.addVertex(0.5,-0.5,0.5);
+
+        tess.setColorRGBA(0,0,255,255);
+        tess.addVertex(-0.5,-0.5,-0.5);
+        tess.addVertex(-0.5,-0.5,0.5);
+        tess.addVertex(0.5,-0.5,0.5);
+        tess.addVertex(0.5,-0.5,-0.5);
+
+        tess.setColorRGBA(0,0,128,255);
+        tess.addVertex(-0.5,0.5,-0.5);
+        tess.addVertex(-0.5,0.5,0.5);
+        tess.addVertex(0.5,0.5,0.5);
+        tess.addVertex(0.5,0.5,-0.5);
+
+      tess.draw();
+        // scale
+
+        // translate
+
+        // rotate
+
+        GL11.glPopAttrib();
+        GL11.glPopMatrix();
+
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
+        return  AxisAlignedBB.getBoundingBox(x-40, y-40, z-40, x + 40, y + 40, z + 40);
     }
 
     public enum PlasmaType {
