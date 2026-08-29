@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_MAGIC;
@@ -50,6 +51,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -109,7 +111,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         .addElement(
             'N',
             buildHatchAdder(MTEDEFusionCrafter.class)
-                .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Energy, Maintenance)
+                .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Energy.or(MultiAmpEnergy), Maintenance)
                 .casingIndex(CASING_INDEX)
                 .hint(1)
                 .buildAndChain(onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7))))
@@ -140,7 +142,12 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         if (mTierCasing > 3 && mFusionTierCasing < 2) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.defc_fusion_machine_casing"));
         }
-        checkHasEnergyHatch(errors);
+        if (!mExoticEnergyHatches.isEmpty()) {
+            checkHatchMax(errors, MultiAmpEnergy, mTierCasing == 5 ? 1 : 0);
+            if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+        } else {
+            checkHasEnergyHatch(errors);
+        }
         checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
