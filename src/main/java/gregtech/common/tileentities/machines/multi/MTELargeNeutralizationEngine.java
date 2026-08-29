@@ -626,7 +626,13 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 if (random < amount) depleteInput(robotArmItemStack);
                 robotArmTicksTimer = MINUTES;
             }
-            if (this.isAllowedToWork()) {
+            if (this.isAllowedToWork() || this.toxicResidue > 0) {// If the machine is active, toxic residue is
+                                                                  // increasing so robot arms are being used.
+                                                                  // Additionally, if there is toxic residue (even if
+                                                                  // the machine is inactive), then the
+                                                                  // robot arms are being used to remove the residue. In
+                                                                  // either case, the timer should
+                                                                  // count down.
                 robotArmTicksTimer--;
             }
         } else {
