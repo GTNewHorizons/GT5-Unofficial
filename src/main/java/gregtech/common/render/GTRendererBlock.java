@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -209,7 +210,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
         final IMetaTileEntity imte = getMTE(aBlock, aMeta);
-        if (((TesselatorAccessor) Tessellator.instance).gt5u$isDrawing()) {
+        // Nested capture can cache an incomplete model; let the outer renderer own that render instead.
+        if (((TesselatorAccessor) Tessellator.instance).gt5u$isDrawing() || TessellatorManager.isCurrentlyCapturing()
+            || TessellatorManager.shouldInterceptDraw(Tessellator.instance)) {
             renderInventoryBlockImmediate(aBlock, aMeta, aModelID, aRenderer, imte);
             return;
         }
