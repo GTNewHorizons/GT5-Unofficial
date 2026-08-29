@@ -26,6 +26,7 @@ import tectech.mechanics.pipe.PipeActivityMessage;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPipeLaserMirror extends MTEPipeLaser {
 
     private static IIconContainer EMpipe;

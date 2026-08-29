@@ -104,8 +104,10 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
     @Override
     public String getLocalName() {
         if (!hasOwnLocalName()) return super.getLocalName();
-        return StatCollector
-            .translateToLocalFormatted("gt.blockmachines.hatch.comp-output-bus.name", GTValues.VN[mTier]);
+        // The same class serves the compressed and the quantum buses, which are named apart.
+        final String key = mName.startsWith("hatch.quantum") ? "gt.blockmachines.hatch.quantum-output-bus.name"
+            : "gt.blockmachines.hatch.comp-output-bus.name";
+        return StatCollector.translateToLocalFormatted(key, GTValues.VN[mTier]);
     }
 
     @Override

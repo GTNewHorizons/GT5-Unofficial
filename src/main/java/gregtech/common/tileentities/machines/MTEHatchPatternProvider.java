@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.items.misc.ItemEncodedPattern;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -21,6 +22,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchPatternProviderGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchPatternProvider extends MTEHatchInputBus {
 
     public MTEHatchPatternProvider(int id, String name, String nameRegional, int tier) {

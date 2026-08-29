@@ -30,6 +30,7 @@ import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.mechanics.pipe.PipeActivityMessage;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
 
     static IIconContainer EMcandy, EMCandyActive;
