@@ -407,6 +407,7 @@ public class GTClient extends GTProxy {
             mPreference = new GTClientPreference();
             final boolean renderIndicatorsOnHatch = GTMod.proxy.mRenderIndicatorsOnHatch;
             GTPreLoad.loadClientConfig();
+            GTRendererBlock.clearInventoryDisplayListCache();
             if (renderIndicatorsOnHatch != GTMod.proxy.mRenderIndicatorsOnHatch) {
                 for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                     if (GregTechAPI.METATILEENTITIES[i] instanceof CommonMetaTileEntity metaTileEntity) {
