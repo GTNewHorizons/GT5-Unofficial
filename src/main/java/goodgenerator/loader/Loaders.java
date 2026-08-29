@@ -18,8 +18,8 @@ import goodgenerator.blocks.regularBlock.BlockTurbineCasing;
 import goodgenerator.blocks.tileEntity.AntimatterForge;
 import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import goodgenerator.blocks.tileEntity.AntimatterOutputHatch;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEHatchNeutronSensor;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
-import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.blocks.tileEntity.MTEComponentAssemblyLine;
 import goodgenerator.blocks.tileEntity.MTECoolantTower;
@@ -306,8 +306,11 @@ public class Loaders {
                 "Neutron Accelerator " + GTValues.VN[i],
                 i).getStackForm(1L);
         }
-        Loaders.NS = new MTENeutronSensor(MetaTileEntityIDs.NeutronSensor.ID, "Neutron Sensor", "Neutron Sensor", 5)
-            .getStackForm(1L);
+        Loaders.NS = new MTEHatchNeutronSensor(
+            MetaTileEntityIDs.NeutronSensor.ID,
+            "Neutron Sensor",
+            "Neutron Sensor",
+            5).getStackForm(1L);
         Loaders.NA = new MTENeutronActivator(
             MetaTileEntityIDs.NeutronActivator.ID,
             "NeutronActivator",

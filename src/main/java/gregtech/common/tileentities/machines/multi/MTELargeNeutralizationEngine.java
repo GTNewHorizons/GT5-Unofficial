@@ -113,7 +113,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private final static ItemStack POTASSIUM_HYDROXIDE_DUST = Materials.PotassiumHydroxide.getDust(1);
     private final static ItemStack SODIUM_HYDROXIDE_DUST = Materials.SodiumHydroxide.getDust(1);
 
-    private final ArrayList<MTEToxicResidueSensor> sensorHatches = new ArrayList<>();
+    private final ArrayList<MTEHatchToxicResidueSensor> sensorHatches = new ArrayList<>();
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -406,7 +406,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureId());
         for (MTEHatch h : mExoticDynamoHatches) h.updateTexture(getCasingTextureId());
         for (MTEHatchDynamo h : mDynamoHatches) h.updateTexture(getCasingTextureId());
-        for (MTEToxicResidueSensor h : sensorHatches) h.updateTexture(getCasingTextureId());
+        for (MTEHatchToxicResidueSensor h : sensorHatches) h.updateTexture(getCasingTextureId());
     }
 
     @Override
@@ -605,8 +605,9 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         this.residueIncrease = 0;
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (!aBaseMetaTileEntity.isServerSide()) return;
-        for (MTEToxicResidueSensor toxicResidueSensorHatch : sensorHatches) { // done in onPostTick so it can update
-                                                                              // even when multi is off
+        for (MTEHatchToxicResidueSensor toxicResidueSensorHatch : sensorHatches) { // done in onPostTick so it can
+                                                                                   // update
+            // even when multi is off
             toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, residueCapacity);
         }
         robotArmTier = getRobotArmTier(); // robotArmTier is 1 less than real robot arm tier
@@ -685,7 +686,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private boolean addSensorHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEToxicResidueSensor sensor) {
+        if (aMetaTileEntity instanceof MTEHatchToxicResidueSensor sensor) {
             sensor.updateTexture(aBaseCasingIndex);
             return this.sensorHatches.add(sensor);
         }
@@ -694,7 +695,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private enum SpecialHatchElement implements IHatchElement<MTELargeNeutralizationEngine> {
 
-        ToxicResidueSensor(MTELargeNeutralizationEngine::addSensorHatchToMachineList, MTEToxicResidueSensor.class) {
+        ToxicResidueSensor(MTELargeNeutralizationEngine::addSensorHatchToMachineList,
+            MTEHatchToxicResidueSensor.class) {
 
             @Override
             public long count(MTELargeNeutralizationEngine gtMetaTileEntityLargeNeutralizationEngine) {

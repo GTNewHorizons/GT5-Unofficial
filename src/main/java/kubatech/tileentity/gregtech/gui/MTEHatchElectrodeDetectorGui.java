@@ -3,44 +3,34 @@ package kubatech.tileentity.gregtech.gui;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CYCLIC;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.modularui2.common.CommonWidgets;
-import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import kubatech.tileentity.gregtech.hatch.MTEElectrodeDetectorHatch;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchRedstoneBaseGui;
+import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
 
-public class MTEElectrodeDetectorHatchGui extends MTEHatchBaseGui<MTEElectrodeDetectorHatch> {
+public class MTEHatchElectrodeDetectorGui extends MTEHatchRedstoneBaseGui<MTEHatchElectrodeDetector> {
 
-    public MTEElectrodeDetectorHatchGui(MTEElectrodeDetectorHatch detector) {
+    public MTEHatchElectrodeDetectorGui(MTEHatchElectrodeDetector detector) {
         super(detector);
     }
 
     @Override
-    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow col = Flow.column()
-            .child(
-                CommonWidgets
-                    .createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted).allowC2S()))
-            .child(createThresholdTypeButtonRow())
+    protected Flow createContentColumn() {
+        return super.createContentColumn().child(createThresholdTypeButtonRow())
             .child(createThresholdFieldRow())
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .childPadding(2);
-        return super.createContentSection(panel, syncManager).child(col);
     }
 
     public Flow createThresholdTypeButtonRow() {
-        EnumSyncValue<MTEElectrodeDetectorHatch.ThresholdType, ?> thresholdTypeSyncer = new EnumSyncValue<>(
-            MTEElectrodeDetectorHatch.ThresholdType.class,
+        EnumSyncValue<MTEHatchElectrodeDetector.ThresholdType, ?> thresholdTypeSyncer = new EnumSyncValue<>(
+            MTEHatchElectrodeDetector.ThresholdType.class,
             machine::getThresholdType,
             machine::setThresholdType).allowC2S();
 

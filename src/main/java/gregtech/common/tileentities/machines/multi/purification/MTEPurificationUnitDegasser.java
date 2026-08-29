@@ -604,7 +604,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         this.insertedStuffThisCycle.clear();
         this.outputMultiplier = 1.0f;
         // Make sure to output the hatch control signal.
-        this.controlHatch.updateOutputSignal(this.controlSignal.getSignal());
+        this.controlHatch.setRedstoneSignal(this.controlSignal.getSignal());
     }
 
     private static ArrayList<FluidStack> getDrainableFluidsFromHatch(MTEHatchInput hatch) {

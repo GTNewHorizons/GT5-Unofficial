@@ -33,8 +33,8 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEHatchNeutronSensor;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
-import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
@@ -81,7 +81,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
     protected static IStructureDefinition<MTENeutronActivator> multiDefinition = null;
     protected final ArrayList<MTENeutronAccelerator> mNeutronAccelerator = new ArrayList<>();
-    protected final ArrayList<MTENeutronSensor> mNeutronSensor = new ArrayList<>();
+    protected final ArrayList<MTEHatchNeutronSensor> mNeutronSensor = new ArrayList<>();
     protected int casingAmount = 0;
     protected int height = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
@@ -309,9 +309,9 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             if (aMetaTileEntity instanceof MTENeutronAccelerator) {
                 ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return this.mNeutronAccelerator.add((MTENeutronAccelerator) aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof MTENeutronSensor) {
+            } else if (aMetaTileEntity instanceof MTEHatchNeutronSensor) {
                 ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mNeutronSensor.add((MTENeutronSensor) aMetaTileEntity);
+                return this.mNeutronSensor.add((MTEHatchNeutronSensor) aMetaTileEntity);
             }
         }
         return false;
@@ -381,7 +381,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             if (this.eV < 0) this.eV = 0;
             if (this.eV > maxNeutronKineticEnergy()) doExplosion(4 * 32);
 
-            for (MTENeutronSensor tHatch : mNeutronSensor) {
+            for (MTEHatchNeutronSensor tHatch : mNeutronSensor) {
                 tHatch.updateRedstoneOutput(this.eV);
             }
 
@@ -496,7 +496,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
 
     private enum NeutronHatchElement implements IHatchElement<MTENeutronActivator> {
 
-        NeutronSensor(MTENeutronActivator::addAcceleratorAndSensor, MTENeutronSensor.class) {
+        NeutronSensor(MTENeutronActivator::addAcceleratorAndSensor, MTEHatchNeutronSensor.class) {
 
             @Override
             public long count(MTENeutronActivator t) {

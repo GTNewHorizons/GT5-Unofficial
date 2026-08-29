@@ -3,26 +3,23 @@ package gregtech.common.gui.modularui.hatch;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchRedstoneBaseGui;
+import gregtech.common.tileentities.machines.multi.compressor.MTEHatchBlackHoleUtility;
 
-public class MTEBlackHoleUtilityGui extends MTEHatchBaseGui<MTEBlackHoleUtility> {
+public class MTEHatchBlackHoleUtilityGui extends MTEHatchRedstoneBaseGui<MTEHatchBlackHoleUtility> {
 
-    public MTEBlackHoleUtilityGui(MTEBlackHoleUtility hatch) {
+    public MTEHatchBlackHoleUtilityGui(MTEHatchBlackHoleUtility hatch) {
         super(hatch);
     }
 
     @Override
-    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createContentSection(panel, syncManager).child(createInvertButtonRow());
+    protected Flow createContentColumn() {
+        return super.createContentColumn().child(createInvertButtonRow());
     }
 
     private Flow createInvertButtonRow() {

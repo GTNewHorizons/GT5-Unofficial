@@ -4,9 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -20,11 +18,11 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
+import gregtech.common.gui.modularui.hatch.MTEHatchNeutronSensorGui;
+import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
+public class MTEHatchNeutronSensor extends MTEHatchRedstoneBase implements IDataCopyable {
 
     public static final String COPIED_DATA_IDENTIFIER = "neutronSensor";
 
@@ -33,14 +31,12 @@ public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
         .customOptional("icons/NeutronSensorFont_GLOW");
 
     protected int threshold = 0;
-    protected boolean inverted = false;
-    boolean isOn = false;
 
-    public MTENeutronSensor(int aID, String aName, String aNameRegional, int aTier) {
+    public MTEHatchNeutronSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Detect Neutron Kinetic Energy.");
     }
 
-    public MTENeutronSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchNeutronSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -58,7 +54,6 @@ public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
             setThresholdFromString(aNBT.getString("mBoxContext"));
         } else {
             threshold = aNBT.getInteger("mThreshold");
-            inverted = aNBT.getBoolean("mInverted");
         }
         super.loadNBTData(aNBT);
     }
@@ -129,30 +124,7 @@ public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mThreshold", threshold);
-        aNBT.setBoolean("mInverted", inverted);
         super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {
-        getBaseMetaTileEntity().setActive(true);
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        openGui(aPlayer);
-        return true;
     }
 
     /**
@@ -161,7 +133,7 @@ public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
      * @param eV Amount of eV to compare.
      */
     public void updateRedstoneOutput(int eV) {
-        isOn = (eV >= threshold) ^ inverted;
+        setRedstoneSignal(eV >= threshold);
     }
 
     @Override
@@ -178,49 +150,13 @@ public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
     }
 
     @Override
-    public boolean allowGeneralRedstoneOutput() {
-        return true;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (isOn) {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 15);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
-            }
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTENeutronSensor(mName, mTier, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
+        return new MTEHatchNeutronSensor(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTENeutronSensorGui(this).build(data, syncManager, uiSettings);
+        return new MTEHatchNeutronSensorGui(this).build(data, syncManager, uiSettings);
     }
 
     public int getThreshold() {
@@ -229,14 +165,6 @@ public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
 
     public void setThreshold(int threshold) {
         this.threshold = threshold;
-    }
-
-    public boolean isInverted() {
-        return inverted;
-    }
-
-    public void setInverted(boolean inverted) {
-        this.inverted = inverted;
     }
 
     @Override

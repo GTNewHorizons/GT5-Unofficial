@@ -4,10 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -21,65 +18,24 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHeatProducer;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.IGTHatchAdder;
-import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
+import gregtech.common.gui.modularui.hatch.MTEHatchHeatSensorGui;
+import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTEHeatSensor extends MTEHatch {
+public class MTEHatchHeatSensor extends MTEHatchRedstoneBase {
 
     protected static final IIconContainer TEXTURE_FRONT = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     protected static final IIconContainer TEXTURE_FRONT_GLOW = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
 
     protected double threshold = 0;
-    protected boolean inverted = false;
-    protected float heat = 0;
 
-    public MTEHeatSensor(int aID, String aName, String aNameRegional, int aTier) {
+    public MTEHatchHeatSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Reads heat from a machine.");
     }
 
-    public MTEHeatSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchHeatSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean allowGeneralRedstoneOutput() {
-        return true;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {
-        getBaseMetaTileEntity().setActive(true);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        openGui(aPlayer);
-        return true;
     }
 
     @Override
@@ -92,39 +48,22 @@ public class MTEHeatSensor extends MTEHatch {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getDouble("mThreshold");
-        inverted = aNBT.getBoolean("mInverted");
-        heat = aNBT.getFloat("heat");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setDouble("mThreshold", threshold);
-        aNBT.setBoolean("mInverted", inverted);
-        aNBT.setFloat("heat", heat);
         super.saveNBTData(aNBT);
     }
 
-    public void setHeatValue(float heat) {
-        this.heat = heat;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
-        boolean isOn = (heat > threshold) ^ inverted;
-        if (aBaseMetaTileEntity.isServerSide()) {
-            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity
-                    .setStrongOutputRedstoneSignal(direction, isOn && direction == facing ? (byte) 15 : 0);
-            }
-        }
+    public void updateRedstoneOutput(float heat) {
+        setRedstoneSignal(heat > threshold);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEHeatSensor(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchHeatSensor(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -148,27 +87,14 @@ public class MTEHeatSensor extends MTEHatch {
         this.threshold = threshold;
     }
 
-    public boolean isInverted() {
-        return inverted;
-    }
-
-    public void setInverted(boolean inverted) {
-        this.inverted = inverted;
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEHeatSensorGui(this).build(data, syncManager, uiSettings);
+        return new MTEHatchHeatSensorGui(this).build(data, syncManager, uiSettings);
     }
 
     public enum HeatSensorHatchElement implements IHatchElement<IHeatProducer> {
 
-        HeatSensor(IHeatProducer::addHeatSensorHatchToMachineList, MTEHeatSensor.class);
+        HeatSensor(IHeatProducer::addHeatSensorHatchToMachineList, MTEHatchHeatSensor.class);
 
         private final IGTHatchAdder<IHeatProducer> adder;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
