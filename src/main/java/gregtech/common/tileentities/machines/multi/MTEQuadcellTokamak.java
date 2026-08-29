@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -375,6 +376,21 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     }
 
     @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean showMachineStatusInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean hasRunningText() {
+        return false;
+    }
+
+    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, WIDTH_OFFSET, HEIGHT_OFFSET, DEPTH_OFFSET);
     }
@@ -439,20 +455,23 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
 
     public enum PlasmaType {
 
-        FORCE("ForceDR", 10_000, 0.15f, 200_000, () -> MaterialsElements.STANDALONE.FORCE),
-        RUNITE("RuniteDR", 20_000, 0.1f, 800_000, () -> MaterialsElements.STANDALONE.RUNITE),
-        CELESTIAL("CelestialTungstenDR", 80_000, 0.05f, 3_200_000,
+        FORCE("ForceDR", "ForceBoost", 10_000, 0.15f, 200_000, () -> MaterialsElements.STANDALONE.FORCE),
+        RUNITE("RuniteDR", "RuniteBoost", 20_000, 0.1f, 800_000, () -> MaterialsElements.STANDALONE.RUNITE),
+        CELESTIAL("CelestialTungstenDR", "CelestialTungstenBoost", 80_000, 0.05f, 3_200_000,
             () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN),
-        ORIKALKUM("OrikalkumDR", 320_000, 1.5f, 8_000_000, () -> Materials.Orikalkum);
+        ORIKALKUM("OrikalkumDR", "OrikalkumBoost", 320_000, 1.5f, 8_000_000, () -> Materials.Orikalkum);
 
         private final String syncKey;
+        private final String boostSyncKey;
         private final int maxDR;
         private final float maxBoost;
         private final int density;
         private final Supplier<IOreMaterial> material;
 
-        PlasmaType(String syncKey, int maxDrainRate, float maxBoost, int density, Supplier<IOreMaterial> material) {
+        PlasmaType(String syncKey, String boostSyncKey, int maxDrainRate, float maxBoost, int density,
+            Supplier<IOreMaterial> material) {
             this.syncKey = syncKey;
+            this.boostSyncKey = boostSyncKey;
             this.maxDR = maxDrainRate;
             this.maxBoost = maxBoost;
             this.density = density;
@@ -461,6 +480,10 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
 
         public IntSyncValue getSyncValue(PanelSyncManager syncManager) {
             return syncManager.findSyncHandler(this.syncKey, IntSyncValue.class);
+        }
+
+        public FloatSyncValue getBoostSyncValue(PanelSyncManager syncManager) {
+            return syncManager.findSyncHandler(this.boostSyncKey, FloatSyncValue.class);
         }
 
         public int getMaxDR() {

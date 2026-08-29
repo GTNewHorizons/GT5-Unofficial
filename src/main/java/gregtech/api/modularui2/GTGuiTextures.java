@@ -2007,6 +2007,13 @@ public final class GTGuiTextures {
         .nonOpaque()
         .build();
 
+    public static final UITexture TOKAMAK_SLIDER_BG = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/tokamak_slider_bg")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
+
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE = UITexture
         .fullImage(MODID, "gui/picture/milestone_charge");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION = UITexture

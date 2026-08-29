@@ -1,6 +1,9 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+
+import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -12,11 +15,14 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.value.IntValue;
+import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
@@ -24,6 +30,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.modularui2.sync.Predicates;
 import gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak;
 import gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak.PlasmaType;
 
@@ -55,6 +62,22 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
             multiblock.ORIKALKUM_CURRENT_DR = val;
             multiblock.resetBoosts();
         }).allowC2S());
+
+        syncManager.syncValue(
+            "RuniteBoost",
+            new FloatSyncValue(() -> multiblock.RUNITE_CURRENT_BOOST, val -> multiblock.RUNITE_CURRENT_BOOST = val));
+        syncManager.syncValue(
+            "CelestialTungstenBoost",
+            new FloatSyncValue(
+                () -> multiblock.CELESTIAL_TUNGSTEN_CURRENT_BOOST,
+                val -> multiblock.CELESTIAL_TUNGSTEN_CURRENT_BOOST = val));
+        syncManager.syncValue(
+            "OrikalkumBoost",
+            new FloatSyncValue(
+                () -> multiblock.ORIKALKUM_CURRENT_BOOST,
+                val -> multiblock.ORIKALKUM_CURRENT_BOOST = val));
+
+        syncManager.syncValue("EnergyProduced", new LongSyncValue(() -> multiblock.lEUt, val -> multiblock.lEUt = val));
     }
 
     @Override
@@ -86,11 +109,11 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
                         createTerminalTextWidget(syncManager, panel).collapseDisabledChild()
-                            .setEnabledIf($ -> !multiblock.terminalSwitch)
-                            .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 4))
+                            .setEnabledIf(_ -> !multiblock.terminalSwitch)
+                            .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8))
                     .child(
                         createConfigurationTerminalTextWidget(syncManager).collapseDisabledChild()
-                            .setEnabledIf($ -> multiblock.terminalSwitch)
+                            .setEnabledIf(_ -> multiblock.terminalSwitch)
                             .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8))
                     .childIf(
                         multiblock.supportsTerminalRightCornerColumn(),
@@ -113,6 +136,93 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
             .size(0);
     }
 
+    @Override
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        IntSyncValue force = PlasmaType.FORCE.getSyncValue(syncManager);
+        IntSyncValue runite = PlasmaType.RUNITE.getSyncValue(syncManager);
+        IntSyncValue celestial = PlasmaType.CELESTIAL.getSyncValue(syncManager);
+        IntSyncValue orikalkum = PlasmaType.ORIKALKUM.getSyncValue(syncManager);
+
+        FloatSyncValue runiteBoost = PlasmaType.RUNITE.getBoostSyncValue(syncManager);
+        FloatSyncValue celestialBoost = PlasmaType.CELESTIAL.getBoostSyncValue(syncManager);
+        FloatSyncValue orikalkumBoost = PlasmaType.ORIKALKUM.getBoostSyncValue(syncManager);
+
+        LongSyncValue eut = syncManager.findSyncHandler("EnergyProduced", LongSyncValue.class);
+
+        return super.createTerminalTextWidget(syncManager, parent).child(createRecipeInfoTextWidget(syncManager))
+            .child(
+                IKey.dynamic(
+                    () -> "Generating " + EnumChatFormatting.AQUA
+                        + formatNumber(eut.getLongValue())
+                        + EnumChatFormatting.WHITE
+                        + " EU/t")
+                    .color(Color.WHITE.main)
+                    .alignment(Alignment.CenterLeft)
+                    .asWidget()
+                    .marginBottom(2)
+                    .fullWidth())
+            // todo Residue output line here
+            .child(
+                IKey.lang("Expected drain rates:")
+                    .color(Color.WHITE.main)
+                    .alignment(Alignment.CenterLeft)
+                    .asWidget()
+                    .fullWidth()
+                    .marginBottom(2)
+                    .setEnabledIf(
+                        _ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0"))))
+            .child(IKey.dynamic(() -> {
+                float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
+                    * orikalkumBoost.getFloatValue()));
+                int value = Math.round(force.getIntValue() / multiplier);
+                return "Force: " + EnumChatFormatting.GREEN + formatNumber(value) + EnumChatFormatting.WHITE + " L/s";
+            })
+                .color(PlasmaType.FORCE.getRGB())
+                .asWidget()
+                .marginBottom(2)
+                .marginLeft(2)
+                .setEnabledIf(_ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0"))))
+            .child(IKey.dynamic(() -> {
+                float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
+                    * orikalkumBoost.getFloatValue()));
+                int value = Math.round(runite.getIntValue() / multiplier);
+                return "Runite: " + EnumChatFormatting.GREEN + formatNumber(value) + EnumChatFormatting.WHITE + " L/s";
+            })
+                .color(PlasmaType.RUNITE.getRGB())
+                .asWidget()
+                .marginBottom(2)
+                .marginLeft(2)
+                .setEnabledIf(_ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0"))))
+            .child(IKey.dynamic(() -> {
+                float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
+                    * orikalkumBoost.getFloatValue()));
+                int value = Math.round(celestial.getIntValue() / multiplier);
+                return "Celestial Tungsten: " + EnumChatFormatting.GREEN
+                    + formatNumber(value)
+                    + EnumChatFormatting.WHITE
+                    + " L/s";
+            })
+                .color(PlasmaType.CELESTIAL.getRGB())
+                .asWidget()
+                .marginBottom(2)
+                .marginLeft(2)
+                .setEnabledIf(_ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0"))))
+            .child(IKey.dynamic(() -> {
+                float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
+                    * orikalkumBoost.getFloatValue()));
+                int value = Math.round(orikalkum.getIntValue() / multiplier);
+                return "Orikalkum: " + EnumChatFormatting.GREEN
+                    + formatNumber(value)
+                    + EnumChatFormatting.WHITE
+                    + " L/s";
+            })
+                .color(PlasmaType.ORIKALKUM.getRGB())
+                .asWidget()
+                .marginBottom(2)
+                .marginLeft(3)
+                .setEnabledIf(_ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0"))));
+    }
+
     protected Flow createConfigurationTerminalTextWidget(PanelSyncManager syncManager) {
         return Flow.column()
             .horizontalCenter()
@@ -127,10 +237,11 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
         IntSyncValue syncValue = plasma.getSyncValue(syncManager);
 
         return Flow.column()
-            .size(150, 16 + 1 + 9)
+            .size(171, 16 + 1 + 9)
             .child(
                 IKey.str(plasma.getLocalName())
                     .color(plasma.getRGB())
+                    .shadow(true)
                     .asWidget()
                     .marginBottom(1))
             .child(
@@ -145,19 +256,18 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
                             .size(16)
                             .marginRight(2))
                     .child(
-                        new ParentWidget<>().size(82, 10)
+                        new ParentWidget<>().size(103, 10)
                             .child(
-                                GTGuiTextures.SLOT_ITEM_DARK.asWidget()
-                                    .size(82, 10))
+                                GTGuiTextures.TOKAMAK_SLIDER_BG.asWidget()
+                                    .size(103, 10))
                             .child(
-                                new SliderWidget().size(80, 8)
+                                new SliderWidget().size(101, 8)
                                     .margin(1, 1)
                                     .verticalCenter()
                                     .bounds(0, plasma.getMaxDR())
                                     .sliderSize(2, 8)
                                     .sliderTexture(new Rectangle().color(Color.WHITE.main))
-                                    .background(IDrawable.EMPTY)
-                                    .overlay(new Rectangle().horizontalGradient(Color.GREY.main, plasma.getRGB()))
+                                    .background(new Rectangle().horizontalGradient(Color.GREY.main, plasma.getRGB()))
                                     .value(
                                         new DoubleValue.Dynamic(syncValue::getDoubleValue, syncValue::setDoubleValue))))
                     .child(
@@ -181,5 +291,4 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
             .tooltipBuilder(t -> t.addLine("Configure plasmas"))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
-
 }
