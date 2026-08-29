@@ -136,13 +136,6 @@ death.attack.elementalPollution.player=%1$s was vaping from the wrong hole while
 death.attack.subspace=%1$s was N-th dimensionally displeased.
 death.attack.subspace.player=%1$s N-th dimensionally displeased while fighting %2$s.
 
-#Machine hulls
-gt.blockmachines.hull.tier.10.name=UEV Machine Hull
-gt.blockmachines.hull.tier.11.name=UIV Machine Hull
-gt.blockmachines.hull.tier.12.name=UMV Machine Hull
-gt.blockmachines.hull.tier.13.name=UXV Machine Hull
-gt.blockmachines.hull.tier.14.name=MAX Machine Hull
-
 #Transformers
 gt.blockmachines.transformer.ha.tier.09.name=Highly Ultimate Hi-Amp Transformer
 gt.blockmachines.transformer.ha.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert)

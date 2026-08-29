@@ -106,13 +106,6 @@ death.attack.elementalPollution.player=%1$s在与%2$s的战斗中被错误的空
 death.attack.subspace=%1$s受到了降维打击。
 death.attack.subspace.player=%1$s在与%2$s的战斗中受到了降维打击。
 
-#Machine hulls
-gt.blockmachines.hull.tier.10.name=UEV机器外壳
-gt.blockmachines.hull.tier.11.name=UIV机器外壳
-gt.blockmachines.hull.tier.12.name=UMV机器外壳
-gt.blockmachines.hull.tier.13.name=UXV机器外壳
-gt.blockmachines.hull.tier.14.name=MAX机器外壳
-
 #Transformers
 gt.blockmachines.transformer.ha.tier.09.name=UHV高电流变压器
 gt.blockmachines.transformer.ha.tier.09.desc=UEV -> UHV (用软锤右击以反转

@@ -3302,3 +3302,5 @@ gt.blockmachines.hatch.muffler.adv.name=进阶消声仓（%s）
 gt.blockmachines.muffler_advanced.filter.desc=需要空气滤网
 gt.blockmachines.muffler_advanced.filter_tier2.desc=需要%s空气滤网
 gt.blockmachines.muffler_advanced.desc=为多方块机器排放污染\n请勿阻塞输出！\n排气面前方需要三格空气\n%1$s\n可以从多方块的输入总线获取空气滤网\n降低污染排放至%2$s%%
+gt.blockmachines.energybuffer.name=%1$s能量缓冲器
+gt.blockmachines.energybuffer.desc=默认输入/输出4安电流\n用螺丝刀改变输出电流\n现在可携带了！

@@ -134,13 +134,6 @@ death.attack.elementalPollution.player=%1$s вейпил из неверного
 death.attack.subspace=%1$s был размазан по N-мерному пространству.
 death.attack.subspace.player=%1$s был размазан по N-мерному пространству, пока сражался с %2$s.
 
-#Machine hulls
-gt.blockmachines.hull.tier.10.name=UEV Корпус механизма
-gt.blockmachines.hull.tier.11.name=UIV Корпус механизма
-gt.blockmachines.hull.tier.12.name=UMV Корпус механизма
-gt.blockmachines.hull.tier.13.name=UXV Корпус механизма
-gt.blockmachines.hull.tier.14.name=MAX Корпус механизма
-
 #Transformers
 gt.blockmachines.transformer.ha.tier.09.name=UHV Высокоамперный трансформатор
 gt.blockmachines.transformer.ha.tier.09.desc=UEV - UHV (Используй Киянку для инвертации)

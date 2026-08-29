@@ -4172,3 +4172,5 @@ gt.blockmachines.hatch.muffler.adv.name=Advanced Muffler Hatch (%s)
 gt.blockmachines.muffler_advanced.filter.desc=Requires an Air Filter
 gt.blockmachines.muffler_advanced.filter_tier2.desc=Requires an Air Filter %s
 gt.blockmachines.muffler_advanced.desc=Outputs pollution from a multiblock\nDO NOT OBSTRUCT THE OUTPUT!\nRequires 3 Air Blocks in front of the exhaust face\n%1$s\nCan take Air Filters from an input bus of the multiblock\nReduces Pollution to %2$s%%
+gt.blockmachines.energybuffer.name=%1$s Energy Buffer
+gt.blockmachines.energybuffer.desc=Defaults 4A In/Out\nChange output Amperage with a screwdriver\nNow Portable!

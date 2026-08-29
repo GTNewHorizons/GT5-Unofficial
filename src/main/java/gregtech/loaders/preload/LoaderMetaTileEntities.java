@@ -1717,25 +1717,16 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerLocker() {
-        ItemList.Locker_ULV
-            .set(new MTELocker(LOCKER_ULV.ID, "locker.tier.00", "Ultra Low Voltage Locker", 0).getStackForm(1L));
-        ItemList.Locker_LV.set(new MTELocker(LOCKER_LV.ID, "locker.tier.01", "Low Voltage Locker", 1).getStackForm(1L));
-        ItemList.Locker_MV
-            .set(new MTELocker(LOCKER_MV.ID, "locker.tier.02", "Medium Voltage Locker", 2).getStackForm(1L));
-        ItemList.Locker_HV
-            .set(new MTELocker(LOCKER_HV.ID, "locker.tier.03", "High Voltage Locker", 3).getStackForm(1L));
-        ItemList.Locker_EV
-            .set(new MTELocker(LOCKER_EV.ID, "locker.tier.04", "Extreme Voltage Locker", 4).getStackForm(1L));
-        ItemList.Locker_IV
-            .set(new MTELocker(LOCKER_IV.ID, "locker.tier.05", "Insane Voltage Locker", 5).getStackForm(1L));
-        ItemList.Locker_LuV
-            .set(new MTELocker(LOCKER_LuV.ID, "locker.tier.06", "Ludicrous Voltage Locker", 6).getStackForm(1L));
-        ItemList.Locker_ZPM
-            .set(new MTELocker(LOCKER_ZPM.ID, "locker.tier.07", "ZPM Voltage Locker", 7).getStackForm(1L));
-        ItemList.Locker_UV
-            .set(new MTELocker(LOCKER_UV.ID, "locker.tier.08", "Ultimate Voltage Locker", 8).getStackForm(1L));
-        ItemList.Locker_MAX
-            .set(new MTELocker(LOCKER_UHV.ID, "locker.tier.09", "Highly Ultimate Voltage Locker", 9).getStackForm(1L));
+        ItemList.Locker_ULV.set(new MTELocker(LOCKER_ULV.ID, "locker.tier.00", "", 0).getStackForm(1L));
+        ItemList.Locker_LV.set(new MTELocker(LOCKER_LV.ID, "locker.tier.01", "", 1).getStackForm(1L));
+        ItemList.Locker_MV.set(new MTELocker(LOCKER_MV.ID, "locker.tier.02", "", 2).getStackForm(1L));
+        ItemList.Locker_HV.set(new MTELocker(LOCKER_HV.ID, "locker.tier.03", "", 3).getStackForm(1L));
+        ItemList.Locker_EV.set(new MTELocker(LOCKER_EV.ID, "locker.tier.04", "", 4).getStackForm(1L));
+        ItemList.Locker_IV.set(new MTELocker(LOCKER_IV.ID, "locker.tier.05", "", 5).getStackForm(1L));
+        ItemList.Locker_LuV.set(new MTELocker(LOCKER_LuV.ID, "locker.tier.06", "", 6).getStackForm(1L));
+        ItemList.Locker_ZPM.set(new MTELocker(LOCKER_ZPM.ID, "locker.tier.07", "", 7).getStackForm(1L));
+        ItemList.Locker_UV.set(new MTELocker(LOCKER_UV.ID, "locker.tier.08", "", 8).getStackForm(1L));
+        ItemList.Locker_MAX.set(new MTELocker(LOCKER_UHV.ID, "locker.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerScanner() {
@@ -2391,26 +2382,26 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEBasicHullSteelBricks(HULL_CAST_IRON.ID, "hull.steel_bricked", "Bricked Cast Iron Hull", 0)
                 .getStackForm(1L));
 
-        ItemList.Hull_ULV.set(new MTEBasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0).getStackForm(1L));
-        ItemList.Hull_LV.set(new MTEBasicHull(HULL_LV.ID, "hull.tier.01", "LV Machine Hull", 1).getStackForm(1L));
-        ItemList.Hull_MV.set(new MTEBasicHull(HULL_MV.ID, "hull.tier.02", "MV Machine Hull", 2).getStackForm(1L));
-        ItemList.Hull_HV.set(new MTEBasicHull(HULL_HV.ID, "hull.tier.03", "HV Machine Hull", 3).getStackForm(1L));
-        ItemList.Hull_EV.set(new MTEBasicHull(HULL_EV.ID, "hull.tier.04", "EV Machine Hull", 4).getStackForm(1L));
-        ItemList.Hull_IV.set(new MTEBasicHull(HULL_IV.ID, "hull.tier.05", "IV Machine Hull", 5).getStackForm(1L));
-        ItemList.Hull_LuV.set(new MTEBasicHull(HULL_LuV.ID, "hull.tier.06", "LuV Machine Hull", 6).getStackForm(1L));
-        ItemList.Hull_ZPM.set(new MTEBasicHull(HULL_ZPM.ID, "hull.tier.07", "ZPM Machine Hull", 7).getStackForm(1L));
-        ItemList.Hull_UV.set(new MTEBasicHull(HULL_UV.ID, "hull.tier.08", "UV Machine Hull", 8).getStackForm(1L));
-        ItemList.Hull_MAX.set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "UHV Machine Hull", 9).getStackForm(1L));
+        ItemList.Hull_ULV.set(new MTEBasicHull(HULL_ULV.ID, "hull.tier.00", "", 0).getStackForm(1L));
+        ItemList.Hull_LV.set(new MTEBasicHull(HULL_LV.ID, "hull.tier.01", "", 1).getStackForm(1L));
+        ItemList.Hull_MV.set(new MTEBasicHull(HULL_MV.ID, "hull.tier.02", "", 2).getStackForm(1L));
+        ItemList.Hull_HV.set(new MTEBasicHull(HULL_HV.ID, "hull.tier.03", "", 3).getStackForm(1L));
+        ItemList.Hull_EV.set(new MTEBasicHull(HULL_EV.ID, "hull.tier.04", "", 4).getStackForm(1L));
+        ItemList.Hull_IV.set(new MTEBasicHull(HULL_IV.ID, "hull.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hull_LuV.set(new MTEBasicHull(HULL_LuV.ID, "hull.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hull_ZPM.set(new MTEBasicHull(HULL_ZPM.ID, "hull.tier.07", "", 7).getStackForm(1L));
+        ItemList.Hull_UV.set(new MTEBasicHull(HULL_UV.ID, "hull.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hull_MAX.set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "", 9).getStackForm(1L));
 
-        ItemList.Hull_UEV.set(new MTEBasicHull(HULL_UEV.ID, "hull.tier.10", "UEV Machine Hull", 10).getStackForm(1L));
+        ItemList.Hull_UEV.set(new MTEBasicHull(HULL_UEV.ID, "hull.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.Hull_UIV.set(new MTEBasicHull(HULL_UIV.ID, "hull.tier.11", "UIV Machine Hull", 11).getStackForm(1L));
+        ItemList.Hull_UIV.set(new MTEBasicHull(HULL_UIV.ID, "hull.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.Hull_UMV.set(new MTEBasicHull(HULL_UMV.ID, "hull.tier.12", "UMV Machine Hull", 12).getStackForm(1L));
+        ItemList.Hull_UMV.set(new MTEBasicHull(HULL_UMV.ID, "hull.tier.12", "", 12).getStackForm(1L));
 
-        ItemList.Hull_UXV.set(new MTEBasicHull(HULL_UXV.ID, "hull.tier.13", "UXV Machine Hull", 13).getStackForm(1L));
+        ItemList.Hull_UXV.set(new MTEBasicHull(HULL_UXV.ID, "hull.tier.13", "", 13).getStackForm(1L));
 
-        ItemList.Hull_MAXV.set(new MTEBasicHull(HULL_MAX.ID, "hull.tier.14", "MAX Machine Hull", 14).getStackForm(1L));
+        ItemList.Hull_MAXV.set(new MTEBasicHull(HULL_MAX.ID, "hull.tier.14", "", 14).getStackForm(1L));
     }
 
     private static void registerTransformer() {
@@ -8067,75 +8058,35 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerQuadrupleInputHatch() {
         ItemList.Hatch_Input_Multi_2x2_EV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_EV.ID,
-                4,
-                "hatch.multi.input.tier.01",
-                "Quadruple Input Hatch (EV)",
-                4).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_EV.ID, 4, "hatch.multi.input.tier.01", "", 4)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_IV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_IV.ID,
-                4,
-                "hatch.multi.input.tier.02",
-                "Quadruple Input Hatch (IV)",
-                5).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_IV.ID, 4, "hatch.multi.input.tier.02", "", 5)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_LuV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_LuV.ID,
-                4,
-                "hatch.multi.input.tier.03",
-                "Quadruple Input Hatch (LuV)",
-                6).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_LuV.ID, 4, "hatch.multi.input.tier.03", "", 6)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_ZPM.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_ZPM.ID,
-                4,
-                "hatch.multi.input.tier.04",
-                "Quadruple Input Hatch (ZPM)",
-                7).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_ZPM.ID, 4, "hatch.multi.input.tier.04", "", 7)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UV.ID,
-                4,
-                "hatch.multi.input.tier.05",
-                "Quadruple Input Hatch (UV)",
-                8).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UV.ID, 4, "hatch.multi.input.tier.05", "", 8)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UHV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UHV.ID,
-                4,
-                "hatch.multi.input.tier.06",
-                "Quadruple Input Hatch (UHV)",
-                9).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UHV.ID, 4, "hatch.multi.input.tier.06", "", 9)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UEV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UEV.ID,
-                4,
-                "hatch.multi.input.tier.07",
-                "Quadruple Input Hatch (UEV)",
-                10).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UEV.ID, 4, "hatch.multi.input.tier.07", "", 10)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UIV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UIV.ID,
-                4,
-                "hatch.multi.input.tier.08",
-                "Quadruple Input Hatch (UIV)",
-                11).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UIV.ID, 4, "hatch.multi.input.tier.08", "", 11)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UMV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UMV.ID,
-                4,
-                "hatch.multi.input.tier.09",
-                "Quadruple Input Hatch (UMV)",
-                12).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UMV.ID, 4, "hatch.multi.input.tier.09", "", 12)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UXV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UXV.ID,
-                4,
-                "hatch.multi.input.tier.10",
-                "Quadruple Input Hatch (UXV)",
-                13).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UXV.ID, 4, "hatch.multi.input.tier.10", "", 13)
+                .getStackForm(1L));
 
         ItemList.Hatch_Input_Multi_2x2_Humongous.set(
             new MTEHatchQuadrupleHumongous(
