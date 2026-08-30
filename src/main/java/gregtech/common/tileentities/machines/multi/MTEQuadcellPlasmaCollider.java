@@ -6,10 +6,10 @@ import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.ExoticDynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_GLOW_ON;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_OFF;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_ON;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PLASMA_COLLIDER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PLASMA_COLLIDER_GLOW_ON;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PLASMA_COLLIDER_OFF;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PLASMA_COLLIDER_ON;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
@@ -158,10 +158,10 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
             side,
             aFacing,
             aActive,
-            OVERLAY_TOKAMAK_OFF,
-            OVERLAY_TOKAMAK_GLOW,
-            OVERLAY_TOKAMAK_ON,
-            OVERLAY_TOKAMAK_GLOW_ON);
+            OVERLAY_PLASMA_COLLIDER_OFF,
+            OVERLAY_PLASMA_COLLIDER_GLOW,
+            OVERLAY_PLASMA_COLLIDER_ON,
+            OVERLAY_PLASMA_COLLIDER_GLOW_ON);
     }
 
     @Override

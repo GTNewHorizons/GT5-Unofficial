@@ -272,7 +272,7 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
                     .child(
                         new ParentWidget<>().size(103, 10)
                             .child(
-                                GTGuiTextures.TOKAMAK_SLIDER_BG.asWidget()
+                                GTGuiTextures.PLASMA_COLLIDER_SLIDER_BG.asWidget()
                                     .size(103, 10))
                             .child(
                                 new SliderWidget().size(101, 8)
