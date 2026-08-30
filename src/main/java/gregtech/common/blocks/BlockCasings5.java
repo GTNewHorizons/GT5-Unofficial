@@ -1,6 +1,6 @@
 package gregtech.common.blocks;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HeatingCoilLevel.EV;
 import static gregtech.api.enums.HeatingCoilLevel.HV;
 import static gregtech.api.enums.HeatingCoilLevel.IV;
@@ -20,11 +20,12 @@ import static gregtech.api.enums.HeatingCoilLevel.ZPM;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReferenceArray;
-import java.util.function.Supplier;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
@@ -58,8 +59,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class BlockCasings5 extends BlockCasingsAbstract
     implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta, IBlockWithActiveOffset, IGregtechWailaProvider {
 
-    public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
-    public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
     private final AtomicReferenceArray<ITexture[][]> textureCache = new AtomicReferenceArray<>(ACTIVE_OFFSET * 4);
 
     public BlockCasings5() {
@@ -274,7 +273,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
         int metadata = stack.getItemDamage();
 
         HeatingCoilLevel coilLevel = BlockCasings5.getCoilHeatFromDamage(metadata);
-        tooltip.add(COIL_HEAT_TOOLTIP.get() + coilLevel.getHeat() + COIL_UNIT_TOOLTIP.get());
+        tooltip.add(StatCollector.translateToLocalFormatted("gt.coilheattooltip", EnumChatFormatting.RED + formatNumber(coilLevel.getHeat()) + EnumChatFormatting.GRAY));
     }
 
     @Override

@@ -7607,8 +7607,7 @@ GT5U.die.frozen=%s froze to death
 GT5U.die.boiled=%s was boiled alive
 GT5U.die.exploded=%s exploded
 
-gt.coilheattooltip=Base Heating Capacity =
-gt.coilunittooltip= Kelvin
+gt.coilheattooltip=Base Heating Capacity: %s Kelvin
 
 GT5U.tootlip.tool.turbine.steam=Steam
 GT5U.tootlip.tool.turbine.loose=Loose
