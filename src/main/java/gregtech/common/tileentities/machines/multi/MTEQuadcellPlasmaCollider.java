@@ -62,7 +62,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.gui.modularui.multiblock.MTEQuadcellTokamakGui;
 import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.multi.foundry.FoundryRenderUtils;
 import gtPlusPlus.core.material.Material;
@@ -70,7 +69,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.register.LanthItemList;
 import io.netty.buffer.ByteBuf;
 
-public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadcellTokamak>
+public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MTEQuadcellPlasmaCollider>
     implements ISurvivalConstructable, ICasingTextureProvider, IMTERenderer {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -99,8 +98,8 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
 
     public boolean terminalSwitch = false;
 
-    private static final IStructureDefinition<MTEQuadcellTokamak> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEQuadcellTokamak>builder()
+    private static final IStructureDefinition<MTEQuadcellPlasmaCollider> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEQuadcellPlasmaCollider>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -126,7 +125,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
                {"                   ","                   ","        BBB        ","       BBBBB       ","       BBBBB       ","       BBBBB       ","        BBB        ","                   ","                   "}
            }))
         .addElement('A', Casings.SuperconductingCoilBlock.asElement())
-        .addElement('B',buildHatchAdder(MTEQuadcellTokamak.class).atLeast(Dynamo.or(ExoticDynamo), InputHatch, OutputHatch)
+        .addElement('B',buildHatchAdder(MTEQuadcellPlasmaCollider.class).atLeast(Dynamo.or(ExoticDynamo), InputHatch, OutputHatch)
                     .casingIndex(Casings.PressureContainmentCasing.textureId)
                     .hint(1)
                     .buildAndChain(Casings.PressureContainmentCasing.asElement()))
@@ -135,22 +134,22 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         //spotless:on
         .build();
 
-    public MTEQuadcellTokamak(final int aID, final String aName, final String aNameRegional) {
+    public MTEQuadcellPlasmaCollider(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEQuadcellTokamak(String aName) {
+    public MTEQuadcellPlasmaCollider(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<MTEQuadcellTokamak> getStructureDefinition() {
+    public IStructureDefinition<MTEQuadcellPlasmaCollider> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEQuadcellTokamak(this.mName);
+        return new MTEQuadcellPlasmaCollider(this.mName);
     }
 
     @Override
@@ -175,7 +174,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Tokamak, QT")
+        tt.addMachineType("Plasma Collider, QPC")
             .beginStructureBlock(23, 13, 9, true)
             .addController("Front center, 2nd layer")
             .addInfo("Burns certain Plasmas to generate power")
@@ -496,8 +495,8 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     }
 
     @Override
-    protected @NotNull MTEQuadcellTokamakGui getGui() {
-        return new MTEQuadcellTokamakGui(this);
+    protected @NotNull gregtech.common.gui.modularui.multiblock.MTEQuadcellPlasmaCollider getGui() {
+        return new gregtech.common.gui.modularui.multiblock.MTEQuadcellPlasmaCollider(this);
     }
 
     public void setForceDR(int val) {

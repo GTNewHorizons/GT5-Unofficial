@@ -2,7 +2,7 @@ package gregtech.common.gui.modularui.multiblock;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak.RESIDUE_CONVERSION_DIVISOR;
+import static gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider.RESIDUE_CONVERSION_DIVISOR;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -33,12 +33,12 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.sync.Predicates;
-import gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak;
-import gregtech.common.tileentities.machines.multi.MTEQuadcellTokamak.PlasmaType;
+import gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider.PlasmaType;
 
-public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokamak> {
+public class MTEQuadcellPlasmaCollider
+    extends MTEMultiBlockBaseGui<gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider> {
 
-    public MTEQuadcellTokamakGui(MTEQuadcellTokamak multiblock) {
+    public MTEQuadcellPlasmaCollider(gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider multiblock) {
         super(multiblock);
     }
 
@@ -247,7 +247,7 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
             .child(createConfigurationRow(PlasmaType.ORIKALKUM, syncManager));
     }
 
-    protected Flow createConfigurationRow(MTEQuadcellTokamak.PlasmaType plasma, PanelSyncManager syncManager) {
+    protected Flow createConfigurationRow(PlasmaType plasma, PanelSyncManager syncManager) {
         IntSyncValue syncValue = plasma.getSyncValue(syncManager);
 
         return Flow.column()
