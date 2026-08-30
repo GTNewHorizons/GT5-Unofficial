@@ -98,11 +98,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int robotArmTier;
     private int robotArmAmount;
     public int residueCapacity;
-    private int robotArmTicksTimer = 0;
     /**
      * Whenever this is at 0, robot arms get used and the timer ticks back up to 1200. Every tick that a robot arm is
      * used, this timer decreases by 1
      */
+    private int robotArmTicksTimer = 0;
 
     // random number generation
     private int randomFactor;
@@ -626,13 +626,14 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 if (random < amount) depleteInput(robotArmItemStack);
                 robotArmTicksTimer = MINUTES;
             }
-            if (this.isAllowedToWork() || this.toxicResidue > 0) {// If the machine is active, toxic residue is
-                                                                  // increasing so robot arms are being used.
-                                                                  // Additionally, if there is toxic residue (even if
-                                                                  // the machine is inactive), then the
-                                                                  // robot arms are being used to remove the residue. In
-                                                                  // either case, the timer should
-                                                                  // count down.
+            // If the machine is active, toxic residue is
+            // increasing so robot arms are being used.
+            // Additionally, if there is toxic residue (even if
+            // the machine is inactive), then the
+            // robot arms are being used to remove the residue. In
+            // either case, the timer should
+            // count down.
+            if (this.isAllowedToWork() || this.toxicResidue > 0) {
                 robotArmTicksTimer--;
             }
         } else {
