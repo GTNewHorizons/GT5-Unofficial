@@ -90,8 +90,8 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     }
 
     @Override
-    protected void checkActive() {
-        mIsActive = network != null && !network.getComponents(BECInventory.class)
+    protected boolean checkActive() {
+        return network != null && !network.getComponents(BECInventory.class)
             .isEmpty();
     }
 
@@ -133,6 +133,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     @Override
     protected void checkConnections() {
+        mCheckConnections = false;
         mConnections = 0;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();

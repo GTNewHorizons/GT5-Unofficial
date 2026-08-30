@@ -282,6 +282,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
+    public ITexture[][] getInventoryTextures() {
+        return getOrCreateInventoryTextures();
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         final int textureIndex;
