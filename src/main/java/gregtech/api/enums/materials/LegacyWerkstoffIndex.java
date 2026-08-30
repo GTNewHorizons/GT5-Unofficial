@@ -30,14 +30,19 @@ public class LegacyWerkstoffIndex {
             }
         }
 
-        // gt-bridge proxy werkstoffe: bartworks declared these ids only to give a gregtech material a casing
-        // slot, so they belong to no material's WERKSTOFF_IDS. Postea still has to resolve placed casings
-        // addressed by them.
+        // gt-bridge proxy werkstoffe (bartworks' BWGTMaterialReference, id = 31766 + the legacy sub id):
+        // bartworks declared these ids only to give a gregtech material casing slots (Magnesia: metal parts
+        // and a molten fluid), so they belong to no material's WERKSTOFF_IDS. Postea still has to resolve
+        // saved casings and parts addressed by them.
+        occupy(31776, Materials.Carbon);
+        occupy(31820, Materials.Silver);
         occupy(31850, Materials.Iridium);
         occupy(32083, Materials.Osmiridium);
         occupy(32090, Materials.Naquadah);
         occupy(32091, Materials.NaquadahAlloy);
         occupy(32100, Materials.BlackSteel);
+        occupy(32237, Materials.Magnesia);
+        occupy(32575, Materials.Wood);
 
         GTLoggers.GT_FML_LOGGER.info("LegacyWerkstoffIndex populated {} id slots", size);
     }
