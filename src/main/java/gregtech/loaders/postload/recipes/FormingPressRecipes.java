@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BuildCraftSilicon;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -318,6 +319,18 @@ public class FormingPressRecipes implements Runnable {
             .fluidInputs(GGMaterial.tairitsu.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
+            .addTo(formingPressRecipes);
+
+        // Plasma Collider Glass
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.ReinforcedGlass.get(8),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 8),
+                getModItem(NewHorizonsCoreMod.ID, "IridiumBars", 3))
+            .fluidInputs(Materials.Strontium.getMolten(576))
+            .itemOutputs(ItemList.GlassPlasmaCollider.get(8))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
             .addTo(formingPressRecipes);
     }
 }
