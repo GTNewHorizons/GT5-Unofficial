@@ -45,6 +45,7 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
+import codechicken.nei.api.API;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
@@ -8554,6 +8555,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     private static void registerAE2Hatches() {
         ItemList.Hatch_Output_Bus_ME
             .set(new MTEHatchOutputBusME(OUTPUT_BUS_ME.ID, "hatch.output_bus.me", "Output Bus (ME)").getStackForm(1L));
+        API.setAliases(ItemList.Hatch_Output_Bus_ME.get(1L), "gt.alias.debug");
         ItemList.Hatch_Input_Bus_ME.set(
             new MTEHatchInputBusME(INPUT_BUS_ME.ID, false, "hatch.input_bus.me.basic", "Stocking Input Bus (ME)")
                 .getStackForm(1L));
@@ -8574,6 +8576,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Stocking Input Hatch (ME)").getStackForm(1L));
         ItemList.Hatch_Output_ME
             .set(new MTEHatchOutputME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)").getStackForm(1L));
+        API.setAliases(ItemList.Hatch_Output_ME.get(1L), "gt.alias.debug");
         ItemList.Hatch_CraftingInput_Bus_ME.set(
             new MTEHatchCraftingInputME(
                 CRAFTING_INPUT_ME.ID,
@@ -8686,6 +8689,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hatch_Muffler_LV.set(
             new MTEHatchMuffler(MUFFLER_HATCH_LV.ID, "hatch.muffler.tier.01", "Muffler Hatch (LV)", 1)
                 .getStackForm(1L));
+        API.setAliases(ItemList.Hatch_Muffler_LV.get(1L), "gt.alias.debug");
         ItemList.Hatch_Muffler_MV.set(
             new MTEHatchMuffler(MUFFLER_HATCH_MV.ID, "hatch.muffler.tier.02", "Muffler Hatch (MV)", 2)
                 .getStackForm(1L));

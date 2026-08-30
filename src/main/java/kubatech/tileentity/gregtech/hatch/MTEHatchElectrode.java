@@ -14,23 +14,23 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.common.gui.modularui.hatch.MTEElectrodeHatchGui;
+import gregtech.common.gui.modularui.hatch.MTEHatchElectrodeGui;
 
-public class MTEElectrodeHatch extends MTEHatchInputBus {
+public class MTEHatchElectrode extends MTEHatchInputBus {
 
     private boolean hasBeenUpdated = false;
 
-    public MTEElectrodeHatch(int id, String name, String nameRegional) {
+    public MTEHatchElectrode(int id, String name, String nameRegional) {
         super(id, name, nameRegional, VoltageIndex.IV, 1, new String[] { "Holds an electrode." });
     }
 
-    public MTEElectrodeHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchElectrode(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEElectrodeHatch(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new MTEHatchElectrode(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -55,6 +55,7 @@ public class MTEElectrodeHatch extends MTEHatchInputBus {
 
     @Override
     public void onContentsChanged(int slot) {
+        super.onContentsChanged(slot);
         hasBeenUpdated = true;
     }
 
@@ -68,7 +69,7 @@ public class MTEElectrodeHatch extends MTEHatchInputBus {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEElectrodeHatchGui(this).build(data, syncManager, uiSettings);
+        return new MTEHatchElectrodeGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override

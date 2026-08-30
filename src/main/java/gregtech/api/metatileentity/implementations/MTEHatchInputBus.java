@@ -151,8 +151,8 @@ public class MTEHatchInputBus extends MTEHatch
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            detectInventoryChange();
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
+            notifyWatchers();
             updateSlots();
         }
     }
