@@ -32,6 +32,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
@@ -62,6 +63,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEQuadcellTokamakGui;
 import gregtech.common.render.IMTERenderer;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryRenderUtils;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.register.LanthItemList;
@@ -562,6 +564,10 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         return AxisAlignedBB.getBoundingBox(x - 40, y - 40, z - 40, x + 40, y + 40, z + 40);
     }
 
+    private double lerp(double start, double end, double t) {
+        return start + t * (end - start);
+    }
+
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         if (!shouldRender || !getBaseMetaTileEntity().isActive()) {
@@ -587,6 +593,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         BloomShader.getInstance()
             .bindFramebuffer();
         drawCubes(true, timeSinceLastTick, world);
+        drawRings();
         BloomShader.unbind();
 
         ShaderProgram.clear();
@@ -595,15 +602,42 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
 
     }
 
+    // todo: make it handle rotation properly
+    private void drawRings() {
+        GL11.glPushMatrix();
+        // this order is so that force and runite can face each other. for symmetry initially
+        if (forceOn) drawRing(PlasmaType.FORCE);
+        GL11.glRotatef(90, 1, 0, 0);
+        if (celestialOn) drawRing(PlasmaType.CELESTIAL);
+        GL11.glRotatef(90, 1, 0, 0);
+        if (runiteOn) drawRing(PlasmaType.RUNITE);
+        GL11.glRotatef(90, 1, 0, 0);
+        if (orikalkumOn) drawRing(PlasmaType.ORIKALKUM);
+        GL11.glPopMatrix();
+    }
+
+
+    public void drawRing(PlasmaType plasma) {
+        GL11.glPushMatrix();
+        FoundryRenderUtils.ringShader.use();
+        short[] rgba = plasma.material.get()
+            .getRGBA();
+        float r = rgba[0] / 255f;
+        float g = rgba[1] / 255f;
+        float b = rgba[2] / 255f;
+        GL20.glUniform3f(FoundryRenderUtils.ringShader.loc(FoundryRenderUtils.RING_COLOR), r, g, b);
+        FoundryRenderUtils.ringMatrix.translation(0, 8, 0)
+            .scale(0.4f, 1.2f, 0.4f);
+        FoundryRenderUtils.ringShader.uploadModel(FoundryRenderUtils.ringMatrix);
+        FoundryRenderUtils.ring.render();
+        GL11.glPopMatrix();
+    }
+
     private void drawCubes(boolean bloom, float timeSinceLastTick, World world) {
         if (forceOn) drawCube(PlasmaType.FORCE, world, bloom, timeSinceLastTick, 1, 1, -1, 1, 1.3, 1);
         if (runiteOn) drawCube(PlasmaType.RUNITE, world, bloom, timeSinceLastTick, -1, -1, 1, 1, 1.2, 2);
         if (celestialOn) drawCube(PlasmaType.CELESTIAL, world, bloom, timeSinceLastTick, 1, -1, -1, 0.8, 1.2, 4);
         if (orikalkumOn) drawCube(PlasmaType.ORIKALKUM, world, bloom, timeSinceLastTick, -1, 1, -1, 0.6, 1.2, 8);
-    }
-
-    private double lerp(double start, double end, double t) {
-        return start + t * (end - start);
     }
 
     public void drawCube(PlasmaType plasma, World world, boolean bloom, float timeSinceLastTick, double xMod,
