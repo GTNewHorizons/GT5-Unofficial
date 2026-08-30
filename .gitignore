@@ -38,3 +38,11 @@ addon.late.local.gradle.kts
 /.vs
 layout.json
 /scratch/
+# Local EoH-rework working files (never commit)
+/.test-audit/
+/_texsample/
+/com/
+/planets v1.zip
+/docs/EyeOfHarmony_Rework_Proposal.md
+/docs/Voidcraft_Implementation_Plan.md
+/src/test/java/tectech/voidcraft/
