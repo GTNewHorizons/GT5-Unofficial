@@ -182,7 +182,6 @@ import gregtech.common.recipes.CALImprintRecipe;
 import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
-import gregtech.common.tools.ToolVajra;
 import gregtech.common.worldgen.HEEIslandScanner;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -743,7 +742,6 @@ public class GTProxy implements IFuelHandler {
     public WirelessEnergyHatchManager wirelessEnergyHatchManager;
 
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
-    public SyncedKeybind VAJRA_SPEED_SWITCH_KEYBIND;
     public SyncedKeybind CTRL_KEYBIND;
 
     static {
@@ -1101,9 +1099,6 @@ public class GTProxy implements IFuelHandler {
             .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
             .registerGlobalListener(MetaGeneratedTool::switchCurrentToolMode)
             .registerGlobalListener(ItemGTToolbox::switchToolMode);
-        VAJRA_SPEED_SWITCH_KEYBIND = SyncedKeybind
-            .createConfigurable("key.gt.vajra_speed_switch", "Gregtech", Keyboard.KEY_NONE)
-            .registerGlobalListener(ToolVajra::switchSpeedMode);
         CTRL_KEYBIND = SyncedKeybind.create(Keyboard.KEY_LCONTROL);
 
         GregTechAPI.sLoadStarted = true;

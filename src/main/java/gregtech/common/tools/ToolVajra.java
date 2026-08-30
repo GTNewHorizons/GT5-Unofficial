@@ -11,13 +11,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -25,21 +22,30 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.GuiFactories;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
-import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
 import gregtech.api.items.ItemTool;
+import gregtech.common.gui.modularui.item.VajraGui;
+import gregtech.crossmod.backhand.Backhand;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import thaumcraft.common.tiles.TileOwned;
 import xonin.backhand.api.core.BackhandUtils;
 
-public class ToolVajra extends ItemTool implements IElectricItem {
+public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<PlayerInventoryGuiData> {
 
     private static final String SPEED_MODE_KEY = "VajraSpeedMode";
+    private static final String CREATIVE_BREAK_COOLDOWN_KEY = "VajraCreativeBreakCooldown";
     private static final SpeedMode[] SPEED_MODES = SpeedMode.values();
 
     public int maxCharge = (int) 1e8;
@@ -70,6 +76,9 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int par4, int par5, int par6,
         EntityLivingBase entityLiving) {
         ElectricItem.manager.use(stack, baseCost, entityLiving);
+        if (world.isRemote && isCreativeBreakCooldownEnabled(stack)) {
+            Minecraft.getMinecraft().playerController.blockHitDelay = 5;
+        }
         return true;
     }
 
@@ -120,28 +129,49 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             EnumChatFormatting.YELLOW + StatCollector.translateToLocalFormatted(
                 "gt.vajra.tooltip.speed",
                 StatCollector.translateToLocal(getSpeedMode(stack).translationKey)));
-        list.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.vajra.tooltip.silk_touch"));
+        list.add(
+            EnumChatFormatting.YELLOW + StatCollector
+                .translateToLocalFormatted("gt.vajra.tooltip.silk_touch", getStateName(isSilkTouchEnabled(stack))));
+        list.add(
+            EnumChatFormatting.YELLOW + StatCollector.translateToLocalFormatted(
+                "gt.vajra.tooltip.creative_break_cooldown",
+                getStateName(isCreativeBreakCooldownEnabled(stack))));
+        list.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.vajra.tooltip.configure"));
     }
 
-    public static void switchSpeedMode(EntityPlayerMP player, @SuppressWarnings("unused") SyncedKeybind keybind,
-        boolean keyDown) {
-        if (!keyDown) return;
-        ItemStack stack = player.inventory.getCurrentItem();
-        if (stack == null || !(stack.getItem() instanceof ToolVajra)) return;
-
-        SpeedMode currentMode = getSpeedMode(stack);
-        SpeedMode nextMode = SPEED_MODES[(currentMode.ordinal() + 1) % SPEED_MODES.length];
-        ItemStackNBT.setByte(stack, SPEED_MODE_KEY, (byte) nextMode.ordinal());
-        player.addChatMessage(
-            new ChatComponentTranslation(
-                "gt.vajra.message.speed",
-                new ChatComponentTranslation(nextMode.translationKey)));
+    private static String getStateName(boolean enabled) {
+        return StatCollector
+            .translateToLocal(enabled ? "GT5U.gui.button.feature_enabled" : "GT5U.gui.button.feature_disabled");
     }
 
-    private static SpeedMode getSpeedMode(ItemStack stack) {
+    public static SpeedMode getSpeedMode(ItemStack stack) {
         if (!ItemStackNBT.hasKey(stack, SPEED_MODE_KEY)) return SpeedMode.FAST;
         int mode = ItemStackNBT.getByte(stack, SPEED_MODE_KEY) & 0xFF;
         return mode < SPEED_MODES.length ? SPEED_MODES[mode] : SpeedMode.FAST;
+    }
+
+    public static void setSpeedMode(ItemStack stack, SpeedMode mode) {
+        ItemStackNBT.setByte(stack, SPEED_MODE_KEY, (byte) mode.ordinal());
+    }
+
+    public static boolean isSilkTouchEnabled(ItemStack stack) {
+        return ItemStackNBT.hasKey(stack, "ench");
+    }
+
+    public static void setSilkTouchEnabled(ItemStack stack, boolean enabled) {
+        if (enabled) {
+            if (!isSilkTouchEnabled(stack)) stack.addEnchantment(Enchantment.silkTouch, 1);
+        } else {
+            ItemStackNBT.removeTag(stack, "ench");
+        }
+    }
+
+    public static boolean isCreativeBreakCooldownEnabled(ItemStack stack) {
+        return ItemStackNBT.getBoolean(stack, CREATIVE_BREAK_COOLDOWN_KEY);
+    }
+
+    public static void setCreativeBreakCooldownEnabled(ItemStack stack, boolean enabled) {
+        ItemStackNBT.setBoolean(stack, CREATIVE_BREAK_COOLDOWN_KEY, enabled);
     }
 
     @Override
@@ -185,6 +215,11 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
+        if (player.isSneaking()) {
+            if (!world.isRemote) openConfigurationGui(stack, player);
+            return true;
+        }
+
         Block target = world.getBlock(x, y, z);
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         int metaData = world.getBlockMetadata(x, y, z);
@@ -237,20 +272,32 @@ public class ToolVajra extends ItemTool implements IElectricItem {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player) {
-        if (!worldIn.isRemote && player.isSneaking()) {
-            if (ItemStackNBT.hasKey(stack, "ench")) {
-                ItemStackNBT.removeTag(stack, "ench");
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Disabled silk touch"));
-            } else {
-                // Adds the "ench" tag to the tool
-                stack.addEnchantment(Enchantment.silkTouch, 1);
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Enabled silk touch"));
-            }
-        }
+        if (!worldIn.isRemote && player.isSneaking()) openConfigurationGui(stack, player);
         return super.onItemRightClick(stack, worldIn, player);
     }
 
-    private enum SpeedMode {
+    private static void openConfigurationGui(ItemStack stack, EntityPlayer player) {
+        if (stack == Backhand.getOffhandItem(player)) {
+            GuiFactories.playerInventory()
+                .openFromPlayerInventory(player, Backhand.getOffhandSlot(player));
+        } else {
+            GuiFactories.playerInventory()
+                .openFromMainHand(player);
+        }
+    }
+
+    @Override
+    public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
+        return new VajraGui(data, syncManager).build();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PlayerInventoryGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(Mods.GregTech.ID, mainPanel);
+    }
+
+    public enum SpeedMode {
 
         SLOW(8.0F, "gt.vajra.speed.slow"),
         MEDIUM(64.0F, "gt.vajra.speed.medium"),
@@ -262,6 +309,10 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         SpeedMode(float digSpeed, String translationKey) {
             this.digSpeed = digSpeed;
             this.translationKey = translationKey;
+        }
+
+        public String getTranslationKey() {
+            return translationKey;
         }
     }
 }
