@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.ExoticDynamo;
@@ -66,7 +65,6 @@ import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.multi.foundry.FoundryRenderUtils;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtnhlanth.common.register.LanthItemList;
 import io.netty.buffer.ByteBuf;
 
 public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MTEQuadcellPlasmaCollider>
@@ -126,11 +124,11 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
            }))
         .addElement('A', Casings.SuperconductingCoilBlock.asElement())
         .addElement('B',buildHatchAdder(MTEQuadcellPlasmaCollider.class).atLeast(Dynamo.or(ExoticDynamo), InputHatch, OutputHatch)
-                    .casingIndex(Casings.PressureContainmentCasing.textureId)
+                    .casingIndex(Casings.PlasmaColliderCasing.textureId)
                     .hint(1)
-                    .buildAndChain(Casings.PressureContainmentCasing.asElement()))
-        .addElement('C', Casings.InsulatedFluidPipeCasing.asElement())
-        .addElement('D', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
+                    .buildAndChain(Casings.PlasmaColliderCasing.asElement()))
+        .addElement('C', Casings.QuadcellDrivingCasing.asElement())
+        .addElement('D', Casings.PlasmaColliderGlass.asElement())
         //spotless:on
         .build();
 
@@ -168,7 +166,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public ITexture getCasingTexture() {
-        return Casings.AdvancedIridiumPlatedMachineCasing.getCasingTexture();
+        return Casings.PlasmaColliderCasing.getCasingTexture();
     }
 
     @Override
