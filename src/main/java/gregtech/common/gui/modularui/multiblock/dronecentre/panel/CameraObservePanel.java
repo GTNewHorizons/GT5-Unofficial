@@ -1,5 +1,8 @@
 package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -466,7 +469,8 @@ public class CameraObservePanel extends ModularPanel {
                     if (outputStack != null) {
                         String name = outputStack.getDisplayName();
                         long count = tag.getLong("outputItemCount" + i);
-                        newInfo.add("§b" + name + " x" + count + outputChance(tag, "outputItemChance" + i));
+                        newInfo
+                            .add("§b" + name + " x" + formatNumber(count) + outputChance(tag, "outputItemChance" + i));
                     }
                 }
 
@@ -477,7 +481,8 @@ public class CameraObservePanel extends ModularPanel {
                         net.minecraftforge.fluids.Fluid fluid = FluidRegistry.getFluid(internalName);
                         String fluidName = fluid != null ? new FluidStack(fluid, 1).getLocalizedName() : internalName;
                         long count = tag.getLong("outputFluidCount" + i);
-                        newInfo.add("§3" + fluidName + " x" + count + "L" + outputChance(tag, "outputFluidChance" + i));
+                        newInfo.add(
+                            "§3" + fluidName + " x" + formatFluid(count) + outputChance(tag, "outputFluidChance" + i));
                     }
                 }
 
