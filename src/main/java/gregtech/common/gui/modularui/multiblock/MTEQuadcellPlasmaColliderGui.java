@@ -291,7 +291,6 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
                             .value(new IntValue.Dynamic(syncValue::getIntValue, syncValue::setIntValue))
                             .setTextAlignment(Alignment.CENTER)
                             .setTextColor(plasma.getRGB())
-                            .tooltip(t -> t.addLine("todo"))
                             .marginLeft(2)));
     }
 
