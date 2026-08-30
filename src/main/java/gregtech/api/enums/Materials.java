@@ -295,6 +295,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Oilsands;
     public static Materials Onyx;
     public static Materials Orikalkum;
+    public static Materials OrikalkicReagent;
     public static Materials Osmonium;
     public static Materials Painite;
     public static Materials Peanutwood;

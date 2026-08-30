@@ -297,7 +297,7 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 4000),
-                Materials.CollisionResidue.getFluid(4))
+                Materials.OrikalkicReagent.getFluid(100))
             .fluidOutputs(Materials.Orikalkum.getPlasma(4000))
             .duration(5 * TICKS)
             .eut(1_966_080)
