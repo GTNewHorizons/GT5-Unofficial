@@ -33,13 +33,12 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.sync.Predicates;
+import gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider;
 import gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider.PlasmaType;
 
-public class MTEQuadcellPlasmaColliderGui
-    extends MTEMultiBlockBaseGui<gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider> {
+public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadcellPlasmaCollider> {
 
-    public MTEQuadcellPlasmaColliderGui(
-        gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider multiblock) {
+    public MTEQuadcellPlasmaColliderGui(MTEQuadcellPlasmaCollider multiblock) {
         super(multiblock);
     }
 
