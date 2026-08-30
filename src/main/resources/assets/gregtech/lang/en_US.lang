@@ -2983,6 +2983,10 @@ GT5U.gui.text.nac.amount=Amount: %s
 GT5U.gui.text.nac.splitter.redstone_level=Current Redstone Level
 GT5U.gui.text.nac.splitter.channel=Channel
 GT5U.gui.text.nac.splitter.strength=Strength
+GT5U.gui.text.nac.splitter.custom_name_header=Enter Custom Name
+GT5U.gui.text.nac.splitter.custom_name_confirm=Confirm
+GT5U.gui.text.nac.splitter.custom_name_cancel=Cancel
+GT5U.gui.text.nac.splitter.custom_name_desc=Press middle-mouse to rename item
 
 GT5U.gui.text.nac.hint.talk=Type %s to enter talk mode
 GT5U.gui.text.nac.hint.exit=Type %s to exit talk mode
@@ -3186,6 +3190,7 @@ GT5U.tooltip.nac.module.scanner.total_buffer=§aTotal EU Buffer Size: %s
 
 GT5U.tooltip.nac.color_grid.click_select=Click to select
 GT5U.tooltip.nac.color_grid.selected=Selected
+GT5U.tooltip.nac.color_grid.wildcard=No selected color means any color matches this rule
 
 # NAC circuit components
 gt.circuitcomponent.base=Packaged %s
