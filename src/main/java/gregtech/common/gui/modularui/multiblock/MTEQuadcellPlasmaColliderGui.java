@@ -1,10 +1,12 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider.RESIDUE_CONVERSION_DIVISOR;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -155,10 +157,9 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
         return super.createTerminalTextWidget(syncManager, parent).child(createRecipeInfoTextWidget(syncManager))
             .child(
                 IKey.dynamic(
-                    () -> "Generating " + EnumChatFormatting.AQUA
-                        + formatNumber(eut.getLongValue())
-                        + EnumChatFormatting.WHITE
-                        + " EU/t")
+                    () -> StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.qpc.generating",
+                        EnumChatFormatting.AQUA + formatNumber(eut.getLongValue()) + EnumChatFormatting.WHITE))
                     .color(Color.WHITE.main)
                     .alignment(Alignment.CenterLeft)
                     .asWidget()
@@ -167,10 +168,11 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
                     .setEnabledIf(_ -> Predicates.isPositive(progress)))
             .child(
                 IKey.dynamic(
-                    () -> "Producing " + EnumChatFormatting.DARK_AQUA
-                        + formatNumber(Math.floorDiv(residue.getIntValue(), RESIDUE_CONVERSION_DIVISOR))
-                        + EnumChatFormatting.WHITE
-                        + " L/s residue")
+                    () -> StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.qpc.residue",
+                        EnumChatFormatting.DARK_AQUA
+                            + formatFluid(Math.floorDiv(residue.getIntValue(), RESIDUE_CONVERSION_DIVISOR))
+                            + EnumChatFormatting.WHITE))
                     .color(Color.WHITE.main)
                     .alignment(Alignment.CenterLeft)
                     .asWidget()
@@ -178,7 +180,7 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
                     .fullWidth()
                     .setEnabledIf(_ -> Predicates.arePositive(progress, residue)))
             .child(
-                IKey.lang("Expected drain rates:")
+                IKey.lang("GT5U.gui.text.qpc.expected_rate")
                     .color(Color.WHITE.main)
                     .alignment(Alignment.CenterLeft)
                     .asWidget()
@@ -189,7 +191,11 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
                 float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
                     * orikalkumBoost.getFloatValue()));
                 int value = Math.round(force.getIntValue() / multiplier);
-                return "Force: " + EnumChatFormatting.GREEN + formatNumber(value) + EnumChatFormatting.WHITE + " L/s";
+                return StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.qpc.plasma_display",
+                    PlasmaType.FORCE.getLocalName(),
+                    EnumChatFormatting.GREEN + formatFluid(value) + EnumChatFormatting.WHITE);
+
             })
                 .color(PlasmaType.FORCE.getRGB())
                 .asWidget()
@@ -200,7 +206,10 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
                 float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
                     * orikalkumBoost.getFloatValue()));
                 int value = Math.round(runite.getIntValue() / multiplier);
-                return "Runite: " + EnumChatFormatting.GREEN + formatNumber(value) + EnumChatFormatting.WHITE + " L/s";
+                return StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.qpc.plasma_display",
+                    PlasmaType.RUNITE.getLocalName(),
+                    EnumChatFormatting.GREEN + formatFluid(value) + EnumChatFormatting.WHITE);
             })
                 .color(PlasmaType.RUNITE.getRGB())
                 .asWidget()
@@ -211,10 +220,10 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
                 float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
                     * orikalkumBoost.getFloatValue()));
                 int value = Math.round(celestial.getIntValue() / multiplier);
-                return "Celestial Tungsten: " + EnumChatFormatting.GREEN
-                    + formatNumber(value)
-                    + EnumChatFormatting.WHITE
-                    + " L/s";
+                return StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.qpc.plasma_display",
+                    PlasmaType.CELESTIAL.getLocalName(),
+                    EnumChatFormatting.GREEN + formatFluid(value) + EnumChatFormatting.WHITE);
             })
                 .color(PlasmaType.CELESTIAL.getRGB())
                 .asWidget()
@@ -225,10 +234,11 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
                 float multiplier = 1.0f / (1.0f - ((runiteBoost.getFloatValue() + celestialBoost.getFloatValue())
                     * orikalkumBoost.getFloatValue()));
                 int value = Math.round(orikalkum.getIntValue() / multiplier);
-                return "Orikalkum: " + EnumChatFormatting.GREEN
-                    + formatNumber(value)
-                    + EnumChatFormatting.WHITE
-                    + " L/s";
+                return StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.qpc.plasma_display",
+                    PlasmaType.ORIKALKUM.getLocalName(),
+                    EnumChatFormatting.GREEN + formatFluid(value) + EnumChatFormatting.WHITE);
+
             })
                 .color(PlasmaType.ORIKALKUM.getRGB())
                 .asWidget()
@@ -301,7 +311,7 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
                 multiblock.terminalSwitch = !multiblock.terminalSwitch;
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine("Configure plasmas"))
+            .tooltipBuilder(t -> t.addLine(StatCollector.translateToLocal("GT5U.gui.button.qpc.configure")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 }
