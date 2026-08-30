@@ -569,7 +569,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     // Relative offsets for the various renderers
-    private final int[] cubeOff = new int[] { 0, -3, -3 };
+    private final int[] cubeOff = new int[] { 0, -3, 3 };
     private final int[] ringUpOff = new int[] { 0, -11, 3 };
     private final int[] ringRightOff = new int[] { 8, -3, 3 };
     private final int[] ringDownOff = new int[] { 0, 5, 3 };
