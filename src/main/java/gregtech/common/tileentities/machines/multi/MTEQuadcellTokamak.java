@@ -41,6 +41,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -582,18 +583,21 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
 
         GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glDisable(GL11.GL_LIGHTING | GL11.GL_ALPHA_TEST);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        GL11.glPushMatrix();
         Vec3 abc = this.getExtendedFacing()
             .getWorldOffset(Vec3.createVectorHelper(0, -3, 3));
         GL11.glTranslated(abc.xCoord + x + 0.5, abc.yCoord + y + 0.5, abc.zCoord + z + 0.5);
-
-        GL11.glDisable(GL11.GL_LIGHTING | GL11.GL_ALPHA_TEST);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         drawCubes(false, timeSinceLastTick, world);
         BloomShader.getInstance()
             .bindFramebuffer();
         drawCubes(true, timeSinceLastTick, world);
-        drawRings();
+        GL11.glPopMatrix();
+
+        drawRings(x, y, z);
         BloomShader.unbind();
 
         ShaderProgram.clear();
@@ -602,23 +606,90 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
 
     }
 
-    // todo: make it handle rotation properly
-    private void drawRings() {
-        GL11.glPushMatrix();
+    private void drawRings(double x, double y, double z) {
         // this order is so that force and runite can face each other. for symmetry initially
-        if (forceOn) drawRing(PlasmaType.FORCE);
-        GL11.glRotatef(90, 1, 0, 0);
-        if (celestialOn) drawRing(PlasmaType.CELESTIAL);
-        GL11.glRotatef(90, 1, 0, 0);
-        if (runiteOn) drawRing(PlasmaType.RUNITE);
-        GL11.glRotatef(90, 1, 0, 0);
-        if (orikalkumOn) drawRing(PlasmaType.ORIKALKUM);
-        GL11.glPopMatrix();
+        ExtendedFacing ext = getExtendedFacing();
+        int[] off = new int[3];
+        int[] offRel = new int[3];
+
+        // get relative z-axis to rotate around
+        int rotX = ext.getRelativeBackInWorld().offsetX;
+        int rotY = ext.getRelativeBackInWorld().offsetY;
+        int rotZ = ext.getRelativeBackInWorld().offsetZ;
+
+        boolean spin = false;
+        int sX = 0, sY = 0, sZ = 0;
+        if (ext.getRelativeForwardInWorld().offsetY != 0) {
+            // if the multi is facing up/down, spin around relative x-axis
+            spin = true;
+            sX = ext.getRelativeLeftInWorld().offsetX;
+            sY = ext.getRelativeLeftInWorld().offsetY;
+            sZ = ext.getRelativeLeftInWorld().offsetZ;
+        } else if (ext.getRelativeUpInWorld().offsetY == 0) {
+            // if the multi is instead rotated 90/270 degrees, spin around relative z-axis
+            spin = true;
+            sX = ext.getRelativeBackInWorld().offsetX;
+            sY = ext.getRelativeBackInWorld().offsetY;
+            sZ = ext.getRelativeBackInWorld().offsetZ;
+        }
+
+        // Up
+        if (forceOn) {
+            GL11.glPushMatrix();
+            off[0] = 0;
+            off[1] = -11; // up 11
+            off[2] = 3; // back 3
+            ext.getWorldOffset(off, offRel);
+            GL11.glTranslated(x + offRel[0] + 0.5f, y + offRel[1] + 0.5f, z + offRel[2] + 0.5f);
+            if (spin) GL11.glRotated(90, sX, sY, sZ);
+            drawRing(PlasmaType.FORCE);
+            GL11.glPopMatrix();
+        }
+
+        // Right
+        if (celestialOn) {
+            GL11.glPushMatrix();
+            off[0] = 8; // right 8
+            off[1] = -3; // up 3
+            off[2] = 3; // back 3
+            ext.getWorldOffset(off, offRel);
+            GL11.glTranslated(x + offRel[0] + 0.5f, y + offRel[1] + 0.5f, z + offRel[2] + 0.5f);
+            GL11.glRotated(90, rotX, rotY, rotZ);
+            if (spin) GL11.glRotated(90, sX, sY, sZ);
+            drawRing(PlasmaType.CELESTIAL);
+            GL11.glPopMatrix();
+        }
+
+        // Down
+        if (runiteOn) {
+            GL11.glPushMatrix();
+            off[0] = 0;
+            off[1] = 5; // down 5
+            off[2] = 3; // back 3
+            ext.getWorldOffset(off, offRel);
+            GL11.glTranslated(x + offRel[0] + 0.5f, y + offRel[1] + 0.5f, z + offRel[2] + 0.5f);
+            GL11.glRotated(180, rotX, rotY, rotZ);
+            if (spin) GL11.glRotated(90, sX, sY, sZ);
+            drawRing(PlasmaType.RUNITE);
+            GL11.glPopMatrix();
+        }
+
+        // Left
+        if (orikalkumOn) {
+            GL11.glPushMatrix();
+            off[0] = -8; // left 8
+            off[1] = -3; // up 3
+            off[2] = 3; // back 3
+            ext.getWorldOffset(off, offRel);
+            GL11.glTranslated(x + offRel[0] + 0.5f, y + offRel[1] + 0.5f, z + offRel[2] + 0.5f);
+            GL11.glRotated(-90, rotX, rotY, rotZ);
+            if (spin) GL11.glRotated(90, sX, sY, sZ);
+            drawRing(PlasmaType.ORIKALKUM);
+            GL11.glPopMatrix();
+        }
     }
 
-
     public void drawRing(PlasmaType plasma) {
-        GL11.glPushMatrix();
         FoundryRenderUtils.ringShader.use();
         short[] rgba = plasma.material.get()
             .getRGBA();
@@ -626,11 +697,10 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         float g = rgba[1] / 255f;
         float b = rgba[2] / 255f;
         GL20.glUniform3f(FoundryRenderUtils.ringShader.loc(FoundryRenderUtils.RING_COLOR), r, g, b);
-        FoundryRenderUtils.ringMatrix.translation(0, 8, 0)
+        FoundryRenderUtils.ringMatrix.translation(0, 0, 0)
             .scale(0.4f, 1.2f, 0.4f);
         FoundryRenderUtils.ringShader.uploadModel(FoundryRenderUtils.ringMatrix);
         FoundryRenderUtils.ring.render();
-        GL11.glPopMatrix();
     }
 
     private void drawCubes(boolean bloom, float timeSinceLastTick, World world) {
