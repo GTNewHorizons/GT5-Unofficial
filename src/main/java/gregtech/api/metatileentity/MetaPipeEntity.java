@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
@@ -65,6 +66,9 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      */
     public byte mConnections = 0;
 
+    /**
+     * Used by cables to provide delayed reconstruction of neighbors
+     */
     protected boolean mCheckConnections = false;
     /**
      * accessibility to this Field is no longer given, see below
@@ -659,7 +663,19 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     public void setCheckConnections() {
-        mCheckConnections = true;
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base.isServerSide()) {
+            if (base.isTickDisabled() || !deferCheckConnection()) {
+                checkConnections();
+            } else {
+                mCheckConnections = true;
+            }
+        }
+    }
+
+    @ApiStatus.OverrideOnly
+    protected boolean deferCheckConnection() {
+        return true;
     }
 
     public long injectEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
@@ -749,6 +765,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     protected void checkConnections() {
+        mCheckConnections = false;
         // Verify connections around us. If GT6 style cables are not enabled then revert to old behavior and try
         // connecting to everything around us
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -756,7 +773,6 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
                 disconnect(side);
             }
         }
-        mCheckConnections = false;
     }
 
     private void connectAtSide(ForgeDirection side) {

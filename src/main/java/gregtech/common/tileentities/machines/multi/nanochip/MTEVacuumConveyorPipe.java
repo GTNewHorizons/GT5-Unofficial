@@ -37,6 +37,8 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     private static IIconContainer CCPipe;
     private static IIconContainer CCBarOverlay, CCBarOverlayActive;
     public VacuumFactoryNetwork network;
+    private boolean clientRenderState;
+    private boolean registered = false;
 
     public MTEVacuumConveyorPipe(int aID, String aName) {
         super(aID, aName);
@@ -65,12 +67,20 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         super.registerIcons(aBlockIconRegister);
     }
 
+    public final void toggleClientRenderState() {
+        clientRenderState = !clientRenderState;
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null) {
+            base.issueTextureUpdate();
+        }
+    }
+
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int colorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { TextureFactory.of(CCPipe),
             TextureFactory.of(
-                getActive() ? CCBarOverlayActive : CCBarOverlay,
+                clientRenderState ? CCBarOverlayActive : CCBarOverlay,
                 Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
 
@@ -92,11 +102,18 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         VacuumFactoryGrid.INSTANCE.updateElement(this);
+        if (aBaseMetaTileEntity.isClientSide()) {
+            registered = true;
+            VacuumConveyorPipeClientStateManager.INSTANCE.register(this);
+        }
     }
 
     @Override
     public void onUnload() {
         VacuumFactoryGrid.INSTANCE.removeElement(this);
+        if (getBaseMetaTileEntity().isClientSide() && registered) {
+            VacuumConveyorPipeClientStateManager.INSTANCE.unregister(this);
+        }
         super.onUnload();
     }
 
@@ -158,6 +175,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
 
     @Override
     protected void checkConnections() {
+        mCheckConnections = false;
         mConnections = 0;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -254,14 +272,12 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     }
 
     @Override
-    protected void checkActive() {
-        mIsActive = getBaseMetaTileEntity().getTimer() % 200 > 100;
-    }
-
-    @Override
     public void onRemoval() {
         super.onRemoval();
         VacuumFactoryGrid.INSTANCE.removeElement(this);
+        if (getBaseMetaTileEntity().isClientSide() && registered) {
+            VacuumConveyorPipeClientStateManager.INSTANCE.unregister(this);
+        }
     }
 
     @Override
