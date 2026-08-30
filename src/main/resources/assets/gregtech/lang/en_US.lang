@@ -3095,7 +3095,6 @@ GT5U.tooltip.nac.main.body.6=%s in a %s %s are placed in an output bus of the sa
 GT5U.tooltip.nac.main.body.7=%s must be processed into a refined version by §f§nmodules§r§7 before they
 GT5U.tooltip.nac.main.body.8=can be assembled into a circuit in the §aNanochip Assembly Matrix
 GT5U.tooltip.nac.main.body.9=All power from the energy hatch is distributed to the modules as they need it
-GT5U.tooltip.nac.main.body.10=Can only have at most §f§none§r§7 of each module besides Splitter
 GT5U.tooltip.nac.module.assembly_matrix.name=Assembly Matrix
 GT5U.tooltip.nac.module.assembly_matrix.flavor.1=After processing your CCs through an intricate pipeline, they are finally
 GT5U.tooltip.nac.module.assembly_matrix.flavor.2=ready to be assembled into a circuit. This circuit can be converted into a real
@@ -3192,7 +3191,6 @@ GT5U.tooltip.nac.module.scanner.total_buffer=§aTotal EU Buffer Size: %s
 GT5U.tooltip.nac.color_grid.click_select=Click to select
 GT5U.tooltip.nac.color_grid.selected=Selected
 GT5U.tooltip.nac.color_grid.wildcard=No selected color means any color matches this rule
-GT5U.tooltip.nac.structure_error.module_count=Can only have at most one of each module type besides Splitter
 
 # NAC circuit components
 gt.circuitcomponent.base=Packaged %s

@@ -23,11 +23,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -64,7 +62,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -78,7 +75,6 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitBatch;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
@@ -214,19 +210,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         checkHasOutputBus(errors);
         if (!errors.isEmpty()) return;
 
-        // Limit to at most 1 of each module type
-        Set<Class<?>> types = new HashSet<>();
-        for (MTENanochipAssemblyModuleBase<?> module : modules) {
-            Class<?> type = module.getClass();
-            // Allow any number of splitters
-            if (type == MTESplitterModule.class) continue;
-            if (types.contains(type)) {
-                errors.add(StructureErrors.of("GT5U.tooltip.nac.structure_error.module_count"));
-                return;
-            }
-            types.add(type);
-        }
-
         modules.sort((module1, module2) -> module2.getPriority() - module1.getPriority());
 
         for (MTENanochipAssemblyModuleBase<?> module : modules) {
@@ -266,7 +249,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.7", TOOLTIP_CCs))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.8", TOOLTIP_COLORED))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.9", TOOLTIP_COLORED))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.main.body.10"))
             .addSupportAny()
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
