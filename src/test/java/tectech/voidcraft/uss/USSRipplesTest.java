@@ -1,7 +1,6 @@
 package tectech.voidcraft.uss;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashSet;
@@ -30,7 +29,7 @@ public class USSRipplesTest {
 
     @Test
     public void testFieldHasTheFullGrid() {
-        USSRippleField field = USSRipples.generate(USSStarType.MAIN_SEQUENCE, 123L);
+        USSRippleField field = USSRipples.generate(USSStarType.YELLOW_DWARF, 123L);
         assertEquals(USSRipples.GRID_SIZE, field.getGridSize(), "grid edge is 7");
         assertEquals(USSRipples.POINT_COUNT, field.size(), "a 7×7×7 field has 343 points");
         assertEquals(343, USSRipples.POINT_COUNT, "343 = 7³");
@@ -55,7 +54,7 @@ public class USSRipplesTest {
         Set<Integer> counts = new HashSet<>();
         for (long seed = 1; seed <= 64; seed++) {
             counts.add(
-                USSRipples.generate(USSStarType.MAIN_SEQUENCE, seed)
+                USSRipples.generate(USSStarType.YELLOW_DWARF, seed)
                     .getRippleCount());
         }
         assertTrue(counts.size() > 1, "a sweep of 64 seeds must produce more than one ripple count: " + counts);
@@ -82,8 +81,8 @@ public class USSRipplesTest {
     public void testDifferentSeedsGiveDifferentRippleSets() {
         boolean anyDifference = false;
         for (long seed = 1; seed <= 16; seed++) {
-            USSRippleField a = USSRipples.generate(USSStarType.MAIN_SEQUENCE, seed);
-            USSRippleField b = USSRipples.generate(USSStarType.MAIN_SEQUENCE, seed + 100_000L);
+            USSRippleField a = USSRipples.generate(USSStarType.YELLOW_DWARF, seed);
+            USSRippleField b = USSRipples.generate(USSStarType.YELLOW_DWARF, seed + 100_000L);
             if (!a.rippleIndices()
                 .equals(b.rippleIndices())) {
                 anyDifference = true;
@@ -113,7 +112,7 @@ public class USSRipplesTest {
     public void testEveryPointSitsOnOneOfTheThreeShells() {
         USSPosition center = USSPosition.starCenter();
         Set<Double> radii = new HashSet<>();
-        USSRippleField field = USSRipples.generate(USSStarType.MAIN_SEQUENCE, 42L);
+        USSRippleField field = USSRipples.generate(USSStarType.YELLOW_DWARF, 42L);
         for (int i = 0; i < field.size(); i++) {
             double r = field.pointAt(i)
                 .getPosition()
@@ -152,15 +151,14 @@ public class USSRipplesTest {
     }
 
     @Test
-    public void testNullStarTypeFallsBackToMainSequence() {
-        USSRippleField nullType = USSRipples.generate(null, 42L);
-        USSRippleField mainSequence = USSRipples.generate(USSStarType.MAIN_SEQUENCE, 42L);
-        assertEquals(mainSequence.rippleIndices(), nullType.rippleIndices(), "null star type → main sequence field");
-        assertNotEquals(
-            USSRipples.generate(USSStarType.SUPERMASSIVE, 42L)
+    public void testNullStarTypeFallsBackToYellowDwarf() {
+        // The defensive null case draws exactly as a yellow dwarf with the same seed.
+        assertEquals(
+            USSRipples.generate(USSStarType.YELLOW_DWARF, 42L)
                 .rippleIndices(),
-            mainSequence.rippleIndices(),
-            "different star types draw different ripple ranges (same seed)");
+            USSRipples.generate(null, 42L)
+                .rippleIndices(),
+            "null star type → yellow dwarf field");
     }
 
     private static double round(double v) {

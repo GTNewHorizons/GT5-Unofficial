@@ -12,26 +12,30 @@ import net.minecraft.nbt.NBTTagList;
 import gregtech.api.enums.Materials;
 
 /**
- * Deterministic cargo of a completed mission (plan Phase 3; Phase 4 pass 1 adds Starlifter cargo; Phase 4 pass 3
- * switches the miner to the star's planets):
+ * Deterministic cargo of a completed mission (plan Phase 3; reserve depletion per material):
  *
  * <p>
- * <strong>Miner</strong> (Phase 4 pass 3): the miner works the star's <em>planets</em> — cargo is the union
- * of the planets' ore materials (deduplicated, {@link USSPlanets#materialsOf(List)}) plus stone dust, all as dust.
- * The system's planets come from the star's TYPE (its planet pool — {@link USSPlanetType}) — "the different
- * planet types determine what can be mined from the system".
+ * <strong>Miner</strong> ({@link #minePlanet}): the miner works its target planet — cargo is that planet's
+ * registered ores, each weighed by its weight and capped by the planet's remaining reserve (ores deplete over the
+ * planet's lifetime).
+ *
+ * <p>
+ * <strong>Starlifter</strong> ({@link #siphonStar}): the starlifter works the star — cargo is the star's PRODUCED
+ * fluids (1–3 of its three materials), each weighed by its weight, scaled by the star size, and capped by the star's
+ * remaining fluid reserve (the fluids deplete over the star's life).
  *
  * <p>
  * <strong>Abstract representation.</strong> While cargo lives on the ship (and in its NBT) it is a list of
- * <em>abstract entries</em> — {@code {id: item id, Damage: meta, amount: int}} — NOT {@link ItemStack}s. Amounts are
- * plain ints (the 1.7.10 NBT {@code Count} byte and GT's 64-item stack cap do not apply), so a mission can carry
- * 10 000 dust without ever materializing 157 stacks. The conversion to 64-chunked {@link ItemStack}s happens exactly
- * once, at the delivery boundary ({@link #toStacks(NBTTagList)}, called by the bay's
- * {@code deliver} before the pool merge — the pool is the only 64-slot structure involved).
+ * <em>abstract entries</em> — {@code {id: item id, Damage: meta, amount: int}} for items,
+ * {@code {material: GT material name, amount: mB}} for fluids — NOT {@link ItemStack}s / {@code FluidStack}s.
+ * Amounts are plain ints/longs (the 1.7.10 NBT {@code Count} byte and GT's 64-item stack cap do not apply), so a
+ * mission can carry 10 000 dust or 10 000 000 mB without materializing stacks. The conversion to 64-chunked
+ * {@link ItemStack}s happens exactly once, at the delivery boundary ({@link #toStacks(NBTTagList)}, called by the
+ * bay's {@code deliver} before the pool merge — the pool is the only 64-slot structure involved).
  *
  * <p>
- * Amounts come from {@link USSConstants#minerOreAmount(long)} (per ore) and
- * {@link USSConstants#minerStoneDustAmount(long)} (stone dust).
+ * Amounts come from {@link USSConstants#minerOreAmount(long)} (mining) and
+ * {@link USSConstants#starlifterPlasmaAmount(long)} (siphoning).
  */
 public final class USSShipCargo {
 
@@ -53,8 +57,8 @@ public final class USSShipCargo {
      */
     public static final String ITEM_ENTRY_MATERIAL = "material";
 
-    // Phase 4 pass 1 — Starlifter fluid cargo (fluids stay ABSTRACT while on the ship, like the items: the pool and
-    // the delivery boundary are the only fluid-aware structures).
+    // Starlifter fluid cargo (fluids stay ABSTRACT while on the ship, like the items: the pool and the delivery
+    // boundary are the only fluid-aware structures).
 
     /** Tag under which the fluid list lives in a cargo compound. */
     public static final String TAG_FLUIDS = "vc_fluids";
@@ -81,9 +85,9 @@ public final class USSShipCargo {
         public final NBTTagCompound cargo;
 
         /** The planet's reserve after this mission's draw (never null). */
-        public final VoidcraftUSS.PlanetReserve newReserve;
+        public final VoidcraftUSS.MaterialReserve newReserve;
 
-        MinerResult(NBTTagCompound cargo, VoidcraftUSS.PlanetReserve newReserve) {
+        MinerResult(NBTTagCompound cargo, VoidcraftUSS.MaterialReserve newReserve) {
             this.cargo = cargo;
             this.newReserve = newReserve;
         }
@@ -92,7 +96,7 @@ public final class USSShipCargo {
     /**
      * Mine ONE planet (the mechanics pass): the planet's registered ores, weighed by their weights, each capped by
      * the planet's remaining reserve. The reserve is initialized from the planet definition on the first mine
-     * ({@code ore.amount × 1_000_000 × planetSize²}, see {@link VoidcraftUSS.PlanetReserve#fromPlanet}) and then
+     * ({@code ore.amount × 1_000_000 × planetSize²}, see {@link VoidcraftUSS.MaterialReserve#fromPlanet}) and then
      * decremented by the mined amount — so ores deplete over the planet's lifetime.
      *
      * <p>
@@ -106,24 +110,24 @@ public final class USSShipCargo {
      * @return the cargo + the new reserve (both non-null)
      */
     public static MinerResult minePlanet(USSPlanets.USSPlanet planet, long miningPower,
-        VoidcraftUSS.PlanetReserve currentReserve) {
+        VoidcraftUSS.MaterialReserve currentReserve) {
         if (planet == null || planet.definition == null) {
             return new MinerResult(
                 new NBTTagCompound(),
                 currentReserve != null ? currentReserve
-                    : new VoidcraftUSS.PlanetReserve(new java.util.LinkedHashMap<>()));
+                    : new VoidcraftUSS.MaterialReserve(new java.util.LinkedHashMap<>()));
         }
         List<USSPlanetOre> ores = planet.definition.getOres();
         if (ores == null || ores.isEmpty()) {
             return new MinerResult(
                 new NBTTagCompound(),
                 currentReserve != null ? currentReserve
-                    : new VoidcraftUSS.PlanetReserve(new java.util.LinkedHashMap<>()));
+                    : new VoidcraftUSS.MaterialReserve(new java.util.LinkedHashMap<>()));
         }
 
         // Initialize the reserve from the planet definition (ore.amount × planetSize²) when not present.
-        VoidcraftUSS.PlanetReserve reserve = currentReserve != null ? currentReserve
-            : VoidcraftUSS.PlanetReserve.fromPlanet(planet.definition, planet.scale);
+        VoidcraftUSS.MaterialReserve reserve = currentReserve != null ? currentReserve
+            : VoidcraftUSS.MaterialReserve.fromPlanet(planet.definition, planet.scale);
 
         long base = USSConstants.minerOreAmount(miningPower);
         double totalWeight = 0.0;
@@ -159,54 +163,79 @@ public final class USSShipCargo {
     }
 
     /**
-     * Build the cargo of a completed Starlifter mission (the mechanics pass): the star's three registered
-     * materials, each as a FLUID entry (they are "primarily fluids"), with amount =
-     * {@code starlifterPlasmaAmount(siphonPower) × weight × √(star size)}. The weights set the relative split;
-     * the star size (sampled from the star's size range, a pure function of the star type + seed) scales the total.
+     * The outcome of a Starlifter mission (the starlifter pass): the collected fluid cargo plus the star's reserve
+     * after this mission's draw.
+     */
+    public static final class StarlifterResult {
+
+        /**
+         * The cargo compound (a {@link #TAG_FLUIDS} list of abstract fluid entries; empty when the star yields
+         * nothing).
+         */
+        public final NBTTagCompound cargo;
+
+        /** The star's fluid reserve after this mission's draw (never null). */
+        public final VoidcraftUSS.MaterialReserve newReserve;
+
+        StarlifterResult(NBTTagCompound cargo, VoidcraftUSS.MaterialReserve newReserve) {
+            this.cargo = cargo;
+            this.newReserve = newReserve;
+        }
+    }
+
+    /**
+     * Siphon ONE star (the starlifter pass): the star's PRODUCED fluids (a zero-capacity slot produces nothing — a
+     * star may produce 1–3 of its three materials), each capped by the star's remaining fluid reserve. The reserve is
+     * initialized from the star definition on the first siphon
+     * ({@code material.amount × 1_000_000 × starSize²}, see {@link VoidcraftUSS.MaterialReserve#fromStar}) and then
+     * decremented by the siphoned amount — so the fluids deplete over the star's life (the amount left later feeds
+     * the Dyson swarm output and stellar evolution).
      *
      * <p>
-     * Deterministic: the star size is derived from the seed (no RNG outside {@link USSPlanets#sampleStarSize}).
+     * Per-mission yield per fluid = {@code min(starlifterPlasmaAmount(siphonPower) × weight × √starSize,
+     * reserve.remaining(fluid))}. The weights set the relative split; the star size scales the total. A depleted
+     * fluid is skipped (0 → no entry); a fully depleted star yields empty cargo, and the mission completes normally
+     * (same as a depleted planet).
      *
-     * @param starType    the star the ship siphoned (null → main sequence, defensive).
-     * @param siphonPower the ship's total siphon (starlifter) power.
-     * @param seed        the star's ignition timestamp (the seed for the star-size draw — same as
-     *                    {@link USSPlanets#sampleStarSize(USSStarType, long)}).
-     * @return a cargo compound with a {@link #TAG_FLUIDS} list of the star's 3 materials (defensive: empty when the
-     *         star is unregistered).
+     * @param star           the star definition to siphon (null → empty cargo)
+     * @param starSize       the star's sampled size (negative clamped to 0)
+     * @param siphonPower    the ship's total siphon (starlifter) power
+     * @param currentReserve the star's current fluid reserve (null → initialized from the star definition)
+     * @return the cargo + the new reserve (both non-null)
      */
-    public static NBTTagCompound buildForStarlifter(USSStarType starType, long siphonPower, long seed) {
-        if (starType == null) {
-            starType = USSStarType.MAIN_SEQUENCE;
-        }
-        USSStarDefinition star = USSStarRegistry.byType(starType);
+    public static StarlifterResult siphonStar(USSStarDefinition star, double starSize, long siphonPower,
+        VoidcraftUSS.MaterialReserve currentReserve) {
+        VoidcraftUSS.MaterialReserve reserve = currentReserve != null ? currentReserve
+            : VoidcraftUSS.MaterialReserve.fromStar(star, starSize);
         if (star == null) {
-            return new NBTTagCompound(); // defensive: no registered star → empty cargo
+            return new StarlifterResult(new NBTTagCompound(), reserve);
         }
+
         long base = USSConstants.starlifterPlasmaAmount(siphonPower);
-        double sizeFactor = Math.sqrt(USSPlanets.sampleStarSize(starType, seed));
+        double sizeFactor = Math.sqrt(Math.max(0.0, starSize));
+
+        // Per-fluid yield: base × weight × √starSize, capped by the reserve. The reserve decreases by the siphoned
+        // amount; a zero-capacity or depleted fluid is skipped.
+        NBTTagList fluids = new NBTTagList();
+        for (USSStarMaterial material : star.getMaterials()) {
+            if (material == null || material.getMaterial() == null
+                || material.getMaterial() == Materials._NULL
+                || material.getAmount() <= 0L
+                || material.getWeight() <= 0.0) {
+                continue;
+            }
+            long share = (long) (base * material.getWeight() * sizeFactor);
+            long capped = Math.min(share, reserve.remaining(material.getMaterial()));
+            if (capped <= 0L) {
+                continue;
+            }
+            fluids.appendTag(fluidEntry(material.getMaterial(), capped));
+            reserve = reserve.mine(material.getMaterial(), capped);
+        }
 
         NBTTagCompound cargo = new NBTTagCompound();
-        NBTTagList fluids = new NBTTagList();
-        fluids.appendTag(
-            fluidEntry(
-                star.getMain()
-                    .getMaterial(),
-                (long) (base * star.getMain()
-                    .getWeight() * sizeFactor)));
-        fluids.appendTag(
-            fluidEntry(
-                star.getSecondary()
-                    .getMaterial(),
-                (long) (base * star.getSecondary()
-                    .getWeight() * sizeFactor)));
-        fluids.appendTag(
-            fluidEntry(
-                star.getTertiary()
-                    .getMaterial(),
-                (long) (base * star.getTertiary()
-                    .getWeight() * sizeFactor)));
         cargo.setTag(TAG_FLUIDS, fluids);
-        return cargo;
+        return new StarlifterResult(cargo, reserve);
     }
 
     /**

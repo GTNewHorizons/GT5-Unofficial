@@ -66,7 +66,7 @@ public final class USSStarRegistry {
 
     /**
      * Look up a star by the legacy {@link USSStarType} enum — the enum name lowercased is the star's id
-     * (e.g. {@code MAIN_SEQUENCE} → {@code "main_sequence"}). This is the bridge between the still-live enum
+     * (e.g. {@code YELLOW_DWARF} → {@code "yellow_dwarf"}). This is the bridge between the enum identity
      * identity (planet pools, infodata, the render TE) and the registration-based definition source.
      *
      * @param starType the star type (null → null)

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Bare-JVM tests for the USS planet tint (Phase 4 pass 5.1): every registered planet definition resolves to an
+ * Bare-JVM tests for the USS planet tint: every registered planet definition resolves to an
  * opaque, deterministic color from its ore materials, and the catalog's planets are visually distinguishable (not
  * one shared default).
  */

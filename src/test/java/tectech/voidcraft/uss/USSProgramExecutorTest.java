@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagList;
 import org.junit.jupiter.api.Test;
 
 /**
- * Phase B: the program executor against the fake context — sequencing, control flow, pacing, the command
+ * The program executor against the fake context — sequencing, control flow, pacing, the command
  * lifecycles, failure-skip, the invisible-while wrap (a finished program runs again; only STOP ends it), and
  * the NBT cursor (resume mid-program).
  */
@@ -91,7 +91,7 @@ final class USSProgramExecutorTest {
         USSProgramExecutor executor = USSProgramExecutor
             .start(program(writeVar(0, "a"), writeVar(1, "b"), writeVar(2, "c")));
         runTicks(executor, ctx, 60);
-        assertEquals(3, ctx.writeVarCalls, "decision #6: exactly one node step per 20 ticks (3 nodes = 60)");
+        assertEquals(3, ctx.writeVarCalls, "exactly one node step per 20 ticks (3 nodes = 60)");
         runTicks(executor, ctx, 60);
         assertEquals(6, ctx.writeVarCalls, "the wrap restarts the same one-step-per-second rhythm");
         assertFalse(executor.isCompleted());
@@ -197,7 +197,7 @@ final class USSProgramExecutorTest {
         USSProgramExecutor executor = USSProgramExecutor
             .start(program(USSNode.repeat(0, Arrays.asList(writeVar(0, "r"))), writeVar(1, "after")));
         runTicks(executor, ctx, 80);
-        assertFalse(ctx.vars.isWritten(0), "REPEAT 0 — the body must never run (Phase A contract, across two loops)");
+        assertFalse(ctx.vars.isWritten(0), "REPEAT 0 — the body must never run (across two loops)");
         assertEquals("after", ctx.vars.get(1), "the node after the REPEAT runs (every loop)");
         assertEquals(2, ctx.writeVarCalls, "only the trailing write ran (once per loop)");
         assertFalse(executor.isCompleted());
@@ -261,10 +261,7 @@ final class USSProgramExecutorTest {
         assertEquals("arrived", ctx.vars.get(0), "the instruction after MOVE runs on arrival");
         assertFalse(executor.isCompleted(), "the program wraps instead of ending");
         runTicks(executor, ctx, 200);
-        assertEquals(
-            6,
-            ctx.travelLegs,
-            "the wrapped pass re-arms the same MOVE leg on every loop (5 more passes in 200 ticks)");
+        assertEquals(6, ctx.travelLegs, "the wrap re-arms the same MOVE leg on every loop (5 more loops in 200 ticks)");
     }
 
     @Test
@@ -284,15 +281,12 @@ final class USSProgramExecutorTest {
         assertEquals("worked", ctx.vars.get(0));
         assertFalse(executor.isCompleted(), "the program wraps instead of ending");
         runTicks(executor, ctx, 200);
-        assertEquals(
-            6,
-            ctx.workLegs,
-            "the wrapped pass re-arms the WORK leg on every loop (5 more passes in 200 ticks)");
+        assertEquals(6, ctx.workLegs, "the wrap re-arms the WORK leg on every loop (5 more loops in 200 ticks)");
     }
 
     // endregion
 
-    // region failure → skip (decision #3)
+    // region failure → skip
 
     @Test
     void testMoveUnresolvableTargetSkipsToNextNode() {

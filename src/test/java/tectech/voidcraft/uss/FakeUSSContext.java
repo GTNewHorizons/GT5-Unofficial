@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A fake {@link USSExecutionContext} for the Phase B tests — the bare-JVM stand-in for the game side (Phase C).
+ * A fake {@link USSExecutionContext} — the bare-JVM stand-in for the game side.
  * Deterministic; counts the calls the tests assert pacing/failure semantics against.
  */
 public final class FakeUSSContext implements USSExecutionContext {
@@ -48,8 +48,19 @@ public final class FakeUSSContext implements USSExecutionContext {
     public int constructTickCalls = 0;
     public boolean repairStartResult = true;
     public int repairStartCalls = 0;
+    /** The target param of the last REPAIR start (empty / SELF = the executor itself). */
+    public String repairStartTarget = "";
     public boolean repairTickResult = true;
     public int repairTickCalls = 0;
+    /** SEND / TAKE seam results + the args of the last start (the cargo transfer framework). */
+    public boolean transferStartResult = true;
+    public int transferStartCalls = 0;
+    public int transferStartCommandId;
+    public String transferStartTarget;
+    public long transferStartAmount = -1L;
+    public String transferStartFilter;
+    public boolean transferTickResult = true;
+    public int transferTickCalls = 0;
 
     public void setTarget(String target, int index, USSPosition dest) {
         targets.put(target + "#" + index, dest);
@@ -75,6 +86,8 @@ public final class FakeUSSContext implements USSExecutionContext {
                 return readVar(value.slot());
             case STAT:
                 return stat(USSShipStat.byId(value.statId()));
+            case LOCATION:
+                return position().coordString();
             case LITERAL:
             default:
                 return value.literal();
@@ -170,8 +183,9 @@ public final class FakeUSSContext implements USSExecutionContext {
     }
 
     @Override
-    public boolean repairStart() {
+    public boolean repairStart(String target) {
         repairStartCalls++;
+        repairStartTarget = target == null ? "" : target;
         return repairStartResult;
     }
 
@@ -179,6 +193,22 @@ public final class FakeUSSContext implements USSExecutionContext {
     public boolean repairTick() {
         repairTickCalls++;
         return repairTickResult;
+    }
+
+    @Override
+    public boolean transferStart(int commandId, String target, long amount, String filter) {
+        transferStartCalls++;
+        transferStartCommandId = commandId;
+        transferStartTarget = target;
+        transferStartAmount = amount;
+        transferStartFilter = filter;
+        return transferStartResult;
+    }
+
+    @Override
+    public boolean transferTick(int commandId) {
+        transferTickCalls++;
+        return transferTickResult;
     }
 
     @Override

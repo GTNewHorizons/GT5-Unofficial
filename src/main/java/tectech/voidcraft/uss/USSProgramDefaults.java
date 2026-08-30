@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * controller when right-clicking the controller. For miner, starlifter, explorer — others come later").
  *
  * <p>
- * Each chip is the same shape — MOVE to the role's target → the role's work command → MOVE HOME (delivery
+ * Each chip is the same shape — MOVE to the work target → the work command → MOVE HOME (delivery
  * happens on the return leg) — differing in target and work command:
  * <ul>
  * <li>Miner → {@link #TARGET_NEAREST_PLANET} + MINE</li>
@@ -27,6 +27,10 @@ public final class USSProgramDefaults {
     public static final String PARAM_TARGET = "target";
     /** MOVE param key: the target index (PLANET / RIPPLE / SHIP). */
     public static final String PARAM_INDEX = "index";
+    /** SEND / TAKE param key: the amount in cargo units (default -1 = ALL). */
+    public static final String PARAM_AMOUNT = "amount";
+    /** SEND / TAKE param key: the material name filter (default "*" = match all). */
+    public static final String PARAM_FILTER = "filter";
 
     // MOVE target values (the string content of the PARAM_TARGET param).
     /** The star (Starlifter work point). */
@@ -49,6 +53,14 @@ public final class USSProgramDefaults {
     public static final String TARGET_SHIP = "SHIP";
     /** Home — the launch origin / gateway anchor ("Leave the USS"; delivery happens on the return leg). */
     public static final String TARGET_HOME = "HOME";
+
+    /**
+     * SEND / TAKE target: the first fleet ship (fleet order) that is not in transit, shares the executing
+     * ship's location, and is a viable counterparty — carrying cargo for {@code TAKE} (the hauler case —
+     * {@code TAKE -1 * NEARBY} grabs everything from a ship that parked at the same spot), free hold space for
+     * {@code SEND}.
+     */
+    public static final String TARGET_NEARBY = "NEARBY";
 
     /** Miner chip: go to the nearest planet, mine, come home. */
     public static USSProgram miner() {

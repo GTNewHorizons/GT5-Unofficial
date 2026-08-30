@@ -35,15 +35,13 @@ import tectech.voidcraft.gui.VoidcraftProgramGui;
 import tectech.voidcraft.gui.VoidcraftProgramItemSource;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
 import tectech.voidcraft.ship.VoidcraftNbt;
-import tectech.voidcraft.ship.VoidcraftRole;
 
 /**
- * The digitized Voidcraft — a single, non-stackable item carrying the blueprint grid, the derived stats, the role
- * set and the hybrid efficiency.
+ * The digitized Voidcraft — a single, non-stackable item carrying the blueprint grid and the derived stats.
  *
  * <p>
- * This is the payload the Voidcraft Assembler outputs and (in a later phase) the Unstable Solar System gateway
- * consumes. It is intentionally not a machine item and not placeable: the ship "lives" inside this item's NBT
+ * This is the payload the Voidcraft Assembler outputs and the Unstable Solar System gateway consumes. It is
+ * intentionally not a machine item and not placeable: the ship "lives" inside this item's NBT
  * (see {@link VoidcraftNbt}).
  */
 public class ItemVoidcraft extends Item implements IGuiHolder<PlayerInventoryGuiData> {
@@ -75,8 +73,7 @@ public class ItemVoidcraft extends Item implements IGuiHolder<PlayerInventoryGui
     }
 
     /**
-     * Build the voidcraft item for a digitized blueprint, carrying the controller's program (programming framework,
-     * Phase C).
+     * Build the voidcraft item for a digitized blueprint, carrying the controller's program.
      *
      * @param blueprint validated blueprint
      * @param name      display name stored in the payload
@@ -148,7 +145,7 @@ public class ItemVoidcraft extends Item implements IGuiHolder<PlayerInventoryGui
             : translateToLocal("item.tm.voidcraft.unnamed");
         aList.add(EnumChatFormatting.YELLOW + translateToLocalFormatted("item.tm.voidcraft.named", name));
 
-        // Programming framework (Phase C): the ship's program (the controller's instruction list).
+        // The ship's program (the controller's instruction list).
         if (nbt.hasKey(VoidcraftNbt.TAG_PROGRAM)) {
             NBTTagList program = nbt.getTagList(VoidcraftNbt.TAG_PROGRAM, 10);
             aList.add(
@@ -161,28 +158,6 @@ public class ItemVoidcraft extends Item implements IGuiHolder<PlayerInventoryGui
         }
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.voidcraft.editor"));
 
-        int roles = VoidcraftNbt.readInt(nbt, VoidcraftNbt.TAG_ROLES);
-        if (roles == 0) {
-            aList.add(EnumChatFormatting.AQUA + translateToLocal("item.tm.voidcraft.role.none"));
-        } else {
-            StringBuilder sb = new StringBuilder();
-            for (VoidcraftRole role : VoidcraftRole.activeRoles(roles)) {
-                if (sb.length() > 0) {
-                    sb.append(", ");
-                }
-                sb.append(translateToLocal(role.getLangKey()));
-            }
-            aList.add(EnumChatFormatting.AQUA + translateToLocalFormatted("item.tm.voidcraft.role.list", sb));
-        }
-
-        double efficiency = VoidcraftNbt.readDouble(nbt, VoidcraftNbt.TAG_EFFICIENCY);
-        if (efficiency < 1.0) {
-            aList.add(
-                EnumChatFormatting.GOLD + translateToLocalFormatted(
-                    "item.tm.voidcraft.hybrid",
-                    String.format("%.0f%%", efficiency * 100.0)));
-        }
-
         long mass = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_MASS);
         long thrust = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_THRUST);
         double speed = VoidcraftNbt.readDouble(nbt, VoidcraftNbt.TAG_SPEED);
@@ -191,6 +166,7 @@ public class ItemVoidcraft extends Item implements IGuiHolder<PlayerInventoryGui
         long scan = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_SCAN);
         long construction = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_CONSTRUCTION);
         long starlifter = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_STARLIFTER);
+        long logistics = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_LOGISTICS);
         long buffer = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_ENERGY_BUFFER);
         long draw = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_ENERGY_DRAW);
         long integrity = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_INTEGRITY);
@@ -217,13 +193,17 @@ public class ItemVoidcraft extends Item implements IGuiHolder<PlayerInventoryGui
             aList.add(
                 EnumChatFormatting.GRAY + translateToLocalFormatted("item.tm.voidcraft.stat.starlifter", starlifter));
         }
+        if (logistics > 0) {
+            aList.add(
+                EnumChatFormatting.GRAY + translateToLocalFormatted("item.tm.voidcraft.stat.logistics", logistics));
+        }
         if (buffer > 0) {
             aList.add(EnumChatFormatting.GRAY + translateToLocalFormatted("item.tm.voidcraft.stat.buffer", buffer));
         }
         if (draw > 0) {
             aList.add(EnumChatFormatting.GRAY + translateToLocalFormatted("item.tm.voidcraft.stat.draw", draw));
         }
-        // Integrity is the ship's TIME LIMIT (the time-limit pass): the seconds it survives in the USS (it drops
+        // Integrity is the ship's TIME LIMIT: the seconds it survives in the USS (it drops
         // by 1 per second, starting at this maximum on entry; at 0 the ship is lost with its cargo).
         aList.add(
             EnumChatFormatting.GRAY

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 /**
  * A Voidcraft blueprint: the placed component grid (with per-cell facing), the per-face cover grid, and the stats
- * and role derived from them.
+ * derived from them.
  *
  * <p>
  * Grid encodings (all {@code index = x + width * (y + height * z)}):
@@ -472,7 +472,7 @@ public final class VoidcraftBlueprint {
      */
     public VoidcraftStats computeStats() {
         long mass = 0, cargoSlots = 0, miningPower = 0, scanPower = 0, constructionPower = 0, starlifterPower = 0,
-            energyBuffer = 0, energyDraw = 0, energyGen = 0, integrity = 0;
+            logisticsPower = 0, energyBuffer = 0, energyDraw = 0, energyGen = 0, integrity = 0;
         long thrust = 0;
 
         for (int cell = 0; cell < grid.length; cell++) {
@@ -488,6 +488,7 @@ public final class VoidcraftBlueprint {
                 scanPower += component.getScanPower();
                 constructionPower += component.getConstructionPower();
                 starlifterPower += component.getStarlifterPower();
+                logisticsPower += component.getLogisticsPower();
                 energyBuffer += component.getEnergyBuffer();
                 energyDraw += component.getEnergyDraw();
                 energyGen += component.getEnergyGen();
@@ -506,6 +507,7 @@ public final class VoidcraftBlueprint {
                 scanPower += cover.getScanPower();
                 constructionPower += cover.getConstructionPower();
                 starlifterPower += cover.getStarlifterPower();
+                logisticsPower += cover.getLogisticsPower();
                 energyBuffer += cover.getEnergyBuffer();
                 energyDraw += cover.getEnergyDraw();
                 energyGen += cover.getEnergyGen();
@@ -524,26 +526,11 @@ public final class VoidcraftBlueprint {
             scanPower,
             constructionPower,
             starlifterPower,
+            logisticsPower,
             energyBuffer,
             energyDraw,
             energyGen,
             integrity);
-    }
-
-    /**
-     * @return the active role mask (see {@link VoidcraftRole#computeRoles})
-     */
-    public int computeRoles() {
-        VoidcraftStats stats = computeStats();
-        return VoidcraftRole
-            .computeRoles(stats.miningPower, stats.scanPower, stats.constructionPower, stats.starlifterPower);
-    }
-
-    /**
-     * @return the hybrid efficiency multiplier for this ship's role set
-     */
-    public double computeEfficiency() {
-        return VoidcraftRole.efficiencyMultiplier(VoidcraftRole.countRoles(computeRoles()));
     }
 
     /**
@@ -594,6 +581,8 @@ public final class VoidcraftBlueprint {
      * (within 5 cells, i.e. the hull is between the nozzle and the open exhaust toward the assembler)</li>
      * <li>{@code voidcraft_cover_only_component} — a full-block cell holds a cover-only part (pass 23)</li>
      * <li>{@code voidcraft_no_frame} — no Voidcraft Frame hull block (pass 23)</li>
+     * <li>{@code voidcraft_launcher_station_only} — a Satellite Rail Launcher is on the grid (station-only
+     * infrastructure — bases, not ships)</li>
      * </ul>
      *
      * @param maxComponentTier highest component/cover tier the assembler (circuit) may digitize
@@ -636,6 +625,13 @@ public final class VoidcraftBlueprint {
 
         if (maxTier() > maxComponentTier) {
             errors.add("voidcraft_tier_too_high");
+            ok = false;
+        }
+
+        // Station-only infrastructure: the Satellite Rail Launcher operates from a base anchored to the star —
+        // a ship build containing it is rejected outright.
+        if (count(VoidcraftComponent.SATELLITE_LAUNCHER) > 0) {
+            errors.add("voidcraft_launcher_station_only");
             ok = false;
         }
 
@@ -682,8 +678,8 @@ public final class VoidcraftBlueprint {
 
     /**
      * Validate the blueprint as a digitizable Voidbase (an immobile station): the ship's structural rules — part
-     * count, exactly one controller, cover-only parts, at least one frame, tier — but WITHOUT the thruster rules,
-     * since a base does not fly. A base may carry thruster covers; they are simply inert.
+     * count, exactly one controller, cover-only parts, at least one frame, tier — WITHOUT the thruster rules, but
+     * with thruster covers FORBIDDEN outright (a base cannot fly; a nozzle on the grid is rejected, not inert).
      *
      * <p>
      * Failure reason keys (assembler GUI):
@@ -694,6 +690,7 @@ public final class VoidcraftBlueprint {
      * <li>{@code voidcraft_cover_only_component} — a full-block cell holds a cover-only part</li>
      * <li>{@code voidcraft_no_frame} — no Voidcraft Frame hull block</li>
      * <li>{@code voidcraft_tier_too_high} — a part exceeds the assembler circuit tier</li>
+     * <li>{@code voidbase_thruster_forbidden} — a Thruster Nozzle cover is on the grid (bases are immobile)</li>
      * </ul>
      *
      * @param maxComponentTier highest component/cover tier the assembler (circuit) may digitize
@@ -735,6 +732,22 @@ public final class VoidcraftBlueprint {
 
         if (maxTier() > maxComponentTier) {
             errors.add("voidcraft_tier_too_high");
+            ok = false;
+        }
+
+        boolean hasThruster = false;
+        for (int cell = 0; cell < grid.length && !hasThruster; cell++) {
+            for (int side = 0; side < 6; side++) {
+                int value = coverGrid[cell * 6 + side];
+                if (value != 0 && VoidcraftCoverComponent.fromGridValue(value)
+                    .orElseThrow() == VoidcraftCoverComponent.THRUSTER_NOZZLE) {
+                    hasThruster = true;
+                    break;
+                }
+            }
+        }
+        if (hasThruster) {
+            errors.add("voidbase_thruster_forbidden");
             ok = false;
         }
 

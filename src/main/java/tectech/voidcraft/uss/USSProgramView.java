@@ -183,13 +183,35 @@ public final class USSProgramView {
                 s.add(
                     new Slot(USSCommandWait.PARAM_TICKS, String.valueOf(p.getLong(USSCommandWait.PARAM_TICKS)), false));
                 break;
+            case USSCommand.SEND:
+            case USSCommand.TAKE: {
+                long amount = -1L;
+                if (p.hasKey(USSProgramDefaults.PARAM_AMOUNT, 3)) {
+                    amount = p.getInteger(USSProgramDefaults.PARAM_AMOUNT);
+                } else if (p.hasKey(USSProgramDefaults.PARAM_AMOUNT, 4)) {
+                    amount = p.getLong(USSProgramDefaults.PARAM_AMOUNT);
+                }
+                s.add(new Slot(USSProgramDefaults.PARAM_AMOUNT, String.valueOf(amount), false));
+                s.add(new Slot(USSProgramDefaults.PARAM_FILTER, p.getString(USSProgramDefaults.PARAM_FILTER), false));
+                s.add(new Slot(USSProgramDefaults.PARAM_TARGET, p.getString(USSProgramDefaults.PARAM_TARGET), false));
+                break;
+            }
+            case USSCommand.REPAIR:
+                if (p.hasKey(USSProgramDefaults.PARAM_TARGET)) {
+                    s.add(
+                        new Slot(USSProgramDefaults.PARAM_TARGET, p.getString(USSProgramDefaults.PARAM_TARGET), false));
+                }
+                break;
             default:
                 break; // MINE / SCAN / SIPHON / STOP take no arguments
         }
         return s;
     }
 
-    /** A program VALUE as block text: literal → the text itself; VAR → "VAR n"; STAT → "STAT n". */
+    /**
+     * A program VALUE as block text: literal → the text itself; VAR → "VAR n"; STAT → "STAT n"; LOCATION →
+     * "LOC".
+     */
     public static String valueDisplay(USSValue value) {
         if (value == null) {
             return "";
@@ -201,6 +223,8 @@ public final class USSProgramView {
                 return "VAR " + value.slot();
             case STAT:
                 return "STAT " + value.statId();
+            case LOCATION:
+                return "LOC";
             default:
                 return "";
         }

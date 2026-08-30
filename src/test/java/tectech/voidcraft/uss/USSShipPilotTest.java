@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import tectech.voidcraft.ship.VoidcraftNbt;
 
 /**
- * Unit tests for the Phase C pilot — the bridge between the program executor and the game world
+ * Unit tests for the pilot — the bridge between the program executor and the game world
  * ({@link USSShipPilot}): the leg/arrival flow, the EXACTLY-ONCE side-effect invariants (including across a
  * save/reload), the HOME = origin rule, holding, and the executor invariants through the real (fake-world) bridge.
  */
@@ -56,6 +56,10 @@ public class USSShipPilotTest {
     private static VoidcraftActiveShip ship(String uuid, USSProgram program) {
         NBTTagCompound payload = new NBTTagCompound();
         payload.setString("vc_uuid", uuid);
+        // The energy stats the assembler always denormalizes (the legs run on the buffer — a zero-capacity
+        // payload would stall every work leg).
+        payload.setLong(VoidcraftNbt.TAG_ENERGY_BUFFER, 1_000_000L);
+        payload.setLong(VoidcraftNbt.TAG_ENERGY_GEN, 100L);
         if (program != null) {
             NBTTagList list = program.writeToNBT();
             if (list != null) {
@@ -148,7 +152,7 @@ public class USSShipPilotTest {
 
     @Test
     public void testRandomPlanetTargetRunsLikeMiner() {
-        // pass-33 UI target: MOVE RANDOM_PLANET → the world picks the planet (here: index 1) → WORK mines it → HOME.
+        // UI target: MOVE RANDOM_PLANET → the world picks the planet (here: index 1) → WORK mines it → HOME.
         FakePilotWorld w = new FakePilotWorld();
         w.resolve(USSProgramDefaults.TARGET_RANDOM_PLANET, 0, PLANET, 1, false);
         USSProgram program = USSProgram
@@ -247,7 +251,7 @@ public class USSShipPilotTest {
 
     // endregion
 
-    // region failure = SKIP (user decision #3)
+    // region failure = SKIP
 
     @Test
     public void testUnresolvableMoveIsSkippedAndTheProgramContinues() {
@@ -298,7 +302,7 @@ public class USSShipPilotTest {
 
     // endregion
 
-    // region exactly-once across a save/reload (THE Phase C invariant)
+    // region exactly-once across a save/reload (THE pilot invariant)
 
     @Test
     public void testWorkSideEffectFiresOnceAcrossReloadMidWorkLeg() {
@@ -363,7 +367,7 @@ public class USSShipPilotTest {
         USSShipPilot p = USSShipPilot.create(ship("end-1", program), program, w, SEED);
         int budget = 2000;
         while (w.workCalls < 2) {
-            assertTrue(budget-- > 0, "the program must run a second pass (the wrap)");
+            assertTrue(budget-- > 0, "the program must run a second loop (the wrap)");
             assertFalse(p.tick(), "only MOVE HOME delivers (this program has none)");
             assertFalse(p.isCompleted(), "a program without STOP never ends");
         }
@@ -400,7 +404,7 @@ public class USSShipPilotTest {
     @Test
     public void testVariablesAndStatsFlowThroughTheWorld() {
         FakePilotWorld w = worldWithNearestPlanet();
-        // A ship with a 10-slot cargo pool (capacity 10 × 100 = 1000 units, pass 27).
+        // A ship with a 10-slot cargo pool (capacity 10 × 100 = 1000 units).
         NBTTagCompound payload = new NBTTagCompound();
         payload.setString("vc_uuid", "ctx-1");
         payload.setLong("vc_cargo", 10L);
@@ -413,7 +417,7 @@ public class USSShipPilotTest {
         assertEquals("hello", p.readVar(5));
         assertEquals("", p.readVar(255), "an unwritten slot reads as the empty string");
 
-        assertEquals("1000", p.stat(USSShipStat.CARGO_FREE), "CARGO_FREE = capacity × 100 (pass 27)");
+        assertEquals("1000", p.stat(USSShipStat.CARGO_FREE), "CARGO_FREE = capacity × 100");
         assertEquals("0", p.stat(USSShipStat.CARGO_USED), "nothing has been mined yet");
         assertEquals("0", p.stat(USSShipStat.CARGO_FULL), "the hold is not full");
         assertEquals("0", p.stat(USSShipStat.DIST_TO_TARGET), "no destination yet");
@@ -518,6 +522,197 @@ public class USSShipPilotTest {
         assertEquals(USSProgramDefaults.TARGET_NEAREST_PLANET, p2.getLastKind(), "the last kind was recorded");
         assertEquals(2, p2.getLastIndex(), "the last index was recorded");
         assertEquals(ORIGIN, p2.getOrigin(), "the origin was recorded (HOME = origin survives the attach)");
+    }
+
+    // endregion
+
+    // region the anchored pilot (a Voidbase runs the same brain, minus the legs it cannot fly)
+
+    private static final USSPosition BASE_HOVER = USSPosition.of(8.0, 9.0, 10.0);
+
+    /**
+     * A base (the same fleet entity with an anchor + speed 0) whose payload carries the PROGRAM + the stats the
+     * assembler always denormalizes (mining power, integrity, the energy buffer).
+     */
+    private static VoidcraftActiveShip base(String uuid, USSProgram program) {
+        NBTTagCompound payload = new NBTTagCompound();
+        payload.setString("vc_uuid", uuid);
+        payload.setLong(VoidcraftNbt.TAG_MINING, 1000L);
+        payload.setLong(VoidcraftNbt.TAG_INTEGRITY, 90L);
+        payload.setLong(VoidcraftNbt.TAG_ENERGY_BUFFER, 1_000_000L);
+        payload.setLong(VoidcraftNbt.TAG_ENERGY_GEN, 100L);
+        if (program != null) {
+            NBTTagList list = program.writeToNBT();
+            if (list != null) {
+                payload.setTag(VoidcraftNbt.TAG_PROGRAM, list);
+            }
+        }
+        return VoidcraftActiveShip.spawnBase(uuid, uuid, payload, USSBaseAnchor.planet(3), SEED, BASE_HOVER);
+    }
+
+    private static USSProgram mineProgram() {
+        return USSProgram.of(Arrays.asList(work()));
+    }
+
+    @Test
+    public void testAnchoredMineCompletesWithTheAnchorDescriptor() {
+        // A base never flew (its MOVE legs are refused), so its work legs complete with the ANCHOR descriptor —
+        // not a last-MOVE target the pilot never recorded. A STOP ends the program (the invisible while would
+        // loop it forever otherwise); the base then holds at its anchor.
+        FakePilotWorld w = new FakePilotWorld();
+        USSProgram prog = USSProgram.of(Arrays.asList(work(), USSNode.command(USSCommand.STOP, new NBTTagCompound())));
+        USSShipPilot p = USSShipPilot.create(base("anchor-mine", prog), prog, w, SEED);
+        int budget = 100;
+        while (p.getShip()
+            .getState() == USSShipState.HOVERING && budget-- > 0) {
+            p.tick();
+        }
+        assertEquals(
+            USSShipState.MINING,
+            p.getShip()
+                .getState(),
+            "the MINE leg arms at the anchor's hover point");
+        budget = 400;
+        while (!p.isCompleted() && budget-- > 0) {
+            p.tick();
+        }
+        assertTrue(p.isCompleted(), "the program ends — the base holds at its anchor");
+        assertEquals(1, w.workCalls, "the work side-effect fires exactly once");
+        assertEquals(USSWorkKind.MINE, w.workLegKinds.get(0));
+        assertEquals(
+            USSProgramDefaults.TARGET_PLANET,
+            w.workKinds.get(0),
+            "the anchor's body kind, not a last-MOVE target");
+        assertEquals(3, w.workIndices.get(0), "the anchor's planet index");
+        assertEquals(
+            USSShipState.HOVERING,
+            p.getShip()
+                .getState(),
+            "after the program the base holds");
+    }
+
+    @Test
+    public void testAnchoredMoveIsRefusedAndTheProgramContinues() {
+        // Every MOVE on a base is refused (HOME included) — the leg SKIPs and the program runs on to the STOP
+        // (without one, the invisible while would loop the refusal forever).
+        FakePilotWorld w = new FakePilotWorld();
+        USSProgram prog = USSProgram
+            .of(Arrays.asList(move("HOME", 0), USSNode.command(USSCommand.STOP, new NBTTagCompound())));
+        USSShipPilot p = USSShipPilot.create(base("anchor-move", prog), prog, w, SEED);
+        int budget = 200;
+        while (!p.isCompleted() && budget-- > 0) {
+            p.tick();
+        }
+        assertTrue(p.isCompleted(), "the refused MOVE SKIPs and the program continues");
+        assertFalse(
+            p.getShip()
+                .isLegActive(),
+            "no leg was ever armed");
+        assertEquals(
+            USSShipState.HOVERING,
+            p.getShip()
+                .getState());
+        assertEquals(
+            BASE_HOVER,
+            p.getShip()
+                .getPosition(),
+            "the base never left its anchor's hover point");
+        assertTrue(
+            w.logs.stream()
+                .anyMatch(l -> l.contains("anchored")),
+            "the refusal is logged (the user can see why the leg skipped)");
+        assertEquals(0, w.workCalls);
+    }
+
+    @Test
+    public void testAnchoredStatsReportTheBase() {
+        // The program-visible state of a base: STATE = BASE, TARGET = the anchor descriptor, INTEGRITY = the
+        // time limit (the INTEGRITY stat is the base's survival budget).
+        FakePilotWorld w = new FakePilotWorld();
+        USSShipPilot p = USSShipPilot.create(base("stats-1", null), null, w, SEED);
+        assertEquals("BASE", p.stat(USSShipStat.STATE), "a base reports STATE = BASE");
+        assertEquals("PLANET:3", p.stat(USSShipStat.TARGET), "a planet anchor reads KIND:index");
+        assertEquals("90", p.stat(USSShipStat.INTEGRITY));
+
+        // A star anchor has no index — just the kind.
+        NBTTagCompound payload = new NBTTagCompound();
+        payload.setString("vc_uuid", "stats-2");
+        payload.setLong(VoidcraftNbt.TAG_INTEGRITY, 60L);
+        VoidcraftActiveShip starBase = VoidcraftActiveShip
+            .spawnBase("stats-2", "stats-2", payload, USSBaseAnchor.star(), SEED, BASE_HOVER);
+        USSShipPilot p2 = USSShipPilot.create(starBase, null, w, SEED);
+        assertEquals("STAR", p2.stat(USSShipStat.TARGET));
+        assertEquals("60", p2.stat(USSShipStat.INTEGRITY));
+    }
+
+    @Test
+    public void testRepairDelegatesTheTargetOnABaseAndRefusesOnAShip() {
+        // Base: the raw target param passes through to the world (SELF / name / index resolution is the world's
+        // job) — the pilot only enforces the station rule.
+        NBTTagCompound params = new NBTTagCompound();
+        params.setString(USSProgramDefaults.PARAM_TARGET, "SELF");
+        USSProgram prog = USSProgram.of(
+            Arrays.asList(
+                USSNode.command(USSCommand.REPAIR, params),
+                USSNode.command(USSCommand.STOP, new NBTTagCompound())));
+        FakePilotWorld w = new FakePilotWorld();
+        USSShipPilot p = USSShipPilot.create(base("repair-1", prog), prog, w, SEED);
+        int budget = 200;
+        while (w.repairStartCalls == 0 && budget-- > 0) {
+            p.tick();
+        }
+        assertEquals(1, w.repairStartCalls, "the REPAIR begin probes the world exactly once");
+        assertEquals("SELF", w.repairStartTarget, "the raw target param passes through");
+        assertEquals("repair-1", w.repairStartShip.getUuid());
+
+        // Ship: REPAIR is a station command — refused locally, the world never sees it, the leg SKIPs.
+        FakePilotWorld w2 = new FakePilotWorld();
+        USSShipPilot p2 = USSShipPilot.create(ship("ship-repair", prog), prog, w2, SEED);
+        while (!p2.isCompleted()) {
+            assertTrue(budget-- > 0, "the refused REPAIR SKIPs and the program ends");
+            p2.tick();
+        }
+        assertEquals(0, w2.repairStartCalls, "a ship never reaches the world's repair seam");
+        assertTrue(
+            w2.logs.stream()
+                .anyMatch(l -> l.contains("not a station")),
+            "the refusal is logged");
+    }
+
+    @Test
+    public void testZeroEnergyStallsTheWorkLeg() {
+        // The stall model: a zero-capacity payload (no energy stats) stalls every draw — the MINE leg arms but
+        // never advances (the executor keeps polling, the leg just does not move).
+        FakePilotWorld w = new FakePilotWorld();
+        NBTTagCompound payload = new NBTTagCompound();
+        payload.setString("vc_uuid", "stall-1");
+        NBTTagList list = mineProgram().writeToNBT();
+        if (list != null) {
+            payload.setTag(VoidcraftNbt.TAG_PROGRAM, list);
+        }
+        VoidcraftActiveShip s = VoidcraftActiveShip
+            .launch("stall-1", "stall-1", 0.5, 1000L, payload, null, null, 0, ORIGIN);
+        assertEquals(0L, s.getEnergyCapacity(), "no energy stats → a zero-capacity buffer");
+        USSShipPilot p = USSShipPilot.create(s, mineProgram(), w, SEED);
+        int budget = 100;
+        while (p.getShip()
+            .getState() == USSShipState.HOVERING && budget-- > 0) {
+            p.tick();
+        }
+        assertEquals(
+            USSShipState.MINING,
+            p.getShip()
+                .getState(),
+            "the leg still ARMS (mining power is present)");
+        budget = 400;
+        while (budget-- > 0) {
+            p.tick();
+        }
+        assertTrue(
+            p.getShip()
+                .isLegActive(),
+            "the leg is still armed after 400 ticks");
+        assertEquals(0, w.workCalls, "the work side-effect never fires (the leg never advanced)");
     }
 
     // endregion

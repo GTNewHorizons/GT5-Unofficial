@@ -87,6 +87,17 @@ public class USSValueTest {
     }
 
     @Test
+    public void testLocationKindIsPinned() {
+        // the serialized kind id is a stored format — the "Current location" value (WRITE value / condition
+        // side) resolves to the ship's current position at execution time
+        assertEquals(3, USSValue.Kind.LOCATION.getId());
+        USSValue v = USSValue.location();
+        assertEquals(USSValue.Kind.LOCATION, v.kind());
+        assertEquals("LOC", v.toString());
+        assertEquals(v, USSValue.readFromNBT(v.writeToNBT()), "NBT round-trip");
+    }
+
+    @Test
     public void testKindByIdRoundTrip() {
         for (USSValue.Kind kind : USSValue.Kind.values()) {
             assertEquals(kind, USSValue.Kind.byId(kind.getId()));
@@ -96,7 +107,8 @@ public class USSValueTest {
 
     @Test
     public void testNbtRoundTripAllKinds() {
-        USSValue[] values = { USSValue.literal("x"), USSValue.variable(123), USSValue.stat(5), USSValue.literal("") };
+        USSValue[] values = { USSValue.literal("x"), USSValue.variable(123), USSValue.stat(5), USSValue.location(),
+            USSValue.literal("") };
         for (USSValue v : values) {
             assertEquals(v, USSValue.readFromNBT(v.writeToNBT()), "round-trip: " + v);
         }

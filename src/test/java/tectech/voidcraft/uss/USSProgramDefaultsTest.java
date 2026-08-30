@@ -35,41 +35,41 @@ public class USSProgramDefaultsTest {
             "Explorer");
     }
 
-    private static void assertChip(USSProgram program, String expectedFirstTarget, int expectedWork, String role) {
-        assertEquals(3, program.size(), role + " chip: exactly three instructions");
-        assertEquals(1, program.depth(), role + " chip: a flat list");
+    private static void assertChip(USSProgram program, String expectedFirstTarget, int expectedWork, String chip) {
+        assertEquals(3, program.size(), chip + " chip: exactly three instructions");
+        assertEquals(1, program.depth(), chip + " chip: a flat list");
 
-        // instruction 1 — MOVE to the role's target
+        // instruction 1 — MOVE to the chip's target
         USSNode move = program.nodes()
             .get(0);
         assertTrue(move.isCommand());
-        assertEquals(USSCommand.MOVE, move.cmdId(), role + " chip: instruction 1 is MOVE");
+        assertEquals(USSCommand.MOVE, move.cmdId(), chip + " chip: instruction 1 is MOVE");
         assertEquals(
             expectedFirstTarget,
             move.params()
                 .getString(USSProgramDefaults.PARAM_TARGET),
-            role + " chip: MOVE target");
+            chip + " chip: MOVE target");
 
-        // instruction 2 — the role's work command
+        // instruction 2 — the chip's work command
         USSNode work = program.nodes()
             .get(1);
         assertTrue(work.isCommand());
-        assertEquals(expectedWork, work.cmdId(), role + " chip: instruction 2 is the role's work command");
+        assertEquals(expectedWork, work.cmdId(), chip + " chip: instruction 2 is the chip's work command");
         assertTrue(
             work.params()
                 .hasNoTags(),
-            role + " chip: the work command takes no params");
+            chip + " chip: the work command takes no params");
 
         // instruction 3 — MOVE HOME
         USSNode home = program.nodes()
             .get(2);
         assertTrue(home.isCommand());
-        assertEquals(USSCommand.MOVE, home.cmdId(), role + " chip: instruction 3 is MOVE");
+        assertEquals(USSCommand.MOVE, home.cmdId(), chip + " chip: instruction 3 is MOVE");
         assertEquals(
             USSProgramDefaults.TARGET_HOME,
             home.params()
                 .getString(USSProgramDefaults.PARAM_TARGET),
-            role + " chip: comes HOME");
+            chip + " chip: comes HOME");
     }
 
     @Test

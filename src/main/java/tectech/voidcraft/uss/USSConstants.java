@@ -44,23 +44,46 @@ public final class USSConstants {
     }
 
     /**
-     * Lifespan in machine ticks for a star class (placeholder balance table — Phase 4 pass 1 the star class is
-     * chosen by the ignition item, so the table is keyed by type):
-     * <ul>
-     * <li>{@link USSStarType#MAIN_SEQUENCE}: 120_000 ticks (10 in-game days)</li>
-     * <li>{@link USSStarType#WHITE_DWARF}: 300_000 ticks (25 in-game days)</li>
-     * <li>{@link USSStarType#SUPERMASSIVE}: 60_000 ticks (5 in-game days)</li>
-     * </ul>
+     * Lifespan in machine ticks for a star class (placeholder balance table — the star class is chosen by the
+     * ignition item, so the table is keyed by type). The three mapped legacy classes keep their values (yellow
+     * dwarf 10 in-game days, white dwarf 25, blue giant 5); the rest are placeholders: hot giants and transient
+     * classes burn shortest, cold remnants and degenerate objects last longest.
      *
-     * @param starType the star class (null → main sequence, defensive).
+     * @param starType the star class (null → yellow dwarf, defensive).
      * @return the lifespan in ticks (always &gt; 0).
      */
     public static long lifespanForType(USSStarType starType) {
-        switch (starType == null ? USSStarType.MAIN_SEQUENCE : starType) {
+        switch (starType == null ? USSStarType.YELLOW_DWARF : starType) {
+            case RED_DWARF:
+                return 480_000L;
             case WHITE_DWARF:
                 return 300_000L;
-            case SUPERMASSIVE:
+            case BLACK_DWARF:
+                return 900_000L;
+            case BLUE_GIANT:
                 return 60_000L;
+            case RED_GIANT:
+                return 36_000L;
+            case RED_SUPERGIANT:
+                return 24_000L;
+            case SUPERNOVA:
+                return 6_000L;
+            case BLACK_HOLE:
+                return 3_600_000L;
+            case QUASI_STAR:
+                return 12_000L;
+            case BLUE_SUPERGIANT:
+                return 30_000L;
+            case HYPERNOVA:
+                return 4_800L;
+            case NEUTRON_STAR:
+                return 1_800_000L;
+            case MAGNETAR:
+                return 720_000L;
+            case GRAVASTAR:
+                return 3_600_000L;
+            case QUARK_STAR:
+                return 1_440_000L;
             default:
                 return 120_000L;
         }
@@ -71,10 +94,36 @@ public final class USSConstants {
      * NOT consumed by the Phase 2 vertical slice — documented here so the table is complete in one place.
      */
     public static long starDrawEUt(USSStarType starType) {
-        switch (starType == null ? USSStarType.MAIN_SEQUENCE : starType) {
+        switch (starType == null ? USSStarType.YELLOW_DWARF : starType) {
+            case RED_DWARF:
+                return 16L;
             case WHITE_DWARF:
                 return 256L;
-            case SUPERMASSIVE:
+            case BLACK_DWARF:
+                return 32L;
+            case BLUE_GIANT:
+                return 1024L;
+            case RED_GIANT:
+                return 2048L;
+            case RED_SUPERGIANT:
+                return 4096L;
+            case SUPERNOVA:
+                return 16384L;
+            case BLACK_HOLE:
+                return 8192L;
+            case QUASI_STAR:
+                return 16384L;
+            case BLUE_SUPERGIANT:
+                return 4096L;
+            case HYPERNOVA:
+                return 32768L;
+            case NEUTRON_STAR:
+                return 512L;
+            case MAGNETAR:
+                return 2048L;
+            case GRAVASTAR:
+                return 8192L;
+            case QUARK_STAR:
                 return 1024L;
             default:
                 return 64L;
@@ -278,7 +327,7 @@ public final class USSConstants {
         return Math.max(1L, 2000L / power);
     }
 
-    // region Phase 4 pass 1 Starlifter (fluid production on top of the miner item cargo)
+    // region Starlifter (fluid production, reserve-capped)
 
     /**
      * Starlifter plasma multiplier: a starlifter carries {@code siphonPower * STARLIFTER_PLASMA_FACTOR} mB of
@@ -299,17 +348,6 @@ public final class USSConstants {
     public static long starlifterPlasmaAmount(long siphonPower) {
         long amount = Math.max(1L, siphonPower) * STARLIFTER_PLASMA_FACTOR;
         return Math.min(amount, STARLIFTER_PLASMA_CAP);
-    }
-
-    /**
-     * Dwarf-matter dust amount a starlifter carries (white-dwarf or supermassive stars only — the miner's
-     * per-ore dust amount, same scale; a main-sequence star yields plasma only).
-     *
-     * @param siphonPower the ship's total siphon (starlifter) power.
-     * @return the dust amount (always &gt;= 1).
-     */
-    public static long starlifterMatterAmount(long siphonPower) {
-        return minerOreAmount(siphonPower);
     }
 
     // endregion
@@ -402,6 +440,118 @@ public final class USSConstants {
                 return 0L;
         }
     }
+
+    // endregion
+
+    // region ship-to-ship cargo transfer (SEND / TAKE)
+
+    /**
+     * Logistics power that transfers ONE cargo unit per second (user spec: "1 power = 1 cargo transferred per
+     * second" — the single tuning point for the SEND / TAKE transfer rate).
+     */
+    public static final long LOGISTICS_POWER_PER_CARGO_PER_SECOND = 1L;
+
+    /**
+     * The ship radius for a "same location" check (blocks): a ship counts as being AT another ship (the shared
+     * location is that ship) when it is within this radius of the other ship's position. Covers the rendezvous
+     * nudge (magnitude &le; {@code USSFleetOrbit.MAX_RADIUS} = 2.0, see {@code USSFleetOrbit.nudge}) plus margin.
+     */
+    public static final double SHIP_LOCATION_RADIUS = 2.5;
+
+    /**
+     * The position tolerance for the "at the star" location check (blocks): a ship's server position is the exact
+     * leg endpoint, so this only guards against float drift (the gateway anchor sits 2.0 blocks from the star
+     * point — far outside it — which is what keeps a fresh gateway ship from counting as "at the star").
+     */
+    public static final double STAR_LOCATION_TOLERANCE = 0.5;
+
+    /**
+     * Machine ticks per cargo unit for a SEND / TAKE transfer at the given logistics power:
+     * {@code 20 · LOGISTICS_POWER_PER_CARGO_PER_SECOND / power}, minimum 1 — 1 power = 1 unit/s, 4 power = 1
+     * unit/5 ticks, 20 power = 1 unit/tick.
+     *
+     * @param logisticsPower the executing ship's logistics power (&gt; 0; a ship without it cannot transfer at all)
+     * @return the pacing countdown (always &gt;= 1)
+     */
+    public static long transferTicksPerUnit(long logisticsPower) {
+        long power = Math.max(1L, logisticsPower);
+        return Math.max(1L, 20L * LOGISTICS_POWER_PER_CARGO_PER_SECOND / power);
+    }
+
+    // endregion
+
+    // region action energy consumption (every action runs on the ship's energy buffer)
+
+    /**
+     * Travel energy draw per tick, per speed point (EU/tick/speed): the thruster burn while a MOVE leg runs.
+     * A normal ship (speed 5) burns 100 EU/tick = 2000 EU/s.
+     */
+    public static final long TRAVEL_ENERGY_PER_TICK_PER_SPEED = 20L;
+
+    /**
+     * Work energy draw divisor (EU/tick = power / divisor): a work leg (MINE / SCAN / SIPHON) burns the leg's
+     * owning power divided by this — mining power 1000 burns 100 EU/tick.
+     */
+    public static final long WORK_ENERGY_DIVISOR = 10L;
+
+    /** CONSTRUCT energy draw (EU/tick) while the part-transfer leg runs. */
+    public static final long CONSTRUCT_ENERGY_PER_TICK = 100L;
+
+    /**
+     * The REPAIR work command draw (EU per second of repair: one integrity per second, drawn from the executor's
+     * energy buffer when the repair boundary fires).
+     */
+    public static final long REPAIR_DRAW = 2000L;
+
+    /**
+     * The energy draw of an active LEG for a ship (EU/tick, the stall model's per-tick cost): a travel leg burns
+     * {@link #TRAVEL_ENERGY_PER_TICK_PER_SPEED} per speed point; a work leg burns its owning power (mining / scan /
+     * siphon) divided by {@link #WORK_ENERGY_DIVISOR}; no leg (or a zero-power kind) draws nothing.
+     *
+     * @param workKind the leg's work kind ({@link USSWorkKind}; TRAVEL = a MOVE leg)
+     * @param ship     the ship executing the leg (speed / work powers)
+     * @return the draw in EU/tick (&ge; 0; 0 = idle or powerless)
+     */
+    public static long legEnergyDraw(int workKind, VoidcraftActiveShip ship) {
+        if (ship == null) {
+            return 0L;
+        }
+        switch (workKind) {
+            case USSWorkKind.MINE:
+                return Math.max(0L, ship.getMiningPower()) / WORK_ENERGY_DIVISOR;
+            case USSWorkKind.SCAN:
+                return Math.max(0L, ship.getScanPower()) / WORK_ENERGY_DIVISOR;
+            case USSWorkKind.SIPHON:
+                return Math.max(0L, ship.getStarlifterPower()) / WORK_ENERGY_DIVISOR;
+            default:
+                long speed = (long) Math.max(0.0, ship.getSpeed());
+                return speed * TRAVEL_ENERGY_PER_TICK_PER_SPEED;
+        }
+    }
+
+    // endregion
+
+    // region dyson swarm (star infrastructure — the Satellite Rail Launcher)
+
+    /**
+     * Machine ticks between two satellite launches of ONE Satellite Rail Launcher (one launch per interval: 10
+     * ticks = one satellite per second). Multiple launchers in a base each run their own countdown.
+     */
+    public static final long DYSON_SATELLITE_LAUNCH_INTERVAL = 10L;
+
+    /**
+     * Capacity scaling of the star's satellite swarm against the star's RENDER size (blocks):
+     * {@code capacity = round(DYSON_SATELLITE_CAPACITY_PER_RENDER_AREA · renderSize²)} (minimum 1). The shell the
+     * swarm renders around the star has its area scale the same way, so the count tracks the rendered geometry —
+     * ~300 satellites at a main-star-sized star, ~1000 at the largest (giant size 10).
+     */
+    public static final double DYSON_SATELLITE_CAPACITY_PER_RENDER_AREA = 225.0;
+
+    /**
+     * The fraction of the single-launcher-equivalent decay rate that is actually applied: at 1.0, one launcher's
+     * launch rate exactly offsets the largest fully-saturated star's decay.
+     */
+    public static final double DYSON_SATELLITE_DECAY_FRACTION = 0.2;
 
     // endregion
 }

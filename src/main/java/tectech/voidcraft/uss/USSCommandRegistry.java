@@ -8,7 +8,7 @@ import java.util.Map;
  * {@link USSCommand}) to {@link USSCommandHandler} instances.
  *
  * <p>
- * The ten built-ins are registered statically; additional commands register themselves (one class +
+ * The built-ins are registered statically; additional commands register themselves (one class +
  * {@link #register} + an id — the executor and the program format never change). Handlers must be stateless
  * singletons (per-ship state lives in the executor's cursor — see {@link USSCommandHandler}).
  */
@@ -27,6 +27,8 @@ public final class USSCommandRegistry {
         register(new USSCommandRepair());
         register(new USSCommandScan());
         register(new USSCommandSiphon());
+        register(new USSCommandSend());
+        register(new USSCommandTake());
     }
 
     private USSCommandRegistry() {}

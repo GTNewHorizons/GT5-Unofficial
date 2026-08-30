@@ -3,6 +3,7 @@ package tectech.voidcraft.uss;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -22,7 +23,7 @@ import tectech.voidcraft.ship.VoidcraftNbt;
 /**
  * Bare-JVM tests for the Voidcraft cargo-capacity framework ({@link CargoHold}) — the bounded internal cargo a
  * Voidcraft fills while mining / starlifting / constructing, and the generic modify framework (add / remove /
- * transfer) for future ship-to-ship transfer.
+ * transfer).
  *
  * <p>
  * Capacity model (user spec): {@code 1 cargo unit = 1 item = 100 mB of fluid}. Items consume their count in units;
@@ -242,6 +243,83 @@ public class CargoHoldTest {
 
     // endregion
 
+    // region special items (infrastructure payloads — the Dyson Swarm pass)
+
+    @Test
+    public void testSpecialItemsClampedByCapacity() {
+        CargoHold hold = CargoHold.of(10L);
+        assertEquals(0L, hold.specialOf("power_satellite"));
+        // 1 item = 1 cargo unit — adding clamps to the remaining capacity.
+        CargoHold filled = hold.addSpecial("power_satellite", 25L);
+        assertEquals(10L, filled.specialOf("power_satellite"), "clamped to the capacity");
+        assertEquals(10L, filled.usedUnits(), "special items count toward the used units");
+        assertTrue(filled.isFull(), "special items fill the hold");
+        // An over-full hold takes nothing more.
+        assertEquals(
+            10L,
+            filled.addSpecial("power_satellite", 5L)
+                .specialOf("power_satellite"));
+        // Mixed with the classic axes: items + specials share the same capacity.
+        CargoHold mixed = CargoHold.of(20L)
+            .addItems(Materials.Copper, 5L)
+            .addSpecial("power_satellite", 30L);
+        assertEquals(5L, mixed.itemsOf(Materials.Copper));
+        assertEquals(15L, mixed.specialOf("power_satellite"), "20 - 5 = 15 units left for the satellites");
+        // null / empty keys and non-positive amounts are no-ops.
+        assertSame(hold, hold.addSpecial(null, 1));
+        assertSame(hold, hold.addSpecial("", 1));
+        assertSame(hold, hold.addSpecial("power_satellite", 0));
+    }
+
+    @Test
+    public void testSpecialRemoveClamped() {
+        CargoHold hold = CargoHold.of(10L)
+            .addSpecial("power_satellite", 3L);
+        assertEquals(
+            2L,
+            hold.removeSpecial("power_satellite", 1L)
+                .specialOf("power_satellite"));
+        assertEquals(
+            0L,
+            hold.removeSpecial("power_satellite", 99L)
+                .specialOf("power_satellite"),
+            "clamped to on board");
+        assertEquals(
+            0L,
+            hold.removeSpecial("power_satellite", 99L)
+                .usedUnits(),
+            "the freed units return to the capacity");
+        assertSame(hold, hold.removeSpecial(null, 1));
+        assertSame(hold, hold.removeSpecial("power_satellite", 0));
+    }
+
+    @Test
+    public void testSpecialNbtRoundTrip() {
+        CargoHold hold = CargoHold.of(100L)
+            .addItems(Materials.Copper, 10L)
+            .addSpecial("power_satellite", 40L)
+            .addSpecial("dyson_panel", 5L);
+        NBTTagCompound nbt = new NBTTagCompound();
+        hold.writeToNBT(nbt);
+        CargoHold loaded = CargoHold.readFromNBT(nbt);
+        assertEquals(40L, loaded.specialOf("power_satellite"), "special items survive the round trip");
+        assertEquals(5L, loaded.specialOf("dyson_panel"), "multiple special keys survive");
+        assertEquals(10L, loaded.itemsOf(Materials.Copper), "items survive alongside specials");
+        assertEquals(55L, loaded.usedUnits(), "special units count toward the used units");
+    }
+
+    @Test
+    public void testSpecialTransferFollowsTheHold() {
+        CargoHold source = CargoHold.of(10L)
+            .addSpecial("power_satellite", 6L);
+        CargoHold target = CargoHold.of(10L);
+        CargoHold.TransferResult result = source.transferTo(target);
+        assertEquals(6L, result.target.specialOf("power_satellite"), "the transfer moves the specials");
+        assertEquals(0L, result.source.specialOf("power_satellite"), "the source loses them");
+    }
+
+    // endregion
+
     // region integration (fillHold + cargoFromHold)
 
     @Test
@@ -254,7 +332,7 @@ public class CargoHoldTest {
             .id("fill_world")
             .texture("Ma")
             .sizeRange(0.5f, 0.5f)
-            .allowedStarType(USSStarType.MAIN_SEQUENCE)
+            .allowedStarType(USSStarType.YELLOW_DWARF)
             .ores(
                 Arrays
                     .asList(new USSPlanetOre(Materials.Copper, 100L, 1.0), new USSPlanetOre(Materials.Iron, 100L, 1.0)))
@@ -287,7 +365,7 @@ public class CargoHoldTest {
             .id("scarce_world")
             .texture("Ma")
             .sizeRange(0.5f, 0.5f)
-            .allowedStarType(USSStarType.MAIN_SEQUENCE)
+            .allowedStarType(USSStarType.YELLOW_DWARF)
             .ores(Collections.singletonList(new USSPlanetOre(Materials.Copper, 100L, 1.0)))
             .build();
         USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 1.0, 1.0, 1.0, 10, 10, false, -1);
@@ -304,10 +382,10 @@ public class CargoHoldTest {
 
     @Test
     public void testFillHoldFromStarlifterCargo() {
-        // A starlifter cargo (3 fluids) — fill a hold.
+        // A starlifter cargo (the yellow dwarf's 3 produced fluids) — fill a hold.
         long power = 10L;
-        long seed = 42L;
-        NBTTagCompound cargo = USSShipCargo.buildForStarlifter(USSStarType.MAIN_SEQUENCE, power, seed);
+        NBTTagCompound cargo = USSShipCargo
+            .siphonStar(USSStarRegistry.byType(USSStarType.YELLOW_DWARF), 2.0, power, null).cargo;
         NBTTagList fluids = USSShipCargo.readFluids(cargo);
         long totalMB = 0;
         for (int i = 0; i < fluids.tagCount(); i++) {
@@ -329,7 +407,7 @@ public class CargoHoldTest {
     @Test
     public void testShipCargoCapacityFromPayload() {
         // A ship's cargo capacity comes from the payload's vc_cargo (the blueprint's cargoSlots), times the
-        // pass-27 CARGO_UNIT_MULTIPLIER (100× — the user's "cargo hold size increased by a factor of 100").
+        // CARGO_UNIT_MULTIPLIER (100× — the user's "cargo hold size increased by a factor of 100").
         NBTTagCompound payload = new NBTTagCompound();
         payload.setLong(VoidcraftNbt.TAG_CARGO, 500L);
         VoidcraftActiveShip ship = VoidcraftActiveShip

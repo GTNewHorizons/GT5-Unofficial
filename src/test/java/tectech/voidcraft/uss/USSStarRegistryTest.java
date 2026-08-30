@@ -35,9 +35,9 @@ public class USSStarRegistryTest {
             .nameMethod(() -> id)
             .type(id)
             .sizeRange(1.0f, 5.0f)
-            .main(Materials.Hydrogen, 1.0)
-            .secondary(Materials.Helium, 1.0)
-            .tertiary(Materials.Oxygen, 1.0)
+            .main(Materials.Hydrogen, 1.0, 1L)
+            .secondary(Materials.Helium, 1.0, 1L)
+            .tertiary(Materials.Oxygen, 1.0, 25L)
             .luminosity(5.0f)
             .planetRange(3, 9)
             .texture("star_" + id)
@@ -142,10 +142,10 @@ public class USSStarRegistryTest {
     // region catalog
 
     @Test
-    public void testCatalogRegistersThreeStars() {
+    public void testCatalogRegistersSixteenStars() {
         assertEquals(0, USSStarRegistry.size());
         USSStarCatalog.registerAll();
-        assertEquals(3, USSStarRegistry.size());
+        assertEquals(16, USSStarRegistry.size());
     }
 
     @Test
@@ -154,31 +154,38 @@ public class USSStarRegistryTest {
         int first = USSStarRegistry.size();
         USSStarCatalog.registerAll(); // second call is a no-op
         assertEquals(first, USSStarRegistry.size());
-        assertEquals(3, USSStarRegistry.size());
+        assertEquals(16, USSStarRegistry.size());
     }
 
     @Test
-    public void testCatalogPreservesTheThreeLegacyStarClasses() {
+    public void testCatalogRegistersTheMappedClasses() {
         USSStarCatalog.registerAll();
-        assertNotNull(USSStarRegistry.get("main_sequence"), "main_sequence registered");
+        // The three mapped legacy classes under their new ids, plus a spot of the new catalog.
+        assertNotNull(USSStarRegistry.get("yellow_dwarf"), "yellow_dwarf registered");
         assertNotNull(USSStarRegistry.get("white_dwarf"), "white_dwarf registered");
-        assertNotNull(USSStarRegistry.get("supermassive"), "supermassive registered");
+        assertNotNull(USSStarRegistry.get("blue_giant"), "blue_giant registered");
+        assertNotNull(USSStarRegistry.get("black_hole"), "black_hole registered");
+        assertNotNull(USSStarRegistry.get("quark_star"), "quark_star registered");
     }
 
     @Test
     public void testCatalogTypeIsDisplayNameDistinctFromId() {
         USSStarCatalog.registerAll();
         assertEquals(
-            "Main Sequence",
-            USSStarRegistry.get("main_sequence")
+            "Yellow Dwarf",
+            USSStarRegistry.get("yellow_dwarf")
                 .getType());
         assertEquals(
             "White Dwarf",
             USSStarRegistry.get("white_dwarf")
                 .getType());
         assertEquals(
-            "Supermassive",
-            USSStarRegistry.get("supermassive")
+            "Blue Giant",
+            USSStarRegistry.get("blue_giant")
+                .getType());
+        assertEquals(
+            "Gravastar",
+            USSStarRegistry.get("gravastar")
                 .getType());
     }
 
@@ -208,49 +215,163 @@ public class USSStarRegistryTest {
     public void testCatalogColorsFollowTheVisualSpec() {
         USSStarCatalog.registerAll();
         assertEquals(
-            0xFFFFD640,
-            USSStarRegistry.get("main_sequence")
-                .getColor());
+            0xFFE07020,
+            USSStarRegistry.get("yellow_dwarf")
+                .getColor(),
+            "yellow dwarf core orange");
         assertEquals(
-            0xFFFFFFFF,
+            0xFF9FC8FF,
             USSStarRegistry.get("white_dwarf")
-                .getColor());
+                .getColor(),
+            "white dwarf core light blue");
         assertEquals(
-            0xFF5A8CFF,
-            USSStarRegistry.get("supermassive")
-                .getColor());
+            0xFF9FC8FF,
+            USSStarRegistry.get("blue_giant")
+                .getColor(),
+            "blue giant core light blue");
+        assertEquals(
+            0xFF000000,
+            USSStarRegistry.get("black_hole")
+                .getColor(),
+            "black hole core black");
+        assertEquals(
+            0xFFFFB000,
+            USSStarRegistry.get("black_hole")
+                .getShellColor(),
+            "black hole shell amber");
     }
 
     @Test
     public void testStarColorHelperResolvesRegisteredAndFallsBack() {
         USSStarCatalog.registerAll();
         assertEquals(USSStarColor.DEFAULT, USSStarColor.colorFor(null));
-        assertEquals(0xFFFFD640, USSStarColor.colorFor(USSStarRegistry.byType(USSStarType.MAIN_SEQUENCE)));
+        assertEquals(0xFFE07020, USSStarColor.colorFor(USSStarRegistry.byType(USSStarType.YELLOW_DWARF)));
         assertEquals(USSStarColor.DEFAULT, USSStarColor.colorFor(USSStarRegistry.get("unregistered")));
+        // Shell: the registered shell when set (black hole amber), the core color when they match (blue giant).
+        assertEquals(0xFFFFB000, USSStarColor.shellColorFor(USSStarRegistry.byType(USSStarType.BLACK_HOLE)));
+        assertEquals(0xFF9FC8FF, USSStarColor.shellColorFor(USSStarRegistry.byType(USSStarType.BLUE_GIANT)));
+        assertEquals(USSStarColor.DEFAULT, USSStarColor.shellColorFor(null));
     }
 
     @Test
-    public void testCatalogEvolutionChain() {
+    public void testCatalogRenderTypes() {
         USSStarCatalog.registerAll();
-        // main_sequence evolves into white_dwarf (registered); the others are terminal (null target).
+        // The magnetar is the first custom render treatment: magnetic dipole field loops through the core.
+        assertEquals(
+            USSStarRenderType.MAGNETAR,
+            USSStarRegistry.get("magnetar")
+                .getRenderType(),
+            "magnetar field loops");
+        // The other catalog stars keep the standard three-layer sphere.
+        assertEquals(
+            USSStarRenderType.STANDARD,
+            USSStarRegistry.get("yellow_dwarf")
+                .getRenderType(),
+            "yellow dwarf standard");
+        assertEquals(
+            USSStarRenderType.STANDARD,
+            USSStarRegistry.get("black_hole")
+                .getRenderType(),
+            "black hole standard");
+    }
+
+    @Test
+    public void testStarRenderTypeHelperResolvesRegisteredAndFallsBack() {
+        USSStarCatalog.registerAll();
+        assertEquals(
+            USSStarRenderType.MAGNETAR,
+            USSStarColor.renderTypeFor(USSStarRegistry.byType(USSStarType.MAGNETAR)));
+        assertEquals(
+            USSStarRenderType.STANDARD,
+            USSStarColor.renderTypeFor(USSStarRegistry.byType(USSStarType.YELLOW_DWARF)));
+        assertEquals(USSStarRenderType.STANDARD, USSStarColor.renderTypeFor(null));
+    }
+
+    @Test
+    public void testCatalogStarsProduceOneToThreeFluids() {
+        // Every catalog star produces 1–3 of its three materials (a zero-capacity slot produces none), and every
+        // produced fluid has a positive capacity.
+        USSStarCatalog.registerAll();
+        for (USSStarDefinition star : USSStarRegistry.all()) {
+            int produced = 0;
+            for (USSStarMaterial material : star.getMaterials()) {
+                if (material.getAmount() > 0L) {
+                    produced++;
+                }
+            }
+            assertTrue(produced >= 1 && produced <= 3, star.getId() + " produces " + produced + " fluid(s) (1–3)");
+        }
+    }
+
+    @Test
+    public void testCatalogEvolutionTable() {
+        USSStarCatalog.registerAll();
+        // The star-evolution design table: the seven chains, the six terminal types, every target registered.
         assertEquals(
             "white_dwarf",
-            USSStarRegistry.get("main_sequence")
+            USSStarRegistry.get("red_dwarf")
                 .getEvolutionTarget(),
-            "main_sequence → white_dwarf");
-        assertNull(
+            "red_dwarf → white_dwarf");
+        assertEquals(
+            "red_giant",
+            USSStarRegistry.get("yellow_dwarf")
+                .getEvolutionTarget(),
+            "yellow_dwarf → red_giant");
+        assertEquals(
+            "white_dwarf",
+            USSStarRegistry.get("red_giant")
+                .getEvolutionTarget(),
+            "red_giant → white_dwarf");
+        assertEquals(
+            "black_dwarf",
             USSStarRegistry.get("white_dwarf")
                 .getEvolutionTarget(),
-            "white_dwarf is terminal");
-        assertNull(
-            USSStarRegistry.get("supermassive")
-                .getEvolutionTarget(),
-            "supermassive is terminal");
+            "white_dwarf → black_dwarf");
         assertEquals(
-            "white_dwarf",
-            USSStarRegistry.evolutionTargetOf(USSStarRegistry.get("main_sequence"))
-                .getId(),
-            "evolution resolves to the registered star");
+            "red_supergiant",
+            USSStarRegistry.get("blue_giant")
+                .getEvolutionTarget(),
+            "blue_giant → red_supergiant");
+        assertEquals(
+            "supernova",
+            USSStarRegistry.get("red_supergiant")
+                .getEvolutionTarget(),
+            "red_supergiant → supernova");
+        assertEquals(
+            "black_hole",
+            USSStarRegistry.get("supernova")
+                .getEvolutionTarget(),
+            "supernova → black_hole");
+        assertEquals(
+            "hypernova",
+            USSStarRegistry.get("blue_supergiant")
+                .getEvolutionTarget(),
+            "blue_supergiant → hypernova");
+        assertEquals(
+            "neutron_star",
+            USSStarRegistry.get("hypernova")
+                .getEvolutionTarget(),
+            "hypernova → neutron_star");
+        assertEquals(
+            "magnetar",
+            USSStarRegistry.get("neutron_star")
+                .getEvolutionTarget(),
+            "neutron_star → magnetar");
+        for (String terminal : new String[] { "black_dwarf", "black_hole", "quasi_star", "magnetar", "gravastar",
+            "quark_star" }) {
+            assertNull(
+                USSStarRegistry.get(terminal)
+                    .getEvolutionTarget(),
+                terminal + " is terminal");
+        }
+        // Every target resolves to a registered star.
+        for (USSStarDefinition star : USSStarRegistry.all()) {
+            if (star.getEvolutionTarget() != null) {
+                assertNotNull(
+                    USSStarRegistry.evolutionTargetOf(star),
+                    star.getId() + " target resolves to a registered star");
+            }
+        }
     }
 
     @Test

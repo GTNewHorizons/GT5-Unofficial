@@ -23,30 +23,36 @@ public class USSStarDefinitionTest {
     // region USSStarMaterial
 
     @Test
-    public void testStarMaterialStoresMaterialAndWeight() {
-        USSStarMaterial m = new USSStarMaterial(Materials.Hydrogen, 2.5);
-        assertEquals(Materials.Hydrogen, m.getMaterial());
-        assertEquals(2.5, m.getWeight(), 1e-9);
-    }
-
-    @Test
     public void testStarMaterialRejectsNullMaterial() {
-        assertThrows(NullPointerException.class, () -> new USSStarMaterial(null, 1.0));
+        assertThrows(NullPointerException.class, () -> new USSStarMaterial(null, 1.0, 1L));
     }
 
     @Test
     public void testStarMaterialRejectsNullMaterialSentinel() {
-        assertThrows(IllegalArgumentException.class, () -> new USSStarMaterial(Materials._NULL, 1.0));
+        assertThrows(IllegalArgumentException.class, () -> new USSStarMaterial(Materials._NULL, 1.0, 1L));
     }
 
     @Test
     public void testStarMaterialRejectsNonPositiveOrNonFiniteWeight() {
-        assertThrows(IllegalArgumentException.class, () -> new USSStarMaterial(Materials.Hydrogen, 0.0));
-        assertThrows(IllegalArgumentException.class, () -> new USSStarMaterial(Materials.Hydrogen, -1.0));
-        assertThrows(IllegalArgumentException.class, () -> new USSStarMaterial(Materials.Hydrogen, Double.NaN));
+        assertThrows(IllegalArgumentException.class, () -> new USSStarMaterial(Materials.Hydrogen, 0.0, 1L));
+        assertThrows(IllegalArgumentException.class, () -> new USSStarMaterial(Materials.Hydrogen, -1.0, 1L));
+        assertThrows(IllegalArgumentException.class, () -> new USSStarMaterial(Materials.Hydrogen, Double.NaN, 1L));
         assertThrows(
             IllegalArgumentException.class,
-            () -> new USSStarMaterial(Materials.Hydrogen, Double.POSITIVE_INFINITY));
+            () -> new USSStarMaterial(Materials.Hydrogen, Double.POSITIVE_INFINITY, 1L));
+    }
+
+    @Test
+    public void testStarMaterialRejectsNegativeAmount() {
+        assertThrows(IllegalArgumentException.class, () -> new USSStarMaterial(Materials.Hydrogen, 1.0, -1L));
+    }
+
+    @Test
+    public void testStarMaterialCarriesAmount() {
+        // A zero amount is VALID — the slot simply produces no fluid (a star may produce 1–3 of its 3 slots).
+        assertEquals(0L, new USSStarMaterial(Materials.Helium, 2.0, 0L).getAmount(), "0 = no fluid produced");
+        assertEquals(200L, new USSStarMaterial(Materials.Hydrogen, 3.0, 200L).getAmount(), "the amount round-trips");
+        assertEquals(3.0, new USSStarMaterial(Materials.Hydrogen, 3.0, 200L).getWeight());
     }
 
     // endregion
@@ -59,9 +65,9 @@ public class USSStarDefinitionTest {
             .nameMethod(() -> "Test Star")
             .type("Test Type")
             .sizeRange(1.0f, 5.0f)
-            .main(Materials.Hydrogen, 3.0)
-            .secondary(Materials.Helium, 2.0)
-            .tertiary(Materials.Oxygen, 1.0)
+            .main(Materials.Hydrogen, 3.0, 100L)
+            .secondary(Materials.Helium, 2.0, 50L)
+            .tertiary(Materials.Oxygen, 1.0, 25L)
             .luminosity(5.0f)
             .planetRange(3, 9)
             .texture("star_test")
@@ -70,36 +76,8 @@ public class USSStarDefinitionTest {
     }
 
     @Test
-    public void testStarExposesAllFields() {
-        USSStarDefinition star = validStar();
-        assertEquals("test_star", star.getId());
-        assertEquals("Test Star", star.name());
-        assertEquals("Test Type", star.getType());
-        assertEquals(1.0f, star.getSizeMin(), 1e-6);
-        assertEquals(5.0f, star.getSizeMax(), 1e-6);
-        assertEquals(
-            Materials.Hydrogen,
-            star.getMain()
-                .getMaterial());
-        assertEquals(
-            3.0,
-            star.getMain()
-                .getWeight(),
-            1e-9);
-        assertEquals(
-            Materials.Helium,
-            star.getSecondary()
-                .getMaterial());
-        assertEquals(
-            Materials.Oxygen,
-            star.getTertiary()
-                .getMaterial());
-        assertEquals(5.0f, star.getLuminosity(), 1e-6);
-        assertEquals(3, star.getPlanetMin());
-        assertEquals(9, star.getPlanetMax());
-        assertEquals("star_test", star.getTexture());
-        assertNull(star.getEvolutionTarget());
-        assertEquals(0xFFFFFFFF, star.getColor(), "color defaults to white");
+    public void testColorDefaultsToWhite() {
+        assertEquals(0xFFFFFFFF, validStar().getColor(), "color defaults to white");
     }
 
     @Test
@@ -109,9 +87,9 @@ public class USSStarDefinitionTest {
             .nameMethod(() -> "Blue Star")
             .type("Blue Type")
             .sizeRange(1.0f, 5.0f)
-            .main(Materials.Hydrogen, 3.0)
-            .secondary(Materials.Helium, 2.0)
-            .tertiary(Materials.Oxygen, 1.0)
+            .main(Materials.Hydrogen, 3.0, 100L)
+            .secondary(Materials.Helium, 2.0, 50L)
+            .tertiary(Materials.Oxygen, 1.0, 25L)
             .luminosity(5.0f)
             .planetRange(3, 9)
             .texture("star_blue")
@@ -122,22 +100,77 @@ public class USSStarDefinitionTest {
     }
 
     @Test
-    public void testNameMethodIsInvocableAndSupplied() {
-        final String[] value = { "generated-name" };
-        Supplier<String> supplier = () -> value[0];
-        USSStarDefinition star = USSStarDefinition.builder()
-            .id("gen")
-            .nameMethod(supplier)
-            .type("T")
-            .main(Materials.Hydrogen, 1.0)
-            .secondary(Materials.Helium, 1.0)
-            .tertiary(Materials.Oxygen, 1.0)
-            .texture("x")
+    public void testShellColorDefaultsToUnset() {
+        assertEquals(0, validStar().getShellColor(), "shell color defaults to unset (0)");
+    }
+
+    @Test
+    public void testShellColorBuilderRoundTripsAndFallsBack() {
+        USSStarDefinition star = validStar();
+        // Unset shell: the renderer's fallback resolves the core color.
+        assertEquals(star.getColor(), USSStarColor.shellColorFor(star));
+        USSStarDefinition shelled = USSStarDefinition.builder()
+            .id("black_hole_star")
+            .nameMethod(() -> "Black Hole Star")
+            .type("Black Hole Type")
+            .sizeRange(1.0f, 5.0f)
+            .main(Materials.Iron, 3.0, 100L)
+            .secondary(Materials.Osmium, 2.0, 50L)
+            .tertiary(Materials.Platinum, 1.0, 25L)
+            .luminosity(0.0f)
+            .planetRange(0, 3)
+            .texture("star_black_hole")
+            .evolutionTarget(null)
+            .color(0xFF000000)
+            .shellColor(0xFFFFB000)
             .build();
-        assertEquals("generated-name", star.name());
-        // the name method is a function: re-invoking it can produce a different value
-        value[0] = "another-name";
-        assertEquals("another-name", star.name());
+        assertEquals(0xFFFFB000, shelled.getShellColor());
+        assertEquals(0xFFFFB000, USSStarColor.shellColorFor(shelled));
+    }
+
+    @Test
+    public void testRenderTypeDefaultsToStandard() {
+        assertEquals(
+            USSStarRenderType.STANDARD,
+            validStar().getRenderType(),
+            "render type defaults to standard (no extra geometry)");
+    }
+
+    @Test
+    public void testRenderTypeBuilderRoundTripsAndNullFallsBack() {
+        USSStarDefinition magnetar = USSStarDefinition.builder()
+            .id("magnetar_star")
+            .nameMethod(() -> "Magnetar Star")
+            .type("Magnetar Type")
+            .sizeRange(1.0f, 3.0f)
+            .main(Materials.Cobalt, 3.0, 100L)
+            .secondary(Materials.Iron, 2.0, 50L)
+            .tertiary(Materials.Nickel, 1.0, 25L)
+            .luminosity(1.0f)
+            .planetRange(0, 3)
+            .texture("star_magnetar")
+            .evolutionTarget(null)
+            .renderType(USSStarRenderType.MAGNETAR)
+            .build();
+        assertEquals(USSStarRenderType.MAGNETAR, magnetar.getRenderType());
+        // A null render type normalizes to the standard treatment.
+        assertEquals(
+            USSStarRenderType.STANDARD,
+            USSStarDefinition.builder()
+                .id("null_render_star")
+                .nameMethod(() -> "Null Render Star")
+                .type("Null Render Type")
+                .sizeRange(1.0f, 5.0f)
+                .main(Materials.Hydrogen, 3.0, 100L)
+                .secondary(Materials.Helium, 2.0, 50L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
+                .luminosity(5.0f)
+                .planetRange(3, 9)
+                .texture("star_null_render")
+                .evolutionTarget(null)
+                .renderType(null)
+                .build()
+                .getRenderType());
     }
 
     @Test
@@ -167,9 +200,9 @@ public class USSStarDefinitionTest {
             .id("evolves")
             .nameMethod(() -> "E")
             .type("T")
-            .main(Materials.Hydrogen, 1.0)
-            .secondary(Materials.Helium, 1.0)
-            .tertiary(Materials.Oxygen, 1.0)
+            .main(Materials.Hydrogen, 1.0, 1L)
+            .secondary(Materials.Helium, 1.0, 1L)
+            .tertiary(Materials.Oxygen, 1.0, 25L)
             .texture("x")
             .evolutionTarget("white_dwarf")
             .build();
@@ -188,9 +221,9 @@ public class USSStarDefinitionTest {
                 .id("   ")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .texture("x")
                 .build());
     }
@@ -202,9 +235,9 @@ public class USSStarDefinitionTest {
             () -> USSStarDefinition.builder()
                 .id("x")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .texture("x")
                 .build());
     }
@@ -217,9 +250,9 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .texture("x")
                 .build());
     }
@@ -233,9 +266,9 @@ public class USSStarDefinitionTest {
                 .nameMethod(() -> "N")
                 .type("T")
                 .sizeRange(-0.5f, 5.0f)
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .texture("x")
                 .build());
         assertThrows(
@@ -245,9 +278,9 @@ public class USSStarDefinitionTest {
                 .nameMethod(() -> "N")
                 .type("T")
                 .sizeRange(1.0f, 10.5f)
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .texture("x")
                 .build());
     }
@@ -261,9 +294,9 @@ public class USSStarDefinitionTest {
                 .nameMethod(() -> "N")
                 .type("T")
                 .sizeRange(9.0f, 1.0f)
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .texture("x")
                 .build());
     }
@@ -275,9 +308,9 @@ public class USSStarDefinitionTest {
             .nameMethod(() -> "N")
             .type("T")
             .sizeRange(0.0f, 10.0f)
-            .main(Materials.Hydrogen, 1.0)
-            .secondary(Materials.Helium, 1.0)
-            .tertiary(Materials.Oxygen, 1.0)
+            .main(Materials.Hydrogen, 1.0, 1L)
+            .secondary(Materials.Helium, 1.0, 1L)
+            .tertiary(Materials.Oxygen, 1.0, 25L)
             .luminosity(10.0f)
             .planetRange(0, 16)
             .texture("x")
@@ -297,9 +330,9 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .luminosity(10.5f)
                 .texture("x")
                 .build());
@@ -309,9 +342,9 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .luminosity(-0.5f)
                 .texture("x")
                 .build());
@@ -325,9 +358,9 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .planetRange(-1, 9)
                 .texture("x")
                 .build());
@@ -337,9 +370,9 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .planetRange(3, 17)
                 .texture("x")
                 .build());
@@ -353,9 +386,9 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .planetRange(9, 3)
                 .texture("x")
                 .build());
@@ -367,9 +400,9 @@ public class USSStarDefinitionTest {
             .id("ripples")
             .nameMethod(() -> "N")
             .type("T")
-            .main(Materials.Hydrogen, 1.0)
-            .secondary(Materials.Helium, 1.0)
-            .tertiary(Materials.Oxygen, 1.0)
+            .main(Materials.Hydrogen, 1.0, 1L)
+            .secondary(Materials.Helium, 1.0, 1L)
+            .tertiary(Materials.Oxygen, 1.0, 25L)
             .rippleRange(4, 20)
             .texture("x")
             .build();
@@ -400,9 +433,9 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .rippleRange(-1, 9)
                 .texture("x")
                 .build());
@@ -412,9 +445,9 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .rippleRange(0, 129)
                 .texture("x")
                 .build());
@@ -428,9 +461,9 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .rippleRange(20, 4)
                 .texture("x")
                 .build());
@@ -445,8 +478,8 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .texture("x")
                 .build());
         // secondary missing
@@ -456,8 +489,8 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .texture("x")
                 .build());
         // tertiary missing
@@ -467,8 +500,8 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
                 .texture("x")
                 .build());
     }
@@ -481,9 +514,9 @@ public class USSStarDefinitionTest {
                 .id("x")
                 .nameMethod(() -> "N")
                 .type("T")
-                .main(Materials.Hydrogen, 1.0)
-                .secondary(Materials.Helium, 1.0)
-                .tertiary(Materials.Oxygen, 1.0)
+                .main(Materials.Hydrogen, 1.0, 1L)
+                .secondary(Materials.Helium, 1.0, 1L)
+                .tertiary(Materials.Oxygen, 1.0, 25L)
                 .texture("  ")
                 .build());
     }

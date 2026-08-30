@@ -32,9 +32,11 @@ public final class USSCapabilities {
     public static final int CONSTRUCT = 16;
     /** The craft carries a repair bay — the REPAIR command (stations only; a ship's REPAIR always SKIPs). */
     public static final int REPAIR = 32;
+    /** The craft has logistics power (Cargo Drone Bay covers) — the SEND / TAKE cargo-transfer commands. */
+    public static final int LOGISTICS = 64;
 
     /** Every capability. */
-    public static final int ALL = MOVE | MINE | SCAN | SIPHON | CONSTRUCT | REPAIR;
+    public static final int ALL = MOVE | MINE | SCAN | SIPHON | CONSTRUCT | REPAIR | LOGISTICS;
 
     private final int bits;
 
@@ -85,6 +87,10 @@ public final class USSCapabilities {
         return (bits & REPAIR) != 0;
     }
 
+    public boolean isLogistics() {
+        return (bits & LOGISTICS) != 0;
+    }
+
     public boolean has(int bit) {
         return (bits & bit) != 0;
     }
@@ -108,6 +114,9 @@ public final class USSCapabilities {
                 return isConstruct();
             case USSCommand.REPAIR:
                 return isRepair();
+            case USSCommand.SEND:
+            case USSCommand.TAKE:
+                return isLogistics();
             default:
                 return true;
         }

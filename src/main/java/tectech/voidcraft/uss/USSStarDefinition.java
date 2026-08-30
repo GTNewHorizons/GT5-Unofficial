@@ -13,11 +13,12 @@ import gregtech.api.enums.Materials;
  * <ol>
  * <li><b>Name method</b> — a string-returning function ({@link Supplier}) that produces the star's name (so names can
  * be generated procedurally per instance rather than fixed).</li>
- * <li><b>Type</b> — the <em>display</em> type name (e.g. "Supermassive", "White Dwarf"). Distinct from the
+ * <li><b>Type</b> — the <em>display</em> type name (e.g. "Blue Giant", "White Dwarf"). Distinct from the
  * {@code id}.</li>
  * <li><b>Size range</b> — a {@code [min, max]} pair of floats, each in {@code [0.0, 10.0]}.</li>
- * <li><b>Main / secondary / tertiary materials</b> — three {@link USSStarMaterial} slots (material + weight, no
- * amount), primarily fluids.</li>
+ * <li><b>Main / secondary / tertiary materials</b> — three {@link USSStarMaterial} slots (material + weight + fluid
+ * capacity in millions of mB; a zero-capacity slot produces no fluid, so a star produces 1–3 fluids), primarily
+ * fluids.</li>
  * <li><b>Luminosity</b> — a float in {@code [0.0, 10.0]}.</li>
  * <li><b>Planet range</b> — a {@code [min, max]} pair of ints, each in {@code [0, 16]} (how many planets the star
  * hosts).</li>
@@ -26,8 +27,13 @@ import gregtech.api.enums.Materials;
  * type.</li>
  * <li><b>Spacetime ripples</b> — a {@code [min, max]} pair of ints, each in {@code [0, 128]}: the range the system's
  * spacetime-ripple count is sampled from at creation (see {@link USSRipples}; the Explorer ships' target).</li>
- * <li><b>Color</b> — an opaque ARGB int: the color the star's render mesh is tinted with (what visually
- * distinguishes the star classes — e.g. main sequence yellow, white dwarf white, supermassive blue).</li>
+ * <li><b>Color</b> — an opaque ARGB int: the color the star's render core is tinted with (what visually
+ * distinguishes the star classes — e.g. yellow dwarf orange, white dwarf light blue, blue giant light blue).</li>
+ * <li><b>Shell color</b> — an opaque ARGB int (0 = unset): the color the star's outer halo layers are tinted with
+ * (the glow that fades out of the core; falls back to the core {@code color} when unset).</li>
+ * <li><b>Render type</b> — the {@link USSStarRenderType} custom render treatment of the star (the extra geometry
+ * the renderer draws on top of the shared three-layer sphere; default
+ * {@link USSStarRenderType#STANDARD} — no extra geometry).</li>
  * </ol>
  *
  * <p>
@@ -63,7 +69,7 @@ public final class USSStarDefinition {
     /** The string-returning name method (field 1). */
     private final Supplier<String> nameMethod;
 
-    /** The display type name (field 2, e.g. "Supermassive"). Distinct from {@link #id}. */
+    /** The display type name (field 2, e.g. "Blue Giant"). Distinct from {@link #id}. */
     private final String type;
 
     /** Lower bound of the size range (field 3, in {@code [0.0, 10.0]}). */
@@ -105,10 +111,21 @@ public final class USSStarDefinition {
     private final int rippleMax;
 
     /**
-     * Opaque ARGB color the star's render mesh is tinted with (field 10) — the per-class visual identity (default
+     * Opaque ARGB color the star's render core is tinted with (field 10) — the per-class visual identity (default
      * white when unset).
      */
     private final int color;
+
+    /**
+     * Opaque ARGB color the star's outer halo layers are tinted with (field 11; 0 = unset → the core color).
+     */
+    private final int shellColor;
+
+    /**
+     * The custom render treatment of the star (field 12) — the extra geometry the renderer draws on top of the
+     * shared three-layer sphere (default {@link USSStarRenderType#STANDARD}).
+     */
+    private final USSStarRenderType renderType;
 
     private USSStarDefinition(Builder b) {
         this.id = b.id;
@@ -127,6 +144,8 @@ public final class USSStarDefinition {
         this.rippleMin = b.rippleMin;
         this.rippleMax = b.rippleMax;
         this.color = b.color;
+        this.shellColor = b.shellColor;
+        this.renderType = b.renderType;
     }
 
     /**
@@ -155,7 +174,7 @@ public final class USSStarDefinition {
     }
 
     /**
-     * @return the display type name (e.g. "Supermassive").
+     * @return the display type name (e.g. "Blue Giant").
      */
     public String getType() {
         return type;
@@ -187,6 +206,13 @@ public final class USSStarDefinition {
 
     public USSStarMaterial getTertiary() {
         return tertiary;
+    }
+
+    /**
+     * @return the three material slots in order (main, secondary, tertiary)
+     */
+    public USSStarMaterial[] getMaterials() {
+        return new USSStarMaterial[] { main, secondary, tertiary };
     }
 
     public float getLuminosity() {
@@ -244,10 +270,26 @@ public final class USSStarDefinition {
     }
 
     /**
-     * @return the opaque ARGB color the star's render mesh is tinted with (field 10).
+     * @return the opaque ARGB color the star's render core is tinted with (field 10).
      */
     public int getColor() {
         return color;
+    }
+
+    /**
+     * @return the opaque ARGB color the star's outer halo layers are tinted with (field 11; 0 = unset, the halo
+     *         falls back to the core color).
+     */
+    public int getShellColor() {
+        return shellColor;
+    }
+
+    /**
+     * @return the custom render treatment of the star (field 12; never null, default
+     *         {@link USSStarRenderType#STANDARD}).
+     */
+    public USSStarRenderType getRenderType() {
+        return renderType;
     }
 
     @Override
@@ -273,6 +315,8 @@ public final class USSStarDefinition {
             + evolutionTarget
             + ", color=0x"
             + Integer.toHexString(color)
+            + (shellColor != 0 ? ", shell=0x" + Integer.toHexString(shellColor) : "")
+            + (renderType != USSStarRenderType.STANDARD ? ", render=" + renderType : "")
             + "]";
     }
 
@@ -297,6 +341,8 @@ public final class USSStarDefinition {
         private int rippleMin = MIN_RIPPLES;
         private int rippleMax = MAX_RIPPLES;
         private int color = 0xFFFFFFFF;
+        private int shellColor = 0;
+        private USSStarRenderType renderType = USSStarRenderType.STANDARD;
 
         private Builder() {}
 
@@ -319,7 +365,7 @@ public final class USSStarDefinition {
         }
 
         /**
-         * @param type the display type name (field 2, e.g. "Supermassive")
+         * @param type the display type name (field 2, e.g. "Blue Giant")
          * @return this builder
          */
         public Builder type(String type) {
@@ -341,30 +387,33 @@ public final class USSStarDefinition {
         /**
          * @param material the main material (field 4)
          * @param weight   its relative weight
+         * @param amount   its fluid capacity in millions of mB (0 = produces no fluid)
          * @return this builder
          */
-        public Builder main(Materials material, double weight) {
-            this.main = new USSStarMaterial(material, weight);
+        public Builder main(Materials material, double weight, long amount) {
+            this.main = new USSStarMaterial(material, weight, amount);
             return this;
         }
 
         /**
          * @param material the secondary material (field 4)
          * @param weight   its relative weight
+         * @param amount   its fluid capacity in millions of mB (0 = produces no fluid)
          * @return this builder
          */
-        public Builder secondary(Materials material, double weight) {
-            this.secondary = new USSStarMaterial(material, weight);
+        public Builder secondary(Materials material, double weight, long amount) {
+            this.secondary = new USSStarMaterial(material, weight, amount);
             return this;
         }
 
         /**
          * @param material the tertiary material (field 4)
          * @param weight   its relative weight
+         * @param amount   its fluid capacity in millions of mB (0 = produces no fluid)
          * @return this builder
          */
-        public Builder tertiary(Materials material, double weight) {
-            this.tertiary = new USSStarMaterial(material, weight);
+        public Builder tertiary(Materials material, double weight, long amount) {
+            this.tertiary = new USSStarMaterial(material, weight, amount);
             return this;
         }
 
@@ -419,11 +468,31 @@ public final class USSStarDefinition {
         }
 
         /**
-         * @param color the opaque ARGB color the star's render mesh is tinted with (field 10; default white)
+         * @param color the opaque ARGB color the star's render core is tinted with (field 10; default white)
          * @return this builder
          */
         public Builder color(int color) {
             this.color = color;
+            return this;
+        }
+
+        /**
+         * @param shellColor the opaque ARGB color the star's outer halo layers are tinted with (field 11; 0 = unset
+         *                   → the core color)
+         * @return this builder
+         */
+        public Builder shellColor(int shellColor) {
+            this.shellColor = shellColor;
+            return this;
+        }
+
+        /**
+         * @param renderType the custom render treatment of the star (field 12; null →
+         *                   {@link USSStarRenderType#STANDARD})
+         * @return this builder
+         */
+        public Builder renderType(USSStarRenderType renderType) {
+            this.renderType = (renderType == null ? USSStarRenderType.STANDARD : renderType);
             return this;
         }
 

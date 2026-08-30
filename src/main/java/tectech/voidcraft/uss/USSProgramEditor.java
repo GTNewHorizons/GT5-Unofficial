@@ -310,7 +310,9 @@ public final class USSProgramEditor {
      * <li>MOVE: {@code target} (a known {@link USSProgramDefaults} target string), {@code index} (int ≥ 0);</li>
      * <li>WRITE: {@code value} (string, ≤ 255 chars), {@code slot} (0..255);</li>
      * <li>READ: {@code from} / {@code to} (0..255);</li>
-     * <li>WAIT: {@code ticks} (long, 0..2147483647).</li>
+     * <li>WAIT: {@code ticks} (long, 0..2147483647);</li>
+     * <li>SEND / TAKE: {@code amount} (long ≥ -1; -1 = ALL), {@code filter} (string, "*" = match all),
+     * {@code target} (string — a fleet index or a ship name).</li>
      * </ul>
      *
      * @param program  the program
@@ -663,6 +665,13 @@ public final class USSProgramEditor {
                     return null;
                 }
                 return "unknown WAIT parameter '" + key + "'";
+            case USSCommand.SEND:
+            case USSCommand.TAKE:
+                if (USSProgramDefaults.PARAM_AMOUNT.equals(key) || USSProgramDefaults.PARAM_FILTER.equals(key)
+                    || USSProgramDefaults.PARAM_TARGET.equals(key)) {
+                    return null;
+                }
+                return "unknown " + USSCommand.label(cmdId) + " parameter '" + key + "'";
             default:
                 return "this command takes no parameters";
         }
@@ -693,6 +702,15 @@ public final class USSProgramEditor {
             return (v != null && v >= 0L && v <= USSCommandWait.MAX_WAIT_TICKS) ? null
                 : "ticks must be 0.." + USSCommandWait.MAX_WAIT_TICKS;
         }
+        if ((cmdId == USSCommand.SEND || cmdId == USSCommand.TAKE) && USSProgramDefaults.PARAM_AMOUNT.equals(key)) {
+            Long v = parseLong(raw);
+            return (v != null && v >= -1L) ? null : "amount must be a number ≥ -1 (-1 = ALL)";
+        }
+        if ((cmdId == USSCommand.SEND || cmdId == USSCommand.TAKE)
+            && (USSProgramDefaults.PARAM_FILTER.equals(key) || USSProgramDefaults.PARAM_TARGET.equals(key))) {
+            String s = (raw == null) ? "" : raw.trim();
+            return s.length() <= 32 ? null : "too long (max 32 characters)";
+        }
         return "bad parameter value";
     }
 
@@ -712,7 +730,16 @@ public final class USSProgramEditor {
             params.setInteger(USSCommandRead.PARAM_TO, parseLong(raw).intValue());
         } else if (cmdId == USSCommand.WAIT && USSCommandWait.PARAM_TICKS.equals(key)) {
             params.setLong(USSCommandWait.PARAM_TICKS, parseLong(raw).longValue());
-        }
+        } else
+            if ((cmdId == USSCommand.SEND || cmdId == USSCommand.TAKE) && USSProgramDefaults.PARAM_AMOUNT.equals(key)) {
+                params.setLong(USSProgramDefaults.PARAM_AMOUNT, parseLong(raw).longValue());
+            } else if ((cmdId == USSCommand.SEND || cmdId == USSCommand.TAKE)
+                && USSProgramDefaults.PARAM_FILTER.equals(key)) {
+                    params.setString(USSProgramDefaults.PARAM_FILTER, raw == null ? "" : raw.trim());
+                } else if ((cmdId == USSCommand.SEND || cmdId == USSCommand.TAKE)
+                    && USSProgramDefaults.PARAM_TARGET.equals(key)) {
+                        params.setString(USSProgramDefaults.PARAM_TARGET, raw == null ? "" : raw.trim());
+                    }
     }
 
     private static Long parseLong(String s) {
@@ -801,6 +828,18 @@ public final class USSProgramEditor {
                         return "a WAIT ticks value must be ≥ 0";
                     }
                     return null;
+                case USSCommand.SEND:
+                case USSCommand.TAKE: {
+                    if (p.hasKey(USSProgramDefaults.PARAM_AMOUNT, 3)
+                        && p.getInteger(USSProgramDefaults.PARAM_AMOUNT) < -1) {
+                        return "a " + USSCommand.label(node.cmdId()) + " amount must be ≥ -1 (-1 = ALL)";
+                    }
+                    if (p.hasKey(USSProgramDefaults.PARAM_AMOUNT, 4)
+                        && p.getLong(USSProgramDefaults.PARAM_AMOUNT) < -1L) {
+                        return "a " + USSCommand.label(node.cmdId()) + " amount must be ≥ -1 (-1 = ALL)";
+                    }
+                    return null;
+                }
                 default:
                     return null; // STOP / CONSTRUCT / REPAIR / SCAN / SIPHON — unknown extra keys are ignored by the
                                  // executor

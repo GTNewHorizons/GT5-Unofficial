@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for the Phase 4 pass 1 bay fluid pool ({@link VoidcraftFluidPool}) — the abstract
+ * Unit tests for the bay fluid pool ({@link VoidcraftFluidPool}) — the abstract
  * {@code {material, mB}} slots: merge-aware insert, remove, overflow semantics (the caller keeps the remainder),
  * and the NBT round-trip.
  *

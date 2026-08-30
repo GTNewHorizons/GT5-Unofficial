@@ -21,7 +21,7 @@ import tectech.thing.CustomItemList;
 import tectech.voidcraft.uss.USSStarType;
 
 /**
- * USS Controller (EoH rework, Phase 2 vertical slice; Phase 4 pass 1 — star types).
+ * USS Controller (the EoH rework).
  *
  * <p>
  * The ignition source for the Unstable Solar System multiblock. Insert one into the system's controller slot
@@ -29,22 +29,17 @@ import tectech.voidcraft.uss.USSStarType;
  * out — one controller = one star life.
  *
  * <p>
- * Phase 4 pass 1: three variants, one per star class — the <strong>item decides the star type</strong> (it is
- * no longer derived from the spacetime tier; the tier still scales the star's rendering and the miner ore band):
- * <ul>
- * <li>meta 0 — Main Sequence (original placeholder icon)</li>
- * <li>meta 1 — White Dwarf (cold-white placeholder icon)</li>
- * <li>meta 2 — Supermassive (hot-gold placeholder icon)</li>
- * </ul>
+ * Sixteen variants, one per star class (meta 0–15, the {@link USSStarType} ordinal — the ignition order) — the
+ * <strong>item decides the star type</strong> (not derived from the spacetime tier; the tier still scales the
+ * star's rendering and the miner ore band).
  *
  * @see tectech.voidcraft.uss.MTEUnstableSolarSystem
- * @see docs/Voidcraft_Implementation_Plan.md
  */
 public class ItemUSSController extends Item {
 
     public static ItemUSSController INSTANCE;
 
-    /** Number of star-class variants (meta values 0–2). */
+    /** Number of star-class variants (meta values 0–15). */
     public static final int VARIANT_COUNT = USSStarType.values().length;
 
     private IIcon[] icons;
@@ -52,8 +47,8 @@ public class ItemUSSController extends Item {
     private ItemUSSController() {
         setHasSubtypes(true);
         setMaxStackSize(1);
-        // Item name keys: item.tt.ussController.name (meta 0), item.tt.ussController.1.name (meta 1),
-        // item.tt.ussController.2.name (meta 2) — 1.7.10 appends the meta to the unlocalized name (see
+        // Item name keys: item.tt.ussController.name (meta 0), item.tt.ussController.1.name (meta 1) …
+        // item.tt.ussController.15.name (meta 15) — 1.7.10 appends the meta to the unlocalized name (see
         // ItemVoidcraftCovers.getUnlocalizedName for the same pattern).
         setUnlocalizedName("tt.ussController");
         setTextureName(Reference.MODID + ":itemUssController");
@@ -61,7 +56,7 @@ public class ItemUSSController extends Item {
     }
 
     /**
-     * @param meta 0–2
+     * @param meta 0–15
      * @return the star class selected by that controller variant (null for unknown metas).
      */
     public static USSStarType starTypeOf(int meta) {

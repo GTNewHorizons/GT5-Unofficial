@@ -12,8 +12,10 @@ import net.minecraft.nbt.NBTTagList;
 
 import org.junit.jupiter.api.Test;
 
+import gregtech.api.enums.Materials;
+
 /**
- * Unit tests for the Phase 2 USS data model ({@link VoidcraftUSS}) — state transitions, the star tables via
+ * Unit tests for the USS data model ({@link VoidcraftUSS}) — state transitions, the star tables via
  * {@link USSConstants}, and the NBT round-trip.
  */
 public class VoidcraftUSSTest {
@@ -36,50 +38,50 @@ public class VoidcraftUSSTest {
 
     @Test
     public void testIgniteUsesStarTables() {
-        // Phase 4 pass 1: the star type comes from the IGNITION ITEM (the parameter), not from the tier.
-        VoidcraftUSS uss = VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 12_345L);
+        // The star type comes from the IGNITION ITEM (the parameter), not from the tier.
+        VoidcraftUSS uss = VoidcraftUSS.ignite(0, USSStarType.YELLOW_DWARF, 12_345L);
         assertEquals(USSState.IGNITED, uss.getState());
         assertTrue(uss.isIgnited());
         assertEquals(0, uss.getTier());
-        assertEquals(USSStarType.MAIN_SEQUENCE, uss.getStarType());
-        assertEquals(USSConstants.lifespanForType(USSStarType.MAIN_SEQUENCE), uss.getLifespanRemaining());
+        assertEquals(USSStarType.YELLOW_DWARF, uss.getStarType());
+        assertEquals(USSConstants.lifespanForType(USSStarType.YELLOW_DWARF), uss.getLifespanRemaining());
         assertEquals(12_345L, uss.getIgnitedAt());
 
-        // a higher tier no longer changes the star class — the item does
+        // a higher tier does not change the star class — the item does
         VoidcraftUSS mid = VoidcraftUSS.ignite(4, USSStarType.WHITE_DWARF, 0L);
         assertEquals(USSStarType.WHITE_DWARF, mid.getStarType());
         assertEquals(4, mid.getTier());
 
-        // ...and the same tier can now host any star class
-        VoidcraftUSS cross = VoidcraftUSS.ignite(0, USSStarType.SUPERMASSIVE, 0L);
-        assertEquals(USSStarType.SUPERMASSIVE, cross.getStarType());
-        assertEquals(USSConstants.lifespanForType(USSStarType.SUPERMASSIVE), cross.getLifespanRemaining());
+        // ...and the same tier can host any star class
+        VoidcraftUSS cross = VoidcraftUSS.ignite(0, USSStarType.BLUE_GIANT, 0L);
+        assertEquals(USSStarType.BLUE_GIANT, cross.getStarType());
+        assertEquals(USSConstants.lifespanForType(USSStarType.BLUE_GIANT), cross.getLifespanRemaining());
     }
 
     @Test
     public void testIgniteClampsTier() {
         assertEquals(
             0,
-            VoidcraftUSS.ignite(-7, USSStarType.MAIN_SEQUENCE, 0L)
+            VoidcraftUSS.ignite(-7, USSStarType.YELLOW_DWARF, 0L)
                 .getTier());
         assertEquals(
             USSConstants.MAX_TIER,
-            VoidcraftUSS.ignite(99, USSStarType.SUPERMASSIVE, 0L)
+            VoidcraftUSS.ignite(99, USSStarType.BLUE_GIANT, 0L)
                 .getTier());
         assertEquals(
-            USSStarType.SUPERMASSIVE,
-            VoidcraftUSS.ignite(99, USSStarType.SUPERMASSIVE, 0L)
+            USSStarType.BLUE_GIANT,
+            VoidcraftUSS.ignite(99, USSStarType.BLUE_GIANT, 0L)
                 .getStarType());
-        // a null type (defensive) falls back to main sequence
+        // a null type (defensive) falls back to yellow dwarf
         assertEquals(
-            USSStarType.MAIN_SEQUENCE,
+            USSStarType.YELLOW_DWARF,
             VoidcraftUSS.ignite(3, null, 0L)
                 .getStarType());
     }
 
     @Test
     public void testLifespanDecrementAndBurnout() {
-        VoidcraftUSS uss = VoidcraftUSS.ignite(2, USSStarType.MAIN_SEQUENCE, 0L);
+        VoidcraftUSS uss = VoidcraftUSS.ignite(2, USSStarType.YELLOW_DWARF, 0L);
         long full = uss.getLifespanRemaining();
         assertTrue(full > 0);
 
@@ -126,12 +128,12 @@ public class VoidcraftUSSTest {
 
     // endregion
 
-    // region ripple scan state (the Explorer pass)
+    // region ripple scan state (scan work)
 
     @Test
     public void testRippleScanStateStartsEmpty() {
         // All ripples are hidden at USS creation — nothing is scanned yet.
-        VoidcraftUSS uss = VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L);
+        VoidcraftUSS uss = VoidcraftUSS.ignite(0, USSStarType.YELLOW_DWARF, 0L);
         assertTrue(
             uss.getScannedRipples()
                 .isEmpty(),
@@ -143,7 +145,7 @@ public class VoidcraftUSSTest {
 
     @Test
     public void testRippleScanStateAccumulates() {
-        VoidcraftUSS uss = VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L)
+        VoidcraftUSS uss = VoidcraftUSS.ignite(0, USSStarType.YELLOW_DWARF, 0L)
             .withRippleScanned(5)
             .withRippleScanned(342)
             .withRippleScanned(120);
@@ -172,7 +174,7 @@ public class VoidcraftUSSTest {
 
     @Test
     public void testRippleScanStateIsImmutable() {
-        VoidcraftUSS base = VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L)
+        VoidcraftUSS base = VoidcraftUSS.ignite(0, USSStarType.YELLOW_DWARF, 0L)
             .withRippleScanned(10);
         VoidcraftUSS extended = base.withRippleScanned(20);
         assertTrue(base.isRippleScanned(10), "the base keeps its own scanned set");
@@ -182,7 +184,7 @@ public class VoidcraftUSSTest {
 
     @Test
     public void testNbtRoundTripRippleScanState() {
-        VoidcraftUSS original = VoidcraftUSS.ignite(3, USSStarType.SUPERMASSIVE, 42L)
+        VoidcraftUSS original = VoidcraftUSS.ignite(3, USSStarType.BLUE_GIANT, 42L)
             .withRippleScanned(7)
             .withRippleScanned(100)
             .withRippleScanned(342);
@@ -203,7 +205,7 @@ public class VoidcraftUSSTest {
     @Test
     public void testNbtRoundTripEmptyRippleScanState() {
         // A system with no scanned ripples round-trips with an empty set (the tag is simply absent).
-        VoidcraftUSS original = VoidcraftUSS.ignite(3, USSStarType.SUPERMASSIVE, 42L);
+        VoidcraftUSS original = VoidcraftUSS.ignite(3, USSStarType.BLUE_GIANT, 42L);
         NBTTagCompound nbt = new NBTTagCompound();
         original.writeToNBT(nbt);
         assertFalse(nbt.hasKey(VoidcraftUSS.TAG_RIPPLE_SCANNED), "no tag when nothing is scanned");
@@ -220,16 +222,16 @@ public class VoidcraftUSSTest {
 
     @Test
     public void testStarTypeTables() {
-        // Phase 4 pass 1: the tables are keyed by star TYPE (item-driven), and every type has positive balance.
+        // The tables are keyed by star TYPE (item-driven), and every type has positive balance.
         for (USSStarType starType : USSStarType.values()) {
             assertTrue(USSConstants.lifespanForType(starType) > 0, "lifespan must be positive for " + starType);
             assertTrue(USSConstants.starDrawEUt(starType) > 0, "EU draw must be positive for " + starType);
             assertNotNull(starType.getLangKey(), "lang key for " + starType);
         }
         // the three types are distinct in lifespan (the table actually differentiates them)
-        long ms = USSConstants.lifespanForType(USSStarType.MAIN_SEQUENCE);
+        long ms = USSConstants.lifespanForType(USSStarType.YELLOW_DWARF);
         long wd = USSConstants.lifespanForType(USSStarType.WHITE_DWARF);
-        long sm = USSConstants.lifespanForType(USSStarType.SUPERMASSIVE);
+        long sm = USSConstants.lifespanForType(USSStarType.BLUE_GIANT);
         assertTrue(ms != wd && wd != sm && ms != sm, "lifespan table must differentiate the star types");
         // null is defensive, not a crash
         assertTrue(USSConstants.lifespanForType(null) > 0);
@@ -245,11 +247,11 @@ public class VoidcraftUSSTest {
 
     // endregion
 
-    // region USS variable space (programming framework, Phase C: the 256-slot global variable list)
+    // region USS variable space (the 256-slot global variable list)
 
     @Test
     public void testVariableSpaceStartsFresh() {
-        VoidcraftUSS uss = VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L);
+        VoidcraftUSS uss = VoidcraftUSS.ignite(0, USSStarType.YELLOW_DWARF, 0L);
         assertNotNull(uss.getVariables(), "every USS carries a variable space");
         assertEquals(
             "",
@@ -302,7 +304,7 @@ public class VoidcraftUSSTest {
 
     @Test
     public void testVariableSpaceNbtRoundTripIsSparse() {
-        VoidcraftUSS uss = VoidcraftUSS.ignite(1, USSStarType.SUPERMASSIVE, 5L)
+        VoidcraftUSS uss = VoidcraftUSS.ignite(1, USSStarType.BLUE_GIANT, 5L)
             .withVariables(
                 USSVariableSpace.fresh()
                     .set(10, "a")
@@ -334,7 +336,7 @@ public class VoidcraftUSSTest {
 
     @Test
     public void testVariableSpaceFreshOnColdAndIgnite() {
-        VoidcraftUSS v = VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L)
+        VoidcraftUSS v = VoidcraftUSS.ignite(0, USSStarType.YELLOW_DWARF, 0L)
             .withVariables(
                 USSVariableSpace.fresh()
                     .set(3, "x"));
@@ -360,7 +362,7 @@ public class VoidcraftUSSTest {
     public void testFreshSpaceWritesNoVariablesTag() {
         // A USS whose space is untouched keeps its tag lean (no empty list in the world file).
         NBTTagCompound nbt = new NBTTagCompound();
-        VoidcraftUSS.ignite(0, USSStarType.MAIN_SEQUENCE, 0L)
+        VoidcraftUSS.ignite(0, USSStarType.YELLOW_DWARF, 0L)
             .writeToNBT(nbt);
         assertFalse(nbt.hasKey(VoidcraftUSS.TAG_VARIABLES), "a fresh space writes nothing");
     }
@@ -414,7 +416,7 @@ public class VoidcraftUSSTest {
     @Test
     public void testNbtRoundTripDoublePass() {
         // write → read → write → read must be stable (what actually happens across save/reload cycles)
-        VoidcraftUSS original = VoidcraftUSS.ignite(7, USSStarType.SUPERMASSIVE, 42L)
+        VoidcraftUSS original = VoidcraftUSS.ignite(7, USSStarType.BLUE_GIANT, 42L)
             .withLifespan(600L);
         NBTTagCompound first = new NBTTagCompound();
         original.writeToNBT(first);
@@ -452,7 +454,7 @@ public class VoidcraftUSSTest {
         badTier.setInteger(VoidcraftUSS.TAG_FORMAT, VoidcraftUSS.NBT_FORMAT_VERSION);
         badTier.setInteger(VoidcraftUSS.TAG_STATE, USSState.IGNITED.ordinal());
         badTier.setInteger(VoidcraftUSS.TAG_TIER, 13);
-        badTier.setInteger(VoidcraftUSS.TAG_STAR_TYPE, USSStarType.SUPERMASSIVE.ordinal());
+        badTier.setInteger(VoidcraftUSS.TAG_STAR_TYPE, USSStarType.BLUE_GIANT.ordinal());
         badTier.setLong(VoidcraftUSS.TAG_LIFESPAN, 1000L);
         assertNull(VoidcraftUSS.readFromNBT(badTier));
 
@@ -472,6 +474,84 @@ public class VoidcraftUSSTest {
         badLifespan.setInteger(VoidcraftUSS.TAG_STAR_TYPE, USSStarType.WHITE_DWARF.ordinal());
         badLifespan.setLong(VoidcraftUSS.TAG_LIFESPAN, 0L);
         assertNull(VoidcraftUSS.readFromNBT(badLifespan));
+    }
+
+    // endregion
+
+    // region star fluid reserve (starlifter depletion)
+
+    @Test
+    public void testStarFluidReserveStartsNull() {
+        // A fresh system has not been siphoned — the reserve is null and the tag is absent (sparse write).
+        VoidcraftUSS uss = VoidcraftUSS.ignite(3, USSStarType.YELLOW_DWARF, 42L);
+        assertNull(uss.getStarFluidReserve(), "not yet siphoned → null reserve");
+        NBTTagCompound nbt = new NBTTagCompound();
+        uss.writeToNBT(nbt);
+        assertFalse(nbt.hasKey(VoidcraftUSS.TAG_STAR_FLUID_RESERVE), "no tag when not siphoned");
+    }
+
+    @Test
+    public void testStarFluidReserveNbtRoundTrip() {
+        java.util.Map<Materials, Long> map = new java.util.LinkedHashMap<>();
+        map.put(Materials.Hydrogen, 25_000_000L);
+        map.put(Materials.Helium, 10_000_000L);
+        VoidcraftUSS original = VoidcraftUSS.ignite(3, USSStarType.YELLOW_DWARF, 42L)
+            .withStarFluidReserve(new VoidcraftUSS.MaterialReserve(map));
+
+        NBTTagCompound nbt = new NBTTagCompound();
+        original.writeToNBT(nbt);
+        VoidcraftUSS loaded = VoidcraftUSS.readFromNBT(nbt);
+        assertNotNull(loaded);
+        assertNotNull(loaded.getStarFluidReserve(), "the reserve survives the round trip");
+        assertEquals(
+            25_000_000L,
+            loaded.getStarFluidReserve()
+                .remaining(Materials.Hydrogen));
+        assertEquals(
+            10_000_000L,
+            loaded.getStarFluidReserve()
+                .remaining(Materials.Helium));
+        assertEquals(
+            0L,
+            loaded.getStarFluidReserve()
+                .remaining(Materials.Oxygen),
+            "absent material → 0");
+    }
+
+    @Test
+    public void testStarFluidReserveIsPreservedByWithChain() {
+        java.util.Map<Materials, Long> map = new java.util.LinkedHashMap<>();
+        map.put(Materials.Hydrogen, 42L);
+        VoidcraftUSS base = VoidcraftUSS.ignite(3, USSStarType.YELLOW_DWARF, 42L)
+            .withStarFluidReserve(new VoidcraftUSS.MaterialReserve(map));
+        VoidcraftUSS chained = base.withLifespan(77L)
+            .withShip("ship-a")
+            .withRippleScanned(5);
+        assertEquals(
+            42L,
+            chained.getStarFluidReserve()
+                .remaining(Materials.Hydrogen),
+            "the with* chain preserves the reserve");
+        // A cleared reserve stays cleared across a NBT round trip.
+        VoidcraftUSS cleared = chained.withStarFluidReserve(null);
+        assertNull(cleared.getStarFluidReserve(), "withStarFluidReserve(null) clears it");
+        NBTTagCompound nbt = new NBTTagCompound();
+        cleared.writeToNBT(nbt);
+        assertFalse(nbt.hasKey(VoidcraftUSS.TAG_STAR_FLUID_RESERVE), "cleared → sparse (no tag)");
+        assertNull(
+            VoidcraftUSS.readFromNBT(nbt)
+                .getStarFluidReserve());
+    }
+
+    @Test
+    public void testStarFluidReserveDiscardedOnToCold() {
+        java.util.Map<Materials, Long> map = new java.util.LinkedHashMap<>();
+        map.put(Materials.Hydrogen, 42L);
+        VoidcraftUSS siphoned = VoidcraftUSS.ignite(3, USSStarType.YELLOW_DWARF, 42L)
+            .withStarFluidReserve(new VoidcraftUSS.MaterialReserve(map));
+        assertNotNull(siphoned.getStarFluidReserve());
+        VoidcraftUSS cold = siphoned.toCold();
+        assertNull(cold.getStarFluidReserve(), "a re-ignition is a new system with fresh reserves");
     }
 
     // endregion

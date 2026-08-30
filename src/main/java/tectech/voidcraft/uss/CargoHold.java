@@ -40,8 +40,10 @@ public final class CargoHold {
     public static final String TAG_CAPACITY = "vc_hold_capacity";
     public static final String TAG_ITEMS = "vc_hold_items";
     public static final String TAG_FLUIDS = "vc_hold_fluids";
+    public static final String TAG_SPECIAL = "vc_hold_special";
     public static final String ENTRY_MATERIAL = "m";
     public static final String ENTRY_AMOUNT = "a";
+    public static final String ENTRY_KEY = "k";
 
     /** The hold's capacity in cargo units (1 unit = 1 item = 100 mB). */
     private final long capacity;
@@ -52,10 +54,19 @@ public final class CargoHold {
     /** Fluids on board: GT material → mB count. */
     private final Map<Materials, Long> fluids;
 
-    private CargoHold(long capacity, Map<Materials, Long> items, Map<Materials, Long> fluids) {
+    /**
+     * Special (non-GT-material) cargo on board: stable string key → item count. This axis holds infrastructure
+     * payloads (e.g. the Power Satellite) that are not GT {@link Materials} and so cannot ride the {@code items}
+     * axis. Each special item consumes 1 cargo unit, like a normal item.
+     */
+    private final Map<String, Long> special;
+
+    private CargoHold(long capacity, Map<Materials, Long> items, Map<Materials, Long> fluids,
+        Map<String, Long> special) {
         this.capacity = Math.max(0L, capacity);
         this.items = new LinkedHashMap<>(items);
         this.fluids = new LinkedHashMap<>(fluids);
+        this.special = new LinkedHashMap<>(special);
     }
 
     /**
@@ -63,14 +74,22 @@ public final class CargoHold {
      * @return a fresh, empty hold with the given capacity
      */
     public static CargoHold of(long capacity) {
-        return new CargoHold(capacity, new LinkedHashMap<Materials, Long>(), new LinkedHashMap<Materials, Long>());
+        return new CargoHold(
+            capacity,
+            new LinkedHashMap<Materials, Long>(),
+            new LinkedHashMap<Materials, Long>(),
+            new LinkedHashMap<String, Long>());
     }
 
     /**
      * @return an empty hold with ZERO capacity (the defensive default — holds nothing)
      */
     public static CargoHold empty() {
-        return new CargoHold(0L, new LinkedHashMap<Materials, Long>(), new LinkedHashMap<Materials, Long>());
+        return new CargoHold(
+            0L,
+            new LinkedHashMap<Materials, Long>(),
+            new LinkedHashMap<Materials, Long>(),
+            new LinkedHashMap<String, Long>());
     }
 
     // region queries
@@ -83,7 +102,8 @@ public final class CargoHold {
     }
 
     /**
-     * @return the used capacity in cargo units — the item count plus {@code mB / 100} for each fluid
+     * @return the used capacity in cargo units — the item count plus {@code mB / 100} for each fluid, plus the
+     *         special-item count
      */
     public long usedUnits() {
         long units = 0L;
@@ -92,6 +112,9 @@ public final class CargoHold {
         }
         for (Long mB : fluids.values()) {
             units += mB / MB_PER_UNIT;
+        }
+        for (Long count : special.values()) {
+            units += count;
         }
         return units;
     }
@@ -176,7 +199,7 @@ public final class CargoHold {
         }
         Map<Materials, Long> nextItems = new LinkedHashMap<>(items);
         nextItems.put(material, itemsOf(material) + toAdd);
-        return new CargoHold(capacity, nextItems, new LinkedHashMap<>(fluids));
+        return new CargoHold(capacity, nextItems, new LinkedHashMap<>(fluids), new LinkedHashMap<>(special));
     }
 
     /**
@@ -196,7 +219,7 @@ public final class CargoHold {
         }
         Map<Materials, Long> nextFluids = new LinkedHashMap<>(fluids);
         nextFluids.put(material, fluidsOf(material) + toAdd);
-        return new CargoHold(capacity, new LinkedHashMap<>(items), nextFluids);
+        return new CargoHold(capacity, new LinkedHashMap<>(items), nextFluids, new LinkedHashMap<>(special));
     }
 
     /**
@@ -221,7 +244,7 @@ public final class CargoHold {
         } else {
             nextItems.put(material, remaining);
         }
-        return new CargoHold(capacity, nextItems, new LinkedHashMap<>(fluids));
+        return new CargoHold(capacity, nextItems, new LinkedHashMap<>(fluids), new LinkedHashMap<>(special));
     }
 
     /**
@@ -246,7 +269,71 @@ public final class CargoHold {
         } else {
             nextFluids.put(material, remaining);
         }
-        return new CargoHold(capacity, new LinkedHashMap<>(items), nextFluids);
+        return new CargoHold(capacity, new LinkedHashMap<>(items), nextFluids, new LinkedHashMap<>(special));
+    }
+
+    /**
+     * @param key the special-item key (null / empty → 0)
+     * @return the special-item count on board for the key (0 when absent)
+     */
+    public long specialOf(String key) {
+        if (key == null || key.isEmpty()) {
+            return 0L;
+        }
+        Long v = special.get(key);
+        return v == null ? 0L : v;
+    }
+
+    /**
+     * @return an unmodifiable view of the special-item counts (key → count)
+     */
+    public Map<String, Long> getSpecial() {
+        return Collections.unmodifiableMap(special);
+    }
+
+    /**
+     * Add special (infrastructure) items to the hold, clamped by the remaining capacity (1 item = 1 unit).
+     *
+     * @param key   the special-item key (null / empty → this hold unchanged)
+     * @param count the item count to add (≤ 0 → this hold unchanged)
+     * @return a new hold with the (clamped) items added
+     */
+    public CargoHold addSpecial(String key, long count) {
+        if (key == null || key.isEmpty() || count <= 0L) {
+            return this;
+        }
+        long toAdd = Math.min(count, remainingUnits());
+        if (toAdd <= 0L) {
+            return this;
+        }
+        Map<String, Long> next = new LinkedHashMap<>(special);
+        next.put(key, specialOf(key) + toAdd);
+        return new CargoHold(capacity, new LinkedHashMap<>(items), new LinkedHashMap<>(fluids), next);
+    }
+
+    /**
+     * Remove special (infrastructure) items from the hold (clamped by what is on board).
+     *
+     * @param key   the special-item key (null / empty → this hold unchanged)
+     * @param count the item count to remove (≤ 0 → this hold unchanged)
+     * @return a new hold with the (clamped) items removed
+     */
+    public CargoHold removeSpecial(String key, long count) {
+        if (key == null || key.isEmpty() || count <= 0L) {
+            return this;
+        }
+        long toRemove = Math.min(count, specialOf(key));
+        if (toRemove <= 0L) {
+            return this;
+        }
+        Map<String, Long> next = new LinkedHashMap<>(special);
+        long remaining = specialOf(key) - toRemove;
+        if (remaining <= 0L) {
+            next.remove(key);
+        } else {
+            next.put(key, remaining);
+        }
+        return new CargoHold(capacity, new LinkedHashMap<>(items), new LinkedHashMap<>(fluids), next);
     }
 
     // endregion
@@ -315,6 +402,19 @@ public final class CargoHold {
             nextSource = nextSource.removeFluids(material, toMove);
             nextTarget = nextTarget.addFluids(material, toMove);
         }
+        // Special (infrastructure) items: transfer 1-for-1, clamped by the target's remaining capacity.
+        for (String key : new LinkedHashMap<>(special).keySet()) {
+            long count = specialOf(key);
+            if (count <= 0L) {
+                continue;
+            }
+            long toMove = Math.min(count, nextTarget.remainingUnits());
+            if (toMove <= 0L) {
+                break;
+            }
+            nextSource = nextSource.removeSpecial(key, toMove);
+            nextTarget = nextTarget.addSpecial(key, toMove);
+        }
         return new TransferResult(nextSource, nextTarget);
     }
 
@@ -323,7 +423,7 @@ public final class CargoHold {
     // region NBT
 
     /**
-     * Serialize the hold (capacity + items + fluids).
+     * Serialize the hold (capacity + items + fluids + special items).
      *
      * @param nbt the compound to write into (null → no-op)
      */
@@ -334,19 +434,18 @@ public final class CargoHold {
         nbt.setLong(TAG_CAPACITY, capacity);
         nbt.setTag(TAG_ITEMS, entryList(items));
         nbt.setTag(TAG_FLUIDS, entryList(fluids));
+        nbt.setTag(TAG_SPECIAL, specialEntryList(special));
     }
 
-    private static NBTTagList entryList(Map<Materials, Long> map) {
+    private static NBTTagList specialEntryList(Map<String, Long> map) {
         NBTTagList list = new NBTTagList();
-        for (Map.Entry<Materials, Long> e : map.entrySet()) {
-            if (e.getKey() == null || e.getKey() == Materials._NULL || e.getValue() == null || e.getValue() <= 0L) {
+        for (Map.Entry<String, Long> e : map.entrySet()) {
+            if (e.getKey() == null || e.getKey()
+                .isEmpty() || e.getValue() == null || e.getValue() <= 0L) {
                 continue;
             }
             NBTTagCompound entry = new NBTTagCompound();
-            entry.setString(
-                ENTRY_MATERIAL,
-                e.getKey()
-                    .getName());
+            entry.setString(ENTRY_KEY, e.getKey());
             entry.setLong(ENTRY_AMOUNT, e.getValue());
             list.appendTag(entry);
         }
@@ -364,7 +463,48 @@ public final class CargoHold {
         return new CargoHold(
             capacity,
             readEntries(nbt != null ? nbt.getTagList(TAG_ITEMS, 10) : null),
-            readEntries(nbt != null ? nbt.getTagList(TAG_FLUIDS, 10) : null));
+            readEntries(nbt != null ? nbt.getTagList(TAG_FLUIDS, 10) : null),
+            readSpecialEntries(nbt != null ? nbt.getTagList(TAG_SPECIAL, 10) : null));
+    }
+
+    private static Map<String, Long> readSpecialEntries(NBTTagList list) {
+        Map<String, Long> map = new LinkedHashMap<>();
+        if (list == null) {
+            return map;
+        }
+        for (int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound entry = list.getCompoundTagAt(i);
+            if (entry == null) {
+                continue;
+            }
+            String key = entry.getString(ENTRY_KEY);
+            if (key == null || key.isEmpty()) {
+                continue;
+            }
+            long amount = Math.max(0L, entry.getLong(ENTRY_AMOUNT));
+            if (amount <= 0L) {
+                continue;
+            }
+            map.put(key, map.getOrDefault(key, 0L) + amount);
+        }
+        return map;
+    }
+
+    private static NBTTagList entryList(Map<Materials, Long> map) {
+        NBTTagList list = new NBTTagList();
+        for (Map.Entry<Materials, Long> e : map.entrySet()) {
+            if (e.getKey() == null || e.getKey() == Materials._NULL || e.getValue() == null || e.getValue() <= 0L) {
+                continue;
+            }
+            NBTTagCompound entry = new NBTTagCompound();
+            entry.setString(
+                ENTRY_MATERIAL,
+                e.getKey()
+                    .getName());
+            entry.setLong(ENTRY_AMOUNT, e.getValue());
+            list.appendTag(entry);
+        }
+        return list;
     }
 
     private static Map<Materials, Long> readEntries(NBTTagList list) {

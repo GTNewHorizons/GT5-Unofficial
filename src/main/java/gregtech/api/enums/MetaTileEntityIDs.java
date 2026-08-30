@@ -2119,7 +2119,12 @@ public enum MetaTileEntityIDs {
     // in-flight model's renderer contract). The Mining Array: controller + its two casing blocks.
     VoidcraftMiningArrayController(32069),
     VoidcraftMiningArrayCasing(32070),
-    VoidcraftMiningArrayPanel(32071);
+    VoidcraftMiningArrayPanel(32071),
+    // 32072 is reserved for the cover-only Cargo Drone Bay entry (32058 + meta 14) — never registered (no MTE).
+    // The Satellite Rail Launcher (station multiblock, 7x7x12): controller + its two casing blocks.
+    VoidcraftSatelliteLauncherController(32073),
+    VoidcraftSatelliteLauncherCasing(32074),
+    VoidcraftSatelliteLauncherPanel(32075);
 
     public final int ID;
 

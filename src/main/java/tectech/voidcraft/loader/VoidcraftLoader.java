@@ -3,6 +3,8 @@ package tectech.voidcraft.loader;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.covers.CoverPlacer;
@@ -15,10 +17,13 @@ import tectech.thing.CustomItemList;
 import tectech.voidcraft.VoidcraftConfig;
 import tectech.voidcraft.VoidcraftTextures;
 import tectech.voidcraft.cover.CoverVoidcraftComponent;
+import tectech.voidcraft.debug.VoidcraftDebugEffectRegistry;
 import tectech.voidcraft.item.ItemUSSController;
 import tectech.voidcraft.item.ItemVoidbaseBlueprint;
 import tectech.voidcraft.item.ItemVoidcraft;
 import tectech.voidcraft.item.ItemVoidcraftCovers;
+import tectech.voidcraft.item.ItemVoidcraftDebugDysonSwarm;
+import tectech.voidcraft.item.ItemVoidcraftSatellite;
 import tectech.voidcraft.machine.MTEVoidbaseAssembler;
 import tectech.voidcraft.machine.MTEVoidcraftAssembler;
 import tectech.voidcraft.machine.MTEVoidcraftComponent;
@@ -26,6 +31,7 @@ import tectech.voidcraft.machine.MTEVoidcraftGateway;
 import tectech.voidcraft.machine.MTEVoidcraftStorageBay;
 import tectech.voidcraft.multiblock.MTEVoidcraftMiningArray;
 import tectech.voidcraft.multiblock.MTEVoidcraftMultiblockCasing;
+import tectech.voidcraft.multiblock.MTEVoidcraftSatelliteLauncher;
 import tectech.voidcraft.multiblock.VoidcraftMultiblockRegistry;
 import tectech.voidcraft.render.BlockVoidcraftShipRender;
 import tectech.voidcraft.render.TileEntityVoidcraftShip;
@@ -37,24 +43,24 @@ import tectech.voidcraft.uss.USSPlanetCatalog;
 import tectech.voidcraft.uss.USSStarCatalog;
 
 /**
- * Voidcraft loader (EoH rework, Phase 0+1+1.5+2).
+ * Voidcraft loader (the EoH rework).
  *
  * <p>
  * Wired into {@code MainLoader}:
  * <ul>
  * <li>preLoad — cover item registration + cover item→component registry</li>
- * <li>load — the two full-block MTEs (controller + frame, pass 23), the 8 covers, the Voidcraft Assembler MTE, and
- * the Phase 2 Unstable Solar System MTE</li>
+ * <li>load — the two full-block MTEs (controller + frame), the 8 covers, the Voidcraft Assembler MTE, and
+ * the Unstable Solar System MTE</li>
  * </ul>
  *
  * <p>
- * PASS 23 (user spec): covers are the PRIMARY components — all ship functionality comes from them. The only
- * placeable full blocks are the Voidcraft Controller and the Voidcraft Frame (renamed Utility Block, a
+ * Covers are the PRIMARY components — all ship functionality comes from them. The only
+ * placeable full blocks are the Voidcraft Controller and the Voidcraft Frame (a
  * mostly-transparent framebox). Full blocks live on the standard GT machine block (wrench-facing, per-face
  * texture slots, six cover slots); the assembler scan picks blocks + covers up.
  *
  * <p>
- * Recipes are intentionally absent: creative-mode testing is the working loop for now (standing user directive —
+ * Recipes are intentionally absent: creative-mode testing is the working loop (standing user directive —
  * ignore recipes until explicitly asked).
  *
  * <p>
@@ -73,7 +79,7 @@ public final class VoidcraftLoader {
     public static BlockVoidcraftShipRender sBlockVoidcraftShipRender;
 
     /**
-     * PASS 23: only the two placeable full blocks have creative-tab items (controller + frame) — every other
+     * Only the two placeable full blocks have creative-tab items (controller + frame) — every other
      * classic function ships as a cover (see {@link ItemVoidcraftCovers}). The multiblock component entries
      * (mining array controller + casings) register in {@link #registerMultiblockMTEs()}. The entry array is
      * indexed by component meta.
@@ -81,7 +87,8 @@ public final class VoidcraftLoader {
     private static final CustomItemList[] COMPONENT_ENTRIES = { CustomItemList.VoidcraftComponent_Controller, null,
         CustomItemList.VoidcraftComponent_Frame, null, null, null, null, null, null, null, null,
         CustomItemList.VoidcraftMiningArray_Controller, CustomItemList.VoidcraftMiningArray_Casing,
-        CustomItemList.VoidcraftMiningArray_Panel };
+        CustomItemList.VoidcraftMiningArray_Panel, null, CustomItemList.VoidcraftSatelliteLauncher_Controller,
+        CustomItemList.VoidcraftSatelliteLauncher_Casing, CustomItemList.VoidcraftSatelliteLauncher_Panel };
 
     private VoidcraftLoader() {}
 
@@ -126,13 +133,44 @@ public final class VoidcraftLoader {
         CustomItemList.VoidbaseBlueprint.set(ItemVoidbaseBlueprint.INSTANCE);
         TecTech.LOGGER.info("Voidbase blueprint item registered");
 
-        // Cover parts (8 subtypes) + item→component registry (covers are placed on hull blocks in the load phase)
+        // Cover parts (one subtype per cover) + item→component registry (covers are placed on hull blocks in the load
+        // phase)
         ItemVoidcraftCovers.run();
         for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
             VoidcraftCoverRegistry.register(ItemVoidcraftCovers.stack(cover), cover);
         }
         VoidcraftCoverRegistry.markReady();
         TecTech.LOGGER.info("Voidcraft covers registered");
+
+        // The Power Satellite — the Satellite Rail Launcher's infrastructure payload (a plain item that rides
+        // ship cargo; no recipe, creative loop).
+        ItemVoidcraftSatellite.run();
+        CustomItemList.PowerSatellite.set(ItemVoidcraftSatellite.INSTANCE);
+        TecTech.LOGGER.info("Power Satellite item registered");
+
+        // Debug tool (item → effect registry): right-clicked on the UnstableSolarSystem machine, it injects a
+        // fixed fraction of the star's satellite capacity into the Dyson Swarm (no resource cost).
+        ItemVoidcraftDebugDysonSwarm.run();
+        VoidcraftDebugEffectRegistry.register(ItemVoidcraftDebugDysonSwarm.INSTANCE, (machine, player) -> {
+            long capacity = machine.starSatelliteCapacity();
+            long added = machine.debugAddDysonSatellites(ItemVoidcraftDebugDysonSwarm.injectAmountFor(capacity));
+            if (added > 0L) {
+                player.addChatMessage(
+                    new ChatComponentText(
+                        StatCollector.translateToLocalFormatted(
+                            "tt.voidcraft_debug_dyson_swarm.feedback",
+                            added,
+                            machine.starSatelliteCount(),
+                            capacity)));
+            } else if (capacity <= 0L) {
+                player.addChatMessage(
+                    new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_dyson_swarm.no_star")));
+            } else {
+                player.addChatMessage(
+                    new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_dyson_swarm.saturated")));
+            }
+        });
+        TecTech.LOGGER.info("Dyson Swarm debug item registered");
 
         // Star + planet DEFINITION catalogs (the registration-based passes): populate the bare-JVM registries that
         // USSPlanets.generate / USSPlanets.sampleStarSize / USSRipples.generate / USSShipCargo consult for planet
@@ -160,7 +198,7 @@ public final class VoidcraftLoader {
         // unregistered containers and NPE at render time.
         VoidcraftTextures.resolveAll();
 
-        // The two full-block MTEs (machine block) — controller (id 32058) + frame (id 32060); pass 23: everything
+        // The two full-block MTEs (machine block) — controller (id 32058) + frame (id 32060); everything
         // else is a cover
         registerComponentMTEs();
 
@@ -183,7 +221,7 @@ public final class VoidcraftLoader {
                 "Voidbase Assembler").getStackForm(1L));
         TecTech.LOGGER.info("Voidbase Assembler MTE registered");
 
-        // Phase 2 — the Unstable Solar System multiblock (parallel to the legacy Eye of Harmony) + its ignition
+        // The Unstable Solar System multiblock (parallel to the legacy Eye of Harmony) + its ignition
         // controller item. Reserved ID 32057 (MetaTileEntityIDs.UnstableSolarSystem).
         ItemUSSController.run();
         TecTech.LOGGER.info("USS controller item registered");
@@ -195,7 +233,7 @@ public final class VoidcraftLoader {
                 "Unstable Solar System").getStackForm(1L));
         TecTech.LOGGER.info("Unstable Solar System MTE registered");
 
-        // Phase 3 — the launch gateway (ship slot in the center) and the shared cargo storage bay, plus the
+        // The launch gateway (ship slot in the center) and the shared cargo storage bay, plus the
         // invisible ship-hologram block + its tile entity (the actual digitized ship, rendered as a 3D model).
         CustomItemList.Machine_Multi_VoidcraftGateway.set(
             new MTEVoidcraftGateway(
@@ -218,11 +256,11 @@ public final class VoidcraftLoader {
     }
 
     private static void registerComponentMTEs() {
-        // PASS 23 (user spec): covers are the primary components — the only classic placeable full blocks are the
+        // Covers are the primary components — the only classic placeable full blocks are the
         // controller + frame. The cover-only catalog entries (engine, cargo bay, mining centre, starlifter,
-        // scanner, fabricator, reactor) get NO MTE and NO item: they cannot be placed, and old builds holding
-        // them are rejected at the assembler with voidcraft_cover_only_component (no backwards compatibility —
-        // standing directive).
+        // scanner, fabricator, reactor) get NO MTE and NO item: they cannot be placed, and builds holding
+        // them as full blocks are rejected at the assembler with voidcraft_cover_only_component (no backwards
+        // compatibility — standing directive).
         MTEVoidcraftComponent controller = new MTEVoidcraftComponent(
             gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Controller.ID,
             "voidcraft_component_controller",
@@ -262,7 +300,29 @@ public final class VoidcraftLoader {
             VoidcraftComponent.MINING_ARRAY_PANEL);
         COMPONENT_ENTRIES[VoidcraftComponent.MINING_ARRAY_PANEL.getMeta()].set(panel.getStackForm(1L));
         VoidcraftMultiblockRegistry.register(miningArray);
-        TecTech.LOGGER.info("Voidcraft multiblock components registered (Mining Array 3x3x2)");
+
+        // The Satellite Rail Launcher (station multiblock, 7x7x12): controller + its two casing blocks. Station-only
+        // (the ship assembler rejects it); the 7x7x12 footprint only fits the Voidbase Assembler's 15x15x15 volume.
+        MTEVoidcraftSatelliteLauncher launcher = new MTEVoidcraftSatelliteLauncher(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftSatelliteLauncherController.ID,
+            "multimachine.em.voidcraft_satellite_launcher",
+            VoidcraftComponent.SATELLITE_LAUNCHER.getDisplayName());
+        COMPONENT_ENTRIES[VoidcraftComponent.SATELLITE_LAUNCHER.getMeta()].set(launcher.getStackForm(1L));
+        MTEVoidcraftMultiblockCasing launcherCasing = new MTEVoidcraftMultiblockCasing(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftSatelliteLauncherCasing.ID,
+            "voidcraft_satellite_launcher_casing",
+            VoidcraftComponent.SATELLITE_LAUNCHER_CASING.getDisplayName(),
+            VoidcraftComponent.SATELLITE_LAUNCHER_CASING);
+        COMPONENT_ENTRIES[VoidcraftComponent.SATELLITE_LAUNCHER_CASING.getMeta()].set(launcherCasing.getStackForm(1L));
+        MTEVoidcraftMultiblockCasing launcherPanel = new MTEVoidcraftMultiblockCasing(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftSatelliteLauncherPanel.ID,
+            "voidcraft_satellite_launcher_panel",
+            VoidcraftComponent.SATELLITE_LAUNCHER_PANEL.getDisplayName(),
+            VoidcraftComponent.SATELLITE_LAUNCHER_PANEL);
+        COMPONENT_ENTRIES[VoidcraftComponent.SATELLITE_LAUNCHER_PANEL.getMeta()].set(launcherPanel.getStackForm(1L));
+        VoidcraftMultiblockRegistry.register(launcher);
+        TecTech.LOGGER
+            .info("Voidcraft multiblock components registered (Mining Array 3x3x2, Satellite Launcher 7x7x12)");
     }
 
     private static void registerCovers() {

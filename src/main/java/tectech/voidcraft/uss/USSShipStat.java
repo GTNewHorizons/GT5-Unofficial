@@ -21,7 +21,7 @@ public enum USSShipStat {
     CARGO_FREE(1),
     /** Whether the hold is full (stringified boolean: "1"/"0"). */
     CARGO_FULL(2),
-    /** The ship state name (OUTBOUND / MINING / RETURNING / DOCKED / HOVERING). */
+    /** The ship state name (OUTBOUND / MINING / RETURNING / DOCKED / HOVERING — an anchored base reads "BASE"). */
     STATE(3),
     /** The current/last target name (e.g. "NEAREST_PLANET", "STAR", "HOME"). */
     TARGET(4),
@@ -38,7 +38,13 @@ public enum USSShipStat {
     /** Ticks elapsed in the current leg (stringified int). */
     TICKS_IN_LEG(10),
     /** Still-unscanned ripple points in this USS (stringified int). */
-    RIPPLES_UNSCANNED(11);
+    RIPPLES_UNSCANNED(11),
+    /**
+     * The ship's logistics power (stringified number — the ship-to-ship cargo transfer rate: 1 power = 1 cargo unit/s).
+     */
+    LOGISTICS_POWER(12),
+    /** The remaining integrity (stringified number — the time limit: 1 per second in the USS, 0 = lost). */
+    INTEGRITY(13);
 
     private final int id;
 

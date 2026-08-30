@@ -11,7 +11,7 @@ package tectech.voidcraft.uss;
 public final class USSCommand {
 
     /** Highest built-in command id (the GUI's stat-line arrays are sized to this + 1). */
-    public static final int MAX_ID = 9;
+    public static final int MAX_ID = 11;
 
     /**
      * Fly to a target and hover there (the ONE "Go to" — user spec). Params: {@code target} = STAR / PLANET /
@@ -40,10 +40,13 @@ public final class USSCommand {
      */
     public static final int CONSTRUCT = 6;
     /**
-     * REPAIR: restore the station's integrity over time, drawing its own energy buffer (repair work command).
-     * A Voidbase runs this at its anchor (or a Voidcraft at any hover point) to top up the integrity time limit.
-     * Requires a {@link tectech.voidcraft.ship.VoidcraftCoverComponent#REPAIR_BAY} cover; each second of repair
-     * restores one integrity at the bay's energy draw. Params: none.
+     * REPAIR: restore integrity over time, drawing the executor's energy buffer (repair work command). A
+     * Voidbase runs this at its anchor to top up its own integrity time limit, or to repair a fleet member
+     * standing at the station; a Voidcraft SKIPs the command (a repair bay is a station capability). Requires a
+     * {@link tectech.voidcraft.ship.VoidcraftCoverComponent#REPAIR_BAY} cover; each second of repair restores one
+     * integrity at the repair draw. Params: {@code target} (optional — empty or {@code SELF} = the executing
+     * entity itself; otherwise a fleet index or name, resolved with the same pattern and shared-location rule as
+     * SEND / TAKE).
      */
     public static final int REPAIR = 7;
     /**
@@ -56,6 +59,21 @@ public final class USSCommand {
      * {@link USSWorkKind#SIPHON}, siphoned at the ship's starlifter power; the yield is the star cargo).
      */
     public static final int SIPHON = 9;
+    /**
+     * SEND cargo from this ship to the target ship (ship-to-ship cargo transfer — the transfer always succeeds:
+     * there is no refusal from the target). Params: {@code amount} (units, default -1 = ALL), {@code filter}
+     * (material name, default "*" = match all), {@code target} (the target ship — a fleet index or a ship name).
+     * Requires the two ships to share a LOCATION (a planet orbit, the star, a ripple site, or one of the two
+     * ships' own position) — and NEITHER to be mid-MOVE (a ship en route reads its destination's location but is
+     * not settled there, so the transfer is blocked until it arrives); the rate is the ship's logistics power
+     * (1 power = 1 cargo unit per second).
+     */
+    public static final int SEND = 10;
+    /**
+     * TAKE cargo from the target ship into this ship (the inverse of {@link #SEND}; the same params, the same
+     * shared-location rule, the same logistics-power rate — always succeeds, no refusal from the target).
+     */
+    public static final int TAKE = 11;
 
     private USSCommand() {}
 
@@ -85,6 +103,10 @@ public final class USSCommand {
                 return "SCAN";
             case SIPHON:
                 return "SIPHON";
+            case SEND:
+                return "SEND";
+            case TAKE:
+                return "TAKE";
             default:
                 return "CMD" + commandId;
         }

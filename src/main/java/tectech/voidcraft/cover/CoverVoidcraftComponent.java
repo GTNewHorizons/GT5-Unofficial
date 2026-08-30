@@ -15,10 +15,10 @@ import tectech.voidcraft.ship.VoidcraftCoverRegistry;
  * A Voidcraft component cover: a compact part mounted on a face of a Voidcraft hull block.
  *
  * <p>
- * Renders the cover part's own 16×16 icon as a full-face texture over the hull (pass 24: each cover has a
- * dedicated icon — the old mirrored-block icon shared the framebox/planet-sheet art). Carries its
+ * Renders the cover part's own 16×16 icon as a full-face texture over the hull (each cover has a dedicated
+ * icon). Carries its
  * {@link VoidcraftCoverComponent} so the assembler scan and the stat math can see it (covers count toward the ship's
- * stats, and thruster covers count toward thrust only on the ship's REAR face, the assembler side — pass 24 flip).
+ * stats, and thruster covers count toward thrust only on the ship's REAR face, the assembler side).
  */
 public class CoverVoidcraftComponent extends Cover {
 

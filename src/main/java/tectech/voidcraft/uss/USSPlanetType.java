@@ -20,8 +20,8 @@ import gregtech.api.enums.Materials;
  * spawn".
  *
  * <p>
- * <strong>Element families.</strong> Main sequence stars (young, active) host common early elements; white
- * dwarfs (ancient dense remnants) host dense mid elements; supermassive stars host rare and exotic heavy
+ * <strong>Element families.</strong> Yellow dwarf stars (young, active) host common early elements; white
+ * dwarfs (ancient dense remnants) host dense mid elements; blue giant stars host rare and exotic heavy
  * elements. All 36 catalog materials are distinct and resolve through the GT material registry.
  *
  * <p>
@@ -47,7 +47,7 @@ public enum USSPlanetType {
     VOLCANIC_WORLD(6, "volcanic_world", Materials.Tungsten, Materials.Cobalt, Materials.Bismuth, "Io"),
     METALLIC_WORLD(7, "metallic_world", Materials.Niobium, Materials.Titanium, Materials.Vanadium, "Ph"),
 
-    // Supermassive — extreme star, rare/exotic heavy elements.
+    // Blue Giant — giant star, rare/exotic heavy elements.
     GAS_GIANT(8, "gas_giant", Materials.Uranium, Materials.Mercury, Materials.Phosphorus, "Ve"),
     RARE_EARTH_WORLD(9, "rare_earth_world", Materials.Indium, Materials.Neodymium, Materials.Tellurium, "Ga"),
     GOLD_WORLD(10, "gold_world", Materials.Gold, Materials.Palladium, Materials.Iridium, "As"),
@@ -73,9 +73,8 @@ public enum USSPlanetType {
         this.langKey = "tt.voidcraft_uss.planet." + key;
         this.materials = new Materials[] { first, second, third };
         this.visual = visual;
-        // Catalog grouping (declaration order): ids 0–3 main sequence, 4–7 white dwarf, 8–11 supermassive.
-        this.starType = id < 4 ? USSStarType.MAIN_SEQUENCE
-            : id < 8 ? USSStarType.WHITE_DWARF : USSStarType.SUPERMASSIVE;
+        // Catalog grouping (declaration order): ids 0–3 yellow dwarf, 4–7 white dwarf, 8–11 blue giant.
+        this.starType = id < 4 ? USSStarType.YELLOW_DWARF : id < 8 ? USSStarType.WHITE_DWARF : USSStarType.BLUE_GIANT;
     }
 
     private static final Map<USSStarType, List<USSPlanetType>> POOLS = new EnumMap<>(USSStarType.class);
@@ -149,12 +148,12 @@ public enum USSPlanetType {
     /**
      * The spawn pool of a star type: the four planet types a system of this star may generate.
      *
-     * @param starType the star type (null → {@link USSStarType#MAIN_SEQUENCE}, defensive)
+     * @param starType the star type (null → {@link USSStarType#YELLOW_DWARF}, defensive)
      * @return the pool in catalog order (4 entries, never null)
      */
     public static List<USSPlanetType> pool(USSStarType starType) {
         if (starType == null) {
-            starType = USSStarType.MAIN_SEQUENCE;
+            starType = USSStarType.YELLOW_DWARF;
         }
         return POOLS.get(starType);
     }

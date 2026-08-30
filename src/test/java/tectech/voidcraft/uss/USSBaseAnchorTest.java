@@ -89,6 +89,23 @@ public class USSBaseAnchorTest {
     }
 
     @Test
+    public void testTargetKind() {
+        // The anchor descriptor a base's work legs complete with (the MOVE target string of the anchor's body).
+        assertEquals(
+            USSProgramDefaults.TARGET_STAR,
+            USSBaseAnchor.star()
+                .targetKind());
+        assertEquals(
+            USSProgramDefaults.TARGET_PLANET,
+            USSBaseAnchor.planet(3)
+                .targetKind());
+        assertEquals(
+            USSProgramDefaults.TARGET_RIPPLE,
+            USSBaseAnchor.ripple(7)
+                .targetKind());
+    }
+
+    @Test
     public void testEqualsAndToString() {
         assertEquals(USSBaseAnchor.planet(2), USSBaseAnchor.planet(2));
         assertFalse(

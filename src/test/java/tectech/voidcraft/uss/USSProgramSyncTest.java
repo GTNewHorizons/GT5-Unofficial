@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for the pass-33 GUI action handler ({@link USSProgramSync}) — the single server-side entry that
+ * Unit tests for the GUI action handler ({@link USSProgramSync}) — the single server-side entry that
  * turns one GUI ACTION JSON into an {@link USSProgramEditor} call: every op (insert / remove / move / param /
  * count / cond / condop / apply), the USS-slot reference assignment (param-var / cond-var), rejection reasons,
  * and the "bad JSON never throws" rule.
@@ -359,6 +359,27 @@ public class USSProgramSyncTest {
         rejected(program(ifNode()), "{\"op\":\"param\",\"path\":[0],\"key\":\"value\",\"var\":3}", null);
     }
 
+    @Test
+    public void testParamLocAssignsWriteValue() {
+        // the "loc" marker assigns the LOCATION value (the ship's current position at execution time)
+        USSProgram out = ok(
+            program(write(9, "literal")),
+            "{\"op\":\"param\",\"path\":[0],\"key\":\"value\",\"loc\":true}").program;
+        NBTBase tag = out.nodes()
+            .get(0)
+            .params()
+            .getTag(USSCommandWrite.PARAM_VALUE);
+        assertTrue(tag instanceof NBTTagCompound);
+        assertEquals(USSValue.location(), USSValue.readFromNBT((NBTTagCompound) tag));
+    }
+
+    @Test
+    public void testParamLocRejections() {
+        // like a var reference: only a WRITE value accepts the LOCATION value
+        rejected(program(move("HOME")), "{\"op\":\"param\",\"path\":[0],\"key\":\"target\",\"loc\":true}", null);
+        rejected(program(write(1, "x")), "{\"op\":\"param\",\"path\":[0],\"key\":\"slot\",\"loc\":true}", null);
+    }
+
     // endregion
 
     // region count / cond / condop
@@ -427,6 +448,15 @@ public class USSProgramSyncTest {
                 .condition()
                 .left()
                 .statId());
+
+        out = ok(p, "{\"op\":\"cond\",\"path\":[0],\"side\":1,\"loc\":true}").program;
+        assertEquals(
+            USSValue.Kind.LOCATION,
+            out.nodes()
+                .get(0)
+                .condition()
+                .right()
+                .kind());
     }
 
     @Test
@@ -584,6 +614,29 @@ public class USSProgramSyncTest {
                 .get(0)
                 .params()
                 .getString(USSProgramDefaults.PARAM_TARGET));
+    }
+
+    @Test
+    public void testValueSpecPinsTheWireForm() {
+        // the value spec ({"k":…}) is a stored + sent format — the kind ids stay pinned
+        com.google.gson.JsonObject v = new com.google.gson.JsonObject();
+        v.addProperty("k", 0);
+        v.addProperty("s", "lit");
+        assertEquals(USSValue.literal("lit"), USSProgramSync.readValue(v));
+        v = new com.google.gson.JsonObject();
+        v.addProperty("k", 1);
+        v.addProperty("v", 17);
+        assertEquals(USSValue.variable(17), USSProgramSync.readValue(v));
+        v = new com.google.gson.JsonObject();
+        v.addProperty("k", 2);
+        v.addProperty("st", 5);
+        assertEquals(USSValue.stat(5), USSProgramSync.readValue(v));
+        v = new com.google.gson.JsonObject();
+        v.addProperty("k", 3);
+        assertEquals(USSValue.location(), USSProgramSync.readValue(v));
+        v = new com.google.gson.JsonObject();
+        v.addProperty("k", 4);
+        assertNull(USSProgramSync.readValue(v), "unknown kinds are not values");
     }
 
     // endregion

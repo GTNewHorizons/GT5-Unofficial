@@ -13,7 +13,7 @@ public class VoidcraftCoverComponentTest {
 
     @Test
     public void testTableShape() {
-        assertEquals(10, VoidcraftCoverComponent.ALL.length);
+        assertEquals(11, VoidcraftCoverComponent.ALL.length);
         for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
             assertEquals(cover.ordinal(), cover.getId(), "id must match ordinal");
             assertNotEquals(
@@ -37,6 +37,9 @@ public class VoidcraftCoverComponentTest {
         assertEquals(VoidcraftComponent.REACTOR, VoidcraftCoverComponent.POWER_CELL.getMirroredComponent());
         assertEquals(VoidcraftComponent.REPAIR_BAY, VoidcraftCoverComponent.REPAIR_BAY.getMirroredComponent());
         assertEquals(VoidcraftComponent.SOLAR_PANEL, VoidcraftCoverComponent.SOLAR_PANEL.getMirroredComponent());
+        assertEquals(
+            VoidcraftComponent.CARGO_DRONE_BAY,
+            VoidcraftCoverComponent.CARGO_DRONE_BAY.getMirroredComponent());
     }
 
     @Test
@@ -62,6 +65,7 @@ public class VoidcraftCoverComponentTest {
         assertEquals(2, VoidcraftCoverComponent.FABRICATOR_UNIT.getTier());
         assertEquals(2, VoidcraftCoverComponent.REPAIR_BAY.getTier());
         assertEquals(2, VoidcraftCoverComponent.SOLAR_PANEL.getTier());
+        assertEquals(2, VoidcraftCoverComponent.CARGO_DRONE_BAY.getTier());
     }
 
     @Test
@@ -76,9 +80,10 @@ public class VoidcraftCoverComponentTest {
         }
         assertEquals(2000L, VoidcraftCoverComponent.REPAIR_BAY.getEnergyDraw(), "repair bay draw while active");
         assertEquals(0L, VoidcraftCoverComponent.SOLAR_PANEL.getEnergyDraw(), "a panel draws nothing");
-        // Grid values: id + 1 (9 and 10 for the new covers)
+        // Grid values: id + 1 (11 for the latest cover)
         assertEquals(9, VoidcraftCoverComponent.REPAIR_BAY.toGridValue());
         assertEquals(10, VoidcraftCoverComponent.SOLAR_PANEL.toGridValue());
+        assertEquals(11, VoidcraftCoverComponent.CARGO_DRONE_BAY.toGridValue());
         assertEquals(
             VoidcraftCoverComponent.REPAIR_BAY,
             VoidcraftCoverComponent.fromGridValue(9)
@@ -87,6 +92,18 @@ public class VoidcraftCoverComponentTest {
             VoidcraftCoverComponent.SOLAR_PANEL,
             VoidcraftCoverComponent.fromGridValue(10)
                 .orElse(null));
+        assertEquals(
+            VoidcraftCoverComponent.CARGO_DRONE_BAY,
+            VoidcraftCoverComponent.fromGridValue(11)
+                .orElse(null));
+        // the drone bay is the only logistics cover (1 power = 1 cargo unit per second)
+        assertEquals(40L, VoidcraftCoverComponent.CARGO_DRONE_BAY.getLogisticsPower());
+        for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
+            if (cover == VoidcraftCoverComponent.CARGO_DRONE_BAY) {
+                continue;
+            }
+            assertEquals(0L, cover.getLogisticsPower(), cover + " must not carry logistics power");
+        }
     }
 
     @Test
@@ -102,9 +119,9 @@ public class VoidcraftCoverComponentTest {
                 .isEmpty(),
             "0 = no cover");
         assertTrue(
-            VoidcraftCoverComponent.fromGridValue(11)
+            VoidcraftCoverComponent.fromGridValue(12)
                 .isEmpty(),
-            "11 is beyond the 10 covers");
+            "12 is beyond the 11 covers");
         assertTrue(
             VoidcraftCoverComponent.fromGridValue(-5)
                 .isEmpty());
@@ -120,6 +137,7 @@ public class VoidcraftCoverComponentTest {
         assertTrue(VoidcraftCoverComponent.STAR_SIPHON.getStarlifterPower() > 0);
         assertTrue(VoidcraftCoverComponent.SCANNER_DISH.getScanPower() > 0);
         assertTrue(VoidcraftCoverComponent.FABRICATOR_UNIT.getConstructionPower() > 0);
+        assertTrue(VoidcraftCoverComponent.CARGO_DRONE_BAY.getLogisticsPower() > 0);
         for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
             assertTrue(cover.getMass() > 0, cover + " must have mass");
         }

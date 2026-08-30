@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import gregtech.api.enums.Materials;
 
 /**
- * Unit tests for deterministic planet generation ({@link USSPlanets}) — the registration-based mechanics pass: the
+ * Unit tests for deterministic planet generation ({@link USSPlanets}) — the registration-based mechanics: the
  * system's planets are a pure function of (star type, seed), the count from the star's planet range, the types from
  * the star's registered planet pool, the size from each planet's size range, and the orbital parameters inside the
  * legacy EoH ranges (so the shared orbit renderer can draw them) with 4 blocks of margin from the shell edge.
@@ -57,7 +57,7 @@ public class USSPlanetsTest {
         Set<Integer> counts = new HashSet<>();
         for (long seed = 1; seed <= 64; seed++) {
             counts.add(
-                USSPlanets.generate(USSStarType.MAIN_SEQUENCE, seed)
+                USSPlanets.generate(USSStarType.YELLOW_DWARF, seed)
                     .size());
         }
         assertTrue(counts.size() > 1, "a sweep of 64 seeds must produce more than one planet count: " + counts);
@@ -118,8 +118,8 @@ public class USSPlanetsTest {
     public void testDifferentSeedsGiveDifferentSystems() {
         boolean anyDifference = false;
         for (long seed = 1; seed <= 16; seed++) {
-            List<USSPlanets.USSPlanet> a = USSPlanets.generate(USSStarType.MAIN_SEQUENCE, seed);
-            List<USSPlanets.USSPlanet> b = USSPlanets.generate(USSStarType.MAIN_SEQUENCE, seed + 100_000L);
+            List<USSPlanets.USSPlanet> a = USSPlanets.generate(USSStarType.YELLOW_DWARF, seed);
+            List<USSPlanets.USSPlanet> b = USSPlanets.generate(USSStarType.YELLOW_DWARF, seed + 100_000L);
             if (!a.equals(b)) {
                 anyDifference = true;
                 break;
@@ -132,12 +132,11 @@ public class USSPlanetsTest {
     public void testAllStarTypesShareOnePlanetPool() {
         // Every planet may orbit any star class, so each star type's pool is the full catalog — the families are
         // drawn from the same set rather than partitioned by star type.
-        Set<String> main = poolIds(USSStarType.MAIN_SEQUENCE);
-        Set<String> white = poolIds(USSStarType.WHITE_DWARF);
-        Set<String> supermassive = poolIds(USSStarType.SUPERMASSIVE);
-        assertEquals(45, main.size(), "main-sequence pool is the full catalog");
-        assertEquals(main, white, "white-dwarf pool == main-sequence pool (shared pool)");
-        assertEquals(main, supermassive, "supermassive pool == main-sequence pool (shared pool)");
+        Set<String> full = poolIds(USSStarType.YELLOW_DWARF);
+        assertEquals(45, full.size(), "the pool is the full planet catalog");
+        for (USSStarType starType : USSStarType.values()) {
+            assertEquals(full, poolIds(starType), starType + " pool == full catalog (shared pool)");
+        }
     }
 
     private static Set<String> poolIds(USSStarType starType) {
@@ -236,13 +235,11 @@ public class USSPlanetsTest {
     }
 
     @Test
-    public void testNullStarTypeFallsBackToMainSequence() {
-        List<USSPlanets.USSPlanet> nullType = USSPlanets.generate(null, 42L);
-        List<USSPlanets.USSPlanet> mainSequence = USSPlanets.generate(USSStarType.MAIN_SEQUENCE, 42L);
-        assertEquals(mainSequence, nullType, "null star type → main sequence system (identical draw)");
-        assertNotEquals(
-            USSPlanets.generate(USSStarType.SUPERMASSIVE, 42L),
-            mainSequence,
-            "different star types draw from different pools (same seed)");
+    public void testNullStarTypeFallsBackToYellowDwarf() {
+        // The defensive null case draws exactly as a yellow dwarf with the same seed.
+        assertEquals(
+            USSPlanets.generate(USSStarType.YELLOW_DWARF, 42L),
+            USSPlanets.generate(null, 42L),
+            "null star type → yellow dwarf system (identical draw)");
     }
 }

@@ -1,46 +1,18 @@
 package tectech.voidcraft.render;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import org.junit.jupiter.api.Test;
 
-import tectech.voidcraft.ship.VoidcraftNbt;
-import tectech.voidcraft.ship.VoidcraftRole;
-
 /**
- * Pure-math tests for the pass 8 ship effects (mining laser beam + exhaust gate) — the GL layer itself is not
+ * Pure-math tests for the ship effects (mining laser beam + exhaust gate) — the GL layer itself is not
  * reachable in a bare JVM, so the geometry, fade curve, and spawn gate live in {@link VoidcraftShipFx} and are
  * tested here.
  */
 public class VoidcraftShipFxTest {
-
-    @Test
-    public void testBeamRoleGate() {
-        NBTTagCompound miner = new NBTTagCompound();
-        miner.setInteger(VoidcraftNbt.TAG_ROLES, VoidcraftRole.MINER.getBit());
-        assertTrue(VoidcraftShipFx.minesWithBeam(miner), "a Miner fires the beam");
-
-        NBTTagCompound starlifter = new NBTTagCompound();
-        starlifter.setInteger(VoidcraftNbt.TAG_ROLES, VoidcraftRole.STARLIFTER.getBit());
-        assertTrue(VoidcraftShipFx.minesWithBeam(starlifter), "a Starlifter fires the beam");
-
-        NBTTagCompound constructor = new NBTTagCompound();
-        constructor.setInteger(VoidcraftNbt.TAG_ROLES, VoidcraftRole.CONSTRUCTOR.getBit());
-        assertFalse(VoidcraftShipFx.minesWithBeam(constructor), "a Constructor builds, it does not fire");
-
-        NBTTagCompound hybrid = new NBTTagCompound();
-        hybrid.setInteger(VoidcraftNbt.TAG_ROLES, VoidcraftRole.MINER.getBit() | VoidcraftRole.CONSTRUCTOR.getBit());
-        assertTrue(VoidcraftShipFx.minesWithBeam(hybrid), "a mining hybrid still fires the beam");
-
-        assertFalse(VoidcraftShipFx.minesWithBeam(new NBTTagCompound()), "no roles -> no beam");
-        assertFalse(VoidcraftShipFx.minesWithBeam(null), "null payload -> no beam");
-    }
 
     @Test
     public void testBeamFade() {

@@ -38,6 +38,10 @@ public final class USSBaseSite {
     private static final String TAG_PART_KEY = "key";
     private static final String TAG_PART_RECEIVED = "received";
     private static final String TAG_PART_REQUIRED = "required";
+    /** The site's infrastructure cargo (the Dyson Swarm pass — key -> delivered amount, UNBOUNDED). */
+    private static final String TAG_CARGO = "vc_site_cargo";
+    private static final String TAG_CARGO_KEY = "key";
+    private static final String TAG_CARGO_AMOUNT = "amount";
     private static final String TAG_CONSTRUCT_LEG = "vc_site_construct_leg";
     private static final String TAG_CONSTRUCT_TICKS = "vc_site_construct_ticks";
     private static final String TAG_CONSTRUCT_PER_ITEM = "vc_site_construct_per_item";
@@ -51,6 +55,13 @@ public final class USSBaseSite {
     /** key -> [received, required] (LinkedHashMap = stable display order). */
     private final LinkedHashMap<String, long[]> parts;
 
+    /**
+     * The site's infrastructure cargo (the Dyson Swarm pass): key -> delivered amount. UNBOUNDED (unlike the
+     * parts, which credit up to the required count) — Power Satellites land here on the constructor's arrival and
+     * are handed to the finished base's hold at spawn. Does NOT affect site completion.
+     */
+    private final LinkedHashMap<String, Long> cargo;
+
     // The active CONSTRUCT leg (server-authoritative pacing; the client animates the constructor's beam + the
     // site's fill from the synced leg id / total / seed). 0 leg id = no active leg.
     private int constructLegId;
@@ -60,12 +71,13 @@ public final class USSBaseSite {
     private int constructSeed;
 
     private USSBaseSite(USSBaseAnchor anchor, String name, long createdAt, VoidcraftBlueprint blueprint,
-        LinkedHashMap<String, long[]> parts) {
+        LinkedHashMap<String, long[]> parts, LinkedHashMap<String, Long> cargo) {
         this.anchor = anchor;
         this.name = name;
         this.createdAt = createdAt;
         this.blueprint = blueprint;
         this.parts = parts;
+        this.cargo = cargo;
     }
 
     /**
@@ -83,7 +95,7 @@ public final class USSBaseSite {
             .entrySet()) {
             parts.put(entry.getKey(), new long[] { 0L, entry.getValue() });
         }
-        return new USSBaseSite(anchor, name, createdAt, blueprint, parts);
+        return new USSBaseSite(anchor, name, createdAt, blueprint, parts, new LinkedHashMap<String, Long>());
     }
 
     public USSBaseAnchor anchor() {
@@ -245,6 +257,45 @@ public final class USSBaseSite {
         return Collections.unmodifiableMap(parts);
     }
 
+    // region infrastructure cargo (the Dyson Swarm pass — unbounded, does not gate completion)
+
+    /**
+     * A loadout key is an INFRASTRUCTURE CARGO key (not a build part) when it carries the {@code item.} prefix —
+     * such keys route to the site's cargo map instead of its parts.
+     */
+    public static boolean isCargoKey(String key) {
+        return key != null && key.startsWith("item.");
+    }
+
+    /** @return the infrastructure cargo delivered so far for the given key (0 for unknown keys) */
+    public long cargoOf(String key) {
+        Long v = cargo.get(key);
+        return v == null ? 0L : v;
+    }
+
+    /**
+     * Deposit infrastructure cargo (unbounded — no required-count cap; the excess is NOT discarded).
+     *
+     * @param key    the cargo key (null → no-op)
+     * @param amount the amount to deposit (≤ 0 → no-op)
+     * @return the amount actually deposited (0 for a null key or non-positive amount)
+     */
+    public long addCargo(String key, long amount) {
+        if (key == null || amount <= 0L) {
+            return 0L;
+        }
+        Long cur = cargo.get(key);
+        cargo.put(key, (cur == null ? 0L : cur) + amount);
+        return amount;
+    }
+
+    /** @return an unmodifiable view of the infrastructure cargo (key -> delivered amount) */
+    public Map<String, Long> cargoView() {
+        return Collections.unmodifiableMap(cargo);
+    }
+
+    // endregion
+
     /**
      * Write the site into a compound tag.
      */
@@ -266,6 +317,20 @@ public final class USSBaseSite {
             partsList.appendTag(part);
         }
         nbt.setTag(TAG_PARTS, partsList);
+        // The infrastructure cargo (the Dyson Swarm pass). Absent = none delivered.
+        if (!cargo.isEmpty()) {
+            NBTTagList cargoList = new NBTTagList();
+            for (Map.Entry<String, Long> entry : cargo.entrySet()) {
+                if (entry.getValue() == null || entry.getValue() <= 0L) {
+                    continue;
+                }
+                NBTTagCompound cargoEntry = new NBTTagCompound();
+                cargoEntry.setString(TAG_CARGO_KEY, entry.getKey());
+                cargoEntry.setLong(TAG_CARGO_AMOUNT, entry.getValue());
+                cargoList.appendTag(cargoEntry);
+            }
+            nbt.setTag(TAG_CARGO, cargoList);
+        }
         // The active CONSTRUCT leg (absent = never constructed; a leg in flight survives a server restart).
         if (constructLegId > 0) {
             nbt.setInteger(TAG_CONSTRUCT_LEG, constructLegId);
@@ -314,11 +379,27 @@ public final class USSBaseSite {
             .size()) {
             return null;
         }
+        // The infrastructure cargo (the Dyson Swarm pass). Absent = none delivered.
+        LinkedHashMap<String, Long> cargo = new LinkedHashMap<>();
+        NBTTagList cargoTag = nbt.getTagList(TAG_CARGO, 10);
+        for (int i = 0; i < cargoTag.tagCount(); i++) {
+            NBTTagCompound cargoEntry = cargoTag.getCompoundTagAt(i);
+            if (cargoEntry == null) {
+                continue;
+            }
+            String cargoKey = cargoEntry.getString(TAG_CARGO_KEY);
+            long cargoAmount = cargoEntry.getLong(TAG_CARGO_AMOUNT);
+            if (cargoKey == null || cargoKey.isEmpty() || cargoAmount <= 0L) {
+                continue;
+            }
+            Long cur = cargo.get(cargoKey);
+            cargo.put(cargoKey, (cur == null ? 0L : cur) + cargoAmount);
+        }
         String name = nbt.hasKey(TAG_NAME) ? nbt.getString(TAG_NAME) : "Voidbase";
         long createdAt = nbt.hasKey(TAG_CREATED) ? nbt.getLong(TAG_CREATED) : 0L;
         USSBaseAnchor anchor = USSBaseAnchor
             .readFromNBT(nbt.hasKey(TAG_ANCHOR) ? (NBTTagCompound) nbt.getTag(TAG_ANCHOR) : null);
-        USSBaseSite site = new USSBaseSite(anchor, name, createdAt, blueprint, parts);
+        USSBaseSite site = new USSBaseSite(anchor, name, createdAt, blueprint, parts, cargo);
         // The active CONSTRUCT leg (corrupt or incomplete leg tags degrade to NO leg - the site keeps its
         // parts progress, a new Constructor leg re-paces it).
         if (nbt.hasKey(TAG_CONSTRUCT_LEG) && nbt.hasKey(TAG_CONSTRUCT_TOTAL)) {

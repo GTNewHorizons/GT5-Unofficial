@@ -4,9 +4,9 @@ import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * The SIPHON command (programming framework, Phase B) — siphon the star until the work leg completes (a work leg
- * of kind {@link USSWorkKind#SIPHON}, siphoned at the ship's starlifter power). The yield is the star cargo
- * (dwarf-matter dust + Stellar Plasma, per the star's definition). The work leg runs in real time on the game
- * side; the executor only polls.
+ * of kind {@link USSWorkKind#SIPHON}, siphoned at the ship's starlifter power). The yield is the star's produced
+ * fluids, each capped by the star's remaining fluid reserve (the reserve depletes over the star's life). The work
+ * leg runs in real time on the game side; the executor only polls.
  *
  * <p>
  * Params: none (the ship's current target defines the work — set by the preceding MOVE). The game side refuses

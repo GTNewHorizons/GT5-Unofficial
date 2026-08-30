@@ -23,15 +23,15 @@ import tectech.voidcraft.VoidcraftTextures;
 import tectech.voidcraft.ship.VoidcraftCoverComponent;
 
 /**
- * The Voidcraft cover parts (8 subtypes, one per {@link VoidcraftCoverComponent}).
+ * The Voidcraft cover parts (one subtype per {@link VoidcraftCoverComponent}).
  *
  * <p>
  * Use by sneaking + right-click on any face of a Voidcraft hull block (standard GT cover interaction, remove with a
  * crowbar). Each cover adds its stats to the ship and — for the thruster nozzle — thrust, but only when mounted on
- * the ship's REAR face (the assembler side, pass 24).
+ * the ship's REAR face (the assembler side).
  *
  * <p>
- * Icons are the dedicated per-cover art (pass 24: {@code tectech:iconsets/VC_COVER_*} — the same icons the mounted
+ * Icons are the dedicated per-cover art ({@code tectech:iconsets/VC_COVER_*} — the same icons the mounted
  * cover face and the in-flight model use).
  */
 public final class ItemVoidcraftCovers extends Item {
@@ -107,6 +107,12 @@ public final class ItemVoidcraftCovers extends Item {
                     "tt.voidcraft.item.stat.starlifter",
                     NumberFormatUtil.formatNumber(cover.getStarlifterPower())));
         }
+        if (cover.getLogisticsPower() > 0) {
+            aList.add(
+                EnumChatFormatting.GRAY + translateToLocalFormatted(
+                    "tt.voidcraft.item.stat.logistics",
+                    NumberFormatUtil.formatNumber(cover.getLogisticsPower())));
+        }
         if (cover.getEnergyBuffer() > 0) {
             aList.add(
                 EnumChatFormatting.GRAY + translateToLocalFormatted(
@@ -144,7 +150,7 @@ public final class ItemVoidcraftCovers extends Item {
     public void registerIcons(IIconRegister iconRegister) {
         icons = new IIcon[VoidcraftCoverComponent.ALL.length];
         for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
-            // Pass 24: dedicated per-cover icon (same art as the mounted face / in-flight model).
+            // Dedicated per-cover icon (same art as the mounted face / in-flight model).
             icons[cover.getId()] = iconRegister
                 .registerIcon("tectech:iconsets/" + VoidcraftTextures.COVER_ICON_BASE[cover.getId()]);
         }

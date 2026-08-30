@@ -5,7 +5,7 @@ package tectech.voidcraft.uss;
  *
  * <p>
  * With dozens–hundreds of ships (see {@link USSConstants#MAX_SHIPS_PER_USS}), the fleet must not stack at one
- * point: each ship hovers at a stable, deterministic offset around its role's shared hover point, derived from a
+ * point: each ship hovers at a stable, deterministic offset around its shared hover point, derived from a
  * per-ship key — no extra NBT, and the same offset on every client for the life of the world.
  *
  * <p>
@@ -302,7 +302,7 @@ public final class USSFleetOrbit {
      * Deterministic per-ship hover offset (the swarm spread).
      *
      * @param uuid the ship's UUID (null/empty → zero offset: a safe fallback that leaves the shared point unchanged)
-     * @return {@code double[3]} offset in world blocks — horizontal XZ spread around the role hover point plus a
+     * @return {@code double[3]} offset in world blocks — horizontal XZ spread around the shared hover point plus a
      *         vertical component; guaranteed |offset| ≤ {@link #MAX_RADIUS}
      */
     /**

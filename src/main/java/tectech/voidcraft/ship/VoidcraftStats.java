@@ -30,6 +30,8 @@ public final class VoidcraftStats {
     public final long scanPower;
     public final long constructionPower;
     public final long starlifterPower;
+    /** Logistics power (the Cargo Drone Bay covers): 1 power = 1 cargo unit transferred per second (SEND / TAKE). */
+    public final long logisticsPower;
     public final long energyBuffer;
     public final long energyDraw;
     /** Energy generated per game tick (the solar panel covers; 0 for a plain ship). */
@@ -37,8 +39,8 @@ public final class VoidcraftStats {
     public final long integrity;
 
     public VoidcraftStats(long mass, long thrust, long cargoSlots, long miningPower, long scanPower,
-        long constructionPower, long starlifterPower, long energyBuffer, long energyDraw, long energyGen,
-        long integrity) {
+        long constructionPower, long starlifterPower, long logisticsPower, long energyBuffer, long energyDraw,
+        long energyGen, long integrity) {
         this.mass = mass;
         this.thrust = thrust;
         this.speed = speedFor(thrust, mass);
@@ -47,6 +49,7 @@ public final class VoidcraftStats {
         this.scanPower = scanPower;
         this.constructionPower = constructionPower;
         this.starlifterPower = starlifterPower;
+        this.logisticsPower = logisticsPower;
         this.energyBuffer = energyBuffer;
         this.energyDraw = energyDraw;
         this.energyGen = energyGen;
@@ -87,6 +90,8 @@ public final class VoidcraftStats {
             + constructionPower
             + ", starlifter="
             + starlifterPower
+            + ", logistics="
+            + logisticsPower
             + ", buffer="
             + energyBuffer
             + ", draw="

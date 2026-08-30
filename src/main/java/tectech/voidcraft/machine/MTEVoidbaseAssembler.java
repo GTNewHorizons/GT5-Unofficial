@@ -63,12 +63,12 @@ import tectech.voidcraft.uss.USSProgram;
  *
  * <p>
  * A 15×15×3 multiblock whose front face (15×15) looks out over a 15×15×15 build volume. It scans that volume,
- * validates the placed components with the BASE rules (the ship rules minus the thruster audit — a Voidbase is an
- * immobile station) — exactly one controller, a frame, component/cover tier ≤ the assembler circuit tier — then
- * digitizes the build into a single non-stackable, REUSABLE {@code ItemVoidbaseBlueprint} and clears the component
- * blocks. Constructor voidcrafts carry the blueprint data and a parts loadout when they are launched from the
- * gateway; several constructors can build the same base (the first one creates the construction site, the rest
- * fill it).
+ * validates the placed components with the BASE rules (the ship's structural rules, with thruster covers forbidden
+ * — a Voidbase is an immobile station) — exactly one controller, a frame, component/cover tier ≤ the assembler
+ * circuit tier — then digitizes the build into a single non-stackable, REUSABLE {@code ItemVoidbaseBlueprint} and
+ * clears the component blocks. Constructor voidcrafts carry the blueprint data and a parts loadout when they are
+ * launched from the gateway; several constructors can build the same base (the first one creates the construction
+ * site, the rest fill it).
  */
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEVoidbaseAssembler extends TTMultiblockBase implements ISurvivalConstructable {

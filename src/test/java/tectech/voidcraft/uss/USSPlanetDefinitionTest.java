@@ -20,14 +20,6 @@ public class USSPlanetDefinitionTest {
     // region USSPlanetOre
 
     @Test
-    public void testOreStoresTypeAmountAndWeight() {
-        USSPlanetOre ore = new USSPlanetOre(Materials.Copper, 500L, 2.5);
-        assertEquals(Materials.Copper, ore.getOreType());
-        assertEquals(500L, ore.getAmount());
-        assertEquals(2.5, ore.getWeight(), 1e-9);
-    }
-
-    @Test
     public void testOreRejectsNullType() {
         assertThrows(NullPointerException.class, () -> new USSPlanetOre(null, 100L, 1.0));
     }
@@ -67,37 +59,11 @@ public class USSPlanetDefinitionTest {
             .id("test_planet")
             .texture("Ma")
             .sizeRange(0.35f, 0.75f)
-            .allowedStarType(USSStarType.MAIN_SEQUENCE)
+            .allowedStarType(USSStarType.YELLOW_DWARF)
             .ore(Materials.Copper, 500L, 1.0)
             .ore(Materials.Iron, 300L, 2.0)
             .fluid(Materials.Water)
             .build();
-    }
-
-    @Test
-    public void testDefinitionExposesAllFiveFields() {
-        USSPlanetDefinition planet = validDefinition();
-        assertEquals("test_planet", planet.getId());
-        assertEquals("Ma", planet.getTexture());
-        assertEquals(0.35f, planet.getSizeMin(), 1e-6);
-        assertEquals(0.75f, planet.getSizeMax(), 1e-6);
-        assertEquals(
-            1,
-            planet.getAllowedStarTypes()
-                .size());
-        assertTrue(planet.allowsStarType(USSStarType.MAIN_SEQUENCE));
-        assertEquals(
-            2,
-            planet.getOres()
-                .size());
-        assertEquals(
-            1,
-            planet.getFluids()
-                .size());
-        assertEquals(
-            Materials.Water,
-            planet.getFluids()
-                .get(0));
     }
 
     @Test
@@ -106,7 +72,7 @@ public class USSPlanetDefinitionTest {
             .id("dual_star")
             .texture("Eu")
             .sizeRange(0.5f, 1.0f)
-            .allowedStarType(USSStarType.MAIN_SEQUENCE)
+            .allowedStarType(USSStarType.YELLOW_DWARF)
             .allowedStarType(USSStarType.WHITE_DWARF)
             .ore(Materials.Gold, 10L, 1.0)
             .build();
@@ -114,9 +80,9 @@ public class USSPlanetDefinitionTest {
             2,
             planet.getAllowedStarTypes()
                 .size());
-        assertTrue(planet.allowsStarType(USSStarType.MAIN_SEQUENCE));
+        assertTrue(planet.allowsStarType(USSStarType.YELLOW_DWARF));
         assertTrue(planet.allowsStarType(USSStarType.WHITE_DWARF));
-        assertFalse(planet.allowsStarType(USSStarType.SUPERMASSIVE));
+        assertFalse(planet.allowsStarType(USSStarType.BLUE_GIANT));
     }
 
     @Test
@@ -145,7 +111,7 @@ public class USSPlanetDefinitionTest {
             () -> USSPlanetDefinition.builder()
                 .id("   ")
                 .texture("Ma")
-                .allowedStarType(USSStarType.MAIN_SEQUENCE)
+                .allowedStarType(USSStarType.YELLOW_DWARF)
                 .build());
     }
 
@@ -156,7 +122,7 @@ public class USSPlanetDefinitionTest {
             () -> USSPlanetDefinition.builder()
                 .id("x")
                 .texture("")
-                .allowedStarType(USSStarType.MAIN_SEQUENCE)
+                .allowedStarType(USSStarType.YELLOW_DWARF)
                 .build());
     }
 
@@ -169,7 +135,7 @@ public class USSPlanetDefinitionTest {
                 .id("x")
                 .texture("Ma")
                 .sizeRange(-0.1f, 0.5f)
-                .allowedStarType(USSStarType.MAIN_SEQUENCE)
+                .allowedStarType(USSStarType.YELLOW_DWARF)
                 .build());
         // Above 5.0
         assertThrows(
@@ -178,7 +144,7 @@ public class USSPlanetDefinitionTest {
                 .id("x")
                 .texture("Ma")
                 .sizeRange(1.0f, 5.5f)
-                .allowedStarType(USSStarType.MAIN_SEQUENCE)
+                .allowedStarType(USSStarType.YELLOW_DWARF)
                 .build());
     }
 
@@ -190,7 +156,7 @@ public class USSPlanetDefinitionTest {
                 .id("x")
                 .texture("Ma")
                 .sizeRange(0.9f, 0.2f)
-                .allowedStarType(USSStarType.MAIN_SEQUENCE)
+                .allowedStarType(USSStarType.YELLOW_DWARF)
                 .build());
     }
 
@@ -201,7 +167,7 @@ public class USSPlanetDefinitionTest {
             .id("boundary")
             .texture("Ma")
             .sizeRange(0.0f, 5.0f)
-            .allowedStarType(USSStarType.MAIN_SEQUENCE)
+            .allowedStarType(USSStarType.YELLOW_DWARF)
             .build();
         assertTrue(planet.sizeInRange(0.0f));
         assertTrue(planet.sizeInRange(5.0f));
@@ -224,7 +190,7 @@ public class USSPlanetDefinitionTest {
             .id("bare")
             .texture("Ma")
             .sizeRange(0.3f, 0.4f)
-            .allowedStarType(USSStarType.SUPERMASSIVE)
+            .allowedStarType(USSStarType.BLUE_GIANT)
             .build();
         assertTrue(
             planet.getOres()

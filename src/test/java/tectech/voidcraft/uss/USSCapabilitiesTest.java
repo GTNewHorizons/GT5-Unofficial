@@ -20,7 +20,8 @@ public class USSCapabilitiesTest {
         assertEquals(8, USSCapabilities.SIPHON);
         assertEquals(16, USSCapabilities.CONSTRUCT);
         assertEquals(32, USSCapabilities.REPAIR);
-        assertEquals(63, USSCapabilities.ALL);
+        assertEquals(64, USSCapabilities.LOGISTICS);
+        assertEquals(127, USSCapabilities.ALL);
         assertEquals(
             0,
             USSCapabilities.empty()
@@ -45,6 +46,12 @@ public class USSCapabilitiesTest {
         assertFalse(minerOnly.allowsCommand(USSCommand.SIPHON));
         assertFalse(minerOnly.allowsCommand(USSCommand.CONSTRUCT));
         assertFalse(minerOnly.allowsCommand(USSCommand.REPAIR));
+        assertFalse(minerOnly.allowsCommand(USSCommand.SEND));
+        assertFalse(minerOnly.allowsCommand(USSCommand.TAKE));
+        USSCapabilities logisticsShip = USSCapabilities.of(USSCapabilities.MOVE | USSCapabilities.LOGISTICS);
+        assertTrue(logisticsShip.allowsCommand(USSCommand.SEND));
+        assertTrue(logisticsShip.allowsCommand(USSCommand.TAKE));
+        assertFalse(logisticsShip.allowsCommand(USSCommand.MINE));
         // the always-available commands need no bit (the empty set still allows them)
         for (int id : new int[] { USSCommand.WRITE, USSCommand.READ, USSCommand.WAIT, USSCommand.STOP }) {
             assertTrue(
@@ -126,6 +133,8 @@ public class USSCapabilitiesTest {
         assertEquals("REPAIR", USSCommand.label(USSCommand.REPAIR));
         assertEquals("SCAN", USSCommand.label(USSCommand.SCAN));
         assertEquals("SIPHON", USSCommand.label(USSCommand.SIPHON));
+        assertEquals("SEND", USSCommand.label(USSCommand.SEND));
+        assertEquals("TAKE", USSCommand.label(USSCommand.TAKE));
         assertEquals("CMD13", USSCommand.label(13));
     }
 
@@ -149,7 +158,5 @@ public class USSCapabilitiesTest {
             USSConstants.STARLIFTER_PLASMA_FACTOR,
             USSConstants.starlifterPlasmaAmount(0L),
             "no siphon power still ships one factor (the power floors at 1)");
-        // the matter (dwarf dust) amount rides the same siphon power
-        assertEquals(USSConstants.minerOreAmount(40L), USSConstants.starlifterMatterAmount(40L));
     }
 }

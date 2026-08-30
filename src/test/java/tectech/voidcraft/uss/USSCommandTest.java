@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.jupiter.api.Test;
 
 /**
- * Phase B: the ten built-in command handlers against the fake context.
+ * The built-in command handlers against the fake context.
  */
 final class USSCommandTest {
 
@@ -145,6 +145,26 @@ final class USSCommandTest {
     }
 
     @Test
+    void testWriteLocationResolvesToTheCurrentPosition() {
+        // the LOCATION value is resolved at execution time to the ship's current position (the coordinate
+        // string) — not the leg's destination, not a stored literal
+        FakeUSSContext ctx = new FakeUSSContext();
+        ctx.position = USSPosition.of(12.5, -2.0, 40.0);
+        NBTTagCompound p = new NBTTagCompound();
+        p.setTag(
+            USSCommandWrite.PARAM_VALUE,
+            USSValue.location()
+                .writeToNBT());
+        p.setInteger(USSCommandWrite.PARAM_SLOT, 4);
+        USSCommandWrite write = new USSCommandWrite();
+        assertEquals(USSCommandStatus.DONE, write.begin(ctx, command(USSCommand.WRITE, p), new NBTTagCompound()));
+        assertEquals("12.5;-2.0;40.0", ctx.vars.get(4));
+        ctx.position = USSPosition.of(99.0, 1.0, 99.0);
+        assertEquals(USSCommandStatus.DONE, write.begin(ctx, command(USSCommand.WRITE, p), new NBTTagCompound()));
+        assertEquals("99.0;1.0;99.0", ctx.vars.get(4), "a later run broadcasts the position of that run");
+    }
+
+    @Test
     void testWriteMissingSlotDefaultsToZero() {
         FakeUSSContext ctx = new FakeUSSContext();
         NBTTagCompound p = new NBTTagCompound();
@@ -266,6 +286,96 @@ final class USSCommandTest {
             repair.begin(ctx, command(USSCommand.REPAIR, new NBTTagCompound()), new NBTTagCompound()));
         assertTrue(ctx.loggedContains("REPAIR"));
         assertEquals(0, ctx.repairTickCalls);
+    }
+
+    @Test
+    void testRepairPassesTheTargetParamThrough() {
+        // The command never resolves the target — the raw param goes to the world (empty = SELF, the world's
+        // default; a name / index is resolved with the SEND / TAKE rules).
+        FakeUSSContext ctx = new FakeUSSContext();
+        USSCommandRepair repair = new USSCommandRepair();
+        assertEquals(
+            USSCommandStatus.RUNNING,
+            repair.begin(ctx, command(USSCommand.REPAIR, new NBTTagCompound()), new NBTTagCompound()));
+        assertEquals("", ctx.repairStartTarget, "no param → empty (the world reads that as SELF)");
+
+        NBTTagCompound self = new NBTTagCompound();
+        self.setString(USSProgramDefaults.PARAM_TARGET, USSCommandRepair.TARGET_SELF);
+        assertEquals(
+            USSCommandStatus.RUNNING,
+            repair.begin(ctx, command(USSCommand.REPAIR, self), new NBTTagCompound()));
+        assertEquals(USSCommandRepair.TARGET_SELF, ctx.repairStartTarget, "SELF passes through untouched");
+
+        NBTTagCompound fleet = new NBTTagCompound();
+        fleet.setString(USSProgramDefaults.PARAM_TARGET, "Siphon-1");
+        repair.begin(ctx, command(USSCommand.REPAIR, fleet), new NBTTagCompound());
+        assertEquals(
+            "Siphon-1",
+            ctx.repairStartTarget,
+            "a fleet member name / index passes through (the world resolves it)");
+    }
+
+    // endregion
+
+    // region SEND / TAKE (the cargo transfer framework)
+
+    @Test
+    void testTransferPassesTheRawParamsThrough() {
+        // The command never resolves the target — the raw param (a fleet index, a ship name, or NEARBY) goes to
+        // the world verbatim (the MTE resolves it, including the NEARBY candidate scan).
+        assertTransferPassThrough(new USSCommandSend(), USSCommand.SEND);
+        assertTransferPassThrough(new USSCommandTake(), USSCommand.TAKE);
+    }
+
+    /** begin hands the world the raw target / amount / filter and polls tick until it reports the transfer over. */
+    private static void assertTransferPassThrough(USSCommandHandler handler, int commandId) {
+        FakeUSSContext ctx = new FakeUSSContext();
+        NBTTagCompound p = new NBTTagCompound();
+        p.setString(USSProgramDefaults.PARAM_TARGET, USSProgramDefaults.TARGET_NEARBY);
+        p.setLong(USSProgramDefaults.PARAM_AMOUNT, 10L);
+        p.setString(USSProgramDefaults.PARAM_FILTER, "iron");
+        assertEquals(USSCommandStatus.RUNNING, handler.begin(ctx, command(commandId, p), new NBTTagCompound()));
+        assertEquals(1, ctx.transferStartCalls);
+        assertEquals(commandId, ctx.transferStartCommandId);
+        assertEquals(USSProgramDefaults.TARGET_NEARBY, ctx.transferStartTarget, "the target passes through verbatim");
+        assertEquals(10L, ctx.transferStartAmount);
+        assertEquals("iron", ctx.transferStartFilter);
+        assertEquals(USSCommandStatus.RUNNING, handler.tick(ctx, null, new NBTTagCompound()));
+        assertEquals(1, ctx.transferTickCalls);
+        ctx.transferTickResult = false;
+        assertEquals(USSCommandStatus.DONE, handler.tick(ctx, null, new NBTTagCompound()));
+        assertEquals(2, ctx.transferTickCalls);
+    }
+
+    @Test
+    void testTransferFailsWhenTheWorldRefuses() {
+        FakeUSSContext ctx = new FakeUSSContext();
+        ctx.transferStartResult = false;
+        assertEquals(
+            USSCommandStatus.FAILED,
+            new USSCommandSend().begin(ctx, command(USSCommand.SEND, transferParams()), new NBTTagCompound()));
+        assertEquals(1, ctx.transferStartCalls);
+        assertTrue(ctx.loggedContains("SEND"));
+        assertEquals(0, ctx.transferTickCalls);
+    }
+
+    @Test
+    void testTransferMissingTargetFailsWithoutAskingTheWorld() {
+        for (int commandId : new int[] { USSCommand.SEND, USSCommand.TAKE }) {
+            USSCommandHandler handler = commandId == USSCommand.SEND ? new USSCommandSend() : new USSCommandTake();
+            FakeUSSContext ctx = new FakeUSSContext();
+            assertEquals(
+                USSCommandStatus.FAILED,
+                handler.begin(ctx, command(commandId, new NBTTagCompound()), new NBTTagCompound()));
+            assertEquals(0, ctx.transferStartCalls);
+            assertTrue(ctx.loggedContains("missing target"));
+        }
+    }
+
+    private static NBTTagCompound transferParams() {
+        NBTTagCompound p = new NBTTagCompound();
+        p.setString(USSProgramDefaults.PARAM_TARGET, USSProgramDefaults.TARGET_NEARBY);
+        return p;
     }
 
     // endregion

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import tectech.voidcraft.uss.USSPosition;
 
 /**
- * Unit tests for the fleet anchor's Voidbase entries (Phase D, bare-JVM): the construction sites + the standing
+ * Unit tests for the fleet anchor's Voidbase entries (bare-JVM): the construction sites + the standing
  * bases round-trip through the tile entity's NBT (the description packet carries the same NBT).
  */
 public class TileEntityVoidcraftShipTest {

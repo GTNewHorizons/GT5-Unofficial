@@ -1,17 +1,13 @@
 package tectech.voidcraft.render;
 
-import net.minecraft.nbt.NBTTagCompound;
-
-import tectech.voidcraft.ship.VoidcraftNbt;
-import tectech.voidcraft.ship.VoidcraftRole;
-
 /**
  * Pass 8 — pure math for the client-side ship effects (mining laser beam + exhaust), kept out of the GL class so
  * it unit-tests in a bare JVM (no LWJGL, no {@code Minecraft} statics).
  *
  * <p>
- * <strong>Beam</strong> (user spec): during the MINING leg, a thin laser rod from the MIDDLE of the ship to the
- * MIDDLE of the body it works — for MINERS and STARLIFTERS (a Constructor builds, it does not fire). The rod
+ * <strong>Beam</strong> (user spec): during a work leg, a thin laser rod from the MIDDLE of the ship to the
+ * MIDDLE of the body it works — on the MINE and SIPHON legs (a CONSTRUCT leg builds at the site, a SCAN leg
+ * scans). The rod
  * fades in over the first {@link #BEAM_FADE_RAMP} of the leg and out over the last, so the state transitions
  * (OUTBOUND→MINING→RETURNING) read as the beam engaging and releasing instead of popping.
  *
@@ -41,20 +37,6 @@ public final class VoidcraftShipFx {
     public static final double BEAM_FADE_RAMP = 0.08;
 
     private VoidcraftShipFx() {}
-
-    /**
-     * Whether the mining laser fires for the given ship (user spec: MINER and STARLIFTER — a Constructor builds
-     * during its leg and does not fire; a pure transport has no mining leg at all).
-     *
-     * @param payload the ship payload NBT (carries {@link VoidcraftNbt#TAG_ROLES}); null-safe
-     */
-    public static boolean minesWithBeam(NBTTagCompound payload) {
-        if (payload == null) {
-            return false;
-        }
-        int roles = VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES);
-        return VoidcraftRole.MINER.isActive(roles) || VoidcraftRole.STARLIFTER.isActive(roles);
-    }
 
     /**
      * Beam visibility for the mining-leg progress in [0, 1]: 0 at either end, 1 in the middle, with a linear ramp

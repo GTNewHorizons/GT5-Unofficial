@@ -42,7 +42,7 @@ public class USSPlanetRegistryTest {
 
     @Test
     public void testRegisterAndGet() {
-        USSPlanetDefinition p = planet("alpha", USSStarType.MAIN_SEQUENCE);
+        USSPlanetDefinition p = planet("alpha", USSStarType.YELLOW_DWARF);
         USSPlanetRegistry.register(p);
         assertEquals(p, USSPlanetRegistry.get("alpha"));
         assertTrue(USSPlanetRegistry.contains("alpha"));
@@ -62,7 +62,7 @@ public class USSPlanetRegistryTest {
 
     @Test
     public void testRejectsDuplicateId() {
-        USSPlanetRegistry.register(planet("dup", USSStarType.MAIN_SEQUENCE));
+        USSPlanetRegistry.register(planet("dup", USSStarType.YELLOW_DWARF));
         assertThrows(
             IllegalArgumentException.class,
             () -> USSPlanetRegistry.register(planet("dup", USSStarType.WHITE_DWARF)));
@@ -70,9 +70,9 @@ public class USSPlanetRegistryTest {
 
     @Test
     public void testAllPreservesRegistrationOrder() {
-        USSPlanetRegistry.register(planet("one", USSStarType.MAIN_SEQUENCE));
+        USSPlanetRegistry.register(planet("one", USSStarType.YELLOW_DWARF));
         USSPlanetRegistry.register(planet("two", USSStarType.WHITE_DWARF));
-        USSPlanetRegistry.register(planet("three", USSStarType.SUPERMASSIVE));
+        USSPlanetRegistry.register(planet("three", USSStarType.BLUE_GIANT));
         List<USSPlanetDefinition> all = USSPlanetRegistry.all();
         assertEquals(3, all.size());
         assertEquals(
@@ -92,8 +92,8 @@ public class USSPlanetRegistryTest {
     @Test
     public void testSizeAndClear() {
         assertEquals(0, USSPlanetRegistry.size());
-        USSPlanetRegistry.register(planet("a", USSStarType.MAIN_SEQUENCE));
-        USSPlanetRegistry.register(planet("b", USSStarType.MAIN_SEQUENCE));
+        USSPlanetRegistry.register(planet("a", USSStarType.YELLOW_DWARF));
+        USSPlanetRegistry.register(planet("b", USSStarType.YELLOW_DWARF));
         assertEquals(2, USSPlanetRegistry.size());
         USSPlanetRegistry.clear();
         assertEquals(0, USSPlanetRegistry.size());
@@ -108,19 +108,19 @@ public class USSPlanetRegistryTest {
 
     @Test
     public void testPoolFiltersByAllowedStarType() {
-        USSPlanetRegistry.register(planet("ms_only", USSStarType.MAIN_SEQUENCE));
+        USSPlanetRegistry.register(planet("ms_only", USSStarType.YELLOW_DWARF));
         USSPlanetRegistry.register(planet("wd_only", USSStarType.WHITE_DWARF));
         USSPlanetDefinition dual = USSPlanetDefinition.builder()
             .id("dual")
             .texture("Eu")
             .sizeRange(0.4f, 0.8f)
-            .allowedStarType(USSStarType.MAIN_SEQUENCE)
-            .allowedStarType(USSStarType.SUPERMASSIVE)
+            .allowedStarType(USSStarType.YELLOW_DWARF)
+            .allowedStarType(USSStarType.BLUE_GIANT)
             .ore(Materials.Gold, 10L, 1.0)
             .build();
         USSPlanetRegistry.register(dual);
 
-        List<USSPlanetDefinition> ms = USSPlanetRegistry.pool(USSStarType.MAIN_SEQUENCE);
+        List<USSPlanetDefinition> ms = USSPlanetRegistry.pool(USSStarType.YELLOW_DWARF);
         assertEquals(2, ms.size());
         assertTrue(
             ms.stream()
@@ -144,13 +144,13 @@ public class USSPlanetRegistryTest {
                 .size());
         assertEquals(
             1,
-            USSPlanetRegistry.pool(USSStarType.SUPERMASSIVE)
+            USSPlanetRegistry.pool(USSStarType.BLUE_GIANT)
                 .size());
     }
 
     @Test
     public void testPoolNullStarTypeIsEmpty() {
-        USSPlanetRegistry.register(planet("x", USSStarType.MAIN_SEQUENCE));
+        USSPlanetRegistry.register(planet("x", USSStarType.YELLOW_DWARF));
         assertTrue(
             USSPlanetRegistry.pool(null)
                 .isEmpty());
@@ -182,7 +182,7 @@ public class USSPlanetRegistryTest {
         USSPlanetCatalog.registerAll();
         assertEquals(
             45,
-            USSPlanetRegistry.pool(USSStarType.MAIN_SEQUENCE)
+            USSPlanetRegistry.pool(USSStarType.YELLOW_DWARF)
                 .size());
         assertEquals(
             45,
@@ -190,7 +190,7 @@ public class USSPlanetRegistryTest {
                 .size());
         assertEquals(
             45,
-            USSPlanetRegistry.pool(USSStarType.SUPERMASSIVE)
+            USSPlanetRegistry.pool(USSStarType.BLUE_GIANT)
                 .size());
     }
 
@@ -203,7 +203,7 @@ public class USSPlanetRegistryTest {
         assertEquals("textures/uss/planets/mars/stitched.png", mars.getTexture());
         assertEquals(PlanetTier.SMALL, mars.getTier());
         assertFalse(mars.isGasGiant());
-        assertTrue(mars.allowsStarType(USSStarType.MAIN_SEQUENCE));
+        assertTrue(mars.allowsStarType(USSStarType.YELLOW_DWARF));
         assertEquals(
             3,
             mars.getOres()
@@ -229,7 +229,7 @@ public class USSPlanetRegistryTest {
         assertEquals("textures/uss/planets/jupiter/stitched.png", jupiter.getTexture());
         assertEquals(PlanetTier.HUGE, jupiter.getTier());
         assertTrue(jupiter.isGasGiant());
-        assertTrue(jupiter.allowsStarType(USSStarType.SUPERMASSIVE));
+        assertTrue(jupiter.allowsStarType(USSStarType.BLUE_GIANT));
         assertEquals(
             Materials.Gold,
             jupiter.getOres()

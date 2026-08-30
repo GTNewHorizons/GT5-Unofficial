@@ -49,15 +49,16 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.voidcraft.item.ItemVoidbaseBlueprint;
 import tectech.voidcraft.item.ItemVoidcraft;
 import tectech.voidcraft.item.ItemVoidcraftCovers;
+import tectech.voidcraft.item.ItemVoidcraftSatellite;
 import tectech.voidcraft.loader.VoidcraftLoader;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
 import tectech.voidcraft.ship.VoidcraftComponent;
 import tectech.voidcraft.ship.VoidcraftCoverComponent;
 import tectech.voidcraft.ship.VoidcraftNbt;
-import tectech.voidcraft.ship.VoidcraftRole;
 import tectech.voidcraft.uss.MTEUnstableSolarSystem;
 import tectech.voidcraft.uss.USSBaseAnchor;
 import tectech.voidcraft.uss.USSCommand;
+import tectech.voidcraft.uss.USSInfra;
 import tectech.voidcraft.uss.USSNode;
 import tectech.voidcraft.uss.USSProgram;
 import tectech.voidcraft.uss.USSProgramDefaults;
@@ -276,16 +277,6 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
             reportError(aTick, "invalid_ship");
             return;
         }
-        int roles = VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES);
-        boolean constructor = VoidcraftRole.CONSTRUCTOR.isActive(roles);
-        // MINER / STARLIFTER (mining cargo), EXPLORER (spacetime-ripple scanning) or CONSTRUCTOR
-        // (Voidbase construction) may launch; a ship with none of those roles cannot be sent out.
-        boolean regular = VoidcraftRole.MINER.isActive(roles) || VoidcraftRole.STARLIFTER.isActive(roles)
-            || VoidcraftRole.EXPLORER.isActive(roles);
-        if (!constructor && !regular) {
-            reportError(aTick, "no_mission_role");
-            return;
-        }
         int cx = base.getXCoord();
         int cy = base.getYCoord();
         int cz = base.getZCoord();
@@ -300,19 +291,13 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
             return;
         }
 
-        // A CONSTRUCTOR needs the blueprint in the blueprint slot: the ship leaves loaded with a DATA COPY of
-        // the blueprint (the item stays in the slot — reusable) plus a parts loadout that FILLS its cargo from
-        // the input buses (capped at the ship's cargo space; the CONSTRUCT leg credits the site with what it
-        // needs, the first Constructor creates the construction site, the rest fill it). A CONSTRUCTOR+MINER/
-        // STARLIFTER hybrid without a blueprint falls back to a regular mining mission; a pure CONSTRUCTOR
-        // without one is rejected (the ship stays in the input, no wasted flights).
-        if (constructor) {
-            if (prepareVoidbaseMission(aTick, payload)) {
-                payload.setBoolean(VoidcraftNbt.TAG_BUILD_MISSION, true);
-            } else if (!regular) {
-                reportError(aTick, "no_blueprint");
-                return;
-            }
+        // A Voidbase blueprint in the blueprint slot turns the launch into a construction mission: the ship
+        // leaves loaded with a DATA COPY of the blueprint (the item stays in the slot — reusable) plus a parts
+        // loadout that FILLS its cargo from the input buses (capped at the ship's cargo space; the CONSTRUCT
+        // leg credits the site with what it needs, the first Constructor creates the construction site, the
+        // rest fill it). Without a blueprint the launch is a plain mission.
+        if (prepareVoidbaseMission(aTick, payload)) {
+            payload.setBoolean(VoidcraftNbt.TAG_BUILD_MISSION, true);
         }
 
         int[] bayPos = new int[] { targetBay.getBaseMetaTileEntity()
@@ -345,8 +330,7 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
      * fill is fine — the first Constructor creates the construction site even without parts, the rest fill it.
      *
      * @return true when the payload carries the blueprint + loadout; false when there is no (valid) blueprint in
-     *         the blueprint slot (no error is reported — the caller decides: a hybrid role may still launch as a
-     *         regular mission)
+     *         the blueprint slot (the launch then proceeds as a plain mission)
      */
     private boolean prepareVoidbaseMission(long aTick, NBTTagCompound payload) {
         if (blueprint == null || blueprint.getItem() != ItemVoidbaseBlueprint.INSTANCE
@@ -382,6 +366,19 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
                 take.put(key, amount);
                 pullItemInput(item, amount);
                 remaining -= amount;
+            }
+        }
+
+        // Infrastructure cargo (the Dyson Swarm pass): a station built with a Satellite Rail Launcher also pulls
+        // Power Satellites from the buses — the item. loadout key routes to the build site's cargo (delivered
+        // unpaced at construct start), not its parts.
+        if (remaining > 0L && baseBlueprint.count(VoidcraftComponent.SATELLITE_LAUNCHER) > 0) {
+            ItemStack satellite = ItemVoidcraftSatellite.stack();
+            long available = countItemInput(satellite);
+            long amount = Math.min(available, remaining);
+            if (amount > 0L) {
+                take.put(USSInfra.LOADOUT_KEY_SATELLITE, amount);
+                pullItemInput(satellite, amount);
             }
         }
 

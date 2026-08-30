@@ -45,7 +45,7 @@ public interface USSPilotWorld {
      *
      * @param target the target string (one of the {@link USSProgramDefaults} {@code TARGET_*} values)
      * @param index  the target index (0 for index-less targets)
-     * @param ship   the ship (its position — for {@code NEAREST_PLANET} / {@code SHIP} — and its roles)
+     * @param ship   the ship (its position — for {@code NEAREST_PLANET} / {@code SHIP})
      * @return the resolution, or null when unresolvable (the pilot then SKIPs the instruction)
      */
     USSTargetResult resolveTarget(String target, int index, VoidcraftActiveShip ship);
@@ -116,30 +116,62 @@ public interface USSPilotWorld {
     boolean constructTick(VoidcraftActiveShip ship, String targetKind, int targetIndex);
 
     /**
-     * Probe whether a base can start repairing (the repair work command at a station): true when the station has
-     * integrity to restore and energy to spend (the command goes RUNNING); false - the command SKIPs.
+     * A REPAIR command begins at the executing entity (the repair work command): the target is the entity itself
+     * (an empty or {@code SELF} param — an anchored station repairing its own integrity) or a fleet member
+     * (a fleet index or a name) that shares the executor's location — the same target pattern and shared-location
+     * rule as SEND / TAKE. The game side stores the repair session (target + pacing) and arms it.
      *
-     * @param base the station being repaired (its own program runs REPAIR at its anchor)
-     * @return true when repair can run
+     * @param ship   the executing entity (an anchored station; a flying ship has no repair bay and is refused)
+     * @param target the target param (empty / {@code SELF} = the executor; otherwise a fleet index or name)
+     * @return true when the repair started (the command goes RUNNING and polls {@link #repairTick}) / false when
+     *         it cannot (the executor is a ship, the target is unresolvable or not co-located, or nothing is
+     *         restorable - the command reports FAILED and SKIPs)
      */
-    boolean baseRepairStart(VoidcraftActiveBase base);
+    boolean repairStart(VoidcraftActiveShip ship, String target);
 
     /**
-     * One REPAIR tick on a station (polled while its REPAIR command is in flight): spend energy buffer at the
-     * repair draw, accrue one integrity per second of repair.
+     * One machine tick of the executing entity's in-flight REPAIR (polled while its REPAIR command is in flight):
+     * draws the executor's energy buffer at the repair draw and restores one integrity per second on the target;
+     * the target's loss, or its leaving the shared location, ends the repair with what was restored so far.
      *
-     * @param base the station
-     * @return true when integrity is still below the maximum (keep polling) / false when full (the command DONEs)
+     * @param ship the executing entity
+     * @return true when repair is still running (keep polling) / false when it is over (the command reports
+     *         DONE)
      */
-    boolean baseRepairTick(VoidcraftActiveBase base);
+    boolean repairTick(VoidcraftActiveShip ship);
 
     /**
-     * A framework log line for a base (its own program log).
+     * A SEND / TAKE command begins at the executing ship (ship-to-ship cargo transfer): resolve the target ship
+     * (fleet index or name, or {@code NEARBY} = the first viable fleet ship at a shared location — carrying
+     * cargo for TAKE, free hold space for SEND), check the
+     * ship-side preconditions (target exists and is not this ship, the ship has
+     * logistics power, and the two ships share a location — see {@link USSLocation#shared}), and arm the paced
+     * unit transfer (one cargo unit per {@code USSConstants.transferTicksPerUnit}).
      *
-     * @param base    the base (for the log identity)
-     * @param message the line (never null)
+     * @param ship      the executing ship
+     * @param commandId the command id ({@code USSCommand.SEND} = ship → target; {@code USSCommand.TAKE} =
+     *                  target → ship)
+     * @param target    the target ship (a fleet index, a ship name, or {@code NEARBY})
+     * @param amount    the unit limit (-1 = ALL)
+     * @param filter    the material name filter (null / empty / "*" = match all)
+     * @return true when the transfer started (the command goes RUNNING and polls {@link #cargoTransferTick}) /
+     *         false when it cannot start (the command reports FAILED and SKIPs)
      */
-    void logBase(VoidcraftActiveBase base, String message);
+    boolean cargoTransferStart(VoidcraftActiveShip ship, int commandId, String target, long amount, String filter);
+
+    /**
+     * One machine tick of the executing ship's in-flight cargo transfer (polled while its SEND / TAKE command
+     * is in flight): advances the pacing countdown, moves one cargo unit per
+     * {@code USSConstants.transferTicksPerUnit} between the two ships' holds (direction by command id),
+     * re-checking the shared location each tick (a target that left — or stopped sharing the location — ends
+     * the transfer with what has been moved so far).
+     *
+     * @param ship      the executing ship
+     * @param commandId the command id ({@code USSCommand.SEND} / {@code USSCommand.TAKE})
+     * @return true when the transfer is still running (keep polling) / false when it is over (the command
+     *         reports DONE)
+     */
+    boolean cargoTransferTick(VoidcraftActiveShip ship, int commandId);
 
     // endregion
 }

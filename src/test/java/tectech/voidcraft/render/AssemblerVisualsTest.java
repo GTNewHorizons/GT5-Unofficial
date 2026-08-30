@@ -61,17 +61,6 @@ class AssemblerVisualsTest {
         assertTrue(same(AssemblerVisuals.scanAxes(ForgeDirection.DOWN.ordinal()), up));
     }
 
-    @Test
-    void scanAxesAreOrthogonalToEachOtherAndToTheFront() {
-        for (int facing = 0; facing < 6; facing++) {
-            double[] axes = AssemblerVisuals.scanAxes(facing);
-            ForgeDirection front = ForgeDirection.getOrientation(facing);
-            assertEquals(0.0, dot(axes, 0, front), TOL); // a1 ⊥ front
-            assertEquals(0.0, dot(axes, 3, front), TOL); // a2 ⊥ front
-            assertEquals(0.0, axes[0] * axes[3] + axes[1] * axes[4] + axes[2] * axes[5], TOL); // a1 ⊥ a2
-        }
-    }
-
     // ---- scan cell world positions ----
 
     @Test

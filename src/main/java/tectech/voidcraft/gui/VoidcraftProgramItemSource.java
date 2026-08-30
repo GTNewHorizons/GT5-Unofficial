@@ -14,6 +14,7 @@ import tectech.voidcraft.item.ItemVoidcraft;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
 import tectech.voidcraft.ship.VoidcraftCoverComponent;
 import tectech.voidcraft.ship.VoidcraftNbt;
+import tectech.voidcraft.ship.VoidcraftStats;
 import tectech.voidcraft.uss.USSBlueprintProgram;
 import tectech.voidcraft.uss.USSCapabilities;
 import tectech.voidcraft.uss.USSCommand;
@@ -25,9 +26,10 @@ import tectech.voidcraft.uss.USSCommand;
  *
  * <p>
  * The capability set is DERIVED from the item itself (the capability system): a digitized SHIP item carries its
- * exact denormalized stats (speed / mining / scan / siphon / construction power), so the editor offers exactly
- * the commands that ship can run; a base item offers MINE (mining power) + REPAIR (a repair bay in the
- * blueprint).
+ * exact denormalized stats (speed / mining / scan / siphon / construction / logistics power), so the editor
+ * offers exactly the commands that ship can run; a base item offers everything a voidcraft runs EXCEPT MOVE —
+ * MINE / SCAN / SIPHON / CONSTRUCT / SEND / TAKE (its stats) + REPAIR (a repair bay in the blueprint) — and
+ * never the MOVE capability (a base cannot move).
  */
 public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
 
@@ -39,6 +41,7 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
     private final long scanPower;
     private final long siphonPower;
     private final long constructionPower;
+    private final long logisticsPower;
     private final int repairBays;
     private final double speed;
 
@@ -61,25 +64,36 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
             this.scanPower = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_SCAN);
             this.siphonPower = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_STARLIFTER);
             this.constructionPower = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_CONSTRUCTION);
+            this.logisticsPower = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_LOGISTICS);
             this.repairBays = 0;
         } else {
-            this.speed = 0.0;
-            this.scanPower = 0L;
-            this.siphonPower = 0L;
-            this.constructionPower = 0L;
+            this.speed = 0.0; // a base cannot move
             long mining = 0L;
+            long scan = 0L;
+            long siphon = 0L;
+            long construction = 0L;
+            long logistics = 0L;
             int bays = 0;
             VoidcraftBlueprint blueprint = stack == null ? null : ItemVoidbaseBlueprint.getBlueprint(stack);
             if (blueprint != null) {
-                mining = blueprint.computeStats().miningPower;
+                VoidcraftStats stats = blueprint.computeStats();
+                mining = stats.miningPower;
+                scan = stats.scanPower;
+                siphon = stats.starlifterPower;
+                construction = stats.constructionPower;
+                logistics = stats.logisticsPower;
                 bays = blueprint.countCover(VoidcraftCoverComponent.REPAIR_BAY);
             }
             this.miningPower = mining;
+            this.scanPower = scan;
+            this.siphonPower = siphon;
+            this.constructionPower = construction;
+            this.logisticsPower = logistics;
             this.repairBays = bays;
         }
     }
 
-    /** The capability set of the blueprint item (ship stats / base mining power + repair bays). */
+    /** The capability set of the blueprint item (ship stats / base stats minus MOVE). */
     private static USSCapabilities deriveCaps(Item item, ItemStack stack) {
         NBTTagCompound nbt = stack == null ? null : stack.getTagCompound();
         int bits = 0;
@@ -99,12 +113,28 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
             if (VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_CONSTRUCTION) > 0L) {
                 bits |= USSCapabilities.CONSTRUCT;
             }
+            if (VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_LOGISTICS) > 0L) {
+                bits |= USSCapabilities.LOGISTICS;
+            }
             // a ship never repairs (a REPAIR on a ship SKIPs)
         } else if (item instanceof ItemVoidbaseBlueprint && stack != null) {
             VoidcraftBlueprint blueprint = ItemVoidbaseBlueprint.getBlueprint(stack);
             if (blueprint != null) {
-                if (blueprint.computeStats().miningPower > 0L) {
+                VoidcraftStats stats = blueprint.computeStats();
+                if (stats.miningPower > 0L) {
                     bits |= USSCapabilities.MINE;
+                }
+                if (stats.scanPower > 0L) {
+                    bits |= USSCapabilities.SCAN;
+                }
+                if (stats.starlifterPower > 0L) {
+                    bits |= USSCapabilities.SIPHON;
+                }
+                if (stats.constructionPower > 0L) {
+                    bits |= USSCapabilities.CONSTRUCT;
+                }
+                if (stats.logisticsPower > 0L) {
+                    bits |= USSCapabilities.LOGISTICS;
                 }
                 if (blueprint.countCover(VoidcraftCoverComponent.REPAIR_BAY) > 0) {
                     bits |= USSCapabilities.REPAIR;
@@ -154,6 +184,9 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
                 return constructionPower > 0L ? "Construction power: " + constructionPower : "";
             case USSCommand.REPAIR:
                 return repairBays > 0 ? "Repair bays: " + repairBays : "";
+            case USSCommand.SEND:
+            case USSCommand.TAKE:
+                return logisticsPower > 0L ? "Logistics power: " + logisticsPower : "";
             default:
                 return "";
         }

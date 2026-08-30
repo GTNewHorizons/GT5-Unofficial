@@ -8,20 +8,21 @@ import net.minecraft.nbt.NBTTagList;
 import tectech.voidcraft.ship.VoidcraftNbt;
 
 /**
- * The per-ship PILOT (programming framework, Phase C) — the brain of a Voidcraft in flight.
+ * The per-ship PILOT (programming framework, Phase C) — the brain of a Voidcraft fleet entity: the in-flight
+ * ship and the anchored Voidbase run the SAME pilot (a non-null anchor on the ship marks the base).
  *
  * <p>
- * The pilot owns one ship's program: it runs the {@link USSProgramExecutor} (Phase B) against the ship, and it
- * implements the executor's {@link USSExecutionContext} game seam by bridging to the {@link USSPilotWorld} (the
- * MTE: USS variable space, ripple field, fleet, cargo, logging). Bare-JVM throughout (NBT + primitives + these
- * seams), so the full program-driven mission loop is unit-testable with a fake world
+ * The pilot owns one entity's program: it runs the {@link USSProgramExecutor} (Phase B) against the entity, and
+ * it implements the executor's {@link USSExecutionContext} game seam by bridging to the {@link USSPilotWorld}
+ * (the MTE: USS variable space, ripple field, fleet, cargo, logging). Bare-JVM throughout (NBT + primitives +
+ * these seams), so the full program-driven mission loop is unit-testable with a fake world
  * (see {@code USSShipPilotTest}).
  *
  * <p>
  * Tick model (one {@link #tick()} per game tick, called by the MTE's fleet loop):
  * <ol>
- * <li>the ship's active leg counts down (legs tick in REAL time — the executor's 20-tick pacing never distorts a
- * leg);</li>
+ * <li>the energy buffer recharges, and the active leg counts down ONLY while the buffer covers the leg's energy
+ * draw (the stall model — an exhausted buffer pauses the leg, not the program; the executor keeps polling);</li>
  * <li>a leg that just completed is consumed EXACTLY ONCE (its side-effect — a WORK leg's cargo/reveal, or a
  * HOME leg's delivery — fires here, then the completion is handed to the executor as
  * {@link #legComplete()} on the same tick);</li>
@@ -188,8 +189,14 @@ public final class USSShipPilot implements USSExecutionContext {
      *         caller delivers it and removes it); false otherwise
      */
     public boolean tick() {
-        // 1) the leg counts down in REAL time (the executor's pacing never distorts a leg).
-        ship.tickLeg();
+        // 1) the leg counts down in REAL time, on the entity's energy buffer: it ticks only while the buffer
+        // covers the leg's draw (the stall model — the executor keeps polling, the leg just does not advance).
+        ship.tickEnergy();
+        if (ship.isLegActive()) {
+            if (ship.spendEnergy(USSConstants.legEnergyDraw(ship.getLegWorkKind(), ship))) {
+                ship.tickLeg();
+            }
+        }
 
         // 2) consume a just-completed leg EXACTLY ONCE (its side-effect, then the executor observes it).
         if (ship.isLegComplete()) {
@@ -211,8 +218,14 @@ public final class USSShipPilot implements USSExecutionContext {
             }
             if (kind != USSWorkKind.TRAVEL) {
                 // The work leg's yield — keyed by the leg's WORK KIND (owned by the work command) — EXACTLY ONCE
-                // (the latch was just cleared).
-                world.onWorkComplete(ship, kind, lastKind, lastIndex);
+                // (the latch was just cleared). A base never flew (MOVE is force-refused on it), so its work legs
+                // complete with the ANCHOR descriptor, not a last-MOVE target.
+                if (ship.isBase()) {
+                    USSBaseAnchor anchor = ship.getAnchor();
+                    world.onWorkComplete(ship, kind, anchor.targetKind(), anchor.index());
+                } else {
+                    world.onWorkComplete(ship, kind, lastKind, lastIndex);
+                }
             }
             legDoneReported = true; // the active MOVE/WORK command observes it on the same tick
         }
@@ -245,6 +258,8 @@ public final class USSShipPilot implements USSExecutionContext {
                 return world.readVar(value.slot());
             case STAT:
                 return stat(USSShipStat.byId(value.statId()));
+            case LOCATION:
+                return position().coordString();
             default:
                 return "";
         }
@@ -279,9 +294,15 @@ public final class USSShipPilot implements USSExecutionContext {
                 return (hold != null && hold.isFull()) ? "1" : "0";
             }
             case STATE:
-                return ship.getState()
-                    .name();
+                return ship.isBase() ? "BASE"
+                    : ship.getState()
+                        .name();
             case TARGET:
+                if (ship.isBase()) {
+                    USSBaseAnchor anchor = ship.getAnchor();
+                    return anchor.isStar() ? USSProgramDefaults.TARGET_STAR
+                        : anchor.targetKind() + ":" + anchor.index();
+                }
                 if (lastKind == null || lastKind.isEmpty()) {
                     return "";
                 }
@@ -309,8 +330,12 @@ public final class USSShipPilot implements USSExecutionContext {
                 return String.valueOf(ship.getSpeed());
             case TICKS_IN_LEG:
                 return String.valueOf(ship.getTicksInLeg());
+            case INTEGRITY:
+                return String.valueOf(ship.getIntegrity());
             case RIPPLES_UNSCANNED:
                 return String.valueOf(world.unscannedRipples());
+            case LOGISTICS_POWER:
+                return String.valueOf(ship.getLogisticsPower());
             default:
                 return "";
         }
@@ -330,6 +355,12 @@ public final class USSShipPilot implements USSExecutionContext {
 
     @Override
     public USSPosition resolveMoveTarget(String target, int index) {
+        // The anchor forces the refusal (see the entity contract): a base's MOVE legs SKIP and the program
+        // continues.
+        if (ship.getAnchor() != null) {
+            log("MOVE: anchored at " + ship.getAnchor() + " — cannot move");
+            return null;
+        }
         // HOME resolves to the launch origin — the ship itself knows it (the world seam never sees it).
         if (USSProgramDefaults.TARGET_HOME.equals(target)) {
             pendingHome = true;
@@ -404,15 +435,28 @@ public final class USSShipPilot implements USSExecutionContext {
     }
 
     @Override
-    public boolean repairStart() {
-        // v1: a Voidcraft has no repairable station at its hover (repair is a station command - the base runs it
-        // in its own program). The REPAIR instruction SKIPs on a ship.
-        return false;
+    public boolean repairStart(String target) {
+        if (ship.getAnchor() == null) {
+            // REPAIR is a station command: only an anchored Voidbase runs it (in its own program).
+            log("REPAIR: not a station — skipping");
+            return false;
+        }
+        return world.repairStart(ship, target);
     }
 
     @Override
     public boolean repairTick() {
-        return false; // repairStart never RUNNING on a ship
+        return world.repairTick(ship);
+    }
+
+    @Override
+    public boolean transferStart(int commandId, String target, long amount, String filter) {
+        return world.cargoTransferStart(ship, commandId, target, amount, filter);
+    }
+
+    @Override
+    public boolean transferTick(int commandId) {
+        return world.cargoTransferTick(ship, commandId);
     }
 
     @Override
@@ -453,6 +497,14 @@ public final class USSShipPilot implements USSExecutionContext {
 
     public int getLastIndex() {
         return lastIndex;
+    }
+
+    /**
+     * The id of the entity's in-flight MINE work leg (the base's mining-beam identity for the fleet render
+     * anchor) — 0 when no mining leg is active.
+     */
+    public int miningLegId() {
+        return (ship.isLegActive() && legWorkKind == USSWorkKind.MINE) ? ship.getLegId() : 0;
     }
 
     /**

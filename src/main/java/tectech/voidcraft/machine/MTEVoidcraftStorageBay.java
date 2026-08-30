@@ -48,7 +48,7 @@ import tectech.voidcraft.uss.VoidcraftCargoPool;
 import tectech.voidcraft.uss.VoidcraftFluidPool;
 
 /**
- * Voidcraft Storage Bay (EoH rework, Phase 3).
+ * Voidcraft Storage Bay (the EoH rework).
  *
  * <p>
  * A 5×5×3 multiblock holding the shared {@link VoidcraftCargoPool} (16 slots) that mining ships deliver into and
@@ -62,7 +62,7 @@ import tectech.voidcraft.uss.VoidcraftFluidPool;
  * pool),</li>
  * <li>ships deliver cargo straight through the output busses first (an ME output bus is the bulk sink: it takes any
  * number of items into its cache and flushes them to the ME network),</li>
- * <li>Phase 4 pass 1: Starlifter missions also deliver <em>fluid</em> cargo (Stellar Plasma) into a parallel
+ * <li>Starlifter missions also deliver <em>fluid</em> cargo (Stellar Plasma) into a parallel
  * {@link VoidcraftFluidPool}, pumped out through output <em>hatches</em> (an ME output hatch is the bulk sink) —
  * same ME-first / pool-fallback / never-silently-void contract as the item path,</li>
  * <li>both pump directions run every machine tick while the structure is valid.</li>
@@ -98,7 +98,7 @@ public class MTEVoidcraftStorageBay extends TTMultiblockBase implements ISurviva
         .addElement(
             'C',
             buildHatchAdder(MTEVoidcraftStorageBay.class)
-                // Input/OutputBus: the item path (buses, incl. ME item buses). OutputHatch: the Phase 4 pass 1
+                // Input/OutputBus: the item path (buses, incl. ME item buses). OutputHatch: the
                 // FLUID path — output hatches (incl. ME output hatches) accept the pool's Stellar Plasma.
                 .atLeast(InputBus, OutputBus, OutputHatch)
                 .casingIndex(Casings.HighPowerCasing.getTextureId())
@@ -109,7 +109,7 @@ public class MTEVoidcraftStorageBay extends TTMultiblockBase implements ISurviva
     /** The shared cargo pool (16 slots). */
     private @Nullable VoidcraftCargoPool pool = new VoidcraftCargoPool();
 
-    /** The shared fluid pool (Phase 4 pass 1: Starlifter Stellar Plasma / dwarf-matter fluids). */
+    /** The shared fluid pool (the starlifter's produced star fluids). */
     private @Nullable VoidcraftFluidPool fluidPool = new VoidcraftFluidPool();
 
     public MTEVoidcraftStorageBay(int aID, String aName, String aNameRegional) {
@@ -164,9 +164,8 @@ public class MTEVoidcraftStorageBay extends TTMultiblockBase implements ISurviva
             }
         }
 
-        // 2) Pool → output busses (as much as fits). Void protection is ON so the leftover stays in the pool slot —
-        // the old addOutputPartial() (protection OFF for this machine) silently voided whatever the busses
-        // (incl. a full ME cache) could not take, while the pool slot was drained completely.
+        // 2) Pool → output busses (as much as fits). Void protection is ON: the busses (incl. a full ME cache)
+        // may not take everything, and whatever they cannot take must not be voided — it stays in the pool slot.
         boolean poolHasContent = false;
         for (int slot = 0; slot < VoidcraftCargoPool.SLOTS; slot++) {
             if (pool.get(slot) != null) {
@@ -188,7 +187,7 @@ public class MTEVoidcraftStorageBay extends TTMultiblockBase implements ISurviva
             helper.commit();
         }
 
-        // 3) Fluid pool → output hatches (Phase 4 pass 1). Same contract: void protection ON → the accepted mB
+        // 3) Fluid pool → output hatches. Same contract: void protection ON → the accepted mB
         // comes back, the remainder stays in the pool slot (ME output hatches are the bulk sink for it).
         if (!fluidPool.isEmpty()) {
             FluidEjectionHelper helper = new FluidEjectionHelper(getOutputHatches(), true);
@@ -359,7 +358,7 @@ public class MTEVoidcraftStorageBay extends TTMultiblockBase implements ISurviva
                         "" + stack.stackSize + " × " + stack.getDisplayName()));
             }
         }
-        // Phase 4 pass 1: the fluid pool (Starlifter Stellar Plasma).
+        // The fluid pool (Starlifter Stellar Plasma).
         if (fluidPool != null && !fluidPool.isEmpty()) {
             str.add("tt.voidcraft.bay.infodata.fluids.header");
             for (int slot = 0; slot < VoidcraftFluidPool.SLOTS; slot++) {

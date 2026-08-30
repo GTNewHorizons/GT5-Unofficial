@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 /**
- * Bare-JVM tests for the deterministic fleet swarm spread (Phase 4 pass 5): same ship → same hover offset for the
+ * Bare-JVM tests for the deterministic fleet swarm spread: same ship → same hover offset for the
  * life of the world; different ships → different spots; every offset inside the magnitude bound that keeps the whole
  * fleet inside the EoH space shell.
  */
@@ -73,7 +73,7 @@ public class USSFleetOrbitTest {
         assertTrue(USSConstants.MAX_SHIPS_PER_USS >= 100, "fleet capacity must be large");
     }
 
-    // region per-launch seed key (pass 5.1) — duplicated ship items share the item UUID, so the fleet must key
+    // region per-launch seed key — duplicated ship items share the item UUID, so the fleet must key
     // per-ship identity on the USS-assigned per-launch seed instead
 
     @Test
@@ -112,7 +112,7 @@ public class USSFleetOrbitTest {
 
     // endregion
 
-    // region planet position + dynamic hover (pass 7) — the ships must hover above the RENDERED planets, so this
+    // region planet position + dynamic hover — the ships must hover above the RENDERED planets, so this
     // math must agree with EOHRenderingUtils.renderUSSOrbits exactly
 
     @Test
@@ -167,8 +167,8 @@ public class USSFleetOrbitTest {
             double[] actual = USSFleetOrbit.planetAnchorPosition(distance, orbitSpeed, xAngle, zAngle, starSize, time);
 
             float radius = 0.2f + distance + 0.2f * starSize; // float, exactly like the renderer
-            // Pass 30: the orbit angle is the RADIUS law (0.3·time/radius) — the random orbitSpeed no longer
-            // drives it (it is only passed through for signature stability).
+            // The orbit angle is the RADIUS law (0.3·time/radius) — orbitSpeed does not drive it (it is only
+            // passed through for signature stability).
             double th = Math.toRadians((USSFleetOrbit.ORBIT_DEG_PER_TICK_PER_BLOCK * time / radius) % 360f);
             double ph = Math.toRadians(zAngle);
             double ps = Math.toRadians(xAngle);
@@ -195,12 +195,11 @@ public class USSFleetOrbitTest {
 
     @Test
     public void testPlanetAndStarLifterBoundsRespectTheVoidcraftShell() {
-        // Pass 13/14 (user: "the planets are still very close to the star — orbital distance randomized between
-        // 3 blocks from the star all the way to the edges of the system"; then "ships exiting the dome isn't
-        // good — make the distance from the edge 4 blocks"):
+        // Orbital distance is randomized from 3 blocks off the star all the way to the edge of the system,
+        // and ships must not exit the dome — 4 blocks of margin from the edge:
         // MAX_DISTANCE = USSConstants.SPACE_SHELL_RADIUS − 4 BY CONSTRUCTION, so the planet center always stays
-        // inside the Voidcraft dome (27.1) with the user's 4-block margin. (The legacy 12.95 bound is gone —
-        // the dome is per-machine; the legacy EoH machine keeps its own 12.95 default.)
+        // inside the Voidcraft dome (27.1) with the 4-block margin. The dome is per-machine; the legacy EoH
+        // machine keeps its own 12.95 default.
         float starSize = 0.4f + 8f / 8.0f;
         double planetWorstCenter = 0.2 + USSPlanets.MAX_DISTANCE + 0.2 * starSize;
         assertTrue(
@@ -235,7 +234,7 @@ public class USSFleetOrbitTest {
         assertTrue(USSConstants.HOVER_ABOVE_STAR > 1.9, "Starlifter hover must clear the star surface");
     }
 
-    // region stateful-position pass (USSPosition) — the "distance within the solar system" model
+    // region stateful position (USSPosition) — the "distance within the solar system" model
 
     @Test
     public void testStarPositionIsTheStarCenter() {
@@ -360,7 +359,7 @@ public class USSFleetOrbitTest {
 
     // endregion
 
-    // region gateway render pass (the dome-edge point in the gateway's direction)
+    // region gateway render (the dome-edge point in the gateway's direction)
 
     @Test
     public void testGatewayEdgeSitsOnTheDomeSurface() {

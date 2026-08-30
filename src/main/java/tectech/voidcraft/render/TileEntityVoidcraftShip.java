@@ -53,8 +53,7 @@ public class TileEntityVoidcraftShip extends TileEntity {
      * Entry tag (pass 7): the ship's mission target — a planet index into {@link #getSystemPlanets()} (the ship
      * hovers 0.5 blocks above that planet's rendered position), a RIPPLE-POINT index (0..342, the Explorer pass)
      * for Explorers, or {@code -1} for the star itself (Starlifters hover 2.5 above the star center). The
-     * destination is resolved CLIENT-side against the system below — the pass-5 static role hover point
-     * ({@code vc_orbit_rel}) is gone.
+     * destination is resolved CLIENT-side against the system below.
      */
     public static final String TAG_ENTRY_TARGET = "vc_target";
 
@@ -133,9 +132,9 @@ public class TileEntityVoidcraftShip extends TileEntity {
     /**
      * Entry tag (the command-split pass): the ship's CURRENT leg's WORK KIND (see
      * {@code USSWorkKind}: 0 travel / 1 mine / 2 scan / 3 siphon). A work leg's duration depends on the KIND (the
-     * work command that started it), not the ship's role — a hybrid ship (miner + explorer) mines at its mining
+     * work command that started it) — a ship with both mining and scan power mines at its mining
      * power and scans at its scan power. The client derives the SAME duration the server ticks from this. 0 /
-     * absent → the legacy role-based table.
+     * absent → the travel table.
      */
     public static final String TAG_ENTRY_WORK_KIND = "vc_work_kind";
 
@@ -159,6 +158,16 @@ public class TileEntityVoidcraftShip extends TileEntity {
     public static final String TAG_SITE_CONSTRUCT_LEG = "vc_site_construct_leg";
     public static final String TAG_SITE_CONSTRUCT_TOTAL = "vc_site_construct_total";
     public static final String TAG_SITE_CONSTRUCT_SEED = "vc_site_construct_seed";
+
+    /**
+     * Fleet tag (ship-to-ship cargo transfer): the in-flight SEND / TAKE transfers — the client draws a gray beam
+     * for each. Each entry is a compound carrying the EXECUTING ship's uuid ({@link #TAG_TRANSFER_SOURCE}) and the
+     * target ship's uuid ({@link #TAG_TRANSFER_TARGET}); the client pairs each to the rendered ship holding that
+     * uuid (first match — the same identity the server resolves the transfer against).
+     */
+    public static final String TAG_TRANSFERS = "vc_transfers";
+    public static final String TAG_TRANSFER_SOURCE = "vc_tr_src";
+    public static final String TAG_TRANSFER_TARGET = "vc_tr_tgt";
 
     /**
      * Render bounding-box half-extent (covers the flight path from gateway to hover point + swarm spread): the
@@ -186,6 +195,10 @@ public class TileEntityVoidcraftShip extends TileEntity {
     // Voidbase (Phase D): the in-USS construction sites + standing bases (rendered from this same anchor).
     private final List<NBTTagCompound> baseSites = new ArrayList<NBTTagCompound>();
     private final List<NBTTagCompound> bases = new ArrayList<NBTTagCompound>();
+
+    // Ship-to-ship cargo transfers (SEND / TAKE): each entry pairs the executing + target ship uuids (the client's
+    // gray transfer beams).
+    private final List<NBTTagCompound> transfers = new ArrayList<NBTTagCompound>();
 
     private AxisAlignedBB boundingBox;
 
@@ -346,6 +359,26 @@ public class TileEntityVoidcraftShip extends TileEntity {
         return Collections.unmodifiableList(bases);
     }
 
+    /**
+     * Replace the whole transfer list (the MTE rebuilds it on every transfer start/end). Each entry: the executing
+     * ship's uuid ({@link #TAG_TRANSFER_SOURCE}) + the target ship's uuid ({@link #TAG_TRANSFER_TARGET}).
+     */
+    public void setTransfers(List<NBTTagCompound> entries) {
+        transfers.clear();
+        if (entries != null) {
+            for (NBTTagCompound entry : entries) {
+                if (entry != null) {
+                    transfers.add(entry);
+                }
+            }
+        }
+    }
+
+    /** @return the in-flight transfer entries (executing + target uuids), in no particular order (never null). */
+    public List<NBTTagCompound> getTransfers() {
+        return Collections.unmodifiableList(transfers);
+    }
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
@@ -415,6 +448,13 @@ public class TileEntityVoidcraftShip extends TileEntity {
             }
             compound.setTag(TAG_BASES, baseList);
         }
+        if (!transfers.isEmpty()) {
+            NBTTagList transferList = new NBTTagList();
+            for (NBTTagCompound entry : transfers) {
+                transferList.appendTag(entry);
+            }
+            compound.setTag(TAG_TRANSFERS, transferList);
+        }
     }
 
     @Override
@@ -478,6 +518,11 @@ public class TileEntityVoidcraftShip extends TileEntity {
         NBTTagList baseList = compound.getTagList(TAG_BASES, 10);
         for (int i = 0; i < baseList.tagCount(); i++) {
             bases.add(baseList.getCompoundTagAt(i));
+        }
+        transfers.clear();
+        NBTTagList transferList = compound.getTagList(TAG_TRANSFERS, 10);
+        for (int i = 0; i < transferList.tagCount(); i++) {
+            transfers.add(transferList.getCompoundTagAt(i));
         }
     }
 

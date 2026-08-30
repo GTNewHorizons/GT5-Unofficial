@@ -8,7 +8,7 @@ import cpw.mods.fml.relauncher.FMLInjectionData;
 import tectech.TecTech;
 
 /**
- * Voidcraft rework configuration (EoH rework, Phase 2 vertical slice).
+ * Voidcraft rework configuration.
  *
  * <p>
  * {@code config/voidcraft.cfg}:

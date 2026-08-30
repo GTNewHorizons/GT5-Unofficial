@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The pilot's fake game world (programming framework, Phase C tests): records every side-effect the pilot
+ * The pilot's fake game world (bare-JVM): records every side-effect the pilot
  * dispatches (so the "exactly once" invariants are assertable) and serves scripted target resolutions + leg
  * durations.
  */
@@ -44,28 +44,41 @@ public final class FakePilotWorld implements USSPilotWorld {
     public int constructTickCalls = 0;
     public final List<String> constructTickKinds = new ArrayList<>();
     public final List<Integer> constructTickIndices = new ArrayList<>();
-    /** Recorded base REPAIR dispatches. */
-    public int baseRepairStarts = 0;
-    public int baseRepairTicks = 0;
-    public final List<String> baseLogs = new ArrayList<>();
+    /** Recorded REPAIR dispatches (the station's repair work command). */
+    public int repairStartCalls = 0;
+    public VoidcraftActiveShip repairStartShip;
+    public String repairStartTarget = "";
+    public int repairTickCalls = 0;
 
     // endregion
 
-    // region scripted results (base-mode seam)
+    // region scripted results (game-side seams)
 
     /** The CONSTRUCT leg start result (false = nothing to construct - the command SKIPs). */
     public boolean constructStartResult = false;
     /** The CONSTRUCT leg tick result (true = still running). */
     public boolean constructTickResult = false;
-    /** The base REPAIR start result. */
+    /** The REPAIR start result (false = nothing restorable - the command SKIPs). */
     public boolean repairStartResult = true;
-    /** The base REPAIR tick result (true = still below max). */
+    /** The REPAIR tick result (true = the target is still below max). */
     public boolean repairTickResult = true;
     /**
-     * When &gt;= 0, the base REPAIR tick returns true exactly this many more times and then false (a bounded
+     * When &gt;= 0, the REPAIR tick returns true exactly this many more times and then false (a bounded
      * repair run); -1 uses {@link #repairTickResult} forever.
      */
     public int repairTickTrueLeft = -1;
+
+    /** Recorded ship SEND / TAKE dispatches (the cargo transfer seam). */
+    public int cargoTransferStartCalls = 0;
+    public int cargoTransferStartCommandId;
+    public String cargoTransferStartTarget;
+    public long cargoTransferStartAmount = -1L;
+    public String cargoTransferStartFilter;
+    public int cargoTransferTickCalls = 0;
+    /** The cargoTransferStart result. */
+    public boolean cargoTransferStartResult = true;
+    /** The cargoTransferTick result (true = still running). */
+    public boolean cargoTransferTickResult = true;
 
     // endregion
 
@@ -128,14 +141,16 @@ public final class FakePilotWorld implements USSPilotWorld {
     }
 
     @Override
-    public boolean baseRepairStart(VoidcraftActiveBase base) {
-        baseRepairStarts++;
+    public boolean repairStart(VoidcraftActiveShip ship, String target) {
+        repairStartCalls++;
+        repairStartShip = ship;
+        repairStartTarget = target == null ? "" : target;
         return repairStartResult;
     }
 
     @Override
-    public boolean baseRepairTick(VoidcraftActiveBase base) {
-        baseRepairTicks++;
+    public boolean repairTick(VoidcraftActiveShip ship) {
+        repairTickCalls++;
         if (repairTickTrueLeft >= 0) {
             if (repairTickTrueLeft == 0) {
                 return false;
@@ -147,8 +162,20 @@ public final class FakePilotWorld implements USSPilotWorld {
     }
 
     @Override
-    public void logBase(VoidcraftActiveBase base, String message) {
-        baseLogs.add(message == null ? "" : message);
+    public boolean cargoTransferStart(VoidcraftActiveShip ship, int commandId, String target, long amount,
+        String filter) {
+        cargoTransferStartCalls++;
+        cargoTransferStartCommandId = commandId;
+        cargoTransferStartTarget = target;
+        cargoTransferStartAmount = amount;
+        cargoTransferStartFilter = filter;
+        return cargoTransferStartResult;
+    }
+
+    @Override
+    public boolean cargoTransferTick(VoidcraftActiveShip ship, int commandId) {
+        cargoTransferTickCalls++;
+        return cargoTransferTickResult;
     }
 
     /** Resolve key helper (test readability). */

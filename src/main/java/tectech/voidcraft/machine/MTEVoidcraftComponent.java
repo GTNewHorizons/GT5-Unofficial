@@ -292,6 +292,9 @@ public class MTEVoidcraftComponent extends MetaTileEntity implements VoidcraftPr
         if (stats[5] > 0L) {
             bits |= USSCapabilities.REPAIR;
         }
+        if (stats[6] > 0L) {
+            bits |= USSCapabilities.LOGISTICS;
+        }
         return bits == 0 ? USSCapabilities.universal() : USSCapabilities.of(bits);
     }
 
@@ -318,6 +321,9 @@ public class MTEVoidcraftComponent extends MetaTileEntity implements VoidcraftPr
                 return stats[4] > 0L ? "Construction power: " + stats[4] : "";
             case USSCommand.REPAIR:
                 return stats[5] > 0L ? "Repair bays: " + stats[5] : "";
+            case USSCommand.SEND:
+            case USSCommand.TAKE:
+                return stats[6] > 0L ? "Logistics power: " + stats[6] : "";
             default:
                 return "";
         }
@@ -326,10 +332,10 @@ public class MTEVoidcraftComponent extends MetaTileEntity implements VoidcraftPr
     /**
      * The stats of the covers mounted on this controller's OWN block (all six faces), per
      * {@link VoidcraftCoverComponent}: {@code [0] thrust [1] mining [2] scan [3] siphon [4] construction
-     * [5] repair bays}. Zeroes when the base TE is not available (a client read before sync).
+     * [5] repair bays [6] logistics}. Zeroes when the base TE is not available (a client read before sync).
      */
     private long[] mountedCoverStats() {
-        long[] out = new long[6];
+        long[] out = new long[7];
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base == null) {
             return out;
@@ -345,6 +351,7 @@ public class MTEVoidcraftComponent extends MetaTileEntity implements VoidcraftPr
             out[2] += cover.getScanPower();
             out[3] += cover.getStarlifterPower();
             out[4] += cover.getConstructionPower();
+            out[6] += cover.getLogisticsPower();
             if (cover == VoidcraftCoverComponent.REPAIR_BAY) {
                 out[5]++;
             }

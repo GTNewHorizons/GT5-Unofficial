@@ -42,6 +42,11 @@ public final class VoidcraftUSS {
     /** Per-planet ore reserves (the mechanics pass — depletion). A list indexed by planet index. */
     public static final String TAG_PLANET_RESERVES = "vc_uss_planet_reserves";
     /**
+     * The star's remaining fluid reserve (the starlifter pass — depletion). A reserve compound; absent = not yet
+     * siphoned.
+     */
+    public static final String TAG_STAR_FLUID_RESERVE = "vc_uss_star_fluid_reserve";
+    /**
      * Scanned spacetime-ripple point indices (the Explorer pass — which of the 343 grid points have been revealed).
      * An int array of point indices (0..342). Empty = nothing scanned yet (all ripples still hidden).
      */
@@ -51,6 +56,8 @@ public final class VoidcraftUSS {
      * future UI / external machines) read and write. A SPARSE list of {@code {i, s}} compounds (only written slots).
      */
     public static final String TAG_VARIABLES = "vc_uss_variables";
+    /** The star-scale infrastructure progress (the Dyson Swarm pass — per-target satellite counts + decay). */
+    public static final String TAG_INFRASTRUCTURE = "vc_uss_infra";
     /** Within one planet-reserve compound: the ore list (material + remaining amount). */
     public static final String RESERVE_TAG_ORES = "ores";
     /** One ore entry: the GT material name. */
@@ -69,7 +76,13 @@ public final class VoidcraftUSS {
      * is a pure function of star type + ignition timestamp). A null entry means "not yet mined" (the reserve is
      * initialized from the planet definition on first mine).
      */
-    private final List<PlanetReserve> planetReserves;
+    private final List<MaterialReserve> planetReserves;
+
+    /**
+     * The star's remaining fluid reserve (the starlifter pass — depletion). null = not yet siphoned (the reserve is
+     * initialized from the star definition on the first siphon).
+     */
+    private final MaterialReserve starFluidReserve;
 
     /**
      * Scanned spacetime-ripple point indices (the Explorer pass). A point is added to this set the moment an
@@ -85,9 +98,15 @@ public final class VoidcraftUSS {
      */
     private final USSVariableSpace variableSpace;
 
+    /**
+     * The star-scale infrastructure progress (the Dyson Swarm pass): per target, the satellite count plus the decay
+     * accumulator. Immutable — {@link #withInfrastructure} returns a new instance.
+     */
+    private final USSInfrastructure infrastructure;
+
     private VoidcraftUSS(USSState state, int tier, USSStarType starType, long lifespanRemaining, long ignitedAt,
-        List<String> ships, List<PlanetReserve> planetReserves, java.util.Set<Integer> scannedRipples,
-        USSVariableSpace variableSpace) {
+        List<String> ships, List<MaterialReserve> planetReserves, MaterialReserve starFluidReserve,
+        java.util.Set<Integer> scannedRipples, USSVariableSpace variableSpace, USSInfrastructure infrastructure) {
         this.state = state;
         this.tier = tier;
         this.starType = starType;
@@ -95,14 +114,16 @@ public final class VoidcraftUSS {
         this.ignitedAt = ignitedAt;
         this.ships = ships == null ? new ArrayList<>() : new ArrayList<>(ships);
         this.planetReserves = planetReserves == null ? new ArrayList<>() : new ArrayList<>(planetReserves);
+        this.starFluidReserve = starFluidReserve;
         this.scannedRipples = scannedRipples == null ? new java.util.TreeSet<Integer>()
             : new java.util.TreeSet<>(scannedRipples);
         this.variableSpace = variableSpace == null ? USSVariableSpace.fresh() : variableSpace;
+        this.infrastructure = infrastructure == null ? USSInfrastructure.empty() : infrastructure;
     }
 
     /** A fresh-space constructor (cold / ignited / toCold — a new system has a fresh variable space). */
     private VoidcraftUSS(USSState state, int tier, USSStarType starType, long lifespanRemaining, long ignitedAt,
-        List<String> ships, List<PlanetReserve> planetReserves, java.util.Set<Integer> scannedRipples) {
+        List<String> ships, List<MaterialReserve> planetReserves, java.util.Set<Integer> scannedRipples) {
         this(
             state,
             tier,
@@ -111,22 +132,24 @@ public final class VoidcraftUSS {
             ignitedAt,
             ships,
             planetReserves,
+            null,
             scannedRipples,
-            USSVariableSpace.fresh());
+            USSVariableSpace.fresh(),
+            USSInfrastructure.empty());
     }
 
     /**
-     * One planet's remaining ore reserve: a map of GT material → remaining amount (items). Immutable — mining
-     * returns a new instance.
+     * One material's remaining reserve: a map of GT material → remaining amount (planet ores in items, star fluids in
+     * millibuckets). Immutable — depletion returns a new instance.
      *
      * <p>
      * Bare-JVM safe: only {@link gregtech.api.enums.Materials} data (no Forge fluid/block objects).
      */
-    public static final class PlanetReserve {
+    public static final class MaterialReserve {
 
         private final Map<gregtech.api.enums.Materials, Long> remaining;
 
-        PlanetReserve(Map<gregtech.api.enums.Materials, Long> remaining) {
+        MaterialReserve(Map<gregtech.api.enums.Materials, Long> remaining) {
             this.remaining = new LinkedHashMap<>(remaining);
         }
 
@@ -166,20 +189,20 @@ public final class VoidcraftUSS {
          * @param amount   the amount to subtract (clamped at 0)
          * @return a new reserve with the amount subtracted from the material (all other entries preserved)
          */
-        public PlanetReserve mine(gregtech.api.enums.Materials material, long amount) {
+        public MaterialReserve mine(gregtech.api.enums.Materials material, long amount) {
             Map<gregtech.api.enums.Materials, Long> next = new LinkedHashMap<>(remaining);
             long current = next.getOrDefault(material, 0L);
             next.put(material, Math.max(0L, current - amount));
-            return new PlanetReserve(next);
+            return new MaterialReserve(next);
         }
 
         /**
          * @return a new reserve with the material's remaining set to the given amount (added if absent)
          */
-        public PlanetReserve setAmount(gregtech.api.enums.Materials material, long amount) {
+        public MaterialReserve setAmount(gregtech.api.enums.Materials material, long amount) {
             Map<gregtech.api.enums.Materials, Long> next = new LinkedHashMap<>(remaining);
             next.put(material, Math.max(0L, amount));
-            return new PlanetReserve(next);
+            return new MaterialReserve(next);
         }
 
         public void writeToNBT(NBTTagCompound nbt) {
@@ -208,7 +231,7 @@ public final class VoidcraftUSS {
          * @param planetSize the planet's sampled size (the hologram scale; negative clamped to 0)
          * @return the initial reserve (never null)
          */
-        public static PlanetReserve fromPlanet(USSPlanetDefinition definition, double planetSize) {
+        public static MaterialReserve fromPlanet(USSPlanetDefinition definition, double planetSize) {
             Map<gregtech.api.enums.Materials, Long> map = new LinkedHashMap<>();
             if (definition != null) {
                 double sizeSq = Math.max(0.0, planetSize) * Math.max(0.0, planetSize);
@@ -220,10 +243,36 @@ public final class VoidcraftUSS {
                     map.put(ore.getOreType(), Math.max(0L, amount));
                 }
             }
-            return new PlanetReserve(map);
+            return new MaterialReserve(map);
         }
 
-        public static PlanetReserve readFromNBT(NBTTagCompound nbt) {
+        /**
+         * Initialize a star's fluid reserve from its registered definition: each PRODUCED fluid's capacity (in
+         * millions, {@code material.getAmount() × 1_000_000}) multiplied by the square of the star size (the same
+         * rule as planet ores; a zero-amount slot produces no fluid and gets no reserve entry).
+         *
+         * @param definition the star definition (null → empty reserve)
+         * @param starSize   the star's sampled size (negative clamped to 0)
+         * @return the initial reserve (never null)
+         */
+        public static MaterialReserve fromStar(USSStarDefinition definition, double starSize) {
+            Map<gregtech.api.enums.Materials, Long> map = new LinkedHashMap<>();
+            if (definition != null) {
+                double sizeSq = Math.max(0.0, starSize) * Math.max(0.0, starSize);
+                for (USSStarMaterial material : definition.getMaterials()) {
+                    if (material == null || material.getMaterial() == null
+                        || material.getMaterial() == gregtech.api.enums.Materials._NULL
+                        || material.getAmount() <= 0L) {
+                        continue;
+                    }
+                    long amount = (long) (material.getAmount() * 1_000_000L * sizeSq);
+                    map.put(material.getMaterial(), Math.max(0L, amount));
+                }
+            }
+            return new MaterialReserve(map);
+        }
+
+        public static MaterialReserve readFromNBT(NBTTagCompound nbt) {
             Map<gregtech.api.enums.Materials, Long> map = new LinkedHashMap<>();
             if (nbt != null) {
                 NBTTagList ores = nbt.getTagList(RESERVE_TAG_ORES, 10);
@@ -240,7 +289,7 @@ public final class VoidcraftUSS {
                     map.put(m, Math.max(0L, ore.getLong(RESERVE_TAG_AMOUNT)));
                 }
             }
-            return new PlanetReserve(map);
+            return new MaterialReserve(map);
         }
     }
 
@@ -264,7 +313,7 @@ public final class VoidcraftUSS {
     public static VoidcraftUSS ignite(int tier, USSStarType starType, long nowMillis) {
         tier = USSConstants.clampTier(tier);
         if (starType == null) {
-            starType = USSStarType.MAIN_SEQUENCE; // defensive: an unknown controller is rejected by the machine anyway
+            starType = USSStarType.YELLOW_DWARF; // defensive: an unknown controller is rejected by the machine anyway
         }
         return new VoidcraftUSS(
             USSState.IGNITED,
@@ -289,8 +338,10 @@ public final class VoidcraftUSS {
             ignitedAt,
             ships,
             planetReserves,
+            starFluidReserve,
             scannedRipples,
-            variableSpace);
+            variableSpace,
+            infrastructure);
     }
 
     /**
@@ -309,13 +360,16 @@ public final class VoidcraftUSS {
             ignitedAt,
             next,
             planetReserves,
+            starFluidReserve,
             scannedRipples,
-            variableSpace);
+            variableSpace,
+            infrastructure);
     }
 
     /**
      * @return a COLD copy of this model (star gone; the controller is consumed by the machine, not by this method).
-     *         The ore reserves are discarded (a re-ignition is a new system with fresh reserves).
+     *         The ore reserves and the star's fluid reserve are discarded (a re-ignition is a new system with fresh
+     *         reserves).
      */
     public VoidcraftUSS toCold() {
         return new VoidcraftUSS(USSState.COLD, -1, null, 0L, 0L, null, null, null);
@@ -325,7 +379,7 @@ public final class VoidcraftUSS {
      * @param planetIndex the planet index (the stable identity within the system)
      * @return that planet's ore reserve, or null when it has not been mined yet
      */
-    public PlanetReserve getPlanetReserve(int planetIndex) {
+    public MaterialReserve getPlanetReserve(int planetIndex) {
         if (planetIndex < 0 || planetIndex >= planetReserves.size()) {
             return null;
         }
@@ -336,8 +390,15 @@ public final class VoidcraftUSS {
      * @return an unmodifiable view of the per-planet ore reserves (index = planet index; null entries = not yet
      *         mined)
      */
-    public List<PlanetReserve> getPlanetReserves() {
+    public List<MaterialReserve> getPlanetReserves() {
         return Collections.unmodifiableList(planetReserves);
+    }
+
+    /**
+     * @return the star's fluid reserve, or null when it has not been siphoned yet
+     */
+    public MaterialReserve getStarFluidReserve() {
+        return starFluidReserve;
     }
 
     /**
@@ -346,11 +407,11 @@ public final class VoidcraftUSS {
      * @return a new model with that planet's reserve updated (the list is grown with nulls as needed; all other
      *         fields preserved)
      */
-    public VoidcraftUSS withPlanetReserve(int planetIndex, PlanetReserve reserve) {
+    public VoidcraftUSS withPlanetReserve(int planetIndex, MaterialReserve reserve) {
         if (planetIndex < 0) {
             return this;
         }
-        List<PlanetReserve> next = new ArrayList<>(planetReserves);
+        List<MaterialReserve> next = new ArrayList<>(planetReserves);
         while (next.size() <= planetIndex) {
             next.add(null);
         }
@@ -363,8 +424,29 @@ public final class VoidcraftUSS {
             ignitedAt,
             ships,
             next,
+            starFluidReserve,
             scannedRipples,
-            variableSpace);
+            variableSpace,
+            infrastructure);
+    }
+
+    /**
+     * @param reserve the star's new fluid reserve (null clears it)
+     * @return a new model with the star's fluid reserve replaced (all other fields preserved)
+     */
+    public VoidcraftUSS withStarFluidReserve(MaterialReserve reserve) {
+        return new VoidcraftUSS(
+            state,
+            tier,
+            starType,
+            lifespanRemaining,
+            ignitedAt,
+            ships,
+            planetReserves,
+            reserve,
+            scannedRipples,
+            variableSpace,
+            infrastructure);
     }
 
     /**
@@ -401,8 +483,10 @@ public final class VoidcraftUSS {
             ignitedAt,
             ships,
             planetReserves,
+            starFluidReserve,
             next,
-            variableSpace);
+            variableSpace,
+            infrastructure);
     }
 
     // region the USS global variable space (programming framework, Phase C)
@@ -425,8 +509,38 @@ public final class VoidcraftUSS {
             ignitedAt,
             ships,
             planetReserves,
+            starFluidReserve,
             scannedRipples,
-            space);
+            space,
+            infrastructure);
+    }
+
+    // endregion
+
+    // region the star-scale infrastructure progress (the Dyson Swarm pass)
+
+    /** @return the infrastructure progress (never null — empty when nothing has been built). */
+    public USSInfrastructure getInfrastructure() {
+        return infrastructure;
+    }
+
+    /**
+     * @param progress the new infrastructure progress (null → an empty progress)
+     * @return a new model with the infrastructure progress replaced; all other fields preserved
+     */
+    public VoidcraftUSS withInfrastructure(USSInfrastructure progress) {
+        return new VoidcraftUSS(
+            state,
+            tier,
+            starType,
+            lifespanRemaining,
+            ignitedAt,
+            ships,
+            planetReserves,
+            starFluidReserve,
+            scannedRipples,
+            variableSpace,
+            progress);
     }
 
     // endregion
@@ -500,7 +614,7 @@ public final class VoidcraftUSS {
         }
         // The per-planet ore reserves (the mechanics pass). Only written when at least one planet has been mined.
         boolean anyReserve = false;
-        for (PlanetReserve r : planetReserves) {
+        for (MaterialReserve r : planetReserves) {
             if (r != null) {
                 anyReserve = true;
                 break;
@@ -508,7 +622,7 @@ public final class VoidcraftUSS {
         }
         if (anyReserve) {
             NBTTagList reserves = new NBTTagList();
-            for (PlanetReserve r : planetReserves) {
+            for (MaterialReserve r : planetReserves) {
                 NBTTagCompound entry = new NBTTagCompound();
                 if (r != null) {
                     r.writeToNBT(entry);
@@ -516,6 +630,12 @@ public final class VoidcraftUSS {
                 reserves.appendTag(entry);
             }
             nbt.setTag(TAG_PLANET_RESERVES, reserves);
+        }
+        // The star's fluid reserve (the starlifter pass). Only written once the star has been siphoned.
+        if (starFluidReserve != null) {
+            NBTTagCompound reserveTag = new NBTTagCompound();
+            starFluidReserve.writeToNBT(reserveTag);
+            nbt.setTag(TAG_STAR_FLUID_RESERVE, reserveTag);
         }
         // The scanned spacetime-ripple point indices (the Explorer pass). Only written when at least one is scanned.
         if (!scannedRipples.isEmpty()) {
@@ -530,6 +650,13 @@ public final class VoidcraftUSS {
         // writes nothing, keeping a COLD / fresh USS tag lean).
         if (variableSpace != null && variableSpace.writtenCount() > 0) {
             nbt.setTag(TAG_VARIABLES, variableSpace.writeToNBT());
+        }
+        // The star-scale infrastructure progress (the Dyson Swarm pass). Only written when at least one target
+        // carries satellites.
+        if (infrastructure != null && !infrastructure.isEmpty()) {
+            NBTTagCompound infraTag = new NBTTagCompound();
+            infrastructure.writeToNBT(infraTag);
+            nbt.setTag(TAG_INFRASTRUCTURE, infraTag);
         }
     }
 
@@ -579,12 +706,16 @@ public final class VoidcraftUSS {
             }
         }
         // The per-planet ore reserves (the mechanics pass). Null entries = not yet mined.
-        List<PlanetReserve> reserves = new ArrayList<>();
+        List<MaterialReserve> reserves = new ArrayList<>();
         NBTTagList reservesTag = nbt.getTagList(TAG_PLANET_RESERVES, 9);
         for (int i = 0; i < reservesTag.tagCount(); i++) {
             NBTTagCompound entry = reservesTag.getCompoundTagAt(i);
-            reserves.add(PlanetReserve.readFromNBT(entry));
+            reserves.add(MaterialReserve.readFromNBT(entry));
         }
+        // The star's fluid reserve (the starlifter pass). Absent tag = not yet siphoned.
+        MaterialReserve starReserve = nbt.hasKey(TAG_STAR_FLUID_RESERVE)
+            ? MaterialReserve.readFromNBT(nbt.getCompoundTag(TAG_STAR_FLUID_RESERVE))
+            : null;
         // The scanned spacetime-ripple point indices (the Explorer pass). Absent = nothing scanned.
         java.util.Set<Integer> scanned = new java.util.TreeSet<>();
         int[] scannedArr = nbt.getIntArray(TAG_RIPPLE_SCANNED);
@@ -595,6 +726,8 @@ public final class VoidcraftUSS {
         // (1.7.10: a list of COMPOUNDS has element type 10 — getTagList(key, 9) would silently return empty.)
         USSVariableSpace variables = USSVariableSpace
             .readFromNBT(nbt.hasKey(TAG_VARIABLES) ? nbt.getTagList(TAG_VARIABLES, 10) : null);
+        // The star-scale infrastructure progress (the Dyson Swarm pass). Absent tag = an empty progress.
+        USSInfrastructure infrastructure = USSInfrastructure.readFromNBT(nbt.getCompoundTag(TAG_INFRASTRUCTURE));
         return new VoidcraftUSS(
             USSState.IGNITED,
             tier,
@@ -603,8 +736,10 @@ public final class VoidcraftUSS {
             ignitedAt,
             ships,
             reserves,
+            starReserve,
             scanned,
-            variables);
+            variables,
+            infrastructure);
     }
 
     // endregion

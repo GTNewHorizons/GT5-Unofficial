@@ -24,17 +24,21 @@ import com.google.gson.JsonPrimitive;
  * <li>{@code {"op":"remove","path":[0]}};</li>
  * <li>{@code {"op":"move","path":[0],"up":true}};</li>
  * <li>{@code {"op":"copy","path":[0]}} (duplicate the block right after itself);</li>
- * <li>{@code {"op":"param","path":[0],"key":"target","value":"STAR"}} (literal) or
- * {@code {"op":"param","path":[0],"key":"value","var":17}} (assign a USS slot reference to a WRITE value);</li>
+ * <li>{@code {"op":"param","path":[0],"key":"target","value":"STAR"}} (literal), or
+ * {@code {"op":"param","path":[0],"key":"value","var":17}} (assign a USS slot reference to a WRITE value), or
+ * {@code {"op":"param","path":[0],"key":"value","loc":true}} (assign the LOCATION value — the ship's current
+ * position — to a WRITE value);</li>
  * <li>{@code {"op":"count","path":[0],"value":5}};</li>
- * <li>{@code {"op":"cond","path":[0],"side":0,"lit":"x"}} | {@code …,"var":3} | {@code …,"stat":5};</li>
+ * <li>{@code {"op":"cond","path":[0],"side":0,"lit":"x"}} | {@code …,"var":3} | {@code …,"stat":5} |
+ * {@code …,"loc":true} (the LOCATION value);</li>
  * <li>{@code {"op":"condop","path":[0],"operator":"EQ"}} (EQ / NEQ / LT / GT);</li>
  * <li>{@code {"op":"apply","preset":"miner"|"starlifter"|"explorer"|"constructor"|"clear"}}.</li>
  * </ul>
  *
  * Node spec (the insert {@code node}): {@code {"t":0,"c":<cmdId>,"p":{…}}} |
  * {@code {"t":1|"t":2,"l":<value>,"op":<0-3>,"r":<value>,"b":[…]}} | {@code {"t":3,"n":N,"b":[…]}}.
- * Value spec: {@code {"k":0,"s":"lit"}} | {@code {"k":1,"v":17}} | {@code {"k":2,"st":5}}.
+ * Value spec: {@code {"k":0,"s":"lit"}} | {@code {"k":1,"v":17}} | {@code {"k":2,"st":5}} |
+ * {@code {"k":3}} (LOCATION — the ship's current position).
  */
 public final class USSProgramSync {
 
@@ -124,6 +128,10 @@ public final class USSProgramSync {
                                     a.get("var")
                                         .getAsInt())));
                     }
+                    if (a.has("loc")) {
+                        return map(
+                            USSProgramEditor.setParam(current, readPath(a.get("path")), key, USSValue.location()));
+                    }
                     String value = a.has("value") ? a.get("value")
                         .getAsString() : "";
                     return map(USSProgramEditor.setParam(current, readPath(a.get("path")), key, value));
@@ -151,6 +159,8 @@ public final class USSProgramSync {
                         value = USSValue.stat(
                             a.get("stat")
                                 .getAsInt());
+                    } else if (a.has("loc")) {
+                        value = USSValue.location();
                     } else if (a.has("lit")) {
                         value = USSValue.literal(
                             a.get("lit")
@@ -321,6 +331,9 @@ public final class USSProgramSync {
             return USSValue.stat(
                 v.has("st") ? v.get("st")
                     .getAsInt() : 0);
+        }
+        if (k == 3) {
+            return USSValue.location();
         }
         return null;
     }

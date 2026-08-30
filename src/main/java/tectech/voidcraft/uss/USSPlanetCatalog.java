@@ -35,8 +35,7 @@ public final class USSPlanetCatalog {
     public static final double DEFAULT_ORE_WEIGHT = 1.0;
 
     /** Every star class (the catalog is star-agnostic; the per-star pool can be refined later). */
-    private static final List<USSStarType> ALL_STARS = Arrays
-        .asList(USSStarType.MAIN_SEQUENCE, USSStarType.WHITE_DWARF, USSStarType.SUPERMASSIVE);
+    private static final List<USSStarType> ALL_STARS = Arrays.asList(USSStarType.values());
 
     private static boolean registered;
 

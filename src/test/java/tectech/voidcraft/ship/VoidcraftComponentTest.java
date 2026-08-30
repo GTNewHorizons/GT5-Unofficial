@@ -59,10 +59,13 @@ public class VoidcraftComponentTest {
     }
 
     @Test
-    public void testPass23PlaceableSet() {
+    public void testPlaceableSet() {
         // Covers are the primary components — the only CLASSIC placeable full blocks are the controller and the
         // frame; the multiblock component blocks are the second kind of placeable block.
-        assertEquals(5, VoidcraftComponent.PLACEABLE.size(), "controller + frame + the three Mining Array blocks");
+        assertEquals(
+            8,
+            VoidcraftComponent.PLACEABLE.size(),
+            "controller + frame + the six multiblock component blocks");
         assertTrue(VoidcraftComponent.PLACEABLE.contains(VoidcraftComponent.CONTROLLER));
         assertTrue(VoidcraftComponent.PLACEABLE.contains(VoidcraftComponent.FRAME));
         for (VoidcraftComponent component : VoidcraftComponent.ALL) {
@@ -84,7 +87,10 @@ public class VoidcraftComponentTest {
         assertTrue(VoidcraftComponent.MINING_ARRAY.isPlaceable(), "a multiblock controller is a placeable full block");
         assertTrue(VoidcraftComponent.MINING_ARRAY_CASING.isMultiblock());
         assertTrue(VoidcraftComponent.MINING_ARRAY_PANEL.isMultiblock());
-        assertEquals(3, countComponents(VoidcraftComponent::isMultiblock), "exactly the three Mining Array blocks");
+        assertEquals(
+            6,
+            countComponents(VoidcraftComponent::isMultiblock),
+            "the Mining Array and the Satellite Launcher block triples");
         // The controller entry carries the component's stats
         assertEquals(2, VoidcraftComponent.MINING_ARRAY.getTier());
         assertEquals(1000L, VoidcraftComponent.MINING_ARRAY.getMiningPower());
@@ -112,6 +118,26 @@ public class VoidcraftComponentTest {
         assertEquals(12, VoidcraftComponent.MINING_ARRAY.toGridValue());
         assertEquals(13, VoidcraftComponent.MINING_ARRAY_CASING.toGridValue());
         assertEquals(14, VoidcraftComponent.MINING_ARRAY_PANEL.toGridValue());
+        // The Satellite Launcher multiblock: one stats-carrying controller entry (tier 2, mass only) + two
+        // zero-stat casing entries.
+        assertTrue(VoidcraftComponent.SATELLITE_LAUNCHER.isMultiblock());
+        assertTrue(VoidcraftComponent.SATELLITE_LAUNCHER.isPlaceable());
+        assertTrue(VoidcraftComponent.SATELLITE_LAUNCHER_CASING.isMultiblock());
+        assertTrue(VoidcraftComponent.SATELLITE_LAUNCHER_PANEL.isMultiblock());
+        assertEquals(2, VoidcraftComponent.SATELLITE_LAUNCHER.getTier());
+        assertEquals(60L, VoidcraftComponent.SATELLITE_LAUNCHER.getMass());
+        for (VoidcraftComponent casing : new VoidcraftComponent[] { VoidcraftComponent.SATELLITE_LAUNCHER_CASING,
+            VoidcraftComponent.SATELLITE_LAUNCHER_PANEL }) {
+            assertEquals(5L, casing.getMass(), casing + " contributes mass only");
+            assertEquals(0, casing.getTier());
+        }
+        // Meta / grid values: 15, 16, 17 → grid 16, 17, 18
+        assertEquals(15, VoidcraftComponent.SATELLITE_LAUNCHER.getMeta());
+        assertEquals(16, VoidcraftComponent.SATELLITE_LAUNCHER_CASING.getMeta());
+        assertEquals(17, VoidcraftComponent.SATELLITE_LAUNCHER_PANEL.getMeta());
+        assertEquals(16, VoidcraftComponent.SATELLITE_LAUNCHER.toGridValue());
+        assertEquals(17, VoidcraftComponent.SATELLITE_LAUNCHER_CASING.toGridValue());
+        assertEquals(18, VoidcraftComponent.SATELLITE_LAUNCHER_PANEL.toGridValue());
     }
 
     @Test
@@ -134,6 +160,15 @@ public class VoidcraftComponentTest {
         assertEquals(
             base + VoidcraftComponent.MINING_ARRAY_PANEL.getMeta(),
             gregtech.api.enums.MetaTileEntityIDs.VoidcraftMiningArrayPanel.ID);
+        assertEquals(
+            base + VoidcraftComponent.SATELLITE_LAUNCHER.getMeta(),
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftSatelliteLauncherController.ID);
+        assertEquals(
+            base + VoidcraftComponent.SATELLITE_LAUNCHER_CASING.getMeta(),
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftSatelliteLauncherCasing.ID);
+        assertEquals(
+            base + VoidcraftComponent.SATELLITE_LAUNCHER_PANEL.getMeta(),
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftSatelliteLauncherPanel.ID);
     }
 
     @Test

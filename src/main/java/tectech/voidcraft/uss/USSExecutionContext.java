@@ -108,20 +108,56 @@ public interface USSExecutionContext {
     boolean constructTick();
 
     /**
-     * Probe whether a REPAIR can start at the executor (the repair work command): true when the station has
-     * integrity to restore and energy to spend (the command goes RUNNING and the executor polls {@link
-     * #repairTick()}); false - the command reports FAILED and SKIPs (a ship has no repairable station in v1).
+     * Begin a REPAIR at the executor (the repair work command): the target is the executor ITSELF (an empty or
+     * {@code SELF} param — a station repairing its own integrity) or a fleet member (a fleet index or a name)
+     * that shares the executor's location (the same target pattern and shared-location rule as SEND / TAKE).
+     *
+     * @param target the target param (empty / {@code SELF} = the executor; otherwise a fleet index or name)
+     * @return true when the repair started (the command goes RUNNING and the executor polls
+     *         {@link #repairTick()}) / false when it cannot (no anchor, unresolvable target, no co-location,
+     *         or nothing to restore - the command reports FAILED and SKIPs)
      */
-    boolean repairStart();
+    boolean repairStart(String target);
 
     /**
-     * One REPAIR tick (polled while the command is in flight): spends the station energy buffer at the repair
-     * draw and accrues integrity (one integrity per second of repair).
+     * One REPAIR tick (polled while the command is in flight): draws the executor's energy buffer at the repair
+     * draw and restores one integrity per second on the target (the executor itself or the co-located fleet
+     * member the begin resolved).
      *
-     * @return true when repair is still pending (integrity below the maximum - keep polling) / false when the
-     *         station is at full integrity (the command reports DONE)
+     * @return true when repair is still pending (the target's integrity below its maximum - keep polling) /
+     *         false when the repair is over (the target is full, lost, or left the shared location - the command
+     *         reports DONE)
      */
     boolean repairTick();
+
+    /**
+     * Begin a ship-to-ship cargo transfer (the SEND / TAKE commands): the game side resolves the target ship
+     * (fleet index or name), checks the ship-side preconditions (target exists and is not this ship, the ship
+     * has logistics power, and the two ships share a location — see {@link USSLocation#shared}), and arms the
+     * paced unit transfer (one cargo unit per {@code USSConstants.transferTicksPerUnit} — 1 logistics power =
+     * 1 cargo unit per second).
+     *
+     * @param commandId the command id ({@code USSCommand.SEND} = ship → target; {@code USSCommand.TAKE} =
+     *                  target → ship)
+     * @param target    the target ship (a fleet index or a ship name)
+     * @param amount    the unit limit (-1 = ALL)
+     * @param filter    the material name filter (null / empty / "*" = match all)
+     * @return true when the transfer started (the command goes RUNNING and the executor polls {@link
+     *         #transferTick()}) / false when it cannot start (the command reports FAILED and SKIPs)
+     */
+    boolean transferStart(int commandId, String target, long amount, String filter);
+
+    /**
+     * One machine tick of the in-flight cargo transfer (polled while the command is in flight): advances the
+     * pacing countdown and moves one cargo unit every {@code USSConstants.transferTicksPerUnit} ticks,
+     * re-checking the shared location each tick (a target that left, or stopped sharing the location, ends the
+     * transfer with what has been moved so far).
+     *
+     * @param commandId the command id ({@code USSCommand.SEND} / {@code USSCommand.TAKE})
+     * @return true when the transfer is still running (keep polling) / false when it is over (the command
+     *         reports DONE)
+     */
+    boolean transferTick(int commandId);
 
     /**
      * A framework log line (the game side: LOGGER; tests: a capturing list).

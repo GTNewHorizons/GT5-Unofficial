@@ -70,14 +70,6 @@ public abstract class EOHRenderingUtils {
     private static final ResourceLocation[] USS_STAR_LAYERS = { USS_STAR_LAYER_0, USS_STAR_LAYER_1, USS_STAR_LAYER_2 };
 
     /**
-     * Per-layer shift of the star's tint toward white (index 0 = the innermost layer, 2 = the outermost halo): the
-     * core keeps the star class's full color while the outer layers fade toward white, so the glow reads as the
-     * star's light scattering out.
-     */
-    private static final float[] USS_STAR_LAYER_WHITEN = { 0.0f, 0.6f, 0.95f };
-    private static final float[] NO_LAYER_WHITEN = { 0.0f, 0.0f, 0.0f };
-
-    /**
      * Per-layer blend alpha (index 0 = the innermost layer, 2 = the outermost halo): the halo layers carry more
      * alpha on USS stars so the glow reads as light scattering outward.
      */
@@ -93,16 +85,36 @@ public abstract class EOHRenderingUtils {
     private static final float[] USS_STAR_LAYER_GAIN = { 1.0f, 1.6f, 2.0f };
 
     /**
+     * Per-layer radius multipliers (index 0 = the innermost layer): the core is the SMALLEST sphere and the shell
+     * layers grow outward to the star's full radius (the outermost shell is the largest and draws last, over the
+     * core — it is the star's visible body).
+     */
+    private static final float USS_SHELL_STEP = 0.95f;
+    private static final float[] USS_STAR_LAYER_SCALE = { USS_SHELL_STEP * USS_SHELL_STEP, USS_SHELL_STEP, 1.0f };
+
+    /**
+     * The halo star treatment's per-layer radius multipliers: the core keeps the star's full radius and the shell
+     * layers expand PAST its rim. With the shells rendered outside-in (their far hemispheres only — the same
+     * inverted winding the space shell uses) the depth test then hides the shells inside the core's disc and only
+     * a glow ring beyond the rim is visible, so the dark core reads true instead of overdriven.
+     */
+    private static final float[] HALO_STAR_LAYER_SCALE = { 1.0f, 1.06f, 1.14f };
+
+    /**
      * The USS star's surface rotates ten times slower than the legacy star's shimmer (legacy uses 1.0f).
      */
     private static final float USS_STAR_ROTATION_SCALE = 0.1f;
 
     /**
-     * Shift a tint toward white ({@code t} 0 = unchanged, 1 = pure white).
+     * The midpoint blend of two colors (the per-channel average) — the USS star's middle shell reads as the
+     * transition between the core color and the shell color.
      */
-    private static Color towardWhite(Color c, float t) {
-        final float r = c.getRed() / 255f, g = c.getGreen() / 255f, b = c.getBlue() / 255f;
-        return new Color(r + (1f - r) * t, g + (1f - g) * t, b + (1f - b) * t, 1.0f);
+    private static Color midpoint(Color a, Color b) {
+        return new Color(
+            (a.getRed() + b.getRed()) / 510f,
+            (a.getGreen() + b.getGreen()) / 510f,
+            (a.getBlue() + b.getBlue()) / 510f,
+            1.0f);
     }
 
     public static void renderEOHStar(Matrix4fc base, IItemRenderer.ItemRenderType type, float partialTicks,
@@ -110,14 +122,15 @@ public abstract class EOHRenderingUtils {
         renderStar(
             base,
             type,
-            EOHStarColour,
+            new Color[] { EOHStarColour, EOHStarColour, EOHStarColour },
             partialTicks,
             starRadius,
             LEGACY_STAR_LAYERS,
-            NO_LAYER_WHITEN,
             1.0f,
             LEGACY_STAR_LAYER_ALPHA,
-            NO_LAYER_GAIN);
+            NO_LAYER_GAIN,
+            USS_STAR_LAYER_SCALE,
+            false);
     }
 
     /**
@@ -131,39 +144,47 @@ public abstract class EOHRenderingUtils {
         renderStar(
             base,
             type,
-            color,
+            new Color[] { color, color, color },
             partialTicks,
             starRadius,
             LEGACY_STAR_LAYERS,
-            NO_LAYER_WHITEN,
             1.0f,
             LEGACY_STAR_LAYER_ALPHA,
-            NO_LAYER_GAIN);
+            NO_LAYER_GAIN,
+            USS_STAR_LAYER_SCALE,
+            false);
     }
 
     /**
-     * The USS star: the three-layer mesh tinted with the star class's registered color over the neutral-gray USS
+     * The USS star: the three-layer mesh tinted with the star class's registered colors over the neutral-gray USS
      * base layers, so the tint reads true for any class color.
      *
-     * The outer halo layers are progressively shifted toward white ({@link #USS_STAR_LAYER_WHITEN}) so the glow
-     * fades from the class color to white as it leaves the core, and every layer carries a brightness gain
+     * The innermost layer keeps the star's CORE color; the middle shell is the midpoint between the core and shell
+     * colors (the transition between them); the outermost shell carries the star's SHELL color in full, so dark or
+     * exotic class colors keep their color all the way out. Every layer carries a brightness gain
      * ({@link #USS_STAR_LAYER_GAIN}) that overdrives the bright spots past full-bright for the hot-glow look.
      *
-     * @param color the opaque ARGB color of the star (the registered definition's color)
+     * @param color      the opaque ARGB core color of the star (the registered definition's color)
+     * @param shellColor the opaque ARGB shell color (the registered definition's shell color; 0 = unset → the core
+     *                   color)
+     * @param halo       when true the shell layers render outside-in as a glow ring beyond the core's rim (the
+     *                   halo star treatment — see {@link #HALO_STAR_LAYER_SCALE})
      */
-    public static void renderUSSStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color color, float partialTicks,
-        double starRadius) {
+    public static void renderUSSStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color color, int shellColor,
+        float partialTicks, double starRadius, boolean halo) {
+        final Color shell = shellColor != 0 ? new Color(shellColor) : color;
         renderStar(
             base,
             type,
-            color,
+            new Color[] { color, midpoint(color, shell), shell },
             partialTicks,
             starRadius,
             USS_STAR_LAYERS,
-            USS_STAR_LAYER_WHITEN,
             USS_STAR_ROTATION_SCALE,
             USS_STAR_LAYER_ALPHA,
-            USS_STAR_LAYER_GAIN);
+            USS_STAR_LAYER_GAIN,
+            halo ? HALO_STAR_LAYER_SCALE : USS_STAR_LAYER_SCALE,
+            halo);
     }
 
     // Used for GORGE item renderer only.
@@ -174,21 +195,22 @@ public abstract class EOHRenderingUtils {
         renderStar(
             base,
             type,
-            GORGEStarColour,
+            new Color[] { GORGEStarColour, GORGEStarColour, GORGEStarColour },
             partialTicks,
             starRadius,
             LEGACY_STAR_LAYERS,
-            NO_LAYER_WHITEN,
             1.0f,
             LEGACY_STAR_LAYER_ALPHA,
-            NO_LAYER_GAIN);
+            NO_LAYER_GAIN,
+            USS_STAR_LAYER_SCALE,
+            false);
     }
 
     private static final Matrix4f starBase = new Matrix4f();
 
-    private static void renderStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color color, float partialTicks,
-        double starRadius, ResourceLocation[] layers, float[] towardWhite, float rotationScale, float[] layerAlpha,
-        float[] layerGain) {
+    private static void renderStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color[] layerColors,
+        float partialTicks, double starRadius, ResourceLocation[] layers, float rotationScale, float[] layerAlpha,
+        float[] layerGain, float[] layerScale, boolean shellInverted) {
         if (!shadersReady()) return;
 
         starBase.set(base);
@@ -203,47 +225,30 @@ public abstract class EOHRenderingUtils {
         final long blendFuncWas = RenderState.savedBlendFunc();
 
         GL11.glEnable(GL11.GL_BLEND);
-        final long cullWas = beginSphereCull(false);
 
         texturedShader().use();
         eohSphere.bind();
 
-        final Color[] layerColors = new Color[3];
-        for (int i = 0; i < 3; i++) {
-            layerColors[i] = towardWhite[i] > 0f ? towardWhite(color, towardWhite[i]) : color;
+        for (int layer = 0; layer < 3; layer++) {
+            final boolean invert = shellInverted && layer > 0;
+            final long cullWas = beginSphereCull(invert);
+            renderStarLayer(
+                layer,
+                layers[layer],
+                layerColors[layer],
+                layerAlpha[layer],
+                partialTicks,
+                starRadius,
+                rotationScale,
+                layerScale[layer],
+                layerGain[layer],
+                invert);
+            endSphereCull(cullWas);
         }
-        renderStarLayer(
-            0,
-            layers[0],
-            layerColors[0],
-            layerAlpha[0],
-            partialTicks,
-            starRadius,
-            rotationScale,
-            layerGain[0]);
-        renderStarLayer(
-            1,
-            layers[1],
-            layerColors[1],
-            layerAlpha[1],
-            partialTicks,
-            starRadius,
-            rotationScale,
-            layerGain[1]);
-        renderStarLayer(
-            2,
-            layers[2],
-            layerColors[2],
-            layerAlpha[2],
-            partialTicks,
-            starRadius,
-            rotationScale,
-            layerGain[2]);
 
         eohSphere.unbind();
         ShaderProgram.clear();
 
-        endSphereCull(cullWas);
         RenderState.restore(GL11.GL_BLEND, blendWas);
         RenderState.restoreBlendFunc(blendFuncWas);
     }
@@ -254,7 +259,7 @@ public abstract class EOHRenderingUtils {
     private static final Matrix4f layerMatrix = new Matrix4f();
 
     private static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha,
-        float partialTicks, double starRadius, float rotationScale, float gain) {
+        float partialTicks, double starRadius, float rotationScale, float scale, float gain, boolean invertWinding) {
 
         if (layer >= 3) throw new IllegalArgumentException("Star rendering only supports three layers.");
 
@@ -270,13 +275,15 @@ public abstract class EOHRenderingUtils {
             .bindTexture(texture);
 
         final float rotation = (BASE_ROTATIONS[layer] + ROTATION_SPEEDS[layer] * rotationScale * partialTicks) % 360f;
-        final int maxLayer = 2;
-        final float scale = (float) (starRadius * Math.pow(0.95f, maxLayer - layer));
+        final float radius = (float) (starRadius * scale);
         final Vector3f axis = LAYER_AXIS[layer];
 
+        // A negative X inverts the mesh's winding (the space shell's trick): paired with the inverted cull mode
+        // (beginSphereCull(true) in renderStar) only the far hemisphere draws — the layer renders "outside-in"
+        // and the depth test hides whatever the core's surface stands between the camera and.
         layerMatrix.set(starBase)
             .rotate((float) Math.toRadians(rotation), axis.x, axis.y, axis.z)
-            .scale(scale);
+            .scale(invertWinding ? -radius : radius, radius, radius);
 
         // The gain may push the tint channels past 1.0: the framebuffer clips them to full-bright, which is the
         // hot-glow look the overdriven layers want.
@@ -349,6 +356,10 @@ public abstract class EOHRenderingUtils {
             vao.delete();
         }
         USS_PLANET_CUBES.clear();
+        for (IVertexArrayObject vao : DYSON_SHELLS.values()) {
+            vao.delete();
+        }
+        DYSON_SHELLS.clear();
     }
 
     private static void releaseOrbitMesh() {
@@ -704,6 +715,205 @@ public abstract class EOHRenderingUtils {
         return USS_RING_DISC;
     }
 
+    // ============================= Magnetar field loops (the MAGNETAR render type) =============================
+
+    /**
+     * The magnetar's field-line PAIR count (three pairs at 120° around the magnetic axis — six ovals in total):
+     * each pair is two ovals in the same plane, one bulging to each side of the axis — the ()() dipole field shape.
+     */
+    private static final int MAGNETAR_LOOP_PAIRS = 3;
+
+    /**
+     * The loop's vertical radius (along the magnetic axis), × the star radius — the loop tips extend well past the
+     * star at the poles, and the steep sides make the lines dive into the core at a near-vertical angle.
+     */
+    private static final float MAGNETAR_LOOP_POLE = 1.6f;
+
+    /**
+     * The loop's center offset from the magnetic axis, × the star radius — each loop of a pair is a distinct oval
+     * on one side of the axis (the ()() shape); the inner edge (OFFSET − WIDTH) passes through the core. Keeping
+     * OFFSET close to WIDTH puts each line's polar entry on the same side of the axis as its bulge — the six lines
+     * fan out in their own azimuth bands instead of crossing above the poles.
+     */
+    private static final float MAGNETAR_LOOP_OFFSET = 0.9f;
+
+    /**
+     * The loop's horizontal radius (in the plane, perpendicular to the axis), × the star radius — the bulge: the
+     * outer edge reaches OFFSET + WIDTH past the star's body.
+     */
+    private static final float MAGNETAR_LOOP_WIDTH = 1.0f;
+
+    /**
+     * The ovals' uniform size scales — the "dissipating" field: each successive oval in a plane is larger (tips
+     * higher above the poles, bulge wider); the uniform scaling keeps each oval's polar entry in its own azimuth
+     * band, so the nested ovals fan out without crossing.
+     */
+    private static final float[] MAGNETAR_LOOP_SCALES = { 1.0f, 1.5f, 2.0f };
+
+    /**
+     * The ovals' alpha multipliers (the field dissipates — the larger ovals fade).
+     */
+    private static final float[] MAGNETAR_LOOP_ALPHA_SCALES = { 1.0f, 0.7f, 0.5f };
+
+    /**
+     * The field-line tube radius, × the star radius (the orbit ring's {@link #RING_TUBE_RADIUS} is absolute —
+     * scaled by the star radius the lines stay thin on small stars).
+     */
+    private static final float MAGNETAR_LOOP_TUBE = 0.04f;
+
+    /**
+     * The ovals' tube-radius multipliers (the field thins as it dissipates) — each band's VAO bakes in
+     * {@code MAGNETAR_LOOP_TUBE} × this, and the per-draw model scale multiplies it like the oval's size.
+     */
+    private static final float[] MAGNETAR_LOOP_TUBE_SCALES = { 0.7f, 0.5f, 0.3f };
+
+    /** The loop's oval path / tube cross-section segment counts (the orbit ring uses the same 48×8). */
+    private static final int MAGNETAR_LOOP_SEGMENTS = 48;
+    private static final int MAGNETAR_LOOP_TUBE_SEGMENTS = 8;
+
+    /**
+     * The loops' precession about the magnetic axis (degrees per tick) — the slow cage twist (the star's own
+     * surface layers turn at 0.12–0.16°/tick).
+     */
+    private static final float MAGNETAR_LOOP_PRECESSION = 0.1f;
+
+    /**
+     * The field-line tint alpha (the orbit ring uses 0.125 — the field lines need to read clearly against the
+     * core).
+     */
+    private static final float MAGNETAR_LOOP_ALPHA = 0.5f;
+
+    private static final Matrix4f magnetarMatrix = new Matrix4f();
+
+    /**
+     * The magnetar's magnetic dipole field loops (the {@code MAGNETAR} render type): thin transparent tubes (the
+     * orbit ring's look — the same white texture and tint path) tracing dipole field lines. Each PAIR of loops
+     * shares a plane through the star's magnetic axis, one loop on each side of it — the ()() dipole field shape.
+     * Each loop is a tall oval offset from the axis: the tips extend well past the star at the poles, the sides
+     * dive steeply into the core at the poles, the inner edge passes through the core (hidden by the opaque
+     * surface), and the outer edge bulges beyond the star's body. Each oval is nested inside larger siblings in
+     * its plane at uniform scales (1×, 1.5×, 2× — fading with size), so the field dissipates outward. The pairs
+     * precess about the axis at a shared slow pace, so the cage twists.
+     *
+     * <p>
+     * Drawn after the star body as a pure overlay (the orbit ring's GL treatment): depth-tested — the star's
+     * written depth occludes the parts of each loop behind the body, which is what makes the lines read as passing
+     * through the core — with depth writes off, blended, and cull and alpha-test disabled.
+     *
+     * @param base         the star-center model matrix (as in {@link #renderUSSStar})
+     * @param partialTicks the smooth animation clock (as in {@link #renderUSSStar})
+     * @param starRadius   the star's render radius (as in {@link #renderUSSStar})
+     * @param tint         the loops' opaque ARGB tint (the star's core color; 0 → white)
+     */
+    public static void renderMagnetarFieldLoops(Matrix4fc base, float partialTicks, double starRadius, int tint) {
+        if (!shadersReady() || starRadius <= 0.0) return;
+
+        final int argb = tint != 0 ? tint : 0xFFFFFFFF;
+
+        final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final boolean alphaTestOn = GL11.glIsEnabled(GL11.GL_ALPHA_TEST);
+        final boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
+        final long blendFuncWas = RenderState.savedBlendFunc();
+        GL11.glDisable(GL11.GL_CULL_FACE); // the tube's winding is mixed — do not rely on the face convention
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); // never inherit a prior renderer's blend
+                                                                          // function (the game loop does not reset
+                                                                          // GL state between tile-entity renderers)
+        GL11.glDepthMask(false); // pure overlay: the star's written depth occludes the far arcs, depth-WRITE off
+        GL11.glDisable(GL11.GL_ALPHA_TEST); // the sub-0.5 tint would be discarded by the world pass cutout test
+        try {
+            final ShaderHandle shader = texturedShader();
+            shader.use();
+            bindTexture(RING_TEXTURE); // 1×1 white — the tint alone shapes the lines
+            final float precession = (MAGNETAR_LOOP_PRECESSION * partialTicks) % 360f;
+            for (int pair = 0; pair < MAGNETAR_LOOP_PAIRS; pair++) {
+                for (int loop = 0; loop < 2; loop++) {
+                    for (int oval = 0; oval < MAGNETAR_LOOP_SCALES.length; oval++) {
+                        // The pair's plane azimuth, plus the loop's 180° flip (one bulge per side of the axis — the
+                        // ()() shape); the ovals' uniform scales nest them without crossing.
+                        magnetarMatrix.set(base)
+                            .rotate(
+                                (float) Math.toRadians(precession + pair * 360f / MAGNETAR_LOOP_PAIRS + loop * 180f),
+                                0f,
+                                1f,
+                                0f)
+                            .scale((float) starRadius * MAGNETAR_LOOP_SCALES[oval]);
+                        GL20.glUniform4f(
+                            shader.loc(SharedShaders.U_TINT),
+                            ((argb >> 16) & 0xFF) / 255f,
+                            ((argb >> 8) & 0xFF) / 255f,
+                            (argb & 0xFF) / 255f,
+                            MAGNETAR_LOOP_ALPHA * MAGNETAR_LOOP_ALPHA_SCALES[oval]);
+                        shader.uploadModel(magnetarMatrix);
+                        magnetarLoop(oval).render();
+                    }
+                }
+            }
+        } finally {
+            GL11.glDepthMask(true);
+            RenderState.restoreBlendFunc(blendFuncWas);
+            RenderState.restore(GL11.GL_BLEND, blendOn);
+            RenderState.restore(GL11.GL_ALPHA_TEST, alphaTestOn);
+            RenderState.restore(GL11.GL_CULL_FACE, cullOn);
+            ShaderProgram.clear();
+        }
+    }
+
+    /**
+     * The field-loop VAOs — one per dissipation band: the unit dipole loop (a tall ellipse in the XY plane,
+     * centered OFFSET from the Y axis, the part passing through the core hidden by the opaque surface) with the
+     * band's tube radius baked in. Each oval's 180°-rotated twin is the pair's second oval; the VAO is scaled to
+     * the star per draw.
+     */
+    private static final IVertexArrayObject[] MAGNETAR_LOOP_VAOS = new IVertexArrayObject[MAGNETAR_LOOP_SCALES.length];
+
+    private static IVertexArrayObject magnetarLoop(int oval) {
+        final IVertexArrayObject vao = MAGNETAR_LOOP_VAOS[oval];
+        if (vao != null) {
+            return vao;
+        }
+        // MeshBuilder capacity counts TRIANGLE vertices: 6 per quad (the orbit ring's arithmetic).
+        try (MeshBuilder mesh = MeshBuilder
+            .of(texturedShader(), MAGNETAR_LOOP_SEGMENTS * MAGNETAR_LOOP_TUBE_SEGMENTS * 6)) {
+            final float tube = MAGNETAR_LOOP_TUBE * MAGNETAR_LOOP_TUBE_SCALES[oval];
+            for (int i = 0; i < MAGNETAR_LOOP_SEGMENTS; i++) {
+                final float t0 = i * 2f * (float) Math.PI / MAGNETAR_LOOP_SEGMENTS;
+                final float t1 = (i + 1) * 2f * (float) Math.PI / MAGNETAR_LOOP_SEGMENTS;
+                for (int j = 0; j < MAGNETAR_LOOP_TUBE_SEGMENTS; j++) {
+                    final float p0 = j * 2f * (float) Math.PI / MAGNETAR_LOOP_TUBE_SEGMENTS;
+                    final float p1 = (j + 1) * 2f * (float) Math.PI / MAGNETAR_LOOP_TUBE_SEGMENTS;
+                    magnetarLoopVertex(mesh, t0, p0, tube);
+                    magnetarLoopVertex(mesh, t1, p0, tube);
+                    magnetarLoopVertex(mesh, t1, p1, tube);
+                    magnetarLoopVertex(mesh, t0, p1, tube);
+                }
+            }
+            MAGNETAR_LOOP_VAOS[oval] = mesh.build();
+        }
+        return MAGNETAR_LOOP_VAOS[oval];
+    }
+
+    /**
+     * One field-loop point: the loop's oval (center OFFSET from the axis, horizontal radius on X, vertical radius
+     * on Y, path angle {@code pathAngle}) plus the circular tube offset of radius {@code tube} — the tube's
+     * cross-section frame is the path tangent, the binormal tangent × plane normal (0,0,1), and the plane normal
+     * itself.
+     */
+    private static void magnetarLoopVertex(MeshBuilder mesh, float pathAngle, float tubeAngle, float tube) {
+        final float cx = MAGNETAR_LOOP_OFFSET + MAGNETAR_LOOP_WIDTH * (float) Math.cos(pathAngle);
+        final float cy = MAGNETAR_LOOP_POLE * (float) Math.sin(pathAngle);
+        // The oval's tangent (d/dθ of (OFFSET + WIDTH·cosθ, POLE·sinθ, 0)), normalized
+        final float tx = -MAGNETAR_LOOP_WIDTH * (float) Math.sin(pathAngle);
+        final float ty = MAGNETAR_LOOP_POLE * (float) Math.cos(pathAngle);
+        final float tLen = (float) Math.sqrt(tx * tx + ty * ty);
+        final float nx = tx / tLen;
+        final float ny = ty / tLen;
+        // The tube offset tube·(cosφ·normal + sinφ·binormal) with binormal = tangent × (0,0,1) = (ny, −nx, 0)
+        final float cosP = (float) Math.cos(tubeAngle);
+        final float sinP = (float) Math.sin(tubeAngle);
+        mesh.vertex(cx + tube * sinP * ny, cy - tube * sinP * nx, tube * cosP, 0.5, 0.5);
+    }
+
     private static void bindTexture(ResourceLocation location) {
         FMLClientHandler.instance()
             .getClient()
@@ -939,6 +1149,325 @@ public abstract class EOHRenderingUtils {
     private static boolean shadersReady() {
         return SharedShaders.ready() && eohSphere != null;
     }
+
+    // region Dyson Swarm shell (the Voidcraft infrastructure pass — the star's satellite swarm)
+
+    /**
+     * The shell's radial offset from the star's rendered surface (blocks) — the swarm's cage sits a little OUTSIDE
+     * the star's surface so the star stays clearly visible through the shell.
+     */
+    public static final float DYSON_SHELL_MARGIN = 0.35f;
+
+    /**
+     * The nominal triangle edge (blocks) — the triangle SIZE is constant across star sizes (the user spec): a
+     * bigger star gets a bigger shell and MORE triangles, not bigger ones. The shell is a triangle TILING, not a
+     * quad grid: each latitude row's height is the equilateral-triangle height for this edge ((√3/2) × edge) and
+     * each row is staggered half a segment off the one below it, so the panels are equilateral. ~900 triangles at
+     * a main-star-sized star (shell radius ~1.5), ~2000 at the largest.
+     */
+    public static final float DYSON_TRIANGLE_EDGE = 0.12f;
+
+    /**
+     * Per-triangle scale toward its own centroid (0..1): the triangles are shrunk toward their centers to leave
+     * the gaps between them (the shell reads as separate panels, not a closed skin).
+     */
+    public static final float DYSON_TRIANGLE_GAP = 0.9f;
+
+    /** The shell's spin speed (radians per world tick) — a slow rotation (one full turn every ~1050 ticks, ~52 s). */
+    public static final float DYSON_ROTATION_SPEED = 0.002f;
+
+    /** A fixed tilt (radians) so the shell's poles never face the camera head-on. */
+    public static final float DYSON_TILT = 0.35f;
+
+    /** The shell's tint (near-opaque gray — 90% alpha) — packed ARGB, fed to the textured shader's u_Tint. */
+    public static final int DYSON_SHELL_TINT = 0xFF3C3C3C;
+
+    /** The accent layer's size relative to the gray panel (the dark blue core inside each panel). */
+    public static final float DYSON_ACCENT_SCALE = 0.85f;
+
+    /**
+     * The accent layer's outward offset from the gray panel (blocks) — a hair outside the frame: the core stays on
+     * the exterior of the shell, and being strictly in front of the gray avoids any z-fighting between the two
+     * layers.
+     */
+    public static final float DYSON_ACCENT_OFFSET = 0.001f;
+
+    /** The accent layer's tint (very dark blue, near-opaque) — packed ARGB, fed to the textured shader's u_Tint. */
+    public static final int DYSON_ACCENT_TINT = 0xE6081536;
+
+    /** Shell-VAO cache cap (FIFO eviction, the same policy as the orbit rings). */
+    public static final int DYSON_SHELL_CACHE_MAX = 8;
+
+    private static final Matrix4f dysonMatrix = new Matrix4f();
+
+    /** One shell VAO per distinct shell radius (quantized to a cm) — the radius is stable per star. */
+    private static final Map<Integer, IVertexArrayObject> DYSON_SHELLS = new LinkedHashMap<>();
+
+    /**
+     * The Dyson Swarm shell: a sphere of near-opaque gray triangles around the star, each carrying a slightly
+     * smaller dark blue core (the accent layer, {@code DYSON_ACCENT_SCALE} of the panel, a hair outside the panel
+     * surface — see {@code DYSON_ACCENT_OFFSET}), drawn with a fraction ({@code count / capacity}) of its panels
+     * — a sparse patchwork that fills in as satellites join the swarm. The panels emit in a deterministic MIXED
+     * order (a finalizer-scattered hash of the panel triple), so any prefix of them reads as a uniform random
+     * patchwork (no sector-by-sector fill).
+     *
+     * <p>
+     * The same textured-shader VAO path the orbit ring uses (the shared program is bound until
+     * {@code ShaderProgram.clear()}); the VAO holds the gray half then the accent half, tinted
+     * {@code DYSON_SHELL_TINT} / {@code DYSON_ACCENT_TINT} over the 1×1 white texture.
+     *
+     * @param base     the star-center model matrix (already translated to the TE position)
+     * @param time     world time + partial ticks (the shared animation clock)
+     * @param starSize the star's render size (blocks)
+     * @param count    satellites currently in the swarm (0 → nothing drawn)
+     * @param capacity the star's satellite capacity (the full-shell count; &le; 0 → nothing drawn)
+     */
+    public static void renderUSSDysonSwarm(Matrix4fc base, float time, float starSize, long count, long capacity) {
+        if (!shadersReady() || count <= 0L || capacity <= 0L) return;
+
+        FMLClientHandler.instance()
+            .getClient()
+            .getTextureManager()
+            .bindTexture(RING_TEXTURE);
+
+        final float radius = starSize + DYSON_SHELL_MARGIN;
+        final IVertexArrayObject shell = dysonShellFor(radius);
+
+        // The fraction of the shell drawn this frame (clamped to the full mesh).
+        final int total = dysonTriangleCount(radius);
+        int draw = (int) (total * Math.min(1.0, (double) count / (double) capacity));
+        if (draw > total) draw = total;
+        if (draw < 1) draw = 1;
+
+        final boolean blendWas = GL11.glGetBoolean(GL11.GL_BLEND);
+        final long blendFuncWas = RenderState.savedBlendFunc();
+        final boolean cullWas = GL11.glGetBoolean(GL11.GL_CULL_FACE);
+        final boolean alphaTestWas = GL11.glGetBoolean(GL11.GL_ALPHA_TEST);
+
+        try {
+            if (cullWas) GL11.glDisable(GL11.GL_CULL_FACE); // double-sided panels
+            if (alphaTestWas) GL11.glDisable(GL11.GL_ALPHA_TEST);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glDepthMask(false);
+
+            // tilt (fixed) then spin (the world clock) — the shell keeps a readable face while turning.
+            dysonMatrix.set(base)
+                .rotate(DYSON_TILT, 1f, 0f, 0f)
+                .rotate((float) (time * DYSON_ROTATION_SPEED), 0f, 1f, 0f);
+
+            final ShaderHandle shader = texturedShader();
+            shader.use();
+            shader.uploadModel(dysonMatrix);
+
+            // The gray panels, then the accent cores (the VAO's second half, the same mixed prefix).
+            dysonTint(shader, DYSON_SHELL_TINT);
+            shell.render(0, draw * 3);
+            dysonTint(shader, DYSON_ACCENT_TINT);
+            shell.render(total * 3, draw * 3);
+        } finally {
+            ShaderProgram.clear();
+            RenderState.restore(GL11.GL_BLEND, blendWas);
+            RenderState.restoreBlendFunc(blendFuncWas);
+            RenderState.restore(GL11.GL_ALPHA_TEST, alphaTestWas);
+            RenderState.restore(GL11.GL_CULL_FACE, cullWas);
+        }
+    }
+
+    /** Unpacks a packed-ARGB tint into the textured shader's u_Tint (the shell's two layers). */
+    private static void dysonTint(ShaderHandle shader, int tint) {
+        GL20.glUniform4f(
+            shader.loc(SharedShaders.U_TINT),
+            ((tint >> 16) & 0xFF) / 255f,
+            ((tint >> 8) & 0xFF) / 255f,
+            (tint & 0xFF) / 255f,
+            ((tint >> 24) & 0xFF) / 255f);
+    }
+
+    /**
+     * The shell's latitude rows: the pole-to-pole span split so each row's arc height equals the equilateral
+     * triangle's height for {@link #DYSON_TRIANGLE_EDGE} — (√3/2) × edge — so the panels keep their shape from
+     * equator to pole.
+     */
+    private static int dysonRowCount(float radius) {
+        final float rowHeight = (float) Math.sqrt(3) * 0.5f * DYSON_TRIANGLE_EDGE;
+        return Math.max(2, (int) Math.round(Math.PI * radius / rowHeight));
+    }
+
+    /**
+     * A row's longitude segments: its mid-latitude circumference over the nominal edge, minimum 6 (the pole rows
+     * close the shell in a six-panel cap).
+     */
+    private static int dysonRowSegments(float radius, int row) {
+        final float mid = -((float) Math.PI / 2f) + (float) Math.PI * (row + 0.5f) / dysonRowCount(radius);
+        final int segments = (int) Math
+            .round(2f * (float) Math.PI * radius * (float) Math.cos(mid) / DYSON_TRIANGLE_EDGE);
+        return Math.max(6, segments);
+    }
+
+    /**
+     * A row's emitted triangles: an interior row emits two per segment (the up and down panels); a pole row
+     * emits one — its degenerate twin collapses to the pole vertex and is dropped.
+     */
+    private static int dysonRowTriangles(int segs, int row, int rows) {
+        if (rows > 2 && row > 0 && row < rows - 1) {
+            return 2 * segs;
+        }
+        return segs;
+    }
+
+    /** The shell's full triangle count for a radius (the rows' emitted triangles — the mesh's total). */
+    private static int dysonTriangleCount(float radius) {
+        final int rows = dysonRowCount(radius);
+        int total = 0;
+        for (int row = 0; row < rows; row++) {
+            total += dysonRowTriangles(dysonRowSegments(radius, row), row, rows);
+        }
+        return total;
+    }
+
+    /** One shell VAO per distinct shell radius (baked triangles) — cached like {@link #ussRingFor}. */
+    private static IVertexArrayObject dysonShellFor(float radius) {
+        final Integer key = Math.round(radius * 100f);
+        IVertexArrayObject cached = DYSON_SHELLS.get(key);
+        if (cached != null) {
+            return cached;
+        }
+        final int rows = dysonRowCount(radius);
+        final int[] segs = new int[rows];
+        final float[] offsets = new float[rows];
+        int total = 0;
+        for (int row = 0; row < rows; row++) {
+            segs[row] = dysonRowSegments(radius, row);
+            total += dysonRowTriangles(segs[row], row, rows);
+            if (row > 0) {
+                // Half the PREVIOUS row's segment off its bottom edge — the stagger that makes the lattice a
+                // triangle tiling (each row's top edge sits between the row below's segments).
+                offsets[row] = offsets[row - 1] + (float) Math.PI / segs[row - 1];
+            }
+        }
+        // The (row, column, direction) triples in DETERMINISTIC INTERLEAVED order: a hash of the triple,
+        // sorted — any prefix of the mesh then samples the whole shell evenly.
+        final int[] eRow = new int[total];
+        final int[] eCol = new int[total];
+        final int[] eDir = new int[total];
+        int[] hashes = new int[total];
+        for (int i = 0; i < total; i++) {
+            int rest = i;
+            int row = 0;
+            while (rest >= dysonRowTriangles(segs[row], row, rows)) {
+                rest -= dysonRowTriangles(segs[row], row, rows);
+                row++;
+            }
+            eRow[i] = row;
+            if (rows > 2 && row > 0 && row < rows - 1) {
+                eCol[i] = rest / 2;
+                eDir[i] = rest % 2;
+            } else {
+                eCol[i] = rest;
+                eDir[i] = row == rows - 1 ? 0 : 1;
+            }
+            hashes[i] = dysonHash(eRow[i], eCol[i], eDir[i]);
+        }
+        final Integer[] byHash = new Integer[total];
+        for (int i = 0; i < total; i++) {
+            byHash[i] = i;
+        }
+        java.util.Arrays.sort(byHash, (a, b) -> Integer.compare(hashes[a], hashes[b]));
+
+        final IVertexArrayObject built;
+        // The capacity is in VERTICES (one per emitted corner) — each panel emits three for the gray layer and
+        // three for the accent.
+        try (MeshBuilder mesh = MeshBuilder.of(texturedShader(), total * 6)) {
+            for (int i = 0; i < total; i++) {
+                final int idx = byHash[i];
+                dysonTriangle(mesh, radius, eRow[idx], eCol[idx], eDir[idx], offsets[eRow[idx]], false);
+            }
+            for (int i = 0; i < total; i++) {
+                final int idx = byHash[i];
+                dysonTriangle(mesh, radius, eRow[idx], eCol[idx], eDir[idx], offsets[eRow[idx]], true);
+            }
+            built = mesh.build();
+        }
+        if (DYSON_SHELLS.size() >= DYSON_SHELL_CACHE_MAX) {
+            final Iterator<Integer> oldest = DYSON_SHELLS.keySet()
+                .iterator();
+            if (oldest.hasNext()) {
+                DYSON_SHELLS.get(oldest.next())
+                    .delete();
+                oldest.remove();
+            }
+        }
+        DYSON_SHELLS.put(key, built);
+        return built;
+    }
+
+    /**
+     * A well-mixed 32-bit hash of a panel triple: the raw XOR keeps the triple's low-bit structure, so sorted
+     * prefixes would fill the shell sector by sector — the finalizer scatters it into a uniform patchwork.
+     */
+    private static int dysonHash(int row, int col, int dir) {
+        int h = (row * 73856093) ^ (col * 19349663) ^ (dir * 83492791);
+        h ^= h >>> 16;
+        h *= 0x7feb352d;
+        h ^= h >>> 15;
+        h *= 0x846ca68b;
+        h ^= h >>> 16;
+        return h;
+    }
+
+    /**
+     * One shell panel: row {@code row} × segment {@code segment}, direction {@code direction} (0 = the up panel —
+     * apex on the row's top edge, 1 = the down panel — apex on its bottom edge), each corner pulled toward the
+     * panel's OWN centroid — by {@link #DYSON_TRIANGLE_GAP} for the gray layer, by
+     * {@code GAP × DYSON_ACCENT_SCALE} for the accent (the dark blue core, emitted on the sphere pushed out by
+     * {@link #DYSON_ACCENT_OFFSET}). The top edge is staggered half a segment off the bottom edge (see
+     * {@code offsets} in {@link #dysonShellFor}), so the panels are equilateral.
+     */
+    private static void dysonTriangle(MeshBuilder mesh, float radius, int row, int segment, int direction,
+        float bottomOffset, boolean accent) {
+        final float layerRadius = accent ? radius + DYSON_ACCENT_OFFSET : radius;
+        final float scale = accent ? DYSON_TRIANGLE_GAP * DYSON_ACCENT_SCALE : DYSON_TRIANGLE_GAP;
+        final float rowStep = (float) Math.PI / dysonRowCount(radius);
+        final float th0 = -((float) Math.PI / 2f) + row * rowStep;
+        final float th1 = th0 + rowStep;
+        final int segs = dysonRowSegments(radius, row);
+        final float segStep = 2f * (float) Math.PI / segs;
+        final float ph0 = bottomOffset + segment * segStep;
+        final float ph1 = ph0 + segStep;
+        final float tph0 = bottomOffset + segStep * 0.5f + segment * segStep;
+        final float tph1 = tph0 + segStep;
+
+        final float[] b0 = dysonPoint(layerRadius, th0, ph0);
+        final float[] b1 = dysonPoint(layerRadius, th0, ph1);
+        final float[] t0 = dysonPoint(layerRadius, th1, tph0);
+        final float[] t1 = dysonPoint(layerRadius, th1, tph1);
+
+        final float[][] corners = direction == 0 ? new float[][] { b0, b1, t0 } : new float[][] { t0, t1, b1 };
+
+        final float cx = (corners[0][0] + corners[1][0] + corners[2][0]) / 3f;
+        final float cy = (corners[0][1] + corners[1][1] + corners[2][1]) / 3f;
+        final float cz = (corners[0][2] + corners[1][2] + corners[2][2]) / 3f;
+
+        for (int v = 0; v < 3; v++) {
+            final float[] c = corners[v];
+            mesh.triangleVertex(
+                cx + (c[0] - cx) * scale,
+                cy + (c[1] - cy) * scale,
+                cz + (c[2] - cz) * scale,
+                0.5f,
+                0.5f);
+        }
+    }
+
+    /** A point on the shell sphere: latitude {@code theta} (−π/2..π/2), longitude {@code phi}. */
+    private static float[] dysonPoint(float radius, float theta, float phi) {
+        final float ct = (float) Math.cos(theta);
+        return new float[] { radius * ct * (float) Math.cos(phi), radius * (float) Math.sin(theta),
+            radius * ct * (float) Math.sin(phi) };
+    }
+
+    // endregion
 
     static final double[] BLOCK_X = { -0.5, -0.5, +0.5, +0.5, +0.5, +0.5, -0.5, -0.5 };
     static final double[] BLOCK_Y = { +0.5, -0.5, -0.5, +0.5, +0.5, -0.5, -0.5, +0.5 };

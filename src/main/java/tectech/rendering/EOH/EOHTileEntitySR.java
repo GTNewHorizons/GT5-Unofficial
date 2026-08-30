@@ -17,6 +17,7 @@ import org.lwjgl.opengl.GL11;
 import gregtech.common.render.shader.RenderState;
 import tectech.Reference;
 import tectech.thing.block.TileEntityEyeOfHarmony;
+import tectech.voidcraft.uss.USSStarRenderType;
 
 public class EOHTileEntitySR extends TileEntitySpecialRenderer {
 
@@ -57,8 +58,30 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
                 eyeModel,
                 IItemRenderer.ItemRenderType.INVENTORY,
                 new Color(te.getStarColor()),
+                te.getStarShellColor(),
                 time,
-                te.getStarSize());
+                te.getStarSize(),
+                te.isStarHalo());
+            // Custom render treatments (the star's registered render type): the magnetar's magnetic dipole loops
+            // pass through the core — drawn AFTER the star body so the body's written depth occludes the far arcs
+            // (that is what makes the field lines read as entering and exiting the core).
+            if (te.getStarRenderType() == USSStarRenderType.MAGNETAR) {
+                EOHRenderingUtils.renderMagnetarFieldLoops(
+                    eyeModel,
+                    time,
+                    te.getStarSize(),
+                    te.getStarColor() != 0 ? te.getStarColor() : te.getStarShellColor());
+            }
+            // Dyson Swarm (the infrastructure pass): the star's satellite swarm renders as a near-opaque gray
+            // triangle shell with a dark blue core in each panel, filling with the satellite count.
+            if (te.getSwarmCount() > 0L) {
+                EOHRenderingUtils.renderUSSDysonSwarm(
+                    eyeModel,
+                    time,
+                    (float) te.getStarSize(),
+                    te.getSwarmCount(),
+                    te.getSwarmCapacity());
+            }
         } else {
             EOHRenderingUtils.renderEOHStar(eyeModel, IItemRenderer.ItemRenderType.INVENTORY, time, te.getStarSize());
         }

@@ -25,8 +25,9 @@ import gregtech.api.util.GTOreDictUnificator;
 
 /**
  * Unit tests for the deterministic cargo builders ({@link USSShipCargo}) — the planet-based miner cargo (the
- * mechanics pass — one planet, weighted ores, capped by the depletion reserve), the Starlifter star cargo (three
- * fluids, base × weight × √star-size), the reserve/depletion math, and the stack-conversion boundary.
+ * mechanics — one planet, weighted ores, capped by the depletion reserve), the Starlifter star cargo (1–3 produced
+ * fluids, base × weight × √star-size, capped by the fluid reserve), the reserve/depletion math, and the
+ * stack-conversion boundary.
  *
  * <p>
  * Bare-JVM: only {@link Materials} data + abstract NBT entries — no Forge fluid/block objects. The abstract entries
@@ -98,7 +99,7 @@ public class USSShipCargoTest {
             .id("weighted_world")
             .texture("Ma")
             .sizeRange(0.5f, 0.5f)
-            .allowedStarType(USSStarType.MAIN_SEQUENCE)
+            .allowedStarType(USSStarType.YELLOW_DWARF)
             .ores(
                 Arrays.asList(
                     new USSPlanetOre(Materials.Copper, 100L, 1.0),
@@ -127,13 +128,13 @@ public class USSShipCargoTest {
             .id("scarce_world")
             .texture("Ma")
             .sizeRange(0.5f, 0.5f)
-            .allowedStarType(USSStarType.MAIN_SEQUENCE)
+            .allowedStarType(USSStarType.YELLOW_DWARF)
             .ores(Collections.singletonList(new USSPlanetOre(Materials.Copper, 100L, 1.0)))
             .build();
         USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 0.5, 1.0, 1.0, 10, 10, false, -1);
 
         // A reserve of only 50 items (well below the base×weight share).
-        VoidcraftUSS.PlanetReserve reserve = new VoidcraftUSS.PlanetReserve(initialCopper(50L));
+        VoidcraftUSS.MaterialReserve reserve = new VoidcraftUSS.MaterialReserve(initialCopper(50L));
 
         long base = USSConstants.minerOreAmount(1000L);
         assertTrue(base > 50L, "the base must exceed the reserve for this test");
@@ -153,13 +154,13 @@ public class USSShipCargoTest {
             .id("init_world")
             .texture("Ma")
             .sizeRange(0.5f, 0.5f)
-            .allowedStarType(USSStarType.MAIN_SEQUENCE)
+            .allowedStarType(USSStarType.YELLOW_DWARF)
             .ores(Collections.singletonList(new USSPlanetOre(Materials.Copper, 100L, 1.0)))
             .build();
         USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 2.0, 1.0, 1.0, 10, 10, false, -1);
 
         // planetSize = 2.0 → size² = 4.0 → reserve = 100 × 1_000_000 × 4.0 = 400_000_000.
-        VoidcraftUSS.PlanetReserve expected = VoidcraftUSS.PlanetReserve.fromPlanet(def, planet.scale);
+        VoidcraftUSS.MaterialReserve expected = VoidcraftUSS.MaterialReserve.fromPlanet(def, planet.scale);
         assertEquals(400_000_000L, expected.remaining(Materials.Copper), "reserve = amount × planetSize²");
 
         USSShipCargo.MinerResult result = USSShipCargo.minePlanet(planet, 10L, null);
@@ -174,7 +175,7 @@ public class USSShipCargoTest {
             .id("deplete_world")
             .texture("Ma")
             .sizeRange(0.5f, 0.5f)
-            .allowedStarType(USSStarType.MAIN_SEQUENCE)
+            .allowedStarType(USSStarType.YELLOW_DWARF)
             .ores(Collections.singletonList(new USSPlanetOre(Materials.Copper, 1L, 1.0))) // 1 million items
             .build();
         USSPlanets.USSPlanet planet = new USSPlanets.USSPlanet(def, 5.0, 1.0, 1.0, 1.0, 10, 10, false, -1);
@@ -205,60 +206,33 @@ public class USSShipCargoTest {
 
     // endregion
 
-    // region starlifter (3-arg buildForStarlifter) — three fluids, base × weight × √star-size
+    // region starlifter (siphonStar) — produced fluids, base × weight × √star-size, capped by the fluid reserve
 
     @Test
-    public void testStarlifterYieldsThreeWeightedFluids() {
+    public void testSiphonStarYieldsProducedFluidsCappedByReserve() {
+        // Yellow dwarf: Hydrogen(3.0) / Helium(2.0) / Oxygen(1.0) — all three slots produced.
+        USSStarDefinition star = USSStarRegistry.byType(USSStarType.YELLOW_DWARF);
+        double size = 2.0;
         long power = 12L;
-        long seed = 42L;
-        NBTTagCompound cargo = USSShipCargo.buildForStarlifter(USSStarType.MAIN_SEQUENCE, power, seed);
+        long base = USSConstants.starlifterPlasmaAmount(power);
+        double sizeFactor = Math.sqrt(size);
 
-        NBTTagList fluids = USSShipCargo.readFluids(cargo);
-        assertEquals(3, fluids.tagCount(), "main sequence → three fluid entries");
+        USSShipCargo.StarlifterResult result = USSShipCargo.siphonStar(star, size, power, null);
+        NBTTagList fluids = USSShipCargo.readFluids(result.cargo);
+        assertEquals(3, fluids.tagCount(), "yellow dwarf → three fluid entries");
         assertEquals(
             0,
-            USSShipCargo.readItems(cargo)
+            USSShipCargo.readItems(result.cargo)
                 .tagCount(),
             "no item cargo");
 
-        // The amounts follow base × weight × √(sampled size).
-        double size = USSPlanets.sampleStarSize(USSStarType.MAIN_SEQUENCE, seed);
-        double sizeFactor = Math.sqrt(size);
-        long base = USSConstants.starlifterPlasmaAmount(power);
-
-        USSStarDefinition star = USSStarRegistry.byType(USSStarType.MAIN_SEQUENCE);
-        assertEquals(
-            base * star.getMain()
-                .getWeight() * sizeFactor,
-            fluids.getCompoundTagAt(0)
-                .getLong(USSShipCargo.FLUID_ENTRY_AMOUNT),
-            1.0,
-            "main fluid amount");
-        assertEquals(
-            base * star.getSecondary()
-                .getWeight() * sizeFactor,
-            fluids.getCompoundTagAt(1)
-                .getLong(USSShipCargo.FLUID_ENTRY_AMOUNT),
-            1.0,
-            "secondary fluid amount");
-        assertEquals(
-            base * star.getTertiary()
-                .getWeight() * sizeFactor,
-            fluids.getCompoundTagAt(2)
-                .getLong(USSShipCargo.FLUID_ENTRY_AMOUNT),
-            1.0,
-            "tertiary fluid amount");
-    }
-
-    @Test
-    public void testStarlifterFluidMaterialsMatchStar() {
-        long power = 5L;
-        long seed = 7L;
-        USSStarDefinition star = USSStarRegistry.byType(USSStarType.WHITE_DWARF);
-
-        NBTTagList fluids = USSShipCargo
-            .readFluids(USSShipCargo.buildForStarlifter(USSStarType.WHITE_DWARF, power, seed));
-        assertEquals(3, fluids.tagCount(), "white dwarf → three fluid entries");
+        // Per-fluid amount = min(base × weight × √size, the reserve).
+        long mainShare = (long) (base * star.getMain()
+            .getWeight() * sizeFactor);
+        long secondaryShare = (long) (base * star.getSecondary()
+            .getWeight() * sizeFactor);
+        long tertiaryShare = (long) (base * star.getTertiary()
+            .getWeight() * sizeFactor);
         assertEquals(
             star.getMain()
                 .getMaterial()
@@ -267,51 +241,143 @@ public class USSShipCargoTest {
                 .getString(USSShipCargo.FLUID_ENTRY_MATERIAL),
             "main material");
         assertEquals(
-            star.getSecondary()
-                .getMaterial()
-                .getName(),
+            mainShare,
+            fluids.getCompoundTagAt(0)
+                .getLong(USSShipCargo.FLUID_ENTRY_AMOUNT),
+            "main fluid amount");
+        assertEquals(
+            secondaryShare,
             fluids.getCompoundTagAt(1)
-                .getString(USSShipCargo.FLUID_ENTRY_MATERIAL),
-            "secondary material");
+                .getLong(USSShipCargo.FLUID_ENTRY_AMOUNT),
+            "secondary fluid amount");
         assertEquals(
-            star.getTertiary()
-                .getMaterial()
-                .getName(),
+            tertiaryShare,
             fluids.getCompoundTagAt(2)
+                .getLong(USSShipCargo.FLUID_ENTRY_AMOUNT),
+            "tertiary fluid amount");
+        // The reserve is initialized from the definition, then drawn down by the siphon.
+        assertEquals(
+            (long) (star.getMain()
+                .getAmount() * 1_000_000L
+                * size
+                * size) - mainShare,
+            result.newReserve.remaining(
+                star.getMain()
+                    .getMaterial()),
+            "the reserve holds the initial amount minus the siphon");
+    }
+
+    @Test
+    public void testStarFluidReserveIsInitializedFromDefinition() {
+        // Each produced fluid starts at amount × 1_000_000 × starSize² (zero-capacity slots get no entry).
+        USSStarDefinition star = USSStarRegistry.byType(USSStarType.YELLOW_DWARF);
+        double size = 3.0;
+        VoidcraftUSS.MaterialReserve reserve = VoidcraftUSS.MaterialReserve.fromStar(star, size);
+        for (USSStarMaterial material : star.getMaterials()) {
+            long expected = material.getAmount() > 0L ? (long) (material.getAmount() * 1_000_000L * size * size) : 0L;
+            assertEquals(expected, reserve.remaining(material.getMaterial()), material.getMaterial() + " initial");
+        }
+        // A null definition gives an empty reserve (defensive, not a crash).
+        assertEquals(
+            0L,
+            VoidcraftUSS.MaterialReserve.fromStar(null, size)
+                .remaining(Materials.Hydrogen));
+    }
+
+    @Test
+    public void testSiphonStarDepletesOverMissions() {
+        // Black hole: ONE produced fluid (Osmium, weight 3.0, 500 million mB capacity at size 1).
+        USSStarDefinition star = USSStarRegistry.byType(USSStarType.BLACK_HOLE);
+        double size = 1.0;
+        long power = 10_000L; // base = 10_000_000 (the cap)
+        long base = USSConstants.starlifterPlasmaAmount(power);
+        USSStarMaterial osmium = star.getMain();
+        assertEquals(Materials.Osmium, osmium.getMaterial());
+        long initial = (long) (osmium.getAmount() * 1_000_000L);
+        long firstShare = (long) (base * osmium.getWeight() * Math.sqrt(size));
+        assertTrue(firstShare < initial, "the first siphon must not exhaust the reserve");
+
+        USSShipCargo.StarlifterResult first = USSShipCargo.siphonStar(star, size, power, null);
+        assertEquals(
+            firstShare,
+            USSShipCargo.readFluids(first.cargo)
+                .getCompoundTagAt(0)
+                .getLong(USSShipCargo.FLUID_ENTRY_AMOUNT),
+            "first siphon amount");
+        assertEquals(initial - firstShare, first.newReserve.remaining(Materials.Osmium), "depleted by the siphon");
+
+        USSShipCargo.StarlifterResult second = USSShipCargo.siphonStar(star, size, power, first.newReserve);
+        assertEquals(initial - 2L * firstShare, second.newReserve.remaining(Materials.Osmium), "second draw");
+
+        // A small reserve caps the yield; a fully depleted star yields empty cargo (the mission still completes).
+        Map<Materials, Long> small = new LinkedHashMap<>();
+        small.put(Materials.Osmium, 7L);
+        USSShipCargo.StarlifterResult capped = USSShipCargo
+            .siphonStar(star, size, power, new VoidcraftUSS.MaterialReserve(small));
+        assertEquals(
+            7L,
+            USSShipCargo.readFluids(capped.cargo)
+                .getCompoundTagAt(0)
+                .getLong(USSShipCargo.FLUID_ENTRY_AMOUNT),
+            "capped by the 7 mB left");
+        assertEquals(0L, capped.newReserve.remaining(Materials.Osmium), "drained to zero");
+
+        USSShipCargo.StarlifterResult empty = USSShipCargo.siphonStar(star, size, power, capped.newReserve);
+        assertEquals(
+            0,
+            USSShipCargo.readFluids(empty.cargo)
+                .tagCount(),
+            "fully depleted → empty cargo");
+        assertEquals(
+            0,
+            USSShipCargo.readItems(empty.cargo)
+                .tagCount(),
+            "and no item cargo");
+    }
+
+    @Test
+    public void testSiphonStarNullDefinitionIsEmptyCargo() {
+        USSShipCargo.StarlifterResult result = USSShipCargo.siphonStar(null, 1.0, 5L, null);
+        assertEquals(
+            0,
+            USSShipCargo.readFluids(result.cargo)
+                .tagCount(),
+            "null star → empty cargo");
+        assertNotNull(result.newReserve, "an empty reserve is still returned");
+        // A passed-in reserve is preserved on a null star.
+        Map<Materials, Long> map = new LinkedHashMap<>();
+        map.put(Materials.Hydrogen, 42L);
+        USSShipCargo.StarlifterResult kept = USSShipCargo
+            .siphonStar(null, 1.0, 5L, new VoidcraftUSS.MaterialReserve(map));
+        assertEquals(42L, kept.newReserve.remaining(Materials.Hydrogen), "the current reserve is untouched");
+    }
+
+    @Test
+    public void testSiphonStarOmitsZeroCapacitySlots() {
+        // A star produces 1–3 of its three materials: the black hole ONE (Osmium), the quasi star TWO
+        // (Hydrogen + Iron) — the zero-capacity slots yield no entries.
+        USSStarDefinition blackHole = USSStarRegistry.byType(USSStarType.BLACK_HOLE);
+        NBTTagList holeFluids = USSShipCargo.readFluids(USSShipCargo.siphonStar(blackHole, 1.0, 5L, null).cargo);
+        assertEquals(1, holeFluids.tagCount(), "black hole → one fluid entry");
+        assertEquals(
+            Materials.Osmium.getName(),
+            holeFluids.getCompoundTagAt(0)
                 .getString(USSShipCargo.FLUID_ENTRY_MATERIAL),
-            "tertiary material");
-    }
+            "the black hole's fluid is Osmium");
 
-    @Test
-    public void testStarlifterNullStarFallsBackToMainSequence() {
-        // A null star type is a defensive case — it falls back to MAIN_SEQUENCE (consistent with generate +
-        // sampleStarSize), so it yields the main sequence's 3 fluids (not an empty cargo).
-        NBTTagCompound cargo = USSShipCargo.buildForStarlifter(null, 5L, 1L);
+        USSStarDefinition quasi = USSStarRegistry.byType(USSStarType.QUASI_STAR);
+        NBTTagList quasiFluids = USSShipCargo.readFluids(USSShipCargo.siphonStar(quasi, 1.0, 5L, null).cargo);
+        assertEquals(2, quasiFluids.tagCount(), "quasi star → two fluid entries (the zero-capacity slot is omitted)");
         assertEquals(
-            3,
-            USSShipCargo.readFluids(cargo)
-                .tagCount(),
-            "null star → main sequence's 3 fluids");
+            Materials.Hydrogen.getName(),
+            quasiFluids.getCompoundTagAt(0)
+                .getString(USSShipCargo.FLUID_ENTRY_MATERIAL),
+            "the quasi star's main fluid is Hydrogen");
         assertEquals(
-            0,
-            USSShipCargo.readItems(cargo)
-                .tagCount(),
-            "no item cargo");
-    }
-
-    @Test
-    public void testStarlifterUnregisteredStarIsEmptyCargo() {
-        // An enum value with NO registered star definition → empty cargo (not a crash).
-        NBTTagCompound cargo = USSShipCargo.buildForStarlifter(USSStarType.SUPERMASSIVE, 5L, 1L);
-        // (SUPERMASSIVE IS registered in the default catalog — so this yields fluids. The unregistered case is
-        // exercised by clearing the registry first.)
-        USSStarRegistry.clear();
-        NBTTagCompound empty = USSShipCargo.buildForStarlifter(USSStarType.SUPERMASSIVE, 5L, 1L);
-        assertEquals(
-            0,
-            USSShipCargo.readFluids(empty)
-                .tagCount(),
-            "unregistered star → no fluids");
+            Materials.Iron.getName(),
+            quasiFluids.getCompoundTagAt(1)
+                .getString(USSShipCargo.FLUID_ENTRY_MATERIAL),
+            "the quasi star's second fluid is Iron");
     }
 
     // endregion
@@ -320,9 +386,9 @@ public class USSShipCargoTest {
 
     @Test
     public void testSampleStarSizeIsInRange() {
-        USSStarDefinition star = USSStarRegistry.byType(USSStarType.MAIN_SEQUENCE);
+        USSStarDefinition star = USSStarRegistry.byType(USSStarType.YELLOW_DWARF);
         for (long seed = 1; seed <= 5; seed++) {
-            double size = USSPlanets.sampleStarSize(USSStarType.MAIN_SEQUENCE, seed);
+            double size = USSPlanets.sampleStarSize(USSStarType.YELLOW_DWARF, seed);
             assertTrue(
                 size >= star.getSizeMin() && size <= star.getSizeMax(),
                 "seed " + seed + " size " + size + " within [" + star.getSizeMin() + "," + star.getSizeMax() + "]");
@@ -347,11 +413,11 @@ public class USSShipCargoTest {
         Map<Materials, Long> map = new LinkedHashMap<>();
         map.put(Materials.Copper, 25_000_000L);
         map.put(Materials.Iron, 10_000_000L);
-        VoidcraftUSS.PlanetReserve reserve = new VoidcraftUSS.PlanetReserve(map);
+        VoidcraftUSS.MaterialReserve reserve = new VoidcraftUSS.MaterialReserve(map);
 
         NBTTagCompound nbt = new NBTTagCompound();
         reserve.writeToNBT(nbt);
-        VoidcraftUSS.PlanetReserve loaded = VoidcraftUSS.PlanetReserve.readFromNBT(nbt);
+        VoidcraftUSS.MaterialReserve loaded = VoidcraftUSS.MaterialReserve.readFromNBT(nbt);
 
         assertEquals(25_000_000L, loaded.remaining(Materials.Copper), "Copper survives the round trip");
         assertEquals(10_000_000L, loaded.remaining(Materials.Iron), "Iron survives the round trip");
@@ -362,12 +428,12 @@ public class USSShipCargoTest {
     public void testReserveMineClampsAtZero() {
         Map<Materials, Long> map = new LinkedHashMap<>();
         map.put(Materials.Copper, 100L);
-        VoidcraftUSS.PlanetReserve reserve = new VoidcraftUSS.PlanetReserve(map);
+        VoidcraftUSS.MaterialReserve reserve = new VoidcraftUSS.MaterialReserve(map);
 
-        VoidcraftUSS.PlanetReserve after = reserve.mine(Materials.Copper, 50L);
+        VoidcraftUSS.MaterialReserve after = reserve.mine(Materials.Copper, 50L);
         assertEquals(50L, after.remaining(Materials.Copper), "mine subtracts");
 
-        VoidcraftUSS.PlanetReserve over = after.mine(Materials.Copper, 1000L);
+        VoidcraftUSS.MaterialReserve over = after.mine(Materials.Copper, 1000L);
         assertEquals(0L, over.remaining(Materials.Copper), "mine clamps at 0 (no negative)");
     }
 
@@ -381,7 +447,7 @@ public class USSShipCargoTest {
             .id("stack_world")
             .texture("Ma")
             .sizeRange(0.5f, 0.5f)
-            .allowedStarType(USSStarType.MAIN_SEQUENCE)
+            .allowedStarType(USSStarType.YELLOW_DWARF)
             .ores(
                 Arrays
                     .asList(new USSPlanetOre(Materials.Copper, 100L, 1.0), new USSPlanetOre(Materials.Iron, 100L, 1.0)))
@@ -441,7 +507,8 @@ public class USSShipCargoTest {
 
     @Test
     public void testFluidEntryResolvesToMaterial() {
-        NBTTagList fluids = USSShipCargo.readFluids(USSShipCargo.buildForStarlifter(USSStarType.MAIN_SEQUENCE, 9L, 1L));
+        NBTTagList fluids = USSShipCargo
+            .readFluids(USSShipCargo.siphonStar(USSStarRegistry.byType(USSStarType.YELLOW_DWARF), 1.0, 9L, null).cargo);
         NBTTagCompound fluidEntry = fluids.getCompoundTagAt(0);
 
         String name = fluidEntry.getString(USSShipCargo.FLUID_ENTRY_MATERIAL);

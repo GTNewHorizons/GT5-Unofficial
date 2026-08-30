@@ -10,6 +10,8 @@ import net.minecraft.network.PacketBuffer;
 import com.cleanroommc.modularui.api.drawable.IIcon;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.api.widget.Interactable;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -22,6 +24,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.DropDownMenu;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -35,29 +38,31 @@ import com.google.gson.JsonPrimitive;
 import cpw.mods.fml.relauncher.Side;
 import tectech.voidcraft.uss.USSCapabilities;
 import tectech.voidcraft.uss.USSCommand;
+import tectech.voidcraft.uss.USSCommandRepair;
 import tectech.voidcraft.uss.USSConditionOp;
 import tectech.voidcraft.uss.USSProgramDefaults;
 import tectech.voidcraft.uss.USSProgramView;
 
 /**
- * The Voidcraft programming GUI (pass 33 UI, UI-2) — a linear block-based visual programming view
+ * The Voidcraft programming GUI — a linear block-based visual programming view
  * (Scratch-style), opened by right-clicking the controller block, or by right-clicking a digitized blueprint
  * item (ship / base) in hand.
  *
  * <p>
  * LEFT: the current program as horizontal blocks (loops indented one level per depth), each block showing its
- * arguments as visually distinct SLOTS; a CURSOR (the selected row + slot) drives the slot editor above the list
- * (text field + Set / VAR); each row has ▲ / ▼ (reorder) and ✕ (delete) buttons; the footer shows the program
- * caps and the last server rejection.
+ * arguments as visually distinct SLOTS; a FREEFORM slot with hard-coded options (the MOVE / SEND / TAKE /
+ * REPAIR target, the WRITE value) is a drop-down that lists those options on click (the click also selects the
+ * slot into the CURSOR editor above the list, where the text field keeps the freeform text path); each row has
+ * up / down arrow (reorder) and x (delete) buttons; the footer shows the program caps and the last server
+ * rejection.
  *
  * <p>
  * RIGHT: (1) USS VALUES — pick a global USS variable slot (0..255) and assign it as a reference into the
- * selected slot (SLOT SELECTION ONLY — no live USS value display, user spec UI-2); (2) ARGUMENTS — helpers that
- * fill the selected MOVE target (Nearest planet / Random planet / Random ripple), shown only when the craft can
- * MOVE; (3) COMMANDS — the palette with an [Add] per command (inserts at the cursor), gated by the craft's
+ * selected slot (SLOT SELECTION ONLY — no live USS value display); (2) COMMANDS — the palette with an [Add] per
+ * command (inserts below the selected node), gated by the craft's
  * CAPABILITY SET (a ship without thrusters gets no MOVE row; without mining power no MINE row, etc.) and each
  * row's tooltip carries the command description + the craft's stat line for it (speed / mining power / scan
- * power / siphon power / construction power); (4) PRESETS — Miner / Starlifter / Explorer / Build / Clear, each
+ * power / siphon power / construction power); (3) PRESETS — Miner / Starlifter / Explorer / Build / Clear, each
  * hidden when the craft lacks the capability the preset needs.
  *
  * <p>
@@ -76,9 +81,11 @@ public class VoidcraftProgramGui {
     private static final String SPEC_WAIT = "{\"t\":0,\"c\":4,\"p\":{\"ticks\":20}}";
     private static final String SPEC_STOP = "{\"t\":0,\"c\":5}";
     private static final String SPEC_CONSTRUCT = "{\"t\":0,\"c\":6}";
-    private static final String SPEC_REPAIR = "{\"t\":0,\"c\":7}";
+    private static final String SPEC_REPAIR = "{\"t\":0,\"c\":7,\"p\":{\"target\":\"SELF\"}}";
     private static final String SPEC_SCAN = "{\"t\":0,\"c\":8}";
     private static final String SPEC_SIPHON = "{\"t\":0,\"c\":9}";
+    private static final String SPEC_SEND = "{\"t\":0,\"c\":10,\"p\":{\"amount\":-1,\"filter\":\"*\",\"target\":\"\"}}";
+    private static final String SPEC_TAKE = "{\"t\":0,\"c\":11,\"p\":{\"amount\":-1,\"filter\":\"*\",\"target\":\"\"}}";
     private static final String SPEC_IF = "{\"t\":1,\"l\":{\"k\":0,\"s\":\"\"},\"op\":0,\"r\":{\"k\":0,\"s\":\"\"}}";
     private static final String SPEC_WHILE = "{\"t\":2,\"l\":{\"k\":0,\"s\":\"\"},\"op\":0,\"r\":{\"k\":0,\"s\":\"\"}}";
     private static final String SPEC_REPEAT = "{\"t\":3,\"n\":1}";
@@ -111,6 +118,10 @@ public class VoidcraftProgramGui {
     private final List<int[]> rowPaths = new ArrayList<int[]>();
     private final List<List<ButtonWidget>> rowSlotBtns = new ArrayList<List<ButtonWidget>>();
     private final List<List<Rectangle>> rowSlotDefaults = new ArrayList<List<Rectangle>>();
+    private final List<List<DropDownMenu>> rowSlotDropdowns = new ArrayList<List<DropDownMenu>>();
+
+    // the WRITE-value drop-down's "Current location" choice (the action JSON carries the "loc" marker instead)
+    private static final String LOC_CHOICE = "Current location";
 
     // highlight / slot-kind backgrounds (UI-3)
     private static final Rectangle ROW_HILITE = new Rectangle().color(70, 130, 70, 255);
@@ -249,6 +260,7 @@ public class VoidcraftProgramGui {
         rowPaths.clear();
         rowSlotBtns.clear();
         rowSlotDefaults.clear();
+        rowSlotDropdowns.clear();
         List<IWidget> children = new ArrayList<IWidget>();
         if (rows != null) {
             for (int i = 0; i < rows.size(); i++) {
@@ -296,9 +308,19 @@ public class VoidcraftProgramGui {
         rowPaths.add(row.path);
         List<ButtonWidget> slotBtns = new ArrayList<ButtonWidget>();
         List<Rectangle> slotDefs = new ArrayList<Rectangle>();
+        List<DropDownMenu> slotDds = new ArrayList<DropDownMenu>();
         for (int si = 0; si < row.slots.size(); si++) {
             final int s = si;
             USSProgramView.Slot slot = row.slots.get(si);
+            String ddKind = slotOptionKind(row, slot);
+            if (ddKind != null) {
+                DropDownMenu dd = createSlotDropdown(row, index, s, ddKind, slot);
+                slotBtns.add(null);
+                slotDefs.add(null);
+                slotDds.add(dd);
+                flow.child(dd);
+                continue;
+            }
             Rectangle def = slot.isOp ? OP_BG : (slot.display.startsWith("VAR ") ? VAR_BG : null);
             ButtonWidget<?> slotBtn = new ButtonWidget<>().onMousePressed(mb -> {
                 if (slot.isOp) {
@@ -324,34 +346,28 @@ public class VoidcraftProgramGui {
             }
             slotBtns.add(slotBtn);
             slotDefs.add(def);
+            slotDds.add(null);
             flow.child(slotBtn);
         }
         rowSlotBtns.add(slotBtns);
         rowSlotDefaults.add(slotDefs);
+        rowSlotDropdowns.add(slotDds);
         flow.child(new ButtonWidget<>().onMousePressed(mb -> {
             sendAction(moveJson(row.path, true));
             return true;
         })
-            .overlay(IKey.str("up"))
-            .width(16)
+            .overlay(GuiTextures.ARROW_UP)
+            .width(14)
             .height(14)
             .tooltip(t -> t.add(IKey.str("move up"))));
         flow.child(new ButtonWidget<>().onMousePressed(mb -> {
             sendAction(moveJson(row.path, false));
             return true;
         })
-            .overlay(IKey.str("dn"))
-            .width(16)
+            .overlay(GuiTextures.ARROW_DOWN)
+            .width(14)
             .height(14)
             .tooltip(t -> t.add(IKey.str("move down"))));
-        flow.child(new ButtonWidget<>().onMousePressed(mb -> {
-            sendAction(copyJson(row.path));
-            return true;
-        })
-            .overlay(IKey.str("cp"))
-            .width(18)
-            .height(14)
-            .tooltip(t -> t.add(IKey.str("copy this block (insert a copy right after it)"))));
         flow.child(new ButtonWidget<>().onMousePressed(mb -> {
             sendAction(removeJson(row.path));
             return true;
@@ -380,6 +396,10 @@ public class VoidcraftProgramGui {
                 return "row " + (index + 1) + " - wait for N ticks";
             case "STOP":
                 return "row " + (index + 1) + " - end the program (the ship holds)";
+            case "SEND":
+                return "row " + (index + 1) + " - send cargo to the target ship (needs a shared location)";
+            case "TAKE":
+                return "row " + (index + 1) + " - take cargo from the target ship (needs a shared location)";
             case "IF":
                 return "row " + (index + 1) + " - run the block below once, when the condition holds";
             case "WHILE":
@@ -436,13 +456,6 @@ public class VoidcraftProgramGui {
                         .tooltip(t -> t.add(IKey.str("assign this USS slot to the selected slot"))))
                     .childPadding(2)
                     .coverChildren());
-        if (caps.has(USSCapabilities.MOVE)) {
-            // the ARGUMENTS helpers fill the MOVE target — only useful when MOVE is available
-            col.child(sectionLabel("ARGUMENTS"))
-                .child(argButton("Nearest planet", USSProgramDefaults.TARGET_NEAREST_PLANET))
-                .child(argButton("Random planet", USSProgramDefaults.TARGET_RANDOM_PLANET))
-                .child(argButton("Random ripple", USSProgramDefaults.TARGET_RIPPLE_UNSCANNED));
-        }
         col.child(sectionLabel("COMMANDS"));
         if (caps.has(USSCapabilities.MOVE)) {
             col.child(cmdRow(USSCommand.MOVE, SPEC_MOVE, "fly to the target body (HOME = the gateway)"));
@@ -456,6 +469,18 @@ public class VoidcraftProgramGui {
         if (caps.has(USSCapabilities.SIPHON)) {
             col.child(cmdRow(USSCommand.SIPHON, SPEC_SIPHON, "siphon the target star into fluid cargo"));
         }
+        if (caps.has(USSCapabilities.LOGISTICS)) {
+            col.child(
+                cmdRow(
+                    USSCommand.SEND,
+                    SPEC_SEND,
+                    "send cargo to the target ship (amount, filter, target — index / name / NEARBY; default ALL / * )"))
+                .child(
+                    cmdRow(
+                        USSCommand.TAKE,
+                        SPEC_TAKE,
+                        "take cargo from the target ship (amount, filter, target — index / name / NEARBY; default ALL / * )"));
+        }
         col.child(cmdRow(USSCommand.WRITE, SPEC_WRITE, "write a USS slot value into the selected slot"))
             .child(cmdRow(USSCommand.READ, SPEC_READ, "copy one USS slot into another"))
             .child(cmdRow(USSCommand.WAIT, SPEC_WAIT, "pause the program for a number of ticks"))
@@ -464,7 +489,11 @@ public class VoidcraftProgramGui {
             col.child(cmdRow(USSCommand.CONSTRUCT, SPEC_CONSTRUCT, "build the stored base at the target site"));
         }
         if (caps.has(USSCapabilities.REPAIR)) {
-            col.child(cmdRow(USSCommand.REPAIR, SPEC_REPAIR, "repair the base at the target site"));
+            col.child(
+                cmdRow(
+                    USSCommand.REPAIR,
+                    SPEC_REPAIR,
+                    "repair the station (target — SELF or a fleet member at the station's location)"));
         }
         col.child(flowRow("IF", SPEC_IF, "run the block when the condition holds"))
             .child(flowRow("WHILE", SPEC_WHILE, "repeat the block while the condition holds"))
@@ -557,18 +586,6 @@ public class VoidcraftProgramGui {
         return row(label, specJson, description, "");
     }
 
-    /** An ARGUMENT helper: fills the selected MOVE target slot with the given target. */
-    private IWidget argButton(String label, String target) {
-        return new ButtonWidget<>().onMousePressed(mb -> {
-            applyArgument(target);
-            return true;
-        })
-            .overlay(IKey.str(label))
-            .width(120)
-            .height(14)
-            .tooltip(t -> t.add(IKey.str("set the selected MOVE target to " + target)));
-    }
-
     private IWidget presetButton(String label, String preset) {
         return new ButtonWidget<>().onMousePressed(mb -> {
             sendAction(applyPresetJson(preset));
@@ -624,14 +641,20 @@ public class VoidcraftProgramGui {
         for (int i = 0; i < rowSlotBtns.size(); i++) {
             List<ButtonWidget> btns = rowSlotBtns.get(i);
             List<Rectangle> defs = rowSlotDefaults.get(i);
+            List<DropDownMenu> dds = rowSlotDropdowns.get(i);
             for (int j = 0; j < btns.size(); j++) {
-                if (defs.get(j) == null) {
-                    btns.get(j)
-                        .disableThemeBackground(false);
+                if (btns.get(j) != null) {
+                    if (defs.get(j) == null) {
+                        btns.get(j)
+                            .disableThemeBackground(false);
+                    } else {
+                        btns.get(j)
+                            .disableThemeBackground(true)
+                            .background(defs.get(j));
+                    }
                 } else {
-                    btns.get(j)
-                        .disableThemeBackground(true)
-                        .background(defs.get(j));
+                    dds.get(j)
+                        .disableThemeBackground(false);
                 }
             }
         }
@@ -662,10 +685,18 @@ public class VoidcraftProgramGui {
         int si = selSlot.get();
         if (si >= 0 && si < rowSlotBtns.get(idx)
             .size()) {
-            rowSlotBtns.get(idx)
-                .get(si)
-                .disableThemeBackground(true)
-                .background(SLOT_HILITE);
+            if (rowSlotBtns.get(idx)
+                .get(si) != null) {
+                rowSlotBtns.get(idx)
+                    .get(si)
+                    .disableThemeBackground(true)
+                    .background(SLOT_HILITE);
+            } else {
+                rowSlotDropdowns.get(idx)
+                    .get(si)
+                    .disableThemeBackground(true)
+                    .background(SLOT_HILITE);
+            }
         }
     }
 
@@ -727,14 +758,6 @@ public class VoidcraftProgramGui {
         // any other slot kind: a USS reference is not valid there — silent no-op
     }
 
-    /** ARGUMENT helper: set the selected MOVE target slot. */
-    private void applyArgument(String target) {
-        if (!hasSelectedSlot() || !"target".equals(selectedSlotLabel())) {
-            return;
-        }
-        sendAction(paramJson(selectedRow, "target", target));
-    }
-
     /** Op slot: cycle EQ → NEQ → LT → GT → EQ. */
     private void cycleOp(USSProgramView.Row row, int slotIndex) {
         String current = row.slots.get(slotIndex).display;
@@ -748,6 +771,143 @@ public class VoidcraftProgramGui {
             : op == USSConditionOp.NEQ ? USSConditionOp.LT
                 : op == USSConditionOp.LT ? USSConditionOp.GT : USSConditionOp.EQ;
         sendAction(condopJson(row, next.name()));
+    }
+
+    /**
+     * The drop-down option kind of a freeform slot, or null when the slot has no hard-coded options: "move" /
+     * "send" / "repair" = the target slot of those commands, "write" = the WRITE value slot.
+     */
+    private static String slotOptionKind(USSProgramView.Row row, USSProgramView.Slot slot) {
+        if (slot.isOp) {
+            return null;
+        }
+        if ("target".equals(slot.label)) {
+            switch (row.label) {
+                case "MOVE":
+                    return "move";
+                case "SEND":
+                case "TAKE":
+                    return "send";
+                case "REPAIR":
+                    return "repair";
+                default:
+                    return null;
+            }
+        }
+        if ("value".equals(slot.label) && "WRITE".equals(row.label)) {
+            return "write";
+        }
+        return null;
+    }
+
+    /**
+     * A freeform slot with hard-coded options, rendered as a drop-down: on click the options appear (and the
+     * slot is selected into the editor at the same time, so the freeform text path stays available). The closed
+     * state shows the current value; a value that is not an option gets its own choice added. A choice click
+     * sends the same one C2S action as the freeform path (the server stays authoritative).
+     */
+    @SuppressWarnings("deprecation")
+    private DropDownMenu createSlotDropdown(USSProgramView.Row row, int rowIndex, int slotIndex, String kind,
+        USSProgramView.Slot slot) {
+        final int s = slotIndex;
+        List<String> labels = new ArrayList<String>();
+        List<String> values = new ArrayList<String>();
+        if ("move".equals(kind)) {
+            labels.add("Star");
+            values.add(USSProgramDefaults.TARGET_STAR);
+            labels.add("Planet");
+            values.add(USSProgramDefaults.TARGET_PLANET);
+            labels.add("Nearest planet");
+            values.add(USSProgramDefaults.TARGET_NEAREST_PLANET);
+            labels.add("Random planet");
+            values.add(USSProgramDefaults.TARGET_RANDOM_PLANET);
+            labels.add("Ripple");
+            values.add(USSProgramDefaults.TARGET_RIPPLE);
+            labels.add("Random ripple");
+            values.add(USSProgramDefaults.TARGET_RIPPLE_UNSCANNED);
+            labels.add("Ship");
+            values.add(USSProgramDefaults.TARGET_SHIP);
+            labels.add("Home");
+            values.add(USSProgramDefaults.TARGET_HOME);
+        } else if ("send".equals(kind)) {
+            labels.add("Nearby");
+            values.add(USSProgramDefaults.TARGET_NEARBY);
+        } else if ("repair".equals(kind)) {
+            labels.add("Self");
+            values.add(USSCommandRepair.TARGET_SELF);
+        } else {
+            labels.add(LOC_CHOICE);
+            values.add(LOC_CHOICE);
+        }
+        String display = slot.display;
+        int sel = -1;
+        for (int i = 0; i < values.size(); i++) {
+            if (values.get(i)
+                .equals(display)) {
+                sel = i;
+                break;
+            }
+        }
+        if (sel < 0 && !display.isEmpty()) {
+            // a custom value (freeform text, a VAR / STAT reference) gets its own choice so the closed state
+            // can show it
+            labels.add(display);
+            values.add(display);
+            sel = values.size() - 1;
+        }
+        int textW = display.length();
+        for (String l : labels) {
+            textW = Math.max(textW, l.length());
+        }
+        DropDownMenu dd = new SlotDropdown(new Runnable() {
+
+            @Override
+            public void run() {
+                select(rowIndex, s);
+            }
+        });
+        for (int i = 0; i < values.size(); i++) {
+            final String value = values.get(i);
+            dd.addChoice(new DropDownMenu.ItemSelected() {
+
+                @Override
+                public void selected(DropDownMenu menu) {
+                    // the built-in choice handler already closed the internal list (on mouse release) — the
+                    // mirror must not stay open or the next bar press reopens it
+                    ((SlotDropdown) dd).setOpen(false);
+                    String json = slotChoiceActionJson(row, kind, value);
+                    if (json != null) {
+                        sendAction(json);
+                    }
+                }
+            }, labels.get(i));
+        }
+        dd.setSelectedIndex(sel);
+        dd.width(Math.max(40, Math.min(textW * 5 + 17, 110)))
+            .height(14)
+            .tooltip(t -> t.add(IKey.str(slot.label + " - pick an option, or type a value in the editor")));
+        return dd;
+    }
+
+    /** The one C2S action a drop-down choice sends (null = no action — the current value is kept). */
+    private String slotChoiceActionJson(USSProgramView.Row row, String kind, String value) {
+        if (!"write".equals(kind)) {
+            return paramJson(row, "target", value);
+        }
+        if (LOC_CHOICE.equals(value)) {
+            return paramLocJson(row);
+        }
+        if (value.startsWith("VAR ")) {
+            try {
+                return paramVarJson(row, Integer.parseInt(value.substring(4)));
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        if (value.startsWith("STAT ")) {
+            return null; // no GUI action for a STAT reference — the value is kept as-is
+        }
+        return paramJson(row, "value", value);
     }
 
     // endregion
@@ -787,6 +947,15 @@ public class VoidcraftProgramGui {
         o.add("path", pathArray(row.path));
         o.addProperty("key", "value");
         o.addProperty("var", slot);
+        return o.toString();
+    }
+
+    private String paramLocJson(USSProgramView.Row row) {
+        JsonObject o = new JsonObject();
+        o.addProperty("op", "param");
+        o.add("path", pathArray(row.path));
+        o.addProperty("key", "value");
+        o.addProperty("loc", true);
         return o.toString();
     }
 
@@ -839,14 +1008,10 @@ public class VoidcraftProgramGui {
         return o.toString();
     }
 
-    private static String copyJson(int[] path) {
-        JsonObject o = new JsonObject();
-        o.addProperty("op", "copy");
-        o.add("path", pathArray(path));
-        return o.toString();
-    }
-
-    /** INSERT at the cursor: before the selected row (its list, at its index) or at the end of the program. */
+    /**
+     * INSERT at the cursor: below the selected row (its list, one after its index) or at the end of the
+     * program.
+     */
     private String insertSpecJson(String specJson) {
         JsonObject o = new JsonObject();
         o.addProperty("op", "insert");
@@ -857,7 +1022,7 @@ public class VoidcraftProgramGui {
         } else {
             int[] p = sel.path;
             o.add("path", pathArray(java.util.Arrays.copyOf(p, p.length - 1)));
-            o.addProperty("index", p[p.length - 1]);
+            o.addProperty("index", p[p.length - 1] + 1);
         }
         o.add(
             "node",
@@ -874,4 +1039,34 @@ public class VoidcraftProgramGui {
     }
 
     // endregion
+
+    /**
+     * A {@link DropDownMenu} that selects its slot into the editor the moment it opens — the same click that
+     * shows the options also makes the freeform text field available for that slot.
+     */
+    @SuppressWarnings("deprecation")
+    private static final class SlotDropdown extends DropDownMenu {
+
+        private final Runnable onOpen;
+        private boolean open;
+
+        SlotDropdown(Runnable onOpen) {
+            this.onOpen = onOpen;
+        }
+
+        public void setOpen(boolean open) {
+            this.open = open;
+        }
+
+        @Override
+        public Interactable.Result onMousePressed(int mouseButton) {
+            if (open) {
+                open = false;
+            } else {
+                open = true;
+                onOpen.run();
+            }
+            return super.onMousePressed(mouseButton);
+        }
+    }
 }

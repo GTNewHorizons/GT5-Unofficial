@@ -144,4 +144,22 @@ public class USSPositionTest {
             .toString();
         assertTrue(s.contains("1.0") && s.contains("-2.0") && s.contains("3.0"), "toString lists the components: " + s);
     }
+
+    @Test
+    public void testCoordStringIsTheBroadcastFormat() {
+        // "x;y;z" (Double.toString per component, semicolon-separated) is the string the LOCATION value
+        // resolves to when a ship broadcasts its position through the USS variable space
+        assertEquals(
+            "1.5;-2.0;0.25",
+            USSPosition.of(1.5, -2.0, 0.25)
+                .coordString());
+        assertEquals(
+            "0.0;0.0;0.0",
+            USSPosition.zero()
+                .coordString());
+        assertEquals(
+            "3.0;-7.5;100.0",
+            USSPosition.of(3.0, -7.5, 100.0)
+                .coordString());
+    }
 }

@@ -1,0 +1,1038 @@
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\multiblock\MiningArrayStructureTest.java ====
+9: * Invariants of the Mining Array structure shape (plain data, no MTE or world references).
+14: 3 wide (x) × 3 tall (y, layers) × 2 deep (z, slices)
+35: The controller sits at the front slice's center of the middle layer: x=1, y=1, z=0.
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\multiblock\MultiblockAuditTest.java ====
+14: * Pure-audit behavior of the assembler's multiblock component checks.
+59: All controllers formed, but fewer cells in the volume than the full structure needs.
+81: 2 × 18 = 36 cells required; 1 controller + 30 casings = 31 in the volume.
+89: A healthy component plus a broken one: only the broken one's error appears.
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\render\AssemblerVisualsTest.java ====
+14: * Pins the assembler-visual geometry contract: the scan-volume axes (mirroring the assemblers' scanCell
+15: * basis for all six front directions), the grid indexing, the scanning-plane sweep and the preview
+16: * placement. The GL draw itself is client-only and verified by playtest.
+26: ---- scan axes (the assembler's scanCell basis, all six front directions) ----
+64: ---- scan cell world positions ----
+69: i/j in the X-Y plane, depth along -Z from the controller block corner.
+85: ---- grid indexing (mirrors the assemblers' scan) ----
+89: half = 2, width = height = 5 (ship volume 5×5×10).
+94: last of 250 cells
+99: half = 7, width = height = 15 (base volume 15×15×15).
+101: last of 3375 cells
+104: ---- scanning-plane sweep ----
+118: symmetric about the volume middle
+125: ---- preview placement ----
+129: North-facing 5-tall ship machine (3 deep): behind = +Z, above = +Y.
+136: machine top (2.5 above center) + config height
+137: back face (2.5 behind center) + config distance
+142: Up-facing machine: the build volume extends up, so the preview floats below the machine —
+143: distance behind the back face, which is machineHeight/2 from the controller center.
+150: 1.5 below the machine's bottom face
+171: 1.5 above the machine's top face
+175: ---- snapshot change detection ----
+182: unchanged → no republish
+183: missing → publish
+196: ---- helpers ----
+211: * The shipped config defaults (the values {@code VoidcraftConfig} loads for the preview location).
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\render\RenderVoidcraftBlueprintItemTest.java ====
+20: * Pins the item renderer's claiming and helper decision tables (the parts that are pure logic) and the model
+21: * fit scale. The actual GL draw is client-only and is verified by playtest.
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\render\TileEntityVoidcraftShipTest.java ====
+17: * Unit tests for the fleet anchor's Voidbase entries (bare-JVM): the construction sites + the standing
+18: * bases round-trip through the tile entity's NBT (the description packet carries the same NBT).
+23: * {@link TileEntity#writeToNBT(NBTTagCompound)} looks the class up in the global class<->name map — register
+24: * the fleet anchor class (a test-only name) so the round trip works in a bare JVM.
+75: planet anchor, in progress
+76: ripple anchor (static resolved point), nearly done
+78: planet anchor, damaged
+79: ripple anchor, full integrity
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\render\VoidcraftShipFxTest.java ====
+17: * Pure-math tests for the ship effects (mining laser beam + exhaust gate) — the GL layer itself is not
+18: * reachable in a bare JVM, so the geometry, fade curve, and spawn gate live in {@link VoidcraftShipFx} and are
+19: * tested here.
+50: Strictly INSIDE the fade ramp (at half the ramp width) the beam must still be ramping — expressed in
+51: terms of BEAM_FADE_RAMP so the assertion survives balance changes to the ramp width.
+55: And just past the ramp the beam is fully on.
+59: Monotone rising over the first half.
+66: Symmetric: fade(p) == fade(1 - p) — the beam engages and releases identically.
+75: start, end — first case is the straight-down mining pose (the common case)
+96: Right-handed: p1 x p2 = d (the beam corners form a proper box around the axis).
+111: Exactly 3 of every 8 consecutive ticks fire, for any seed (a fleet should puff, not stream).
+123: Different seeds offset the puffing (a fleet does not exhale in lockstep).
+131: Corrupt (negative) world time must not throw.
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\ship\VoidcraftBlueprintTest.java ====
+23: * Helper: builds a 1×h×d grid from a list of components (index = y + h*z for x=0), NO facing data (cells
+24: * default to facing DOWN — no thruster covers are mounted here, so no thrust comes out of this helper).
+37: The nose is the FAR end (grid +Z, away from the assembler); the nozzle cover mounts on the BACK (−Z,
+38: assembler side) of the near cell. The nozzle sits at the near end, so its exhaust (toward the assembler)
+39: is clear of the hull — the hull on the +Z side never blocks it. Hull: controller + frame + nozzle cover.
+62: speed = thrust/mass, clamped at 0 only — a strong engine load exceeds the [0, 1] scale.
+72: Roles come from the COVERS (mining array / scanner dish) on the controller + frame hull.
+73: dedicated miner
+81: miner + explorer hybrid: two roles
+96: Cargo ships as the CARGO_POD cover.
+109: two controllers: invalid
+119: no controller: invalid (frame-only hull)
+130: A valid hull (controller + frame) with NO thruster cover → voidcraft_no_engine.
+142: A ship with NO frame hull block → voidcraft_no_frame.
+156: Cover-only functions (engine, cargo bay, ...) cannot be full blocks — builds holding them as blocks are
+157: rejected with a reason.
+163: an old-world engine block
+176: single component: below minimum
+181: empty ship
+191: The STAR_SIPHON cover is tier 2; the nozzle cover at the near end has its exhaust (toward the assembler)
+192: clear, so it thrusts
+212: 5x5x10 grid with a single frame block at the far corner (trim is independent of validation)
+215: x=4,y=4,z=9
+234: unknown grid value (200 is above the highest component grid value)
+241: Controller + frame hull; nozzle cover at the near end (exhaust toward the assembler is clear) → real
+242: thrust/speed to round-trip through the denormalized NBT fields.
+262: denormalized stats must match
+277: Nozzle cover at the near end (exhaust toward the assembler is clear); cargo pod on a hull face. Covers
+278: carry ALL the function stats.
+285: cargo pod on the frame's top face
+298: The nozzle cover on the BACK face (side 2 = NORTH, −Z = the assembler side, BACK_FACE) counts; on the +Z
+299: face (side 3 = SOUTH) it is dead weight. Thrust is covers-only. The nozzle is on the near end, so its
+300: exhaust (toward the assembler) is clear of the hull.
+311: side 3 = SOUTH (+Z) — the nose
+319: A nozzle cover mounted on a NON-BACK face BREAKS the digitization — reported with a reason.
+322: side 1 = UP — not the back
+335: A thruster cover ON THE BACK FACE (−Z, assembler side) of the near cell → thrust — the nozzle cover is
+336: the only engine. The nozzle is on the near end, so its exhaust (toward the assembler) is clear of the
+337: hull on the +Z side.
+338: z0: the nozzle cell, z6/z7: the hull; the exhaust side (−Z) is open
+354: The exhaust comes out the BACK face (−Z, the assembler side). A Voidcraft block on the nozzle's EXHAUST
+355: side (−Z) blocks it → "Engine blocked". Here the controller sits at z0, the nozzle (on a frame) at z1 —
+356: so the controller is on the nozzle's exhaust side and blocks it.
+370: The exhaust comes out the BACK face (−Z, the assembler side); the 5 cells on that exhaust side must be
+371: free of Voidcraft blocks. A nozzle on the NEAR END (z=0) is always clear — its exhaust points at the
+372: assembler, outside the hull — so it thrusts even with the hull directly adjacent (the working layout:
+373: [assembler] → [nozzle frame] → [hull]). A nozzle deeper in the ship is blocked when the hull sits on its
+374: exhaust side within 5 cells.
+376: clear: nozzle on the near end (z=0), hull directly adjacent on the +Z side.
+383: blocked: nozzle deeper in the ship (z=2), hull on its exhaust side (z=1, z=0) within 5 cells.
+394: Scanner Dish is a tier-2 cover. Nozzle cover at the near end (exhaust toward the assembler is clear).
+400: tier 2
+401: thrust valid
+419: x=1,y=1,z=1
+421: facing east
+422: west face
+457: down, back, east
+469: denormalized stats must match
+482: length mismatch
+493: region Voidbase (the 15x15x15 base volume + base validation + the parts list)
+497: ofBase accepts up to 15 in every direction (the 15x15x15 base volume)
+506: The ship factory still rejects 15 (ships stay 5x5x10)
+508: ofBase rejects 16
+514: A build with no thruster at all: invalid as a ship (voidcraft_no_engine), valid as a base
+534: Base validation keeps the ship's structural rules: two controllers, no frame
+541: ... and the tier rule
+572: Stable order: blocks in component meta order, then covers in cover id order
+598: region toGridSide (world-facing cover -> grid-side cover; the assemblers delegate here)
+600: * All six assembler front orientations (unit axes).
+601: DOWN
+602: UP
+603: NORTH
+604: SOUTH
+605: WEST
+606: EAST
+609: * The ForgeDirection world-side ordinal of a unit axis (0 DOWN, 1 UP, 2 NORTH, 3 SOUTH, 4 WEST, 5 EAST).
+629: * The world-side ordinal opposite the given one (0<->1, 2<->3, 4<->5).
+636: The six world directions must map to six DISTINCT grid sides, no matter which way the assembler
+637: faces (a direction landing on an already-used side would silently lose a cover face).
+654: A cover facing AWAY from the assembler is the grid far side (+Z, 3); one facing TOWARD it is the
+655: grid back (2) - for every assembler orientation.
+671: A SOUTH-facing assembler: grid +Y = world UP, grid +X = world EAST, grid +Z = world SOUTH.
+682: An UP-facing assembler: grid +Z = world UP, grid +Y = world SOUTH, grid +X = world EAST.
+691: endregion
+698: * Fills the 3×3×2 corner of a grid (x 0..2, y 0..2, z 0..1) with the Mining Array layout: controller at the
+699: * front slice's center of the middle layer, panels around it on the front slice, plain casings on the back
+700: * slice.
+715: The Mining Array digitized as a unit: its 18 cells carry the component's stats exactly once (the
+716: controller entry), with the casings contributing mass only.
+731: The Mining Array is a tier-2 component: a tier-1 circuit rejects the ship, a tier-2 circuit accepts it.
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\ship\VoidcraftComponentTest.java ====
+38: 0 and out-of-range values are not components
+63: Covers are the primary components — the only CLASSIC placeable full blocks are the controller and the
+64: frame; the multiblock component blocks are the second kind of placeable block.
+82: The Mining Array multiblock: one stats-carrying controller entry + two zero-stat casing entries.
+88: The controller entry carries the component's stats
+93: The casings contribute mass only
+108: Meta / grid values: 11, 12, 13 → grid 12, 13, 14
+119: In-flight model contract (ShipModelBuilder): the MTE id of every placeable block is 32058 + catalog
+120: meta — the renderer derives the block's texture meta straight from the blueprint's grid values.
+141: The repair bay and solar panel function definitions behind the new covers: cover-only, tier 2
+146: The solar panel is the first energy-generating component definition
+155: Grid values: meta + 1 (10 and 11)
+186: clamped to the highest registered tier
+188: clamped to 0 for garbage damage values
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\ship\VoidcraftCoverComponentTest.java ====
+10: * Sanity tests for the cover component table (pure Java).
+69: The solar panel is the first energy-generating component; the repair bay draws while repairing
+79: Grid values: id + 1 (9 and 10 for the new covers)
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\ship\VoidcraftRoleTest.java ====
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\BareJvmItemRegistry.java ====
+9: * Test helper for bare-JVM unit tests (no game, no mod loader).
+10: *
+11: * <p>
+12: * In a bare JVM, {@link Item#itemRegistry} is the FML-controlled registry, whose registration path requires a
+13: * {@code LaunchClassLoader} and throws — so vanilla {@code Items.*} fields are all {@code null}, and
+14: * {@link net.minecraft.item.ItemStack} NBT round-trips ({@code Item.getIdFromItem} /
+15: * {@code Item.getItemById}) resolve nothing.
+16: *
+17: * <p>
+18: * This registers a test {@link Item} by writing directly into the registry's internal identity map (bypassing the
+19: * FML guard on the registration methods). After that, item ↔ id resolution — and therefore
+20: * {@code ItemStack.writeToNBT}/{@code loadItemStackFromNBT} — works for the registered items.
+21: *
+22: * <p>
+23: * <strong>Id range:</strong> {@code ItemStack} NBT stores the id as a <em>signed short</em>, so ids must stay in
+24: * 1..32767 (use ids in the 30000s for these tests; a 92001 truncates to 26465 and the round-trip breaks).
+31: * Make {@link Item} id resolution work for {@code item} at {@code id} in this bare JVM.
+32: *
+33: * @param item the item to register (a fresh {@code new Item()})
+34: * @param id   stable id in 1..32767 (NBT short)
+35: * @return the same item
+48: field is declared on another class in the hierarchy — keep walking up
+57: MCP name in a fully mapped environment, SRG name in this fork's partial mapping.
+63: try the next name
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\CargoHoldTest.java ====
+23: * Bare-JVM tests for the Voidcraft cargo-capacity framework ({@link CargoHold}) — the bounded internal cargo a
+24: * Voidcraft fills while mining / starlifting / constructing, and the generic modify framework (add / remove /
+25: * transfer) for future ship-to-ship transfer.
+26: *
+27: * <p>
+28: * Capacity model (user spec): {@code 1 cargo unit = 1 item = 100 mB of fluid}. Items consume their count in units;
+29: * fluids consume {@code mB / 100} units. Adding is clamped by the remaining capacity ("they cannot mine if it is
+30: * full").
+31: *
+32: * <p>
+33: * The item resolution (for {@link USSShipCargo#fillHold}) goes through the GT ore-dictionary unification map, which
+34: * is empty in a bare JVM — so the test pre-populates it with one recognizable dust per material (like
+35: * {@link USSShipCargoTest}).
+66: region capacity model
+81: Add 60 items (1 item = 1 unit) — fits.
+87: Add another 50 items — clamped to the remaining 40.
+93: A full hold accepts nothing more.
+102: Add 5000 mB of fluid (100 mB = 1 unit → 50 units) — fits.
+108: Add 10000 mB more — clamped to the remaining 50 units (5000 mB).
+118: 50 items (50 units) + 3000 mB fluid (30 units) = 80 units — fits.
+126: 25 items (25 units) would exceed the 20 remaining — clamped to 20.
+137: Remove 30 items — fits.
+140: Remove 100 items (only 20 on board) — clamped to 20.
+143: Remove 5000 mB (only 2000 on board) — clamped to 2000.
+162: endregion
+164: region transfer (the generic ship-to-ship primitive)
+174: Source is emptied, target is filled.
+184: Source has 100 items; target has only room for 40.
+210: The original holds are unchanged (immutable).
+215: endregion
+217: region NBT round-trip
+243: endregion
+245: region integration (fillHold + cargoFromHold)
+249: A planet with 2 ores (Copper + Iron) — mine it and fill the hold.
+268: Fill a hold with capacity = base (so the full yield fits).
+271: two ores, equal weight
+275: Derive the cargo back from the hold — it should match the yield.
+283: A hold with capacity = 10 (small) — the yield is clamped.
+307: A starlifter cargo (3 fluids) — fill a hold.
+317: A hold with enough capacity for the full fluid cargo.
+331: A ship's cargo capacity comes from the payload's vc_cargo (the blueprint's cargoSlots), times the
+332: CARGO_UNIT_MULTIPLIER (100× — the user's "cargo hold size increased by a factor of 100").
+336: null origin → (0,0,0)
+341: The hold is initialized with that capacity at construction.
+350: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\FakePilotWorld.java ====
+9: * The pilot's fake game world (bare-JVM): records every side-effect the pilot
+10: * dispatches (so the "exactly once" invariants are assertable) and serves scripted target resolutions + leg
+11: * durations.
+15: * The USS variable space (the pilot's WRITE/READ channel).
+17: * The still-unscanned ripple count (the RIPPLES_UNSCANNED stat).
+20: * Scripted resolutions: key {@code target + ":" + index} → result (absent key → unresolvable, like the real world).
+23: * Leg durations (work / travel).
+26: * A leg start that should be refused (the executor then SKIPS the instruction).
+29: region effect records
+32: * The WORK KIND of each completed work leg (the command that ran it).
+34: * The TARGET kind of each completed work leg (PLANET / STAR / ...).
+40: * Recorded CONSTRUCT leg dispatches.
+47: * Recorded base REPAIR dispatches.
+52: endregion
+54: region scripted results (base-mode seam)
+56: * The CONSTRUCT leg start result (false = nothing to construct - the command SKIPs).
+58: * The CONSTRUCT leg tick result (true = still running).
+60: * The base REPAIR start result.
+62: * The base REPAIR tick result (true = still below max).
+65: * When &gt;= 0, the base REPAIR tick returns true exactly this many more times and then false (a bounded
+66: * repair run); -1 uses {@link #repairTickResult} forever.
+70: endregion
+154: * Resolve key helper (test readability).
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\FakeUSSContext.java ====
+10: * A fake {@link USSExecutionContext} — the bare-JVM stand-in for the game side.
+11: * Deterministic; counts the calls the tests assert pacing/failure semantics against.
+15: * The USS variable space (immutable — writeVar replaces it).
+17: * Stat overrides (anything not listed reads as {@code ""}).
+20: * Test hook: when true, {@code stat(CARGO_FREE)} returns the current value and DECREMENTS it — simulates the
+21: * world changing (cargo filling up) as the program polls. Lets a WHILE-terminated-by-stat test be
+22: * deterministic.
+26: * The ship's position (for distanceTo + WORK).
+28: * MOVE targets: key {@code target + "#" + index} (or {@code target + "#-1"} for any index).
+34: * Test hook: refuse leg starts (the executor must SKIP the instruction).
+42: * nextInt(bound) = bound ≤ 0 ? 0 : randomBase % bound (deterministic).
+44: * CONSTRUCT / REPAIR seam results (the Voidbase construction framework).
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\ItemVoidbaseBlueprintTest.java ====
+21: * Bare-JVM tests for the Voidbase blueprint item: the payload round-trip (item NBT -> blueprint -> item NBT)
+22: * and the empty-blueprint detection.
+66: A VOIDCRAFT (ship) item is not a base blueprint
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSBaseAnchorTest.java ====
+14: * Unit tests for the Voidbase anchor descriptor (bare-JVM: NBT + primitives).
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSBasePilotTest.java ====
+22: * Unit tests for the Voidbase pilot (the base-mode bridge between the program executor and the game world):
+23: * the zero-length leg (a base sits at its anchor), the SKIP rules (other anchors / HOME / SHIP), the MINE
+24: * no-op, the REPAIR relay, program end = the base keeps standing, and the exactly-once / save-reload invariants
+25: * through the real (fake-world) bridge.
+50: * A base whose payload carries the PROGRAM (the MTE flow: the blueprint carries the digitized controller
+51: * program; the pilot attach re-reads it from the base payload).
+53: * A 1x1x2 base blueprint: controller + a frame (a valid base payload for the NBT round-trip).
+72: * How many times the base MINE ran (its log line is one per completed MINE leg).
+83: region creation + program end
+90: a finished pilot is a quiet no-op
+96: The user's one-command base program: no STOP anywhere — the invisible while re-runs the lone MINE
+97: forever, and the base keeps standing (only integrity decay decommissions it).
+111: endregion
+113: region the zero-length leg (a base sits at its anchor)
+117: A base at PLANET 2 with MOVE PLANET 2: the target IS the base anchor → a zero-length leg that
+118: completes on the next tick (the program continues).
+141: A base at PLANET 1 with MOVE PLANET 2: unresolvable (the base is immobile) → SKIP → the program
+142: continues (the WORK still runs).
+207: endregion
+209: region REPAIR (the station repairs itself)
+213: The pilot RELAYS the repair to the world seam: begin → RUNNING, then the world is polled every tick
+214: until it reports the integrity is full (DONE).
+216: three more true ticks, then false → DONE
+234: The world refuses the repair (nothing to restore / no energy) → the REPAIR instruction SKIPs and the
+235: program continues.
+258: endregion
+260: region CONSTRUCT (a base never constructs)
+264: A base carries no parts (a build loadout belongs to the Constructor in flight) — CONSTRUCT SKIPs even
+265: when the world would accept it.
+267: the world would build — the base must not ask it to
+288: endregion
+290: region the context surface
+344: endregion
+346: region NBT + attach (the save/reload invariant)
+350: Mid-program save → reload → the base pilot resumes EXACTLY where it left off (no re-run, no
+351: double-fire) — then the invisible while carries it into its second loop.
+355: drive the pilot past the MOVE + WORK into the REPAIR
+363: SAVE + RELOAD.
+371: Drive it: the first repair finishes (its 2 true + the final false polls happen after the reload),
+372: then the program WRAPS (MOVE + WORK + the second REPAIR start).
+389: no vc_pilot (first save)
+412: wrongly-typed nested tag — must not crash the load
+421: endregion
+423: region mining leg (a MINE on a base with mining power runs a real mining leg)
+440: a station with mining power
+443: The executor steps a node every STEP_TICKS (20) ticks: the MINE command starts the leg on its step,
+444: with the full duration from the ship's table (mineTicks(4) = 150 ticks).
+513: 3 countdown ticks: 147 left
+517: the MTE pattern: pilot nested in the base NBT
+536: an empty program (already over)
+543: the program-over path abandons the in-flight leg
+548: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSBaseSiteTest.java ====
+17: * Unit tests for the Voidbase construction site: creation from a blueprint parts list, partial deliveries
+18: * with overflow discarded, completion, and the NBT round-trip (bare-JVM).
+22: * A 1x1x4 test base: controller + 3 frames, two power cells + one solar panel on the frames.
+37: partsList counts: controller x1, frame x3, power cell x2, solar x1
+54: Over-delivering a part credits only up to the required count (the excess is consumed, not stored)
+67: Complete it: the controller + the solar panel
+94: The blueprint round-trips through the site payload (the full grid is preserved)
+96: The progress keeps working after a round-trip (the site is still mutable)
+111: The countdown decrements by one machine tick and holds at 0 (a finished leg never goes negative).
+114: The deposit schedule: with total = ticksPerItem * parts, the countdown hits a multiple of the pacing
+115: on every deposit tick - including the final 0 (20-tick pacing, 10 parts -> deposits at 180, 160, .., 0).
+124: past zero
+126: A new leg re-arms the countdown and bumps the leg id (the client's phase key).
+131: Degenerate totals clamp to a one-tick leg (never zero - a zero duration would never end).
+137: finishConstructLeg zeroes the pacing (the client draws no beam) but keeps the id.
+162: A site with no leg writes no leg tags (absent = never constructed).
+170: A corrupt leg (the id present but the totals missing) degrades to NO leg - the parts survive.
+177: A corrupt leg (a non-positive total) degrades the same way.
+190: A site whose parts list no longer matches the blueprint is rejected
+197: delete one part entry (drop the solar panel) - the count no longer matches the blueprint
+208: a received count above the required count is corrupt
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSBlueprintProgramTest.java ====
+15: * Unit tests for the blueprint-item program ({@link USSBlueprintProgram}) — the program stored in a digitized
+16: * blueprint item NBT after digitization, edited through GUI actions and written back to the item NBT.
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSCapabilitiesTest.java ====
+10: * Bare-JVM tests for the COMMAND CAPABILITY SET ({@link USSCapabilities}): the bits, the command gating
+11: * (always-available commands need no bit), the preset requirements, and the universal / empty sentinels.
+32: out-of-range bits are masked away (a corrupt set can only shrink, never add)
+48: the always-available commands need no bit (the empty set still allows them)
+56: an unknown id is allowed at authoring time (the executor SKIPs it at run time)
+58: the universal set allows everything
+83: even the EMPTY set allows the capability-free preset
+94: the work kinds (see USSWorkKind): TRAVEL is the non-work leg
+103: the command → kind mapping (a work command owns its kind)
+109: the kind names (logs + base-pilot messages)
+118: the palette labels: every built-in gets a readable name (the view's fallback is CMD<id>)
+134: the starlifter yield scales with SIPHON power (not mining power — the command split): the plasma
+135: amount = siphonPower * the plasma factor, capped
+152: the matter (dwarf dust) amount rides the same siphon power
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSCommandTest.java ====
+14: * The ten built-in command handlers against the fake context.
+29: region MOVE
+64: 3-4-5 triangle
+67: still flying
+84: endregion
+86: region MINE / SCAN / SIPHON (the work commands)
+103: * A work command starts its KIND's leg at the ship's position (distance 0) and completes when the leg ends.
+118: endregion
+120: region WRITE / READ
+167: source untouched
+170: endregion
+172: region WAIT
+210: region CONSTRUCT / REPAIR (the Voidbase construction framework)
+271: endregion
+273: region STOP / registry
+303: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSConditionTest.java ====
+13: * Bare-JVM tests for the program CONDITION ({@link USSCondition}): the op enum, the null-safe factory, the pure
+14: * string/numeric evaluation rules, and the NBT round-trip.
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSFleetOrbitTest.java ====
+10: * Bare-JVM tests for the deterministic fleet swarm spread: same ship → same hover offset for the
+11: * life of the world; different ships → different spots; every offset inside the magnitude bound that keeps the whole
+12: * fleet inside the EoH space shell.
+20: pure function: bit-identical results for the same UUID
+21: and NOT the same as a different ship's offset
+44: A realistic fleet must not collapse to one or two points: among 50 ships there must be at least 10
+45: distinct hover spots (guards against a hash avalanche onto identical slots).
+72: The fleet must host dozens–hundreds of ships (user request), not a single slot.
+76: region per-launch seed key — duplicated ship items share the item UUID, so the fleet must key
+77: per-ship identity on the USS-assigned per-launch seed instead
+93: The user's test loop: ONE ship item duplicated N times (same vc_uuid) launched as a fleet. Every launch
+94: gets a fresh per-launch seed — those seeds must produce distinct hover spots, or the whole fleet stacks
+95: at one point (the reported "no variance" bug).
+99: sparse sequential seeds, as random ints would be
+113: endregion
+115: region planet position + dynamic hover — the ships must hover above the RENDERED planets, so this
+116: math must agree with EOHRenderingUtils.renderUSSOrbits exactly
+120: t = 0 → orbit angle 0 → the planet sits on +X at its orbit radius (star-center frame); the anchor sits
+121: exactly 2 above the star block, so in anchor coordinates the point is (radius, -2, 0).
+122: The radius is FLOAT math (exactly like renderUSSOrbits) — expectations use the same float expression.
+124: the render formula: 0.2 + distance + 0.2*starSize
+132: at any time the planet stays at its orbit radius from the star center (it orbits, it does not drift)
+138: float, like the renderer
+145: angle 0: (r,0,0) under Rz(zAngle) then Rx(xAngle) → (r·cp, r·sp·cs, r·sp·ss) — checked against explicit
+146: values, not just the shortcut algebra. (radius = float, like the renderer)
+156: Cross-check the trig shortcut against an INDEPENDENT explicit right-handed rotation composition
+157: (Rx(xAngle) · Rz(zAngle) · Ry(orbitAngle) · (radius, 0, 0) — the same chain order renderUSSOrbits
+158: applies to its matrix), across a spread of parameters and times.
+162: -21..+21
+163: -10..+10
+169: float, exactly like the renderer
+170: The orbit angle is the RADIUS law (0.3·time/radius) — orbitSpeed does not drive it (it is only
+171: passed through for signature stability).
+198: Orbital distance is randomized from 3 blocks off the star all the way to the edge of the system,
+199: and ships must not exit the dome — 4 blocks of margin from the edge:
+200: MAX_DISTANCE = USSConstants.SPACE_SHELL_RADIUS − 4 BY CONSTRUCTION, so the planet center always stays
+201: inside the Voidcraft dome (27.1) with the 4-block margin. The dome is per-machine; the legacy EoH
+202: machine keeps its own 12.95 default.
+216: The 4-block margin covers hover 0.5 + cube half ≤ 0.33 (MAX_SCALE 0.66 / 2) + spread 2.0 = 2.83 < 4.0 —
+217: even the outermost hovering ship stays INSIDE the dome (≈ 23.68 + 2.83 = 26.51 vs 27.1), so ships
+218: render inside the bubble.
+225: Starlifter over the star: 2.5 + spread (the star center is 2 below the anchor — well inside).
+233: and clears the largest star surface (radius ≤ 1.9)
+237: region stateful position (USSPosition) — the "distance within the solar system" model
+250: planetPosition is the USSPosition wrapper over planetAnchorPosition — they must agree exactly.
+280: "not only above it, but on any side" — a fleet of shells must occupy points on BOTH the +Y and -Y hemispheres
+281: (and off-axis), not stack on one pole.
+308: null center defaults to the origin — the point is radius from the origin.
+334: The user's "clouds of Voidcraft instead of overlapping them all": a swarm targeting one ship must occupy
+335: DISTINCT spots (at least 10 distinct among 50), all within the nudge bound.
+360: endregion
+362: region gateway render (the dome-edge point in the gateway's direction)
+388: The edge point is the dome point CLOSEST to the gateway: it stays on the star-center → gateway ray,
+389: only the radius changes.
+416: 16 blocks out at +X (2 above the star center): the edge point is further along the same ray, at
+417: exactly the dome radius — this is where the ships now spawn/return.
+424: endregion
+426: region the station equatorial band (the Voidbase hover law) — a planet-anchored base sits within ±30° of
+427: the planet's orbital plane, on the shell at the ship hover radius, seeded by the planet index
+443: The orbital plane through the center has normal Rx(x)·Rz(z)·(0,1,0) (the same chain the orbit law
+444: uses); a point within 30° of the plane has |dot(dir, n)| ≤ cos(60°) = 0.5.
+473: No tilt: the orbital plane is the XZ plane through the center — the band point stays within ±30° of
+474: it (|dy| ≤ radius·sin(30°)).
+487: The band point is anchored to the planet center: as the planet orbits, the point follows (always at
+488: the hover radius from the LIVE center, always inside the band).
+512: endregion
+515: definition unused by the orbit math (only distance / speed / tilts matter)
+537: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSNodeTest.java ====
+16: * Bare-JVM tests for the program NODE ({@link USSNode}): the four node kinds, factory clamping/null-safety,
+17: * depth/subtree counting, and the NBT round-trip (including the structural-corruption → null path).
+153: that is the point
+221: the budget is already exhausted
+256: a payload with NO type key
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSPlanetColorTest.java ====
+12: * Bare-JVM tests for the USS planet tint: every registered planet definition resolves to an
+13: * opaque, deterministic color from its ore materials, and the catalog's planets are visually distinguishable (not
+14: * one shared default).
+45: The planet catalog exists so "different planets determine what can be mined" is visible too: the
+46: catalog's tinted planets must not all collapse to one color.
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSPlanetDefinitionTest.java ====
+13: * Unit tests for the planet registration data model — {@link USSPlanetOre} and {@link USSPlanetDefinition}.
+14: *
+15: * <p>
+16: * Bare-JVM: only {@link Materials}/{@link USSStarType} registry data — no Forge fluid/block objects.
+20: region USSPlanetOre
+39: A zero amount is legal data (a planet may list an ore it currently holds none of); only negative is rejected.
+53: endregion
+55: region USSPlanetDefinition — happy path
+103: endregion
+105: region USSPlanetDefinition — validation
+131: Below 0.0
+140: Above 5.0
+165: 0.0 and 5.0 are inclusive bounds (user spec: float 0.0–5.0).
+220: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSPlanetRegistryTest.java ====
+17: * Unit tests for the registration system — {@link USSPlanetRegistry} and the initial {@link USSPlanetCatalog}.
+18: *
+19: * <p>
+20: * The registry is a global static, so each test starts from a cleared registry and a reset catalog flag
+21: * ({@link #setUp()}). Bare-JVM: only registry data — no Forge objects.
+41: region registry basics
+105: endregion
+107: region pool by star type
+159: endregion
+161: region catalog
+174: second call is a no-op
+181: The catalog is star-agnostic: every planet may orbit any star class, so each pool is the full set.
+201: A named rocky world: its texture is the bundled stitched.png path, sized by tier, with a placeholder ore set.
+227: A gas giant: flagged as such (50% ring chance), huge tier, allowed around every star class.
+263: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSPlanetsTest.java ====
+19: * Unit tests for deterministic planet generation ({@link USSPlanets}) — the registration-based mechanics: the
+20: * system's planets are a pure function of (star type, seed), the count from the star's planet range, the types from
+21: * the star's registered planet pool, the size from each planet's size range, and the orbital parameters inside the
+22: * legacy EoH ranges (so the shared orbit renderer can draw them) with 4 blocks of margin from the shell edge.
+23: *
+24: * <p>
+25: * Bare-JVM: no blocks or world involved — the hologram block resolution happens at the render TE boundary.
+41: The count is RANDOM but bounded by the star's planet range — and a wide seed sweep must actually produce
+42: more than one count.
+68: Distinct worlds until the star's registered pool is exhausted — then it wraps (duplicates unavoidable,
+69: but no definition may repeat before the first cycle is complete).
+88: stronger: the FIRST min(count, pool) planets are pairwise distinct (no early duplicates)
+133: Every planet may orbit any star class, so each star type's pool is the full catalog — the families are
+134: drawn from the same set rather than partitioned by star type.
+158: distance: inside its orbital band (bands are disjoint, inner → outer), clear of the star (≤ 1.9)
+159: and 4 blocks inside the shell edge (MAX_DISTANCE = dome − 4 by construction).
+168: scale: within the PLANET DEFINITION's size range reduced by PLANET_RENDER_SCALE.
+185: coplanar orbits — each tilt component stays within the small 0–5° inclination.
+196: Two distinct planets → the union of their ores (first-seen order).
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSPlanetTypeTest.java ====
+18: * Unit tests for the fixed planet-type catalog ({@link USSPlanetType}) — star type → planet pool →
+19: * mineable ore set.
+20: *
+21: * <p>
+22: * Bare-JVM: only the {@link gregtech.api.enums.Materials} registry is involved (no blocks, no fluids, no world).
+47: name → material round-trip (the cargo entries and infodata rely on name identity)
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSPositionTest.java ====
+13: * Bare-JVM tests for the stateful-position vector ({@link USSPosition}): the star center, the "distance within the
+14: * solar system" (Euclidean blocks), the vector math the ship's move-toward-target uses, and the NBT round-trip.
+37: Δ = (3, 4, 0) → length 5 (a 3-4-5 right triangle).
+91: x × y = z (right-handed).
+137: no-op, must not throw
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSProgramDefaultsTest.java ====
+13: * Bare-JVM tests for the DEFAULT PROGRAM CHIPS ({@link USSProgramDefaults}): the Miner / Starlifter / Explorer
+14: * programs, their shape (MOVE → WORK → MOVE HOME), their distinct targets, and the NBT round-trip (params are
+15: * compared explicitly — node equality covers structure, not free-form payload).
+42: instruction 1 — MOVE to the role's target
+53: instruction 2 — the role's work command
+63: instruction 3 — MOVE HOME
+110: structure round-trips through node equality (params excluded by design)…
+127: …and the params round-trip verbatim:
+128: the param key is a contract — pin it here
+141: The controller block's covers declare what it IS (right-click applies the chip). Priority:
+142: Explorer > Starlifter > Miner (the Miner is the default — no recognizable cover at all).
+196: every derived chip is a valid 3-instruction program that comes HOME (the MTE stores it as-is)
+223: 1.7.10: raw key set via the public tagMap field
+237: instruction 1 - MOVE to the anchor target (nearest planet by default; the player edits it)
+247: instruction 2 - CONSTRUCT (create or fill the construction site at the anchor)
+257: instruction 3 - MOVE HOME
+267: NBT round-trip
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSProgramEditorTest.java ====
+19: * Unit tests for the program editor ({@link USSProgramEditor}) — the bare-JVM core of the Controller's
+20: * program editor: structural edits (insert / remove / move) at every nesting level, content edits (params with
+21: * the executor's NBT types, REPEAT count, conditions), the whole-program gate (presets / clear), cap
+22: * enforcement, and the "the input program is never mutated" purity rule.
+26: region builders (test readability)
+70: * A program of N WORK nodes (root level).
+79: * A chain of IFs {@code depth} levels deep (each body holds the next).
+101: endregion
+103: region insert
+153: the second root node is untouched
+204: nestedIfs(n) has depth n+1 (n nested IFs + the leaf) — at cap = 7 IFs, leaf at depth 8.
+207: the innermost IF is at address [0,0,0,0,0,0,0] (depth 7); its body holds the leaf at depth 8.
+208: inserting a FLOW node there would put its body at depth 9 → over the cap
+212: a plain leaf still fits (depth 8) and is accepted
+216: endregion
+218: region remove
+276: endregion
+278: region move
+283: work DOWN after HOME
+295: work UP before STAR
+338: endregion
+340: region copy
+364: the copy is an INDEPENDENT node: editing the original's target does not touch the copy
+433: editing the copy's body does not touch the original
+457: 255 nodes already (cap) — a copy would be 256 → rejected
+474: endregion
+476: region setParam (with the executor's NBT types)
+490: every known target is accepted by the schema
+598: endregion
+600: region setCount
+638: endregion
+640: region condition
+660: the right side and the operator survived
+683: a WHILE node is edited the same way
+719: the sides survived
+735: endregion
+737: region apply (preset chips / clear / the whole-program gate)
+744: the Clear button
+778: a bad target DEEP in the body is caught by the walk
+785: endregion
+787: region purity + round-trip
+795: a battery of edits — every one applies to a DIFFERENT valid shape of the (unmodified) program
+834: edited = [REPEAT(write), IF(work), MOVE HOME]
+842: and it passes the whole-program gate
+846: endregion
+848: region capability gating (the capability system)
+853: a mining-only ship: SCAN / SIPHON / CONSTRUCT rows are not insertable (the GUI hides them; the
+854: editor is the authority the GUI syncs to)
+861: the allowed commands go in (and a null caps means no check at all — the legacy call path)
+869: copying a SCAN row on a mining-only ship is rejected (a copy is a re-insert of the row's command)
+879: the preset walk: the starlifter preset carries a SIPHON row — applying it on a mining-only ship
+880: is rejected (the pre-walk sees the forbidden command before the program is replaced)
+885: ...and it applies on a ship that has the capability (plus MOVE for the travel legs)
+890: the miner preset fits the miner caps
+894: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSProgramExecutorTest.java ====
+15: * The program executor against the fake context — sequencing, control flow, pacing, the command
+16: * lifecycles, failure-skip, the invisible-while wrap (a finished program runs again; only STOP ends it), and
+17: * the NBT cursor (resume mid-program).
+21: region helpers
+41: * Tick until completed (or maxTicks) — returns the number of ticks consumed.
+52: * Tick a fixed number of times (for programs that never end on their own — the wrap tests).
+59: endregion
+61: region program end / basics
+79: first loop: both nodes
+84: second loop
+102: the wrap: a finished program restarts at its first node — and starts no implicit leg
+118: nothing ran — the context is the seam
+121: endregion
+123: region IF / WHILE / REPEAT
+155: the world changes: CARGO_FREE decrements on every poll — the loop must stop exactly when it hits 0
+171: a WHILE(true) with an EMPTY body must not busy-loop: at most one node-step (20 ticks) per iteration
+185: a finished REPEAT wraps (the whole program restarts) — two passes of 3 iterations in 280 ticks
+208: WHILE cargo { IF always { write } } — nested control, terminated by the stat
+226: IF VAR0 EQ "hello" — the condition resolves a value an earlier instruction wrote
+241: endregion
+243: region MOVE / WORK lifecycles
+254: the leg (real time on the game side) finishes at tick 40
+278: the work leg finishes after 30 ticks
+293: endregion
+295: region failure → skip
+299: no STAR target registered
+322: a context that refuses legs — the instruction is skipped, not a crash, not a halt
+332: endregion
+334: region WRITE / READ / STOP
+364: endregion
+366: region the invisible while (the wrap)
+370: the user's one-command base program: a lone WORK runs, the program restarts at it, forever
+372: legs finish instantly
+382: a STOP anywhere in the tree ends the whole program (the wrap is transparent to it)
+397: endregion
+399: region NBT cursor (resume mid-program)
+412: mid-loop: 2 of the 5 writes done
+418: save / restore (a fresh executor from NBT — the game pilot's reload path)
+423: the loop runs to its stat end (then the program wraps)
+440: WAIT begin at tick 20, now in flight
+465: MOVE begin at tick 20, leg in flight
+484: endregion
+486: region corrupt cursor → fail-safe
+500: not a compound — corruption
+513: unknown kind
+536: ROOT with an empty body
+540: WAIT
+541: but the node record is garbage (no type)
+551: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSProgramSyncTest.java ====
+17: * Unit tests for the GUI action handler ({@link USSProgramSync}) — the single server-side entry that
+18: * turns one GUI ACTION JSON into an {@link USSProgramEditor} call: every op (insert / remove / move / param /
+19: * count / cond / condop / apply), the USS-slot reference assignment (param-var / cond-var), rejection reasons,
+20: * and the "bad JSON never throws" rule.
+82: region insert
+137: REPEAT + its WORK child
+167: the node cap is still enforced through the action path (255 roots + 1 → over cap)
+174: endregion
+176: region remove / move
+185: IF (now empty body) + WORK
+214: first row cannot move up → rejection
+216: last row cannot move down → rejection
+218: middle moves both ways
+241: both bodies are WORK — verify by order marker: move the second up, then the list is unchanged in content
+288: endregion
+290: region param (literal + USS reference)
+332: MOVE target out of the whitelist
+356: only a WRITE value accepts a reference
+362: endregion
+364: region count / cond / condop
+451: int form
+463: endregion
+465: region apply (presets)
+493: endregion
+495: region capability gating (the capability system)
+499: a mining-only ship: the palette offers no SCAN / SIPHON / CONSTRUCT rows, and the server rejects an
+500: insert of one (the GUI's Add buttons never reach it — the server is authoritative)
+517: MINE / MOVE / the always-available commands are accepted
+524: a null caps = no check at all (legacy call path)
+530: copying a SCAN row on a mining-only ship is rejected (the copy is a re-insert)
+541: the preset gate: a mining-only ship cannot apply the Starlifter / Explorer / Constructor presets
+546: its own preset and the capability-free clear are fine
+549: the editor walk applies too: a starlifter program needs MOVE + SIPHON for the editor's own check
+561: endregion
+563: region robustness
+579: the input program is untouched (purity — the editor is pure)
+589: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSProgramTest.java ====
+17: * Bare-JVM tests for the PROGRAM ({@link USSProgram}): the in-code factory, size/depth/nodeCount, the NBT
+18: * round-trip, and — the point of the caps — oversized / corrupt programs reading back as the EMPTY program.
+71: that is the point
+155: an unknown node type
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSProgramViewTest.java ====
+19: * Unit tests for the program ROW VIEW ({@link USSProgramView}) — the flat Scratch-style block list the
+20: * Controller GUI renders: depth / path / label per node, the argument slots each block shows (including a WRITE
+21: * value held as a USS reference), the flat visual order (children immediately after their parent), and the row
+22: * wire form (list sync).
+54: * A WRITE whose value is a USS VARIABLE reference (the slot-assignment feature).
+73: region rows
+111: the next root comes after the whole IF subtree
+122: IF
+123: IF
+124: REPEAT
+125: WORK
+142: endregion
+144: region slots
+241: endregion
+243: region wire form
+283: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSRipplesTest.java ====
+14: * Unit tests for spacetime-ripple field generation ({@link USSRipples}) — the Explorer mechanic: every solar system
+15: * carries a 7×7×7 point grid (343 points), the ripple COUNT is sampled inclusively from the star's
+16: * {@code spacetimeRipples} range, and the ripple POINTS are chosen deterministically (seeded). The points sit on 3
+17: * evenly-spaced shells around the star center.
+18: *
+19: * <p>
+20: * Bare-JVM: no world or renderer — the positions are pure fleet-anchor doubles.
+54: A sweep of seeds must actually produce more than one ripple count (the count is a real draw, not a constant).
+105: every listed index really is a ripple, and every ripple is listed
+123: Every point lands on one of the three evenly-spaced shells — exactly those three radii.
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSShipCargoTest.java ====
+27: * Unit tests for the deterministic cargo builders ({@link USSShipCargo}) — the planet-based miner cargo (the
+28: * mechanics — one planet, weighted ores, capped by the depletion reserve), the Starlifter star cargo (three
+29: * fluids, base × weight × √star-size), the reserve/depletion math, and the stack-conversion boundary.
+30: *
+31: * <p>
+32: * Bare-JVM: only {@link Materials} data + abstract NBT entries — no Forge fluid/block objects. The abstract entries
+33: * resolve through the GT ore-dictionary unification map, which is empty in a bare JVM — so the test pre-populates
+34: * the map with one recognizable dust per material (distinct damage values double as ore tags).
+38: * Bare-JVM test item ids (must fit in a signed short).
+41: * Damage value registered per dust (distinct per material; tests reference them by material).
+46: A fresh catalog per test (the catalog is static; reset + re-register).
+53: Register dusts for every planet-catalog ore material (idempotent — only the first test actually registers).
+81: * The amount of the single entry with meta {@code damage} (the test dusts use distinct metas).
+92: region miner (minePlanet) — weighted ores, capped by the reserve
+96: A planet with 3 ores (weights 1.0, 2.0, 3.0) — the yield is base × (weight / Σweight).
+125: A planet with a SMALL reserve — the yield is capped by the reserve (not the base×weight share).
+135: A reserve of only 50 items (well below the base×weight share).
+151: A null reserve → initialized from the planet definition (ore.amount × planetSize²).
+161: planetSize = 2.0 → size² = 4.0 → reserve = 100 × 1_000_000 × 4.0 = 400_000_000.
+172: Mine the same planet twice — the second mission yields less (the reserve decreased).
+178: 1 million items
+189: The reserve is finite (1M × 1.0² = 1M), so both missions draw from it and the reserve shrinks.
+206: endregion
+208: region starlifter (3-arg buildForStarlifter) — three fluids, base × weight × √star-size
+224: The amounts follow base × weight × √(sampled size).
+287: A null star type is a defensive case — it falls back to MAIN_SEQUENCE (consistent with generate +
+288: sampleStarSize), so it yields the main sequence's 3 fluids (not an empty cargo).
+304: An enum value with NO registered star definition → empty cargo (not a crash).
+306: (SUPERMASSIVE IS registered in the default catalog — so this yields fluids. The unregistered case is
+307: exercised by clearing the registry first.)
+317: endregion
+319: region star size (sampleStarSize + starRenderSize)
+334: (2/3) × √(size): size 1.0 → 2/3, size 4.0 → 4/3, size 0 → 0.
+341: endregion
+343: region reserve NBT round-trip
+374: endregion
+376: region delivery boundary
+412: unregistered id → skipped
+452: unknown material name → the sentinel (the bay skips it, never voids the rest)
+456: endregion
+458: region helpers
+466: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSShipPilotTest.java ====
+18: * Unit tests for the pilot — the bridge between the program executor and the game world
+19: * ({@link USSShipPilot}): the leg/arrival flow, the EXACTLY-ONCE side-effect invariants (including across a
+20: * save/reload), the HOME = origin rule, holding, and the executor invariants through the real (fake-world) bridge.
+41: * A Miner-style program: MOVE NEAREST_PLANET → WORK → MOVE HOME.
+53: * A ship whose payload carries the PROGRAM (the MTE's flow: the assembler writes {@code vc_program} into the
+54: * item NBT, which becomes the launch payload — the pilot's {@code attach} re-reads it there).
+68: region creation
+84: endregion
+86: region the full chip loop
+98: The first MOVE starts within the first step (20-tick pacing) and arms an OUTBOUND leg.
+125: Drive to the HOME delivery (bounded).
+151: UI target: MOVE RANDOM_PLANET → the world picks the planet (here: index 1) → WORK mines it → HOME.
+208: Let the OUTBOUND leg finish (its completion report drives the executor on the same tick).
+229: REPEAT 3 { WORK }: three distinct work legs → the side-effect fires EXACTLY three times (per leg, not
+230: per program) — the "exactly once PER WORK LEG" contract.
+248: endregion
+250: region failure = SKIP
+254: MOVE BOGUS (unresolvable) → SKIP (no leg, no crash) → WORK → the work leg still runs → HOME → delivery.
+255: no scripted targets at all
+279: The world refuses the leg (legTicks ≤ 0) → the MOVE is SKIPPED (never stuck RUNNING); the STOP after it
+280: ends the program, and the ship HOLDS.
+299: endregion
+301: region exactly-once across a save/reload (THE pilot invariant)
+308: Run until the WORK leg is armed and one tick from finishing (the side-effect has NOT fired yet).
+323: SAVE: the world saves here (the leg finishes on the NEXT tick, post-reload).
+328: RELOAD: fresh ship + fresh pilot (attach) — the leg state must come back with it.
+335: Finish the leg post-reload — the side-effect fires EXACTLY ONCE, then the program runs to delivery.
+346: endregion
+348: region HOME + holding
+359: A program with NO HOME and no STOP: the invisible while — it runs, finishes, and runs again (only a
+360: STOP ends it; the ship keeps flying its loop).
+396: endregion
+398: region the context surface
+403: A ship with a 10-slot cargo pool (capacity 10 × 100 = 1000 units).
+424: nextInt is seeded and bounded.
+456: endregion
+458: region NBT + attach
+475: no vc_pilot (first save)
+489: wrongly-typed nested tag — must not crash the load
+510: Mid-work-leg: attach a fresh pilot from the saved state — the target bookkeeping must come back.
+523: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSShipStatTest.java ====
+10: * The ship STAT registry ids round-trip.
+40: the stat set: cargo, state, target, position, travel, work progress
+41: CARGO_USED
+42: CARGO_FREE
+43: CARGO_FULL
+44: STATE
+45: TARGET
+46: POSITION_X
+47: POSITION_Y
+48: POSITION_Z
+49: DIST_TO_TARGET
+50: SPEED
+51: TICKS_IN_LEG
+52: RIPPLES_UNSCANNED
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSStarDefinitionTest.java ====
+16: * Unit tests for the star registration data model — {@link USSStarMaterial} and {@link USSStarDefinition}.
+17: *
+18: * <p>
+19: * Bare-JVM: only {@link Materials}/{@link Supplier} data — no Forge fluid/block objects.
+23: region USSStarMaterial
+45: endregion
+47: region USSStarDefinition — happy path
+125: endregion
+127: region USSStarDefinition — validation
+333: No explicit rippleRange → the full [0, 128] span (defensive default).
+387: main missing
+398: secondary missing
+409: tertiary missing
+437: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSStarRegistryTest.java ====
+18: * Unit tests for the star registration system — {@link USSStarRegistry} and the initial {@link USSStarCatalog}.
+19: *
+20: * <p>
+21: * The registry is a global static, so each test starts from a cleared registry and a reset catalog flag. Bare-JVM:
+22: * only registry data — no Forge objects.
+48: region registry basics
+110: endregion
+112: region evolution target
+140: endregion
+142: region catalog
+155: second call is a no-op
+235: main_sequence evolves into white_dwarf (registered); the others are terminal (null target).
+283: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSTargetTest.java ====
+12: * Bare-JVM tests for the ship target model ({@link USSTarget}): the three kinds (star / planet / ship), the payload
+13: * accessors, the NBT round-trip, and the defensive fallbacks (null / unknown kind → the star).
+101: no-op, must not throw
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSValueTest.java ====
+12: * Bare-JVM tests for the program VALUE ({@link USSValue}): the three kinds, clamping/truncation, null-safety and
+13: * the NBT round-trip.
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSVariableSpaceTest.java ====
+18: * Bare-JVM tests for the USS variable space ({@link USSVariableSpace}): the 256 slots, the unwritten-vs-written
+19: * distinction, immutability, the sparse NBT round-trip, and garbage tolerance.
+115: 1.7.10: raw element via the public tagList field
+141: non-compound entry
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\USSVeinMathTest.java ====
+20: * Unit tests for {@link USSVeinMath} — the vein→dust math copied from the legacy Eye of Harmony recipe.
+21: *
+22: * <p>
+23: * The material side of a vein entry is never dereferenced by the math (only the amount), so a throwaway
+24: * {@link IOreMaterial} keeps the tests off the heavy {@code Materials} static init.
+28: * Minimal stand-in material — the math only reads the amount, never the material.
+84: ISubTagContainer
+128: (10+5) * 3
+136: legacy formula: miningTimeSeconds * 2^19 * 20
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\VoidcraftActiveBaseTest.java ====
+21: * Unit tests for the active Voidbase (bare-JVM): launch, the integrity time limit (1 per second, 0 =
+22: * decommissioned), the repair command math, and the NBT round-trip.
+28: * A 1x1x4 base blueprint: controller + 3 frames (integrity = 10 + 3x10 = 40).
+61: * A blueprint item whose payload lost its integrity stat (a stale or hand-edited item): the launch must fall
+62: * back to the stat re-derived from the blueprint grid, not spawn at 1.
+75: * The full construction seam: the assembler's blueprint item, copied the way the gateway loads it into the ship
+76: * payload, read back nested the way the construct handler reads it at launch time - the integrity must survive
+77: * the whole item -> payload -> nested-copy chain.
+92: * A payload with no usable stat and no readable grid falls back to the default floor.
+116: no-op: negative amounts are ignored
+117: force the integrity down: 39 seconds of decay
+127: * The exact return-value contract the USS tick wiring uses for the decommission decision: tickIntegrity
+128: * returns false on EVERY tick while the integrity is still above zero (a healthy base, however worn, never
+129: * reports decommission) and true from the tick the integrity reaches 0 onward.
+134: 39 full seconds: integrity 40 -> 1, no decommission report anywhere along the way.
+139: One integrity per FULL second: the last point drops only on the 40th second's completing tick.
+152: decay one second, then repair well above the maximum - clamped to the maximum
+189: The payload (the station grid + stats + program) survives the round-trip
+195: And the re-read base still ticks
+203: * A base whose payload carries an energy buffer (POWER_CELL covers) and a generation rate (SOLAR_PANEL
+204: * covers) - the derived stats the assembler writes.
+219: drain, then regenerate (capped at capacity).
+242: decay 1 integrity.
+248: 20 ticks of repair (2000 EU/t) restore exactly 1 integrity.
+265: and a full base does not accrue repair ticks.
+273: decay 1 integrity so the repair ticks accrue
+290: a payload with the right format tag but no grids is not a base
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\VoidcraftActiveShipTest.java ====
+18: * Unit tests for the passive leg driver ({@link VoidcraftActiveShip}): launch (holding at the origin),
+19: * leg arming / countdown / completion latch (consumed exactly once), holding, and the NBT round-trip (including
+20: * the persisted completion latch that makes a leg's side-effect fire exactly once across a save/reload).
+37: region launch (the ship starts HOLDING at its origin, legs unarmed)
+64: endregion
+66: region leg arming + countdown + completion latch
+111: ticking after consumption is a no-op
+159: endregion
+161: region cargo handoff
+179: The pilot's onWorkComplete is the SOLE producer of the cargo — the ship's leg driver must not
+180: pre-fill anything (that is how a work leg's yield fires exactly once).
+189: endregion
+191: region NBT round-trip
+239: null targets stay null across the round-trip (a drop-at-USS fallback mission)
+261: THE leg invariant: a leg that finished but whose side-effect has not fired yet (latched complete)
+262: must survive a save/reload and be consumable exactly once AFTER the reload.
+268: save WITHOUT consuming (the world saved between the latch and the pilot's consumption)
+292: The per-launch identity seed (unique per flight even for duplicated ship items) must survive
+293: the mission NBT round-trip — the client keys this ship's animation phase + swarm spot on it.
+305: Saves without leg tags restore with the safe defaults (no armed leg) instead of failing.
+322: A HOLDING ship (program finished / a fresh one) is a LEGITIMATE in-flight state — the USS must
+323: restore it (it occupies its slot until the player deals with it).
+337: docked ships live in the gateway inventory, never in the USS — refuse to restore
+352: endregion
+354: region constructor loadout (durable ship state: a site consumes only its need, the remainder persists)
+442: a CONSTRUCT leg took 2 of the 5 frames
+459: endregion
+461: region integrity (max on entry, -1 per second in the USS, 0 = lost)
+516: 1 full second + 5 ticks into the next
+522: the partial second continues where it left off: 15 more ticks → one more drop
+533: endregion
+535: region USSConstants leg-table checks (unchanged invariants the client's animation relies on)
+539: For EVERY mining power the MINING leg must be a visible hover (4.5–30 s) — a 10-tick hover would be
+540: invisible at the fleet's scale.
+556: One part per second per 100 construction power = 2000/power machine ticks per part.
+561: Power <= 0 degrades to the base rate (100 power): a blueprint without constructor components still
+562: deposits at one part per second.
+565: Monotone non-increasing in power.
+575: The construction power is denormalized into the payload at digitization (vc_construction) and read
+576: LIVE by the CONSTRUCT pacing (like the scan power).
+650: the leg's state is MINING for every work kind — the KIND picks the table (a hybrid ship's leg duration
+651: depends on the command that ran it, not on the ship's role)
+712: The fleet entry writes the ship's leg work kind — a mid-leg reload must keep the SAME kind, or the
+713: client's leg duration desyncs (a SCAN leg would animate at the mining table).
+724: "The travel time becomes an actual measure of distance divided by speed."
+733: The 5× speed test aid: legs divide by speed * SHIP_SPEED_MULTIPLIER — 15 blocks at speed 5 is
+734: 15 * 200 / (5 * 5) = 120 ticks (a fifth of the 600 ticks the same leg takes without the multiplier).
+738: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\VoidcraftCargoPoolTest.java ====
+17: * Unit tests for the bay cargo pool ({@link VoidcraftCargoPool}) — merge-aware insert, slot capacity,
+18: * remove/drain, and the NBT round-trip.
+19: *
+20: * <p>
+21: * Bare-JVM note: vanilla {@code Items.*} fields are all {@code null} here (they resolve through the
+22: * FML-controlled item registry, which is empty without a game). The test therefore uses two fresh
+23: * {@link Item} instances registered via {@link BareJvmItemRegistry} — distinct item instances stand in for two
+24: * distinct item ids, and the registry entry makes the {@code ItemStack} NBT id round-trip work.
+28: * First registered test item ("kind A"). Ids must fit in a signed short (NBT).
+31: * Second registered test item ("kind B").
+36: Fail loudly (with a clear message) if the bare-JVM registry shim stops working in this environment.
+50: region insert
+112: endregion
+114: region capacity
+143: endregion
+145: region remove + drain
+183: endregion
+185: region NBT round-trip
+234: Hand-craft an entry whose vc_count is above the slot max: readFromNBT must clamp to 64.
+235: (The vanilla Count field is a byte, so the oversized count is only visible through vc_count.)
+252: endregion
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\VoidcraftFluidPoolTest.java ====
+12: * Unit tests for the bay fluid pool ({@link VoidcraftFluidPool}) — the abstract
+13: * {@code {material, mB}} slots: merge-aware insert, remove, overflow semantics (the caller keeps the remainder),
+14: * and the NBT round-trip.
+15: *
+16: * <p>
+17: * Same design contract as {@link VoidcraftCargoPool} (see {@code VoidcraftCargoPoolTest}): the pool never
+18: * silently voids — {@code insert} returns the accepted amount and the bay delivers the rest.
+59: a different material takes the NEXT slot (no cross-fluid merging)
+109: merges into slot 0 → 12_387
+121: double pass (save → load → save → load) must be stable
+==== E:\Programming\Java\GT5-Unofficial\src\test\java\tectech\voidcraft\uss\VoidcraftUSSTest.java ====
+16: * Unit tests for the USS data model ({@link VoidcraftUSS}) — state transitions, the star tables via
+17: * {@link USSConstants}, and the NBT round-trip.
+21: region cold/ignited state machine
+39: The star type comes from the IGNITION ITEM (the parameter), not from the tier.
+48: a higher tier no longer changes the star class — the item does
+53: ...and the same tier can now host any star class
+73: a null type (defensive) falls back to main sequence
+88: identity fields preserved
+92: original immutable
+113: duplicates ignored
+119: nulls ignored
+127: endregion
+129: region ripple scan state (the Explorer role)
+133: All ripples are hidden at USS creation — nothing is scanned yet.
+159: duplicates are a no-op
+165: negative index is a no-op
+205: A system with no scanned ripples round-trips with an empty set (the tag is simply absent).
+217: endregion
+219: region star tables
+223: The tables are keyed by star TYPE (item-driven), and every type has positive balance.
+229: the three types are distinct in lifespan (the table actually differentiates them)
+234: null is defensive, not a crash
+246: endregion
+248: region USS variable space (the 256-slot global variable list)
+312: a list of compounds is element type 10
+361: A USS whose space is untouched keeps its tag lean (no empty list in the world file).
+368: endregion
+370: region NBT round-trip
+416: write → read → write → read must be stable (what actually happens across save/reload cycles)
+435: null / empty / missing format version
+439: wrong format version
+444: invalid state ordinal
+450: ignited but tier out of range
+459: ignited but star type missing
+467: ignited but lifespan exhausted
+477: endregion

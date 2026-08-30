@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-/** Phase B: the ship STAT registry ids round-trip. */
+/** The ship STAT registry ids round-trip. */
 final class USSShipStatTest {
 
     @Test
@@ -37,7 +37,7 @@ final class USSShipStatTest {
 
     @Test
     void testRegistryCoversTheSpecList() {
-        // the Phase B stat set: cargo, state, target, position, travel, work progress
+        // the stat set: cargo, state, target, position, travel, work progress
         assertNotNull(USSShipStat.byId(0)); // CARGO_USED
         assertNotNull(USSShipStat.byId(1)); // CARGO_FREE
         assertNotNull(USSShipStat.byId(2)); // CARGO_FULL
@@ -50,5 +50,6 @@ final class USSShipStatTest {
         assertNotNull(USSShipStat.byId(9)); // SPEED
         assertNotNull(USSShipStat.byId(10)); // TICKS_IN_LEG
         assertNotNull(USSShipStat.byId(11)); // RIPPLES_UNSCANNED
+        assertNotNull(USSShipStat.byId(12)); // LOGISTICS_POWER
     }
 }

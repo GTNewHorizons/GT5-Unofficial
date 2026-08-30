@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for the pass-33 program ROW VIEW ({@link USSProgramView}) â€” the flat Scratch-style block list the
+ * Unit tests for the program ROW VIEW ({@link USSProgramView}) — the flat Scratch-style block list the
  * Controller GUI renders: depth / path / label per node, the argument slots each block shows (including a WRITE
  * value held as a USS reference), the flat visual order (children immediately after their parent), and the row
  * wire form (list sync).
@@ -51,13 +51,24 @@ public class USSProgramViewTest {
         return USSNode.command(USSCommand.WRITE, a);
     }
 
-    /** A WRITE whose value is a USS VARIABLE reference (the slot-assignment feature, pass 33 UI). */
+    /** A WRITE whose value is a USS VARIABLE reference (the slot-assignment feature). */
     private static USSNode writeVar(int slot, int varSlot) {
         NBTTagCompound a = new NBTTagCompound();
         a.setInteger(USSCommandWrite.PARAM_SLOT, slot);
         a.setTag(
             USSCommandWrite.PARAM_VALUE,
             USSValue.variable(varSlot)
+                .writeToNBT());
+        return USSNode.command(USSCommand.WRITE, a);
+    }
+
+    /** A WRITE whose value is the LOCATION value ("Current location" — the ship's position at execution time). */
+    private static USSNode writeLoc(int slot) {
+        NBTTagCompound a = new NBTTagCompound();
+        a.setInteger(USSCommandWrite.PARAM_SLOT, slot);
+        a.setTag(
+            USSCommandWrite.PARAM_VALUE,
+            USSValue.location()
                 .writeToNBT());
         return USSNode.command(USSCommand.WRITE, a);
     }
@@ -169,6 +180,9 @@ public class USSProgramViewTest {
 
         rows = USSProgramView.rows(program(writeVar(9, 17)));
         assertEquals("VAR 17", rows.get(0).slots.get(0).display);
+
+        rows = USSProgramView.rows(program(writeLoc(2)));
+        assertEquals("LOC", rows.get(0).slots.get(0).display);
     }
 
     @Test
@@ -235,6 +249,7 @@ public class USSProgramViewTest {
         assertEquals("VAR 0", USSProgramView.valueDisplay(USSValue.variable(0)));
         assertEquals("VAR 255", USSProgramView.valueDisplay(USSValue.variable(255)));
         assertEquals("STAT 5", USSProgramView.valueDisplay(USSValue.stat(5)));
+        assertEquals("LOC", USSProgramView.valueDisplay(USSValue.location()));
         assertEquals("", USSProgramView.valueDisplay(null));
     }
 

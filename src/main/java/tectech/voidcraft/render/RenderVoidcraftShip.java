@@ -37,11 +37,11 @@ import tectech.thing.block.TileEntityEyeOfHarmony;
 import tectech.voidcraft.loader.VoidcraftLoader;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
 import tectech.voidcraft.ship.VoidcraftNbt;
-import tectech.voidcraft.ship.VoidcraftRole;
 import tectech.voidcraft.uss.USSConstants;
 import tectech.voidcraft.uss.USSFleetOrbit;
 import tectech.voidcraft.uss.USSPosition;
 import tectech.voidcraft.uss.USSShipState;
+import tectech.voidcraft.uss.USSWorkKind;
 
 /**
  * Renders the ship fleet hologram (Phase 4 pass 5): the USS's WHOLE in-flight fleet (dozens–hundreds of ships, see
@@ -85,10 +85,10 @@ import tectech.voidcraft.uss.USSShipState;
  * constant display spin).
  *
  * <p>
- * <strong>Pass 8 effects:</strong> while a MINER or STARLIFTER is in its MINING leg, a thin additive laser rod
+ * <strong>Pass 8 effects:</strong> while a MINE or SIPHON leg is in its MINING state, a thin additive laser rod
  * runs from the ship's middle to the body's middle (fading over the leg's ends — see {@link VoidcraftShipFx});
  * while a ship moves (OUTBOUND / RETURNING), smoke exhaust is emitted behind it, the opposite of its travel
- * direction. The Constructor is the only role that does not fire the beam (it builds, per user spec).
+ * direction. A CONSTRUCT leg builds at the site (it fires no mining beam, per user spec).
  */
 @SideOnly(Side.CLIENT)
 public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
@@ -247,10 +247,14 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         List<TileEntityEyeOfHarmony.PlanetSpec> planets = fleet.getSystemPlanets();
         float starSize = fleet.getStarSize();
 
+        // The rendered (camera-relative) position of every fleet member this frame, keyed by uuid — filled by the
+        // bases and the ships as they place, read by the cargo-transfer beams once both endpoints are known.
+        Map<String, double[]> transferPositions = new HashMap<String, double[]>();
+
         // Phase D: the Voidbase construction sites (gray wireframe + progressive fill) and the standing bases
         // (static models) — drawn before the ships so the fleet renders on top of them.
         renderSites(sites, planets, starSize, x, y, z, worldTime, partialTicks);
-        renderBases(bases, planets, starSize, x, y, z, worldTime, partialTicks);
+        renderBases(bases, planets, starSize, x, y, z, worldTime, partialTicks, transferPositions);
 
         // Gateway render pass: a star-facing opaque TUBE (0.1 blocks deep) with a flat 25% cyan event plane in its
         // bore,
@@ -267,6 +271,8 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             return; // only ripples, Voidbase renders and gateways were present — done
         }
 
+        // Cargo transfer (SEND / TAKE) beams: the gray rods are drawn once every fleet member is placed (a transfer's
+        // endpoints are ships and/or bases, so neither is known while a single member is being drawn).
         for (int i = 0; i < ships.size(); i++) {
             renderShip(
                 ships.get(i),
@@ -279,7 +285,41 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 planets,
                 starSize,
                 tileEntity.getWorldObj(),
-                sites);
+                sites,
+                transferPositions);
+        }
+        renderTransferBeams(fleet.getTransfers(), transferPositions, worldTime);
+    }
+
+    /**
+     * The cargo transfer beams (SEND / TAKE): a gray rod from the executing member's rendered position to the
+     * target's rendered position, for each in-flight transfer — queued into the same world-last beam pass as the
+     * mining (cyan) and construction (orange) lasers. A transfer whose source or target did not render this frame
+     * (not in the fleet, or off-screen) is skipped.
+     *
+     * @param transfers         the in-flight transfer entries (executing + target uuids) from the fleet TE
+     * @param transferPositions the rendered (camera-relative) position of every ship this frame, keyed by uuid
+     * @param worldTime         the world's total tick count (drives the beam's pulse)
+     */
+    private static void renderTransferBeams(List<NBTTagCompound> transfers, Map<String, double[]> transferPositions,
+        long worldTime) {
+        if (transfers == null || transfers.isEmpty() || transferPositions.isEmpty()) {
+            return;
+        }
+        for (NBTTagCompound transfer : transfers) {
+            double[] source = transferPositions.get(transfer.getString(TileEntityVoidcraftShip.TAG_TRANSFER_SOURCE));
+            double[] target = transferPositions.get(transfer.getString(TileEntityVoidcraftShip.TAG_TRANSFER_TARGET));
+            if (source == null || target == null) {
+                continue; // one of the ships did not render this frame
+            }
+            queueBeam(
+                source,
+                target,
+                TRANSFER_BEAM_FADE,
+                worldTime,
+                TRANSFER_BEAM_GRAY,
+                TRANSFER_BEAM_GRAY,
+                TRANSFER_BEAM_GRAY);
         }
     }
 
@@ -600,7 +640,7 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
 
     private void renderShip(NBTTagCompound entry, int index, double x, double y, double z, long worldTime,
         float partialTicks, List<TileEntityEyeOfHarmony.PlanetSpec> planets, float starSize, World world,
-        List<NBTTagCompound> sites) {
+        List<NBTTagCompound> sites, Map<String, double[]> transferPositions) {
         NBTTagCompound payload = entry.getCompoundTag(TileEntityVoidcraftShip.TAG_ENTRY_PAYLOAD);
         if (payload == null) {
             return;
@@ -614,7 +654,7 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         double travelDistance = entry.getDouble(TileEntityVoidcraftShip.TAG_ENTRY_TDIST);
         // The command-split pass: the current leg's WORK KIND (the work command that started it) — a work leg's
         // duration depends on the KIND (mines at mining power, scans at scan power, siphons at siphon power), so
-        // the client must derive the SAME duration the server ticks for a hybrid ship.
+        // the client must derive the SAME duration the server ticks for a ship with several work capabilities.
         int workKind = entry.getInteger(TileEntityVoidcraftShip.TAG_ENTRY_WORK_KIND);
         VoidcraftBlueprint blueprint = VoidcraftNbt.read(payload);
         if (blueprint == null) {
@@ -667,8 +707,7 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         double shipRenderTime = (double) worldTime + partialTicks;
         // Programming framework (Phase C): the server tells us whether the hover body is a FIXED point (a ripple
         // point, a ship rendezvous — TAG_ENTRY_STATIC, resolved into TAG_ENTRY_DEST) or a LIVE body (a planet that
-        // keeps orbiting — the client tracks it). The old isExplorer ROLE check is gone: a ship's target is now
-        // decided by its PROGRAM (MOVE target), not by its role.
+        // keeps orbiting — the client tracks it). The target is decided by the ship's PROGRAM (MOVE target).
         boolean staticBody = entry.getBoolean(TileEntityVoidcraftShip.TAG_ENTRY_STATIC);
         double[] body;
         double hoverAbove;
@@ -831,6 +870,13 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         phase.lastZ = pos[2];
         phase.hasLastPos = true;
 
+        // Ship-to-ship transfer beams: register this ship's rendered position under its uuid (the server's
+        // transfer identity) so both endpoints of a transfer resolve once the whole fleet has been placed.
+        String transferUuid = payload.getString(VoidcraftNbt.TAG_UUID);
+        if (!transferUuid.isEmpty()) {
+            transferPositions.put(transferUuid, new double[] { x + pos[0], y + pos[1], z + pos[2] });
+        }
+
         double yaw = 0.0;
         double pitch = 0.0;
         // Phase C: the heading is the leg's direction (legFrom → leg end) — OUTBOUND/RETURNING travel it, MINING
@@ -912,10 +958,11 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         }
 
         // Pass 8: the mining laser — a thin glowing rod from the MIDDLE of the ship to the MIDDLE of the body it
-        // works (user spec), for MINERS and STARLIFTERS during the MINING leg, fading in over the leg's start and
-        // out over its end (VoidcraftShipFx.beamFade) so OUTBOUND→MINING→RETURNING reads as the beam engaging
-        // and releasing.
-        if (state == USSShipState.MINING && VoidcraftShipFx.minesWithBeam(payload)) {
+        // works (user spec), on the MINE and SIPHON legs during the MINING state, fading in over the leg's start
+        // and out over its end (VoidcraftShipFx.beamFade) so OUTBOUND→MINING→RETURNING reads as the beam
+        // engaging and releasing. A CONSTRUCT leg builds at the site (its own orange beam); a SCAN leg scans (its
+        // own cube).
+        if (state == USSShipState.MINING && (workKind == USSWorkKind.MINE || workKind == USSWorkKind.SIPHON)) {
             double fade = VoidcraftShipFx.beamFade(
                 legProgress(phase, payload, travelDistance, shipRenderTime, USSShipState.MINING, legId, workKind));
             if (fade > 0.0) {
@@ -983,11 +1030,11 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // previously "only sometimes showed" was the client animating every leg at the minimum travel time (the
         // ship zipped through states), so the working leg was reached almost instantly and the effect had no
         // visible window. Now that the client uses the ACTUAL travel time (see legProgress), the ship holds each
-        // leg for its real duration and the working-state effects render for their full length. Role-based (not
-        // target-based) so it also shows for the rare all-points-scanned fallback (target -1). Pass 26 also
+        // leg for its real duration and the working-state effects render for their full length. Keyed on the leg's
+        // work KIND (SCAN) rather than the ship, so it also shows for the rare all-points-scanned fallback
+        // (target -1). Pass 26 also
         // de-rotated it (user: "it's a 'twisted' cube, it should be a cube") — see renderScanCube.
-        if (state == USSShipState.MINING
-            && VoidcraftRole.EXPLORER.isActive(VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES))) {
+        if (state == USSShipState.MINING && workKind == USSWorkKind.SCAN) {
             // Pass 28 (user: "the cube itself should be half the size") + pass 31 (user: "make the cube half the
             // size — it can be quite small around the ship"): 0.25× the pass-26/27 wrap radius.
             double half = (Math.max(0.75, 0.5 * model.maxAxis() * CELL_SIZE + 0.25)) * 0.25;
@@ -1044,6 +1091,14 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
      * would leave an unpainted window in the shell). Each entry: start xyz, end xyz, fade, worldTime, r, g, b.
      */
     private static final List<double[]> BEAM_QUEUE = new ArrayList<double[]>();
+
+    /**
+     * The steady glow of the ship-to-ship cargo transfer beam (SEND / TAKE): a moderate gray, calmer than the
+     * mining (cyan) and construction (orange) beams.
+     */
+    public static final double TRANSFER_BEAM_FADE = 0.5;
+    /** The transfer beam's gray (r = g = b — a neutral gray, no color cast). */
+    public static final double TRANSFER_BEAM_GRAY = 0.6;
 
     private static void queueBeam(double[] start, double[] end, double fade, long worldTime, double red, double green,
         double blue) {
@@ -1451,7 +1506,8 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
      * (VoidcraftShipFx.beamFade).
      */
     private static void renderBases(List<NBTTagCompound> bases, List<TileEntityEyeOfHarmony.PlanetSpec> planets,
-        float starSize, double x, double y, double z, long worldTime, float partialTicks) {
+        float starSize, double x, double y, double z, long worldTime, float partialTicks,
+        Map<String, double[]> transferPositions) {
         if (bases == null || bases.isEmpty()) {
             return;
         }
@@ -1472,6 +1528,12 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 continue;
             }
             double[] pos = anchorHoverPoint(entry, planets, starSize, renderTime);
+            // Transfer beams with the base at either endpoint: register its rendered position under its uuid
+            // (the server's transfer identity), the same map the ships fill in renderShip.
+            String transferUuid = payload != null ? payload.getString(VoidcraftNbt.TAG_UUID) : "";
+            if (!transferUuid.isEmpty()) {
+                transferPositions.put(transferUuid, new double[] { x + pos[0], y + pos[1], z + pos[2] });
+            }
             long integrity = entry.getLong(TileEntityVoidcraftShip.TAG_BASE_INTEGRITY);
             long maxIntegrity = entry.getLong(TileEntityVoidcraftShip.TAG_BASE_INTEGRITY_MAX);
             float f = maxIntegrity > 0 ? (float) Math.max(0.0, Math.min(1.0, (double) integrity / maxIntegrity)) : 1.0F;

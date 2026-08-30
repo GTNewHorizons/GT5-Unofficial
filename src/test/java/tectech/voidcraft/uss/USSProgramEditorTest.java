@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for the pass-33 program editor ({@link USSProgramEditor}) — the bare-JVM core of the Controller's
+ * Unit tests for the program editor ({@link USSProgramEditor}) — the bare-JVM core of the Controller's
  * program editor: structural edits (insert / remove / move) at every nesting level, content edits (params with
  * the executor's NBT types, REPEAT count, conditions), the whole-program gate (presets / clear), cap
  * enforcement, and the "the input program is never mutated" purity rule.

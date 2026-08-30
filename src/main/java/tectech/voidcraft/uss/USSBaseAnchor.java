@@ -100,6 +100,21 @@ public final class USSBaseAnchor {
     }
 
     /**
+     * The MOVE target string this anchor's body corresponds to (the anchor descriptor a work leg completes
+     * with, see {@link USSPilotWorld#onWorkComplete}).
+     */
+    public String targetKind() {
+        switch (kind) {
+            case KIND_PLANET:
+                return USSProgramDefaults.TARGET_PLANET;
+            case KIND_RIPPLE:
+                return USSProgramDefaults.TARGET_RIPPLE;
+            default:
+                return USSProgramDefaults.TARGET_STAR;
+        }
+    }
+
+    /**
      * Write the anchor into a compound tag.
      */
     public void writeToNBT(NBTTagCompound nbt) {

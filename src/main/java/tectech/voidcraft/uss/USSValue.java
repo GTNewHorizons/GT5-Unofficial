@@ -6,11 +6,13 @@ import net.minecraft.nbt.NBTTagCompound;
  * One program VALUE of a Voidcraft program (programming framework, Phase A).
  *
  * <p>
- * User spec: "the value is always a string". A value is one of three kinds:
+ * User spec: "the value is always a string". A value is one of four kinds:
  * <ul>
  * <li>{@link Kind#LITERAL} — a fixed string (at most {@link USSProgram#MAX_LITERAL_LENGTH} characters);</li>
  * <li>{@link Kind#VAR} — a slot (0..255) of the USS global variable space (the external in/out channel);</li>
- * <li>{@link Kind#STAT} — a ship stat id (the executor's stat registry, Phase B).</li>
+ * <li>{@link Kind#STAT} — a ship stat id (the executor's stat registry, Phase B);</li>
+ * <li>{@link Kind#LOCATION} — the ship's current position, resolved at execution time to its coordinate string
+ * (the "Current location" value — broadcast a location through the variable space).</li>
  * </ul>
  *
  * <p>
@@ -27,7 +29,12 @@ public final class USSValue {
         /** A USS variable slot (0..255). */
         VAR(1),
         /** A ship stat id (Phase B registry). */
-        STAT(2);
+        STAT(2),
+        /**
+         * The ship's current position — resolved at execution time to the position's coordinate string (see
+         * {@link USSPosition#coordString()}); the "Current location" value.
+         */
+        LOCATION(3);
 
         private final int id;
 
@@ -84,6 +91,14 @@ public final class USSValue {
         return new USSValue(Kind.STAT, "", 0, Math.max(0, statId));
     }
 
+    /**
+     * @return the LOCATION value — resolves at execution time to the ship's current position (its coordinate
+     *         string; see {@link USSPosition#coordString()})
+     */
+    public static USSValue location() {
+        return new USSValue(Kind.LOCATION, "", 0, 0);
+    }
+
     public Kind kind() {
         return kind;
     }
@@ -132,6 +147,8 @@ public final class USSValue {
                 return variable(nbt.getInteger("v"));
             case STAT:
                 return stat(nbt.getInteger("st"));
+            case LOCATION:
+                return location();
             case LITERAL:
             default:
                 return literal(nbt.getString("s"));
@@ -164,6 +181,8 @@ public final class USSValue {
                 return "VAR" + slot;
             case STAT:
                 return "STAT" + statId;
+            case LOCATION:
+                return "LOC";
             case LITERAL:
             default:
                 return '"' + literal + '"';

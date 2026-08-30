@@ -14,6 +14,7 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -77,6 +78,7 @@ import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
+import tectech.voidcraft.debug.VoidcraftDebugEffectRegistry;
 import tectech.voidcraft.item.ItemUSSController;
 import tectech.voidcraft.item.ItemVoidbaseBlueprint;
 import tectech.voidcraft.item.ItemVoidcraft;
@@ -85,8 +87,8 @@ import tectech.voidcraft.machine.MTEVoidcraftGateway;
 import tectech.voidcraft.machine.MTEVoidcraftStorageBay;
 import tectech.voidcraft.render.TileEntityVoidcraftShip;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
+import tectech.voidcraft.ship.VoidcraftComponent;
 import tectech.voidcraft.ship.VoidcraftNbt;
-import tectech.voidcraft.ship.VoidcraftRole;
 
 /**
  * Unstable Solar System (EoH rework, Phase 2 vertical slice).
@@ -144,21 +146,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     private final List<USSBaseSite> baseSites = new ArrayList<USSBaseSite>();
 
     /**
-     * The completed Voidbases (one per anchor; each ticks itself — integrity decay/repair, anchor hover, energy).
-     * Persisted in NBT; discarded on burnout/teardown like the ships.
-     */
-    private final List<VoidcraftActiveBase> bases = new ArrayList<VoidcraftActiveBase>();
-
-    /**
-     * The base pilots — one per completed Voidbase (index-parallel to {@link #bases}): each base runs its
-     * station program (the digitized controller program) in BASE mode against this MTE (the same seam as the
-     * ships).
-     */
-    private final List<USSBasePilot> basePilots = new ArrayList<>();
-
-    /**
-     * The fleet render signature last pushed to the fleet anchor (Phase D): a hash of the ship count + every
-     * base integrity + every site progress. {@link #tickBases()} resyncs the anchor exactly when it changes
+     * The fleet render signature last pushed to the fleet anchor (Phase D): a hash of the fleet count + every
+     * entity's integrity + every site progress. The fleet tick resyncs the anchor exactly when it changes
      * (integrity decay/repair, site fill), so the client tint/fill follows the server without per-tick packets.
      */
     private long lastFleetRenderSignature = -1L;
@@ -176,18 +165,50 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     // fleet (dozens–hundreds) rendered by ONE fleet anchor block, not one block per ship).
 
     /**
-     * The ships in flight; list index = ship SLOT (launch order). Each ship carries its own cargo (built when its
-     * MINING leg completes) and its own return targets (captured at launch), so a mission from any gateway/bay pair
-     * is routed back to its own launchers.
+     * The fleet entities: every in-flight ship AND every anchored Voidbase (a non-null anchor on the entity
+     * marks the base). List index = entity SLOT (launch order for ships; bases join the tail). Each entity
+     * carries its own cargo and, for a ship, its own return targets (captured at launch), so a mission from any
+     * gateway/bay pair is routed back to its own launchers.
      */
     private final List<VoidcraftActiveShip> activeShips = new ArrayList<>();
 
     /**
-     * The pilots — one per in-flight ship (programming framework, Phase C), index-parallel to {@link #activeShips}.
-     * Each pilot runs its ship's program (the controller's instruction list) against this MTE (the
-     * {@link USSPilotWorld} game seam) and decides the ship's legs; the ships themselves are passive leg drivers.
+     * The pilots — one per fleet entity, index-parallel to {@link #activeShips}: each pilot runs its entity's
+     * program (the controller's instruction list) against this MTE (the {@link USSPilotWorld} game seam) and
+     * decides its legs; the entities themselves are passive leg drivers.
      */
     private final List<USSShipPilot> pilots = new ArrayList<>();
+
+    /**
+     * In-flight SEND / TAKE transfers (ship-to-ship cargo transfer): one per executing ship, keyed by the
+     * executing ship's uuid. Transient bookkeeping — NOT persisted: on a chunk reload a mid-transfer simply
+     * disappears (the executing ship's command observes a false tick and reports DONE; the units already moved
+     * stay moved).
+     */
+    private final Map<String, USSCargoTransferState> cargoTransfers = new HashMap<String, USSCargoTransferState>();
+
+    /** One in-flight transfer: the paced leg + the target ship's identity (re-resolved by uuid every tick). */
+    private static final class USSCargoTransferState {
+
+        USSCargoTransfer leg;
+        String targetUuid;
+        String targetName;
+    }
+
+    /**
+     * In-flight REPAIR sessions, keyed by the EXECUTING entity's uuid: one anchored station repairing itself or
+     * a co-located fleet member. Persisted (the executor's command resumes its poll after a reload).
+     */
+    private final Map<String, USSRepairState> repairs = new HashMap<String, USSRepairState>();
+
+    /** One in-flight repair: the pacing countdown + the target entity's identity (re-resolved by uuid every tick). */
+    private static final class USSRepairState {
+
+        /** Ticks until the next integrity step (20 = one game second). */
+        int ticks;
+        /** The target entity's uuid (the entity being repaired). */
+        String targetUuid;
+    }
 
     /**
      * The state id last pushed to each slot's ship render TE (avoids per-tick description packets). Starts at -1
@@ -247,6 +268,13 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      */
     private long progressLogTicks = 0L;
 
+    /**
+     * Per-base launch countdown (the Dyson Swarm pass): ship UUID -> machine ticks until its next Satellite Rail
+     * Launcher launch. Kept by {@link #tickSatelliteLauncher(VoidcraftActiveShip)}; cleared when the star burns
+     * out (every mission in flight is lost).
+     */
+    private final java.util.Map<String, Long> satelliteLaunchCountdowns = new java.util.HashMap<>();
+
     // endregion
 
     // NBT tag names (voidcraft "vc_" naming convention).
@@ -256,8 +284,24 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     private static final String ACTIVE_SHIPS_NBT_TAG = "vc_active_ships";
     /** NBTTagList of Voidbase construction sites (anchor + per-part delivered counts). */
     private static final String BASE_SITES_NBT_TAG = "vc_uss_base_sites";
-    /** NBTTagList of completed Voidbases (the bases themselves, serialized like ships). */
-    private static final String BASES_NBT_TAG = "vc_uss_bases";
+    /**
+     * NBTTagList of the in-flight SEND / TAKE transfers: one entry per transfer carrying the executing ship's
+     * uuid, the target ship's uuid + name, and the transfer's own state (see
+     * {@link USSCargoTransfer#writeToNBT}).
+     */
+    private static final String CARGO_TRANSFERS_NBT_TAG = "vc_cargo_transfers";
+    private static final String CARGO_TRANSFER_SRC_UUID_NBT_TAG = "vc_tr_src_uuid";
+    private static final String CARGO_TRANSFER_TGT_UUID_NBT_TAG = "vc_tr_tgt_uuid";
+    private static final String CARGO_TRANSFER_TGT_NAME_NBT_TAG = "vc_tr_tgt_name";
+    private static final String CARGO_TRANSFER_LEG_NBT_TAG = "vc_tr_leg";
+    /**
+     * NBTTagList of the in-flight REPAIR sessions: one entry per session carrying the executing entity's uuid,
+     * the target entity's uuid, and the pacing countdown.
+     */
+    private static final String REPAIRS_NBT_TAG = "vc_uss_repairs";
+    private static final String REPAIR_SRC_UUID_NBT_TAG = "vc_rp_src_uuid";
+    private static final String REPAIR_TGT_UUID_NBT_TAG = "vc_rp_tgt_uuid";
+    private static final String REPAIR_TICKS_NBT_TAG = "vc_rp_ticks";
 
     // Multiblock structure.
     /**
@@ -1037,10 +1081,21 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * Insert the USS Controller into the empty controller slot (sneak or plain right-click with the item in hand).
+     * Right-click handling: a registered debug item applies its effect to the machine; otherwise insert the USS
+     * Controller into the empty controller slot (sneak or plain right-click with the item in hand); otherwise the
+     * machine UI.
      */
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        // A registered debug item applies its effect to the machine instead of opening the UI (server side —
+        // the star state is server-authoritative).
+        VoidcraftDebugEffectRegistry.Effect debugEffect = VoidcraftDebugEffectRegistry.effectFor(aPlayer.getHeldItem());
+        if (debugEffect != null) {
+            if (aBaseMetaTileEntity.isServerSide()) {
+                debugEffect.apply(this, aPlayer);
+            }
+            return true;
+        }
         if (getControllerSlot() == null) {
             ItemStack heldItem = aPlayer.getHeldItem();
             if (heldItem != null && heldItem.getItem() == ItemUSSController.INSTANCE) {
@@ -1077,8 +1132,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 starBurnsOut();
             } else {
                 uss = uss.withLifespan(remaining);
+                tickStarInfrastructure();
                 tickShips();
-                tickBases();
             }
         } else if (getControllerSlot() != null) {
             // COLD + controller in slot + structure valid → ignite.
@@ -1172,8 +1227,17 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             // mechanics pass — see starSizeFor).
             rendererTileEntity.setStarSize(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
             // Star color: from the star's registered definition (null → the legacy orange fallback) — the shared
-            // star mesh is a single texture, so the color is what distinguishes the star classes visually.
+            // star mesh is a single texture, so the colors are what distinguish the star classes visually.
             rendererTileEntity.setStarColor(USSStarColor.colorFor(USSStarRegistry.byType(uss.getStarType())));
+            rendererTileEntity.setStarShellColor(USSStarColor.shellColorFor(USSStarRegistry.byType(uss.getStarType())));
+            // Halo stars (the near-black cores — black dwarf, black hole, gravastar): their shell layers render
+            // outside-in as a glow ring — the flag rides the description packet like the colors so chunk reloads
+            // keep it.
+            rendererTileEntity.setStarHalo(USSStarColor.isHaloStar(uss.getStarType()));
+            // Custom render treatment (the magnetar's magnetic field loops): the extra geometry the renderer draws
+            // on top of the standard star body — rides the description packet like the halo flag so chunk reloads
+            // keep it.
+            rendererTileEntity.setStarRenderType(USSStarColor.renderTypeFor(USSStarRegistry.byType(uss.getStarType())));
             // Pass 12: the Voidcraft structure is 2× the legacy radius, so the space shell doubles with it
             // (star and planet sizes stay unchanged).
             rendererTileEntity.setDomeRadius(USSConstants.SPACE_SHELL_RADIUS);
@@ -1336,88 +1400,54 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         syncFleetRenderBlock();
     }
 
-    /** @return the completed Voidbases (their own tick — integrity decay/repair, anchor hover, energy). */
-    public List<VoidcraftActiveBase> getBases() {
-        return Collections.unmodifiableList(bases);
-    }
-
     /** @return the base standing at the given anchor (one base per anchor), or null. */
-    public VoidcraftActiveBase getBase(USSBaseAnchor anchor) {
+    public VoidcraftActiveShip getBase(USSBaseAnchor anchor) {
         if (anchor == null) {
             return null;
         }
-        for (VoidcraftActiveBase base : bases) {
-            if (base.anchor()
+        for (VoidcraftActiveShip entity : activeShips) {
+            if (entity.getAnchor() != null && entity.getAnchor()
                 .equals(anchor)) {
-                return base;
+                return entity;
             }
         }
         return null;
     }
 
-    /** Spawn a completed base at the anchor (removing its site). No-op when a base already stands there. */
-    public void spawnBase(VoidcraftActiveBase base) {
-        if (base == null || getBase(base.anchor()) != null) {
+    /**
+     * Join a completed Voidbase to the fleet at its anchor: the unified entity (anchor set, speed 0) enters
+     * {@link #activeShips} — the fleet cap counts it — with a pilot running its station program (the digitized
+     * controller program), and its construction site is removed. No-op when a base already stands there or the
+     * fleet is full.
+     *
+     * @param entity the base entity (created via {@link VoidcraftActiveShip#spawnBase})
+     */
+    public void spawnBase(VoidcraftActiveShip entity) {
+        if (entity == null || entity.getAnchor() == null
+            || getBase(entity.getAnchor()) != null
+            || activeShips.size() >= USSConstants.MAX_SHIPS_PER_USS) {
             return;
         }
-        bases.add(base);
-        NBTTagCompound payload = base.payload();
+        int slot = activeShips.size();
+        activeShips.add(entity);
+        NBTTagCompound payload = entity.getPayload();
         NBTTagList list = (payload != null && payload.hasKey(VoidcraftNbt.TAG_PROGRAM))
             ? payload.getTagList(VoidcraftNbt.TAG_PROGRAM, 10)
             : null;
-        basePilots.add(USSBasePilot.create(base, USSProgram.readFromNBT(list), this));
-        completeBaseSite(base.anchor());
-        syncFleetRenderBlock();
-    }
-
-    /**
-     * Tick the bases (anchor hover recompute, energy generation, the base program, integrity decay) — driven
-     * from the USS server tick.
-     */
-    public void tickBases() {
-        for (int i = bases.size() - 1; i >= 0; i--) {
-            VoidcraftActiveBase base = bases.get(i);
-            // The base sits at its anchor band point (within ±30° of the orbital plane), recomputed every tick
-            // (a planet anchor orbits).
-            USSPosition hover = anchorHoverPoint(base.anchor());
-            if (hover != null) {
-                base.setPosition(hover);
-            }
-            base.tickEnergy();
-            if (i < basePilots.size()) {
-                basePilots.get(i)
-                    .tick();
-            }
-            // The integrity time limit (the same rule as the in-flight ships): a base that hits 0 decommissions -
-            // removed here, cargo discarded, exactly like a lost ship.
-            if (base.tickIntegrity()) {
-                discardBase(i);
-            }
-        }
-        // Phase D: resync the fleet anchor when the render-visible fleet state changed (integrity decay or
-        // repair, a site advancing, a gateway registering or being destroyed) — prune dead gateways first so the
-        // signature reflects their removal.
-        IGregTechTileEntity mteBase = getBaseMetaTileEntity();
-        if (mteBase != null) {
-            pruneGateways(shipAnchorPos(mteBase));
-        }
-        if (fleetRenderSignature() != lastFleetRenderSignature) {
-            syncFleetRenderBlock();
-        }
-    }
-
-    /** Discard a base whose integrity reached 0 (decommissioned) — log it and remove it. */
-    private void discardBase(int index) {
-        VoidcraftActiveBase base = bases.remove(index);
-        if (index < basePilots.size()) {
-            basePilots.remove(index);
-        }
+        pilots.add(USSShipPilot.create(entity, USSProgram.readFromNBT(list), this, entity.getSeed()));
+        lastPushedShipStates[slot] = -1;
+        lastPushedLegIds[slot] = -1;
+        // The site's infrastructure cargo (the Dyson Swarm pass) moves into the finished base's hold (clamped by
+        // the hold's capacity) before the site is completed away.
+        injectSiteCargo(entity);
+        completeBaseSite(entity.getAnchor());
         try {
             LOGGER.info(
-                "[Voidcraft] VOIDBASE {} decommissioned at {} — integrity reached 0, base removed",
-                base.name(),
-                base.anchor());
+                "[Voidcraft] VOIDBASE {} commissioned at {} — station joined the fleet",
+                entity.getName(),
+                entity.getAnchor());
         } catch (Throwable ignored) {}
+        syncFleetRenderBlock();
     }
 
     /**
@@ -1532,13 +1562,11 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         // and progress"): one line at launch with the ship's identity and its program — the leg durations are
         // calculated per leg by the pilot (the legs no longer exist at launch; they are the program's).
         try {
-            int roles = VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES);
             int instructions = program == null ? 0 : program.nodeCount();
             LOGGER.info(
-                "[Voidcraft] LAUNCH {} — roles=0x{}, origin={} blocks, speed={}, program={} instruction(s), "
+                "[Voidcraft] LAUNCH {} — origin={} blocks, speed={}, program={} instruction(s), "
                     + "integrity time limit={}s",
                 name,
-                Integer.toHexString(roles),
                 String.format("%.3f", origin.x()) + ","
                     + String.format("%.3f", origin.y())
                     + ","
@@ -1554,120 +1582,148 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * Advance every ship in flight one tick (called from {@link #onPostTick} while the star is ignited). Ships
-     * that end this tick — COMPLETED (their program's HOME leg just finished) or LOST (integrity reached 0) —
-     * are finished AFTER the tick loop, in one index-safe reverse pass (completed → {@link #completeShip}, lost →
-     * {@link #loseShip}).
+     * Advance every fleet entity one tick (called from {@link #onPostTick} while the star is ignited): the
+     * in-flight ships AND the anchored Voidbases (one loop — the base's pilot runs its station program, its
+     * position is re-derived from the live anchor). Entities that end this tick — COMPLETED (a ship's program
+     * HOME leg just finished; a base never completes) or LOST (integrity reached 0) — are finished AFTER the
+     * tick loop, in one index-safe reverse pass (completed → {@link #completeShip}, lost → {@link #loseShip}).
      *
      * <p>
-     * Programming framework (Phase C): the loop is now a PILOT loop — each pilot ticks its ship (the ship's leg
-     * countdown + the program executor) and reports when a HOME leg completes (the mission is over —
-     * {@link #completeShip} delivers). The work leg's yield (cargo / the Explorer reveal) is applied by the pilot
-     * exactly once, through {@link #onWorkComplete}.
+     * Programming framework (Phase C): the loop is a PILOT loop — each pilot ticks its entity (the energy
+     * buffer, the leg countdown, the program executor) and reports when a HOME leg completes (the mission is
+     * over — {@link #completeShip} delivers). The work leg's yield (cargo / the Explorer reveal) is applied by
+     * the pilot exactly once, through {@link #onWorkComplete}.
      *
      * <p>
-     * Integrity time limit (user design): every ship's integrity drops by 1 per second
+     * Integrity time limit (user design): every entity's integrity drops by 1 per second
      * ({@link VoidcraftActiveShip#tickIntegrity()})
-     * — a ship that hits 0 is removed immediately and its cargo is discarded.
+     * — an entity that hits 0 is removed immediately and its cargo is discarded (a base is decommissioned).
      */
     private void tickShips() {
-        if (activeShips.isEmpty()) {
-            progressLogTicks = 0L;
-            return;
-        }
-        // Progress heartbeat pace: the counter advances once per machine tick and the heartbeat is the tick on
-        // which it reaches PROGRESS_LOG_INTERVAL (deterministic — no world-clock dependency).
-        progressLogTicks++;
-        boolean progressTick = progressLogTicks >= PROGRESS_LOG_INTERVAL;
-        if (progressTick) {
-            progressLogTicks = 0L;
-        }
-        List<Integer> completed = new ArrayList<>();
-        List<Integer> lost = new ArrayList<>();
-        for (int slot = 0; slot < activeShips.size(); slot++) {
-            VoidcraftActiveShip ship = activeShips.get(slot);
-            // The integrity time limit: 1 per second (the ship counts its own ticks — even while HOLDING). At 0
-            // the ship is LOST: removed below, its cargo discarded (no delivery, no drop, no re-emission).
-            if (ship.tickIntegrity()) {
-                lost.add(slot);
-                continue;
-            }
-            USSShipPilot pilot = pilots.get(slot);
-            if (pilot.tick()) {
-                // HOME leg complete — the mission is over (delivery + re-emission below).
-                completed.add(slot);
-                continue;
-            }
-            // Mark the fleet dirty when a ship's state OR leg id changes — pushed ONCE per tick at the end (no
-            // per-tick packets, and one full-fleet push instead of one per ship — Phase 4 pass 5). The leg id
-            // (Phase C) makes consecutive legs of the SAME state (MOVE → MOVE) animate from their own start.
-            int stateId = ship.getState()
-                .getId();
-            int legId = ship.getLegId();
-            if (lastPushedShipStates[slot] != stateId || lastPushedLegIds[slot] != legId) {
-                // Diagnostic (pass 7): one line per state transition. If a ship appears to "turn back without
-                // mining", the server's truth is right here — OUTBOUND → MINING → RETURNING in order, with the
-                // MINING leg's duration in ticks (a long gap before RETURNING = the mission logic ran correctly).
-                try {
-                    LOGGER.info(
-                        "[Voidcraft] {} mission: {} ({} ticks left, target={})",
-                        ship.getName(),
-                        ship.getState()
-                            .name(),
-                        ship.getTicksRemaining(),
-                        ship.getTargetPlanet());
-                } catch (Throwable ignored) {}
-                lastPushedShipStates[slot] = stateId;
-                lastPushedLegIds[slot] = legId;
-                fleetDirty = true;
-            }
-            // A periodic progress heartbeat — once per PROGRESS_LOG_INTERVAL machine ticks (the counter advanced
-            // at the top of this method), one line per in-flight ship showing the current leg and its PROGRESS
-            // fraction (the ship's ticks-remaining against the leg's total calculated duration), so the movement's
-            // progress is visible in the game log. The state-transition log above already prints the leg's total
-            // (its "ticks left" at the transition); this adds the running progress in between.
+        if (!activeShips.isEmpty()) {
+            // Progress heartbeat pace: the counter advances once per machine tick and the heartbeat is the tick
+            // on which it reaches PROGRESS_LOG_INTERVAL (deterministic — no world-clock dependency).
+            progressLogTicks++;
+            boolean progressTick = progressLogTicks >= PROGRESS_LOG_INTERVAL;
             if (progressTick) {
-                try {
-                    long legTotal = ship.getLegTotal();
-                    double progress = legTotal > 0 ? (1.0 - (double) ship.getTicksRemaining() / (double) legTotal)
-                        : 1.0;
-                    LOGGER.info(
-                        "[Voidcraft] PROGRESS {} — {} {}% ({} ticks left of {})",
-                        ship.getName(),
-                        ship.getState()
-                            .name(),
-                        String.format("%.0f", progress * 100.0),
-                        ship.getTicksRemaining(),
-                        legTotal);
-                } catch (Throwable ignored) {}
+                progressLogTicks = 0L;
             }
-        }
-        // Resolve the tick's endings (completions + losses) in ONE index-safe reverse pass — a ship cannot be
-        // both (a lost ship is skipped before the pilot tick), but the two slot lists must not shift each other's
-        // indices as the lists are mutated.
-        List<Integer> ending = new ArrayList<>(completed);
-        for (Integer s : lost) {
-            if (!ending.contains(s)) {
-                ending.add(s);
+            List<Integer> completed = new ArrayList<>();
+            List<Integer> lost = new ArrayList<>();
+            for (int slot = 0; slot < activeShips.size(); slot++) {
+                VoidcraftActiveShip ship = activeShips.get(slot);
+                // The integrity time limit: 1 per second (the entity counts its own ticks — even while HOLDING).
+                // At 0 the entity is LOST: removed below, its cargo discarded (no delivery, no drop, no
+                // re-emission).
+                if (ship.tickIntegrity()) {
+                    lost.add(slot);
+                    continue;
+                }
+                // An anchored Voidbase stands at its anchor's hover point (within ±30° of the orbital plane),
+                // re-derived from the live anchor each tick (a planet anchor orbits).
+                if (ship.isBase()) {
+                    USSPosition hover = anchorHoverPoint(ship.getAnchor());
+                    if (hover != null) {
+                        ship.setPosition(hover);
+                    }
+                    // A station anchored to the star runs its Satellite Rail Launchers: Power Satellites leave the
+                    // base's hold for the star's Dyson Swarm (the infrastructure pass).
+                    if (ship.getAnchor() != null && ship.getAnchor()
+                        .isStar()) {
+                        tickSatelliteLauncher(ship);
+                    }
+                }
+                USSShipPilot pilot = pilots.get(slot);
+                if (pilot.tick()) {
+                    // HOME leg complete — the mission is over (delivery + re-emission below).
+                    completed.add(slot);
+                    continue;
+                }
+                // Mark the fleet dirty when a ship's state OR leg id changes — pushed ONCE per tick at the end (no
+                // per-tick packets, and one full-fleet push instead of one per ship — Phase 4 pass 5). The leg id
+                // (Phase C) makes consecutive legs of the SAME state (MOVE → MOVE) animate from their own start.
+                int stateId = ship.getState()
+                    .getId();
+                int legId = ship.getLegId();
+                if (lastPushedShipStates[slot] != stateId || lastPushedLegIds[slot] != legId) {
+                    // Diagnostic (pass 7): one line per state transition. If a ship appears to "turn back without
+                    // mining", the server's truth is right here — OUTBOUND → MINING → RETURNING in order, with the
+                    // MINING leg's duration in ticks (a long gap before RETURNING = the mission logic ran
+                    // correctly).
+                    try {
+                        LOGGER.info(
+                            "[Voidcraft] {} mission: {} ({} ticks left, target={})",
+                            ship.getName(),
+                            ship.getState()
+                                .name(),
+                            ship.getTicksRemaining(),
+                            ship.getTargetPlanet());
+                    } catch (Throwable ignored) {}
+                    lastPushedShipStates[slot] = stateId;
+                    lastPushedLegIds[slot] = legId;
+                    fleetDirty = true;
+                }
+                // A periodic progress heartbeat — once per PROGRESS_LOG_INTERVAL machine ticks (the counter
+                // advanced at the top of this method), one line per in-flight ship showing the current leg and
+                // its PROGRESS fraction (the ship's ticks-remaining against the leg's total calculated
+                // duration), so the movement's progress is visible in the game log. The state-transition log
+                // above already prints the leg's total (its "ticks left" at the transition); this adds the
+                // running progress in between.
+                if (progressTick) {
+                    try {
+                        long legTotal = ship.getLegTotal();
+                        double progress = legTotal > 0 ? (1.0 - (double) ship.getTicksRemaining() / (double) legTotal)
+                            : 1.0;
+                        LOGGER.info(
+                            "[Voidcraft] PROGRESS {} — {} {}% ({} ticks left of {})",
+                            ship.getName(),
+                            ship.getState()
+                                .name(),
+                            String.format("%.0f", progress * 100.0),
+                            ship.getTicksRemaining(),
+                            legTotal);
+                    } catch (Throwable ignored) {}
+                }
             }
-        }
-        ending.sort(java.util.Collections.reverseOrder());
-        for (int slot : ending) {
-            if (completed.contains(slot)) {
-                completeShip(slot);
-            } else {
-                loseShip(slot);
+            // Resolve the tick's endings (completions + losses) in ONE index-safe reverse pass — a ship cannot
+            // be both (a lost ship is skipped before the pilot tick), but the two slot lists must not shift
+            // each other's indices as the lists are mutated.
+            List<Integer> ending = new ArrayList<>(completed);
+            for (Integer s : lost) {
+                if (!ending.contains(s)) {
+                    ending.add(s);
+                }
             }
+            ending.sort(java.util.Collections.reverseOrder());
+            for (int slot : ending) {
+                if (completed.contains(slot)) {
+                    completeShip(slot);
+                } else {
+                    loseShip(slot);
+                }
+            }
+            if (fleetDirty || !completed.isEmpty() || !lost.isEmpty()) {
+                syncFleetRenderBlock(); // one push for every state change + ending of this tick
+            }
+        } else {
+            progressLogTicks = 0L;
         }
-        if (fleetDirty || !completed.isEmpty() || !lost.isEmpty()) {
-            syncFleetRenderBlock(); // one push for every state change + ending of this tick
+        // Resync the fleet anchor when the render-visible fleet state changed (integrity decay or repair, a
+        // site advancing, a gateway registering or being destroyed) — prune dead gateways first so the
+        // signature reflects their removal.
+        IGregTechTileEntity mteBase = getBaseMetaTileEntity();
+        if (mteBase != null) {
+            pruneGateways(shipAnchorPos(mteBase));
+        }
+        if (fleetRenderSignature() != lastFleetRenderSignature) {
+            syncFleetRenderBlock();
         }
     }
 
     /**
-     * Ship LOST (the integrity time limit hit 0): it is removed from the USS and its cargo is DISCARDED — no
-     * delivery to the bay, no drop at the USS, no re-emission. The fleet anchor is resynced by the CALLER (one
-     * push for the whole fleet).
+     * Fleet entity LOST (the integrity time limit hit 0): it is removed from the USS and its cargo is
+     * DISCARDED — no delivery to the bay, no drop at the USS, no re-emission. The fleet anchor is resynced by
+     * the CALLER (one push for the whole fleet).
      */
     private void loseShip(int slot) {
         if (slot < 0 || slot >= activeShips.size()) {
@@ -1681,10 +1737,17 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         lastPushedShipStates[slot] = -1;
         lastPushedLegIds[slot] = -1;
         try {
-            LOGGER.info(
-                "[Voidcraft] LOST {} (slot {}) — integrity reached 0: ship removed, cargo discarded",
-                lostShip.getName(),
-                slot);
+            if (lostShip.isBase()) {
+                LOGGER.info(
+                    "[Voidcraft] VOIDBASE {} decommissioned at {} — integrity reached 0, base removed",
+                    lostShip.getName(),
+                    lostShip.getAnchor());
+            } else {
+                LOGGER.info(
+                    "[Voidcraft] LOST {} (slot {}) — integrity reached 0: ship removed, cargo discarded",
+                    lostShip.getName(),
+                    slot);
+            }
         } catch (Throwable ignored) {}
     }
 
@@ -1698,8 +1761,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             return false;
         }
         NBTTagCompound payload = ship.getPayload();
-        return payload.getBoolean(VoidcraftNbt.TAG_BUILD_MISSION)
-            && VoidcraftRole.CONSTRUCTOR.isActive(ship.getRoles());
+        return payload.getBoolean(VoidcraftNbt.TAG_BUILD_MISSION);
     }
 
     /**
@@ -1718,10 +1780,34 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             return new NBTTagCompound(); // no planet to mine (defensive)
         }
         USSPlanets.USSPlanet planet = planets.get(target);
-        VoidcraftUSS.PlanetReserve currentReserve = uss.getPlanetReserve(target);
+        VoidcraftUSS.MaterialReserve currentReserve = uss.getPlanetReserve(target);
         USSShipCargo.MinerResult result = USSShipCargo.minePlanet(planet, ship.getMiningPower(), currentReserve);
         // Persist the updated reserve (the planet depletes).
         uss = uss.withPlanetReserve(target, result.newReserve);
+        return result.cargo;
+    }
+
+    /**
+     * Build the cargo of a completed STARLIFTER mission (the starlifter pass): the star's PRODUCED fluids, each
+     * capped by the star's remaining fluid reserve. The reserve is initialized from the star definition on the
+     * first siphon ({@code material.amount × 1_000_000 × starSize²}) and then decremented — so the fluids deplete
+     * over the star's life (the amount left later feeds the Dyson swarm output and stellar evolution; the reserve
+     * lives on the {@link VoidcraftUSS} model and is persisted).
+     *
+     * @param ship the starlifter ship (its siphon power)
+     * @return the cargo compound (never null; empty when the star yields nothing)
+     */
+    private NBTTagCompound buildStarlifterCargo(VoidcraftActiveShip ship) {
+        if (ship == null || uss == null) {
+            return new NBTTagCompound(); // no star to siphon (defensive)
+        }
+        USSStarDefinition star = USSStarRegistry.byType(uss.getStarType());
+        double starSize = USSPlanets.sampleStarSize(uss.getStarType(), uss.getIgnitedAt());
+        VoidcraftUSS.MaterialReserve currentReserve = uss.getStarFluidReserve();
+        USSShipCargo.StarlifterResult result = USSShipCargo
+            .siphonStar(star, starSize, ship.getStarlifterPower(), currentReserve);
+        // Persist the updated reserve (the star depletes).
+        uss = uss.withStarFluidReserve(result.newReserve);
         return result.cargo;
     }
 
@@ -1735,8 +1821,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      * a non-planet target (a MINE at the star / a ripple) delivers nothing but logs the reason;</li>
      * <li>SCAN — the current ripple point is REVEALED (the yield is the reveal itself, not cargo); a non-ripple
      * target logs the reason;</li>
-     * <li>SIPHON — the star cargo (dwarf-matter dust + Stellar Plasma) when the target is the star; anything else
-     * logs the reason.</li>
+     * <li>SIPHON — the star's produced fluids (each capped by the star's remaining fluid reserve — the reserve
+     * depletes) when the target is the star; anything else logs the reason.</li>
      * </ul>
      * A Voidbase construction mission carries no cargo either (its parts loadout is consumed in flight by the
      * CONSTRUCT leg).
@@ -1781,10 +1867,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             }
             case USSWorkKind.SIPHON: {
                 if (USSProgramDefaults.TARGET_STAR.equals(targetKind)) {
-                    applyWorkCargo(
-                        ship,
-                        USSShipCargo
-                            .buildForStarlifter(uss.getStarType(), ship.getStarlifterPower(), uss.getIgnitedAt()));
+                    applyWorkCargo(ship, buildStarlifterCargo(ship));
                 } else {
                     log(ship, "SIPHON: nothing to siphon here");
                 }
@@ -1938,8 +2021,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             return 0L;
         }
         // The same tables the client animates with (USSConstants) — server and client agree on every leg's length.
-        // The work KIND (owned by the work command) picks the work table: a hybrid ship's leg depends on the
-        // command, not on the role.
+        // The work KIND (owned by the work command) picks the work table.
         USSShipState state = USSWorkKind.isWork(workKind) ? USSShipState.MINING : USSShipState.OUTBOUND;
         long ticks = USSConstants.legTicks(
             state,
@@ -1958,6 +2040,200 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             LOGGER.info("[Voidcraft] {} — {}", ship != null ? ship.getName() : "ship", message);
         } catch (Throwable ignored) {}
     }
+
+    // region star-scale infrastructure (the Dyson Swarm pass — the Satellite Rail Launcher)
+
+    /**
+     * One machine tick of the star's infrastructure: the satellite swarm decays proportionally to its count (the
+     * per-unit rate is {@link USSInfra#decayPerUnitPerTick()}).
+     */
+    private void tickStarInfrastructure() {
+        if (uss == null || !uss.isIgnited()) {
+            return;
+        }
+        USSInfrastructure infra = uss.getInfrastructure();
+        if (infra == null || infra.isEmpty()) {
+            return;
+        }
+        USSInfrastructure next = infra;
+        boolean visible = false;
+        for (String key : new ArrayList<>(
+            infra.counts()
+                .keySet())) {
+            USSInfrastructure.DecayStep step = next.applyDecay(key, USSInfra.decayPerUnitPerTick());
+            // Keep the step's infrastructure even when nothing was lost — it carries the (possibly new) decay
+            // fraction; dropping it would stall the accumulator.
+            next = step.infrastructure;
+            if (step.lost > 0L) {
+                visible = true;
+            }
+        }
+        if (next != infra) {
+            uss = uss.withInfrastructure(next);
+        }
+        if (visible) {
+            syncStarRenderBlock();
+        }
+    }
+
+    /**
+     * One machine tick of a star-anchored base's Satellite Rail Launchers: a Power Satellite leaves the base's
+     * hold for the star's swarm on a fixed pace (one launch per launcher interval), capped at the star's satellite
+     * capacity.
+     *
+     * @param ship the star-anchored base (the caller guarantees an ignited star and a star anchor)
+     */
+    private void tickSatelliteLauncher(VoidcraftActiveShip ship) {
+        VoidcraftBlueprint blueprint = VoidcraftNbt.readBase(ship.getPayload());
+        if (blueprint == null || blueprint.count(VoidcraftComponent.SATELLITE_LAUNCHER) <= 0) {
+            return;
+        }
+        long capacity = USSInfra.starSatelliteCapacity(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+        long current = uss.getInfrastructure()
+            .count(USSInfrastructure.DYSON_STAR_KEY);
+        if (current >= capacity) {
+            return; // the swarm is saturated — no further launches
+        }
+        String uuid = ship.getUuid();
+        long countdown = satelliteLaunchCountdowns.getOrDefault(uuid, USSConstants.DYSON_SATELLITE_LAUNCH_INTERVAL) - 1;
+        if (countdown > 0L) {
+            satelliteLaunchCountdowns.put(uuid, countdown);
+            return;
+        }
+        satelliteLaunchCountdowns.put(uuid, USSConstants.DYSON_SATELLITE_LAUNCH_INTERVAL);
+        CargoHold hold = ship.getHold();
+        if (hold == null || hold.specialOf(USSInfra.KEY_POWER_SATELLITE) <= 0L) {
+            return; // nothing on board — the countdown advanced, no launch
+        }
+        ship.setHold(hold.removeSpecial(USSInfra.KEY_POWER_SATELLITE, 1L));
+        uss = uss.withInfrastructure(
+            uss.getInfrastructure()
+                .addUnits(USSInfrastructure.DYSON_STAR_KEY, 1L));
+        if (current % 20L == 0L) {
+            log(ship, "LAUNCHER: a Power Satellite joined the Dyson Swarm (" + (current + 1L) + "/" + capacity + ")");
+        }
+        syncStarRenderBlock();
+    }
+
+    /**
+     * Deliver a constructor loadout's infrastructure-cargo keys to the build site (unpaced — the site holds them
+     * until the finished base's hold receives them at spawn).
+     */
+    private void deliverInfraCargo(VoidcraftActiveShip ship, USSBaseSite site) {
+        for (String key : new ArrayList<>(
+            ship.getBuildLoadout()
+                .keySet())) {
+            if (!USSBaseSite.isCargoKey(key)) {
+                continue;
+            }
+            Long onBoard = ship.getBuildLoadout()
+                .get(key);
+            if (onBoard == null || onBoard <= 0L) {
+                continue;
+            }
+            long delivered = site.addCargo(key, onBoard);
+            if (delivered > 0L) {
+                ship.consumeBuildParts(key, delivered);
+            }
+        }
+    }
+
+    /**
+     * Move a build site's infrastructure cargo into the finished base's hold (clamped by the hold's capacity —
+     * overflow is discarded).
+     */
+    private void injectSiteCargo(VoidcraftActiveShip base) {
+        USSBaseAnchor anchor = base.getAnchor();
+        USSBaseSite site = anchor != null ? getBaseSite(anchor) : null;
+        if (site == null || site.cargoView()
+            .isEmpty()) {
+            return;
+        }
+        base.initializeHold();
+        CargoHold hold = base.getHold();
+        if (hold == null) {
+            return;
+        }
+        for (Map.Entry<String, Long> entry : site.cargoView()
+            .entrySet()) {
+            hold = hold.addSpecial(entry.getKey(), entry.getValue());
+        }
+        base.setHold(hold);
+    }
+
+    /**
+     * Push the star's Dyson Swarm state (satellite count + capacity) to the star's render block — the client's
+     * shell redraws from the description packet (markBlockForUpdate, the same mechanism createRenderBlock uses).
+     */
+    private void syncStarRenderBlock() {
+        IGregTechTileEntity mte = getBaseMetaTileEntity();
+        if (mte == null || !animationsEnabled) {
+            return;
+        }
+        int x = mte.getXCoord();
+        int y = mte.getYCoord();
+        int z = mte.getZCoord();
+        int sx = (int) (x + 32 * getExtendedFacing().getRelativeBackInWorld().offsetX);
+        int sy = (int) (y + 32 * getExtendedFacing().getRelativeBackInWorld().offsetY);
+        int sz = (int) (z + 32 * getExtendedFacing().getRelativeBackInWorld().offsetZ);
+        TileEntityEyeOfHarmony te = (TileEntityEyeOfHarmony) mte.getWorld()
+            .getTileEntity(sx, sy, sz);
+        if (te == null || uss == null || !uss.isIgnited()) {
+            return;
+        }
+        long capacity = USSInfra.starSatelliteCapacity(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+        long count = uss.getInfrastructure()
+            .count(USSInfrastructure.DYSON_STAR_KEY);
+        te.setDysonSwarm(count, capacity);
+        mte.getWorld()
+            .markBlockForUpdate(sx, sy, sz);
+    }
+
+    /**
+     * @return the current star's satellite capacity (0 when the star is not ignited)
+     */
+    public long starSatelliteCapacity() {
+        if (uss == null || !uss.isIgnited()) {
+            return 0L;
+        }
+        return USSInfra.starSatelliteCapacity(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+    }
+
+    /**
+     * @return the current star's satellite count (0 when there is no swarm)
+     */
+    public long starSatelliteCount() {
+        if (uss == null) {
+            return 0L;
+        }
+        return uss.getInfrastructure()
+            .count(USSInfrastructure.DYSON_STAR_KEY);
+    }
+
+    /**
+     * Debug path: add Dyson Swarm satellites to this star (no resource cost), clamped by the remaining capacity.
+     *
+     * @param amount the satellites to add
+     * @return the satellites actually added (0 when the star is not ignited, the swarm is saturated, or the
+     *         amount is non-positive)
+     */
+    public long debugAddDysonSatellites(long amount) {
+        if (uss == null || !uss.isIgnited() || amount <= 0L) {
+            return 0L;
+        }
+        long capacity = USSInfra.starSatelliteCapacity(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+        long toAdd = Math.min(amount, capacity - starSatelliteCount());
+        if (toAdd <= 0L) {
+            return 0L;
+        }
+        uss = uss.withInfrastructure(
+            uss.getInfrastructure()
+                .addUnits(USSInfrastructure.DYSON_STAR_KEY, toAdd));
+        syncStarRenderBlock();
+        return toAdd;
+    }
+
+    // endregion
 
     @Override
     public boolean constructStart(VoidcraftActiveShip ship, String targetKind, int targetIndex) {
@@ -1987,6 +2263,9 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         }
         String name = bpTag.hasKey(VoidcraftNbt.TAG_NAME) ? bpTag.getString(VoidcraftNbt.TAG_NAME) : "Voidbase";
         USSBaseSite site = createOrGetBaseSite(anchor, blueprint, name);
+        // Infrastructure cargo (the Dyson Swarm pass): loadout keys with the item. prefix land on the site NOW
+        // (unpaced — the finished base's hold receives them at spawn) and never enter the parts transfer total.
+        deliverInfraCargo(ship, site);
         // The parts this ship will actually deposit: per loadout key, the site's remaining need capped at what is
         // on board (a part already satisfied by another Constructor is skipped and stays on board).
         long total = 0L;
@@ -2052,6 +2331,11 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             spawnBaseFromSite(site, ship);
             syncFleetRenderBlock();
             return false;
+        }
+        // The construction leg runs on the executor's energy buffer: the site's countdown (and its part
+        // deposits) advance only while the buffer covers the leg's draw (the stall model).
+        if (!ship.spendEnergy(USSConstants.CONSTRUCT_ENERGY_PER_TICK)) {
+            return true; // stalled — the command keeps polling
         }
         site.tickConstruct();
         // One part per ticksPerItem machine ticks: the countdown (total = ticksPerItem * parts) hits a multiple
@@ -2125,6 +2409,268 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         return ship.buildLoadoutTotal() > 0L ? " (" + ship.buildLoadoutTotal() + " parts remain on board)" : "";
     }
 
+    // region ship-to-ship cargo transfer (SEND / TAKE — the USSPilotWorld seams)
+
+    @Override
+    public boolean cargoTransferStart(VoidcraftActiveShip ship, int commandId, String target, long amount,
+        String filter) {
+        if (ship == null || target == null
+            || target.trim()
+                .isEmpty()) {
+            return false;
+        }
+        String label = USSCommand.label(commandId);
+        if (cargoTransfers.containsKey(ship.getUuid())) {
+            log(ship, label + ": a transfer is already in flight - skipping");
+            return false;
+        }
+        String rawTarget = target.trim();
+        VoidcraftActiveShip targetShip;
+        if (USSProgramDefaults.TARGET_NEARBY.equalsIgnoreCase(rawTarget)) {
+            targetShip = resolveNearbyFleetTarget(ship, commandId);
+            if (targetShip == null) {
+                String none = USSCommand.SEND == commandId
+                    ? "no nearby ship with free cargo space at a shared location - skipping"
+                    : "no nearby ship with cargo at a shared location - skipping";
+                log(ship, label + ": " + none);
+                return false;
+            }
+        } else {
+            targetShip = resolveFleetTarget(rawTarget);
+            if (targetShip == null) {
+                log(ship, label + ": no ship '" + rawTarget + "' in this fleet - skipping");
+                return false;
+            }
+        }
+        if (targetShip.getUuid() != null && targetShip.getUuid()
+            .equals(ship.getUuid())) {
+            log(ship, label + ": the target is this ship - skipping");
+            return false;
+        }
+        long power = ship.getLogisticsPower();
+        if (power <= 0L) {
+            log(ship, label + ": no logistics power (Cargo Drone Bay covers) - skipping");
+            return false;
+        }
+        // A ship mid-MOVE is not properly at any location, even though its hover body already reads the
+        // destination — the transfer waits until it settles.
+        if (ship.isTraveling()) {
+            log(ship, label + ": this ship is in transit - skipping");
+            return false;
+        }
+        if (targetShip.isTraveling()) {
+            log(ship, label + ": '" + targetShip.getName() + "' is in transit - skipping");
+            return false;
+        }
+        if (!sharesLocation(ship, targetShip)) {
+            log(ship, label + ": '" + targetShip.getName() + "' is not at a shared location - skipping");
+            return false;
+        }
+        USSCargoTransferState state = new USSCargoTransferState();
+        state.leg = USSCargoTransfer.arm(filter, amount, (int) USSConstants.transferTicksPerUnit(power));
+        state.targetUuid = targetShip.getUuid();
+        state.targetName = targetShip.getName();
+        cargoTransfers.put(ship.getUuid(), state);
+        String normFilter = USSCargoTransfer.normalizeFilter(filter);
+        log(
+            ship,
+            label + ": transferring "
+                + (amount < 0L ? "all" : String.valueOf(amount))
+                + " units to '"
+                + state.targetName
+                + "' (filter '"
+                + (normFilter.isEmpty() ? USSCargoTransfer.FILTER_ALL : normFilter)
+                + "', logistics power "
+                + power
+                + ")");
+        syncFleetRenderBlock(); // the new transfer beam appears as soon as it starts (no ship-state change to ride on)
+        return true;
+    }
+
+    @Override
+    public boolean cargoTransferTick(VoidcraftActiveShip ship, int commandId) {
+        if (ship == null) {
+            return false;
+        }
+        USSCargoTransferState state = cargoTransfers.get(ship.getUuid());
+        if (state == null) {
+            return false; // nothing in flight (a mid-transfer chunk reload degrades gracefully to DONE)
+        }
+        String label = USSCommand.label(commandId);
+        VoidcraftActiveShip target = findFleetShip(state.targetUuid);
+        if (target == null) {
+            cargoTransfers.remove(ship.getUuid());
+            log(
+                ship,
+                label + ": '"
+                    + state.targetName
+                    + "' is no longer in the fleet - transfer over ("
+                    + state.leg.transferred()
+                    + " units moved)");
+            syncFleetRenderBlock(); // the transfer beam disappears as soon as it ends
+            return false;
+        }
+        if (!sharesLocation(ship, target)) {
+            cargoTransfers.remove(ship.getUuid());
+            log(
+                ship,
+                label + ": '"
+                    + target.getName()
+                    + "' left the shared location - transfer over ("
+                    + state.leg.transferred()
+                    + " units moved)");
+            syncFleetRenderBlock(); // the transfer beam disappears as soon as it ends
+            return false;
+        }
+        // The shared location can still READ as shared while a ship is en route (its hover body reads the
+        // destination) — a started MOVE leg ends the transfer.
+        if (ship.isTraveling() || target.isTraveling()) {
+            cargoTransfers.remove(ship.getUuid());
+            log(ship, label + ": a ship is in transit - transfer over (" + state.leg.transferred() + " units moved)");
+            syncFleetRenderBlock(); // the transfer beam disappears as soon as it ends
+            return false;
+        }
+        // The transfer runs on the executor's energy buffer: a unit only moves while the buffer covers the
+        // executor's logistics-power draw (the stall model).
+        if (!ship.spendEnergy(ship.getLogisticsPower())) {
+            return true; // stalled — keep polling
+        }
+        // SEND moves executing -> target; TAKE the inverse (the CALLER owns the direction).
+        VoidcraftActiveShip sourceShip = commandId == USSCommand.SEND ? ship : target;
+        VoidcraftActiveShip destShip = commandId == USSCommand.SEND ? target : ship;
+        USSCargoTransfer.Result result = state.leg.tick(sourceShip.getHold(), destShip.getHold());
+        if (result.source != null) {
+            sourceShip.setHold(result.source);
+            sourceShip.setCargo(USSShipCargo.cargoFromHold(result.source));
+        }
+        if (result.target != null) {
+            destShip.setHold(result.target);
+            destShip.setCargo(USSShipCargo.cargoFromHold(result.target));
+        }
+        if (result.running) {
+            return true;
+        }
+        cargoTransfers.remove(ship.getUuid());
+        log(
+            ship,
+            label + ": transfer over ("
+                + state.leg.transferred()
+                + " units moved"
+                + (result.reason == null ? "" : " - " + result.reason)
+                + ")");
+        syncFleetRenderBlock(); // the transfer beam disappears as soon as it ends
+        return false;
+    }
+
+    /**
+     * Resolve a fleet target for a SEND / TAKE: a pure non-negative int in the fleet's index range = a fleet
+     * slot (launch order); anything else = a case-insensitive ship name (first match).
+     *
+     * @param target the raw target param (already trimmed)
+     * @return the target ship (null when unresolvable)
+     */
+    private VoidcraftActiveShip resolveFleetTarget(String target) {
+        try {
+            int index = Integer.parseInt(target);
+            if (index >= 0 && index < activeShips.size()) {
+                return activeShips.get(index);
+            }
+            return null;
+        } catch (NumberFormatException ignored) {
+            // not an index - fall through to a name match
+        }
+        for (VoidcraftActiveShip s : activeShips) {
+            if (s != null && s.getName()
+                .equalsIgnoreCase(target)) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * The {@code NEARBY} transfer target ({@link USSProgramDefaults#TARGET_NEARBY}): the first fleet ship in
+     * fleet order that is not in transit, shares the executing ship's location, and is a viable counterparty —
+     * a hold with cargo for {@code TAKE} (it is the source), free hold capacity for {@code SEND} (it is the
+     * sink).
+     *
+     * @param ship      the executing ship
+     * @param commandId the command id ({@code USSCommand.SEND} or {@code USSCommand.TAKE})
+     * @return the target ship (null when no candidate qualifies)
+     */
+    private VoidcraftActiveShip resolveNearbyFleetTarget(VoidcraftActiveShip ship, int commandId) {
+        for (VoidcraftActiveShip s : activeShips) {
+            if (s == null || s == ship || s.isTraveling()) {
+                continue;
+            }
+            CargoHold hold = s.getHold();
+            if (hold == null) {
+                continue;
+            }
+            long units = USSCommand.SEND == commandId ? hold.remainingUnits() : hold.usedUnits();
+            if (units <= 0L) {
+                continue;
+            }
+            if (!sharesLocation(ship, s)) {
+                continue;
+            }
+            return s;
+        }
+        return null;
+    }
+
+    /** @return the in-flight ship with the given uuid (null when none) */
+    private VoidcraftActiveShip findFleetShip(String uuid) {
+        if (uuid == null) {
+            return null;
+        }
+        for (VoidcraftActiveShip s : activeShips) {
+            if (s != null && uuid.equals(s.getUuid())) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * The ship's EFFECTIVE point for location checks: its leg's destination while a WORK leg runs (a working
+     * ship hovers at the destination; the server position lags at the departure point until the leg
+     * completes), its position otherwise.
+     */
+    private USSPosition effectivePoint(VoidcraftActiveShip ship) {
+        if (ship == null) {
+            return null;
+        }
+        if (ship.isLegActive() && USSWorkKind.isWork(ship.getLegWorkKind())) {
+            return ship.getDestination();
+        }
+        return ship.getPosition();
+    }
+
+    /**
+     * The ship's LOCATION (the shared-location rule): its body descriptor + effective point, with the fleet
+     * snapshot (every in-flight ship's position) for the rendezvous scan.
+     */
+    private USSLocation locationOf(VoidcraftActiveShip ship) {
+        if (ship == null) {
+            return USSLocation.none();
+        }
+        List<USSLocation.Entry> fleet = new ArrayList<USSLocation.Entry>(activeShips.size());
+        for (VoidcraftActiveShip s : activeShips) {
+            if (s != null) {
+                fleet.add(new USSLocation.Entry(s.getUuid(), s.getPosition()));
+            }
+        }
+        return USSLocation.of(ship.isBodyStatic(), ship.getTargetPlanet(), effectivePoint(ship), fleet, ship.getUuid());
+    }
+
+    /** @return true when the two ships share a location (the SEND / TAKE co-location rule) */
+    private boolean sharesLocation(VoidcraftActiveShip a, VoidcraftActiveShip b) {
+        return USSLocation.shared(effectivePoint(a), locationOf(a), effectivePoint(b), locationOf(b));
+    }
+
+    // endregion
+
     /**
      * Spawn the finished Voidbase from a completed site (the base payload is the ship's mission blueprint - the
      * site's re-encoded blueprint when the ship carries no tag; the base stands at the anchor's band point).
@@ -2135,45 +2681,109 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         NBTTagCompound bpTag = (payload != null && payload.hasKey(VoidcraftNbt.TAG_BUILD_BLUEPRINT))
             ? payload.getCompoundTag(VoidcraftNbt.TAG_BUILD_BLUEPRINT)
             : siteBlueprintPayload(site);
-        String uuid = bpTag.hasKey(VoidcraftNbt.TAG_UUID) ? bpTag.getString(VoidcraftNbt.TAG_UUID)
-            : ItemVoidbaseBlueprint.newUuid();
+        String uuid = bpTag.getString(VoidcraftNbt.TAG_UUID);
+        if (uuid.isEmpty()) {
+            uuid = ItemVoidbaseBlueprint.newUuid();
+            bpTag.setString(VoidcraftNbt.TAG_UUID, uuid);
+        }
         USSPosition hover = anchorHoverPoint(anchor);
-        VoidcraftActiveBase base = VoidcraftActiveBase
-            .launch(uuid, site.name(), anchor, bpTag, ship != null ? ship.getSeed() : 0, hover);
-        spawnBase(base);
+        VoidcraftActiveShip entity = VoidcraftActiveShip
+            .spawnBase(uuid, site.name(), bpTag, anchor, ship != null ? ship.getSeed() : 0, hover);
+        spawnBase(entity);
     }
 
     /** The site's blueprint re-encoded as a base payload tag (the fallback when the completing ship carries none). */
     private NBTTagCompound siteBlueprintPayload(USSBaseSite site) {
         NBTTagCompound payload = new NBTTagCompound();
-        VoidcraftNbt.write(payload, site.blueprint(), "site", site.name(), site.createdAt());
+        // The uuid slot stays empty — spawnBaseFromSite mints (and persists) the base identity.
+        VoidcraftNbt.write(payload, site.blueprint(), "", site.name(), site.createdAt());
         return payload;
     }
 
     @Override
-    public boolean baseRepairStart(VoidcraftActiveBase base) {
-        if (base == null || base.integrity() >= base.maxIntegrity()) {
-            return false; // nothing to restore
+    public boolean repairStart(VoidcraftActiveShip ship, String target) {
+        if (ship == null || !ship.isBase()) {
+            return false; // a repair bay is a station capability (a flying ship has no bay)
         }
-        return base.energy() >= VoidcraftActiveBase.REPAIR_DRAW || base.energyGen() >= VoidcraftActiveBase.REPAIR_DRAW;
-    }
-
-    @Override
-    public boolean baseRepairTick(VoidcraftActiveBase base) {
-        if (base == null) {
+        if (repairs.containsKey(ship.getUuid())) {
+            log(ship, "REPAIR: a repair is already in flight - skipping");
             return false;
         }
-        if (base.addRepair()) {
-            logBase(base, "REPAIR: drawing " + VoidcraftActiveBase.REPAIR_DRAW + " EU for station integrity");
+        String raw = (target == null) ? "" : target.trim();
+        VoidcraftActiveShip targetShip;
+        if (raw.isEmpty() || USSCommandRepair.TARGET_SELF.equalsIgnoreCase(raw)) {
+            targetShip = ship; // the station repairs itself
+        } else {
+            targetShip = resolveFleetTarget(raw); // fleet index or name, like SEND / TAKE
         }
-        return base.integrity() < base.maxIntegrity();
+        if (targetShip == null) {
+            log(ship, "REPAIR: no fleet member '" + raw + "' to repair - skipping");
+            return false;
+        }
+        if (targetShip != ship && !sharesLocation(ship, targetShip)) {
+            log(ship, "REPAIR: '" + targetShip.getName() + "' is not at a shared location - skipping");
+            return false;
+        }
+        if (targetShip.getIntegrity() >= targetShip.maxIntegrity()) {
+            log(ship, "REPAIR: '" + targetShip.getName() + "' is at full integrity - skipping");
+            return false;
+        }
+        if (ship.getEnergy() < USSConstants.REPAIR_DRAW && ship.getEnergyGen() < USSConstants.REPAIR_DRAW) {
+            log(ship, "REPAIR: not enough energy for the " + USSConstants.REPAIR_DRAW + " EU draw - skipping");
+            return false;
+        }
+        USSRepairState state = new USSRepairState();
+        state.ticks = 0;
+        state.targetUuid = targetShip.getUuid();
+        repairs.put(ship.getUuid(), state);
+        log(
+            ship,
+            "REPAIR: repairing '" + targetShip.getName()
+                + "' ("
+                + targetShip.getIntegrity()
+                + "/"
+                + targetShip.maxIntegrity()
+                + " integrity, one per "
+                + USSConstants.REPAIR_DRAW
+                + " EU)");
+        return true;
     }
 
     @Override
-    public void logBase(VoidcraftActiveBase base, String message) {
-        try {
-            LOGGER.info("[Voidcraft] VOIDBASE {} - {}", base != null ? base.name() : "base", message);
-        } catch (Throwable ignored) {}
+    public boolean repairTick(VoidcraftActiveShip ship) {
+        if (ship == null) {
+            return false;
+        }
+        USSRepairState state = repairs.get(ship.getUuid());
+        if (state == null) {
+            return false; // nothing in flight (the command DONEs)
+        }
+        VoidcraftActiveShip target = findFleetShip(state.targetUuid);
+        if (target == null) {
+            repairs.remove(ship.getUuid());
+            log(ship, "REPAIR: the target left the fleet - repair over");
+            return false;
+        }
+        if (target != ship && !sharesLocation(ship, target)) {
+            repairs.remove(ship.getUuid());
+            log(ship, "REPAIR: '" + target.getName() + "' left the shared location - repair over");
+            return false;
+        }
+        if (target.getIntegrity() >= target.maxIntegrity()) {
+            repairs.remove(ship.getUuid());
+            log(ship, "REPAIR: '" + target.getName() + "' is at full integrity - repair over");
+            return false;
+        }
+        state.ticks++;
+        if (state.ticks >= VoidcraftActiveShip.TICKS_PER_INTEGRITY) {
+            state.ticks = 0;
+            // One integrity per second, the draw paid at the boundary: a buffer that cannot cover it stalls
+            // this second (the draw retries at the next boundary).
+            if (ship.spendEnergy(USSConstants.REPAIR_DRAW)) {
+                target.repair(1);
+            }
+        }
+        return target.getIntegrity() < target.maxIntegrity();
     }
 
     // endregion
@@ -2318,11 +2928,14 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      */
     private void discardAllShips() {
         activeShips.clear();
+        pilots.clear();
         Arrays.fill(lastPushedShipStates, -1);
+        Arrays.fill(lastPushedLegIds, -1);
         fleetDirty = false;
         baseSites.clear();
-        bases.clear();
-        basePilots.clear();
+        cargoTransfers.clear();
+        repairs.clear();
+        satelliteLaunchCountdowns.clear();
         syncFleetRenderBlock(); // empty fleet → the anchor block is cleared
     }
 
@@ -2494,9 +3107,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      * <p>
      * Pass 7: the DESTINATION is no longer in the entry — it is derived CLIENT-side from the target: a planet
      * index → that planet's live rendered position (the system specs + star size ride along in the TE, see
-     * {@link #syncFleetRenderBlock}); {@code -1} → the star center (Starlifters hover 2.5 above it). The old
-     * static role hover point is gone — it was the "destination in the outer reaches of the system" the user
-     * flagged. The per-ship swarm spread around the hover point is computed CLIENT-side from the seed
+     * {@link #syncFleetRenderBlock}); {@code -1} → the star center (Starlifters hover 2.5 above it). The
+     * per-ship swarm spread around the hover point is computed CLIENT-side from the seed
      * ({@link USSFleetOrbit}).
      */
     private List<NBTTagCompound> buildFleetEntries(IGregTechTileEntity base) {
@@ -2506,6 +3118,10 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         }
         int[] anchor = shipAnchorPos(base);
         for (VoidcraftActiveShip ship : activeShips) {
+            // Anchored Voidbases have their own entry list (buildBaseEntries) — the ship list stays flying-ships-only.
+            if (ship.getAnchor() != null) {
+                continue;
+            }
             NBTTagCompound payload = ship.getPayload();
             if (payload == null) {
                 continue;
@@ -2551,12 +3167,37 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             // the SAME state (MOVE → MOVE) animate from their own start.
             entry.setInteger(TileEntityVoidcraftShip.TAG_ENTRY_LEG_ID, ship.getLegId());
             // The command-split pass: the current leg's WORK KIND (owned by the work command) — the client
-            // derives the SAME work-leg duration the server ticks (a hybrid ship's duration depends on the
-            // kind, not the role).
+            // derives the SAME work-leg duration the server ticks.
             entry.setInteger(TileEntityVoidcraftShip.TAG_ENTRY_WORK_KIND, ship.getLegWorkKind());
             int[] gatewayWorld = ship.getGatewayPos() != null ? ship.getGatewayPos()
                 : new int[] { anchor[0], anchor[1], anchor[2] };
             entry.setIntArray(TileEntityVoidcraftShip.TAG_ENTRY_GW_REL, rel(anchor, gatewayWorld));
+            entries.add(entry);
+        }
+        return entries;
+    }
+
+    /**
+     * The in-flight ship-to-ship cargo transfers (SEND / TAKE) for the fleet render anchor: one entry per transfer,
+     * pairing the executing ship's uuid with the target ship's uuid (the client draws a gray beam between the two
+     * rendered ships). A transfer whose executing or target ship is no longer in the fleet is skipped here; the
+     * executing ship's own completion/loss drops it on the next transfer tick.
+     */
+    private List<NBTTagCompound> buildTransferEntries() {
+        List<NBTTagCompound> entries = new ArrayList<NBTTagCompound>();
+        for (Map.Entry<String, USSCargoTransferState> e : cargoTransfers.entrySet()) {
+            USSCargoTransferState state = e.getValue();
+            if (state == null) {
+                continue;
+            }
+            VoidcraftActiveShip source = findFleetShip(e.getKey());
+            VoidcraftActiveShip target = findFleetShip(state.targetUuid);
+            if (source == null || target == null) {
+                continue;
+            }
+            NBTTagCompound entry = new NBTTagCompound();
+            entry.setString(TileEntityVoidcraftShip.TAG_TRANSFER_SOURCE, e.getKey());
+            entry.setString(TileEntityVoidcraftShip.TAG_TRANSFER_TARGET, state.targetUuid);
             entries.add(entry);
         }
         return entries;
@@ -2593,30 +3234,30 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * The standing-base entries for the fleet render anchor (Phase D): each base's anchor target (the
-     * ship-entry protocol), the full base payload (the client renders its blueprint as a static model from it)
+     * The standing-base entries for the fleet render anchor (Phase D): each anchored fleet member's anchor target
+     * (the ship-entry protocol), the full base payload (the client renders its blueprint as a static model from it)
      * and the current/max integrity (the client tints the model red as integrity drops).
      */
     private List<NBTTagCompound> buildBaseEntries() {
         List<NBTTagCompound> entries = new ArrayList<NBTTagCompound>();
-        for (int i = 0; i < bases.size(); i++) {
-            VoidcraftActiveBase base = bases.get(i);
-            if (base == null || base.payload() == null) {
+        for (int i = 0; i < activeShips.size(); i++) {
+            VoidcraftActiveShip base = activeShips.get(i);
+            if (base.getAnchor() == null || base.getPayload() == null) {
                 continue;
             }
             NBTTagCompound entry = new NBTTagCompound();
-            writeAnchorTarget(entry, base.anchor());
+            writeAnchorTarget(entry, base.getAnchor());
             entry.setTag(
                 TileEntityVoidcraftShip.TAG_ENTRY_PAYLOAD,
-                base.payload()
+                base.getPayload()
                     .copy());
-            entry.setLong(TileEntityVoidcraftShip.TAG_BASE_INTEGRITY, base.integrity());
+            entry.setLong(TileEntityVoidcraftShip.TAG_BASE_INTEGRITY, base.getIntegrity());
             entry.setLong(TileEntityVoidcraftShip.TAG_BASE_INTEGRITY_MAX, base.maxIntegrity());
-            entry.setInteger(TileEntityVoidcraftShip.TAG_BASE_SEED, base.seed());
+            entry.setInteger(TileEntityVoidcraftShip.TAG_BASE_SEED, base.getSeed());
             // The active mining-leg id (0 = not mining) - the client animates the mining beam from it.
             entry.setInteger(
                 TileEntityVoidcraftShip.TAG_BASE_MINING_LEG,
-                i < basePilots.size() ? basePilots.get(i)
+                i < pilots.size() ? pilots.get(i)
                     .miningLegId() : 0);
             entries.add(entry);
         }
@@ -2647,19 +3288,22 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * The render-visible fleet signature (Phase D): the ship count + every base integrity + every base mining-leg
-     * id + every site progress (quantized to 0.1%) + every site CONSTRUCT leg identity (leg id + seed) + the
-     * system's gateway set. {@link #tickBases()} resyncs the fleet anchor exactly when it changes (integrity decay
-     * or repair, a site advancing, a mining leg or a construction leg starting or ending, a gateway registering or
+     * The render-visible fleet signature (Phase D): the fleet count + every base integrity + every base
+     * mining-leg id + every site progress (quantized to 0.1%) + every site CONSTRUCT leg identity (leg id + seed)
+     * + the system's gateway set. The fleet tick resyncs the anchor exactly when it changes (integrity decay or
+     * repair, a site advancing, a mining leg or a construction leg starting or ending, a gateway registering or
      * being destroyed) — never per tick (the client animates the beams locally from the leg ids + durations).
      */
     private long fleetRenderSignature() {
         long sig = activeShips.size();
-        for (int i = 0; i < bases.size(); i++) {
-            VoidcraftActiveBase base = bases.get(i);
-            long mining = (base != null && i < basePilots.size()) ? basePilots.get(i)
+        for (int i = 0; i < activeShips.size(); i++) {
+            VoidcraftActiveShip base = activeShips.get(i);
+            if (base.getAnchor() == null) {
+                continue;
+            }
+            long mining = (i < pilots.size()) ? pilots.get(i)
                 .miningLegId() : 0L;
-            sig = sig * 31 + (base != null ? base.integrity() : 0L) * 31 + mining;
+            sig = sig * 31 + base.getIntegrity() * 31 + mining;
         }
         for (USSBaseSite site : baseSites) {
             sig = sig * 31 + (long) (site != null ? Math.round(site.progressFraction() * 1000.0) : 0.0);
@@ -2734,7 +3378,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         int[] anchor = shipAnchorPos(base);
         // The system's gateways render even with an empty fleet, so a gateway-only system keeps its anchor.
         List<int[]> gateways = pruneGateways(anchor);
-        if (activeShips.isEmpty() && bases.isEmpty() && baseSites.isEmpty() && gateways.isEmpty()) {
+        if (activeShips.isEmpty() && baseSites.isEmpty() && gateways.isEmpty()) {
             if (world.getBlock(anchor[0], anchor[1], anchor[2]) == VoidcraftLoader.sBlockVoidcraftShipRender) {
                 world.setBlockToAir(anchor[0], anchor[1], anchor[2]);
                 try {
@@ -2773,6 +3417,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         fleetTe.setBases(buildBaseEntries());
         // The system's gateways — a permanent part of the system view (they render even with an empty fleet).
         fleetTe.setGateways(gateways);
+        // Ship-to-ship cargo transfers (SEND / TAKE) — the client's gray transfer beams (absent when none in flight).
+        fleetTe.setTransfers(buildTransferEntries());
         lastFleetRenderSignature = fleetRenderSignature();
         // 1.7.10: updateEntity() is a tick hook — the real client push is markBlockForUpdate (see syncToClient).
         fleetTe.syncToClient();
@@ -2911,15 +3557,26 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                         : "tt.voidcraft_uss.controller.absent")));
         // Phase 4 pass 5: the fleet in flight (dozens–hundreds possible) — the COUNT plus a few sample lines,
         // not a 100-line list.
-        if (!activeShips.isEmpty()) {
-            str.add(
-                IGregTechDeviceInformation.encode("tt.voidcraft_uss.ships.header", String.valueOf(activeShips.size())));
+        int shipCount = 0;
+        int baseCount = 0;
+        for (VoidcraftActiveShip entity : activeShips) {
+            if (entity.getAnchor() == null) {
+                shipCount++;
+            } else {
+                baseCount++;
+            }
+        }
+        if (shipCount > 0) {
+            str.add(IGregTechDeviceInformation.encode("tt.voidcraft_uss.ships.header", String.valueOf(shipCount)));
             int shown = 0;
             for (VoidcraftActiveShip ship : activeShips) {
+                if (ship.getAnchor() != null) {
+                    continue; // anchored stations get their own section below
+                }
                 if (shown++ >= 3) {
                     str.add(
                         IGregTechDeviceInformation
-                            .encode("tt.voidcraft_uss.ships.more", String.valueOf(activeShips.size() - 3)));
+                            .encode("tt.voidcraft_uss.ships.more", String.valueOf(shipCount - 3)));
                     break;
                 }
                 str.add(
@@ -2936,8 +3593,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                             + "t"));
             }
         }
-        // Voidbases: the construction sites (in progress) and the completed bases.
-        if (!baseSites.isEmpty() || !bases.isEmpty()) {
+        // Voidbases: the construction sites (in progress) and the anchored stations.
+        if (!baseSites.isEmpty() || baseCount > 0) {
             str.add("tt.voidcraft_uss.infodata.bases.header");
             for (USSBaseSite site : baseSites) {
                 str.add(
@@ -2951,15 +3608,18 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                             + RESET
                             + "%"));
             }
-            for (VoidcraftActiveBase base : bases) {
+            for (VoidcraftActiveShip base : activeShips) {
+                if (base.getAnchor() == null) {
+                    continue;
+                }
                 str.add(
                     IGregTechDeviceInformation.encode(
                         "tt.voidcraft_uss.infodata.base.line",
-                        base.name() + " "
-                            + anchorName(base.anchor())
+                        base.getName() + " "
+                            + anchorName(base.getAnchor())
                             + " — integrity "
                             + YELLOW
-                            + base.integrity()
+                            + base.getIntegrity()
                             + "/"
                             + base.maxIntegrity()
                             + RESET));
@@ -3110,22 +3770,48 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             }
             aNBT.setTag(BASE_SITES_NBT_TAG, sites);
         }
-        if (!bases.isEmpty()) {
-            NBTTagList baseTags = new NBTTagList();
-            for (int i = 0; i < bases.size(); i++) {
-                NBTTagCompound baseTag = bases.get(i)
-                    .writeToNBT();
-                // The pilot state (executor cursor + zero-length leg bookkeeping) nests under the base tag,
-                // like the ships.
-                if (i < basePilots.size()) {
-                    baseTag.setTag(
-                        USSBasePilot.TAG_PILOT,
-                        basePilots.get(i)
-                            .writeToNBT());
+        // The in-flight SEND / TAKE transfers: the pilots' cursors (persisted per ship) resume the nodes, but the
+        // transfers' own progress + pacing state lives here — without it a resumed node finds nothing in flight
+        // and abandons the remainder.
+        if (!cargoTransfers.isEmpty()) {
+            NBTTagList transferTags = new NBTTagList();
+            for (Map.Entry<String, USSCargoTransferState> entry : cargoTransfers.entrySet()) {
+                USSCargoTransferState state = entry.getValue();
+                if (state == null || state.leg == null || state.targetUuid == null || state.targetUuid.isEmpty()) {
+                    continue;
                 }
-                baseTags.appendTag(baseTag);
+                NBTTagCompound transferTag = new NBTTagCompound();
+                transferTag.setString(CARGO_TRANSFER_SRC_UUID_NBT_TAG, entry.getKey());
+                transferTag.setString(CARGO_TRANSFER_TGT_UUID_NBT_TAG, state.targetUuid);
+                transferTag
+                    .setString(CARGO_TRANSFER_TGT_NAME_NBT_TAG, state.targetName == null ? "" : state.targetName);
+                NBTTagCompound legTag = new NBTTagCompound();
+                state.leg.writeToNBT(legTag);
+                transferTag.setTag(CARGO_TRANSFER_LEG_NBT_TAG, legTag);
+                transferTags.appendTag(transferTag);
             }
-            aNBT.setTag(BASES_NBT_TAG, baseTags);
+            if (transferTags.tagCount() > 0) {
+                aNBT.setTag(CARGO_TRANSFERS_NBT_TAG, transferTags);
+            }
+        }
+        // The in-flight REPAIR sessions: the same rationale as the transfers (the pilots' cursors resume the
+        // nodes; the sessions' own pacing + target identity live here).
+        if (!repairs.isEmpty()) {
+            NBTTagList repairTags = new NBTTagList();
+            for (Map.Entry<String, USSRepairState> entry : repairs.entrySet()) {
+                USSRepairState state = entry.getValue();
+                if (state == null || state.targetUuid == null || state.targetUuid.isEmpty()) {
+                    continue;
+                }
+                NBTTagCompound repairTag = new NBTTagCompound();
+                repairTag.setString(REPAIR_SRC_UUID_NBT_TAG, entry.getKey());
+                repairTag.setString(REPAIR_TGT_UUID_NBT_TAG, state.targetUuid);
+                repairTag.setInteger(REPAIR_TICKS_NBT_TAG, state.ticks);
+                repairTags.appendTag(repairTag);
+            }
+            if (repairTags.tagCount() > 0) {
+                aNBT.setTag(REPAIRS_NBT_TAG, repairTags);
+            }
         }
         super.saveNBTData(aNBT);
     }
@@ -3162,8 +3848,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 }
             }
         }
-        // Voidbase construction sites + completed bases (absent tags = fresh/empty; corrupt entries are skipped,
-        // no migration path).
+        // Voidbase construction sites (absent tag = fresh/empty; corrupt entries are skipped, no migration path).
         baseSites.clear();
         if (aNBT.hasKey(BASE_SITES_NBT_TAG)) {
             NBTTagList sites = aNBT.getTagList(BASE_SITES_NBT_TAG, 10);
@@ -3178,23 +3863,62 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 }
             }
         }
-        bases.clear();
-        basePilots.clear();
-        if (aNBT.hasKey(BASES_NBT_TAG)) {
-            NBTTagList baseTags = aNBT.getTagList(BASES_NBT_TAG, 10);
-            for (int i = 0; i < baseTags.tagCount(); i++) {
-                NBTTagCompound baseTag = baseTags.getCompoundTagAt(i);
-                if (baseTag == null) {
+        // The in-flight SEND / TAKE transfers (AFTER the fleet, so the orphan check can see the rebuilt ships):
+        // a record whose executing or target ship did not survive the reload is dropped.
+        cargoTransfers.clear();
+        if (aNBT.hasKey(CARGO_TRANSFERS_NBT_TAG)) {
+            NBTTagList transferTags = aNBT.getTagList(CARGO_TRANSFERS_NBT_TAG, 10);
+            for (int i = 0; i < transferTags.tagCount(); i++) {
+                NBTTagCompound transferTag = transferTags.getCompoundTagAt(i);
+                if (transferTag == null) {
                     continue;
                 }
-                VoidcraftActiveBase base = VoidcraftActiveBase.readFromNBT(baseTag);
-                if (base != null) {
-                    bases.add(base);
-                    // Re-attach the base pilot (program from the base payload; cursor from the nested vc_pilot
-                    // tag — a missing one degrades to a fresh pilot, a corrupt one fails safe to a COMPLETED
-                    // program → the base holds).
-                    basePilots.add(USSBasePilot.attach(base, this, baseTag));
+                String sourceUuid = transferTag.getString(CARGO_TRANSFER_SRC_UUID_NBT_TAG);
+                String targetUuid = transferTag.getString(CARGO_TRANSFER_TGT_UUID_NBT_TAG);
+                if (sourceUuid.isEmpty() || targetUuid.isEmpty() || sourceUuid.equals(targetUuid)) {
+                    continue; // a self-target is rejected at start — such a record is corrupt
                 }
+                if (findFleetShip(sourceUuid) == null || findFleetShip(targetUuid) == null) {
+                    continue; // orphaned — a ship did not survive the reload
+                }
+                USSCargoTransfer leg = transferTag.hasKey(CARGO_TRANSFER_LEG_NBT_TAG, 10)
+                    ? USSCargoTransfer.readFromNBT(transferTag.getCompoundTag(CARGO_TRANSFER_LEG_NBT_TAG))
+                    : null;
+                if (leg == null) {
+                    continue;
+                }
+                USSCargoTransferState state = new USSCargoTransferState();
+                state.leg = leg;
+                state.targetUuid = targetUuid;
+                state.targetName = transferTag.getString(CARGO_TRANSFER_TGT_NAME_NBT_TAG);
+                cargoTransfers.put(sourceUuid, state);
+            }
+        }
+        // The in-flight REPAIR sessions (AFTER the fleet, so the orphan check can see the rebuilt entities):
+        // a record whose executing or target entity did not survive the reload is dropped. A self-target
+        // (source == target, the station repairing itself) is valid.
+        repairs.clear();
+        if (aNBT.hasKey(REPAIRS_NBT_TAG)) {
+            NBTTagList repairTags = aNBT.getTagList(REPAIRS_NBT_TAG, 10);
+            for (int i = 0; i < repairTags.tagCount(); i++) {
+                NBTTagCompound repairTag = repairTags.getCompoundTagAt(i);
+                if (repairTag == null) {
+                    continue;
+                }
+                String sourceUuid = repairTag.getString(REPAIR_SRC_UUID_NBT_TAG);
+                String targetUuid = repairTag.getString(REPAIR_TGT_UUID_NBT_TAG);
+                if (sourceUuid.isEmpty() || targetUuid.isEmpty()) {
+                    continue;
+                }
+                if (findFleetShip(sourceUuid) == null || findFleetShip(targetUuid) == null) {
+                    continue; // orphaned — an entity did not survive the reload
+                }
+                USSRepairState state = new USSRepairState();
+                state.targetUuid = targetUuid;
+                state.ticks = Math.max(
+                    0,
+                    Math.min(VoidcraftActiveShip.TICKS_PER_INTEGRITY - 1, repairTag.getInteger(REPAIR_TICKS_NBT_TAG)));
+                repairs.put(sourceUuid, state);
             }
         }
         super.loadNBTData(aNBT);

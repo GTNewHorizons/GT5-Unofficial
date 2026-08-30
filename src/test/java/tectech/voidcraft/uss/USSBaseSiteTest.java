@@ -98,6 +98,30 @@ public class USSBaseSiteTest {
     }
 
     @Test
+    public void testCargoAxisIsUnboundedAndNotGated() {
+        USSBaseSite site = USSBaseSite.create(USSBaseAnchor.star(), "Swarm Station", testBase(), 1L);
+        assertTrue(USSBaseSite.isCargoKey(USSInfra.LOADOUT_KEY_SATELLITE), "the item. prefix marks cargo keys");
+        assertFalse(USSBaseSite.isCargoKey("block.FRAME"), "part keys are not cargo keys");
+        // Cargo deliveries are unbounded (there is no required count) and do not gate completion.
+        assertEquals(100L, site.addCargo(USSInfra.LOADOUT_KEY_SATELLITE, 100L));
+        assertEquals(50L, site.addCargo(USSInfra.LOADOUT_KEY_SATELLITE, 50L), "further amounts add up");
+        assertEquals(150L, site.cargoOf(USSInfra.LOADOUT_KEY_SATELLITE));
+        assertEquals(
+            150L,
+            site.cargoView()
+                .get(USSInfra.LOADOUT_KEY_SATELLITE));
+        assertEquals(0L, site.addCargo(null, 5), "null key is a no-op");
+        assertEquals(0L, site.addCargo(USSInfra.LOADOUT_KEY_SATELLITE, -3));
+        assertFalse(site.isComplete(), "cargo does not count toward completion");
+        assertEquals(7L, site.totalRequired(), "the parts list is untouched by cargo");
+        // The cargo rides the NBT round trip.
+        NBTTagCompound nbt = new NBTTagCompound();
+        site.writeToNBT(nbt);
+        USSBaseSite back = USSBaseSite.readFromNBT(nbt);
+        assertEquals(150L, back.cargoOf(USSInfra.LOADOUT_KEY_SATELLITE), "the cargo survives the round trip");
+    }
+
+    @Test
     public void testConstructLegArmsTicksDownAndRestarts() {
         USSBaseSite site = USSBaseSite.create(USSBaseAnchor.planet(3), "Leg Station", testBase(), 1L);
         assertEquals(0, site.constructLegId(), "no leg before the first start");

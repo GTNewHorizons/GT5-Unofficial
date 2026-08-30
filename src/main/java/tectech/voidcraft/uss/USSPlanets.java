@@ -208,7 +208,7 @@ public final class USSPlanets {
      * ({@link USSPlanetDefinition#getSizeMin()}…{@link USSPlanetDefinition#getSizeMax()}, 0.0–5.0).</li>
      * </ul>
      *
-     * @param starType the star's type (null → {@link USSStarType#MAIN_SEQUENCE}, defensive) — selects the pool
+     * @param starType the star's type (null → {@link USSStarType#YELLOW_DWARF}, defensive) — selects the pool
      * @param seed     any stable long (the USS ignition timestamp in practice) — same (starType, seed) always yields
      *                 the same system
      * @return the system's planets (never null, never empty); planet i orbits in the i-th of COUNT equal distance
@@ -216,7 +216,7 @@ public final class USSPlanets {
      */
     public static List<USSPlanet> generate(USSStarType starType, long seed) {
         if (starType == null) {
-            starType = USSStarType.MAIN_SEQUENCE;
+            starType = USSStarType.YELLOW_DWARF;
         }
         // The star's planet range (how many planets this star has) — from the registered star definition.
         USSStarDefinition star = USSStarRegistry.byType(starType);
@@ -293,13 +293,13 @@ public final class USSPlanets {
      * Sample the star's SIZE from its registered size range (0.0–10.0) — a pure function of (star type, seed), so
      * server (starlifter output) and client (render) derive the identical value.
      *
-     * @param starType the star's type (null → {@link USSStarType#MAIN_SEQUENCE}, defensive)
+     * @param starType the star's type (null → {@link USSStarType#YELLOW_DWARF}, defensive)
      * @param seed     any stable long (the USS ignition timestamp in practice)
      * @return the sampled size (within the star's size range; 5.0 when the star is unregistered, defensive)
      */
     public static double sampleStarSize(USSStarType starType, long seed) {
         if (starType == null) {
-            starType = USSStarType.MAIN_SEQUENCE;
+            starType = USSStarType.YELLOW_DWARF;
         }
         USSStarDefinition star = USSStarRegistry.byType(starType);
         if (star == null) {

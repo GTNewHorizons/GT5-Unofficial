@@ -6,11 +6,11 @@ import net.minecraft.nbt.NBTTagList;
 import tectech.voidcraft.ship.VoidcraftNbt;
 
 /**
- * A Voidcraft in flight inside an Unstable Solar System: a PASSIVE leg driver (no mission state machine — the
- * ship's PILOT decides its legs, programming framework Phase C).
+ * A Voidcraft in the Unstable Solar System: the single active fleet entity — an in-flight ship and an anchored
+ * Voidbase are the same object (a non-null {@link USSBaseAnchor} marks the base).
  *
  * <p>
- * The ship knows ONE thing: its current leg. A leg has a state ({@link USSShipState#OUTBOUND} a travel leg to a
+ * The entity knows ONE thing: its current leg. A leg has a state ({@link USSShipState#OUTBOUND} a travel leg to a
  * body, {@link USSShipState#MINING} a work leg, {@link USSShipState#RETURNING} the travel leg home), a start
  * point, an endpoint, a duration, and a countdown. {@link #startLeg} arms it, {@link #tickLeg} counts it down,
  * {@link #isLegComplete()} latches completion (consumed exactly once via {@link #clearLegComplete()} by the
@@ -18,17 +18,28 @@ import tectech.voidcraft.ship.VoidcraftNbt;
  * ({@link USSShipState#HOVERING} — the program finished without a return; user decision: no implicit MOVE HOME).
  *
  * <p>
+ * A base (anchor != null) never flies: the pilot refuses its MOVE legs, and the USS re-computes its position
+ * from the live anchor each tick (a planet anchor orbits). Its location (the shared-location rule) derives from
+ * the anchor's body: planet → the planet orbit zone, star → the star, ripple → the fixed ripple point.
+ *
+ * <p>
  * Bare-JVM (NBT + primitives only) so the ship + pilot stay unit-testable without Forge. Cargo is built externally
  * (see {@link USSShipCargo}) and handed in via {@link #setCargo(NBTTagCompound)} on the WORK leg's completion —
  * this class stays free of {@code Materials} so tests run without a live ore dictionary.
  *
  * <p>
- * The ship's INTEGRITY is its TIME LIMIT: it is set to the ship's maximum (the blueprint's integrity) when the
- * ship enters the USS, drops by 1 per second while the ship is in the USS ({@link #tickIntegrity()}), and when
- * it reaches 0 the ship is LOST (removed from the USS, its cargo discarded — no delivery, no re-emission). A
- * ship that finishes its program before the limit expires survives: its item is re-emitted into the gateway's
- * output bus (dropped at the USS when the bus cannot absorb it), with its integrity back at maximum for the
- * next flight.
+ * The INTEGRITY is the time limit: it is set to the maximum (the blueprint's integrity) when the entity enters
+ * the USS, drops by 1 per second while in the USS ({@link #tickIntegrity()}), and at 0 the entity is LOST
+ * (removed from the USS, its cargo discarded — no delivery, no re-emission; a base is decommissioned the same
+ * way). A SHIP that finishes its program before the limit expires survives: its item is re-emitted into the
+ * gateway's output bus (dropped at the USS when the bus cannot absorb it), with its integrity back at maximum for
+ * the next flight. A base never completes a mission (it cannot MOVE) — it stands until its integrity runs out.
+ *
+ * <p>
+ * ENERGY: every action runs on the entity's energy buffer (capacity from the blueprint's power cells, generation
+ * from its solar covers — the payload's denormalized stats). The buffer starts full; {@link #tickEnergy()}
+ * recharges it each tick; an action spends from it via {@link #spendEnergy(long)} and STALLS (no progress) while
+ * the buffer cannot cover the draw.
  */
 public final class VoidcraftActiveShip {
 
@@ -59,6 +70,8 @@ public final class VoidcraftActiveShip {
     private static final String TAG_LEG_DONE = "vc_leg_done";
     private static final String TAG_BODY_STATIC = "vc_body_static";
     private static final String TAG_BUILD_LOADOUT = "vc_build_parts";
+    private static final String TAG_ANCHOR = "vc_anchor";
+    private static final String TAG_ENERGY = "vc_energy";
 
     /**
      * Pass 27 (user: "the cargo hold size should be increased by a factor of 100 — as currently the mining is
@@ -73,6 +86,12 @@ public final class VoidcraftActiveShip {
      * ship's integrity is exactly its survival budget in SECONDS while it is in the USS.
      */
     public static final int TICKS_PER_INTEGRITY = 20;
+
+    /**
+     * The integrity a spawned base falls back to when its payload carries no usable integrity stat (a stale or
+     * corrupt blueprint item): a base never spawns at 0 (it would decommission on its first tick).
+     */
+    public static final long DEFAULT_INTEGRITY = 60L;
 
     private final String uuid;
     private final String name;
@@ -114,6 +133,28 @@ public final class VoidcraftActiveShip {
 
     /** Ticks until the next integrity drop (re-armed to {@link #TICKS_PER_INTEGRITY} after each drop). */
     private int integrityTimer = TICKS_PER_INTEGRITY;
+
+    // region the base anchor (non-null = an anchored Voidbase, not a flying ship)
+
+    /**
+     * The Voidbase anchor (null = a flying ship): the body the station is built around. The station's position is
+     * re-computed from the live anchor each tick, and its location (the shared-location rule) derives from the
+     * anchor's body (see {@link #getTargetPlanet()} / {@link #isBodyStatic()}).
+     */
+    private USSBaseAnchor anchor;
+
+    // endregion
+
+    // region the energy buffer (every action runs on it)
+
+    /** The energy buffer content in EU (starts full — a freshly built ship or station). */
+    private long energy;
+    /** The buffer capacity in EU (the blueprint's power cells, from the payload's {@code vc_energy_buffer}). */
+    private final long energyCapacity;
+    /** The buffer generation in EU/tick (the blueprint's solar covers, from the payload's {@code vc_energy_gen}). */
+    private final long energyGen;
+
+    // endregion
 
     // region the current leg (a passive countdown — the pilot arms + consumes it)
 
@@ -188,6 +229,39 @@ public final class VoidcraftActiveShip {
         // The integrity time limit: the ship enters the USS at its MAXIMUM (the blueprint's total) and counts
         // down from there (tickIntegrity()).
         this.integrity = maxIntegrity();
+        // The energy buffer: capacity + generation from the payload's denormalized stats, content starts FULL.
+        this.energyCapacity = (payload != null)
+            ? Math.max(0L, VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_ENERGY_BUFFER))
+            : 0L;
+        this.energyGen = (payload != null) ? Math.max(0L, VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_ENERGY_GEN))
+            : 0L;
+        this.energy = this.energyCapacity;
+    }
+
+    /**
+     * Spawn a completed Voidbase at its anchor (a base is ONLY constructed in-USS — never launched from a
+     * gateway): HOLDING at the anchor's hover point, legs unarmed, integrity at maximum (a payload without a
+     * usable integrity stat falls back to {@link #DEFAULT_INTEGRITY} — a base never spawns at 0), energy buffer
+     * full.
+     *
+     * @param uuid     base identity (the blueprint item's {@code vc_uuid})
+     * @param name     base display name
+     * @param payload  the digitized base payload (blueprint grid + derived stats + the controller program)
+     * @param anchor   the body the station stands around
+     * @param seed     the identity seed (the client's per-base key: the mining-beam phase, the rendezvous nudge)
+     * @param position the anchor's hover point (the base's starting position)
+     */
+    public static VoidcraftActiveShip spawnBase(String uuid, String name, NBTTagCompound payload, USSBaseAnchor anchor,
+        int seed, USSPosition position) {
+        long mining = (payload != null) ? VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_MINING) : 0L;
+        VoidcraftActiveShip ship = new VoidcraftActiveShip(uuid, name, 0.0, mining, payload, null, null, seed);
+        ship.anchor = (anchor == null) ? USSBaseAnchor.star() : anchor;
+        USSPosition p = (position == null) ? USSPosition.zero() : position;
+        ship.position = p;
+        ship.legFrom = p;
+        long max = ship.maxIntegrity();
+        ship.integrity = (max > 0L) ? max : DEFAULT_INTEGRITY;
+        return ship;
     }
 
     /**
@@ -233,8 +307,14 @@ public final class VoidcraftActiveShip {
         return seed;
     }
 
-    /** @return the hover body descriptor: a system planet index, a ripple-point index, or {@code -1} (star / none). */
+    /**
+     * @return the hover body descriptor: a system planet index, a ripple-point index, or {@code -1} (star / none).
+     *         An anchored base always reads its anchor's body (a star anchor reads -1).
+     */
     public int getTargetPlanet() {
+        if (anchor != null) {
+            return anchor.isStar() ? -1 : anchor.index();
+        }
         return targetPlanet;
     }
 
@@ -243,14 +323,90 @@ public final class VoidcraftActiveShip {
         this.targetPlanet = targetPlanet;
     }
 
-    /** @return true when the client hovers the ship at the fixed resolved destination (ripple / ship rendezvous). */
+    /**
+     * @return true when the client hovers the ship at the fixed resolved destination (ripple / ship rendezvous).
+     *         An anchored base is static exactly when its anchor is a ripple point.
+     */
     public boolean isBodyStatic() {
+        if (anchor != null) {
+            return anchor.isRipple();
+        }
         return bodyStatic;
     }
 
     /** Set the static-body flag (the pilot sets it when a MOVE target resolves). */
     public void setBodyStatic(boolean bodyStatic) {
         this.bodyStatic = bodyStatic;
+    }
+
+    /** @return the base anchor (null = a flying ship). */
+    public USSBaseAnchor getAnchor() {
+        return anchor;
+    }
+
+    /** @return true when this entity is an anchored Voidbase (not a flying ship). */
+    public boolean isBase() {
+        return anchor != null;
+    }
+
+    /** @return the energy buffer content in EU. */
+    public long getEnergy() {
+        return energy;
+    }
+
+    /** @return the energy buffer capacity in EU. */
+    public long getEnergyCapacity() {
+        return energyCapacity;
+    }
+
+    /** @return the energy generation in EU/tick. */
+    public long getEnergyGen() {
+        return energyGen;
+    }
+
+    /**
+     * Advance the energy buffer one world tick: generation is added, clamped at capacity (a zero-capacity buffer
+     * stays at 0). Call once per tick while the entity is in the USS.
+     */
+    public void tickEnergy() {
+        if (energyGen > 0L && energy < energyCapacity) {
+            energy = Math.min(energyCapacity, energy + energyGen);
+        }
+    }
+
+    /**
+     * Spend energy from the buffer (the stall model's gate): the draw is paid only when the buffer covers it.
+     *
+     * @param amount the draw in EU (&lt;= 0 is a free no-op)
+     * @return true when the draw was paid (false = the action must STALL: no progress this tick)
+     */
+    public boolean spendEnergy(long amount) {
+        if (amount <= 0L) {
+            return true;
+        }
+        if (energy < amount) {
+            return false;
+        }
+        energy -= amount;
+        return true;
+    }
+
+    /**
+     * Restore integrity (the REPAIR work): clamped at the maximum.
+     *
+     * @param amount the integrity restored (&gt; 0)
+     * @return true when integrity was actually restored (false = already at maximum)
+     */
+    public boolean repair(int amount) {
+        if (amount <= 0) {
+            return false;
+        }
+        long max = maxIntegrity();
+        if (integrity >= max) {
+            return false;
+        }
+        integrity = Math.min(max, integrity + amount);
+        return true;
     }
 
     public String getName() {
@@ -307,16 +463,18 @@ public final class VoidcraftActiveShip {
     }
 
     /**
-     * The ship's role bitmask (from the payload's {@code vc_roles} — see {@code VoidcraftRole}). 0 when the
-     * payload lacks the tag (a pre-role ship acts as a pure miner).
+     * The ship's logistics power (the SEND / TAKE cargo-transfer rate: 1 power = 1 cargo unit per second, see
+     * {@link USSConstants#transferTicksPerUnit}): from the payload's {@code vc_logistics} (denormalized at
+     * digitization). 0 when the payload lacks the tag (no Cargo Drone Bay covers — the ship cannot transfer
+     * cargo).
      *
-     * @return the active role mask.
+     * @return the total logistics power (0 = no Cargo Drone Bay components)
      */
-    public int getRoles() {
+    public long getLogisticsPower() {
         if (payload == null) {
-            return 0;
+            return 0L;
         }
-        return VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ROLES);
+        return VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_LOGISTICS);
     }
 
     /**
@@ -406,6 +564,14 @@ public final class VoidcraftActiveShip {
         return position;
     }
 
+    /**
+     * Set the position in fleet-anchor coordinates (the USS re-derives an anchored entity's position from its
+     * live anchor each tick).
+     */
+    public void setPosition(USSPosition position) {
+        this.position = (position == null) ? USSPosition.zero() : position;
+    }
+
     /** @return the monotonic leg counter (the client's leg-identity for progress-phase resets). */
     public int getLegId() {
         return legId;
@@ -416,14 +582,22 @@ public final class VoidcraftActiveShip {
     /**
      * The current leg's work kind (see {@link USSWorkKind}): TRAVEL for a travel leg, or the work kind the
      * work command started (the pilot arms it with the leg). The client reads this (fleet-entry tag) to derive
-     * the SAME leg duration the server ticks — a hybrid ship's leg duration depends on the kind, not on the
-     * role.
+     * the SAME leg duration the server ticks — a ship's leg duration depends on the kind.
      */
     private int legWorkKind = USSWorkKind.TRAVEL;
 
     /** @return the current leg's work kind ({@link USSWorkKind}; TRAVEL when no work leg is armed). */
     public int getLegWorkKind() {
         return legWorkKind;
+    }
+
+    /**
+     * @return true while a MOVE (travel) leg is armed — the ship is en route and not properly settled at any
+     *         location (a work leg does not qualify: the ship hovers at its work point for the whole leg). A
+     *         latched-complete leg still counts: the ship has only just arrived until the leg is consumed.
+     */
+    public boolean isTraveling() {
+        return legActive && !USSWorkKind.isWork(legWorkKind);
     }
 
     /**
@@ -745,6 +919,12 @@ public final class VoidcraftActiveShip {
         if (bayPos != null) {
             nbt.setIntArray(TAG_BAY, bayPos);
         }
+        if (anchor != null) {
+            NBTTagCompound anchorTag = new NBTTagCompound();
+            anchor.writeToNBT(anchorTag);
+            nbt.setTag(TAG_ANCHOR, anchorTag);
+        }
+        nbt.setLong(TAG_ENERGY, energy);
         nbt.setInteger(TAG_SEED, seed);
         nbt.setInteger(TAG_TARGET, targetPlanet);
         return nbt;
@@ -820,6 +1000,14 @@ public final class VoidcraftActiveShip {
         if (nbt.hasKey(TAG_BUILD_LOADOUT)) {
             ship.restoreBuildLoadout(nbt.getTagList(TAG_BUILD_LOADOUT, 10));
         }
+        // The base anchor (present = an anchored Voidbase; absent = a flying ship) + the energy buffer content
+        // (capacity/generation re-derive from the payload on restore).
+        if (nbt.hasKey(TAG_ANCHOR)) {
+            ship.anchor = USSBaseAnchor.readFromNBT(nbt.getCompoundTag(TAG_ANCHOR));
+        }
+        if (nbt.hasKey(TAG_ENERGY)) {
+            ship.energy = Math.max(0L, Math.min(ship.energyCapacity, nbt.getLong(TAG_ENERGY)));
+        }
         return ship;
     }
 
@@ -828,6 +1016,7 @@ public final class VoidcraftActiveShip {
     @Override
     public String toString() {
         return "VoidcraftActiveShip[" + name
+            + (anchor != null ? " @ " + anchor : "")
             + " "
             + state
             + " ticks="
@@ -840,6 +1029,10 @@ public final class VoidcraftActiveShip {
             + position
             + " integrity="
             + integrity
+            + " energy="
+            + energy
+            + "/"
+            + energyCapacity
             + " cargo="
             + (cargo == null ? "none" : "yes")
             + "]";

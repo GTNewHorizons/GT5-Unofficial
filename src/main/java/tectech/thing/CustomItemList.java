@@ -428,6 +428,15 @@ public enum CustomItemList implements IItemContainer {
     VoidcraftMiningArray_Casing,
     VoidcraftMiningArray_Panel,
 
+    // The Satellite Rail Launcher (station multiblock, 7x7x12): controller + its two casing blocks.
+    VoidcraftSatelliteLauncher_Controller,
+    VoidcraftSatelliteLauncher_Casing,
+    VoidcraftSatelliteLauncher_Panel,
+
+    // Infrastructure payload item: a Power Satellite — launched by a Satellite Rail Launcher onto a star's
+    // Dyson Swarm.
+    PowerSatellite,
+
     astralArrayFabricator;
 
     private ItemStack mStack;

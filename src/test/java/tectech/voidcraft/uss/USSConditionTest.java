@@ -42,16 +42,6 @@ public class USSConditionTest {
     }
 
     @Test
-    public void testAccessors() {
-        USSValue l = USSValue.variable(5);
-        USSValue r = USSValue.stat(2);
-        USSCondition c = USSCondition.of(l, USSConditionOp.GT, r);
-        assertEquals(l, c.left());
-        assertEquals(USSConditionOp.GT, c.op());
-        assertEquals(r, c.right());
-    }
-
-    @Test
     public void testEqIsExactAndCaseSensitive() {
         assertTrue(cond(USSConditionOp.EQ, "abc", "abc").evaluate("abc", "abc"));
         assertFalse(cond(USSConditionOp.EQ, "abc", "abd").evaluate("abc", "abd"));

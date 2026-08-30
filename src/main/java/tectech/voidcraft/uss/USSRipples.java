@@ -77,13 +77,13 @@ public final class USSRipples {
      * {@code spacetimeRipples} range, and the ripple POINTS are chosen by a seeded shuffle of the 343 grid indices —
      * so (starType, seed) yields exactly ONE fixed field and server/client agree.
      *
-     * @param starType the star's type (null → {@link USSStarType#MAIN_SEQUENCE}, defensive)
+     * @param starType the star's type (null → {@link USSStarType#YELLOW_DWARF}, defensive)
      * @param seed     any stable long (the USS ignition timestamp in practice)
      * @return the field (never null; always the full 343-point grid, with {@code rippleCount} ripples)
      */
     public static USSRippleField generate(USSStarType starType, long seed) {
         if (starType == null) {
-            starType = USSStarType.MAIN_SEQUENCE;
+            starType = USSStarType.YELLOW_DWARF;
         }
         USSStarDefinition star = USSStarRegistry.byType(starType);
         int rippleMin = star != null ? star.getRippleMin() : USSStarDefinition.MIN_RIPPLES;

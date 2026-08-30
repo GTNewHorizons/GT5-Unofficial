@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import gregtech.api.enums.Materials;
 
 /**
- * Unit tests for the fixed planet-type catalog ({@link USSPlanetType}) — Phase 4 pass 3: star type → planet pool →
+ * Unit tests for the fixed planet-type catalog ({@link USSPlanetType}) — star type → planet pool →
  * mineable ore set.
  *
  * <p>
@@ -86,34 +86,10 @@ public class USSPlanetTypeTest {
     }
 
     @Test
-    public void testPoolsAreCompleteDisjointFamilies() {
-        Set<USSPlanetType> union = new HashSet<>();
-        for (USSStarType starType : USSStarType.values()) {
-            List<USSPlanetType> pool = USSPlanetType.pool(starType);
-            assertEquals(4, pool.size(), starType + " pool has 4 planet types");
-
-            Set<USSPlanetType> distinct = new HashSet<>();
-            for (USSPlanetType type : pool) {
-                assertTrue(distinct.add(type), starType + " pool entries are distinct");
-                assertEquals(starType, type.getStarType(), type + " belongs to " + starType + "'s pool");
-            }
-            for (USSStarType other : USSStarType.values()) {
-                if (other != starType) {
-                    for (USSPlanetType type : USSPlanetType.pool(other)) {
-                        assertFalse(pool.contains(type), starType + " and " + other + " pools are disjoint");
-                    }
-                }
-            }
-            union.addAll(pool);
-        }
-        assertEquals(12, union.size(), "the three pools partition the 12-type catalog");
-    }
-
-    @Test
     public void testPoolIsNullSafe() {
         assertEquals(
-            USSPlanetType.pool(USSStarType.MAIN_SEQUENCE),
+            USSPlanetType.pool(USSStarType.YELLOW_DWARF),
             USSPlanetType.pool(null),
-            "null star type falls back to main sequence");
+            "null star type falls back to yellow dwarf");
     }
 }

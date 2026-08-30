@@ -31,12 +31,11 @@ public final class VoidcraftNbt {
     public static final String TAG_SCAN = "vc_scan";
     public static final String TAG_CONSTRUCTION = "vc_construction";
     public static final String TAG_STARLIFTER = "vc_starlifter";
+    public static final String TAG_LOGISTICS = "vc_logistics";
     public static final String TAG_ENERGY_BUFFER = "vc_energy_buffer";
     public static final String TAG_ENERGY_DRAW = "vc_energy_draw";
     public static final String TAG_ENERGY_GEN = "vc_energy_gen";
     public static final String TAG_INTEGRITY = "vc_integrity";
-    public static final String TAG_ROLES = "vc_roles";
-    public static final String TAG_EFFICIENCY = "vc_efficiency";
 
     // Programming framework (Phase C):
 
@@ -83,8 +82,6 @@ public final class VoidcraftNbt {
     public static void write(NBTTagCompound nbt, VoidcraftBlueprint blueprint, String uuid, String name,
         long createdAt) {
         VoidcraftStats stats = blueprint.computeStats();
-        int roles = blueprint.computeRoles();
-        double efficiency = blueprint.computeEfficiency();
 
         nbt.setInteger(TAG_FORMAT, VoidcraftConstants.NBT_FORMAT_VERSION);
         nbt.setString(TAG_UUID, uuid);
@@ -105,12 +102,11 @@ public final class VoidcraftNbt {
         nbt.setLong(TAG_SCAN, stats.scanPower);
         nbt.setLong(TAG_CONSTRUCTION, stats.constructionPower);
         nbt.setLong(TAG_STARLIFTER, stats.starlifterPower);
+        nbt.setLong(TAG_LOGISTICS, stats.logisticsPower);
         nbt.setLong(TAG_ENERGY_BUFFER, stats.energyBuffer);
         nbt.setLong(TAG_ENERGY_DRAW, stats.energyDraw);
         nbt.setLong(TAG_ENERGY_GEN, stats.energyGen);
         nbt.setLong(TAG_INTEGRITY, stats.integrity);
-        nbt.setInteger(TAG_ROLES, roles);
-        nbt.setDouble(TAG_EFFICIENCY, efficiency);
     }
 
     /**

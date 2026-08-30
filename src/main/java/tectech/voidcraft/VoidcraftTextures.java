@@ -48,14 +48,14 @@ public final class VoidcraftTextures {
     /** Cover icon basenames in {@link VoidcraftCoverComponent#getId()} order (also exposed for the item icons). */
     public static final String[] COVER_ICON_BASE = { "VC_COVER_NOZZLE", "VC_COVER_ARMOR", "VC_COVER_POD",
         "VC_COVER_MINING", "VC_COVER_SIPHON", "VC_COVER_DISH", "VC_COVER_FABRICATOR", "VC_COVER_CELL",
-        "VC_COVER_REPAIR", "VC_COVER_SOLAR" };
+        "VC_COVER_REPAIR", "VC_COVER_SOLAR", "VC_COVER_DRONE_BAY" };
 
     private static final String[] COVER_ICON_NAMES = { "tectech:iconsets/" + COVER_ICON_BASE[0],
         "tectech:iconsets/" + COVER_ICON_BASE[1], "tectech:iconsets/" + COVER_ICON_BASE[2],
         "tectech:iconsets/" + COVER_ICON_BASE[3], "tectech:iconsets/" + COVER_ICON_BASE[4],
         "tectech:iconsets/" + COVER_ICON_BASE[5], "tectech:iconsets/" + COVER_ICON_BASE[6],
         "tectech:iconsets/" + COVER_ICON_BASE[7], "tectech:iconsets/" + COVER_ICON_BASE[8],
-        "tectech:iconsets/" + COVER_ICON_BASE[9] };
+        "tectech:iconsets/" + COVER_ICON_BASE[9], "tectech:iconsets/" + COVER_ICON_BASE[10] };
 
     /** The controller's dedicated block icon (pass 24; was a planet-sheet squashed onto its faces). */
     public static final String CONTROLLER_ICON_NAME = "tectech:iconsets/VC_CONTROLLER";

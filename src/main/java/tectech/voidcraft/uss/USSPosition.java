@@ -73,6 +73,17 @@ public final class USSPosition {
         return z;
     }
 
+    /**
+     * The coordinate string: {@code "x;y;z"} — one {@link Double#toString} per component, semicolon-separated.
+     * The form the LOCATION value ({@link USSValue#location()}) resolves to: a ship broadcasts its position by
+     * writing this string into a USS variable slot.
+     *
+     * @return e.g. {@code "1.5;-2.0;0.25"}
+     */
+    public String coordString() {
+        return Double.toString(x) + ";" + Double.toString(y) + ";" + Double.toString(z);
+    }
+
     // region vector math
 
     /**

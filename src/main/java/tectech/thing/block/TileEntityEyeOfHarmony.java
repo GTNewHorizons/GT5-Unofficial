@@ -22,6 +22,7 @@ import net.minecraft.util.AxisAlignedBB;
 
 import gtneioreplugin.plugin.block.ModBlocks;
 import tectech.voidcraft.uss.USSStarColor;
+import tectech.voidcraft.uss.USSStarRenderType;
 
 public class TileEntityEyeOfHarmony extends TileEntity {
 
@@ -58,7 +59,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
 
     private double starSize = 1;
 
-    /** The opaque ARGB color the star mesh is tinted with (from the star's registered definition). */
+    /** The opaque ARGB color the star's render core is tinted with (from the star's registered definition). */
     private int starColor = USSStarColor.DEFAULT;
 
     public int getStarColor() {
@@ -67,6 +68,70 @@ public class TileEntityEyeOfHarmony extends TileEntity {
 
     public void setStarColor(int color) {
         this.starColor = color;
+    }
+
+    /**
+     * The opaque ARGB color the star's outer halo layers are tinted with (from the star's registered definition;
+     * 0 = unset — the renderer falls back to the core color).
+     */
+    private int starShellColor = 0;
+
+    public int getStarShellColor() {
+        return starShellColor;
+    }
+
+    public void setStarShellColor(int color) {
+        this.starShellColor = color;
+    }
+
+    /**
+     * Whether the star's shell layers render outside-in as a glow ring beyond the core's rim (the halo treatment —
+     * from the star's registered definition; the legacy star and the other classes keep the solid additive shells).
+     */
+    private boolean starHalo = false;
+
+    public boolean isStarHalo() {
+        return starHalo;
+    }
+
+    public void setStarHalo(boolean halo) {
+        this.starHalo = halo;
+    }
+
+    /**
+     * The star's custom render treatment — the ordinal of {@code USSStarRenderType} (STANDARD when unset): the extra
+     * geometry the renderer draws on top of the standard star body (the magnetar's magnetic field loops), from the
+     * star's registered definition.
+     */
+    private int starRenderType = USSStarRenderType.STANDARD.ordinal();
+
+    public USSStarRenderType getStarRenderType() {
+        return USSStarRenderType.fromOrdinal(starRenderType);
+    }
+
+    public void setStarRenderType(USSStarRenderType renderType) {
+        this.starRenderType = (renderType == null ? USSStarRenderType.STANDARD : renderType).ordinal();
+    }
+
+    /**
+     * The Dyson Swarm state (the Voidcraft infrastructure pass): the satellites currently in the star's swarm plus
+     * the star's satellite capacity (0 capacity = no swarm — the legacy path and Voidcraft stars before the first
+     * launch). The client renders a semi-transparent gray triangle shell at a fill of count/capacity.
+     */
+    private long swarmCount = 0;
+    private long swarmCapacity = 0;
+
+    public long getSwarmCount() {
+        return swarmCount;
+    }
+
+    public long getSwarmCapacity() {
+        return swarmCapacity;
+    }
+
+    public void setDysonSwarm(long count, long capacity) {
+        this.swarmCount = Math.max(0L, count);
+        this.swarmCapacity = Math.max(0L, capacity);
     }
 
     /**
@@ -291,6 +356,11 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     private static final String TIER_NBT_TAG = EOH_NBT_TAG + "tier";
     private static final String DOME_NBT_TAG = EOH_NBT_TAG + "dome";
     private static final String COLOR_NBT_TAG = EOH_NBT_TAG + "color";
+    private static final String SHELL_NBT_TAG = EOH_NBT_TAG + "shell";
+    private static final String HALO_NBT_TAG = EOH_NBT_TAG + "halo";
+    private static final String RENDER_TYPE_NBT_TAG = EOH_NBT_TAG + "render_type";
+    private static final String SWARM_COUNT_NBT_TAG = EOH_NBT_TAG + "swarm_count";
+    private static final String SWARM_CAP_NBT_TAG = EOH_NBT_TAG + "swarm_cap";
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -301,6 +371,22 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         compound.setLong(TIER_NBT_TAG, tier);
         compound.setDouble(DOME_NBT_TAG, domeRadius);
         compound.setInteger(COLOR_NBT_TAG, starColor);
+        if (starShellColor != 0) {
+            compound.setInteger(SHELL_NBT_TAG, starShellColor);
+        }
+        if (starHalo) {
+            compound.setBoolean(HALO_NBT_TAG, true);
+        }
+        if (starRenderType != USSStarRenderType.STANDARD.ordinal()) {
+            compound.setInteger(RENDER_TYPE_NBT_TAG, starRenderType);
+        }
+
+        // Dyson Swarm state (Voidcraft infrastructure pass) — persisted so chunk reloads and description packets
+        // carry it (0 capacity = no swarm; the legacy star and a fresh Voidcraft star write nothing).
+        if (swarmCapacity > 0) {
+            compound.setLong(SWARM_COUNT_NBT_TAG, swarmCount);
+            compound.setLong(SWARM_CAP_NBT_TAG, swarmCapacity);
+        }
 
         // Explicit planet system (Voidcraft) — persisted so chunk reloads and description packets carry it (the
         // tag is omitted entirely for legacy stars, which keep the lazy random path).
@@ -339,6 +425,26 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         }
         if (compound.hasKey(COLOR_NBT_TAG)) {
             starColor = compound.getInteger(COLOR_NBT_TAG);
+        }
+        if (compound.hasKey(SHELL_NBT_TAG)) {
+            starShellColor = compound.getInteger(SHELL_NBT_TAG);
+        }
+        if (compound.hasKey(HALO_NBT_TAG)) {
+            setStarHalo(compound.getBoolean(HALO_NBT_TAG));
+        } else if (starHalo) {
+            setStarHalo(false);
+        }
+        if (compound.hasKey(RENDER_TYPE_NBT_TAG)) {
+            setStarRenderType(USSStarRenderType.fromOrdinal(compound.getInteger(RENDER_TYPE_NBT_TAG)));
+        } else if (starRenderType != USSStarRenderType.STANDARD.ordinal()) {
+            setStarRenderType(USSStarRenderType.STANDARD);
+        }
+
+        // Dyson Swarm state (Voidcraft): restore it, or clear a stale swarm when a legacy / fresh-star NBT arrives.
+        if (compound.hasKey(SWARM_CAP_NBT_TAG)) {
+            setDysonSwarm(compound.getLong(SWARM_COUNT_NBT_TAG), compound.getLong(SWARM_CAP_NBT_TAG));
+        } else if (swarmCapacity > 0) {
+            setDysonSwarm(0, 0);
         }
 
         // Explicit planet system (Voidcraft): restore it (re-resolving the hologram blocks), or clear a stale one
