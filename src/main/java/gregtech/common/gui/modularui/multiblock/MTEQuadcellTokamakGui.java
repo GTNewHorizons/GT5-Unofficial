@@ -46,24 +46,20 @@ public class MTEQuadcellTokamakGui extends MTEMultiBlockBaseGui<MTEQuadcellTokam
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        syncManager.syncValue("ForceDR", new IntSyncValue(() -> multiblock.FORCE_CURRENT_DR, val -> {
-            multiblock.FORCE_CURRENT_DR = val;
-            multiblock.resetBoosts();
-        }).allowC2S());
+        syncManager.syncValue(
+            "ForceDR",
+            new IntSyncValue(() -> multiblock.FORCE_CURRENT_DR, multiblock::setForceDR).allowC2S());
 
-        syncManager.syncValue("RuniteDR", new IntSyncValue(() -> multiblock.RUNITE_CURRENT_DR, val -> {
-            multiblock.RUNITE_CURRENT_DR = val;
-            multiblock.resetBoosts();
-        }).allowC2S());
-        syncManager
-            .syncValue("CelestialTungstenDR", new IntSyncValue(() -> multiblock.CELESTIAL_TUNGSTEN_CURRENT_DR, val -> {
-                multiblock.CELESTIAL_TUNGSTEN_CURRENT_DR = val;
-                multiblock.resetBoosts();
-            }).allowC2S());
-        syncManager.syncValue("OrikalkumDR", new IntSyncValue(() -> multiblock.ORIKALKUM_CURRENT_DR, val -> {
-            multiblock.ORIKALKUM_CURRENT_DR = val;
-            multiblock.resetBoosts();
-        }).allowC2S());
+        syncManager.syncValue(
+            "RuniteDR",
+            new IntSyncValue(() -> multiblock.RUNITE_CURRENT_DR, multiblock::setRuniteDR).allowC2S());
+        syncManager.syncValue(
+            "CelestialTungstenDR",
+            new IntSyncValue(() -> multiblock.CELESTIAL_TUNGSTEN_CURRENT_DR, multiblock::setCelestialTungstenDR)
+                .allowC2S());
+        syncManager.syncValue(
+            "OrikalkumDR",
+            new IntSyncValue(() -> multiblock.ORIKALKUM_CURRENT_DR, multiblock::setOrikalkumDR).allowC2S());
 
         syncManager.syncValue(
             "RuniteBoost",

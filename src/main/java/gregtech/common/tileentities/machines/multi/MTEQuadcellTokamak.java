@@ -394,6 +394,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         RUNITE_CURRENT_BOOST = 0;
         CELESTIAL_TUNGSTEN_CURRENT_BOOST = 0;
         ORIKALKUM_CURRENT_BOOST = 1;
+        getBaseMetaTileEntity().issueTileUpdate();
     }
 
     public CheckRecipeResult crashMachine(FluidStack stack) {
@@ -496,8 +497,37 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         return new MTEQuadcellTokamakGui(this);
     }
 
+    public void setForceDR(int val) {
+        this.FORCE_CURRENT_DR = val;
+        resetBoosts();
+        getBaseMetaTileEntity().issueTileUpdate();
+    }
+
+    public void setRuniteDR(int val) {
+        this.RUNITE_CURRENT_DR = val;
+        resetBoosts();
+        getBaseMetaTileEntity().issueTileUpdate();
+    }
+
+    public void setCelestialTungstenDR(int val) {
+        this.CELESTIAL_TUNGSTEN_CURRENT_DR = val;
+        resetBoosts();
+        getBaseMetaTileEntity().issueTileUpdate();
+    }
+
+    public void setOrikalkumDR(int val) {
+        this.ORIKALKUM_CURRENT_DR = val;
+        resetBoosts();
+        getBaseMetaTileEntity().issueTileUpdate();
+    }
+
     // render code
     private boolean shouldRender = true;
+    // whether or not specific plasmas are being drained, and should thus be rendered.
+    private boolean forceOn = false;
+    private boolean runiteOn = false;
+    private boolean celestialOn = false;
+    private boolean orikalkumOn = false;
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
@@ -511,12 +541,25 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
     public void writeToStream(ByteBuf buffer) {
         super.writeToStream(buffer);
         buffer.writeBoolean(shouldRender);
+        buffer.writeBoolean(FORCE_CURRENT_DR > 0);
+        buffer.writeBoolean(RUNITE_CURRENT_DR > 0);
+        buffer.writeBoolean(CELESTIAL_TUNGSTEN_CURRENT_DR > 0);
+        buffer.writeBoolean(ORIKALKUM_CURRENT_DR > 0);
     }
 
     @Override
     public void readFromStream(ByteBuf buffer) {
         super.readFromStream(buffer);
         shouldRender = buffer.readBoolean();
+        forceOn = buffer.readBoolean();
+        runiteOn = buffer.readBoolean();
+        celestialOn = buffer.readBoolean();
+        orikalkumOn = buffer.readBoolean();
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
+        return AxisAlignedBB.getBoundingBox(x - 40, y - 40, z - 40, x + 40, y + 40, z + 40);
     }
 
     @Override
@@ -537,27 +580,26 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
             .getWorldOffset(Vec3.createVectorHelper(0, -3, 3));
         GL11.glTranslated(abc.xCoord + x + 0.5, abc.yCoord + y + 0.5, abc.zCoord + z + 0.5);
 
-        GL11.glEnable(GL11.GL_DEPTH_TEST | GL11.GL_LIGHT0 | GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_LIGHTING | GL11.GL_ALPHA_TEST | GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_LIGHTING | GL11.GL_ALPHA_TEST);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        drawCube(PlasmaType.FORCE, world, false, timeSinceLastTick, 1, 1, -1, 1, 1.3, 1);
-        drawCube(PlasmaType.RUNITE, world, false, timeSinceLastTick, -1, -1, 1, 1, 1.2, 2);
-        drawCube(PlasmaType.CELESTIAL, world, false, timeSinceLastTick, 1, -1, -1, 0.8, 1.2, 4);
-        drawCube(PlasmaType.ORIKALKUM, world, false, timeSinceLastTick, -1, 1, -1, 0.6, 1.2, 8);
-
+        drawCubes(false, timeSinceLastTick, world);
         BloomShader.getInstance()
             .bindFramebuffer();
-        drawCube(PlasmaType.FORCE, world, true, timeSinceLastTick, 1, 1, -1, 1, 1.3, 1);
-        drawCube(PlasmaType.RUNITE, world, true, timeSinceLastTick, -1, -1, 1, 1, 1.2, 2);
-        drawCube(PlasmaType.CELESTIAL, world, true, timeSinceLastTick, 1, -1, -1, 0.8, 1.2, 4);
-        drawCube(PlasmaType.ORIKALKUM, world, true, timeSinceLastTick, -1, 1, -1, 0.6, 1.2, 8);
+        drawCubes(true, timeSinceLastTick, world);
         BloomShader.unbind();
 
         ShaderProgram.clear();
         GL11.glPopAttrib();
         GL11.glPopMatrix();
 
+    }
+
+    private void drawCubes(boolean bloom, float timeSinceLastTick, World world) {
+        if (forceOn) drawCube(PlasmaType.FORCE, world, bloom, timeSinceLastTick, 1, 1, -1, 1, 1.3, 1);
+        if (runiteOn) drawCube(PlasmaType.RUNITE, world, bloom, timeSinceLastTick, -1, -1, 1, 1, 1.2, 2);
+        if (celestialOn) drawCube(PlasmaType.CELESTIAL, world, bloom, timeSinceLastTick, 1, -1, -1, 0.8, 1.2, 4);
+        if (orikalkumOn) drawCube(PlasmaType.ORIKALKUM, world, bloom, timeSinceLastTick, -1, 1, -1, 0.6, 1.2, 8);
     }
 
     private double lerp(double start, double end, double t) {
@@ -637,11 +679,6 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         GL11.glScaled(lerped, lerped, lerped);
         tess.draw();
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
-        return AxisAlignedBB.getBoundingBox(x - 40, y - 40, z - 40, x + 40, y + 40, z + 40);
     }
 
     public enum PlasmaType {
