@@ -44,9 +44,8 @@ import xonin.backhand.api.core.BackhandUtils;
 
 public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<PlayerInventoryGuiData> {
 
-    private static final String SPEED_MODE_KEY = "VajraSpeedMode";
     private static final String CREATIVE_BREAK_COOLDOWN_KEY = "VajraCreativeBreakCooldown";
-    private static final SpeedMode[] SPEED_MODES = SpeedMode.values();
+    private static final String RIGHT_CLICK_DISABLED_KEY = "VajraRightClickDisabled";
 
     public int maxCharge = (int) 1e8;
     public int baseCost = 3333;
@@ -97,7 +96,7 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
         if (!ElectricItem.manager.canUse(stack, baseCost)) {
             return 0.0F;
         }
-        return getSpeedMode(stack).digSpeed;
+        return Integer.MAX_VALUE;
     }
 
     @Override
@@ -126,32 +125,22 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
         list.add(
             EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.vajra.tooltip.charge", VN[tier]));
         list.add(
-            EnumChatFormatting.YELLOW + StatCollector.translateToLocalFormatted(
-                "gt.vajra.tooltip.speed",
-                StatCollector.translateToLocal(getSpeedMode(stack).translationKey)));
-        list.add(
             EnumChatFormatting.YELLOW + StatCollector
                 .translateToLocalFormatted("gt.vajra.tooltip.silk_touch", getStateName(isSilkTouchEnabled(stack))));
         list.add(
             EnumChatFormatting.YELLOW + StatCollector.translateToLocalFormatted(
                 "gt.vajra.tooltip.creative_break_cooldown",
                 getStateName(isCreativeBreakCooldownEnabled(stack))));
+        list.add(
+            EnumChatFormatting.YELLOW + StatCollector.translateToLocalFormatted(
+                "gt.vajra.tooltip.right_click_breaking",
+                getStateName(isRightClickEnabled(stack))));
         list.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.vajra.tooltip.configure"));
     }
 
     private static String getStateName(boolean enabled) {
         return StatCollector
             .translateToLocal(enabled ? "GT5U.gui.button.feature_enabled" : "GT5U.gui.button.feature_disabled");
-    }
-
-    public static SpeedMode getSpeedMode(ItemStack stack) {
-        if (!ItemStackNBT.hasKey(stack, SPEED_MODE_KEY)) return SpeedMode.FAST;
-        int mode = ItemStackNBT.getByte(stack, SPEED_MODE_KEY) & 0xFF;
-        return mode < SPEED_MODES.length ? SPEED_MODES[mode] : SpeedMode.FAST;
-    }
-
-    public static void setSpeedMode(ItemStack stack, SpeedMode mode) {
-        ItemStackNBT.setByte(stack, SPEED_MODE_KEY, (byte) mode.ordinal());
     }
 
     public static boolean isSilkTouchEnabled(ItemStack stack) {
@@ -172,6 +161,18 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
 
     public static void setCreativeBreakCooldownEnabled(ItemStack stack, boolean enabled) {
         ItemStackNBT.setBoolean(stack, CREATIVE_BREAK_COOLDOWN_KEY, enabled);
+    }
+
+    public static boolean isRightClickEnabled(ItemStack stack) {
+        return !ItemStackNBT.getBoolean(stack, RIGHT_CLICK_DISABLED_KEY);
+    }
+
+    public static void setRightClickEnabled(ItemStack stack, boolean enabled) {
+        if (enabled) {
+            ItemStackNBT.removeTag(stack, RIGHT_CLICK_DISABLED_KEY);
+        } else {
+            ItemStackNBT.setBoolean(stack, RIGHT_CLICK_DISABLED_KEY, true);
+        }
     }
 
     @Override
@@ -215,10 +216,7 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
-        if (player.isSneaking()) {
-            if (!world.isRemote) openConfigurationGui(stack, player);
-            return true;
-        }
+        if (!isRightClickEnabled(stack)) return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 
         Block target = world.getBlock(x, y, z);
         TileEntity tileEntity = world.getTileEntity(x, y, z);
@@ -295,24 +293,5 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
     @SideOnly(Side.CLIENT)
     public ModularScreen createScreen(PlayerInventoryGuiData data, ModularPanel mainPanel) {
         return new ModularScreen(Mods.GregTech.ID, mainPanel);
-    }
-
-    public enum SpeedMode {
-
-        SLOW(8.0F, "gt.vajra.speed.slow"),
-        MEDIUM(64.0F, "gt.vajra.speed.medium"),
-        FAST(Integer.MAX_VALUE, "gt.vajra.speed.fast");
-
-        private final float digSpeed;
-        private final String translationKey;
-
-        SpeedMode(float digSpeed, String translationKey) {
-            this.digSpeed = digSpeed;
-            this.translationKey = translationKey;
-        }
-
-        public String getTranslationKey() {
-            return translationKey;
-        }
     }
 }

@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
@@ -32,19 +31,18 @@ public class VajraGui {
 
     public ModularPanel build() {
         ModularPanel panel = ModularPanel.defaultPanel("vajra_configuration", 224, 100);
-        EnumSyncValue<ToolVajra.SpeedMode, ?> speedMode = new EnumSyncValue<>(
-            ToolVajra.SpeedMode.class,
-            () -> ToolVajra.getSpeedMode(data.getUsedItemStack()),
-            mode -> ToolVajra.setSpeedMode(data.getUsedItemStack(), mode)).allowC2S();
         BooleanSyncValue silkTouch = new BooleanSyncValue(
             () -> ToolVajra.isSilkTouchEnabled(data.getUsedItemStack()),
             enabled -> ToolVajra.setSilkTouchEnabled(data.getUsedItemStack(), enabled)).allowC2S();
         BooleanSyncValue breakCooldown = new BooleanSyncValue(
             () -> ToolVajra.isCreativeBreakCooldownEnabled(data.getUsedItemStack()),
             enabled -> ToolVajra.setCreativeBreakCooldownEnabled(data.getUsedItemStack(), enabled)).allowC2S();
-        syncManager.syncValue("speedMode", speedMode);
+        BooleanSyncValue rightClick = new BooleanSyncValue(
+            () -> ToolVajra.isRightClickEnabled(data.getUsedItemStack()),
+            enabled -> ToolVajra.setRightClickEnabled(data.getUsedItemStack(), enabled)).allowC2S();
         syncManager.syncValue("silkTouch", silkTouch);
         syncManager.syncValue("breakCooldown", breakCooldown);
+        syncManager.syncValue("rightClick", rightClick);
 
         panel.child(
             IKey.lang("gt.vajra.gui.title")
@@ -59,21 +57,6 @@ public class VajraGui {
                 .top(27)
                 .left(12)
                 .childPadding(4)
-                .child(
-                    createSettingRow(
-                        IKey.lang("gt.vajra.gui.mining_speed"),
-                        createButton(
-                            LinkedBoolValue.of(speedMode, ToolVajra.SpeedMode.SLOW),
-                            IKey.lang(ToolVajra.SpeedMode.SLOW.getTranslationKey()),
-                            36),
-                        createButton(
-                            LinkedBoolValue.of(speedMode, ToolVajra.SpeedMode.MEDIUM),
-                            IKey.lang(ToolVajra.SpeedMode.MEDIUM.getTranslationKey()),
-                            36),
-                        createButton(
-                            LinkedBoolValue.of(speedMode, ToolVajra.SpeedMode.FAST),
-                            IKey.lang(ToolVajra.SpeedMode.FAST.getTranslationKey()),
-                            36)))
                 .child(
                     createSettingRow(
                         IKey.lang("gt.vajra.gui.silk_touch"),
@@ -94,6 +77,17 @@ public class VajraGui {
                             56),
                         createButton(
                             LinkedBoolValue.of(breakCooldown, true),
+                            IKey.lang("GT5U.gui.button.feature_enabled"),
+                            56)))
+                .child(
+                    createSettingRow(
+                        IKey.lang("gt.vajra.gui.right_click_breaking"),
+                        createButton(
+                            LinkedBoolValue.of(rightClick, false),
+                            IKey.lang("GT5U.gui.button.feature_disabled"),
+                            56),
+                        createButton(
+                            LinkedBoolValue.of(rightClick, true),
                             IKey.lang("GT5U.gui.button.feature_enabled"),
                             56))));
 
