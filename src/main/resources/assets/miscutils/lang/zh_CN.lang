@@ -3299,8 +3299,8 @@ item.BasicGenericChemItem.15.name=无尽突变催化剂
 # Multiblocks
 gt.blockmachines.chemicalplant.controller.tier.single.name=埃克森美孚化工厂
 gt.blockmachines.cyclotron.tier.single.name=COMET-紧凑式回旋加速器
-gt.blockmachines.fusioncomputer.tier.09.name=核聚变反应堆控制电脑 MK-IV
-gt.blockmachines.fusioncomputer.tier.10.name=核聚变反应堆控制电脑 MK-V
+gt.blockmachines.fusioncomputer.tier.09.name=核聚变反应堆控制电脑 Mk-IV
+gt.blockmachines.fusioncomputer.tier.10.name=核聚变反应堆控制电脑 Mk-V
 gt.blockmachines.gtplusplus.autocrafter.multi.name=大规模自动装配机v1.01
 gt.blockmachines.gtpp.multimachine.isamill.name=艾萨研磨机
 gt.blockmachines.gtpp.multimachine.replicator.name=大型元素复制机

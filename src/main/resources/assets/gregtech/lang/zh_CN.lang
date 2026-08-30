@@ -664,11 +664,11 @@ achievement.gt.blockmachines.hatch.dynamo.tier.11.desc=捡起此物品以在NEI�
 achievement.gt.blockmachines.hatch.dynamo.tier.12=动力仓(UMV)
 achievement.gt.blockmachines.hatch.dynamo.tier.12.desc=捡起此物品以在NEI内解锁该合成表
 
-achievement.gt.blockmachines.fusioncomputer.tier.06=核聚变反应堆控制电脑Mk I
+achievement.gt.blockmachines.fusioncomputer.tier.06=核聚变反应堆控制电脑Mk-I
 achievement.gt.blockmachines.fusioncomputer.tier.06.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.fusioncomputer.tier.07=核聚变反应堆控制电脑Mk II
+achievement.gt.blockmachines.fusioncomputer.tier.07=核聚变反应堆控制电脑Mk-II
 achievement.gt.blockmachines.fusioncomputer.tier.07.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.fusioncomputer.tier.08=核聚变反应堆控制电脑Mk III
+achievement.gt.blockmachines.fusioncomputer.tier.08=核聚变反应堆控制电脑Mk-III
 achievement.gt.blockmachines.fusioncomputer.tier.08.desc=捡起此物品以在NEI内解锁该合成表
 
 achievement.gt.metaitem.03.32072=神经元处理器
@@ -1152,8 +1152,8 @@ GT5U.tooltip.fluid.stat.liquid=液体
 # Achievements
 
 # 4/2/19
-achievement.gt.blockmachines.fusioncomputer.tier.09=聚变计算机MK IV
-achievement.gtplusplus.blockcasings.3.12=聚变框架MK III
+achievement.gt.blockmachines.fusioncomputer.tier.09=聚变计算机Mk-IV
+achievement.gtplusplus.blockcasings.3.12=聚变框架Mk-III
 achievement.gtplusplus.blockcasings.3.13=进阶磁力遏制!
 achievement.gtplusplus.blockcasings.3.15=量子遏制!
 achievement.gt.blockmachines.fusioncomputer.tier.09.desc=[AL]捡起此物品以在NEI内解锁该合成表
@@ -1185,10 +1185,10 @@ achievement.MU-metaitem.01.32070.desc=[AL]捡起此物品以在NEI内解锁该�
 achievement.MU-metaitem.01.32110.desc=[AL]捡起此物品以在NEI内解锁该合成表
 achievement.item.personalHealingDevice=食物是为了笨蛋
 achievement.item.personalHealingDevice.desc=[AL]你已经升级到纳米，未来就是你的
-achievement.item.GTPP.BattPack.06.name=充电工具包Mk I
-achievement.item.GTPP.BattPack.07.name=充电工具包Mk II
-achievement.item.GTPP.BattPack.08.name=充电工具包Mk III
-achievement.item.GTPP.BattPack.09.name=充电工具包Mk IV
+achievement.item.GTPP.BattPack.06.name=充电工具包Mk-I
+achievement.item.GTPP.BattPack.07.name=充电工具包Mk-II
+achievement.item.GTPP.BattPack.08.name=充电工具包Mk-III
+achievement.item.GTPP.BattPack.09.name=充电工具包Mk-IV
 achievement.item.GTPP.BattPack.06.name.desc=[AL]捡起此物品以在NEI内解锁该合成表
 achievement.item.GTPP.BattPack.07.name.desc=[AL]捡起此物品以在NEI内解锁该合成表
 achievement.item.GTPP.BattPack.08.name.desc=[AL]捡起此物品以在NEI内解锁该合成表
@@ -1298,9 +1298,9 @@ gt.blockmachines.algaefarm.controller.tier.single.name=藻类农场
 gt.blockmachines.amazonprime.controller.tier.single.name=亚马逊仓库
 gt.blockmachines.electricimplosioncompressor.name=电动聚爆压缩机
 gt.blockmachines.frf.name=硅岩燃料精炼厂
-gt.blockmachines.fusioncomputer.tier.06.name=核聚变反应堆控制电脑 MK-I
-gt.blockmachines.fusioncomputer.tier.07.name=核聚变反应堆控制电脑 MK-II
-gt.blockmachines.fusioncomputer.tier.08.name=核聚变反应堆控制电脑 MK-III
+gt.blockmachines.fusioncomputer.tier.06.name=核聚变反应堆控制电脑 Mk-I
+gt.blockmachines.fusioncomputer.tier.07.name=核聚变反应堆控制电脑 Mk-II
+gt.blockmachines.fusioncomputer.tier.08.name=核聚变反应堆控制电脑 Mk-III
 gt.blockmachines.gtplusplus.thermal.boiler.name=地热锅炉
 gt.blockmachines.gtpp.multimachine.flotationcell.name=工业浮选机
 gt.blockmachines.gtpp.multimachine.steam.alloysmelter.name=大型蒸汽合金炉

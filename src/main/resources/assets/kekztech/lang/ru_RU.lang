@@ -178,6 +178,6 @@ kekztech.multiblock.TankTFFT.footer1=Воздушные зазоры не доп
 kekztech.multiblock.TankTFFT.footer2=Разместите жидкостную шину хранения на Мульти I/O шлюзе, чтобы работать со всеми жидкостями одновременно 
 
 # Multiblocks
-gt.blockmachines.multimachine.fuelcellmk1.name=Твердооксидная топливная ячейка Mk I
-gt.blockmachines.multimachine.fuelcellmk2.name=Твердооксидная топливная ячейка Mk II
+gt.blockmachines.multimachine.fuelcellmk1.name=Твердооксидная топливная ячейка Mk-I
+gt.blockmachines.multimachine.fuelcellmk2.name=Твердооксидная топливная ячейка Mk-II
 gt.blockmachines.multimachine.supercapacitor.name=Лазуротроновый суперконденсатор
