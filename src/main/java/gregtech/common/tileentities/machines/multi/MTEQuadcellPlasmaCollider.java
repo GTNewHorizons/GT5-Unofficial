@@ -25,7 +25,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -569,6 +568,13 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         return start + t * (end - start);
     }
 
+    // Relative offsets for the various renderers
+    private final int[] cubeOff = new int[] { 0, -3, -3 };
+    private final int[] ringUpOff = new int[] { 0, -11, 3 };
+    private final int[] ringRightOff = new int[] { 8, -3, 3 };
+    private final int[] ringDownOff = new int[] { 0, 5, 3 };
+    private final int[] ringLeftOff = new int[] { -8, -3, 3 };
+
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         if (!shouldRender || !getBaseMetaTileEntity().isActive()) {
@@ -587,9 +593,10 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         GL11.glPushMatrix();
-        Vec3 abc = this.getExtendedFacing()
-            .getWorldOffset(Vec3.createVectorHelper(0, -3, 3));
-        GL11.glTranslated(abc.xCoord + x + 0.5, abc.yCoord + y + 0.5, abc.zCoord + z + 0.5);
+        int[] offRel = new int[3];
+        this.getExtendedFacing()
+            .getWorldOffset(cubeOff, offRel);
+        GL11.glTranslated(offRel[0] + x + 0.5, offRel[1] + y + 0.5, offRel[2] + z + 0.5);
 
         drawCubes(false, timeSinceLastTick, world);
         BloomShader.getInstance()
@@ -609,7 +616,6 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
     private void drawRings(double x, double y, double z) {
         // this order is so that force and runite can face each other. for symmetry initially
         ExtendedFacing ext = getExtendedFacing();
-        int[] off = new int[3];
         int[] offRel = new int[3];
 
         // get relative z-axis to rotate around
@@ -636,10 +642,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         // Up
         if (forceOn) {
             GL11.glPushMatrix();
-            off[0] = 0;
-            off[1] = -11; // up 11
-            off[2] = 3; // back 3
-            ext.getWorldOffset(off, offRel);
+            ext.getWorldOffset(ringUpOff, offRel);
             GL11.glTranslated(x + offRel[0] + 0.5f, y + offRel[1] + 0.5f, z + offRel[2] + 0.5f);
             if (spin) GL11.glRotated(90, sX, sY, sZ);
             drawRing(PlasmaType.FORCE);
@@ -649,10 +652,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         // Right
         if (celestialOn) {
             GL11.glPushMatrix();
-            off[0] = 8; // right 8
-            off[1] = -3; // up 3
-            off[2] = 3; // back 3
-            ext.getWorldOffset(off, offRel);
+            ext.getWorldOffset(ringRightOff, offRel);
             GL11.glTranslated(x + offRel[0] + 0.5f, y + offRel[1] + 0.5f, z + offRel[2] + 0.5f);
             GL11.glRotated(90, rotX, rotY, rotZ);
             if (spin) GL11.glRotated(90, sX, sY, sZ);
@@ -663,10 +663,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         // Down
         if (runiteOn) {
             GL11.glPushMatrix();
-            off[0] = 0;
-            off[1] = 5; // down 5
-            off[2] = 3; // back 3
-            ext.getWorldOffset(off, offRel);
+            ext.getWorldOffset(ringDownOff, offRel);
             GL11.glTranslated(x + offRel[0] + 0.5f, y + offRel[1] + 0.5f, z + offRel[2] + 0.5f);
             GL11.glRotated(180, rotX, rotY, rotZ);
             if (spin) GL11.glRotated(90, sX, sY, sZ);
@@ -677,10 +674,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         // Left
         if (orikalkumOn) {
             GL11.glPushMatrix();
-            off[0] = -8; // left 8
-            off[1] = -3; // up 3
-            off[2] = 3; // back 3
-            ext.getWorldOffset(off, offRel);
+            ext.getWorldOffset(ringLeftOff, offRel);
             GL11.glTranslated(x + offRel[0] + 0.5f, y + offRel[1] + 0.5f, z + offRel[2] + 0.5f);
             GL11.glRotated(-90, rotX, rotY, rotZ);
             if (spin) GL11.glRotated(90, sX, sY, sZ);
