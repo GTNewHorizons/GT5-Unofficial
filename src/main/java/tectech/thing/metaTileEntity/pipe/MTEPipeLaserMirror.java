@@ -8,7 +8,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -19,10 +18,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import tectech.TecTech;
-import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
-import tectech.mechanics.pipe.PipeActivityMessage;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 import tectech.util.CommonValues;
 
@@ -31,8 +27,6 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
     private static IIconContainer EMpipe;
     private final ForgeDirection[] connectedSides = { null, null };
     private ForgeDirection chainedFrontFacing = null;
-
-    private boolean active;
 
     public MTEPipeLaserMirror(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -71,58 +65,40 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if ((aTick & 31) == 31) {
-                if (TecTech.RANDOM.nextInt(15) == 0) {
-                    NetworkDispatcher.INSTANCE.sendToAllAround(
-                        new PipeActivityMessage.PipeActivityData(this),
-                        new NetworkRegistry.TargetPoint(
-                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                            aBaseMetaTileEntity.getXCoord(),
-                            aBaseMetaTileEntity.getYCoord(),
-                            aBaseMetaTileEntity.getZCoord(),
-                            256));
+    public void updateSelf(IGregTechTileEntity aBaseMetaTileEntity) {
+        mConnections = 0;
+        connectedSides[0] = null;
+        connectedSides[1] = null;
+        connectionCount = 0;
+        if (aBaseMetaTileEntity.getColorization() < 0) {
+            return;
+        }
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            // We only allow a single bend
+            if (connectionCount < 2) {
+                final ForgeDirection oppositeSide = side.getOpposite();
+                TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
+                if (tTileEntity instanceof IColoredTileEntity) {
+                    byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
+                    if (tColor != aBaseMetaTileEntity.getColorization()) {
+                        continue;
+                    }
                 }
-                if (active) {
-                    active = false;
-                }
-                mConnections = 0;
-                connectedSides[0] = null;
-                connectedSides[1] = null;
-                connectionCount = 0;
-                if (aBaseMetaTileEntity.getColorization() < 0) {
-                    return;
-                }
-                for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                    // We only allow a single bend
-                    if (connectionCount < 2) {
-                        final ForgeDirection oppositeSide = side.getOpposite();
-                        TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
-                        if (tTileEntity instanceof IColoredTileEntity) {
-                            byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
-                            if (tColor != aBaseMetaTileEntity.getColorization()) {
-                                continue;
-                            }
-                        }
-                        if (tTileEntity instanceof IConnectsToEnergyTunnel
-                            && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {
+                if (tTileEntity instanceof IConnectsToEnergyTunnel
+                    && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {
+                    mConnections |= 1 << side.ordinal();
+                    connectedSides[connectionCount] = side;
+                    connectionCount++;
+                } else if (tTileEntity instanceof IGregTechTileEntity
+                    && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
+                        if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
+                            .canConnect(oppositeSide)) {
                             mConnections |= 1 << side.ordinal();
                             connectedSides[connectionCount] = side;
                             connectionCount++;
-                        } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity)
-                            .getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
-                                if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
-                                    .canConnect(oppositeSide)) {
-                                    mConnections |= 1 << side.ordinal();
-                                    connectedSides[connectionCount] = side;
-                                    connectionCount++;
-                                }
-                            }
+                        }
                     }
-                }
             }
-
         }
     }
 
@@ -136,7 +112,6 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
         ForgeDirection a = connectedSides[0];
         ForgeDirection b = connectedSides[1];
 
-        // Race condition of updateNetwork() and onPostTick()
         if (a == null || b == null) {
             return null;
         }
@@ -167,6 +142,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
             if (direction == null) {
                 return null;
             }
+            markUsed();
             ForgeDirection opposite = direction.getOpposite();
             for (short dist = 1; dist < 1000; dist++) {
 
