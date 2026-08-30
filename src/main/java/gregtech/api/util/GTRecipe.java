@@ -494,7 +494,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     /**
      * @return Computes a (cached) array of all input items, combined by type into stacks. Do not mutate.
      */
-    private @NotNull RecipeItemInput @NotNull [] getCachedCombinedItemInputs() {
+    public @NotNull RecipeItemInput @NotNull [] getCachedCombinedItemInputs() {
         if (mergedInputCache != null) {
             if (mInputs != inputsAtCacheTime) {
                 throw new IllegalStateException(
