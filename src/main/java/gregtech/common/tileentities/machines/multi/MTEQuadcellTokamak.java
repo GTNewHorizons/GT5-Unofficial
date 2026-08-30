@@ -12,8 +12,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_GLOW_ON;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_OFF;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOKAMAK_ON;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -27,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -45,7 +44,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -66,6 +64,7 @@ import gregtech.common.gui.modularui.multiblock.MTEQuadcellTokamakGui;
 import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
+import gtnhlanth.common.register.LanthItemList;
 import io.netty.buffer.ByteBuf;
 
 public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadcellTokamak>
@@ -73,8 +72,8 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private final XSTR random = XSTR.XSTR_INSTANCE;
-    private static final int WIDTH_OFFSET = 11;
-    private static final int HEIGHT_OFFSET = 6;
+    private static final int WIDTH_OFFSET = 9;
+    private static final int HEIGHT_OFFSET = 12;
     private static final int DEPTH_OFFSET = 1;
 
     // How many cycles should it take between outputs of residue
@@ -102,37 +101,35 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
-            transpose(new String[][]{
-                {"                       ","          BBB          ","          BBB          "," BB     BBBIBBB     BB ","BIIB    BIIIIIB    BIIB"," BB     BBBIBBB     BB ","          BBB          ","          BBB          ","                       "},
-                {"                       ","                       ","                       ","B                     B","B C      C I C      C B","B                     B","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","B   E  G       F  D   B","B C E  G C I C F  D C B","B   E  G       F  D   B","                       ","                       ","                       "},
-                {"                       ","                       ","    E  G       F  D    ","B   E  G   B   F  D   B","BBCCCCCCCCBIBCCCCCCCCBB","B   E  G   B   F  D   B","    E  G       F  D    ","                       ","                       "},
-                {"                       ","    E  G       F  D    ","B   E  G   B   F  D   B","IB        HHH        BI","IC       BHIHB       CI","IB        HHH        BI","B   E  G   B   F  D   B","    E  G       F  D    ","                       "},
-                {"    E  G       F  D    ","B   E  G   B   F  D   B","IB        HHH        BI","BC       HHHHH       CB","BB       HHIHH       BB","BC       HHHHH       CB","IB        HHH        BI","B   E  G   B   F  D   B","    E  G       F  D    "},
-                {"    E  G       F  D    ","BBCCCCCCCCB~BCCCCCCCCBB","IC       BHHHB       CI","BB       HHHHH       BB","BIAAAAAAAIIIIIAAAAAAAIB","BB       HHHHH       BB","IC       BHHHB       CI","BBCCCCCCCCBBBCCCCCCCCBB","    E  G       F  D    "},
-                {"    E  G       F  D    ","B   E  G   B   F  D   B","IB        HHH        BI","BC       HHHHH       CB","BB       HHIHH       BB","BC       HHHHH       CB","IB        HHH        BI","B   E  G   B   F  D   B","    E  G       F  D    "},
-                {"                       ","    E  G       F  D    ","B   E  G   B   F  D   B","IB        HHH        BI","IC       BHIHB       CI","IB        HHH        BI","B   E  G   B   F  D   B","    E  G       F  D    ","                       "},
-                {"                       ","                       ","    E  G       F  D    ","B   E  G   B   F  D   B","BBCCCCCCCCBIBCCCCCCCCBB","B   E  G   B   F  D   B","    E  G       F  D    ","                       ","                       "},
-                {"                       ","                       ","                       ","B   E  G       F  D   B","B C E  G C I C F  D C B","B   E  G       F  D   B","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","B                     B","B C      C I C      C B","B                     B","                       ","                       ","                       "},
-                {"                       ","          BBB          ","          BBB          "," BB     BBBIBBB     BB ","BIIB    BIIIIIB    BIIB"," BB     BBBIBBB     BB ","          BBB          ","          BBB          ","                       "},
-
-            }))
+           transpose(new String[][]{
+               {"                   ","                   ","        BBB        ","       BBBBB       ","       BBBBB       ","       BBBBB       ","        BBB        ","                   ","                   "},
+               {"                   ","        DDD        ","       D   D       ","      D     D      ","      D  C  D      ","      D     D      ","       D   D       ","        DDD        ","                   "},
+               {"                   ","                   ","        BBB        ","       B   B       ","       B   B       ","       B   B       ","        BBB        ","                   ","                   "},
+               {"                   ","                   ","         B         ","        BBB        ","       BB BB       ","        BBB        ","         B         ","                   ","                   "},
+               {"                   ","                   ","                   ","         C         ","        C C        ","         C         ","                   ","                   ","                   "},
+               {"                   ","                   ","         B         ","        BCB        ","       BC CB       ","        BCB        ","         B         ","                   ","                   "},
+               {"                   ","        BBB        ","       BBABB       "," D    BBAAABB    D "," D    BAA AAB    D "," D    BBAAABB    D ","       BBABB       ","        BBB        ","                   "},
+               {"         D         ","       DD DD       "," D    B     B    D ","B B   BA   AB   B B","B BB BA     AB BB B","B B   BA   AB   B B"," D    B     B    D ","       DD DD       ","         D         "},
+               {"        DDD        "," D    DD   DD    D ","B B   B     B   B B","B  B BA     AB B  B","B  BCCA     ACCB  B","B  B BA     AB B  B","B B   B     B   B B"," D    DD   DD    D ","        DDD        "},
+               {"       DDDDD       "," D    D     D    D ","B BB BA     AB BB B","B  BCCA     ACCB  B","BC               CB","B  BCCA     ACCB  B","B BB BA     AB BB B"," D    D     D    D ","       DDDDD       "},
+               {"        DDD        "," D    DD   DD    D ","B B   B     B   B B","B  B BA     AB B  B","B  BCCA     ACCB  B","B  B BA     AB B  B","B B   B     B   B B"," D    DD   DD    D ","        DDD        "},
+               {"         D         ","       DD DD       "," D    B     B    D ","B B   BA   AB   B B","B BB BA     AB BB B","B B   BA   AB   B B"," D    B     B    D ","       DD DD       ","         D         "},
+               {"                   ","        B~B        ","       BBABB       "," D    BBAAABB    D "," D    BAA AAB    D "," D    BBAAABB    D ","       BBABB       ","        BBB        ","                   "},
+               {"                   ","                   ","         B         ","        BCB        ","       BC CB       ","        BCB        ","         B         ","                   ","                   "},
+               {"                   ","                   ","                   ","         C         ","        C C        ","         C         ","                   ","                   ","                   "},
+               {"                   ","                   ","         B         ","        BBB        ","       BB BB       ","        BBB        ","         B         ","                   ","                   "},
+               {"                   ","                   ","        BBB        ","       B   B       ","       B   B       ","       B   B       ","        BBB        ","                   ","                   "},
+               {"                   ","        DDD        ","       D   D       ","      D     D      ","      D  C  D      ","      D     D      ","       D   D       ","        DDD        ","                   "},
+               {"                   ","                   ","        BBB        ","       BBBBB       ","       BBBBB       ","       BBBBB       ","        BBB        ","                   ","                   "}
+           }))
+        .addElement('A', Casings.SuperconductingCoilBlock.asElement())
+        .addElement('B',buildHatchAdder(MTEQuadcellTokamak.class).atLeast(Dynamo.or(ExoticDynamo), InputHatch, OutputHatch)
+                    .casingIndex(Casings.PressureContainmentCasing.textureId)
+                    .hint(1)
+                    .buildAndChain(Casings.PressureContainmentCasing.asElement()))
+        .addElement('C', Casings.InsulatedFluidPipeCasing.asElement())
+        .addElement('D', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
         //spotless:on
-        .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
-        .addElement(
-            'B',
-            buildHatchAdder(MTEQuadcellTokamak.class).atLeast(Dynamo.or(ExoticDynamo), InputHatch, OutputHatch)
-                .casingIndex(Casings.AdvancedIridiumPlatedMachineCasing.textureId)
-                .hint(1)
-                .buildAndChain(Casings.AdvancedIridiumPlatedMachineCasing.asElement()))
-        .addElement('C', ofFrame(Materials.Naquadah))
-        .addElement('D', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
-        .addElement('E', ofBlock(GregTechAPI.sBlockTintedGlass, 5))
-        .addElement('F', ofBlock(GregTechAPI.sBlockTintedGlass, 7))
-        .addElement('G', ofBlock(GregTechAPI.sBlockTintedGlass, 11))
-        .addElement('H', ofSheetMetal(Materials.Americium))
-        .addElement('I', ofSheetMetal(Materials.Naquadria))
         .build();
 
     public MTEQuadcellTokamak(final int aID, final String aName, final String aNameRegional) {
@@ -536,13 +533,12 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
 
         GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-        GL11.glTranslated(x + 2, y + 10, z + 2);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_LIGHT0);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glEnable(GL11.GL_BLEND);
+        Vec3 abc = this.getExtendedFacing()
+            .getWorldOffset(Vec3.createVectorHelper(0, -3, 3));
+        GL11.glTranslated(abc.xCoord + x + 0.5, abc.yCoord + y + 0.5, abc.zCoord + z + 0.5);
+
+        GL11.glEnable(GL11.GL_DEPTH_TEST | GL11.GL_LIGHT0 | GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_LIGHTING | GL11.GL_ALPHA_TEST | GL11.GL_CULL_FACE);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         drawCube(PlasmaType.FORCE, world, false, timeSinceLastTick, 1, 1, -1, 1, 1.3, 1);
@@ -578,6 +574,7 @@ public class MTEQuadcellTokamak extends MTEExtendedPowerMultiBlockBase<MTEQuadce
                 * world.getWorldInfo()
                     .getWorldTotalTime()
                 + timeSinceLastTick));
+
         GL11.glRotated(rotationTimer, xMod, yMod, zMod);
 
         Tessellator tess = Tessellator.instance;
