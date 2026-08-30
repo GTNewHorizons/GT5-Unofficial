@@ -23,7 +23,9 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -689,30 +691,15 @@ public class SingleRecipeCheck {
                 int cost = entry.getValue() - afterItems.getOrDefault(entry.getKey(), 0);
                 if (cost > 0) {
                     itemCostBuilder.put(entry.getKey(), cost);
-                } else {
-                    // Check if somehow an item not meant to be consumed was consumed
-                    // We don't want that possibility here
-                    if (Objects.equals(entry.getValue(), afterItems.getOrDefault(entry.getKey(), -1))) {
-                        // This is either a non-consumable or an item not used in the recipe
-                        // Filter for non-consumables based on oreDictAlt first
-                        if (this.recipe instanceof GTRecipe.GTRecipe_WithAlt recipeWithAlt) {
-                            if (Arrays.stream(recipeWithAlt.mOreDictAlt)
-                                .filter(Objects::nonNull)
-                                .flatMap(Arrays::stream)
-                                .anyMatch(
-                                    aStack -> aStack != null && entry.getKey()
-                                        .matches(aStack))) {
-                                itemCostBuilder.put(entry.getKey(), cost);
-                            }
-                        }
-                        // Filter for non-consumables that have no alts
-                        else if (Arrays.stream(this.recipe.mInputs)
-                            .anyMatch(
-                                aStack -> entry.getKey()
-                                    .matches(aStack))) {
-                                        itemCostBuilder.put(entry.getKey(), cost);
-                                    }
-                        // Anything left here isn't a non-consumable
+                } else if (cost == 0) {
+                    // Item is not consumed, but may be a non-consumable
+                    ItemStack stack = entry.getKey()
+                        .getItemStack();
+                    ItemData data = GTOreDictUnificator.getItemData(stack);
+                    boolean matchesAnyInput = Arrays.stream(this.recipe.getCachedCombinedItemInputs())
+                        .anyMatch(recipeInput -> recipeInput.matchesRecipe(data, stack));
+                    if (matchesAnyInput) {
+                        itemCostBuilder.put(entry.getKey(), cost);
                     }
                 }
             }
