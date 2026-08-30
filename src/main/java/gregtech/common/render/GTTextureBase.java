@@ -10,10 +10,11 @@ public abstract class GTTextureBase implements ITexture {
 
     protected final boolean beginDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
         final Tessellator tess = Tessellator.instance;
-        if (aRenderer.useInventoryTint && !((TesselatorAccessor) tess).gt5u$isDrawing()) {
-            tess.startDrawingQuads();
+        if (aRenderer.useInventoryTint) {
+            final boolean startedDrawing = !((TesselatorAccessor) tess).gt5u$isDrawing();
+            if (startedDrawing) tess.startDrawingQuads();
             tess.setNormal(aNormalX, aNormalY, aNormalZ);
-            return true;
+            return startedDrawing;
         }
         return false;
     }
