@@ -62,6 +62,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.MTEQuadcellPlasmaColliderGui;
 import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.multi.foundry.FoundryRenderUtils;
 import gtPlusPlus.core.material.Material;
@@ -495,8 +496,8 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     @Override
-    protected @NotNull gregtech.common.gui.modularui.multiblock.MTEQuadcellPlasmaCollider getGui() {
-        return new gregtech.common.gui.modularui.multiblock.MTEQuadcellPlasmaCollider(this);
+    protected @NotNull MTEQuadcellPlasmaColliderGui getGui() {
+        return new MTEQuadcellPlasmaColliderGui(this);
     }
 
     public void setForceDR(int val) {

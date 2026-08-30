@@ -35,10 +35,11 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.sync.Predicates;
 import gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider.PlasmaType;
 
-public class MTEQuadcellPlasmaCollider
+public class MTEQuadcellPlasmaColliderGui
     extends MTEMultiBlockBaseGui<gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider> {
 
-    public MTEQuadcellPlasmaCollider(gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider multiblock) {
+    public MTEQuadcellPlasmaColliderGui(
+        gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider multiblock) {
         super(multiblock);
     }
 
