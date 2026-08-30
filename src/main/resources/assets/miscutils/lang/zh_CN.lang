@@ -155,7 +155,6 @@ item.backpackSilver.name=银色背包
 item.backpackGray.name=灰色背包
 item.backpackBlack.name=黑色背包
 item.backpackWhite.name=白色背包
-item.itemBlueprint.name=蓝图[无用]
 item.itemGemShards.name=钻石碎片
 item.itemHalfCompleteCasings.name=半成品机械方块
 item.itemSulfuricPotion.name=喷溅型 硫酸
@@ -3019,8 +3018,6 @@ item.BasicAgrichemItem.23.name=洁净铝混合物
 
 //Added 12/12/19
 
-item.BasicGenericChemItem.0.name=红色金属催化剂
-item.BasicGenericChemItem.1.name=黄色金属催化剂
 item.BasicGenericChemItem.2.name=蓝色金属催化剂
 item.BasicGenericChemItem.3.name=橙色金属催化剂
 item.BasicGenericChemItem.4.name=紫色金属催化剂

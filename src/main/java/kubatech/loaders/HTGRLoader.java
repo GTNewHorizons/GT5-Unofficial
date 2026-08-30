@@ -208,7 +208,7 @@ public class HTGRLoader {
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
                     MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1),
                     MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 1) })
-            .metadata(FUEL_MODIFICATOR, Triple.of(1d, 1.1d, 1.1d))
+            .metadata(FUEL_MODIFICATOR, Triple.of(1.1d, 1.1d, 1.1d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -350,7 +350,7 @@ public class HTGRLoader {
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
                     MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1),
                     MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 1) })
-            .metadata(FUEL_MODIFICATOR, Triple.of(2d, 1.2d, 1.1d))
+            .metadata(FUEL_MODIFICATOR, Triple.of(0.65d, 1.2d, 1.1d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);

@@ -808,9 +808,9 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_LuV.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Chrome), 'C',
-                new ItemStack(Blocks.crafting_table), 'I', Circuits.LuV.getIngredient(), 'H', ItemList.Hull_LuV, 'R',
-                ItemList.Robot_Arm_LuV });
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.RhodiumPlatedPalladium),
+                'C', new ItemStack(Blocks.crafting_table), 'I', Circuits.LuV.getIngredient(), 'H', ItemList.Hull_LuV,
+                'R', ItemList.Robot_Arm_LuV });
 
         // ZPM
         GTModHandler.addCraftingRecipe(

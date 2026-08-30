@@ -316,10 +316,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Dynamo_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            2))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UEV.get(1))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 1 * INGOTS))
@@ -331,10 +328,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Dynamo_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            2))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UIV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 1 * INGOTS))
                     .duration(5 * SECONDS)
@@ -451,10 +445,7 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_UIV_UEV.get(1),
                         CustomItemList.eM_dynamoMulti4_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            4))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UEV.get(1))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 4 * INGOTS))
@@ -467,10 +458,7 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_UMV_UIV.get(1),
                         CustomItemList.eM_dynamoMulti4_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            4))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UIV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 4 * INGOTS))
                     .duration(10 * SECONDS)
@@ -589,10 +577,7 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UIV_UEV.get(1),
                         CustomItemList.eM_dynamoMulti16_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            6))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UEV.get(1))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 16 * INGOTS))
@@ -605,10 +590,7 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UMV_UIV.get(1),
                         CustomItemList.eM_dynamoMulti16_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            6))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UIV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 16 * INGOTS))
                     .duration(20 * SECONDS)
@@ -673,10 +655,7 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UIV_UEV.get(4),
                         CustomItemList.eM_dynamoMulti64_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            8))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 8))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UEV.get(1))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 64 * INGOTS))
@@ -689,10 +668,7 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UMV_UIV.get(4),
                         CustomItemList.eM_dynamoMulti64_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            8))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 8))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UIV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 64 * INGOTS))
                     .duration(40 * SECONDS)
@@ -808,10 +784,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Energy_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            2))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UEV.get(1))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 1 * INGOTS))
@@ -823,10 +796,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Energy_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            2))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UIV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 1 * INGOTS))
                     .duration(5 * SECONDS)
@@ -943,10 +913,7 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_UIV_UEV.get(1),
                         CustomItemList.eM_energyMulti4_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            4))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UEV.get(1))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 4 * INGOTS))
@@ -959,10 +926,7 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_UMV_UIV.get(1),
                         CustomItemList.eM_energyMulti4_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            4))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UIV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 4 * INGOTS))
                     .duration(10 * SECONDS)
@@ -1081,10 +1045,7 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UIV_UEV.get(1),
                         CustomItemList.eM_energyMulti16_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            6))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UEV.get(1))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 16 * INGOTS))
@@ -1097,10 +1058,7 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UMV_UIV.get(1),
                         CustomItemList.eM_energyMulti16_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            6))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UIV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 16 * INGOTS))
                     .duration(20 * SECONDS)
@@ -1217,13 +1175,11 @@ public class Assembler implements Runnable {
                 ItemList.Transformer_UIV_UEV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
                 Circuits.UEV.get(2),
-                GTOreDictUnificator
-                    .get(OrePrefixes.plate, BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium), 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4),
                 new ItemStack(bw_realglas, 2, 7))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UEV.get(1))
-            .fluidInputs(
-                MaterialUtils.molten(BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium), 2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -1233,13 +1189,11 @@ public class Assembler implements Runnable {
                 ItemList.Transformer_UMV_UIV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
                 Circuits.UIV.get(2),
-                GTOreDictUnificator
-                    .get(OrePrefixes.plate, BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium), 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 4),
                 new ItemStack(bw_realglas, 2, 8))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UIV.get(1))
-            .fluidInputs(
-                MaterialUtils.molten(BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium), 2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);

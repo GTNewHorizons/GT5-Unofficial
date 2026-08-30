@@ -59,6 +59,7 @@ import gregtech.common.misc.workarea.IWorkAreaProvider;
 import gregtech.common.misc.workarea.WorkAreaProviderRegistry;
 import gregtech.common.ores.OreManager;
 import gregtech.crossmod.visualprospecting.VisualProspectingDatabase;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.longs.LongList;
@@ -169,45 +170,29 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = new NBTTagCompound();
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(chunkRadiusConfig);
+        buffer.writeBoolean(showWorkArea);
+        buffer.writeInt(workState.ordinal());
 
-        data.setInteger(NBT_CHUNK_RADIUS_CONFIG, chunkRadiusConfig);
-        data.setBoolean(NBT_SHOW_WORK_AREA, showWorkArea);
-
-        data.setInteger(NBT_WORK_STATE, workState.ordinal());
-        data.setBoolean(NBT_HAS_CURRENT_WORK_CHUNK, mCurrentChunk != null);
-
+        buffer.writeBoolean(mCurrentChunk != null);
         if (mCurrentChunk != null) {
-            data.setInteger(NBT_CURRENT_WORK_CHUNK_X, mCurrentChunk.chunkXPos);
-            data.setInteger(NBT_CURRENT_WORK_CHUNK_Z, mCurrentChunk.chunkZPos);
+            buffer.writeInt(mCurrentChunk.chunkXPos);
+            buffer.writeInt(mCurrentChunk.chunkZPos);
         }
-
-        return data;
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        if (data == null) {
-            return;
-        }
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        chunkRadiusConfig = buffer.readInt();
+        showWorkArea = buffer.readBoolean();
+        setWorkState(WorkState.fromOrdinal(buffer.readInt()));
 
-        if (data.hasKey(NBT_CHUNK_RADIUS_CONFIG)) {
-            chunkRadiusConfig = data.getInteger(NBT_CHUNK_RADIUS_CONFIG);
-        }
-
-        if (data.hasKey(NBT_SHOW_WORK_AREA)) {
-            showWorkArea = data.getBoolean(NBT_SHOW_WORK_AREA);
-        }
-
-        if (data.hasKey(NBT_WORK_STATE)) {
-            setWorkState(WorkState.fromOrdinal(data.getInteger(NBT_WORK_STATE)));
-        }
-
-        if (data.getBoolean(NBT_HAS_CURRENT_WORK_CHUNK)) {
-            mCurrentChunk = new ChunkCoordIntPair(
-                data.getInteger(NBT_CURRENT_WORK_CHUNK_X),
-                data.getInteger(NBT_CURRENT_WORK_CHUNK_Z));
+        boolean hasWorkChunk = buffer.readBoolean();
+        if (hasWorkChunk) {
+            mCurrentChunk = new ChunkCoordIntPair(buffer.readInt(), buffer.readInt());
         } else {
             mCurrentChunk = null;
         }

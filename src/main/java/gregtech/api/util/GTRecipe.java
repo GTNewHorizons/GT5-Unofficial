@@ -1091,7 +1091,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         private static void checkInvalidRecipes() {
             int invalidCount = 0;
-            GT_FML_LOGGER.error("Started assline validation");
+            GT_FML_LOGGER.info("Started assline validation");
             for (RecipeAssemblyLine recipe : sAssemblylineRecipes) {
                 if (recipe.getPersistentHash() == 0) {
                     invalidCount++;

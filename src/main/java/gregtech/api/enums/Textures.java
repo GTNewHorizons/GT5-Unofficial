@@ -50,7 +50,11 @@ public class Textures {
         RENDERING_ERROR(null, null),
         VOID(InvisibleIcon.INVISIBLE_ICON, InvisibleIcon.INVISIBLE_ICON);
 
-        IIcon mIcon, mOverlay;
+        // Atlas sprites are replaced during stitching
+        // RenderInit clears this after the block atlas rebuilds
+        private static IIcon missingIcon;
+
+        private final IIcon mIcon, mOverlay;
 
         GlobalIcons(IIcon icon, IIcon overlay) {
             mIcon = icon;
@@ -59,14 +63,18 @@ public class Textures {
 
         @Override
         public IIcon getIcon() {
-            if (mIcon == null) mIcon = getMissingNo();
+            if (mIcon == null) return getMissingNo();
             return mIcon;
         }
 
         @Override
         public IIcon getOverlayIcon() {
-            if (mOverlay == null) mOverlay = getMissingNo();
+            if (mOverlay == null) return getMissingNo();
             return mOverlay;
+        }
+
+        public static void invalidateMissingIconCache() {
+            missingIcon = null;
         }
 
         @Override
@@ -75,9 +83,12 @@ public class Textures {
         }
 
         private static IIcon getMissingNo() {
-            return ((TextureMap) Minecraft.getMinecraft()
-                .getTextureManager()
-                .getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
+            if (missingIcon == null) {
+                missingIcon = ((TextureMap) Minecraft.getMinecraft()
+                    .getTextureManager()
+                    .getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
+            }
+            return missingIcon;
         }
     }
 

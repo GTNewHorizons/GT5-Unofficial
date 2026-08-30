@@ -74,7 +74,7 @@ public class CraftingRecipes implements Runnable {
             Materials.RhodiumPlatedPalladium, // LuV
             Materials.Iridium, // ZPM
             Materials.Osmium, // UV
-            Materials.Naquadah // UHV
+            Materials.Neutronium // UHV
         };
 
         ItemStack[] bats = { ItemList.Battery_Hull_LV.get(1L), ItemList.Battery_Hull_MV.get(1L),
@@ -459,8 +459,9 @@ public class CraftingRecipes implements Runnable {
             new MTEBioLab(BioLab_LuV.ID, "bw.biolabLuV", StatCollector.translateToLocal("tile.biolab.name"), 6)
                 .getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PFP", "WCW", "OGO", 'F', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Chrome, 1L),
-                'W', GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.HSSG, 1L), 'P',
+            new Object[] { "PFP", "WCW", "OGO", 'F',
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.RhodiumPlatedPalladium, 1L), 'W',
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.HSSG, 1L), 'P',
                 MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.plate, 1), 'O',
                 MaterialLibAPI.getStack(Materials.Polystyrene, Shapes.plate, 1), 'G',
                 OrePrefixes.circuit.oreDictName(Circuits.LuV.materialName()), 'C', ItemList.MACHINE_HULLS[6].get(1L) });
@@ -502,7 +503,7 @@ public class CraftingRecipes implements Runnable {
                 .getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bedrockium, 1L), 'W',
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.DraconiumAwakened, 1L), 'P',
                 MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.plate, 1), 'O',
                 MaterialLibAPI.getStack(Materials.Polystyrene, Shapes.plate, 1), 'G',

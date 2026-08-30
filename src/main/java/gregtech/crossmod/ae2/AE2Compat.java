@@ -1,12 +1,20 @@
 package gregtech.crossmod.ae2;
 
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.BloodArsenal;
+import static gregtech.api.enums.Mods.BloodMagic;
+import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.enums.Mods.ForbiddenMagic;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Laser_Lens_Special;
 import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Laser_Lens_WoodsGlass;
 
 import net.minecraft.item.ItemStack;
+
+import com.gtnewhorizon.gtnhlib.chat.ChatComponentCustomRegistry;
 
 import appeng.api.AEApi;
 import appeng.api.features.IBlockingModeIgnoreItemRegistry;
@@ -24,6 +32,9 @@ import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 public final class AE2Compat {
 
     public static void onPreInit() {
+        ChatComponentCustomRegistry.register(ChatComponentGhostCircuitSuffix::new);
+        ChatComponentCustomRegistry.register(ChatComponentNonConsumedItemsSuffix::new);
+
         IInterfaceTerminalRegistry reg = AEApi.instance()
             .registries()
             .interfaceTerminal();
@@ -108,5 +119,35 @@ public final class AE2Compat {
             registry.register(getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens"));
             registry.register(getModItem(NewHorizonsCoreMod.ID, "ChromaticLens"));
         }
+
+        if (BloodMagic.isModLoaded()) {
+            registry.register(getModItem(BloodMagic.ID, "weakBloodOrb"));
+            registry.register(getModItem(BloodMagic.ID, "apprenticeBloodOrb"));
+            registry.register(getModItem(BloodMagic.ID, "magicianBloodOrb"));
+            registry.register(getModItem(BloodMagic.ID, "masterBloodOrb"));
+            registry.register(getModItem(BloodMagic.ID, "archmageBloodOrb"));
+            registry.register(getModItem(BloodMagic.ID, "transcendentBloodOrb"));
+        }
+
+        if (BloodArsenal.isModLoaded()) {
+            registry.register(getModItem(BloodArsenal.ID, "transparent_orb"));
+        }
+
+        if (ForbiddenMagic.isModLoaded()) {
+            registry.register(getModItem(ForbiddenMagic.ID, "EldritchOrb"));
+        }
+
+        if (Avaritia.isModLoaded()) {
+            registry.register(getModItem(Avaritia.ID, "Orb_Armok"));
+        }
+
+        if (TwilightForest.isModLoaded()) {
+            registry.register(getModItem(TwilightForest.ID, "item.trophy", 1, WILDCARD));
+        }
+
+        if (ExtraUtilities.isModLoaded()) {
+            registry.register(getModItem(ExtraUtilities.ID, "divisionSigil"));
+        }
+
     }
 }

@@ -97,6 +97,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.CheckboxWidget;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputHatch;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -291,6 +292,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         this.damageFactorLow = MachineStats.machines.damageFactorLow;
         this.damageFactorHigh = MachineStats.machines.damageFactorHigh;
         if (!shouldCheckMaintenance()) fixAllIssues();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ITexture[][] getInventoryTextures() {
+        return getOrCreateInventoryTextures();
     }
 
     @Override
@@ -2789,11 +2796,21 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .add(translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumber(tAverageTime)));
         }
 
-        if (tag.getInteger("maxParallelRecipes") > 1) {
-            currentTip.add(
-                StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+        final int localMaxParallels = tag.getInteger("maxParallelRecipes");
+        if (localMaxParallels > 1) {
+            String tooltip;
+            if (tag.hasKey("powerPanelMaxParallel")) {
+                tooltip = translateToLocalFormatted(
+                    "GT5U.multiblock.parallelism_override",
+                    tag.getInteger("powerPanelMaxParallel"),
+                    localMaxParallels);
+            } else {
+                tooltip = translateToLocal("GT5U.multiblock.parallelism") + ": "
                     + EnumChatFormatting.WHITE
-                    + tag.getInteger("maxParallelRecipes"));
+                    + localMaxParallels;
+            }
+
+            currentTip.add(tooltip);
         }
 
         if (tag.hasKey("mode")) {
@@ -2824,17 +2841,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
+        final int localMaxParallel = getMaxParallelRecipes();
+        final int localPowerPanelParallel = getTrueParallel();
+
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
         tag.setInteger("progress", mProgresstime);
         tag.setInteger("maxProgress", mMaxProgresstime);
         tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
-        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
+        tag.setInteger("maxParallelRecipes", localMaxParallel);
         tag.setBoolean("isLockedToRecipe", isRecipeLockingEnabled());
         SingleRecipeCheck lockedRecipe = getSingleRecipeCheck();
         tag.setString(
             "lockedRecipeName",
             lockedRecipe != null ? getDisplayString(lockedRecipe.getRecipe(), false, true, false, true) : "");
+
+        if (localPowerPanelParallel != localMaxParallel) {
+            tag.setInteger("powerPanelMaxParallel", localPowerPanelParallel);
+        }
 
         if (mOutputItems != null) {
             int index = 0;

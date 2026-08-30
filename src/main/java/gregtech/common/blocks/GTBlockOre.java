@@ -46,6 +46,7 @@ import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -58,6 +59,7 @@ import gregtech.nei.NEIGTConfig;
 public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IBlockWithCustomSound {
 
     public final List<StoneType> stoneTypes;
+    private final BoundedTextureCache textureCache = new BoundedTextureCache();
 
     public GTBlockOre(int series, StoneType[] stoneTypes) {
         super(GTItemOre.class, "gt.blockores" + series, Material.rock);
@@ -207,6 +209,17 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Override
     public ITexture[][] getTextures(int metadata) {
+        metadata = getTextureCacheKey(metadata);
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+        return cacheTextures(metadata);
+    }
+
+    private synchronized ITexture[][] cacheTextures(int metadata) {
+        // Another render thread may have populated the cache while this thread waited for the monitor.
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+
         StoneType stoneType = getStoneType(metadata);
         if (stoneType == null) stoneType = StoneType.Stone;
         com.ruling_0.materiallib.api.Material mat = getMaterial(metadata);
@@ -230,7 +243,9 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
         final ITexture[] textures = new ITexture[] { bg, fg };
 
-        return new ITexture[][] { textures, textures, textures, textures, textures, textures };
+        cached = new ITexture[][] { textures, textures, textures, textures, textures, textures };
+        textureCache.put(metadata, cached);
+        return cached;
     }
 
     @Override
@@ -407,6 +422,11 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     }
 
     public static final int SMALL_ORE_META_OFFSET = 16000, NATURAL_ORE_META_OFFSET = 8000;
+
+    static int getTextureCacheKey(int metadata) {
+        if ((metadata % SMALL_ORE_META_OFFSET) >= NATURAL_ORE_META_OFFSET) metadata -= NATURAL_ORE_META_OFFSET;
+        return metadata;
+    }
 
     public int getMaterialIndex(int meta) {
         if (meta < 0) return 0;

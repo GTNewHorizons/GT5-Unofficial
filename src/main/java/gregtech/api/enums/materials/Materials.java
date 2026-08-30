@@ -11939,7 +11939,7 @@ public class Materials {
             .setTint(0xFFDCDC00)
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)
-            .setProperty(GTMaterialProperties.LOCAL_NAME, "Phosphorous Pentoxide")
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Phosphorus Pentoxide")
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 665)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Phosphorus), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 10L)))
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))

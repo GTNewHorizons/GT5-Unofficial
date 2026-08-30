@@ -196,6 +196,8 @@ public class GTRecipeConstants {
 
     /**
      * Tier of advanced compression (HIP/black hole)
+     * 1: HIP
+     * 2: Black Hole
      */
     public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = CompressionTierKey.INSTANCE;
 

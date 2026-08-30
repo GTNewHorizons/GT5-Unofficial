@@ -9,13 +9,15 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.common.blocks.FrameShapeBlock;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 
 /// Server -> Client : Full state of a frame-box tile entity.
 ///
 /// [FrameShapeBlock] never creates tile entities itself, so after a chunk load the client has no tile
 /// entity for the vanilla description packet to land on and the packet is dropped. The frame tile entity
 /// therefore describes itself with this packet instead; the client handler creates the tile entity when
-/// it is missing and applies the same initial data the description packet would have carried.
+/// it is missing and applies the same description buffer the vanilla packet would have carried.
 public class GTPacketFrameEntity extends GTPacket {
 
     private int mX;
@@ -32,7 +34,14 @@ public class GTPacketFrameEntity extends GTPacket {
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
-        this.mData = tile.getInitialDataForClient();
+        ByteBuf buffer = PooledByteBufAllocator.DEFAULT.directBuffer();
+        try {
+            tile.writeDescriptionBuffer(buffer);
+            this.mData = new byte[buffer.readableBytes()];
+            buffer.readBytes(this.mData);
+        } finally {
+            buffer.release();
+        }
     }
 
     private GTPacketFrameEntity(int x, short y, int z, byte[] data) {
@@ -80,7 +89,12 @@ public class GTPacketFrameEntity extends GTPacket {
             base = new BaseMetaPipeEntity();
             world.setTileEntity(mX, mY, mZ, base);
         }
-        base.receiveInitialDataOnClient(mData);
+        ByteBuf buffer = Unpooled.wrappedBuffer(mData);
+        try {
+            base.readDescriptionBuffer(buffer);
+        } finally {
+            buffer.release();
+        }
         world.markBlockForUpdate(mX, mY, mZ);
     }
 }

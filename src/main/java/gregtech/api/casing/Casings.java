@@ -787,8 +787,6 @@ public enum Casings implements ICasing {
     VigorousLaureniumMachineCasing(() -> ModBlocks.blockCustomMachineCasings, 2, gtpp(2, 4)),
     RuggedBotmiumMachineCasing(() -> ModBlocks.blockCustomMachineCasings, 3, gtpp(3, 4)),
 
-    // GregtechMetaCasingBlocksPipeGearbox - skipped, unused, uncraftable
-
     // ------------------ Tectech Casings -----------------
 
     // TT Block Casings

@@ -50,7 +50,7 @@ public class AcidRecipes {
         GTValues.RA.stdBuilder()
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ThoriumElutionAdsorbent, FluidShapes.fluidLiquid, 8000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, 4))
-            .outputChances(5500)
+            .outputChances(4500)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.ImpureFranciumSolution, FluidShapes.fluidLiquid, 4500),
                 MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 3500))

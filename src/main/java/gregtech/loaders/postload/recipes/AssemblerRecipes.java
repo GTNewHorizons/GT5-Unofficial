@@ -6651,7 +6651,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.RhodiumPlatedPalladium, 6),
-                GTOreDictUnificator.get("frameGtChrome", 1))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.RhodiumPlatedPalladium, 1))
             .itemOutputs(ItemList.Casing_Advanced_Rhodium_Palladium.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)

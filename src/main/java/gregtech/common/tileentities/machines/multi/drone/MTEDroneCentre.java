@@ -76,6 +76,7 @@ import gregtech.common.items.ItemTierDrone;
 import gregtech.common.render.DroneRender;
 import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -605,22 +606,21 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        data.setBoolean("usingLegacyStructure", usingLegacyStructure);
-        data.setBoolean("useRender", useRender);
-        data.setBoolean("renderActive", renderActive);
-        data.setInteger("droneLevel", droneLevel);
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(usingLegacyStructure);
+        buffer.writeBoolean(useRender);
+        buffer.writeBoolean(renderActive);
+        buffer.writeInt(droneLevel);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        usingLegacyStructure = data.getBoolean("usingLegacyStructure");
-        useRender = data.getBoolean("useRender");
-        renderActive = data.getBoolean("renderActive");
-        droneLevel = data.getInteger("droneLevel");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        usingLegacyStructure = buffer.readBoolean();
+        useRender = buffer.readBoolean();
+        renderActive = buffer.readBoolean();
+        droneLevel = buffer.readInt();
     }
 
     private void issueTileUpdate() {

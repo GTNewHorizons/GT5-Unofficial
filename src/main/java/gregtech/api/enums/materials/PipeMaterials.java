@@ -96,13 +96,13 @@ public class PipeMaterials {
             new WireCable(Materials.Draconium, 32, 8, TierEU.UEV),
             new WireCable(Materials.NetherStar, 16, 4, TierEU.UIV),
             new WireCable(Materials.Quantium, 32, 4, TierEU.UMV),
+            new WireCable(Materials.BlackPlutonium, 8, 8, TierEU.UXV),
         };
 
         WireOnly[] wireOnly = {
             new WireOnly(Materials.Graphene, 2, 1, TierEU.IV, false),
             new WireOnly(Materials.Ichorium, 8, 12, TierEU.UHV, false),
             new WireOnly(Materials.Hypogen, 0, 8, TierEU.UIV, false),
-            new WireOnly(Materials.BlackPlutonium, 8, 8, TierEU.UXV, true),
             new WireOnly(Materials.DraconiumAwakened, 64, 8, TierEU.MAX, true),
             new WireOnly(Materials.Infinity, 0, 8192, TierEU.MAX, false),
             new WireOnly(Materials.SpaceTime, 0, 1_000_000, TierEU.MAX, false),
@@ -152,6 +152,7 @@ public class PipeMaterials {
         edit(Materials.Lumiium).setProperty(PipeProperties.WIRE_LOSS, 64);
         edit(Materials.Bedrockium).setProperty(PipeProperties.WIRE_LOSS, 48);
         edit(Materials.Quantium).setProperty(PipeProperties.WIRE_LOSS, 128);
+        edit(Materials.BlackPlutonium).setProperty(PipeProperties.WIRE_LOSS, 32);
 
         for (WireOnly[] rows : new WireOnly[][] { wireOnly, superconductorBases, superconductorMarkers }) {
             for (WireOnly row : rows) {

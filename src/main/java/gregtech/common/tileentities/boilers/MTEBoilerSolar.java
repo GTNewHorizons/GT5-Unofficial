@@ -26,6 +26,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -220,16 +221,15 @@ public class MTEBoilerSolar extends MTEBoiler {
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("RuntimeTicks", mRunTimeTicks);
-        return tag;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(mRunTimeTicks);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        mRunTimeTicks = data.getInteger("RuntimeTicks");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        mRunTimeTicks = buffer.readInt();
     }
 
     @Override

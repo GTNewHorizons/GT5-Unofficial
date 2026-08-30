@@ -185,7 +185,7 @@ public class IG_RecipeAdder extends RecipeAdder {
             }
             if (Arrays.stream(aChances)
                 .sum() != 10000) {
-                GT_FML_LOGGER.error(
+                GT_FML_LOGGER.info(
                     "Sum of chances in mining recipe for main material {} is not 100%! This will lead to no issue but might be unintentional",
                     aItemOutputs[0].getUnlocalizedName());
             }

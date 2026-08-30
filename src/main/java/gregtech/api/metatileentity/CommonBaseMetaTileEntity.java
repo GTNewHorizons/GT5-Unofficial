@@ -6,9 +6,7 @@ import static gregtech.GTLoggers.GT_FML_LOGGER;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.IllegalFormatException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +14,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -27,6 +26,7 @@ import appeng.api.interfaces.IInterfaceNameProvider;
 import appeng.api.util.WorldCoord;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
@@ -42,7 +42,11 @@ import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.Gregtech;
+import gregtech.crossmod.ae2.ChatComponentGhostCircuitSuffix;
+import gregtech.crossmod.ae2.ChatComponentNonConsumedItemsSuffix;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, IInterfaceNameProvider {
@@ -451,52 +455,81 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Run on the server when the block is marked for a full resync, e.g. when loading a chunk.
      */
-    abstract byte[] getInitialDataForClient();
+    public void tileWriteToStream(ByteBuf buffer) {
+        buffer.writeShort(mID);
+        byte coverMask = getValidCoversMask();
+        buffer.writeByte(coverMask);
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            if ((coverMask & direction.flag) != 0) {
+                buffer.writeInt(getCoverAtSide(direction).getCoverID());
+            }
+        }
+    }
 
     /**
      * Runs on the client to receive full resync data from the server.
      */
-    abstract void receiveInitialDataOnClient(byte[] data);
+    public void tileReadFromStream(ByteBuf buffer) {
+        short aID = buffer.readShort();
+        if (mID != aID && aID > 0) {
+            mID = aID;
+            createNewMetatileEntity(mID);
+        }
+        byte coverMask = buffer.readByte();
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            if ((coverMask & direction.flag) != 0) {
+                int coverID = buffer.readInt();
+                CoverRegistry.cover(this, direction, coverID);
+            } else {
+                CoverRegistry.cover(this, direction, CoverRegistry.NO_COVER.getCoverID());
+            }
+        }
+    }
 
-    @Override
-    public Packet getDescriptionPacket() {
-        byte[] base = getInitialDataForClient();
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setByteArray("base", base);
-        S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbt);
-
+    public final void writeDescriptionBuffer(ByteBuf buffer) {
+        tileWriteToStream(buffer);
         IMetaTileEntity imte = getMetaTileEntity();
+        if (imte != null) {
+            imte.writeToStream(buffer);
+        }
+    }
 
-        if (imte == null) return pkt;
-
-        NBTTagCompound data = imte.getDescriptionData();
-
-        if (data == null) return pkt;
-
-        // Yeah we delay a bit of modification after packet construction
-        // it's fine... it's clear this won't cause problems
-        nbt.setTag("mte", data);
-
-        return pkt;
+    public final void readDescriptionBuffer(ByteBuf buffer) {
+        // Receive and create the mte first if it doesn't exist
+        tileReadFromStream(buffer);
+        IMetaTileEntity mte = getMetaTileEntity();
+        if (mte != null) {
+            mte.readFromStream(buffer);
+            mte.onClientSoundStateChanged();
+        }
+        issueTextureUpdate();
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public Packet getDescriptionPacket() {
+        ByteBuf buffer = PooledByteBufAllocator.DEFAULT.directBuffer();
+        try {
+            writeDescriptionBuffer(buffer);
+            byte[] result = new byte[buffer.readableBytes()];
+            buffer.readBytes(result);
 
-        NBTTagCompound nbt = pkt.func_148857_g();
-        // Receive and create the mte if it doesn't exist
-        receiveInitialDataOnClient(nbt.getByteArray("base"));
-
-        IMetaTileEntity mte = getMetaTileEntity();
-
-        // The mte sent from server is invalid
-        if (mte == null) return;
-
-        if (nbt.hasKey("mte")) {
-            mte.onDescriptionPacket(nbt.getCompoundTag("mte"));
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setByteArray("X", result);
+            return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbt);
+        } finally {
+            buffer.release();
         }
+    }
 
-        mte.onClientSoundStateChanged();
+    @Override
+    public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        NBTTagCompound nbt = pkt.func_148857_g();
+        ByteBuf buffer = Unpooled.wrappedBuffer(nbt.getByteArray("X"));
+        try {
+            readDescriptionBuffer(buffer);
+        } finally {
+            buffer.release();
+        }
     }
 
     @Override
@@ -589,8 +622,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public String getInterfaceNameSuffix() {
-        StringBuilder suffix = new StringBuilder();
+    public IChatComponent getInterfaceNameSuffix() {
+        IChatComponent suffix = null;
 
         // Ghost + physical circuit suffix
         List<Integer> circuitNumbers = new ArrayList<>();
@@ -605,28 +638,33 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             circuitNumbers.addAll(provider.getPhysicalCircuitNumbers());
         }
         if (!circuitNumbers.isEmpty()) {
-            String joined = circuitNumbers.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining(", "));
-            try {
-                suffix.append(String.format(Gregtech.machines.ghostCircuitSuffixFormat, joined));
-            } catch (IllegalFormatException ignored) {}
+            suffix = new ChatComponentGhostCircuitSuffix(circuitNumbers);
         }
 
         // Non-consumed items suffix (e.g. molds in Extruder)
         if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof INonConsumedItemDisplay provider) {
             List<ItemStack> items = provider.getNonConsumedInputDisplayItems();
             if (!items.isEmpty()) {
-                String joined = items.stream()
-                    .map(ItemStack::getDisplayName)
-                    .collect(Collectors.joining(", "));
-                try {
-                    suffix.append(String.format(Gregtech.machines.itemSlotsSuffixFormat, joined));
-                } catch (IllegalFormatException ignored) {}
+                IChatComponent itemSuffix = new ChatComponentNonConsumedItemsSuffix(items);
+                suffix = suffix == null ? itemSuffix : suffix.appendSibling(itemSuffix);
             }
         }
 
-        return !suffix.isEmpty() ? suffix.toString() : null;
+        return suffix;
+    }
+
+    /**
+     * Shortens item names like "Mold (Ingot)" to just "Ingot", so the interface name stays readable. Names without a
+     * trailing parenthesised part are returned unchanged.
+     */
+    public static String getShortItemDisplayName(ItemStack stack) {
+        String name = stack.getDisplayName();
+        if (!name.endsWith(")")) return name;
+        int open = name.lastIndexOf('(');
+        if (open < 0) return name;
+        String inner = name.substring(open + 1, name.length() - 1)
+            .trim();
+        return inner.isEmpty() ? name : inner;
     }
 
     @Override

@@ -6,6 +6,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -359,6 +360,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         if (V[tTier] * (long) parallelSetting.get() > getEUVar()) {
             return CheckRecipeResultRegistry.insufficientPower(V[tTier] * (long) parallelSetting.get());
         }
+        if (parent == null) {
+            return SimpleCheckRecipeResult.ofFailure("no_plasma");
+        }
 
         lEUt = 0;
         eAmpereFlow = 0;
@@ -367,35 +371,51 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         mPollution = 0;
         mOutputItems = null;
         mOutputFluids = null;
-        List<FluidStack> inputFluids = new ArrayList<>();
-        inputFluids.addAll(parent.getStoredFluids());
-        inputFluids.addAll(this.getStoredFluids());
-        if (inputFluids.isEmpty()) {
-            return SimpleCheckRecipeResult.ofFailure("no_plasma");
-        }
 
-        // Check for valid item inputs
-        ItemStack[] itemInputs = validInputs();
+        // Plasma hatches for this module can live on the parent Space Elevator. ME-backed
+        // (stocking) input hatches only expose their real, drainable fluid amount while the owning multiblock is
+        // bracketed by start/endRecipeProcessing (see MTEHatchInputME#getStoredFluids); outside of that window they
+        // only report a 1 mB placeholder of the configured fluid.
+        parent.startRecipeProcessing();
+        try {
+            List<FluidStack> inputFluids = new ArrayList<>();
+            inputFluids.addAll(parent.getStoredFluids());
+            inputFluids.addAll(this.getStoredFluids());
+            if (inputFluids.isEmpty()) {
+                return SimpleCheckRecipeResult.ofFailure("no_plasma");
+            }
 
-        // Look for a valid plasma to start a mining operation
-        for (FluidStack fluidStack : inputFluids) {
-            int availablePlasmaTier = getTierFromPlasma(fluidStack);
-            if (availablePlasmaTier > 0) {
-                // Check if valid inputs for a mining operation are present
-                CheckRecipeResult result = process(
-                    itemInputs,
-                    inputFluids.toArray(new FluidStack[0]),
-                    availablePlasmaTier,
-                    fluidStack,
-                    getParallels(fluidStack, getPlasmaUsageFromTier(availablePlasmaTier)));
-                if (result.wasSuccessful()) {
-                    cycleDistance();
-                    return result;
+            // Prefer the highest-tier plasma available, regardless of whether it's sourced from the parent or the
+            // module's own hatches, since a higher tier boosts the mining operation.
+            inputFluids.sort(
+                Comparator.comparingInt(this::getTierFromPlasma)
+                    .reversed());
+
+            // Check for valid item inputs
+            ItemStack[] itemInputs = validInputs();
+
+            // Look for a valid plasma to start a mining operation
+            for (FluidStack fluidStack : inputFluids) {
+                int availablePlasmaTier = getTierFromPlasma(fluidStack);
+                if (availablePlasmaTier > 0) {
+                    // Check if valid inputs for a mining operation are present
+                    CheckRecipeResult result = process(
+                        itemInputs,
+                        inputFluids.toArray(new FluidStack[0]),
+                        availablePlasmaTier,
+                        fluidStack,
+                        getParallels(fluidStack, getPlasmaUsageFromTier(availablePlasmaTier)));
+                    if (result.wasSuccessful()) {
+                        cycleDistance();
+                        return result;
+                    }
                 }
             }
+            cycleDistance();
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        } finally {
+            parent.endRecipeProcessing();
         }
-        cycleDistance();
-        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     /** Determine which drones and items are in the correct buses */

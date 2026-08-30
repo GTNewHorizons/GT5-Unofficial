@@ -13,8 +13,6 @@
 
 package bartworks.system.material;
 
-import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -43,11 +41,12 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -69,6 +68,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     public final String blockName;
     public final StoneType stoneType;
     public final boolean isSmall, isNatural;
+    private final BoundedTextureCache textureCache = new BoundedTextureCache();
 
     public BWMetaGeneratedOres(String blockName, StoneType stoneType, boolean small, boolean natural) {
         super(Material.rock);
@@ -204,6 +204,16 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     @Override
     @Nullable
     public ITexture[][] getTextures(int metadata) {
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+        return cacheTextures(metadata);
+    }
+
+    private synchronized ITexture[][] cacheTextures(int metadata) {
+        // Another render thread may have populated the cache while this thread waited for the monitor
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+
         com.ruling_0.materiallib.api.Material material = LegacyWerkstoffIndex.get(metadata);
 
         OrePrefixes prefix = getPrefix();
@@ -212,9 +222,8 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         ITexture oreTexture;
 
         if (material != null) {
-            IIconContainer icon = GTMaterialIcons.oreBlock(prefix.name(), variant, material);
-            oreTexture = TextureFactory
-                .of(icon, icon.hasOverrideIcon() ? UNCOLORED_RGBA : MaterialUtils.rgba(material));
+            oreTexture = GTMaterialTextures
+                .of(GTMaterialIcons.oreBlock(prefix.name(), variant, material), MaterialUtils.rgba(material));
         } else {
             oreTexture = TextureFactory.of(GTMaterialIcons.oreBlock(prefix.name(), variant, Materials.NULL));
         }
@@ -225,6 +234,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
             out[i] = new ITexture[] { stoneType.getTexture(i), oreTexture };
         }
 
+        textureCache.put(metadata, out);
         return out;
     }
 

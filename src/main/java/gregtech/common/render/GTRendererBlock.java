@@ -13,6 +13,8 @@ import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
+import java.util.Arrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
@@ -21,7 +23,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -32,6 +33,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
@@ -49,6 +51,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
+import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 
 @ThreadSafeISBRH(perThread = true)
 public class GTRendererBlock implements ISimpleBlockRenderingHandler {
@@ -56,6 +59,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static final int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
     public static final float BLOCK_MIN = 0.0F;
     public static final float BLOCK_MAX = 1.0F;
+    private static final int[][] INVENTORY_DISPLAY_LISTS = new int[2][GregTechAPI.METATILEENTITIES.length];
+    private static final ITexture[][][] INVENTORY_DISPLAY_LIST_TEXTURES = new ITexture[GregTechAPI.METATILEENTITIES.length][][];
+    private static final Long2IntOpenHashMap PIPE_SHAPE_DISPLAY_LISTS = new Long2IntOpenHashMap();
     private final ITexture[][] textureArray = new ITexture[6][];
     private final ITexture[] overlayHolder = new ITexture[1];
 
@@ -209,36 +215,135 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
+        final IMetaTileEntity imte = getMTE(aBlock, aMeta);
+        if (((TesselatorAccessor) Tessellator.instance).gt5u$isDrawing()) {
+            renderInventoryBlockImmediate(aBlock, aMeta, aModelID, aRenderer, imte);
+            return;
+        }
+        if (imte == null) {
+            renderInventoryBlockImmediate(aBlock, aMeta, aModelID, aRenderer, null);
+            return;
+        }
+
+        final int variant;
+        if (imte instanceof MetaPipeEntity) {
+            variant = GTMod.clientProxy()
+                .shouldHideThings() ? 1 : 0;
+        } else {
+            final ITexture[][] textures = imte.getInventoryTextures();
+            if (textures == null) {
+                renderInventoryBlockImmediate(aBlock, aMeta, aModelID, aRenderer, imte);
+                return;
+            }
+            variant = 0;
+            if (INVENTORY_DISPLAY_LIST_TEXTURES[aMeta] != textures) {
+                deleteInventoryDisplayList(variant, aMeta);
+                INVENTORY_DISPLAY_LIST_TEXTURES[aMeta] = textures;
+            }
+        }
+
+        int displayList = getInventoryDisplayList(aBlock, variant, aMeta);
+        if (displayList == 0) {
+            displayList = GL11.glGenLists(1);
+            if (displayList == 0) {
+                renderInventoryBlockImmediate(aBlock, aMeta, aModelID, aRenderer, imte);
+                return;
+            }
+
+            try {
+                GL11.glNewList(displayList, GL11.GL_COMPILE);
+                try {
+                    renderInventoryBlockImmediate(aBlock, aMeta, aModelID, aRenderer, imte);
+                } finally {
+                    GL11.glEndList();
+                }
+            } catch (RuntimeException | Error e) {
+                GL11.glDeleteLists(displayList, 1);
+                throw e;
+            }
+            putInventoryDisplayList(aBlock, variant, aMeta, displayList);
+        }
+
+        GL11.glCallList(displayList);
+        aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+    }
+
+    /// A machine stack's metadata is its MTE id and indexes the display list arrays directly. A pipe-shape stack's
+    /// metadata is its material index, so its display list is keyed by the shape's MTE id and that index together.
+    private static int getInventoryDisplayList(Block block, int variant, int meta) {
+        if (block instanceof PipeShapeBlock pipeShape) {
+            return PIPE_SHAPE_DISPLAY_LISTS.get(pipeShapeDisplayListKey(pipeShape, variant, meta));
+        }
+        return INVENTORY_DISPLAY_LISTS[variant][meta];
+    }
+
+    private static void putInventoryDisplayList(Block block, int variant, int meta, int displayList) {
+        if (block instanceof PipeShapeBlock pipeShape) {
+            PIPE_SHAPE_DISPLAY_LISTS.put(pipeShapeDisplayListKey(pipeShape, variant, meta), displayList);
+        } else {
+            INVENTORY_DISPLAY_LISTS[variant][meta] = displayList;
+        }
+    }
+
+    private static long pipeShapeDisplayListKey(PipeShapeBlock pipeShape, int variant, int materialIndex) {
+        return ((long) variant << 48) | ((long) pipeShape.getMteId() << 32) | (materialIndex & 0xFFFFFFFFL);
+    }
+
+    private void renderInventoryBlockImmediate(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer,
+        IMetaTileEntity imte) {
         final ISBRInventoryContext ctx = sbrContextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
+        final boolean enableAO = aRenderer.enableAO;
+        final boolean useInventoryTint = aRenderer.useInventoryTint;
+        final Tessellator tessellator = Tessellator.instance;
+        final boolean startedDrawing = !((TesselatorAccessor) tessellator).gt5u$isDrawing();
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
 
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        IMetaTileEntity imte = getMTE(aBlock, aMeta);
+        try {
+            if (startedDrawing) tessellator.startDrawingQuads();
+            try {
+                if (imte != null && !renderMTEInInventory(ctx, aBlock, aMeta, imte)) {
+                    renderNormalInventoryMetaTileEntity(ctx, imte);
+                } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
+                    ITexture[][] texture = texturedBlock.getInventoryTextures(aMeta);
+                    if (texture != null) {
+                        aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+                        renderInventoryTextures(ctx, texture);
+                    }
+                }
+            } finally {
+                if (startedDrawing && ((TesselatorAccessor) tessellator).gt5u$isDrawing()) tessellator.draw();
+            }
+        } finally {
+            aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+            aRenderer.enableAO = enableAO;
+            aRenderer.useInventoryTint = useInventoryTint;
+            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+            ctx.doCleanup();
+        }
+    }
 
-        if (imte != null && !renderMTEInInventory(ctx, aBlock, aMeta, imte)) {
-            renderNormalInventoryMetaTileEntity(ctx, imte);
-        } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
-            ITexture[][] texture = texturedBlock.getInventoryTextures(aMeta);
-            if (texture != null) {
-                aBlock.setBlockBoundsForItemRender();
-                aRenderer.setRenderBoundsFromBlock(aBlock);
-                ctx.renderNegativeYFacing(texture[ForgeDirection.DOWN.ordinal()]);
-                ctx.renderPositiveYFacing(texture[ForgeDirection.UP.ordinal()]);
-                ctx.renderNegativeZFacing(texture[ForgeDirection.NORTH.ordinal()]);
-                ctx.renderPositiveZFacing(texture[ForgeDirection.SOUTH.ordinal()]);
-                ctx.renderNegativeXFacing(texture[ForgeDirection.WEST.ordinal()]);
-                ctx.renderPositiveXFacing(texture[ForgeDirection.EAST.ordinal()]);
+    public static void clearInventoryDisplayListCache() {
+        for (int variant = 0; variant < INVENTORY_DISPLAY_LISTS.length; variant++) {
+            for (int meta = 0; meta < INVENTORY_DISPLAY_LISTS[variant].length; meta++) {
+                deleteInventoryDisplayList(variant, meta);
             }
         }
-        aBlock.setBlockBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+        Arrays.fill(INVENTORY_DISPLAY_LIST_TEXTURES, null);
+        for (int displayList : PIPE_SHAPE_DISPLAY_LISTS.values()) {
+            GL11.glDeleteLists(displayList, 1);
+        }
+        PIPE_SHAPE_DISPLAY_LISTS.clear();
+    }
 
-        aRenderer.setRenderBoundsFromBlock(aBlock);
-
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        ctx.doCleanup();
+    private static void deleteInventoryDisplayList(int variant, int meta) {
+        final int displayList = INVENTORY_DISPLAY_LISTS[variant][meta];
+        if (displayList == 0) return;
+        GL11.glDeleteLists(displayList, 1);
+        INVENTORY_DISPLAY_LISTS[variant][meta] = 0;
     }
 
     /// Renders an MTE's inventory form. A pipe-shape stack encodes its material in the damage value, which the
@@ -251,9 +356,14 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     }
 
     private static void renderNormalInventoryMetaTileEntity(ISBRInventoryContext ctx, IMetaTileEntity imte) {
-        final Block block = ctx.getBlock();
-        block.setBlockBoundsForItemRender();
-        ctx.setRenderBoundsFromBlock();
+        ctx.getRenderBlocks()
+            .setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+
+        final ITexture[][] textures = imte.getInventoryTextures();
+        if (textures != null) {
+            renderInventoryTextures(ctx, textures);
+            return;
+        }
 
         final IGregTechTileEntity igte = imte.getBaseMetaTileEntity();
         ctx.renderNegativeYFacing(imte.getTexture(igte, DOWN, WEST, -1, true, false));
@@ -262,6 +372,15 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         ctx.renderPositiveZFacing(imte.getTexture(igte, SOUTH, WEST, -1, true, false));
         ctx.renderNegativeXFacing(imte.getTexture(igte, WEST, WEST, -1, true, false));
         ctx.renderPositiveXFacing(imte.getTexture(igte, EAST, WEST, -1, true, false));
+    }
+
+    private static void renderInventoryTextures(ISBRInventoryContext ctx, ITexture[][] textures) {
+        ctx.renderNegativeYFacing(textures[SIDE_DOWN]);
+        ctx.renderPositiveYFacing(textures[SIDE_UP]);
+        ctx.renderNegativeZFacing(textures[SIDE_NORTH]);
+        ctx.renderPositiveZFacing(textures[SIDE_SOUTH]);
+        ctx.renderNegativeXFacing(textures[SIDE_WEST]);
+        ctx.renderPositiveXFacing(textures[SIDE_EAST]);
     }
 
     @Override
