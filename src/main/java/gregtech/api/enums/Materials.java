@@ -310,7 +310,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Sunstone;
     public static Materials Tar;
     public static Materials Tartarite;
-    public static Materials TokamakResidue;
+    public static Materials CollisionResidue;
     public static Materials UUAmplifier;
     public static Materials UUMatter;
     public static Materials Void;

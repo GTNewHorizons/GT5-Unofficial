@@ -2760,7 +2760,7 @@ public class MaterialsInit {
         Materials.Sunstone = loadSunstone();
         Materials.Tar = loadTar();
         Materials.Tartarite = loadTartarite();
-        Materials.TokamakResidue = loadTokamakResidue();
+        Materials.CollisionResidue = loadCollisionResidue();
         Materials.UUAmplifier = loadUUAmplifier();
         Materials.UUMatter = loadUUMatter();
         Materials.Void = loadVoid();
@@ -4352,9 +4352,9 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadTokamakResidue() {
-        return new MaterialBuilder().setName("TokamakResidue")
-            .setDefaultLocalName("Tokamak Residue")
+    private static Materials loadCollisionResidue() {
+        return new MaterialBuilder().setName("CollisionResidue")
+            .setDefaultLocalName("Collision Residue")
             .setChemicalFormula("✦Fc⚙◆Rt*✦")
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00014D4E)

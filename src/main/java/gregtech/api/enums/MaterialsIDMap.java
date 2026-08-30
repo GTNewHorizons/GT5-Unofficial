@@ -664,7 +664,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(855, Materials.Chalcopyrite);
         r(856, Materials.SiliconSG);
         r(858, Materials.CrudeOil);
-        r(859, Materials.TokamakResidue);
+        r(859, Materials.CollisionResidue);
         r(861, Materials.Emery);
         r(862, Materials.Epidote);
         r(865, Materials.Graphite);

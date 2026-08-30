@@ -254,7 +254,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
                     + " Plasmas are supplied:")
             .addInfo(
                 "Periodically outputs " + EnumChatFormatting.DARK_AQUA
-                    + "Tokamak Residue"
+                    + "Collision Residue"
                     + EnumChatFormatting.GRAY
                     + " at a rate of 1L per "
                     + RESIDUE_CONVERSION_DIVISOR
@@ -359,7 +359,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         if (FORCE_CURRENT_DR > 0 && RUNITE_CURRENT_DR > 0 && CELESTIAL_TUNGSTEN_CURRENT_DR > 0) {
             if (residueCycles == CYCLES_FOR_RESIDUE) {
                 int residueOutput = Math.floorDiv(drainedSinceLastOutput, RESIDUE_CONVERSION_DIVISOR);
-                addOutput(Materials.TokamakResidue.getFluid(residueOutput));
+                addOutput(Materials.CollisionResidue.getFluid(residueOutput));
                 residueCycles = 0;
                 drainedSinceLastOutput = 0;
             }
