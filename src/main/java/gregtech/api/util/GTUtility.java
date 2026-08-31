@@ -4190,7 +4190,7 @@ public class GTUtility {
         return EnumChatFormatting.RESET + translateToLocal("GT5U.gui.text.amount")
             + " "
             + EnumChatFormatting.GOLD
-            + formatFluid(amount)
+            + (isLiquid ? formatFluid(amount) : formatNumber(amount))
             + EnumChatFormatting.RESET
             + "\n"
             + rateLines(isLiquid, amount, maxProgressTicks);
@@ -4206,12 +4206,15 @@ public class GTUtility {
         if (isFormatShortened) return appendRate(isLiquid, expected, true, maxProgressTicks);
 
         return EnumChatFormatting.RESET
-            + translateToLocalFormatted("GT5U.gui.text.amount_chance", formatFluid(amount), formatOutputChance(chance))
+            + translateToLocalFormatted(
+                "GT5U.gui.text.amount_chance",
+                (isLiquid ? formatFluid(amount) : formatNumber(amount)),
+                formatOutputChance(chance))
             + "\n"
             + translateToLocal("GT5U.gui.text.expected_amount")
             + " "
             + EnumChatFormatting.GOLD
-            + formatFluid(expected)
+            + (isLiquid ? formatFluid(expected) : formatNumber(expected))
             + EnumChatFormatting.RESET
             + "\n"
             + rateLines(isLiquid, expected, maxProgressTicks);
@@ -4242,7 +4245,7 @@ public class GTUtility {
         ret.append(
             translateToLocal("GT5U.gui.text.per_tick") + " "
                 + EnumChatFormatting.GOLD
-                + formatFluid(roundNumber.apply(perTick))
+                + (isLiquid ? formatFluid(roundNumber.apply(perTick)) : formatNumber(roundNumber.apply(perTick)))
                 + (perSecond > 1_000_000 ? " "
                     + translateToLocalFormatted("GT5U.gui.text.rate_large_suffix", formatShortenedLong((long) perTick))
                     : "")
@@ -4251,7 +4254,7 @@ public class GTUtility {
         ret.append(
             translateToLocal("GT5U.gui.text.per_second") + " "
                 + EnumChatFormatting.GOLD
-                + formatFluid(roundNumber.apply(perSecond))
+                + (isLiquid ? formatFluid(roundNumber.apply(perSecond)) : formatNumber(roundNumber.apply(perSecond)))
                 + (perSecond > 1_000_000 ? " " + translateToLocalFormatted(
                     "GT5U.gui.text.rate_large_suffix",
                     formatShortenedLong((long) perSecond)) : "")
@@ -4260,7 +4263,7 @@ public class GTUtility {
         ret.append(
             translateToLocal("GT5U.gui.text.per_minute") + " "
                 + EnumChatFormatting.GOLD
-                + formatFluid(roundNumber.apply(perMinute))
+                + (isLiquid ? formatFluid(roundNumber.apply(perMinute)) : formatNumber(roundNumber.apply(perMinute)))
                 + (perMinute > 1_000_000 ? " " + translateToLocalFormatted(
                     "GT5U.gui.text.rate_large_suffix",
                     formatShortenedLong((long) perMinute)) : "")
@@ -4269,7 +4272,7 @@ public class GTUtility {
         ret.append(
             translateToLocal("GT5U.gui.text.per_hour") + " "
                 + EnumChatFormatting.GOLD
-                + formatFluid(roundNumber.apply(perHour))
+                + (isLiquid ? formatFluid(roundNumber.apply(perHour)) : formatNumber(roundNumber.apply(perHour)))
                 + (perHour > 1_000_000 ? " "
                     + translateToLocalFormatted("GT5U.gui.text.rate_large_suffix", formatShortenedLong((long) perHour))
                     : "")
@@ -4278,7 +4281,7 @@ public class GTUtility {
         ret.append(
             translateToLocal("GT5U.gui.text.per_day") + " "
                 + EnumChatFormatting.GOLD
-                + formatFluid(roundNumber.apply(perDay))
+                + (isLiquid ? formatFluid(roundNumber.apply(perDay)) : formatNumber(roundNumber.apply(perDay)))
                 + (perDay > 1_000_000 ? " "
                     + translateToLocalFormatted("GT5U.gui.text.rate_large_suffix", formatShortenedLong((long) perDay))
                     : "")
