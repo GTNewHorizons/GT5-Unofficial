@@ -7276,8 +7276,7 @@ GT5U.die.frozen=%s замерз насмерть
 GT5U.die.boiled=%s был сварен заживо
 GT5U.die.exploded=%s взорвался
 
-gt.coilheattooltip=Теплопроизводительность =
-gt.coilunittooltip= Кельвинов
+gt.coilheattooltip=Теплопроизводительность: %s Кельвинов
 
 GT5U.tootlip.tool.turbine.steam=Пар
 GT5U.tootlip.tool.turbine.loose=Форсированный
