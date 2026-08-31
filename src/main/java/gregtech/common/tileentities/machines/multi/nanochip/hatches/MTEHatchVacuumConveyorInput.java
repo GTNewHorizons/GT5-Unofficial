@@ -7,8 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_PIPE_PORT_IN
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.Map;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -19,6 +17,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.IVacuumStorage;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
@@ -72,22 +71,21 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
     }
 
     // Try to consume a stack of fake input items from this hatch. Returns the amount of items consumed.
-    public int tryConsume(ItemStack stack) {
+    public int tryConsume(ItemStack stack, boolean withName) {
         if (contents == null) return 0;
-        CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(stack);
-        Map<CircuitComponent, Long> inventory = contents.getComponents();
+        CircuitComponent cc = CircuitComponent.getFromFakeStackUnsafe(stack);
+
         // Find this component in the inventory
-        Long amount = inventory.get(component);
-        if (amount != null) {
+        long amount;
+        if (withName) {
+            amount = contents.getNamedAmount(cc, GTUtility.getStackCustomName(stack));
+        } else {
+            amount = contents.getAmount(cc);
+        }
+        if (amount > 0) {
             // If found, consume as much as possible
             int toConsume = Math.min((int) Math.min(Integer.MAX_VALUE, amount), stack.stackSize);
-            amount -= toConsume;
-            if (amount > 0) {
-                inventory.put(component, amount);
-            } else {
-                // Remove component from inventory if it is fully drained
-                inventory.remove(component);
-            }
+            contents.consume(cc, toConsume);
             return toConsume;
         }
         return 0;

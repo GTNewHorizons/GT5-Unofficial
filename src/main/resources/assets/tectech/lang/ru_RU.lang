@@ -1762,3 +1762,13 @@ tt.infodata.fog.connected=Подключено модулей: %s
 ## Base factory pipe
 tt.infodata.pipe.active=Активен
 tt.infodata.pipe.inactive=Неактивен
+
+# Multiblocks
+gt.blockmachines.multimachine.em.exotic_module.name=Экзопроизводитель гелиопотока
+gt.blockmachines.multimachine.em.eye_of_harmony.name=Око гармонии
+gt.blockmachines.multimachine.em.forge_of_gods.name=Кузница Богов
+gt.blockmachines.multimachine.em.molten_module.name=Гелиопоточное плавильное ядро
+gt.blockmachines.multimachine.em.plasma_module.name=Гелиотермальный производитель плазмы
+gt.blockmachines.multimachine.em.research.name=Исследовательская станция
+gt.blockmachines.multimachine.em.smelting_module.name=Гелиовспывшковая кузня
+gt.blockmachines.multimachine.tm.teslacoil.name=Башня Теслы
