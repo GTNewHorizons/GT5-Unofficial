@@ -26,6 +26,8 @@ import goodgenerator.api.recipe.ExtremeHeatExchangerBackend;
 import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.FormingPressBackend;
@@ -169,14 +171,14 @@ class GTRecipeBackendLifecycleTest {
         assertEquals(
             30,
             map.getBackend()
-                .getMaxDuration());
+                .getMaxDuration(-1));
 
         map.getBackend()
             .removeRecipe(longRecipe);
         assertEquals(
             10,
             map.getBackend()
-                .getMaxDuration());
+                .getMaxDuration(-1));
 
         map.getBackend()
             .reInit();
@@ -188,14 +190,41 @@ class GTRecipeBackendLifecycleTest {
         assertEquals(
             10,
             map.getBackend()
-                .getMaxDuration());
+                .getMaxDuration(-1));
 
         map.getBackend()
             .clearRecipes();
         assertEquals(
             0,
             map.getBackend()
-                .getMaxDuration());
+                .getMaxDuration(-1));
+    }
+
+    @Test
+    void nacMaxDurationChecksBasedOnTier() {
+        RecipeMap<NACRecipeMapBackend> map = RecipeMapBuilder.of(uniqueName("nac"), NACRecipeMapBackend::new)
+            .maxIO(1, 1, 0, 0)
+            .build();
+        addItemRecipe(map, 10, (int) TierEU.RECIPE_LV);
+        addItemRecipe(map, 20, (int) TierEU.RECIPE_HV);
+        addItemRecipe(map, 50, (int) TierEU.RECIPE_ZPM);
+        addItemRecipe(map, 5, (int) TierEU.RECIPE_UEV);
+
+        var backend = map.getBackend();
+        assertEquals(10, backend.getMaxDuration(VoltageIndex.ULV));
+        assertEquals(10, backend.getMaxDuration(VoltageIndex.LV));
+        assertEquals(10, backend.getMaxDuration(VoltageIndex.MV));
+        assertEquals(20, backend.getMaxDuration(VoltageIndex.HV));
+        assertEquals(20, backend.getMaxDuration(VoltageIndex.EV));
+        assertEquals(20, backend.getMaxDuration(VoltageIndex.IV));
+        assertEquals(20, backend.getMaxDuration(VoltageIndex.LuV));
+        assertEquals(50, backend.getMaxDuration(VoltageIndex.ZPM));
+        assertEquals(50, backend.getMaxDuration(VoltageIndex.UV));
+        assertEquals(50, backend.getMaxDuration(VoltageIndex.UHV));
+        assertEquals(50, backend.getMaxDuration(VoltageIndex.UEV));
+        assertEquals(50, backend.getMaxDuration(VoltageIndex.UIV));
+
+        assertEquals(50, backend.getMaxDuration(-1));
     }
 
     @Test
@@ -337,6 +366,16 @@ class GTRecipeBackendLifecycleTest {
                 .itemOutputs(new ItemStack(chest, 1))
                 .duration(duration)
                 .eut(1)
+                .addTo(map));
+    }
+
+    private static GTRecipe addItemRecipe(RecipeMap<NACRecipeMapBackend> map, int duration, int eut) {
+        return onlyRecipe(
+            RA.stdBuilder()
+                .itemInputs(new ItemStack(log, 1, duration))
+                .itemOutputs(new ItemStack(chest, 1))
+                .duration(duration)
+                .eut(eut)
                 .addTo(map));
     }
 

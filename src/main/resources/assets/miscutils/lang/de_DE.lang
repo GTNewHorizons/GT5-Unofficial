@@ -142,7 +142,6 @@ item.BackpackSilver.name=Silberner Rucksack
 item.BackpackGray.name=Grauer Rucksack
 item.BackpackBlack.name=Schwarzer Rucksack
 item.BackpackWhite.name=Weißer Rucksack
-item.itemBlueprint.name=Blaupause [Ich bin nutzlos]
 item.itemGemShards.name=Diamantscherbe
 item.itemHalfCompleteCasings.name=Halb-fertige Hülle I
 item.itemSulfuricPotion.name=Werfbare Phiole mit Schwefelsäure
@@ -1888,3 +1887,8 @@ tile.blockDarkWorldPortal.name=Portalstein für die Dunkle Welt
 tile.blockDarkWorldGround.name=Grundstein der Dunklen Welt
 tile.blockDarkWorldGround2.name=Grundstein der Dunklen Welt
 tile.blockDarkWorldPortalFrame.name=Portalrahmen für die Dunkle Welt
+
+# Multiblocks
+gt.blockmachines.quantumforcetransformer.controller.tier.single.name=Quantenkrafttransformator
+gt.blockmachines.solartower.controller.tier.single.name=Solarturm
+gt.blockmachines.sparge.controller.single.name=Spargerturm-Controller

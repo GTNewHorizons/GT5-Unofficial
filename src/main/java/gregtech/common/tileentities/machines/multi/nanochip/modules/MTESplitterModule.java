@@ -36,6 +36,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTESplitterModuleGui;
@@ -277,8 +278,12 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
                                 stack.getItem(),
                                 itemsForThisBus,
                                 stack.getItemDamage());
+                            String customName = GTUtility.getStackCustomName(stack);
+                            if (customName != null) {
+                                stackToOutput.setStackDisplayName(customName);
+                            }
                             this.addVCOutput(stackToOutput, group.get(busIndex));
-                            this.removeItemFromInputByColor(stackToOutput, currentDye);
+                            this.removeItemFromInputByColor(stackToOutput, currentDye, true);
                         }
                     }
                 }
