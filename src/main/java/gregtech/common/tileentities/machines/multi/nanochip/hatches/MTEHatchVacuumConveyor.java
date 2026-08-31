@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -112,8 +111,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
         else contents.unifyWith(packet);
         // Components are fake items kept outside mInventory, so the inventory-dirty flag never fires for them. Push a
         // recipe check directly so a module waiting on these inputs restarts the moment a component arrives.
-        if (packet != null && !packet.getComponents()
-            .isEmpty()) {
+        if (packet != null && !packet.isEmpty()) {
             notifyWatchers();
         }
     }
@@ -252,11 +250,26 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
             info.add("Hatch ID: " + identifier);
         }
         if (contents != null) {
-            Map<CircuitComponent, Long> components = contents.getComponents();
-            for (Map.Entry<CircuitComponent, Long> component : components.entrySet()) {
-                info.add(
-                    EnumChatFormatting.YELLOW + component.getKey()
-                        .getLocalizedName() + ": " + EnumChatFormatting.WHITE + formatNumber(component.getValue()));
+            var components = contents.getComponents();
+            for (var entry : components.entrySet()) {
+                CircuitComponent cc = entry.getKey();
+                for (var pair : entry.getValue()) {
+                    if (pair.getLeft() == null) {
+                        info.add(
+                            EnumChatFormatting.YELLOW + cc.getLocalizedName()
+                                + ": "
+                                + EnumChatFormatting.WHITE
+                                + formatNumber(pair.getRight()));
+                    } else {
+                        info.add(
+                            EnumChatFormatting.YELLOW + cc.getLocalizedName()
+                                + "(Renamed to: "
+                                + pair.getLeft()
+                                + "): "
+                                + EnumChatFormatting.WHITE
+                                + formatNumber(pair.getRight()));
+                    }
+                }
             }
         }
         return info.toArray(new String[] {});
