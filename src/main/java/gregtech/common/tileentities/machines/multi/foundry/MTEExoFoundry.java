@@ -11,7 +11,6 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.SolidifierHatch;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW;
@@ -37,24 +36,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -65,7 +60,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
-import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -96,10 +90,6 @@ import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.gui.modularui.multiblock.MTEExoFoundryGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.IMTERenderer;
-import gregtech.common.render.shader.ShaderHandle;
-import gregtech.common.render.shader.ShaderRecipe;
-import gregtech.common.render.shader.Uniform;
-import gregtech.common.render.shader.VertexAttribute;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import io.netty.buffer.ByteBuf;
@@ -839,63 +829,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     // Render code
     private boolean shouldRender = true;
-    private static boolean renderInitialized;
-    private static IVertexArrayObject ffpRing; // The universium path draws via FFP
-    private static IVertexArrayObject ring;
-
-    private static final ShaderRecipe FOUNDRY = ShaderRecipe.of(GregTech.resourceDomain, "foundry")
-        .required("u_Color")
-        .modelUniform("u_ModelMatrix")
-        .attribute("a_Position", VertexAttribute.POSITION);
-
-    private static final Uniform RING_COLOR = FOUNDRY.uniform("u_Color");
-
-    private static ShaderHandle ringShader;
-
-    private static final Matrix4f ringMatrix = new Matrix4f();
-
-    public static void reloadRender() {
-        renderInitialized = false;
-        releaseRender();
-        // spotless:off
-        ringShader = FOUNDRY.bake();
-        if (!ringShader.isValid()) {
-            GTLoggers.GT_FML_LOGGER.error("Failed to initialize exo foundry shader");
-            releaseRender();
-            return;
-        }
-
-        try {
-            final ResourceLocation model = new ResourceLocation(
-                GregTech.resourceDomain,
-                "textures/model/foundry_ring.obj"
-            );
-            ring = WavefrontVBOBuilder.compileToVBO(model, ringShader.vertexFormat());
-            ffpRing = WavefrontVBOBuilder.compileToVBO(model);
-        } catch (RuntimeException e) {
-            GTLoggers.GT_FML_LOGGER.error("Failed to load exo foundry ring model", e);
-            releaseRender();
-            return;
-        }
-
-        renderInitialized = true;
-        // spotless:on
-    }
-
-    private static void releaseRender() {
-        if (ringShader != null) {
-            ringShader.release();
-            ringShader = null;
-        }
-        if (ring != null) {
-            ring.delete();
-            ring = null;
-        }
-        if (ffpRing != null) {
-            ffpRing.delete();
-            ffpRing = null;
-        }
-    }
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
@@ -903,7 +836,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             return;
         }
 
-        if (!renderInitialized) return;
+        if (!FoundryRenderUtils.renderInitialized) return;
 
         ForgeDirection dir = getDirection();
         PostProcessingManager.getInstance()
@@ -952,13 +885,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     private static void renderStandardRing(int index, float red, float green, float blue) {
-        ringShader.use();
-        GL20.glUniform3f(ringShader.loc(RING_COLOR), red, green, blue);
+        FoundryRenderUtils.ringShader.use();
+        GL20.glUniform3f(FoundryRenderUtils.ringShader.loc(FoundryRenderUtils.RING_COLOR), red, green, blue);
 
-        ringMatrix.translation(0, ringHeight(index), 0)
+        FoundryRenderUtils.ringMatrix.translation(0, ringHeight(index), 0)
             .scale(0.8f, 1.2f, 0.8f);
-        ringShader.uploadModel(ringMatrix);
-        ring.render();
+        FoundryRenderUtils.ringShader.uploadModel(FoundryRenderUtils.ringMatrix);
+        FoundryRenderUtils.ring.render();
     }
 
     private static void renderUniversiumRing(int index, boolean bloom) {
@@ -997,7 +930,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL11.glPushMatrix();
         GL11.glTranslatef(0, ringHeight(index), 0);
         GL11.glScalef(0.8f, 1.2f, 0.8f);
-        ffpRing.render();
+        FoundryRenderUtils.ffpRing.render();
         GL11.glPopMatrix();
     }
 

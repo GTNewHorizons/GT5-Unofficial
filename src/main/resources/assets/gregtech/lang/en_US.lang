@@ -6746,6 +6746,13 @@ GT5U.gui.button.vm.deselect=Deselect all ores
 GT5U.gui.button.vm.tt.void=§cWill be voided
 GT5U.gui.button.vm.tt.novoid=§aWill not be voided
 
+#Quad-Cell Plasma Collider GUI
+GT5U.gui.button.qpc.configure=Configure plasmas
+GT5U.gui.text.qpc.plasma_display=%s: %s/s
+GT5U.gui.text.qpc.expected_rate=Expected Drain Rates:
+GT5U.gui.text.qpc.residue=Producing %s/s residue 
+GT5U.gui.text.qpc.generating=Generating %s EU/t
+
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.wireless.receiver.tier.01=LV Wireless Energy Hatch
@@ -8901,6 +8908,8 @@ gt.blockcasings13.15.name=Naquadah Reactor Casing
 gt.blockcasings14.3.name=Hearth Casing
 gt.blockcasings14.4.name=Fridge Casing
 gt.blockcasings14.5.name=Naquadah Reinforced Distillation Casing
+gt.blockcasings14.6.name=Plasma Collider Casing
+gt.blockcasings14.7.name=Quadcell Driving Casing
 
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
@@ -8961,6 +8970,7 @@ gt.blockglass1.7.name=Exo-Foundry Containment Glass
 gt.blockglass1.8.name=Nanochip Complex Glass
 gt.blockglass1.9.name=Electromagnetic Waveguide
 gt.blockglass1.10.name=Reinforced Glass
+gt.blockglass1.11.name=Plasma Collider Glass
 gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
