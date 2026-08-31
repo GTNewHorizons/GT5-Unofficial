@@ -233,6 +233,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Chrysocolla;
     public static Materials Citrine;
     public static Materials CobaltHexahydrate;
+    public static Materials CollisionResidue;
     public static Materials ConstructionFoam;
     public static Materials Coral;
     public static Materials CrudeOil;
@@ -294,8 +295,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials ObsidianFlux;
     public static Materials Oilsands;
     public static Materials Onyx;
-    public static Materials Orikalkum;
     public static Materials OrikalkicReagent;
+    public static Materials Orikalkum;
     public static Materials Osmonium;
     public static Materials Painite;
     public static Materials Peanutwood;
@@ -311,7 +312,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Sunstone;
     public static Materials Tar;
     public static Materials Tartarite;
-    public static Materials CollisionResidue;
     public static Materials UUAmplifier;
     public static Materials UUMatter;
     public static Materials Void;
