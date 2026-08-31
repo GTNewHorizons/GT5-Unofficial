@@ -44,8 +44,8 @@ import xonin.backhand.api.core.BackhandUtils;
 
 public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<PlayerInventoryGuiData> {
 
-    private static final String CREATIVE_BREAK_COOLDOWN_KEY = "VajraCreativeBreakCooldown";
-    private static final String RIGHT_CLICK_DISABLED_KEY = "VajraRightClickDisabled";
+    private static final String CREATIVE_BREAK_COOLDOWN_KEY = "creativeBreakCooldown";
+    private static final String RIGHT_CLICK_DISABLED_KEY = "rightClickDisabled";
 
     public int maxCharge = (int) 1e8;
     public int baseCost = 3333;
