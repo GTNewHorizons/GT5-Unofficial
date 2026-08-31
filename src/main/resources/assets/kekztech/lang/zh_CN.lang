@@ -95,3 +95,8 @@ achievement.tile.kekztech_lapotronicenergyunit_block.5.desc=捡起这个物品�
 achievement.tile.kekztech_lapotronicenergyunit_block.5=终极电容(UHV)
 
 kekztech.structure.glass_incompatible=玻璃不兼容
+
+# Multiblocks
+gt.blockmachines.multimachine.fuelcellmk1.name=固体氧化物燃料电池 MK-I
+gt.blockmachines.multimachine.fuelcellmk2.name=固体氧化物燃料电池 MK-II
+gt.blockmachines.multimachine.supercapacitor.name=兰波顿超级电容库

@@ -29,14 +29,14 @@ yottaFluidTankCell.8.name=流体单元方块T9
 yottaFluidTankCell.9.name=流体单元方块T10
 supercriticalFluidTurbineCasing.0.name=超临界蒸汽涡轮机械方块
 pressureResistantWalls.0.name=耐压墙
-preciseUnitCasing.0.name=精密电子单元机械方块 MK-I
-preciseUnitCasing.1.name=精密电子单元机械方块 MK-II
-preciseUnitCasing.2.name=精密电子单元机械方块 MK-III
+preciseUnitCasing.0.name=精密电子单元机械方块 Mk-I
+preciseUnitCasing.1.name=精密电子单元机械方块 Mk-II
+preciseUnitCasing.2.name=精密电子单元机械方块 Mk-III
 compactFusionCoil.0.name=改良型超导线圈方块
 compactFusionCoil.1.name=压缩聚变线圈方块
 compactFusionCoil.2.name=进阶压缩聚变线圈方块
-compactFusionCoil.3.name=压缩聚变线圈方块MK-II原型
-compactFusionCoil.4.name=压缩聚变线圈方块MK-II
+compactFusionCoil.3.name=压缩聚变线圈方块Mk-II原型
+compactFusionCoil.4.name=压缩聚变线圈方块Mk-II
 essentiaFilterCasing.0.name=源质过滤方块
 essentiaOutputHatch.0.name=源质输出仓
 essentiaOutputHatch_ME.0.name=源质输出仓 (ME)
@@ -101,11 +101,11 @@ item.fluidCore.4.name=流体存储核心T5
 item.fluidCore.5.name=流体存储核心T6
 item.highEnergyMixture.0.name=高能混合物
 item.saltyRoot.0.name=盐根
-item.huiCircuit.0.name=高算力工作站 MK-I
-item.huiCircuit.1.name=高算力工作站 MK-II
-item.huiCircuit.2.name=高算力工作站 MK-III
-item.huiCircuit.3.name=高算力工作站 MK-IV
-item.huiCircuit.4.name=高算力工作站 MK-V
+item.huiCircuit.0.name=高算力工作站 Mk-I
+item.huiCircuit.1.name=高算力工作站 Mk-II
+item.huiCircuit.2.name=高算力工作站 Mk-III
+item.huiCircuit.3.name=高算力工作站 Mk-IV
+item.huiCircuit.4.name=高算力工作站 Mk-V
 
 #Crops
 crops.saltroot=盐根
@@ -269,7 +269,7 @@ value.neutron_activator.2= MeV
 value.extreme_heat_exchanger.0=最大热流体输入：
 value.extreme_heat_exchanger.1=最大工质输入：
 value.extreme_heat_exchanger.4=阈值：
-value.precise_assembler=要求 MK-%s 机械方块
+value.precise_assembler=要求 Mk-%s 机械方块
 
 #TecTech Structure Info
 FuelRefineFactory.hint.0=8x力场约束玻璃
@@ -345,3 +345,18 @@ research.ESSENTIA_SMELTERY.page.0=荒古炼金炉已经不足以支撑你的源�
 research.ESSENTIA_SMELTERY.page.1=Ignis与Aqua是LES运行的基本条件,最低需求约为最高能源仓等级^2*1.15cv/每次工作,满足后机器才能运行.<BR><BR>Ordo影响污染、咒波瓦斯生成概率(冶炼源质时随机在消声仓仓口排出咒波瓦斯).<BR><BR>Perditio可以加速机器工作,最高200%(100cv/5t).
 research.ESSENTIA_SMELTERY.page.2=扩散单元等级及结构大小仅影响机器并行,最大并行为64x.<BR><BR>不含源质的物品会冶炼出1点perditio.
 research.ESSENTIA_OUTPUT_HATCH_ME.page.0=总有一天你会用到它...<BR><BR>务必连接网络使用,它没有缓存！
+
+# Multiblocks
+gt.blockmachines.antimatterforge.name=半稳定反物质稳定序列器
+gt.blockmachines.antimattergenerator.name=屏蔽拉格朗日湮灭矩阵
+gt.blockmachines.componentassemblyline.name=部件装配线
+gt.blockmachines.coolanttower.name=冷却塔
+gt.blockmachines.extremeheatexchanger.name=超级热交换机
+gt.blockmachines.largefusioncomputer1.name=压缩核聚变反应堆控制电脑 Mk-I
+gt.blockmachines.largefusioncomputer2.name=压缩核聚变反应堆控制电脑 Mk-II
+gt.blockmachines.largefusioncomputer3.name=压缩核聚变反应堆控制电脑 Mk-III
+gt.blockmachines.largefusioncomputer4.name=压缩核聚变反应堆控制电脑 Mk-IV
+gt.blockmachines.largefusioncomputer5.name=压缩核聚变反应堆控制电脑 Mk-V
+gt.blockmachines.neutronactivator.name=中子活化器
+gt.blockmachines.preciseassembler.name=精密自动组装机MT-3662
+gt.blockmachines.yottafluidtank.name=YOT储罐

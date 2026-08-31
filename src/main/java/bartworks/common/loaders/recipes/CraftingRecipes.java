@@ -69,7 +69,7 @@ public class CraftingRecipes implements Runnable {
             WerkstoffLoader.RhodiumPlatedPalladium, // LuV
             Materials.Iridium, // ZPM
             Materials.Osmium, // UV
-            Materials.Naquadah // UHV
+            Materials.Neutronium // UHV
         };
 
         ItemStack[] bats = { ItemList.Battery_Hull_LV.get(1L), ItemList.Battery_Hull_MV.get(1L),
@@ -453,7 +453,7 @@ public class CraftingRecipes implements Runnable {
             new MTEBioLab(BioLab_LuV.ID, "bw.biolabLuV", StatCollector.translateToLocal("tile.biolab.name"), 6)
                 .getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PFP", "WCW", "OGO", 'F', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Chrome, 1L),
+            new Object[] { "PFP", "WCW", "OGO", 'F', WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.frameGt, 1),
                 'W', GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.HSSG, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.LuV,
@@ -496,7 +496,7 @@ public class CraftingRecipes implements Runnable {
                 .getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bedrockium, 1L), 'W',
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.DraconiumAwakened, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UEV,
