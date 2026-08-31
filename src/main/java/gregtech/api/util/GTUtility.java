@@ -105,6 +105,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -4366,6 +4367,15 @@ public class GTUtility {
             amount -= a;
         }
         return result;
+    }
+
+    public static String getStackCustomName(ItemStack stack) {
+        if (stack == null) return null;
+        if (stack.stackTagCompound == null) return null;
+        NBTTagCompound subTag = stack.stackTagCompound.getCompoundTag("display");
+        if (subTag == null) return null;
+        if (!subTag.hasKey("Name", Constants.NBT.TAG_STRING)) return null;
+        return subTag.getString("Name");
     }
 
     public static List<ItemStack> mergeAndSortItemStacks(List<ItemStack> inputItems) {
