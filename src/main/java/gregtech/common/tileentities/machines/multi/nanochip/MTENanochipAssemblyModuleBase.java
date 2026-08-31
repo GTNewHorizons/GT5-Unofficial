@@ -354,7 +354,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 // Store the color of this hatch for each ItemStack
                 byte conveyorColor = conveyor.getColorization();
                 for (ItemStack stack : itemsInHatch) {
-                    GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(stack);
+                    GTUtility.ItemId id = GTUtility.ItemId.createWithoutNBT(stack);
                     // Merge stack into the input map, so we have a list of entries that are all unique.
                     inputs.merge(
                         id,
