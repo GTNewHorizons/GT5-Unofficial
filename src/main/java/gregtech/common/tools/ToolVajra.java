@@ -45,6 +45,7 @@ import xonin.backhand.api.core.BackhandUtils;
 public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<PlayerInventoryGuiData> {
 
     private static final String CREATIVE_BREAK_COOLDOWN_KEY = "creativeBreakCooldown";
+    private static final String LEGACY_CREATIVE_BREAK_COOLDOWN_KEY = "VajraCreativeBreakCooldown";
     private static final String RIGHT_CLICK_DISABLED_KEY = "rightClickDisabled";
 
     public int maxCharge = (int) 1e8;
@@ -75,8 +76,9 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
     public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int par4, int par5, int par6,
         EntityLivingBase entityLiving) {
         ElectricItem.manager.use(stack, baseCost, entityLiving);
-        if (world.isRemote && isCreativeBreakCooldownEnabled(stack)) {
-            Minecraft.getMinecraft().playerController.blockHitDelay = 5;
+        int breakCooldown = getCreativeBreakCooldown(stack);
+        if (world.isRemote && breakCooldown > 0) {
+            Minecraft.getMinecraft().playerController.blockHitDelay = breakCooldown;
         }
         return true;
     }
@@ -130,7 +132,7 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
         list.add(
             EnumChatFormatting.YELLOW + StatCollector.translateToLocalFormatted(
                 "gt.vajra.tooltip.creative_break_cooldown",
-                getStateName(isCreativeBreakCooldownEnabled(stack))));
+                getCreativeBreakCooldown(stack)));
         list.add(
             EnumChatFormatting.YELLOW + StatCollector.translateToLocalFormatted(
                 "gt.vajra.tooltip.right_click_breaking",
@@ -155,12 +157,16 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
         }
     }
 
-    public static boolean isCreativeBreakCooldownEnabled(ItemStack stack) {
-        return ItemStackNBT.getBoolean(stack, CREATIVE_BREAK_COOLDOWN_KEY);
+    public static int getCreativeBreakCooldown(ItemStack stack) {
+        if (ItemStackNBT.hasKey(stack, CREATIVE_BREAK_COOLDOWN_KEY)) {
+            return Math.max(0, Math.min(20, ItemStackNBT.getInteger(stack, CREATIVE_BREAK_COOLDOWN_KEY)));
+        }
+        return ItemStackNBT.getBoolean(stack, LEGACY_CREATIVE_BREAK_COOLDOWN_KEY) ? 5 : 0;
     }
 
-    public static void setCreativeBreakCooldownEnabled(ItemStack stack, boolean enabled) {
-        ItemStackNBT.setBoolean(stack, CREATIVE_BREAK_COOLDOWN_KEY, enabled);
+    public static void setCreativeBreakCooldown(ItemStack stack, int cooldown) {
+        ItemStackNBT.setInteger(stack, CREATIVE_BREAK_COOLDOWN_KEY, Math.max(0, Math.min(20, cooldown)));
+        ItemStackNBT.removeTag(stack, LEGACY_CREATIVE_BREAK_COOLDOWN_KEY);
     }
 
     public static boolean isRightClickEnabled(ItemStack stack) {

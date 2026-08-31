@@ -4,11 +4,17 @@ import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.value.IBoolValue;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.common.modularui2.sync.LinkedBoolValue;
@@ -30,13 +36,13 @@ public class VajraGui {
     }
 
     public ModularPanel build() {
-        ModularPanel panel = ModularPanel.defaultPanel("vajra_configuration", 224, 100);
+        ModularPanel panel = ModularPanel.defaultPanel("vajra_configuration", 264, 100);
         BooleanSyncValue silkTouch = new BooleanSyncValue(
             () -> ToolVajra.isSilkTouchEnabled(data.getUsedItemStack()),
             enabled -> ToolVajra.setSilkTouchEnabled(data.getUsedItemStack(), enabled)).allowC2S();
-        BooleanSyncValue breakCooldown = new BooleanSyncValue(
-            () -> ToolVajra.isCreativeBreakCooldownEnabled(data.getUsedItemStack()),
-            enabled -> ToolVajra.setCreativeBreakCooldownEnabled(data.getUsedItemStack(), enabled)).allowC2S();
+        DoubleSyncValue breakCooldown = new DoubleSyncValue(
+            () -> ToolVajra.getCreativeBreakCooldown(data.getUsedItemStack()),
+            cooldown -> ToolVajra.setCreativeBreakCooldown(data.getUsedItemStack(), (int) cooldown)).allowC2S();
         BooleanSyncValue rightClick = new BooleanSyncValue(
             () -> ToolVajra.isRightClickEnabled(data.getUsedItemStack()),
             enabled -> ToolVajra.setRightClickEnabled(data.getUsedItemStack(), enabled)).allowC2S();
@@ -47,66 +53,62 @@ public class VajraGui {
         panel.child(
             IKey.lang("gt.vajra.gui.title")
                 .asWidget()
-                .size(208, 12)
+                .size(248, 12)
                 .top(8)
                 .left(8)
                 .textAlign(Alignment.Center));
         panel.child(
             Flow.column()
-                .size(200, 62)
+                .size(240, 62)
                 .top(27)
                 .left(12)
                 .childPadding(4)
                 .child(
                     createSettingRow(
-                        IKey.lang("gt.vajra.gui.silk_touch"),
-                        createButton(
-                            LinkedBoolValue.of(silkTouch, false),
-                            IKey.lang("GT5U.gui.button.feature_disabled"),
-                            56),
-                        createButton(
-                            LinkedBoolValue.of(silkTouch, true),
-                            IKey.lang("GT5U.gui.button.feature_enabled"),
-                            56)))
-                .child(
-                    createSettingRow(
                         IKey.lang("gt.vajra.gui.creative_break_cooldown"),
-                        createButton(
-                            LinkedBoolValue.of(breakCooldown, false),
-                            IKey.lang("GT5U.gui.button.feature_disabled"),
-                            56),
-                        createButton(
-                            LinkedBoolValue.of(breakCooldown, true),
-                            IKey.lang("GT5U.gui.button.feature_enabled"),
-                            56)))
+                        createCooldownSlider(breakCooldown)))
+                .child(createSettingRow(IKey.lang("gt.vajra.gui.silk_touch"), createToggleControls(silkTouch)))
                 .child(
                     createSettingRow(
                         IKey.lang("gt.vajra.gui.right_click_breaking"),
-                        createButton(
-                            LinkedBoolValue.of(rightClick, false),
-                            IKey.lang("GT5U.gui.button.feature_disabled"),
-                            56),
-                        createButton(
-                            LinkedBoolValue.of(rightClick, true),
-                            IKey.lang("GT5U.gui.button.feature_enabled"),
-                            56))));
+                        createToggleControls(rightClick))));
 
         return panel;
     }
 
-    private Flow createSettingRow(IKey label, SelectButton... buttons) {
-        Flow controls = Flow.row()
-            .size(116, 18)
-            .childPadding(4);
-        for (SelectButton button : buttons) controls.child(button);
+    private Flow createSettingRow(IKey label, IWidget controls) {
         return Flow.row()
-            .size(200, 18)
+            .size(240, 18)
             .childPadding(4)
             .child(
                 label.asWidget()
-                    .size(80, 18)
+                    .size(120, 18)
                     .textAlign(Alignment.CenterLeft))
             .child(controls);
+    }
+
+    private Flow createToggleControls(BooleanSyncValue value) {
+        return Flow.row()
+            .size(116, 18)
+            .childPadding(4)
+            .child(createButton(LinkedBoolValue.of(value, false), IKey.lang("GT5U.gui.button.feature_disabled"), 56))
+            .child(createButton(LinkedBoolValue.of(value, true), IKey.lang("GT5U.gui.button.feature_enabled"), 56));
+    }
+
+    private IWidget createCooldownSlider(DoubleSyncValue value) {
+        return new ParentWidget<>().size(116, 18)
+            .child(
+                new SliderWidget().size(116, 18)
+                    .background(GuiTextures.MC_BUTTON)
+                    .bounds(0, 20)
+                    .stopper(1)
+                    .value(value))
+            .child(
+                IKey.dynamic(() -> String.valueOf((int) value.getDoubleValue()))
+                    .color(Color.WHITE.main)
+                    .asWidget()
+                    .size(116, 18)
+                    .textAlign(Alignment.Center));
     }
 
     private SelectButton createButton(IBoolValue<?> value, IKey label, int width) {
