@@ -278,9 +278,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IntSyncValue startupCheckSyncer = new IntSyncValue(multiblock::getmStartUpCheck);
-        StringSyncValue machineModeSyncer = new StringSyncValue(multiblock::getMachineModeName);
         syncManager.syncValue("startupCheck", startupCheckSyncer);
-        syncManager.syncValue("machineModeName", machineModeSyncer);
 
         return new ListWidget<>().fullWidth()
             .crossAxisAlignment(Alignment.CrossAxis.START)
@@ -289,7 +287,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 () -> IKey
                     .dynamic(
                         () -> StatCollector
-                            .translateToLocalFormatted("gt.interact.desc.mb.mode", machineModeSyncer.getStringValue()))
+                            .translateToLocalFormatted("gt.interact.desc.mb.mode", multiblock.getMachineModeName()))
                     .asWidget()
                     .marginBottom(2)
                     .fullWidth())
@@ -339,13 +337,16 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected IWidget createShutdownReasonWidget(PanelSyncManager syncManager) {
-        StringSyncValue shutdownReasonSync = (StringSyncValue) syncManager
-            .getSyncHandlerFromMapKey("shutdownDisplayString:0");
-        return IKey.dynamic(shutdownReasonSync::getValue)
+        return IKey.dynamic(
+            () -> baseMetaTileEntity.getLastShutDownReason()
+                .getDisplayString())
             .asWidget()
             .fullWidth()
             .marginBottom(2)
-            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutdownReasonSync.getValue()));
+            .setEnabledIf(
+                widget -> shouldShutdownReasonBeDisplayed(
+                    baseMetaTileEntity.getLastShutDownReason()
+                        .getDisplayString()));
     }
 
     protected boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
@@ -1224,11 +1225,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue("shutdownReason", shutdownReasonSyncer);
 
         syncManager.syncValue(
-            "shutdownDisplayString",
-            new StringSyncValue(
-                () -> baseMetaTileEntity.getLastShutDownReason()
-                    .getDisplayString()));
-        syncManager.syncValue(
             "shutdownReasonKey",
             new StringSyncValue(
                 () -> baseMetaTileEntity.getLastShutDownReason()
@@ -1281,6 +1277,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
         // Widget Specific
         BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(multiblock::isAllowedToWork, bool -> {
+            // This setter also runs on the client when the value is synced from the server. Toggling the machine there
+            // would overwrite state the server just sent, such as the shutdown reason.
+            if (!baseMetaTileEntity.isServerSide()) return;
             if (isPowerSwitchDisabled()) return;
             if (bool) multiblock.enableWorking();
             else {
