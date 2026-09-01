@@ -177,7 +177,8 @@ public final class USSStarCatalog {
                 .texture("star_supernova")
                 .evolutionTarget("black_hole")
                 .color(0xFF9040D0) // purple
-                .shellColor(0xFFFFFFFF) // white
+                .shellColor(0xFF9FC8FF) // light blue
+                .renderType(USSStarRenderType.SUPERNOVA)
                 .build());
 
         USSStarRegistry.register(
@@ -248,8 +249,9 @@ public final class USSStarCatalog {
                 .rippleRange(48, 128)
                 .texture("star_hypernova")
                 .evolutionTarget("neutron_star")
-                .color(0xFFFFFFFF) // white
-                .shellColor(0xFFFFFFFF) // white
+                .color(0xFF39FF14) // neon green
+                .shellColor(0xFFFF60C0) // pink
+                .renderType(USSStarRenderType.HYPERNOVA)
                 .build());
 
         USSStarRegistry.register(

@@ -1508,6 +1508,9 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             // on top of the standard star body — rides the description packet like the halo flag so chunk reloads
             // keep it.
             rendererTileEntity.setStarRenderType(USSStarColor.renderTypeFor(USSStarRegistry.byType(uss.getStarType())));
+            // Remaining lifespan — the client's supernova/hypernova show derives its lifetime progress from it
+            // (re-asserted every machine tick by reapplyStarRenderState while the star burns).
+            rendererTileEntity.setStarLifespanRemaining(uss.getLifespanRemaining());
             // Pass 12: the Voidcraft structure is 2× the legacy radius, so the space shell doubles with it
             // (star and planet sizes stay unchanged).
             rendererTileEntity.setDomeRadius(USSConstants.SPACE_SHELL_RADIUS);
@@ -1562,6 +1565,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         te.setStarShellColor(USSStarColor.shellColorFor(USSStarRegistry.byType(uss.getStarType())));
         te.setStarHalo(USSStarColor.isHaloStar(uss.getStarType()));
         te.setStarRenderType(USSStarColor.renderTypeFor(USSStarRegistry.byType(uss.getStarType())));
+        te.setStarLifespanRemaining(uss.getLifespanRemaining());
         te.setDomeRadius(USSConstants.SPACE_SHELL_RADIUS);
         te.setPlanets(planetSpecsFor(getPlanets()));
         te.setUssOrbitTime(

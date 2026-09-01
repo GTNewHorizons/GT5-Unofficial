@@ -114,6 +114,52 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     }
 
     /**
+     * The star's remaining lifespan in machine ticks — the server's truth, re-pushed every machine tick while the
+     * star burns (the machine's render-state re-assert): the client derives the transient render treatment's
+     * lifetime progress from it (the supernova/hypernova show, see
+     * {@link tectech.voidcraft.uss.USSSupernovaExplosion}). -1 = not synced.
+     */
+    private long starLifespanRemaining = -1;
+
+    public long getStarLifespanRemaining() {
+        return starLifespanRemaining;
+    }
+
+    public void setStarLifespanRemaining(long remaining) {
+        this.starLifespanRemaining = remaining;
+    }
+
+    /**
+     * The last lifetime progress this client saw while the star was exploding (−1 = not mid-show): the
+     * explosion's detonation particle burst fires on the crossing INTO the detonation — never on a mid-show chunk
+     * load. Client-only render state, never synced or written to NBT.
+     */
+    private float explosionLastProgress = -1f;
+
+    public float getExplosionLastProgress() {
+        return explosionLastProgress;
+    }
+
+    public void setExplosionLastProgress(float progress) {
+        this.explosionLastProgress = progress;
+    }
+
+    /**
+     * The last world tick this client spawned the explosion's continuous sparks on: the render pass runs many
+     * frames per tick, so the sparks emit at most once per tick. Client-only render state, never synced or
+     * written to NBT.
+     */
+    private long explosionLastSparkTick = -1L;
+
+    public long getExplosionLastSparkTick() {
+        return explosionLastSparkTick;
+    }
+
+    public void setExplosionLastSparkTick(long tick) {
+        this.explosionLastSparkTick = tick;
+    }
+
+    /**
      * The Dyson Swarm state (the Voidcraft infrastructure pass): the satellites currently in the star's swarm plus
      * the star's satellite capacity (0 capacity = no swarm — the legacy path and Voidcraft stars before the first
      * launch). The client renders a semi-transparent gray triangle shell at a fill of count/capacity.
@@ -411,6 +457,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     private static final String SHELL_NBT_TAG = EOH_NBT_TAG + "shell";
     private static final String HALO_NBT_TAG = EOH_NBT_TAG + "halo";
     private static final String RENDER_TYPE_NBT_TAG = EOH_NBT_TAG + "render_type";
+    private static final String LIFESPAN_NBT_TAG = EOH_NBT_TAG + "lifespan";
     private static final String SWARM_COUNT_NBT_TAG = EOH_NBT_TAG + "swarm_count";
     private static final String SWARM_CAP_NBT_TAG = EOH_NBT_TAG + "swarm_cap";
     private static final String INFRA_SHELL_TYPE_NBT_TAG = EOH_NBT_TAG + "infra_shell_type";
@@ -436,6 +483,9 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         }
         if (starRenderType != USSStarRenderType.STANDARD.ordinal()) {
             compound.setInteger(RENDER_TYPE_NBT_TAG, starRenderType);
+        }
+        if (starLifespanRemaining >= 0L) {
+            compound.setLong(LIFESPAN_NBT_TAG, starLifespanRemaining);
         }
 
         // Dyson Swarm state (Voidcraft infrastructure pass) — persisted so chunk reloads and description packets
@@ -510,6 +560,11 @@ public class TileEntityEyeOfHarmony extends TileEntity {
             setStarRenderType(USSStarRenderType.fromOrdinal(compound.getInteger(RENDER_TYPE_NBT_TAG)));
         } else if (starRenderType != USSStarRenderType.STANDARD.ordinal()) {
             setStarRenderType(USSStarRenderType.STANDARD);
+        }
+        if (compound.hasKey(LIFESPAN_NBT_TAG)) {
+            setStarLifespanRemaining(compound.getLong(LIFESPAN_NBT_TAG));
+        } else if (starLifespanRemaining >= 0L) {
+            setStarLifespanRemaining(-1L);
         }
 
         // Dyson Swarm state (Voidcraft): restore it, or clear a stale swarm when a legacy / fresh-star NBT arrives.

@@ -43,6 +43,7 @@ import tectech.loader.ConfigHandler;
 import tectech.thing.block.TileEntityEyeOfHarmony;
 import tectech.voidcraft.uss.USSFleetOrbit;
 import tectech.voidcraft.uss.USSInfraShell;
+import tectech.voidcraft.uss.USSSupernovaExplosion;
 
 public abstract class EOHRenderingUtils {
 
@@ -173,6 +174,18 @@ public abstract class EOHRenderingUtils {
      */
     public static void renderUSSStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color color, int shellColor,
         float partialTicks, double starRadius, boolean halo) {
+        renderUSSStar(base, type, color, shellColor, partialTicks, starRadius, halo, 1f);
+    }
+
+    /**
+     * The USS star with a layer-gain MULTIPLIER on top of the class gain (the transient render treatment — the
+     * supernova/hypernova show overdrives the layers past their registered brightness; 1.0 = the registered look).
+     *
+     * @see #renderUSSStar(Matrix4fc, IItemRenderer.ItemRenderType, Color, int, float, double, boolean)
+     * @param gainBoost the brightness multiplier applied to every layer's gain
+     */
+    public static void renderUSSStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color color, int shellColor,
+        float partialTicks, double starRadius, boolean halo, float gainBoost) {
         final Color shell = shellColor != 0 ? new Color(shellColor) : color;
         renderStar(
             base,
@@ -183,7 +196,8 @@ public abstract class EOHRenderingUtils {
             USS_STAR_LAYERS,
             USS_STAR_ROTATION_SCALE,
             USS_STAR_LAYER_ALPHA,
-            USS_STAR_LAYER_GAIN,
+            new float[] { USS_STAR_LAYER_GAIN[0] * gainBoost, USS_STAR_LAYER_GAIN[1] * gainBoost,
+                USS_STAR_LAYER_GAIN[2] * gainBoost },
             halo ? HALO_STAR_LAYER_SCALE : USS_STAR_LAYER_SCALE,
             halo);
     }
@@ -914,6 +928,334 @@ public abstract class EOHRenderingUtils {
         final float sinP = (float) Math.sin(tubeAngle);
         mesh.vertex(cx + tube * sinP * ny, cy - tube * sinP * nx, tube * cosP, 0.5, 0.5);
     }
+
+    // region Supernova / hypernova explosion (the stellar-evolution transient render treatment)
+
+    /**
+     * The shock shell's surface texture — the star's own grayscale surface layer (the neutral luminance keeps the
+     * tint true — see the USS star layer comments): the shell reads as the star's ejected envelope.
+     */
+    public static final ResourceLocation SUPERNOVA_SHELL_TEXTURE = new ResourceLocation(
+        MODID,
+        "textures/uss/star/StarLayer1.png");
+
+    /**
+     * The shock shell's flattening: the Y radius as a fraction of the shell's XZ radius — a squashed-sphere disc
+     * (the blast wave reads as an equatorial disc spreading from the star's rim, not a sphere).
+     */
+    public static final float SUPERNOVA_SHELL_FLATNESS = 0.01f;
+
+    /** The churn layer's texture — the star's softest surface layer (the diffuse roiling look). */
+    public static final ResourceLocation SUPERNOVA_CHURN_TEXTURE = new ResourceLocation(
+        MODID,
+        "textures/uss/star/StarLayer2.png");
+
+    /** The churn layer's Y spin speed (radians per tick). */
+    public static final float SUPERNOVA_CHURN_SPIN_Y = 0.08f;
+
+    /** The churn layer's X spin speed (radians per tick) — off-axis so the roll reads 3D. */
+    public static final float SUPERNOVA_CHURN_SPIN_X = 0.03f;
+
+    /**
+     * The supernova/hypernova explosion overlay — drawn AFTER the star body and the infrastructure shells: the
+     * dome flash (an additive wash of the space shell, decaying from the detonation), the shock shell (an additive
+     * textured disc — the sphere mesh flattened in Y — expanding from the star's rim to the dome radius, tinted
+     * with the class's shell color), and the GRB jets (two thin additive beams out of the poles, flaring with the
+     * detonation and fading over the expansion). Pure additive light: the depth test stays on with depth writes
+     * OFF, so it brightens whatever the system view has already drawn (star, planets, ripples, gateways, shells)
+     * and writes nothing that could occlude a later pass.
+     *
+     * @param base       the star-center model matrix (already translated to the TE position, see
+     *                   {@code EOHTileEntitySR})
+     * @param starRadius the star's rendered radius (blocks)
+     * @param domeRadius the space shell's radius (blocks) — the shell's travel end and the flash's size
+     * @param shellColor the star's registered shell color (the dome flash tint; 0 = white)
+     * @param hypernova  the class variant (false = supernova)
+     * @param progress   the show's lifetime progress (0..1, see {@code USSSupernovaExplosion})
+     */
+    public static void renderSupernovaExplosion(Matrix4fc base, double starRadius, double domeRadius, int shellColor,
+        boolean hypernova, float progress) {
+        if (!shadersReady() || starRadius <= 0.0 || domeRadius <= 0.0) {
+            return;
+        }
+        final int v = hypernova ? 1 : 0;
+        final int flash = shellColor != 0 ? shellColor : 0xFFFFFFFF;
+        final float flashR = ((flash >> 16) & 0xFF) / 255f;
+        final float flashG = ((flash >> 8) & 0xFF) / 255f;
+        final float flashB = (flash & 0xFF) / 255f;
+
+        final float flashAlpha = USSSupernovaExplosion.domeFlashAlpha(progress, hypernova);
+        if (flashAlpha > 0f) {
+            drawGlowSphere(
+                base,
+                RING_TEXTURE,
+                (float) (domeRadius * USSSupernovaExplosion.DOME_FLASH_RADIUS_FACTOR),
+                1.0f,
+                flashR,
+                flashG,
+                flashB,
+                flashAlpha);
+        }
+
+        final float travel = USSSupernovaExplosion.shellRadiusFraction(progress, hypernova);
+        if (travel >= 0f) {
+            final float alpha = USSSupernovaExplosion.shellAlpha(progress, hypernova);
+            if (alpha > 0f) {
+                final float radius = (float) (starRadius * USSSupernovaExplosion.SHELL_START_FACTOR
+                    + (domeRadius - starRadius * USSSupernovaExplosion.SHELL_START_FACTOR) * travel);
+                final int shellTint = USSSupernovaExplosion.SHELL_COLOR[v];
+                drawGlowSphere(
+                    base,
+                    SUPERNOVA_SHELL_TEXTURE,
+                    radius,
+                    SUPERNOVA_SHELL_FLATNESS,
+                    ((shellTint >> 16) & 0xFF) / 255f,
+                    ((shellTint >> 8) & 0xFF) / 255f,
+                    (shellTint & 0xFF) / 255f,
+                    alpha);
+            }
+        }
+
+        // The GRB jets: two layered additive beams out of the star's poles — the near-white core beam under the
+        // light-blue glow shells (see {@code USSSupernovaExplosion.jetLayer*}).
+        final float jetAlpha = USSSupernovaExplosion.jetAlpha(progress, hypernova);
+        if (jetAlpha > 0f) {
+            final float jetLength = (float) domeRadius * USSSupernovaExplosion.JET_LENGTH_FACTOR;
+            final float jetThickness = jetLength * USSSupernovaExplosion.JET_THICKNESS_FACTOR;
+            for (int layer = 0; layer < USSSupernovaExplosion.JET_LAYERS; layer++) {
+                final float alpha = jetAlpha * USSSupernovaExplosion.jetLayerAlphaFactor(layer);
+                if (alpha <= 0.003f) {
+                    continue;
+                }
+                final int jetTint = USSSupernovaExplosion.jetLayerColor(layer);
+                final float thickness = jetThickness * USSSupernovaExplosion.jetLayerRadiusFactor(layer);
+                drawJetBeam(
+                    base,
+                    jetLength,
+                    thickness,
+                    ((jetTint >> 16) & 0xFF) / 255f,
+                    ((jetTint >> 8) & 0xFF) / 255f,
+                    (jetTint & 0xFF) / 255f,
+                    alpha,
+                    true);
+                drawJetBeam(
+                    base,
+                    jetLength,
+                    thickness,
+                    ((jetTint >> 16) & 0xFF) / 255f,
+                    ((jetTint >> 8) & 0xFF) / 255f,
+                    (jetTint & 0xFF) / 255f,
+                    alpha,
+                    false);
+            }
+        }
+    }
+
+    /**
+     * The explosion's surface churn — a close additive roiling layer just above the star's surface (the deferred
+     * "shader churn" with the shared sphere mesh): the star's soft surface layer, tinted with the star's core
+     * color, spinning on two axes and pulsing per {@code USSSupernovaExplosion.churnAlpha /
+     * churnRadiusFactor}. Drawn right after the star body (before the infrastructure shells), so the swarm/shell
+     * pass over it.
+     *
+     * @param base       the star-center model matrix (see {@code EOHTileEntitySR})
+     * @param time       the animation clock (ticks)
+     * @param starRadius the star's rendered radius (blocks — already collapsed during the finale)
+     * @param coreColor  the star's registered core color (the churn tint; 0 = white)
+     */
+    public static void renderSupernovaChurn(Matrix4fc base, float time, float starRadius, int coreColor) {
+        if (!shadersReady() || starRadius <= 0f) {
+            return;
+        }
+        final float radius = starRadius * USSSupernovaExplosion.churnRadiusFactor(time);
+        final float alpha = USSSupernovaExplosion.churnAlpha(time);
+        if (alpha <= 0.003f) {
+            return;
+        }
+        final int tint = coreColor != 0 ? coreColor : 0xFFFFFFFF;
+        final boolean blendWas = GL11.glGetBoolean(GL11.GL_BLEND);
+        final long blendFuncWas = RenderState.savedBlendFunc();
+        final long cullWas = beginSphereCull(false);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // additive light: never inherit a prior renderer's blend
+                                                          // function
+        GL11.glDepthMask(false); // pure overlay: depth-WRITE off (the test stays on)
+        try {
+            final ShaderHandle shader = texturedShader();
+            shader.use();
+            bindTexture(SUPERNOVA_CHURN_TEXTURE);
+            churnMatrix.set(base)
+                .scale(radius, radius, radius)
+                .rotate(time * SUPERNOVA_CHURN_SPIN_Y, 0f, 1f, 0f)
+                .rotate(time * SUPERNOVA_CHURN_SPIN_X, 1f, 0f, 0f);
+            GL20.glUniform4f(
+                shader.loc(SharedShaders.U_TINT),
+                ((tint >> 16) & 0xFF) / 255f,
+                ((tint >> 8) & 0xFF) / 255f,
+                (tint & 0xFF) / 255f,
+                alpha);
+            shader.uploadModel(churnMatrix);
+            eohSphere.render();
+        } finally {
+            GL11.glDepthMask(true);
+            endSphereCull(cullWas);
+            RenderState.restoreBlendFunc(blendFuncWas);
+            RenderState.restore(GL11.GL_BLEND, blendWas);
+            ShaderProgram.clear();
+        }
+    }
+
+    /**
+     * The explosion's orbit-ring light-up — each orbit ring flashes (additive, in the ring's own plane) as the
+     * shock shell crosses its radius, decaying as the shell travels on
+     * ({@code USSSupernovaExplosion.ringFlashAlpha}). Reuses the orbit rings' cached torus meshes and their exact
+     * plane chain ({@code base · rotX(xAngle) · rotZ(zAngle)}), so the flash sits on the ring by construction.
+     *
+     * @param base        the star-center model matrix (see {@code EOHTileEntitySR})
+     * @param specs       the explicit planet system (the rings' plane + radius)
+     * @param starSize    the star size factor (the orbit-radius term, as in {@link #renderUSSOrbits})
+     * @param shellRadius the shock shell's current world radius (blocks; &le; 0 = not launched → nothing)
+     * @param shellAlpha  the shell's own alpha (the flash scales with it — dead shell, dead flash)
+     * @param flashColor  the flash tint (the class's shell color; 0 = white)
+     */
+    public static void renderSupernovaRingFlashes(Matrix4fc base, List<TileEntityEyeOfHarmony.PlanetSpec> specs,
+        float starSize, float shellRadius, float shellAlpha, int flashColor) {
+        if (!shadersReady() || specs == null || specs.isEmpty() || shellRadius <= 0f || shellAlpha <= 0.003f) {
+            return;
+        }
+        final int count = Math.min(specs.size(), MAX_USS_PLANETS);
+        final int tint = flashColor != 0 ? flashColor : 0xFFFFFFFF;
+        final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        final boolean alphaTestOn = GL11.glIsEnabled(GL11.GL_ALPHA_TEST);
+        final boolean blendOn = GL11.glIsEnabled(GL11.GL_BLEND);
+        final long blendFuncWas = RenderState.savedBlendFunc();
+        GL11.glDisable(GL11.GL_CULL_FACE); // mixed torus winding — do not rely on the face convention
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // additive light: never inherit a prior renderer's blend
+                                                          // function
+        GL11.glDepthMask(false); // pure overlay: depth-tested (planet/star occlude it), depth-WRITE off
+        // The ring flash is a blended additive overlay — the world pass GL_GREATER 0.5 alpha test would discard
+        // its low-alpha quads (the same reason the orbit rings themselves draw with the test disabled).
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        try {
+            final ShaderHandle shader = texturedShader();
+            shader.use();
+            bindTexture(RING_TEXTURE);
+            for (int i = 0; i < count; i++) {
+                final TileEntityEyeOfHarmony.PlanetSpec spec = specs.get(i);
+                final float radius = 0.2f + spec.distance + 0.2f * starSize; // the planet's orbit radius, exactly
+                final float alpha = USSSupernovaExplosion.ringFlashAlpha(shellRadius, radius, shellAlpha);
+                if (alpha <= 0.003f) {
+                    continue;
+                }
+                ringMatrix.set(base)
+                    .rotate((float) Math.toRadians(spec.xAngle), 1f, 0f, 0f)
+                    .rotate((float) Math.toRadians(spec.zAngle), 0f, 0f, 1f);
+                GL20.glUniform4f(
+                    shader.loc(SharedShaders.U_TINT),
+                    ((tint >> 16) & 0xFF) / 255f,
+                    ((tint >> 8) & 0xFF) / 255f,
+                    (tint & 0xFF) / 255f,
+                    alpha);
+                shader.uploadModel(ringMatrix);
+                ussRingFor(radius).render();
+            }
+        } finally {
+            GL11.glDepthMask(true);
+            RenderState.restoreBlendFunc(blendFuncWas);
+            RenderState.restore(GL11.GL_BLEND, blendOn);
+            RenderState.restore(GL11.GL_ALPHA_TEST, alphaTestOn);
+            RenderState.restore(GL11.GL_CULL_FACE, cullOn);
+            ShaderProgram.clear();
+        }
+    }
+
+    /** Shared model for the explosion's glow spheres. */
+    private static final Matrix4f glowSphereMatrix = new Matrix4f();
+
+    /** Shared model for the churn layer (the star's close roiling surface). */
+    private static final Matrix4f churnMatrix = new Matrix4f();
+
+    /** Shared model for the GRB jet beams. */
+    private static final Matrix4f jetBeamMatrix = new Matrix4f();
+
+    /**
+     * One additive glow sphere (unit sphere × the radii — {@code flatY} squashes it into a disc, the given
+     * texture, tint + alpha via the tint uniform): the detonation wash (1×1 white, unflattened) and the shock
+     * shell (the star's surface layer, flattened). The star body's written depth keeps the sphere from painting
+     * the system view's far side where the core stands between the camera and it.
+     *
+     * @param flatY the Y radius, × the XZ radius (1.0 = a round sphere)
+     */
+    private static void drawGlowSphere(Matrix4fc base, ResourceLocation texture, float radius, float flatY, float r,
+        float g, float b, float alpha) {
+        if (radius <= 0f || alpha <= 0.003f) {
+            return;
+        }
+        final boolean blendWas = GL11.glGetBoolean(GL11.GL_BLEND);
+        final long blendFuncWas = RenderState.savedBlendFunc();
+        final long cullWas = beginSphereCull(false);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // additive light: never inherit a prior renderer's blend
+                                                          // function
+        GL11.glDepthMask(false); // pure overlay: depth-WRITE off (the test stays on)
+        try {
+            final ShaderHandle shader = texturedShader();
+            shader.use();
+            bindTexture(texture);
+            glowSphereMatrix.set(base)
+                .scale(radius, radius * flatY, radius);
+            GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), r, g, b, alpha);
+            shader.uploadModel(glowSphereMatrix);
+            eohSphere.render();
+        } finally {
+            GL11.glDepthMask(true);
+            endSphereCull(cullWas);
+            RenderState.restoreBlendFunc(blendFuncWas);
+            RenderState.restore(GL11.GL_BLEND, blendWas);
+            ShaderProgram.clear();
+        }
+    }
+
+    /**
+     * One GRB jet beam (a thin additive ellipsoid out of a pole: the unit sphere scaled to
+     * {@code thickness × length/2 × thickness} — the post-multiplied chain applies the scale to the vertex first
+     * and the translate second — and translated to the pole, the 1×1 white texture tinted).
+     *
+     * @param positive the +Y jet (false = the −Y jet)
+     */
+    private static void drawJetBeam(Matrix4fc base, float length, float thickness, float r, float g, float b,
+        float alpha, boolean positive) {
+        if (length <= 0f || thickness <= 0f || alpha <= 0.003f) {
+            return;
+        }
+        final boolean blendWas = GL11.glGetBoolean(GL11.GL_BLEND);
+        final long blendFuncWas = RenderState.savedBlendFunc();
+        final long cullWas = beginSphereCull(false);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE); // additive light: never inherit a prior renderer's blend
+                                                          // function
+        GL11.glDepthMask(false); // pure overlay: depth-WRITE off (the test stays on)
+        try {
+            final ShaderHandle shader = texturedShader();
+            shader.use();
+            bindTexture(RING_TEXTURE);
+            jetBeamMatrix.set(base)
+                .translate(0f, (positive ? 1f : -1f) * length / 2f, 0f)
+                .scale(thickness, length / 2f, thickness);
+            GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), r, g, b, alpha);
+            shader.uploadModel(jetBeamMatrix);
+            eohSphere.render();
+        } finally {
+            GL11.glDepthMask(true);
+            endSphereCull(cullWas);
+            RenderState.restoreBlendFunc(blendFuncWas);
+            RenderState.restore(GL11.GL_BLEND, blendWas);
+            ShaderProgram.clear();
+        }
+    }
+
+    // endregion
 
     private static void bindTexture(ResourceLocation location) {
         FMLClientHandler.instance()
