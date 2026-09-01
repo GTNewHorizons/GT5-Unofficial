@@ -49,7 +49,6 @@ import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
@@ -1109,22 +1108,20 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected IWidget createShutdownReasonHoverableTerminal(PanelSyncManager syncManager) {
         BooleanSyncValue wasShutdownSyncer = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("wasShutdown:0");
-        StringSyncValue shutDownReasonSyncer = (StringSyncValue) syncManager
-            .getSyncHandlerFromMapKey("shutdownReasonKey:0");
         return new HoverableIcon(new DynamicDrawable(() -> {
             if (wasShutdownSyncer.getBoolValue()) {
-                return getTextureForReason(shutDownReasonSyncer.getValue());
+                return getTextureForReason(getShutDownReasonKey());
             }
             return null;
         }).asIcon()).asWidget()
             .size(18, 18)
             .tooltipBuilder(t -> {
                 if (wasShutdownSyncer.getBoolValue()) {
-                    t.add(getToolTipForReason(shutDownReasonSyncer.getValue()));
+                    t.add(getToolTipForReason(getShutDownReasonKey()));
                 }
             })
             .tooltipAutoUpdate(true)
-            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutDownReasonSyncer.getValue()));
+            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(getShutDownReasonKey()));
     }
 
     protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
@@ -1224,11 +1221,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .allowC2S();
         syncManager.syncValue("shutdownReason", shutdownReasonSyncer);
 
-        syncManager.syncValue(
-            "shutdownReasonKey",
-            new StringSyncValue(
-                () -> baseMetaTileEntity.getLastShutDownReason()
-                    .getKey()));
         syncManager.syncValue(
             "checkRecipeResult",
             GenericSyncValue.builder(CheckRecipeResult.class)
@@ -1346,6 +1338,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected void setMachineModeIcons() {}
 
     // Method for registering Icons/Tooltip Text to specific ShutDownReasons. Override for custom icons/conditions.
+
+    protected String getShutDownReasonKey() {
+        return baseMetaTileEntity.getLastShutDownReason()
+            .getKey();
+    }
 
     protected UITexture getTextureForReason(String key) {
         return this.shutdownReasonTextureMap.getOrDefault(key, null);
