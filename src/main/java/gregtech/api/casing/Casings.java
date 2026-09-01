@@ -608,7 +608,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
 
     // BEC
-    SuperconductivePlasmaEnergyConduit
+    CoherencePreservingPlasmaConduit
         (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(17, 0, 0)),
     ElectromagneticallyIsolatedCasing
         (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),

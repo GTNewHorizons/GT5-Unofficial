@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
@@ -7,7 +8,6 @@ import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTDataUtils.oneshot;
@@ -174,7 +174,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @Override
     public IStructureDefinition<MTEBECIONode> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
             .withHatches(1, 32, Arrays.asList(InputBus, OutputBus, NaniteHatch.INSTANCE, ControllerHatch.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
@@ -211,7 +211,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         tt.beginStructureBlock(7, 23, 13, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))
-            .addCasing("94", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("94", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
             .addCasing("88", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("56", ElectromagneticWaveguide.getLocalizedName(), false)
             .addCasing("18-48", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
@@ -241,8 +241,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     @Override
-    protected ITexture getCasingTexture() {
-        return SuperconductivePlasmaEnergyConduit.getCasingTexture();
+    public ITexture getCasingTexture() {
+        return CoherencePreservingPlasmaConduit.getCasingTexture();
     }
 
     @Override
