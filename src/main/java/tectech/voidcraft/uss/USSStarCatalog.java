@@ -9,8 +9,8 @@ import gregtech.api.enums.Materials;
  *
  * <p>
  * <strong>Placeholder note.</strong> The colors and the evolution targets follow the star-evolution design table;
- * the sizes follow the band spec (tiny 0.2–1.0, small 1.0–3.0, medium 2.0–4.0, large 4.0–8.0, giant 8.0–10.0 — the
- * rendered size is (2/3)·√size, so the top end compresses). The remaining fields (weights,
+ * the sizes are tuned per class (dwarfs 0.05–0.75, neutron star 0.15–0.25, quark star 1.2–1.8, giants up to 10.0 —
+ * the rendered size is (2/3)·√size, so the top end compresses). The remaining fields (weights,
  * luminosity, planet range, ripple range, texture) are reasonable, valid starting values to be tuned by game
  * design. Each star produces 1–3 of its three materials as starlifter fluids (a zero-capacity slot produces
  * none), with per-fluid capacities in millions of mB. The materials are "primarily fluids" (stellar composition).
@@ -41,7 +41,7 @@ public final class USSStarCatalog {
                 .id("red_dwarf")
                 .nameMethod(() -> "Red Dwarf")
                 .type("Red Dwarf")
-                .sizeRange(0.2f, 1.0f)
+                .sizeRange(0.05f, 0.25f)
                 .main(Materials.Hydrogen, 3.0, 100L)
                 .secondary(Materials.Helium, 2.0, 50L)
                 .tertiary(Materials.Lithium, 1.0, 25L)
@@ -59,7 +59,7 @@ public final class USSStarCatalog {
                 .id("yellow_dwarf")
                 .nameMethod(() -> "Yellow Dwarf")
                 .type("Yellow Dwarf")
-                .sizeRange(1.0f, 3.0f)
+                .sizeRange(0.25f, 0.75f)
                 .main(Materials.Hydrogen, 3.0, 200L)
                 .secondary(Materials.Helium, 2.0, 100L)
                 .tertiary(Materials.Oxygen, 1.0, 50L)
@@ -95,7 +95,7 @@ public final class USSStarCatalog {
                 .id("white_dwarf")
                 .nameMethod(() -> "White Dwarf")
                 .type("White Dwarf")
-                .sizeRange(1.0f, 3.0f)
+                .sizeRange(0.25f, 0.75f)
                 .main(Materials.Oxygen, 3.0, 200L)
                 .secondary(Materials.Carbon, 2.0, 100L)
                 .tertiary(Materials.Helium, 1.0, 50L)
@@ -113,7 +113,7 @@ public final class USSStarCatalog {
                 .id("black_dwarf")
                 .nameMethod(() -> "Black Dwarf")
                 .type("Black Dwarf")
-                .sizeRange(1.0f, 3.0f)
+                .sizeRange(0.25f, 0.75f)
                 .main(Materials.Carbon, 3.0, 200L)
                 .secondary(Materials.Iron, 2.0, 100L)
                 .tertiary(Materials.Cobalt, 1.0, 50L)
@@ -257,7 +257,7 @@ public final class USSStarCatalog {
                 .id("neutron_star")
                 .nameMethod(() -> "Neutron Star")
                 .type("Neutron Star")
-                .sizeRange(2.0f, 4.0f)
+                .sizeRange(0.15f, 0.25f)
                 .main(Materials.Iron, 3.0, 600L)
                 .secondary(Materials.Cobalt, 2.0, 300L)
                 .tertiary(Materials.Nickel, 1.0, 150L)
@@ -312,7 +312,7 @@ public final class USSStarCatalog {
                 .id("quark_star")
                 .nameMethod(() -> "Quark Star")
                 .type("Quark Star")
-                .sizeRange(0.2f, 1.0f)
+                .sizeRange(1.2f, 1.8f)
                 .main(Materials.Gold, 3.0, 800L)
                 .secondary(Materials.Iridium, 2.0, 0L)
                 .tertiary(Materials.Osmium, 1.0, 0L)

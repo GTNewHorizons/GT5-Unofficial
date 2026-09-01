@@ -34,9 +34,14 @@ public final class USSCapabilities {
     public static final int REPAIR = 32;
     /** The craft has logistics power (Cargo Drone Bay covers) — the SEND / TAKE cargo-transfer commands. */
     public static final int LOGISTICS = 64;
+    /**
+     * The craft's hull carries a Stabilization Matrix component — the STABILIZE command (bases only; a ship's
+     * STABILIZE always SKIPs).
+     */
+    public static final int STABILIZE = 128;
 
     /** Every capability. */
-    public static final int ALL = MOVE | MINE | SCAN | SIPHON | CONSTRUCT | REPAIR | LOGISTICS;
+    public static final int ALL = MOVE | MINE | SCAN | SIPHON | CONSTRUCT | REPAIR | LOGISTICS | STABILIZE;
 
     private final int bits;
 
@@ -91,6 +96,10 @@ public final class USSCapabilities {
         return (bits & LOGISTICS) != 0;
     }
 
+    public boolean isStabilize() {
+        return (bits & STABILIZE) != 0;
+    }
+
     public boolean has(int bit) {
         return (bits & bit) != 0;
     }
@@ -117,6 +126,8 @@ public final class USSCapabilities {
             case USSCommand.SEND:
             case USSCommand.TAKE:
                 return isLogistics();
+            case USSCommand.STABILIZE:
+                return isStabilize();
             default:
                 return true;
         }
@@ -136,6 +147,8 @@ public final class USSCapabilities {
                 return SCAN;
             case "constructor":
                 return CONSTRUCT;
+            case "stabilizer":
+                return STABILIZE;
             default:
                 return 0;
         }

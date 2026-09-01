@@ -29,6 +29,8 @@ import gregtech.common.render.shader.QuadSink;
  * ripple billboards.</li>
  * <li>{@link #beamRod()} — the laser rod cross-section (four side quads, t ∈ [0, 1] along the axis): every
  * beam; endpoints / axes / half-width come from the beam shader's uniforms.</li>
+ * <li>{@link #unitTube()} — the open unit cylinder along +Z (z = 0 to 1, radius 1): the thruster trail's
+ * per-section mesh; the per-section radius, length and orientation come from the draw's model matrix.</li>
  *
  * <p>
  * Each VAO is built lazily from the vertex format of its owning shader and is deleted by {@link #release()}
@@ -41,6 +43,7 @@ public final class VoidcraftGeometry {
     private static IVertexArrayObject unitQuad;
     private static IVertexArrayObject rippleTriangle;
     private static IVertexArrayObject beamRod;
+    private static IVertexArrayObject unitTube;
 
     private VoidcraftGeometry() {}
 
@@ -111,6 +114,30 @@ public final class VoidcraftGeometry {
         return beamRod;
     }
 
+    /** Radial segments of the unit tube. */
+    private static final int TUBE_SEGMENTS = 16;
+
+    /**
+     * The unit tube: an OPEN cylinder along +Z (z = 0 to 1, radius 1) — the thruster trail's per-section mesh;
+     * the per-section radius, length and orientation are the model matrix's scale / rotation.
+     */
+    public static IVertexArrayObject unitTube() {
+        if (unitTube == null) {
+            final MeshBuilder mesh = MeshBuilder.of(VoidcraftShaders.color(), TUBE_SEGMENTS * 6);
+            final double twoPi = 2.0 * Math.PI;
+            for (int i = 0; i < TUBE_SEGMENTS; i++) {
+                final double a0 = twoPi * i / TUBE_SEGMENTS;
+                final double a1 = twoPi * (i + 1) / TUBE_SEGMENTS;
+                mesh.vertex(Math.cos(a0), Math.sin(a0), 0.0, 0.0, 0.0);
+                mesh.vertex(Math.cos(a0), Math.sin(a0), 1.0, 0.0, 0.0);
+                mesh.vertex(Math.cos(a1), Math.sin(a1), 1.0, 0.0, 0.0);
+                mesh.vertex(Math.cos(a1), Math.sin(a1), 0.0, 0.0, 0.0);
+            }
+            unitTube = mesh.build();
+        }
+        return unitTube;
+    }
+
     /** Deletes every cached VAO (attribute locations may move on a shader re-bake). */
     public static void release() {
         delete(unitCube);
@@ -123,6 +150,8 @@ public final class VoidcraftGeometry {
         rippleTriangle = null;
         delete(beamRod);
         beamRod = null;
+        delete(unitTube);
+        unitTube = null;
     }
 
     private static void delete(IVertexArrayObject vao) {

@@ -17,6 +17,8 @@ import org.lwjgl.opengl.GL11;
 import gregtech.common.render.shader.RenderState;
 import tectech.Reference;
 import tectech.thing.block.TileEntityEyeOfHarmony;
+import tectech.voidcraft.uss.USSConstants;
+import tectech.voidcraft.uss.USSInfraBuild;
 import tectech.voidcraft.uss.USSStarRenderType;
 
 public class EOHTileEntitySR extends TileEntitySpecialRenderer {
@@ -38,8 +40,17 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
         World world = te.getWorldObj();
         if (world == null) return; // Just in-case
 
-        // Smooth global animation clock
-        float time = world.getTotalWorldTime() + partialTicks;
+        // Smooth global animation clock: the world tick (partialTicks for sub-tick smoothness), EXCEPT when a
+        // Voidcraft USS has synced its virtual orbit clock — then advance from the last sync at the normal rate
+        // so the star/planet phases keep the server's clock (it only ever runs FASTER than the world during a
+        // stellar-acceleration second, which the machine re-syncs every tick of).
+        float time;
+        if (te.getUssOrbitTime() > 0L) {
+            long sinceSync = world.getTotalWorldTime() - te.getUssSyncedWorldTime();
+            time = (float) (te.getUssOrbitTime() + Math.max(0L, sinceSync)) + partialTicks;
+        } else {
+            time = world.getTotalWorldTime() + partialTicks;
+        }
 
         eyeModel.translation((float) x + 0.5f, (float) y + 0.5f, (float) z + 0.5f);
 
@@ -81,6 +92,34 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
                     (float) te.getStarSize(),
                     te.getSwarmCount(),
                     te.getSwarmCapacity());
+            }
+            // The star's constructor-built infrastructure shell (the infrastructure-builder pass): the Stellar
+            // Injector (light gray panels, orange cores) or the Stellar Gravitational Lens (dark gray panels,
+            // light green cores) — the star's shell slot is exclusive, so at most one of Dyson Swarm / Injector /
+            // Lens draws.
+            int shellType = te.getInfraShellType();
+            if (shellType >= 0 && te.getInfraShellCount() > 0L) {
+                if (shellType == USSInfraBuild.INJECTOR) {
+                    EOHRenderingUtils.renderUSSInfraShell(
+                        eyeModel,
+                        time,
+                        (float) te.getStarSize() + USSConstants.INJECTOR_SHELL_RADIUS_MARGIN,
+                        USSConstants.INJECTOR_TRIANGLE_EDGE,
+                        te.getInfraShellCount(),
+                        te.getInfraShellCapacity(),
+                        EOHRenderingUtils.INJECTOR_SHELL_TINT,
+                        EOHRenderingUtils.INJECTOR_ACCENT_TINT);
+                } else if (shellType == USSInfraBuild.LENS) {
+                    EOHRenderingUtils.renderUSSInfraShell(
+                        eyeModel,
+                        time,
+                        (float) te.getStarSize() + USSConstants.LENS_SHELL_RADIUS_MARGIN,
+                        USSConstants.LENS_TRIANGLE_EDGE,
+                        te.getInfraShellCount(),
+                        te.getInfraShellCapacity(),
+                        EOHRenderingUtils.LENS_SHELL_TINT,
+                        EOHRenderingUtils.LENS_ACCENT_TINT);
+                }
             }
         } else {
             EOHRenderingUtils.renderEOHStar(eyeModel, IItemRenderer.ItemRenderType.INVENTORY, time, te.getStarSize());

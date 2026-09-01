@@ -416,11 +416,14 @@ public enum CustomItemList implements IItemContainer {
     // Voidbase: the digitized station blueprint item (Voidbase Assembler output; gateway blueprint slot)
     VoidbaseBlueprint,
 
-    // Pass 23: covers are the primary components — only the two placeable full blocks have items (the engine,
+    // Pass 23: covers are the primary components — only the placeable full blocks have items (the engine,
     // cargo bay, mining centre, starlifter, scanner, fabricator and reactor functions ship as covers: see
-    // ItemVoidcraftCovers).
+    // ItemVoidcraftCovers). The frame tiers (2 / 3 / 4) are placeable too.
     VoidcraftComponent_Controller,
     VoidcraftComponent_Frame,
+    VoidcraftComponent_Frame2,
+    VoidcraftComponent_Frame3,
+    VoidcraftComponent_Frame4,
 
     // Multiblock components (GT multiblocks; machine-block MTEs, id = 32058 + catalog meta): the Mining Array
     // controller + its two casing blocks.
@@ -432,6 +435,17 @@ public enum CustomItemList implements IItemContainer {
     VoidcraftSatelliteLauncher_Controller,
     VoidcraftSatelliteLauncher_Casing,
     VoidcraftSatelliteLauncher_Panel,
+
+    // The star-infrastructure structures (id = 32058 + catalog meta, 27..34): the world-only Stellar Injector,
+    // Continuum Stabilizer and Stellar Lens + the station-only Stabilization Matrix, controller + one casing each.
+    VoidcraftStellarInjector_Controller,
+    VoidcraftStellarInjector_Casing,
+    VoidcraftContinuumStabilizer_Controller,
+    VoidcraftContinuumStabilizer_Casing,
+    VoidcraftStellarLens_Controller,
+    VoidcraftStellarLens_Casing,
+    VoidcraftStabilizationMatrix_Controller,
+    VoidcraftStabilizationMatrix_Casing,
 
     // Infrastructure payload item: a Power Satellite — launched by a Satellite Rail Launcher onto a star's
     // Dyson Swarm.

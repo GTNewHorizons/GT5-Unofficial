@@ -483,12 +483,6 @@ public final class USSConstants {
     // region action energy consumption (every action runs on the ship's energy buffer)
 
     /**
-     * Travel energy draw per tick, per speed point (EU/tick/speed): the thruster burn while a MOVE leg runs.
-     * A normal ship (speed 5) burns 100 EU/tick = 2000 EU/s.
-     */
-    public static final long TRAVEL_ENERGY_PER_TICK_PER_SPEED = 20L;
-
-    /**
      * Work energy draw divisor (EU/tick = power / divisor): a work leg (MINE / SCAN / SIPHON) burns the leg's
      * owning power divided by this — mining power 1000 burns 100 EU/tick.
      */
@@ -505,11 +499,12 @@ public final class USSConstants {
 
     /**
      * The energy draw of an active LEG for a ship (EU/tick, the stall model's per-tick cost): a travel leg burns
-     * {@link #TRAVEL_ENERGY_PER_TICK_PER_SPEED} per speed point; a work leg burns its owning power (mining / scan /
-     * siphon) divided by {@link #WORK_ENERGY_DIVISOR}; no leg (or a zero-power kind) draws nothing.
+     * the engine cover's own travel draw ({@link VoidcraftActiveShip#getTravelEnergyPerTick()} per engine cover —
+     * the static per-thruster model, the economics live on the cover); a work leg burns its owning power (mining /
+     * scan / siphon) divided by {@link #WORK_ENERGY_DIVISOR}; no leg (or a zero-thruster ship) draws nothing.
      *
      * @param workKind the leg's work kind ({@link USSWorkKind}; TRAVEL = a MOVE leg)
-     * @param ship     the ship executing the leg (speed / work powers)
+     * @param ship     the ship executing the leg (engine type + thruster count / work powers)
      * @return the draw in EU/tick (&ge; 0; 0 = idle or powerless)
      */
     public static long legEnergyDraw(int workKind, VoidcraftActiveShip ship) {
@@ -524,8 +519,70 @@ public final class USSConstants {
             case USSWorkKind.SIPHON:
                 return Math.max(0L, ship.getStarlifterPower()) / WORK_ENERGY_DIVISOR;
             default:
-                long speed = (long) Math.max(0.0, ship.getSpeed());
-                return speed * TRAVEL_ENERGY_PER_TICK_PER_SPEED;
+                return Math.max(0L, ship.getThrusterCount()) * ship.getTravelEnergyPerTick();
+        }
+    }
+
+    /**
+     * The FUEL draw of an active LEG for a ship (mB/tick, the stall model's per-tick tank cost): a travel leg burns
+     * the engine cover's own travel fuel draw ({@link VoidcraftActiveShip#getTravelFuelPerTick()} per engine cover
+     * — the cover's stat is 0 for the fuel-less families, so the baseline nozzles burn nothing); every work leg
+     * burns nothing.
+     *
+     * @param workKind the leg's work kind ({@link USSWorkKind}; TRAVEL = a MOVE leg)
+     * @param ship     the ship executing the leg (engine type + thruster count)
+     * @return the draw in mB/tick (&ge; 0; 0 = no fuel burn)
+     */
+    public static long travelFuelDraw(int workKind, VoidcraftActiveShip ship) {
+        if (ship == null || workKind != USSWorkKind.TRAVEL) {
+            return 0L;
+        }
+        return Math.max(0L, ship.getThrusterCount()) * ship.getTravelFuelPerTick();
+    }
+
+    /**
+     * Integrity loss per SECOND for a ship whose hover body is the star (the star-proximity penalty, tunable per
+     * star type; a ship elsewhere in the system loses at the base rate of 1/s). Hot / transient classes erode the
+     * hull fastest; cold remnants slowest. Placeholder balance table — the same class that drives
+     * {@link #lifespanForType} keys the table.
+     *
+     * @param starType the star class (null → yellow dwarf, defensive).
+     * @return the integrity points lost per second (always &gt;= 1).
+     */
+    public static int starIntegrityLossPerSecond(USSStarType starType) {
+        switch (starType == null ? USSStarType.YELLOW_DWARF : starType) {
+            case RED_DWARF:
+                return 1;
+            case WHITE_DWARF:
+                return 3;
+            case BLACK_DWARF:
+                return 2;
+            case BLUE_GIANT:
+                return 5;
+            case RED_GIANT:
+                return 6;
+            case RED_SUPERGIANT:
+                return 8;
+            case SUPERNOVA:
+                return 12;
+            case BLACK_HOLE:
+                return 8;
+            case QUASI_STAR:
+                return 6;
+            case BLUE_SUPERGIANT:
+                return 7;
+            case HYPERNOVA:
+                return 16;
+            case NEUTRON_STAR:
+                return 5;
+            case MAGNETAR:
+                return 9;
+            case GRAVASTAR:
+                return 4;
+            case QUARK_STAR:
+                return 6;
+            default:
+                return 2;
         }
     }
 
@@ -552,6 +609,161 @@ public final class USSConstants {
      * launch rate exactly offsets the largest fully-saturated star's decay.
      */
     public static final double DYSON_SATELLITE_DECAY_FRACTION = 0.2;
+
+    // endregion
+
+    // region infrastructure builders (the constructor-built shells — Injector / Stabilizer / Lens)
+
+    /**
+     * Machine ticks between two structure units of ONE infrastructure builder (one unit per interval: 10 ticks =
+     * one unit per second). Multiple builders of the same type in a base each run their own countdown; the
+     * built structures are solid — they do not decay (only the Dyson Swarm does).
+     */
+    public static final long INFRA_BUILD_INTERVAL = 10L;
+
+    /** The Stellar Injector's shell radius margin around the star (added to the star's render size, blocks). */
+    public static final float INJECTOR_SHELL_RADIUS_MARGIN = 0.45f;
+
+    /** The Stellar Injector's shell triangle edge (blocks — much larger panels than the Dyson Swarm's). */
+    public static final float INJECTOR_TRIANGLE_EDGE = 0.45f;
+
+    /** The Stellar Gravitational Lens's shell radius margin around the star (blocks). */
+    public static final float LENS_SHELL_RADIUS_MARGIN = 0.60f;
+
+    /**
+     * The Stellar Gravitational Lens's shell triangle edge (blocks — slightly larger panels than the Dyson Swarm's).
+     */
+    public static final float LENS_TRIANGLE_EDGE = 0.18f;
+
+    /** The Continuum Stabilizer's small shell radius around a ripple point (blocks). */
+    public static final float STABILIZER_SHELL_RADIUS = 0.20f;
+
+    /** The Continuum Stabilizer's shell triangle edge (blocks — a full shell is 80 triangles). */
+    public static final float STABILIZER_TRIANGLE_EDGE = 0.12f;
+
+    // endregion
+
+    // region stellar evolution (acceleration, expiry, injector, stabilization)
+
+    /** Machine ticks between two acceleration-fluid drains of the stellar acceleration (one drain per second). */
+    public static final long ACCELERATION_INTERVAL_TICKS = 20L;
+
+    /**
+     * Orbit-clock speedup divisor (the acceleration's proportional orbit speedup): while an accelerating second is
+     * active the USS virtual orbit clock advances {@code 1 + sqrt(consumedMB) / ORBIT_SPEEDUP_DIVISOR} per machine
+     * tick instead of 1 (placeholder: 10 000 mB/s -> sqrt 100 -> 11x orbit speed).
+     */
+    public static final double ORBIT_SPEEDUP_DIVISOR = 10.0;
+
+    /** One litre of Universium = 1000 mB of Molten Universium. */
+    public static final long UNIVERSIUM_MB_PER_LITRE = 1000L;
+
+    /** The 100000:1 Spacetime:Universium ratio (mB of Molten Spacetime consumed per litre of Universium). */
+    public static final long UNIVERSIUM_SPACETIME_MB_PER_LITRE = 100_000L;
+
+    /**
+     * Spacetime:Universium ratio with an active Spacetime Continuum Stabilizer at expiry (1 000 mB of Molten
+     * Spacetime consumed per litre of Universium — a 100x cheaper conversion than the base ratio).
+     */
+    public static final long UNIVERSIUM_SPACETIME_MB_PER_LITRE_STABILIZED = 1_000L;
+
+    /** Base Universium conversion rate: mB of Molten Spacetime per litre per scanned ripple (10 million). */
+    public static final long UNIVERSIUM_RATE_MB_PER_LITRE = 10_000_000L;
+
+    /**
+     * Universium conversion rate with an active Spacetime Continuum Stabilizer at expiry (200 000 mB per litre per
+     * scanned ripple — 50x the base rate).
+     */
+    public static final long UNIVERSIUM_RATE_MB_PER_LITRE_STABILIZED = 200_000L;
+
+    /**
+     * Spacetime yield (mB of Molten Spacetime) an expiring star outputs (placeholder balance table, keyed by type
+     * like {@link #lifespanForType}: transient classes yield the most, cold remnants the least).
+     *
+     * @param starType the expiring star class (null → yellow dwarf, defensive).
+     * @return the yield in mB (always &gt; 0).
+     */
+    public static long spacetimeYieldForType(USSStarType starType) {
+        switch (starType == null ? USSStarType.YELLOW_DWARF : starType) {
+            case RED_DWARF:
+                return 8_000_000L;
+            case WHITE_DWARF:
+                return 6_000_000L;
+            case BLACK_DWARF:
+                return 4_000_000L;
+            case BLUE_GIANT:
+                return 20_000_000L;
+            case RED_GIANT:
+                return 16_000_000L;
+            case RED_SUPERGIANT:
+                return 30_000_000L;
+            case SUPERNOVA:
+                return 50_000_000L;
+            case BLACK_HOLE:
+                return 40_000_000L;
+            case QUASI_STAR:
+                return 24_000_000L;
+            case BLUE_SUPERGIANT:
+                return 36_000_000L;
+            case HYPERNOVA:
+                return 60_000_000L;
+            case NEUTRON_STAR:
+                return 25_000_000L;
+            case MAGNETAR:
+                return 32_000_000L;
+            case GRAVASTAR:
+                return 45_000_000L;
+            case QUARK_STAR:
+                return 28_000_000L;
+            default:
+                return 10_000_000L;
+        }
+    }
+
+    /** The Stellar Injector's maximum star size as a factor of the original sampled size (the 1.5x cap). */
+    public static final double INJECTOR_MAX_SIZE_FACTOR = 1.5;
+
+    /**
+     * Cargo units the Stellar Injector consumes per unit of size growth, scaled by the star's CURRENT size squared
+     * (the material cost grows with the size of the star — placeholder).
+     */
+    public static final long INJECTOR_COST_PER_SIZE_UNIT = 100_000L;
+
+    /** The star size growth per one Stellar Injector step (size units). */
+    public static final double INJECTOR_SIZE_STEP = 0.01;
+
+    /** Machine ticks between two Stellar Injector size steps (one step per 50 s). */
+    public static final long INJECTOR_STEP_INTERVAL_TICKS = 1000L;
+
+    /** The Stellar Injector's cargo buffer capacity (cargo units; 1 unit = 1 item = 100 mB). */
+    public static final long INJECTOR_BUFFER_CAPACITY_UNITS = 100_000L;
+
+    /**
+     * Hold item key for UMV Field Generator cargo (the Hyperdimensional Stabilization Matrix's lower tier —
+     * the GregTech Field Generator item).
+     */
+    public static final String FIELD_GENERATOR_UMV = "field_generator_umv";
+
+    /**
+     * Hold item key for UXV Field Generator cargo (the Hyperdimensional Stabilization Matrix's upper tier —
+     * the GregTech Field Generator item).
+     */
+    public static final String FIELD_GENERATOR_UXV = "field_generator_uxv";
+
+    /** Effective weight of a UMV-fed stabilization matrix at expiry. */
+    public static final int MATRIX_WEIGHT_UMV = 1;
+
+    /** Effective weight of a UXV-fed stabilization matrix at expiry. */
+    public static final int MATRIX_WEIGHT_UXV = 2;
+
+    /** Machine ticks between two stabilization-matrix Field Generator consumptions (one per 10 s). */
+    public static final long STABILIZE_FIELD_GENERATOR_INTERVAL_TICKS = 2000L;
+
+    /** STABILIZE-leg energy draw (EU per machine tick; placeholder). */
+    public static final long STABILIZE_ENERGY_PER_TICK = 5000L;
+
+    /** The Stabilizer preset's default STABILIZE window length in machine ticks (60 s). */
+    public static final long STABILIZE_DEFAULT_TICKS = 1200L;
 
     // endregion
 }

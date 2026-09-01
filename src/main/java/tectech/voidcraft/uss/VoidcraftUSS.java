@@ -29,7 +29,7 @@ import net.minecraft.nbt.NBTTagList;
 public final class VoidcraftUSS {
 
     /** NBT format version (no backwards-compatibility required — project directive). */
-    public static final int NBT_FORMAT_VERSION = 1;
+    public static final int NBT_FORMAT_VERSION = 2;
 
     // NBT tags (voidcraft "vc_" naming convention).
     public static final String TAG_FORMAT = "vc_uss_format";
@@ -58,6 +58,22 @@ public final class VoidcraftUSS {
     public static final String TAG_VARIABLES = "vc_uss_variables";
     /** The star-scale infrastructure progress (the Dyson Swarm pass — per-target satellite counts + decay). */
     public static final String TAG_INFRASTRUCTURE = "vc_uss_infra";
+    /**
+     * The star's current size (the Stellar Evolution pass — the sampled size at ignition, raised by the Stellar
+     * Injector up to 1.5x the original). A double (size units, 0.0–15.0); 0.0 when the model is cold/unset.
+     */
+    public static final String TAG_STAR_SIZE = "vc_uss_star_size";
+    /**
+     * The USS virtual orbit clock (the Stellar Evolution pass): the machine-tick count that drives the planet
+     * orbits — advancing normally per tick and proportionally faster while the stellar acceleration is active.
+     */
+    public static final String TAG_VIRTUAL_TIME = "vc_uss_virtual_time";
+    /**
+     * The Stellar Injector's cargo buffer (the Stellar Evolution pass): the ANY-cargo reservoir a ship's
+     * {@code SEND target=star} fills, which the injector drains at a pace to grow the star's size. A CargoHold
+     * compound; absent = an empty buffer at the injector's capacity.
+     */
+    public static final String TAG_INJECTOR_BUFFER = "vc_uss_injector_buffer";
     /** Within one planet-reserve compound: the ore list (material + remaining amount). */
     public static final String RESERVE_TAG_ORES = "ores";
     /** One ore entry: the GT material name. */
@@ -104,9 +120,28 @@ public final class VoidcraftUSS {
      */
     private final USSInfrastructure infrastructure;
 
+    /**
+     * The star's current size (the Stellar Evolution pass): sampled at ignition, raised by the Stellar Injector up
+     * to 1.5x the original. Immutable — {@link #withStarSize} returns a new instance.
+     */
+    private final double starSize;
+
+    /**
+     * The USS virtual orbit clock (the Stellar Evolution pass): the machine-tick count that drives the planet
+     * orbits. Immutable — {@link #withVirtualTime} returns a new instance.
+     */
+    private final long virtualTime;
+
+    /**
+     * The Stellar Injector's cargo buffer (the Stellar Evolution pass). Never null (a fresh system starts with an
+     * empty buffer at the injector's capacity). Immutable — {@link #withInjectorBuffer} returns a new instance.
+     */
+    private final CargoHold injectorBuffer;
+
     private VoidcraftUSS(USSState state, int tier, USSStarType starType, long lifespanRemaining, long ignitedAt,
         List<String> ships, List<MaterialReserve> planetReserves, MaterialReserve starFluidReserve,
-        java.util.Set<Integer> scannedRipples, USSVariableSpace variableSpace, USSInfrastructure infrastructure) {
+        java.util.Set<Integer> scannedRipples, USSVariableSpace variableSpace, USSInfrastructure infrastructure,
+        double starSize, long virtualTime, CargoHold injectorBuffer) {
         this.state = state;
         this.tier = tier;
         this.starType = starType;
@@ -119,9 +154,13 @@ public final class VoidcraftUSS {
             : new java.util.TreeSet<>(scannedRipples);
         this.variableSpace = variableSpace == null ? USSVariableSpace.fresh() : variableSpace;
         this.infrastructure = infrastructure == null ? USSInfrastructure.empty() : infrastructure;
+        this.starSize = starSize;
+        this.virtualTime = virtualTime;
+        this.injectorBuffer = injectorBuffer == null ? CargoHold.of(USSConstants.INJECTOR_BUFFER_CAPACITY_UNITS)
+            : injectorBuffer;
     }
 
-    /** A fresh-space constructor (cold / ignited / toCold — a new system has a fresh variable space). */
+    /** A fresh-system constructor (cold / ignited / toCold — a new system has a fresh variable space). */
     private VoidcraftUSS(USSState state, int tier, USSStarType starType, long lifespanRemaining, long ignitedAt,
         List<String> ships, List<MaterialReserve> planetReserves, java.util.Set<Integer> scannedRipples) {
         this(
@@ -135,7 +174,10 @@ public final class VoidcraftUSS {
             null,
             scannedRipples,
             USSVariableSpace.fresh(),
-            USSInfrastructure.empty());
+            USSInfrastructure.empty(),
+            0.0,
+            0L,
+            null);
     }
 
     /**
@@ -315,7 +357,7 @@ public final class VoidcraftUSS {
         if (starType == null) {
             starType = USSStarType.YELLOW_DWARF; // defensive: an unknown controller is rejected by the machine anyway
         }
-        return new VoidcraftUSS(
+        VoidcraftUSS fresh = new VoidcraftUSS(
             USSState.IGNITED,
             tier,
             starType,
@@ -324,6 +366,9 @@ public final class VoidcraftUSS {
             null,
             null,
             null); // a fresh system has no ore reserves yet and no scanned ripples (all hidden)
+        // The star's ORIGINAL size is sampled at ignition (pure function of type + ignition timestamp, so server
+        // and client derive the identical value) — the Stellar Injector may later raise it up to 1.5x this value.
+        return fresh.withStarSize(USSPlanets.sampleStarSize(starType, nowMillis));
     }
 
     /**
@@ -341,7 +386,10 @@ public final class VoidcraftUSS {
             starFluidReserve,
             scannedRipples,
             variableSpace,
-            infrastructure);
+            infrastructure,
+            starSize,
+            virtualTime,
+            injectorBuffer);
     }
 
     /**
@@ -363,7 +411,10 @@ public final class VoidcraftUSS {
             starFluidReserve,
             scannedRipples,
             variableSpace,
-            infrastructure);
+            infrastructure,
+            starSize,
+            virtualTime,
+            injectorBuffer);
     }
 
     /**
@@ -427,7 +478,10 @@ public final class VoidcraftUSS {
             starFluidReserve,
             scannedRipples,
             variableSpace,
-            infrastructure);
+            infrastructure,
+            starSize,
+            virtualTime,
+            injectorBuffer);
     }
 
     /**
@@ -446,7 +500,10 @@ public final class VoidcraftUSS {
             reserve,
             scannedRipples,
             variableSpace,
-            infrastructure);
+            infrastructure,
+            starSize,
+            virtualTime,
+            injectorBuffer);
     }
 
     /**
@@ -486,7 +543,10 @@ public final class VoidcraftUSS {
             starFluidReserve,
             next,
             variableSpace,
-            infrastructure);
+            infrastructure,
+            starSize,
+            virtualTime,
+            injectorBuffer);
     }
 
     // region the USS global variable space (programming framework, Phase C)
@@ -512,7 +572,10 @@ public final class VoidcraftUSS {
             starFluidReserve,
             scannedRipples,
             space,
-            infrastructure);
+            infrastructure,
+            starSize,
+            virtualTime,
+            injectorBuffer);
     }
 
     // endregion
@@ -540,7 +603,139 @@ public final class VoidcraftUSS {
             starFluidReserve,
             scannedRipples,
             variableSpace,
-            progress);
+            progress,
+            starSize,
+            virtualTime,
+            injectorBuffer);
+    }
+
+    // endregion
+
+    // region the stellar evolution data (star size, orbit clock, injector buffer)
+
+    /** @return the star's current size in size units (0.0 while COLD). */
+    public double getStarSize() {
+        return starSize;
+    }
+
+    /**
+     * @param size the star's new size (size units; negative clamped to 0)
+     * @return a new model with the star's size replaced; all other fields preserved
+     */
+    public VoidcraftUSS withStarSize(double size) {
+        return new VoidcraftUSS(
+            state,
+            tier,
+            starType,
+            lifespanRemaining,
+            ignitedAt,
+            ships,
+            planetReserves,
+            starFluidReserve,
+            scannedRipples,
+            variableSpace,
+            infrastructure,
+            Math.max(0.0, size),
+            virtualTime,
+            injectorBuffer);
+    }
+
+    /** @return the USS virtual orbit clock (machine ticks; 0 while COLD). */
+    public long getVirtualTime() {
+        return virtualTime;
+    }
+
+    /**
+     * The remaining fraction (0..1) of the star's primary material — the stellar-evolution expiry read: 1.0 when
+     * nothing has been siphoned yet (no reserve), otherwise the remaining amount over the ORIGINAL (ignition-size)
+     * reserve total.
+     */
+    public double primaryFraction() {
+        if (starType == null) {
+            return 1.0;
+        }
+        MaterialReserve reserve = getStarFluidReserve();
+        if (reserve == null) {
+            return 1.0;
+        }
+        MaterialReserve initial = MaterialReserve
+            .fromStar(USSStarRegistry.byType(starType), USSPlanets.sampleStarSize(starType, ignitedAt));
+        long total = 0L;
+        for (Long v : initial.getRemaining()
+            .values()) {
+            total += v;
+        }
+        long remaining = 0L;
+        for (Long v : reserve.getRemaining()
+            .values()) {
+            remaining += v;
+        }
+        return total <= 0L ? 1.0 : (double) remaining / (double) total;
+    }
+
+    /**
+     * The star's current size as a multiple of its ORIGINAL sampled size (1.0 at ignition — the Stellar Injector
+     * raises it toward the 1.5 cap) — the stellar-evolution expiry read. 1.0 when the star is cold or its
+     * original size is unknown.
+     */
+    public double sizeFactor() {
+        if (starType == null) {
+            return 1.0;
+        }
+        double original = USSPlanets.sampleStarSize(starType, ignitedAt);
+        if (original <= 0.0) {
+            return 1.0;
+        }
+        return Math.max(1.0, starSize / original);
+    }
+
+    /**
+     * @param time the new virtual orbit clock value (machine ticks; negative clamped to 0)
+     * @return a new model with the virtual orbit clock replaced; all other fields preserved
+     */
+    public VoidcraftUSS withVirtualTime(long time) {
+        return new VoidcraftUSS(
+            state,
+            tier,
+            starType,
+            lifespanRemaining,
+            ignitedAt,
+            ships,
+            planetReserves,
+            starFluidReserve,
+            scannedRipples,
+            variableSpace,
+            infrastructure,
+            starSize,
+            Math.max(0L, time),
+            injectorBuffer);
+    }
+
+    /** @return the Stellar Injector's cargo buffer (never null). */
+    public CargoHold getInjectorBuffer() {
+        return injectorBuffer;
+    }
+
+    /**
+     * @param buffer the new injector cargo buffer (null → an empty buffer at the injector's capacity)
+     * @return a new model with the injector cargo buffer replaced; all other fields preserved
+     */
+    public VoidcraftUSS withInjectorBuffer(CargoHold buffer) {
+        return new VoidcraftUSS(
+            state,
+            tier,
+            starType,
+            lifespanRemaining,
+            ignitedAt,
+            ships,
+            planetReserves,
+            starFluidReserve,
+            scannedRipples,
+            variableSpace,
+            infrastructure,
+            starSize,
+            virtualTime,
+            buffer);
     }
 
     // endregion
@@ -658,6 +853,15 @@ public final class VoidcraftUSS {
             infrastructure.writeToNBT(infraTag);
             nbt.setTag(TAG_INFRASTRUCTURE, infraTag);
         }
+        // The stellar evolution data: the star's current size and the virtual orbit clock (always written — cheap
+        // scalars); the injector buffer only when it holds cargo (sparse).
+        nbt.setDouble(TAG_STAR_SIZE, starSize);
+        nbt.setLong(TAG_VIRTUAL_TIME, virtualTime);
+        if (injectorBuffer != null && !injectorBuffer.isEmpty()) {
+            NBTTagCompound bufferTag = new NBTTagCompound();
+            injectorBuffer.writeToNBT(bufferTag);
+            nbt.setTag(TAG_INJECTOR_BUFFER, bufferTag);
+        }
     }
 
     /**
@@ -728,6 +932,13 @@ public final class VoidcraftUSS {
             .readFromNBT(nbt.hasKey(TAG_VARIABLES) ? nbt.getTagList(TAG_VARIABLES, 10) : null);
         // The star-scale infrastructure progress (the Dyson Swarm pass). Absent tag = an empty progress.
         USSInfrastructure infrastructure = USSInfrastructure.readFromNBT(nbt.getCompoundTag(TAG_INFRASTRUCTURE));
+        // The stellar evolution data. Absent tags = the fresh-system defaults (size 0, clock 0, empty buffer at the
+        // injector's capacity).
+        double starSize = nbt.hasKey(TAG_STAR_SIZE) ? nbt.getDouble(TAG_STAR_SIZE) : 0.0;
+        long virtualTime = nbt.hasKey(TAG_VIRTUAL_TIME) ? nbt.getLong(TAG_VIRTUAL_TIME) : 0L;
+        CargoHold injectorBuffer = nbt.hasKey(TAG_INJECTOR_BUFFER)
+            ? CargoHold.readFromNBT(nbt.getCompoundTag(TAG_INJECTOR_BUFFER))
+            : CargoHold.of(USSConstants.INJECTOR_BUFFER_CAPACITY_UNITS);
         return new VoidcraftUSS(
             USSState.IGNITED,
             tier,
@@ -739,7 +950,10 @@ public final class VoidcraftUSS {
             starReserve,
             scanned,
             variables,
-            infrastructure);
+            infrastructure,
+            starSize,
+            virtualTime,
+            injectorBuffer);
     }
 
     // endregion

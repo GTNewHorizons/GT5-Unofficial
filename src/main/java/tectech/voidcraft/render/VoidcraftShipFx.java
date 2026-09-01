@@ -1,19 +1,22 @@
 package tectech.voidcraft.render;
 
 /**
- * Pass 8 — pure math for the client-side ship effects (mining laser beam + exhaust), kept out of the GL class so
+ * Pure math for the client-side ship effects (mining laser beam + thruster trail), kept out of the GL class so
  * it unit-tests in a bare JVM (no LWJGL, no {@code Minecraft} statics).
  *
  * <p>
- * <strong>Beam</strong> (user spec): during a work leg, a thin laser rod from the MIDDLE of the ship to the
- * MIDDLE of the body it works — on the MINE and SIPHON legs (a CONSTRUCT leg builds at the site, a SCAN leg
- * scans). The rod
+ * <strong>Beam</strong>: during a work leg, a thin laser rod from the MIDDLE of the ship to the MIDDLE of the
+ * body it works — on the MINE and SIPHON legs (a CONSTRUCT leg builds at the site, a SCAN leg scans). The rod
  * fades in over the first {@link #BEAM_FADE_RAMP} of the leg and out over the last, so the state transitions
  * (OUTBOUND→MINING→RETURNING) read as the beam engaging and releasing instead of popping.
  *
  * <p>
- * <strong>Exhaust</strong> (user spec): particles emitted BEHIND the ship — the opposite of its direction of
- * travel — on the legs it actually moves (OUTBOUND / RETURNING), not while it hovers.
+ * <strong>Trail</strong>: while a ship moves (the OUTBOUND / RETURNING legs — not while it hovers on a body),
+ * a fading tube trail runs BEHIND it, opposite its direction of travel: {@value TRAIL_SECTIONS} sections,
+ * alpha {@value #TRAIL_ALPHA_MAX} at the ship fading by STEP per section to 0 + STEP at the tail
+ * ({@link #trailSectionAlpha}), total length scaled by the ship's rendered
+ * speed ({@link #trailLength}), ramped from 0 to full length over the first and last {@value TRAIL_LENGTH_RAMP}
+ * of the travel leg ({@link #trailLengthScale}).
  */
 public final class VoidcraftShipFx {
 
@@ -93,15 +96,65 @@ public final class VoidcraftShipFx {
         return new double[] { dx, dy, dz, p1x, p1y, p1z, p2x, p2y, p2z };
     }
 
+    /** Number of trail sections behind a moving ship. */
+    public static final int TRAIL_SECTIONS = 9;
+    /** The trail's alpha at the ship (section 0). */
+    public static final double TRAIL_ALPHA_MAX = 0.7;
+    /** Trail length (blocks) per 1 block/tick of rendered ship speed. */
+    public static final double TRAIL_LENGTH_PER_SPEED = 15.0;
+    /** Trail length floor (blocks) — a slow ship still leaves a short trail. */
+    public static final double TRAIL_LENGTH_MIN = 0.25;
+    /** Trail length ceiling (blocks). */
+    public static final double TRAIL_LENGTH_MAX = 8.0;
     /**
-     * Exhaust spawn gate: deterministic (no RNG state on the render thread) — fires on exactly 3 of every 8
-     * consecutive world ticks, offset by the ship's per-launch seed so a fleet does not puff in lockstep.
-     *
-     * @param tick the world time in ticks (clamped at 0 for corrupt values)
-     * @param seed the ship's per-launch seed
+     * The fraction of a travel leg over which the trail's length ramps 0 → 1 at the start and 1 → 0 at the
+     * end (the ship "speeds up" out of the gateway and "slows down" into it).
      */
-    public static boolean exhaustGate(long tick, int seed) {
-        long t = tick < 0 ? 0L : tick;
-        return (t + (long) seed * 7L) % 8L < 3L;
+    public static final double TRAIL_LENGTH_RAMP = 0.02;
+
+    /**
+     * The trail's total length in blocks for a rendered speed in blocks/tick: proportional to the speed,
+     * clamped to {@link #TRAIL_LENGTH_MIN}–{@link #TRAIL_LENGTH_MAX}.
+     *
+     * @param blocksPerTick the ship's rendered speed (leg distance over the leg's tick duration); corrupt
+     *                      (negative) values degrade to the floor
+     */
+    public static double trailLength(double blocksPerTick) {
+        double v = Math.max(0.0, blocksPerTick) * TRAIL_LENGTH_PER_SPEED;
+        return Math.max(TRAIL_LENGTH_MIN, Math.min(TRAIL_LENGTH_MAX, v));
+    }
+
+    /**
+     * The trail's length scale at a travel leg's progress in [0, 1]: 0 at the leg's start, smooth-stepping up to
+     * 1 over the first {@value TRAIL_LENGTH_RAMP} of the leg, 1 across the middle, and smooth-stepping back to 0
+     * over the last — so the trail grows out of the gateway and shrinks into it. Out-of-range progress clamps to
+     * the endpoints.
+     */
+    public static double trailLengthScale(double progress) {
+        double p = Math.min(1.0, Math.max(0.0, progress));
+        double v = Math.min(p, 1.0 - p) / TRAIL_LENGTH_RAMP;
+        if (v <= 0.0) {
+            return 0.0;
+        }
+        if (v >= 1.0) {
+            return 1.0;
+        }
+        return v * v * (3.0 - 2.0 * v);
+    }
+
+    /**
+     * The alpha of trail section {@code section} (0 = the section at the ship): a linear ramp from
+     * {@link #TRAIL_ALPHA_MAX} at the ship, down by STEP = {@link #TRAIL_ALPHA_MAX} / {@value TRAIL_SECTIONS}
+     * per section, so the last section sits at 0 + STEP — still visible (a 0-alpha section renders nothing).
+     * Out-of-range sections clamp to the ramp's ends.
+     */
+    public static double trailSectionAlpha(int section) {
+        if (section < 0) {
+            section = 0;
+        }
+        if (section >= TRAIL_SECTIONS) {
+            return 0.0;
+        }
+        return TRAIL_ALPHA_MAX * (1.0 - section / (double) TRAIL_SECTIONS);
     }
 }

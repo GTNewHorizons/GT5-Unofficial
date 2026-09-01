@@ -29,6 +29,22 @@ public final class VoidcraftConstants {
     /** Maximum cell count of a Voidbase (15³ = 3375). */
     public static final int MAX_BASE_CELLS = MAX_BASE_DIM * MAX_BASE_DIM * MAX_BASE_DIM;
 
+    // region Frame integrity (per-face model)
+
+    /**
+     * Integrity gained PER FRAME SIDE that faces another frame side (any frame tier). Solid frame clusters —
+     * where every frame hugs its neighbours — are the strongest hulls.
+     */
+    public static final long FRAME_FACE_INTEGRITY_BONUS = 4L;
+
+    /**
+     * Integrity lost PER FRAME SIDE that is exposed to air (outside the bounding volume or facing an empty cell).
+     * Hollow frames bleed integrity on every exposed side.
+     */
+    public static final long FRAME_FACE_INTEGRITY_PENALTY = 2L;
+
+    // endregion
+
     // region Assembler digitization cost
 
     /** EU consumed per digitized component block. */
@@ -48,9 +64,11 @@ public final class VoidcraftConstants {
      * <ul>
      * <li>1: grid of component blocks only.</li>
      * <li>2: + per-cell facing grid, per-face cover grid, and net-thrust vector tags.</li>
+     * <li>3: + fuel capacity, engine type, thruster count, and frame tier denormalized stat tags (the reactor /
+     * fuel / frame-tier mechanics pass).</li>
      * </ul>
      */
-    public static final int NBT_FORMAT_VERSION = 2;
+    public static final int NBT_FORMAT_VERSION = 3;
 
     private VoidcraftConstants() {
         throw new AssertionError("Constants class");

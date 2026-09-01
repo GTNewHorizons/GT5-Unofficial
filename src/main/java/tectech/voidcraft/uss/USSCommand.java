@@ -11,7 +11,7 @@ package tectech.voidcraft.uss;
 public final class USSCommand {
 
     /** Highest built-in command id (the GUI's stat-line arrays are sized to this + 1). */
-    public static final int MAX_ID = 11;
+    public static final int MAX_ID = 12;
 
     /**
      * Fly to a target and hover there (the ONE "Go to" — user spec). Params: {@code target} = STAR / PLANET /
@@ -34,8 +34,9 @@ public final class USSCommand {
     public static final int STOP = 5;
     /**
      * CONSTRUCT: build a Voidbase at the current hover point (Voidbase construction framework). A constructor
-     * carrying a Voidbase blueprint + parts loadout reaches its target and builds/fills the construction site
-     * there. Params: {@code target} (the anchor body — STAR / PLANET / RIPPLE, with {@code index} for PLANET /
+     * carrying a Voidbase blueprint (the parts it carries are its cargo) reaches its target and builds/fills the
+     * construction site there. Params: {@code target} (the anchor body — STAR / PLANET / RIPPLE, with {@code index} for
+     * PLANET /
      * RIPPLE). On a ship this is the CONSTRUCT leg of the Constructor mission; a completed site spawns the base.
      */
     public static final int CONSTRUCT = 6;
@@ -74,6 +75,18 @@ public final class USSCommand {
      * shared-location rule, the same logistics-power rate — always succeeds, no refusal from the target).
      */
     public static final int TAKE = 11;
+    /**
+     * STABILIZE: run a fixed-duration Hyperdimensional Stabilization Matrix window (a Voidbase-only station
+     * command like {@link #REPAIR} — the base polls its own side-effect, no leg is started). Params: {@code
+     * ticks} (long, the window length; 0 / absent = no-op). While in flight the base pays the per-tick matrix
+     * draw from its energy buffer (a shortfall stalls the window, travel semantics) and consumes one Field
+     * Generator (the GregTech tiered component) every interval from its hold (the UXV tier over the UMV tier);
+     * the leg's expiry WEIGHT is the tier of the last Field Generator consumed (UMV = 1, UXV = 2). The command
+     * is skipped when the executing base's blueprint carries no STABILIZATION_MATRIX, it is not anchored to a
+     * revealed ripple, the Continuum Stabilizer on the anchor ripple is not fully built, or no Field Generator
+     * is on board.
+     */
+    public static final int STABILIZE = 12;
 
     private USSCommand() {}
 
@@ -107,6 +120,8 @@ public final class USSCommand {
                 return "SEND";
             case TAKE:
                 return "TAKE";
+            case STABILIZE:
+                return "STABILIZE";
             default:
                 return "CMD" + commandId;
         }

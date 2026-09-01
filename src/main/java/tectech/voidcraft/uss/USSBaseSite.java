@@ -259,14 +259,6 @@ public final class USSBaseSite {
 
     // region infrastructure cargo (the Dyson Swarm pass — unbounded, does not gate completion)
 
-    /**
-     * A loadout key is an INFRASTRUCTURE CARGO key (not a build part) when it carries the {@code item.} prefix —
-     * such keys route to the site's cargo map instead of its parts.
-     */
-    public static boolean isCargoKey(String key) {
-        return key != null && key.startsWith("item.");
-    }
-
     /** @return the infrastructure cargo delivered so far for the given key (0 for unknown keys) */
     public long cargoOf(String key) {
         Long v = cargo.get(key);

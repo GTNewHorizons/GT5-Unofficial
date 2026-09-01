@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import tectech.voidcraft.item.ItemVoidbaseBlueprint;
 import tectech.voidcraft.item.ItemVoidcraft;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
+import tectech.voidcraft.ship.VoidcraftComponent;
 import tectech.voidcraft.ship.VoidcraftCoverComponent;
 import tectech.voidcraft.ship.VoidcraftNbt;
 import tectech.voidcraft.ship.VoidcraftStats;
@@ -28,8 +29,9 @@ import tectech.voidcraft.uss.USSCommand;
  * The capability set is DERIVED from the item itself (the capability system): a digitized SHIP item carries its
  * exact denormalized stats (speed / mining / scan / siphon / construction / logistics power), so the editor
  * offers exactly the commands that ship can run; a base item offers everything a voidcraft runs EXCEPT MOVE —
- * MINE / SCAN / SIPHON / CONSTRUCT / SEND / TAKE (its stats) + REPAIR (a repair bay in the blueprint) — and
- * never the MOVE capability (a base cannot move).
+ * MINE / SCAN / SIPHON / CONSTRUCT / SEND / TAKE (its stats) + REPAIR (a repair bay in the blueprint) +
+ * STABILIZE (a Stabilization Matrix component in the blueprint) — and never the MOVE capability (a base cannot
+ * move).
  */
 public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
 
@@ -43,6 +45,7 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
     private final long constructionPower;
     private final long logisticsPower;
     private final int repairBays;
+    private final int matrix;
     private final double speed;
 
     /**
@@ -66,6 +69,7 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
             this.constructionPower = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_CONSTRUCTION);
             this.logisticsPower = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_LOGISTICS);
             this.repairBays = 0;
+            this.matrix = 0;
         } else {
             this.speed = 0.0; // a base cannot move
             long mining = 0L;
@@ -74,6 +78,7 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
             long construction = 0L;
             long logistics = 0L;
             int bays = 0;
+            int matrix = 0;
             VoidcraftBlueprint blueprint = stack == null ? null : ItemVoidbaseBlueprint.getBlueprint(stack);
             if (blueprint != null) {
                 VoidcraftStats stats = blueprint.computeStats();
@@ -83,6 +88,7 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
                 construction = stats.constructionPower;
                 logistics = stats.logisticsPower;
                 bays = blueprint.countCover(VoidcraftCoverComponent.REPAIR_BAY);
+                matrix = blueprint.count(VoidcraftComponent.STABILIZATION_MATRIX);
             }
             this.miningPower = mining;
             this.scanPower = scan;
@@ -90,6 +96,7 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
             this.constructionPower = construction;
             this.logisticsPower = logistics;
             this.repairBays = bays;
+            this.matrix = matrix;
         }
     }
 
@@ -139,6 +146,9 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
                 if (blueprint.countCover(VoidcraftCoverComponent.REPAIR_BAY) > 0) {
                     bits |= USSCapabilities.REPAIR;
                 }
+                if (blueprint.count(VoidcraftComponent.STABILIZATION_MATRIX) > 0) {
+                    bits |= USSCapabilities.STABILIZE;
+                }
             }
         }
         return USSCapabilities.of(bits);
@@ -187,6 +197,8 @@ public class VoidcraftProgramItemSource implements VoidcraftProgramSource {
             case USSCommand.SEND:
             case USSCommand.TAKE:
                 return logisticsPower > 0L ? "Logistics power: " + logisticsPower : "";
+            case USSCommand.STABILIZE:
+                return matrix > 0 ? "Matrix: " + matrix : "";
             default:
                 return "";
         }

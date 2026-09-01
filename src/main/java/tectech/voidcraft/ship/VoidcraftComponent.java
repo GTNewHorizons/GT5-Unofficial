@@ -10,12 +10,15 @@ import java.util.Optional;
  *
  * <p>
  * PASS 23 (user spec): <b>covers are the primary components â€” all ship functionality comes from the covers.</b>
- * Only TWO components are placeable full blocks:
+ * Only FOUR components are placeable hull blocks:
  *
  * <ul>
  * <li>{@link #CONTROLLER} â€” the ship's brain (required, exactly one per ship).</li>
- * <li>{@link #FRAME} â€” the "Voidcraft Frame": a mostly-transparent framebox hull block whose purpose is to
- * accept the Voidcraft component covers on its faces (renamed from the old Utility Block).</li>
+ * <li>{@link #FRAME}, {@link #FRAME_2}, {@link #FRAME_3}, {@link #FRAME_4} â€” the frame tiers:
+ * mostly-transparent framebox hull blocks whose purpose is to accept the Voidcraft component covers on their
+ * faces. A ship may use frames of exactly ONE tier (no mix-and-match; multiblock components are exempt) and a
+ * frame tier only accepts components of its own tier or lower (see
+ * {@link #isFrame} / {@link #getTier}).</li>
  * </ul>
  *
  * <p>
@@ -53,9 +56,11 @@ public enum VoidcraftComponent {
         false),
 
     /**
-     * The "Voidcraft Frame" (renamed from the old "Voidcraft Utility Block"): the mostly-transparent
-     * framebox hull block. Structural mass + integrity, no function of its own â€” its purpose is to accept
-     * the Voidcraft component covers on its faces; all ship functionality comes from those covers.
+     * The "Voidcraft Frame" (tier 1, renamed from the old "Voidcraft Utility Block"): the mostly-transparent
+     * framebox hull block. Structural mass + base integrity, no function of its own â€” its purpose is to accept
+     * the Voidcraft component covers on its faces; all ship functionality comes from those covers. A frame side
+     * facing another frame side adds integrity, a side exposed to air removes some (see
+     * {@link VoidcraftBlueprint#computeStats}).
      */
     FRAME(2, "Voidcraft Frame", "tt.voidcraft.component.frame", true, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, false),
 
@@ -171,7 +176,141 @@ public enum VoidcraftComponent {
      * beyond mass).
      */
     SATELLITE_LAUNCHER_PANEL(17, "Satellite Launcher Panel", "tt.voidcraft.component.satellite_launcher_panel", true, 0,
-        5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, true);
+        5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, true),
+
+    /**
+     * Frame tier 2: hosts covers of tier 1 or lower (all of tier 0, plus the tier-1 engines and reactor). Higher
+     * base integrity than tier 1. All frames of a ship must be the same tier.
+     */
+    FRAME_2(18, "Voidcraft Frame (Tier 2)", "tt.voidcraft.component.frame_2", true, 1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        15, false),
+
+    /**
+     * Frame tier 3: hosts covers of tier 2 or lower. Higher base integrity than tier 2. All frames of a ship must
+     * be the same tier.
+     */
+    FRAME_3(19, "Voidcraft Frame (Tier 3)", "tt.voidcraft.component.frame_3", true, 2, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        20, false),
+
+    /**
+     * Frame tier 4: hosts covers of tier 3 or lower (the full catalog). Highest base integrity. All frames of a
+     * ship must be the same tier.
+     */
+    FRAME_4(20, "Voidcraft Frame (Tier 4)", "tt.voidcraft.component.frame_4", true, 3, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        25, false),
+
+    /**
+     * COVER-ONLY: the Fusion Reactor is delivered by the {@link VoidcraftCoverComponent#FUSION_REACTOR} cover. A
+     * high-output energy source (large flat energyGen, no fuel burned in flight); a ship carrying it must pay a
+     * launch cost of reactor fuel (Deuterium) at the Gateway, scaled by the number of reactors. Kept as the
+     * function definition behind that cover (icon + stat shape); not a placeable block.
+     */
+    FUSION_REACTOR(21, "Voidcraft Fusion Reactor", "tt.voidcraft.component.fusion_reactor", false, 2, 20, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 5_000, 0, false),
+
+    /**
+     * COVER-ONLY: the Antimatter Reactor is delivered by the {@link VoidcraftCoverComponent#ANTIMATTER_REACTOR}
+     * cover. The highest-output energy source in the catalog; a ship carrying it must pay a launch cost of reactor
+     * fuel (Semi-Stable Antimatter) at the Gateway, scaled by the number of reactors. Kept as the function
+     * definition behind that cover (icon + stat shape); not a placeable block.
+     */
+    ANTIMATTER_REACTOR(22, "Voidcraft Antimatter Reactor", "tt.voidcraft.component.antimatter_reactor", false, 3, 30, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 25_000, 0, false),
+
+    /**
+     * COVER-ONLY: the Ion Thruster is delivered by the {@link VoidcraftCoverComponent#ION_THRUSTER} cover. The
+     * fuel-burning engine family's baseline (burns Xenon while travelling); a ship may carry exactly one engine
+     * type. Kept as the function definition behind that cover (icon + stat shape); not a placeable block.
+     */
+    ION_THRUSTER(23, "Voidcraft Ion Thruster", "tt.voidcraft.component.ion_thruster", false, 1, 3, 150, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, false),
+
+    /**
+     * COVER-ONLY: the Fusion Torch is delivered by the {@link VoidcraftCoverComponent#FUSION_TORCH} cover.
+     * High-thrust fuel-burning engine (burns Water while travelling); a ship may carry exactly one engine type.
+     * Kept as the function definition behind that cover (icon + stat shape); not a placeable block.
+     */
+    FUSION_TORCH(24, "Voidcraft Fusion Torch", "tt.voidcraft.component.fusion_torch", false, 2, 6, 400, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, false),
+
+    /**
+     * COVER-ONLY: the Antimatter Engine is delivered by the {@link VoidcraftCoverComponent#ANTIMATTER_ENGINE}
+     * cover. The highest-thrust engine in the catalog (burns Semi-Stable Antimatter while travelling); a ship may
+     * carry exactly one engine type. Kept as the function definition behind that cover (icon + stat shape); not a
+     * placeable block.
+     */
+    ANTIMATTER_ENGINE(25, "Voidcraft Antimatter Engine", "tt.voidcraft.component.antimatter_engine", false, 3, 10, 900,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false),
+
+    /**
+     * COVER-ONLY: the Fuel Storage is delivered by the {@link VoidcraftCoverComponent#FUEL_STORAGE} cover. A
+     * dedicated tank (separate from the cargo hold) holding the fuel required by the ship's engine type; the
+     * Gateway only launches the ship when the tank is full, and the fuel is consumed while travelling. Kept as
+     * the function definition behind that cover (icon + stat shape); not a placeable block.
+     */
+    FUEL_STORAGE(26, "Voidcraft Fuel Storage", "tt.voidcraft.component.fuel_storage", false, 0, 8, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, false),
+
+    /**
+     * MULTIBLOCK CONTROLLER: the Stellar Injector — a 7×7×12 STATION component like the Satellite Rail Launcher:
+     * a ship build containing it is rejected ({@code voidcraft_launcher_station_only}); the Voidbase Assembler
+     * digitizes it into a Voidbase blueprint. The star-feeding injector it provides is an internal of the
+     * Unstable Solar System, contributed by the base that carries it.
+     */
+    STELLAR_INJECTOR(27, "Stellar Injector", "tt.voidcraft.component.stellar_injector", true, 2, 80, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, true),
+
+    /**
+     * MULTIBLOCK CASING: the Stellar Injector's plain filler block — a "dumb" casing with no stats of its own
+     * beyond mass (it takes no covers).
+     */
+    STELLAR_INJECTOR_CASING(28, "Stellar Injector Casing", "tt.voidcraft.component.stellar_injector_casing", true, 0, 5,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, true),
+
+    /**
+     * MULTIBLOCK CONTROLLER: the Continuum Stabilizer — a 5×5×7 STATION component like the Satellite Rail
+     * Launcher: a ship build containing it is rejected ({@code voidcraft_launcher_station_only}); the Voidbase
+     * Assembler digitizes it into a Voidbase blueprint. The ripple stabilization it provides is an internal of
+     * the Unstable Solar System, contributed by the base that carries it.
+     */
+    CONTINUUM_STABILIZER(29, "Continuum Stabilizer", "tt.voidcraft.component.continuum_stabilizer", true, 2, 50, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, true),
+
+    /**
+     * MULTIBLOCK CASING: the Continuum Stabilizer's plain filler block (no stats beyond mass).
+     */
+    CONTINUUM_STABILIZER_CASING(30, "Continuum Stabilizer Casing", "tt.voidcraft.component.continuum_stabilizer_casing",
+        true, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, true),
+
+    /**
+     * MULTIBLOCK CONTROLLER: the Stellar Lens — a 7×7×12 STATION component like the Satellite Rail Launcher: a
+     * ship build containing it is rejected ({@code voidcraft_launcher_station_only}); the Voidbase Assembler
+     * digitizes it into a Voidbase blueprint. The visual it provides around the star is an internal of the
+     * Unstable Solar System, contributed by the base that carries it.
+     */
+    STELLAR_LENS(31, "Stellar Lens", "tt.voidcraft.component.stellar_lens", true, 2, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, true),
+
+    /**
+     * MULTIBLOCK CASING: the Stellar Lens's plain filler block (no stats beyond mass).
+     */
+    STELLAR_LENS_CASING(32, "Stellar Lens Casing", "tt.voidcraft.component.stellar_lens_casing", true, 0, 5, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, true),
+
+    /**
+     * MULTIBLOCK CONTROLLER: the Stabilization Matrix — a 7×7×10 STATION component like the Satellite Rail
+     * Launcher: a ship build containing it is rejected ({@code voidcraft_launcher_station_only}); the Voidbase
+     * Assembler digitizes it into a Voidbase blueprint. The stabilization it provides is an internal of the
+     * Unstable Solar System, contributed by the base that carries it.
+     */
+    STABILIZATION_MATRIX(33, "Stabilization Matrix", "tt.voidcraft.component.stabilization_matrix", true, 2, 60, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, true),
+
+    /**
+     * MULTIBLOCK CASING: the Stabilization Matrix's plain filler block (no stats beyond mass).
+     */
+    STABILIZATION_MATRIX_CASING(34, "Stabilization Matrix Casing", "tt.voidcraft.component.stabilization_matrix_casing",
+        true, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, true);
 
     /** All components in meta order (index == meta). */
     public static final VoidcraftComponent[] ALL = values();
@@ -270,6 +409,15 @@ public enum VoidcraftComponent {
     }
 
     /**
+     * @return true when this entry is one of the frame tiers ({@link #FRAME} through {@link #FRAME_4}). The frame
+     *         tier gates which covers may attach to its faces and contributes the face-based integrity math;
+     *         all frames of a ship must be the same tier.
+     */
+    public boolean isFrame() {
+        return this == FRAME || this == FRAME_2 || this == FRAME_3 || this == FRAME_4;
+    }
+
+    /**
      * {@code true} when this entry is a block of a GT multiblock component (the multiblock's controller or one of
      * its casing blocks). The assembler audits the owning structure before digitizing it.
      */
@@ -278,7 +426,20 @@ public enum VoidcraftComponent {
     }
 
     /**
-     * Technology tier. Gated by the assembler circuit: circuit damage 0-2 = tier 0, 3-5 = tier 1, 6+ = tier 2.
+     * @return true when this entry is a STATION-ONLY infrastructure controller (the Satellite Rail Launcher and
+     *         the four star-infrastructure components): infrastructure that lives in a Voidbase, never in a
+     *         flying ship.
+     */
+    public boolean isStationOnlyMultiblock() {
+        return this == SATELLITE_LAUNCHER || this == STELLAR_INJECTOR
+            || this == CONTINUUM_STABILIZER
+            || this == STELLAR_LENS
+            || this == STABILIZATION_MATRIX;
+    }
+
+    /**
+     * Technology tier. Gated by the assembler circuit: circuit damage 0-2 = tier 0, 3-5 = tier 1, 6-8 = tier 2,
+     * 9+ = tier 3. For the frame tiers this is also the highest cover tier the frame may host.
      */
     public int getTier() {
         return tier;

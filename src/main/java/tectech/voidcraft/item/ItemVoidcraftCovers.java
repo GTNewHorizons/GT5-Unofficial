@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
@@ -21,6 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import tectech.TecTech;
 import tectech.voidcraft.VoidcraftTextures;
 import tectech.voidcraft.ship.VoidcraftCoverComponent;
+import tectech.voidcraft.ship.VoidcraftFuel;
 
 /**
  * The Voidcraft cover parts (one subtype per {@link VoidcraftCoverComponent}).
@@ -119,11 +121,42 @@ public final class ItemVoidcraftCovers extends Item {
                     "tt.voidcraft.item.stat.buffer",
                     NumberFormatUtil.formatNumber(cover.getEnergyBuffer())));
         }
+        if (cover.getEnergyGen() > 0) {
+            aList.add(
+                EnumChatFormatting.GRAY + translateToLocalFormatted(
+                    "tt.voidcraft.item.stat.gen",
+                    NumberFormatUtil.formatNumber(cover.getEnergyGen())));
+        }
         if (cover.getEnergyDraw() > 0) {
             aList.add(
                 EnumChatFormatting.GRAY + translateToLocalFormatted(
                     "tt.voidcraft.item.stat.draw",
                     NumberFormatUtil.formatNumber(cover.getEnergyDraw())));
+        }
+        if (cover.getFuelCapacity() > 0) {
+            aList.add(
+                EnumChatFormatting.GRAY + translateToLocalFormatted(
+                    "tt.voidcraft_cover.fuel_tank",
+                    NumberFormatUtil.formatNumber(cover.getFuelCapacity())));
+        }
+        if (cover.isEngine() && cover.getEngineType()
+            .requiresFuel()) {
+            Fluid fuel = VoidcraftFuel.engineFuel(cover.getEngineType());
+            if (fuel != null) {
+                aList.add(
+                    EnumChatFormatting.GRAY
+                        + translateToLocalFormatted("tt.voidcraft_cover.engine_fuel", fuel.getLocalizedName()));
+            }
+        }
+        if (cover.isReactor()) {
+            Fluid feeFuel = VoidcraftFuel.reactorLaunchFluid(cover);
+            if (feeFuel != null) {
+                aList.add(
+                    EnumChatFormatting.GRAY + translateToLocalFormatted(
+                        "tt.voidcraft_cover.launch_fuel",
+                        NumberFormatUtil.formatNumber(cover.getLaunchFuel()),
+                        feeFuel.getLocalizedName()));
+            }
         }
         if (cover.getIntegrity() > 0) {
             aList.add(
@@ -135,7 +168,7 @@ public final class ItemVoidcraftCovers extends Item {
             aList.add(
                 EnumChatFormatting.GRAY + translateToLocalFormatted("tt.voidcraft.item.stat.tier", cover.getTier()));
         }
-        if (cover == VoidcraftCoverComponent.THRUSTER_NOZZLE) {
+        if (cover.isEngine()) {
             aList.add(EnumChatFormatting.GOLD + translateToLocal("tt.voidcraft_cover.thrust_direction"));
         }
     }

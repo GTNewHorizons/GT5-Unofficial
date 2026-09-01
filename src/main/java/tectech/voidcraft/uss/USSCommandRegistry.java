@@ -29,6 +29,7 @@ public final class USSCommandRegistry {
         register(new USSCommandSiphon());
         register(new USSCommandSend());
         register(new USSCommandTake());
+        register(new USSCommandStabilize());
     }
 
     private USSCommandRegistry() {}

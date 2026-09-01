@@ -25,8 +25,9 @@ import tectech.voidcraft.uss.USSStarType;
  *
  * <p>
  * The ignition source for the Unstable Solar System multiblock. Insert one into the system's controller slot
- * (sneak-right-click on the casing) to ignite the star. The controller is <em>consumed</em> when the star burns
- * out — one controller = one star life.
+ * (sneak-right-click on the casing) to ignite the star. The star's evolutions continue on the same controller
+ * (the machine upgrades it to the new star class); the controller is <em>consumed</em> when the system
+ * terminates.
  *
  * <p>
  * Sixteen variants, one per star class (meta 0–15, the {@link USSStarType} ordinal — the ignition order) — the

@@ -189,11 +189,14 @@ public final class USSShipPilot implements USSExecutionContext {
      *         caller delivers it and removes it); false otherwise
      */
     public boolean tick() {
-        // 1) the leg counts down in REAL time, on the entity's energy buffer: it ticks only while the buffer
-        // covers the leg's draw (the stall model — the executor keeps polling, the leg just does not advance).
+        // 1) the leg counts down in REAL time, on the entity's energy buffer AND (travel legs on a fuel-burning
+        // engine) its fuel tank: it ticks only while both cover the leg's draw (the stall model — the executor
+        // keeps polling, the leg just does not advance).
         ship.tickEnergy();
         if (ship.isLegActive()) {
-            if (ship.spendEnergy(USSConstants.legEnergyDraw(ship.getLegWorkKind(), ship))) {
+            long energyDraw = USSConstants.legEnergyDraw(ship.getLegWorkKind(), ship);
+            long fuelDraw = USSConstants.travelFuelDraw(ship.getLegWorkKind(), ship);
+            if (ship.spendEnergy(energyDraw) && ship.spendFuel(fuelDraw)) {
                 ship.tickLeg();
             }
         }
@@ -457,6 +460,21 @@ public final class USSShipPilot implements USSExecutionContext {
     @Override
     public boolean transferTick(int commandId) {
         return world.cargoTransferTick(ship, commandId);
+    }
+
+    @Override
+    public boolean stabilizeStart(long ticks) {
+        if (ship.getAnchor() == null) {
+            // STABILIZE is a station command: only an anchored Voidbase runs it (in its own program).
+            log("STABILIZE: not a station - skipping");
+            return false;
+        }
+        return world.stabilizeStart(ship, ticks);
+    }
+
+    @Override
+    public boolean stabilizeTick() {
+        return world.stabilizeTick(ship);
     }
 
     @Override

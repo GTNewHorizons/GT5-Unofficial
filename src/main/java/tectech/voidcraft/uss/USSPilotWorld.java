@@ -91,10 +91,11 @@ public interface USSPilotWorld {
 
     /**
      * A CONSTRUCT command begins at the ship hover anchor: create or reuse the construction site there (the
-     * Voidbase blueprint + parts loadout from the ship payload) and arm its timed part transfer (one part per
+     * Voidbase blueprint from the ship payload) and arm its timed part transfer (one part per
      * second per 100 construction power of the ship); a site with nothing left to take settles on the first tick.
      *
-     * @param ship        the executing ship (its payload carries the build blueprint + parts loadout)
+     * @param ship        the executing ship (its payload carries the build blueprint; the parts it carries are
+     *                    its cargo)
      * @param targetKind  the ship hover target kind (the MOVE target string; see {@link #resolveTarget})
      * @param targetIndex the RESOLVED hover body index (-1 star)
      * @return true when the work started or has nothing to transfer (the command goes RUNNING and polls
@@ -105,7 +106,7 @@ public interface USSPilotWorld {
 
     /**
      * One machine tick of the ship's CONSTRUCT leg (polled while its CONSTRUCT command is in flight): advances
-     * the site's pacing countdown, deposits one part per ticksPerItem from the ship's loadout (the site takes
+     * the site's pacing countdown, deposits one part per ticksPerItem from the ship's hold (the site takes
      * only what it still needs), and spawns the Voidbase when the site completes.
      *
      * @param ship        the executing ship
@@ -172,6 +173,33 @@ public interface USSPilotWorld {
      *         reports DONE)
      */
     boolean cargoTransferTick(VoidcraftActiveShip ship, int commandId);
+
+    /**
+     * A STABILIZE command begins at the executing base (the Hyperdimensional Stabilization Matrix's activation
+     * command — a Voidbase station side-effect like REPAIR): the game side runs the eligibility gates (the
+     * base's blueprint carries a STABILIZATION_MATRIX, the base is anchored to a revealed ripple, the Continuum
+     * Stabilizer on the anchor ripple is fully built, and at least one Field Generator is on board) and
+     * arms the timed window.
+     *
+     * @param ship  the executing base (a flying ship is refused — the matrix is a station capability)
+     * @param ticks the window length in machine ticks (already clamped to the positive range)
+     * @return true when the window started (the command goes RUNNING and polls {@link #stabilizeTick}) / false
+     *         when it cannot (the command reports FAILED and SKIPs)
+     */
+    boolean stabilizeStart(VoidcraftActiveShip ship, long ticks);
+
+    /**
+     * One machine tick of the executing base's in-flight STABILIZE window (polled while its STABILIZE command
+     * is in flight): the base pays the per-tick matrix draw from its energy buffer (a shortfall stalls the
+     * window — the duration, the consumption countdown and the consumption all freeze) and every interval
+     * consumes one Field Generator from its hold (the UXV tier over the UMV tier; the window's weight is
+     * the last consumed tier).
+     *
+     * @param ship the executing base
+     * @return true when the window is still running (keep polling) / false when it is over (the window ran out
+     *         or no session is in flight anymore - the command reports DONE)
+     */
+    boolean stabilizeTick(VoidcraftActiveShip ship);
 
     // endregion
 }

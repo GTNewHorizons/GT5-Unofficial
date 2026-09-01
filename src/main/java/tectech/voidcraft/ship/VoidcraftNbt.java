@@ -37,6 +37,12 @@ public final class VoidcraftNbt {
     public static final String TAG_ENERGY_GEN = "vc_energy_gen";
     public static final String TAG_INTEGRITY = "vc_integrity";
 
+    // Format v3 (the reactor / fuel / frame-tier mechanics pass):
+    public static final String TAG_FUEL = "vc_fuel";
+    public static final String TAG_ENGINE = "vc_engine";
+    public static final String TAG_THRUSTERS = "vc_thrusters";
+    public static final String TAG_FRAME_TIER = "vc_frame_tier";
+
     // Programming framework (Phase C):
 
     /**
@@ -57,11 +63,11 @@ public final class VoidcraftNbt {
     public static final String TAG_BUILD_BLUEPRINT = "vc_build_blueprint";
 
     /**
-     * NBTTagList: the parts loadout — entries {@code {key: String, amount: int}} with the blueprint's
-     * {@code partsList()} keys ({@code block.<NAME>} / {@code cover.<NAME>}). The CONSTRUCT handler credits the
-     * site part by part; whatever the ship carries beyond the site's remaining needs is discarded.
+     * Compound: the ship's cargo hold at launch ({@code CargoHold.writeToNBT} format) — the gateway's input-side
+     * dump (everything the user loaded on the input side but is not the ship item), written into the ship item's
+     * payload. The ship reads it at launch; absent = an empty hold at the payload's cargo capacity.
      */
-    public static final String TAG_BUILD_LOADOUT = "vc_build_loadout";
+    public static final String TAG_HOLD = "vc_hold";
 
     /** Boolean: this launch is a Voidbase construction mission (the ship creates or fills a construction site). */
     public static final String TAG_BUILD_MISSION = "vc_build_mission";
@@ -107,6 +113,10 @@ public final class VoidcraftNbt {
         nbt.setLong(TAG_ENERGY_DRAW, stats.energyDraw);
         nbt.setLong(TAG_ENERGY_GEN, stats.energyGen);
         nbt.setLong(TAG_INTEGRITY, stats.integrity);
+        nbt.setLong(TAG_FUEL, stats.fuelCapacity);
+        nbt.setInteger(TAG_ENGINE, stats.engineType);
+        nbt.setLong(TAG_THRUSTERS, stats.thrusterCount);
+        nbt.setInteger(TAG_FRAME_TIER, stats.frameTier);
     }
 
     /**

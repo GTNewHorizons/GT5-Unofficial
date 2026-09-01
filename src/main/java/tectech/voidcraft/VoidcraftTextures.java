@@ -39,6 +39,11 @@ public final class VoidcraftTextures {
      */
     public static final String FRAME_ICON_NAME = "tectech:iconsets/VC_FRAME";
 
+    /** The frame-tier block icons (tier 2 / 3 / 4): the framebox in green / purple / red. */
+    public static final String FRAME_2_ICON_NAME = "tectech:iconsets/VC_FRAME_2";
+    public static final String FRAME_3_ICON_NAME = "tectech:iconsets/VC_FRAME_3";
+    public static final String FRAME_4_ICON_NAME = "tectech:iconsets/VC_FRAME_4";
+
     /**
      * Cover icon names in {@link VoidcraftCoverComponent#getId()} order — each cover has its OWN 16×16 icon
      * (pass 24: the old {@code iconsets/EM_DIM_*} names pointed at the IORE dimension-block planet sheets — 16×64
@@ -48,14 +53,19 @@ public final class VoidcraftTextures {
     /** Cover icon basenames in {@link VoidcraftCoverComponent#getId()} order (also exposed for the item icons). */
     public static final String[] COVER_ICON_BASE = { "VC_COVER_NOZZLE", "VC_COVER_ARMOR", "VC_COVER_POD",
         "VC_COVER_MINING", "VC_COVER_SIPHON", "VC_COVER_DISH", "VC_COVER_FABRICATOR", "VC_COVER_CELL",
-        "VC_COVER_REPAIR", "VC_COVER_SOLAR", "VC_COVER_DRONE_BAY" };
+        "VC_COVER_REPAIR", "VC_COVER_SOLAR", "VC_COVER_DRONE_BAY", "VC_COVER_FUSION_REACTOR",
+        "VC_COVER_ANTIMATTER_REACTOR", "VC_COVER_ION_THRUSTER", "VC_COVER_FUSION_TORCH", "VC_COVER_ANTIMATTER_ENGINE",
+        "VC_COVER_FUEL_STORAGE" };
 
-    private static final String[] COVER_ICON_NAMES = { "tectech:iconsets/" + COVER_ICON_BASE[0],
-        "tectech:iconsets/" + COVER_ICON_BASE[1], "tectech:iconsets/" + COVER_ICON_BASE[2],
-        "tectech:iconsets/" + COVER_ICON_BASE[3], "tectech:iconsets/" + COVER_ICON_BASE[4],
-        "tectech:iconsets/" + COVER_ICON_BASE[5], "tectech:iconsets/" + COVER_ICON_BASE[6],
-        "tectech:iconsets/" + COVER_ICON_BASE[7], "tectech:iconsets/" + COVER_ICON_BASE[8],
-        "tectech:iconsets/" + COVER_ICON_BASE[9], "tectech:iconsets/" + COVER_ICON_BASE[10] };
+    private static final String[] COVER_ICON_NAMES = coverIconNames();
+
+    private static String[] coverIconNames() {
+        String[] names = new String[COVER_ICON_BASE.length];
+        for (int i = 0; i < COVER_ICON_BASE.length; i++) {
+            names[i] = "tectech:iconsets/" + COVER_ICON_BASE[i];
+        }
+        return names;
+    }
 
     /** The controller's dedicated block icon (pass 24; was a planet-sheet squashed onto its faces). */
     public static final String CONTROLLER_ICON_NAME = "tectech:iconsets/VC_CONTROLLER";
@@ -97,24 +107,43 @@ public final class VoidcraftTextures {
      * re-resolve the name.
      */
     public static ITexture componentTexture(VoidcraftComponent component) {
-        return COMPONENT_TEXTURES.computeIfAbsent(component, c -> resolveComponentTexture(c));
+        return COMPONENT_TEXTURES.computeIfAbsent(
+            component,
+            c -> TextureFactory.of(Textures.BlockIcons.custom(resolveComponentIconName(c))));
     }
 
-    private static ITexture resolveComponentTexture(VoidcraftComponent c) {
+    /**
+     * The registered block-atlas name of a component's icon — for client code that needs the {@code IIcon} itself
+     * (UVs) rather than the {@link ITexture} (e.g. the in-flight ship model).
+     */
+    public static String componentIconName(VoidcraftComponent component) {
+        return resolveComponentIconName(component);
+    }
+
+    private static String resolveComponentIconName(VoidcraftComponent c) {
         if (c == VoidcraftComponent.CONTROLLER) {
-            return TextureFactory.of(Textures.BlockIcons.custom(CONTROLLER_ICON_NAME));
+            return CONTROLLER_ICON_NAME;
         }
         if (c == VoidcraftComponent.FRAME) {
-            return TextureFactory.of(Textures.BlockIcons.custom(FRAME_ICON_NAME));
+            return FRAME_ICON_NAME;
+        }
+        if (c == VoidcraftComponent.FRAME_2) {
+            return FRAME_2_ICON_NAME;
+        }
+        if (c == VoidcraftComponent.FRAME_3) {
+            return FRAME_3_ICON_NAME;
+        }
+        if (c == VoidcraftComponent.FRAME_4) {
+            return FRAME_4_ICON_NAME;
         }
         if (c.isMultiblock()) {
             // Multiblock component block — its own dedicated 16×16 icon (VC_MBLK_<entry name>)
-            return TextureFactory.of(Textures.BlockIcons.custom(MULTIBLOCK_ICON_PREFIX + c.name()));
+            return MULTIBLOCK_ICON_PREFIX + c.name();
         }
         // cover-only catalog entry — the icon of the cover part that provides this function
         for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
             if (cover.getMirroredComponent() == c) {
-                return coverTexture(cover);
+                return COVER_ICON_NAMES[cover.getId()];
             }
         }
         throw new IllegalStateException("No texture for component " + c);

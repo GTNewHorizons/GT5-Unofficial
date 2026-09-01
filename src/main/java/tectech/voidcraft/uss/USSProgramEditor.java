@@ -665,6 +665,11 @@ public final class USSProgramEditor {
                     return null;
                 }
                 return "unknown WAIT parameter '" + key + "'";
+            case USSCommand.STABILIZE:
+                if (USSCommandStabilize.PARAM_TICKS.equals(key)) {
+                    return null;
+                }
+                return "unknown STABILIZE parameter '" + key + "'";
             case USSCommand.SEND:
             case USSCommand.TAKE:
                 if (USSProgramDefaults.PARAM_AMOUNT.equals(key) || USSProgramDefaults.PARAM_FILTER.equals(key)
@@ -702,6 +707,11 @@ public final class USSProgramEditor {
             return (v != null && v >= 0L && v <= USSCommandWait.MAX_WAIT_TICKS) ? null
                 : "ticks must be 0.." + USSCommandWait.MAX_WAIT_TICKS;
         }
+        if (cmdId == USSCommand.STABILIZE && USSCommandStabilize.PARAM_TICKS.equals(key)) {
+            Long v = parseLong(raw);
+            return (v != null && v >= 0L && v <= USSCommandStabilize.MAX_STABILIZE_TICKS) ? null
+                : "ticks must be 0.." + USSCommandStabilize.MAX_STABILIZE_TICKS;
+        }
         if ((cmdId == USSCommand.SEND || cmdId == USSCommand.TAKE) && USSProgramDefaults.PARAM_AMOUNT.equals(key)) {
             Long v = parseLong(raw);
             return (v != null && v >= -1L) ? null : "amount must be a number ≥ -1 (-1 = ALL)";
@@ -730,6 +740,8 @@ public final class USSProgramEditor {
             params.setInteger(USSCommandRead.PARAM_TO, parseLong(raw).intValue());
         } else if (cmdId == USSCommand.WAIT && USSCommandWait.PARAM_TICKS.equals(key)) {
             params.setLong(USSCommandWait.PARAM_TICKS, parseLong(raw).longValue());
+        } else if (cmdId == USSCommand.STABILIZE && USSCommandStabilize.PARAM_TICKS.equals(key)) {
+            params.setLong(USSCommandStabilize.PARAM_TICKS, parseLong(raw).longValue());
         } else
             if ((cmdId == USSCommand.SEND || cmdId == USSCommand.TAKE) && USSProgramDefaults.PARAM_AMOUNT.equals(key)) {
                 params.setLong(USSProgramDefaults.PARAM_AMOUNT, parseLong(raw).longValue());
@@ -826,6 +838,11 @@ public final class USSProgramEditor {
                 case USSCommand.WAIT:
                     if (p.hasKey(USSCommandWait.PARAM_TICKS) && p.getLong(USSCommandWait.PARAM_TICKS) < 0L) {
                         return "a WAIT ticks value must be ≥ 0";
+                    }
+                    return null;
+                case USSCommand.STABILIZE:
+                    if (p.hasKey(USSCommandStabilize.PARAM_TICKS) && p.getLong(USSCommandStabilize.PARAM_TICKS) < 0L) {
+                        return "a STABILIZE ticks value must be ≥ 0";
                     }
                     return null;
                 case USSCommand.SEND:

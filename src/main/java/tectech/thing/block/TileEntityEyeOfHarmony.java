@@ -135,6 +135,58 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     }
 
     /**
+     * The constructor-built star-scale infrastructure shell (the infrastructure-builder pass): the Stellar
+     * Injector / Stellar Gravitational Lens state — the shell type to render
+     * ({@link tectech.voidcraft.uss.USSInfraBuild}
+     * INJECTOR / LENS; -1 = none, the star's shell is the Dyson Swarm), the structure units built so far and the
+     * star's shell capacity. The client renders a triangle shell at a fill of count/capacity (the star hosts at
+     * most one of Dyson Swarm / Injector / Lens — they are mutually exclusive).
+     */
+    private int infraShellType = -1;
+    private long infraShellCount = 0;
+    private long infraShellCapacity = 0;
+
+    public int getInfraShellType() {
+        return infraShellType;
+    }
+
+    public long getInfraShellCount() {
+        return infraShellCount;
+    }
+
+    public long getInfraShellCapacity() {
+        return infraShellCapacity;
+    }
+
+    public void setInfraShell(int type, long count, long capacity) {
+        this.infraShellType = (type >= 0 ? type : -1);
+        this.infraShellCount = Math.max(0L, count);
+        this.infraShellCapacity = Math.max(0L, capacity);
+    }
+
+    /**
+     * The USS virtual orbit clock (machine ticks, the server's orbit time base) + the world tick it was sampled
+     * at: the client renders orbits at {@code ussOrbitTime + (worldTime − ussSyncedWorldTime) + partialTicks} —
+     * advancing at the normal rate from the last sync — so the planet phases keep the server's clock (including a
+     * stellar-acceleration second's proportionally faster advance). 0 = not set (legacy star: world time).
+     */
+    private long ussOrbitTime = 0;
+    private long ussSyncedWorldTime = 0;
+
+    public long getUssOrbitTime() {
+        return ussOrbitTime;
+    }
+
+    public long getUssSyncedWorldTime() {
+        return ussSyncedWorldTime;
+    }
+
+    public void setUssOrbitTime(long orbitTime, long syncedWorldTime) {
+        this.ussOrbitTime = orbitTime;
+        this.ussSyncedWorldTime = syncedWorldTime;
+    }
+
+    /**
      * Radius of the space-shell dome in blocks. Pass 12 — a per-machine parameter instead of the renderer's old
      * hardcoded scale: legacy Eye of Harmony keeps the historical 12.95 (0.01·17.5·74); the Voidcraft Unstable
      * Solar System sets 27.1 (pass 12's 2× = 25.9, +1.5 blocks in pass 13, −0.3 in pass 15; its structure
@@ -361,6 +413,11 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     private static final String RENDER_TYPE_NBT_TAG = EOH_NBT_TAG + "render_type";
     private static final String SWARM_COUNT_NBT_TAG = EOH_NBT_TAG + "swarm_count";
     private static final String SWARM_CAP_NBT_TAG = EOH_NBT_TAG + "swarm_cap";
+    private static final String INFRA_SHELL_TYPE_NBT_TAG = EOH_NBT_TAG + "infra_shell_type";
+    private static final String INFRA_SHELL_COUNT_NBT_TAG = EOH_NBT_TAG + "infra_shell_count";
+    private static final String INFRA_SHELL_CAP_NBT_TAG = EOH_NBT_TAG + "infra_shell_cap";
+    private static final String ORBIT_TIME_NBT_TAG = EOH_NBT_TAG + "orbit_time";
+    private static final String ORBIT_SYNC_NBT_TAG = EOH_NBT_TAG + "orbit_sync";
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -386,6 +443,21 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         if (swarmCapacity > 0) {
             compound.setLong(SWARM_COUNT_NBT_TAG, swarmCount);
             compound.setLong(SWARM_CAP_NBT_TAG, swarmCapacity);
+        }
+
+        // The constructor-built star-scale infrastructure shell (the infrastructure-builder pass) — persisted so
+        // chunk reloads and description packets carry it (no shell = nothing written).
+        if (infraShellType >= 0 && infraShellCapacity > 0) {
+            compound.setInteger(INFRA_SHELL_TYPE_NBT_TAG, infraShellType);
+            compound.setLong(INFRA_SHELL_COUNT_NBT_TAG, infraShellCount);
+            compound.setLong(INFRA_SHELL_CAP_NBT_TAG, infraShellCapacity);
+        }
+
+        // The USS virtual orbit clock (Voidcraft stellar evolution) — persisted so chunk reloads and description
+        // packets carry it (0 = not set; the legacy star and a cold USS write nothing).
+        if (ussOrbitTime > 0) {
+            compound.setLong(ORBIT_TIME_NBT_TAG, ussOrbitTime);
+            compound.setLong(ORBIT_SYNC_NBT_TAG, ussSyncedWorldTime);
         }
 
         // Explicit planet system (Voidcraft) — persisted so chunk reloads and description packets carry it (the
@@ -445,6 +517,25 @@ public class TileEntityEyeOfHarmony extends TileEntity {
             setDysonSwarm(compound.getLong(SWARM_COUNT_NBT_TAG), compound.getLong(SWARM_CAP_NBT_TAG));
         } else if (swarmCapacity > 0) {
             setDysonSwarm(0, 0);
+        }
+
+        // The constructor-built star-scale infrastructure shell (Voidcraft): restore it, or clear a stale shell
+        // when a legacy / no-shell NBT arrives over the description-packet wire.
+        if (compound.hasKey(INFRA_SHELL_CAP_NBT_TAG)) {
+            setInfraShell(
+                compound.getInteger(INFRA_SHELL_TYPE_NBT_TAG),
+                compound.getLong(INFRA_SHELL_COUNT_NBT_TAG),
+                compound.getLong(INFRA_SHELL_CAP_NBT_TAG));
+        } else if (infraShellType >= 0) {
+            setInfraShell(-1, 0, 0);
+        }
+
+        // The USS virtual orbit clock (Voidcraft): restore it, or clear a stale one when a legacy / cold-USS NBT
+        // arrives over the description-packet wire.
+        if (compound.hasKey(ORBIT_TIME_NBT_TAG)) {
+            setUssOrbitTime(compound.getLong(ORBIT_TIME_NBT_TAG), compound.getLong(ORBIT_SYNC_NBT_TAG));
+        } else if (ussOrbitTime > 0) {
+            setUssOrbitTime(0, 0);
         }
 
         // Explicit planet system (Voidcraft): restore it (re-resolving the hologram blocks), or clear a stale one

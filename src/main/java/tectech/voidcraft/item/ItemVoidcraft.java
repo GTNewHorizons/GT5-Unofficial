@@ -4,6 +4,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
@@ -34,6 +36,9 @@ import tectech.Reference;
 import tectech.voidcraft.gui.VoidcraftProgramGui;
 import tectech.voidcraft.gui.VoidcraftProgramItemSource;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
+import tectech.voidcraft.ship.VoidcraftCoverComponent;
+import tectech.voidcraft.ship.VoidcraftEngineType;
+import tectech.voidcraft.ship.VoidcraftFuel;
 import tectech.voidcraft.ship.VoidcraftNbt;
 
 /**
@@ -203,11 +208,71 @@ public class ItemVoidcraft extends Item implements IGuiHolder<PlayerInventoryGui
         if (draw > 0) {
             aList.add(EnumChatFormatting.GRAY + translateToLocalFormatted("item.tm.voidcraft.stat.draw", draw));
         }
+        long thrusters = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_THRUSTERS);
+        int engineType = VoidcraftNbt.readInt(nbt, VoidcraftNbt.TAG_ENGINE);
+        long fuelCapacity = VoidcraftNbt.readLong(nbt, VoidcraftNbt.TAG_FUEL);
+        int frameTier = VoidcraftNbt.readInt(nbt, VoidcraftNbt.TAG_FRAME_TIER);
+        if (thrusters > 0) {
+            aList.add(
+                EnumChatFormatting.GRAY + translateToLocalFormatted("item.tm.voidcraft.stat.thrusters", thrusters));
+            aList.add(
+                EnumChatFormatting.GRAY + translateToLocalFormatted(
+                    "item.tm.voidcraft.stat.engine",
+                    translateToLocal(engineFamilyKey(engineType))));
+        }
+        if (fuelCapacity > 0 && engineFamilyRequiresFuel(engineType)) {
+            Fluid fuel = VoidcraftFuel.engineFuel(VoidcraftEngineType.byId(engineType));
+            if (fuel != null) {
+                aList.add(
+                    EnumChatFormatting.GRAY + translateToLocalFormatted(
+                        "item.tm.voidcraft.stat.fuel",
+                        NumberFormatUtil.formatNumber(fuelCapacity),
+                        fuel.getLocalizedName()));
+            }
+        }
+        if (frameTier > 0) {
+            aList.add(
+                EnumChatFormatting.GRAY + translateToLocalFormatted("item.tm.voidcraft.stat.frame_tier", frameTier));
+        }
+        for (Map.Entry<VoidcraftCoverComponent, Long> fee : blueprint.reactorLaunchFuel()
+            .entrySet()) {
+            Fluid feeFuel = VoidcraftFuel.reactorLaunchFluid(fee.getKey());
+            if (feeFuel != null) {
+                aList.add(
+                    EnumChatFormatting.GRAY + translateToLocalFormatted(
+                        "item.tm.voidcraft.stat.launch_fuel",
+                        NumberFormatUtil.formatNumber(fee.getValue()),
+                        feeFuel.getLocalizedName(),
+                        blueprint.countCover(fee.getKey()),
+                        fee.getKey()
+                            .getDisplayName()));
+            }
+        }
         // Integrity is the ship's TIME LIMIT: the seconds it survives in the USS (it drops
         // by 1 per second, starting at this maximum on entry; at 0 the ship is lost with its cargo).
         aList.add(
             EnumChatFormatting.GRAY
                 + translateToLocalFormatted("item.tm.voidcraft.integrity", NumberFormatUtil.formatNumber(integrity)));
+    }
+
+    private static String engineFamilyKey(int engineType) {
+        switch (VoidcraftEngineType.byId(engineType)) {
+            case ION:
+                return "tt.voidcraft.engine.ion";
+            case FUSION:
+                return "tt.voidcraft.engine.fusion";
+            case ANTIMATTER:
+                return "tt.voidcraft.engine.antimatter";
+            case NONE:
+            case STANDARD:
+            default:
+                return "tt.voidcraft.engine.standard";
+        }
+    }
+
+    private static boolean engineFamilyRequiresFuel(int engineType) {
+        return VoidcraftEngineType.byId(engineType)
+            .requiresFuel();
     }
 
     // region program editor GUI — right-clicking the digitized item in hand opens the same editor as the controller

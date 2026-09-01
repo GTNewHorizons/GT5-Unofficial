@@ -49,8 +49,8 @@ public final class VoidcraftComponentRegistry {
      * Map an assembler integrated-circuit damage value to the highest component tier it may digitize.
      *
      * <p>
-     * Circuit damage 0-2 = tier 0 (base components), 3-5 = tier 1, 6+ = tier 2 — the EoH machine uses the same
-     * integrated-circuit-in-input-bus convention for its overclock, so operators already know the pattern.
+     * Circuit damage 0-2 = tier 0 (base components), 3-5 = tier 1, 6-8 = tier 2, 9+ = tier 3 — the EoH machine uses
+     * the same integrated-circuit-in-input-bus convention for its overclock, so operators already know the pattern.
      *
      * @param circuitDamage integrated circuit damage (0-24)
      * @return allowed max component tier (0..MAX_TIER)

@@ -71,4 +71,9 @@ public class MTEVoidcraftSatelliteLauncher extends MTEVoidcraftMultiblockBase {
     protected int[] getAnchorOffset() {
         return ANCHOR;
     }
+
+    @Override
+    protected String componentTooltipHint() {
+        return "tt.voidcraft_component.satellite_launcher_hint";
+    }
 }

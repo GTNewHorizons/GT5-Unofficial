@@ -21,6 +21,12 @@ public final class USSWorkKind {
     public static final int SCAN = 2;
     /** Siphon the star (the Starlifter's work leg — the yield is the star cargo). */
     public static final int SIPHON = 3;
+    /**
+     * The matrix's stabilization leg (STABILIZE) — a Voidbase station side-effect polled by the command itself
+     * (like CONSTRUCT / REPAIR), NOT a travel or work leg: {@link #isWork} stays false and {@link #fromCommand}
+     * starts no leg for it.
+     */
+    public static final int STABILIZE = 4;
 
     private USSWorkKind() {}
 
@@ -31,7 +37,8 @@ public final class USSWorkKind {
 
     /**
      * The work kind a command id starts (0 for every non-work command — MOVE / WRITE / READ / WAIT / STOP /
-     * CONSTRUCT / REPAIR are not work legs; CONSTRUCT and REPAIR poll their own side-effects).
+     * CONSTRUCT / REPAIR / STABILIZE are not work legs; CONSTRUCT, REPAIR and STABILIZE poll their own
+     * side-effects).
      */
     public static int fromCommand(int commandId) {
         switch (commandId) {

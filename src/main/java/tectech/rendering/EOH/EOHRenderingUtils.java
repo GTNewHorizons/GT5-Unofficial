@@ -42,6 +42,7 @@ import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.block.TileEntityEyeOfHarmony;
 import tectech.voidcraft.uss.USSFleetOrbit;
+import tectech.voidcraft.uss.USSInfraShell;
 
 public abstract class EOHRenderingUtils {
 
@@ -1195,26 +1196,45 @@ public abstract class EOHRenderingUtils {
     /** The accent layer's tint (very dark blue, near-opaque) — packed ARGB, fed to the textured shader's u_Tint. */
     public static final int DYSON_ACCENT_TINT = 0xE6081536;
 
+    /** The Stellar Injector's panel tint (light gray, near-opaque) — packed ARGB. */
+    public static final int INJECTOR_SHELL_TINT = 0xFFBDBDBD;
+
+    /** The Stellar Injector's accent core tint (orange, near-opaque) — packed ARGB. */
+    public static final int INJECTOR_ACCENT_TINT = 0xFFE07820;
+
+    /** The Stellar Gravitational Lens's panel tint (dark gray, near-opaque) — packed ARGB. */
+    public static final int LENS_SHELL_TINT = 0xFF4A4A4A;
+
+    /** The Stellar Gravitational Lens's accent core tint (light green, near-opaque) — packed ARGB. */
+    public static final int LENS_ACCENT_TINT = 0xFF9FE89F;
+
+    /** The Continuum Stabilizer's panel tint (gray, near-opaque) — packed ARGB. */
+    public static final int STABILIZER_SHELL_TINT = 0xFF8A8A8A;
+
+    /** The Continuum Stabilizer's accent core tint (dark purple, near-opaque) — packed ARGB. */
+    public static final int STABILIZER_ACCENT_TINT = 0xFF3D1E63;
+
     /** Shell-VAO cache cap (FIFO eviction, the same policy as the orbit rings). */
     public static final int DYSON_SHELL_CACHE_MAX = 8;
 
     private static final Matrix4f dysonMatrix = new Matrix4f();
 
-    /** One shell VAO per distinct shell radius (quantized to a cm) — the radius is stable per star. */
+    /** One shell VAO per distinct (radius, edge, accent faces) — the radius is stable per star. */
     private static final Map<Integer, IVertexArrayObject> DYSON_SHELLS = new LinkedHashMap<>();
 
     /**
      * The Dyson Swarm shell: a sphere of near-opaque gray triangles around the star, each carrying a slightly
-     * smaller dark blue core (the accent layer, {@code DYSON_ACCENT_SCALE} of the panel, a hair outside the panel
-     * surface — see {@code DYSON_ACCENT_OFFSET}), drawn with a fraction ({@code count / capacity}) of its panels
+     * smaller dark blue core on BOTH faces of the panel (the accent layer, {@code DYSON_ACCENT_SCALE} of the
+     * panel, a hair outside AND a hair inside the panel surface — see {@code DYSON_ACCENT_OFFSET}), so the blue
+     * face reads from both sides of the shell. Drawn with a fraction ({@code count / capacity}) of its panels
      * — a sparse patchwork that fills in as satellites join the swarm. The panels emit in a deterministic MIXED
      * order (a finalizer-scattered hash of the panel triple), so any prefix of them reads as a uniform random
      * patchwork (no sector-by-sector fill).
      *
      * <p>
      * The same textured-shader VAO path the orbit ring uses (the shared program is bound until
-     * {@code ShaderProgram.clear()}); the VAO holds the gray half then the accent half, tinted
-     * {@code DYSON_SHELL_TINT} / {@code DYSON_ACCENT_TINT} over the 1×1 white texture.
+     * {@code ShaderProgram.clear()}); the VAO holds the gray half then the accent half (outer face then inner
+     * face per panel), tinted {@code DYSON_SHELL_TINT} / {@code DYSON_ACCENT_TINT} over the 1×1 white texture.
      *
      * @param base     the star-center model matrix (already translated to the TE position)
      * @param time     world time + partial ticks (the shared animation clock)
@@ -1223,6 +1243,58 @@ public abstract class EOHRenderingUtils {
      * @param capacity the star's satellite capacity (the full-shell count; &le; 0 → nothing drawn)
      */
     public static void renderUSSDysonSwarm(Matrix4fc base, float time, float starSize, long count, long capacity) {
+        renderUSSInfraShell(
+            base,
+            time,
+            starSize + DYSON_SHELL_MARGIN,
+            DYSON_TRIANGLE_EDGE,
+            count,
+            capacity,
+            DYSON_SHELL_TINT,
+            DYSON_ACCENT_TINT,
+            true);
+    }
+
+    /**
+     * The generic infrastructure shell (the constructor-built infrastructure pass — the Dyson Swarm shell's
+     * triangle lattice, parameterized), single-sided accent (the outer face only).
+     *
+     * @see #renderUSSInfraShell(Matrix4fc, float, float, float, long, long, int, int, boolean)
+     */
+    public static void renderUSSInfraShell(Matrix4fc base, float time, float radius, float edge, long count,
+        long capacity, int shellTint, int accentTint) {
+        renderUSSInfraShell(base, time, radius, edge, count, capacity, shellTint, accentTint, false);
+    }
+
+    /**
+     * The generic infrastructure shell (the constructor-built infrastructure pass — the Dyson Swarm shell's
+     * triangle lattice, parameterized): a sphere of panels at {@code radius} with {@code edge}-sized triangles,
+     * each panel carrying a slightly smaller accent core on its EXTERIOR face ({@code DYSON_ACCENT_SCALE} of the
+     * panel, a hair outside the panel surface — {@code DYSON_ACCENT_OFFSET}) and, when {@code innerAccent}, a
+     * matching core on its INTERIOR face a hair inside the surface, so the accent face reads from both sides of
+     * the shell. Drawn with a fraction ({@code count / capacity}) of its panels — a sparse patchwork that fills
+     * in as structure units join the shell. The panels emit in the same deterministic MIXED order (a
+     * finalizer-scattered hash of the panel triple), so any prefix reads as a uniform random patchwork.
+     *
+     * <p>
+     * The same textured-shader VAO path the orbit ring uses; the VAO holds the panel half then the accent half
+     * (outer face, and inner face when {@code innerAccent}), tinted {@code shellTint} / {@code accentTint} over
+     * the 1×1 white texture.
+     *
+     * @param base        the model matrix centered on the shell (the star center or the ripple point)
+     * @param time        world time + partial ticks (the shared animation clock)
+     * @param radius      the shell's radius (blocks)
+     * @param edge        the panel's triangle edge (blocks)
+     * @param count       structure units built so far (0 → nothing drawn)
+     * @param capacity    the shell's triangle capacity (the full-shell count; &le; 0 → nothing drawn)
+     * @param shellTint   the panel layer's packed ARGB tint
+     * @param accentTint  the accent core's packed ARGB tint
+     * @param innerAccent emit a second accent core on the INTERIOR face of each panel as well (the Dyson Swarm
+     *                    shell; the depth test keeps only the face turned toward the camera, so the inner face
+     *                    reads through the lattice gaps and the shell's missing panels)
+     */
+    public static void renderUSSInfraShell(Matrix4fc base, float time, float radius, float edge, long count,
+        long capacity, int shellTint, int accentTint, boolean innerAccent) {
         if (!shadersReady() || count <= 0L || capacity <= 0L) return;
 
         FMLClientHandler.instance()
@@ -1230,11 +1302,10 @@ public abstract class EOHRenderingUtils {
             .getTextureManager()
             .bindTexture(RING_TEXTURE);
 
-        final float radius = starSize + DYSON_SHELL_MARGIN;
-        final IVertexArrayObject shell = dysonShellFor(radius);
+        final IVertexArrayObject shell = infraShellFor(radius, edge, innerAccent);
 
         // The fraction of the shell drawn this frame (clamped to the full mesh).
-        final int total = dysonTriangleCount(radius);
+        final int total = (int) USSInfraShell.triangleCount(radius, edge);
         int draw = (int) (total * Math.min(1.0, (double) count / (double) capacity));
         if (draw > total) draw = total;
         if (draw < 1) draw = 1;
@@ -1243,13 +1314,13 @@ public abstract class EOHRenderingUtils {
         final long blendFuncWas = RenderState.savedBlendFunc();
         final boolean cullWas = GL11.glGetBoolean(GL11.GL_CULL_FACE);
         final boolean alphaTestWas = GL11.glGetBoolean(GL11.GL_ALPHA_TEST);
+        final boolean depthMaskWas = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
 
         try {
             if (cullWas) GL11.glDisable(GL11.GL_CULL_FACE); // double-sided panels
             if (alphaTestWas) GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glDepthMask(false);
 
             // tilt (fixed) then spin (the world clock) — the shell keeps a readable face while turning.
             dysonMatrix.set(base)
@@ -1260,12 +1331,26 @@ public abstract class EOHRenderingUtils {
             shader.use();
             shader.uploadModel(dysonMatrix);
 
-            // The gray panels, then the accent cores (the VAO's second half, the same mixed prefix).
-            dysonTint(shader, DYSON_SHELL_TINT);
+            // The panels are fully opaque (tint alpha 0xFF) and must WRITE depth: the mixed panel order
+            // draws back-hemisphere panels after front ones, and without depth writes they overpaint the
+            // front, so the shell reads see-through (its back side over its front rim).
+            GL11.glDepthMask(true);
+            dysonTint(shader, shellTint);
             shell.render(0, draw * 3);
-            dysonTint(shader, DYSON_ACCENT_TINT);
-            shell.render(total * 3, draw * 3);
+            // The accent faces stay depth-write-off (pure overlay): each sits DYSON_ACCENT_OFFSET off its panel on
+            // the side it faces, so the depth test keeps the face turned toward the camera (the outer face on
+            // the near side, the inner face through the lattice gaps on the far side) and discards the one
+            // facing away.
+            GL11.glDepthMask(false);
+            dysonTint(shader, accentTint);
+            if (innerAccent) {
+                // the outer + inner faces are emitted contiguously per panel (the same mixed prefix)
+                shell.render(total * 3, draw * 6);
+            } else {
+                shell.render(total * 3, draw * 3);
+            }
         } finally {
+            GL11.glDepthMask(depthMaskWas);
             ShaderProgram.clear();
             RenderState.restore(GL11.GL_BLEND, blendWas);
             RenderState.restoreBlendFunc(blendFuncWas);
@@ -1285,61 +1370,23 @@ public abstract class EOHRenderingUtils {
     }
 
     /**
-     * The shell's latitude rows: the pole-to-pole span split so each row's arc height equals the equilateral
-     * triangle's height for {@link #DYSON_TRIANGLE_EDGE} — (√3/2) × edge — so the panels keep their shape from
-     * equator to pole.
+     * One shell VAO per distinct (radius, edge, accent faces) triple (baked triangles) — cached like
+     * {@link #ussRingFor}. The key packs the quantized radius (cm), edge (cm) and the inner-accent flag; the
+     * radius is the dominant term so shells of different stars never collide.
      */
-    private static int dysonRowCount(float radius) {
-        final float rowHeight = (float) Math.sqrt(3) * 0.5f * DYSON_TRIANGLE_EDGE;
-        return Math.max(2, (int) Math.round(Math.PI * radius / rowHeight));
-    }
-
-    /**
-     * A row's longitude segments: its mid-latitude circumference over the nominal edge, minimum 6 (the pole rows
-     * close the shell in a six-panel cap).
-     */
-    private static int dysonRowSegments(float radius, int row) {
-        final float mid = -((float) Math.PI / 2f) + (float) Math.PI * (row + 0.5f) / dysonRowCount(radius);
-        final int segments = (int) Math
-            .round(2f * (float) Math.PI * radius * (float) Math.cos(mid) / DYSON_TRIANGLE_EDGE);
-        return Math.max(6, segments);
-    }
-
-    /**
-     * A row's emitted triangles: an interior row emits two per segment (the up and down panels); a pole row
-     * emits one — its degenerate twin collapses to the pole vertex and is dropped.
-     */
-    private static int dysonRowTriangles(int segs, int row, int rows) {
-        if (rows > 2 && row > 0 && row < rows - 1) {
-            return 2 * segs;
-        }
-        return segs;
-    }
-
-    /** The shell's full triangle count for a radius (the rows' emitted triangles — the mesh's total). */
-    private static int dysonTriangleCount(float radius) {
-        final int rows = dysonRowCount(radius);
-        int total = 0;
-        for (int row = 0; row < rows; row++) {
-            total += dysonRowTriangles(dysonRowSegments(radius, row), row, rows);
-        }
-        return total;
-    }
-
-    /** One shell VAO per distinct shell radius (baked triangles) — cached like {@link #ussRingFor}. */
-    private static IVertexArrayObject dysonShellFor(float radius) {
-        final Integer key = Math.round(radius * 100f);
+    private static IVertexArrayObject infraShellFor(float radius, float edge, boolean innerAccent) {
+        final Integer key = (Math.round(radius * 100f) * 10_000 + Math.round(edge * 100f)) * 2 + (innerAccent ? 1 : 0);
         IVertexArrayObject cached = DYSON_SHELLS.get(key);
         if (cached != null) {
             return cached;
         }
-        final int rows = dysonRowCount(radius);
+        final int rows = USSInfraShell.rowCount(radius, edge);
         final int[] segs = new int[rows];
         final float[] offsets = new float[rows];
         int total = 0;
         for (int row = 0; row < rows; row++) {
-            segs[row] = dysonRowSegments(radius, row);
-            total += dysonRowTriangles(segs[row], row, rows);
+            segs[row] = USSInfraShell.rowSegments(radius, row, rows, edge);
+            total += USSInfraShell.rowTriangles(segs[row], row, rows);
             if (row > 0) {
                 // Half the PREVIOUS row's segment off its bottom edge — the stagger that makes the lattice a
                 // triangle tiling (each row's top edge sits between the row below's segments).
@@ -1355,8 +1402,8 @@ public abstract class EOHRenderingUtils {
         for (int i = 0; i < total; i++) {
             int rest = i;
             int row = 0;
-            while (rest >= dysonRowTriangles(segs[row], row, rows)) {
-                rest -= dysonRowTriangles(segs[row], row, rows);
+            while (rest >= USSInfraShell.rowTriangles(segs[row], row, rows)) {
+                rest -= USSInfraShell.rowTriangles(segs[row], row, rows);
                 row++;
             }
             eRow[i] = row;
@@ -1377,15 +1424,45 @@ public abstract class EOHRenderingUtils {
 
         final IVertexArrayObject built;
         // The capacity is in VERTICES (one per emitted corner) — each panel emits three for the gray layer and
-        // three for the accent.
-        try (MeshBuilder mesh = MeshBuilder.of(texturedShader(), total * 6)) {
+        // three per accent face (outer always, inner when innerAccent).
+        try (MeshBuilder mesh = MeshBuilder.of(texturedShader(), total * (innerAccent ? 9 : 6))) {
             for (int i = 0; i < total; i++) {
                 final int idx = byHash[i];
-                dysonTriangle(mesh, radius, eRow[idx], eCol[idx], eDir[idx], offsets[eRow[idx]], false);
+                infraTriangle(
+                    mesh,
+                    radius,
+                    edge,
+                    eRow[idx],
+                    eCol[idx],
+                    eDir[idx],
+                    offsets[eRow[idx]],
+                    radius,
+                    DYSON_TRIANGLE_GAP);
             }
             for (int i = 0; i < total; i++) {
                 final int idx = byHash[i];
-                dysonTriangle(mesh, radius, eRow[idx], eCol[idx], eDir[idx], offsets[eRow[idx]], true);
+                infraTriangle(
+                    mesh,
+                    radius,
+                    edge,
+                    eRow[idx],
+                    eCol[idx],
+                    eDir[idx],
+                    offsets[eRow[idx]],
+                    radius + DYSON_ACCENT_OFFSET,
+                    DYSON_TRIANGLE_GAP * DYSON_ACCENT_SCALE);
+                if (innerAccent) {
+                    infraTriangle(
+                        mesh,
+                        radius,
+                        edge,
+                        eRow[idx],
+                        eCol[idx],
+                        eDir[idx],
+                        offsets[eRow[idx]],
+                        radius - DYSON_ACCENT_OFFSET,
+                        DYSON_TRIANGLE_GAP * DYSON_ACCENT_SCALE);
+                }
             }
             built = mesh.build();
         }
@@ -1417,21 +1494,20 @@ public abstract class EOHRenderingUtils {
     }
 
     /**
-     * One shell panel: row {@code row} × segment {@code segment}, direction {@code direction} (0 = the up panel —
-     * apex on the row's top edge, 1 = the down panel — apex on its bottom edge), each corner pulled toward the
-     * panel's OWN centroid — by {@link #DYSON_TRIANGLE_GAP} for the gray layer, by
-     * {@code GAP × DYSON_ACCENT_SCALE} for the accent (the dark blue core, emitted on the sphere pushed out by
-     * {@link #DYSON_ACCENT_OFFSET}). The top edge is staggered half a segment off the bottom edge (see
-     * {@code offsets} in {@link #dysonShellFor}), so the panels are equilateral.
+     * One shell layer triangle: row {@code row} × segment {@code segment}, direction {@code direction} (0 = the
+     * up panel — apex on the row's top edge, 1 = the down panel — apex on its bottom edge), each corner on the
+     * sphere of radius {@code layerRadius} pulled toward the triangle's own centroid by {@code scale} (the gray
+     * layer: the shell radius at {@code DYSON_TRIANGLE_GAP}; the accent faces: the shell radius ±
+     * {@code DYSON_ACCENT_OFFSET} at {@code GAP × DYSON_ACCENT_SCALE}). The top edge is staggered half a segment
+     * off the bottom edge (see {@code offsets} in {@link #infraShellFor}), so the panels are equilateral.
      */
-    private static void dysonTriangle(MeshBuilder mesh, float radius, int row, int segment, int direction,
-        float bottomOffset, boolean accent) {
-        final float layerRadius = accent ? radius + DYSON_ACCENT_OFFSET : radius;
-        final float scale = accent ? DYSON_TRIANGLE_GAP * DYSON_ACCENT_SCALE : DYSON_TRIANGLE_GAP;
-        final float rowStep = (float) Math.PI / dysonRowCount(radius);
+    private static void infraTriangle(MeshBuilder mesh, float radius, float edge, int row, int segment, int direction,
+        float bottomOffset, float layerRadius, float scale) {
+        final int rows = USSInfraShell.rowCount(radius, edge);
+        final float rowStep = (float) Math.PI / rows;
         final float th0 = -((float) Math.PI / 2f) + row * rowStep;
         final float th1 = th0 + rowStep;
-        final int segs = dysonRowSegments(radius, row);
+        final int segs = USSInfraShell.rowSegments(radius, row, rows, edge);
         final float segStep = 2f * (float) Math.PI / segs;
         final float ph0 = bottomOffset + segment * segStep;
         final float ph1 = ph0 + segStep;

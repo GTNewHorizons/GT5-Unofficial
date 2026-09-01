@@ -40,6 +40,7 @@ import tectech.voidcraft.uss.USSCapabilities;
 import tectech.voidcraft.uss.USSCommand;
 import tectech.voidcraft.uss.USSCommandRepair;
 import tectech.voidcraft.uss.USSConditionOp;
+import tectech.voidcraft.uss.USSConstants;
 import tectech.voidcraft.uss.USSProgramDefaults;
 import tectech.voidcraft.uss.USSProgramView;
 
@@ -86,6 +87,9 @@ public class VoidcraftProgramGui {
     private static final String SPEC_SIPHON = "{\"t\":0,\"c\":9}";
     private static final String SPEC_SEND = "{\"t\":0,\"c\":10,\"p\":{\"amount\":-1,\"filter\":\"*\",\"target\":\"\"}}";
     private static final String SPEC_TAKE = "{\"t\":0,\"c\":11,\"p\":{\"amount\":-1,\"filter\":\"*\",\"target\":\"\"}}";
+    private static final String SPEC_STABILIZE = "{\"t\":0,\"c\":12,\"p\":{\"ticks\":"
+        + USSConstants.STABILIZE_DEFAULT_TICKS
+        + "}}";
     private static final String SPEC_IF = "{\"t\":1,\"l\":{\"k\":0,\"s\":\"\"},\"op\":0,\"r\":{\"k\":0,\"s\":\"\"}}";
     private static final String SPEC_WHILE = "{\"t\":2,\"l\":{\"k\":0,\"s\":\"\"},\"op\":0,\"r\":{\"k\":0,\"s\":\"\"}}";
     private static final String SPEC_REPEAT = "{\"t\":3,\"n\":1}";
@@ -488,12 +492,25 @@ public class VoidcraftProgramGui {
         if (caps.has(USSCapabilities.CONSTRUCT)) {
             col.child(cmdRow(USSCommand.CONSTRUCT, SPEC_CONSTRUCT, "build the stored base at the target site"));
         }
-        if (caps.has(USSCapabilities.REPAIR)) {
+        if (caps.has(USSCapabilities.REPAIR) || caps.has(USSCapabilities.STABILIZE)) {
+            Flow station = Flow.row();
+            if (caps.has(USSCapabilities.REPAIR)) {
+                station.child(
+                    cmdRow(
+                        USSCommand.REPAIR,
+                        SPEC_REPAIR,
+                        "repair the station (target — SELF or a fleet member at the station's location)"));
+            }
+            if (caps.has(USSCapabilities.STABILIZE)) {
+                station.child(
+                    cmdRow(
+                        USSCommand.STABILIZE,
+                        SPEC_STABILIZE,
+                        "run a Stabilization Matrix window for the given ticks (needs a built Stabilizer + Field Generators)"));
+            }
             col.child(
-                cmdRow(
-                    USSCommand.REPAIR,
-                    SPEC_REPAIR,
-                    "repair the station (target — SELF or a fleet member at the station's location)"));
+                station.childPadding(2)
+                    .coverChildren());
         }
         col.child(flowRow("IF", SPEC_IF, "run the block when the condition holds"))
             .child(flowRow("WHILE", SPEC_WHILE, "repeat the block while the condition holds"))
@@ -519,11 +536,16 @@ public class VoidcraftProgramGui {
         col.child(
             row2.childPadding(2)
                 .coverChildren());
-        if (caps.has(USSCapabilities.CONSTRUCT)) {
+        if (caps.has(USSCapabilities.CONSTRUCT) || caps.has(USSCapabilities.STABILIZE)) {
+            Flow row3 = Flow.row();
+            if (caps.has(USSCapabilities.CONSTRUCT)) {
+                row3.child(presetButton("Build", "constructor"));
+            }
+            if (caps.has(USSCapabilities.STABILIZE)) {
+                row3.child(presetButton("Stabilize", "stabilizer"));
+            }
             col.child(
-                Flow.row()
-                    .child(presetButton("Build", "constructor"))
-                    .childPadding(2)
+                row3.childPadding(2)
                     .coverChildren());
         }
         return new ParentWidget<>().width(172)

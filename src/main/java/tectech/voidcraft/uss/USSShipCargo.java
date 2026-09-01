@@ -26,7 +26,9 @@ import gregtech.api.enums.Materials;
  *
  * <p>
  * <strong>Abstract representation.</strong> While cargo lives on the ship (and in its NBT) it is a list of
- * <em>abstract entries</em> — {@code {id: item id, Damage: meta, amount: int}} for items,
+ * <em>abstract entries</em> — {@code {id: item id, Damage: meta, amount: int}} for items (ore dusts and everything
+ * the gateway's input side carried — hull parts, infrastructure payloads, Field Generators, or any other item; the
+ * cargo item key, see {@link USSItemCargo#keyOf(ItemStack)}, resolves back to the item id + meta),
  * {@code {material: GT material name, amount: mB}} for fluids — NOT {@link ItemStack}s / {@code FluidStack}s.
  * Amounts are plain ints/longs (the 1.7.10 NBT {@code Count} byte and GT's 64-item stack cap do not apply), so a
  * mission can carry 10 000 dust or 10 000 000 mB without materializing stacks. The conversion to 64-chunked
@@ -52,8 +54,9 @@ public final class USSShipCargo {
     public static final String ENTRY_AMOUNT = "amount";
 
     /**
-     * Abstract item entry (optional): the GT material name the dust resolves from — written by Constructor loadouts
-     * so the applying side can credit the right material without a reverse item lookup (mining cargo omits it).
+     * Abstract item entry (optional): the GT material name the item resolves from — written for material-name
+     * keys (mining cargo + the hold's material items) so the cargo hold can resolve the key without a reverse item
+     * lookup. Entries without it resolve their key from the item id + meta ({@link USSItemCargo#keyOf}).
      */
     public static final String ITEM_ENTRY_MATERIAL = "material";
 
@@ -273,8 +276,9 @@ public final class USSShipCargo {
      * cargo-capacity pass: "mining fills their internal cargo capacity, and they cannot mine if it is full").
      *
      * <p>
-     * The hold is the ship's internal cargo — this method adds the (clamped) cargo to it. Materials are resolved
-     * from each entry's material name (the {@link #ITEM_ENTRY_MATERIAL} / {@link #FLUID_ENTRY_MATERIAL} tags).
+     * The hold is the ship's internal cargo — this method adds the (clamped) cargo to it. An entry's item key is
+     * its material-name tag when present (the material items); otherwise it resolves from the item id + meta
+     * ({@link USSItemCargo#keyOf}).
      *
      * @param hold  the hold to fill (null → null; the caller keeps no cargo)
      * @param cargo the cargo to add (the abstract items + fluids; null → hold unchanged)
@@ -285,7 +289,6 @@ public final class USSShipCargo {
             return hold;
         }
         CargoHold next = hold;
-        // Items: resolve the material from the entry's material name (the abstractEntry writes it).
         NBTTagList items = readItems(cargo);
         for (int i = 0; i < items.tagCount(); i++) {
             NBTTagCompound entry = items.getCompoundTagAt(i);
@@ -293,11 +296,21 @@ public final class USSShipCargo {
                 continue;
             }
             long amount = Math.max(0L, entry.getInteger(ENTRY_AMOUNT));
-            Materials material = Materials.get(entry.getString(ITEM_ENTRY_MATERIAL));
-            if (amount <= 0L || material == null || material == Materials._NULL) {
+            if (amount <= 0L) {
                 continue;
             }
-            next = next.addItems(material, amount);
+            String key = entry.hasKey(ITEM_ENTRY_MATERIAL) ? entry.getString(ITEM_ENTRY_MATERIAL) : "";
+            if (key.isEmpty()) {
+                Item item = Item.getItemById(entry.getShort(ENTRY_ID));
+                if (item == null) {
+                    continue;
+                }
+                key = USSItemCargo.keyOf(new ItemStack(item, 1, entry.getShort(ENTRY_DAMAGE)));
+            }
+            if (key == null || key.isEmpty()) {
+                continue;
+            }
+            next = next.addItem(key, amount);
         }
         // Fluids: resolve the material from the entry's material name.
         NBTTagList fluids = readFluids(cargo);
@@ -329,9 +342,9 @@ public final class USSShipCargo {
             return cargo;
         }
         NBTTagList items = new NBTTagList();
-        for (Map.Entry<Materials, Long> e : hold.getItems()
+        for (Map.Entry<String, Long> e : hold.getItems()
             .entrySet()) {
-            NBTTagCompound entry = abstractEntry(e.getKey(), e.getValue());
+            NBTTagCompound entry = USSItemCargo.abstractEntry(e.getKey(), e.getValue());
             if (entry != null) {
                 items.appendTag(entry);
             }

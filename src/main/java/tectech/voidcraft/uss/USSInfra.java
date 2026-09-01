@@ -6,17 +6,46 @@ package tectech.voidcraft.uss;
  */
 public final class USSInfra {
 
-    /** The hold / site-cargo / loadout key of the Power Satellite (the {@code item.} loadout prefix + this key). */
+    /** The cargo key of the Power Satellite (the Dyson Swarm pass's builder payload). */
     public static final String KEY_POWER_SATELLITE = "power_satellite";
 
+    /** The cargo key of the Injector Component (the Stellar Injector's builder payload). */
+    public static final String KEY_INJECTOR_COMPONENT = "injector_component";
+
+    /** The cargo key of the Stabilizer Component (the Continuum Stabilizer's builder payload). */
+    public static final String KEY_STABILIZER_COMPONENT = "stabilizer_component";
+
+    /** The cargo key of the Lens Component (the Stellar Gravitational Lens's builder payload). */
+    public static final String KEY_LENS_COMPONENT = "lens_component";
+
     /**
-     * The constructor-loadout key of the Power Satellite ({@code item.<key>} — the {@code item.} prefix routes the
-     * loadout entry to the build site's CARGO (infrastructure payloads) instead of its parts.
+     * The infrastructure cargo keys — the hold items the CONSTRUCT leg delivers to the build site (unbounded,
+     * unpaced) instead of crediting it as parts: the Power Satellite, the three builder components, and the
+     * matrix's UMV / UXV Field Generator tiers.
      */
-    public static final String LOADOUT_KEY_SATELLITE = "item." + KEY_POWER_SATELLITE;
+    public static final String[] INFRA_CARGO_KEYS = { KEY_POWER_SATELLITE, KEY_INJECTOR_COMPONENT,
+        KEY_STABILIZER_COMPONENT, KEY_LENS_COMPONENT, USSConstants.FIELD_GENERATOR_UMV,
+        USSConstants.FIELD_GENERATOR_UXV };
 
     private USSInfra() {
         throw new AssertionError("Utility holder");
+    }
+
+    /**
+     * The cargo key of the given infrastructure type's component (the hold key the builder draws from) — null for
+     * an unknown type.
+     */
+    public static String componentKey(int type) {
+        switch (type) {
+            case USSInfraBuild.INJECTOR:
+                return KEY_INJECTOR_COMPONENT;
+            case USSInfraBuild.STABILIZER:
+                return KEY_STABILIZER_COMPONENT;
+            case USSInfraBuild.LENS:
+                return KEY_LENS_COMPONENT;
+            default:
+                return null;
+        }
     }
 
     /**

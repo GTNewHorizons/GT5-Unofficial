@@ -13,11 +13,11 @@ import java.util.Optional;
  * Grid encodings (all {@code index = x + width * (y + height * z)}):
  *
  * <ul>
- * <li>{@link #grid}: 0 = empty cell, otherwise {@link VoidcraftComponent#toGridValue()} (1..9).</li>
+ * <li>{@link #grid}: 0 = empty cell, otherwise {@link VoidcraftComponent#toGridValue()} (component meta + 1).</li>
  * <li>{@link #facingGrid}: 0 = empty cell, otherwise {@code ForgeDirection ordinal + 1} (1..6) — the facing the
  * component block was placed with. A cell without facing data is treated as facing DOWN (the MTE default facing).</li>
  * <li>{@link #coverGrid}: length {@code cells * 6}, {@code index = cell * 6 + side}, 0 = no cover, otherwise
- * {@link VoidcraftCoverComponent#toGridValue()} (1..8).</li>
+ * {@link VoidcraftCoverComponent#toGridValue()} (cover id + 1).</li>
  * </ul>
  *
  * <p>
@@ -25,10 +25,20 @@ import java.util.Optional;
  *
  * <p>
  * <b>Component model (pass 23).</b> Covers are the primary components: the ONLY placeable full blocks are the
- * {@link VoidcraftComponent#CONTROLLER} and the {@link VoidcraftComponent#FRAME} (Voidcraft Frame); every other
- * catalog entry is cover-only, and a cell holding one fails validation
- * ({@code voidcraft_cover_only_component}). A ship also needs at least one frame hull block
- * ({@code voidcraft_no_frame}) — the block whose faces accept the covers that carry all ship functionality.
+ * {@link VoidcraftComponent#CONTROLLER} and the frame tiers ({@link VoidcraftComponent#FRAME} through
+ * {@link VoidcraftComponent#FRAME_4}); every other catalog entry is cover-only, and a cell holding one fails
+ * validation ({@code voidcraft_cover_only_component}). A ship needs at least one frame hull block
+ * ({@code voidcraft_no_frame}) — the blocks whose faces accept the covers that carry all ship functionality. All
+ * frames of a ship must be the SAME tier ({@code voidcraft_frame_tier_mismatch}); a frame tier only accepts covers
+ * of its own tier or lower ({@code voidcraft_cover_tier_too_high}).
+ *
+ * <p>
+ * <b>Integrity model (frame rework).</b> Each frame block contributes its tier's base integrity plus a per-face
+ * term: a frame side facing another frame side adds {@code FRAME_FACE_INTEGRITY_BONUS}, a side exposed to air
+ * (outside the volume or facing an empty cell) removes {@code FRAME_FACE_INTEGRITY_PENALTY}, a side facing the
+ * controller or a multiblock block contributes nothing. A cover mounted on a frame side that faces a frame is an
+ * "internal component" — the ship is invalid ({@code voidcraft_internal_component}). A ship with total integrity
+ * &lt;= 0 is invalid ({@code voidcraft_integrity_too_low}).
  *
  * <p>
  * <b>Thrust model (pass 18/19, pass 23, pass 24 flip).</b> Thrust is a <em>single value</em>, not directional.
@@ -36,8 +46,9 @@ import java.util.Optional;
  * grid −Z is the assembler side. A player builds the ship pointing away from the machine, so the FAR end (grid +Z)
  * is the ship's NOSE — in flight the ship travels away from where it was built and the cockpit leads (see
  * {@code RenderVoidcraftShip.headingFor}). The ship's BACK is the assembler side (grid −Z, {@link #BACK_FACE}).
- * Thrust comes ONLY from {@link VoidcraftCoverComponent#THRUSTER_NOZZLE} covers mounted on that back face (exhaust
- * out the rear). Thrust = the plain sum of those magnitudes.
+ * Thrust comes ONLY from ENGINE covers (all four families: the fuel-less baseline nozzles plus the fuel-burning
+ * Ion / Fusion Torch / Antimatter types) mounted on that back face (exhaust out the rear). Thrust = the plain sum
+ * of those magnitudes. A ship may mount exactly ONE engine family ({@code voidcraft_engine_mismatch}).
  *
  * <p>
  * (Pass 18/20 had this inverted — nose on the assembler side, nozzle on the far end — which playtested as "the
@@ -411,18 +422,17 @@ public final class VoidcraftBlueprint {
     }
 
     /**
-     * @return the ship's single thrust value (pass 18/20/23): the sum of the thrust of every
-     *         {@link VoidcraftCoverComponent#THRUSTER_NOZZLE} cover mounted on the ship's BACK
-     *         ({@link #BACK_FACE}) that is not blocked ({@link #isExhaustBlocked(int)}). Nozzles mounted on any
-     *         other face, or blocked by the ship's own hull, contribute nothing. (Pass 23: engines are covers
-     *         only — there is no block engine.)
+     * @return the ship's single thrust value (pass 18/20/23): the sum of the thrust of every ENGINE cover (all four
+     *         families) mounted on the ship's BACK ({@link #BACK_FACE}) that is not blocked
+     *         ({@link #isExhaustBlocked(int)}). Engines mounted on any other face, or blocked by the ship's own
+     *         hull, contribute nothing. (Pass 23: engines are covers only — there is no block engine.)
      */
     public long totalThrust() {
         long total = 0;
         for (int cell = 0; cell < grid.length; cell++) {
             VoidcraftCoverComponent cover = VoidcraftCoverComponent.fromGridValue(coverGrid[cell * 6 + BACK_FACE])
                 .orElse(null);
-            if (cover == VoidcraftCoverComponent.THRUSTER_NOZZLE && !isExhaustBlocked(cell)) {
+            if (cover != null && cover.isEngine() && !isExhaustBlocked(cell)) {
                 total += cover.getThrust();
             }
         }
@@ -463,21 +473,84 @@ public final class VoidcraftBlueprint {
     }
 
     /**
+     * The cell directly on the given face of {@code cell}, or -1 when that face is on the bounding volume (air).
+     *
+     * @param cell the cell index
+     * @param side the face side (ForgeDirection ordinal: 0 DOWN, 1 UP, 2 NORTH, 3 SOUTH, 4 WEST, 5 EAST)
+     * @return the neighbouring cell index, or -1
+     */
+    private int neighborCell(int cell, int side) {
+        int x = cell % width;
+        int y = (cell / width) % height;
+        int z = cell / (width * height);
+        int nx = x + (side == 4 ? -1 : side == 5 ? 1 : 0);
+        int ny = y + (side == 0 ? -1 : side == 1 ? 1 : 0);
+        int nz = z + (side == 2 ? -1 : side == 3 ? 1 : 0);
+        if (nx < 0 || nx >= width || ny < 0 || ny >= height || nz < 0 || nz >= depth) {
+            return -1;
+        }
+        return nx + width * (ny + height * nz);
+    }
+
+    /**
+     * @return the frame tier in use by the grid's frame blocks (all frames one tier — validation enforces it),
+     *         or 0 when the grid holds no frame.
+     */
+    private int frameTierInUse() {
+        for (VoidcraftComponent frame : new VoidcraftComponent[] { VoidcraftComponent.FRAME, VoidcraftComponent.FRAME_2,
+            VoidcraftComponent.FRAME_3, VoidcraftComponent.FRAME_4 }) {
+            if (count(frame) > 0) {
+                return frame.getTier();
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * @return how many frame blocks (of ANY tier) are in the grid.
+     */
+    public int countFrames() {
+        int count = 0;
+        for (byte b : grid) {
+            if (b != 0 && VoidcraftComponent.fromGridValue(b)
+                .orElseThrow()
+                .isFrame()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
      * Compute the ship's stats from the component and cover grids.
      *
      * <p>
-     * Thrust (pass 18/20) is a single value: every back-facing engine ({@link #BACK_FACE}) that is not blocked
+     * Thrust is a single value: every back-facing engine cover ({@link #BACK_FACE}) that is not blocked
      * ({@link #isExhaustBlocked(int)}) counts; anything aimed elsewhere or blocked by the hull contributes
      * nothing — see {@link #totalThrust()}.
+     *
+     * <p>
+     * Integrity: flat sums for the controller, covers and multiblock blocks, plus the per-FACE model for frames —
+     * each frame block adds its tier's base integrity, then per side: facing a frame adds
+     * {@code FRAME_FACE_INTEGRITY_BONUS}, facing air (out of bounds or an empty cell) removes
+     * {@code FRAME_FACE_INTEGRITY_PENALTY}, facing the controller or a multiblock block contributes nothing.
+     *
+     * <p>
+     * Fuel / engines: {@code engineType} is the single engine family present (NONE id when there are no engine
+     * covers), {@code thrusterCount} the number of its engine covers (drives the per-thruster travel draws),
+     * {@code fuelCapacity} the sum of the Fuel Storage covers' mB capacities.
      */
     public VoidcraftStats computeStats() {
         long mass = 0, cargoSlots = 0, miningPower = 0, scanPower = 0, constructionPower = 0, starlifterPower = 0,
             logisticsPower = 0, energyBuffer = 0, energyDraw = 0, energyGen = 0, integrity = 0;
         long thrust = 0;
+        long fuelCapacity = 0, thrusterCount = 0;
+        int engineType = VoidcraftEngineType.NONE.id();
+        boolean engineTypeSet = false;
 
         for (int cell = 0; cell < grid.length; cell++) {
             if (grid[cell] != 0) {
-                // Pass 23: full blocks are the controller and the frame only — structural mass + integrity.
+                // Pass 23: full blocks are the controller and the frame tiers — structural mass.
                 // ALL function stats (thrust, cargo, mining, scan, construction, starlifter, energy) come from
                 // the covers mounted on their faces.
                 VoidcraftComponent component = VoidcraftComponent.fromGridValue(grid[cell])
@@ -492,7 +565,22 @@ public final class VoidcraftBlueprint {
                 energyBuffer += component.getEnergyBuffer();
                 energyDraw += component.getEnergyDraw();
                 energyGen += component.getEnergyGen();
-                integrity += component.getIntegrity();
+                if (component.isFrame()) {
+                    // Frame integrity = tier base + the per-face model (frame side vs air / frame / other block).
+                    integrity += component.getIntegrity();
+                    for (int side = 0; side < 6; side++) {
+                        int neighbour = neighborCell(cell, side);
+                        if (neighbour < 0 || grid[neighbour] == 0) {
+                            integrity -= VoidcraftConstants.FRAME_FACE_INTEGRITY_PENALTY;
+                        } else if (VoidcraftComponent.fromGridValue(grid[neighbour])
+                            .orElseThrow()
+                            .isFrame()) {
+                                integrity += VoidcraftConstants.FRAME_FACE_INTEGRITY_BONUS;
+                            }
+                    }
+                } else {
+                    integrity += component.getIntegrity();
+                }
             }
             for (int side = 0; side < 6; side++) {
                 int value = coverGrid[cell * 6 + side];
@@ -512,8 +600,18 @@ public final class VoidcraftBlueprint {
                 energyDraw += cover.getEnergyDraw();
                 energyGen += cover.getEnergyGen();
                 integrity += cover.getIntegrity();
-                if (cover == VoidcraftCoverComponent.THRUSTER_NOZZLE && side == BACK_FACE && !isExhaustBlocked(cell)) {
-                    thrust += cover.getThrust();
+                fuelCapacity += cover.getFuelCapacity();
+                if (cover.isEngine()) {
+                    thrusterCount++;
+                    int type = cover.getEngineType()
+                        .id();
+                    if (!engineTypeSet) {
+                        engineType = type;
+                        engineTypeSet = true;
+                    }
+                    if (side == BACK_FACE && !isExhaustBlocked(cell)) {
+                        thrust += cover.getThrust();
+                    }
                 }
             }
         }
@@ -530,7 +628,11 @@ public final class VoidcraftBlueprint {
             energyBuffer,
             energyDraw,
             energyGen,
-            integrity);
+            integrity,
+            fuelCapacity,
+            engineType,
+            thrusterCount,
+            frameTierInUse());
     }
 
     /**
@@ -563,26 +665,35 @@ public final class VoidcraftBlueprint {
      * Validate the blueprint as a digitizable ship.
      *
      * <p>
-     * Pass 23 rules: only the controller and the frame are placeable full blocks — a cell holding any cover-only
-     * component fails with {@code voidcraft_cover_only_component}, and the ship needs at least one frame hull
-     * block ({@code voidcraft_no_frame}).
+     * Pass 23 rules: only the controller and the frame tiers are placeable full blocks — a cell holding any
+     * cover-only component fails with {@code voidcraft_cover_only_component}, and the ship needs at least one
+     * frame hull block ({@code voidcraft_no_frame}). All frames of a ship must be the same tier
+     * ({@code voidcraft_frame_tier_mismatch}); a frame tier only accepts covers of its own tier or lower
+     * ({@code voidcraft_cover_tier_too_high}). A cover on a frame side that faces a frame is an internal component
+     * — invalid ({@code voidcraft_internal_component}).
      *
      * <p>
-     * Thruster rules (pass 18/20, pass 24 flip): every thruster — a {@link VoidcraftCoverComponent#THRUSTER_NOZZLE}
-     * cover — must be mounted on the ship's BACK face ({@link #BACK_FACE}, the assembler side), and a back-facing
-     * thruster needs the {@link #EXHAUST_CLEARANCE} blocks directly on its exhaust side (grid −Z, toward the
-     * assembler) free of Voidcraft blocks. A violation breaks the digitization and is reported in the assembler
-     * GUI:
+     * Engine rules: every engine cover (all four families) must be mounted on the ship's BACK face
+     * ({@link #BACK_FACE}, the assembler side), and a back-facing engine needs the {@link #EXHAUST_CLEARANCE}
+     * blocks directly on its exhaust side (grid −Z, toward the assembler) free of Voidcraft blocks. A ship may
+     * carry exactly ONE engine family ({@code voidcraft_engine_mismatch}). A violation breaks the digitization and
+     * is reported in the assembler GUI:
      *
      * <ul>
-     * <li>{@code voidcraft_no_engine} — no thruster at all</li>
-     * <li>{@code voidcraft_thruster_wrong_facing} — a thruster does not face the back</li>
-     * <li>{@code voidcraft_engine_blocked} — a Voidcraft block sits on the exhaust side of a back-facing thruster
-     * (within 5 cells, i.e. the hull is between the nozzle and the open exhaust toward the assembler)</li>
+     * <li>{@code voidcraft_no_engine} — no engine cover at all</li>
+     * <li>{@code voidcraft_thruster_wrong_facing} — an engine does not face the back</li>
+     * <li>{@code voidcraft_engine_blocked} — a Voidcraft block sits on the exhaust side of a back-facing engine
+     * (within 5 cells, i.e. the hull is between the engine and the open exhaust toward the assembler)</li>
+     * <li>{@code voidcraft_engine_mismatch} — the ship carries covers of more than one engine family</li>
      * <li>{@code voidcraft_cover_only_component} — a full-block cell holds a cover-only part (pass 23)</li>
-     * <li>{@code voidcraft_no_frame} — no Voidcraft Frame hull block (pass 23)</li>
-     * <li>{@code voidcraft_launcher_station_only} — a Satellite Rail Launcher is on the grid (station-only
-     * infrastructure — bases, not ships)</li>
+     * <li>{@code voidcraft_no_frame} — no frame hull block (pass 23)</li>
+     * <li>{@code voidcraft_frame_tier_mismatch} — frames of more than one tier on one ship</li>
+     * <li>{@code voidcraft_cover_tier_too_high} — a cover on a frame face exceeds that frame's tier</li>
+     * <li>{@code voidcraft_internal_component} — a cover on a frame face that faces a frame</li>
+     * <li>{@code voidcraft_integrity_too_low} — the ship's total integrity is &lt;= 0 (the frame face model
+     * penalizes exposed sides; hollow frames can bleed to nothing)</li>
+     * <li>{@code voidcraft_launcher_station_only} — a station-only infrastructure controller (the Satellite Rail
+     * Launcher or one of the four star-infrastructure components) is on the grid (bases, not ships)</li>
      * </ul>
      *
      * @param maxComponentTier highest component/cover tier the assembler (circuit) may digitize
@@ -603,7 +714,7 @@ public final class VoidcraftBlueprint {
             ok = false;
         }
 
-        // Pass 23: covers are primary — only the controller and the frame are placeable full blocks.
+        // Pass 23: covers are primary — only the controller and the frame tiers are placeable full blocks.
         boolean coverOnlyPresent = false;
         for (byte b : grid) {
             if (b != 0 && VoidcraftComponent.fromGridValue(b)
@@ -618,8 +729,32 @@ public final class VoidcraftBlueprint {
             ok = false;
         }
 
-        if (count(VoidcraftComponent.FRAME) < 1) {
+        if (countFrames() < 1) {
             errors.add("voidcraft_no_frame");
+            ok = false;
+        }
+
+        // Frame tier uniformity: all frames of a ship the same tier (multiblock blocks and the controller are
+        // exempt — only frame entries take part).
+        int frameTier = -1;
+        boolean frameTierMismatch = false;
+        for (byte b : grid) {
+            if (b == 0) {
+                continue;
+            }
+            VoidcraftComponent component = VoidcraftComponent.fromGridValue(b)
+                .orElseThrow();
+            if (component.isFrame()) {
+                if (frameTier == -1) {
+                    frameTier = component.getTier();
+                } else if (component.getTier() != frameTier) {
+                    frameTierMismatch = true;
+                    break;
+                }
+            }
+        }
+        if (frameTierMismatch) {
+            errors.add("voidcraft_frame_tier_mismatch");
             ok = false;
         }
 
@@ -628,27 +763,82 @@ public final class VoidcraftBlueprint {
             ok = false;
         }
 
-        // Station-only infrastructure: the Satellite Rail Launcher operates from a base anchored to the star —
-        // a ship build containing it is rejected outright.
-        if (count(VoidcraftComponent.SATELLITE_LAUNCHER) > 0) {
+        // Station-only infrastructure (the Satellite Rail Launcher and the four star-infrastructure components)
+        // operates from a base anchored to the star — a ship build containing it is rejected outright.
+        if (count(VoidcraftComponent.SATELLITE_LAUNCHER) > 0 || count(VoidcraftComponent.STELLAR_INJECTOR) > 0
+            || count(VoidcraftComponent.CONTINUUM_STABILIZER) > 0
+            || count(VoidcraftComponent.STELLAR_LENS) > 0
+            || count(VoidcraftComponent.STABILIZATION_MATRIX) > 0) {
             errors.add("voidcraft_launcher_station_only");
             ok = false;
         }
 
-        // Thruster audit (pass 18/19, pass 23 covers-only): every nozzle cover must be on the back face with a
-        // clear exhaust path.
-        boolean hasThruster = false;
+        // Frame face audit: a cover may only mount on a frame face of a tier the frame can host, and never on a
+        // frame face that faces another frame (an "internal" component).
+        boolean coverTierTooHigh = false;
+        boolean internalComponent = false;
+        for (int cell = 0; cell < grid.length; cell++) {
+            int value = grid[cell];
+            if (value == 0) {
+                continue;
+            }
+            VoidcraftComponent component = VoidcraftComponent.fromGridValue(value)
+                .orElseThrow();
+            if (!component.isFrame()) {
+                continue; // covers on the controller face are not tier-gated by a frame
+            }
+            for (int side = 0; side < 6; side++) {
+                int coverValue = coverGrid[cell * 6 + side];
+                if (coverValue == 0) {
+                    continue;
+                }
+                VoidcraftCoverComponent cover = VoidcraftCoverComponent.fromGridValue(coverValue)
+                    .orElseThrow();
+                if (cover.getTier() > component.getTier()) {
+                    coverTierTooHigh = true;
+                }
+                int neighbour = neighborCell(cell, side);
+                if (neighbour >= 0 && grid[neighbour] != 0
+                    && VoidcraftComponent.fromGridValue(grid[neighbour])
+                        .orElseThrow()
+                        .isFrame()) {
+                    internalComponent = true;
+                }
+            }
+        }
+        if (coverTierTooHigh) {
+            errors.add("voidcraft_cover_tier_too_high");
+            ok = false;
+        }
+        if (internalComponent) {
+            errors.add("voidcraft_internal_component");
+            ok = false;
+        }
+
+        // Engine audit: every engine cover (all four families) on the back face with a clear exhaust path, and
+        // exactly one engine family per ship.
+        boolean hasEngine = false;
         boolean wrongFacing = false;
         boolean blocked = false;
+        boolean engineMismatch = false;
+        int engineFamily = -1;
         for (int cell = 0; cell < grid.length; cell++) {
             for (int side = 0; side < 6; side++) {
                 int value = coverGrid[cell * 6 + side];
                 if (value == 0) {
                     continue;
                 }
-                if (VoidcraftCoverComponent.fromGridValue(value)
-                    .orElseThrow() == VoidcraftCoverComponent.THRUSTER_NOZZLE) {
-                    hasThruster = true;
+                VoidcraftCoverComponent cover = VoidcraftCoverComponent.fromGridValue(value)
+                    .orElseThrow();
+                if (cover.isEngine()) {
+                    hasEngine = true;
+                    int family = cover.getEngineType()
+                        .id();
+                    if (engineFamily == -1) {
+                        engineFamily = family;
+                    } else if (family != engineFamily) {
+                        engineMismatch = true;
+                    }
                     if (side != BACK_FACE) {
                         wrongFacing = true;
                     } else if (isExhaustBlocked(cell)) {
@@ -658,8 +848,13 @@ public final class VoidcraftBlueprint {
             }
         }
 
-        if (!hasThruster) {
+        if (!hasEngine) {
             errors.add("voidcraft_no_engine");
+            ok = false;
+        }
+
+        if (engineMismatch) {
+            errors.add("voidcraft_engine_mismatch");
             ok = false;
         }
 
@@ -673,13 +868,19 @@ public final class VoidcraftBlueprint {
             ok = false;
         }
 
+        if (computeStats().integrity <= 0L) {
+            errors.add("voidcraft_integrity_too_low");
+            ok = false;
+        }
+
         return ok;
     }
 
     /**
      * Validate the blueprint as a digitizable Voidbase (an immobile station): the ship's structural rules — part
-     * count, exactly one controller, cover-only parts, at least one frame, tier — WITHOUT the thruster rules, but
-     * with thruster covers FORBIDDEN outright (a base cannot fly; a nozzle on the grid is rejected, not inert).
+     * count, exactly one controller, cover-only parts, at least one frame, frame tier uniformity, the per-frame
+     * cover tier gate and the internal-component rule, tier — WITHOUT the thruster rules, but with engine covers
+     * FORBIDDEN outright (a base cannot fly; any thruster on the grid is rejected, not inert).
      *
      * <p>
      * Failure reason keys (assembler GUI):
@@ -688,9 +889,14 @@ public final class VoidcraftBlueprint {
      * <li>{@code voidcraft_too_small} — fewer than {@link VoidcraftConstants#MIN_COMPONENT_COUNT} parts</li>
      * <li>{@code voidcraft_controller_count} — not exactly one controller</li>
      * <li>{@code voidcraft_cover_only_component} — a full-block cell holds a cover-only part</li>
-     * <li>{@code voidcraft_no_frame} — no Voidcraft Frame hull block</li>
+     * <li>{@code voidcraft_no_frame} — no frame hull block</li>
+     * <li>{@code voidcraft_frame_tier_mismatch} — frames of more than one tier on one station</li>
+     * <li>{@code voidcraft_cover_tier_too_high} — a cover on a frame face exceeds that frame's tier</li>
+     * <li>{@code voidcraft_internal_component} — a cover on a frame face that faces a frame</li>
+     * <li>{@code voidcraft_integrity_too_low} — the station's total integrity is &lt;= 0</li>
      * <li>{@code voidcraft_tier_too_high} — a part exceeds the assembler circuit tier</li>
-     * <li>{@code voidbase_thruster_forbidden} — a Thruster Nozzle cover is on the grid (bases are immobile)</li>
+     * <li>{@code voidbase_thruster_forbidden} — an engine cover of any family is on the grid (bases are immobile)
+     * </li>
      * </ul>
      *
      * @param maxComponentTier highest component/cover tier the assembler (circuit) may digitize
@@ -725,8 +931,30 @@ public final class VoidcraftBlueprint {
             ok = false;
         }
 
-        if (count(VoidcraftComponent.FRAME) < 1) {
+        if (countFrames() < 1) {
             errors.add("voidcraft_no_frame");
+            ok = false;
+        }
+
+        int frameTier = -1;
+        boolean frameTierMismatch = false;
+        for (byte b : grid) {
+            if (b == 0) {
+                continue;
+            }
+            VoidcraftComponent component = VoidcraftComponent.fromGridValue(b)
+                .orElseThrow();
+            if (component.isFrame()) {
+                if (frameTier == -1) {
+                    frameTier = component.getTier();
+                } else if (component.getTier() != frameTier) {
+                    frameTierMismatch = true;
+                    break;
+                }
+            }
+        }
+        if (frameTierMismatch) {
+            errors.add("voidcraft_frame_tier_mismatch");
             ok = false;
         }
 
@@ -735,19 +963,66 @@ public final class VoidcraftBlueprint {
             ok = false;
         }
 
-        boolean hasThruster = false;
-        for (int cell = 0; cell < grid.length && !hasThruster; cell++) {
+        // Frame face audit (same rule as ships): covers only on tier-permitted frame faces, never facing a frame.
+        boolean coverTierTooHigh = false;
+        boolean internalComponent = false;
+        for (int cell = 0; cell < grid.length; cell++) {
+            int value = grid[cell];
+            if (value == 0) {
+                continue;
+            }
+            VoidcraftComponent component = VoidcraftComponent.fromGridValue(value)
+                .orElseThrow();
+            if (!component.isFrame()) {
+                continue;
+            }
+            for (int side = 0; side < 6; side++) {
+                int coverValue = coverGrid[cell * 6 + side];
+                if (coverValue == 0) {
+                    continue;
+                }
+                VoidcraftCoverComponent cover = VoidcraftCoverComponent.fromGridValue(coverValue)
+                    .orElseThrow();
+                if (cover.getTier() > component.getTier()) {
+                    coverTierTooHigh = true;
+                }
+                int neighbour = neighborCell(cell, side);
+                if (neighbour >= 0 && grid[neighbour] != 0
+                    && VoidcraftComponent.fromGridValue(grid[neighbour])
+                        .orElseThrow()
+                        .isFrame()) {
+                    internalComponent = true;
+                }
+            }
+        }
+        if (coverTierTooHigh) {
+            errors.add("voidcraft_cover_tier_too_high");
+            ok = false;
+        }
+        if (internalComponent) {
+            errors.add("voidcraft_internal_component");
+            ok = false;
+        }
+
+        boolean hasEngine = false;
+        for (int cell = 0; cell < grid.length && !hasEngine; cell++) {
             for (int side = 0; side < 6; side++) {
                 int value = coverGrid[cell * 6 + side];
                 if (value != 0 && VoidcraftCoverComponent.fromGridValue(value)
-                    .orElseThrow() == VoidcraftCoverComponent.THRUSTER_NOZZLE) {
-                    hasThruster = true;
+                    .orElseThrow()
+                    .isEngine()) {
+                    hasEngine = true;
                     break;
                 }
             }
         }
-        if (hasThruster) {
+        if (hasEngine) {
             errors.add("voidbase_thruster_forbidden");
+            ok = false;
+        }
+
+        if (computeStats().integrity <= 0L) {
+            errors.add("voidcraft_integrity_too_low");
             ok = false;
         }
 
@@ -774,6 +1049,28 @@ public final class VoidcraftBlueprint {
             int count = countCover(cover);
             if (count > 0) {
                 map.put("cover." + cover.name(), (long) count);
+            }
+        }
+        return java.util.Collections.unmodifiableMap(map);
+    }
+
+    /**
+     * The reactor launch fuel this ship must pay at the Gateway before it may launch: per reactor cover type, the
+     * count of mounted units times the cover's per-unit fuel (in mB). Reactor types mix freely (a ship with 2
+     * fusion + 1 antimatter reactors pays both). Ships without reactors yield an empty map.
+     *
+     * @return a stable-ordered map (cover catalog order): key = the reactor cover, value = required mB (≥ 1). The
+     *         fluid identity of each cover's fuel lives in the runtime registry (the blueprint is plain Java).
+     */
+    public java.util.Map<VoidcraftCoverComponent, Long> reactorLaunchFuel() {
+        java.util.LinkedHashMap<VoidcraftCoverComponent, Long> map = new java.util.LinkedHashMap<>();
+        for (VoidcraftCoverComponent cover : VoidcraftCoverComponent.ALL) {
+            if (!cover.isReactor()) {
+                continue;
+            }
+            int count = countCover(cover);
+            if (count > 0) {
+                map.put(cover, (long) count * cover.getLaunchFuel());
             }
         }
         return java.util.Collections.unmodifiableMap(map);

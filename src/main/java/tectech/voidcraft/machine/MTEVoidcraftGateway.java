@@ -8,7 +8,6 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +15,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,17 +47,17 @@ import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.voidcraft.item.ItemVoidbaseBlueprint;
 import tectech.voidcraft.item.ItemVoidcraft;
-import tectech.voidcraft.item.ItemVoidcraftCovers;
-import tectech.voidcraft.item.ItemVoidcraftSatellite;
 import tectech.voidcraft.loader.VoidcraftLoader;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
-import tectech.voidcraft.ship.VoidcraftComponent;
 import tectech.voidcraft.ship.VoidcraftCoverComponent;
+import tectech.voidcraft.ship.VoidcraftEngineType;
+import tectech.voidcraft.ship.VoidcraftFuel;
 import tectech.voidcraft.ship.VoidcraftNbt;
+import tectech.voidcraft.uss.CargoHold;
 import tectech.voidcraft.uss.MTEUnstableSolarSystem;
 import tectech.voidcraft.uss.USSBaseAnchor;
 import tectech.voidcraft.uss.USSCommand;
-import tectech.voidcraft.uss.USSInfra;
+import tectech.voidcraft.uss.USSItemCargo;
 import tectech.voidcraft.uss.USSNode;
 import tectech.voidcraft.uss.USSProgram;
 import tectech.voidcraft.uss.USSProgramDefaults;
@@ -80,10 +79,10 @@ import tectech.voidcraft.uss.VoidcraftActiveShip;
  * <p>
  * No energy hatches, no recipes — the interaction surface is the BLUEPRINT slot (right-click with a Voidbase
  * blueprint item in hand — the blueprint is KEPT, the constructor ship carries a data copy) plus the front-face
- * hatch ring: the input buses feed the ship + the Constructor's parts loadout (component blocks + covers as
- * items) — MINER / STARLIFTER ships launch with just the ship item, no parts. The output bus is the return path
- * for the surviving ship and a Constructor's unused parts — the structure check requires an input bus AND an
- * output bus.
+ * hatch ring: the input side (buses + hatches) feeds the ship and its cargo — everything on the input side but
+ * the ship item loads into the ship's cargo hold at launch (no validity checks; the user loads what the mission
+ * needs, a Constructor the parts it carries). The output bus is the return path for the surviving ship — the
+ * structure check requires an input bus AND an output bus.
  *
  * <p>
  * The gateway renders nothing itself: a ship's hologram exists only while it is in flight, and that in-flight anchor
@@ -106,8 +105,8 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
     /**
      * 3×3×3 shell: the <strong>front face</strong> (z=0) is the controller (center) ringed by the hatch-capable
      * perimeter 'C' (input buses + input hatches — the SHIP source, a launch consumes one Voidcraft from them,
-     * plus the Constructor's parts loadout; and the output bus — the return path for the surviving ship and a
-     * Constructor's unused parts on mission complete; non-hatch ring
+     * and the CARGO source: everything on the input side but the ship loads into the ship's cargo hold at
+     * launch; and the output bus — the return path for the surviving ship; non-hatch ring
      * cells render as HighPowerCasing, same family convention as the Storage Bay and the Energy Infuser), the two
      * back planes are BA0 casing meta 10. The controller sits at the front-face center (x=1, y=1, z=0 — the same
      * convention as the Storage Bay and the Assembler; a buried center controller would be unreachable once the
@@ -122,9 +121,9 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         .addElement(
             'C',
             buildHatchAdder(MTEVoidcraftGateway.class)
-                // InputBus: the Constructor parts path (component blocks + covers, incl. ME item buses).
+                // InputBus: the cargo source (everything but the ship item, incl. ME item buses).
                 // InputHatch slot 0 is also read for items (the standard GT hatch slot).
-                // OutputBus: the return path for a Constructor's unused parts (mission complete).
+                // OutputBus: the return path for the surviving ship (mission complete).
                 // Non-hatch ring cells fall back to the HighPowerCasing render.
                 .atLeast(InputBus, InputHatch, OutputBus)
                 .casingIndex(Casings.HighPowerCasing.getTextureId())
@@ -144,8 +143,8 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
 
     /**
      * The Voidbase blueprint in the blueprint slot (a single {@code ItemVoidbaseBlueprint} stack — REUSABLE: it
-     * stays here between launches; each Constructor launch copies its data + a parts loadout into the ship
-     * payload). Server-only: the gateway has no GUI and renders nothing of its own, so no client sync.
+     * stays here between launches; each Constructor launch copies its data into the ship payload). Server-only:
+     * the gateway has no GUI and renders nothing of its own, so no client sync.
      */
     private ItemStack blueprint;
 
@@ -254,6 +253,12 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
      * Try to launch a ship from the input side (input hatch slot 0 + input buses). The ship item is consumed
      * from the input ONLY when the launch succeeds — a rejected launch leaves the ship in the input (and the
      * error is reported, rate-limited, to nearby players).
+     *
+     * <p>
+     * Launch fuel (validated + drained against the INPUT HATCHES only, same tick as the successful launch): a
+     * ship with a fuel-burning engine needs its fuel tank FULL (the blueprint's Fuel Storage capacity, mB of the
+     * engine's fluid) and every reactor cover its per-reactor launch fuel (Deuterium / Semi-Stable Antimatter,
+     * scaled by the reactor count per type). A shortfall rejects the launch — ship and fuel stay in place.
      */
     private void attemptLaunch(long aTick) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -269,8 +274,8 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         // The ship payload is the item's tag compound (the vc_* keys sit at its top level — see
         // ItemVoidcraft.getBlueprint). The full ItemStack NBT nests it one level deeper under the vanilla
         // "tag" key, so writeToNBT must NOT be used here. It is COPIED before the mission is loaded: the
-        // Constructor path mutates the payload (vc_build_mission + vc_build_loadout), and the input item is
-        // consumed by full-NBT equality against the bus's stack — a mutated payload would never match.
+        // launch mutates the payload (the cargo hold, the Constructor's blueprint data + flag), and the input
+        // item is consumed by full-NBT equality against the bus's stack — a mutated payload would never match.
         NBTTagCompound payload = (NBTTagCompound) ship.getTagCompound()
             .copy();
         if (payload == null || VoidcraftNbt.read(payload) == null) {
@@ -291,12 +296,27 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
             return;
         }
 
+        // The launch fuel (validated + drained against the INPUT HATCHES only — the ship's fuel tank is filled
+        // at launch, the reactor fees are paid at launch): the ship's fuel-burning engine needs its tank FULL
+        // (the blueprint's Fuel Storage capacity), and every reactor cover needs its per-reactor launch fuel.
+        // A shortfall rejects the launch (the ship AND the fuel stay in place).
+        VoidcraftBlueprint launchBlueprint = VoidcraftNbt.read(payload);
+        if (!preflightLaunchFuel(aTick, launchBlueprint, payload)) {
+            return;
+        }
+
+        // The ship's cargo: everything on the input side (the input-hatch slot 0 + every input-bus slot) but the
+        // ship item itself loads into the ship's cargo hold — no validity checks (it is up to the user to load
+        // what the mission needs, for whatever role the ship is), clamped by the ship's cargo space (a full hold
+        // simply stops accepting). The hold enters the USS as part of the ship payload.
+        loadCargoFromInput(payload);
+
         // A Voidbase blueprint in the blueprint slot turns the launch into a construction mission: the ship
-        // leaves loaded with a DATA COPY of the blueprint (the item stays in the slot — reusable) plus a parts
-        // loadout that FILLS its cargo from the input buses (capped at the ship's cargo space; the CONSTRUCT
-        // leg credits the site with what it needs, the first Constructor creates the construction site, the
-        // rest fill it). Without a blueprint the launch is a plain mission.
-        if (prepareVoidbaseMission(aTick, payload)) {
+        // leaves loaded with a DATA COPY of the blueprint (the item stays in the slot — reusable). The parts it
+        // builds with are its cargo — the CONSTRUCT leg credits the site part by part, drawing from the hold (the
+        // first Constructor creates the construction site, the rest fill it). Without a blueprint the launch is a
+        // plain mission.
+        if (prepareVoidbaseMission(payload)) {
             payload.setBoolean(VoidcraftNbt.TAG_BUILD_MISSION, true);
         }
 
@@ -316,23 +336,177 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
                     LOGGER.warn("[Voidcraft] gateway launched a ship but could not consume its item from the input");
                 } catch (Throwable ignored) {}
             }
+            // The validated launch fuel leaves the input hatches in the same tick (the tank + the reactor fees).
+            pullLaunchFuel(launchBlueprint, payload);
         } else {
             reportError(aTick, "uss_busy");
         }
     }
 
     /**
-     * Load a Voidbase construction mission into the ship payload: copy the blueprint's data (the blueprint item
-     * stays in the slot — reusable) and FILL the ship's cargo with parts from the input buses — for each part of
-     * the parts list (blueprint order), as many as the buses hold, until the ship's cargo space (the hold
-     * capacity, in cargo units) is full or the buses run dry. The CONSTRUCT leg credits the site with what it
-     * needs; whatever is carried beyond the site's needs is discarded there (the site's existing rule). A zero
-     * fill is fine — the first Constructor creates the construction site even without parts, the rest fill it.
+     * The launch fuel preflight (input hatches only): the ship's fuel-burning engine needs its tank FULL
+     * (capacity = the blueprint's Fuel Storage stat) and every reactor cover needs its per-reactor launch fuel
+     * (scaled by the reactor count, per type).
      *
-     * @return true when the payload carries the blueprint + loadout; false when there is no (valid) blueprint in
-     *         the blueprint slot (the launch then proceeds as a plain mission)
+     * @return false (error reported, rate-limited) when an input hatch cannot cover a requirement.
      */
-    private boolean prepareVoidbaseMission(long aTick, NBTTagCompound payload) {
+    private boolean preflightLaunchFuel(long aTick, VoidcraftBlueprint blueprint, NBTTagCompound payload) {
+        long tankCapacity = Math.max(0L, VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_FUEL));
+        Fluid tankFluid = VoidcraftFuel
+            .engineFuel(VoidcraftEngineType.byId(VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ENGINE)));
+        if (tankFluid != null && tankCapacity > 0L && countFluidInput(tankFluid) < tankCapacity) {
+            reportError(aTick, "fuel_short", " " + tankFluid.getLocalizedName());
+            return false;
+        }
+        if (blueprint != null) {
+            for (Map.Entry<VoidcraftCoverComponent, Long> fee : blueprint.reactorLaunchFuel()
+                .entrySet()) {
+                Fluid feeFluid = VoidcraftFuel.reactorLaunchFluid(fee.getKey());
+                long required = Math.max(0L, fee.getValue());
+                if (feeFluid == null || countFluidInput(feeFluid) < required) {
+                    reportError(aTick, "reactor_fuel_short", feeFluid == null ? "" : " " + feeFluid.getLocalizedName());
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Drain the validated launch fuel from the input hatches (same tick as the successful launch): the tank
+     * fill + every reactor's launch fuel.
+     */
+    private void pullLaunchFuel(VoidcraftBlueprint blueprint, NBTTagCompound payload) {
+        long tankCapacity = Math.max(0L, VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_FUEL));
+        Fluid tankFluid = VoidcraftFuel
+            .engineFuel(VoidcraftEngineType.byId(VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ENGINE)));
+        if (tankFluid != null && tankCapacity > 0L) {
+            pullFluidInput(tankFluid, tankCapacity);
+        }
+        if (blueprint != null) {
+            for (Map.Entry<VoidcraftCoverComponent, Long> fee : blueprint.reactorLaunchFuel()
+                .entrySet()) {
+                Fluid feeFluid = VoidcraftFuel.reactorLaunchFluid(fee.getKey());
+                long required = Math.max(0L, fee.getValue());
+                if (feeFluid != null && required > 0L) {
+                    pullFluidInput(feeFluid, required);
+                }
+            }
+        }
+    }
+
+    /**
+     * The total mB of a fluid across the INPUT HATCHES (the ship's fuel + reactor fees come from hatches only —
+     * not the buses).
+     */
+    private long countFluidInput(Fluid fluid) {
+        if (fluid == null) {
+            return 0L;
+        }
+        long total = 0L;
+        for (MTEHatchInput hatch : GTUtility.validMTEList(mInputHatches)) {
+            FluidStack held = hatch.getFluid();
+            if (held != null && held.getFluid() == fluid) {
+                total += held.amount;
+            }
+        }
+        return total;
+    }
+
+    /**
+     * Drain up to {@code amount} mB of a fluid from the INPUT HATCHES.
+     *
+     * @return the mB actually drained (the shortfall stays in the hatches — a launch that was preflight-checked
+     *         cannot short).
+     */
+    private long pullFluidInput(Fluid fluid, long amount) {
+        if (fluid == null || amount <= 0L) {
+            return 0L;
+        }
+        long remaining = amount;
+        for (MTEHatchInput hatch : GTUtility.validMTEList(mInputHatches)) {
+            if (remaining <= 0L) {
+                break;
+            }
+            FluidStack held = hatch.getFluid();
+            if (held == null || held.getFluid() != fluid) {
+                continue;
+            }
+            FluidStack drained = hatch.drain((int) Math.min(remaining, held.amount), true);
+            if (drained != null) {
+                remaining -= drained.amount;
+            }
+        }
+        return amount - remaining;
+    }
+
+    /**
+     * Load the ship's cargo from the input side (input-hatch slot 0 + every input-bus slot — the same slot set
+     * the ship is found on): everything there but the digitized ship items becomes cargo (keyed by item identity
+     * — {@link USSItemCargo#keyOf}), clamped by the ship's cargo space (a full hold simply stops accepting; the
+     * rest stays in the input). The gateway does no validity checks: it is up to the user to load what the
+     * mission needs — the parts a Voidbase Constructor has to carry, the infrastructure payloads a base has to
+     * build, the Field Generators a matrix consumes, or anything else the user wants carried. The updated hold
+     * is written into the payload; the consumed stacks leave the input in the same tick.
+     */
+    private void loadCargoFromInput(NBTTagCompound payload) {
+        CargoHold hold = CargoHold.of(VoidcraftActiveShip.holdCapacityFor(payload));
+        for (MTEHatchInput hatch : GTUtility.validMTEList(mInputHatches)) {
+            IGregTechTileEntity base = hatch.getBaseMetaTileEntity();
+            if (base != null) {
+                hold = pullCargo(hold, base, 0);
+            }
+        }
+        for (MTEHatchInputBus bus : GTUtility.validMTEList(mInputBusses)) {
+            IGregTechTileEntity base = bus.getBaseMetaTileEntity();
+            if (base == null) {
+                continue;
+            }
+            for (int i = 0; i < base.getSizeInventory(); i++) {
+                hold = pullCargo(hold, base, i);
+            }
+        }
+        NBTTagCompound holdTag = new NBTTagCompound();
+        hold.writeToNBT(holdTag);
+        payload.setTag(VoidcraftNbt.TAG_HOLD, holdTag);
+    }
+
+    /**
+     * Pull one input slot into the hold (a digitized ship item is never cargo — the launch consumes it
+     * separately; a full hold keeps the slot untouched).
+     *
+     * @return the updated hold (unchanged when the slot is empty, a ship item, or the hold has no room)
+     */
+    private CargoHold pullCargo(CargoHold hold, IGregTechTileEntity base, int slot) {
+        if (hold.isFull()) {
+            return hold;
+        }
+        ItemStack stack = base.getStackInSlot(slot);
+        if (stack == null || stack.getItem() == ItemVoidcraft.INSTANCE) {
+            return hold;
+        }
+        String key = USSItemCargo.keyOf(stack);
+        if (key == null) {
+            return hold;
+        }
+        long take = Math.min(stack.stackSize, hold.remainingUnits());
+        if (take <= 0L) {
+            return hold;
+        }
+        base.decrStackSize(slot, (int) take);
+        return hold.addItem(key, take);
+    }
+
+    /**
+     * Load a Voidbase construction mission into the ship payload: copy the blueprint's data (the blueprint item
+     * stays in the slot — reusable). The parts a Constructor has to carry are plain cargo (see
+     * {@link #loadCargoFromInput}) — the CONSTRUCT leg credits the site part by part, drawing them from the
+     * ship's hold.
+     *
+     * @return true when the payload carries the blueprint data; false when there is no (valid) blueprint in the
+     *         blueprint slot (the launch then proceeds as a plain mission)
+     */
+    private boolean prepareVoidbaseMission(NBTTagCompound payload) {
         if (blueprint == null || blueprint.getItem() != ItemVoidbaseBlueprint.INSTANCE
             || ItemVoidbaseBlueprint.isEmptyBlueprint(blueprint)) {
             return false;
@@ -341,55 +515,13 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         if (blueprintNbt == null || VoidcraftNbt.readBase(blueprintNbt) == null) {
             return false;
         }
-        VoidcraftBlueprint baseBlueprint = VoidcraftNbt.readBase(blueprintNbt);
-
-        // The build anchor (launch log only): the program's first static MOVE target, when it resolves.
-        USSBaseAnchor anchor = resolveBuildAnchor(blueprintNbt);
-
-        // Fill the ship's cargo from the input buses: for each part of the parts list (blueprint order), as
-        // many as the buses hold, until the cargo space (the hold capacity, in cargo units) is full.
-        long remaining = VoidcraftActiveShip.holdCapacityFor(payload);
-        Map<String, Long> take = new LinkedHashMap<>();
-        for (Map.Entry<String, Long> part : baseBlueprint.partsList()
-            .entrySet()) {
-            if (remaining <= 0L) {
-                break;
-            }
-            String key = part.getKey();
-            ItemStack item = partItem(key);
-            if (item == null) {
-                continue;
-            }
-            long available = countItemInput(item);
-            long amount = Math.min(available, remaining);
-            if (amount > 0L) {
-                take.put(key, amount);
-                pullItemInput(item, amount);
-                remaining -= amount;
-            }
-        }
-
-        // Infrastructure cargo (the Dyson Swarm pass): a station built with a Satellite Rail Launcher also pulls
-        // Power Satellites from the buses — the item. loadout key routes to the build site's cargo (delivered
-        // unpaced at construct start), not its parts.
-        if (remaining > 0L && baseBlueprint.count(VoidcraftComponent.SATELLITE_LAUNCHER) > 0) {
-            ItemStack satellite = ItemVoidcraftSatellite.stack();
-            long available = countItemInput(satellite);
-            long amount = Math.min(available, remaining);
-            if (amount > 0L) {
-                take.put(USSInfra.LOADOUT_KEY_SATELLITE, amount);
-                pullItemInput(satellite, amount);
-            }
-        }
 
         payload.setTag(VoidcraftNbt.TAG_BUILD_BLUEPRINT, blueprintNbt.copy());
-        writeVoidbaseLoadout(payload, take);
         try {
+            USSBaseAnchor anchor = resolveBuildAnchor(blueprintNbt);
             LOGGER.info(
-                "[Voidcraft] gateway loaded constructor for the Voidbase at "
-                    + (anchor != null ? anchor : "?dynamic anchor")
-                    + " with "
-                    + take);
+                "[Voidcraft] gateway loaded a constructor for the Voidbase at "
+                    + (anchor != null ? anchor : "?dynamic anchor"));
         } catch (Throwable ignored) {}
         return true;
     }
@@ -430,134 +562,9 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
     }
 
     /**
-     * The input-bus item for a parts-list key: {@code block.<NAME>} → the component block item (the classic
-     * placeable blocks + the multiblock components — see {@link VoidcraftLoader#blockItem}), {@code cover.<NAME>}
-     * → the cover item (meta = cover id).
-     */
-    @Nullable
-    public static ItemStack partItem(String key) {
-        int sep = key.indexOf('.');
-        if (sep <= 0) {
-            return null;
-        }
-        String kind = key.substring(0, sep);
-        String name = key.substring(sep + 1);
-        try {
-            if ("block".equals(kind)) {
-                return VoidcraftLoader.blockItem(VoidcraftComponent.valueOf(name));
-            }
-            if ("cover".equals(kind)) {
-                return ItemVoidcraftCovers.stack(VoidcraftCoverComponent.valueOf(name));
-            }
-        } catch (IllegalArgumentException ignored) {
-            // unknown part name — nothing to pull
-        }
-        return null;
-    }
-
-    /**
-     * Write the parts loadout into the ship payload (entries {@code {key, amount}} in the blueprint's
-     * parts-list key format — the CONSTRUCT handler credits the site part by part).
-     */
-    private static void writeVoidbaseLoadout(NBTTagCompound payload, Map<String, Long> take) {
-        if (take.isEmpty()) {
-            return;
-        }
-        NBTTagList loadout = new NBTTagList();
-        for (Map.Entry<String, Long> entry : take.entrySet()) {
-            NBTTagCompound part = new NBTTagCompound();
-            part.setString("key", entry.getKey());
-            part.setInteger(
-                "amount",
-                entry.getValue()
-                    .intValue());
-            loadout.appendTag(part);
-        }
-        payload.setTag(VoidcraftNbt.TAG_BUILD_LOADOUT, loadout);
-    }
-
-    /**
-     * Sum the matching dust stacks over the slots the depletion can reach: input-hatch slot 0 of every input hatch
-     * plus every slot of every input bus (the same slot set {@code depleteInput} walks).
-     */
-    private long countItemInput(ItemStack match) {
-        long total = 0L;
-        if (match == null) {
-            return 0L;
-        }
-        for (MTEHatchInput hatch : GTUtility.validMTEList(mInputHatches)) {
-            IGregTechTileEntity base = hatch.getBaseMetaTileEntity();
-            if (base == null) {
-                continue;
-            }
-            ItemStack inSlot = base.getStackInSlot(0);
-            if (inSlot != null && GTUtility.areStacksEqual(match, inSlot)) {
-                total += inSlot.stackSize;
-            }
-        }
-        for (MTEHatchInputBus bus : GTUtility.validMTEList(mInputBusses)) {
-            IGregTechTileEntity base = bus.getBaseMetaTileEntity();
-            if (base == null) {
-                continue;
-            }
-            for (int i = 0; i < base.getSizeInventory(); i++) {
-                ItemStack inSlot = base.getStackInSlot(i);
-                if (inSlot != null && GTUtility.areStacksEqual(match, inSlot)) {
-                    total += inSlot.stackSize;
-                }
-            }
-        }
-        return total;
-    }
-
-    /**
-     * Deplete {@code amount} of the matching dust from the input slots (hatch slot 0 first, then bus slots — partial
-     * per-slot takes, so split stacks drain completely; returns the amount actually taken).
-     */
-    private long pullItemInput(ItemStack match, long amount) {
-        if (match == null || amount <= 0L) {
-            return 0L;
-        }
-        long remaining = amount;
-        for (MTEHatchInput hatch : GTUtility.validMTEList(mInputHatches)) {
-            if (remaining <= 0L) {
-                break;
-            }
-            IGregTechTileEntity base = hatch.getBaseMetaTileEntity();
-            if (base == null) {
-                continue;
-            }
-            ItemStack inSlot = base.getStackInSlot(0);
-            if (inSlot != null && GTUtility.areStacksEqual(match, inSlot)) {
-                int take = (int) Math.min(remaining, inSlot.stackSize);
-                base.decrStackSize(0, take);
-                remaining -= take;
-            }
-        }
-        for (MTEHatchInputBus bus : GTUtility.validMTEList(mInputBusses)) {
-            if (remaining <= 0L) {
-                break;
-            }
-            IGregTechTileEntity base = bus.getBaseMetaTileEntity();
-            if (base == null) {
-                continue;
-            }
-            for (int i = 0; i < base.getSizeInventory() && remaining > 0L; i++) {
-                ItemStack inSlot = base.getStackInSlot(i);
-                if (inSlot != null && GTUtility.areStacksEqual(match, inSlot)) {
-                    int take = (int) Math.min(remaining, inSlot.stackSize);
-                    base.decrStackSize(i, take);
-                    remaining -= take;
-                }
-            }
-        }
-        return amount - remaining;
-    }
-
-    /**
      * The first Voidcraft on the input side (input-hatch slot 0 of every input hatch, then every slot of every
-     * input bus — the same slot set the Constructor loadout pulls from). A copy is returned (the bus's stack
-     * is not touched); null when the input side holds no ship (the gateway idles — no error).
+     * input bus). A copy is returned (the bus's stack is not touched); null when the input side holds no ship (the
+     * gateway idles — no error).
      */
     @Nullable
     private ItemStack findShipInput() {
@@ -625,7 +632,7 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
     /**
      * Output an item stack into the output bus buffers — each bus absorbs as much as it can, and whatever does
      * not fit stays in the given stack (its {@code stackSize} is reduced by the absorbed amount). Used for the
-     * returned ship and for a Constructor's unused parts.
+     * returned ship (mission complete).
      *
      * @param stack the stack to output (mutated in place: only the absorbed amount is removed)
      * @return the amount actually absorbed by the output buses (0 when the gateway has none)
@@ -661,8 +668,8 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         lastTargetScan = aTick;
         diag.setLength(0);
         // A FULL USS (all ship slots occupied) is NOT a valid launch target: it would reject the launch
-        // (uss_busy) — and a Constructor launch is rejected only AFTER its loadout was already pulled from the
-        // inputs (material loss). A USS with free slots is a valid target even while other ships are in flight
+        // (uss_busy) — and a launch is rejected only AFTER its cargo was already pulled from the inputs
+        // (material loss). A USS with free slots is a valid target even while other ships are in flight
         // (Phase 4 pass 4 — multiple ships per star system).
         targetUSS = findNearest(
             world,
@@ -790,6 +797,14 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
     }
 
     private void reportError(long aTick, String key) {
+        reportError(aTick, key, null);
+    }
+
+    /**
+     * Same as {@link #reportError(long, String)} with a plain-text suffix appended (the fuel/fees errors carry
+     * the fluid's name).
+     */
+    private void reportError(long aTick, String key, String suffix) {
         if (aTick - lastErrorTick < 40) {
             return;
         }
@@ -805,12 +820,15 @@ public class MTEVoidcraftGateway extends TTMultiblockBase implements ISurvivalCo
         double cx = base.getXCoord() + 0.5;
         double cy = base.getYCoord() + 0.5;
         double cz = base.getZCoord() + 0.5;
+        String suffixText = (suffix == null || suffix.isEmpty()) ? "" : suffix;
         for (EntityPlayer player : world.playerEntities) {
             double dx = player.posX - cx;
             double dy = player.posY - cy;
             double dz = player.posZ - cz;
             if (dx * dx + dy * dy + dz * dz <= 16.0D * 16.0D) {
-                player.addChatMessage(new ChatComponentTranslation("tt.voidcraft.gateway.error." + key));
+                ChatComponentText message = new ChatComponentText(
+                    translateToLocal("tt.voidcraft.gateway.error." + key) + suffixText);
+                player.addChatMessage(message);
             }
         }
     }

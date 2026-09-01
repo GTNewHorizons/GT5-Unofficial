@@ -1,8 +1,9 @@
 package tectech.voidcraft.uss;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
+import tectech.voidcraft.ship.VoidcraftCoverComponent;
+import tectech.voidcraft.ship.VoidcraftEngineType;
 import tectech.voidcraft.ship.VoidcraftNbt;
 
 /**
@@ -29,7 +30,8 @@ import tectech.voidcraft.ship.VoidcraftNbt;
  *
  * <p>
  * The INTEGRITY is the time limit: it is set to the maximum (the blueprint's integrity) when the entity enters
- * the USS, drops by 1 per second while in the USS ({@link #tickIntegrity()}), and at 0 the entity is LOST
+ * the USS, drops per {@link #tickIntegrity(int)} while in the USS (base rate 1/s; the rate is star-type tuned
+ * when the entity's hover body is the star — the star-proximity penalty), and at 0 the entity is LOST
  * (removed from the USS, its cargo discarded — no delivery, no re-emission; a base is decommissioned the same
  * way). A SHIP that finishes its program before the limit expires survives: its item is re-emitted into the
  * gateway's output bus (dropped at the USS when the bus cannot absorb it), with its integrity back at maximum for
@@ -37,9 +39,16 @@ import tectech.voidcraft.ship.VoidcraftNbt;
  *
  * <p>
  * ENERGY: every action runs on the entity's energy buffer (capacity from the blueprint's power cells, generation
- * from its solar covers — the payload's denormalized stats). The buffer starts full; {@link #tickEnergy()}
- * recharges it each tick; an action spends from it via {@link #spendEnergy(long)} and STALLS (no progress) while
- * the buffer cannot cover the draw.
+ * from its reactor / solar covers — the payload's denormalized stats). The buffer starts full;
+ * {@link #tickEnergy()} recharges it each tick; an action spends from it via {@link #spendEnergy(long)} and
+ * STALLS (no progress) while the buffer cannot cover the draw.
+ *
+ * <p>
+ * FUEL: the fuel-burning engine families (Ion / Fusion Torch / Antimatter) draw the entity's FUEL TANK (mB,
+ * capacity from the blueprint's Fuel Storage covers — the payload's {@code vc_fuel} stat) while a travel leg
+ * runs. The tank is full at launch (the Gateway only launches a full tank) and is never refilled in flight — a
+ * ship that runs dry STALLS its travel legs (and its integrity runs out with it). The fuel-less baseline nozzles
+ * draw no fuel.
  */
 public final class VoidcraftActiveShip {
 
@@ -69,9 +78,9 @@ public final class VoidcraftActiveShip {
     private static final String TAG_LEG_ACTIVE = "vc_leg_active";
     private static final String TAG_LEG_DONE = "vc_leg_done";
     private static final String TAG_BODY_STATIC = "vc_body_static";
-    private static final String TAG_BUILD_LOADOUT = "vc_build_parts";
     private static final String TAG_ANCHOR = "vc_anchor";
     private static final String TAG_ENERGY = "vc_energy";
+    private static final String TAG_FUEL_LEVEL = "vc_fuel_level";
 
     /**
      * Pass 27 (user: "the cargo hold size should be increased by a factor of 100 — as currently the mining is
@@ -114,6 +123,12 @@ public final class VoidcraftActiveShip {
      * when a MOVE target resolves (the ship's hover body for the leg and the work leg that follows).
      */
     /** The hover body descriptor (the pilot sets it when a MOVE target resolves). -1 = star / none. */
+    /** The ship's fuel tank (mB): capacity from the blueprint's Fuel Storage covers; full at launch. */
+    private final long fuelCapacity;
+
+    /** The fuel tank's current content (mB); consumed while travel legs run. */
+    private long fuel;
+
     private int targetPlanet = -1;
 
     /**
@@ -192,22 +207,15 @@ public final class VoidcraftActiveShip {
     /**
      * The ship's internal cargo hold (the cargo-capacity pass): a bounded hold (capacity in cargo units, where
      * {@code 1 unit = 1 item = 100 mB}) that mining / starlifting / construction fill. The hold is the ship's
-     * STATE — it is empty at launch, filled by the mission (clamped by capacity), and delivered on return. A full
-     * hold means the ship "cannot mine if it is full" (the yield is 0).
+     * STATE — the gateway loads it from the input side at launch (the payload's
+     * {@link VoidcraftNbt#TAG_HOLD}), the mission clamps every draw to its capacity (a full hold simply stops
+     * accepting), and it is delivered on return.
      *
      * <p>
      * The {@link #cargo} NBT (the abstract items + fluids for delivery) is DERIVED from this hold — see
      * {@link #getCargo()} / {@link #setCargo(NBTTagCompound)}.
      */
     private CargoHold hold;
-
-    /**
-     * The parts loadout a CONSTRUCTOR carries (parts-list key → count on board): filled by the gateway at launch
-     * (from the payload's {@code vc_build_loadout}), consumed PART-BY-PART by the CONSTRUCT legs — a site takes
-     * only what it needs, and whatever is left stays on board (for the next station, or the return to the gateway
-     * when the mission completes).
-     */
-    private final java.util.LinkedHashMap<String, Long> buildLoadout = new java.util.LinkedHashMap<>();
 
     private VoidcraftActiveShip(String uuid, String name, double speed, long miningPower, NBTTagCompound payload,
         int[] gatewayPos, int[] bayPos, int seed) {
@@ -220,11 +228,12 @@ public final class VoidcraftActiveShip {
         this.bayPos = bayPos;
         this.seed = seed;
         this.state = USSShipState.HOVERING;
-        // The internal cargo hold (the cargo-capacity pass): empty, capacity from cargoCapacity() (the payload's
-        // vc_cargo × CARGO_UNIT_MULTIPLIER — the pass-27 100× hold).
+        // The internal cargo hold (the cargo-capacity pass): the gateway's input-side dump when the payload carries
+        // one, otherwise empty at the payload's capacity (vc_cargo × CARGO_UNIT_MULTIPLIER).
         if (payload != null) {
-            this.hold = CargoHold.of(cargoCapacity());
-            readBuildLoadoutFromPayload(payload);
+            this.hold = payload.hasKey(VoidcraftNbt.TAG_HOLD)
+                ? CargoHold.readFromNBT(payload.getCompoundTag(VoidcraftNbt.TAG_HOLD))
+                : CargoHold.of(cargoCapacity());
         }
         // The integrity time limit: the ship enters the USS at its MAXIMUM (the blueprint's total) and counts
         // down from there (tickIntegrity()).
@@ -236,6 +245,11 @@ public final class VoidcraftActiveShip {
         this.energyGen = (payload != null) ? Math.max(0L, VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_ENERGY_GEN))
             : 0L;
         this.energy = this.energyCapacity;
+        // The fuel tank: capacity from the payload's Fuel Storage stat; the Gateway only launches a ship with a
+        // full tank, so the content enters the USS at capacity.
+        this.fuelCapacity = (payload != null) ? Math.max(0L, VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_FUEL))
+            : 0L;
+        this.fuel = this.fuelCapacity;
     }
 
     /**
@@ -391,6 +405,74 @@ public final class VoidcraftActiveShip {
         return true;
     }
 
+    /** @return the fuel tank's capacity in mB (the blueprint's Fuel Storage covers). */
+    public long getFuelCapacity() {
+        return fuelCapacity;
+    }
+
+    /** @return the fuel tank's current content in mB. */
+    public long getFuel() {
+        return fuel;
+    }
+
+    /**
+     * Spend fuel from the tank (the stall model's gate for the fuel-burning engine families): the draw is paid
+     * only when the tank covers it.
+     *
+     * @param amount the draw in mB (&lt;= 0 is a free no-op — the fuel-less engines and the work legs burn
+     *               nothing)
+     * @return true when the draw was paid (false = the travel leg must STALL: no progress this tick)
+     */
+    public boolean spendFuel(long amount) {
+        if (amount <= 0L) {
+            return true;
+        }
+        if (fuel < amount) {
+            return false;
+        }
+        fuel -= amount;
+        return true;
+    }
+
+    /**
+     * The ship's engine family ({@code VoidcraftEngineType.id}; NONE id when there are no engine covers — read
+     * from the payload's denormalized stat).
+     */
+    public int getEngineType() {
+        return payload == null ? VoidcraftEngineType.NONE.id() : VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ENGINE);
+    }
+
+    /** The number of the ship's engine covers (drives the per-thruster travel draws). */
+    public long getThrusterCount() {
+        return payload == null ? 0L : Math.max(0L, VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_THRUSTERS));
+    }
+
+    /** The frame tier of the ship's frames (0 when the ship has no frame). */
+    public int getFrameTier() {
+        return payload == null ? 0 : VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_FRAME_TIER);
+    }
+
+    /**
+     * The travel energy draw of ONE of the ship's engine covers (EU/tick, from the engine cover's stats; 0 when
+     * the ship has no engine covers). The ship's static travel burn is this times {@link #getThrusterCount()}.
+     */
+    public long getTravelEnergyPerTick() {
+        return VoidcraftCoverComponent.engineCoverOf(getEngineType())
+            .map(VoidcraftCoverComponent::getTravelEnergyPerTick)
+            .orElse(0L);
+    }
+
+    /**
+     * The travel FUEL draw of ONE of the ship's engine covers (mB/tick, from the engine cover's stats; 0 for the
+     * fuel-less families and engine-less ships). The ship's static travel burn is this times
+     * {@link #getThrusterCount()}.
+     */
+    public long getTravelFuelPerTick() {
+        return VoidcraftCoverComponent.engineCoverOf(getEngineType())
+            .map(VoidcraftCoverComponent::getTravelFuelPerTick)
+            .orElse(0L);
+    }
+
     /**
      * Restore integrity (the REPAIR work): clamped at the maximum.
      *
@@ -498,12 +580,14 @@ public final class VoidcraftActiveShip {
 
     /**
      * Advance the integrity time limit by ONE world tick (call once per tick while the ship is in the USS — it
-     * counts down even while the ship HOLDS). Integrity drops by 1 every {@link #TICKS_PER_INTEGRITY} ticks
-     * (one game second).
+     * counts down even while the ship HOLDS). Integrity drops by {@code lossPerSecond} points every
+     * {@link #TICKS_PER_INTEGRITY} ticks (one game second; the base rate is 1/s — the USS passes the
+     * star-type-tuned rate while the entity's hover body is the star).
      *
+     * @param lossPerSecond integrity points lost per game second (clamped at 1 — the limit must keep counting).
      * @return true when the integrity has reached 0 — the ship is LOST (removed from the USS, cargo discarded)
      */
-    public boolean tickIntegrity() {
+    public boolean tickIntegrity(int lossPerSecond) {
         if (integrity <= 0L) {
             return true;
         }
@@ -512,7 +596,7 @@ public final class VoidcraftActiveShip {
         }
         if (integrityTimer <= 0) {
             integrityTimer = TICKS_PER_INTEGRITY;
-            integrity--;
+            integrity -= Math.max(1L, lossPerSecond);
         }
         return integrity <= 0L;
     }
@@ -716,8 +800,8 @@ public final class VoidcraftActiveShip {
 
     /**
      * The cargo hold capacity (in cargo units) implied by a ship payload: the payload's {@code vc_cargo} (the
-     * blueprint's cargoSlots) times {@link #CARGO_UNIT_MULTIPLIER}. Shared with the gateway, which caps the
-     * constructor parts loadout at the same cargo space the ship's hold gets at launch.
+     * blueprint's cargoSlots) times {@link #CARGO_UNIT_MULTIPLIER}. Shared with the gateway, which loads the
+     * ship's cargo into a hold of exactly this capacity at launch.
      *
      * @param payload a ship item NBT (null → 0)
      * @return the capacity (0 when the payload lacks the tag)
@@ -730,105 +814,12 @@ public final class VoidcraftActiveShip {
     }
 
     /**
-     * Initialize the ship's internal cargo hold (empty, capacity from the payload's {@code vc_cargo}). Called at
-     * launch and NBT restore so the ship's hold is always present.
+     * Initialize the ship's internal cargo hold (empty, capacity from the payload's {@code vc_cargo}) when it is
+     * absent — the finished bases spawned at a construction site have no gateway to load their hold.
      */
     public void initializeHold() {
         if (hold == null) {
             hold = CargoHold.of(cargoCapacity());
-        }
-    }
-
-    /**
-     * The parts loadout a CONSTRUCTOR carries (parts-list key to count on board) - an unmodifiable view. Empty
-     * for ships without a constructor mission.
-     */
-    public java.util.Map<String, Long> getBuildLoadout() {
-        return java.util.Collections.unmodifiableMap(buildLoadout);
-    }
-
-    /**
-     * @return the total parts on board over all keys (0 when the ship carries no loadout)
-     */
-    public long buildLoadoutTotal() {
-        long total = 0L;
-        for (Long count : buildLoadout.values()) {
-            total += count;
-        }
-        return total;
-    }
-
-    /**
-     * Consume parts from the loadout: take up to {@code amount} of the given key (clamped to what is on board)
-     * - the key is dropped once it reaches zero.
-     *
-     * @param key    a parts-list key (unknown key to 0)
-     * @param amount the requested count
-     * @return the count actually consumed
-     */
-    public long consumeBuildParts(String key, long amount) {
-        if (key == null || amount <= 0L) {
-            return 0L;
-        }
-        Long onBoard = buildLoadout.get(key);
-        if (onBoard == null) {
-            return 0L;
-        }
-        long take = Math.min(amount, onBoard);
-        if (take <= 0L) {
-            return 0L;
-        }
-        long left = onBoard - take;
-        if (left <= 0L) {
-            buildLoadout.remove(key);
-        } else {
-            buildLoadout.put(key, left);
-        }
-        return take;
-    }
-
-    /**
-     * Load the constructor loadout from the launch payload tag {@code vc_build_loadout} (entries
-     * {@code {key, amount}}) - called by the constructor; zero or negative amounts are skipped.
-     */
-    private void readBuildLoadoutFromPayload(NBTTagCompound payload) {
-        if (!payload.hasKey(VoidcraftNbt.TAG_BUILD_LOADOUT)) {
-            return;
-        }
-        loadBuildLoadoutList(payload.getTagList(VoidcraftNbt.TAG_BUILD_LOADOUT, 10));
-    }
-
-    /**
-     * Replace the loadout with the persisted remainder (a CONSTRUCT leg may have consumed parts in flight) -
-     * the launch-payload copy the constructor made is discarded.
-     *
-     * @param loadout the persisted list (entries {@code {key, amount}})
-     */
-    public void restoreBuildLoadout(NBTTagList loadout) {
-        buildLoadout.clear();
-        loadBuildLoadoutList(loadout);
-    }
-
-    /**
-     * Merge a loadout list (entries {@code {key, amount}}) into the loadout - zero or negative amounts are
-     * skipped, equal keys add up.
-     */
-    private void loadBuildLoadoutList(NBTTagList loadout) {
-        if (loadout == null) {
-            return;
-        }
-        for (int i = 0; i < loadout.tagCount(); i++) {
-            NBTTagCompound part = loadout.getCompoundTagAt(i);
-            if (part == null) {
-                continue;
-            }
-            String key = part.getString("key");
-            long amount = part.hasKey("amount") ? part.getInteger("amount") : 0;
-            if (key.isEmpty() || amount <= 0L) {
-                continue;
-            }
-            Long prev = buildLoadout.get(key);
-            buildLoadout.put(key, (prev == null ? 0L : prev) + amount);
         }
     }
 
@@ -896,20 +887,6 @@ public final class VoidcraftActiveShip {
             hold.writeToNBT(holdTag);
             nbt.setTag(TAG_HOLD, holdTag);
         }
-        // The constructor's remaining parts loadout (the CONSTRUCT legs consume it part by part).
-        if (!buildLoadout.isEmpty()) {
-            NBTTagList loadoutTag = new NBTTagList();
-            for (java.util.Map.Entry<String, Long> entry : buildLoadout.entrySet()) {
-                NBTTagCompound part = new NBTTagCompound();
-                part.setString("key", entry.getKey());
-                part.setInteger(
-                    "amount",
-                    entry.getValue()
-                        .intValue());
-                loadoutTag.appendTag(part);
-            }
-            nbt.setTag(TAG_BUILD_LOADOUT, loadoutTag);
-        }
         if (payload != null) {
             nbt.setTag(TAG_PAYLOAD, payload);
         }
@@ -925,6 +902,7 @@ public final class VoidcraftActiveShip {
             nbt.setTag(TAG_ANCHOR, anchorTag);
         }
         nbt.setLong(TAG_ENERGY, energy);
+        nbt.setLong(TAG_FUEL_LEVEL, fuel);
         nbt.setInteger(TAG_SEED, seed);
         nbt.setInteger(TAG_TARGET, targetPlanet);
         return nbt;
@@ -995,11 +973,6 @@ public final class VoidcraftActiveShip {
         if (nbt.hasKey(TAG_HOLD)) {
             ship.setHold(CargoHold.readFromNBT(nbt.getCompoundTag(TAG_HOLD)));
         }
-        // The constructor's remaining parts loadout: the constructor initialized a full copy from the payload;
-        // the persisted remainder (partially consumed in flight) replaces it when present.
-        if (nbt.hasKey(TAG_BUILD_LOADOUT)) {
-            ship.restoreBuildLoadout(nbt.getTagList(TAG_BUILD_LOADOUT, 10));
-        }
         // The base anchor (present = an anchored Voidbase; absent = a flying ship) + the energy buffer content
         // (capacity/generation re-derive from the payload on restore).
         if (nbt.hasKey(TAG_ANCHOR)) {
@@ -1007,6 +980,11 @@ public final class VoidcraftActiveShip {
         }
         if (nbt.hasKey(TAG_ENERGY)) {
             ship.energy = Math.max(0L, Math.min(ship.energyCapacity, nbt.getLong(TAG_ENERGY)));
+        }
+        // The fuel tank content (capacity re-derives from the payload on restore; a missing tag = a full tank, as
+        // if the ship had just launched).
+        if (nbt.hasKey(TAG_FUEL_LEVEL)) {
+            ship.fuel = Math.max(0L, Math.min(ship.fuelCapacity, nbt.getLong(TAG_FUEL_LEVEL)));
         }
         return ship;
     }
@@ -1033,6 +1011,10 @@ public final class VoidcraftActiveShip {
             + energy
             + "/"
             + energyCapacity
+            + " fuel="
+            + fuel
+            + "/"
+            + fuelCapacity
             + " cargo="
             + (cargo == null ? "none" : "yes")
             + "]";

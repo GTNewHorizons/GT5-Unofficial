@@ -15,7 +15,7 @@ import gregtech.api.enums.Materials;
  * tick, {@link #tick} advances the pacing countdown; every {@code ticksPerUnit} ticks (from
  * {@code USSConstants.transferTicksPerUnit}: 1 logistics power = 1 cargo unit per second) ONE cargo unit — 1
  * item, or {@code CargoHold.MB_PER_UNIT} mB of fluid — moves from the SOURCE hold to the TARGET hold, honoring
- * the material filter, the unit limit (default -1 = ALL) and the target's capacity (a full target stops the
+ * the name filter, the unit limit (default -1 = ALL) and the target's capacity (a full target stops the
  * transfer; the source keeps the remainder). The holds are IMMUTABLE — the tick returns the updated holds
  * (null = unchanged) and the caller applies them to the ships (plus their derived cargo NBT).
  *
@@ -62,8 +62,8 @@ public final class USSCargoTransfer {
     /**
      * Arm a fresh transfer.
      *
-     * @param filter       the material name filter (null / empty / "*" = match all; case-insensitive material name
-     *                     otherwise)
+     * @param filter       the name filter (null / empty / "*" = match all; case-insensitive item key / material
+     *                     name otherwise)
      * @param limit        the unit limit (-1 = ALL; &lt; -1 clamps to -1)
      * @param ticksPerUnit the pacing (machine ticks per cargo unit, &ge; 1)
      * @return the armed transfer (its first unit lands after {@code ticksPerUnit} ticks)
@@ -94,37 +94,42 @@ public final class USSCargoTransfer {
             return new Result(false, REASON_TARGET_FULL, null, null);
         }
         // The next matching unit: items first (insertion order — deterministic), then fluids.
-        for (Map.Entry<Materials, Long> e : source.getItems()
+        for (Map.Entry<String, Long> e : source.getItems()
             .entrySet()) {
             if (e.getValue() != null && e.getValue() > 0L && matches(filter, e.getKey())) {
-                return move(source, target, e.getKey(), true);
+                return moveItem(source, target, e.getKey());
             }
         }
         for (Map.Entry<Materials, Long> e : source.getFluids()
             .entrySet()) {
-            if (e.getValue() != null && e.getValue() >= CargoHold.MB_PER_UNIT && matches(filter, e.getKey())) {
-                return move(source, target, e.getKey(), false);
+            if (e.getValue() != null && e.getValue() >= CargoHold.MB_PER_UNIT
+                && matches(
+                    filter,
+                    e.getKey()
+                        .getName())) {
+                return moveFluid(source, target, e.getKey());
             }
         }
         return new Result(false, REASON_NO_CARGO, null, null);
     }
 
-    private Result move(CargoHold source, CargoHold target, Materials material, boolean item) {
-        CargoHold nextSource;
-        CargoHold nextTarget;
-        if (item) {
-            nextSource = source.removeItems(material, 1L);
-            nextTarget = target.addItems(material, 1L);
-        } else {
-            nextSource = source.removeFluids(material, CargoHold.MB_PER_UNIT);
-            nextTarget = target.addFluids(material, CargoHold.MB_PER_UNIT);
-        }
+    private Result moveItem(CargoHold source, CargoHold target, String key) {
+        return finishTick(source.removeItem(key, 1L), target.addItem(key, 1L));
+    }
+
+    private Result moveFluid(CargoHold source, CargoHold target, Materials material) {
+        return finishTick(
+            source.removeFluids(material, CargoHold.MB_PER_UNIT),
+            target.addFluids(material, CargoHold.MB_PER_UNIT));
+    }
+
+    private Result finishTick(CargoHold source, CargoHold target) {
         transferred++;
         if (remaining() == 0) {
-            return new Result(false, REASON_LIMIT_REACHED, nextSource, nextTarget);
+            return new Result(false, REASON_LIMIT_REACHED, source, target);
         }
         countdown = ticksPerUnit;
-        return new Result(true, null, nextSource, nextTarget);
+        return new Result(true, null, source, target);
     }
 
     /** @return the units moved so far */
@@ -160,20 +165,21 @@ public final class USSCargoTransfer {
     }
 
     /**
-     * Whether a material passes the (normalized) filter: match-all or a case-insensitive material-name match.
+     * Whether a cargo entry passes the (normalized) filter: match-all, or a case-insensitive match of the item
+     * key (the material name for ore items) / the fluid material's name.
      *
      * @param normalizedFilter the filter from {@link #normalizeFilter} (null = match-all)
-     * @param material         the cargo material
-     * @return true when the material may transfer
+     * @param name             the cargo entry's name (item key or fluid material name)
+     * @return true when the entry may transfer
      */
-    public static boolean matches(String normalizedFilter, Materials material) {
+    public static boolean matches(String normalizedFilter, String name) {
         if (normalizedFilter == null || normalizedFilter.isEmpty()) {
             return true;
         }
-        if (material == null || material == Materials._NULL) {
+        if (name == null || name.isEmpty()) {
             return false;
         }
-        return normalizedFilter.equalsIgnoreCase(material.getName());
+        return normalizedFilter.equalsIgnoreCase(name);
     }
 
     /**

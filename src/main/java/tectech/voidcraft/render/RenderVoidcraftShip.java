@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,9 +32,11 @@ import gregtech.common.render.shader.MeshBuilder;
 import gregtech.common.render.shader.RenderState;
 import gregtech.common.render.shader.ShaderHandle;
 import gregtech.common.render.shader.SharedShaders;
+import tectech.rendering.EOH.EOHRenderingUtils;
 import tectech.thing.block.TileEntityEyeOfHarmony;
 import tectech.voidcraft.loader.VoidcraftLoader;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
+import tectech.voidcraft.ship.VoidcraftEngineType;
 import tectech.voidcraft.ship.VoidcraftNbt;
 import tectech.voidcraft.uss.USSConstants;
 import tectech.voidcraft.uss.USSFleetOrbit;
@@ -85,10 +86,13 @@ import tectech.voidcraft.uss.USSWorkKind;
  * constant display spin).
  *
  * <p>
- * <strong>Pass 8 effects:</strong> while a MINE or SIPHON leg is in its MINING state, a thin additive laser rod
+ * <strong>Effects:</strong> while a MINE or SIPHON leg is in its MINING state, a thin additive laser rod
  * runs from the ship's middle to the body's middle (fading over the leg's ends — see {@link VoidcraftShipFx});
- * while a ship moves (OUTBOUND / RETURNING), smoke exhaust is emitted behind it, the opposite of its travel
- * direction. A CONSTRUCT leg builds at the site (it fires no mining beam, per user spec).
+ * while a ship moves (OUTBOUND / RETURNING), a fading tube trail runs behind it, opposite its travel direction:
+ * 9 sections, alpha 0.7 at the ship fading by one step per section so the last is still visible, total length
+ * scaled by the ship's speed, colored by the ship's engine type (standard yellow, ion/xenon light blue, fusion
+ * white, antimatter purple).
+ * A CONSTRUCT leg builds at the site (it fires no mining beam, per user spec).
  */
 @SideOnly(Side.CLIENT)
 public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
@@ -150,8 +154,6 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         double pitch = 0.0;
         boolean headingInit = false;
         double lastFrame = -1.0;
-        /** Tick of the last exhaust burst (render runs many frames per tick — one burst per active tick max). */
-        long lastExhaustTick = -1;
         // Pass 32: the ship's last rendered position (fleet-anchor coords) — the visual start point of its next
         // travel leg. A return leg departs from the LIVE hover above the body the ship just worked, not from the
         // server's static launch-time-resolved point (a planet that has orbited since launch can sit on the
@@ -213,8 +215,17 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             return;
         }
 
-        long worldTime = tileEntity.getWorldObj()
-            .getTotalWorldTime();
+        long worldTime;
+        if (fleet.getUssOrbitTime() > 0L) {
+            // The USS virtual orbit clock (synced by the fleet TE): advance from the last sync at the normal rate
+            // so the planet phases match the star render TE (the clock only ever runs faster than the world
+            // during a stellar-acceleration second, which the machine re-syncs every tick of).
+            worldTime = fleet.getUssOrbitTime() + (tileEntity.getWorldObj()
+                .getTotalWorldTime() - fleet.getUssSyncedWorldTime());
+        } else {
+            worldTime = tileEntity.getWorldObj()
+                .getTotalWorldTime();
+        }
         if (worldTime < 0) {
             worldTime = 0;
         }
@@ -241,6 +252,11 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // live in the same anchor frame as the star/ships (the centered (x, y, z) above), so they render in the same
         // pass. Drawn first (behind the ships) so the fleet stays legible.
         renderRipples(ripples, x, y, z, worldTime);
+
+        // The infrastructure-builder pass: the ripple-scale infrastructure shells — a small gray triangle shell
+        // with dark purple cores at each revealed ripple carrying a built Continuum Stabilizer (the same anchor
+        // frame as the revealed ripples; drawn behind the ships like the ripples).
+        renderRippleInfraShells(fleet.getRippleInfraShells(), x, y, z, worldTime);
 
         // Pass 7: the system the fleet works (specs + star size ride with the fleet TE — no world lookups) —
         // fetched before the Voidbase renders: a PLANET-anchored site/base tracks the planet's live orbit.
@@ -288,29 +304,40 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 sites,
                 transferPositions);
         }
-        renderTransferBeams(fleet.getTransfers(), transferPositions, worldTime);
+        renderTransferBeams(fleet.getTransfers(), transferPositions, x, y, z, worldTime);
     }
 
     /**
      * The cargo transfer beams (SEND / TAKE): a gray rod from the executing member's rendered position to the
      * target's rendered position, for each in-flight transfer — queued into the same world-last beam pass as the
-     * mining (cyan) and construction (orange) lasers. A transfer whose source or target did not render this frame
-     * (not in the fleet, or off-screen) is skipped.
+     * mining (cyan) and construction (orange) lasers. A transfer whose source did not render this frame (not in
+     * the fleet, or off-screen) is skipped; a STAR-target transfer (the Stellar Injector's buffer) ends at the
+     * star center instead of a rendered ship.
      *
-     * @param transfers         the in-flight transfer entries (executing + target uuids) from the fleet TE
+     * @param transfers         the in-flight transfer entries (executing + target uuids, or the star flag) from
+     *                          the fleet TE
      * @param transferPositions the rendered (camera-relative) position of every ship this frame, keyed by uuid
+     * @param x,                y, z the fleet anchor block center in camera-relative coordinates (the star endpoint)
      * @param worldTime         the world's total tick count (drives the beam's pulse)
      */
     private static void renderTransferBeams(List<NBTTagCompound> transfers, Map<String, double[]> transferPositions,
-        long worldTime) {
+        double x, double y, double z, long worldTime) {
         if (transfers == null || transfers.isEmpty() || transferPositions.isEmpty()) {
             return;
         }
         for (NBTTagCompound transfer : transfers) {
             double[] source = transferPositions.get(transfer.getString(TileEntityVoidcraftShip.TAG_TRANSFER_SOURCE));
-            double[] target = transferPositions.get(transfer.getString(TileEntityVoidcraftShip.TAG_TRANSFER_TARGET));
-            if (source == null || target == null) {
-                continue; // one of the ships did not render this frame
+            if (source == null) {
+                continue;
+            }
+            double[] target;
+            if (transfer.getBoolean(TileEntityVoidcraftShip.TAG_TRANSFER_STAR)) {
+                target = new double[] { x, y + USSFleetOrbit.STAR_CENTER_Y, z };
+            } else {
+                target = transferPositions.get(transfer.getString(TileEntityVoidcraftShip.TAG_TRANSFER_TARGET));
+            }
+            if (target == null) {
+                continue; // the ship did not render this frame
             }
             queueBeam(
                 source,
@@ -411,6 +438,39 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             GL11.glDepthMask(depthMaskOn);
             RenderState.restoreBlendFunc(blend);
             RenderState.restore(GL11.GL_CULL_FACE, cullOn);
+        }
+    }
+
+    /**
+     * The ripple-scale infrastructure shells (the infrastructure-builder pass): the Continuum Stabilizer built
+     * around a revealed spacetime ripple point — a small triangle shell (gray panels, dark purple cores,
+     * {@link USSConstants#STABILIZER_SHELL_RADIUS} around the ripple) filling with its count/capacity.
+     *
+     * <p>
+     * Same frame as {@link #renderRipples}: each shell is centered on its ripple point (the fleet-anchor block
+     * center + the entry's offset) in camera-relative coordinates.
+     *
+     * @param shells    each {@code [x, y, z, count, capacity]} in fleet-anchor blocks (never null)
+     * @param x,y,z     the anchor block CENTER in camera-relative coordinates
+     * @param worldTime the world's total tick count (drives the shells' spin)
+     */
+    private static void renderRippleInfraShells(List<float[]> shells, double x, double y, double z, long worldTime) {
+        if (shells == null || shells.isEmpty()) {
+            return;
+        }
+        final Matrix4f model = new Matrix4f();
+        for (float[] s : shells) {
+            model.identity()
+                .translation((float) (x + s[0]), (float) (y + s[1]), (float) (z + s[2]));
+            EOHRenderingUtils.renderUSSInfraShell(
+                model,
+                (float) worldTime,
+                USSConstants.STABILIZER_SHELL_RADIUS,
+                USSConstants.STABILIZER_TRIANGLE_EDGE,
+                (long) s[3],
+                (long) s[4],
+                EOHRenderingUtils.STABILIZER_SHELL_TINT,
+                EOHRenderingUtils.STABILIZER_ACCENT_TINT);
         }
     }
 
@@ -808,36 +868,20 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // for the ships to go up and down"): no vertical bob — ships hold a fixed hover altitude.
         // Phase C: travel legs lerp from the LEG'S START (travelFrom — the ship's position at the leg's first
         // frame: the gateway for a fresh ship, the previous body for a MOVE→MOVE leg) to their end point (the
-        // body / the gateway).
+        // body / the gateway). legProgress advances the per-leg phase, so it is called ONCE per frame and its
+        // value shared between the lerp and the trail's length ramp.
+        double travelProgress = travelLeg
+            ? legProgress(phase, payload, travelDistance, shipRenderTime, state, legId, workKind)
+            : 0.0;
         double[] pos;
         switch (state) {
             case OUTBOUND:
-                pos = lerp(
-                    travelFrom,
-                    hover,
-                    legProgress(
-                        phase,
-                        payload,
-                        travelDistance,
-                        shipRenderTime,
-                        USSShipState.OUTBOUND,
-                        legId,
-                        workKind));
+                pos = lerp(travelFrom, hover, travelProgress);
                 break;
             case RETURNING:
                 // Gateway render pass: the return leg ends at the DOME-EDGE gateway render (the gray circle),
                 // not the actual (dome-external) gateway block.
-                pos = lerp(
-                    travelFrom,
-                    gwRender,
-                    legProgress(
-                        phase,
-                        payload,
-                        travelDistance,
-                        shipRenderTime,
-                        USSShipState.RETURNING,
-                        legId,
-                        workKind));
+                pos = lerp(travelFrom, gwRender, travelProgress);
                 break;
             case MINING:
                 // Work the body: hover just above it (0.5 over the planet SURFACE / 2.5 over the star / AT the
@@ -915,8 +959,11 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             pitch = phase.pitch;
         }
 
-        // The model matrix: translate to the ship position, scale to hologram cell size, orient, and center (cells
-        // span 0..n-1 on each axis). Orientation: headingFor returns (yaw, pitch) in DEGREES; JOML's rotate()
+        // The model matrix: translate to the ship position, scale to hologram cell size, orient, and center. The cell
+        // CUBES span 0..n on each axis (cells are indexed 0..n-1, each occupying [i, i+1]) — the VOLUME center
+        // n/2, not the cell-center centroid (n−1)/2, must land on the ship's position: centering the centroid
+        // leaves the hull offset half a cell along every model axis, off the line of travel for any non-diagonal
+        // heading. Orientation: headingFor returns (yaw, pitch) in DEGREES; JOML's rotate()
         // takes RADIANS (the codebase-wide convention — every other JOML caller wraps its degrees in
         // Math.toRadians). The derivation applies YAW to the model first, then PITCH, i.e. the model rotation is
         // R_pitch * R_yaw (yaw on the right, applied to the vertex first). JOML post-multiplies each rotate()
@@ -927,7 +974,7 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             .scale((float) CELL_SIZE)
             .rotate((float) Math.toRadians(pitch), 1.0F, 0.0F, 0.0F)
             .rotate((float) Math.toRadians(yaw), 0.0F, 1.0F, 0.0F)
-            .translate(-(model.width - 1) / 2.0F, -(model.height - 1) / 2.0F, -(model.depth - 1) / 2.0F);
+            .translate(-(model.width / 2.0F), -(model.height / 2.0F), -(model.depth / 2.0F));
 
         // Culling off for the ship: the hull is a hollow shell of blocks plus thin cover quads, and we cannot
         // assume every face's winding from the outside — the back sides are depth-occluded by the cube volume,
@@ -939,8 +986,18 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
         // star). Blend OFF is immune to the function and matches the legacy unblended hull look.
         final boolean cullEnabled = GL11.glIsEnabled(GL11.GL_CULL_FACE);
         final boolean blendEnabled = GL11.glIsEnabled(GL11.GL_BLEND);
+        // Depth state asserted, not inherited (test ON, LEQUAL, writes ON): the ship's far faces must
+        // occlude the near ones within this single VAO draw, and this pass runs behind every other
+        // tile-entity renderer — the same ambient-state hazard the cull/blend asserts above defend
+        // against (the beam pass below carries the same depth discipline for the same reason).
+        final boolean depthTestEnabled = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+        final int depthFunc = GL11.glGetInteger(GL11.GL_DEPTH_FUNC);
+        final boolean depthMaskEnabled = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthFunc(GL11.GL_LEQUAL);
+        GL11.glDepthMask(true);
         try {
             GL13.glActiveTexture(GL13.GL_TEXTURE0);
             Minecraft.getMinecraft()
@@ -953,6 +1010,9 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             model.vao.render();
             ShaderProgram.clear();
         } finally {
+            GL11.glDepthMask(depthMaskEnabled);
+            GL11.glDepthFunc(depthFunc);
+            RenderState.restore(GL11.GL_DEPTH_TEST, depthTestEnabled);
             RenderState.restore(GL11.GL_BLEND, blendEnabled);
             RenderState.restore(GL11.GL_CULL_FACE, cullEnabled);
         }
@@ -1042,38 +1102,60 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             renderScanCube(new double[] { x + pos[0], y + pos[1], z + pos[2] }, shipRenderTime, half, seed);
         }
 
-        // Pass 8: exhaust — smoke emitted BEHIND the ship, the opposite of its travel direction (user spec),
-        // only on the legs it actually moves (OUTBOUND / RETURNING — not while it hovers on the body).
-        //
-        // NOTE (the fix for "no particles showed up"): World.spawnParticle(String, ...) is GT5U's machine-output
-        // hook — on a CLIENT world it just loops an empty IWorldAccess list and spawns NOTHING. Real client
-        // particles are EntityFX instances added to the effect renderer (the codebase pattern, cf.
-        // ClientProxy.em_particle): EntitySmokeFX + Minecraft.effectRenderer.addEffect.
-        if (state == USSShipState.OUTBOUND || state == USSShipState.RETURNING) {
-            // Phase C: exhaust is opposite the leg's direction of travel (legFrom → leg end), not the legacy
-            // gateway→hover chord (a MOVE→MOVE leg's gateway is irrelevant to its path). Gateway render pass:
-            // the return leg travels to the DOME-EDGE gateway render.
-            double[] legTo2 = (state == USSShipState.OUTBOUND) ? hover : gwRender;
-            double dx = legTo2[0] - legFrom[0];
-            double dy = legTo2[1] - legFrom[1];
-            double dz = legTo2[2] - legFrom[2];
-            double len = Math.sqrt(dx * dx + dy * dy + dz * dz);
-            // The render loop runs MANY frames per tick — the gate is re-evaluated every frame, so without this
-            // dedupe each active tick would spawn dozens of puffs per ship. One burst per active tick.
-            if (len > 1e-9 && VoidcraftShipFx.exhaustGate(worldTime, seed) && phase.lastExhaustTick != worldTime) {
-                phase.lastExhaustTick = worldTime;
-                double speed = 0.05 + (Math.abs(seed) % 5) * 0.01; // 0.05–0.09 blocks/tick — a visible plume
-                for (int puff = 0; puff < 3; puff++) { // a small burst per tick → a continuous-looking trail
-                    EntitySmokeFX fx = new EntitySmokeFX(
-                        world,
-                        x + pos[0] + (Math.random() - 0.5) * 0.2,
-                        y + pos[1] + (Math.random() - 0.5) * 0.2,
-                        z + pos[2] + (Math.random() - 0.5) * 0.2,
-                        -dx / len * speed,
-                        -dy / len * speed,
-                        -dz / len * speed,
-                        1.0F);
-                    Minecraft.getMinecraft().effectRenderer.addEffect(fx);
+        // The thruster trail: on the legs the ship actually moves (OUTBOUND / RETURNING — not while it hovers
+        // on the body), a fading tube trail runs BEHIND the ship, opposite the leg's direction of travel. Queued
+        // for the world-last pass with the beams: a trail drawn in the tile-entity pass would be overpainted by
+        // the space shell, which renders later in the same pass.
+        if (travelLeg) {
+            VoidcraftEngineType engine = VoidcraftEngineType
+                .byId(VoidcraftNbt.readInt(payload, VoidcraftNbt.TAG_ENGINE));
+            if (engine != VoidcraftEngineType.NONE) {
+                double[] trailLegTo = (state == USSShipState.OUTBOUND) ? hover : gwRender;
+                double tdx = trailLegTo[0] - travelFrom[0];
+                double tdy = trailLegTo[1] - travelFrom[1];
+                double tdz = trailLegTo[2] - travelFrom[2];
+                double chord = Math.sqrt(tdx * tdx + tdy * tdy + tdz * tdz);
+                if (chord > 1e-9) {
+                    // The rendered speed in blocks/tick: the leg distance over the SAME leg duration the server
+                    // ticks with (the trail's length scales with it).
+                    double speed = VoidcraftNbt.readDouble(payload, VoidcraftNbt.TAG_SPEED);
+                    long leg = USSConstants.legTicks(
+                        state,
+                        travelDistance,
+                        speed,
+                        workKind,
+                        VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_MINING),
+                        VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_SCAN),
+                        VoidcraftNbt.readLong(payload, VoidcraftNbt.TAG_STARLIFTER));
+                    double blocksPerTick = leg > 0 ? travelDistance / (double) leg : 0.0;
+                    final double dirNX = tdx / chord;
+                    final double dirNY = tdy / chord;
+                    final double dirNZ = tdz / chord;
+                    // The trail's head is the model's BACK-FACE CENTER: the model is volume-centered on the
+                    // ship's position (the model matrix), so the hull's rear face sits depth/2 cells (at the
+                    // hologram scale) behind it along the model's own nose axis — the EASED orientation, which
+                    // lags the leg's chord while the ship turns, so the chord direction does not generally point
+                    // at the back face.
+                    double trailBack = model.depth / 2.0 * CELL_SIZE;
+                    double yawRad = Math.toRadians(yaw);
+                    double pitchRad = Math.toRadians(pitch);
+                    double noseX = Math.sin(yawRad);
+                    double noseY = -Math.sin(pitchRad) * Math.cos(yawRad);
+                    double noseZ = Math.cos(pitchRad) * Math.cos(yawRad);
+                    // The trail grows out over the first and shrinks in over the last of the leg (the ship
+                    // "speeds up" out of the gateway and "slows down" into it) — the leg progress drives it.
+                    double trailLen = VoidcraftShipFx.trailLength(blocksPerTick)
+                        * VoidcraftShipFx.trailLengthScale(travelProgress);
+                    if (trailLen > 0.0) {
+                        queueTrail(
+                            new double[] { x + pos[0] - noseX * trailBack, y + pos[1] - noseY * trailBack,
+                                z + pos[2] - noseZ * trailBack },
+                            dirNX,
+                            dirNY,
+                            dirNZ,
+                            trailLen,
+                            trailColor(engine));
+                    }
                 }
             }
         }
@@ -1108,6 +1190,49 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
     }
 
     /**
+     * The thruster-trail queue: filled by {@link #renderShip} while a ship moves (the OUTBOUND / RETURNING legs)
+     * and drawn once per frame in the {@code RenderWorldLastEvent} pass ({@link BeamWorldLastRenderer}) — the
+     * same pass as the beams, for the same reason (the full depth buffer is written by then, so the hull and the
+     * bodies occlude the trail and nothing drawn later can overpaint it). Each entry: head xyz (the model's back-face
+     * center — the model is volume-centered on the ship's position, so the rear face sits depth/2 cells behind
+     * it), the unit direction of travel, the total length in blocks,
+     * and the engine's trail color r/g/b.
+     */
+    private static final List<double[]> TRAIL_QUEUE = new ArrayList<double[]>();
+
+    /** The trail tube's radius, in blocks. */
+    public static final double TRAIL_TUBE_RADIUS = 0.003;
+
+    /**
+     * Each trail section's length × this factor — the sections overlap so the boundary ring between two
+     * separately-drawn sections cannot crack under rasterization.
+     */
+    public static final double TRAIL_SECTION_OVERLAP = 1.01;
+
+    private static void queueTrail(double[] head, double dirX, double dirY, double dirZ, double length, float[] color) {
+        TRAIL_QUEUE
+            .add(new double[] { head[0], head[1], head[2], dirX, dirY, dirZ, length, color[0], color[1], color[2] });
+    }
+
+    /**
+     * The trail color per engine type (user spec): the standard nozzle is yellow, the xenon ion thruster light
+     * blue, the fusion torch white, the antimatter engine purple.
+     */
+    private static float[] trailColor(VoidcraftEngineType engine) {
+        switch (engine) {
+            case ION:
+                return new float[] { 0.45F, 0.75F, 1.0F };
+            case FUSION:
+                return new float[] { 1.0F, 1.0F, 1.0F };
+            case ANTIMATTER:
+                return new float[] { 0.65F, 0.30F, 0.95F };
+            case STANDARD:
+            default:
+                return new float[] { 1.0F, 0.85F, 0.10F };
+        }
+    }
+
+    /**
      * Draws the queued lasers ({@link #BEAM_QUEUE}) in the {@code RenderWorldLastEvent} pass, once per frame. The
      * event fires with the world's modelview still active and the captured endpoints are in the same
      * camera-relative frame the tile-entity pass used, so the rod shader draws them with the identity model
@@ -1127,16 +1252,18 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
 
         @SubscribeEvent
         public void onRenderWorldLast(RenderWorldLastEvent event) {
-            if (BEAM_QUEUE.isEmpty()) {
+            if (BEAM_QUEUE.isEmpty() && TRAIL_QUEUE.isEmpty()) {
                 return;
             }
             if (!VoidcraftShaders.ready()) {
                 BEAM_QUEUE.clear();
+                TRAIL_QUEUE.clear();
                 return;
             }
             final int depthFunc = GL11.glGetInteger(GL11.GL_DEPTH_FUNC);
             final boolean cullOn = GL11.glIsEnabled(GL11.GL_CULL_FACE);
             final boolean depthMaskOn = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
+            final boolean alphaTestOn = GL11.glIsEnabled(GL11.GL_ALPHA_TEST);
             final long blend = RenderState.savedBlendFunc();
             try {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -1179,11 +1306,67 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                         (float) (0.9 * b[6] * pulse));
                     rod.render();
                 }
+
+                // The thruster trails (the same pass, for the same reason as the beams): 9 tube sections per
+                // trail, section i covering [i, i+1) of the length back from the ship's head. Standard alpha
+                // (each section's alpha IS its fade step — not the beams' additive glow); the world pass's
+                // 0.5 GL_GREATER alpha-test reference would discard the low-alpha sections, so the test is off
+                // for the trail.
+                if (!TRAIL_QUEUE.isEmpty()) {
+                    GL11.glDisable(GL11.GL_ALPHA_TEST);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    final ShaderHandle colorShader = VoidcraftShaders.color();
+                    colorShader.use();
+                    final IVertexArrayObject tube = VoidcraftGeometry.unitTube();
+                    for (int i = 0; i < TRAIL_QUEUE.size(); i++) {
+                        final double[] tr = TRAIL_QUEUE.get(i);
+                        final double dirX = tr[3];
+                        final double dirY = tr[4];
+                        final double dirZ = tr[5];
+                        // The yaw/pitch pair maps +Z onto the travel direction (the headingFor convention):
+                        // pitch about X, then yaw about Y (JOML post-multiplies each rotate).
+                        final double yaw = Math.atan2(dirX, Math.sqrt(dirY * dirY + dirZ * dirZ));
+                        final double pitch = -Math.atan2(dirY, dirZ);
+                        final double section = tr[6] / VoidcraftShipFx.TRAIL_SECTIONS;
+                        // The sections overlap by a quarter of a section length (their shared boundary ring is
+                        // the edge of two separate meshes, which rasterization can crack) and are drawn
+                        // tail-first, so the BRIGHTER section always covers the overlap sliver.
+                        final double sectionLen = section * TRAIL_SECTION_OVERLAP;
+                        for (int s = VoidcraftShipFx.TRAIL_SECTIONS - 1; s >= 0; s--) {
+                            final double alpha = VoidcraftShipFx.trailSectionAlpha(s);
+                            if (alpha <= 0.0) {
+                                continue;
+                            }
+                            final double back = s * section;
+                            GL20.glUniform4f(
+                                colorShader.loc(VoidcraftShaders.COLOR_COLOR),
+                                (float) tr[7],
+                                (float) tr[8],
+                                (float) tr[9],
+                                (float) alpha);
+                            // The scale is issued LAST (JOML applies it to the vertex first, in the tube's
+                            // local axes): a scale issued before the rotations would act in world axes and
+                            // squash the tube along the travel direction for any non-vertical flight.
+                            colorShader.uploadModel(
+                                MODEL_MATRIX.identity()
+                                    .translate(
+                                        (float) (tr[0] - dirX * back),
+                                        (float) (tr[1] - dirY * back),
+                                        (float) (tr[2] - dirZ * back))
+                                    .rotate((float) pitch, 1.0F, 0.0F, 0.0F)
+                                    .rotate((float) yaw, 0.0F, 1.0F, 0.0F)
+                                    .scale((float) TRAIL_TUBE_RADIUS, (float) TRAIL_TUBE_RADIUS, (float) sectionLen));
+                            tube.render();
+                        }
+                    }
+                }
                 ShaderProgram.clear();
             } finally {
                 BEAM_QUEUE.clear();
+                TRAIL_QUEUE.clear();
                 GL11.glDepthFunc(depthFunc);
                 GL11.glDepthMask(depthMaskOn);
+                RenderState.restore(GL11.GL_ALPHA_TEST, alphaTestOn);
                 RenderState.restoreBlendFunc(blend);
                 RenderState.restore(GL11.GL_CULL_FACE, cullOn);
             }
@@ -1551,8 +1734,17 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
             // as semi-transparent against the star layer.
             final boolean cullEnabled = GL11.glIsEnabled(GL11.GL_CULL_FACE);
             final boolean blendEnabled = GL11.glIsEnabled(GL11.GL_BLEND);
+            // Depth state asserted, not inherited (test ON, LEQUAL, writes ON) — the same ambient-state
+            // hazard as the ship draw above: the base's far faces must occlude the near ones within the
+            // single VAO draw.
+            final boolean depthTestEnabled = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+            final int depthFunc = GL11.glGetInteger(GL11.GL_DEPTH_FUNC);
+            final boolean depthMaskEnabled = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
             GL11.glDisable(GL11.GL_CULL_FACE);
             GL11.glDisable(GL11.GL_BLEND);
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GL11.glDepthFunc(GL11.GL_LEQUAL);
+            GL11.glDepthMask(true);
             try {
                 GL13.glActiveTexture(GL13.GL_TEXTURE0);
                 Minecraft.getMinecraft()
@@ -1565,6 +1757,9 @@ public class RenderVoidcraftShip extends TileEntitySpecialRenderer {
                 model.vao.render();
                 ShaderProgram.clear();
             } finally {
+                GL11.glDepthMask(depthMaskEnabled);
+                GL11.glDepthFunc(depthFunc);
+                RenderState.restore(GL11.GL_DEPTH_TEST, depthTestEnabled);
                 RenderState.restore(GL11.GL_BLEND, blendEnabled);
                 RenderState.restore(GL11.GL_CULL_FACE, cullEnabled);
             }

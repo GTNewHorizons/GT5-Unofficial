@@ -433,7 +433,7 @@ public class MTEVoidcraftComponent extends MetaTileEntity implements VoidcraftPr
         List<String> lines = new ArrayList<>();
         // Pass 23: the frame is the cover-accepting hull; the controller is the brain.
         lines.add(
-            component == VoidcraftComponent.FRAME ? translateToLocal("tt.voidcraft.component.frame_hint")
+            component.isFrame() ? translateToLocal("tt.voidcraft.component.frame_hint")
                 : translateToLocal("tt.voidcraft.component.controller_hint"));
 
         if (component.getMass() > 0) {
@@ -498,6 +498,13 @@ public class MTEVoidcraftComponent extends MetaTileEntity implements VoidcraftPr
         }
         if (component.getTier() > 0) {
             lines.add(translateToLocalFormatted("tt.voidcraft.item.stat.tier", component.getTier()));
+        }
+        if (component.isFrame() && component.getTier() > 0) {
+            lines.add(
+                translateToLocalFormatted(
+                    "tt.voidcraft.component.frame_tier",
+                    component.getTier(),
+                    component.getTier()));
         }
 
         if (component == VoidcraftComponent.CONTROLLER) {

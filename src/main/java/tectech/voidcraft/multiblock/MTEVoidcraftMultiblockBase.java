@@ -1,5 +1,7 @@
 package tectech.voidcraft.multiblock;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -121,9 +123,21 @@ public abstract class MTEVoidcraftMultiblockBase extends TTMultiblockBase implem
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("Voidcraft Multiblock Component")
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder().addMachineType("Voidcraft Multiblock Component")
             .addSupportAny()
-            .toolTipFinisher();
+            .addInfo(translateToLocal("tt.voidcraft_component.station_only"));
+        String hint = translateToLocal(componentTooltipHint());
+        if (!hint.isEmpty() && !hint.equals(componentTooltipHint())) {
+            tt = tt.addInfo(hint);
+        }
+        return tt.toolTipFinisher();
+    }
+
+    /**
+     * @return the lang key of the component's tooltip hint (what it does once built into a Voidbase — empty for none)
+     */
+    protected String componentTooltipHint() {
+        return "";
     }
 
     // ------------------------------------------------------------------

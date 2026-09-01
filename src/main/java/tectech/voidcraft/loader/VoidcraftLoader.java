@@ -2,6 +2,7 @@ package tectech.voidcraft.loader;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
@@ -23,22 +24,32 @@ import tectech.voidcraft.item.ItemVoidbaseBlueprint;
 import tectech.voidcraft.item.ItemVoidcraft;
 import tectech.voidcraft.item.ItemVoidcraftCovers;
 import tectech.voidcraft.item.ItemVoidcraftDebugDysonSwarm;
+import tectech.voidcraft.item.ItemVoidcraftDebugInfraShell;
+import tectech.voidcraft.item.ItemVoidcraftDebugStarControl;
+import tectech.voidcraft.item.ItemVoidcraftDebugStarDepletion;
+import tectech.voidcraft.item.ItemVoidcraftInfraComponent;
 import tectech.voidcraft.item.ItemVoidcraftSatellite;
 import tectech.voidcraft.machine.MTEVoidbaseAssembler;
 import tectech.voidcraft.machine.MTEVoidcraftAssembler;
 import tectech.voidcraft.machine.MTEVoidcraftComponent;
 import tectech.voidcraft.machine.MTEVoidcraftGateway;
 import tectech.voidcraft.machine.MTEVoidcraftStorageBay;
+import tectech.voidcraft.multiblock.MTEVoidcraftContinuumStabilizer;
 import tectech.voidcraft.multiblock.MTEVoidcraftMiningArray;
 import tectech.voidcraft.multiblock.MTEVoidcraftMultiblockCasing;
 import tectech.voidcraft.multiblock.MTEVoidcraftSatelliteLauncher;
+import tectech.voidcraft.multiblock.MTEVoidcraftStabilizationMatrix;
+import tectech.voidcraft.multiblock.MTEVoidcraftStellarInjector;
+import tectech.voidcraft.multiblock.MTEVoidcraftStellarLens;
 import tectech.voidcraft.multiblock.VoidcraftMultiblockRegistry;
 import tectech.voidcraft.render.BlockVoidcraftShipRender;
 import tectech.voidcraft.render.TileEntityVoidcraftShip;
 import tectech.voidcraft.ship.VoidcraftComponent;
 import tectech.voidcraft.ship.VoidcraftCoverComponent;
 import tectech.voidcraft.ship.VoidcraftCoverRegistry;
+import tectech.voidcraft.ship.VoidcraftFuel;
 import tectech.voidcraft.uss.MTEUnstableSolarSystem;
+import tectech.voidcraft.uss.USSInfraBuild;
 import tectech.voidcraft.uss.USSPlanetCatalog;
 import tectech.voidcraft.uss.USSStarCatalog;
 
@@ -51,6 +62,8 @@ import tectech.voidcraft.uss.USSStarCatalog;
  * <li>preLoad — cover item registration + cover item→component registry</li>
  * <li>load — the two full-block MTEs (controller + frame), the 8 covers, the Voidcraft Assembler MTE, and
  * the Unstable Solar System MTE</li>
+ * <li>postLoad — the fuel fluids (the engine tank fluids + the reactor launch fee fluids — the load phase runs
+ * before BartWorks' Werkstoff fluid registration, which is declared after:tectech)</li>
  * </ul>
  *
  * <p>
@@ -79,7 +92,7 @@ public final class VoidcraftLoader {
     public static BlockVoidcraftShipRender sBlockVoidcraftShipRender;
 
     /**
-     * Only the two placeable full blocks have creative-tab items (controller + frame) — every other
+     * The placeable full blocks have creative-tab items (controller + the four frame tiers) — every other
      * classic function ships as a cover (see {@link ItemVoidcraftCovers}). The multiblock component entries
      * (mining array controller + casings) register in {@link #registerMultiblockMTEs()}. The entry array is
      * indexed by component meta.
@@ -88,7 +101,13 @@ public final class VoidcraftLoader {
         CustomItemList.VoidcraftComponent_Frame, null, null, null, null, null, null, null, null,
         CustomItemList.VoidcraftMiningArray_Controller, CustomItemList.VoidcraftMiningArray_Casing,
         CustomItemList.VoidcraftMiningArray_Panel, null, CustomItemList.VoidcraftSatelliteLauncher_Controller,
-        CustomItemList.VoidcraftSatelliteLauncher_Casing, CustomItemList.VoidcraftSatelliteLauncher_Panel };
+        CustomItemList.VoidcraftSatelliteLauncher_Casing, CustomItemList.VoidcraftSatelliteLauncher_Panel,
+        CustomItemList.VoidcraftComponent_Frame2, CustomItemList.VoidcraftComponent_Frame3,
+        CustomItemList.VoidcraftComponent_Frame4, null, null, null, null, null, null,
+        CustomItemList.VoidcraftStellarInjector_Controller, CustomItemList.VoidcraftStellarInjector_Casing,
+        CustomItemList.VoidcraftContinuumStabilizer_Controller, CustomItemList.VoidcraftContinuumStabilizer_Casing,
+        CustomItemList.VoidcraftStellarLens_Controller, CustomItemList.VoidcraftStellarLens_Casing,
+        CustomItemList.VoidcraftStabilizationMatrix_Controller, CustomItemList.VoidcraftStabilizationMatrix_Casing };
 
     private VoidcraftLoader() {}
 
@@ -148,6 +167,11 @@ public final class VoidcraftLoader {
         CustomItemList.PowerSatellite.set(ItemVoidcraftSatellite.INSTANCE);
         TecTech.LOGGER.info("Power Satellite item registered");
 
+        // The infrastructure components — the constructor-built shells' builder payloads (plain items that ride
+        // ship cargo; no recipe, creative loop).
+        ItemVoidcraftInfraComponent.run();
+        TecTech.LOGGER.info("Infrastructure component items registered");
+
         // Debug tool (item → effect registry): right-clicked on the UnstableSolarSystem machine, it injects a
         // fixed fraction of the star's satellite capacity into the Dyson Swarm (no resource cost).
         ItemVoidcraftDebugDysonSwarm.run();
@@ -172,6 +196,62 @@ public final class VoidcraftLoader {
         });
         TecTech.LOGGER.info("Dyson Swarm debug item registered");
 
+        // Debug tool (item → effect registry): right-clicked on the UnstableSolarSystem machine, each injects a
+        // fixed fraction of its shell's capacity into the matching infrastructure shell (no resource cost) — the
+        // Stabilizer one also reveals the ripple it builds on (the first not-fully-built shell's ripple).
+        ItemVoidcraftDebugInfraShell.run();
+        VoidcraftDebugEffectRegistry
+            .register(ItemVoidcraftDebugInfraShell.INJECTOR, (machine, player) -> debugInjectorEffect(player, machine));
+        VoidcraftDebugEffectRegistry.register(
+            ItemVoidcraftDebugInfraShell.STABILIZER,
+            (machine, player) -> debugInfraShellInject(player, machine, USSInfraBuild.STABILIZER, "stabilizer"));
+        VoidcraftDebugEffectRegistry.register(
+            ItemVoidcraftDebugInfraShell.LENS,
+            (machine, player) -> debugInfraShellInject(player, machine, USSInfraBuild.LENS, "lens"));
+        TecTech.LOGGER.info("Infrastructure shell debug items registered");
+
+        // Debug tool (item → effect registry): right-clicked on the UnstableSolarSystem machine, it depletes a
+        // fixed fraction of the star's PRIMARY material reserve — the stellar evolution's depletion read (no
+        // resource cost).
+        ItemVoidcraftDebugStarDepletion.run();
+        VoidcraftDebugEffectRegistry.register(ItemVoidcraftDebugStarDepletion.INSTANCE, (machine, player) -> {
+            long depleted = machine.debugDepleteStarPrimary(ItemVoidcraftDebugStarDepletion.DEPLETE_FRACTION);
+            if (depleted > 0L) {
+                player.addChatMessage(
+                    new ChatComponentText(
+                        StatCollector.translateToLocalFormatted(
+                            "tt.voidcraft_debug_star_depletion.feedback",
+                            depleted,
+                            String.format("%.0f%%", machine.starPrimaryFraction() * 100.0))));
+            } else if (machine.starSize() <= 0.0) {
+                player.addChatMessage(
+                    new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_star_depletion.no_star")));
+            } else {
+                player.addChatMessage(
+                    new ChatComponentText(
+                        StatCollector.translateToLocal("tt.voidcraft_debug_star_depletion.depleted")));
+            }
+        });
+        TecTech.LOGGER.info("Star depletion debug item registered");
+
+        // Debug tools (item → effect registry): right-clicked on the UnstableSolarSystem machine — reveal random
+        // ripple points, set the star's size to the injector's cap, set the remaining lifespan, or force the
+        // star's expiry now (no resource cost).
+        ItemVoidcraftDebugStarControl.run();
+        VoidcraftDebugEffectRegistry.register(
+            ItemVoidcraftDebugStarControl.RIPPLE_SCAN,
+            (machine, player) -> debugRippleScanEffect(player, machine));
+        VoidcraftDebugEffectRegistry.register(
+            ItemVoidcraftDebugStarControl.STAR_SIZE_MAX,
+            (machine, player) -> debugStarSizeEffect(player, machine));
+        VoidcraftDebugEffectRegistry.register(
+            ItemVoidcraftDebugStarControl.LIFESPAN,
+            (machine, player) -> debugLifespanEffect(player, machine));
+        VoidcraftDebugEffectRegistry.register(
+            ItemVoidcraftDebugStarControl.FORCE_EXPIRY,
+            (machine, player) -> debugForceExpiryEffect(player, machine));
+        TecTech.LOGGER.info("Star control debug items registered");
+
         // Star + planet DEFINITION catalogs (the registration-based passes): populate the bare-JVM registries that
         // USSPlanets.generate / USSPlanets.sampleStarSize / USSRipples.generate / USSShipCargo consult for planet
         // count, planet pools, star size ranges and ripple ranges. MUST run before any USS is ignited, scanned, or
@@ -181,6 +261,187 @@ public final class VoidcraftLoader {
         USSStarCatalog.registerAll();
         USSPlanetCatalog.registerAll();
         TecTech.LOGGER.info("Voidcraft star + planet catalogs registered");
+    }
+
+    /**
+     * One infrastructure-shell debug effect: injects 10% of the shell's capacity into the matching shell (the
+     * star's shell for the Injector / Lens, the next ripple's shell for the Stabilizer — which the effect
+     * reveals) and reports the result to the player.
+     *
+     * @param player  the player who right-clicked
+     * @param machine the machine right-clicked
+     * @param type    the infrastructure shell's type
+     * @param langKey the debug item's lang key prefix (name stem)
+     */
+    private static void debugInfraShellInject(EntityPlayer player, MTEUnstableSolarSystem machine, int type,
+        String langKey) {
+        boolean starShell = type != USSInfraBuild.STABILIZER;
+        int index = starShell ? -1 : machine.debugStabilizerTargetRipple();
+        long capacity = starShell ? machine.infraShellCapacity(type, USSInfraBuild.TARGET_STAR, -1)
+            : machine.infraShellCapacity(type, USSInfraBuild.TARGET_RIPPLE, index);
+        if (capacity <= 0L) {
+            // 0 capacity = no ignited star (infraShellCapacity is 0 unless the star is ignited).
+            player.addChatMessage(
+                new ChatComponentText(
+                    StatCollector.translateToLocal("tt.voidcraft_debug_" + langKey + "_shell.no_star")));
+            return;
+        }
+        if (!starShell && index < 0) {
+            // Stabilizer with an ignited star but no next ripple: every ripple's shell is already full.
+            player.addChatMessage(
+                new ChatComponentText(
+                    StatCollector.translateToLocal("tt.voidcraft_debug_" + langKey + "_shell.saturated")));
+            return;
+        }
+        long added = starShell
+            ? machine.debugAddStarShellUnits(type, ItemVoidcraftDebugInfraShell.injectAmountFor(capacity))
+            : machine.debugAddStabilizerToNextRipple(ItemVoidcraftDebugInfraShell.injectAmountFor(capacity));
+        if (added > 0L) {
+            long count = starShell ? machine.infraShellCount(type, USSInfraBuild.TARGET_STAR, -1)
+                : machine.infraShellCount(type, USSInfraBuild.TARGET_RIPPLE, index);
+            if (starShell) {
+                player.addChatMessage(
+                    new ChatComponentText(
+                        StatCollector.translateToLocalFormatted(
+                            "tt.voidcraft_debug_" + langKey + "_shell.feedback",
+                            added,
+                            count,
+                            capacity)));
+            } else {
+                player.addChatMessage(
+                    new ChatComponentText(
+                        StatCollector.translateToLocalFormatted(
+                            "tt.voidcraft_debug_" + langKey + "_shell.feedback",
+                            index,
+                            added,
+                            count,
+                            capacity)));
+            }
+        } else {
+            player.addChatMessage(
+                new ChatComponentText(
+                    StatCollector.translateToLocal("tt.voidcraft_debug_" + langKey + "_shell.saturated")));
+        }
+    }
+
+    /**
+     * The Stellar Injector's debug effect: while the star's shell is not fully built, one click injects 10% of the
+     * shell's capacity (the usual shell debug path); once the shell is fully built, each click runs ONE cycle of
+     * the size step — the star's size jumps one step toward the 1.5× cap (the injector's buffer is bypassed; the
+     * debug item is free).
+     *
+     * @param player  the player who right-clicked
+     * @param machine the machine right-clicked
+     */
+    private static void debugInjectorEffect(EntityPlayer player, MTEUnstableSolarSystem machine) {
+        long capacity = machine.infraShellCapacity(USSInfraBuild.INJECTOR, USSInfraBuild.TARGET_STAR, -1);
+        if (capacity <= 0L) {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_injector_shell.no_star")));
+            return;
+        }
+        if (machine.infraShellCount(USSInfraBuild.INJECTOR, USSInfraBuild.TARGET_STAR, -1) < capacity) {
+            debugInfraShellInject(player, machine, USSInfraBuild.INJECTOR, "injector");
+            return;
+        }
+        double newSize = machine.debugStepInjector();
+        if (newSize > 0.0) {
+            player.addChatMessage(
+                new ChatComponentText(
+                    StatCollector.translateToLocalFormatted(
+                        "tt.voidcraft_debug_injector_shell.step",
+                        String.format("%.2f", newSize),
+                        String.format("%.2f", machine.starSizeCap()))));
+        } else {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_injector_shell.at_cap")));
+        }
+    }
+
+    /**
+     * The ripple scanner's debug effect: reveals up to {@link ItemVoidcraftDebugStarControl#RIPPLES_PER_CLICK}
+     * random unrevealed ripple points and reports the result to the player.
+     *
+     * @param player  the player who right-clicked
+     * @param machine the machine right-clicked
+     */
+    private static void debugRippleScanEffect(EntityPlayer player, MTEUnstableSolarSystem machine) {
+        int revealed = machine.debugScanRandomRipples(ItemVoidcraftDebugStarControl.RIPPLES_PER_CLICK);
+        if (revealed > 0) {
+            player.addChatMessage(
+                new ChatComponentText(
+                    StatCollector.translateToLocalFormatted(
+                        "tt.voidcraft_debug_ripple_scan.feedback",
+                        revealed,
+                        machine.rippleRevealedCount(),
+                        machine.ripplePointCount())));
+        } else if (machine.starSize() <= 0.0) {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_ripple_scan.no_star")));
+        } else {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_ripple_scan.revealed")));
+        }
+    }
+
+    /**
+     * The star-size setter's debug effect: sets the star's size to the injector's cap and reports the result to
+     * the player.
+     *
+     * @param player  the player who right-clicked
+     * @param machine the machine right-clicked
+     */
+    private static void debugStarSizeEffect(EntityPlayer player, MTEUnstableSolarSystem machine) {
+        double newSize = machine.debugSetStarSizeToCap();
+        if (newSize > 0.0) {
+            player.addChatMessage(
+                new ChatComponentText(
+                    StatCollector.translateToLocalFormatted(
+                        "tt.voidcraft_debug_star_size.feedback",
+                        String.format("%.2f", newSize))));
+        } else if (machine.starSize() <= 0.0) {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_star_size.no_star")));
+        } else {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_star_size.at_cap")));
+        }
+    }
+
+    /**
+     * The lifespan setter's debug effect: sets the star's remaining lifespan to
+     * {@link ItemVoidcraftDebugStarControl#LIFESPAN_SECONDS} seconds and reports the result to the player.
+     *
+     * @param player  the player who right-clicked
+     * @param machine the machine right-clicked
+     */
+    private static void debugLifespanEffect(EntityPlayer player, MTEUnstableSolarSystem machine) {
+        long ticks = machine.debugSetLifespanTicks(ItemVoidcraftDebugStarControl.LIFESPAN_SECONDS * 20L);
+        if (ticks > 0L) {
+            player.addChatMessage(
+                new ChatComponentText(
+                    StatCollector.translateToLocalFormatted("tt.voidcraft_debug_lifespan.feedback", ticks / 20L)));
+        } else {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_lifespan.no_star")));
+        }
+    }
+
+    /**
+     * The expiry trigger's debug effect: forces the star's expiry on the spot (the expiry pipeline runs
+     * immediately) and reports the result to the player.
+     *
+     * @param player  the player who right-clicked
+     * @param machine the machine right-clicked
+     */
+    private static void debugForceExpiryEffect(EntityPlayer player, MTEUnstableSolarSystem machine) {
+        if (machine.debugForceExpiry()) {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_force_expiry.feedback")));
+        } else {
+            player.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("tt.voidcraft_debug_force_expiry.no_star")));
+        }
     }
 
     // endregion
@@ -198,8 +459,8 @@ public final class VoidcraftLoader {
         // unregistered containers and NPE at render time.
         VoidcraftTextures.resolveAll();
 
-        // The two full-block MTEs (machine block) — controller (id 32058) + frame (id 32060); everything
-        // else is a cover
+        // The full-block MTEs (machine block) — controller (id 32058) + the four frame tiers (id 32060 / 32076 /
+        // 32077 / 32078); everything else is a cover
         registerComponentMTEs();
 
         // The multiblock components (GT multiblocks; machine-block MTEs, id = 32058 + catalog meta)
@@ -273,8 +534,26 @@ public final class VoidcraftLoader {
             VoidcraftComponent.FRAME.getDisplayName(),
             VoidcraftComponent.FRAME);
         COMPONENT_ENTRIES[VoidcraftComponent.FRAME.getMeta()].set(frame.getStackForm(1L));
-        TecTech.LOGGER
-            .info("Voidcraft full-block MTEs registered (controller + frame only — all other functions are covers)");
+        MTEVoidcraftComponent frame2 = new MTEVoidcraftComponent(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Frame2.ID,
+            "voidcraft_component_frame_2",
+            VoidcraftComponent.FRAME_2.getDisplayName(),
+            VoidcraftComponent.FRAME_2);
+        COMPONENT_ENTRIES[VoidcraftComponent.FRAME_2.getMeta()].set(frame2.getStackForm(1L));
+        MTEVoidcraftComponent frame3 = new MTEVoidcraftComponent(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Frame3.ID,
+            "voidcraft_component_frame_3",
+            VoidcraftComponent.FRAME_3.getDisplayName(),
+            VoidcraftComponent.FRAME_3);
+        COMPONENT_ENTRIES[VoidcraftComponent.FRAME_3.getMeta()].set(frame3.getStackForm(1L));
+        MTEVoidcraftComponent frame4 = new MTEVoidcraftComponent(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftComponent_Frame4.ID,
+            "voidcraft_component_frame_4",
+            VoidcraftComponent.FRAME_4.getDisplayName(),
+            VoidcraftComponent.FRAME_4);
+        COMPONENT_ENTRIES[VoidcraftComponent.FRAME_4.getMeta()].set(frame4.getStackForm(1L));
+        TecTech.LOGGER.info(
+            "Voidcraft full-block MTEs registered (controller + the four frame tiers — all other functions are covers)");
     }
 
     private static void registerMultiblockMTEs() {
@@ -321,8 +600,67 @@ public final class VoidcraftLoader {
             VoidcraftComponent.SATELLITE_LAUNCHER_PANEL);
         COMPONENT_ENTRIES[VoidcraftComponent.SATELLITE_LAUNCHER_PANEL.getMeta()].set(launcherPanel.getStackForm(1L));
         VoidcraftMultiblockRegistry.register(launcher);
-        TecTech.LOGGER
-            .info("Voidcraft multiblock components registered (Mining Array 3x3x2, Satellite Launcher 7x7x12)");
+
+        // The star-infrastructure structures: the Stellar Injector (7x7x12), Continuum Stabilizer (5x5x7), Stellar
+        // Lens (7x7x12) and Stabilization Matrix (7x7x10), each a controller + one casing. Station-only, like the
+        // launcher: digitized by the Voidbase Assembler into a base blueprint, rejected from ship builds; the
+        // capability each provides (the injector / stabilizer / lens / matrix) is an internal of the Unstable
+        // Solar System, contributed by the base that carries it.
+        MTEVoidcraftStellarInjector injector = new MTEVoidcraftStellarInjector(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftStellarInjector.ID,
+            "multimachine.em.voidcraft_stellar_injector",
+            VoidcraftComponent.STELLAR_INJECTOR.getDisplayName());
+        COMPONENT_ENTRIES[VoidcraftComponent.STELLAR_INJECTOR.getMeta()].set(injector.getStackForm(1L));
+        MTEVoidcraftMultiblockCasing injectorCasing = new MTEVoidcraftMultiblockCasing(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftStellarInjectorCasing.ID,
+            "voidcraft_stellar_injector_casing",
+            VoidcraftComponent.STELLAR_INJECTOR_CASING.getDisplayName(),
+            VoidcraftComponent.STELLAR_INJECTOR_CASING);
+        COMPONENT_ENTRIES[VoidcraftComponent.STELLAR_INJECTOR_CASING.getMeta()].set(injectorCasing.getStackForm(1L));
+        VoidcraftMultiblockRegistry.register(injector);
+
+        MTEVoidcraftContinuumStabilizer stabilizer = new MTEVoidcraftContinuumStabilizer(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftContinuumStabilizer.ID,
+            "multimachine.em.voidcraft_continuum_stabilizer",
+            VoidcraftComponent.CONTINUUM_STABILIZER.getDisplayName());
+        COMPONENT_ENTRIES[VoidcraftComponent.CONTINUUM_STABILIZER.getMeta()].set(stabilizer.getStackForm(1L));
+        MTEVoidcraftMultiblockCasing stabilizerCasing = new MTEVoidcraftMultiblockCasing(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftContinuumStabilizerCasing.ID,
+            "voidcraft_continuum_stabilizer_casing",
+            VoidcraftComponent.CONTINUUM_STABILIZER_CASING.getDisplayName(),
+            VoidcraftComponent.CONTINUUM_STABILIZER_CASING);
+        COMPONENT_ENTRIES[VoidcraftComponent.CONTINUUM_STABILIZER_CASING.getMeta()]
+            .set(stabilizerCasing.getStackForm(1L));
+        VoidcraftMultiblockRegistry.register(stabilizer);
+
+        MTEVoidcraftStellarLens lens = new MTEVoidcraftStellarLens(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftStellarLens.ID,
+            "multimachine.em.voidcraft_stellar_lens",
+            VoidcraftComponent.STELLAR_LENS.getDisplayName());
+        COMPONENT_ENTRIES[VoidcraftComponent.STELLAR_LENS.getMeta()].set(lens.getStackForm(1L));
+        MTEVoidcraftMultiblockCasing lensCasing = new MTEVoidcraftMultiblockCasing(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftStellarLensCasing.ID,
+            "voidcraft_stellar_lens_casing",
+            VoidcraftComponent.STELLAR_LENS_CASING.getDisplayName(),
+            VoidcraftComponent.STELLAR_LENS_CASING);
+        COMPONENT_ENTRIES[VoidcraftComponent.STELLAR_LENS_CASING.getMeta()].set(lensCasing.getStackForm(1L));
+        VoidcraftMultiblockRegistry.register(lens);
+
+        MTEVoidcraftStabilizationMatrix matrix = new MTEVoidcraftStabilizationMatrix(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftStabilizationMatrix.ID,
+            "multimachine.em.voidcraft_stabilization_matrix",
+            VoidcraftComponent.STABILIZATION_MATRIX.getDisplayName());
+        COMPONENT_ENTRIES[VoidcraftComponent.STABILIZATION_MATRIX.getMeta()].set(matrix.getStackForm(1L));
+        MTEVoidcraftMultiblockCasing matrixCasing = new MTEVoidcraftMultiblockCasing(
+            gregtech.api.enums.MetaTileEntityIDs.VoidcraftStabilizationMatrixCasing.ID,
+            "voidcraft_stabilization_matrix_casing",
+            VoidcraftComponent.STABILIZATION_MATRIX_CASING.getDisplayName(),
+            VoidcraftComponent.STABILIZATION_MATRIX_CASING);
+        COMPONENT_ENTRIES[VoidcraftComponent.STABILIZATION_MATRIX_CASING.getMeta()].set(matrixCasing.getStackForm(1L));
+        VoidcraftMultiblockRegistry.register(matrix);
+
+        TecTech.LOGGER.info(
+            "Voidcraft multiblock components registered (Mining Array 3x3x2, Satellite Launcher 7x7x12, Stellar Injector 7x7x12, Continuum Stabilizer 5x5x7, Stellar Lens 7x7x12, Stabilization Matrix 7x7x10)");
     }
 
     private static void registerCovers() {
@@ -339,6 +677,24 @@ public final class VoidcraftLoader {
                     .build());
         }
         TecTech.LOGGER.info("Voidcraft cover placements registered");
+    }
+
+    // endregion
+
+    // region fuel fluids (postLoad)
+
+    /**
+     * The fuel fluids (the engine tanks + the reactor launch fees): the POST-init phase — BartWorks registers its
+     * Werkstoff fluids (Xenon) during its own init, which is declared {@code after:tectech}, so the load phase runs
+     * too early (WerkstoffLoader.fluids is still empty there). Both sides — the tooltips resolve fluid names
+     * client-side.
+     */
+    public static void postLoad() {
+        if (!VoidcraftConfig.enabled) {
+            return;
+        }
+        VoidcraftFuel.init();
+        TecTech.LOGGER.info("Voidcraft fuel fluids resolved");
     }
 
     // endregion

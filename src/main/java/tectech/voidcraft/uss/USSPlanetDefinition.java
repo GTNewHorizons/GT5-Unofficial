@@ -63,6 +63,9 @@ public final class USSPlanetDefinition {
     /** The star types this planet may orbit (never empty). */
     private final List<USSStarType> allowedStarTypes;
 
+    /** The orbit band this planet spawns in (its orbit occupies one of the band's slots). */
+    private final USSOrbitBand orbitBand;
+
     /** The available ores (never null; may be empty). */
     private final List<USSPlanetOre> ores;
 
@@ -77,6 +80,7 @@ public final class USSPlanetDefinition {
         this.sizeMin = b.sizeMin;
         this.sizeMax = b.sizeMax;
         this.allowedStarTypes = Collections.unmodifiableList(new ArrayList<>(b.allowedStarTypes));
+        this.orbitBand = b.orbitBand;
         this.ores = Collections.unmodifiableList(new ArrayList<>(b.ores));
         this.fluids = Collections.unmodifiableList(new ArrayList<>(b.fluids));
     }
@@ -167,6 +171,15 @@ public final class USSPlanetDefinition {
     }
 
     /**
+     * @return the orbit band this planet spawns in — its orbit occupies one of the band's slots (see
+     *         {@link USSOrbitBand}): volcanic/hot worlds the near band, habitable/mid worlds the medium band, gas
+     *         giants the far band
+     */
+    public USSOrbitBand getOrbitBand() {
+        return orbitBand;
+    }
+
+    /**
      * @return the available ores (unmodifiable, never null; may be empty).
      */
     public List<USSPlanetOre> getOres() {
@@ -194,6 +207,8 @@ public final class USSPlanetDefinition {
             + sizeMax
             + ", stars="
             + allowedStarTypes
+            + ", band="
+            + orbitBand
             + ", ores="
             + ores.size()
             + ", fluids="
@@ -213,6 +228,7 @@ public final class USSPlanetDefinition {
         private float sizeMin = 0.35f;
         private float sizeMax = 0.75f;
         private final List<USSStarType> allowedStarTypes = new ArrayList<>();
+        private USSOrbitBand orbitBand = USSOrbitBand.MEDIUM;
         private final List<USSPlanetOre> ores = new ArrayList<>();
         private final List<Materials> fluids = new ArrayList<>();
 
@@ -296,6 +312,17 @@ public final class USSPlanetDefinition {
                         this.allowedStarTypes.add(starType);
                     }
                 }
+            }
+            return this;
+        }
+
+        /**
+         * @param orbitBand the orbit band this planet spawns in (null keeps the current band)
+         * @return this builder
+         */
+        public Builder orbitBand(USSOrbitBand orbitBand) {
+            if (orbitBand != null) {
+                this.orbitBand = orbitBand;
             }
             return this;
         }

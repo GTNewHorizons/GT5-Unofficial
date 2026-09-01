@@ -94,6 +94,16 @@ public final class USSProgramDefaults {
     }
 
     /**
+     * Stabilizer chip: a single STABILIZE window at the default length (a Voidbase runs it at its anchor — no MOVE
+     * legs; the window is the node's {@code ticks} param).
+     */
+    public static USSProgram stabilizer() {
+        NBTTagCompound p = new NBTTagCompound();
+        p.setLong(USSCommandStabilize.PARAM_TICKS, USSConstants.STABILIZE_DEFAULT_TICKS);
+        return USSProgram.of(Arrays.asList(USSNode.command(USSCommand.STABILIZE, p)));
+    }
+
+    /**
      * Derive the default chip from the covers mounted on the controller block (user spec: "default program chips
      * that apply a basic program to the controller when right-clicking the controller. For miner, starlifter,
      * explorer"). The controller block's covers declare what it IS:

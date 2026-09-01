@@ -2124,7 +2124,22 @@ public enum MetaTileEntityIDs {
     // The Satellite Rail Launcher (station multiblock, 7x7x12): controller + its two casing blocks.
     VoidcraftSatelliteLauncherController(32073),
     VoidcraftSatelliteLauncherCasing(32074),
-    VoidcraftSatelliteLauncherPanel(32075);
+    VoidcraftSatelliteLauncherPanel(32075),
+    // Frame-tier hull blocks (tier 2 / 3 / 4): placeable full blocks, id = 32058 + catalog meta (18 / 19 / 20).
+    VoidcraftComponent_Frame2(32076),
+    VoidcraftComponent_Frame3(32077),
+    VoidcraftComponent_Frame4(32078),
+    // The star-infrastructure structures (the world-only Stellar Injector / Continuum Stabilizer / Stellar Lens +
+    // the station-only Stabilization Matrix): controller + one casing per structure, id = 32058 + catalog meta
+    // (27..34).
+    VoidcraftStellarInjector(32085),
+    VoidcraftStellarInjectorCasing(32086),
+    VoidcraftContinuumStabilizer(32087),
+    VoidcraftContinuumStabilizerCasing(32088),
+    VoidcraftStellarLens(32089),
+    VoidcraftStellarLensCasing(32090),
+    VoidcraftStabilizationMatrix(32091),
+    VoidcraftStabilizationMatrixCasing(32092);
 
     public final int ID;
 

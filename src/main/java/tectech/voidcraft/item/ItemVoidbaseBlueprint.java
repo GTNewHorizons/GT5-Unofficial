@@ -37,15 +37,15 @@ import gregtech.api.util.GTUtility;
 import tectech.Reference;
 import tectech.voidcraft.gui.VoidcraftProgramGui;
 import tectech.voidcraft.gui.VoidcraftProgramItemSource;
-import tectech.voidcraft.machine.MTEVoidcraftGateway;
 import tectech.voidcraft.ship.VoidcraftBlueprint;
 import tectech.voidcraft.ship.VoidcraftNbt;
+import tectech.voidcraft.uss.USSItemCargo;
 
 /**
  * The digitized Voidbase - a single, non-stackable, REUSABLE item carrying the station blueprint grid (up to
  * 15x15x15), the derived stats, the parts list and the controller program. The Voidbase Assembler outputs it;
- * the Unstable Solar System gateway keeps it in its blueprint slot and copies the blueprint data plus a parts
- * loadout into each Constructor it launches (the item itself is never consumed - one blueprint builds as many
+ * the Unstable Solar System gateway keeps it in its blueprint slot and copies the blueprint data into each
+ * Constructor it launches (the item itself is never consumed - one blueprint builds as many
  * stations as the player has parts for).
  *
  * <p>
@@ -177,7 +177,7 @@ public class ItemVoidbaseBlueprint extends Item implements IGuiHolder<PlayerInve
             } else {
                 aList.add(EnumChatFormatting.AQUA + translateToLocal("item.tm.voidbase_blueprint.parts"));
                 for (Map.Entry<String, Long> entry : components.entrySet()) {
-                    ItemStack component = MTEVoidcraftGateway.partItem(entry.getKey());
+                    ItemStack component = USSItemCargo.stackOf(entry.getKey(), 1L);
                     String label = component != null ? component.getDisplayName() : entry.getKey();
                     aList.add(
                         EnumChatFormatting.GRAY + NumberFormatUtil.formatNumber(entry.getValue())

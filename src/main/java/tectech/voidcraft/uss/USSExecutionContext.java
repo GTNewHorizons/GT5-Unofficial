@@ -160,6 +160,31 @@ public interface USSExecutionContext {
     boolean transferTick(int commandId);
 
     /**
+     * Begin a STABILIZE window on the executor (the matrix's activation command — a Voidbase station
+     * side-effect, polled like CONSTRUCT / REPAIR): the game side runs the eligibility gates (the base's
+     * blueprint carries a STABILIZATION_MATRIX, the base is anchored to a revealed ripple, the Continuum
+     * Stabilizer on the anchor ripple is fully built, and at least one Field Generator is on board) and
+     * arms the timed window.
+     *
+     * @param ticks the window length in machine ticks (the command node's {@code ticks} param, already clamped
+     *              to the positive range)
+     * @return true when the window started (the command goes RUNNING and the executor polls {@link
+     *         #stabilizeTick()}) / false when it cannot start (the command reports FAILED and SKIPs)
+     */
+    boolean stabilizeStart(long ticks);
+
+    /**
+     * One machine tick of the in-flight STABILIZE window (polled while the command is in flight): the base pays
+     * the per-tick matrix draw from its energy buffer (a shortfall stalls the window — the duration, the
+     * consumption countdown and the consumption all freeze) and every interval consumes one Field Generator
+     * from its hold (the UXV tier over the UMV tier; the window's weight is the last consumed tier).
+     *
+     * @return true when the window is still running (keep polling) / false when it is over (the window ran out
+     *         or no session is in flight anymore - the command reports DONE)
+     */
+    boolean stabilizeTick();
+
+    /**
      * A framework log line (the game side: LOGGER; tests: a capturing list).
      *
      * @param message the line (never null)

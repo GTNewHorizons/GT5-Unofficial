@@ -93,6 +93,15 @@ public class TileEntityVoidcraftShip extends TileEntity {
     public static final String TAG_RIPPLES = "vc_ripples";
 
     /**
+     * System tag (the infrastructure-builder pass): the RIPPLE-scale infrastructure shells — one entry per revealed
+     * spacetime ripple carrying a built Stabilizer shell. Each entry is {@code [x, y, z, count, capacity]} in
+     * fleet-anchor blocks (the same frame the revealed ripples ride in). The client renders each as a small gray /
+     * dark-purple triangle shell at a fill of count/capacity. Only ripples that are revealed (scanned) and carry a
+     * built shell ride here (hidden ripples + shells without a revealed ripple stay absent).
+     */
+    public static final String TAG_RIPPLE_INFRA = "vc_ripple_infra";
+
+    /**
      * System tag: the system's GATEWAY positions — each entry is {@code [x, y, z]} in fleet-anchor blocks, one per
      * gateway machine that is locked onto this USS (the MTE registers them on its launch-target scan). The client
      * renders each as the space-dome gateway (gray tube + cyan event plane) — the gateways are a permanent part of
@@ -170,6 +179,16 @@ public class TileEntityVoidcraftShip extends TileEntity {
     public static final String TAG_TRANSFER_TARGET = "vc_tr_tgt";
 
     /**
+     * The transfer's target is the STAR's Stellar Injector cargo buffer (not a rendered ship): the client draws
+     * the beam's endpoint at the star center.
+     */
+    public static final String TAG_TRANSFER_STAR = "vc_tr_star";
+
+    /** The USS virtual orbit clock + the world tick it was sampled at (0 = not set — legacy world-time clock). */
+    public static final String TAG_ORBIT_TIME = "vc_orbit_time";
+    public static final String TAG_ORBIT_SYNC = "vc_orbit_sync";
+
+    /**
      * Render bounding-box half-extent (covers the flight path from gateway to hover point + swarm spread): the
      * gateway scans up to 32 blocks from the USS center and the anchor sits 16 further behind it — 64 covers the
      * worst case (48) plus margin, so the fleet TE never drops out of the render list while the player stands at
@@ -184,9 +203,22 @@ public class TileEntityVoidcraftShip extends TileEntity {
     private final List<TileEntityEyeOfHarmony.PlanetSpec> systemPlanets = new ArrayList<TileEntityEyeOfHarmony.PlanetSpec>();
     private float starSize = 0.4f;
 
+    /**
+     * The USS virtual orbit clock (machine ticks) + the world tick it was sampled at (0 = not set — the client
+     * falls back to the world clock): the same pair the star render TE carries, so the ships' hover math and the
+     * star's planet orbits run on ONE clock.
+     */
+    private long ussOrbitTime = 0;
+    private long ussSyncedWorldTime = 0;
+
     // The Explorer pass: the revealed ripple positions ([x, y, z] in fleet-anchor blocks) — the client renders each
     // as a pulsating dark-blue transparent triangle. Only revealed ripples are present (hidden + non-ripple absent).
     private final List<float[]> revealedRipples = new ArrayList<float[]>();
+
+    // The infrastructure-builder pass: the ripple-scale infrastructure shells ([x, y, z, count, capacity] in
+    // fleet-anchor blocks) — the client renders each as a small gray / dark-purple triangle shell at a fill of
+    // count/capacity. Only revealed ripples carrying a built shell are present.
+    private final List<float[]> rippleInfraShells = new ArrayList<float[]>();
 
     // The system's gateways ([x, y, z] in fleet-anchor blocks, one per locked-on gateway machine) — the client
     // renders each as the space-dome gateway, always (the gateways render even with an empty fleet).
@@ -274,6 +306,22 @@ public class TileEntityVoidcraftShip extends TileEntity {
         return starSize;
     }
 
+    /** @return the USS virtual orbit clock (0 = not set — the client uses the world clock). */
+    public long getUssOrbitTime() {
+        return ussOrbitTime;
+    }
+
+    /** @return the world tick the virtual orbit clock was last sampled at (0 when unset). */
+    public long getUssSyncedWorldTime() {
+        return ussSyncedWorldTime;
+    }
+
+    /** Install the USS virtual orbit clock pair (0/0 clears it back to the legacy world-time clock). */
+    public void setUssOrbitTime(long orbitTime, long syncedWorldTime) {
+        this.ussOrbitTime = orbitTime;
+        this.ussSyncedWorldTime = syncedWorldTime;
+    }
+
     /**
      * Install the revealed spacetime-ripple positions (the Explorer pass). Each entry is {@code [x, y, z]} in
      * fleet-anchor blocks. The client renders each as a pulsating dark-blue transparent triangle.
@@ -294,6 +342,30 @@ public class TileEntityVoidcraftShip extends TileEntity {
      */
     public List<float[]> getRevealedRipples() {
         return Collections.unmodifiableList(revealedRipples);
+    }
+
+    /**
+     * Install the ripple-scale infrastructure shells (the infrastructure-builder pass). Each entry is
+     * {@code [x, y, z, count, capacity]} in fleet-anchor blocks. The client renders each as a small triangle shell
+     * at a fill of count/capacity.
+     */
+    public void setRippleInfraShells(List<float[]> shells) {
+        rippleInfraShells.clear();
+        if (shells != null) {
+            for (float[] s : shells) {
+                if (s != null && s.length == 5) {
+                    rippleInfraShells.add(s);
+                }
+            }
+        }
+    }
+
+    /**
+     * @return the ripple-scale infrastructure shells ({@code [x, y, z, count, capacity]} in fleet-anchor blocks),
+     *         in field order (never null)
+     */
+    public List<float[]> getRippleInfraShells() {
+        return Collections.unmodifiableList(rippleInfraShells);
     }
 
     /**
@@ -408,6 +480,11 @@ public class TileEntityVoidcraftShip extends TileEntity {
         }
         compound.setTag(TAG_SYSTEM_PLANETS, planets);
         compound.setFloat(TAG_STAR_SIZE, starSize);
+        // The USS virtual orbit clock (absent when not set — the legacy world-time clock).
+        if (ussOrbitTime > 0) {
+            compound.setLong(TAG_ORBIT_TIME, ussOrbitTime);
+            compound.setLong(TAG_ORBIT_SYNC, ussSyncedWorldTime);
+        }
         // The Explorer pass: the revealed ripple positions (one compound per [x, y, z]).
         if (!revealedRipples.isEmpty()) {
             NBTTagList rippleList = new NBTTagList();
@@ -419,6 +496,21 @@ public class TileEntityVoidcraftShip extends TileEntity {
                 rippleList.appendTag(entry);
             }
             compound.setTag(TAG_RIPPLES, rippleList);
+        }
+        // The infrastructure-builder pass: the ripple-scale infrastructure shells (one compound per [x, y, z,
+        // count, capacity]).
+        if (!rippleInfraShells.isEmpty()) {
+            NBTTagList infraList = new NBTTagList();
+            for (float[] s : rippleInfraShells) {
+                NBTTagCompound entry = new NBTTagCompound();
+                entry.setFloat("x", s[0]);
+                entry.setFloat("y", s[1]);
+                entry.setFloat("z", s[2]);
+                entry.setLong("count", (long) s[3]);
+                entry.setLong("cap", (long) s[4]);
+                infraList.appendTag(entry);
+            }
+            compound.setTag(TAG_RIPPLE_INFRA, infraList);
         }
         // The system's gateways (one compound per [x, y, z] in fleet-anchor blocks) — always ride so the gateways
         // render even with an empty fleet.
@@ -488,6 +580,13 @@ public class TileEntityVoidcraftShip extends TileEntity {
         if (starSize <= 0) {
             starSize = 0.4f;
         }
+        // The USS virtual orbit clock: restore it, or clear a stale one when a legacy / cold-USS NBT arrives over
+        // the description-packet wire.
+        if (compound.hasKey(TAG_ORBIT_TIME)) {
+            setUssOrbitTime(compound.getLong(TAG_ORBIT_TIME), compound.getLong(TAG_ORBIT_SYNC));
+        } else if (ussOrbitTime > 0) {
+            setUssOrbitTime(0, 0);
+        }
         // The Explorer pass: the revealed ripple positions.
         revealedRipples.clear();
         NBTTagList ripples = compound.getTagList(TAG_RIPPLES, 10);
@@ -497,6 +596,19 @@ public class TileEntityVoidcraftShip extends TileEntity {
                 continue;
             }
             revealedRipples.add(new float[] { tag.getFloat("x"), tag.getFloat("y"), tag.getFloat("z") });
+        }
+        // The infrastructure-builder pass: the ripple-scale infrastructure shells (absent tag = none, so a
+        // legacy / no-shell NBT clears a stale list over the description-packet wire).
+        rippleInfraShells.clear();
+        NBTTagList infra = compound.getTagList(TAG_RIPPLE_INFRA, 10);
+        for (int i = 0; i < infra.tagCount(); i++) {
+            NBTTagCompound tag = infra.getCompoundTagAt(i);
+            if (tag == null) {
+                continue;
+            }
+            rippleInfraShells.add(
+                new float[] { tag.getFloat("x"), tag.getFloat("y"), tag.getFloat("z"), (float) tag.getLong("count"),
+                    (float) tag.getLong("cap") });
         }
         // The system's gateways (absent tag = none).
         gateways.clear();

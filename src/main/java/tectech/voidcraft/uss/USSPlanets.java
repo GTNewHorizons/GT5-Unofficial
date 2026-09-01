@@ -2,6 +2,8 @@ package tectech.voidcraft.uss;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,21 +28,26 @@ import gregtech.api.enums.Materials;
  * <p>
  * <strong>Shape of a system.</strong> A RANDOM planet count — PASS 22 (user: "planet count randomized between
  * 3-9"): {@code MIN_PLANETS_PER_SYSTEM}…{@code MAX_PLANETS_PER_SYSTEM} (3–9), drawn as the FIRST rng call so
- * (star type, seed) still yields exactly one fixed system. Types are shuffled WITHOUT replacement from the star
- * type's pool ({@link USSPlanetType#pool(USSStarType)} — 4 types) and walked in order: the first
- * {@code min(count, 4)} planets are all different types, and only systems larger than the pool wrap and repeat
- * (a 9-planet system has at most one type twice). Drawing with replacement (the pass-3 behavior) put duplicate
- * types in 62.5% of systems — same-colored stacked spheres that read as "one planet" in the infodata. Each planet
- * gets distinct orbital parameters — pass 13 (user: "the planets are still very close to the star"): distance is
- * randomized from MIN_DISTANCE (3 blocks from the star) all the way to the system's edge leaving 4 blocks from
- * the shell edge (pass 14, user: "ships exiting the dome isn't good" — the 2-block margin was smaller than hover
- * + planet half + spread = 2.875; MAX_DISTANCE = USSConstants.SPACE_SHELL_RADIUS − 4 = 23.1, dome 27.1), clear
- * of the star surface ≤ 1.9; rendered scale 0.175–0.66 across the texture tiers (the definition's size range
- * 0.35–1.32 reduced by PLANET_RENDER_SCALE) and orbit/spin speeds 0.5–1.5. The
- * distance range is split into COUNT bands (inner → outer), so a 9-planet system still spreads across the dome.
- * Pass 11
- * (user spec):
- * all orbits sit on the SAME horizontal (xz) plane like a real solar system, each inclined only 0–5° from it
+ * (star type, seed) still yields exactly one fixed system.
+ *
+ * <p>
+ * <strong>Orbits as fixed band slots.</strong> The orbit radius is NOT a random draw — a randomized distance let
+ * two planets drift onto nearly the same radius and overlap. The system's orbits are the fixed slots of
+ * {@link USSOrbitBand}: NEAR 2 slots (3.0–6.0), MEDIUM 6 slots (7.0–17.0), FAR 3 slots (18.0–23.1) — 11 slots,
+ * each at a predetermined radius (the band's range split into equal-width slots, a 1-block gap between the
+ * bands' ranges). A planet's registered band ({@link USSPlanetDefinition#getOrbitBand()}) decides where it can
+ * spawn — volcanic planets orbit close to the star, habitable worlds in the middle, gas giants at the edge. The
+ * generator shuffles the 11 slots, takes one per planet (the count, capped at the slot total when a star wants
+ * more planets than slots), sorts the chosen slots inner → outer, and fills each with a type drawn from ITS
+ * band's shuffled pool. Invariants: no two planets share a slot, a band never hosts more planets than it has
+ * slots, every planet orbits in its type's band, and the radius is a pure function of (band, slot) — so the
+ * orbits can never overlap. The bands span the legacy distance range: inner edge {@link #MIN_DISTANCE}
+ * (3 blocks, clear of the star surface) and outer edge {@link #MAX_DISTANCE} (pass 14, user: "ships exiting the
+ * dome isn't good" — 4 blocks of margin, which covers the worst-case ship extension (hover 0.5 + planet half
+ * 0.375 + spread 2.0 = 2.875); MAX_DISTANCE = USSConstants.SPACE_SHELL_RADIUS − 4 = 23.1, dome 27.1). Each
+ * planet gets rendered scale 0.175–0.66 across the texture tiers (the definition's size range 0.35–1.32 reduced
+ * by PLANET_RENDER_SCALE) and orbit/spin speeds 0.5–1.5. Pass 11 (user spec):
+ * all orbits sit on the SAME horizontal (xz) plane like a real solar system, each inclined only 0–1.67° from it
  * (the inclination and its direction are decomposed into the renderer's xAngle/zAngle tilt pair, so the
  * renderer chain and the ship-tracked orbit math are unchanged).
  *
@@ -90,9 +97,9 @@ public final class USSPlanets {
 
     /**
      * Pass 11 (user spec: "like real solar systems") — each orbit lies on the horizontal (xz) plane inclined by a
-     * small random angle in 0–5° (the legacy ±30° dual tilts are gone; the old constant is replaced).
+     * small random angle in 0–5/3° (≈1.67°; the legacy ±30° dual tilts are gone; the old constant is replaced).
      */
-    public static final double MAX_INCLINATION_DEG = 5.0;
+    public static final double MAX_INCLINATION_DEG = 5.0 / 3.0;
 
     private USSPlanets() {
         throw new AssertionError("Static helpers");
@@ -107,7 +114,20 @@ public final class USSPlanets {
         /** The registered planet definition (carries the mineable ores + fluids, hologram texture, and size range). */
         public final USSPlanetDefinition definition;
 
-        /** Orbit radius in blocks from the star center (within {@link #MIN_DISTANCE}–{@link #MAX_DISTANCE}). */
+        /** The orbit band this planet's slot belongs to (its type's band); null for a free-form planet. */
+        public final USSOrbitBand orbitBand;
+
+        /**
+         * The slot index within {@link #orbitBand} ({@code 0..orbitBand.slotCount-1}); {@code -1} for a
+         * free-form planet.
+         */
+        public final int slot;
+
+        /**
+         * Orbit radius in blocks from the star center — the predetermined radius of this planet's slot
+         * ({@code orbitBand.slotRadius(slot)}, within {@link #MIN_DISTANCE}–{@link #MAX_DISTANCE}); a free-form
+         * planet (a null band) carries an arbitrary distance.
+         */
         public final double distance;
 
         /** Hologram scale — sampled from the definition's size range (0.0–5.0), applied to the render. */
@@ -120,13 +140,13 @@ public final class USSPlanets {
         public final double rotationSpeed;
 
         /**
-         * Orbit-plane tilt about X, in degrees — one component of the small 0–5° inclination (pass 11: coplanar
+         * Orbit-plane tilt about X, in degrees — one component of the small 0–1.67° inclination (pass 11: coplanar
          * orbits; |x| ≤ {@link #MAX_INCLINATION_DEG}).
          */
         public final double xAngle;
 
         /**
-         * Orbit-plane tilt about Z, in degrees — the other component of the small 0–5° inclination (pass 11:
+         * Orbit-plane tilt about Z, in degrees — the other component of the small 0–1.67° inclination (pass 11:
          * coplanar orbits; |z| ≤ {@link #MAX_INCLINATION_DEG}).
          */
         public final double zAngle;
@@ -140,9 +160,12 @@ public final class USSPlanets {
          */
         public final int ringVariant;
 
-        public USSPlanet(USSPlanetDefinition definition, double distance, double scale, double orbitSpeed,
-            double rotationSpeed, double xAngle, double zAngle, boolean hasRing, int ringVariant) {
+        public USSPlanet(USSPlanetDefinition definition, USSOrbitBand orbitBand, int slot, double distance,
+            double scale, double orbitSpeed, double rotationSpeed, double xAngle, double zAngle, boolean hasRing,
+            int ringVariant) {
             this.definition = definition;
+            this.orbitBand = orbitBand;
+            this.slot = slot;
             this.distance = distance;
             this.scale = scale;
             this.orbitSpeed = orbitSpeed;
@@ -151,6 +174,26 @@ public final class USSPlanets {
             this.zAngle = zAngle;
             this.hasRing = hasRing;
             this.ringVariant = ringVariant;
+        }
+
+        /**
+         * A free-form planet (orbit math, tests): no band slot — the distance is an arbitrary value, not a slot
+         * radius.
+         */
+        public USSPlanet(USSPlanetDefinition definition, double distance, double scale, double orbitSpeed,
+            double rotationSpeed, double xAngle, double zAngle, boolean hasRing, int ringVariant) {
+            this(
+                definition,
+                null,
+                -1,
+                distance,
+                scale,
+                orbitSpeed,
+                rotationSpeed,
+                xAngle,
+                zAngle,
+                hasRing,
+                ringVariant);
         }
 
         @Override
@@ -162,7 +205,9 @@ public final class USSPlanets {
                 return false;
             }
             USSPlanet that = (USSPlanet) other;
-            return this.definition == that.definition && this.distance == that.distance
+            return this.definition == that.definition && this.orbitBand == that.orbitBand
+                && this.slot == that.slot
+                && this.distance == that.distance
                 && this.scale == that.scale
                 && this.orbitSpeed == that.orbitSpeed
                 && this.rotationSpeed == that.rotationSpeed
@@ -175,6 +220,8 @@ public final class USSPlanets {
         @Override
         public int hashCode() {
             int h = definition.hashCode();
+            h = 31 * h + (orbitBand == null ? 0 : orbitBand.hashCode());
+            h = 31 * h + slot;
             h = 31 * h + Double.hashCode(distance);
             h = 31 * h + Double.hashCode(scale);
             h = 31 * h + Double.hashCode(orbitSpeed);
@@ -188,7 +235,25 @@ public final class USSPlanets {
 
         @Override
         public String toString() {
-            return "USSPlanet[" + definition.getId() + ", d=" + distance + ", s=" + scale + "]";
+            return "USSPlanet[" + definition
+                .getId() + ", band=" + orbitBand + ", slot=" + slot + ", d=" + distance + ", s=" + scale + "]";
+        }
+    }
+
+    /**
+     * One orbit slot: the band it belongs to, its index within the band, and the slot's predetermined orbit
+     * radius.
+     */
+    private static final class Slot {
+
+        final USSOrbitBand band;
+        final int slot;
+        final double radius;
+
+        Slot(USSOrbitBand band, int slot, double radius) {
+            this.band = band;
+            this.slot = slot;
+            this.radius = radius;
         }
     }
 
@@ -202,8 +267,10 @@ public final class USSPlanets {
      * <ul>
      * <li><strong>Planet count</strong> — sampled from the star's planet range
      * ({@link USSStarDefinition#getPlanetMin()}…{@link USSStarDefinition#getPlanetMax()}).</li>
-     * <li><strong>Planet types</strong> — the registered planets that allow this star type
-     * ({@link USSPlanetRegistry#pool(USSStarType)}), shuffled and walked.</li>
+     * <li><strong>Planet types</strong> — drawn per slot from the registered planets of the slot's band
+     * (each band's pool shuffled; a planet's registered band decides where it can spawn).</li>
+     * <li><strong>Orbit radius</strong> — the slot's predetermined radius ({@link USSOrbitBand#slotRadius(int)},
+     * a pure function of (band, slot) — no RNG draw).</li>
      * <li><strong>Planet size</strong> — sampled from each planet's size range
      * ({@link USSPlanetDefinition#getSizeMin()}…{@link USSPlanetDefinition#getSizeMax()}, 0.0–5.0).</li>
      * </ul>
@@ -211,8 +278,9 @@ public final class USSPlanets {
      * @param starType the star's type (null → {@link USSStarType#YELLOW_DWARF}, defensive) — selects the pool
      * @param seed     any stable long (the USS ignition timestamp in practice) — same (starType, seed) always yields
      *                 the same system
-     * @return the system's planets (never null, never empty); planet i orbits in the i-th of COUNT equal distance
-     *         bands {@code MIN_DISTANCE + i*(MAX-MIN)/count … MIN_DISTANCE + (i+1)*(MAX-MIN)/count}
+     * @return the system's planets (never null; empty when the star's planet range admits 0): planet i is the i-th
+     *         chosen slot in inner → outer order, its orbit radius the slot's predetermined radius; a band never
+     *         hosts more planets than it has slots and no two planets share a slot
      */
     public static List<USSPlanet> generate(USSStarType starType, long seed) {
         if (starType == null) {
@@ -239,20 +307,78 @@ public final class USSPlanets {
         // The count is the FIRST draw — planetMin…planetMax inclusive — so (starType, seed) still yields exactly
         // one fixed system and server/client agree (Random(long) contract).
         final int count = planetMin + rng.nextInt(planetMax - planetMin + 1);
-        double band = (MAX_DISTANCE - MIN_DISTANCE) / count;
-        // Distinct types: shuffle the pool with the SAME seeded rng and walk it in order — the first min(count,
-        // pool) planets are all different types; only beyond the pool does it wrap.
-        List<USSPlanetDefinition> types = new ArrayList<>(pool);
-        for (int i = types.size() - 1; i > 0; i--) {
-            int j = rng.nextInt(i + 1);
-            USSPlanetDefinition tmp = types.get(i);
-            types.set(i, types.get(j));
-            types.set(j, tmp);
+
+        // The pool grouped by orbit band — a band's slots are filled only with that band's planets (a planet's
+        // registered band decides where it can spawn). A band with no planets in the pool loses its slots.
+        final USSOrbitBand[] bands = USSOrbitBand.values();
+        final Map<USSOrbitBand, List<USSPlanetDefinition>> bandPools = new EnumMap<>(USSOrbitBand.class);
+        boolean anyBandPool = false;
+        for (USSOrbitBand band : bands) {
+            List<USSPlanetDefinition> bandPool = new ArrayList<>();
+            for (USSPlanetDefinition def : pool) {
+                if (def.getOrbitBand() == band) {
+                    bandPool.add(def);
+                }
+            }
+            bandPools.put(band, bandPool);
+            if (!bandPool.isEmpty()) {
+                anyBandPool = true;
+            }
         }
-        List<USSPlanet> planets = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            USSPlanetDefinition def = types.get(i % Math.max(1, types.size()));
-            double distance = MIN_DISTANCE + band * (i + rng.nextFloat());
+        if (!anyBandPool) {
+            throw new IllegalStateException("No registered planet has an orbit band for star type " + starType);
+        }
+
+        // The orbit slots: every slot of every band that has a pool, at its predetermined radius.
+        List<Slot> slots = new ArrayList<>();
+        for (USSOrbitBand band : bands) {
+            if (bandPools.get(band)
+                .isEmpty()) {
+                continue;
+            }
+            for (int slot = 0; slot < band.slotCount; slot++) {
+                slots.add(new Slot(band, slot, band.slotRadius(slot)));
+            }
+        }
+        // Shuffled — which slots the system uses (and the band mix) varies per seed; the radii never vary.
+        for (int i = slots.size() - 1; i > 0; i--) {
+            int j = rng.nextInt(i + 1);
+            Slot tmp = slots.get(i);
+            slots.set(i, slots.get(j));
+            slots.set(j, tmp);
+        }
+        // A star may want more planets than there are slots — the system then hosts every slot once.
+        final int taken = Math.min(count, slots.size());
+        List<Slot> chosen = new ArrayList<>(slots.subList(0, taken));
+        // Inner → outer: planet 0 is the innermost, so the infodata and the targeting index read as a real
+        // solar-system listing.
+        Collections.sort(chosen, new Comparator<Slot>() {
+
+            @Override
+            public int compare(Slot a, Slot b) {
+                return Double.compare(a.radius, b.radius);
+            }
+        });
+
+        // Each band's types, shuffled (in band order, so the per-band draw order is fixed): a slot of a band is
+        // filled by the band's next type, wrapping when the band's pool is smaller than its slot count
+        // (duplicates then unavoidable).
+        for (USSOrbitBand band : bands) {
+            List<USSPlanetDefinition> bandPool = bandPools.get(band);
+            for (int i = bandPool.size() - 1; i > 0; i--) {
+                int j = rng.nextInt(i + 1);
+                USSPlanetDefinition tmp = bandPool.get(i);
+                bandPool.set(i, bandPool.get(j));
+                bandPool.set(j, tmp);
+            }
+        }
+        final int[] bandCursor = new int[bands.length];
+        List<USSPlanet> planets = new ArrayList<>(taken);
+        for (Slot slot : chosen) {
+            List<USSPlanetDefinition> bandPool = bandPools.get(slot.band);
+            int cursor = bandCursor[slot.band.ordinal()];
+            USSPlanetDefinition def = bandPool.get(cursor % Math.max(1, bandPool.size()));
+            bandCursor[slot.band.ordinal()] = cursor + 1;
             // The planet's SIZE — sampled from the definition's size range (0.0–5.0). This is both the hologram
             // scale (the render size of the planet cube) and the size used in the miner's ore-amount calculation
             // (ore.amount × planetSize²).
@@ -261,7 +387,7 @@ public final class USSPlanets {
             double orbitSpeed = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * rng.nextFloat();
             double rotationSpeed = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * rng.nextFloat();
             // Orbits on the same horizontal xz plane, like real solar systems: the orbit plane is the xz plane
-            // inclined by a small random inclination (0–5°) toward a random node direction.
+            // inclined by a small random inclination (0–1.67°) toward a random node direction.
             double inclination = MAX_INCLINATION_DEG * rng.nextFloat();
             double node = 360.0 * rng.nextFloat();
             double incRad = Math.toRadians(inclination);
@@ -283,8 +409,20 @@ public final class USSPlanets {
                     ringVariant = 1 + rng.nextInt(ringCount);
                 }
             }
+            // The orbit radius is the slot's predetermined radius — no RNG draw, so orbits can never overlap.
             planets.add(
-                new USSPlanet(def, distance, scale, orbitSpeed, rotationSpeed, xAngle, zAngle, hasRing, ringVariant));
+                new USSPlanet(
+                    def,
+                    slot.band,
+                    slot.slot,
+                    slot.radius,
+                    scale,
+                    orbitSpeed,
+                    rotationSpeed,
+                    xAngle,
+                    zAngle,
+                    hasRing,
+                    ringVariant));
         }
         return Collections.unmodifiableList(planets);
     }

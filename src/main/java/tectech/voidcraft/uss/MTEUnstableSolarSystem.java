@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
@@ -37,6 +38,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -101,9 +104,11 @@ import tectech.voidcraft.ship.VoidcraftNbt;
  * <ul>
  * <li>COLD until a {@link ItemUSSController} is inserted into the controller slot;</li>
  * <li>IGNITED — the star burns: the render block is placed and the lifespan from {@link USSConstants} is counted
- * down every machine tick. The spacetime compression field tier decides the star class and the lifespan;</li>
- * <li>lifespan reaches zero — the star burns out: render block removed, the controller item is consumed (one
- * controller = one star life), state returns to COLD.</li>
+ * down every machine tick. The spacetime compression field tier decides the star's rendering size and the miner
+ * ore band, the controller item decides the star class;</li>
+ * <li>lifespan reaches zero — the expiry pipeline ({@link #starExpires()}) pays out the Spacetime yield +
+ * Universium, evolves the star (auto-ignited on the upgraded controller) or terminates the system (controller
+ * consumed, state returns to COLD).</li>
  * </ul>
  *
  * <p>
@@ -161,6 +166,44 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      */
     private final Map<String, int[]> gatewayBlocks = new LinkedHashMap<String, int[]>();
 
+    /**
+     * Ticks elapsed since the last stellar-acceleration drain (0..ACCELERATION_INTERVAL_TICKS-1). Server
+     * bookkeeping, not persisted — a reload simply resumes the cycle.
+     */
+    private long accelerationTicks = 0L;
+
+    /**
+     * Ticks elapsed since the last Stellar Injector size step (0..INJECTOR_STEP_INTERVAL_TICKS-1). Server
+     * bookkeeping, not persisted — a reload simply resumes the cycle.
+     */
+    private long injectorStepTicks = 0L;
+
+    /**
+     * The Tachyon Rich Temporal Fluid drained by the last completed second (mB): while it is &gt; 0 the virtual orbit
+     * clock advances at the proportional rate for the rest of that second. Reset on star death / machine stop.
+     */
+    private long lastAccelerationSecondMB = 0L;
+
+    /**
+     * The orbit-clock phase of the current acceleration window (the start/end smoothing of the virtual orbit
+     * clock — ramp up on the first acceleration second, ramp down on the last). Server bookkeeping, not
+     * persisted — a reload simply resumes the cycle.
+     */
+    private USSStellarEvolution.AccelerationPhase accelPhase = USSStellarEvolution.AccelerationPhase.IDLE;
+
+    /**
+     * Whether an acceleration second has completed since ignition (distinguishes the FIRST acceleration second —
+     * the ramp-up — from the middle seconds). Server bookkeeping, not persisted.
+     */
+    private boolean accelerationActive = false;
+
+    /**
+     * The sub-tick remainder of the virtual orbit clock's advance: the per-tick advance is fractional while the
+     * acceleration's start/end ramps run (the whole part goes into the clock, this part carries over). Server
+     * bookkeeping, not persisted.
+     */
+    private double orbitFractionalAccumulator = 0.0;
+
     // Region mining mission (Phase 4 pass 5 — up to USSConstants.MAX_SHIPS_PER_USS ships in flight per USS; a large
     // fleet (dozens–hundreds) rendered by ONE fleet anchor block, not one block per ship).
 
@@ -193,6 +236,9 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         USSCargoTransfer leg;
         String targetUuid;
         String targetName;
+
+        /** The target is the star's Stellar Injector cargo buffer (the SEND / TAKE star pass — no target ship). */
+        boolean starTarget;
     }
 
     /**
@@ -209,6 +255,13 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         /** The target entity's uuid (the entity being repaired). */
         String targetUuid;
     }
+
+    /**
+     * In-flight STABILIZE windows (the matrix's activation command), keyed by the executing base's uuid: one
+     * per base (a base's own program re-arms the window per program loop). Persisted (the executor's command
+     * resumes its poll after a reload; the expiry weight read queries the live sessions).
+     */
+    private final Map<String, USSStabilize.Session> stabilizes = new HashMap<String, USSStabilize.Session>();
 
     /**
      * The state id last pushed to each slot's ship render TE (avoids per-tick description packets). Starts at -1
@@ -275,6 +328,13 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      */
     private final java.util.Map<String, Long> satelliteLaunchCountdowns = new java.util.HashMap<>();
 
+    /**
+     * Per-base infrastructure-builder countdown (the infrastructure-builder pass): ship UUID + '#' + type ->
+     * machine ticks until the base's next structure unit. Kept by
+     * {@link #tickInfrastructureBuilder(VoidcraftActiveShip)}; cleared with the fleet.
+     */
+    private final java.util.Map<String, Long> infraBuildCountdowns = new java.util.HashMap<>();
+
     // endregion
 
     // NBT tag names (voidcraft "vc_" naming convention).
@@ -294,6 +354,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     private static final String CARGO_TRANSFER_TGT_UUID_NBT_TAG = "vc_tr_tgt_uuid";
     private static final String CARGO_TRANSFER_TGT_NAME_NBT_TAG = "vc_tr_tgt_name";
     private static final String CARGO_TRANSFER_LEG_NBT_TAG = "vc_tr_leg";
+    private static final String CARGO_TRANSFER_STAR_NBT_TAG = "vc_tr_star";
     /**
      * NBTTagList of the in-flight REPAIR sessions: one entry per session carrying the executing entity's uuid,
      * the target entity's uuid, and the pacing countdown.
@@ -302,6 +363,16 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     private static final String REPAIR_SRC_UUID_NBT_TAG = "vc_rp_src_uuid";
     private static final String REPAIR_TGT_UUID_NBT_TAG = "vc_rp_tgt_uuid";
     private static final String REPAIR_TICKS_NBT_TAG = "vc_rp_ticks";
+    /**
+     * NBTTagList of the in-flight STABILIZE windows: one entry per window carrying the executing base's uuid,
+     * the remaining duration, the Field Generator countdown, and the last consumed Field Generator's tier (the
+     * window's weight).
+     */
+    private static final String STABILIZES_NBT_TAG = "vc_uss_stabilizes";
+    private static final String STABILIZE_SRC_UUID_NBT_TAG = "vc_st_src_uuid";
+    private static final String STABILIZE_TICKS_NBT_TAG = "vc_st_ticks";
+    private static final String STABILIZE_FIELD_GENERATOR_TICKS_NBT_TAG = "vc_st_fieldgen_ticks";
+    private static final String STABILIZE_WEIGHT_NBT_TAG = "vc_st_weight";
 
     // Multiblock structure.
     /**
@@ -1126,19 +1197,104 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             uss = VoidcraftUSS.cold();
         }
         if (uss.isIgnited()) {
+            // The virtual orbit clock (the orbit time base, server and client): +1 per tick normally, proportionally
+            // more during a stellar-acceleration second — the acceleration's first/last second ramp the rate up /
+            // down (fractional per-tick advance, accumulated into the whole-tick clock).
+            orbitFractionalAccumulator += USSStellarEvolution.orbitAdvanceSmoothed(
+                USSStellarEvolution.orbitAdvancePerTick(lastAccelerationSecondMB),
+                accelPhase,
+                accelerationTicks / (double) USSConstants.ACCELERATION_INTERVAL_TICKS);
+            long orbitAdvance = (long) orbitFractionalAccumulator;
+            orbitFractionalAccumulator -= orbitAdvance;
+            uss = uss.withVirtualTime(uss.getVirtualTime() + orbitAdvance);
+            tickStellarAcceleration();
             // The star burns: one machine tick of lifespan per tick (no power draw yet — Phase 6).
             long remaining = uss.getLifespanRemaining() - 1;
             if (remaining <= 0) {
-                starBurnsOut();
+                starExpires();
             } else {
                 uss = uss.withLifespan(remaining);
                 tickStarInfrastructure();
+                tickInjector();
                 tickShips();
+                // The client extrapolates the orbit clock at the normal rate from the last sync — re-sync every
+                // tick while the clock runs faster than the world (an active stellar-acceleration second).
+                if (lastAccelerationSecondMB > 0L) {
+                    syncOrbitClock();
+                }
             }
+            reapplyStarRenderState();
         } else if (getControllerSlot() != null) {
             // COLD + controller in slot + structure valid → ignite.
             igniteStar();
         }
+    }
+
+    /**
+     * Stellar acceleration (every machine tick while the star is ignited): every
+     * {@link USSConstants#ACCELERATION_INTERVAL_TICKS} ticks drain ALL the Tachyon Rich Temporal Fluid out of the
+     * input hatches. A non-empty second shortens the star's lifespan by the square root of the drained amount
+     * (minimum 1 tick) and wipes the entire fleet — ships AND voidbases ({@link #discardAllShips()}); the star, the
+     * planets and the infrastructure registrations persist, and the virtual orbit clock runs at the proportional
+     * rate during that second.
+     */
+    private void tickStellarAcceleration() {
+        if (++accelerationTicks < USSConstants.ACCELERATION_INTERVAL_TICKS) {
+            return;
+        }
+        accelerationTicks = 0;
+        long consumed = drainTachyonFluid();
+        lastAccelerationSecondMB = consumed;
+        if (consumed <= 0L) {
+            accelPhase = USSStellarEvolution.AccelerationPhase.IDLE;
+            return;
+        }
+        int lost = activeShips.size();
+        long reduction = USSStellarEvolution.lifespanReductionPerSecond(consumed);
+        uss = uss.withLifespan(uss.getLifespanRemaining() - reduction);
+        // Orbit-clock phase of the window this drain starts (its rate applies from the next tick): ramp up on the
+        // first acceleration second, ramp down on the last — the one the star's lifespan runs out within.
+        if (!accelerationActive) {
+            accelerationActive = true;
+            accelPhase = USSStellarEvolution.AccelerationPhase.RAMP_UP;
+        } else if (uss.getLifespanRemaining() <= USSConstants.ACCELERATION_INTERVAL_TICKS + reduction) {
+            accelPhase = USSStellarEvolution.AccelerationPhase.RAMP_DOWN;
+        } else {
+            accelPhase = USSStellarEvolution.AccelerationPhase.FULL;
+        }
+        discardAllShips();
+        if (lost > 0) {
+            try {
+                LOGGER.info(
+                    "[Voidcraft] USS stellar acceleration: {} mB tachyon fluid consumed, lifespan -{} ticks, {} ship(s) wiped",
+                    consumed,
+                    reduction,
+                    lost);
+            } catch (Throwable ignored) {}
+        }
+    }
+
+    /**
+     * Drain ALL the Tachyon Rich Temporal Fluid out of the input hatches (the acceleration feed — the same
+     * input-hatch drain pattern as the Gateway's launch fuel).
+     *
+     * @return the mB drained
+     */
+    private long drainTachyonFluid() {
+        Fluid tachyon = Materials.Time.getMolten(1)
+            .getFluid();
+        long consumed = 0L;
+        for (MTEHatchInput hatch : GTUtility.validMTEList(mInputHatches)) {
+            FluidStack held = hatch.getFluid();
+            if (held == null || held.getFluid() != tachyon) {
+                continue;
+            }
+            FluidStack drained = hatch.drain(held.amount, true);
+            if (drained != null) {
+                consumed += drained.amount;
+            }
+        }
+        return consumed;
     }
 
     /**
@@ -1154,24 +1310,128 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         }
         int tier = USSConstants.clampTier(spacetimeCompressionFieldMetadata);
         uss = VoidcraftUSS.ignite(tier, starType, System.currentTimeMillis());
+        // The virtual orbit clock starts at the current world tick: the planet phases stay continuous with the
+        // old world-time clock (acceleration only ever ADDS extra ticks on top), and the client's extrapolation
+        // (synced clock + world ticks since the sync) stays exact.
+        IGregTechTileEntity igniteBase = getBaseMetaTileEntity();
+        if (igniteBase != null && igniteBase.getWorld() != null) {
+            uss = uss.withVirtualTime(
+                igniteBase.getWorld()
+                    .getTotalWorldTime());
+        }
+        resetAccelerationCycle();
         if (animationsEnabled) {
             createRenderBlock(tier);
         }
     }
 
     /**
-     * The star has burned out: remove the render block, consume the controller (one controller = one star life) and
-     * return to COLD.
+     * The star's lifespan has expired — the expiry pipeline: the system's primary fraction, size factor and the
+     * infrastructure BUILT around the targets decide the OUTCOME (the star evolves to a new class and auto-ignites
+     * on the same controller, upgraded — or the system terminates: controller consumed, star cold); the Spacetime
+     * yield is paid out with the Universium conversion on the scanned ripples. Both paths wipe the fleet and the
+     * system's internal state (the model swap — the injector buffer, the star size, the Dyson count, the scanned
+     * ripples — is gone with the old system).
      */
-    private void starBurnsOut() {
-        // The star dies with its ships: every mission in flight is lost (the design choice for this slice).
+    private void starExpires() {
+        USSStarType expiring = uss.getStarType();
+        // Capabilities read from what is BUILT (a fully complete shell), not what the bases merely carry: the
+        // expiry conversion counts the active scanned ripples that carry a finished Stabilizer shell, the Lens
+        // when the star's Lens shell is complete.
+        double renderSize = starShellRenderSize();
+        USSInfrastructure infra = uss.getInfrastructure();
+        int ripples = USSStellarEvolution.activeScannedRipples(getRippleField(), uss.getScannedRipples());
+        int stabilizedRipples = USSInfraBuild
+            .builtOnActiveRipples(getRippleField(), uss.getScannedRipples(), infra, USSInfraBuild.STABILIZER);
+        boolean lensPresent = USSInfraBuild.isBuilt(
+            infra,
+            USSInfraBuild.LENS,
+            USSInfraBuild.TARGET_STAR,
+            -1,
+            USSInfraBuild.starCapacity(USSInfraBuild.LENS, renderSize));
+
+        long yield = USSConstants.spacetimeYieldForType(expiring);
+        long litres = USSStellarEvolution.universiumLiters(yield, stabilizedRipples, ripples);
+        long consumed = USSStellarEvolution.spacetimeConsumedMB(yield, stabilizedRipples, ripples);
+        long universiumMB = USSStellarEvolution
+            .universiumOutputMB(litres, USSStellarEvolution.matrixMultiplier(stabilizeWeightSum()));
+        Optional<USSStarType> outcome = USSStellarEvolution
+            .resolve(expiring, uss.primaryFraction(), uss.sizeFactor(), lensPresent, new Random());
+
+        int lost = activeShips.size();
         discardAllShips();
-        uss = uss.toCold();
-        destroyRenderBlock();
-        if (mInventory[getControllerSlotIndex()] != null) {
-            mInventory[getControllerSlotIndex()] = null;
+
+        long virtualTime = uss.getVirtualTime();
+        if (outcome.isPresent()) {
+            uss = VoidcraftUSS.ignite(spacetimeCompressionFieldMetadata, outcome.get(), System.currentTimeMillis())
+                .withVirtualTime(virtualTime);
+            upgradeController(outcome.get());
+            resetAccelerationCycle();
+            if (animationsEnabled) {
+                createRenderBlock(USSConstants.clampTier(spacetimeCompressionFieldMetadata));
+            }
+        } else {
+            uss = uss.toCold();
+            resetAccelerationCycle();
+            destroyRenderBlock();
+            if (mInventory[getControllerSlotIndex()] != null) {
+                mInventory[getControllerSlotIndex()] = null;
+            }
+            updateSlots();
+        }
+
+        List<FluidStack> outputs = new ArrayList<FluidStack>();
+        long spacetimeOut = yield - consumed;
+        if (spacetimeOut > 0L) {
+            outputs.add(Materials.SpaceTime.getMolten(spacetimeOut));
+        }
+        if (universiumMB > 0L) {
+            outputs.add(Materials.Universium.getMolten(universiumMB));
+        }
+        if (!outputs.isEmpty()) {
+            addFluidOutputs(outputs.toArray(new FluidStack[0]));
+        }
+
+        try {
+            LOGGER.info(
+                "[Voidcraft] USS star expiry: {} -> {} ({} ship(s) wiped, {} mB spacetime + {} mB universium yielded)",
+                expiring,
+                outcome.map(USSStarType::name)
+                    .orElse("terminal"),
+                lost,
+                Math.max(0L, spacetimeOut),
+                universiumMB);
+        } catch (Throwable ignored) {}
+    }
+
+    /**
+     * Upgrade the controller in the controller slot to the given star class (the star's evolutions continue on
+     * the same controller item — only the terminal death consumes it).
+     */
+    private void upgradeController(USSStarType to) {
+        ItemStack stack = mInventory[getControllerSlotIndex()];
+        if (stack != null && stack.getItem() == ItemUSSController.INSTANCE) {
+            stack.setItemDamage(to.ordinal());
         }
         updateSlots();
+    }
+
+    /**
+     * How many of the given station infrastructure component the STANDING bases carry — the capability the bases
+     * contribute to the system (the in-world component structures are dormant; the base's blueprint is the record).
+     */
+    private long infrastructureCount(VoidcraftComponent component) {
+        long count = 0L;
+        for (VoidcraftActiveShip ship : activeShips) {
+            if (ship == null || !ship.isBase()) {
+                continue;
+            }
+            VoidcraftBlueprint blueprint = VoidcraftNbt.readBase(ship.getPayload());
+            if (blueprint != null) {
+                count += blueprint.count(component);
+            }
+        }
+        return count;
     }
 
     @Override
@@ -1181,6 +1441,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             uss = uss.toCold();
         }
         discardAllShips();
+        resetAccelerationCycle();
         destroyRenderBlock();
     }
 
@@ -1188,7 +1449,17 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
         discardAllShips();
+        resetAccelerationCycle();
         destroyRenderBlock();
+    }
+
+    /** Reset the per-second stellar-acceleration bookkeeping (new star life / star death / machine stop / teardown). */
+    private void resetAccelerationCycle() {
+        accelerationTicks = 0L;
+        lastAccelerationSecondMB = 0L;
+        accelPhase = USSStellarEvolution.AccelerationPhase.IDLE;
+        accelerationActive = false;
+        orbitFractionalAccumulator = 0.0;
     }
 
     // endregion
@@ -1223,9 +1494,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
 
         if (rendererTileEntity != null) {
             rendererTileEntity.setTier(tier);
-            // Star size: (2/3)·√(sampled size), a pure function of the star type + ignition timestamp (the
-            // mechanics pass — see starSizeFor).
-            rendererTileEntity.setStarSize(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+            // Star size: the USS's current size rendered ((2/3)·√(size) — see VoidcraftUSS.starSize).
+            rendererTileEntity.setStarSize(USSPlanets.starRenderSize(uss.getStarSize()));
             // Star color: from the star's registered definition (null → the legacy orange fallback) — the shared
             // star mesh is a single texture, so the colors are what distinguish the star classes visually.
             rendererTileEntity.setStarColor(USSStarColor.colorFor(USSStarRegistry.byType(uss.getStarType())));
@@ -1244,6 +1514,11 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             // Phase 4 pass 3: the system's PLANETS — deterministic (star type + ignition timestamp), so the legacy
             // orbit renderer draws exactly the bodies the miner works (see getPlanets / USSPlanets).
             rendererTileEntity.setPlanets(planetSpecsFor(getPlanets()));
+            // Seed the virtual orbit clock so the client's first frame runs on it (0 virtual time at ignition).
+            rendererTileEntity.setUssOrbitTime(
+                uss.getVirtualTime(),
+                gregTechTileEntity.getWorld()
+                    .getTotalWorldTime());
         }
         // Push the TE data (tier/size/planets) to the client now — in 1.7.10 nothing else does until a chunk reload
         // (markBlockForUpdate sends the description packet to nearby players; see
@@ -1252,6 +1527,48 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         int sy = (int) (y + yOffset);
         int sz = (int) (z + zOffset);
         gregTechTileEntity.getWorld()
+            .markBlockForUpdate(sx, sy, sz);
+    }
+
+    /**
+     * Re-assert the star render block's full client state (tier, rendered size, the star class's color/shell/halo/
+     * render treatment, dome radius, planet specs, orbit clock) and push the description packet to the chunk's
+     * watchers. The client render TE's star class and planets have no other source than the description packet —
+     * createRenderBlock's push is one-shot, so a client TE that misses it renders the default star until the next
+     * re-assert converges it.
+     */
+    private void reapplyStarRenderState() {
+        IGregTechTileEntity mte = getBaseMetaTileEntity();
+        if (mte == null || !animationsEnabled || uss == null || !uss.isIgnited()) {
+            return;
+        }
+        int x = mte.getXCoord();
+        int y = mte.getYCoord();
+        int z = mte.getZCoord();
+        double xOffset = 32 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double yOffset = 32 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        double zOffset = 32 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        int sx = (int) (x + xOffset);
+        int sy = (int) (y + yOffset);
+        int sz = (int) (z + zOffset);
+        TileEntityEyeOfHarmony te = (TileEntityEyeOfHarmony) mte.getWorld()
+            .getTileEntity(sx, sy, sz);
+        if (te == null) {
+            return;
+        }
+        te.setTier(USSConstants.clampTier(spacetimeCompressionFieldMetadata));
+        te.setStarSize(USSPlanets.starRenderSize(uss.getStarSize()));
+        te.setStarColor(USSStarColor.colorFor(USSStarRegistry.byType(uss.getStarType())));
+        te.setStarShellColor(USSStarColor.shellColorFor(USSStarRegistry.byType(uss.getStarType())));
+        te.setStarHalo(USSStarColor.isHaloStar(uss.getStarType()));
+        te.setStarRenderType(USSStarColor.renderTypeFor(USSStarRegistry.byType(uss.getStarType())));
+        te.setDomeRadius(USSConstants.SPACE_SHELL_RADIUS);
+        te.setPlanets(planetSpecsFor(getPlanets()));
+        te.setUssOrbitTime(
+            uss.getVirtualTime(),
+            mte.getWorld()
+                .getTotalWorldTime());
+        mte.getWorld()
             .markBlockForUpdate(sx, sy, sz);
     }
 
@@ -1282,17 +1599,6 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                     ringTexture));
         }
         return specs;
-    }
-
-    /**
-     * The star's rendered size (the mechanics pass: (2/3)·√(sampled size), the sampled size being a pure function of
-     * the star type + ignition timestamp — see {@link USSPlanets#starRenderSize(double)} and
-     * {@link USSPlanets#sampleStarSize(USSStarType, long)}). Pass 7: the fleet TE carries this value so the client
-     * computes the planet orbit radii EXACTLY like {@code EOHRenderingUtils.renderUSSOrbits} (radius = 0.2 +
-     * distance + 0.2·starSize) — ships hover precisely above the rendered planets.
-     */
-    private static float starSizeFor(USSStarType starType, long seed) {
-        return USSPlanets.starRenderSize(USSPlanets.sampleStarSize(starType, seed));
     }
 
     /**
@@ -1338,7 +1644,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     /**
      * @return true when the USS can accept another launch (Phase 4 pass 4 — up to
      *         {@code USSConstants.MAX_SHIPS_PER_USS} ships fly simultaneously). The gateway's radius scan skips
-     *         FULL systems, so a rejected Constructor launch (which would already have consumed its loadout) can
+     *         FULL systems, so a rejected launch (which would already have pulled its cargo from the inputs) can
      *         only happen on a capacity race, not on the normal "already busy" path.
      */
     public boolean hasFreeShipSlot() {
@@ -1376,8 +1682,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
 
     /**
      * Create (or reuse) the construction site at the anchor from the mission blueprint's parts needs (one site
-     * per anchor). The site carries the FULL requirement — the gateway caps the launch loadout at the site's
-     * remaining needs.
+     * per anchor). The site carries the FULL requirement — the CONSTRUCT leg credits it part by part from the
+     * constructor's hold.
      *
      * @return the site (freshly created, or the existing one)
      */
@@ -1595,10 +1901,25 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      * the pilot exactly once, through {@link #onWorkComplete}.
      *
      * <p>
-     * Integrity time limit (user design): every entity's integrity drops by 1 per second
-     * ({@link VoidcraftActiveShip#tickIntegrity()})
-     * — an entity that hits 0 is removed immediately and its cargo is discarded (a base is decommissioned).
+     * Integrity time limit (user design): every entity's integrity drops per second
+     * ({@link VoidcraftActiveShip#tickIntegrity(int)}) — at the base rate of 1/s, or the star-type-tuned rate
+     * while the entity's hover body is the star (the star-proximity penalty,
+     * {@link USSConstants#starIntegrityLossPerSecond(USSStarType)}) — an entity that hits 0 is removed
+     * immediately and its cargo is discarded (a base is decommissioned).
+     *
+     * @param ship the fleet entity
+     * @return true when the entity's hover body is the star: a base anchored to the star, or a ship whose
+     *         resolved MOVE target is the star (the pilot's hover-body descriptor {@code -1}) and that has left
+     *         the launch origin (a leg has started).
      */
+    private boolean hoverBodyIsStar(VoidcraftActiveShip ship) {
+        if (ship.isBase()) {
+            return ship.getAnchor() != null && ship.getAnchor()
+                .isStar();
+        }
+        return ship.getTargetPlanet() == -1 && ship.getLegId() > 0;
+    }
+
     private void tickShips() {
         if (!activeShips.isEmpty()) {
             // Progress heartbeat pace: the counter advances once per machine tick and the heartbeat is the tick
@@ -1612,10 +1933,13 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             List<Integer> lost = new ArrayList<>();
             for (int slot = 0; slot < activeShips.size(); slot++) {
                 VoidcraftActiveShip ship = activeShips.get(slot);
-                // The integrity time limit: 1 per second (the entity counts its own ticks — even while HOLDING).
-                // At 0 the entity is LOST: removed below, its cargo discarded (no delivery, no drop, no
-                // re-emission).
-                if (ship.tickIntegrity()) {
+                // The integrity time limit: 1 per second while the entity's hover body is NOT the star, and the
+                // star-type-tuned rate (USSConstants.starIntegrityLossPerSecond) while it IS — hovering around the
+                // star corrodes the hull faster (the entity counts its own ticks — even while HOLDING). At 0 the
+                // entity is LOST: removed below, its cargo discarded (no delivery, no drop, no re-emission).
+                int integrityLoss = hoverBodyIsStar(ship) ? USSConstants.starIntegrityLossPerSecond(uss.getStarType())
+                    : 1;
+                if (ship.tickIntegrity(integrityLoss)) {
                     lost.add(slot);
                     continue;
                 }
@@ -1627,10 +1951,18 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                         ship.setPosition(hover);
                     }
                     // A station anchored to the star runs its Satellite Rail Launchers: Power Satellites leave the
-                    // base's hold for the star's Dyson Swarm (the infrastructure pass).
-                    if (ship.getAnchor() != null && ship.getAnchor()
-                        .isStar()) {
-                        tickSatelliteLauncher(ship);
+                    // base's hold for the star's Dyson Swarm (the infrastructure pass). A station anchored to
+                    // the star OR a ripple runs its infrastructure builders: the base's builder components
+                    // join structure units of their type on the anchor target (the infrastructure-builder pass).
+                    if (ship.getAnchor() != null && (ship.getAnchor()
+                        .isStar()
+                        || ship.getAnchor()
+                            .isRipple())) {
+                        if (ship.getAnchor()
+                            .isStar()) {
+                            tickSatelliteLauncher(ship);
+                        }
+                        tickInfrastructureBuilder(ship);
                     }
                 }
                 USSShipPilot pilot = pilots.get(slot);
@@ -1734,6 +2066,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         if (slot < pilots.size()) {
             pilots.remove(slot);
         }
+        stabilizes.remove(lostShip.getUuid());
         lastPushedShipStates[slot] = -1;
         lastPushedLegIds[slot] = -1;
         try {
@@ -1753,8 +2086,8 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
 
     /**
      * Whether the given mission is a Voidbase construction mission (the gateway set the flag at launch after
-     * writing the blueprint + parts loadout into the ship's payload). Such a ship produces no WORK-leg cargo —
-     * its parts are consumed in flight by the CONSTRUCT leg (create-or-fill the site at the anchor).
+     * writing the blueprint data into the ship's payload). Such a ship produces no WORK-leg cargo —
+     * its parts are drawn from the hold in flight by the CONSTRUCT leg (create-or-fill the site at the anchor).
      */
     private boolean isVoidbaseMission(VoidcraftActiveShip ship) {
         if (ship == null || ship.getPayload() == null) {
@@ -1824,7 +2157,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      * <li>SIPHON — the star's produced fluids (each capped by the star's remaining fluid reserve — the reserve
      * depletes) when the target is the star; anything else logs the reason.</li>
      * </ul>
-     * A Voidbase construction mission carries no cargo either (its parts loadout is consumed in flight by the
+     * A Voidbase construction mission carries no cargo either (its parts are drawn from the hold in flight by the
      * CONSTRUCT leg).
      */
     @Override
@@ -1853,7 +2186,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             }
             case USSWorkKind.MINE: {
                 if (isVoidbaseMission(ship)) {
-                    return; // no cargo: the parts loadout is consumed in flight by the CONSTRUCT leg
+                    return; // no cargo: the parts are drawn from the hold in flight by the CONSTRUCT leg
                 }
                 boolean planet = USSProgramDefaults.TARGET_PLANET.equals(targetKind)
                     || USSProgramDefaults.TARGET_NEAREST_PLANET.equals(targetKind)
@@ -1952,7 +2285,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             }
             USSPosition shipPos = ship.getPosition();
             float time = worldTimeTicks();
-            float starSize = starSizeFor(uss.getStarType(), uss.getIgnitedAt());
+            float starSize = USSPlanets.starRenderSize(uss.getStarSize());
             int nearest = -1;
             double best = Double.MAX_VALUE;
             for (int i = 0; i < planets.size(); i++) {
@@ -2045,35 +2378,72 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
 
     /**
      * One machine tick of the star's infrastructure: the satellite swarm decays proportionally to its count (the
-     * per-unit rate is {@link USSInfra#decayPerUnitPerTick()}).
+     * per-unit rate is {@link USSInfra#decayPerUnitPerTick()}) — the swarm is the only decaying structure; the
+     * built infrastructure shells (injector / stabilizer / lens) never decay.
      */
     private void tickStarInfrastructure() {
         if (uss == null || !uss.isIgnited()) {
             return;
         }
         USSInfrastructure infra = uss.getInfrastructure();
-        if (infra == null || infra.isEmpty()) {
+        if (infra == null || infra.count(USSInfrastructure.DYSON_STAR_KEY) <= 0L) {
             return;
         }
-        USSInfrastructure next = infra;
-        boolean visible = false;
-        for (String key : new ArrayList<>(
-            infra.counts()
-                .keySet())) {
-            USSInfrastructure.DecayStep step = next.applyDecay(key, USSInfra.decayPerUnitPerTick());
-            // Keep the step's infrastructure even when nothing was lost — it carries the (possibly new) decay
-            // fraction; dropping it would stall the accumulator.
-            next = step.infrastructure;
-            if (step.lost > 0L) {
-                visible = true;
-            }
+        // The step's infrastructure carries the (possibly advanced) decay accumulator even when no whole unit was
+        // lost — dropping it would stall the accumulator.
+        USSInfrastructure.DecayStep step = infra
+            .applyDecay(USSInfrastructure.DYSON_STAR_KEY, USSInfra.decayPerUnitPerTick());
+        if (step.infrastructure != infra) {
+            uss = uss.withInfrastructure(step.infrastructure);
         }
-        if (next != infra) {
-            uss = uss.withInfrastructure(next);
-        }
-        if (visible) {
+        if (step.lost > 0L) {
             syncStarRenderBlock();
         }
+    }
+
+    /**
+     * One machine tick of the Stellar Injector (active when the star's Injector shell is FULLY BUILT — a shell
+     * under construction injects nothing): on the step pace, one size step leaves the injector buffer — the step's
+     * cost is the size-scaled cargo amount (the star's CURRENT size squared, see USSStellarEvolution), the star's
+     * size rises by one step up to the 1.5x cap (the original sampled size). A step the buffer cannot pay is
+     * skipped (no partial consumption); a step that would cross the cap is not started.
+     */
+    private void tickInjector() {
+        if (uss == null || !uss.isIgnited()) {
+            return;
+        }
+        if (!USSInfraBuild.isBuilt(
+            uss.getInfrastructure(),
+            USSInfraBuild.INJECTOR,
+            USSInfraBuild.TARGET_STAR,
+            -1,
+            infraShellCapacity(USSInfraBuild.INJECTOR, USSInfraBuild.TARGET_STAR, -1))) {
+            return;
+        }
+        double cap = USSStellarEvolution.sizeCap(USSPlanets.sampleStarSize(uss.getStarType(), uss.getIgnitedAt()));
+        if (uss.getStarSize() + USSConstants.INJECTOR_SIZE_STEP > cap + 1e-9) {
+            return;
+        }
+        if (++injectorStepTicks < USSConstants.INJECTOR_STEP_INTERVAL_TICKS) {
+            return;
+        }
+        injectorStepTicks = 0L;
+        long cost = USSStellarEvolution.cargoUnitsForSizeDelta(uss.getStarSize(), USSConstants.INJECTOR_SIZE_STEP);
+        CargoHold buffer = uss.getInjectorBuffer();
+        if (buffer == null || buffer.usedUnits() < cost) {
+            return;
+        }
+        double oldSize = uss.getStarSize();
+        uss = uss.withInjectorBuffer(buffer.removeUnits(cost))
+            .withStarSize(oldSize + USSConstants.INJECTOR_SIZE_STEP);
+        try {
+            LOGGER.info(
+                "[Voidcraft] USS Stellar Injector: star size {} -> {} (buffer -{} units)",
+                String.format("%.2f", oldSize),
+                String.format("%.2f", oldSize + USSConstants.INJECTOR_SIZE_STEP),
+                cost);
+        } catch (Throwable ignored) {}
+        syncStarRenderBlock();
     }
 
     /**
@@ -2088,11 +2458,18 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         if (blueprint == null || blueprint.count(VoidcraftComponent.SATELLITE_LAUNCHER) <= 0) {
             return;
         }
-        long capacity = USSInfra.starSatelliteCapacity(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+        long capacity = USSInfra.starSatelliteCapacity(USSPlanets.starRenderSize(uss.getStarSize()));
         long current = uss.getInfrastructure()
             .count(USSInfrastructure.DYSON_STAR_KEY);
         if (current >= capacity) {
             return; // the swarm is saturated — no further launches
+        }
+        // The star's shell slot is exclusive (Dyson Swarm / Stellar Injector / Stellar Gravitational Lens):
+        // an injector or lens built on the star — even a partial shell — blocks the swarm.
+        USSInfrastructure infra = uss.getInfrastructure();
+        if (infra.count(USSInfraBuild.key(USSInfraBuild.INJECTOR, USSInfraBuild.TARGET_STAR, -1)) > 0L
+            || infra.count(USSInfraBuild.key(USSInfraBuild.LENS, USSInfraBuild.TARGET_STAR, -1)) > 0L) {
+            return;
         }
         String uuid = ship.getUuid();
         long countdown = satelliteLaunchCountdowns.getOrDefault(uuid, USSConstants.DYSON_SATELLITE_LAUNCH_INTERVAL) - 1;
@@ -2102,10 +2479,10 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         }
         satelliteLaunchCountdowns.put(uuid, USSConstants.DYSON_SATELLITE_LAUNCH_INTERVAL);
         CargoHold hold = ship.getHold();
-        if (hold == null || hold.specialOf(USSInfra.KEY_POWER_SATELLITE) <= 0L) {
+        if (hold == null || hold.itemsOf(USSInfra.KEY_POWER_SATELLITE) <= 0L) {
             return; // nothing on board — the countdown advanced, no launch
         }
-        ship.setHold(hold.removeSpecial(USSInfra.KEY_POWER_SATELLITE, 1L));
+        ship.setHold(hold.removeItem(USSInfra.KEY_POWER_SATELLITE, 1L));
         uss = uss.withInfrastructure(
             uss.getInfrastructure()
                 .addUnits(USSInfrastructure.DYSON_STAR_KEY, 1L));
@@ -2116,25 +2493,89 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * Deliver a constructor loadout's infrastructure-cargo keys to the build site (unpaced — the site holds them
-     * until the finished base's hold receives them at spawn).
+     * One machine tick of a standing base's infrastructure builders (the infrastructure-builder pass): each
+     * builder component the base's blueprint carries joins ONE structure unit of its type on the base's anchor
+     * target (the star, or the anchor ripple for the Stabilizer) per build interval, drawing the matching
+     * component from the base's hold — clamped by the target's shell capacity (its triangle count) and the
+     * one-structure-per-target rule. A base anchored to a planet builds nothing.
+     *
+     * @param ship the standing base (the caller guarantees a star- or ripple-anchored base on an ignited star)
      */
-    private void deliverInfraCargo(VoidcraftActiveShip ship, USSBaseSite site) {
-        for (String key : new ArrayList<>(
-            ship.getBuildLoadout()
-                .keySet())) {
-            if (!USSBaseSite.isCargoKey(key)) {
+    private void tickInfrastructureBuilder(VoidcraftActiveShip ship) {
+        USSBaseAnchor anchor = ship.getAnchor();
+        int targetKind = anchor.isStar() ? USSInfraBuild.TARGET_STAR : USSInfraBuild.TARGET_RIPPLE;
+        int index = anchor.isRipple() ? anchor.index() : -1;
+        VoidcraftBlueprint blueprint = VoidcraftNbt.readBase(ship.getPayload());
+        if (blueprint == null) {
+            return;
+        }
+        double renderSize = targetKind == USSInfraBuild.TARGET_STAR ? starShellRenderSize()
+            : USSPlanets.starRenderSize(uss.getStarSize());
+        for (int type = USSInfraBuild.INJECTOR; type <= USSInfraBuild.LENS; type++) {
+            if (blueprint.count(USSInfraBuild.builderComponent(type)) <= 0L) {
                 continue;
             }
-            Long onBoard = ship.getBuildLoadout()
-                .get(key);
-            if (onBoard == null || onBoard <= 0L) {
+            if (!USSInfraBuild.isValidTarget(type, targetKind)) {
+                continue; // this builder does not build on this target kind
+            }
+            long capacity = USSInfraBuild.capacity(type, targetKind, renderSize);
+            String key = USSInfraBuild.key(type, targetKind, index);
+            long current = uss.getInfrastructure()
+                .count(key);
+            if (current >= capacity) {
+                continue; // the structure is complete
+            }
+            if (USSInfraBuild.targetOccupiedByOther(uss.getInfrastructure(), type, targetKind, index)) {
+                continue; // the target already hosts another structure
+            }
+            String countdownKey = ship.getUuid() + '#' + type;
+            long countdown = infraBuildCountdowns.getOrDefault(countdownKey, USSConstants.INFRA_BUILD_INTERVAL) - 1L;
+            if (countdown > 0L) {
+                infraBuildCountdowns.put(countdownKey, countdown);
+                continue;
+            }
+            infraBuildCountdowns.put(countdownKey, USSConstants.INFRA_BUILD_INTERVAL);
+            CargoHold hold = ship.getHold();
+            String cargoKey = USSInfra.componentKey(type);
+            if (hold == null || hold.itemsOf(cargoKey) <= 0L) {
+                continue; // nothing on board — the countdown advanced, no unit built
+            }
+            ship.setHold(hold.removeItem(cargoKey, 1L));
+            uss = uss.withInfrastructure(
+                uss.getInfrastructure()
+                    .addUnits(key, 1L));
+            if (current % 20L == 0L) {
+                log(
+                    ship,
+                    "BUILDER: " + USSInfraBuild
+                        .name(type) + " structure " + (current + 1L) + "/" + capacity + " at " + anchor);
+            }
+            syncStarRenderBlock();
+        }
+    }
+
+    /**
+     * Deliver the constructor's on-board infrastructure cargo (the dedicated hold keys) to the build site
+     * (unpaced — the site holds them until the finished base's hold receives them at spawn).
+     */
+    private void deliverInfraCargo(VoidcraftActiveShip ship, USSBaseSite site) {
+        CargoHold hold = ship.getHold();
+        if (hold == null) {
+            return;
+        }
+        CargoHold next = hold;
+        for (String key : USSInfra.INFRA_CARGO_KEYS) {
+            long onBoard = next.itemsOf(key);
+            if (onBoard <= 0L) {
                 continue;
             }
             long delivered = site.addCargo(key, onBoard);
             if (delivered > 0L) {
-                ship.consumeBuildParts(key, delivered);
+                next = next.removeItem(key, delivered);
             }
+        }
+        if (next != hold) {
+            ship.setHold(next);
         }
     }
 
@@ -2156,7 +2597,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         }
         for (Map.Entry<String, Long> entry : site.cargoView()
             .entrySet()) {
-            hold = hold.addSpecial(entry.getKey(), entry.getValue());
+            hold = hold.addItem(entry.getKey(), entry.getValue());
         }
         base.setHold(hold);
     }
@@ -2181,12 +2622,158 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         if (te == null || uss == null || !uss.isIgnited()) {
             return;
         }
-        long capacity = USSInfra.starSatelliteCapacity(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+        long capacity = USSInfra.starSatelliteCapacity(USSPlanets.starRenderSize(uss.getStarSize()));
         long count = uss.getInfrastructure()
             .count(USSInfrastructure.DYSON_STAR_KEY);
         te.setDysonSwarm(count, capacity);
+        // The star's rendered size (the Stellar Injector grows the star — the star TE is the one render that
+        // needs it; the fleet TE gets the same value with its system specs).
+        te.setStarSize(USSPlanets.starRenderSize(uss.getStarSize()));
+        te.setInfraShell(starInfraShellType(), starInfraShellCount(), starInfraShellCapacity());
+        te.setUssOrbitTime(
+            uss.getVirtualTime(),
+            mte.getWorld()
+                .getTotalWorldTime());
         mte.getWorld()
             .markBlockForUpdate(sx, sy, sz);
+        // The ripple-scale infrastructure shells ride the fleet anchor (the same frame as the revealed ripples).
+        int[] anchor = shipAnchorPos(mte);
+        TileEntity fleetTe = mte.getWorld()
+            .getTileEntity(anchor[0], anchor[1], anchor[2]);
+        if (fleetTe instanceof TileEntityVoidcraftShip) {
+            ((TileEntityVoidcraftShip) fleetTe).setRippleInfraShells(rippleInfraShells());
+            mte.getWorld()
+                .markBlockForUpdate(anchor[0], anchor[1], anchor[2]);
+        }
+    }
+
+    /**
+     * The star's ORIGINAL sampled render size (the Stellar Evolution pass): the Stellar Injector and Stellar
+     * Gravitational Lens shells are built ONCE around the ignition-size star (the star never outgrows its 1.5x cap),
+     * so their geometry and capacity stay pinned to the ignition size — a live-size capacity would grow behind the
+     * built shell and read it as incomplete (the Dyson Swarm keeps the LIVE size: the swarm tracks the star).
+     */
+    private double starShellRenderSize() {
+        double original = USSPlanets.sampleStarSize(uss.getStarType(), uss.getIgnitedAt());
+        return USSPlanets.starRenderSize(original > 0.0 ? original : uss.getStarSize());
+    }
+
+    /**
+     * The star's non-Dyson infrastructure shell (the infrastructure-builder pass): the Stellar Injector or the
+     * Stellar Gravitational Lens built on the star — at most one (the star's shell slot is exclusive) — as the
+     * shell TYPE to render (-1 when the star's shell is the Dyson Swarm or none).
+     */
+    private int starInfraShellType() {
+        if (uss == null || !uss.isIgnited()) {
+            return -1;
+        }
+        USSInfrastructure infra = uss.getInfrastructure();
+        long injector = infra.count(USSInfraBuild.key(USSInfraBuild.INJECTOR, USSInfraBuild.TARGET_STAR, -1));
+        long lens = infra.count(USSInfraBuild.key(USSInfraBuild.LENS, USSInfraBuild.TARGET_STAR, -1));
+        if (injector > 0L) {
+            return USSInfraBuild.INJECTOR;
+        }
+        if (lens > 0L) {
+            return USSInfraBuild.LENS;
+        }
+        return -1;
+    }
+
+    /** @return the built unit count of the star's non-Dyson infrastructure shell (0 when none) */
+    private long starInfraShellCount() {
+        int type = starInfraShellType();
+        if (type < 0) {
+            return 0L;
+        }
+        return uss.getInfrastructure()
+            .count(USSInfraBuild.key(type, USSInfraBuild.TARGET_STAR, -1));
+    }
+
+    /** @return the build capacity of the star's non-Dyson infrastructure shell (0 when none) */
+    private long starInfraShellCapacity() {
+        int type = starInfraShellType();
+        if (type < 0) {
+            return 0L;
+        }
+        return USSInfraBuild.starCapacity(type, starShellRenderSize());
+    }
+
+    /**
+     * The ripple-scale infrastructure shell state (the infrastructure-builder pass): each
+     * {@code [x, y, z, count, capacity]} — one entry per revealed ripple carrying a built Stabilizer shell
+     * (fleet-anchor blocks, the same frame as the revealed ripples; hidden ripples stay absent).
+     */
+    private List<float[]> rippleInfraShells() {
+        List<float[]> out = new ArrayList<>();
+        if (uss == null || !uss.isIgnited()) {
+            return out;
+        }
+        USSRippleField field = getRippleField();
+        if (field == null) {
+            return out;
+        }
+        long capacity = USSInfraBuild.rippleCapacity();
+        // The progress key of a ripple target is "<name>:ripple:<index>" (USSInfraBuild.key) — strip the whole
+        // target part before parsing the index, not just the type prefix.
+        String ripplePrefix = USSInfraBuild.prefix(USSInfraBuild.STABILIZER) + "ripple:";
+        for (Map.Entry<String, Long> entry : uss.getInfrastructure()
+            .counts()
+            .entrySet()) {
+            String k = entry.getKey();
+            if (!k.startsWith(ripplePrefix) || entry.getValue() <= 0L) {
+                continue;
+            }
+            int index;
+            try {
+                index = Integer.parseInt(k.substring(ripplePrefix.length()));
+            } catch (NumberFormatException e) {
+                continue;
+            }
+            if (index < 0 || index >= field.size()) {
+                continue;
+            }
+            if (!uss.getScannedRipples()
+                .contains(index)) {
+                continue;
+            }
+            USSPosition p = field.positionOf(index);
+            out.add(
+                new float[] { (float) p.x(), (float) p.y(), (float) p.z(), (float) entry.getValue(),
+                    (float) capacity });
+        }
+        return out;
+    }
+
+    /**
+     * Push the virtual orbit clock pair to both render TEs (the star block + the fleet anchor): the client
+     * extrapolates at the normal rate (1 tick/tick) from the last sync, so a push is only needed while the clock
+     * runs faster than the world (a stellar-acceleration second) — everything else keeps the world-clock phase.
+     */
+    private void syncOrbitClock() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) {
+            return;
+        }
+        World world = base.getWorld();
+        if (world == null || world.isRemote || uss == null || !uss.isIgnited()) {
+            return;
+        }
+        long orbitTime = uss.getVirtualTime();
+        long worldTime = world.getTotalWorldTime();
+        int sx = (int) (base.getXCoord() + 32 * getExtendedFacing().getRelativeBackInWorld().offsetX);
+        int sy = (int) (base.getYCoord() + 32 * getExtendedFacing().getRelativeBackInWorld().offsetY);
+        int sz = (int) (base.getZCoord() + 32 * getExtendedFacing().getRelativeBackInWorld().offsetZ);
+        TileEntity starTe = world.getTileEntity(sx, sy, sz);
+        if (starTe instanceof TileEntityEyeOfHarmony) {
+            ((TileEntityEyeOfHarmony) starTe).setUssOrbitTime(orbitTime, worldTime);
+            world.markBlockForUpdate(sx, sy, sz);
+        }
+        int[] anchor = shipAnchorPos(base);
+        TileEntity fleetTe = world.getTileEntity(anchor[0], anchor[1], anchor[2]);
+        if (fleetTe instanceof TileEntityVoidcraftShip) {
+            ((TileEntityVoidcraftShip) fleetTe).setUssOrbitTime(orbitTime, worldTime);
+            world.markBlockForUpdate(anchor[0], anchor[1], anchor[2]);
+        }
     }
 
     /**
@@ -2196,7 +2783,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         if (uss == null || !uss.isIgnited()) {
             return 0L;
         }
-        return USSInfra.starSatelliteCapacity(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+        return USSInfra.starSatelliteCapacity(USSPlanets.starRenderSize(uss.getStarSize()));
     }
 
     /**
@@ -2221,7 +2808,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         if (uss == null || !uss.isIgnited() || amount <= 0L) {
             return 0L;
         }
-        long capacity = USSInfra.starSatelliteCapacity(starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+        long capacity = USSInfra.starSatelliteCapacity(USSPlanets.starRenderSize(uss.getStarSize()));
         long toAdd = Math.min(amount, capacity - starSatelliteCount());
         if (toAdd <= 0L) {
             return 0L;
@@ -2231,6 +2818,311 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 .addUnits(USSInfrastructure.DYSON_STAR_KEY, toAdd));
         syncStarRenderBlock();
         return toAdd;
+    }
+
+    /**
+     * Debug path: add units to the star's non-Dyson infrastructure shell (the Stellar Injector or the Stellar
+     * Gravitational Lens — no resource cost), clamped by the remaining capacity.
+     *
+     * @param type   the shell's type (a star-scale type)
+     * @param amount the units to add
+     * @return the units actually added (0 when the star is not ignited, the shell is saturated, or the amount is
+     *         non-positive)
+     */
+    public long debugAddStarShellUnits(int type, long amount) {
+        if (uss == null || !uss.isIgnited() || amount <= 0L) {
+            return 0L;
+        }
+        String key = USSInfraBuild.key(type, USSInfraBuild.TARGET_STAR, -1);
+        long toAdd = Math.min(
+            amount,
+            infraShellCapacity(type, USSInfraBuild.TARGET_STAR, -1)
+                - infraShellCount(type, USSInfraBuild.TARGET_STAR, -1));
+        if (toAdd <= 0L) {
+            return 0L;
+        }
+        uss = uss.withInfrastructure(
+            uss.getInfrastructure()
+                .addUnits(key, toAdd));
+        syncStarRenderBlock();
+        return toAdd;
+    }
+
+    /**
+     * Debug path: one cycle of the Stellar Injector's size step with no tick pacing and no resource cost — the
+     * injector buffer is bypassed. Requires the star's shell to be fully built and the star below its size cap.
+     *
+     * @return the star's new size (0.0 when nothing was stepped)
+     */
+    public double debugStepInjector() {
+        if (uss == null || !uss.isIgnited()) {
+            return 0.0;
+        }
+        if (!USSInfraBuild.isBuilt(
+            uss.getInfrastructure(),
+            USSInfraBuild.INJECTOR,
+            USSInfraBuild.TARGET_STAR,
+            -1,
+            infraShellCapacity(USSInfraBuild.INJECTOR, USSInfraBuild.TARGET_STAR, -1))) {
+            return 0.0;
+        }
+        if (uss.getStarSize() + USSConstants.INJECTOR_SIZE_STEP > starSizeCap() + 1e-9) {
+            return 0.0;
+        }
+        uss = uss.withStarSize(uss.getStarSize() + USSConstants.INJECTOR_SIZE_STEP);
+        syncStarRenderBlock();
+        return uss.getStarSize();
+    }
+
+    /**
+     * @return the star's current size (0.0 when not ignited)
+     */
+    public double starSize() {
+        return uss != null && uss.isIgnited() ? uss.getStarSize() : 0.0;
+    }
+
+    /**
+     * @return the star's size cap — 1.5× the original sampled size (0.0 when not ignited)
+     */
+    public double starSizeCap() {
+        if (uss == null || !uss.isIgnited()) {
+            return 0.0;
+        }
+        return USSStellarEvolution.sizeCap(USSPlanets.sampleStarSize(uss.getStarType(), uss.getIgnitedAt()));
+    }
+
+    /**
+     * @return the remaining fraction (0..1) of the star's primary material reserve (1.0 when not ignited)
+     */
+    public double starPrimaryFraction() {
+        return uss != null && uss.isIgnited() ? uss.primaryFraction() : 1.0;
+    }
+
+    /**
+     * Debug path: deplete a fraction of the star's PRIMARY material reserve — the stellar evolution's
+     * {@code primaryFraction} read (no resource cost). Each primary material loses the fraction of its
+     * ignition-time amount (clamped at 0); a never-siphoned star starts from the full reserve.
+     *
+     * @param fraction the depletion fraction (negative clamped to 0)
+     * @return the units depleted across all materials (0 when not ignited or nothing left to deplete)
+     */
+    public long debugDepleteStarPrimary(double fraction) {
+        if (uss == null || !uss.isIgnited() || fraction <= 0.0) {
+            return 0L;
+        }
+        USSStarDefinition definition = USSStarRegistry.byType(uss.getStarType());
+        if (definition == null) {
+            return 0L;
+        }
+        VoidcraftUSS.MaterialReserve initial = VoidcraftUSS.MaterialReserve
+            .fromStar(definition, USSPlanets.sampleStarSize(uss.getStarType(), uss.getIgnitedAt()));
+        VoidcraftUSS.MaterialReserve current = uss.getStarFluidReserve();
+        if (current == null) {
+            current = initial; // a never-siphoned star starts from the full reserve
+        }
+        long depleted = 0L;
+        VoidcraftUSS.MaterialReserve next = current;
+        for (Map.Entry<Materials, Long> entry : initial.getRemaining()
+            .entrySet()) {
+            long amount = Math.round(entry.getValue() * fraction);
+            if (amount <= 0L) {
+                continue;
+            }
+            depleted += Math.min(amount, current.remaining(entry.getKey()));
+            next = next.mine(entry.getKey(), amount);
+        }
+        if (depleted <= 0L) {
+            return 0L;
+        }
+        uss = uss.withStarFluidReserve(next);
+        return depleted;
+    }
+
+    /**
+     * Debug path: reveal (scan) the first ripple whose Continuum Stabilizer shell is not fully built and add units
+     * there (no resource cost) — the target's saturation moves the effect to the next ripple.
+     *
+     * @param amount the units to add (clamped by that shell's remaining capacity)
+     * @return the units actually added (0 when the star is not ignited, no ripple has shell room, or the amount is
+     *         non-positive)
+     */
+    public long debugAddStabilizerToNextRipple(long amount) {
+        int index = debugStabilizerTargetRipple();
+        if (index < 0 || amount <= 0L) {
+            return 0L;
+        }
+        if (!uss.isRippleScanned(index)) {
+            uss = uss.withRippleScanned(index);
+        }
+        long toAdd = Math.min(
+            amount,
+            infraShellCapacity(USSInfraBuild.STABILIZER, USSInfraBuild.TARGET_RIPPLE, index)
+                - infraShellCount(USSInfraBuild.STABILIZER, USSInfraBuild.TARGET_RIPPLE, index));
+        if (toAdd <= 0L) {
+            return 0L;
+        }
+        uss = uss.withInfrastructure(
+            uss.getInfrastructure()
+                .addUnits(USSInfraBuild.key(USSInfraBuild.STABILIZER, USSInfraBuild.TARGET_RIPPLE, index), toAdd));
+        syncFleetRenderBlock();
+        return toAdd;
+    }
+
+    /**
+     * @return the index of the first ripple whose Continuum Stabilizer shell is not fully built (-1 when the star
+     *         is not ignited or every ripple's shell is full)
+     */
+    public int debugStabilizerTargetRipple() {
+        if (uss == null || !uss.isIgnited()) {
+            return -1;
+        }
+        USSRippleField field = getRippleField();
+        if (field == null) {
+            return -1;
+        }
+        return USSInfraBuild.firstIncompleteStabilizerRipple(uss.getInfrastructure(), field.rippleIndices());
+    }
+
+    /**
+     * @param type  the shell's type
+     * @param kind  the target kind (the star, or a ripple point by index)
+     * @param index the ripple point index (ignored for the star)
+     * @return the built unit count of that shell (0 when the star is not ignited or none is built)
+     */
+    public long infraShellCount(int type, int kind, int index) {
+        if (uss == null || !uss.isIgnited()) {
+            return 0L;
+        }
+        return uss.getInfrastructure()
+            .count(USSInfraBuild.key(type, kind, index));
+    }
+
+    /**
+     * @param type  the shell's type
+     * @param kind  the target kind (the star, or a ripple point by index)
+     * @param index the ripple point index (ignored for the star)
+     * @return the build capacity of that shell (0 when the star is not ignited or the type does not build there)
+     */
+    public long infraShellCapacity(int type, int kind, int index) {
+        if (uss == null || !uss.isIgnited()) {
+            return 0L;
+        }
+        double renderSize = kind == USSInfraBuild.TARGET_STAR ? starShellRenderSize()
+            : USSPlanets.starRenderSize(uss.getStarSize());
+        return USSInfraBuild.capacity(type, kind, renderSize);
+    }
+
+    /**
+     * @return the ripple points of the field (0 when the star is not ignited or the field is absent)
+     */
+    public int ripplePointCount() {
+        if (uss == null || !uss.isIgnited()) {
+            return 0;
+        }
+        USSRippleField field = getRippleField();
+        return field == null ? 0
+            : field.rippleIndices()
+                .size();
+    }
+
+    /**
+     * @return how many of the field's ripple points are revealed (0 when the star is not ignited or the field is
+     *         absent)
+     */
+    public int rippleRevealedCount() {
+        if (uss == null || !uss.isIgnited()) {
+            return 0;
+        }
+        USSRippleField field = getRippleField();
+        if (field == null) {
+            return 0;
+        }
+        int revealed = 0;
+        for (int index : field.rippleIndices()) {
+            if (uss.isRippleScanned(index)) {
+                revealed++;
+            }
+        }
+        return revealed;
+    }
+
+    /**
+     * Debug path: reveal (scan) random ripple points — up to {@code count} UNREVEALED ripples picked at random (no
+     * resource cost). A point is revealed exactly once (an already-revealed point is never re-picked).
+     *
+     * @param count the maximum number of ripple points to reveal
+     * @return the ripple points actually revealed (0 when the star is not ignited or every ripple point is already
+     *         revealed)
+     */
+    public int debugScanRandomRipples(int count) {
+        if (uss == null || !uss.isIgnited() || count <= 0) {
+            return 0;
+        }
+        USSRippleField field = getRippleField();
+        if (field == null) {
+            return 0;
+        }
+        List<Integer> candidates = new ArrayList<Integer>();
+        for (int index : field.rippleIndices()) {
+            if (!uss.isRippleScanned(index)) {
+                candidates.add(index);
+            }
+        }
+        if (candidates.isEmpty()) {
+            return 0;
+        }
+        Collections.shuffle(candidates, new Random());
+        int revealed = 0;
+        for (int i = 0; i < Math.min(count, candidates.size()); i++) {
+            uss = uss.withRippleScanned(candidates.get(i));
+            revealed++;
+        }
+        syncFleetRenderBlock();
+        return revealed;
+    }
+
+    /**
+     * Debug path: set the star's size to the injector's cap (1.5× the original sampled size — no resource cost, the
+     * injector's shell and buffer requirements are bypassed).
+     *
+     * @return the star's new size (0.0 when the star is not ignited or already at the cap)
+     */
+    public double debugSetStarSizeToCap() {
+        double cap = starSizeCap();
+        if (cap <= 0.0 || uss.getStarSize() + 1e-9 >= cap) {
+            return 0.0;
+        }
+        uss = uss.withStarSize(cap);
+        syncStarRenderBlock();
+        return uss.getStarSize();
+    }
+
+    /**
+     * Debug path: set the star's remaining lifespan (no resource cost).
+     *
+     * @param ticks the new remaining lifespan in machine ticks
+     * @return the new remaining lifespan (0 when the star is not ignited or the ticks are non-positive)
+     */
+    public long debugSetLifespanTicks(long ticks) {
+        if (uss == null || !uss.isIgnited() || ticks <= 0L) {
+            return 0L;
+        }
+        uss = uss.withLifespan(ticks);
+        return uss.getLifespanRemaining();
+    }
+
+    /**
+     * Debug path: force the star's expiry NOW (the expiry pipeline runs on the spot — evolution auto-ignites the
+     * new star on the upgraded controller, or the system terminates and the controller is consumed).
+     *
+     * @return true when the expiry pipeline ran (false when the star is not ignited)
+     */
+    public boolean debugForceExpiry() {
+        if (uss == null || !uss.isIgnited()) {
+            return false;
+        }
+        starExpires();
+        return true;
     }
 
     // endregion
@@ -2263,25 +3155,24 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         }
         String name = bpTag.hasKey(VoidcraftNbt.TAG_NAME) ? bpTag.getString(VoidcraftNbt.TAG_NAME) : "Voidbase";
         USSBaseSite site = createOrGetBaseSite(anchor, blueprint, name);
-        // Infrastructure cargo (the Dyson Swarm pass): loadout keys with the item. prefix land on the site NOW
-        // (unpaced — the finished base's hold receives them at spawn) and never enter the parts transfer total.
+        // The base's infrastructure cargo (the dedicated hold keys) lands on the site NOW (unpaced — the
+        // finished base's hold receives it at spawn) and never enters the parts transfer total.
         deliverInfraCargo(ship, site);
-        // The parts this ship will actually deposit: per loadout key, the site's remaining need capped at what is
-        // on board (a part already satisfied by another Constructor is skipped and stays on board).
+        // The parts this ship will actually deposit: per parts-list key, the site's remaining need capped at what
+        // is on board in the hold (a part already satisfied by another Constructor is skipped and stays on board).
+        CargoHold hold = ship.getHold();
         long total = 0L;
         for (String key : new ArrayList<String>(
-            ship.getBuildLoadout()
+            blueprint.partsList()
                 .keySet())) {
             long need = site.remaining(key);
             if (need <= 0L) {
                 continue;
             }
-            Long onBoard = ship.getBuildLoadout()
-                .get(key);
-            total += Math.min(need, onBoard == null ? 0L : onBoard);
+            total += Math.min(need, hold != null ? hold.itemsOf(key) : 0L);
         }
         if (total <= 0L) {
-            // Nothing to transfer (no loadout, or every part is already delivered): a site that just completed
+            // Nothing to transfer (no parts on board, or every part is already delivered): a site that just completed
             // by another ship spawns now; otherwise the site simply stands.
             if (site.isComplete()) {
                 spawnBaseFromSite(site, ship);
@@ -2357,7 +3248,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             return false;
         }
         if (site.constructTicksLeft() <= 0L) {
-            // The leg counted down before the site filled (its loadout covered less than the remaining need).
+            // The leg counted down before the site filled (its parts covered less than the remaining need).
             site.finishConstructLeg();
             log(
                 ship,
@@ -2375,21 +3266,24 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * Deposit ONE part from the ship's loadout into the site: the first key (loadout order) the site still
-     * needs and the ship still carries (unknown / saturated keys are skipped).
+     * Deposit ONE part from the ship's hold into the site: the first parts-list key the site still needs and the
+     * hold still carries (unknown / saturated keys are skipped).
      */
     private void depositOneBuildPart(VoidcraftActiveShip ship, USSBaseSite site) {
+        VoidcraftBlueprint blueprint = site.blueprint();
+        CargoHold hold = ship.getHold();
+        if (blueprint == null || hold == null) {
+            return;
+        }
         for (String key : new ArrayList<String>(
-            ship.getBuildLoadout()
+            blueprint.partsList()
                 .keySet())) {
-            if (site.remaining(key) <= 0L) {
+            if (site.remaining(key) <= 0L || hold.itemsOf(key) <= 0L) {
                 continue;
             }
-            long take = ship.consumeBuildParts(key, 1L);
-            if (take > 0L) {
-                site.add(key, take);
-                return;
-            }
+            ship.setHold(hold.removeItem(key, 1L));
+            site.add(key, 1L);
+            return;
         }
     }
 
@@ -2404,9 +3298,35 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         return total;
     }
 
-    /** @return the " (N parts remain on board)" log suffix ("" when the ship's loadout is empty) */
+    /** @return the " (N parts remain on board)" log suffix ("" when the ship carries no parts of its mission) */
     private String buildLeftoverLog(VoidcraftActiveShip ship) {
-        return ship.buildLoadoutTotal() > 0L ? " (" + ship.buildLoadoutTotal() + " parts remain on board)" : "";
+        long parts = partsRemainderOnBoard(ship);
+        return parts > 0L ? " (" + parts + " parts remain on board)" : "";
+    }
+
+    /**
+     * The parts the constructor still carries for its mission (the parts-list keys present in its hold; 0 for a
+     * ship without a blueprint mission).
+     */
+    private long partsRemainderOnBoard(VoidcraftActiveShip ship) {
+        NBTTagCompound payload = ship.getPayload();
+        if (payload == null || !payload.hasKey(VoidcraftNbt.TAG_BUILD_BLUEPRINT)) {
+            return 0L;
+        }
+        VoidcraftBlueprint blueprint = VoidcraftNbt.readBase(payload.getCompoundTag(VoidcraftNbt.TAG_BUILD_BLUEPRINT));
+        if (blueprint == null) {
+            return 0L;
+        }
+        CargoHold hold = ship.getHold();
+        if (hold == null) {
+            return 0L;
+        }
+        long total = 0L;
+        for (String key : blueprint.partsList()
+            .keySet()) {
+            total += hold.itemsOf(key);
+        }
+        return total;
     }
 
     // region ship-to-ship cargo transfer (SEND / TAKE — the USSPilotWorld seams)
@@ -2425,6 +3345,9 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             return false;
         }
         String rawTarget = target.trim();
+        if (USSProgramDefaults.TARGET_STAR.equalsIgnoreCase(rawTarget)) {
+            return cargoTransferStartStar(ship, commandId, amount, filter);
+        }
         VoidcraftActiveShip targetShip;
         if (USSProgramDefaults.TARGET_NEARBY.equalsIgnoreCase(rawTarget)) {
             targetShip = resolveNearbyFleetTarget(ship, commandId);
@@ -2487,6 +3410,67 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         return true;
     }
 
+    /**
+     * A SEND / TAKE whose target is the STAR: the counterparty is the Stellar Injector's cargo buffer (the
+     * injector's delivery point) — SEND moves the ship's cargo into the buffer, TAKE retrieves buffer cargo into
+     * the ship. The ship must be at the star (its own location IS the star) and the star's Injector shell must
+     * be FULLY BUILT (a shell under construction is not a delivery point).
+     *
+     * @param ship      the executing ship
+     * @param commandId the command id ({@code USSCommand.SEND} or {@code USSCommand.TAKE})
+     * @param amount    the unit limit (-1 = ALL)
+     * @param filter    the material filter (null / empty / "*" = all)
+     * @return true when the transfer started
+     */
+    private boolean cargoTransferStartStar(VoidcraftActiveShip ship, int commandId, long amount, String filter) {
+        String label = USSCommand.label(commandId);
+        if (!uss.isIgnited()) {
+            log(ship, label + ": the star is not ignited - skipping");
+            return false;
+        }
+        if (!USSInfraBuild.isBuilt(
+            uss.getInfrastructure(),
+            USSInfraBuild.INJECTOR,
+            USSInfraBuild.TARGET_STAR,
+            -1,
+            infraShellCapacity(USSInfraBuild.INJECTOR, USSInfraBuild.TARGET_STAR, -1))) {
+            log(ship, label + ": the star's Stellar Injector shell is not fully built - skipping");
+            return false;
+        }
+        if (ship.isTraveling()) {
+            log(ship, label + ": this ship is in transit - skipping");
+            return false;
+        }
+        if (locationOf(ship).getKind() != USSLocation.Kind.STAR) {
+            log(ship, label + ": this ship is not at the star - skipping");
+            return false;
+        }
+        long power = ship.getLogisticsPower();
+        if (power <= 0L) {
+            log(ship, label + ": no logistics power (Cargo Drone Bay covers) - skipping");
+            return false;
+        }
+        USSCargoTransferState state = new USSCargoTransferState();
+        state.leg = USSCargoTransfer.arm(filter, amount, (int) USSConstants.transferTicksPerUnit(power));
+        state.starTarget = true;
+        state.targetName = "the star's injector buffer";
+        cargoTransfers.put(ship.getUuid(), state);
+        String normFilter = USSCargoTransfer.normalizeFilter(filter);
+        log(
+            ship,
+            label + ": transferring "
+                + (amount < 0L ? "all" : String.valueOf(amount))
+                + " units to "
+                + state.targetName
+                + " (filter '"
+                + (normFilter.isEmpty() ? USSCargoTransfer.FILTER_ALL : normFilter)
+                + "', logistics power "
+                + power
+                + ")");
+        syncFleetRenderBlock();
+        return true;
+    }
+
     @Override
     public boolean cargoTransferTick(VoidcraftActiveShip ship, int commandId) {
         if (ship == null) {
@@ -2497,6 +3481,59 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             return false; // nothing in flight (a mid-transfer chunk reload degrades gracefully to DONE)
         }
         String label = USSCommand.label(commandId);
+        if (state.starTarget) {
+            // The star cannot leave: the transfer ends when the EXECUTING ship leaves the star or goes in transit.
+            if (ship.isTraveling() || locationOf(ship).getKind() != USSLocation.Kind.STAR) {
+                cargoTransfers.remove(ship.getUuid());
+                log(
+                    ship,
+                    label + ": the ship left the star - transfer over (" + state.leg.transferred() + " units moved)");
+                syncFleetRenderBlock();
+                return false;
+            }
+            if (!ship.spendEnergy(ship.getLogisticsPower())) {
+                return true; // stalled — keep polling
+            }
+            // SEND moves ship -> buffer; TAKE the inverse (the CALLER owns the direction).
+            CargoHold source = commandId == USSCommand.SEND ? ship.getHold() : uss.getInjectorBuffer();
+            CargoHold dest = commandId == USSCommand.SEND ? uss.getInjectorBuffer() : ship.getHold();
+            if (source == null || dest == null) {
+                cargoTransfers.remove(ship.getUuid());
+                log(ship, label + ": no cargo hold - transfer over (" + state.leg.transferred() + " units moved)");
+                syncFleetRenderBlock();
+                return false;
+            }
+            USSCargoTransfer.Result result = state.leg.tick(source, dest);
+            if (result.source != null) {
+                if (commandId == USSCommand.SEND) {
+                    ship.setHold(result.source);
+                    ship.setCargo(USSShipCargo.cargoFromHold(result.source));
+                } else {
+                    uss = uss.withInjectorBuffer(result.source);
+                }
+            }
+            if (result.target != null) {
+                if (commandId == USSCommand.SEND) {
+                    uss = uss.withInjectorBuffer(result.target);
+                } else {
+                    ship.setHold(result.target);
+                    ship.setCargo(USSShipCargo.cargoFromHold(result.target));
+                }
+            }
+            if (result.running) {
+                return true;
+            }
+            cargoTransfers.remove(ship.getUuid());
+            log(
+                ship,
+                label + ": transfer over ("
+                    + state.leg.transferred()
+                    + " units moved"
+                    + (result.reason == null ? "" : " - " + result.reason)
+                    + ")");
+            syncFleetRenderBlock();
+            return false;
+        }
         VoidcraftActiveShip target = findFleetShip(state.targetUuid);
         if (target == null) {
             cargoTransfers.remove(ship.getUuid());
@@ -2786,12 +3823,114 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         return target.getIntegrity() < target.maxIntegrity();
     }
 
+    @Override
+    public boolean stabilizeStart(VoidcraftActiveShip ship, long ticks) {
+        if (ship == null || !ship.isBase()) {
+            return false; // the matrix is a station capability (a flying ship carries no matrix)
+        }
+        if (stabilizes.containsKey(ship.getUuid())) {
+            log(ship, "STABILIZE: a stabilization window is already in flight - skipping");
+            return false;
+        }
+        VoidcraftBlueprint blueprint = VoidcraftNbt.readBase(ship.getPayload());
+        if (blueprint == null || blueprint.count(VoidcraftComponent.STABILIZATION_MATRIX) <= 0) {
+            log(ship, "STABILIZE: no Stabilization Matrix in the blueprint - skipping");
+            return false;
+        }
+        USSBaseAnchor anchor = ship.getAnchor();
+        if (anchor == null || !anchor.isRipple()) {
+            log(ship, "STABILIZE: the base is not anchored to a ripple - skipping");
+            return false;
+        }
+        int index = anchor.index();
+        USSRippleField field = getRippleField();
+        if (uss == null || field == null
+            || index < 0
+            || index >= field.size()
+            || !uss.isRippleScanned(index)
+            || !field.isRipple(index)) {
+            log(ship, "STABILIZE: the anchor ripple is not revealed - skipping");
+            return false;
+        }
+        long capacity = USSInfraBuild.rippleCapacity();
+        long built = uss.getInfrastructure()
+            .count(USSInfraBuild.key(USSInfraBuild.STABILIZER, USSInfraBuild.TARGET_RIPPLE, index));
+        if (capacity <= 0L || built < capacity) {
+            log(ship, "STABILIZE: no built Continuum Stabilizer on the anchor ripple - skipping");
+            return false;
+        }
+        CargoHold hold = ship.getHold();
+        long umv = hold != null ? hold.itemsOf(USSConstants.FIELD_GENERATOR_UMV) : 0L;
+        long uxv = hold != null ? hold.itemsOf(USSConstants.FIELD_GENERATOR_UXV) : 0L;
+        if (!USSStabilize.hasFieldGenerators(umv, uxv)) {
+            log(ship, "STABILIZE: no Field Generators on board - skipping");
+            return false;
+        }
+        USSStabilize.Session session = new USSStabilize.Session();
+        session.ticks = ticks;
+        session.fieldGeneratorTicks = USSConstants.STABILIZE_FIELD_GENERATOR_INTERVAL_TICKS;
+        session.weight = 0;
+        stabilizes.put(ship.getUuid(), session);
+        log(
+            ship,
+            "STABILIZE: stabilizing the anchor ripple for " + ticks
+                + " ticks (one Field Generator per "
+                + USSConstants.STABILIZE_FIELD_GENERATOR_INTERVAL_TICKS
+                + " ticks)");
+        return true;
+    }
+
+    @Override
+    public boolean stabilizeTick(VoidcraftActiveShip ship) {
+        if (ship == null) {
+            return false;
+        }
+        USSStabilize.Session session = stabilizes.get(ship.getUuid());
+        if (session == null) {
+            return false; // nothing in flight (the command DONEs)
+        }
+        CargoHold hold = ship.getHold();
+        long umv = hold != null ? hold.itemsOf(USSConstants.FIELD_GENERATOR_UMV) : 0L;
+        long uxv = hold != null ? hold.itemsOf(USSConstants.FIELD_GENERATOR_UXV) : 0L;
+        boolean paid = ship.spendEnergy(USSConstants.STABILIZE_ENERGY_PER_TICK);
+        USSStabilize.TickResult result = USSStabilize.tick(session, paid, umv, uxv);
+        if (result.consumeUxv) {
+            ship.setHold(
+                ship.getHold()
+                    .removeItem(USSConstants.FIELD_GENERATOR_UXV, 1L));
+        } else if (result.consumeUmv) {
+            ship.setHold(
+                ship.getHold()
+                    .removeItem(USSConstants.FIELD_GENERATOR_UMV, 1L));
+        }
+        if (!result.running) {
+            stabilizes.remove(ship.getUuid());
+            log(ship, "STABILIZE: stabilization window complete (weight " + session.weight + ")");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * The expiry weight read (the matrix's effective weight at star expiry): the sum of the last-consumed Field
+     * Generator weights over ALL live STABILIZE windows (multiple bases stabilize concurrently; the weights sum).
+     */
+    private int stabilizeWeightSum() {
+        int sum = 0;
+        for (USSStabilize.Session session : stabilizes.values()) {
+            if (session != null) {
+                sum += session.weight;
+            }
+        }
+        return sum;
+    }
+
     // endregion
 
     /**
      * Mission complete for ONE ship (slot) — the ship SURVIVED its integrity time limit (it is here with
-     * integrity still &gt; 0): the mission delivers its cargo to ITS OWN bay (captured at launch) — a Voidbase
-     * construction mission carries no cargo (its parts loadout is consumed in flight by the CONSTRUCT leg).
+     * integrity still &gt; 0): the mission delivers its cargo — whatever the ship's hold still carries (a
+     * construction mission's parts leftover rides it too) — to ITS OWN bay (captured at launch).
      * Then: re-emit the surviving ship into ITS OWN gateway's output bus (or drop it at the USS when the bus
      * cannot absorb it) — its integrity is back at maximum for the next flight (the item carries the blueprint
      * full integrity). The fleet anchor is resynced by the CALLER (one push for the whole fleet). Other ships in
@@ -2806,13 +3945,16 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         if (slot < pilots.size()) {
             pilots.remove(slot);
         }
+        stabilizes.remove(completedShip.getUuid());
         lastPushedShipStates[slot] = -1;
         lastPushedLegIds[slot] = -1;
 
         String shipName = completedShip.getName();
-        NBTTagCompound cargo = completedShip.getCargo();
-        NBTTagList items = cargo != null ? USSShipCargo.readItems(cargo) : new NBTTagList();
-        NBTTagList fluids = cargo != null ? USSShipCargo.readFluids(cargo) : new NBTTagList();
+        // The cargo delivered is whatever the ship's hold still carries at mission end (the mining / starlifting
+        // haul, plus the parts a constructor's mission left behind).
+        NBTTagCompound cargo = USSShipCargo.cargoFromHold(completedShip.getHold());
+        NBTTagList items = USSShipCargo.readItems(cargo);
+        NBTTagList fluids = USSShipCargo.readFluids(cargo);
         long integrity = completedShip.getIntegrity(); // > 0 — the ship made it back inside its time limit
         ItemStack shipItem = rebuildShipItem(completedShip);
 
@@ -2861,39 +4003,6 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
 
         MTEVoidcraftGateway gateway = mteAt(world, completedShip.getGatewayPos(), MTEVoidcraftGateway.class);
 
-        // The parts no site took (the constructor's remaining loadout) go to the gateway's output buses -
-        // whatever they cannot absorb (no gateway, no output bus, or a full buffer) drops at the USS instead of
-        // being lost.
-        int returned = 0;
-        List<ItemStack> droppedBack = new ArrayList<>();
-        for (Map.Entry<String, Long> entry : completedShip.getBuildLoadout()
-            .entrySet()) {
-            ItemStack item = MTEVoidcraftGateway.partItem(entry.getKey());
-            if (item == null) {
-                continue;
-            }
-            ItemStack stack = item.copy();
-            stack.stackSize = entry.getValue()
-                .intValue();
-            int inserted = (gateway != null && gateway.mMachine) ? gateway.outputItem(stack) : 0;
-            returned += inserted;
-            if (stack.stackSize > 0) {
-                droppedBack.add(stack);
-            }
-        }
-        if (returned > 0 || !droppedBack.isEmpty()) {
-            if (!droppedBack.isEmpty()) {
-                GTUtility.dropItemsOrClusters(world, dropX, dropY, dropZ, droppedBack);
-            }
-            try {
-                LOGGER.info(
-                    "[Voidcraft] {} returned {} part(s) to the gateway ({} dropped at the USS)",
-                    shipName,
-                    returned,
-                    droppedBack.size());
-            } catch (Throwable ignored) {}
-        }
-
         // The ship SURVIVED (integrity > 0 at completion) → back into ITS OWN gateway's output bus, with its
         // integrity back at maximum for the next flight. Whatever the bus cannot absorb (no gateway, no output
         // bus, or a full buffer) drops at the USS instead of being lost.
@@ -2935,7 +4044,9 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         baseSites.clear();
         cargoTransfers.clear();
         repairs.clear();
+        stabilizes.clear();
         satelliteLaunchCountdowns.clear();
+        infraBuildCountdowns.clear();
         syncFleetRenderBlock(); // empty fleet → the anchor block is cleared
     }
 
@@ -3013,7 +4124,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         }
         USSPlanets.USSPlanet world = planets.get(planet);
         float time = worldTimeTicks();
-        float starSize = starSizeFor(uss.getStarType(), uss.getIgnitedAt());
+        float starSize = USSPlanets.starRenderSize(uss.getStarSize());
         USSPosition planetCenter = USSFleetOrbit.planetPosition(world, starSize, time);
         // The hover distance: the planet's rendered radius (scale · 0.375, the legacy EoH body half) + 0.5, so the
         // ship hovers just off the planet's surface on ANY side (the shell radius).
@@ -3045,7 +4156,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 return null; // out of range (defensive) — the caller treats the base as unanchored
             }
             USSPlanets.USSPlanet planet = planets.get(index);
-            float starSize = starSizeFor(uss.getStarType(), uss.getIgnitedAt());
+            float starSize = USSPlanets.starRenderSize(uss.getStarSize());
             USSPosition planetCenter = USSFleetOrbit.planetPosition(planet, starSize, worldTimeTicks());
             double hoverRadius = 0.5 + 0.375 * planet.scale; // the same hover distance a ship keeps off the surface
             return USSFleetOrbit
@@ -3060,20 +4171,17 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     }
 
     /**
-     * The shared render clock in TICKS, for the orbit math — the SAME time base the client render and
-     * {@code USSFleetOrbit.planetAnchorPosition} expect (the client renders at {@code getTotalWorldTime() +
-     * partialTicks}). {@code getWorldTime()} is the time-of-day counter (it wraps every 24000 ticks) and would put
-     * the server's planet positions at a different orbit phase than the rendered ones, so the total world tick
-     * count is the correct source: the server's planet position and the client's rendered one agree exactly (same
-     * law, same constant, same time base), so a ship's server-resolved destination and the visual position are
-     * consistent.
+     * The shared orbit clock in TICKS for the orbit math — the USS's virtual orbit clock (it advances +1 per
+     * machine tick and proportionally faster during a stellar-acceleration second). The SAME time base the client
+     * render and {@code USSFleetOrbit.planetAnchorPosition} expect (the client renders at the synced
+     * {@code ussOrbitTime} advanced from the last sync, + partialTicks — see the render TEs). The total world tick
+     * count is NOT usable: it does not include the acceleration seconds, so the server's planet positions would
+     * drift off the rendered ones while the star is being accelerated.
      */
     private float worldTimeTicks() {
         try {
-            IGregTechTileEntity base = getBaseMetaTileEntity();
-            if (base != null && base.getWorld() != null) {
-                return (float) base.getWorld()
-                    .getTotalWorldTime();
+            if (uss != null && uss.isIgnited()) {
+                return (float) uss.getVirtualTime();
             }
         } catch (Throwable ignored) {}
         return 0.0f;
@@ -3191,13 +4299,22 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 continue;
             }
             VoidcraftActiveShip source = findFleetShip(e.getKey());
-            VoidcraftActiveShip target = findFleetShip(state.targetUuid);
-            if (source == null || target == null) {
+            if (source == null) {
                 continue;
             }
             NBTTagCompound entry = new NBTTagCompound();
             entry.setString(TileEntityVoidcraftShip.TAG_TRANSFER_SOURCE, e.getKey());
-            entry.setString(TileEntityVoidcraftShip.TAG_TRANSFER_TARGET, state.targetUuid);
+            if (state.starTarget) {
+                // The star's injector buffer: the client resolves the endpoint to the star center itself.
+                entry.setString(TileEntityVoidcraftShip.TAG_TRANSFER_TARGET, "");
+                entry.setBoolean(TileEntityVoidcraftShip.TAG_TRANSFER_STAR, true);
+            } else {
+                VoidcraftActiveShip target = findFleetShip(state.targetUuid);
+                if (target == null) {
+                    continue;
+                }
+                entry.setString(TileEntityVoidcraftShip.TAG_TRANSFER_TARGET, state.targetUuid);
+            }
             entries.add(entry);
         }
         return entries;
@@ -3290,9 +4407,11 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
     /**
      * The render-visible fleet signature (Phase D): the fleet count + every base integrity + every base
      * mining-leg id + every site progress (quantized to 0.1%) + every site CONSTRUCT leg identity (leg id + seed)
-     * + the system's gateway set. The fleet tick resyncs the anchor exactly when it changes (integrity decay or
+     * + the system's gateway set + the star's ignition state (the anchor is born on ignition and dies on burnout).
+     * The fleet tick resyncs the anchor exactly when it changes (integrity decay or
      * repair, a site advancing, a mining leg or a construction leg starting or ending, a gateway registering or
-     * being destroyed) — never per tick (the client animates the beams locally from the leg ids + durations).
+     * being destroyed, the star igniting or going cold) — never per tick (the client animates the beams locally
+     * from the leg ids + durations).
      */
     private long fleetRenderSignature() {
         long sig = activeShips.size();
@@ -3315,6 +4434,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             sig = sig * 31 + gw.getKey()
                 .hashCode();
         }
+        sig = sig * 31 + (uss != null && uss.isIgnited() ? 1L : 0L);
         return sig;
     }
 
@@ -3362,9 +4482,11 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
 
     /**
      * Push the WHOLE fleet to its one render anchor (Phase 4 pass 5 — replaces pass 4's per-slot blocks): creates
-     * or adopts the anchor block, rebuilds its entry list, and syncs it ONCE; with an empty fleet it clears the
-     * anchor. Called at most once per MTE tick (launch / state change / completion / discard / one-time cleanup) —
-     * one full-fleet description packet instead of one per ship.
+     * or adopts the anchor block, rebuilds its entry list, and syncs it ONCE; it clears the anchor only when the
+     * star is cold and the fleet, the sites and the gateways are all empty — while the star burns, the anchor is
+     * the system view's host (revealed ripples, gateways, sites) and stays up. Called at most once per MTE tick
+     * (launch / state change / completion / discard / one-time cleanup) — one full-fleet description packet
+     * instead of one per ship.
      */
     private void syncFleetRenderBlock() {
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -3376,9 +4498,10 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             return;
         }
         int[] anchor = shipAnchorPos(base);
-        // The system's gateways render even with an empty fleet, so a gateway-only system keeps its anchor.
         List<int[]> gateways = pruneGateways(anchor);
-        if (activeShips.isEmpty() && baseSites.isEmpty() && gateways.isEmpty()) {
+        // The anchor hosts the whole system view (revealed ripples, gateways, sites, ships) — it stays up for the
+        // star's whole life, not only while ships fly; only a cold star with nothing to show loses it.
+        if ((uss == null || !uss.isIgnited()) && activeShips.isEmpty() && baseSites.isEmpty() && gateways.isEmpty()) {
             if (world.getBlock(anchor[0], anchor[1], anchor[2]) == VoidcraftLoader.sBlockVoidcraftShipRender) {
                 world.setBlockToAir(anchor[0], anchor[1], anchor[2]);
                 try {
@@ -3406,11 +4529,21 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
         fleetTe.setShips(buildFleetEntries(base));
         // Pass 7: the system's planet specs + star size ride with the fleet so the client can resolve each ship's
         // mission target to the planet's live rendered position (no world lookups client-side).
-        fleetTe.setSystem(planetSpecsFor(getPlanets()), starSizeFor(uss.getStarType(), uss.getIgnitedAt()));
+        fleetTe.setSystem(planetSpecsFor(getPlanets()), USSPlanets.starRenderSize(uss.getStarSize()));
+        // The virtual orbit clock pair (0/0 when the star is not ignited — the client falls back to the world
+        // clock, and a stale clock from a previous life never survives a burnout).
+        if (uss.isIgnited()) {
+            fleetTe.setUssOrbitTime(uss.getVirtualTime(), world.getTotalWorldTime());
+        } else {
+            fleetTe.setUssOrbitTime(0L, 0L);
+        }
         // The Explorer pass: the REVEALED ripple positions (the ripple field ∩ the scanned set) — the client renders
         // each as a pulsating dark-blue transparent triangle. Only ripples that have been scanned ride here (hidden
         // ripples + revealed non-ripples stay absent).
         fleetTe.setRevealedRipples(revealedRipplePositions());
+        // The infrastructure-builder pass: the ripple-scale shells (one entry per revealed ripple carrying a built
+        // Continuum Stabilizer) ride the same anchor.
+        fleetTe.setRippleInfraShells(rippleInfraShells());
         // Phase D: the Voidbase construction sites (wireframe + fill) and the standing bases (static models) —
         // rendered by the client from this same anchor.
         fleetTe.setBaseSites(buildBaseSiteEntries());
@@ -3429,12 +4562,12 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
      * <ul>
      * <li>clear legacy per-slot anchors from pass 4 (slots 1–2 of the old 2-blocks-per-slot lateral geometry —
      * still present in older test worlds; pass 5 uses ONE fleet anchor at the old slot-0 position), and any
-     * stray anchor left with the fleet empty (older builds could leave one behind with stale state, rendering
-     * a frozen ship forever and blocking future launches);</li>
+     * stray anchor left with the fleet empty AND the star cold (older builds could leave one behind with stale
+     * state, rendering a frozen ship forever and blocking future launches);</li>
      * <li>pass 12: the fleet anchor moved 16 → 32 behind the controller (the structure doubled) — clear the
      * old 16-offset anchor and its lateral slots from pre-pass-12 test worlds;</li>
-     * <li>make sure the fleet anchor EXISTS and holds the current fleet when ships are in flight (covers a
-     * load-time edge case where the anchor block was lost while the MTE's NBT survived).</li>
+     * <li>make sure the fleet anchor EXISTS and holds the current fleet (covers a load-time edge case where the
+     * anchor block was lost while the MTE's NBT survived).</li>
      * </ul>
      */
     private void cleanupLegacyShipRender() {
@@ -3490,7 +4623,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 } catch (Throwable ignored) {}
             }
         }
-        if (activeShips.isEmpty()) {
+        if (activeShips.isEmpty() && (uss == null || !uss.isIgnited())) {
             if (world.getBlock(anchor[0], anchor[1], anchor[2]) == VoidcraftLoader.sBlockVoidcraftShipRender) {
                 world.setBlockToAir(anchor[0], anchor[1], anchor[2]);
                 try {
@@ -3531,6 +4664,57 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             str.add(
                 IGregTechDeviceInformation
                     .encode("tt.voidcraft_uss.lifespan.label", "" + YELLOW + model.getLifespanRemaining() + RESET));
+            // Stellar acceleration: the last completed second — the tachyon fluid drained, the lifespan ticks it
+            // shortened, and the orbit clock's rate (ticks per tick) while that second runs.
+            str.add("tt.voidcraft_uss.acceleration.header");
+            if (lastAccelerationSecondMB > 0L) {
+                str.add(
+                    IGregTechDeviceInformation.encode(
+                        "tt.voidcraft_uss.acceleration.tachyon",
+                        "" + YELLOW + lastAccelerationSecondMB + RESET));
+                str.add(
+                    IGregTechDeviceInformation.encode(
+                        "tt.voidcraft_uss.acceleration.reduction",
+                        "-" + YELLOW
+                            + USSStellarEvolution.lifespanReductionPerSecond(lastAccelerationSecondMB)
+                            + RESET));
+                str.add(
+                    IGregTechDeviceInformation.encode(
+                        "tt.voidcraft_uss.acceleration.orbit",
+                        "x" + USSStellarEvolution.orbitAdvancePerTick(lastAccelerationSecondMB)));
+            } else {
+                str.add(IGregTechDeviceInformation.encode("tt.voidcraft_uss.acceleration.tachyon", "0"));
+                str.add(IGregTechDeviceInformation.encode("tt.voidcraft_uss.acceleration.reduction", "0"));
+                str.add(IGregTechDeviceInformation.encode("tt.voidcraft_uss.acceleration.orbit", "x1"));
+            }
+            // Stellar Injector (the Stellar Evolution pass): the star's size progress against the 1.5x cap, the
+            // buffer's
+            // fill, and the shell's build state (the injector is active once the star's shell is fully built).
+            str.add("tt.voidcraft_uss.injector.header");
+            str.add(
+                IGregTechDeviceInformation.encode(
+                    "tt.voidcraft_uss.injector.size",
+                    String.format(
+                        "%.2f / %.2f",
+                        model.getStarSize(),
+                        USSStellarEvolution
+                            .sizeCap(USSPlanets.sampleStarSize(model.getStarType(), model.getIgnitedAt())))));
+            CargoHold buffer = model.getInjectorBuffer();
+            str.add(
+                IGregTechDeviceInformation.encode(
+                    "tt.voidcraft_uss.injector.buffer",
+                    (buffer == null ? 0L : buffer.usedUnits()) + " / " + (buffer == null ? 0L : buffer.getCapacity())));
+            long shellCount = model.getInfrastructure()
+                .count(USSInfraBuild.key(USSInfraBuild.INJECTOR, USSInfraBuild.TARGET_STAR, -1));
+            long shellCap = infraShellCapacity(USSInfraBuild.INJECTOR, USSInfraBuild.TARGET_STAR, -1);
+            str.add(
+                IGregTechDeviceInformation.encode(
+                    "tt.voidcraft_uss.injector.shell",
+                    shellCount + " / "
+                        + shellCap
+                        + (shellCap > 0L && shellCount >= shellCap
+                            ? " " + IGregTechDeviceInformation.translatable("tt.voidcraft_uss.injector.active")
+                            : " " + IGregTechDeviceInformation.translatable("tt.voidcraft_uss.injector.building"))));
             // Phase 4 pass 3: the system's PLANETS — what a Miner can work here (planet → its registered ores).
             str.add("tt.voidcraft_uss.planets.header");
             for (USSPlanets.USSPlanet planet : getPlanets()) {
@@ -3777,14 +4961,17 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             NBTTagList transferTags = new NBTTagList();
             for (Map.Entry<String, USSCargoTransferState> entry : cargoTransfers.entrySet()) {
                 USSCargoTransferState state = entry.getValue();
-                if (state == null || state.leg == null || state.targetUuid == null || state.targetUuid.isEmpty()) {
+                if (state == null || state.leg == null
+                    || (!state.starTarget && (state.targetUuid == null || state.targetUuid.isEmpty()))) {
                     continue;
                 }
                 NBTTagCompound transferTag = new NBTTagCompound();
                 transferTag.setString(CARGO_TRANSFER_SRC_UUID_NBT_TAG, entry.getKey());
-                transferTag.setString(CARGO_TRANSFER_TGT_UUID_NBT_TAG, state.targetUuid);
+                transferTag
+                    .setString(CARGO_TRANSFER_TGT_UUID_NBT_TAG, state.targetUuid == null ? "" : state.targetUuid);
                 transferTag
                     .setString(CARGO_TRANSFER_TGT_NAME_NBT_TAG, state.targetName == null ? "" : state.targetName);
+                transferTag.setBoolean(CARGO_TRANSFER_STAR_NBT_TAG, state.starTarget);
                 NBTTagCompound legTag = new NBTTagCompound();
                 state.leg.writeToNBT(legTag);
                 transferTag.setTag(CARGO_TRANSFER_LEG_NBT_TAG, legTag);
@@ -3811,6 +4998,26 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
             }
             if (repairTags.tagCount() > 0) {
                 aNBT.setTag(REPAIRS_NBT_TAG, repairTags);
+            }
+        }
+        // The in-flight STABILIZE windows: the expiry weight read queries the live sessions, so they persist with
+        // the same rationale as the repair sessions.
+        if (!stabilizes.isEmpty()) {
+            NBTTagList stabilizeTags = new NBTTagList();
+            for (Map.Entry<String, USSStabilize.Session> entry : stabilizes.entrySet()) {
+                USSStabilize.Session state = entry.getValue();
+                if (state == null || state.ticks <= 0L) {
+                    continue;
+                }
+                NBTTagCompound stabilizeTag = new NBTTagCompound();
+                stabilizeTag.setString(STABILIZE_SRC_UUID_NBT_TAG, entry.getKey());
+                stabilizeTag.setLong(STABILIZE_TICKS_NBT_TAG, state.ticks);
+                stabilizeTag.setLong(STABILIZE_FIELD_GENERATOR_TICKS_NBT_TAG, state.fieldGeneratorTicks);
+                stabilizeTag.setInteger(STABILIZE_WEIGHT_NBT_TAG, state.weight);
+                stabilizeTags.appendTag(stabilizeTag);
+            }
+            if (stabilizeTags.tagCount() > 0) {
+                aNBT.setTag(STABILIZES_NBT_TAG, stabilizeTags);
             }
         }
         super.saveNBTData(aNBT);
@@ -3875,10 +5082,11 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 }
                 String sourceUuid = transferTag.getString(CARGO_TRANSFER_SRC_UUID_NBT_TAG);
                 String targetUuid = transferTag.getString(CARGO_TRANSFER_TGT_UUID_NBT_TAG);
-                if (sourceUuid.isEmpty() || targetUuid.isEmpty() || sourceUuid.equals(targetUuid)) {
+                boolean starTarget = transferTag.getBoolean(CARGO_TRANSFER_STAR_NBT_TAG);
+                if (sourceUuid.isEmpty() || (!starTarget && targetUuid.isEmpty()) || sourceUuid.equals(targetUuid)) {
                     continue; // a self-target is rejected at start — such a record is corrupt
                 }
-                if (findFleetShip(sourceUuid) == null || findFleetShip(targetUuid) == null) {
+                if (findFleetShip(sourceUuid) == null || (!starTarget && findFleetShip(targetUuid) == null)) {
                     continue; // orphaned — a ship did not survive the reload
                 }
                 USSCargoTransfer leg = transferTag.hasKey(CARGO_TRANSFER_LEG_NBT_TAG, 10)
@@ -3891,6 +5099,7 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                 state.leg = leg;
                 state.targetUuid = targetUuid;
                 state.targetName = transferTag.getString(CARGO_TRANSFER_TGT_NAME_NBT_TAG);
+                state.starTarget = starTarget;
                 cargoTransfers.put(sourceUuid, state);
             }
         }
@@ -3919,6 +5128,37 @@ public class MTEUnstableSolarSystem extends TTMultiblockBase implements ISurviva
                     0,
                     Math.min(VoidcraftActiveShip.TICKS_PER_INTEGRITY - 1, repairTag.getInteger(REPAIR_TICKS_NBT_TAG)));
                 repairs.put(sourceUuid, state);
+            }
+        }
+        // The in-flight STABILIZE windows (AFTER the fleet, so the orphan check can see the rebuilt bases): a
+        // record whose executing base did not survive the reload is dropped.
+        stabilizes.clear();
+        if (aNBT.hasKey(STABILIZES_NBT_TAG)) {
+            NBTTagList stabilizeTags = aNBT.getTagList(STABILIZES_NBT_TAG, 10);
+            for (int i = 0; i < stabilizeTags.tagCount(); i++) {
+                NBTTagCompound stabilizeTag = stabilizeTags.getCompoundTagAt(i);
+                if (stabilizeTag == null) {
+                    continue;
+                }
+                String sourceUuid = stabilizeTag.getString(STABILIZE_SRC_UUID_NBT_TAG);
+                long ticks = stabilizeTag.getLong(STABILIZE_TICKS_NBT_TAG);
+                if (sourceUuid.isEmpty() || ticks <= 0L) {
+                    continue;
+                }
+                if (findFleetShip(sourceUuid) == null) {
+                    continue; // orphaned — the base did not survive the reload
+                }
+                USSStabilize.Session state = new USSStabilize.Session();
+                state.ticks = ticks;
+                state.fieldGeneratorTicks = Math.max(
+                    1L,
+                    Math.min(
+                        USSConstants.STABILIZE_FIELD_GENERATOR_INTERVAL_TICKS,
+                        stabilizeTag.getLong(STABILIZE_FIELD_GENERATOR_TICKS_NBT_TAG)));
+                state.weight = Math.max(
+                    0,
+                    Math.min(USSConstants.MATRIX_WEIGHT_UXV, stabilizeTag.getInteger(STABILIZE_WEIGHT_NBT_TAG)));
+                stabilizes.put(sourceUuid, state);
             }
         }
         super.loadNBTData(aNBT);

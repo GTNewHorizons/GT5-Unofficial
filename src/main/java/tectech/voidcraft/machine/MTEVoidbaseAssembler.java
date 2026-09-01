@@ -66,8 +66,9 @@ import tectech.voidcraft.uss.USSProgram;
  * validates the placed components with the BASE rules (the ship's structural rules, with thruster covers forbidden
  * — a Voidbase is an immobile station) — exactly one controller, a frame, component/cover tier ≤ the assembler
  * circuit tier — then digitizes the build into a single non-stackable, REUSABLE {@code ItemVoidbaseBlueprint} and
- * clears the component blocks. Constructor voidcrafts carry the blueprint data and a parts loadout when they are
- * launched from the gateway; several constructors can build the same base (the first one creates the construction
+ * clears the component blocks. Constructor voidcrafts carry the blueprint data when they are
+ * launched from the gateway (the parts they build with are plain cargo on the input side); several constructors
+ * can build the same base (the first one creates the construction
  * site, the rest fill it).
  */
 @IMetaTileEntity.SkipGenerateDescription

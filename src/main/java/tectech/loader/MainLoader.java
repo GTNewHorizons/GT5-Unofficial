@@ -74,6 +74,11 @@ public final class MainLoader {
     public static void postLoad() {
         new BaseRecipeLoader().run();
         TecTech.LOGGER.info("Recipe Init Done");
+
+        // Voidcraft (EoH rework, parallel machine) — the fuel fluids (after BartWorks' Werkstoff fluid
+        // registration — declared after:tectech)
+        tectech.voidcraft.loader.VoidcraftLoader.postLoad();
+        TecTech.LOGGER.info("Voidcraft Post-Init Done");
     }
 
     public static void onLoadCompleted() {
