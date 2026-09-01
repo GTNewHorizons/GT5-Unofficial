@@ -1207,3 +1207,12 @@ tt.IUPAC.Anti=反
 tt.keyword.Weird=*
 
 tt.chat.debug.generator=激光模式：%s
+
+# Multiblocks
+gt.blockmachines.multimachine.em.exotic_module.name=太阳聚变异化器
+gt.blockmachines.multimachine.em.eye_of_harmony.name=鸿蒙之眼
+gt.blockmachines.multimachine.em.forge_of_gods.name=诸神之锻炉
+gt.blockmachines.multimachine.em.molten_module.name=太阳射流融化核心
+gt.blockmachines.multimachine.em.plasma_module.name=太阳热能等离子制造机
+gt.blockmachines.multimachine.em.smelting_module.name=太阳烈焰能量锻炉
+gt.blockmachines.multimachine.tm.teslacoil.name=特斯拉电塔

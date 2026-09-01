@@ -1856,6 +1856,11 @@ public final class GTGuiTextures {
         .name(GTTextureIds.PICTURE_LOGO_NANOCHIP)
         .build();
 
+    public static final UITexture PICTURE_NANOCHIP_ARROW = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/nanochip_arrow")
+        .fullImage()
+        .build();
+
     public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()
         .location(GregTech.ID, "gui/picture/transparent")
         .fullImage()

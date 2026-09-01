@@ -344,3 +344,17 @@ bw.bioname.mutagen_bacteria_a_spatio.latin=Mutagen bacteria a spatio
 bw.bioname.mutagen_bacteria_a_spatio=Mutagen bacteria from space
 bw.bioname.null.latin=Cimex remotum
 bw.bioname.null=Debug
+
+# Multiblocks
+gt.blockmachines.bw.biovat.name=Bacterial Vat
+gt.blockmachines.bw.manualtrafo.name=Manual Transformer
+gt.blockmachines.bw.windmill.name=Windmill
+gt.blockmachines.circuitassemblyline.name=Circuit Assembly Line
+gt.blockmachines.dehp.name=Deep Earth Heating Pump
+gt.blockmachines.lesu.name=L.E.S.U.
+gt.blockmachines.megablastfurnace.name=Mega Electric Blast Furnace
+gt.blockmachines.megachemicalreactor.name=Mega Chemical Reactor
+gt.blockmachines.megadistillationtower.name=Mega Distillation Tower
+gt.blockmachines.megaoilcracker.name=Mega Oil Cracker
+gt.blockmachines.megavacuumfreezer.name=Mega Vacuum Freezer
+gt.blockmachines.thtr.name=Thorium High Temperature Reactor

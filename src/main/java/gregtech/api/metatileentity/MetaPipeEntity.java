@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
@@ -58,11 +59,16 @@ import gregtech.common.covers.Cover;
  */
 public abstract class MetaPipeEntity extends CommonMetaTileEntity implements IConnectable {
 
+    private volatile ITexture[][] inventoryTextureCache;
+
     /**
      * This variable tells, which directions the Block is connected to. It is a Bitmask.
      */
     public byte mConnections = 0;
 
+    /**
+     * Used by cables to provide delayed reconstruction of neighbors
+     */
     protected boolean mCheckConnections = false;
     /**
      * accessibility to this Field is no longer given, see below
@@ -149,9 +155,15 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.setRenderBounds(BLOCK_MIN, pipeMin, pipeMin, BLOCK_MAX, pipeMax, pipeMax);
 
-        final IGregTechTileEntity mte = getBaseMetaTileEntity();
-        final ITexture[] sideTexture = getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false);
-        final ITexture[] endTexture = getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false);
+        ITexture[][] textures = inventoryTextureCache;
+        if (textures == null) {
+            final IGregTechTileEntity mte = getBaseMetaTileEntity();
+            textures = new ITexture[][] { getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false),
+                getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false) };
+            inventoryTextureCache = textures;
+        }
+        final ITexture[] sideTexture = textures[0];
+        final ITexture[] endTexture = textures[1];
         ctx.renderNegativeYFacing(sideTexture);
         ctx.renderPositiveYFacing(sideTexture);
         ctx.renderNegativeZFacing(sideTexture);
@@ -651,7 +663,19 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     public void setCheckConnections() {
-        mCheckConnections = true;
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base.isServerSide()) {
+            if (base.isTickDisabled() || !deferCheckConnection()) {
+                checkConnections();
+            } else {
+                mCheckConnections = true;
+            }
+        }
+    }
+
+    @ApiStatus.OverrideOnly
+    protected boolean deferCheckConnection() {
+        return true;
     }
 
     public long injectEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
@@ -741,6 +765,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     protected void checkConnections() {
+        mCheckConnections = false;
         // Verify connections around us. If GT6 style cables are not enabled then revert to old behavior and try
         // connecting to everything around us
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -748,7 +773,6 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
                 disconnect(side);
             }
         }
-        mCheckConnections = false;
     }
 
     private void connectAtSide(ForgeDirection side) {
