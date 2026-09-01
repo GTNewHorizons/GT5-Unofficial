@@ -862,6 +862,7 @@ fog.upgrade.tt.27=Transfinite Stellar Existence
 fog.upgrade.tt.28=The Boundless Flow
 fog.upgrade.tt.29=Effortless Existence
 fog.upgrade.tt.30=Orion’s Arm Genesis Schema
+fog.upgrade.tt.31=Multiphasic Alloy Synthesis
 fog.upgrade.tt.secret=Secret Upgrade
 
 fog.upgrade.tt.short.0=START
@@ -895,6 +896,7 @@ fog.upgrade.tt.short.27=TSE
 fog.upgrade.tt.short.28=TBF
 fog.upgrade.tt.short.29=EE
 fog.upgrade.tt.short.30=END
+fog.upgrade.tt.short.31=MAS
 fog.upgrade.tt.short.secret=SECRET
 
 fog.upgrade.lore.0=The Forge of the Gods is an immensely powerful structure constructed around a stabilized neutron star – it is so advanced that its full capabilities are not yet understood. However, through continued use, one can slowly upgrade and expand the range of abilities of the Forge, and learn the power hidden in the most extreme parts of the universe: graviton shards. This esoteric material can only be found where conventional matter and degenerate neutronium crust matter on the surface of a neutron star meet. At this point in space, gravitons are far more common and irradiate this material mixture to create highly unstable graviton shards, which can be used to internally upgrade the Forge. While these shards cannot yet exist outside the extreme conditions of the Forge, with continued research and utilization it may be possible to eventually isolate and extract them outside the Forge – but for what purpose?
@@ -928,6 +930,7 @@ fog.upgrade.lore.27=A huge development in the capabilities of the Forge has been
 fog.upgrade.lore.28=The usage of graviton shards in electrical systems to create localised miniature energy wormholes has allowed for such efficient power transfer that effectively unlimited electricity may be utilized by the Forge. More power means faster processing, quicker material movement, and better utilization of graviton shard related upgrades.
 fog.upgrade.lore.29=Further enrichment of the extreme spaces within the Plasma Fabricator & Exoticizer allows for the production of the most exotic plasmas beyond merely periodic elements and facilitates the creation of completely new kinds of subatomic particles, resulting in the creation of magmatter, a form of matter made entirely of magnetic monopoles with density and stability billions of times that of conventional bosonic matter.
 fog.upgrade.lore.30=With the construction of the third and final ring, total mastery of the Forge of the Gods has been achieved and it is now possible to quantize and extract graviton shards for use outside the Forge in powerful new technological endeavours. It is with this development you realise that the completion of the Forge was not the end goal, but merely a stepping stone to universal transcendence.
+fog.upgrade.lore.31=Transfinite construction principles applied to the melting core allow multiple material phases to be smelted and converged in a single operation. 
 
 fog.upgrade.text.0=Unlocks the base functionality of the Forge of the Gods, meaning 8 module slots, 1 ring, the Helioflare Power Forge module, 2 billion EU/t processing voltage and 15,000K heat bonus cap.
 fog.upgrade.text.1=Unlocks a recipe time reduction multiplier based on the current heat the multi is running at. This bonus is calculated via following formula: Multiplier = 1 / (Heat^0.01)
@@ -960,6 +963,7 @@ fog.upgrade.text.27=Uncaps maximum fuel consumption, but fuel consumption used i
 fog.upgrade.text.28=Uncaps maximum processing voltage. Voltage can be set in each module's GUI.
 fog.upgrade.text.29=Unlocks Magmatter production in the Heliofusion Exoticizer and creation of exotic plasmas in the Heliothermal Plasma Fabricator.
 fog.upgrade.text.30=Allows construction of the third ring, adds 4 module slots and unlocks Graviton Shard ejection & injection.
+fog.upgrade.text.31=Unlocks the Alloy Smelting mode of the Helioflux Melting Core, allowing it to run Alloy Blast Smelter recipes.
 
 fog.debug.resetbutton.text=Reset
 fog.debug.resetbutton.tooltip=Resets all upgrades to zero
@@ -973,6 +977,9 @@ fog.button.furnacemode.tooltip.02=Furnace Mode
 fog.button.magmattermode.tooltip.01=Quark-Gluon Plasma Mode
 fog.button.magmattermode.tooltip.02=Magmatter Mode
 fog.button.magmattermode.tooltip.03=Magmatter Mode locked, missing upgrade
+fog.button.alloymode.tooltip.01=Melting Mode
+fog.button.alloymode.tooltip.02=Alloy Smelting Mode
+fog.button.alloymode.tooltip.03=Alloy Smelting Mode locked, missing upgrade
 fog.button.battery.tooltip.01=Toggle Battery Charging
 fog.button.battery.tooltip.02=Right click to open configuration menu (if unlocked)
 fog.button.voltageconfig.tooltip.01=Open voltage config
@@ -1329,6 +1336,7 @@ gt.recipe.researchStation=Research Station
 gt.recipe.fog_plasma=Heliothermal Plasma Fabricator
 gt.recipe.fog_exotic=Heliofusion Exoticizer
 gt.recipe.fog_molten=Helioflux Melting Core
+gt.recipe.fog_alloy=Helioflux Melting Core (ABS)
 gt.recipe.upgrade_costs=Godforge Upgrades
 gt.recipe.condensate=Bose-Einstein Condensate
 

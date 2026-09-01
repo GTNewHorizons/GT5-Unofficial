@@ -20,6 +20,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValue.HybridSy
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValue.ModuleSyncValue;
 import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTEMoltenModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
@@ -240,6 +241,14 @@ public class SyncValues {
     public static final ModuleSyncValue<BooleanSyncValue, MTESmeltingModule> SMELTING_MODE = new ModuleSyncValue<>(
         "fog.sync.smelting_mode",
         module -> new BooleanSyncValue(module::isFurnaceModeOn, module::setFurnaceMode));
+
+    public static final ModuleSyncValue<BooleanSyncValue, MTEMoltenModule> ALLOY_CAPABLE = new ModuleSyncValue<>(
+        "fog.sync.alloy_capable",
+        module -> new BooleanSyncValue(module::isAlloyCapable, module::setAlloyCapable));
+
+    public static final ModuleSyncValue<BooleanSyncValue, MTEMoltenModule> ALLOY_MODE = new ModuleSyncValue<>(
+        "fog.sync.alloy_mode",
+        module -> new BooleanSyncValue(module::isAlloyModeOn, module::setAlloyMode));
 
     public static final ModuleSyncValue<IntSyncValue, MTEPlasmaModule> DEBUG_PLASMA_PARALLEL = new ModuleSyncValue<>(
         "fog.sync.debug_plasma_parallel",

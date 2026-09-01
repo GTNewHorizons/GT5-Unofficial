@@ -235,7 +235,10 @@ public final class MainMod {
                     .reInit());
 
         // because the above code runs so late that I couldn't find anywhere else to call this
-        if (!recipesAdded) Godforge.initMoltenModuleRecipes();
+        if (!recipesAdded) {
+            Godforge.initMoltenModuleRecipes();
+            Godforge.initAlloyModuleRecipes();
+        }
 
         recipesAdded = true;
     }

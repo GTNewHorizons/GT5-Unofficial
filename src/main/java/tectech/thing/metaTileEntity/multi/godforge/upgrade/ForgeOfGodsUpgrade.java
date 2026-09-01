@@ -54,6 +54,8 @@ public enum ForgeOfGodsUpgrade {
     TBF,
     EE,
     END,
+    // Appended after END so existing ordinal-keyed NBT and lang entries stay stable
+    MAS,
 
     ;
 
@@ -253,6 +255,12 @@ public enum ForgeOfGodsUpgrade {
             .background(BLUE, COMPOSITION)
             .panelSize(LARGE)
             .treePos(126, 798));
+
+        MAS.build(b -> b
+            .prereqs(TCT)
+            .cost(3)
+            .background(ORANGE, COMPOSITION)
+            .treePos(156, 506));
 
         // spotless:on
 

@@ -291,6 +291,10 @@ public class GodforgeMath {
             }
         }
 
+        if (module instanceof MTEMoltenModule molten) {
+            molten.setAlloyCapable(data.isUpgradeActive(MAS));
+        }
+
         module.setUpgrade83(data.isUpgradeActive(IMKG));
         module.setMultiStepPlasma(data.isUpgradeActive(TPTP));
         module.setPlasmaTier(plasmaTier);
@@ -301,8 +305,9 @@ public class GodforgeMath {
 
     public static boolean allowModuleConnection(MTEBaseModule module, ForgeOfGodsData data) {
 
-        if (module instanceof MTEMoltenModule && data.isUpgradeActive(FDIM)) {
-            return true;
+        if (module instanceof MTEMoltenModule molten && data.isUpgradeActive(FDIM)) {
+            // Alloy smelting mode additionally requires its dedicated upgrade
+            return !molten.isAlloyModeOn() || data.isUpgradeActive(MAS);
         }
 
         if (module instanceof MTEPlasmaModule && data.isUpgradeActive(GPCI)) {

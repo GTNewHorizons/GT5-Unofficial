@@ -10,7 +10,10 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -37,6 +40,8 @@ public class MTEMoltenModule extends MTEBaseModule {
 
     private long EUt = 0;
     private int currentParallel = 0;
+    private boolean alloyMode = false;
+    private boolean alloyCapable = false;
 
     public MTEMoltenModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -124,7 +129,44 @@ public class MTEMoltenModule extends MTEBaseModule {
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return TecTechRecipeMaps.godforgeMoltenRecipes;
+        return alloyMode ? TecTechRecipeMaps.godforgeAlloyRecipes : TecTechRecipeMaps.godforgeMoltenRecipes;
+    }
+
+    @NotNull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(TecTechRecipeMaps.godforgeMoltenRecipes, TecTechRecipeMaps.godforgeAlloyRecipes);
+    }
+
+    public boolean isAlloyModeOn() {
+        return alloyMode;
+    }
+
+    public void setAlloyMode(boolean enabled) {
+        alloyMode = enabled;
+        // The machine is using a different recipemap now
+        // Clear the cached recipe
+        setSingleRecipeCheck(null);
+    }
+
+    public boolean isAlloyCapable() {
+        return alloyCapable;
+    }
+
+    public void setAlloyCapable(boolean capable) {
+        alloyCapable = capable;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound NBT) {
+        NBT.setBoolean("alloyMode", alloyMode);
+        super.saveNBTData(NBT);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound NBT) {
+        alloyMode = NBT.getBoolean("alloyMode");
+        super.loadNBTData(NBT);
     }
 
     @Override

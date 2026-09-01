@@ -1752,7 +1752,7 @@ gt.mbtt.structure.no_air_gaps_fluid_cells_different_tiers=No air gaps allowed, b
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
 gt.mbtt.machine_type.exotic_matter_producer=Exotic Matter Producer
-gt.mbtt.machine_type.blast_smelter=Blast Smelter
+gt.mbtt.machine_type.blast_smelter=Blast Smelter, ABS
 gt.mbtt.machine_type.blast_furnace=Blast Furnace, Furnace
 gt.mbtt.machine_type.plasma_fabricator=Plasma Fabricator
 gt.mbtt.machine_type.stellar_forge=Stellar Forge

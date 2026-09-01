@@ -17,6 +17,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.BECCreationFrontend;
+import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
@@ -125,6 +126,13 @@ public class TecTechRecipeMaps {
         .logo(TecTechUITextures.PICTURE_GODFORGE_LOGO)
         .logoSize(18, 18)
         .logoPos(151, 63)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> godforgeAlloyRecipes = RecipeMapBuilder.of("gt.recipe.fog_alloy")
+        .maxIO(9, 9, 3, 3)
+        .minInputs(1, 0)
+        .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
+        .frontend(LargeNEIFrontend::new)
         .build();
 
     public static final RecipeMap<RecipeMapBackend> godforgeFakeUpgradeCostRecipes = RecipeMapBuilder

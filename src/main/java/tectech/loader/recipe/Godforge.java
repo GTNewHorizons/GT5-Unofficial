@@ -737,6 +737,15 @@ public class Godforge implements Runnable {
                 ItemList.ZPM6.get(2),
                 ItemList.Field_Generator_UMV.get(32));
 
+            ForgeOfGodsUpgrade.MAS.addExtraCost(
+                GregtechItemList.Mega_AlloyBlastSmelter.get(64L),
+                ItemList.Casing_Coil_Eternal.get(32L),
+                CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(32L),
+                getModItem(EternalSingularity.ID, "eternal_singularity", 16L),
+                ItemRefer.Field_Restriction_Coil_T4.get(32),
+                ItemList.Robot_Arm_UMV.get(32L),
+                ItemList.Field_Generator_UIV.get(64L));
+
             ForgeOfGodsUpgrade.EE.addExtraCost(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.WhiteDwarfMatter, 64),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackDwarfMatter, 64),
@@ -779,6 +788,7 @@ public class Godforge implements Runnable {
         ForgeOfGodsUpgrade.CD.addExtraCost(new ItemStack(Blocks.cobblestone, 32));
         ForgeOfGodsUpgrade.EE.addExtraCost(new ItemStack(Blocks.cobblestone, 48));
         ForgeOfGodsUpgrade.END.addExtraCost(new ItemStack(Blocks.cobblestone, 64));
+        ForgeOfGodsUpgrade.MAS.addExtraCost(new ItemStack(Blocks.cobblestone, 24));
     }
 
     public static void addFakeUpgradeCostRecipes() {
@@ -815,6 +825,14 @@ public class Godforge implements Runnable {
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, translateToLocal(ForgeOfGodsUpgrade.QGPIU.getShortNameKey()))
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ForgeOfGodsUpgrade.MAS.getExtraCostNoNulls())
+            .itemOutputs(CustomItemList.Machine_Multi_MoltenModule.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, translateToLocal(ForgeOfGodsUpgrade.MAS.getShortNameKey()))
             .fake()
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
@@ -895,6 +913,31 @@ public class Godforge implements Runnable {
             .eut(TierEU.RECIPE_UXV)
             .metadata(COIL_HEAT, 50000)
             .addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
+    }
+
+    public static void initAlloyModuleRecipes() {
+        for (GTRecipe recipe : RecipeMaps.alloyBlastSmelterRecipes.getAllRecipes()) {
+            // The ABS ignores mSpecialValue, so a synthetic heat requirement is derived from the
+            // recipe's voltage tier instead. This eats into the module's perfect-overclock headroom
+            // the same way high-heat recipes do in the molten module, so high tier alloys don't get
+            // their entire overclock stack for free. Always below the module's minimum heat of
+            // ~12600, so no recipe is ever locked out.
+            int heat = 900 * Math.max(0, GTUtility.getTier(recipe.mEUt) - 1);
+
+            GTRecipeBuilder builder = GTValues.RA.stdBuilder()
+                .duration(recipe.mDuration)
+                .eut(recipe.mEUt)
+                .specialValue(heat);
+
+            if (recipe.mInputs != null) builder.itemInputs(recipe.mInputs);
+            if (recipe.mFluidInputs != null) builder.fluidInputs(recipe.mFluidInputs);
+            if (recipe.mOutputs != null) builder.itemOutputs(recipe.mOutputs);
+            if (recipe.mFluidOutputs != null) builder.fluidOutputs(recipe.mFluidOutputs);
+            if (recipe.mOutputChances != null && recipe.mOutputChances.length > 0)
+                builder.outputChances(recipe.mOutputChances);
+
+            builder.addTo(TecTechRecipeMaps.godforgeAlloyRecipes);
+        }
     }
 
     private static FluidStack convertToMolten(ItemStack stack) {
