@@ -167,6 +167,7 @@ import static gregtech.common.items.IDMetaItem02.Food_IceCream_Spaghetti;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Sprinkles;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Strawberry;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_ToffeeButter;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Trophy;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Unicorn;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Vanilla;
 import static gregtech.common.items.IDMetaItem02.Food_Large_Sandwich_Bacon;
@@ -2585,6 +2586,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                     400,
                     2,
                     100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Trophy.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Trophy.ID,
+                "gt.item.food.icecream_trophy.name",
+                "gt.item.food.icecream_trophy.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
 
         ItemList.Dye_Indigo.set(
