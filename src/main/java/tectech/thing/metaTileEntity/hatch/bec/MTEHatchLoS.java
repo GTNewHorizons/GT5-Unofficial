@@ -318,7 +318,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
         buffer.writeBoolean(connection != null);
 
         // The beam is active if either hatch wants it to be active
-        tag.setBoolean("beamActive", beamActive || other != null && other.beamActive);
+        buffer.writeBoolean(beamActive || other != null && other.beamActive);
 
         if (connection != null) {
             buffer.writeInt(connection.getX());
@@ -333,7 +333,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
 
         isRenderer = buffer.readBoolean();
         canRender = buffer.readBoolean();
-        beamActive = data.getBoolean("beamActive");
+        beamActive = buffer.readBoolean();
 
         boolean connected = buffer.readBoolean();
         if (connected) {
