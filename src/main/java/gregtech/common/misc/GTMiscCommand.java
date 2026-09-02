@@ -434,6 +434,12 @@ public final class GTMiscCommand extends GTBaseCommand {
                     + " ("
                     + GTWorldgenerator.getOregenPatternSource().description
                     + ")");
+            if (GTWorldgenerator.getOregenPattern() == GTWorldgenerator.OregenPattern.AXISSYMMETRICAL) {
+                // spotless:off
+                sendChatToPlayer(sender, EnumChatFormatting.GRAY + "Worlds created since July 2023 use EQUAL_SPACING. If this one was, the value above is");
+                sendChatToPlayer(sender, EnumChatFormatting.GRAY + "wrong and its veins do not sit where prospecting tools report them.");
+                // spotless:on
+            }
             return;
         }
 
