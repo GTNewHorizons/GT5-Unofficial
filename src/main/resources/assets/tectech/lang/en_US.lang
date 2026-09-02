@@ -943,7 +943,7 @@ fog.upgrade.text.10=Adds a x2 multiplier to maximum parallel.
 fog.upgrade.text.11=Unlocks the Heliofusion Exoticizer module and quark gluon plasma creation. At this point this module is not affected by any other multipliers or bonuses from other upgrades.
 fog.upgrade.text.12=Improves the fuel consumption -> heat conversion formula. Improved formula: Power Forge Heat = log_1.12(Stellar Fuel Units/sec) * 1000 + 12601, Melting Core Heat = log1.18(Stellar Fuel Units/sec) * 1000 + 12601
 fog.upgrade.text.13=Improves the formula of SA to: Multiplier = 1 + (Stellar Fuel Units/sec) / 5
-fog.upgrade.text.14=Improves the OC formula from 2/4 OCs to 2.3/4 OCs.
+fog.upgrade.text.14=Allows the OC factor to scale with current heat. Power Forges and Melting Cores gain a static OC factor of 2.15. Plasma fabricator OC factor = 4 - 25000 / Heat 
 fog.upgrade.text.15=Allows the Heliothermal Plasma Fabricator to process multi step plasmas. Tier restriction still applies.
 fog.upgrade.text.16=Allows the Helioflare Power Forge to receive the full benefits of the Helioflux Melting Core upgrade path.
 fog.upgrade.text.17=Increases the cap of EBF heat bonuses to 30,000K.
@@ -2087,3 +2087,13 @@ gt.godforgecasing.5.name=Remote Graviton Flow Modulator
 gt.godforgecasing.6.name=Medial Graviton Flow Modulator
 gt.godforgecasing.7.name=Central Graviton Flow Modulator
 gt.godforgecasing.8.name=Harmonic Phonon Transmission Conduit
+
+# Multiblocks
+gt.blockmachines.multimachine.em.exotic_module.name=Heliofusion Exoticizer
+gt.blockmachines.multimachine.em.eye_of_harmony.name=Eye of Harmony
+gt.blockmachines.multimachine.em.forge_of_gods.name=Forge of the Gods
+gt.blockmachines.multimachine.em.molten_module.name=Helioflux Melting Core
+gt.blockmachines.multimachine.em.plasma_module.name=Heliothermal Plasma Fabricator
+gt.blockmachines.multimachine.em.research.name=Research Station
+gt.blockmachines.multimachine.em.smelting_module.name=Helioflare Power Forge
+gt.blockmachines.multimachine.tm.teslacoil.name=Tesla Tower

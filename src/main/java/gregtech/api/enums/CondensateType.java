@@ -81,52 +81,52 @@ public enum CondensateType {
         "phononmedium",
         () -> Materials.PhononMedium,
         1000,
-        () -> Materials.PhononMedium.getFluid(1000), 60 * SECONDS, 4 * TierEU.RECIPE_UXV),
+        () -> Materials.PhononMedium.getFluid(1000), 90 * SECONDS, TierEU.RECIPE_UMV),
     QuarkGluonPlasma(
         "quarkgluonplasma",
         () -> Materials.QuarkGluonPlasma,
         1000,
-        () -> Materials.QuarkGluonPlasma.getFluid(1000), 120 * SECONDS, 4 * TierEU.RECIPE_UXV),
+        () -> Materials.QuarkGluonPlasma.getFluid(1000), 120 * SECONDS, TierEU.RECIPE_UMV),
     SpaceTime(
         "spacetime",
         () -> Materials.SpaceTime,
         144,
-        () -> Materials.SpaceTime.getMolten(144), 90 * SECONDS, 16 * TierEU.RECIPE_UXV),
+        () -> Materials.SpaceTime.getMolten(144), 120 * SECONDS, TierEU.RECIPE_UXV),
     Time(
         "time",
         () -> Materials.Time,
         144,
-        () -> Materials.Time.getMolten(144), 90 * SECONDS, 16 * TierEU.RECIPE_UXV),
+        () -> Materials.Time.getMolten(144), 120 * SECONDS, TierEU.RECIPE_UXV),
     Space(
         "space",
         () -> Materials.Space,
         144,
-        () -> Materials.Space.getMolten(144), 90 * SECONDS, 16 * TierEU.RECIPE_UXV),
+        () -> Materials.Space.getMolten(144), 120 * SECONDS, TierEU.RECIPE_UXV),
     BoundlessCosmicSolder(
         "cosmicsolder",
         () -> Materials.BoundlessCosmicSolder,
         1000,
-        () -> Materials.BoundlessCosmicSolder.getFluid(1000), 120 * SECONDS, 16 * TierEU.RECIPE_UXV),
+        () -> Materials.BoundlessCosmicSolder.getFluid(1000), 120 * SECONDS, TierEU.RECIPE_UXV),
     MHDCSM(
         "mhdcsm",
         () -> Materials.MHDCSM,
         144,
-        () -> Materials.MHDCSM.getMolten(144), 120 * SECONDS, 64 * TierEU.RECIPE_UXV),
+        () -> Materials.MHDCSM.getMolten(144), 180 * SECONDS, 4 * TierEU.RECIPE_UXV),
     MagMatter(
         "magmatter",
         () -> Materials.MagMatter,
         144,
-        () -> Materials.MagMatter.getMolten(144), 120 * SECONDS, 64 * TierEU.RECIPE_UXV),
+        () -> Materials.MagMatter.getMolten(144), 180 * SECONDS, 4 * TierEU.RECIPE_UXV),
     Universium(
         "universium",
         () -> Materials.Universium,
         144,
-        () -> Materials.Universium.getMolten(144), 120 * SECONDS, 64 * TierEU.RECIPE_UXV),
+        () -> Materials.Universium.getMolten(144), 180 * SECONDS, 4 * TierEU.RECIPE_UXV),
     Eternity(
         "eternity",
         () -> Materials.Eternity,
         144,
-        () -> Materials.Eternity.getMolten(144), 120 * SECONDS, 64 * TierEU.RECIPE_UXV),
+        () -> Materials.Eternity.getMolten(144), 180 * SECONDS, 4 * TierEU.RECIPE_UXV),
     // spotless:on
     ;
 

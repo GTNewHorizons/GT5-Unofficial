@@ -55,6 +55,9 @@ import tectech.thing.block.BlockQuantumGlass;
 /// | Family 3 | Phononic Medium, Universium, MHDCSM, QGP, MagMatter, Cosmic Solder, Eternity |
 /// | Family 4 | Phononic Medium, Celestial Tungsten, Infinity, Neutronium, Cosmic Neutronium, Hypogen, Bedrockium |
 /// | Family 5 | SpaceTime, Space, MHDCSM, QGP, DSS, Cosmic Solder, Eternity |
+///
+/// Presently, recipes cannot be alternatives that diverge only in condensates. The BEC recipe check only acknowledges
+/// items, then checks condensates present against the _selected_ recipe.
 public class BECRecipes implements Runnable {
 
     private static final NaniteTier[] TIER_TO_NANITE = { NaniteTier.Carbon, NaniteTier.Silver, NaniteTier.Gold,
@@ -113,8 +116,8 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 16),
                 ItemList.MetaMaterial_Shielding1.get(64), ItemList.MetaMaterial_EnergyConduit1.get(64) },
             nanites(1, 1, 3, 3, 3, 2, 2, 1, 4, 4, 2, 2),
-            new FluidStack[] { CondensateType.TranscendentMetal.getEntangled(32 * INGOTS),
-                CondensateType.Space.getEntangled(24 * INGOTS), CondensateType.SpaceTime.getEntangled(12 * INGOTS),
+            new FluidStack[] { CondensateType.Space.getEntangled(24 * INGOTS),
+                CondensateType.SpaceTime.getEntangled(12 * INGOTS),
                 CondensateType.DimensionallyShiftedSuperfluid.getEntangled(10_000) },
             600 * SECONDS,
             TierEU.RECIPE_UMV);
@@ -247,24 +250,6 @@ public class BECRecipes implements Runnable {
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(64 * INGOTS),
                 CondensateType.Infinity.getEntangled(32 * INGOTS),
                 CondensateType.TranscendentMetal.getEntangled(32 * INGOTS), },
-            300 * SECONDS,
-            TierEU.RECIPE_UMV);
-        addBec(
-            CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1),
-            new ItemStack[] { CustomItemList.Godforge_MagneticConfinementCasing.get(1),
-                ItemRefer.Field_Restriction_Coil_T4.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Creon, 8),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Mellion, 4),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 32),
-                GregtechItemList.Battery_Gem_4.get(4), GregtechItemList.Laser_Lens_Special.get(8),
-                ItemList.Emitter_UMV.get(4), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 2),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 2),
-                ItemList.MetaMaterial_Waveguide1.get(4) },
-            nanites(1, 1, 1, 1, 1, 2, 3, 3, 3, 2, 2, 4),
-            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(64 * INGOTS),
-                CondensateType.Infinity.getEntangled(32 * INGOTS),
-                CondensateType.BoundlessCosmicSolder.getEntangled(2_000), },
             300 * SECONDS,
             TierEU.RECIPE_UMV);
 
@@ -586,7 +571,7 @@ public class BECRecipes implements Runnable {
         for (int t = 0; t < 9; t++) {
             int tp1 = t + 1;
             ItemStack[] inputs = { CustomItemList.EOH_Reinforced_Spatial_Casing.get(1),
-                ItemList.Machine_Multi_BlackHoleCompressor.get(tp1),
+                ItemList.Machine_Multi_BlackHoleCompressor.get(1),
                 getModItem(AppliedEnergistics2.ID, "item.ItemExtremeStorageCell.Singularity", 1),
                 getModItem(AE2FluidCraft.ID, "fluid_storage.singularity", 1), manipulators[t / 3].get(t % 3 + 1),
                 ItemList.MetaMaterial_Shielding1.get(4L * tp1),

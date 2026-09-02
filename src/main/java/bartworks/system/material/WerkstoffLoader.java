@@ -15,7 +15,6 @@ package bartworks.system.material;
 
 import static bartworks.util.BWUtil.subscriptNumbers;
 import static bartworks.util.BWUtil.superscriptNumbers;
-import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.cell;
@@ -107,7 +106,6 @@ import bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsL
 import bartworks.system.material.werkstoff_loaders.registration.CasingRegistrator;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
-import bwcrossmod.cls.CLSCompat;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -1723,9 +1721,6 @@ public class WerkstoffLoader {
             if (MainMod.DEBUG) {
                 MainMod.BW_DEBUG_LOGGER.info("Loading Recipes{}", System.nanoTime() - timepre);
             }
-            if (BetterLoadingScreen.isModLoaded()) {
-                CLSCompat.initCls();
-            }
 
             IWerkstoffRunnable[] werkstoffRunnables = { new ToolLoader(), new DustLoader(), new GemLoader(),
                 new SimpleMetalLoader(), new CasingLoader(), new AspectLoader(), new RawOreLoader(),
@@ -1733,7 +1728,6 @@ public class WerkstoffLoader {
                 new MultipleMetalLoader(), new MetalLoader(), new BlockLoader() };
 
             long timepreone = 0;
-            int pos = 0;
             for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
                 if (MainMod.DEBUG) {
                     timepreone = System.nanoTime();
@@ -1746,9 +1740,7 @@ public class WerkstoffLoader {
                     progressBar.step("");
                     continue;
                 }
-                if (BetterLoadingScreen.isModLoaded()) {
-                    CLSCompat.updateDisplay(werkstoff, pos);
-                }
+                progressBar.step(werkstoff.getLocalizedName());
                 if (MainMod.DEBUG) {
                     MainMod.BW_DEBUG_LOGGER
                         .info("Werkstoff: {} {}", werkstoff.getDefaultName(), System.nanoTime() - timepreone);
@@ -1767,17 +1759,11 @@ public class WerkstoffLoader {
                 if (MainMod.DEBUG) {
                     MainMod.BW_DEBUG_LOGGER.info("Done {}", System.nanoTime() - timepreone);
                 }
-                progressBar.step(werkstoff.getDefaultName());
-                pos++;
             }
             if (MainMod.DEBUG) {
                 MainMod.BW_DEBUG_LOGGER.info("Loading New Circuits {}", System.nanoTime() - timepreone);
             }
             CircuitPartsItem.init();
-
-            if (BetterLoadingScreen.isModLoaded()) {
-                CLSCompat.disableCls();
-            }
 
             progressBar.step("Load Additional Recipes");
             AdditionalRecipes.run();
