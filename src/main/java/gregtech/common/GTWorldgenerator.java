@@ -73,7 +73,14 @@ public class GTWorldgenerator implements IWorldGenerator {
 
     public static Long2ObjectOpenHashMap<CachedOreVein> validOreveins = new Long2ObjectOpenHashMap<>(1024);
     public boolean mIsGenerating = false;
-    private static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
+
+    /**
+     * Assumed whenever the world's pattern is unknown. Only AXISSYMMETRICAL worlds carry positive evidence of their
+     * pattern, so every other case has to guess, and since 5.09.43.111 almost every world is EQUAL_SPACING.
+     */
+    public static final OregenPattern DEFAULT_PATTERN = OregenPattern.EQUAL_SPACING;
+
+    private static OregenPattern oregenPattern = DEFAULT_PATTERN;
 
     /** Returns the oregen pattern used by the current world. */
     public static OregenPattern getOregenPattern() {
@@ -181,7 +188,7 @@ public class GTWorldgenerator implements IWorldGenerator {
         private static WeakReference<World> loadedWorld = new WeakReference<>(null);
 
         /** Kept per instance: MapStorage returns cached instances without running readFromNBT again. */
-        private OregenPattern pattern = OregenPattern.AXISSYMMETRICAL;
+        private OregenPattern pattern = DEFAULT_PATTERN;
 
         public OregenPatternSavedData(String p_i2141_1_) {
             super(p_i2141_1_);
@@ -199,12 +206,22 @@ public class GTWorldgenerator implements IWorldGenerator {
 
             if (instance == null) {
                 instance = new OregenPatternSavedData(NAME);
-                // Newly created world -> newest pattern, world predating the saved data -> legacy pattern
-                instance.pattern = world.getWorldInfo()
-                    .getWorldTotalTime() == 0L ? OregenPattern.values()[OregenPattern.values().length - 1]
-                        : OregenPattern.AXISSYMMETRICAL;
                 world.mapStorage.setData(OregenPatternSavedData.NAME, instance);
-                instance.markDirty();
+
+                if (world.getWorldInfo()
+                    .getWorldTotalTime() == 0L) {
+                    // Freshly created world, so the pattern is known and worth persisting
+                    instance.pattern = OregenPattern.values()[OregenPattern.values().length - 1];
+                    instance.markDirty();
+                } else {
+                    // Worlds have been stamped with their pattern since 5.09.43.111, so a missing file means the save
+                    // lost it rather than predating it. Assume the default but never persist an unverified guess.
+                    GT_FML_LOGGER.warn(
+                        "{} is missing for an existing world, assuming {}. If this world predates GT 5.09.43.111 its veins use {} instead.",
+                        NAME,
+                        instance.pattern,
+                        OregenPattern.AXISSYMMETRICAL);
+                }
             }
 
             oregenPattern = instance.pattern;

@@ -12,7 +12,7 @@ import io.netty.buffer.ByteBuf;
 
 public class GTPacketSendOregenPattern extends GTPacket {
 
-    protected OregenPattern pattern = OregenPattern.AXISSYMMETRICAL;
+    protected OregenPattern pattern = GTWorldgenerator.DEFAULT_PATTERN;
 
     public GTPacketSendOregenPattern() {
         super();
@@ -35,11 +35,12 @@ public class GTPacketSendOregenPattern extends GTPacket {
         if (ordinal >= 0 && ordinal < OregenPattern.values().length) {
             return new GTPacketSendOregenPattern(OregenPattern.values()[ordinal]);
         }
-        // invalid data, default to AXISSYMMETRICAL:
+        // invalid data, fall back to the default pattern:
         GT_FML_LOGGER.error(
-            "Received invalid data! Received {} but value must be between 0 and {}! Default (0) will be used.",
+            "Received invalid data! Received {} but value must be between 0 and {}! Default ({}) will be used.",
             ordinal,
-            OregenPattern.values().length - 1);
+            OregenPattern.values().length - 1,
+            GTWorldgenerator.DEFAULT_PATTERN);
         return new GTPacketSendOregenPattern();
     }
 
