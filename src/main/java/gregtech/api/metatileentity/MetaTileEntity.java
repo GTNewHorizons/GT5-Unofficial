@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.interfaces.tileentity.IColoredTileEntity.UNCOLOURED;
 
 import java.util.List;

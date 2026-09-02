@@ -76,6 +76,7 @@ import gregtech.common.items.ItemTierDrone;
 import gregtech.common.render.DroneRender;
 import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -426,25 +427,24 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("connectionCount", connectionList.size());
-        if (droneLevel != 0) tag.setInteger("droneLevel", droneLevel);
+        if (droneLevel != 0) {
+            tag.setInteger("droneLevel", droneLevel);
+        }
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             EnumChatFormatting.AQUA + StatCollector
                 .translateToLocalFormatted("GT5U.waila.drone_downlink.droneLevel", tag.getInteger("droneLevel")));
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.drone_downlink.connectionCount",
                 tag.getInteger("connectionCount")));
-        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
@@ -606,22 +606,21 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        data.setBoolean("usingLegacyStructure", usingLegacyStructure);
-        data.setBoolean("useRender", useRender);
-        data.setBoolean("renderActive", renderActive);
-        data.setInteger("droneLevel", droneLevel);
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(usingLegacyStructure);
+        buffer.writeBoolean(useRender);
+        buffer.writeBoolean(renderActive);
+        buffer.writeInt(droneLevel);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        usingLegacyStructure = data.getBoolean("usingLegacyStructure");
-        useRender = data.getBoolean("useRender");
-        renderActive = data.getBoolean("renderActive");
-        droneLevel = data.getInteger("droneLevel");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        usingLegacyStructure = buffer.readBoolean();
+        useRender = buffer.readBoolean();
+        renderActive = buffer.readBoolean();
+        droneLevel = buffer.readInt();
     }
 
     private void issueTileUpdate() {

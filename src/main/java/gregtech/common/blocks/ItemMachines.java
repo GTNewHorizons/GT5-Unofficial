@@ -1,6 +1,6 @@
 package gregtech.common.blocks;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -62,6 +62,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.config.Client;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
 import gregtech.crossmod.backhand.Backhand;
@@ -119,10 +120,12 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                                     TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                         }
                     }
-                    aList.add(
-                        translateToLocalFormatted(
-                            "gt.tileentity.eup_store",
-                            TooltipHelper.euCapacityText(gtTileEntity.getEUCapacity())));
+                    if (Client.tooltip.showEnergyCapacity) {
+                        aList.add(
+                            translateToLocalFormatted(
+                                "gt.tileentity.eup_store",
+                                TooltipHelper.euCapacityText(gtTileEntity.getEUCapacity())));
+                    }
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();

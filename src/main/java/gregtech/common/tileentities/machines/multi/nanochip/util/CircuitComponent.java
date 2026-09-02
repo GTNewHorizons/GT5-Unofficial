@@ -637,6 +637,17 @@ public enum CircuitComponent {
         return META_IDS.get(stack.getItemDamage());
     }
 
+    /**
+     * Try to get a real stack representation from a CC fake ItemStack. Will not work for PCs.
+     */
+    public static ItemStack tryGetRealStack(ItemStack stack) {
+        if (stack == null) return null;
+        if (stack.getItem() != CircuitComponentFakeItem.INSTANCE) return null;
+        CircuitComponent cc = tryGetFromFakeStack(stack);
+        if (cc == null || cc.isProcessed || cc.realComponent == null) return null;
+        return cc.realComponent.get();
+    }
+
     public static class CircuitComponentStack {
 
         private final CircuitComponent circuitComponent;

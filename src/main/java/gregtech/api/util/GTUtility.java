@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
@@ -105,6 +105,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -147,6 +148,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
+import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
@@ -259,7 +261,7 @@ public class GTUtility {
                 .getDeclaredField(aField);
             rField.setAccessible(true);
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return rField;
     }
@@ -270,7 +272,7 @@ public class GTUtility {
             field.setAccessible(true);
             return field;
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -285,7 +287,7 @@ public class GTUtility {
             if (aPrivate) tField.setAccessible(true);
             return tField;
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -300,7 +302,7 @@ public class GTUtility {
             if (aPrivate) tField.setAccessible(true);
             return tField.get(aObject instanceof Class || aObject instanceof String ? null : aObject);
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -341,7 +343,7 @@ public class GTUtility {
             if (aPrivate) tMethod.setAccessible(true);
             return tMethod.invoke(aObject, aParameters);
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -354,17 +356,17 @@ public class GTUtility {
                     try {
                         return tConstructor.newInstance(aParameters);
                     } catch (Exception e) {
-                        if (D1) e.printStackTrace(GTLog.err);
+                        if (D1) GT_FML_LOGGER.error(e);
                     }
                 }
             } catch (Exception e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
+                if (aLogErrors) GT_FML_LOGGER.error(e);
             }
         } else {
             try {
                 return aClass.getConstructors()[aConstructorIndex].newInstance(aParameters);
             } catch (Exception e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
+                if (aLogErrors) GT_FML_LOGGER.error(e);
             }
         }
         return aReplacementObject;
@@ -463,6 +465,14 @@ public class GTUtility {
 
     public static long getAmperageForTier(long voltage, byte tier) {
         return ceilDiv(voltage, GTValues.V[tier]);
+    }
+
+    public static double getExactAmperageForTier(long voltage, byte tier) {
+        if (GTValues.V[tier] <= 0) {
+            return 0.0D;
+        }
+
+        return (double) voltage / (double) GTValues.V[tier];
     }
 
     /**
@@ -1488,9 +1498,9 @@ public class GTUtility {
             aPages[i] = pageText.replace("\\n", "\n");
             if (i < 48) {
                 if (aPages[i].length() < 256) tNBTList.appendTag(new NBTTagString(aPages[i]));
-                else GTLog.err.println("WARNING: String for written Book too long! -> " + aPages[i]);
+                else GT_FML_LOGGER.error("WARNING: String for written Book too long! -> {}", aPages[i]);
             } else {
-                GTLog.err.println("WARNING: Too much Pages for written Book! -> " + aTitle);
+                GT_FML_LOGGER.error("WARNING: Too much Pages for written Book! -> {}", aTitle);
                 break;
             }
         }
@@ -1498,13 +1508,11 @@ public class GTUtility {
             new NBTTagString(StatCollector.translateToLocalFormatted("gt.book.credits", aAuthor, sBookCount)));
         tNBT.setTag("pages", tNBTList);
         rStack.setTagCompound(tNBT);
-        GTLog.out.println(
-            "GTMod: Added Book to Book List  -  Mapping: '" + aMapping
-                + "'  -  Name: '"
-                + aTitle
-                + "'  -  Author: '"
-                + aAuthor
-                + "'");
+        GT_FML_LOGGER.debug(
+            "GTMod: Added Book to Book List  -  Mapping: '{}'  -  Name: '{}'  -  Author: '{}'",
+            aMapping,
+            aTitle,
+            aAuthor);
         GregTechAPI.sBookList.put(aMapping, rStack);
         return copyOrNull(rStack);
     }
@@ -1978,7 +1986,7 @@ public class GTUtility {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error("Error damaging entity", t);
+                GTLoggers.GT_FML_LOGGER.error("Error damaging entity", t);
             }
         }
         return false;
@@ -3640,6 +3648,19 @@ public class GTUtility {
         }
     }
 
+    /// Multiplies two longs, clamping to the min/max for a long if the result overflows.
+    public static long mulSafe(long a, long b) {
+        try {
+            return Math.multiplyExact(a, b);
+        } catch (ArithmeticException ignored) {
+            if (a > 0 == b > 0) {
+                return Long.MAX_VALUE;
+            } else {
+                return Long.MIN_VALUE;
+            }
+        }
+    }
+
     /**
      * Hash an item stack for the purpose of storing hash across launches
      */
@@ -4345,6 +4366,53 @@ public class GTUtility {
             result[i] = tmp;
             amount -= a;
         }
+        return result;
+    }
+
+    public static String getStackCustomName(ItemStack stack) {
+        if (stack == null) return null;
+        if (stack.stackTagCompound == null) return null;
+        NBTTagCompound subTag = stack.stackTagCompound.getCompoundTag("display");
+        if (subTag == null) return null;
+        if (!subTag.hasKey("Name", Constants.NBT.TAG_STRING)) return null;
+        return subTag.getString("Name");
+    }
+
+    public static List<ItemStack> mergeAndSortItemStacks(List<ItemStack> inputItems) {
+        List<ItemStack> result = new ArrayList<>();
+        Map<ItemId, Integer> itemCounts = new HashMap<>();
+
+        for (ItemStack item : inputItems) {
+            if (item == null) {
+                continue;
+            }
+
+            ItemId id = ItemId.create(item);
+
+            int currentCount = itemCounts.getOrDefault(id, 0);
+            itemCounts.put(id, currentCount + item.stackSize);
+        }
+
+        for (Map.Entry<ItemId, Integer> entry : itemCounts.entrySet()) {
+            ItemId id = entry.getKey();
+            int totalCount = entry.getValue();
+            int maxStack = id.getItemStack()
+                .getMaxStackSize();
+
+            while (totalCount > maxStack) {
+                ItemStack stack = id.getItemStack(maxStack);
+                result.add(stack);
+                totalCount -= maxStack;
+            }
+
+            if (totalCount > 0) {
+                ItemStack stack = id.getItemStack(totalCount);
+                result.add(stack);
+            }
+        }
+
+        result.sort((a, b) -> Integer.compare(b.stackSize, a.stackSize));
+
         return result;
     }
 }
