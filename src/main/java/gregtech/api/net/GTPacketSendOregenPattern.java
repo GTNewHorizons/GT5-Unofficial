@@ -12,10 +12,11 @@ import io.netty.buffer.ByteBuf;
 
 public class GTPacketSendOregenPattern extends GTPacket {
 
-    protected OregenPattern pattern = GTWorldgenerator.DEFAULT_PATTERN;
+    /** Null when decoding failed, so a broken packet leaves the client's pattern alone instead of guessing one. */
+    protected final OregenPattern pattern;
 
     public GTPacketSendOregenPattern() {
-        super();
+        this(null);
     }
 
     public GTPacketSendOregenPattern(OregenPattern pattern) {
@@ -35,12 +36,11 @@ public class GTPacketSendOregenPattern extends GTPacket {
         if (ordinal >= 0 && ordinal < OregenPattern.values().length) {
             return new GTPacketSendOregenPattern(OregenPattern.values()[ordinal]);
         }
-        // invalid data, fall back to the default pattern:
+        // A guess here would be indistinguishable from a real answer, so report nothing rather than the default
         GT_FML_LOGGER.error(
-            "Received invalid data! Received {} but value must be between 0 and {}! Default ({}) will be used.",
+            "Received invalid data! Received {} but value must be between 0 and {}! The ore vein pattern is left unchanged.",
             ordinal,
-            OregenPattern.values().length - 1,
-            GTWorldgenerator.DEFAULT_PATTERN);
+            OregenPattern.values().length - 1);
         return new GTPacketSendOregenPattern();
     }
 
@@ -51,6 +51,7 @@ public class GTPacketSendOregenPattern extends GTPacket {
 
     @Override
     public void process(IBlockAccess aWorld) {
+        if (this.pattern == null) return;
         GTWorldgenerator.setClientOregenPattern(this.pattern);
     }
 
