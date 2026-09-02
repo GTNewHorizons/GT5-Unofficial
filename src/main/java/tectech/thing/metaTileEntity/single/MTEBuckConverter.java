@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.custom;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -60,8 +61,8 @@ public class MTEBuckConverter extends MTETieredMachineBlock {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        BUCK = TextureFactory.of(custom("iconsets/BUCK"));
-        BUCK_ACTIVE = TextureFactory.of(custom("iconsets/BUCK_ACTIVE"));
+        BUCK = TextureFactory.of(custom(Mods.GregTech.resourceDomain, "iconsets/BUCK"));
+        BUCK_ACTIVE = TextureFactory.of(custom(Mods.GregTech.resourceDomain, "iconsets/BUCK_ACTIVE"));
     }
 
     @Override

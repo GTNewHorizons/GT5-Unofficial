@@ -30,6 +30,7 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -991,8 +992,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_BHG");
-        ScreenON = Textures.BlockIcons.custom("iconsets/EM_BHG_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BHG");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BHG_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

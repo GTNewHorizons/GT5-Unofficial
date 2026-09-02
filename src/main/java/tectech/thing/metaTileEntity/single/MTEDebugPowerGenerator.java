@@ -2,6 +2,7 @@ package tectech.thing.metaTileEntity.single;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -83,7 +84,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        GENNY = TextureFactory.of(Textures.BlockIcons.custom("iconsets/GENNY"));
+        GENNY = TextureFactory.of(Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/GENNY"));
     }
 
     @Override

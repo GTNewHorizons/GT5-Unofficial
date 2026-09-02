@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -403,8 +404,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_COMPUTER");
-        ScreenON = Textures.BlockIcons.custom("iconsets/EM_COMPUTER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_COMPUTER");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_COMPUTER_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

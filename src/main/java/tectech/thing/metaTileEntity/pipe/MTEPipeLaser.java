@@ -3,6 +3,7 @@ package tectech.thing.metaTileEntity.pipe;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,9 +54,9 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMcandy = Textures.BlockIcons.custom("iconsets/EM_CANDY");
-        EMCandyActive = Textures.BlockIcons.custom("iconsets/EM_CANDY_ACTIVE");
-        EMpipe = Textures.BlockIcons.custom("iconsets/EM_LASER");
+        EMcandy = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_CANDY");
+        EMCandyActive = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_CANDY_ACTIVE");
+        EMpipe = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_LASER");
         super.registerIcons(aBlockIconRegister);
     }
 

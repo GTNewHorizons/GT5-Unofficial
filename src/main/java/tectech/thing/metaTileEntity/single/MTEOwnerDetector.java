@@ -2,6 +2,7 @@ package tectech.thing.metaTileEntity.single;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -56,8 +57,8 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        OWNER_ONLINE = TextureFactory.of(Textures.BlockIcons.custom("iconsets/OWNER_ONLINE"));
-        OWNER_OFFLINE = TextureFactory.of(Textures.BlockIcons.custom("iconsets/OWNER_OFFLINE"));
+        OWNER_ONLINE = TextureFactory.of(Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/OWNER_ONLINE"));
+        OWNER_OFFLINE = TextureFactory.of(Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/OWNER_OFFLINE"));
     }
 
     @Override

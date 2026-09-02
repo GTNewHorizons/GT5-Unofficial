@@ -6,6 +6,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.util.HashMap;
 import java.util.Map;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -66,8 +67,8 @@ public class MTEHatchCapacitor extends MTEHatch {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        TM_H_ACTIVE = Textures.BlockIcons.custom("iconsets/TM_TESLA_CAPS_ACTIVE");
-        TM_H = Textures.BlockIcons.custom("iconsets/TM_TESLA_CAPS");
+        TM_H_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_CAPS_ACTIVE");
+        TM_H = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_CAPS");
     }
 
     @Override

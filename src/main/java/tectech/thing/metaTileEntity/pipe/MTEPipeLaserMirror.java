@@ -3,6 +3,7 @@ package tectech.thing.metaTileEntity.pipe;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
@@ -44,7 +45,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMpipe = Textures.BlockIcons.custom("iconsets/EM_LASERMIRROR");
+        EMpipe = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_LASERMIRROR");
         super.registerIcons(aBlockIconRegister);
     }
 

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -46,64 +47,64 @@ public class MTEBoxinator extends MTEBasicMachine {
             1,
             TextureFactory.of(
                 TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_ACTIVE")),
+                    .of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
                         Textures.BlockIcons
-                            .customOptional("basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW"))
+                            .customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR")),
+                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_SIDE_BOXINATOR_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_ACTIVE")),
+                    .of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
                         Textures.BlockIcons
-                            .customOptional("basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_ACTIVE_GLOW"))
+                            .customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR")),
+                    .of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_FRONT_BOXINATOR_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_ACTIVE")),
+                    .of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW"))
+                        Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR")),
+                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_TOP_BOXINATOR")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_TOP_BOXINATOR_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_ACTIVE")),
+                    .of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
                         Textures.BlockIcons
-                            .customOptional("basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_ACTIVE_GLOW"))
+                            .customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR")),
+                    .of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR")),
                 TextureFactory.builder()
                     .addIcon(
-                        Textures.BlockIcons.customOptional("basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_GLOW"))
+                        Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/boxinator/OVERLAY_BOTTOM_BOXINATOR_GLOW"))
                     .glow()
                     .build()));
     }

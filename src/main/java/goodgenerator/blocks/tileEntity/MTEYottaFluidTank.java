@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -79,12 +80,12 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("iconsets/OVERLAY_QCHEST");
+        .customOptional(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_QCHEST");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QCHEST_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEYottaFluidTank> multiDefinition = null;
     protected final ArrayList<MTEYOTTAHatch> mYottaHatch = new ArrayList<>();

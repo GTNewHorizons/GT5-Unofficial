@@ -2,6 +2,7 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -52,9 +53,9 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_D_ACTIVE = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_ACTIVE");
-        EM_D_SIDES = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_SIDES");
-        EM_D_CONN = Textures.BlockIcons.custom("iconsets/EM_DATA_CONN");
+        EM_D_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_EM_D_ACTIVE");
+        EM_D_SIDES = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_EM_D_SIDES");
+        EM_D_CONN = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_DATA_CONN");
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -399,7 +400,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_PUMP_MODULE");
+        engraving = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_SIDE_PUMP_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 

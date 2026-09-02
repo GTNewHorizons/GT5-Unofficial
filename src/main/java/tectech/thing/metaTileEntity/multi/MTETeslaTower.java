@@ -28,6 +28,7 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -576,8 +577,8 @@ public class MTETeslaTower extends TTMultiblockBase
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER");
-        ScreenON = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_TOWER");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_TOWER_ACTIVE");
     }
 
     @Override

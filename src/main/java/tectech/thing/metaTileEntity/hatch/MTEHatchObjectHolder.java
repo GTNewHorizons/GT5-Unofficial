@@ -2,6 +2,7 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -55,8 +56,8 @@ public class MTEHatchObjectHolder extends MTEHatch implements ISmartInputHatch {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_H_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_HOLDER_ACTIVE");
-        EM_H = Textures.BlockIcons.custom("iconsets/EM_HOLDER");
+        EM_H_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_HOLDER_ACTIVE");
+        EM_H = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_HOLDER");
     }
 
     @Override

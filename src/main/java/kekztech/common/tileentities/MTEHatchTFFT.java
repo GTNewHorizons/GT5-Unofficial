@@ -2,6 +2,7 @@ package kekztech.common.tileentities;
 
 import java.util.HashMap;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -54,7 +55,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
         }
     }
 
-    private static final IIconContainer TEXTURE_TFFT_HATCH = Textures.BlockIcons.custom("iconsets/TFFT_HATCH");
+    private static final IIconContainer TEXTURE_TFFT_HATCH = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TFFT_HATCH");
 
     private HashMap<IMEMonitorHandlerReceiver<IAEFluidStack>, Object> listeners = new HashMap<>();
     private MTETankTFFT controller;

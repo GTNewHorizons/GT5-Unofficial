@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -93,12 +94,12 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     }
     final XSTR R = new XSTR();
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/NeutronActivator_On");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/NeutronActivator_On");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .customOptional("icons/NeutronActivator_On_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("icons/NeutronActivator_Off");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/NeutronActivator_On_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/NeutronActivator_Off");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .customOptional("icons/NeutronActivator_Off_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/NeutronActivator_Off_GLOW");
 
     protected final String NA_BOTTOM = mName + "buttom";
     protected final String NA_MID = mName + "mid";

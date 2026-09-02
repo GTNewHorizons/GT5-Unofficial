@@ -2688,23 +2688,24 @@ public class Textures {
 
         /**
          * Registers a Custom Block {@link IIconContainer}
-         *
+         * @param domain    The resource domain
          * @param aIconName The unique identifier of the icon container.
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer custom(@NotNull String aIconName) {
-            return GTCustomBlockIconContainer.create(aIconName);
+        public static @NotNull IIconContainer custom(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomBlockIconContainer.create(domain, aIconName);
         }
 
         /**
          * Registers a Custom Optional Block {@link IIconContainer}
          *
-         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         * @param domain    The resource domain
+         * @param aIconName The unique {@code path/name} icon identifier<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer customOptional(@NotNull String aIconName) {
-            return GTCustomOptionalBlockIconContainer.create(aIconName);
+        public static @NotNull IIconContainer customOptional(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomOptionalBlockIconContainer.create(domain, aIconName);
         }
 
         /**
@@ -2714,22 +2715,23 @@ public class Textures {
          *                  (see: {@link IIconRegister#registerIcon}).
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer customAlpha(@NotNull String aIconName) {
-            return GTCustomAlphaBlockIconContainer.create(aIconName);
+        public static @NotNull IIconContainer customAlpha(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomAlphaBlockIconContainer.create(domain, aIconName);
         }
 
         /**
          * Registers a Custom Alpha-blended Block {@link IIconContainer} (to be rendered in pass 1) whose icon and
          * _OVERLAY textures are both optional, delegating to the given fallback container when neither exists
          *
-         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         * @param domain    the resource domain of the texture
+         * @param aIconName The unique {@code path/name} icon identifier<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @param fallback  The {@link IIconContainer} to delegate to when no texture exists for this icon.
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer customAlphaFallback(@NotNull String aIconName,
-            @NotNull IIconContainer fallback) {
-            return GTCustomAlphaFallbackBlockIconContainer.create(aIconName, fallback);
+        public static @NotNull IIconContainer customAlphaFallback(@NotNull String domain, @NotNull String aIconName,
+                                                                  @NotNull IIconContainer fallback) {
+            return GTCustomAlphaFallbackBlockIconContainer.create(domain, aIconName, fallback);
         }
 
         /**
@@ -2740,13 +2742,13 @@ public class Textures {
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
-            return GTTextureSetBlockIconContainer.create(setName, prefix, null);
+        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName, @NotNull String prefix) {
+            return GTTextureSetBlockIconContainer.create(domain, setName, prefix, null);
         }
 
-        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
-            IIconRegister register) {
-            return GTTextureSetBlockIconContainer.create(setName, prefix, register);
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
+                                                                     IIconRegister register) {
+            return GTTextureSetBlockIconContainer.create(domain, setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {

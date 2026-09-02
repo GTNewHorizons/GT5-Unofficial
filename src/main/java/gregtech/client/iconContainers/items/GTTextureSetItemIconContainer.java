@@ -57,10 +57,16 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
         logRegisterIcons();
     }
 
+    @Deprecated
     public static String createIconName(String setName, String prefix) {
         String iconName = TextureMaterialIconDirectory + setName + prefix;
         return iconName.contains(":") ? iconName : GregTech.resourceDomain + ":" + iconName;
     }
+
+//    public static String createIconName(String setName, String prefix) {
+//        String iconName = TextureMaterialIconDirectory + setName + prefix;
+//        return iconName.contains(":") ? iconName : GregTech.resourceDomain + ":" + iconName;
+//    }
 
     // 2026-13-05: Counted 7371 unique Item TextureSetIcons, so 9.4K will avoid resize until 7500 entries
     private static Map<Pair<String, String>, IIconContainer> INSTANCES = new HashMap<>(9375);

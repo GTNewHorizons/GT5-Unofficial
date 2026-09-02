@@ -5,6 +5,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import java.util.Collection;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -61,9 +62,9 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        CCPipe = Textures.BlockIcons.custom("iconsets/CC_PIPE");
-        CCBarOverlay = Textures.BlockIcons.customOptional("iconsets/CC_BAR_OVERLAY");
-        CCBarOverlayActive = Textures.BlockIcons.customOptional("iconsets/CC_BAR_OVERLAY_ACTIVE");
+        CCPipe = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/CC_PIPE");
+        CCBarOverlay = Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "iconsets/CC_BAR_OVERLAY");
+        CCBarOverlayActive = Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "iconsets/CC_BAR_OVERLAY_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

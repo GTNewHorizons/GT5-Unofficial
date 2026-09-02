@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,9 +25,9 @@ import io.netty.buffer.ByteBuf;
 
 public abstract class MTEBaseFactoryPipe extends MetaPipeEntity {
 
-    public static final IIconContainer EM_PIPE = Textures.BlockIcons.custom("iconsets/EM_DATA");
-    public static final IIconContainer EM_BAR = Textures.BlockIcons.custom("iconsets/EM_BAR");
-    public static final IIconContainer EM_BAR_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_BAR_ACTIVE");
+    public static final IIconContainer EM_PIPE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_DATA");
+    public static final IIconContainer EM_BAR = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BAR");
+    public static final IIconContainer EM_BAR_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BAR_ACTIVE");
 
     private boolean mIsActive;
 

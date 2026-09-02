@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -358,8 +359,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_CONTROLLER");
-        ScreenON = Textures.BlockIcons.custom("iconsets/EM_CONTROLLER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/EM_CONTROLLER");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/EM_CONTROLLER_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -236,7 +237,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenON = Textures.BlockIcons.custom("iconsets/GODFORGE_CONTROLLER");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/GODFORGE_CONTROLLER");
         super.registerIcons(aBlockIconRegister);
     }
 

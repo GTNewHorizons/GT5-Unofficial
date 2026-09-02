@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.turbines;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -25,9 +26,9 @@ import gregtech.api.util.TurbineStatCalculator;
 
 public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
 
-    private static final IIconContainer[] TURBINE_ON = { Textures.BlockIcons.custom("icons/turbines/TURBINE_05") };
-    private static final IIconContainer[] TURBINE_OFF = { Textures.BlockIcons.custom("icons/turbines/TURBINE_15") };
-    private static final IIconContainer[] TURBINE_EMPTY = { Textures.BlockIcons.custom("icons/turbines/TURBINE_25") };
+    private static final IIconContainer[] TURBINE_ON = { Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_05") };
+    private static final IIconContainer[] TURBINE_OFF = { Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_15") };
+    private static final IIconContainer[] TURBINE_EMPTY = { Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_25") };
 
     public MTELargeTurbineSCSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

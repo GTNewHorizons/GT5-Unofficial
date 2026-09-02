@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -57,7 +58,7 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        face = Textures.BlockIcons.custom("iconsets/OVERLAY_MAGICALMAINTENANCE");
+        face = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_MAGICALMAINTENANCE");
     }
 
     @Override

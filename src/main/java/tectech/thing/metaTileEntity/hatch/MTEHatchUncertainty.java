@@ -2,6 +2,7 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -93,8 +94,8 @@ public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/UC");
-        ScreenON = Textures.BlockIcons.custom("iconsets/UC_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC_ACTIVE");
     }
 
     @Override

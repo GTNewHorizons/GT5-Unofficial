@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -77,12 +78,12 @@ import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
 public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_On");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/LargeEssentiaSmeltery_On");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .customOptional("icons/LargeEssentiaSmeltery_On_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_Off");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/LargeEssentiaSmeltery_On_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/LargeEssentiaSmeltery_Off");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .customOptional("icons/LargeEssentiaSmeltery_Off_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/LargeEssentiaSmeltery_Off_GLOW");
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";

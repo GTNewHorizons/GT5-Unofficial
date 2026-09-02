@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -409,8 +410,8 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenON = Textures.BlockIcons.custom("iconsets/GODFORGE_MODULE_ACTIVE");
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/SCREEN_OFF");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/GODFORGE_MODULE_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/SCREEN_OFF");
         super.registerIcons(aBlockIconRegister);
     }
 

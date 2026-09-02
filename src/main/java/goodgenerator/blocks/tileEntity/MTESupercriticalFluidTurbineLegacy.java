@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,9 +30,9 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
 
     private boolean looseFit = false;
 
-    private static final IIconContainer turbineOn = Textures.BlockIcons.custom("icons/turbines/TURBINE_05");
-    private static final IIconContainer turbineOff = Textures.BlockIcons.custom("icons/turbines/TURBINE_15");
-    private static final IIconContainer turbineEmpty = Textures.BlockIcons.custom("icons/turbines/TURBINE_25");
+    private static final IIconContainer turbineOn = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/turbines/TURBINE_05");
+    private static final IIconContainer turbineOff = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/turbines/TURBINE_15");
+    private static final IIconContainer turbineEmpty = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/turbines/TURBINE_25");
 
     public MTESupercriticalFluidTurbineLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

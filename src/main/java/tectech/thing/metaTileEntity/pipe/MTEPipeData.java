@@ -3,6 +3,7 @@ package tectech.thing.metaTileEntity.pipe;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,9 +56,9 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMpipe = Textures.BlockIcons.custom("iconsets/EM_DATA");
-        EMbar = Textures.BlockIcons.custom("iconsets/EM_BAR");
-        EMbarActive = Textures.BlockIcons.custom("iconsets/EM_BAR_ACTIVE");
+        EMpipe = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_DATA");
+        EMbar = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BAR");
+        EMbarActive = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BAR_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

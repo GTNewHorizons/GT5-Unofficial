@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,7 +52,7 @@ import gregtech.api.util.GTUtility;
 public class MTEYOTTAHatch extends MTEHatch
     implements IGridProxyable, ICellContainer, IMEInventoryHandler<IAEFluidStack>, IPowerChannelState {
 
-    private static final IIconContainer textureFont = Textures.BlockIcons.custom("icons/YOTTAHatch");
+    private static final IIconContainer textureFont = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/YOTTAHatch");
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     private static final BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 

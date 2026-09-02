@@ -2,6 +2,7 @@ package gtnhlanth.common.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
+import gregtech.api.enums.Mods;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -24,9 +25,9 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector implements 
     private static final String sideIconPath = "iconsets/OVERLAY_BI_SIDES";
     private static final String connIconPath = "iconsets/BI_CONN";
 
-    private static final IIconContainer activeIcon = Textures.BlockIcons.custom(activeIconPath);
-    private static final IIconContainer sideIcon = Textures.BlockIcons.custom(sideIconPath);
-    private static final IIconContainer connIcon = Textures.BlockIcons.custom(connIconPath);
+    private static final IIconContainer activeIcon = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, activeIconPath);
+    private static final IIconContainer sideIcon = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, sideIconPath);
+    private static final IIconContainer connIcon = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, connIconPath);
 
     public MTEHatchInputBeamline(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, "");

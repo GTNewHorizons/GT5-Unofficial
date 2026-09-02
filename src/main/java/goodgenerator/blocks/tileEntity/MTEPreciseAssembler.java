@@ -16,6 +16,7 @@ import java.util.stream.IntStream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -85,12 +86,12 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("iconsets/OVERLAY_QCHEST");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_QCHEST");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QCHEST_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEPreciseAssembler> multiDefinition = null;
     protected int casingAmount;

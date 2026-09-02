@@ -23,8 +23,8 @@ public class GTBlockIconContainer extends AbstractBlockIconContainer implements 
     IIcon mIcon;
 
     GTBlockIconContainer(@NotNull String aIconName) {
-        mIconName = GregTech.resourceDomain + ":iconsets/" + aIconName;
-        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
+        mIconName = "iconsets/" + aIconName;
+        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(GregTech.resourceDomain, mIconName);
         GregTechAPI.sGTBlockIconload.add(this);
         logRegisterIcon();
     }

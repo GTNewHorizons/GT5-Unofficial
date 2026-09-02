@@ -84,6 +84,7 @@ public class ResourceUtils {
      *                    extension)
      * @return The complete ResourceLocation pointing to the resource file
      */
+    @Deprecated
     public static @NotNull ResourceLocation getCompleteResourceLocation(@NotNull String basePath, @NotNull String ext,
         @NotNull String resourceKey) {
         final int i = resourceKey.indexOf(':');
@@ -92,11 +93,35 @@ public class ResourceUtils {
         return new ResourceLocation(domain, basePath + path + ext);
     }
 
-    public static @NotNull ResourceLocation getCompleteBlockTextureResourceLocation(@NotNull String resourceKey) {
-        return getCompleteResourceLocation("textures/blocks/", ".png", resourceKey);
+    /**
+     * Get the complete resource location from the short local resource location key.
+     *
+     * @param domain      The namespace of the resource (e.g.: gregtech)
+     * @param basePath    The base path for the resource (e.g.: textures/blocks/)
+     * @param ext         The file name extension of the resource (e.g.: .png)
+     * @param resourceKey The local resource location key (without textures/blocks|items and without the filename
+     *                    extension)
+     * @return The complete ResourceLocation pointing to the resource file
+     */
+    public static @NotNull ResourceLocation getCompleteResourceLocation(@NotNull String domain, @NotNull String basePath, @NotNull String ext,
+                                                                        @NotNull String resourceKey) {
+        final int i = resourceKey.indexOf(':');
+        if (i >= 0){
+            throw new IllegalStateException("wrong path to resource specified");
+        }
+        return new ResourceLocation(domain, basePath + resourceKey + ext);
     }
 
+    public static @NotNull ResourceLocation getCompleteBlockTextureResourceLocation(@NotNull String domain, @NotNull String resourceKey) {
+        return getCompleteResourceLocation(domain,"textures/blocks/", ".png", resourceKey);
+    }
+
+    @Deprecated
     public static @NotNull ResourceLocation getCompleteItemTextureResourceLocation(String resourceKey) {
         return getCompleteResourceLocation("textures/items/", ".png", resourceKey);
+    }
+
+    public static @NotNull ResourceLocation getCompleteItemTextureResourceLocation(@NotNull String domain, String resourceKey) {
+        return getCompleteResourceLocation(domain,"textures/items/", ".png", resourceKey);
     }
 }

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,73 +46,73 @@ public class MTEPotionBrewer extends MTEBasicMachine {
             0,
             TextureFactory.of(
                 TextureFactory.of(
-                    Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_ACTIVE")),
+                    Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
                         Textures.BlockIcons
-                            .customOptional("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW"))
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER")),
+                    .of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER")),
                 TextureFactory.builder()
                     .addIcon(
-                        Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_GLOW"))
+                        Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_SIDE_POTIONBREWER_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_ACTIVE")),
+                    Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
                         Textures.BlockIcons
-                            .customOptional("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW"))
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER")),
+                    .of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER")),
                 TextureFactory.builder()
                     .addIcon(
                         Textures.BlockIcons
-                            .customOptional("basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_GLOW"))
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_FRONT_POTIONBREWER_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_ACTIVE")),
+                    Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
                         Textures.BlockIcons
-                            .customOptional("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW"))
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER")),
+                    .of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER")),
                 TextureFactory.builder()
                     .addIcon(
-                        Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_GLOW"))
+                        Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_TOP_POTIONBREWER_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
                     Textures.BlockIcons
-                        .customOptional("basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_ACTIVE")),
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
                         Textures.BlockIcons
-                            .customOptional("basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW"))
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER")),
+                    .of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER")),
                 TextureFactory.builder()
                     .addIcon(
                         Textures.BlockIcons
-                            .customOptional("basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_GLOW"))
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/potionbrewer/OVERLAY_BOTTOM_POTIONBREWER_GLOW"))
                     .glow()
                     .build()));
     }

@@ -2,6 +2,7 @@ package gtnhlanth.common.beamline;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -126,7 +127,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        pipe = Textures.BlockIcons.custom("iconsets/pipe");
+        pipe = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/pipe");
         super.registerIcons(aBlockIconRegister);
     }
 

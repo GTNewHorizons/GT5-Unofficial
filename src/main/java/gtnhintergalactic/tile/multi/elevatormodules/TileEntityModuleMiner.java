@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -917,7 +918,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_MINER_MODULE");
+        engraving = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_SIDE_MINER_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 

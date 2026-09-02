@@ -2,6 +2,7 @@ package tectech.thing.metaTileEntity.single;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -61,7 +62,7 @@ public class MTEDebugPollutor extends MTETieredMachineBlock {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        POLLUTOR = TextureFactory.of(Textures.BlockIcons.custom("iconsets/POLLUTOR"));
+        POLLUTOR = TextureFactory.of(Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/POLLUTOR"));
     }
 
     @Override

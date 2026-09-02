@@ -22,12 +22,12 @@ public class GTCustomBlockIconContainer extends AbstractBlockIconContainer imple
     protected final String mIconName, mOverlayName;
     protected IIcon mIcon, mOverlay = null;
 
-    GTCustomBlockIconContainer(@NotNull String aIconName) {
-        mIconName = aIconName.contains(":") ? aIconName : GregTech.getResourcePath(aIconName);
-        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
+    GTCustomBlockIconContainer(@NotNull String domain, @NotNull String aIconName) {
+        mIconName = aIconName;
+        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, mIconName);
 
         mOverlayName = mIconName + Textures.OverlaySuffix;
-        overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mOverlayName);
+        overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, mOverlayName);
         GregTechAPI.sGTBlockIconload.add(this);
         logRegisterIcons();
     }
@@ -40,8 +40,8 @@ public class GTCustomBlockIconContainer extends AbstractBlockIconContainer imple
     // 2026-13-05: Counted 36 unique Block TextureSetIcons, so 52 will avoid resize until 50 entries
     private static Map<String, GTCustomBlockIconContainer> INSTANCES = new HashMap<>(52);
 
-    public static @NotNull IIconContainer create(@NotNull String aIconName) {
-        return INSTANCES.computeIfAbsent(aIconName, GTCustomBlockIconContainer::new);
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String aIconName) {
+        return INSTANCES.computeIfAbsent(aIconName, key -> new GTCustomBlockIconContainer(domain, key));
     }
 
     public static void cleanup() {

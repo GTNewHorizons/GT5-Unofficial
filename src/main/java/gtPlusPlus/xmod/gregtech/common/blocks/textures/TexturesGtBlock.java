@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -297,9 +298,9 @@ public class TexturesGtBlock {
     public static final CustomIcon Overlay_Machine_Controller_Advanced_Active = new CustomIcon(
         "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE");
     public static final IIconContainer Overlay_Machine_Controller_Advanced_Glow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_GLOW");
+        .create(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_GLOW");
     public static final IIconContainer Overlay_Machine_Controller_Advanced_Active_Glow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE_GLOW");
+        .create(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE_GLOW");
 
     // oMCA = Overlay_Machine_Controller_Advanced
     public static final CustomIcon oMCACokeOven = new CustomIcon("iconsets/controllerFaces/cokeOven");
@@ -327,9 +328,9 @@ public class TexturesGtBlock {
     public static final CustomIcon oMCATreeFarm = new CustomIcon("iconsets/controllerFaces/treeFarm");
     public static final CustomIcon oMCATreeFarmActive = new CustomIcon("iconsets/controllerFaces/treeFarmActive");
     public static final IIconContainer oMCATreeFarmGlow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/controllerFaces/treeFarmGlow");
+        .create(Mods.GregTech.resourceDomain, "iconsets/controllerFaces/treeFarmGlow");
     public static final IIconContainer oMCATreeFarmActiveGlow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/controllerFaces/treeFarmActiveGlow");
+        .create(Mods.GregTech.resourceDomain, "iconsets/controllerFaces/treeFarmActiveGlow");
 
     public static final CustomIcon oMCAIndustrialRockBreaker = new CustomIcon(
         "iconsets/controllerFaces/industrialRockBreaker");

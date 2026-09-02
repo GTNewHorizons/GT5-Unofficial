@@ -39,18 +39,18 @@ public class GTCustomAlphaFallbackBlockIconContainer extends AbstractBlockIconCo
     private boolean hasIcon;
     private boolean hasOverlay;
 
-    GTCustomAlphaFallbackBlockIconContainer(@NotNull String iconName, @NotNull IIconContainer fallback) {
-        this.iconName = iconName.contains(":") ? iconName : GregTech.getResourcePath(iconName);
+    GTCustomAlphaFallbackBlockIconContainer(@NotNull String domain, @NotNull String iconName, @NotNull IIconContainer fallback) {
+        this.iconName = iconName;
         this.overlayName = this.iconName + Textures.OverlaySuffix;
-        this.iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(this.iconName);
-        this.overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(this.overlayName);
+        this.iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, this.iconName);
+        this.overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, this.overlayName);
         this.fallback = fallback;
     }
 
-    public static @NotNull IIconContainer create(@NotNull String iconName, @NotNull IIconContainer fallback) {
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String iconName, @NotNull IIconContainer fallback) {
         String key = iconName + '\0' + System.identityHashCode(fallback);
         return INSTANCES
-            .computeIfAbsent(key, ignored -> new GTCustomAlphaFallbackBlockIconContainer(iconName, fallback));
+            .computeIfAbsent(key, ignored -> new GTCustomAlphaFallbackBlockIconContainer(domain, iconName, fallback));
     }
 
     public static void cleanup() {
