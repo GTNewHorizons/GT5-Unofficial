@@ -97,6 +97,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.CheckboxWidget;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputHatch;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -149,7 +150,6 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
-import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
@@ -161,9 +161,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteam
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
-import gtnhlanth.common.hatch.MTEBusInputFocus;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
-import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
@@ -253,10 +250,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected List<MTEHatch> mCryotheumHatches = new ArrayList<>();
     protected List<MTEHatch> mPyrotheumHatches = new ArrayList<>();
 
-    protected final List<MTEHatchInputBeamline> mBeamlineInputHatches = new ArrayList<>();
-    protected final List<MTEHatchOutputBeamline> mBeamlineOutputHatches = new ArrayList<>();
-    protected final List<MTEBusInputFocus> mFocusInputBuses = new ArrayList<>();
-
     protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
     protected GTSoundLoop activitySoundLoop;
@@ -291,6 +284,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         this.damageFactorLow = MachineStats.machines.damageFactorLow;
         this.damageFactorHigh = MachineStats.machines.damageFactorHigh;
         if (!shouldCheckMaintenance()) fixAllIssues();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ITexture[][] getInventoryTextures() {
+        return getOrCreateInventoryTextures();
     }
 
     @Override
@@ -551,9 +550,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mSmartInputHatches.clear();
         mCryotheumHatches.clear();
         mPyrotheumHatches.clear();
-        mBeamlineInputHatches.clear();
-        mBeamlineOutputHatches.clear();
-        mFocusInputBuses.clear();
         doPeriodicChecks = false;
 
         mCoils.clear();
@@ -2340,52 +2336,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
-    public boolean addBeamlineInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchInputBeamline mteHatchInputBeamline) {
-            mteHatchInputBeamline.updateTexture(aBaseCasingIndex);
-            mteHatchInputBeamline.updateCraftingIcon(this.getMachineCraftingIcon());
-            addIfSmartInput(aMetaTileEntity);
-            return mBeamlineInputHatches.add(mteHatchInputBeamline);
-        }
-        return false;
-    }
-
-    public boolean addBeamlineOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        switch (aMetaTileEntity) {
-            case null -> {
-                return false;
-            }
-            case MTEHatchAdvancedOutputBeamline mteHatchAdvancedOutputBeamline -> {
-                return false;
-            }
-            case MTEHatchOutputBeamline mteHatchOutputBeamline -> {
-                mteHatchOutputBeamline.updateTexture(aBaseCasingIndex);
-                mteHatchOutputBeamline.updateCraftingIcon(this.getMachineCraftingIcon());
-                return mBeamlineOutputHatches.add(mteHatchOutputBeamline);
-            }
-            default -> {
-            }
-        }
-        return false;
-    }
-
-    public boolean addFocusInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEBusInputFocus mteBusInputFocus) {
-            mteBusInputFocus.updateTexture(aBaseCasingIndex);
-            mteBusInputFocus.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mFocusInputBuses.add(mteBusInputFocus);
-        }
-        return false;
-    }
-
     public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -2789,11 +2739,21 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .add(translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumber(tAverageTime)));
         }
 
-        if (tag.getInteger("maxParallelRecipes") > 1) {
-            currentTip.add(
-                StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+        final int localMaxParallels = tag.getInteger("maxParallelRecipes");
+        if (localMaxParallels > 1) {
+            String tooltip;
+            if (tag.hasKey("powerPanelMaxParallel")) {
+                tooltip = translateToLocalFormatted(
+                    "GT5U.multiblock.parallelism_override",
+                    tag.getInteger("powerPanelMaxParallel"),
+                    localMaxParallels);
+            } else {
+                tooltip = translateToLocal("GT5U.multiblock.parallelism") + ": "
                     + EnumChatFormatting.WHITE
-                    + tag.getInteger("maxParallelRecipes"));
+                    + localMaxParallels;
+            }
+
+            currentTip.add(tooltip);
         }
 
         if (tag.hasKey("mode")) {
@@ -2824,17 +2784,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
+        final int localMaxParallel = getMaxParallelRecipes();
+        final int localPowerPanelParallel = getTrueParallel();
+
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
         tag.setInteger("progress", mProgresstime);
         tag.setInteger("maxProgress", mMaxProgresstime);
         tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
-        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
+        tag.setInteger("maxParallelRecipes", localMaxParallel);
         tag.setBoolean("isLockedToRecipe", isRecipeLockingEnabled());
         SingleRecipeCheck lockedRecipe = getSingleRecipeCheck();
         tag.setString(
             "lockedRecipeName",
             lockedRecipe != null ? getDisplayString(lockedRecipe.getRecipe(), false, true, false, true) : "");
+
+        if (localPowerPanelParallel != localMaxParallel) {
+            tag.setInteger("powerPanelMaxParallel", localPowerPanelParallel);
+        }
 
         if (mOutputItems != null) {
             int index = 0;
@@ -2980,18 +2947,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public List<MTEHatch> getPyrotheumHatches() {
         return mPyrotheumHatches;
-    }
-
-    public List<MTEHatchInputBeamline> getBeamlineInputHatches() {
-        return mBeamlineInputHatches;
-    }
-
-    public List<MTEHatchOutputBeamline> getBeamlineOutputHatches() {
-        return mBeamlineOutputHatches;
-    }
-
-    public List<MTEBusInputFocus> getFocusInputBuses() {
-        return mFocusInputBuses;
     }
 
     /**

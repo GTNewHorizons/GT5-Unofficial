@@ -2794,6 +2794,7 @@ public enum ItemList implements IItemContainer {
     DroneCase,
     Femtocontroller,
     FuelPellet,
+    SolarSail,
 
     PrecisionFieldSyncCasing,
     MagneticAnchorCasing,
@@ -2863,7 +2864,7 @@ public enum ItemList implements IItemContainer {
     Augment_NightVision,
     Augment_CreativeFlight,
     Augment_Jetpack,
-    Augment_Jetpack_PerfectHover,
+    Augment_VectoredJetpack,
     Augment_FireImmunity,
     Augment_StepAssist,
     Augment_GogglesOfRevealing,
@@ -3290,7 +3291,8 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_ConfettiQuestbook,
     Ice_Cream_PitOfDoomAndDespair,
     Ice_Cream_MasterOfDreams,
-
+    // Reserved for Ice creams, don't you dare (to 700)
+    Ice_Cream_Trophy
     // semicolon after the comment to reduce merge conflicts
     ;
 

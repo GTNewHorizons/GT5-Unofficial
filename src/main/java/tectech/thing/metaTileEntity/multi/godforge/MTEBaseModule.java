@@ -30,13 +30,17 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
@@ -440,5 +444,24 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
     @Override
     public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.GORGE;
+    }
+
+    protected static class GorgeModuleProcessingLogic extends ProcessingLogic {
+
+        protected final BigInteger predictDrainedEnergy(GTRecipe recipe) {
+            OverclockCalculator calculator = this.createOverclockCalculator(recipe);
+            ParallelHelper helper = this.createParallelHelper(recipe);
+            helper.setConsumption(false);
+            helper.setCalculator(calculator);
+            helper.build();
+            if (!helper.getResult()
+                .wasSuccessful()) {
+                return BigInteger.ZERO;
+            }
+            long eut = calculator.getConsumption();
+            int duration = (int) calculateDuration(recipe, helper, calculator);
+            return BigInteger.valueOf(eut)
+                .multiply(BigInteger.valueOf(duration));
+        }
     }
 }

@@ -208,7 +208,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         tt.addMachineType("BEC I/O Node, Input Bus, Output Bus")
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode"));
 
-        tt.beginStructureBlock(7, 23, 13, false)
+        tt.beginStructureBlock(7, 23, 13, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))
             .addCasing("94", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
             .addCasing("88", ConflictInducementCasing.getLocalizedName(), false)
@@ -302,8 +302,9 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         var assembler = getAssembler();
 
         logic.setAmperageOC(false);
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(assembler == null ? 0 : assembler.getMaxInputVoltage()));
-        logic.setAvailableAmperage(this.maxParallel);
+        logic.setAvailableVoltage(GTUtility.roundUpVoltage(assembler == null ? 0 : assembler.getMaxInputEu()));
+        logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
         logic.setMaxParallel(this.maxParallel);
     }
 
