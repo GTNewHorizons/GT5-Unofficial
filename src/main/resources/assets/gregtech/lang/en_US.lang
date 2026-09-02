@@ -2313,6 +2313,7 @@ GT5U.recipes.not_consume=Does not get consumed in the process
 GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but not get consumed
 GT5U.recipes.chance.consume=Consume Chance: %s
 GT5U.recipes.chance.output=Output Chance: %s
+GT5U.recipes.chance.unorganized=Has a %d%% chance to output an unorganized version instead
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area

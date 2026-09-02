@@ -552,6 +552,18 @@ public enum CircuitComponent {
         () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE),
     ;
 
+    static {
+        int opticalSuccessChance = 5000; // 50%
+        OpticalProcessor.xorSuccessChance = opticalSuccessChance;
+        OpticalProcessor.xorResult = ProcessedCircuitOpticalProcessor;
+        OpticalAssembly.xorSuccessChance = opticalSuccessChance;
+        OpticalAssembly.xorResult = ProcessedCircuitOpticalAssembly;
+        OpticalComputer.xorSuccessChance = opticalSuccessChance;
+        OpticalComputer.xorResult = ProcessedCircuitOpticalComputer;
+        OpticalMainframe.xorSuccessChance = opticalSuccessChance;
+        OpticalMainframe.xorResult = ProcessedCircuitOpticalMainframe;
+    }
+
     // spotless:on
 
     public static final CircuitComponent[] VALUES = values();
@@ -575,6 +587,9 @@ public enum CircuitComponent {
 
     // Tier used for calibration
     public final CircuitCalibration circuitType;
+
+    public CircuitComponent xorResult;
+    public int xorSuccessChance;
 
     // CC constructor
     CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent) {

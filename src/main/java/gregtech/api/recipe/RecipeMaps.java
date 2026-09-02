@@ -84,6 +84,7 @@ import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.MillingFrontend;
+import gregtech.api.recipe.maps.NACMatrixFrontend;
 import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
@@ -1921,7 +1922,7 @@ public final class RecipeMaps {
             recipes.add(r);
             return recipes;
         })
-        .frontend(AssemblyLineFrontend::new)
+        .frontend(NACMatrixFrontend::new)
         .build();
 
     public static final RecipeMap<NACRecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
