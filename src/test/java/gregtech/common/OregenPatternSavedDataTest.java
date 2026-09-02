@@ -125,6 +125,22 @@ class OregenPatternSavedDataTest {
         assertEquals(PatternSource.SAVED, GTWorldgenerator.getOregenPatternSource());
     }
 
+    /**
+     * A file this build cannot read has to survive untouched, otherwise upgrading and rolling back once loses the
+     * pattern the same way the second saved data load used to.
+     */
+    @Test
+    void aNewerFormatIsNeitherReadNorRewritten() {
+        NBTTagCompound future = withString("AXISSYMMETRICAL");
+        future.setInteger("version", 99);
+
+        OregenPatternSavedData data = read(future);
+        assertEquals(GTWorldgenerator.DEFAULT_PATTERN.name(), written(data), "an unreadable file must not be decoded");
+
+        data.markDirty();
+        assertFalse(data.isDirty(), "a file from a newer GregTech must never be written back");
+    }
+
     private static NetworkManager remoteManager() {
         NetworkManager manager = mock(NetworkManager.class);
         when(manager.isLocalChannel()).thenReturn(false);

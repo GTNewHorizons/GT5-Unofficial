@@ -219,11 +219,16 @@ public class GTWorldgenerator implements IWorldGenerator {
 
         private static final String NAME = "GregTech_OregenPattern";
         private static final String KEY = "oregenPattern";
+        private static final String VERSION_KEY = "version";
+        /** Bump whenever the layout changes, so older builds leave the file alone instead of rewriting their guess. */
+        private static final int CURRENT_FORMAT_VERSION = 1;
         private static WeakReference<World> loadedWorld = new WeakReference<>(null);
 
         /** Kept per instance: MapStorage returns cached instances without running readFromNBT again. */
         private OregenPattern pattern = DEFAULT_PATTERN;
         private PatternSource source = PatternSource.UNVERIFIED;
+        /** Set when the file came from a newer GregTech, whose pattern this build cannot read and must not replace. */
+        private boolean preventSaving = false;
 
         public OregenPatternSavedData(String p_i2141_1_) {
             super(p_i2141_1_);
@@ -267,13 +272,18 @@ public class GTWorldgenerator implements IWorldGenerator {
         }
 
         /** Overwrites the pattern of the currently loaded world and persists it. Operator driven, see GTMiscCommand. */
-        public static void overridePattern(World world, OregenPattern newPattern) {
+        public static boolean overridePattern(World world, OregenPattern newPattern) {
             OregenPatternSavedData instance = (OregenPatternSavedData) world.mapStorage
                 .loadData(OregenPatternSavedData.class, OregenPatternSavedData.NAME);
 
             if (instance == null) {
                 instance = new OregenPatternSavedData(NAME);
                 world.mapStorage.setData(OregenPatternSavedData.NAME, instance);
+            } else if (instance.preventSaving) {
+                // Taking it in memory only would quietly revert on restart, so refuse outright
+                GT_FML_LOGGER
+                    .error("Refusing to override the ore vein pattern, {} was written by a newer GregTech", NAME);
+                return false;
             }
 
             instance.pattern = newPattern;
@@ -286,6 +296,7 @@ public class GTWorldgenerator implements IWorldGenerator {
 
             // Connected clients would otherwise keep drawing the old grid until they reconnect
             GTValues.NW.sendToAll(new GTPacketSendOregenPattern(newPattern));
+            return true;
         }
 
         @SubscribeEvent
@@ -324,6 +335,18 @@ public class GTWorldgenerator implements IWorldGenerator {
 
         @Override
         public void readFromNBT(NBTTagCompound p_76184_1_) {
+            // Absent, so 0, for everything written before this key existed, which is the byte layout below
+            int version = p_76184_1_.getInteger(VERSION_KEY);
+            if (version > CURRENT_FORMAT_VERSION) {
+                preventSaving = true;
+                GT_FML_LOGGER.error(
+                    "{} is in format {}, which this GregTech cannot read. Assuming {} and leaving the file untouched.",
+                    NAME,
+                    version,
+                    DEFAULT_PATTERN);
+                return;
+            }
+
             if (p_76184_1_.hasKey(KEY, Constants.NBT.TAG_STRING)) {
                 String name = p_76184_1_.getString(KEY);
                 try {
@@ -343,12 +366,21 @@ public class GTWorldgenerator implements IWorldGenerator {
                 pattern = OregenPattern.values()[ordinal];
                 source = PatternSource.SAVED;
                 markDirty(); // rewrite it by name
+            } else if (p_76184_1_.hasKey(KEY)) {
+                GT_FML_LOGGER.error("Oregen pattern is stored as an unexpected tag type, assuming {}", DEFAULT_PATTERN);
             }
         }
 
         @Override
         public void writeToNBT(NBTTagCompound p_76187_1_) {
+            p_76187_1_.setInteger(VERSION_KEY, CURRENT_FORMAT_VERSION);
             p_76187_1_.setString(KEY, pattern.name());
+        }
+
+        /** MapStorage writes dirty data only, so this is the one gate that keeps a newer file from being replaced. */
+        @Override
+        public boolean isDirty() {
+            return !preventSaving && super.isDirty();
         }
 
     }

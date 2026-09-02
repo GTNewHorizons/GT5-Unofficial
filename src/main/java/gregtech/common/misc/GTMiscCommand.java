@@ -489,7 +489,14 @@ public final class GTMiscCommand extends GTBaseCommand {
             return;
         }
 
-        GTWorldgenerator.OregenPatternSavedData.overridePattern(overworld, newPattern);
+        if (!GTWorldgenerator.OregenPatternSavedData.overridePattern(overworld, newPattern)) {
+            sendChatToPlayer(
+                sender,
+                EnumChatFormatting.RED
+                    + "The stored pattern was written by a newer GregTech and cannot be replaced. See the log.");
+            return;
+        }
+
         sendChatToPlayer(
             sender,
             EnumChatFormatting.GREEN + "Ore vein pattern changed from "
