@@ -124,10 +124,14 @@ public class GTWorldgenerator implements IWorldGenerator {
 
     private static void applyClientOregenPattern(OregenPattern pattern, PatternSource source) {
         if (FMLCommonHandler.instance()
-            .getMinecraftServerInstance() == null) {
-            oregenPattern = pattern;
-            patternSource = source;
+            .getMinecraftServerInstance() != null) {
+            // Expected in single player and for a LAN host, where the local server already holds the real value
+            GT_FML_LOGGER
+                .debug("Ignoring oregen pattern {} from the network, the local server is authoritative", pattern);
+            return;
         }
+        oregenPattern = pattern;
+        patternSource = source;
     }
 
     public GTWorldgenerator() {
