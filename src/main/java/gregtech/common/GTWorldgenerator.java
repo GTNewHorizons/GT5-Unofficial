@@ -32,6 +32,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
@@ -242,6 +243,12 @@ public class GTWorldgenerator implements IWorldGenerator {
             if (event.player instanceof EntityPlayerMP player) {
                 GTValues.NW.sendToPlayer(new GTPacketSendOregenPattern(oregenPattern), player);
             }
+        }
+
+        @SubscribeEvent
+        public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+            // The next server may use another pattern, so do not keep this one until it syncs its own
+            setClientOregenPattern(DEFAULT_PATTERN);
         }
 
         @Override
