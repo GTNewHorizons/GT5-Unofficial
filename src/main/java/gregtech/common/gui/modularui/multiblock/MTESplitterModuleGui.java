@@ -350,7 +350,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
             }.syncHandler(
                 syncManager.getOrCreateSyncHandler(
                     "items",
-                    (index * 9) + i,
+                    (index * 16) + i,
                     PhantomItemSlotSH.class,
                     () -> new PhantomItemSlotSH(
                         new ModularSlot(rule.filterStacks, i).accessibility(true, false)

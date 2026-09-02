@@ -3290,7 +3290,8 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_ConfettiQuestbook,
     Ice_Cream_PitOfDoomAndDespair,
     Ice_Cream_MasterOfDreams,
-
+    // Reserved for Ice creams, don't you dare (to 700)
+    Ice_Cream_Trophy
     // semicolon after the comment to reduce merge conflicts
     ;
 
