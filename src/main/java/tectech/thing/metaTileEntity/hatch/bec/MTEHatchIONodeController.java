@@ -1,9 +1,14 @@
 package tectech.thing.metaTileEntity.hatch.bec;
 
+import java.util.HashMap;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -13,7 +18,10 @@ import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -22,11 +30,14 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 
 public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
+
+    private Lazy<List<String>> tooltip = null;
 
     private Mode mode = Mode.PAUSE_INSTANT;
 
@@ -57,6 +68,8 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
 
     protected MTEHatchIONodeController(MTEHatchIONodeController prototype) {
         super(prototype);
+
+        tooltip = prototype.tooltip;
     }
 
     @Override
@@ -83,6 +96,20 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
 
     public boolean receivingSignal() {
         return getBaseMetaTileEntity().getRedstone();
+    }
+
+    @Override
+    public String[] getDescription() {
+        if (tooltip == null) {
+            tooltip = new Lazy<>(
+                () -> MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "io-node-controller-hatch"),
+                    new HashMap<>()));
+        }
+        return ArrayUtils.addAll(
+            super.getDescription(),
+            tooltip.get()
+                .toArray(GTValues.emptyStringArray));
     }
 
     @Override
