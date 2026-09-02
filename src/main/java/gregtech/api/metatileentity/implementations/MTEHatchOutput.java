@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -32,6 +33,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OutputHatchType;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.IOutputHatchTransaction;
@@ -50,6 +52,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchOutputGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchOutput extends MTEHatch
     implements IFluidStore, IFluidLockableMui2, IOutputHatch, ISmartInputHatch {
 
@@ -81,6 +84,12 @@ public class MTEHatchOutput extends MTEHatch
     public void setMode(byte mode) {
         this.mMode = mode;
         lockFluid(isFluidLocked());
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.output.name", GTValues.VN[mTier]);
     }
 
     @Override

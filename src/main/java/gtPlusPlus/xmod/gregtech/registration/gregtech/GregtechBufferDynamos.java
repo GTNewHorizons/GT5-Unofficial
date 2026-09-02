@@ -24,65 +24,29 @@ public class GregtechBufferDynamos {
 
     private static void run2() {
         GregtechItemList.Hatch_Buffer_Dynamo_ULV.set(
-            new MTEHatchDynamoBuffer(
-                Hatch_Buffer_Dynamo_ULV.ID,
-                "hatch.dynamo.buffer.tier.00",
-                "ULV Dynamo Hatch [Buffered]",
-                0).getStackForm(1L));
+            new MTEHatchDynamoBuffer(Hatch_Buffer_Dynamo_ULV.ID, "hatch.dynamo.buffer.tier.00", "", 0)
+                .getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_LV.set(
-            new MTEHatchDynamoBuffer(
-                Hatch_Buffer_Dynamo_LV.ID,
-                "hatch.dynamo.buffer.tier.01",
-                "LV Dynamo Hatch [Buffered]",
-                1).getStackForm(1L));
+            new MTEHatchDynamoBuffer(Hatch_Buffer_Dynamo_LV.ID, "hatch.dynamo.buffer.tier.01", "", 1).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_MV.set(
-            new MTEHatchDynamoBuffer(
-                Hatch_Buffer_Dynamo_MV.ID,
-                "hatch.dynamo.buffer.tier.02",
-                "MV Dynamo Hatch [Buffered]",
-                2).getStackForm(1L));
+            new MTEHatchDynamoBuffer(Hatch_Buffer_Dynamo_MV.ID, "hatch.dynamo.buffer.tier.02", "", 2).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_HV.set(
-            new MTEHatchDynamoBuffer(
-                Hatch_Buffer_Dynamo_HV.ID,
-                "hatch.dynamo.buffer.tier.03",
-                "HV Dynamo Hatch [Buffered]",
-                3).getStackForm(1L));
+            new MTEHatchDynamoBuffer(Hatch_Buffer_Dynamo_HV.ID, "hatch.dynamo.buffer.tier.03", "", 3).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_EV.set(
-            new MTEHatchDynamoBuffer(
-                Hatch_Buffer_Dynamo_EV.ID,
-                "hatch.dynamo.buffer.tier.04",
-                "EV Dynamo Hatch [Buffered]",
-                4).getStackForm(1L));
+            new MTEHatchDynamoBuffer(Hatch_Buffer_Dynamo_EV.ID, "hatch.dynamo.buffer.tier.04", "", 4).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_IV.set(
-            new MTEHatchDynamoBuffer(
-                Hatch_Buffer_Dynamo_IV.ID,
-                "hatch.dynamo.buffer.tier.05",
-                "IV Dynamo Hatch [Buffered]",
-                5).getStackForm(1L));
+            new MTEHatchDynamoBuffer(Hatch_Buffer_Dynamo_IV.ID, "hatch.dynamo.buffer.tier.05", "", 5).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_LuV.set(
-            new MTEHatchDynamoBuffer(
-                Hatch_Buffer_Dynamo_LuV.ID,
-                "hatch.dynamo.buffer.tier.06",
-                "LuV Dynamo Hatch [Buffered]",
-                6).getStackForm(1L));
+            new MTEHatchDynamoBuffer(Hatch_Buffer_Dynamo_LuV.ID, "hatch.dynamo.buffer.tier.06", "", 6)
+                .getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_ZPM.set(
-            new MTEHatchDynamoBuffer(
-                Hatch_Buffer_Dynamo_ZPM.ID,
-                "hatch.dynamo.buffer.tier.07",
-                "ZPM Dynamo Hatch [Buffered]",
-                7).getStackForm(1L));
+            new MTEHatchDynamoBuffer(Hatch_Buffer_Dynamo_ZPM.ID, "hatch.dynamo.buffer.tier.07", "", 7)
+                .getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_UV.set(
-            new MTEHatchDynamoBuffer(
-                Hatch_Buffer_Dynamo_UV.ID,
-                "hatch.dynamo.buffer.tier.08",
-                "UV Dynamo Hatch [Buffered]",
-                8).getStackForm(1L));
+            new MTEHatchDynamoBuffer(Hatch_Buffer_Dynamo_UV.ID, "hatch.dynamo.buffer.tier.08", "", 8).getStackForm(1L));
         GregtechItemList.Hatch_Buffer_Dynamo_MAX.set(
-            new MTEHatchDynamoBuffer(
-                Hatch_Buffer_Dynamo_MAX.ID,
-                "hatch.dynamo.buffer.tier.09",
-                "UHV Dynamo Hatch [Buffered]",
-                9).getStackForm(1L));
+            new MTEHatchDynamoBuffer(Hatch_Buffer_Dynamo_MAX.ID, "hatch.dynamo.buffer.tier.09", "", 9)
+                .getStackForm(1L));
         // Conversion Recipes, to be removed in 2.10 (alongside this whole class).
         GTModHandler.addShapelessCraftingRecipe(
             CustomItemList.eM_dynamoMulti4_HV.get(1L),
