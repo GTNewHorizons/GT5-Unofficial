@@ -97,6 +97,14 @@ public class GTWorldgenerator implements IWorldGenerator {
         return patternSource;
     }
 
+    /**
+     * Whether {@link #getOregenPattern()} belongs to the current world rather than being the fallback. A client only
+     * learns it once the server answers, so anything rewriting stored data by pattern has to wait for this.
+     */
+    public static boolean isOregenPatternKnown() {
+        return patternSource != PatternSource.DEFAULT;
+    }
+
     /** @deprecated Use {@link #getOregenPattern()}. */
     @Deprecated
     public static OregenPattern getClientOregenPattern() {
