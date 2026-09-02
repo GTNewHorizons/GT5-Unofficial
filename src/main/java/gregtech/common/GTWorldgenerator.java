@@ -180,6 +180,9 @@ public class GTWorldgenerator implements IWorldGenerator {
         private static final String KEY = "oregenPattern";
         private static WeakReference<World> loadedWorld = new WeakReference<>(null);
 
+        /** Kept per instance: MapStorage returns cached instances without running readFromNBT again. */
+        private OregenPattern pattern = OregenPattern.AXISSYMMETRICAL;
+
         public OregenPatternSavedData(String p_i2141_1_) {
             super(p_i2141_1_);
         }
@@ -191,24 +194,20 @@ public class GTWorldgenerator implements IWorldGenerator {
         }
 
         public static void loadData(World world) {
-            if (world.getWorldInfo()
-                .getWorldTotalTime() == 0L) {
-                // The world has just been created -> use newest pattern
-                oregenPattern = OregenPattern.values()[OregenPattern.values().length - 1];
-            } else {
-                // This is an old world. Use legacy pattern for now, readFromNBT may change this if
-                // GregTech_OregenPattern.dat is present
-                oregenPattern = OregenPattern.AXISSYMMETRICAL;
-            }
-
-            // load OregenPatternSavedData
-            WorldSavedData instance = world.mapStorage
+            OregenPatternSavedData instance = (OregenPatternSavedData) world.mapStorage
                 .loadData(OregenPatternSavedData.class, OregenPatternSavedData.NAME);
+
             if (instance == null) {
                 instance = new OregenPatternSavedData(NAME);
+                // Newly created world -> newest pattern, world predating the saved data -> legacy pattern
+                instance.pattern = world.getWorldInfo()
+                    .getWorldTotalTime() == 0L ? OregenPattern.values()[OregenPattern.values().length - 1]
+                        : OregenPattern.AXISSYMMETRICAL;
                 world.mapStorage.setData(OregenPatternSavedData.NAME, instance);
+                instance.markDirty();
             }
-            instance.markDirty();
+
+            oregenPattern = instance.pattern;
             loadedWorld = new WeakReference<>(world);
         }
 
@@ -232,14 +231,14 @@ public class GTWorldgenerator implements IWorldGenerator {
             if (p_76184_1_.hasKey(KEY)) {
                 int ordinal = p_76184_1_.getByte(KEY);
                 ordinal = MathHelper.clamp_int(ordinal, 0, OregenPattern.values().length - 1);
-                oregenPattern = OregenPattern.values()[ordinal];
+                pattern = OregenPattern.values()[ordinal];
             }
         }
 
         @Override
         public void writeToNBT(NBTTagCompound p_76187_1_) {
             // If we have so many different OregenPatterns that byte isn't good enough something is wrong
-            p_76187_1_.setByte(KEY, (byte) oregenPattern.ordinal());
+            p_76187_1_.setByte(KEY, (byte) pattern.ordinal());
         }
 
     }
