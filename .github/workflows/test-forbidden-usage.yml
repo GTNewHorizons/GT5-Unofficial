@@ -72,11 +72,11 @@ jobs:
             exit 1
           fi
 
-      - name: Test forbidden System.out calls
+      - name: Test forbidden System.out/System.err calls
         if: ${{ !cancelled() && steps.checkout.outcome == 'success' }}
         shell: bash
         run: |
-          if grep -Enr 'System\.out\.print' src/main/java; then
+          if grep -Enr 'System\.(out|err)\.print' src/main/java; then
             echo '::error title=Forbidden standard output::test-forbidden-sysout failed; see matching lines above.'
             exit 1
           fi
