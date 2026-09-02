@@ -23,11 +23,12 @@ public class GTCustomBlockIconContainer extends AbstractBlockIconContainer imple
     protected IIcon mIcon, mOverlay = null;
 
     GTCustomBlockIconContainer(@NotNull String domain, @NotNull String aIconName) {
-        mIconName = aIconName;
-        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, mIconName);
+        mIconName = domain + ":" + aIconName;
+        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, aIconName);
 
         mOverlayName = mIconName + Textures.OverlaySuffix;
-        overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, mOverlayName);
+        overlayResource = ResourceUtils
+            .getCompleteBlockTextureResourceLocation(domain, aIconName + Textures.OverlaySuffix);
         GregTechAPI.sGTBlockIconload.add(this);
         logRegisterIcons();
     }

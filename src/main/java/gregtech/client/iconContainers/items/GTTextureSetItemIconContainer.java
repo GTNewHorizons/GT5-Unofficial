@@ -39,15 +39,20 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
 
     private GTTextureSetItemIconContainer(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
                                           @Nullable IIconRegister override) {
-        this.iconName = createIconName(setName, prefix);
-        this.fallbackIconName = createIconName(TextureSetFallback, prefix);
-        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain,iconName);
-        iconFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain,fallbackIconName);
+        String iconPath = createIconName(setName, prefix);
+        String fallbackIconPath = createIconName(TextureSetFallback, prefix);
+        this.iconName = domain + ":" + iconPath;
+        this.fallbackIconName = domain + ":" + fallbackIconPath;
+        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, iconPath);
+        iconFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, fallbackIconPath);
 
-        this.iconOverlayName = createIconName(setName, prefix + OverlaySuffix);
-        this.fallbackIconOverlayName = createIconName(TextureSetFallback, prefix + OverlaySuffix);
-        iconOverlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain,iconOverlayName);
-        iconOverlayFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain,fallbackIconOverlayName);
+        String iconOverlayPath = createIconName(setName, prefix + OverlaySuffix);
+        String fallbackIconOverlayPath = createIconName(TextureSetFallback, prefix + OverlaySuffix);
+        this.iconOverlayName = domain + ":" + iconOverlayPath;
+        this.fallbackIconOverlayName = domain + ":" + fallbackIconOverlayPath;
+        iconOverlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, iconOverlayPath);
+        iconOverlayFallbackResource = ResourceUtils
+            .getCompleteItemTextureResourceLocation(domain, fallbackIconOverlayPath);
 
         if (override != null) {
             run(override);

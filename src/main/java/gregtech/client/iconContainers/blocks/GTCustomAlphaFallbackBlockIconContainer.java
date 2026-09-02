@@ -40,10 +40,11 @@ public class GTCustomAlphaFallbackBlockIconContainer extends AbstractBlockIconCo
     private boolean hasOverlay;
 
     GTCustomAlphaFallbackBlockIconContainer(@NotNull String domain, @NotNull String iconName, @NotNull IIconContainer fallback) {
-        this.iconName = iconName;
+        this.iconName = domain + ":" + iconName;
         this.overlayName = this.iconName + Textures.OverlaySuffix;
-        this.iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, this.iconName);
-        this.overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, this.overlayName);
+        this.iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, iconName);
+        this.overlayResource = ResourceUtils
+            .getCompleteBlockTextureResourceLocation(domain, iconName + Textures.OverlaySuffix);
         this.fallback = fallback;
     }
 

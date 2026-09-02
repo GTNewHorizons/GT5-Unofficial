@@ -38,15 +38,20 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
 
     private GTTextureSetBlockIconContainer(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
                                            @Nullable IIconRegister override) {
-        this.iconName = createIconName(setName, prefix);
-        this.fallbackIconName = createIconName(TextureSetFallback, prefix);
-        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, iconName);
-        iconFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, fallbackIconName);
+        String iconPath = createIconName(setName, prefix);
+        String fallbackIconPath = createIconName(TextureSetFallback, prefix);
+        this.iconName = domain + ":" + iconPath;
+        this.fallbackIconName = domain + ":" + fallbackIconPath;
+        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, iconPath);
+        iconFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, fallbackIconPath);
 
-        this.iconOverlayName = createIconName(setName, prefix + OverlaySuffix);
-        this.fallbackIconOverlayName = createIconName(TextureSetFallback, prefix + OverlaySuffix);
-        iconOverlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, iconOverlayName);
-        iconOverlayFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, fallbackIconOverlayName);
+        String iconOverlayPath = createIconName(setName, prefix + OverlaySuffix);
+        String fallbackIconOverlayPath = createIconName(TextureSetFallback, prefix + OverlaySuffix);
+        this.iconOverlayName = domain + ":" + iconOverlayPath;
+        this.fallbackIconOverlayName = domain + ":" + fallbackIconOverlayPath;
+        iconOverlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, iconOverlayPath);
+        iconOverlayFallbackResource = ResourceUtils
+            .getCompleteBlockTextureResourceLocation(domain, fallbackIconOverlayPath);
 
         if (override != null) {
             run(override);
