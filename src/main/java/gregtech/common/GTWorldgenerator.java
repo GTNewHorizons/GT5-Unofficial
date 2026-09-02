@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.world.WorldEvent;
@@ -122,9 +123,14 @@ public class GTWorldgenerator implements IWorldGenerator {
     public void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator,
         IChunkProvider aChunkProvider) {
 
-        if (!aWorld.isRemote && aWorld.provider.dimensionId == 0) {
-            // Spawn search can populate chunks before WorldEvent.Load initializes the saved oregen pattern.
-            OregenPatternSavedData.ensureLoaded(aWorld);
+        if (!aWorld.isRemote) {
+            // Chunks are populated before dim 0 fires WorldEvent.Load, by the overworld spawn search and by other
+            // dimensions reinstating chunkloader tickets, so always resolve the pattern from the overworld. It is not
+            // registered with DimensionManager until its constructor returns, hence the special case for itself.
+            World overworld = aWorld.provider.dimensionId == 0 ? aWorld : DimensionManager.getWorld(0);
+            if (overworld != null) {
+                OregenPatternSavedData.ensureLoaded(overworld);
+            }
         }
 
         ModDimensionDef def = DimensionDef.getEffectiveDefForChunk(aWorld, aX, aZ);
@@ -228,6 +234,7 @@ public class GTWorldgenerator implements IWorldGenerator {
 
             oregenPattern = instance.pattern;
             loadedWorld = new WeakReference<>(world);
+            GT_FML_LOGGER.info("Ore veins in this world use the {} pattern", oregenPattern);
         }
 
         @SubscribeEvent
