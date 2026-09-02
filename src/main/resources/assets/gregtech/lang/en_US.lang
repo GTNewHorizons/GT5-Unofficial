@@ -8951,6 +8951,7 @@ gt.blockcasings.bec.3.name=Conflict Inducement Casing
 gt.blockcasings.bec.4.name=Peace Enforcement Casing
 gt.blockcasings.bec.5.name=Condensate Transformative Coil
 gt.blockcasings.bec.6.name=Condensate Guidance Coil
+gt.blockglass1.em-glass-bec.tooltip=BEC Glass
 
 gt.blockglass1.0.name=Chemical Grade Glass
 gt.blockglass1.1.name=Electron-Permeable Neutronium Coated Glass
