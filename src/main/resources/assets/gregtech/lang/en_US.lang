@@ -3348,6 +3348,12 @@ gt.circuitcomponent.bolt.processed.cosmicneutronium=Filed Cosmic Neutronium Bolt
 gt.circuitcomponent.bolt.processed.chromaticglass=Filed Chromatic Glass Bolt
 gt.circuitcomponent.bolt.processed.umvsuperconductor=Filed UMV Superconductor Base Bolt
 gt.circuitcomponent.bolt.processed.whitedwarfmatter=Filed White Dwarf Matter Bolt
+
+gt.circuitcomponent.circuit.processed.opticalprocessor=Unorganized Optical Processor
+gt.circuitcomponent.circuit.processed.opticalassembly=Unorganized Optical Assembly
+gt.circuitcomponent.circuit.processed.opticalcomputer=Unorganized Optical Supercomputer
+gt.circuitcomponent.circuit.processed.opticalmainframe=Unorganized Optical Mainframe
+
 gt.circuitcomponent.plate.processed.rhugnor=Stripped Rhugnor Plate
 gt.circuitcomponent.plate.processed.metastableoganesson=Stripped Metastable Oganesson Plate
 gt.circuitcomponent.plate.processed.hexanite=Stripped Hexanite Plate
