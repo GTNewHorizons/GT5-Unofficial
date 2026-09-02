@@ -304,8 +304,11 @@ public class GTWorldgenerator implements IWorldGenerator {
 
         @SubscribeEvent
         public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-            // The next server may use another pattern, so do not keep this one until it syncs its own
-            applyClientOregenPattern(DEFAULT_PATTERN, PatternSource.DEFAULT);
+            // The next server may use another pattern, so do not keep this one until it syncs its own. Deliberately
+            // not routed through applyClientOregenPattern: leaving single player fires this before the integrated
+            // server is torn down, so its authority check would keep the finished world's pattern marked as known.
+            oregenPattern = DEFAULT_PATTERN;
+            patternSource = PatternSource.DEFAULT;
         }
 
         @Override
