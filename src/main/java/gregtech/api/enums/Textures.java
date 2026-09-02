@@ -2853,12 +2853,13 @@ public class Textures {
          * Each custom item icon consists of a main icon, an overlay, or both.
          * At least one of the icon or overlay must be present; individually, each is optional.
          *
+         * @param domain    The resource domain.
          * @param aIconName The unique identifier of the custom item icon container.
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer custom(@NotNull String aIconName) {
-            return GTCustomItemIconContainer.create(aIconName);
+        public static @NotNull IIconContainer custom(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomItemIconContainer.create(domain, aIconName);
         }
 
         /**
