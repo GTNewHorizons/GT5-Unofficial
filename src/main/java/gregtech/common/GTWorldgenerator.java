@@ -21,6 +21,7 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.world.WorldEvent;
 
 import org.jetbrains.annotations.Nullable;
@@ -211,7 +212,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 if (world.getWorldInfo()
                     .getWorldTotalTime() == 0L) {
                     // Freshly created world, so the pattern is known and worth persisting
-                    instance.pattern = OregenPattern.values()[OregenPattern.values().length - 1];
+                    instance.pattern = OregenPattern.EQUAL_SPACING;
                     instance.markDirty();
                 } else {
                     // Worlds have been stamped with their pattern since 5.09.43.111, so a missing file means the save
@@ -245,23 +246,30 @@ public class GTWorldgenerator implements IWorldGenerator {
 
         @Override
         public void readFromNBT(NBTTagCompound p_76184_1_) {
-            if (p_76184_1_.hasKey(KEY)) {
-                int ordinal = p_76184_1_.getByte(KEY);
-                ordinal = MathHelper.clamp_int(ordinal, 0, OregenPattern.values().length - 1);
+            if (p_76184_1_.hasKey(KEY, Constants.NBT.TAG_STRING)) {
+                String name = p_76184_1_.getString(KEY);
+                try {
+                    pattern = OregenPattern.valueOf(name);
+                } catch (IllegalArgumentException e) {
+                    GT_FML_LOGGER.error("Unknown oregen pattern {}, assuming {}", name, DEFAULT_PATTERN);
+                }
+            } else if (p_76184_1_.hasKey(KEY, Constants.NBT.TAG_BYTE)) {
+                // Written by GT older than this change, mark dirty to rewrite it by name
+                int ordinal = MathHelper.clamp_int(p_76184_1_.getByte(KEY), 0, OregenPattern.values().length - 1);
                 pattern = OregenPattern.values()[ordinal];
+                markDirty();
             }
         }
 
         @Override
         public void writeToNBT(NBTTagCompound p_76187_1_) {
-            // If we have so many different OregenPatterns that byte isn't good enough something is wrong
-            p_76187_1_.setByte(KEY, (byte) pattern.ordinal());
+            p_76187_1_.setString(KEY, pattern.name());
         }
 
     }
 
     public enum OregenPattern {
-        // The last value is used when creating a new world
+        // Persisted by name, renaming a constant needs a migration in readFromNBT
         AXISSYMMETRICAL,
         EQUAL_SPACING
     }
