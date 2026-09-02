@@ -3,11 +3,19 @@ package gregtech.common;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.world.World;
+import net.minecraft.world.storage.MapStorage;
 
 import org.junit.jupiter.api.Test;
 
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
+import gregtech.common.GTWorldgenerator.OregenPattern;
 import gregtech.common.GTWorldgenerator.OregenPatternSavedData;
 
 /**
@@ -60,6 +68,32 @@ class OregenPatternSavedDataTest {
         OregenPatternSavedData data = read(new NBTTagCompound());
         assertEquals(GTWorldgenerator.DEFAULT_PATTERN.name(), written(data));
         assertFalse(data.isDirty());
+    }
+
+    @Test
+    void localDisconnectPreservesWorldgenUntilConnectingToARemoteServer() {
+        World world = mock(World.class);
+        world.mapStorage = new MapStorage(null);
+        OregenPatternSavedData data = read(withByte(0));
+        world.mapStorage.setData("GregTech_OregenPattern", data);
+        OregenPatternSavedData.loadData(world);
+
+        NetworkManager localConnection = mock(NetworkManager.class);
+        when(localConnection.isLocalChannel()).thenReturn(true);
+        data.onClientConnect(new ClientConnectedToServerEvent(localConnection, "MODDED"));
+        assertEquals(OregenPattern.AXISSYMMETRICAL, GTWorldgenerator.getOregenPattern());
+        assertTrue(GTWorldgenerator.isOregenPatternKnown());
+
+        data.onClientDisconnect(new ClientDisconnectionFromServerEvent(localConnection));
+        OregenPatternSavedData.ensureLoaded(world);
+        assertEquals(OregenPattern.AXISSYMMETRICAL, GTWorldgenerator.getOregenPattern());
+        assertTrue(GTWorldgenerator.isOreChunk(-1, 1), "the server must keep its grid while finishing shutdown");
+
+        NetworkManager remoteConnection = mock(NetworkManager.class);
+        data.onClientConnect(new ClientConnectedToServerEvent(remoteConnection, "MODDED"));
+        assertEquals(GTWorldgenerator.DEFAULT_PATTERN, GTWorldgenerator.getOregenPattern());
+        assertFalse(GTWorldgenerator.isOregenPatternKnown(), "the new server has not synced its pattern yet");
+        assertEquals("AXISSYMMETRICAL", written(data), "client lifecycle events must not change the saved pattern");
     }
 
     private static OregenPatternSavedData read(NBTTagCompound nbt) {

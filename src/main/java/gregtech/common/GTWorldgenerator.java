@@ -304,9 +304,16 @@ public class GTWorldgenerator implements IWorldGenerator {
 
         @SubscribeEvent
         public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-            // The next server may use another pattern, so do not keep this one until it syncs its own. Deliberately
-            // not routed through applyClientOregenPattern: leaving single player fires this before the integrated
-            // server is torn down, so its authority check would keep the finished world's pattern marked as known.
+            // The integrated server may still be generating chunks until its shutdown finishes.
+            if (event.manager.isLocalChannel()) return;
+            oregenPattern = DEFAULT_PATTERN;
+            patternSource = PatternSource.DEFAULT;
+        }
+
+        @SubscribeEvent
+        public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+            // Clear a previous integrated server's pattern before the remote server syncs its own.
+            if (event.isLocal) return;
             oregenPattern = DEFAULT_PATTERN;
             patternSource = PatternSource.DEFAULT;
         }
