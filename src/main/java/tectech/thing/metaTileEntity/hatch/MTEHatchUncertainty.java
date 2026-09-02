@@ -36,6 +36,7 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 15.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
 
     private static IIconContainer ScreenON;
@@ -215,7 +216,7 @@ public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
 
     @Override
     public String[] getDescription() {
-        String[] description = new String[4];
+        String[] description = new String[mTier < 6 ? 4 : 3];
         description[0] = CommonValues.TEC_MARK_EM;
         description[1] = translateToLocal("gt.blockmachines.hatch.certain.desc.0");
         description[2] = EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
