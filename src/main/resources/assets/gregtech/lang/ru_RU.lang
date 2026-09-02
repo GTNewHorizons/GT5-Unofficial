@@ -3483,7 +3483,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Ускоряет пуч�
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Режим ускорителя увеличивает §9Энергию пучка§7 на §3EU потреблённую в цикле§7 * §f0.1eV§7 / §6Скорость пучка§7,
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=пока не будет достигнута §9Целевая энергия пучка§7 или §dмаксимальное количество циклов§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=Если §9Целевая энергия пучка§7 достигнута, добавляется §f0.3§7 * §6Скорость пучка§7 к текущей §cСкорости пучка§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=Однако, если текущая §6Скорость пучка§7  >= §f5000§7, добавляется (§f0.3§7 * §6Скорость пучка§7)^§f0.5§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=Однако, если текущая §6Скорость пучка§7  >= §f15000§7, добавляется (§f0.3§7 * §6Скорость пучка§7)^§f0.5§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=к текущей §6Скорости пучка§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=Стоимость §3Энергии§7 начинается с §f1A UV§7 на §6Скорость пучка§7 и увеличивается квадратично
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=с §dколичеством завершённых циклов§7
