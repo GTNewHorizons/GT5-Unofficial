@@ -82,7 +82,9 @@ public class GTWorldgenerator implements IWorldGenerator {
      */
     public static final OregenPattern DEFAULT_PATTERN = OregenPattern.EQUAL_SPACING;
 
-    // Written on the netty thread when a server syncs it, read on the client and worldgen threads
+    // Written on the netty thread when a server syncs it, read on the client and worldgen threads.
+    // Always assign the pattern before the source: isOregenPatternKnown gates on the source, so writing it second is
+    // what guarantees a reader that sees it set also sees the matching pattern.
     private static volatile OregenPattern oregenPattern = DEFAULT_PATTERN;
     private static volatile PatternSource patternSource = PatternSource.DEFAULT;
 
