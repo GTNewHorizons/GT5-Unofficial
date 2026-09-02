@@ -1,6 +1,6 @@
 package gregtech.common.gui.modularui.widget.settings;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.function.Supplier;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -16,22 +16,14 @@ import it.unimi.dsi.fastutil.Pair;
 
 @Desugar
 record TextFieldSettingRow(IKey label, IStringValue<?> value, WidgetConfigurator<TextFieldWidget> configure,
-    Class<? extends TextFieldWidget> widgetClass) implements ISettingRow<TextFieldWidget> {
+    Supplier<? extends TextFieldWidget> widgetConstructor) implements ISettingRow<TextFieldWidget> {
 
     @Override
     public @NotNull Pair<IKey, TextFieldWidget> build(ModularPanel panel, PanelSyncManager syncManager,
         SettingsPanel settings) {
-        TextFieldWidget textFieldWidget;
-
-        try {
-            textFieldWidget = widgetClass.getConstructor()
-                .newInstance()
-                .value(value)
-                .width(80);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException
-            | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+        TextFieldWidget textFieldWidget = widgetConstructor.get()
+            .value(value)
+            .width(80);
 
         if (configure != null) configure.configure(panel, syncManager, textFieldWidget);
 

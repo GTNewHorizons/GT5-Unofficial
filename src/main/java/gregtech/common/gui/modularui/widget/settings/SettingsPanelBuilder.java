@@ -40,6 +40,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import gregtech.common.gui.modularui.widget.EnumCycleButtonWidget;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
 
+@SuppressWarnings("unused")
 public class SettingsPanelBuilder {
 
     private final List<ISettingRow<?>> rows = new ArrayList<>();
@@ -69,8 +70,13 @@ public class SettingsPanelBuilder {
 
     public <T extends TextFieldWidget> SettingsPanelBuilder addIntEditor(IKey label, IntSupplier getter,
         IntConsumer setter, MathUtils.UnaryIntOperator validator, WidgetConfigurator<T> configure,
-        Class<T> widgetClass) {
-        return addIntEditor(label, new IntSyncValue(getter, setter).allowC2S(), validator, configure, widgetClass);
+        Supplier<T> widgetConstructor) {
+        return addIntEditor(
+            label,
+            new IntSyncValue(getter, setter).allowC2S(),
+            validator,
+            configure,
+            widgetConstructor);
     }
 
     public SettingsPanelBuilder addIntEditor(IKey label, IStringValue<Integer> value,
@@ -84,17 +90,19 @@ public class SettingsPanelBuilder {
             widget.numbersInt(validator);
             widget.formatAsInteger(true);
             if (configure != null) configure.configure(panel, syncManager, widget);
-        }, TextFieldWidget.class);
+        }, TextFieldWidget::new);
     }
 
     public <T extends TextFieldWidget> SettingsPanelBuilder addIntEditor(IKey label, IStringValue<Integer> value,
-        MathUtils.UnaryIntOperator validator, WidgetConfigurator<T> configure, Class<T> widgetClass) {
+        MathUtils.UnaryIntOperator validator, WidgetConfigurator<T> configure, Supplier<T> widgetConstructor) {
         return addTextField(label, value, (panel, syncManager, widget) -> {
             widget.numbersInt(validator);
             widget.formatAsInteger(true);
-            // noinspection unchecked
-            if (configure != null) configure.configure(panel, syncManager, (T) widget);
-        }, widgetClass);
+            if (configure != null) {
+                // noinspection unchecked
+                configure.configure(panel, syncManager, (T) widget);
+            }
+        }, widgetConstructor);
     }
 
     public SettingsPanelBuilder addLongEditor(IKey label, LongSupplier getter, LongConsumer setter,
@@ -119,7 +127,7 @@ public class SettingsPanelBuilder {
             widget.numbersLong(validator);
             widget.formatAsInteger(true);
             if (configure != null) configure.configure(panel, syncManager, widget);
-        }, TextFieldWidget.class);
+        }, TextFieldWidget::new);
     }
 
     public SettingsPanelBuilder addDoubleEditor(IKey label, DoubleSupplier getter, DoubleConsumer setter,
@@ -142,7 +150,7 @@ public class SettingsPanelBuilder {
         return addTextField(label, value, (panel, syncManager, widget) -> {
             widget.numbersDouble(validator);
             if (configure != null) configure.configure(panel, syncManager, widget);
-        }, TextFieldWidget.class);
+        }, TextFieldWidget::new);
     }
 
     public SettingsPanelBuilder addStringEditor(IKey label, Supplier<String> getter, Consumer<String> setter) {
@@ -160,12 +168,12 @@ public class SettingsPanelBuilder {
 
     public SettingsPanelBuilder addStringEditor(IKey label, IStringValue<String> value,
         WidgetConfigurator<TextFieldWidget> configure) {
-        return addTextField(label, value, configure, TextFieldWidget.class);
+        return addTextField(label, value, configure, TextFieldWidget::new);
     }
 
     private SettingsPanelBuilder addTextField(IKey label, IStringValue<?> value,
-        WidgetConfigurator<TextFieldWidget> configure, Class<? extends TextFieldWidget> widgetClass) {
-        rows.add(new TextFieldSettingRow(label, value, configure, widgetClass));
+        WidgetConfigurator<TextFieldWidget> configure, Supplier<? extends TextFieldWidget> widgetConstructor) {
+        rows.add(new TextFieldSettingRow(label, value, configure, widgetConstructor));
 
         return this;
     }

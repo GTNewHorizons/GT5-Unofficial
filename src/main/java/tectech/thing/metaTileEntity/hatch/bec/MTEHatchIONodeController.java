@@ -66,13 +66,13 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
 
     @Override
     public ITexture[] getTexturesInactive(ITexture baseTexture) {
-        return new ITexture[] { baseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_HATCH_NANITE_DETECTOR) };
+        return new ITexture[] { baseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_HATCH_IO_NODE_CONTROLLER) };
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture baseTexture) {
         return new ITexture[] { baseTexture, TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_HATCH_NANITE_DETECTOR_GLOW)
+            .addIcon(Textures.BlockIcons.OVERLAY_HATCH_IO_NODE_CONTROLLER_GLOW)
             .glow()
             .build() };
     }
