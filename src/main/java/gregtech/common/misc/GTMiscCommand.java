@@ -500,7 +500,7 @@ public final class GTMiscCommand extends GTBaseCommand {
                 + EnumChatFormatting.WHITE
                 + newPattern
                 + EnumChatFormatting.GREEN
-                + ". Reconnect for clients to pick it up.");
+                + ".");
     }
 
     private void processDumpMusicDurationsCommand(ICommandSender sender) {

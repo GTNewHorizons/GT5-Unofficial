@@ -15,7 +15,6 @@ import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
@@ -281,6 +280,9 @@ public class GTWorldgenerator implements IWorldGenerator {
             oregenPattern = newPattern;
             patternSource = PatternSource.COMMAND;
             GT_FML_LOGGER.warn("Ore vein pattern overridden to {} by command", newPattern);
+
+            // Connected clients would otherwise keep drawing the old grid until they reconnect
+            GTValues.NW.sendToAll(new GTPacketSendOregenPattern(newPattern));
         }
 
         @SubscribeEvent
@@ -315,11 +317,16 @@ public class GTWorldgenerator implements IWorldGenerator {
                     GT_FML_LOGGER.error("Unknown oregen pattern {}, assuming {}", name, DEFAULT_PATTERN);
                 }
             } else if (p_76184_1_.hasKey(KEY, Constants.NBT.TAG_BYTE)) {
-                // Written by GT older than this change, mark dirty to rewrite it by name
-                int ordinal = MathHelper.clamp_int(p_76184_1_.getByte(KEY), 0, OregenPattern.values().length - 1);
+                // Written by GT older than this change
+                int ordinal = p_76184_1_.getByte(KEY);
+                if (ordinal < 0 || ordinal >= OregenPattern.values().length) {
+                    // Clamping this would persist a guess by name and destroy the evidence that it was broken
+                    GT_FML_LOGGER.error("Unknown oregen pattern ordinal {}, assuming {}", ordinal, DEFAULT_PATTERN);
+                    return;
+                }
                 pattern = OregenPattern.values()[ordinal];
                 source = PatternSource.SAVED;
-                markDirty();
+                markDirty(); // rewrite it by name
             }
         }
 
