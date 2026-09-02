@@ -152,14 +152,12 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
 
         if (this.mFluid == null) {
             return new String[] {
-                IGregTechDeviceInformation
-                    .encode("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
+                IGregTechDeviceInformation.encode("gtpp.infodata.tiered_tank.name", GTValues.VN[this.mTier]),
                 "GT5U.infodata.digital_tank.stored_fluid", "GT5U.infodata.digital_tank.stored_fluid.empty", 0 + "L",
                 this.getCapacity() + "L" };
         }
         return new String[] {
-            IGregTechDeviceInformation
-                .encode("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
+            IGregTechDeviceInformation.encode("gtpp.infodata.tiered_tank.name", GTValues.VN[this.mTier]),
             "GT5U.infodata.digital_tank.stored_fluid", this.mFluid.getLocalizedName(), this.mFluid.amount + "L",
             this.getCapacity() + "L" };
     }
