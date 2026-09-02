@@ -83,8 +83,8 @@ public class GTWorldgenerator implements IWorldGenerator {
     public static final OregenPattern DEFAULT_PATTERN = OregenPattern.EQUAL_SPACING;
 
     // Written on the netty thread when a server syncs it, read on the client and worldgen threads.
-    // Always assign the pattern before the source: isOregenPatternKnown gates on the source, so writing it second is
-    // what guarantees a reader that sees it set also sees the matching pattern.
+    // Always assign the pattern before the source: isOregenPatternResolved gates on the source, so writing it second
+    // is what guarantees a reader that sees it set also sees the matching pattern.
     private static volatile OregenPattern oregenPattern = DEFAULT_PATTERN;
     private static volatile PatternSource patternSource = PatternSource.DEFAULT;
 
@@ -101,10 +101,19 @@ public class GTWorldgenerator implements IWorldGenerator {
     /**
      * Whether a world's pattern has been resolved at all, which on a client only happens once the server answers. The
      * resolved value can still be a guess when the world stored no pattern, so anything rewriting stored data by
-     * pattern should weigh {@link #getOregenPatternSource()} too.
+     * pattern wants {@link #isOregenPatternVerified()} instead.
      */
     public static boolean isOregenPatternResolved() {
         return patternSource != PatternSource.DEFAULT;
+    }
+
+    /**
+     * Whether the pattern is the world's real one rather than a guess, so stored data may be permanently rewritten
+     * against it. Worldgen and grid drawing want {@link #isOregenPatternResolved()} instead, because veins are placed
+     * on the guess too.
+     */
+    public static boolean isOregenPatternVerified() {
+        return patternSource.verified;
     }
 
     /** @deprecated Use {@link #getOregenPattern()}. */
@@ -119,12 +128,11 @@ public class GTWorldgenerator implements IWorldGenerator {
         return getOregenPattern();
     }
 
-    /** Called when the server syncs its pattern to the client; no-op when a local server is authoritative. */
-    public static void setClientOregenPattern(OregenPattern pattern) {
-        applyClientOregenPattern(pattern, PatternSource.SYNCED);
-    }
-
-    private static void applyClientOregenPattern(OregenPattern pattern, PatternSource source) {
+    /**
+     * Called when the server syncs its pattern to the client; no-op when a local server is authoritative. The source
+     * is the server's own, so a client can tell a stored pattern from one the server had to guess.
+     */
+    public static void setClientOregenPattern(OregenPattern pattern, PatternSource source) {
         if (FMLCommonHandler.instance()
             .getMinecraftServerInstance() != null) {
             // Expected in single player and for a LAN host, where the local server already holds the real value
@@ -295,7 +303,7 @@ public class GTWorldgenerator implements IWorldGenerator {
             GT_FML_LOGGER.warn("Ore vein pattern overridden to {} by command", newPattern);
 
             // Connected clients would otherwise keep drawing the old grid until they reconnect
-            GTValues.NW.sendToAll(new GTPacketSendOregenPattern(newPattern));
+            GTValues.NW.sendToAll(new GTPacketSendOregenPattern(newPattern, PatternSource.COMMAND));
             return true;
         }
 
@@ -310,7 +318,7 @@ public class GTWorldgenerator implements IWorldGenerator {
         @SubscribeEvent
         public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
             if (event.player instanceof EntityPlayerMP player) {
-                GTValues.NW.sendToPlayer(new GTPacketSendOregenPattern(oregenPattern), player);
+                GTValues.NW.sendToPlayer(new GTPacketSendOregenPattern(oregenPattern, patternSource), player);
             }
         }
 
@@ -391,20 +399,25 @@ public class GTWorldgenerator implements IWorldGenerator {
         EQUAL_SPACING
     }
 
-    /** Not persisted, only reported. Anything but SAVED, NEW_WORLD or COMMAND is a guess. */
+    /** Never persisted. Synced by ordinal, which only has to agree between a matching client and server build. */
     public enum PatternSource {
 
-        DEFAULT("no world loaded yet"),
-        SAVED("read from the world's saved data"),
-        NEW_WORLD("chosen when the world was created"),
-        UNVERIFIED("guessed, the world has no saved pattern"),
-        SYNCED("sent by the server"),
-        COMMAND("set by an operator");
+        DEFAULT("no world loaded yet", false),
+        SAVED("read from the world's saved data", true),
+        NEW_WORLD("chosen when the world was created", true),
+        UNVERIFIED("guessed, the world has no saved pattern", false),
+        SYNCED("sent by the server, origin unknown", false),
+        COMMAND("set by an operator", true);
 
         public final String description;
+        /**
+         * Whether this is the world's real pattern rather than a guess, see GTWorldgenerator#isOregenPatternVerified.
+         */
+        public final boolean verified;
 
-        PatternSource(String description) {
+        PatternSource(String description, boolean verified) {
             this.description = description;
+            this.verified = verified;
         }
     }
 

@@ -46,7 +46,11 @@ public class GTPacketRequestOregenPattern extends GTPacket {
     @Override
     public void process(IBlockAccess world) {
         if (player != null) {
-            GTValues.NW.sendToPlayer(new GTPacketSendOregenPattern(GTWorldgenerator.getOregenPattern()), player);
+            GTValues.NW.sendToPlayer(
+                new GTPacketSendOregenPattern(
+                    GTWorldgenerator.getOregenPattern(),
+                    GTWorldgenerator.getOregenPatternSource()),
+                player);
         }
     }
 }
