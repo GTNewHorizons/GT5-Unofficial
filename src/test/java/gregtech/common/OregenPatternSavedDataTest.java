@@ -18,6 +18,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 import gregtech.common.GTWorldgenerator.OregenPattern;
 import gregtech.common.GTWorldgenerator.OregenPatternSavedData;
+import gregtech.common.GTWorldgenerator.PatternSource;
 
 /**
  * Getting this wrong silently relocates every ore vein in a world, so the paths that can overwrite the stored pattern
@@ -102,6 +103,26 @@ class OregenPatternSavedDataTest {
         assertEquals(GTWorldgenerator.DEFAULT_PATTERN, GTWorldgenerator.getOregenPattern());
         assertFalse(GTWorldgenerator.isOregenPatternKnown(), "the new server has not synced its pattern yet");
         assertEquals("AXISSYMMETRICAL", written(data), "client lifecycle events must not change the saved pattern");
+    }
+
+    /**
+     * The bug this pins: MapStorage hands back the instance it already read, so a second load has to take the pattern
+     * from that instance instead of guessing one again. EQUAL_SPACING on purpose, the old guess was AXISSYMMETRICAL
+     * and a world storing that would pass even while broken.
+     */
+    @Test
+    void loadingTwiceKeepsTheStoredPattern() {
+        World world = mock(World.class);
+        world.mapStorage = new MapStorage(null);
+        world.mapStorage.setData("GregTech_OregenPattern", read(withString("EQUAL_SPACING")));
+
+        OregenPatternSavedData.loadData(world);
+        assertEquals(OregenPattern.EQUAL_SPACING, GTWorldgenerator.getOregenPattern());
+        assertEquals(PatternSource.SAVED, GTWorldgenerator.getOregenPatternSource());
+
+        OregenPatternSavedData.loadData(world);
+        assertEquals(OregenPattern.EQUAL_SPACING, GTWorldgenerator.getOregenPattern());
+        assertEquals(PatternSource.SAVED, GTWorldgenerator.getOregenPatternSource());
     }
 
     private static NetworkManager remoteManager() {
