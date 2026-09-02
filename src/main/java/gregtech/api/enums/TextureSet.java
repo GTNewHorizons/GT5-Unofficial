@@ -85,7 +85,7 @@ public class TextureSet {
                     break;
                 case ITEM:
                 default:
-                    mTextures[type.ordinal()] = Textures.ItemIcons.textureSet(aSetName, type.suffix);
+                    mTextures[type.ordinal()] = Textures.ItemIcons.textureSet(Mods.GregTech.resourceDomain, aSetName, type.suffix);
                     break;
             }
         }
@@ -125,7 +125,7 @@ public class TextureSet {
                         break;
                     case ITEM:
                     default:
-                        mTextures[type.ordinal()] = Textures.ItemIcons.textureSet(mSetName, type.suffix);
+                        mTextures[type.ordinal()] = Textures.ItemIcons.textureSet(Mods.GregTech.resourceDomain, mSetName, type.suffix);
                         break;
                 }
             } else {

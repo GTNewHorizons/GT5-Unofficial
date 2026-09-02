@@ -116,11 +116,6 @@ public class ResourceUtils {
         return getCompleteResourceLocation(domain,"textures/blocks/", ".png", resourceKey);
     }
 
-    @Deprecated
-    public static @NotNull ResourceLocation getCompleteItemTextureResourceLocation(String resourceKey) {
-        return getCompleteResourceLocation("textures/items/", ".png", resourceKey);
-    }
-
     public static @NotNull ResourceLocation getCompleteItemTextureResourceLocation(@NotNull String domain, String resourceKey) {
         return getCompleteResourceLocation(domain,"textures/items/", ".png", resourceKey);
     }

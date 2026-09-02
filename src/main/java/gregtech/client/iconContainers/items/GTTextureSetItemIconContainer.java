@@ -33,21 +33,21 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
     protected ResourceLocation iconResource, iconFallbackResource;
     protected ResourceLocation iconOverlayResource, iconOverlayFallbackResource;
 
-    private GTTextureSetItemIconContainer(@NotNull Pair<String, String> pair) {
-        this(pair.getLeft(), pair.getRight(), null);
+    private GTTextureSetItemIconContainer(@NotNull String domain, @NotNull Pair<String, String> pair) {
+        this(domain, pair.getLeft(), pair.getRight(), null);
     }
 
-    private GTTextureSetItemIconContainer(@NotNull String setName, @NotNull String prefix,
-        @Nullable IIconRegister override) {
+    private GTTextureSetItemIconContainer(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
+                                          @Nullable IIconRegister override) {
         this.iconName = createIconName(setName, prefix);
         this.fallbackIconName = createIconName(TextureSetFallback, prefix);
-        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(iconName);
-        iconFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(fallbackIconName);
+        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain,iconName);
+        iconFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain,fallbackIconName);
 
         this.iconOverlayName = createIconName(setName, prefix + OverlaySuffix);
         this.fallbackIconOverlayName = createIconName(TextureSetFallback, prefix + OverlaySuffix);
-        iconOverlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(iconOverlayName);
-        iconOverlayFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(fallbackIconOverlayName);
+        iconOverlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain,iconOverlayName);
+        iconOverlayFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain,fallbackIconOverlayName);
 
         if (override != null) {
             run(override);
@@ -71,12 +71,12 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
     // 2026-13-05: Counted 7371 unique Item TextureSetIcons, so 9.4K will avoid resize until 7500 entries
     private static Map<Pair<String, String>, IIconContainer> INSTANCES = new HashMap<>(9375);
 
-    public static @NotNull IIconContainer create(@NotNull String setName, @NotNull String prefix,
-        IIconRegister override) {
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
+                                                 IIconRegister override) {
         if (override != null) {
-            return new GTTextureSetItemIconContainer(setName, prefix, override);
+            return new GTTextureSetItemIconContainer(domain, setName, prefix, override);
         }
-        return INSTANCES.computeIfAbsent(Pair.of(setName, prefix), GTTextureSetItemIconContainer::new);
+        return INSTANCES.computeIfAbsent(Pair.of(setName, prefix), key -> new GTTextureSetItemIconContainer(domain, key));
     }
 
     public static void cleanup() {

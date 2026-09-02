@@ -2864,18 +2864,19 @@ public class Textures {
         /**
          * Registers a Item {@link IIconContainer} for a {@link TextureSet}
          *
+         * @param domain  The resource domain
          * @param setName The name of the TextureSet
          * @param prefix  The prefix for the file name
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
-            return GTTextureSetItemIconContainer.create(setName, prefix, null);
+        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName, @NotNull String prefix) {
+            return GTTextureSetItemIconContainer.create(domain, setName, prefix, null);
         }
 
-        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
-            IIconRegister register) {
-            return GTTextureSetItemIconContainer.create(setName, prefix, register);
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
+                                                                     IIconRegister register) {
+            return GTTextureSetItemIconContainer.create(domain, setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {

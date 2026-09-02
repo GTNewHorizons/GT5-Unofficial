@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
@@ -25,10 +26,10 @@ public class GTItemIconContainer extends AbstractItemIconContainer implements Ru
     IIcon mIcon, mOverlay;
 
     GTItemIconContainer(@NotNull String aIconName) {
-        mIconName = GregTech.resourceDomain + ":iconsets/" + aIconName;
-        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
+        mIconName = "iconsets/" + aIconName;
+        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(GregTech.resourceDomain, mIconName);
         mOverlayName = mIconName + "_OVERLAY";
-        overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
+        overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(GregTech.resourceDomain, mOverlayName);
         GregTechAPI.sGTItemIconload.add(this);
         logRegisterIcon();
     }

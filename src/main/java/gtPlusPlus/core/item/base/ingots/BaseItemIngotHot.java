@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,7 +60,7 @@ public class BaseItemIngotHot extends BaseItemIngot {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister i) {
         IIconContainer container = Textures.ItemIcons
-            .textureSetWithRegister("METALLIC", "/" + OrePrefixes.ingotHot.getName(), i);
+            .textureSetWithRegister(Mods.GregTech.resourceDomain, "METALLIC", "/" + OrePrefixes.ingotHot.getName(), i);
         iconBase = container.getIcon();
         iconOverlay = container.getOverlayIcon();
     }

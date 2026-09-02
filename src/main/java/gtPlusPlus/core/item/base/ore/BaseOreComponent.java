@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -149,7 +150,7 @@ public class BaseOreComponent extends Item {
             }
         } else {
             IIconContainer container = Textures.ItemIcons
-                .textureSetWithRegister("METALLIC", "/" + this.componentType.COMPONENT_NAME, par1IconRegister);
+                .textureSetWithRegister(Mods.GregTech.resourceDomain, "METALLIC", "/" + this.componentType.COMPONENT_NAME, par1IconRegister);
             iconBase = container.getIcon();
             iconOverlay = container.getOverlayIcon();
         }

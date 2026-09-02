@@ -22,11 +22,11 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
     protected String mIconName, mOverlayName;
     protected ResourceLocation iconResource, overlayResource;
 
-    GTCustomItemIconContainer(@NotNull String aIconName) {
-        mIconName = aIconName.contains(":") ? aIconName : GregTech.resourceDomain + ":" + aIconName;
-        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
+    GTCustomItemIconContainer(@NotNull String domain, @NotNull String aIconName) {
+        mIconName = aIconName;
+        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, mIconName);
         mOverlayName = mIconName + Textures.OverlaySuffix;
-        overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
+        overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, mOverlayName);
         GregTechAPI.sGTItemIconload.add(this);
         logRegisterIcons();
     }
@@ -39,8 +39,8 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
     // 2026-13-05: Currently unused
     private static Map<String, IIconContainer> INSTANCES = new HashMap<>();
 
-    public static @NotNull IIconContainer create(@NotNull String aIconName) {
-        return INSTANCES.computeIfAbsent(aIconName, GTCustomItemIconContainer::new);
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String aIconName) {
+        return INSTANCES.computeIfAbsent(aIconName, key -> new GTCustomItemIconContainer(domain, key));
     }
 
     public static void cleanup() {
