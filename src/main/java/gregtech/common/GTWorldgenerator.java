@@ -85,10 +85,16 @@ public class GTWorldgenerator implements IWorldGenerator {
 
     // Written on the netty thread when a server syncs it, read on the client and worldgen threads
     private static volatile OregenPattern oregenPattern = DEFAULT_PATTERN;
+    private static volatile PatternSource patternSource = PatternSource.DEFAULT;
 
     /** Returns the oregen pattern used by the current world. */
     public static OregenPattern getOregenPattern() {
         return oregenPattern;
+    }
+
+    /** Where {@link #getOregenPattern()} came from, to tell a trustworthy value from a guess. */
+    public static PatternSource getOregenPatternSource() {
+        return patternSource;
     }
 
     /** @deprecated Use {@link #getOregenPattern()}. */
@@ -105,9 +111,14 @@ public class GTWorldgenerator implements IWorldGenerator {
 
     /** Called when the server syncs its pattern to the client; no-op when a local server is authoritative. */
     public static void setClientOregenPattern(OregenPattern pattern) {
+        applyClientOregenPattern(pattern, PatternSource.SYNCED);
+    }
+
+    private static void applyClientOregenPattern(OregenPattern pattern, PatternSource source) {
         if (FMLCommonHandler.instance()
             .getMinecraftServerInstance() == null) {
             oregenPattern = pattern;
+            patternSource = source;
         }
     }
 
@@ -198,6 +209,7 @@ public class GTWorldgenerator implements IWorldGenerator {
 
         /** Kept per instance: MapStorage returns cached instances without running readFromNBT again. */
         private OregenPattern pattern = DEFAULT_PATTERN;
+        private PatternSource source = PatternSource.UNVERIFIED;
 
         public OregenPatternSavedData(String p_i2141_1_) {
             super(p_i2141_1_);
@@ -221,6 +233,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                     .getWorldTotalTime() == 0L) {
                     // Freshly created world, so the pattern is known and worth persisting
                     instance.pattern = OregenPattern.EQUAL_SPACING;
+                    instance.source = PatternSource.NEW_WORLD;
                     instance.markDirty();
                 } else {
                     // Worlds have been stamped with their pattern since 5.09.43.111, so a missing file means the save
@@ -234,8 +247,28 @@ public class GTWorldgenerator implements IWorldGenerator {
             }
 
             oregenPattern = instance.pattern;
+            patternSource = instance.source;
             loadedWorld = new WeakReference<>(world);
-            GT_FML_LOGGER.info("Ore veins in this world use the {} pattern", oregenPattern);
+            GT_FML_LOGGER.info("Ore veins in this world use the {} pattern ({})", oregenPattern, patternSource);
+        }
+
+        /** Overwrites the pattern of the currently loaded world and persists it. Operator driven, see GTMiscCommand. */
+        public static void overridePattern(World world, OregenPattern newPattern) {
+            OregenPatternSavedData instance = (OregenPatternSavedData) world.mapStorage
+                .loadData(OregenPatternSavedData.class, OregenPatternSavedData.NAME);
+
+            if (instance == null) {
+                instance = new OregenPatternSavedData(NAME);
+                world.mapStorage.setData(OregenPatternSavedData.NAME, instance);
+            }
+
+            instance.pattern = newPattern;
+            instance.source = PatternSource.COMMAND;
+            instance.markDirty();
+
+            oregenPattern = newPattern;
+            patternSource = PatternSource.COMMAND;
+            GT_FML_LOGGER.warn("Ore vein pattern overridden to {} by command", newPattern);
         }
 
         @SubscribeEvent
@@ -256,7 +289,7 @@ public class GTWorldgenerator implements IWorldGenerator {
         @SubscribeEvent
         public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
             // The next server may use another pattern, so do not keep this one until it syncs its own
-            setClientOregenPattern(DEFAULT_PATTERN);
+            applyClientOregenPattern(DEFAULT_PATTERN, PatternSource.DEFAULT);
         }
 
         @Override
@@ -265,6 +298,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 String name = p_76184_1_.getString(KEY);
                 try {
                     pattern = OregenPattern.valueOf(name);
+                    source = PatternSource.SAVED;
                 } catch (IllegalArgumentException e) {
                     GT_FML_LOGGER.error("Unknown oregen pattern {}, assuming {}", name, DEFAULT_PATTERN);
                 }
@@ -272,6 +306,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 // Written by GT older than this change, mark dirty to rewrite it by name
                 int ordinal = MathHelper.clamp_int(p_76184_1_.getByte(KEY), 0, OregenPattern.values().length - 1);
                 pattern = OregenPattern.values()[ordinal];
+                source = PatternSource.SAVED;
                 markDirty();
             }
         }
@@ -287,6 +322,23 @@ public class GTWorldgenerator implements IWorldGenerator {
         // Persisted by name, renaming a constant needs a migration in readFromNBT
         AXISSYMMETRICAL,
         EQUAL_SPACING
+    }
+
+    /** Not persisted, only reported. Anything but SAVED, NEW_WORLD or COMMAND is a guess. */
+    public enum PatternSource {
+
+        DEFAULT("no world loaded yet"),
+        SAVED("read from the world's saved data"),
+        NEW_WORLD("chosen when the world was created"),
+        UNVERIFIED("guessed, the world has no saved pattern"),
+        SYNCED("sent by the server"),
+        COMMAND("set by an operator");
+
+        public final String description;
+
+        PatternSource(String description) {
+            this.description = description;
+        }
     }
 
     public static class WorldGenContainer implements Runnable {
