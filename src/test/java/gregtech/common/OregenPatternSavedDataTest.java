@@ -11,6 +11,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
@@ -25,6 +26,14 @@ import gregtech.common.GTWorldgenerator.OregenPatternSavedData;
 class OregenPatternSavedDataTest {
 
     private static final String KEY = "oregenPattern";
+
+    /**
+     * The pattern and its source are static, so hand them back the way a client that joined nothing would find them.
+     */
+    @AfterEach
+    void clearSharedPatternState() {
+        new OregenPatternSavedData("reset").onClientDisconnect(new ClientDisconnectionFromServerEvent(remoteManager()));
+    }
 
     @Test
     void legacyOrdinalsMigrateToNames() {
@@ -89,11 +98,16 @@ class OregenPatternSavedDataTest {
         assertEquals(OregenPattern.AXISSYMMETRICAL, GTWorldgenerator.getOregenPattern());
         assertTrue(GTWorldgenerator.isOreChunk(-1, 1), "the server must keep its grid while finishing shutdown");
 
-        NetworkManager remoteConnection = mock(NetworkManager.class);
-        data.onClientConnect(new ClientConnectedToServerEvent(remoteConnection, "MODDED"));
+        data.onClientConnect(new ClientConnectedToServerEvent(remoteManager(), "MODDED"));
         assertEquals(GTWorldgenerator.DEFAULT_PATTERN, GTWorldgenerator.getOregenPattern());
         assertFalse(GTWorldgenerator.isOregenPatternKnown(), "the new server has not synced its pattern yet");
         assertEquals("AXISSYMMETRICAL", written(data), "client lifecycle events must not change the saved pattern");
+    }
+
+    private static NetworkManager remoteManager() {
+        NetworkManager manager = mock(NetworkManager.class);
+        when(manager.isLocalChannel()).thenReturn(false);
+        return manager;
     }
 
     private static OregenPatternSavedData read(NBTTagCompound nbt) {

@@ -312,7 +312,10 @@ public class GTWorldgenerator implements IWorldGenerator {
 
         @SubscribeEvent
         public void onClientConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
-            // Clear a previous integrated server's pattern before the remote server syncs its own.
+            // Clear a previous integrated server's pattern before the remote server syncs its own. Skipping the local
+            // case is required, not an optimisation: loadData has already set the pattern by the time the client
+            // connects, and clearing it here would be permanent because setClientOregenPattern ignores the sync that
+            // follows while a local server is up, leaving single player worldgen on the default.
             if (event.isLocal) return;
             oregenPattern = DEFAULT_PATTERN;
             patternSource = PatternSource.DEFAULT;
