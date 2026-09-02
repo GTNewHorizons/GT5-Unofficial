@@ -5941,11 +5941,11 @@ gt.item.tube_wires.tooltip=For the Vacuum Tubes
 
 ## Solar Panels (high tiers)
 gt.item.cover.solar_panel.uhv.name=Solar Panel (UHV)
-gt.item.cover.solar_panel.uhv.tooltip=Ultimate High Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.uhv.tooltip=Highly Ultimate Solar Panel (Needs cleaning with right click)
 gt.item.cover.solar_panel.uev.name=Solar Panel (UEV)
-gt.item.cover.solar_panel.uev.tooltip=Ultimate Extreme Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.uev.tooltip=Extremely Ultimate Solar Panel (Needs cleaning with right click)
 gt.item.cover.solar_panel.uiv.name=Solar Panel (UIV)
-gt.item.cover.solar_panel.uiv.tooltip=Ultimate Insane Voltage Solar Panel (Needs cleaning with right click)
+gt.item.cover.solar_panel.uiv.tooltip=Insanely Ultimate Solar Panel (Needs cleaning with right click)
 
 ## Coils
 gt.item.coil.ulv.name=Ultra Low Voltage Coil
