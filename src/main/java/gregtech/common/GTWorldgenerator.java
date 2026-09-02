@@ -99,10 +99,11 @@ public class GTWorldgenerator implements IWorldGenerator {
     }
 
     /**
-     * Whether {@link #getOregenPattern()} belongs to the current world rather than being the fallback. A client only
-     * learns it once the server answers, so anything rewriting stored data by pattern has to wait for this.
+     * Whether a world's pattern has been resolved at all, which on a client only happens once the server answers. The
+     * resolved value can still be a guess when the world stored no pattern, so anything rewriting stored data by
+     * pattern should weigh {@link #getOregenPatternSource()} too.
      */
-    public static boolean isOregenPatternKnown() {
+    public static boolean isOregenPatternResolved() {
         return patternSource != PatternSource.DEFAULT;
     }
 

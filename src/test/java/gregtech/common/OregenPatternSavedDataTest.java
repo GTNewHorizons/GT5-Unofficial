@@ -92,7 +92,7 @@ class OregenPatternSavedDataTest {
         when(localConnection.isLocalChannel()).thenReturn(true);
         data.onClientConnect(new ClientConnectedToServerEvent(localConnection, "MODDED"));
         assertEquals(OregenPattern.AXISSYMMETRICAL, GTWorldgenerator.getOregenPattern());
-        assertTrue(GTWorldgenerator.isOregenPatternKnown());
+        assertTrue(GTWorldgenerator.isOregenPatternResolved());
 
         data.onClientDisconnect(new ClientDisconnectionFromServerEvent(localConnection));
         OregenPatternSavedData.ensureLoaded(world);
@@ -101,7 +101,7 @@ class OregenPatternSavedDataTest {
 
         data.onClientConnect(new ClientConnectedToServerEvent(remoteManager(), "MODDED"));
         assertEquals(GTWorldgenerator.DEFAULT_PATTERN, GTWorldgenerator.getOregenPattern());
-        assertFalse(GTWorldgenerator.isOregenPatternKnown(), "the new server has not synced its pattern yet");
+        assertFalse(GTWorldgenerator.isOregenPatternResolved(), "the new server has not synced its pattern yet");
         assertEquals("AXISSYMMETRICAL", written(data), "client lifecycle events must not change the saved pattern");
     }
 
