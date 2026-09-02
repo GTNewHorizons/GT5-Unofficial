@@ -83,7 +83,8 @@ public class GTWorldgenerator implements IWorldGenerator {
      */
     public static final OregenPattern DEFAULT_PATTERN = OregenPattern.EQUAL_SPACING;
 
-    private static OregenPattern oregenPattern = DEFAULT_PATTERN;
+    // Written on the netty thread when a server syncs it, read on the client and worldgen threads
+    private static volatile OregenPattern oregenPattern = DEFAULT_PATTERN;
 
     /** Returns the oregen pattern used by the current world. */
     public static OregenPattern getOregenPattern() {
