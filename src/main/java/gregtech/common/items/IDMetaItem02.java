@@ -235,6 +235,7 @@ public enum IDMetaItem02 {
     Food_IceCream_PitOfDoomAndDespair(654),
     Food_IceCream_MasterOfDreams(655),
     // Reserved for Ice creams, don't you dare
+    Food_IceCream_Trophy(700),
     Display_ITS_FREE(765);
 
     public final int ID;

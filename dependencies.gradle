@@ -43,7 +43,7 @@ dependencies {
     api("com.github.GTNewHorizons:ModularUI:1.3.4:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.3.86-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.19.34:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-999-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-1044-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.105-gtnh:dev")
     api("com.github.GTNewHorizons:Postea:1.2.6:dev")
     api("com.github.GTNewHorizons:Draconic-Evolution:1.5.33-GTNH:dev")
@@ -99,7 +99,6 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.60-GTNH:dev') {transitive =  false}
     compileOnly("com.github.GTNewHorizons:BloodMagic:1.9.13:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.8:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.11-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Variable-Horizons:0.1.00:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:biomes-o-plenty-220318:2499612")
 
