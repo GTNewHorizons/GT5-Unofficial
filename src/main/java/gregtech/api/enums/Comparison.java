@@ -1,15 +1,12 @@
 package gregtech.api.enums;
 
-import net.minecraft.util.StatCollector;
-
 public enum Comparison {
 
     EQ,
     LT,
     GT,
     LTEQ,
-    GTEQ,
-    ANALOG;
+    GTEQ;
 
     public boolean test(int actual, int configured) {
         return switch (this) {
@@ -18,7 +15,6 @@ public enum Comparison {
             case GT -> actual > configured;
             case LTEQ -> actual <= configured;
             case GTEQ -> actual >= configured;
-            case ANALOG -> throw new UnsupportedOperationException();
         };
     }
 
@@ -29,7 +25,6 @@ public enum Comparison {
             case GT -> actual > configured;
             case LTEQ -> actual <= configured;
             case GTEQ -> actual >= configured;
-            case ANALOG -> throw new UnsupportedOperationException();
         };
     }
 
@@ -41,7 +36,6 @@ public enum Comparison {
             case GT -> ">";
             case LTEQ -> "<=";
             case GTEQ -> ">=";
-            case ANALOG -> StatCollector.translateToLocal("GT5U.gui.text.nanite-detector-analog");
         };
     }
 }
