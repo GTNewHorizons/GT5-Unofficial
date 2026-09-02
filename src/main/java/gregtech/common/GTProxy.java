@@ -7,7 +7,6 @@ import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.GTValues.debugEntityCramming;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
@@ -146,7 +145,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
-import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLanguageManager;
@@ -2466,36 +2464,29 @@ public class GTProxy implements IFuelHandler {
     @SuppressWarnings("deprecation")
     public void activateOreDictHandler() {
         this.mOreDictActivated = true;
-        ProgressManager.ProgressBar progressBar;
-        if (BetterLoadingScreen.isModLoaded()) {
-            progressBar = ProgressManager.push("Register materials", oreDictEvents.size());
-            GTCLSCompat.stepMaterialsCLS(oreDictEvents, progressBar);
-        } else {
-            if (isClientSide()) {
-                progressBar = ProgressManager.push("Register materials", oreDictEvents.size());
-            } else progressBar = null;
-            this.stepMaterialsVanilla(progressBar);
-        }
-    }
 
-    @SuppressWarnings("deprecation")
-    private void stepMaterialsVanilla(@Nullable ProgressManager.ProgressBar progressBar) {
+        ProgressManager.ProgressBar progressBar = isClientSide()
+            ? ProgressManager.push("Register materials", oreDictEvents.size())
+            : null;
+
         int size = 5;
         int sizeStep = oreDictEvents.size() / 20 - 1;
-        OreDictEventContainer event;
-        for (Iterator<OreDictEventContainer> i$ = oreDictEvents.iterator(); i$.hasNext(); OreDictEventContainer
-            .registerRecipes(event)) {
-            event = i$.next();
+
+        for (OreDictEventContainer event : oreDictEvents) {
             sizeStep--;
             if (sizeStep == 0) {
                 GT_FML_LOGGER.info("Baking : {}%", size);
                 sizeStep = oreDictEvents.size() / 20 - 1;
                 size += 5;
             }
+
             if (progressBar != null) {
-                progressBar.step(event.mMaterial == null ? "" : event.mMaterial.toString());
+                progressBar.step(event.mMaterial == null ? "" : event.mMaterial.getLocalizedName());
             }
+
+            OreDictEventContainer.registerRecipes(event);
         }
+
         if (progressBar != null) {
             ProgressManager.pop(progressBar);
         }
