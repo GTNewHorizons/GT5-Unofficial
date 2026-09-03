@@ -15,6 +15,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
@@ -22,6 +23,7 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
 
     private static IIconContainer face;

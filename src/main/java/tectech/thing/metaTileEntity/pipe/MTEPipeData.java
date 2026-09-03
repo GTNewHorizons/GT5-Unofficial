@@ -32,6 +32,7 @@ import tectech.util.CommonValues;
 /**
  * Created by Tec on 26.02.2017.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
 
     private static IIconContainer EMpipe;

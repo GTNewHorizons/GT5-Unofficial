@@ -56,6 +56,8 @@ import gregtech.common.gui.modularui.singleblock.MTEBioLabGui;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEBioLab extends MTEBasicMachine {
 
     private static final int DNA_EXTRACTION_MODULE = 0;
@@ -176,6 +178,12 @@ public class MTEBioLab extends MTEBasicMachine {
             if (out == null) return null;
             return BioCultureEnum.getPetriDish(out.setPlasmid(bioData));
         }), BioLabRecipeOutputSupplier.EMPTY);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocal("tile.biolab.name");
     }
 
     @Override

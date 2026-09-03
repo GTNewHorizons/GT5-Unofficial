@@ -15,6 +15,7 @@ import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
 @Deprecated // Remove in 2.10
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     public MTEHatchDynamoBuffer(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -24,6 +25,12 @@ public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
     public MTEHatchDynamoBuffer(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.dynamo.buffer.name", GTValues.VN[mTier]);
     }
 
     @Override

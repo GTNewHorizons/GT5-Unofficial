@@ -30,6 +30,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEAcidGenerator extends MTEBasicGenerator {
 
     private final int efficiency;
@@ -145,6 +146,12 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     public boolean isOutputFacing(ForgeDirection side) {
         return side == this.getBaseMetaTileEntity()
             .getFrontFacing();
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[this.mTier];
     }
 
     @Override
