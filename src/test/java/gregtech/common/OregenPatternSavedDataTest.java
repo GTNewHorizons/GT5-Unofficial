@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
+import net.minecraft.world.storage.WorldInfo;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -78,6 +79,40 @@ class OregenPatternSavedDataTest {
         OregenPatternSavedData data = read(new NBTTagCompound());
         assertEquals(GTWorldgenerator.DEFAULT_PATTERN.name(), written(data));
         assertFalse(data.isDirty());
+    }
+
+    @Test
+    void existingWorldWithoutPatternUsesLegacyGridWithoutPersistingAGuess() {
+        World world = mock(World.class);
+        WorldInfo info = mock(WorldInfo.class);
+        when(world.getWorldInfo()).thenReturn(info);
+        when(info.getWorldTotalTime()).thenReturn(100L);
+        world.mapStorage = new MapStorage(null);
+
+        OregenPatternSavedData.loadData(world);
+
+        assertEquals(OregenPattern.AXISSYMMETRICAL, GTWorldgenerator.getOregenPattern());
+        assertEquals(PatternSource.UNVERIFIED, GTWorldgenerator.getOregenPatternSource());
+        assertFalse(GTWorldgenerator.isOregenPatternVerified());
+        assertTrue(GTWorldgenerator.isOreChunk(-1, 1));
+        assertFalse(GTWorldgenerator.isOreChunk(-2, 1));
+        assertFalse(world.mapStorage.loadData(OregenPatternSavedData.class, "GregTech_OregenPattern").isDirty());
+    }
+
+    @Test
+    void newWorldWithoutPatternPersistsEqualSpacing() {
+        World world = mock(World.class);
+        WorldInfo info = mock(WorldInfo.class);
+        when(world.getWorldInfo()).thenReturn(info);
+        when(info.getWorldTotalTime()).thenReturn(0L);
+        world.mapStorage = new MapStorage(null);
+
+        OregenPatternSavedData.loadData(world);
+
+        assertEquals(OregenPattern.EQUAL_SPACING, GTWorldgenerator.getOregenPattern());
+        assertEquals(PatternSource.NEW_WORLD, GTWorldgenerator.getOregenPatternSource());
+        assertTrue(GTWorldgenerator.isOregenPatternVerified());
+        assertTrue(world.mapStorage.loadData(OregenPatternSavedData.class, "GregTech_OregenPattern").isDirty());
     }
 
     @Test

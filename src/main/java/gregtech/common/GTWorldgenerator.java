@@ -77,8 +77,8 @@ public class GTWorldgenerator implements IWorldGenerator {
     public boolean mIsGenerating = false;
 
     /**
-     * Assumed whenever the world's pattern is unknown. Only AXISSYMMETRICAL worlds carry positive evidence of their
-     * pattern, so every other case has to guess, and since 5.09.43.111 almost every world is EQUAL_SPACING.
+     * Assumed before a world's pattern is resolved or when its saved data is unreadable. Existing worlds with no
+     * pattern file instead use AXISSYMMETRICAL, preserving the grid of worlds predating 5.09.43.111.
      */
     public static final OregenPattern DEFAULT_PATTERN = OregenPattern.EQUAL_SPACING;
 
@@ -263,13 +263,13 @@ public class GTWorldgenerator implements IWorldGenerator {
                     instance.source = PatternSource.NEW_WORLD;
                     instance.markDirty();
                 } else {
-                    // Worlds have been stamped with their pattern since 5.09.43.111, so a missing file means the save
-                    // lost it rather than predating it. Assume the default but never persist an unverified guess.
+                    // Worlds predating 5.09.43.111 have no pattern file. It may also have been lost, so do not persist
+                    // this guess.
+                    instance.pattern = OregenPattern.AXISSYMMETRICAL;
                     GT_FML_LOGGER.warn(
-                        "{} is missing for an existing world, assuming {}. If this world predates GT 5.09.43.111 its veins use {} instead.",
+                        "Missing {} for an existing world; assuming legacy {}. If the file was lost, verify with /gt oregenpattern.",
                         NAME,
-                        instance.pattern,
-                        OregenPattern.AXISSYMMETRICAL);
+                        instance.pattern);
                 }
             }
 
@@ -405,7 +405,7 @@ public class GTWorldgenerator implements IWorldGenerator {
         DEFAULT("no world loaded yet", false),
         SAVED("read from the world's saved data", true),
         NEW_WORLD("chosen when the world was created", true),
-        UNVERIFIED("guessed, the world has no saved pattern", false),
+        UNVERIFIED("guessed, the world has no usable saved pattern", false),
         SYNCED("sent by the server, origin unknown", false),
         COMMAND("set by an operator", true);
 
