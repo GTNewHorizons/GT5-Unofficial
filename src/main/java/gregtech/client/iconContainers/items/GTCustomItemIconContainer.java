@@ -1,7 +1,6 @@
 package gregtech.client.iconContainers.items;
 
 import static gregtech.GTLoggers.GT_ICON_LOGGER;
-import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,11 +21,12 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
     protected String mIconName, mOverlayName;
     protected ResourceLocation iconResource, overlayResource;
 
-    GTCustomItemIconContainer(@NotNull String aIconName) {
-        mIconName = aIconName.contains(":") ? aIconName : GregTech.resourceDomain + ":" + aIconName;
-        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
-        mOverlayName = mIconName + Textures.OverlaySuffix;
-        overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
+    GTCustomItemIconContainer(@NotNull String domain, @NotNull String aIconName) {
+        mIconName = ResourceUtils.getIconRegisterName(domain, aIconName);
+        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, aIconName);
+        mOverlayName = ResourceUtils.getIconRegisterName(domain, aIconName + Textures.OverlaySuffix);
+        overlayResource = ResourceUtils
+            .getCompleteItemTextureResourceLocation(domain, aIconName + Textures.OverlaySuffix);
         GregTechAPI.sGTItemIconload.add(this);
         logRegisterIcons();
     }
@@ -39,8 +39,8 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
     // 2026-13-05: Currently unused
     private static Map<String, IIconContainer> INSTANCES = new HashMap<>();
 
-    public static @NotNull IIconContainer create(@NotNull String aIconName) {
-        return INSTANCES.computeIfAbsent(aIconName, GTCustomItemIconContainer::new);
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String aIconName) {
+        return INSTANCES.computeIfAbsent(aIconName, key -> new GTCustomItemIconContainer(domain, key));
     }
 
     public static void cleanup() {

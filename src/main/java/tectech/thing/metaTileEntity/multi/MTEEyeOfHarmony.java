@@ -58,6 +58,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -991,8 +992,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_BHG");
-        ScreenON = Textures.BlockIcons.custom("iconsets/EM_BHG_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BHG");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BHG_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

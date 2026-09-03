@@ -3,6 +3,7 @@ package tectech.thing.metaTileEntity;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
@@ -10,32 +11,76 @@ import gregtech.api.render.TextureFactory;
 @Deprecated
 public class Textures {
 
-    public static final IIconContainer OVERLAY_ENERGY_IN_POWER = custom("iconsets/OVERLAY_ENERGY_IN_POWER");
-    public static final IIconContainer OVERLAY_ENERGY_OUT_POWER = custom("iconsets/OVERLAY_ENERGY_OUT_POWER");
-    public static final IIconContainer OVERLAY_ENERGY_IN_LASER = custom("iconsets/OVERLAY_ENERGY_IN_LASER");
-    public static final IIconContainer OVERLAY_ENERGY_OUT_LASER = custom("iconsets/OVERLAY_ENERGY_OUT_LASER");
-    public static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_4A = custom("iconsets/OVERLAY_ENERGY_ON_WIRELESS_4A");
+    public static final IIconContainer OVERLAY_ENERGY_IN_POWER = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/OVERLAY_ENERGY_IN_POWER");
+    public static final IIconContainer OVERLAY_ENERGY_OUT_POWER = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/OVERLAY_ENERGY_OUT_POWER");
+    public static final IIconContainer OVERLAY_ENERGY_IN_LASER = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/OVERLAY_ENERGY_IN_LASER");
+    public static final IIconContainer OVERLAY_ENERGY_OUT_LASER = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/OVERLAY_ENERGY_OUT_LASER");
+    public static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_4A = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/OVERLAY_ENERGY_ON_WIRELESS_4A");
     public static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_16A = custom(
+        Mods.GregTech.resourceDomain,
         "iconsets/OVERLAY_ENERGY_ON_WIRELESS_16A");
     public static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_LASER = custom(
+        Mods.GregTech.resourceDomain,
         "iconsets/OVERLAY_ENERGY_ON_WIRELESS_LASER");
-    public static final IIconContainer MACHINE_UEV_SIDE = custom("iconsets/MACHINE_UEV_SIDE");
-    public static final IIconContainer MACHINE_UIV_SIDE = custom("iconsets/MACHINE_UIV_SIDE");
-    public static final IIconContainer MACHINE_UMV_SIDE = custom("iconsets/MACHINE_UMV_SIDE");
-    public static final IIconContainer MACHINE_UXV_SIDE = custom("iconsets/MACHINE_UXV_SIDE");
-    public static final IIconContainer MACHINE_MAX_SIDE = custom("iconsets/MACHINE_MAX_SIDE");
-    public static final IIconContainer MACHINE_UEV_TOP = custom("iconsets/MACHINE_UEV_TOP");
-    public static final IIconContainer MACHINE_UIV_TOP = custom("iconsets/MACHINE_UIV_TOP");
-    public static final IIconContainer MACHINE_UMV_TOP = custom("iconsets/MACHINE_UMV_TOP");
-    public static final IIconContainer MACHINE_UXV_TOP = custom("iconsets/MACHINE_UXV_TOP");
-    public static final IIconContainer MACHINE_MAX_TOP = custom("iconsets/MACHINE_MAX_TOP");
-    public static final IIconContainer MACHINE_UEV_BOTTOM = custom("iconsets/MACHINE_UEV_BOTTOM");
-    public static final IIconContainer MACHINE_UIV_BOTTOM = custom("iconsets/MACHINE_UIV_BOTTOM");
-    public static final IIconContainer MACHINE_UMV_BOTTOM = custom("iconsets/MACHINE_UMV_BOTTOM");
-    public static final IIconContainer MACHINE_UXV_BOTTOM = custom("iconsets/MACHINE_UXV_BOTTOM");
-    public static final IIconContainer MACHINE_MAX_BOTTOM = custom("iconsets/MACHINE_MAX_BOTTOM");
+    public static final IIconContainer MACHINE_UEV_SIDE = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UEV_SIDE");
+    public static final IIconContainer MACHINE_UIV_SIDE = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UIV_SIDE");
+    public static final IIconContainer MACHINE_UMV_SIDE = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UMV_SIDE");
+    public static final IIconContainer MACHINE_UXV_SIDE = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UXV_SIDE");
+    public static final IIconContainer MACHINE_MAX_SIDE = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_MAX_SIDE");
+    public static final IIconContainer MACHINE_UEV_TOP = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UEV_TOP");
+    public static final IIconContainer MACHINE_UIV_TOP = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UIV_TOP");
+    public static final IIconContainer MACHINE_UMV_TOP = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UMV_TOP");
+    public static final IIconContainer MACHINE_UXV_TOP = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UXV_TOP");
+    public static final IIconContainer MACHINE_MAX_TOP = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_MAX_TOP");
+    public static final IIconContainer MACHINE_UEV_BOTTOM = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UEV_BOTTOM");
+    public static final IIconContainer MACHINE_UIV_BOTTOM = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UIV_BOTTOM");
+    public static final IIconContainer MACHINE_UMV_BOTTOM = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UMV_BOTTOM");
+    public static final IIconContainer MACHINE_UXV_BOTTOM = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_UXV_BOTTOM");
+    public static final IIconContainer MACHINE_MAX_BOTTOM = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/MACHINE_MAX_BOTTOM");
 
-    public static final IIconContainer TESLA_TRANSCEIVER_TOP = custom("iconsets/TESLA_TRANSCEIVER_TOP");
+    public static final IIconContainer TESLA_TRANSCEIVER_TOP = custom(
+        Mods.GregTech.resourceDomain,
+        "iconsets/TESLA_TRANSCEIVER_TOP");
 
     public static IIconContainer[] MACHINECASINGS_SIDE_TT = new IIconContainer[] { MACHINE_ULV_SIDE, MACHINE_LV_SIDE,
         MACHINE_MV_SIDE, MACHINE_HV_SIDE, MACHINE_EV_SIDE, MACHINE_IV_SIDE, MACHINE_LuV_SIDE, MACHINE_ZPM_SIDE,
