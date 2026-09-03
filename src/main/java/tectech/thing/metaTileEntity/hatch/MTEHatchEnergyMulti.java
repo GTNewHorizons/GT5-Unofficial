@@ -14,6 +14,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ITexture;
@@ -28,6 +29,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Created by danie_000 on 16.12.2016.
  */
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyInfo {
 
     public final int maxAmperes;
@@ -61,6 +63,15 @@ public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyI
 
     public int getHatchType() {
         return 1;
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.hatch.energymulti.name",
+            GTValues.VN[mTier],
+            formatNumber(maxAmperes));
     }
 
     @Override

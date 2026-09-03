@@ -29,6 +29,7 @@ import io.netty.buffer.ByteBuf;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTunnel {
 
     static IIconContainer EMcandy, EMCandyActive;

@@ -29,6 +29,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
@@ -36,6 +37,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.DebugWriterHelper;
 import gregtech.common.gui.modularui.singleblock.MTEDebugStructureWriterGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDebugStructureWriter extends MTETieredMachineBlock {
 
     private static final HashMap<MTEDebugStructureWriter, BoundHighlighter> bondingBoxes = new HashMap<>(1);
