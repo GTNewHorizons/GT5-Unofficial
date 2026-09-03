@@ -96,7 +96,9 @@ class OregenPatternSavedDataTest {
         assertFalse(GTWorldgenerator.isOregenPatternVerified());
         assertTrue(GTWorldgenerator.isOreChunk(-1, 1));
         assertFalse(GTWorldgenerator.isOreChunk(-2, 1));
-        assertFalse(world.mapStorage.loadData(OregenPatternSavedData.class, "GregTech_OregenPattern").isDirty());
+        assertFalse(
+            world.mapStorage.loadData(OregenPatternSavedData.class, "GregTech_OregenPattern")
+                .isDirty());
     }
 
     @Test
@@ -112,7 +114,9 @@ class OregenPatternSavedDataTest {
         assertEquals(OregenPattern.EQUAL_SPACING, GTWorldgenerator.getOregenPattern());
         assertEquals(PatternSource.NEW_WORLD, GTWorldgenerator.getOregenPatternSource());
         assertTrue(GTWorldgenerator.isOregenPatternVerified());
-        assertTrue(world.mapStorage.loadData(OregenPatternSavedData.class, "GregTech_OregenPattern").isDirty());
+        assertTrue(
+            world.mapStorage.loadData(OregenPatternSavedData.class, "GregTech_OregenPattern")
+                .isDirty());
     }
 
     @Test
@@ -148,8 +152,12 @@ class OregenPatternSavedDataTest {
     @Test
     void loadingTwiceKeepsTheStoredPattern() {
         World world = mock(World.class);
+        WorldInfo info = mock(WorldInfo.class);
+        when(world.getWorldInfo()).thenReturn(info);
+        when(info.getWorldTotalTime()).thenReturn(100L);
         world.mapStorage = new MapStorage(null);
-        world.mapStorage.setData("GregTech_OregenPattern", read(withString("EQUAL_SPACING")));
+        OregenPatternSavedData data = read(withString("EQUAL_SPACING"));
+        world.mapStorage.setData("GregTech_OregenPattern", data);
 
         OregenPatternSavedData.loadData(world);
         assertEquals(OregenPattern.EQUAL_SPACING, GTWorldgenerator.getOregenPattern());
@@ -158,6 +166,8 @@ class OregenPatternSavedDataTest {
         OregenPatternSavedData.loadData(world);
         assertEquals(OregenPattern.EQUAL_SPACING, GTWorldgenerator.getOregenPattern());
         assertEquals(PatternSource.SAVED, GTWorldgenerator.getOregenPatternSource());
+        assertEquals("EQUAL_SPACING", written(data));
+        assertFalse(data.isDirty(), "loading cached data must not rewrite the stored pattern");
     }
 
     /**
