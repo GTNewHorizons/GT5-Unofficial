@@ -96,7 +96,9 @@ class OregenPatternSavedDataTest {
         assertFalse(GTWorldgenerator.isOregenPatternVerified());
         assertTrue(GTWorldgenerator.isOreChunk(-1, 1));
         assertFalse(GTWorldgenerator.isOreChunk(-2, 1));
-        assertFalse(world.mapStorage.loadData(OregenPatternSavedData.class, "GregTech_OregenPattern").isDirty());
+        assertFalse(
+            world.mapStorage.loadData(OregenPatternSavedData.class, "GregTech_OregenPattern")
+                .isDirty());
     }
 
     @Test
@@ -112,7 +114,9 @@ class OregenPatternSavedDataTest {
         assertEquals(OregenPattern.EQUAL_SPACING, GTWorldgenerator.getOregenPattern());
         assertEquals(PatternSource.NEW_WORLD, GTWorldgenerator.getOregenPatternSource());
         assertTrue(GTWorldgenerator.isOregenPatternVerified());
-        assertTrue(world.mapStorage.loadData(OregenPatternSavedData.class, "GregTech_OregenPattern").isDirty());
+        assertTrue(
+            world.mapStorage.loadData(OregenPatternSavedData.class, "GregTech_OregenPattern")
+                .isDirty());
     }
 
     @Test
