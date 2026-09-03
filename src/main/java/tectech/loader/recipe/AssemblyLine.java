@@ -46,7 +46,7 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Containment.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Europium, 2),
-                GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Plutonium, 4),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Plutonium, 2),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 8),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Uranium, 16),
                 GTOreDictUnificator

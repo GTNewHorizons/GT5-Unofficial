@@ -37,7 +37,7 @@ public class AssemblyLine implements Runnable {
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Casing_Tank_7.get(4),
-                GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.CrystallinePinkSlime, 6),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.CrystallinePinkSlime, 3),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Naquadah, 3),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "ChromeBars", 6),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Quantium, 6),
@@ -56,7 +56,7 @@ public class AssemblyLine implements Runnable {
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 ItemList.Casing_Tank_10.get(16),
-                GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.MelodicAlloy, 6),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MelodicAlloy, 3),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.NetherStar, 3),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "OsmiumBars", 6),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.MysteriousCrystal, 6),

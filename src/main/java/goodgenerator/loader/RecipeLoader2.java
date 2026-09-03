@@ -175,7 +175,7 @@ public class RecipeLoader2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Large_Fluid_Cell_Steel.get(12L),
-                GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Tin, 4))
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Tin, 2))
             .circuit(1)
             .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T1.get(1))
@@ -186,7 +186,7 @@ public class RecipeLoader2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Large_Fluid_Cell_Aluminium.get(3L),
-                GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Tin, 4))
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Tin, 2))
             .circuit(1)
             .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T1.get(1))
@@ -197,7 +197,7 @@ public class RecipeLoader2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Large_Fluid_Cell_StainlessSteel.get(2L),
-                GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Tin, 4))
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Tin, 2))
             .circuit(1)
             .fluidInputs(Materials.Polyethylene.getMolten(1 * INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T1.get(1))
@@ -209,7 +209,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 ItemList.Large_Fluid_Cell_Titanium.get(64L),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 8),
-                GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.BlackSteel, 4))
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.BlackSteel, 2))
             .circuit(2)
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(16 * INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T2.get(1))
@@ -220,7 +220,7 @@ public class RecipeLoader2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Large_Fluid_Cell_TungstenSteel.get(18L),
-                GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.BlackSteel, 4))
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.BlackSteel, 2))
             .circuit(2)
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(16 * INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T2.get(1))
@@ -231,7 +231,7 @@ public class RecipeLoader2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Large_Fluid_Cell_Chrome.get(4L),
-                GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.BlackSteel, 4))
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.BlackSteel, 2))
             .circuit(2)
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(16 * INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T2.get(1))
@@ -296,7 +296,7 @@ public class RecipeLoader2 {
                 ItemList.Quantum_Tank_HV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 8),
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 16L, 6),
-                GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Polycaprolactam, 24),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Polycaprolactam, 12),
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Titanium, 64))
             .fluidInputs(
                 Materials.Draconium.getMolten(16 * INGOTS),
@@ -338,7 +338,7 @@ public class RecipeLoader2 {
                 ItemList.Machine_Multi_NeutroniumCompressor.get(1),
                 ItemList.Quantum_Tank_EV.get(32),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 8),
-                GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.InfinityCatalyst, 8),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.InfinityCatalyst, 4),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 16))
             .fluidInputs(
                 Materials.Draconium.getMolten(2 * STACKS + 32 * INGOTS),
@@ -359,7 +359,7 @@ public class RecipeLoader2 {
                 ItemList.Machine_Multi_NeutroniumCompressor.get(2),
                 ItemList.Quantum_Tank_EV.get(64),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 16),
-                GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Infinity, 24),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 12),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 16))
             .fluidInputs(
                 Materials.Draconium.getMolten(4 * STACKS),
@@ -380,7 +380,7 @@ public class RecipeLoader2 {
                 ItemList.Machine_Multi_NeutroniumCompressor.get(2),
                 ItemList.Quantum_Tank_IV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 32),
-                GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Infinity, 36),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 18),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 8))
             .fluidInputs(
                 Materials.Draconium.getMolten(4 * STACKS),
@@ -402,7 +402,7 @@ public class RecipeLoader2 {
                 ItemList.Machine_Multi_NeutroniumCompressor.get(4),
                 ItemList.Quantum_Tank_IV.get(16),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 32),
-                GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.CosmicNeutronium, 24),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.CosmicNeutronium, 12),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.SpaceTime, 4))
             .fluidInputs(
                 Materials.Draconium.getMolten(4 * STACKS),
