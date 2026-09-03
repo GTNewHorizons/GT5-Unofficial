@@ -14,12 +14,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class GTSpawnEventHandler {
 
-    public static GTSpawnEventHandler INSTANCE;
-
-    public GTSpawnEventHandler() {
-        INSTANCE = this;
-    }
-
     private final ArrayProximityCheck4D repellents = new ArrayProximityCheck4D(VolumeShape.SPHERE);
 
     public void putRepellent(IGregTechTileEntity mte, int radius) {
