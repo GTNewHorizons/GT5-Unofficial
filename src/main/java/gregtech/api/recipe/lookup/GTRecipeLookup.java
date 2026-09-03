@@ -7,7 +7,6 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.annotation.Nullable;
@@ -44,12 +43,11 @@ public final class GTRecipeLookup {
         GTRecipeLookupBranch branch, int index) {
         boolean lastIngredient = index == ingredients.size() - 1;
         for (GTRecipeLookupIngredient ingredient : ingredients.get(index)) {
-            Map<GTRecipeLookupIngredient, Node> nodes = branch.nodesFor(ingredient);
-            Node node = nodes.get(ingredient);
+            Node node = branch.getNode(ingredient);
 
             if (lastIngredient) {
                 if (node == null) {
-                    nodes.put(ingredient, Node.leaf(recipe));
+                    branch.putNode(ingredient, Node.leaf(recipe));
                     continue;
                 }
                 if (!node.containsRecipe(recipe)) {
@@ -61,7 +59,7 @@ public final class GTRecipeLookup {
             GTRecipeLookupBranch childBranch;
             if (node == null) {
                 childBranch = new GTRecipeLookupBranch();
-                nodes.put(ingredient, Node.branch(childBranch));
+                branch.putNode(ingredient, Node.branch(childBranch));
             } else if (node.branch != null) {
                 childBranch = node.branch;
             } else {
