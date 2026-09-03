@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.outputme.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.common.covers.modes.FilterType.BLACKLIST;
 import static gregtech.common.covers.modes.FilterType.WHITELIST;
 
@@ -26,6 +27,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -72,6 +74,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
@@ -688,12 +691,12 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         return true;
     }
 
-    public void writeToClientPacket(NBTTagCompound tag) {
-        tag.setLong("baseCapacity", baseCapacity);
+    public void writeToClientPacket(ByteBuf buffer) {
+        buffer.writeLong(baseCapacity);
     }
 
-    public void readFromClientPacket(NBTTagCompound data) {
-        baseCapacity = data.getLong("baseCapacity");
+    public void readFromClientPacket(ByteBuf buffer) {
+        baseCapacity = buffer.readLong();
     }
 
     public List<T> getCacheList() {
@@ -726,7 +729,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             .forEach(stack -> {
                 NBTTagCompound stackTag = new NBTTagCompound();
                 stack.writeToNBT(stackTag);
-                stackTag.setString("Name", stack.getDisplayName());
                 stackTag.setLong("Amount", stack.getStackSize());
                 tagList.appendTag(stackTag);
             });
@@ -760,7 +762,8 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
                         nameGetter.apply(s) + ": "
                             + EnumChatFormatting.GOLD
                             + formatNumber(s.getStackSize())
-                            + " L"
+                            + " "
+                            + getFluidUnit()
                             + EnumChatFormatting.RESET);
                 });
         }
@@ -775,7 +778,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         ss.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.hatch.output_me.cache_capacity",
-                EnumChatFormatting.GOLD + formatNumber(getCacheCapacity()) + " L" + EnumChatFormatting.RESET));
+                EnumChatFormatting.GOLD + formatNumber(getCacheCapacity())
+                    + " "
+                    + getFluidUnit()
+                    + EnumChatFormatting.RESET));
         processInfoData(langBaseKey, nameGetter, getCacheList(), ss);
         if (cacheMode && cell != null) {
             List<T> cacheList = new ArrayList<>();
@@ -792,6 +798,16 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
 
     @SideOnly(Side.CLIENT)
     public static class WailaHelper {
+
+        @Nullable
+        private static String getLocalizedName(String prefix, NBTTagCompound stackTag) {
+            if ("fluid".equals(prefix)) {
+                FluidStack fluid = FluidStack.loadFluidStackFromNBT(stackTag);
+                return fluid == null ? null : fluid.getLocalizedName();
+            }
+            ItemStack stack = ItemStack.loadItemStackFromNBT(stackTag);
+            return stack == null ? null : stack.getDisplayName();
+        }
 
         private static void processWailaAdvancedBody(String prefix, List<String> ss, String listKey, String countKey,
             NBTTagCompound tag) {
@@ -810,11 +826,14 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
 
             for (int i = 0; i < stacks.tagCount(); i++) {
                 NBTTagCompound stackTag = stacks.getCompoundTagAt(i);
+                // Names must be resolved client-side, otherwise a dedicated server sends its own localization
+                String name = getLocalizedName(prefix, stackTag);
+                if (name == null) continue;
 
                 ss.add(
                     String.format(
                         "%s: %s%s%s",
-                        stackTag.getString("Name"),
+                        name,
                         EnumChatFormatting.GOLD,
                         formatNumber(stackTag.getLong("Amount")),
                         EnumChatFormatting.RESET));

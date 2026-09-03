@@ -84,6 +84,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     private final HashMap<Integer, IIcon> mIconMap = new HashMap<>();
     private final HashMap<Integer, EnumRarity> rarity = new HashMap<>();
     public final HashMap<Short, Long[]> mElectricStats = new HashMap<>();
+    private static boolean isRegistered;
 
     public void registerPumpType(final int aID, final String aPumpName, final int aEuMax, final int aTier) {
         registerItem(
@@ -115,8 +116,9 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(creativeTab);
         this.setMaxStackSize(1);
-        if (GameRegistry.findItem(GTPlusPlus.ID, unlocalizedName) == null) {
+        if (!isRegistered) {
             GameRegistry.registerItem(this, unlocalizedName);
+            isRegistered = false;
         }
     }
 
@@ -157,7 +159,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName()
                 : StatCollector.translateToLocal("item.itemGregtechPump.tooltip.3")));
         aList.add(
-            EnumChatFormatting.BLUE + (f != null ? "" + formatNumber(f.amount) : "" + 0)
+            EnumChatFormatting.BLUE + (f != null ? formatNumber(f.amount) : "" + 0)
                 + "L"
                 + " / "
                 + formatNumber(getCapacity(aStack))
@@ -826,7 +828,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     }
                 }
             }
-        } catch (Exception t) {}
+        } catch (Exception ignored) {}
         return false;
     }
 

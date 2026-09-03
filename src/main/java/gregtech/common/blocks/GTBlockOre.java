@@ -43,6 +43,7 @@ import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.items.GTGenericBlock;
+import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLanguageManager;
@@ -56,6 +57,7 @@ import gregtech.nei.NEIGTConfig;
 public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IBlockWithCustomSound {
 
     public final List<StoneType> stoneTypes;
+    private final BoundedTextureCache textureCache = new BoundedTextureCache();
 
     public GTBlockOre(int series, StoneType[] stoneTypes) {
         super(GTItemOre.class, "gt.blockores" + series, Material.rock);
@@ -205,6 +207,17 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Override
     public ITexture[][] getTextures(int metadata) {
+        metadata = getTextureCacheKey(metadata);
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+        return cacheTextures(metadata);
+    }
+
+    private synchronized ITexture[][] cacheTextures(int metadata) {
+        // Another render thread may have populated the cache while this thread waited for the monitor.
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+
         StoneType stoneType = getStoneType(metadata);
         Materials mat = getMaterial(metadata);
         boolean small = isSmallOre(metadata);
@@ -227,7 +240,9 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
         final ITexture[] textures = new ITexture[] { bg, fg };
 
-        return new ITexture[][] { textures, textures, textures, textures, textures, textures };
+        cached = new ITexture[][] { textures, textures, textures, textures, textures, textures };
+        textureCache.put(metadata, cached);
+        return cached;
     }
 
     @Override
@@ -363,7 +378,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         float subY, float subZ) {
         if (!world.isRemote) {
             if (player.capabilities.isCreativeMode && player.isSneaking() && player.getHeldItem() == null) {
-                try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
+                try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
                     info.isNatural = !info.isNatural;
 
                     world.setBlockMetadataWithNotify(
@@ -414,6 +429,11 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     }
 
     public static final int SMALL_ORE_META_OFFSET = 16000, NATURAL_ORE_META_OFFSET = 8000;
+
+    static int getTextureCacheKey(int metadata) {
+        if ((metadata % SMALL_ORE_META_OFFSET) >= NATURAL_ORE_META_OFFSET) metadata -= NATURAL_ORE_META_OFFSET;
+        return metadata;
+    }
 
     public int getMaterialIndex(int meta) {
         if (meta < 0) return 0;

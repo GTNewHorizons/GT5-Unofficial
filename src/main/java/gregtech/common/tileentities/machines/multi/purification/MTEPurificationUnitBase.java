@@ -664,27 +664,25 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         // Display linked controller in Waila.
         if (tag.getBoolean("linked")) {
-            currenttip.add(
+            list.add(
                 EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                     "GT5U.waila.purification_unit_base.linked_to",
                     tag.getInteger("controllerX"),
                     tag.getInteger("controllerY"),
                     tag.getInteger("controllerZ")));
         } else {
-            currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
+            list.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
         }
 
-        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
 
         tag.setBoolean("linked", getController() != null);
@@ -693,8 +691,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             tag.setInteger("controllerY", controllerY);
             tag.setInteger("controllerZ", controllerZ);
         }
-
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
     public PurificationUnitStatus status() {

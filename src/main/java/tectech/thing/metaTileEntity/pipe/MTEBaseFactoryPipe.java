@@ -20,16 +20,15 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import tectech.mechanics.pipe.IActivePipe;
-import tectech.mechanics.pipe.PipeActivity;
+import io.netty.buffer.ByteBuf;
 
-public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActivePipe {
+public abstract class MTEBaseFactoryPipe extends MetaPipeEntity {
 
     public static final IIconContainer EM_PIPE = Textures.BlockIcons.custom("iconsets/EM_DATA");
     public static final IIconContainer EM_BAR = Textures.BlockIcons.custom("iconsets/EM_BAR");
     public static final IIconContainer EM_BAR_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_BAR_ACTIVE");
 
-    protected boolean mIsActive;
+    private boolean mIsActive;
 
     protected float mThickness = 0.5f;
 
@@ -79,7 +78,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
 
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
-        setActive(nbtTagCompound.getBoolean("eActive"));
+        mIsActive = nbtTagCompound.getBoolean("eActive");
         mConnections = nbtTagCompound.getByte("mConnections");
     }
 
@@ -109,25 +108,9 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
         return mThickness;
     }
 
-    @Override
-    public void markUsed() {
-        setActive(true);
-    }
-
-    @Override
-    public void setActive(boolean state) {
-        if (state != mIsActive) {
-            mIsActive = state;
-            getBaseMetaTileEntity().issueTextureUpdate();
-        }
-    }
-
-    @Override
     public boolean getActive() {
         return mIsActive;
     }
-
-    private boolean prevActivity;
 
     @Override
     public void onFirstTick(IGregTechTileEntity base) {
@@ -151,27 +134,28 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
             }
 
             if (aTick % SECONDS == 0) {
-                checkActive();
 
-                boolean isActive = getActive();
-
-                if (isActive != prevActivity || aTick % (60 * SECONDS) == 0) {
-                    prevActivity = isActive;
-
-                    PipeActivity
-                        .enqueueUpdate(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord(), isActive);
+                boolean isActive = checkActive();
+                if (mIsActive != isActive) {
+                    mIsActive = isActive;
+                    base.issueTileUpdate();
                 }
             }
         }
     }
 
-    protected void checkActive() {
-        mIsActive = false;
+    protected boolean checkActive() {
+        return false;
+    }
+
+    @Override
+    protected boolean deferCheckConnection() {
+        return false;
     }
 
     @Override
     protected void checkConnections() {
-
+        mCheckConnections = false;
     }
 
     @Override
@@ -183,5 +167,17 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
     public String[] getInfoData() {
         return new String[] { getActive() ? IGregTechDeviceInformation.encode("tt.infodata.pipe.active")
             : IGregTechDeviceInformation.encode("tt.infodata.pipe.inactive") };
+    }
+
+    @Override
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(mIsActive);
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        mIsActive = buffer.readBoolean();
     }
 }

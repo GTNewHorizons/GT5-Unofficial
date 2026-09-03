@@ -26,6 +26,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import io.netty.buffer.ByteBuf;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.gui.MTEDebugPowerGeneratorGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
@@ -71,7 +72,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        LASER = !LASER;
+        toggleLaser();
         GTUtility.sendChatTrans(
             aPlayer,
             "tt.chat.debug.generator",
@@ -133,6 +134,14 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
         isUsingTiers = aNBT.getBoolean("eUsingTiers");
         isProducing = aNBT.getBoolean("eProducing");
         LASER = aNBT.getBoolean("eLaser");
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        if (base.isServerSide()) {
+            updateNeighbours(base);
+        }
     }
 
     @Override
@@ -210,8 +219,16 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
 
     @Override
     public long maxEUStore() {
-        // should not be increased to avoid overflow
-        return getActualVoltage() * amperage << (LASER ? 2 : 3);
+        long eut = getActualVoltage() * amperage;
+        try {
+            if (LASER) {
+                return Math.multiplyExact(eut, 24L);
+            } else {
+                return Math.multiplyExact(eut, 4L);
+            }
+        } catch (ArithmeticException e) {
+            return Long.MAX_VALUE;
+        }
     }
 
     @Override
@@ -267,7 +284,30 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
 
     public void setLASER(boolean LASER) {
         this.LASER = LASER;
-        getBaseMetaTileEntity().issueTextureUpdate();
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) return;
+        if (base.isServerSide()) {
+            updateNeighbours(base);
+            base.issueTileUpdate();
+        } else {
+            base.issueTextureUpdate();
+        }
+    }
+
+    @Override
+    public void writeToStream(ByteBuf buf) {
+        super.writeToStream(buf);
+        buf.writeBoolean(LASER);
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buf) {
+        super.readFromStream(buf);
+        LASER = buf.readBoolean();
+    }
+
+    public void toggleLaser() {
+        setLASER(!isLASER());
     }
 
     public boolean isProducing() {
@@ -286,6 +326,17 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     @Override
     public boolean canConnect(ForgeDirection side) {
         return LASER && side != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    public void updateNeighbours(IGregTechTileEntity base) {
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            IGregTechTileEntity igte = base.getIGregTechTileEntityAtSide(side);
+            if (igte == null) continue;
+            IMetaTileEntity imte = igte.getMetaTileEntity();
+            if (imte instanceof MTEPipeLaser laser) {
+                laser.updateNetwork(true);
+            }
+        }
     }
 
     private void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {

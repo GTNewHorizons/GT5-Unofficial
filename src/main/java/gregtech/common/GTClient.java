@@ -31,6 +31,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
@@ -60,11 +61,13 @@ import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolboxSlot;
@@ -80,6 +83,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
+import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.net.cape.GTPacketSetCape;
@@ -91,6 +95,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.DynamicLangManager;
 import gregtech.api.util.client.ResourceUtils;
 import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
@@ -123,6 +128,7 @@ import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.NanoForgeRenderer;
+import gregtech.common.render.RenderInit;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.CircuitComponentItemRenderer;
 import gregtech.common.render.items.DataStickRenderer;
@@ -131,6 +137,8 @@ import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
+import gregtech.common.tileentities.machines.multi.nanochip.VacuumConveyorPipeClientStateManager;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
@@ -144,6 +152,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 
 public class GTClient extends GTProxy {
 
@@ -182,6 +191,7 @@ public class GTClient extends GTProxy {
         super.onPreInitialization(event);
         SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
+        RenderInit.registerEarly();
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
@@ -242,6 +252,10 @@ public class GTClient extends GTProxy {
 
         MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
 
+        MinecraftForgeClient.registerItemRenderer(
+            ItemList.Ice_Cream_Machine.getItem(),
+            (IItemRenderer) GregTechAPI.METATILEENTITIES[MetaTileEntityIDs.ICE_CREAM_MACHINE.ID]);
+
         final MechanicalArmorRenderer mechanicalArmorRenderer = new MechanicalArmorRenderer();
         MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Helmet.getItem(), mechanicalArmorRenderer);
         MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Chestplate.getItem(), mechanicalArmorRenderer);
@@ -285,8 +299,10 @@ public class GTClient extends GTProxy {
                     GUIColorOverride.onResourceManagerReload();
                     FallbackableSteamTexture.reload();
                     CoverRegistry.reloadCoverColorOverrides();
+                    DynamicLangManager.reload();
                 }
             });
+        RenderInit.register();
         Pollution.onPostInitClient();
 
         ModuleRegistrar.instance()
@@ -390,7 +406,16 @@ public class GTClient extends GTProxy {
         if (GregTech.ID.equals(e.modID)) {
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
             mPreference = new GTClientPreference();
+            final boolean renderIndicatorsOnHatch = GTMod.proxy.mRenderIndicatorsOnHatch;
             GTPreLoad.loadClientConfig();
+            GTRendererBlock.clearInventoryDisplayListCache();
+            if (renderIndicatorsOnHatch != GTMod.proxy.mRenderIndicatorsOnHatch) {
+                for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                    if (GregTechAPI.METATILEENTITIES[i] instanceof CommonMetaTileEntity metaTileEntity) {
+                        metaTileEntity.clearInventoryTextureCache();
+                    }
+                }
+            }
             if (e.isWorldRunning) {
                 GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
                 GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
@@ -579,6 +604,7 @@ public class GTClient extends GTProxy {
     @SubscribeEvent
     public void onRenderStart(TickEvent.RenderTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
+            RenderInit.runPendingReload();
             renderTickTime = event.renderTickTime;
             isRenderingWorld = true;
         } else if (event.phase == TickEvent.Phase.END) {
@@ -616,6 +642,15 @@ public class GTClient extends GTProxy {
     public void onWorldUnload(WorldEvent.Unload event) {
         super.onWorldUnload(event);
         RenderOverlay.onWorldUnload(event.world);
+        if (event.world.isRemote) {
+            VacuumConveyorPipeClientStateManager.INSTANCE.clear();
+        }
+    }
+
+    @SubscribeEvent
+    public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        VacuumFactoryGrid.clearAll();
+        BECFactoryGrid.clearAll();
     }
 
     @SubscribeEvent

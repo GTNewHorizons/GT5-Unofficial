@@ -1318,7 +1318,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             mChemicalFormula = materialList.stream()
                 .map(MaterialStack::toString)
                 .collect(Collectors.joining())
-                .replaceAll("_", "-");
+                .replace("_", "-");
         }
 
         // Set texture and colors
@@ -1938,10 +1938,14 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
      */
     public boolean contains(ItemStack... aStacks) {
         if (aStacks == null || aStacks.length == 0) return false;
-        return mMaterialItems.stream()
-            .anyMatch(
-                tStack -> Arrays.stream(aStacks)
-                    .anyMatch(aStack -> GTUtility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())));
+        for (int i = 0, size = mMaterialItems.size(); i < size; i++) {
+            ItemStack materialItem = mMaterialItems.get(i);
+            boolean ignoreNBT = !materialItem.hasTagCompound();
+            for (int j = 0; j < aStacks.length; j++) {
+                if (GTUtility.areStacksEqual(aStacks[j], materialItem, ignoreNBT)) return true;
+            }
+        }
+        return false;
     }
 
     /**

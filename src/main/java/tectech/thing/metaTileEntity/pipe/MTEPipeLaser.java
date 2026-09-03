@@ -10,7 +10,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
+import org.jetbrains.annotations.ApiStatus;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -21,16 +22,15 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import tectech.TecTech;
-import tectech.loader.NetworkDispatcher;
-import tectech.mechanics.pipe.IActivePipe;
+import io.netty.buffer.ByteBuf;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
-import tectech.mechanics.pipe.PipeActivityMessage;
 import tectech.util.CommonValues;
 
-public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTunnel {
 
     static IIconContainer EMcandy, EMCandyActive;
     private static IIconContainer EMpipe;
@@ -91,11 +91,8 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
         }
     }
 
-    public void updateNetwork(boolean nestedCall) {
-        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-
-        active = false;
-
+    @ApiStatus.OverrideOnly
+    protected void updateSelf(IGregTechTileEntity aBaseMetaTileEntity) {
         mConnections = 0;
         connectionCount = 0;
 
@@ -123,14 +120,25 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
                     }
                 }
         }
-
-        if (!nestedCall) updateNeighboringNetworks();
     }
 
-    @Override
-    public void onColorChangeServer(byte aColor) {
-        this.updateNetwork(false);
-        super.onColorChangeServer(aColor);
+    public void updateNetwork(boolean nestedCall) {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+        if (aBaseMetaTileEntity.isClientSide()) return;
+
+        byte prevConnections = mConnections;
+
+        updateSelf(aBaseMetaTileEntity);
+
+        if (!nestedCall) updateNeighboringNetworks();
+        if (aBaseMetaTileEntity instanceof BaseMetaPipeEntity base) {
+            base.updateConnections();
+            base.syncConnectionToClient();
+        }
+        if (prevConnections != mConnections && active) {
+            active = false;
+            aBaseMetaTileEntity.issueTileUpdate();
+        }
     }
 
     @Override
@@ -151,6 +159,17 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     }
 
     @Override
+    protected boolean deferCheckConnection() {
+        return false;
+    }
+
+    @Override
+    public void checkConnections() {
+        mCheckConnections = false;
+        updateNetwork(false);
+    }
+
+    @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         this.updateNetwork(false);
         super.onFirstTick(aBaseMetaTileEntity);
@@ -163,19 +182,8 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if ((aTick & 31) == 31) {
-                if (TecTech.RANDOM.nextInt(15) == 0) {
-                    NetworkDispatcher.INSTANCE.sendToAllAround(
-                        new PipeActivityMessage.PipeActivityData(this),
-                        new NetworkRegistry.TargetPoint(
-                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                            aBaseMetaTileEntity.getXCoord(),
-                            aBaseMetaTileEntity.getYCoord(),
-                            aBaseMetaTileEntity.getZCoord(),
-                            256));
-                }
-            }
+        if (aBaseMetaTileEntity.isServerSide() && aTick > 1) {
+            aBaseMetaTileEntity.tryDisableTicking();
         }
     }
 
@@ -215,21 +223,25 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     }
 
     @Override
-    public void setActive(boolean state) {
-        if (state != active) {
-            active = state;
-            getBaseMetaTileEntity().issueTextureUpdate();
-        }
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(active);
     }
 
     @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        active = buffer.readBoolean();
+    }
+
     public boolean getActive() {
         return active;
     }
 
-    @Override
     public void markUsed() {
-        this.active = true;
+        if (active) return;
+        active = true;
+        getBaseMetaTileEntity().issueTileUpdate();
     }
 
     @Override

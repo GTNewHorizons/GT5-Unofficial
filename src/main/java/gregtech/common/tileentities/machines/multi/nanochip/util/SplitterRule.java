@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +18,7 @@ import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.google.common.primitives.Bytes;
 
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 
 public class SplitterRule {
@@ -52,6 +52,8 @@ public class SplitterRule {
         FilterType() {}
     }
 
+    private static final int FILTER_STACKS_SIZE = 16;
+
     public List<Byte> inputColors;
     public List<Byte> outputColors;
     // Optional redstone settings for this splitter rule
@@ -66,7 +68,7 @@ public class SplitterRule {
             new ArrayList<>(),
             new ArrayList<>(),
             new SplitterRule.RedstoneMode(0, 0),
-            new LimitingItemStackHandler(6, 1),
+            new LimitingItemStackHandler(FILTER_STACKS_SIZE, 1),
             COLOR);
     }
 
@@ -82,23 +84,29 @@ public class SplitterRule {
     // True if this rule can apply to the given itemstack
     public boolean appliesTo(Byte color, ItemStack item, MTESplitterModule.RedstoneChannelInfo redstoneState) {
         // Requires the given color to be in the set of input colors
-        if (!inputColors.contains(color)) return false;
-        // Get all the filters that are actually set
-        var filters = filterStacks.getStacks()
-            .stream()
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+        // No input color means wildcard, accept any color
+        if (!inputColors.isEmpty() && !inputColors.contains(color)) return false;
+
         // If no items in the filter set match the given item, do not apply this rule
-        if (!filters.isEmpty() && filters.stream()
-            .noneMatch(stack -> stack.isItemEqual(item))) {
-            return false;
+        // Also try the normal item representation
+        ItemStack realStack = CircuitComponent.tryGetRealStack(item);
+        boolean passed = false;
+        String testDisplayName = GTUtility.getStackCustomName(item);
+        for (ItemStack filterStack : filterStacks.getStacks()) {
+            if (filterStack == null) continue;
+            String filterDisplayName = GTUtility.getStackCustomName(filterStack);
+            if (Objects.equals(testDisplayName, filterDisplayName)
+                && (filterStack.isItemEqual(item) || (realStack != null && filterStack.isItemEqual(realStack)))) {
+                passed = true;
+                break;
+            }
         }
+        if (!passed) return false;
+
         // If a redstone mode is set
         if (redstoneMode != null) {
             // Redstone level in requested channel should be at least the given level
-            if (redstoneMode.level > redstoneState.get(redstoneMode.channel)) {
-                return false;
-            }
+            return redstoneMode.level <= redstoneState.get(redstoneMode.channel);
         }
         // All checks passed, this rule applies
         return true;
@@ -133,7 +141,12 @@ public class SplitterRule {
             redstoneMode = new RedstoneMode(channel, level);
         }
         rule.redstoneMode = redstoneMode;
-        rule.filterStacks.deserializeNBT(compound.getCompoundTag("filterStacks"));
+
+        // Handle resizing the filter stacks size across saves
+        NBTTagCompound filterStacksTag = compound.getCompoundTag("filterStacks");
+        filterStacksTag.setInteger("Size", FILTER_STACKS_SIZE);
+        rule.filterStacks.deserializeNBT(filterStacksTag);
+
         rule.enabledWidget = FilterType.VALUES[compound.getInteger("enabled")];
         return rule;
     }

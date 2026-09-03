@@ -1,13 +1,13 @@
 package gregtech.common.tileentities.debug;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,7 +22,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -30,12 +29,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.DebugWriterHelper;
 import gregtech.common.gui.modularui.singleblock.MTEDebugStructureWriterGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDebugStructureWriter extends MTETieredMachineBlock {
 
     private static final HashMap<MTEDebugStructureWriter, BoundHighlighter> bondingBoxes = new HashMap<>(1);
@@ -172,17 +174,14 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
         bondingBoxes.remove(this);
     }
 
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
-        printStructure(aPlayer);
-        aBaseMetaTileEntity.disableWorking();
-    }
-
     public String getPseudoJavaCode() {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
-        return StructureUtility.getPseudoJavaCode(
+
+        if (aBaseMetaTileEntity == null) {
+            return "";
+        }
+
+        return DebugWriterHelper.getPseudoJavaCode(
             aBaseMetaTileEntity.getWorld(),
             ExtendedFacing.of(aBaseMetaTileEntity.getFrontFacing()),
             aBaseMetaTileEntity.getXCoord(),
@@ -196,7 +195,8 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
             numbers[3],
             numbers[4],
             numbers[5],
-            transpose);
+            transpose,
+            DebugWriterHelper::findSymbolOverride);
     }
 
     public void printStructure(EntityPlayer aPlayer) {
@@ -280,7 +280,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
                 return;
             }
 
-            EntityPlayerSP p = mc.thePlayer;
+            EntityLivingBase p = mc.renderViewEntity;
             double doubleX = p.lastTickPosX + (p.posX - p.lastTickPosX) * event.partialTicks;
             double doubleY = p.lastTickPosY + (p.posY - p.lastTickPosY) * event.partialTicks;
             double doubleZ = p.lastTickPosZ + (p.posZ - p.lastTickPosZ) * event.partialTicks;

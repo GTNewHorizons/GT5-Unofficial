@@ -1,6 +1,7 @@
 package gregtech.loaders.preload;
 
-import gregtech.api.util.GTLog;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import gregtech.common.redstonecircuits.CircuitBasicLogic;
 import gregtech.common.redstonecircuits.CircuitBitAnd;
 import gregtech.common.redstonecircuits.CircuitCombinationLock;
@@ -15,7 +16,7 @@ public class LoaderCircuitBehaviors implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Register Redstone Circuit behaviours.");
+        GT_FML_LOGGER.debug("GTMod: Register Redstone Circuit behaviours.");
         new CircuitTimer(0);
         new CircuitBasicLogic(1);
         new CircuitRepeater(2);

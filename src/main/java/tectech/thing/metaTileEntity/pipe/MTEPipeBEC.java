@@ -17,6 +17,7 @@ import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -56,7 +57,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
         if (tooltip == null) {
             tooltip = new Lazy<>(
                 () -> MarkdownTooltipLoader.STANDARD
-                    .loadStandardPath(new ResourceLocation("gregtech", "bec-pipe"), new HashMap<>()));
+                    .loadStandardPath(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-pipe"), new HashMap<>()));
         }
         return ArrayUtils.addAll(
             super.getDescription(),
@@ -89,8 +90,8 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     }
 
     @Override
-    protected void checkActive() {
-        mIsActive = network != null && !network.getComponents(BECInventory.class)
+    protected boolean checkActive() {
+        return network != null && !network.getComponents(BECInventory.class)
             .isEmpty();
     }
 
@@ -132,6 +133,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     @Override
     protected void checkConnections() {
+        mCheckConnections = false;
         mConnections = 0;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -155,7 +157,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     public String[] getInfoData() {
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        data.add("Network: " + (network == null ? "None" : network.id));
+        data.add("BEC Network: " + (network == null ? "None" : network.id));
 
         return data.toArray(new String[0]);
     }
@@ -183,6 +185,15 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     @Override
     public void onRemoval() {
         super.onRemoval();
+
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
 
         if (GTUtility.isServer()) {
             BECFactoryGrid.INSTANCE.removeElement(this);

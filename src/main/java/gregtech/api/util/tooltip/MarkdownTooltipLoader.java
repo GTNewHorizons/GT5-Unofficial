@@ -26,6 +26,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.Localized;
@@ -76,7 +77,7 @@ public class MarkdownTooltipLoader {
             return loadStandardPath(markdown, getCurrentLanguage(), vars);
         } catch (IOException t1) {
             if (!(t1.getCause() instanceof FileNotFoundException)) {
-                GTMod.GT_FML_LOGGER.error("Error loading {}", markdown, t1);
+                GTLoggers.GT_FML_LOGGER.error("Error loading {}", markdown, t1);
             }
 
             try {
@@ -467,7 +468,7 @@ public class MarkdownTooltipLoader {
                     }
                 });
 
-                if (paramBuffer.length() > 0) {
+                if (!paramBuffer.isEmpty()) {
                     paramList.add(paramBuffer.toString());
                 }
 

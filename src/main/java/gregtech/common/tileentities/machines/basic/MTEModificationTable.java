@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import java.util.Collection;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
@@ -51,7 +52,7 @@ import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 
 public class MTEModificationTable extends MetaTileEntity {
 
-    public static final int AUGMENT_CATEGORY_COUNT = AugmentCategory.values().length;
+    public static final int AUGMENT_CATEGORY_COUNT = AugmentCategory.VALUES.length;
     // Update this integer if you add a frame with more slots in a single category than the previous highest
     public static final int LARGEST_FRAME = 5;
     private static final int AUGMENT_SLOTS_COUNT = LARGEST_FRAME * AUGMENT_CATEGORY_COUNT;
@@ -382,6 +383,12 @@ public class MTEModificationTable extends MetaTileEntity {
 
             for (BehaviorName required : augment.getRequiredBehaviors()) {
                 if (!state.hasBehavior(required)) return false;
+            }
+
+            Collection<BehaviorName> requiredOr = augment.getRequiredBehaviorsOr();
+            if (!requiredOr.isEmpty() && requiredOr.stream()
+                .noneMatch(state::hasBehavior)) {
+                return false;
             }
 
             for (BehaviorName incompatible : augment.getIncompatibleBehaviors()) {

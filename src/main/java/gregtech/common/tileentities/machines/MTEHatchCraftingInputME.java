@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -35,10 +34,12 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -103,7 +104,7 @@ import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.ScheduledReason;
 import appeng.util.inv.MEInventoryCrafting;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -114,6 +115,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.GTDualInputPattern;
@@ -123,6 +125,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.config.Gregtech;
 import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputMEGui;
+import gregtech.crossmod.ae2.ChatComponentNonConsumedItemsSuffix;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -168,9 +171,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                         itemInventory.add(item);
                     }
                 } else {
-                    GTMod.GT_FML_LOGGER.warn(
-                        "An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: "
-                            + tagItemStack);
+                    GTLoggers.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: {}",
+                        tagItemStack);
                 }
             }
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
@@ -182,9 +185,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                         fluidInventory.add(fluid);
                     }
                 } else {
-                    GTMod.GT_FML_LOGGER.warn(
-                        "An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: "
-                            + tagFluidStack);
+                    GTLoggers.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: {}",
+                        tagFluidStack);
                 }
             }
         }
@@ -255,11 +258,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
             if (patternDetails != null) {
                 for (IAEStack<?> singleInput : patternDetails.getAEInputs()) {
-                    if (singleInput == null) continue;
-                    if (singleInput instanceof IAEItemStack ais) {
-                        inputItems = ArrayUtils.addAll(inputItems, ais.getItemStack());
-                    } else if (singleInput instanceof IAEFluidStack ifs) {
-                        inputFluids = ArrayUtils.addAll(inputFluids, ifs.getFluidStack());
+                    switch (singleInput) {
+                        case null -> {
+                            continue;
+                        }
+                        case IAEItemStack ais -> inputItems = ArrayUtils.addAll(inputItems, ais.getItemStack());
+                        case IAEFluidStack ifs -> inputFluids = ArrayUtils.addAll(inputFluids, ifs.getFluidStack());
+                        default -> {
+                        }
                     }
                 }
             }
@@ -409,13 +415,18 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         public boolean insertItemsAndFluids(MEInventoryCrafting inventoryCrafting) {
             for (int i = 0; i < inventoryCrafting.getSizeInventory(); ++i) {
                 final IAEStack<?> aes = inventoryCrafting.getAEStackInSlot(i);
-                if (aes == null) continue;
-
-                if (aes instanceof IAEFluidStack ifs) { // insert fluid
-                    insertFluid(ifs);
-                } else if (aes instanceof IAEItemStack ais) { // insert item
-                    insertItem(ais);
+                switch (aes) {
+                    case null -> {
+                        continue;
+                    }
+                    case IAEFluidStack ifs ->  // insert fluid
+                        insertFluid(ifs);
+                    case IAEItemStack ais ->  // insert item
+                        insertItem(ais);
+                    default -> {
+                    }
                 }
+
             }
             return true;
         }
@@ -676,8 +687,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             name.append(getLocalName());
         }
 
-        return name.append(this.getNameSuffix())
-            .toString();
+        IChatComponent suffix = this.getNameSuffix();
+        if (suffix != null) {
+            name.append(suffix.getUnformattedText());
+        }
+        return name.toString();
     }
 
     @Override
@@ -694,30 +708,28 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     }
 
     @Override
-    public String getNameSuffix() {
-        if (hasCustomName()) return "";
+    public IChatComponent getNameSuffix() {
+        if (hasCustomName()) return null;
 
-        StringBuilder suffix = new StringBuilder();
+        IChatComponent suffix = null;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base instanceof IInterfaceNameProvider nameProvider) {
-            String circuitSuffix = nameProvider.getInterfaceNameSuffix();
-            if (circuitSuffix != null) suffix.append(circuitSuffix);
+            suffix = nameProvider.getInterfaceNameSuffix();
         }
 
-        StringJoiner manualSlots = new StringJoiner(", ");
+        List<ItemStack> manualSlots = new ArrayList<>();
         for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
             if (mInventory[i] != null) {
-                manualSlots.add(mInventory[i].getDisplayName());
+                manualSlots.add(mInventory[i]);
             }
         }
-        if (manualSlots.length() > 0) {
-            try {
-                suffix.append(String.format(Gregtech.machines.itemSlotsSuffixFormat, manualSlots));
-            } catch (IllegalFormatException ignored) {}
+        if (!manualSlots.isEmpty()) {
+            IChatComponent manualSuffix = new ChatComponentNonConsumedItemsSuffix(manualSlots);
+            suffix = suffix == null ? manualSuffix : suffix.appendSibling(manualSuffix);
         }
 
-        return suffix.toString();
+        return suffix;
     }
 
     @Override
@@ -799,9 +811,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             if (pattern != null) {
                 internalInventory[patternSlot] = new PatternSlot<>(pattern, patternSlotNBT, this);
             } else {
-                GTMod.GT_FML_LOGGER.warn(
-                    "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: "
-                        + patternSlotNBT);
+                GTLoggers.GT_FML_LOGGER.warn(
+                    "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: {}",
+                    patternSlotNBT);
             }
         }
 
@@ -1095,8 +1107,17 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
-        if (tag.hasKey("name"))
-            currenttip.add(EnumChatFormatting.AQUA + tag.getString("name") + EnumChatFormatting.RESET);
+        if (tag.hasKey("nameLines")) {
+            NBTTagList nameLines = tag.getTagList("nameLines", Constants.NBT.TAG_STRING);
+            if (nameLines.tagCount() > 0) {
+                currenttip.add(EnumChatFormatting.AQUA + nameLines.getStringTagAt(0) + EnumChatFormatting.RESET);
+                // Indent everything below the machine name, so the listed items read as one block
+                for (int i = 1; i < nameLines.tagCount(); i++) {
+                    currenttip
+                        .add(EnumChatFormatting.AQUA + "  " + nameLines.getStringTagAt(i) + EnumChatFormatting.RESET);
+                }
+            }
+        }
         currenttip.add(
             StatCollector.translateToLocal(
                 "GT5U.infodata.hatch.crafting_input_me.show_pattern." + (showPattern ? "enable" : "disabled")));
@@ -1114,6 +1135,46 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             }
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    /**
+     * Same content as {@link #getName()}, but with the circuit numbers and every displayed item on separate lines.
+     */
+    private NBTTagList getWailaNameLines() {
+        NBTTagList lines = new NBTTagList();
+        if (hasCustomName()) {
+            lines.appendTag(new NBTTagString(getCustomName()));
+            return lines;
+        }
+
+        String head = getCrafterIcon() != null ? getCrafterIcon().getDisplayName() : getLocalName();
+
+        List<Integer> circuitNumbers = new ArrayList<>();
+        ItemStack ghostCircuit = getStackInSlot(getCircuitSlot());
+        if (allowSelectCircuit() && ghostCircuit != null && ghostCircuit.getItemDamage() > 0) {
+            circuitNumbers.add(ghostCircuit.getItemDamage());
+        }
+        circuitNumbers.addAll(getPhysicalCircuitNumbers());
+        if (!circuitNumbers.isEmpty()) {
+            try {
+                head += String.format(
+                    Gregtech.machines.ghostCircuitSuffixFormat,
+                    circuitNumbers.stream()
+                        .map(String::valueOf)
+                        .collect(Collectors.joining(", ")));
+            } catch (IllegalFormatException ignored) {}
+        }
+        lines.appendTag(new NBTTagString(head));
+
+        for (ItemStack item : getNonConsumedInputDisplayItems()) {
+            lines.appendTag(new NBTTagString(CommonBaseMetaTileEntity.getShortItemDisplayName(item)));
+        }
+        for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
+            if (mInventory[i] != null) {
+                lines.appendTag(new NBTTagString(CommonBaseMetaTileEntity.getShortItemDisplayName(mInventory[i])));
+            }
+        }
+        return lines;
     }
 
     @Override
@@ -1146,7 +1207,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
         tag.setTag("inventory", inventory);
         if (!Objects.equals(getName(), getLocalName())) {
-            tag.setString("name", getName());
+            // Send the name split into parts, so WAILA can put each one on its own line
+            tag.setTag("nameLines", getWailaNameLines());
         }
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
@@ -1159,10 +1221,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             if (slot == null) continue;
             ICraftingPatternDetails details = slot.getPatternDetails();
             if (details == null) {
-                GTMod.GT_FML_LOGGER.warn(
-                    "Found an invalid pattern at " + getBaseMetaTileEntity().getCoords()
-                        + " in dim "
-                        + getBaseMetaTileEntity().getWorld().provider.dimensionId);
+                GTLoggers.GT_FML_LOGGER.warn(
+                    "Found an invalid pattern at {} in dim {}",
+                    getBaseMetaTileEntity().getCoords(),
+                    getBaseMetaTileEntity().getWorld().provider.dimensionId);
                 continue;
             }
             craftingTracker.addCraftingOption(this, details);

@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
@@ -226,20 +227,12 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         if (TooltipUtil.siphonLoreText != null) {
             tt.addInfo(EnumChatFormatting.ITALIC + TooltipUtil.siphonLoreText);
         }
-        tt.addInfo(
-            StatCollector.translateToLocalFormatted(
-                "gt.blockmachines.multimachine.ig.siphon.desc0",
-                (int) (SPEED_PER_COIL * 100)));
-        tt.addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc3"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc4"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc5"))
+        tt.addMarkdown(new ResourceLocation("gregtech", "planetary-gas-siphon"))
             .beginStructureBlock(13, 23, 13, false)
             .addController(StatCollector.translateToLocal("ig.siphon.structure.ControllerPos"))
             .addCasing("184", StatCollector.translateToLocal("ig.siphon.structure.SiphonCasing"), false)
             .addCasing("93", StatCollector.translateToLocal("ig.siphon.structure.FrameTungstensteel"), false)
-            .addCasing("12", "Heating Coil", true)
+            .addCasing("12", StatCollector.translateToLocal("GT5U.MBTT.Tiers.Coil"), true)
             .addCasing("6", StatCollector.translateToLocal("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"), false)
             .addEnergyHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
@@ -511,15 +504,13 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.coilLevel") + ": "
                 + EnumChatFormatting.WHITE
                 + Math.max(0, tag.getInteger("coilTier")));
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + formatNumber(Math.max(0, 100 / speedBoost(tag.getInteger("coilTier"))))
@@ -527,9 +518,8 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("coilTier", getCoilTier());
     }
 

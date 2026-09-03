@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import kekztech.KekzCore;
 import kekztech.common.items.ErrorItem;
 
 public class Util {
@@ -37,7 +38,7 @@ public class Util {
             ret.stackSize = amount;
             return ret;
         }
-        System.err.println("Failed to find " + oredictName + " in OreDict");
+        KekzCore.LOGGER.error("Failed to find {} in OreDict", oredictName);
         return new ItemStack(ErrorItem.getInstance(), amount);
     }
 

@@ -157,15 +157,18 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private ItemStack[] midProduct;
     private ProcessingMode mode = ProcessingMode.MAC_WASH_THERMAL_MAC;
     private boolean doesVoidStone = false;
-    private int currentParallelism = 0;
     private final XSTR random = new XSTR();
 
+    // setting alwaysMaxParallel to true here combined with supportsPowerPanel() returning false
+    // will result in WAILA never using the overridden parallels format
     public MTEIntegratedOreFactory(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        this.alwaysMaxParallel = true;
     }
 
     public MTEIntegratedOreFactory(String aName) {
         super(aName);
+        this.alwaysMaxParallel = true;
     }
 
     private static void registerOrePrefix(String prefix, IntOpenHashSet target) {
@@ -393,7 +396,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         this.lEUt = fixedEUt;
 
         lastParallel = effectiveParallel;
-        setCurrentParallelism(effectiveParallel);
+        maxParallel = effectiveParallel;
 
         this.updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -619,12 +622,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         midProduct = midProductList.toArray(new ItemStack[0]);
     }
 
-    private void setCurrentParallelism(int parallelism) {
-        this.currentParallelism = parallelism;
-    }
-
-    private int getCurrentParallelism() {
-        return this.currentParallelism;
+    // needed for MTEMultiBlockBase WAILA parallel tag to work
+    @Override
+    public int getMaxParallelRecipes() {
+        return maxParallel;
     }
 
     // Parallels are automatical
@@ -706,7 +707,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         List<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
             IGregTechDeviceInformation
-                .encode("GT5U.infodata.integrated_ore_factory.parallelism", getCurrentParallelism()));
+                .encode("GT5U.infodata.integrated_ore_factory.parallelism", getMaxParallelRecipes()));
         info.add(IGregTechDeviceInformation.encode("GT5U.machines.oreprocessor.void", doesVoidStone));
         info.add("GT5U.multiblock.runningMode");
         info.addAll(getDisplayMode(mode));
@@ -787,7 +788,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     public void loadNBTData(NBTTagCompound aNBT) {
         mode = ProcessingMode.fromOrdinal(aNBT.getInteger("mode"));
         doesVoidStone = aNBT.getBoolean("doesVoidStone");
-        currentParallelism = aNBT.getInteger("currentParallelism");
         super.loadNBTData(aNBT);
     }
 
@@ -795,23 +795,15 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mode", mode.ordinal());
         aNBT.setBoolean("doesVoidStone", doesVoidStone);
-        aNBT.setInteger("currentParallelism", currentParallelism);
         super.saveNBTData(aNBT);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.BLUE
-                + tag.getInteger("currentParallelism")
-                + EnumChatFormatting.RESET);
-        currenttip.add(StatCollector.translateToLocal("GT5U.multiblock.runningMode"));
-        currenttip.addAll(getDisplayMode(ProcessingMode.fromOrdinal(tag.getInteger("machineMode"))));
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(StatCollector.translateToLocal("GT5U.multiblock.runningMode"));
+        list.addAll(getDisplayMode(ProcessingMode.fromOrdinal(tag.getInteger("machineMode"))));
+        list.add(
             StatCollector
                 .translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("doesVoidStone")));
     }
@@ -822,12 +814,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("machineMode", mode.ordinal());
         tag.setBoolean("doesVoidStone", doesVoidStone);
-        tag.setInteger("currentParallelism", currentParallelism);
     }
 
     private enum ProcessingMode {
