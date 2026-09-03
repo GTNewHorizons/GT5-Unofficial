@@ -40,6 +40,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -49,6 +50,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -62,6 +64,7 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -97,11 +100,13 @@ import gregtech.common.misc.GTStructureChannels;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import kubatech.api.arcfurnace.ArcFurnaceContext;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
+import kubatech.api.enums.ItemList;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.ArcFurnaceElectrode;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrode;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustrialArcFurnace>
     implements ISurvivalConstructable, ArcFurnaceContext, ICasingTextureProvider {
 
@@ -363,66 +368,38 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Arc Furnace, IAF")
-            .addInfo("Insert electrode in the electrode hatch")
-            .addInfo("Speed, Parallel, OC and power use depend on the electrode")
-            .addInfo("Some electrodes have special effects, check their tooltip")
-            .addInfo(
-                "Below " + EnumChatFormatting.RED
-                    + ARC_SURGE_DURABILITY_THRESHOLD_PERCENT
-                    + EnumChatFormatting.GRAY
-                    + "% durability: "
-                    + EnumChatFormatting.RED
-                    + ARC_SURGE_CHANCE_PERCENT
-                    + EnumChatFormatting.GRAY
-                    + "% chance for random arc surge")
-            .addInfo("Startup: machine ignites the arc before processing")
-            .addInfo("Startup power: based on electrode startup penalty and parallels")
-            .addInfo("Shutdown: machine powers down the arc after work ends")
-            .addInfo("-------------------------------Blast mode----------------------------------")
-            .addInfo(
-                "Processes EBF recipes at " + EnumChatFormatting.RED
-                    + BLAST_MODE_POWER_MULTIPLIER
-                    + EnumChatFormatting.GRAY
-                    + "x power cost")
-            .addInfo("--------------------------------Ore Mode----------------------------------")
-            .addInfo("Quickly process metallic ores!")
-            .addInfo(
-                "Startup time: " + EnumChatFormatting.RED
-                    + (ORE_MODE_STARTUP_TICKS / 20)
-                    + EnumChatFormatting.GRAY
-                    + " seconds")
-            .addInfo("Consumes all ores and raw ores from input buses")
-            .addInfo("Only furnace-smeltable ores, no blasting")
-            .addInfo("If queued ore exceeds capacity, startup ends immediately")
-            .addInfo(
-                "If no ores enter for " + EnumChatFormatting.RED
-                    + ORE_MODE_IDLE_FINISH_TICKS
-                    + EnumChatFormatting.GRAY
-                    + " ticks, startup ends immediately")
-            .addInfo("Outputs molten metals")
-            .addInfo("Right-click with Screwdriver to change mode")
+        // spotless:off
+        tt.addMachineType(translateToLocal("gt.mbtt.machine_type.arc_furnace_iaf"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-arc-furnace"),
+                ImmutableMap.of(
+                    "surge_threshold", ARC_SURGE_DURABILITY_THRESHOLD_PERCENT,
+                    "surge_chance", ARC_SURGE_CHANCE_PERCENT,
+                    "blast_power_multiplier", BLAST_MODE_POWER_MULTIPLIER,
+                    "ore_startup_seconds", ORE_MODE_STARTUP_TICKS / 20,
+                    "ore_idle_ticks", ORE_MODE_IDLE_FINISH_TICKS))
             .addSupportMultiAmp()
             .beginStructureBlock(17, 11, 19, true)
-            .addController("Front center, 4th layer")
-            .addCasing("175", "Steel Frame Box", false)
-            .addCasing("10-172", "Solid Steel Machine Casing", false)
-            .addCasing("101", "Steel Pipe Casing", false)
-            .addCasing("72", "Bolted Naquadah Casing", false)
-            .addCasing("30", "Heating Coil", false)
-            .addCasing("17", "Blast Smelter Heat Containment Coil", false)
-            .addCasing("15", "Refined Graphite Block", false)
-            .addCasing("12", "Insulated Fluid Pipe Casing", false)
-            .addCasing("12", "Heat Proof Coke Oven Casing", false)
-            .addMiscHatch("1", "Electrode Hatch", "Any steel machine casing", 1)
-            .addMiscHatch("0+", "Electrode Detector Hatch", "Any steel machine casing", 1)
-            .addEnergyHatch("1+", "Any steel machine casing", 1)
-            .addMaintenanceHatch("1", "Any steel machine casing", 1)
-            .addInputAny("1+", "Any steel machine casing", 1)
-            .addOutputAny("1+", "Any steel machine casing", 1)
+            .addController(translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("175", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("10-172", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("101", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing("72", Casings.BoltedNaquadahCasing.getLocalizedName(), false)
+            .addCasing("30", translateToLocal("GT5U.structure.heating_coil"), false)
+            .addCasing("17", Casings.BlastSmelterHeatContainmentCoil.getLocalizedName(), false)
+            .addCasing("15", Casings.RefinedGraphiteBlock.getLocalizedName(), false)
+            .addCasing("12", Casings.InsulatedFluidPipeCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.HeatProofCokeOvenCasing.getLocalizedName(), false)
+            .addMiscHatch("1", ItemList.ElectrodeHatch.getDisplayName(), translateToLocal("gt.mbtt.structure.any_steel_machine_casing"), 1)
+            .addMiscHatch("0+", ItemList.ElectrodeDetectorHatch.getDisplayName(), translateToLocal("gt.mbtt.structure.any_steel_machine_casing"), 1)
+            .addEnergyHatch("1+", translateToLocal("gt.mbtt.structure.any_steel_machine_casing"), 1)
+            .addMaintenanceHatch("1", translateToLocal("gt.mbtt.structure.any_steel_machine_casing"), 1)
+            .addInputAny("1+", translateToLocal("gt.mbtt.structure.any_steel_machine_casing"), 1)
+            .addOutputAny("1+", translateToLocal("gt.mbtt.structure.any_steel_machine_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

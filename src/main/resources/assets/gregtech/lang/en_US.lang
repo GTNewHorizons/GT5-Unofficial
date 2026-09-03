@@ -1812,6 +1812,12 @@ gt.mbtt.structure.neutron_accelerator=Neutron Accelerator
 gt.mbtt.structure.neutron_sensor=Neutron Sensor
 gt.mbtt.structure.yot_hatch=YOTHatch
 gt.mbtt.structure.no_air_gaps_fluid_cells_different_tiers=No air gaps allowed, but the fluid cell blocks can be different tiers
+gt.mbtt.structure.any_steel_machine_casing=Any steel machine casing
+gt.mbtt.structure.any_top_pump_casing=Any top pump casing
+gt.mbtt.structure.top_of_reactor_triso=Top of reactor (TRISO Balls)
+gt.mbtt.structure.bottom_of_reactor_burned_triso=Bottom of reactor (Burned Out TRISO Balls)
+gt.mbtt.structure.htgr_input_hatches=Any top pump casing (helium), bottom of tall tower (coolant), top of short tower (distilled water)
+gt.mbtt.structure.htgr_output_hatches=Top of tall tower (hot coolant), bottom of short tower (steam)
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -1828,6 +1834,8 @@ gt.mbtt.machine_type.heat_exchanger_ehe=Heat Exchanger, EHE
 gt.mbtt.machine_type.neutron_activator=Neutron Activator, NA
 gt.mbtt.machine_type.precise_assembler=Precise Assembler, Assembler, PrAss
 gt.mbtt.machine_type.fluid_tank=Fluid Tank
+gt.mbtt.machine_type.breeder_reactor_htgr=Breeder Reactor, HTGR
+gt.mbtt.machine_type.arc_furnace_iaf=Arc Furnace, IAF
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
