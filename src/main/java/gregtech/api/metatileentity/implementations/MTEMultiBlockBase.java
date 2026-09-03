@@ -1793,7 +1793,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (drained == null) continue;
             if (drained.getFluid() != aLiquid.getFluid()) continue;
             if (GTUtility.getFluidAmount(drained) >= GTUtility.getFluidAmount(remaining)) {
-                return GTUtility.getFluidAmount(aLiquid) - GTUtility.getFluidAmount(remaining) + GTUtility.getFluidAmount(drained);
+                return GTUtility.getFluidAmount(aLiquid) - GTUtility.getFluidAmount(remaining)
+                    + GTUtility.getFluidAmount(drained);
             }
             GTUtility.decFluidAmount(remaining, GTUtility.getFluidAmount(drained));
         }
