@@ -1,6 +1,6 @@
 package gregtech.api.recipe.lookup;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 final class GTRecipeLookupBranch {
@@ -9,7 +9,7 @@ final class GTRecipeLookupBranch {
 
     Map<GTRecipeLookupIngredient, GTRecipeLookup.Node> getNodes() {
         if (nodes == null) {
-            nodes = new LinkedHashMap<>(2);
+            nodes = new HashMap<>(2);
         }
         return nodes;
     }
