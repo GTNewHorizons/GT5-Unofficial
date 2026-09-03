@@ -10,6 +10,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPipeBlockData extends MTEPipeData {
 
     public MTEPipeBlockData(int aID, String aName, String aNameRegional) {
