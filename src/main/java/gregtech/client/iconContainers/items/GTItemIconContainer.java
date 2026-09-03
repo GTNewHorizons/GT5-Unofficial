@@ -27,9 +27,9 @@ public class GTItemIconContainer extends AbstractItemIconContainer implements Ru
 
     GTItemIconContainer(@NotNull String aIconName) {
         String iconPath = "iconsets/" + aIconName;
-        mIconName = GregTech.resourceDomain + ":" + iconPath;
+        mIconName = ResourceUtils.getIconRegisterName(GregTech.resourceDomain, iconPath);
         iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(GregTech.resourceDomain, iconPath);
-        mOverlayName = mIconName + "_OVERLAY";
+        mOverlayName = ResourceUtils.getIconRegisterName(GregTech.resourceDomain, iconPath + "_OVERLAY");
         overlayResource = ResourceUtils
             .getCompleteItemTextureResourceLocation(GregTech.resourceDomain, iconPath + "_OVERLAY");
         GregTechAPI.sGTItemIconload.add(this);

@@ -40,15 +40,15 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
                                            @Nullable IIconRegister override) {
         String iconPath = createIconName(setName, prefix);
         String fallbackIconPath = createIconName(TextureSetFallback, prefix);
-        this.iconName = domain + ":" + iconPath;
-        this.fallbackIconName = domain + ":" + fallbackIconPath;
+        this.iconName = ResourceUtils.getIconRegisterName(domain, iconPath);
+        this.fallbackIconName = ResourceUtils.getIconRegisterName(domain, fallbackIconPath);
         iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, iconPath);
         iconFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, fallbackIconPath);
 
         String iconOverlayPath = createIconName(setName, prefix + OverlaySuffix);
         String fallbackIconOverlayPath = createIconName(TextureSetFallback, prefix + OverlaySuffix);
-        this.iconOverlayName = domain + ":" + iconOverlayPath;
-        this.fallbackIconOverlayName = domain + ":" + fallbackIconOverlayPath;
+        this.iconOverlayName = ResourceUtils.getIconRegisterName(domain, iconOverlayPath);
+        this.fallbackIconOverlayName = ResourceUtils.getIconRegisterName(domain, fallbackIconOverlayPath);
         iconOverlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, iconOverlayPath);
         iconOverlayFallbackResource = ResourceUtils
             .getCompleteBlockTextureResourceLocation(domain, fallbackIconOverlayPath);

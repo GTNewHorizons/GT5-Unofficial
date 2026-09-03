@@ -23,9 +23,9 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
     protected ResourceLocation iconResource, overlayResource;
 
     GTCustomItemIconContainer(@NotNull String domain, @NotNull String aIconName) {
-        mIconName = domain + ":" + aIconName;
+        mIconName = ResourceUtils.getIconRegisterName(domain, aIconName);
         iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, aIconName);
-        mOverlayName = mIconName + Textures.OverlaySuffix;
+        mOverlayName = ResourceUtils.getIconRegisterName(domain, aIconName + Textures.OverlaySuffix);
         overlayResource = ResourceUtils
             .getCompleteItemTextureResourceLocation(domain, aIconName + Textures.OverlaySuffix);
         GregTechAPI.sGTItemIconload.add(this);

@@ -76,6 +76,18 @@ public class ResourceUtils {
     }
 
     /**
+     * Get the domain-qualified resource name expected by an icon register.
+     *
+     * @param domain       The namespace of the resource
+     * @param resourcePath The colon-free local resource path
+     * @return The domain-qualified resource name
+     */
+    public static @NotNull String getIconRegisterName(@NotNull String domain, @NotNull String resourcePath) {
+        validateResourcePath(resourcePath);
+        return domain + ":" + resourcePath;
+    }
+
+    /**
      * Get the complete resource location from a domain and a short, colon-free local resource location key.
      *
      * @param domain      The namespace of the resource (e.g.: gregtech)
@@ -87,10 +99,7 @@ public class ResourceUtils {
      */
     public static @NotNull ResourceLocation getCompleteResourceLocation(@NotNull String domain, @NotNull String basePath, @NotNull String ext,
                                                                         @NotNull String resourceKey) {
-        final int i = resourceKey.indexOf(':');
-        if (i >= 0){
-            throw new IllegalStateException("wrong path to resource specified");
-        }
+        validateResourcePath(resourceKey);
         return new ResourceLocation(domain, basePath + resourceKey + ext);
     }
 
@@ -100,5 +109,11 @@ public class ResourceUtils {
 
     public static @NotNull ResourceLocation getCompleteItemTextureResourceLocation(@NotNull String domain, String resourceKey) {
         return getCompleteResourceLocation(domain,"textures/items/", ".png", resourceKey);
+    }
+
+    private static void validateResourcePath(@NotNull String resourcePath) {
+        if (resourcePath.indexOf(':') >= 0) {
+            throw new IllegalStateException("wrong path to resource specified");
+        }
     }
 }
