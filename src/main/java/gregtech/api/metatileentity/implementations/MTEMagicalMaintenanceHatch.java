@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -59,7 +60,7 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        face = Textures.BlockIcons.custom("iconsets/OVERLAY_MAGICALMAINTENANCE");
+        face = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_MAGICALMAINTENANCE");
     }
 
     @Override
