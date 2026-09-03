@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -73,14 +74,13 @@ public final class GTRecipeLookup {
 
     static final class Node {
 
-        private @Nullable List<GTRecipe> recipes;
+        private @Nullable GTRecipe recipe;
+        private @Nullable List<GTRecipe> additionalRecipes;
         private @Nullable GTRecipeLookupBranch branch;
 
         static Node leaf(GTRecipe recipe) {
             Node node = new Node();
-            List<GTRecipe> recipes = new ArrayList<>(1);
-            recipes.add(recipe);
-            node.recipes = recipes;
+            node.recipe = recipe;
             return node;
         }
 
@@ -91,14 +91,19 @@ public final class GTRecipeLookup {
         }
 
         void addRecipe(GTRecipe recipe) {
-            if (recipes == null) {
-                recipes = new ArrayList<>(1);
+            if (this.recipe == null) {
+                this.recipe = recipe;
+                return;
             }
-            recipes.add(recipe);
+            if (additionalRecipes == null) {
+                additionalRecipes = new ArrayList<>(1);
+            }
+            additionalRecipes.add(recipe);
         }
 
         boolean containsRecipe(GTRecipe recipe) {
-            return recipes != null && recipes.contains(recipe);
+            return Objects.equals(recipe, this.recipe)
+                || additionalRecipes != null && additionalRecipes.contains(recipe);
         }
     }
 
@@ -172,8 +177,11 @@ public final class GTRecipeLookup {
                     stack.push(new SearchFrame(node.branch));
                 }
 
-                if (node.recipes != null && !node.recipes.isEmpty()) {
-                    leafIterator = node.recipes.iterator();
+                if (node.recipe != null) {
+                    if (node.additionalRecipes != null) {
+                        leafIterator = node.additionalRecipes.iterator();
+                    }
+                    return node.recipe;
                 }
             }
         }
