@@ -12,6 +12,8 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
@@ -73,6 +76,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -80,9 +84,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.net.GTPacketLMACraftingFX;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTELargeMolecularAssemblerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -120,7 +126,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'C',
             ofChain(
-                buildHatchAdder(MTELargeMolecularAssembler.class).atLeast(Energy, InputBus, Maintenance)
+                buildHatchAdder(MTELargeMolecularAssembler.class)
+                    .atLeast(Energy, LMAHatchElement.PatternProvider.or(InputBus), Maintenance)
                     .casingIndex(CASING_INDEX)
                     .hint(1)
                     .build(),
@@ -819,6 +826,53 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
 
     public void setHiddenCraftingFX(boolean hiddenCraftingFX) {
         this.hiddenCraftingFX = hiddenCraftingFX;
+    }
+
+    private enum LMAHatchElement implements IHatchElement<MTELargeMolecularAssembler> {
+
+        PatternProvider("GT5U.MBTT.PatternProviderBus", MTEMultiBlockBase::addInputBusToMachineList,
+            MTEHatchPatternProvider.class) {
+
+            @Override
+            public long count(MTELargeMolecularAssembler t) {
+                return t.mInputBusses.stream()
+                    .filter(it -> it instanceof MTEHatchPatternProvider)
+                    .count();
+            }
+        };
+
+        private final String name;
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTELargeMolecularAssembler> adder;
+
+        @SafeVarargs
+        LMAHatchElement(String name, IGTHatchAdder<MTELargeMolecularAssembler> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTELargeMolecularAssembler> adder() {
+            return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
+
     }
 
 }

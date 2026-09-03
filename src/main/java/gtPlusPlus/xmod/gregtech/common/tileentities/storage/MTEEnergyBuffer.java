@@ -6,6 +6,7 @@ import static gregtech.api.enums.GTValues.V;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -18,10 +19,13 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     protected static final byte DEFAULT_OUTPUT_AMPERAGE = 4;
@@ -38,13 +42,18 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.energybuffer.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
+    }
+
+    @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Defaults 4A In/Out",
-            "Change output Amperage with a screwdriver",
-            "Now Portable!",
-            GTPPCore.GT_Tooltip.get());
+        return ArrayUtils
+            .addAll(GTSplit.splitLocalized("gt.blockmachines.energybuffer.desc"), GTPPCore.GT_Tooltip.get());
     }
 
     @Override

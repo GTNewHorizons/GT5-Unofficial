@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +25,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IDataCopyable;
@@ -43,6 +45,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IOutputBus, ISmartInputHatch {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
@@ -73,6 +76,12 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
 
     public MTEHatchOutputBus(String name, int tier, int slots, String[] description, ITexture[][][] textures) {
         super(name, tier, slots, description, textures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.output_bus.name", GTValues.VN[mTier]);
     }
 
     @Override
