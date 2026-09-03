@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.tiered;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -21,6 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.util.BWTooltipReference;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -85,9 +85,14 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getTop(byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/chemical_reactor/OVERLAY_FRONT")),
+            TextureFactory.of(
+                Textures.BlockIcons
+                    .customOptional(Mods.GregTech.resourceDomain, "basicmachines/chemical_reactor/OVERLAY_FRONT")),
             TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
+                .addIcon(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
                 .glow()
                 .build() };
     }
@@ -118,11 +123,14 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
-        return new ITexture[] { super.getTopActive(aColor)[0],
-            TextureFactory
-                .of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
+        return new ITexture[] { super.getTopActive(aColor)[0], TextureFactory.of(
+            Textures.BlockIcons
+                .customOptional(Mods.GregTech.resourceDomain, "basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
             TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW"))
+                .addIcon(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW"))
                 .glow()
                 .build() };
     }

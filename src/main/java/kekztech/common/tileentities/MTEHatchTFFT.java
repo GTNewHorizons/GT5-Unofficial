@@ -2,7 +2,6 @@ package kekztech.common.tileentities;
 
 import java.util.HashMap;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,6 +22,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEFluidStack;
 import appeng.util.item.FluidList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
@@ -55,7 +55,8 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
         }
     }
 
-    private static final IIconContainer TEXTURE_TFFT_HATCH = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TFFT_HATCH");
+    private static final IIconContainer TEXTURE_TFFT_HATCH = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/TFFT_HATCH");
 
     private HashMap<IMEMonitorHandlerReceiver<IAEFluidStack>, Object> listeners = new HashMap<>();
     private MTETankTFFT controller;

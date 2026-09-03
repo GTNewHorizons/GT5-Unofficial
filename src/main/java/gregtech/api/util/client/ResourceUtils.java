@@ -97,14 +97,15 @@ public class ResourceUtils {
      *                    filename extension)
      * @return The complete ResourceLocation pointing to the resource file
      */
-    public static @NotNull ResourceLocation getCompleteResourceLocation(@NotNull String domain, @NotNull String basePath, @NotNull String ext,
-                                                                        @NotNull String resourceKey) {
+    public static @NotNull ResourceLocation getCompleteResourceLocation(@NotNull String domain,
+        @NotNull String basePath, @NotNull String ext, @NotNull String resourceKey) {
         validateResourcePath(resourceKey);
         return new ResourceLocation(domain, basePath + resourceKey + ext);
     }
 
-    public static @NotNull ResourceLocation getCompleteBlockTextureResourceLocation(@NotNull String domain, @NotNull String resourceKey) {
-        return getCompleteResourceLocation(domain,"textures/blocks/", ".png", resourceKey);
+    public static @NotNull ResourceLocation getCompleteBlockTextureResourceLocation(@NotNull String domain,
+        @NotNull String resourceKey) {
+        return getCompleteResourceLocation(domain, "textures/blocks/", ".png", resourceKey);
     }
 
     /**
@@ -118,8 +119,9 @@ public class ResourceUtils {
         return getCompleteBlockTextureResourceLocation(domain, path);
     }
 
-    public static @NotNull ResourceLocation getCompleteItemTextureResourceLocation(@NotNull String domain, String resourceKey) {
-        return getCompleteResourceLocation(domain,"textures/items/", ".png", resourceKey);
+    public static @NotNull ResourceLocation getCompleteItemTextureResourceLocation(@NotNull String domain,
+        String resourceKey) {
+        return getCompleteResourceLocation(domain, "textures/items/", ".png", resourceKey);
     }
 
     private static void validateResourcePath(@NotNull String resourcePath) {

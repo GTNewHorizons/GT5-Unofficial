@@ -1,7 +1,5 @@
 package gregtech.client.iconContainers.blocks;
 
-import static gregtech.api.enums.Mods.GregTech;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,7 +37,8 @@ public class GTCustomAlphaFallbackBlockIconContainer extends AbstractBlockIconCo
     private boolean hasIcon;
     private boolean hasOverlay;
 
-    GTCustomAlphaFallbackBlockIconContainer(@NotNull String domain, @NotNull String iconName, @NotNull IIconContainer fallback) {
+    GTCustomAlphaFallbackBlockIconContainer(@NotNull String domain, @NotNull String iconName,
+        @NotNull IIconContainer fallback) {
         this.iconName = ResourceUtils.getIconRegisterName(domain, iconName);
         this.overlayName = ResourceUtils.getIconRegisterName(domain, iconName + Textures.OverlaySuffix);
         this.iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, iconName);
@@ -48,7 +47,8 @@ public class GTCustomAlphaFallbackBlockIconContainer extends AbstractBlockIconCo
         this.fallback = fallback;
     }
 
-    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String iconName, @NotNull IIconContainer fallback) {
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String iconName,
+        @NotNull IIconContainer fallback) {
         String key = iconName + '\0' + System.identityHashCode(fallback);
         return INSTANCES
             .computeIfAbsent(key, ignored -> new GTCustomAlphaFallbackBlockIconContainer(domain, iconName, fallback));

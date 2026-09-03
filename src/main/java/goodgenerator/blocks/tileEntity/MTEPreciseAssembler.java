@@ -16,7 +16,6 @@ import java.util.stream.IntStream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -51,6 +50,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -86,10 +86,12 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
         .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_QCHEST");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QCHEST");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
         .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QCHEST_GLOW");
 

@@ -12,7 +12,6 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 
 import java.util.Locale;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,6 +27,7 @@ import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -115,86 +115,104 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             aTankCapacity,
             aSound,
             aSpecialEffect,
-            new ITexture[] { TextureFactory.of(
-                TextureFactory.of(
-                    Textures.BlockIcons.customOptional(
-                        Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        (Textures.BlockIcons.customOptional(
-                            Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE_GLOW")))
-                    .glow()
-                    .build()),
+            new ITexture[] {
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
-                            Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
-                                Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_GLOW")))
+                                Mods.GregTech.resourceDomain,
+                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                    + "/OVERLAY_SIDE_ACTIVE_GLOW")))
                         .glow()
                         .build()),
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
-                            Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")),
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
-                                Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                Mods.GregTech.resourceDomain,
+                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_GLOW")))
+                        .glow()
+                        .build()),
+                TextureFactory.of(
+                    TextureFactory.of(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")),
+                    TextureFactory.builder()
+                        .addIcon(
+                            (Textures.BlockIcons.customOptional(
+                                Mods.GregTech.resourceDomain,
+                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
                                     + "/OVERLAY_FRONT_ACTIVE_GLOW")))
                         .glow()
                         .build()),
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
-                            Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
-                                Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_GLOW")))
+                                Mods.GregTech.resourceDomain,
+                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_GLOW")))
                         .glow()
                         .build()),
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
-                            Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")),
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
-                                Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE_GLOW")))
-                        .glow()
-                        .build()),
-                TextureFactory.of(
-                    TextureFactory.of(
-                        Textures.BlockIcons
-                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
-                    TextureFactory.builder()
-                        .addIcon(
-                            (Textures.BlockIcons.customOptional(
-                                Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_GLOW")))
+                                Mods.GregTech.resourceDomain,
+                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE_GLOW")))
                         .glow()
                         .build()),
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
-                            Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE")),
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
-                                Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                Mods.GregTech.resourceDomain,
+                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_GLOW")))
+                        .glow()
+                        .build()),
+                TextureFactory.of(
+                    TextureFactory.of(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE")),
+                    TextureFactory.builder()
+                        .addIcon(
+                            (Textures.BlockIcons.customOptional(
+                                Mods.GregTech.resourceDomain,
+                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
                                     + "/OVERLAY_BOTTOM_ACTIVE_GLOW")))
                         .glow()
                         .build()),
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
-                            Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
-                                Mods.GregTech.resourceDomain, "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_GLOW")))
+                                Mods.GregTech.resourceDomain,
+                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_GLOW")))
                         .glow()
                         .build()) },
             aRecipe);

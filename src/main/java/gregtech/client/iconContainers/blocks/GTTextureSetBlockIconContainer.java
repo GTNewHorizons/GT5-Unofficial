@@ -37,7 +37,7 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
     }
 
     private GTTextureSetBlockIconContainer(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
-                                           @Nullable IIconRegister override) {
+        @Nullable IIconRegister override) {
         String iconPath = createIconName(setName, prefix);
         String fallbackIconPath = createIconName(TextureSetFallback, prefix);
         this.iconName = ResourceUtils.getIconRegisterName(domain, iconPath);
@@ -64,12 +64,13 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
     // 2026-13-05: Counted 1782 unique Block TextureSetIcons, so 2.5K will avoid resize until 1920 entries
     private static Map<Pair<String, String>, IIconContainer> INSTANCES = new HashMap<>(2520);
 
-    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
-                                                 IIconRegister override) {
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String setName,
+        @NotNull String prefix, IIconRegister override) {
         if (override != null) {
             return new GTTextureSetBlockIconContainer(domain, setName, prefix, override);
         }
-        return INSTANCES.computeIfAbsent(Pair.of(setName, prefix), key -> new GTTextureSetBlockIconContainer(domain, key));
+        return INSTANCES
+            .computeIfAbsent(Pair.of(setName, prefix), key -> new GTTextureSetBlockIconContainer(domain, key));
     }
 
     public static void cleanup() {

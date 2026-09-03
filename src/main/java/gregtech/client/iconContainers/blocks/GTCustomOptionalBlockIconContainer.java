@@ -30,6 +30,7 @@ public class GTCustomOptionalBlockIconContainer extends GTCustomBlockIconContain
     public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String aIconName) {
         return INSTANCES.computeIfAbsent(aIconName, key -> new GTCustomOptionalBlockIconContainer(domain, key));
     }
+
     @Override
     public void run() {
         mIcon = ResourceUtils.resourceExists(iconResource) ? GregTechAPI.sBlockIcons.registerIcon(mIconName)

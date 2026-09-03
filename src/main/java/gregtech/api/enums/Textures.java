@@ -2688,6 +2688,7 @@ public class Textures {
 
         /**
          * Registers a Custom Block {@link IIconContainer}
+         * 
          * @param domain    The resource domain
          * @param aIconName The colon-free resource path of the icon container
          * @return The {@link IIconContainer} instance
@@ -2751,7 +2752,7 @@ public class Textures {
          * @return The {@link IIconContainer} instance
          */
         public static @NotNull IIconContainer customAlphaFallback(@NotNull String domain, @NotNull String aIconName,
-                                                                  @NotNull IIconContainer fallback) {
+            @NotNull IIconContainer fallback) {
             return GTCustomAlphaFallbackBlockIconContainer.create(domain, aIconName, fallback);
         }
 
@@ -2764,12 +2765,13 @@ public class Textures {
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName, @NotNull String prefix) {
+        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix) {
             return GTTextureSetBlockIconContainer.create(domain, setName, prefix, null);
         }
 
-        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
-                                                                     IIconRegister register) {
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix, IIconRegister register) {
             return GTTextureSetBlockIconContainer.create(domain, setName, prefix, register);
         }
 
@@ -2893,12 +2895,13 @@ public class Textures {
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName, @NotNull String prefix) {
+        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix) {
             return GTTextureSetItemIconContainer.create(domain, setName, prefix, null);
         }
 
-        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
-                                                                     IIconRegister register) {
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix, IIconRegister register) {
             return GTTextureSetItemIconContainer.create(domain, setName, prefix, register);
         }
 

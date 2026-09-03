@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 

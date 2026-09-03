@@ -49,7 +49,8 @@ public class PrefixTextureLinker implements Runnable {
                         try {
                             curr.put(
                                 (TextureSet) SET.get(null),
-                                Textures.BlockIcons.textureSet(Mods.GregTech.resourceDomain,
+                                Textures.BlockIcons.textureSet(
+                                    Mods.GregTech.resourceDomain,
                                     SET.getName()
                                         .substring(4),
                                     "/" + prefixes.getName()));
@@ -76,7 +77,8 @@ public class PrefixTextureLinker implements Runnable {
                         try {
                             curr.put(
                                 (TextureSet) SET.get(null),
-                                Textures.ItemIcons.textureSet(Mods.GregTech.resourceDomain,
+                                Textures.ItemIcons.textureSet(
+                                    Mods.GregTech.resourceDomain,
                                     SET.getName()
                                         .substring(4),
                                     "/" + prefixes.getName()));

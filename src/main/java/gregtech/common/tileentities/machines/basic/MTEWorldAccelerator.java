@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,6 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -107,10 +107,14 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     @Override
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        _mGTIco_Norm_Idle = Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_ACCELERATOR");
-        _mGTIco_Norm_Active = Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_ACCELERATOR_ACTIVE");
-        _mGTIco_TE_Idle = Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_ACCELERATOR_TE");
-        _mGTIco_TE_Active = Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"iconsets/OVERLAY_ACCELERATOR_TE_ACTIVE");
+        _mGTIco_Norm_Idle = Textures.BlockIcons
+            .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_ACCELERATOR");
+        _mGTIco_Norm_Active = Textures.BlockIcons
+            .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_ACCELERATOR_ACTIVE");
+        _mGTIco_TE_Idle = Textures.BlockIcons
+            .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_ACCELERATOR_TE");
+        _mGTIco_TE_Active = Textures.BlockIcons
+            .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_ACCELERATOR_TE_ACTIVE");
     }
 
     @SideOnly(Side.CLIENT)

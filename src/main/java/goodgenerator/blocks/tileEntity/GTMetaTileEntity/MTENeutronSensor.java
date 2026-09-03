@@ -3,7 +3,6 @@ package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +14,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import crazypants.enderio.Log;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IIconContainer;
@@ -24,11 +24,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
+
 public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
 
     public static final String COPIED_DATA_IDENTIFIER = "neutronSensor";
 
-    private static final IIconContainer textureFont = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/NeutronSensorFont");
+    private static final IIconContainer textureFont = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/NeutronSensorFont");
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons
         .customOptional(Mods.GregTech.resourceDomain, "icons/NeutronSensorFont_GLOW");
 

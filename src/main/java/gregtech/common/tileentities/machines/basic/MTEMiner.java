@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.debugBlockMiner;
 
 import java.util.ArrayList;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -24,6 +23,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -78,51 +78,87 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
             2,
             2,
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_SIDE_ACTIVE_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/miner/OVERLAY_SIDE_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_SIDE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_SIDE")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_SIDE_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_SIDE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_FRONT_ACTIVE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_FRONT_ACTIVE_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/miner/OVERLAY_FRONT_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_FRONT")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_FRONT")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_FRONT_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_FRONT_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_TOP_ACTIVE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_TOP_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_TOP_ACTIVE_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/miner/OVERLAY_TOP_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_TOP")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_TOP")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_TOP_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_TOP_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_BOTTOM_ACTIVE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_BOTTOM_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_BOTTOM_ACTIVE_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/miner/OVERLAY_BOTTOM_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_BOTTOM")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_BOTTOM")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_BOTTOM_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/miner/OVERLAY_BOTTOM_GLOW"))
                     .glow()
                     .build()));
         mSpeed = SPEED[aTier];

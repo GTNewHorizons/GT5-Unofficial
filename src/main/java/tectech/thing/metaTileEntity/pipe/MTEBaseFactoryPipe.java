@@ -6,7 +6,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,6 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -25,9 +25,12 @@ import io.netty.buffer.ByteBuf;
 
 public abstract class MTEBaseFactoryPipe extends MetaPipeEntity {
 
-    public static final IIconContainer EM_PIPE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_DATA");
-    public static final IIconContainer EM_BAR = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BAR");
-    public static final IIconContainer EM_BAR_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BAR_ACTIVE");
+    public static final IIconContainer EM_PIPE = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/EM_DATA");
+    public static final IIconContainer EM_BAR = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/EM_BAR");
+    public static final IIconContainer EM_BAR_ACTIVE = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/EM_BAR_ACTIVE");
 
     private boolean mIsActive;
 

@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,6 +39,7 @@ import goodgenerator.loader.Loaders;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -94,10 +94,12 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     }
     final XSTR R = new XSTR();
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/NeutronActivator_On");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/NeutronActivator_On");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
         .customOptional(Mods.GregTech.resourceDomain, "icons/NeutronActivator_On_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/NeutronActivator_Off");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/NeutronActivator_Off");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
         .customOptional(Mods.GregTech.resourceDomain, "icons/NeutronActivator_Off_GLOW");
 

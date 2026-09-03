@@ -1,7 +1,6 @@
 package gregtech.client.iconContainers.items;
 
 import static gregtech.GTLoggers.GT_ICON_LOGGER;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.OverlaySuffix;
 import static gregtech.api.enums.Textures.TextureMaterialIconDirectory;
 import static gregtech.api.enums.Textures.TextureSetFallback;
@@ -38,7 +37,7 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
     }
 
     private GTTextureSetItemIconContainer(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
-                                          @Nullable IIconRegister override) {
+        @Nullable IIconRegister override) {
         String iconPath = createIconName(setName, prefix);
         String fallbackIconPath = createIconName(TextureSetFallback, prefix);
         this.iconName = ResourceUtils.getIconRegisterName(domain, iconPath);
@@ -69,12 +68,13 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
     // 2026-13-05: Counted 7371 unique Item TextureSetIcons, so 9.4K will avoid resize until 7500 entries
     private static Map<Pair<String, String>, IIconContainer> INSTANCES = new HashMap<>(9375);
 
-    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
-                                                 IIconRegister override) {
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String setName,
+        @NotNull String prefix, IIconRegister override) {
         if (override != null) {
             return new GTTextureSetItemIconContainer(domain, setName, prefix, override);
         }
-        return INSTANCES.computeIfAbsent(Pair.of(setName, prefix), key -> new GTTextureSetItemIconContainer(domain, key));
+        return INSTANCES
+            .computeIfAbsent(Pair.of(setName, prefix), key -> new GTTextureSetItemIconContainer(domain, key));
     }
 
     public static void cleanup() {

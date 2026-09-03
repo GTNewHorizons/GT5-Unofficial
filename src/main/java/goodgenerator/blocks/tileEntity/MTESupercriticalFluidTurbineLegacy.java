@@ -2,7 +2,6 @@ package goodgenerator.blocks.tileEntity;
 
 import java.util.ArrayList;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,6 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import goodgenerator.blocks.tileEntity.base.MTELargeTurbineBaseLegacy;
 import goodgenerator.loader.Loaders;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -30,9 +30,12 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
 
     private boolean looseFit = false;
 
-    private static final IIconContainer turbineOn = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/turbines/TURBINE_05");
-    private static final IIconContainer turbineOff = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/turbines/TURBINE_15");
-    private static final IIconContainer turbineEmpty = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain,"icons/turbines/TURBINE_25");
+    private static final IIconContainer turbineOn = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_05");
+    private static final IIconContainer turbineOff = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_15");
+    private static final IIconContainer turbineEmpty = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_25");
 
     public MTESupercriticalFluidTurbineLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

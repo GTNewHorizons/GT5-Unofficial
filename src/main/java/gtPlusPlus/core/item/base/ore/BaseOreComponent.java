@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +17,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -149,8 +149,11 @@ public class BaseOreComponent extends Item {
                     .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
         } else {
-            IIconContainer container = Textures.ItemIcons
-                .textureSetWithRegister(Mods.GregTech.resourceDomain, "METALLIC", "/" + this.componentType.COMPONENT_NAME, par1IconRegister);
+            IIconContainer container = Textures.ItemIcons.textureSetWithRegister(
+                Mods.GregTech.resourceDomain,
+                "METALLIC",
+                "/" + this.componentType.COMPONENT_NAME,
+                par1IconRegister);
             iconBase = container.getIcon();
             iconOverlay = container.getOverlayIcon();
         }
