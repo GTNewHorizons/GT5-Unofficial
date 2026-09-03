@@ -107,6 +107,17 @@ public class ResourceUtils {
         return getCompleteResourceLocation(domain,"textures/blocks/", ".png", resourceKey);
     }
 
+    /**
+     * @deprecated This method is a stub for external mods calling the old API
+     */
+    @Deprecated
+    public static @NotNull ResourceLocation getCompleteBlockTextureResourceLocation(@NotNull String resourceKey) {
+        final int separator = resourceKey.indexOf(':');
+        final String domain = separator <= 0 ? "" : resourceKey.substring(0, separator);
+        final String path = separator < 0 ? resourceKey : resourceKey.substring(separator + 1);
+        return getCompleteBlockTextureResourceLocation(domain, path);
+    }
+
     public static @NotNull ResourceLocation getCompleteItemTextureResourceLocation(@NotNull String domain, String resourceKey) {
         return getCompleteResourceLocation(domain,"textures/items/", ".png", resourceKey);
     }

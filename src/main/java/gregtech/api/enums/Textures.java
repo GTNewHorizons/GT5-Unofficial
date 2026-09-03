@@ -2697,6 +2697,16 @@ public class Textures {
         }
 
         /**
+         * @deprecated This method is a stub for external mods calling the old API
+         */
+        @Deprecated
+        public static @NotNull IIconContainer custom(@NotNull String aIconName) {
+            ResourceLocation location = aIconName.indexOf(':') < 0 ? Mods.GregTech.getResourceLocation(aIconName)
+                : new ResourceLocation(aIconName);
+            return custom(location.getResourceDomain(), location.getResourcePath());
+        }
+
+        /**
          * Registers a Custom Optional Block {@link IIconContainer}
          *
          * @param domain    The resource domain
@@ -2706,6 +2716,16 @@ public class Textures {
          */
         public static @NotNull IIconContainer customOptional(@NotNull String domain, @NotNull String aIconName) {
             return GTCustomOptionalBlockIconContainer.create(domain, aIconName);
+        }
+
+        /**
+         * @deprecated This method is a stub for external mods calling the old API
+         */
+        @Deprecated
+        public static @NotNull IIconContainer customOptional(@NotNull String aIconName) {
+            ResourceLocation location = aIconName.indexOf(':') < 0 ? Mods.GregTech.getResourceLocation(aIconName)
+                : new ResourceLocation(aIconName);
+            return customOptional(location.getResourceDomain(), location.getResourcePath());
         }
 
         /**
