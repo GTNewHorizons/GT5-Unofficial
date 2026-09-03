@@ -76,13 +76,13 @@ public class ResourceUtils {
     }
 
     /**
-     * Get the complete resource location from the short local resource location key.
+     * Get the complete resource location from a domain and a short, colon-free local resource location key.
      *
      * @param domain      The namespace of the resource (e.g.: gregtech)
      * @param basePath    The base path for the resource (e.g.: textures/blocks/)
      * @param ext         The file name extension of the resource (e.g.: .png)
-     * @param resourceKey The local resource location key (without textures/blocks|items and without the filename
-     *                    extension)
+     * @param resourceKey The colon-free local resource location key (without textures/blocks|items and without the
+     *                    filename extension)
      * @return The complete ResourceLocation pointing to the resource file
      */
     public static @NotNull ResourceLocation getCompleteResourceLocation(@NotNull String domain, @NotNull String basePath, @NotNull String ext,

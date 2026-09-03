@@ -2689,7 +2689,7 @@ public class Textures {
         /**
          * Registers a Custom Block {@link IIconContainer}
          * @param domain    The resource domain
-         * @param aIconName The unique identifier of the icon container.
+         * @param aIconName The colon-free resource path of the icon container
          * @return The {@link IIconContainer} instance
          */
         public static @NotNull IIconContainer custom(@NotNull String domain, @NotNull String aIconName) {
@@ -2700,7 +2700,7 @@ public class Textures {
          * Registers a Custom Optional Block {@link IIconContainer}
          *
          * @param domain    The resource domain
-         * @param aIconName The unique {@code path/name} icon identifier<br>
+         * @param aIconName The colon-free {@code path/name} icon path<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @return The {@link IIconContainer} instance
          */
@@ -2711,7 +2711,8 @@ public class Textures {
         /**
          * Registers a Custom Alpha-blended Block {@link IIconContainer} (to be rendered in pass 1)
          *
-         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         * @param domain    The resource domain
+         * @param aIconName The colon-free {@code path/name} icon path<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @return The {@link IIconContainer} instance
          */
@@ -2723,8 +2724,8 @@ public class Textures {
          * Registers a Custom Alpha-blended Block {@link IIconContainer} (to be rendered in pass 1) whose icon and
          * _OVERLAY textures are both optional, delegating to the given fallback container when neither exists
          *
-         * @param domain    the resource domain of the texture
-         * @param aIconName The unique {@code path/name} icon identifier<br>
+         * @param domain    The resource domain of the texture
+         * @param aIconName The colon-free {@code path/name} icon path<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @param fallback  The {@link IIconContainer} to delegate to when no texture exists for this icon.
          * @return The {@link IIconContainer} instance
@@ -2737,8 +2738,9 @@ public class Textures {
         /**
          * Registers a Block {@link IIconContainer} for a {@link TextureSet}
          *
-         * @param setName The name of the TextureSet
-         * @param prefix  The prefix for the file name
+         * @param domain  The resource domain
+         * @param setName The colon-free name of the TextureSet
+         * @param prefix  The colon-free prefix for the file name
          *
          * @return The {@link IIconContainer} instance
          */
@@ -2854,7 +2856,7 @@ public class Textures {
          * At least one of the icon or overlay must be present; individually, each is optional.
          *
          * @param domain    The resource domain.
-         * @param aIconName The unique identifier of the custom item icon container.
+         * @param aIconName The colon-free resource path of the custom item icon container.
          *
          * @return The {@link IIconContainer} instance
          */
@@ -2866,8 +2868,8 @@ public class Textures {
          * Registers a Item {@link IIconContainer} for a {@link TextureSet}
          *
          * @param domain  The resource domain
-         * @param setName The name of the TextureSet
-         * @param prefix  The prefix for the file name
+         * @param setName The colon-free name of the TextureSet
+         * @param prefix  The colon-free prefix for the file name
          *
          * @return The {@link IIconContainer} instance
          */
