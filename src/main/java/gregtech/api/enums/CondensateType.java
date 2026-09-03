@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
@@ -174,6 +175,14 @@ public enum CondensateType {
 
     public int getUnit() {
         return unit;
+    }
+
+    public FluidStack getSourceFluid() {
+        return source.get();
+    }
+
+    public ItemStack getEntangledCellStack() {
+        return new ItemStack(entangledCell, 1);
     }
 
     public String getAbbrevName() {
