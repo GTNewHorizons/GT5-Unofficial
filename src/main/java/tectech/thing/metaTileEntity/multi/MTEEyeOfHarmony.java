@@ -809,14 +809,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         if (parallelAmount > 1) {
             chance -= stellarPlasmaOverflowProbabilityAdjustment;
         } else {
-            chance -= hydrogenOverflowProbabilityAdjustment + heliumOverflowProbabilityAdjustment;
+            // Intentional: pity compares the base recipe chance before overflow penalties are applied.
+            if (chance == previousRecipeChance && pityChance >= 1) {
+                chance = 1;
+            }
+            chance -= (hydrogenOverflowProbabilityAdjustment + heliumOverflowProbabilityAdjustment);
         }
 
-        chance = MathHelper.clamp_double(chance, 0.0, 1.0);
-        if (parallelAmount <= 1 && chance == previousRecipeChance && pityChance >= 1) {
-            return 1;
-        }
-        return chance;
+        return MathHelper.clamp_double(chance, 0.0, 1.0);
     }
 
     private double recipeYieldCalculator() {
