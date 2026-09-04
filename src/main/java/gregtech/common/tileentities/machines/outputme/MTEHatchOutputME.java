@@ -577,6 +577,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             return isDynamicCapacity;
         }
 
+        public long getDynamicSpace() {
+            return availableSpace;
+        }
+
         @Override
         public IOutputHatch getHatch() {
             return MTEHatchOutputME.this;
@@ -591,13 +595,20 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
-            if (isRecipeCheck && shouldCheckCell()) {
-                IAEFluidStack input = AEFluidStack.create(stack);
-                IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
-                int inserted = (int) (stack.amount - (rejected == null ? 0 : rejected.getStackSize()));
-                cache.insert(id, inserted);
-                stack.amount -= inserted;
-                return stack.amount == 0;
+            if (isRecipeCheck) {
+                if (shouldCheckCell()) {
+                    IAEFluidStack input = AEFluidStack.create(stack);
+                    IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
+                    int inserted = (int) (stack.amount - (rejected == null ? 0 : rejected.getStackSize()));
+                    cache.insert(id, inserted);
+                    stack.amount -= inserted;
+                    return stack.amount == 0;
+                } else if (isDynamicCapacity) {
+                    int amount = (int) Math.min(stack.amount, availableSpace - cache.getTotal());
+                    cache.insert(id, amount);
+                    stack.amount -= amount;
+                    return stack.amount == 0;
+                }
             }
             if (!hasAvailableSpace() || !isFilteredTo(id)) {
                 return false;

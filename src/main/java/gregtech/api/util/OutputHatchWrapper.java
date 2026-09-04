@@ -88,6 +88,13 @@ public class OutputHatchWrapper implements IOutputHatch {
             return false;
         }
 
+        public long getDynamicSpace() {
+            if (transaction instanceof IOutputHatchTransaction.IDynamicCapacityOutputAware rt) {
+                return rt.getDynamicSpace();
+            }
+            throw new IllegalStateException("Can't get dynamic space, the underlying transaction doesn't support it!");
+        }
+
         @Override
         public boolean hasAvailableSpace() {
             return transaction.hasAvailableSpace();

@@ -60,5 +60,14 @@ public interface IOutputTransaction<ID, T> {
          * @return true if it is, false otherwise
          */
         boolean isDynamicCapacity();
+
+        /**
+         * Get the dynamic space.
+         * <p>
+         * Note: Should only be called if {@link #isDynamicCapacity()} returns true
+         *
+         * @return the dynamic space
+         */
+        long getDynamicSpace();
     }
 }

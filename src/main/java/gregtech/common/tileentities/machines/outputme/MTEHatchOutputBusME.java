@@ -238,6 +238,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             return isDynamicCapacity;
         }
 
+        public long getDynamicSpace() {
+            return availableSpace;
+        }
+
         @Override
         public IOutputBus getBus() {
             return MTEHatchOutputBusME.this;
@@ -252,14 +256,22 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         public boolean storePartial(GTUtility.ItemId id, @NotNull ItemStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
-            if (isRecipeCheck && shouldCheckCell()) {
-                IAEItemStack input = AEItemStack.create(stack);
-                IAEItemStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
-                int inserted = (int) (stack.stackSize - (rejected == null ? 0 : rejected.getStackSize()));
-                cache.insert(id, inserted);
-                stack.stackSize -= inserted;
-                return stack.stackSize == 0;
+            if (isRecipeCheck) {
+                if (shouldCheckCell()) {
+                    IAEItemStack input = AEItemStack.create(stack);
+                    IAEItemStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
+                    int inserted = (int) (stack.stackSize - (rejected == null ? 0 : rejected.getStackSize()));
+                    cache.insert(id, inserted);
+                    stack.stackSize -= inserted;
+                    return stack.stackSize == 0;
+                } else if (isDynamicCapacity) {
+                    int amount = (int) Math.min(stack.stackSize, availableSpace - cache.getTotal());
+                    cache.insert(id, amount);
+                    stack.stackSize -= amount;
+                    return stack.stackSize == 0;
+                }
             }
+
             if (!hasAvailableSpace() || !isFilteredTo(id)) {
                 return false;
             }
