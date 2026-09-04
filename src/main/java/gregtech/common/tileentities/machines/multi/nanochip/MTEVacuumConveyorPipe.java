@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.IIconContainer;
@@ -61,9 +62,10 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        CCPipe = Textures.BlockIcons.custom("iconsets/CC_PIPE");
-        CCBarOverlay = Textures.BlockIcons.customOptional("iconsets/CC_BAR_OVERLAY");
-        CCBarOverlayActive = Textures.BlockIcons.customOptional("iconsets/CC_BAR_OVERLAY_ACTIVE");
+        CCPipe = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/CC_PIPE");
+        CCBarOverlay = Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "iconsets/CC_BAR_OVERLAY");
+        CCBarOverlayActive = Textures.BlockIcons
+            .customOptional(Mods.GregTech.resourceDomain, "iconsets/CC_BAR_OVERLAY_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

@@ -105,6 +105,7 @@ public class IceCreamMachineRecipes implements Runnable {
         addRecipe(ItemList.Ice_Cream_ConfettiQuestbook);
         addRecipe(ItemList.Ice_Cream_PitOfDoomAndDespair);
         addRecipe(ItemList.Ice_Cream_MasterOfDreams);
+        addRecipe(ItemList.Ice_Cream_Explosive);
     }
 
     private void addRecipe(ItemList flavor) {
