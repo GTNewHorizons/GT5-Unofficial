@@ -95,14 +95,12 @@ public class ItemEjectionHelper {
         PriorityQueue<ItemParallelData> pendingOutputs = new PriorityQueue<>(
             Comparator.comparingDouble(output -> -output.remaining.stackSize / (double) output.perParallel));
 
-        long totalPerParallel = 0;
         for (var e : Object2LongMaps.fastIterable(GTUtility.getItemStackHistogram(outputs))) {
             if (e.getLongValue() <= 0) continue;
 
             GTUtility.ItemId id = e.getKey();
             int amount = GTUtility.longToInt(e.getLongValue());
 
-            totalPerParallel += amount;
             ItemParallelData parallelData = new ItemParallelData(
                 id,
                 GTUtility.longToInt(amount * (long) startingParallels),
@@ -151,7 +149,7 @@ public class ItemEjectionHelper {
                 }
 
                 // Fill at most one slot with the remaining items
-                if (output.storePartial(transaction, totalPerParallel)) {
+                if (output.storePartial(transaction, pendingOutputs)) {
                     break;
                 } else {
                     // If we couldn't insert anything into the bus, go to the next one
@@ -201,17 +199,16 @@ public class ItemEjectionHelper {
             this.initialAmount = amount;
         }
 
-        public boolean storePartial(IOutputBusTransaction transaction, long totalPerParallel) {
+        public boolean storePartial(IOutputBusTransaction transaction, Iterable<ItemParallelData> pendingOutputs) {
+            long totalPerParallel = perParallel;
             if (transaction.isDynamicCapacity()) {
-                int origin = remaining.stackSize;
-                int parallels = (int) Math.max(1, transaction.getDynamicSpace() / totalPerParallel);
-                int amount = Math.min(origin, parallels * perParallel);
-                remaining.stackSize = amount;
-                boolean succeed = transaction.storePartial(id, remaining);
-                remaining.stackSize += origin - amount;
-                return succeed;
+                for (ItemParallelData other : pendingOutputs) {
+                    if (!transaction.isFiltered() || transaction.isFilteredTo(other.id)) {
+                        totalPerParallel += other.perParallel;
+                    }
+                }
             }
-            return transaction.storePartial(id, remaining);
+            return transaction.storePartial(id, remaining, totalPerParallel, perParallel);
         }
     }
 }

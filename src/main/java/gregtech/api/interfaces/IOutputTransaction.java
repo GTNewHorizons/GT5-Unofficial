@@ -20,11 +20,13 @@ public interface IOutputTransaction<ID, T> {
      * Fills one slot with the given stack, then subtracts the amount stored from the stack's stackSize. This modifies
      * this transaction's internal state.
      *
-     * @param id    The stack's id, to avoid allocations.
-     * @param stack The stack to inject.
+     * @param id               The stack's id, to avoid allocations.
+     * @param stack            The stack to inject.
+     * @param totalPerParallel The total parallel weight of all pending outputs valid for this transaction. Only relevant for dynamic capacity outputs.
+     * @param perParallel      The parallel weight.
      * @return True when stacks were injected into a slot, false otherwise.
      */
-    boolean storePartial(ID id, @NotNull T stack);
+    boolean storePartial(ID id, @NotNull T stack, long totalPerParallel, long perParallel);
 
     /**
      * Signals to the transaction that this stack will never be stored again, allowing it to skip partially filled
@@ -56,16 +58,5 @@ public interface IOutputTransaction<ID, T> {
      */
     default boolean isDynamicCapacity() {
         return false;
-    }
-
-    /**
-     * Get the dynamic space.
-     * <p>
-     * Note: Should only be called if {@link #isDynamicCapacity()} returns true
-     *
-     * @return the dynamic space
-     */
-    default long getDynamicSpace() {
-        throw new IllegalStateException("Can't get dynamic space, the underlying transaction doesn't support it!");
     }
 }

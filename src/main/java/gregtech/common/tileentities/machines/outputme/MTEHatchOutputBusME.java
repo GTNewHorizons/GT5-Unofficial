@@ -234,12 +234,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             }
         }
 
+        @Override
         public boolean isDynamicCapacity() {
             return isDynamicCapacity;
-        }
-
-        public long getDynamicSpace() {
-            return availableSpace;
         }
 
         @Override
@@ -253,7 +250,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         }
 
         @Override
-        public boolean storePartial(GTUtility.ItemId id, @NotNull ItemStack stack) {
+        public boolean storePartial(GTUtility.ItemId id, @NotNull ItemStack stack, long totalPerParallel,
+            long perParallel) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             if (isRecipeCheck) {
@@ -265,7 +263,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     stack.stackSize -= inserted;
                     return stack.stackSize == 0;
                 } else if (isDynamicCapacity) {
-                    int amount = (int) Math.min(stack.stackSize, availableSpace - cache.getTotal());
+                    int parallels = Math.clamp(availableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                    long amount = Math.min(parallels * perParallel, availableSpace - cache.getTotal());
+                    amount = Math.min(amount, stack.stackSize);
                     cache.insert(id, amount);
                     stack.stackSize -= amount;
                     return stack.stackSize == 0;

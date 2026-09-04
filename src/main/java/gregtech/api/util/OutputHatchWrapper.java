@@ -80,23 +80,14 @@ public class OutputHatchWrapper implements IOutputHatch {
         }
 
         @Override
-        public boolean isDynamicCapacity() {
-            return transaction.isDynamicCapacity();
-        }
-
-        public long getDynamicSpace() {
-            return transaction.getDynamicSpace();
-        }
-
-        @Override
         public boolean hasAvailableSpace() {
             return transaction.hasAvailableSpace();
         }
 
         @Override
-        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack, long totalPerParallel, long perParallel) {
             if (!hatch.isFilteredToFluid(id)) return false;
-            return transaction.storePartial(id, stack);
+            return transaction.storePartial(id, stack, totalPerParallel, perParallel);
         }
 
         @Override
