@@ -1927,7 +1927,7 @@ public final class RecipeMaps {
 
     public static final RecipeMap<NACRecipeMapBackend> nanochipPartProcessorRecipes = RecipeMapBuilder
         .of("gt.recipe.nanochip.partprocessor", NACRecipeMapBackend::new)
-        .maxIO(6, 4, 2, 0)
+        .maxIO(6, 4, 3, 0)
         .minInputs(1, 0)
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
