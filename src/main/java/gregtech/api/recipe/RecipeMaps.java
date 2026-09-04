@@ -1925,9 +1925,9 @@ public final class RecipeMaps {
         .frontend(NACMatrixFrontend::new)
         .build();
 
-    public static final RecipeMap<NACRecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
-        .of("gt.recipe.nanochip.smdprocessor", NACRecipeMapBackend::new)
-        .maxIO(1, 1, 0, 0)
+    public static final RecipeMap<NACRecipeMapBackend> nanochipPartProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.partprocessor", NACRecipeMapBackend::new)
+        .maxIO(6, 4, 2, 0)
         .minInputs(1, 0)
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder

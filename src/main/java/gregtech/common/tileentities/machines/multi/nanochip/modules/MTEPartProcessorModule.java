@@ -1,10 +1,10 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SMD_PROCESSOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SMD_PROCESSOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PART_PROCESSOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PART_PROCESSOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PART_PROCESSOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PART_PROCESSOR_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -26,18 +26,18 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
-public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDProcessorModule> {
+public class MTEPartProcessorModule extends MTENanochipAssemblyModuleBase<MTEPartProcessorModule> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    protected static final int SMD_OFFSET_X = 3;
-    protected static final int SMD_OFFSET_Y = 3;
-    protected static final int SMD_OFFSET_Z = 0;
-    protected static final String[][] SMD_STRING = new String[][] { { " B   B ", " EA AE ", " BB BB " },
+    protected static final int PART_OFFSET_X = 3;
+    protected static final int PART_OFFSET_Y = 3;
+    protected static final int PART_OFFSET_Z = 0;
+    protected static final String[][] PART_STRING = new String[][] { { " B   B ", " EA AE ", " BB BB " },
         { "BBDDDBB", "ECA ACE", "BBB BBB" }, { " D   D ", "AAA AAA", "BBBDBBB" }, { " D   D ", "       ", "  DDD  " },
         { " D   D ", "AAA AAA", "BBBDBBB" }, { "BBDDDBB", "ECA ACE", "BBB BBB" }, { " B   B ", " EA AE ", " BB BB " } };
-    public static final IStructureDefinition<MTESMDProcessorModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
-        .<MTESMDProcessorModule>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, SMD_STRING)
+    public static final IStructureDefinition<MTEPartProcessorModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
+        .<MTEPartProcessorModule>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, PART_STRING)
         // Nanochip Mesh Interface Casing
         .addElement('A', Casings.NanochipMeshInterfaceCasing.asElement())
         // Nanochip Reinforcement Casing
@@ -57,52 +57,52 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
             side,
             aFacing,
             aActive,
-            OVERLAY_FRONT_SMD_PROCESSOR,
-            OVERLAY_FRONT_SMD_PROCESSOR_GLOW,
-            OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE,
-            OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE_GLOW);
+            OVERLAY_FRONT_PART_PROCESSOR,
+            OVERLAY_FRONT_PART_PROCESSOR_GLOW,
+            OVERLAY_FRONT_PART_PROCESSOR_ACTIVE,
+            OVERLAY_FRONT_PART_PROCESSOR_ACTIVE_GLOW);
     }
 
-    public MTESMDProcessorModule(int aID, String aName, String aNameRegional) {
+    public MTEPartProcessorModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    protected MTESMDProcessorModule(String aName) {
+    protected MTEPartProcessorModule(String aName) {
         super(aName);
     }
 
     @Override
     public ModuleTypes getModuleType() {
-        return ModuleTypes.SMDProcessor;
+        return ModuleTypes.PartProcessor;
     }
 
     @Override
-    public IStructureDefinition<MTESMDProcessorModule> getStructureDefinition() {
+    public IStructureDefinition<MTEPartProcessorModule> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public int structureOffsetX() {
-        return SMD_OFFSET_X;
+        return PART_OFFSET_X;
     }
 
     @Override
     public int structureOffsetY() {
-        return SMD_OFFSET_Y;
+        return PART_OFFSET_Y;
     }
 
     @Override
     public int structureOffsetZ() {
-        return SMD_OFFSET_Z;
+        return PART_OFFSET_Z;
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.smd_processor.action", TOOLTIP_CCs))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.part_processor.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.smd_processor.flavor.1")))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.part_processor.flavor.1")))
             .beginStructureBlock(7, 6, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
@@ -115,6 +115,7 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
             .addCasing("8", translateToLocal("gt.blockglass1.8.name"), false)
             // UEV Machine Casing
             .addCasing("4", translateToLocal("gt.blockcasingsNH.10.name"), false)
+            .addInputHatch("1", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
             .addMiscHatch(
                 "0+",
                 TOOLTIP_VCI_LONG,
@@ -133,11 +134,11 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTESMDProcessorModule(this.mName);
+        return new MTEPartProcessorModule(this.mName);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.nanochipSMDProcessorRecipes;
+        return RecipeMaps.nanochipPartProcessorRecipes;
     }
 }
