@@ -228,15 +228,14 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        String aName = super.getItemStackDisplayName(aStack);
         final short aDamage = (short) getDamage(aStack);
-        final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
-        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length && metaTE != null) {
-            if (metaTE instanceof ILocalizedMetaPipeEntity localMetaTE) {
-                return localMetaTE.getLocalizedName();
+        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length) {
+            final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
+            if (metaTE != null) {
+                return metaTE.getLocalName();
             }
         }
-        return aName;
+        return super.getItemStackDisplayName(aStack);
     }
 
     @Override

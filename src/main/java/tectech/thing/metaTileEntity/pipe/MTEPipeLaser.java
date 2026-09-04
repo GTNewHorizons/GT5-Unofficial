@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -29,6 +30,7 @@ import io.netty.buffer.ByteBuf;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTunnel {
 
     static IIconContainer EMcandy, EMCandyActive;
@@ -53,9 +55,9 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMcandy = Textures.BlockIcons.custom("iconsets/EM_CANDY");
-        EMCandyActive = Textures.BlockIcons.custom("iconsets/EM_CANDY_ACTIVE");
-        EMpipe = Textures.BlockIcons.custom("iconsets/EM_LASER");
+        EMcandy = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_CANDY");
+        EMCandyActive = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_CANDY_ACTIVE");
+        EMpipe = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_LASER");
         super.registerIcons(aBlockIconRegister);
     }
 

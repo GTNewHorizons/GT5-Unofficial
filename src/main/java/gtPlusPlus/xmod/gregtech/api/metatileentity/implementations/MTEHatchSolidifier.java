@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -29,6 +30,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchSolidifierGui;
 import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport, INonConsumedItemDisplay {
 
     public static final int moldSlot = 2;
@@ -78,6 +80,13 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
 
     public MTEHatchSolidifier(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, getSlots(aTier), aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.hatch.solidifier.name", GTUtility.getRomanNumeral(mTier - 4));
     }
 
     @Override
