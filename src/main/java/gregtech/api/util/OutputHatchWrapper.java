@@ -54,9 +54,8 @@ public class OutputHatchWrapper implements IOutputHatch {
         return new FilteredTransactionWrapper();
     }
 
-    public class FilteredTransactionWrapper
-        implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware,
-        IOutputHatchTransaction.IProtectOutputAware, IOutputHatchTransaction.IDynamicCapacityOutputAware {
+    public class FilteredTransactionWrapper implements IOutputHatchTransaction,
+        IOutputHatchTransaction.IRecipeCheckAware, IOutputHatchTransaction.IProtectOutputAware {
 
         private final OutputHatchWrapper hatch = OutputHatchWrapper.this;
         private final IOutputHatchTransaction transaction = OutputHatchWrapper.this.outputHatch.createTransaction();
@@ -82,17 +81,11 @@ public class OutputHatchWrapper implements IOutputHatch {
 
         @Override
         public boolean isDynamicCapacity() {
-            if (transaction instanceof IOutputHatchTransaction.IDynamicCapacityOutputAware rt) {
-                return rt.isDynamicCapacity();
-            }
-            return false;
+            return transaction.isDynamicCapacity();
         }
 
         public long getDynamicSpace() {
-            if (transaction instanceof IOutputHatchTransaction.IDynamicCapacityOutputAware rt) {
-                return rt.getDynamicSpace();
-            }
-            throw new IllegalStateException("Can't get dynamic space, the underlying transaction doesn't support it!");
+            return transaction.getDynamicSpace();
         }
 
         @Override

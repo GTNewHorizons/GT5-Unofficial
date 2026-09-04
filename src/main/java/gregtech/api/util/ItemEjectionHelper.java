@@ -202,10 +202,9 @@ public class ItemEjectionHelper {
         }
 
         public boolean storePartial(IOutputBusTransaction transaction, long totalPerParallel) {
-            if (transaction instanceof IOutputBusTransaction.IDynamicCapacityOutputAware sharedOutput
-                && sharedOutput.isDynamicCapacity()) {
+            if (transaction.isDynamicCapacity()) {
                 int origin = remaining.stackSize;
-                int parallels = (int) Math.max(1, sharedOutput.getDynamicSpace() / totalPerParallel);
+                int parallels = (int) Math.max(1, transaction.getDynamicSpace() / totalPerParallel);
                 int amount = Math.min(origin, parallels * perParallel);
                 remaining.stackSize = amount;
                 boolean succeed = transaction.storePartial(id, remaining);

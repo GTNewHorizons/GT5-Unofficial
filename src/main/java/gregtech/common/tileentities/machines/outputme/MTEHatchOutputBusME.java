@@ -193,8 +193,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             .getItemInventory();
     }
 
-    class MEOutputBusTransaction implements IOutputBusTransaction, IOutputTransaction.IRecipeCheckAware,
-        IOutputTransaction.IProtectOutputAware, IOutputTransaction.IDynamicCapacityOutputAware {
+    class MEOutputBusTransaction
+        implements IOutputBusTransaction, IOutputTransaction.IRecipeCheckAware, IOutputTransaction.IProtectOutputAware {
 
         private final AECacheCounter<GTUtility.ItemId> cache = new AECacheCounter<>();
         private final long availableSpace;

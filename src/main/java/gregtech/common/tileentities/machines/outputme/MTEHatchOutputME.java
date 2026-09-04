@@ -533,7 +533,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputTransaction.IRecipeCheckAware,
-        IOutputTransaction.IProtectOutputAware, IOutputTransaction.IDynamicCapacityOutputAware {
+        IOutputTransaction.IProtectOutputAware {
 
         private final AECacheCounter<GTUtility.FluidId> cache = new AECacheCounter<>();
         private final long availableSpace;

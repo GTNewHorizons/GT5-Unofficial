@@ -50,24 +50,22 @@ public interface IOutputTransaction<ID, T> {
     }
 
     /**
-     * Represents an output that may have a finite capacity but allows for dynamic resource allocation.
+     * Checks if this output has a finite capacity but allows for dynamic resource allocation.
+     *
+     * @return true if it is, false otherwise
      */
-    interface IDynamicCapacityOutputAware {
+    default boolean isDynamicCapacity() {
+        return false;
+    }
 
-        /**
-         * Checks if this output has a finite capacity but allows for dynamic resource allocation.
-         *
-         * @return true if it is, false otherwise
-         */
-        boolean isDynamicCapacity();
-
-        /**
-         * Get the dynamic space.
-         * <p>
-         * Note: Should only be called if {@link #isDynamicCapacity()} returns true
-         *
-         * @return the dynamic space
-         */
-        long getDynamicSpace();
+    /**
+     * Get the dynamic space.
+     * <p>
+     * Note: Should only be called if {@link #isDynamicCapacity()} returns true
+     *
+     * @return the dynamic space
+     */
+    default long getDynamicSpace() {
+        throw new IllegalStateException("Can't get dynamic space, the underlying transaction doesn't support it!");
     }
 }

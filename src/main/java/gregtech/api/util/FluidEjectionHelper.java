@@ -13,7 +13,6 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
 
 import gregtech.api.enums.OutputHatchType;
-import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.IOutputHatchTransaction;
 import gregtech.api.interfaces.tileentity.IVoidable;
@@ -192,9 +191,8 @@ public class FluidEjectionHelper {
 
         public boolean storePartial(IOutputHatchTransaction transaction, long totalPerParallel) {
             long targetAmount = remainingAmount;
-            if (transaction instanceof IOutputBusTransaction.IDynamicCapacityOutputAware sharedOutput
-                && sharedOutput.isDynamicCapacity()) {
-                int parallels = (int) Math.max(1, sharedOutput.getDynamicSpace() / totalPerParallel);
+            if (transaction.isDynamicCapacity()) {
+                int parallels = (int) Math.max(1, transaction.getDynamicSpace() / totalPerParallel);
                 targetAmount = Math.min(remainingAmount, parallels * perParallel);
             }
             int amount = (int) Math.min(targetAmount, Integer.MAX_VALUE);
