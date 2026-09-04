@@ -20,6 +20,7 @@ public class GTFoodStat implements IFoodStat {
     private final ItemStack mEmptyContainer;
     private final boolean mAlwaysEdible, mInvisibleParticles, mIsRotten;
     private boolean mExplosive = false, mMilk = false;
+    private float mExplosionStrength = 4f;
 
     /**
      * @param aFoodLevel          Amount of Food in Half Bacon [0 - 20]
@@ -45,7 +46,12 @@ public class GTFoodStat implements IFoodStat {
     }
 
     public GTFoodStat setExplosive() {
+        return setExplosive(mExplosionStrength);
+    }
+
+    public GTFoodStat setExplosive(float aStrength) {
         mExplosive = true;
+        mExplosionStrength = aStrength;
         return this;
     }
 
@@ -95,7 +101,7 @@ public class GTFoodStat implements IFoodStat {
             if (mExplosive) {
                 new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setSmoking(true)
                     .setFlaming(true)
-                    .setStrength(4f)
+                    .setStrength(mExplosionStrength)
                     .setPosition(aPlayer.posX, aPlayer.posY, aPlayer.posZ)
                     .setEntity(aPlayer)
                     .setWorld(aPlayer.worldObj)
