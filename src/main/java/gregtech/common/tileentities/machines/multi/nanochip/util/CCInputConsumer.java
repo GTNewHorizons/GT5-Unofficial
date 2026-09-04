@@ -33,7 +33,7 @@ public class CCInputConsumer implements ParallelHelper.InputConsumer {
             for (ArrayList<MTEHatchVacuumConveyorInput> hatchList : inputConveyors.allHatches()) {
                 boolean done = false;
                 for (MTEHatchVacuumConveyorInput conveyor : hatchList) {
-                    int consumed = conveyor.tryConsume(toConsumeStack);
+                    int consumed = conveyor.tryConsume(toConsumeStack, false);
                     toConsumeStack.stackSize -= consumed;
                     if (toConsumeStack.stackSize <= 0) {
                         // Break out of both loops... I hate this
@@ -47,10 +47,6 @@ public class CCInputConsumer implements ParallelHelper.InputConsumer {
         }
 
         // Consume fluid inputs in recipe
-        for (FluidStack fluid : recipe.mFluidInputs) {
-            FluidStack toConsume = fluid.copy();
-            toConsume.amount *= amountMultiplier;
-            module.depleteInput(toConsume);
-        }
+        recipe.consumeInput(amountMultiplier, aFluidInputs);
     }
 }

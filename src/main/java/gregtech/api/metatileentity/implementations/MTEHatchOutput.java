@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
@@ -14,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -31,6 +33,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OutputHatchType;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.IOutputHatchTransaction;
@@ -49,6 +52,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchOutputGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchOutput extends MTEHatch
     implements IFluidStore, IFluidLockableMui2, IOutputHatch, ISmartInputHatch {
 
@@ -80,6 +84,12 @@ public class MTEHatchOutput extends MTEHatch
     public void setMode(byte mode) {
         this.mMode = mode;
         lockFluid(isFluidLocked());
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.output.name", GTValues.VN[mTier]);
     }
 
     @Override
@@ -379,13 +389,11 @@ public class MTEHatchOutput extends MTEHatch
                 "GT5U.infodata.hatch.output.fluid",
                 mFluid == null ? IGregTechDeviceInformation.translatable("GT5U.infodata.hatch.output.fluid.none")
                     : IGregTechDeviceInformation.translatable(mFluid.getUnlocalizedName())),
-            EnumChatFormatting.GREEN + formatNumber(mFluid == null ? 0 : mFluid.amount)
-                + " L"
+            EnumChatFormatting.GREEN + formatFluid(mFluid == null ? 0 : mFluid.amount)
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + formatNumber(getCapacity())
-                + " L"
+                + formatFluid(getCapacity())
                 + EnumChatFormatting.RESET,
             (!isFluidLocked() || lockedFluid == null) ? "GT5U.infodata.hatch.output.fluid.locked_to.none"
                 : IGregTechDeviceInformation.encode(

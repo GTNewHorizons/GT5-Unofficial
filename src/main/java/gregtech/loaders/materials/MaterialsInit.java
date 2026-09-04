@@ -3843,6 +3843,8 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 6)
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 3)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
             .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
@@ -8576,7 +8578,7 @@ public class MaterialsInit {
 
     private static Materials loadPhosphorousPentoxide() {
         return new MaterialBuilder().setName("PhosphorousPentoxide")
-            .setDefaultLocalName("Phosphorous Pentoxide")
+            .setDefaultLocalName("Phosphorus Pentoxide")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00dcdc00)

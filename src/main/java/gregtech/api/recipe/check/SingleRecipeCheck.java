@@ -23,7 +23,9 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -130,7 +132,7 @@ public class SingleRecipeCheck {
         FluidStack[] fluidInputs) {
         int currentParallel = maxParallel;
 
-        if (totalItemCost > 0) {
+        if (!itemCost.isEmpty()) {
             // Create a map for items to their stored amounts.
             Map<ItemId, Integer> itemMap = new HashMap<>();
             for (ItemStack itemStack : itemInputs) {
@@ -140,8 +142,12 @@ public class SingleRecipeCheck {
 
             // For each item cost, update the maximum parallel executions possible.
             for (Map.Entry<ItemId, Integer> costEntry : itemCost.entrySet()) {
-                currentParallel = Math
-                    .min(currentParallel, itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                if (costEntry.getValue() > 0) {
+                    currentParallel = Math
+                        .min(currentParallel, itemMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+                } else { // Non-consumable in itemCost. Check if machine has this non-consumable
+                    if (!itemMap.containsKey(costEntry.getKey())) currentParallel = 0;
+                }
                 if (currentParallel <= 0) {
                     return 0;
                 }
@@ -562,7 +568,7 @@ public class SingleRecipeCheck {
                             .collect(Collectors.joining(", ")));
                 }
                 if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0) {
-                    if (inputSb.length() > 0) {
+                    if (!inputSb.isEmpty()) {
                         inputSb.append(" | ");
                     }
                     inputSb.append("Fluid Inputs: ");
@@ -574,7 +580,7 @@ public class SingleRecipeCheck {
                                     + (showStackAmounts ? " (" + fluid.amount + "L)" : ""))
                             .collect(Collectors.joining(", ")));
                 }
-                if (inputSb.length() > 0) {
+                if (!inputSb.isEmpty()) {
                     sb.append(inputSb);
                     addedSomething = true;
                 }
@@ -590,7 +596,7 @@ public class SingleRecipeCheck {
                             .collect(Collectors.joining(", ")));
                 }
                 if (recipe.mFluidOutputs != null && recipe.mFluidOutputs.length > 0) {
-                    if (outputSb.length() > 0) {
+                    if (!outputSb.isEmpty()) {
                         outputSb.append(" | ");
                     }
                     outputSb.append("Fluid Outputs: ");
@@ -602,7 +608,7 @@ public class SingleRecipeCheck {
                                     + (showStackAmounts ? " (" + fluid.amount + "L)" : ""))
                             .collect(Collectors.joining(", ")));
                 }
-                if (outputSb.length() > 0) {
+                if (!outputSb.isEmpty()) {
                     if (addedSomething) {
                         sb.append(" => ");
                     }
@@ -685,6 +691,16 @@ public class SingleRecipeCheck {
                 int cost = entry.getValue() - afterItems.getOrDefault(entry.getKey(), 0);
                 if (cost > 0) {
                     itemCostBuilder.put(entry.getKey(), cost);
+                } else if (cost == 0) {
+                    // Item is not consumed, but may be a non-consumable
+                    ItemStack stack = entry.getKey()
+                        .getItemStack();
+                    ItemData data = GTOreDictUnificator.getItemData(stack);
+                    boolean matchesAnyInput = Arrays.stream(this.recipe.getCachedCombinedItemInputs())
+                        .anyMatch(recipeInput -> recipeInput.matchesRecipe(data, stack));
+                    if (matchesAnyInput) {
+                        itemCostBuilder.put(entry.getKey(), cost);
+                    }
                 }
             }
             return itemCostBuilder.build();

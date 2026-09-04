@@ -68,6 +68,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import io.netty.buffer.ByteBuf;
 
 public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCuttingMachine>
     implements ISurvivalConstructable, IMTERenderer, ICasingTextureProvider {
@@ -350,10 +351,9 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     private boolean canSawbladeAcceptEnergyHatches(SawbladeTiers sawbladeTier) {
         if (!mExoticEnergyHatches.isEmpty()) return sawbladeTier.supportsExotic;
-        if (sawbladeTier.maxAllowedEnergyHatchTier == Integer.MAX_VALUE) return true;
 
         for (MTEHatchEnergy hatch : mEnergyHatches) {
-            if (hatch.mTier > sawbladeTier.maxAllowedEnergyHatchTier) return false;
+            if (hatch.getTierForStructure() > sawbladeTier.maxAllowedEnergyHatchTier) return false;
         }
         return true;
     }
@@ -369,17 +369,17 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
 
     @Override
     public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean needsClientTick() {
         return true;
     }
 
@@ -459,21 +459,20 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
         SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
-        data.setBoolean("stopAllRendering", stopAllRendering);
-        data.setBoolean("machineFormed", mMachine);
-        data.setInteger("renderSawbladeTier", sawbladeTier == null ? -1 : sawbladeTier.ordinal());
-        return data;
+        buffer.writeBoolean(stopAllRendering);
+        buffer.writeBoolean(mMachine);
+        buffer.writeInt(sawbladeTier == null ? -1 : sawbladeTier.ordinal());
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        stopAllRendering = data.getBoolean("stopAllRendering");
-        mMachine = data.getBoolean("machineFormed");
-        renderSawbladeTier = data.getInteger("renderSawbladeTier");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        stopAllRendering = buffer.readBoolean();
+        mMachine = buffer.readBoolean();
+        renderSawbladeTier = buffer.readInt();
     }
 
     @SideOnly(Side.CLIENT)
@@ -502,7 +501,11 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         float angle = (float) getRenderBladeRotation(timeSinceLastTick);
 
         GL11.glPushMatrix();
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glPushAttrib(
+            GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT
+                | GL11.GL_CURRENT_BIT
+                | GL11.GL_TRANSFORM_BIT
+                | GL11.GL_TEXTURE_BIT);
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);

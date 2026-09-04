@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -22,6 +23,8 @@ import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTESuperChestGui;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTESuperChest extends MTEQuantumChest {
 
     private boolean mOutputItems;
@@ -37,6 +40,13 @@ public class MTESuperChest extends MTEQuantumChest {
 
     public MTESuperChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.super.chest.name", GTUtility.getRomanNumeral(mTier));
     }
 
     @Override
@@ -106,6 +116,12 @@ public class MTESuperChest extends MTEQuantumChest {
     @Override
     protected boolean isItemInputSide(ForgeDirection side) {
         return mAllowInputFromOutputSide || side != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    protected ItemStack getMatterClusterTargetItem() {
+        ItemStack storedItem = super.getMatterClusterTargetItem();
+        return storedItem == null ? lockedItem : storedItem;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.generators;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_DRAGONEGG;
@@ -57,7 +58,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.config.MachineStats;
@@ -197,7 +198,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
             .translateToLocal(sAllowMultipleEggs ? KEY + ".dragon_egg.shared" : KEY + ".dragon_egg.exclusive");
         List<String> description = new ArrayList<>(
             Arrays.asList(
-                GTUtility.translateMultiline(
+                GTSplit.splitLocalizedFormatted(
                     KEY,
                     dragonEgg,
                     sEnergyPerEndercrystal,
@@ -208,7 +209,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         if (Thaumcraft.isModLoaded()) {
             description.addAll(
                 Arrays.asList(
-                    GTUtility.translateMultiline(
+                    GTSplit.splitLocalizedFormatted(
                         KEY + ".thaumcraft",
                         mMaxVisPerDrain,
                         sEnergyPerEssentia * getEfficiency() / 100)));
@@ -762,7 +763,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
             int tTier = (mTier + aOffset + tNumTiers) % tNumTiers;
             int tTrueTier = setTier(tTier);
             if (tTier != tTrueTier) {
-                GTLog.out.format("Absorber's BB Tier set to %d was capped to %d", tTier, tTrueTier);
+                GT_FML_LOGGER.debug("Absorber's BB Tier set to {} was capped to {}", tTier, tTrueTier);
             }
         }
     }

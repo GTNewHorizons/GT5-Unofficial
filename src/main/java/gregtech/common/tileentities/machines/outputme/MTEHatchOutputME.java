@@ -51,7 +51,7 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputHatchType;
@@ -69,6 +69,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -152,8 +153,12 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         return 0;
     }
 
-    public boolean shouldCheck() {
-        return provider.shouldCheck();
+    public boolean getCheckMode() {
+        return provider.getCheckMode();
+    }
+
+    public boolean shouldCheckCell() {
+        return provider.shouldCheckCell();
     }
 
     public boolean hasPhysicalSpace() {
@@ -166,7 +171,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public boolean isEmptyAndAcceptsAnyFluid() {
-        return !provider.isFiltered() && !provider.shouldCheck();
+        return !provider.isFiltered() && !provider.getCheckMode();
     }
 
     BaseActionSource requestSource;
@@ -331,9 +336,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     s.setStackSize(tag.getLong("size"));
                     provider.addToCache(s);
                 } else {
-                    GTMod.GT_FML_LOGGER.warn(
-                        "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: "
-                            + tagFluidStack);
+                    GTLoggers.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: {}",
+                        tagFluidStack);
                 }
             }
         }
@@ -412,21 +417,19 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = super.getDescriptionData();
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
 
         // Sync the hatch capacity to the client so that MM can show its exchanging preview properly
         // This is only called when the hatch is placed since it will never change over its lifetime
 
-        provider.writeToClientPacket(tag);
-
-        return tag;
+        provider.writeToClientPacket(buffer);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        provider.readFromClientPacket(data);
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        provider.readFromClientPacket(buffer);
     }
 
     @Override
@@ -547,7 +550,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
         public void setRecipeCheck(boolean isRecipeCheck) {
             this.isRecipeCheck = isRecipeCheck;
-            if (isRecipeCheck && provider.shouldCheck()) {
+            if (isRecipeCheck && shouldCheckCell()) {
                 provider.flushCachedStack();
                 cell = AEApi.instance()
                     .registries()
@@ -563,9 +566,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         private void updateFlags() {
-            isDynamicCapacity = isRecipeCheck && isProtectOutput && shouldCheck() && !provider.isDistribution();
-            allowAnyInput = isRecipeCheck ? availableSpace > 0
-                : provider.getLastInputTick() == provider.getTickCounter();
+            isDynamicCapacity = isRecipeCheck && isProtectOutput && getCheckMode() && !provider.isDistribution();
+            allowAnyInput = !getCheckMode() && availableSpace > 0;
+            if (!isRecipeCheck) {
+                allowAnyInput |= provider.getLastInputTick() == provider.getTickCounter();
+            }
         }
 
         public boolean isDynamicCapacity() {
@@ -586,7 +591,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
-            if (isRecipeCheck && provider.shouldCheck()) {
+            if (isRecipeCheck && shouldCheckCell()) {
                 IAEFluidStack input = AEFluidStack.create(stack);
                 IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
                 int inserted = (int) (stack.amount - (rejected == null ? 0 : rejected.getStackSize()));

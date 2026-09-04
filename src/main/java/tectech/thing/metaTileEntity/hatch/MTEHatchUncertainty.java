@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -28,6 +29,7 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchUncertaintyGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.util.CommonValues;
@@ -35,7 +37,8 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class MTEHatchUncertainty extends MTEHatch {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
 
     private static IIconContainer ScreenON;
     private static IIconContainer ScreenOFF;
@@ -92,8 +95,8 @@ public class MTEHatchUncertainty extends MTEHatch {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/UC");
-        ScreenON = Textures.BlockIcons.custom("iconsets/UC_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC_ACTIVE");
     }
 
     @Override
@@ -115,10 +118,15 @@ public class MTEHatchUncertainty extends MTEHatch {
                 status = (byte) 0b11111111;
             } else {
                 aBaseMetaTileEntity.setActive(true);
+
+                int oldStatus = status;
+
                 if (!stopChecking) { // No point in making calculations if the entire matrix has faded to 0
                     shift();
                     compute();
                 }
+
+                if (status == 0 && oldStatus != status) notifyWatchers();
             }
         }
     }
@@ -209,7 +217,7 @@ public class MTEHatchUncertainty extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        String[] description = new String[4];
+        String[] description = new String[mTier < 6 ? 4 : 3];
         description[0] = CommonValues.TEC_MARK_EM;
         description[1] = translateToLocal("gt.blockmachines.hatch.certain.desc.0");
         description[2] = EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD

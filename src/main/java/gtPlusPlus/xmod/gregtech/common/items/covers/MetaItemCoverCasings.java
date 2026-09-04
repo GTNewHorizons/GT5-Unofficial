@@ -45,6 +45,7 @@ public class MetaItemCoverCasings extends MetaCustomCoverItem {
     public String getItemStackDisplayName(final ItemStack tItem) {
         return EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocalFormatted(
             "item.itemCustomMetaCover.miscutils.GtMachineCasings",
-            GTValues.VOLTAGE_NAMES[MathUtils.balance(tItem.getItemDamage(), 0, GTValues.VOLTAGE_NAMES.length - 1)]); // super.getItemStackDisplayName(tItem);
+            GTValues.getLocalizedLongVoltageName(
+                MathUtils.balance(tItem.getItemDamage(), 0, GTValues.VOLTAGE_NAMES.length - 1)));
     }
 }

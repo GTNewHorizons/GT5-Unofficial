@@ -15,6 +15,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -38,6 +39,8 @@ import goodgenerator.loader.Loaders;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -66,6 +69,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     public Parameters.Group.ParameterIn batchSetting;
@@ -90,12 +94,14 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     }
     final XSTR R = new XSTR();
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/NeutronActivator_On");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/NeutronActivator_On");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .customOptional("icons/NeutronActivator_On_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("icons/NeutronActivator_Off");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/NeutronActivator_On_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/NeutronActivator_Off");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .customOptional("icons/NeutronActivator_Off_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/NeutronActivator_Off_GLOW");
 
     protected final String NA_BOTTOM = mName + "buttom";
     protected final String NA_MID = mName + "mid";
@@ -188,39 +194,33 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Neutron Activator, NA")
-            .addInfo("Superluminal-velocity Motion.")
-            .addInfo("The minimum height of the Speeding Pipe Casing is 4")
-            .addInfo("Per extra Speeding Pipe Casing will give time discount")
-            .addInfo("But it will reduce the Neutron Accelerator efficiency")
-            .addInfo("You need to input energy to the Neutron Accelerator to get it running")
-            .addInfo("It will output correct products with Specific Neutron Kinetic Energy")
-            .addInfo("Otherwise it will output trash")
-            .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running")
-            .addInfo("Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.neutron_activator"))
+            .addMarkdown(new ResourceLocation("gregtech", "neutron-activator"))
             .beginVariableStructureBlock(5, 5, 6, 256, 5, 5, false)
-            .addController("Front bottom center")
-            .addMiscHatch("1+", "Neutron Accelerator", "Any bottom edge casing", 2)
-            .addMiscHatch("0+", "Neutron Sensor", "Any bottom edge casing", 2)
-            .addMaintenanceHatch("1", "Any bottom edge casing", 2)
-            .addInputAny("1+", "Any top edge casing", 1)
-            .addOutputAny("1+", "Any bottom edge casing", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addMiscHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.neutron_accelerator"), StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"), 2)
+            .addMiscHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.neutron_sensor"), StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"), 2)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_edge_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"), 2)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("32", "Any Tiered Glass", false)
-            .addCasing("7-27", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("18", "Processor Machine Casing", false)
-            .addCasing("16", "Steel Frame Box", false)
-            .addCasing("4", "Speeding Pipe Casing", false)
+            .addCasing("32", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("7-27", StatCollector.translateToLocal("gt.blockcasings4.1.name"), false)
+            .addCasing("18", StatCollector.translateToLocal("gt.blockcasings2.6.name"), false)
+            .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("4", StatCollector.translateToLocal("speedingPipe.name"), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
-            .addCasing("8", "Any Tiered Glass", false)
-            .addCasing("4", "Steel Frame Box", false)
-            .addCasing("1", "Speeding Pipe Casing", false)
+            .addCasing("8", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("4", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("1", StatCollector.translateToLocal("speedingPipe.name"), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -365,8 +365,8 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             }
 
             for (MTENeutronAccelerator tHatch : mNeutronAccelerator) {
-                if (tHatch.getBaseMetaTileEntity()
-                    .isActive() && this.getRepairStatus() == this.getIdealStatus()) {
+                IGregTechTileEntity baseTile = tHatch.getBaseMetaTileEntity();
+                if (baseTile != null && baseTile.isActive() && this.getRepairStatus() == this.getIdealStatus()) {
                     anyWorking = true;
                     this.eV += Math.max(
                         (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -25,6 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -35,8 +37,8 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
+import io.netty.buffer.ByteBuf;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEWorldAccelerator extends MTETieredMachineBlock {
@@ -105,10 +107,14 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     @Override
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        _mGTIco_Norm_Idle = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR");
-        _mGTIco_Norm_Active = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR_ACTIVE");
-        _mGTIco_TE_Idle = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR_TE");
-        _mGTIco_TE_Active = Textures.BlockIcons.customOptional("iconsets/OVERLAY_ACCELERATOR_TE_ACTIVE");
+        _mGTIco_Norm_Idle = Textures.BlockIcons
+            .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_ACCELERATOR");
+        _mGTIco_Norm_Active = Textures.BlockIcons
+            .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_ACCELERATOR_ACTIVE");
+        _mGTIco_TE_Idle = Textures.BlockIcons
+            .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_ACCELERATOR_TE");
+        _mGTIco_TE_Active = Textures.BlockIcons
+            .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_ACCELERATOR_TE_ACTIVE");
     }
 
     @SideOnly(Side.CLIENT)
@@ -128,7 +134,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return GTUtility.translateMultiline(
+        return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.basicmachine.accelerator.tooltip",
             mAccelerateStatic[mTier],
             mTier,
@@ -360,7 +366,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 }
             }
         } catch (Exception e) {
-            GTLog.err.println("MTEWorldAccelerator.onPostTick.crash\n" + e.getMessage());
+            GT_FML_LOGGER.error("MTEWorldAccelerator.onPostTick.crash\n{}", e.getMessage());
         }
     }
 
@@ -368,15 +374,15 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
      * Send the acceleration value to the client
      */
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("acceleration", getSpeedTierOverride());
-        return tag;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(getSpeedTierOverride());
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        this._mSpeedTierOverride = data.getInteger("acceleration");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        this._mSpeedTierOverride = buffer.readInt();
     }
 
     private void doAccelerateTileEntities(IGregTechTileEntity pBaseMetaTileEntity, World pWorld) {
@@ -401,7 +407,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 }
             }
         } catch (Exception e) {
-            GTLog.err.println("MTEWorldAccelerator.doAccelerateTileEntities.crash\n" + e.getMessage());
+            GT_FML_LOGGER.error("MTEWorldAccelerator.doAccelerateTileEntities.crash\n{}", e.getMessage());
         }
     }
 
@@ -498,7 +504,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 }
             }
         } catch (Exception e) {
-            GTLog.err.println("MTEWorldAccelerator.tryTickBlock.crash\n" + e.getMessage());
+            GT_FML_LOGGER.error("MTEWorldAccelerator.tryTickBlock.crash\n{}", e.getMessage());
         }
     }
 

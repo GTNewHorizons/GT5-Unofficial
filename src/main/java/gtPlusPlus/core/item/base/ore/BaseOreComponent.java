@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -148,8 +149,11 @@ public class BaseOreComponent extends Item {
                     .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
         } else {
-            IIconContainer container = Textures.ItemIcons
-                .textureSetWithRegister("METALLIC", "/" + this.componentType.COMPONENT_NAME, par1IconRegister);
+            IIconContainer container = Textures.ItemIcons.textureSetWithRegister(
+                Mods.GregTech.resourceDomain,
+                "METALLIC",
+                "/" + this.componentType.COMPONENT_NAME,
+                par1IconRegister);
             iconBase = container.getIcon();
             iconOverlay = container.getOverlayIcon();
         }
@@ -157,14 +161,8 @@ public class BaseOreComponent extends Item {
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
-        if (this.componentType == ComponentTypes.MILLED) {
-            if (renderPass == 1) {
-                return Utils.rgbtoHexValue(230, 230, 230);
-            }
-        } else {
-            if (renderPass == 1) {
-                return Utils.rgbtoHexValue(230, 230, 230);
-            }
+        if (renderPass == 1) {
+            return Utils.rgbtoHexValue(230, 230, 230);
         }
         return this.componentColour;
     }

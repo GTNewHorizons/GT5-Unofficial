@@ -84,7 +84,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
 
     @Override
     public String getMachineType() {
-        return "Reactor";
+        return "Molten Salt Reactor, LFTR";
     }
 
     @Override
@@ -483,6 +483,11 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
         this.getBaseMetaTileEntity()
             .doExplosion(explodevalue);
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override

@@ -9,6 +9,7 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDE
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
@@ -29,6 +31,7 @@ import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConnectsToDataPipe {
 
     public boolean delDelay = true;
@@ -157,13 +160,13 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
         NBTTagCompound stacksTag = aNBT.getCompoundTag("data_stacks");
         int count = stacksTag.getInteger("count");
         if (count > 0) {
-            recipes = new ArrayList<>();
+            LinkedHashSet<RecipeAssemblyLine> loaded = new LinkedHashSet<>();
 
             for (int i = 0; i < count; i++) {
-                recipes.addAll(AssemblyLineUtils.loadRecipe(stacksTag.getCompoundTag(Integer.toString(i))));
+                loaded.addAll(AssemblyLineUtils.loadRecipe(stacksTag.getCompoundTag(Integer.toString(i))));
             }
 
-            if (recipes.isEmpty()) recipes = null;
+            recipes = loaded.isEmpty() ? null : new ArrayList<>(loaded);
         }
     }
 

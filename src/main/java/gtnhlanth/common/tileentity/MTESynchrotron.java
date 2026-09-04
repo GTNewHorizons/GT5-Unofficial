@@ -4,8 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.HatchElement.BeamlineInput;
-import static gregtech.api.enums.HatchElement.BeamlineOutput;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -18,9 +16,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTUtility.max;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineInput;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineOutput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
@@ -28,6 +29,7 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -54,7 +56,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -68,6 +69,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
@@ -76,10 +78,10 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
-import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
 
-public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron>
+@IMetaTileEntity.SkipGenerateDescription
+public class MTESynchrotron extends MTEBeamMultiBase<MTESynchrotron>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IStructureDefinition<MTESynchrotron> STRUCTURE_DEFINITION;
@@ -491,10 +493,12 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     public MTESynchrotron(String aName) {
         super(aName);
+        this.hasMaintenanceChecks = true;
     }
 
     public MTESynchrotron(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+        this.hasMaintenanceChecks = true;
     }
 
     @Override
@@ -504,56 +508,36 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        final Map<String, Object> tooltipVars = Map.of("fluidUnit", getFluidUnit());
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.synch.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info1"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info2"))
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gtnhlanth.tt.synch.info3", getFluidUnit()))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.oxygen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.nitrogen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.coolant"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.Scoolant"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info4"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info5"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info6"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info7"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info8"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info9"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info10"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info11"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info12"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info13"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info14"))
+            .addMarkdown(new ResourceLocation("gregtech", "synchrotron"), tooltipVars)
             .addSupportAny()
             .beginStructureBlock(36, 7, 34, true)
-            .addController("Front center, 4th layer")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("1690", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
-            .addCasing("90", "Superconducting Coil Block", false)
+            .addCasing("90", Casings.SuperconductingCoilBlock.getLocalizedName(), false)
             .addCasing("64", LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), false)
             .addCasing("28", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)
-            .addCasing("16", "LuV+ Tiered Glass", false)
-            .addCasing("4", "Antenna Casing", true)
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Left of controller", 1)
+            .addCasing("16", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.LuV]), false)
+            .addCasing("4", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.antenna_casing"), true)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.beam_input_pos"), 1)
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"),
-                "Right and back of controller",
+                StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.beam_output_pos"),
                 6)
-            .addEnergyHatch("4", "Above each antenna casing", 4)
-            .addMaintenanceHatch("1", "Around controller", 5)
-            .addInputHatch("2", "Between the energy hatches", 2)
-            .addOutputHatch("2", "Opposite the input hatches", 3)
-            .addAir("Interior of the structure")
+            .addEnergyHatch("4", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.energy_pos"), 4)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 5)
+            .addInputHatch("2", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.input_hatch_pos"), 2)
+            .addOutputHatch("2", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.output_hatch_pos"), 3)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.SYNCHROTRON_ANTENNA)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -687,10 +671,10 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     private void outputPacketAfterRecipe() {
-        if (!this.mBeamlineOutputHatches.isEmpty()) {
+        if (!this.mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
-            for (MTEHatchOutputBeamline o : this.mBeamlineOutputHatches) {
+            for (MTEHatchOutputBeamline o : this.mOutputBeamline) {
                 o.dataPacket = packet;
             }
         }
@@ -708,7 +692,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mBeamlineInputHatches) {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
             if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
             return in.dataPacket.getContent();
         }
@@ -733,7 +717,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     private static float getMachineFocus(int temperature) {
-        return (float) Math.max(Math.min(Math.pow(1.5, -1.0 / 40.0 * (temperature - 480)), 90), 10);
+        return (float) Math.clamp(Math.pow(1.5, -1.0 / 40.0 * (temperature - 480)), 10, 90);
     }
 
     private static float getOutputRatio(float voltageFactor, int antennaTier) {

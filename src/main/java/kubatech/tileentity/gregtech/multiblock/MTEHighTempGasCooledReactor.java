@@ -233,6 +233,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
+            addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             setHatchRecipeMap(hatch);
@@ -249,6 +250,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
+            addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             setHatchRecipeMap(hatch);
@@ -265,6 +267,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
+            addIfSmartInput(aMetaTileEntity);
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             coolantOutputHatch = hatch;
@@ -280,6 +283,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
+            addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             waterInputHatch = hatch;
@@ -295,6 +299,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
+            addIfSmartInput(aMetaTileEntity);
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             steamOutputHatch = hatch;
@@ -579,10 +584,10 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 this.startRecipeProcessing();
                 FluidStack fluidStack = this.getInputFromHatch(heliumInputHatch, Materials.Helium.getGas(1));
                 if (fluidStack != null) {
-                    int toget = Math
+                    int toGet = Math
                         .min(MTEHighTempGasCooledReactor.HELIUM_NEEDED - this.heliumSupply, fluidStack.amount);
-                    fluidStack.amount -= toget;
-                    this.heliumSupply += toget;
+                    fluidStack.amount -= toGet;
+                    this.heliumSupply += toGet;
                     updateneeded = true;
                 }
                 this.endRecipeProcessing();
@@ -780,20 +785,20 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
         }
         {
-            int takewater = this.watertaking;
-            int drainedamount = 0;
+            int takeWater = this.watertaking;
+            int drainedAmount = 0;
 
             FluidStack tLiquid = getInputFromHatch(waterInputHatch, GTModHandler.getDistilledWater(1));
             if (tLiquid != null) {
-                int toDrain = Math.min(takewater, tLiquid.amount);
-                FluidStack drained = waterInputHatch.drain(toDrain, true);
-                drainedamount += drained.amount;
+                int toDrain = Math.min(takeWater, tLiquid.amount);
+                FluidStack drained = waterInputHatch.drain(ForgeDirection.UNKNOWN, tLiquid, toDrain, true);
+                drainedAmount += drained.amount;
             }
 
-            if (drainedamount > 0) {
-                addOutputToHatch(steamOutputHatch, Materials.Steam.getGas(drainedamount * 160L));
+            if (drainedAmount > 0) {
+                addOutputToHatch(steamOutputHatch, Materials.Steam.getGas(drainedAmount * 160L));
 
-                double eff = drainedamount / ((double) this.watertaking);
+                double eff = drainedAmount / ((double) this.watertaking);
                 double addedTime = (int) (this.mMaxProgresstime * WATER_SPEEDUP
                     * eff
                     * this.heliumSupply

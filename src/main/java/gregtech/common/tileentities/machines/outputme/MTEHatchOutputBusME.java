@@ -51,7 +51,7 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IMEConnectable;
@@ -67,6 +67,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -210,7 +211,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
         public void setRecipeCheck(boolean isRecipeCheck) {
             this.isRecipeCheck = isRecipeCheck;
-            if (isRecipeCheck && provider.shouldCheck()) {
+            if (isRecipeCheck && shouldCheckCell()) {
                 provider.flushCachedStack();
                 cell = AEApi.instance()
                     .registries()
@@ -226,9 +227,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         }
 
         private void updateFlags() {
-            isDynamicCapacity = isRecipeCheck && isProtectOutput && shouldCheck() && !provider.isDistribution();
-            allowAnyInput = isRecipeCheck ? availableSpace > 0
-                : provider.getLastInputTick() == provider.getTickCounter();
+            isDynamicCapacity = isRecipeCheck && isProtectOutput && getCheckMode() && !provider.isDistribution();
+            allowAnyInput = !getCheckMode() && availableSpace > 0;
+            if (!isRecipeCheck) {
+                allowAnyInput |= provider.getLastInputTick() == provider.getTickCounter();
+            }
         }
 
         public boolean isDynamicCapacity() {
@@ -249,7 +252,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         public boolean storePartial(GTUtility.ItemId id, @NotNull ItemStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
-            if (isRecipeCheck && provider.shouldCheck()) {
+            if (isRecipeCheck && shouldCheckCell()) {
                 IAEItemStack input = AEItemStack.create(stack);
                 IAEItemStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
                 int inserted = (int) (stack.stackSize - (rejected == null ? 0 : rejected.getStackSize()));
@@ -351,8 +354,12 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         return false;
     }
 
-    public boolean shouldCheck() {
-        return provider.shouldCheck();
+    public boolean getCheckMode() {
+        return provider.getCheckMode();
+    }
+
+    public boolean shouldCheckCell() {
+        return provider.shouldCheckCell();
     }
 
     public boolean hasPhysicalSpace() {
@@ -448,9 +455,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     s.setStackSize(tag.getLong("size"));
                     provider.addToCache(s);
                 } else {
-                    GTMod.GT_FML_LOGGER.warn(
-                        "An error occurred while loading contents of ME Output Bus. This item has been voided: "
-                            + tagItemStack);
+                    GTLoggers.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Output Bus. This item has been voided: {}",
+                        tagItemStack);
                 }
             }
         }
@@ -475,21 +482,19 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = super.getDescriptionData();
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
 
         // Sync the hatch capacity to the client so that MM can show its exchanging preview properly
         // This is only called when the hatch is placed since it will never change over its lifetime
 
-        provider.writeToClientPacket(tag);
-
-        return tag;
+        provider.writeToClientPacket(buffer);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        provider.readFromClientPacket(data);
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        provider.readFromClientPacket(buffer);
     }
 
     @Override

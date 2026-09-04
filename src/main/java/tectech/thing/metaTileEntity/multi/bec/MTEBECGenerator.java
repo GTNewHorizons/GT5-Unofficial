@@ -1,12 +1,12 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
 import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -28,6 +28,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -47,6 +48,7 @@ import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
     public MTEBECGenerator(int aID, String aName) {
@@ -69,7 +71,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
     @Override
     public IStructureDefinition<MTEBECGenerator> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing);
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
@@ -89,14 +91,14 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         StructureWrapperTooltipBuilder<MTEBECGenerator> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Generator, Condensate Entangler, Input Hatch")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-generator"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-generator"))
             .addSupportAny();
 
         tt.beginStructureBlock(19, 19, 34, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-generator.controller-pos"))
             .addCasing("236", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("232", FineStructureConstantManipulator.getLocalizedName(), false)
-            .addCasing("216", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("216", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
             .addCasing("184", PeaceEnforcementCasing.getLocalizedName(), false)
             .addCasing("136-158", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("148", ElectromagneticWaveguide.getLocalizedName(), false)
@@ -113,7 +115,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     }
 
     @Override
-    protected ITexture getCasingTexture() {
+    public ITexture getCasingTexture() {
         return ElectromagneticallyIsolatedCasing.getCasingTexture();
     }
 

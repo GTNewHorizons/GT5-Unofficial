@@ -1,10 +1,15 @@
 package tectech.thing.metaTileEntity.hatch.bec;
 
+import java.util.HashMap;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -14,9 +19,12 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.api.enums.Comparison;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -25,16 +33,21 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import tectech.mechanics.boseEinsteinCondensate.BECInventory;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECStorage;
 
 public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
 
     private Fluid condensateFilter;
     private long requestedAmount, actualAmount;
     private Comparison comparison = Comparison.EQ;
+    private MTEBECStorage becStorage;
+
+    private Lazy<List<String>> tooltip = null;
 
     public MTEHatchCondensateDetector(int aID, String aName) {
         super(aID, aName, VoltageIndex.UIV, null);
@@ -42,6 +55,8 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
 
     protected MTEHatchCondensateDetector(MTEHatchCondensateDetector prototype) {
         super(prototype);
+
+        tooltip = prototype.tooltip;
     }
 
     @Override
@@ -51,15 +66,29 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
 
     @Override
     public ITexture[] getTexturesInactive(ITexture baseTexture) {
-        return new ITexture[] { baseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_HATCH_NANITE_DETECTOR) };
+        return new ITexture[] { baseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_HATCH_CONDENSATE_DETECTOR) };
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture baseTexture) {
         return new ITexture[] { baseTexture, TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_HATCH_NANITE_DETECTOR_GLOW)
+            .addIcon(Textures.BlockIcons.OVERLAY_HATCH_CONDENSATE_DETECTOR_GLOW)
             .glow()
             .build() };
+    }
+
+    public void bindBECStorage(MTEBECStorage becStorage) {
+        this.becStorage = becStorage;
+    }
+
+    public void refreshOutput() {
+        if (this.becStorage != null) {
+            if (this.becStorage.isValid()) {
+                this.becStorage.refreshContentForHatch();
+            } else {
+                this.becStorage = null;
+            }
+        }
     }
 
     public void updateAmount(BECInventory inv) {
@@ -78,6 +107,20 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         actualAmount = amount;
 
         setOutput(comparison.test(actualAmount, requestedAmount));
+    }
+
+    @Override
+    public String[] getDescription() {
+        if (tooltip == null) {
+            tooltip = new Lazy<>(
+                () -> MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "condensate-detector-hatch"),
+                    new HashMap<>()));
+        }
+        return ArrayUtils.addAll(
+            super.getDescription(),
+            tooltip.get()
+                .toArray(GTValues.emptyStringArray));
     }
 
     @Override
@@ -104,6 +147,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         }
         comparison = Comparison.values()[aNBT == null ? 0 : aNBT.getInteger("comparison")];
         requestedAmount = aNBT == null ? 0 : aNBT.getLong("requestedAmount");
+        refreshOutput();
     }
 
     @Override
@@ -145,17 +189,26 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
                     .addPhantomFluidSlot(
                         IKey.lang("GT5U.gui.text.bec-filter"),
                         () -> condensateFilter,
-                        f -> condensateFilter = f,
+                        f -> {
+                            condensateFilter = f;
+                            refreshOutput();
+                        },
                         null)
                     .addEnumCycleButton(
                         IKey.lang("GT5U.gui.text.bec-operation"),
                         Comparison.class,
                         () -> comparison,
-                        v -> comparison = v)
+                        v -> {
+                            comparison = v;
+                            refreshOutput();
+                        })
                     .addLongEditor(
                         IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> requestedAmount,
-                        l -> requestedAmount = l,
+                        l -> {
+                            requestedAmount = l;
+                            refreshOutput();
+                        },
                         l -> Math.clamp(l, 1L, Long.MAX_VALUE))
                     .addReadout(
                         IKey.lang("GT5U.gui.text.bec-current"),

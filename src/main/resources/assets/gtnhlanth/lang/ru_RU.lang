@@ -11,7 +11,6 @@ gtnhlanth.tt.hintNumber=Блок подсказка с точкой %s
 
 # Digester
 gtnhlanth.tt.digester.machinetype=Дигестер
-gtnhlanth.tt.digester.info1=Принимает руду и жидкость, выводит воду
 gtnhlanth.tt.digester.structure.any_casing=Любой корпус из вольфрамовой стали
 gtnhlanth.tt.digester.structure.air=Внутри и над структурой
 
@@ -186,3 +185,11 @@ tooltip.gtnhlanth.particle.rest_mass=Масса покоя: %f MeV
 tooltip.gtnhlanth.particle.charge=Заряд: %s e
 tooltip.gtnhlanth.photomask.desc_spectrum=Подходит для %s-го сегмента электромагнитного спектра и ниже
 tooltip.gtnhlanth.photomask.max_uses=Макс. использований: %d
+
+# Multiblocks
+gt.blockmachines.digester.name=Дигестор
+gt.blockmachines.dissolution_tank.name=Реактор-разбавитель
+gt.blockmachines.linear_accelerator.name=Линейный ускоритель
+gt.blockmachines.source_chamber.name=Источник элементарных частиц
+gt.blockmachines.synchrotron.name=Синхротрон
+gt.blockmachines.target_chamber.name=Приёмник элементарных частиц

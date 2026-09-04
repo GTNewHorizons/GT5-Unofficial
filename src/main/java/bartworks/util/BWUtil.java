@@ -13,6 +13,7 @@
 
 package bartworks.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
@@ -24,25 +25,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 
-import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-
-import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
@@ -52,12 +44,10 @@ import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.GlassTier;
 
 public class BWUtil {
 
@@ -273,105 +263,6 @@ public class BWUtil {
         return ret;
     }
 
-    /**
-     * @deprecated use gregtech.api.util.GTStructureUtility.chainAllGlasses
-     */
-    @Deprecated
-    public static <T> IStructureElement<T> ofGlassTiered(byte mintier, byte maxtier, byte notset,
-        BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots) {
-        return new IStructureElement<>() {
-
-            private final IStructureElement<T> placementDelegate = BorosilicateGlass
-                .ofBoroGlass(notset, mintier, maxtier, setter, getter);
-
-            @Override
-            public boolean check(T te, World world, int x, int y, int z) {
-                if (world.isAirBlock(x, y, z)) return false;
-                Block block = world.getBlock(x, y, z);
-                int meta = world.getBlockMetadata(x, y, z);
-
-                int glassTier = GlassTier.getGlassBlockTier(block, meta);
-
-                // If it is not a glass, the tier will be 0.
-                if (glassTier == 0 || glassTier == notset || glassTier < mintier || glassTier > maxtier) return false;
-
-                if (getter.apply(te) == notset) setter.accept(te, (byte) glassTier);
-                return getter.apply(te) == glassTier;
-            }
-
-            @Override
-            public boolean couldBeValid(T te, World world, int x, int y, int z, ItemStack trigger) {
-                if (world.isAirBlock(x, y, z)) return false;
-                Block block = world.getBlock(x, y, z);
-                int meta = world.getBlockMetadata(x, y, z);
-
-                int glassTier = GlassTier.getGlassBlockTier(block, meta);
-
-                // If it is not a glass, the tier will be 0.
-                return glassTier != 0 && glassTier != notset && glassTier >= mintier && glassTier <= maxtier;
-            }
-
-            @Override
-            public boolean spawnHint(T te, World world, int x, int y, int z, ItemStack itemStack) {
-                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), aDots - 1);
-                return true;
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return this.placementDelegate.placeBlock(t, world, x, y, z, trigger);
-            }
-
-            @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
-                return this.placementDelegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
-            }
-        };
-    }
-
-    @Deprecated
-    public static <T> IStructureElement<T> ofGlassTieredMixed(byte mintier, byte maxtier, int aDots) {
-        return new IStructureElement<>() {
-
-            private final IStructureElement<T> placementDelegate = BorosilicateGlass
-                .ofBoroGlass((byte) 0, mintier, maxtier, (v1, v2) -> {}, v1 -> (byte) 0);
-
-            @Override
-            public boolean check(T te, World world, int x, int y, int z) {
-                if (world.isAirBlock(x, y, z)) return false;
-                Block block = world.getBlock(x, y, z);
-                int meta = world.getBlockMetadata(x, y, z);
-                int glassTier = GlassTier.getGlassBlockTier(block, meta);
-
-                if (glassTier == 0) return false; // Not a glass.
-                return glassTier >= mintier && glassTier <= maxtier;
-            }
-
-            @Override
-            public boolean couldBeValid(T te, World world, int x, int y, int z, ItemStack trigger) {
-                return check(te, world, x, y, z);
-            }
-
-            @Override
-            public boolean spawnHint(T te, World world, int x, int y, int z, ItemStack itemStack) {
-                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), aDots - 1);
-                return true;
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return this.placementDelegate.placeBlock(t, world, x, y, z, trigger);
-            }
-
-            @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
-                return this.placementDelegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
-            }
-        };
-    }
-
     public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return createGTCraftingRecipe(
             aResult,
@@ -514,59 +405,60 @@ public class BWUtil {
         for (; idx < aRecipe.length; idx += 2) {
             if (aRecipe[idx] == null || aRecipe[idx + 1] == null) {
                 if (D1) {
-                    GTLog.err.println(
-                        "WARNING: Missing Item for shaped Recipe: "
-                            + (aResult == null ? "null" : aResult.getDisplayName()));
-                    for (Object tContent : aRecipe) GTLog.err.println(tContent);
+                    GT_FML_LOGGER.error("WARNING: Missing Item for shaped Recipe: {}", aResult == null ? "null" : aResult.getDisplayName());
+                    for (Object tContent : aRecipe) GT_FML_LOGGER.error(tContent);
                 }
                 return null;
             }
             Character chr = (Character) aRecipe[idx];
             Object in = aRecipe[idx + 1];
-            if (in instanceof ItemStack) {
-                tItemStackMap.put(chr, GTUtility.copy(in));
-                tItemDataMap.put(chr, GTOreDictUnificator.getItemData((ItemStack) in));
-            } else if (in instanceof ItemData) {
-                String tString = in.toString();
-                switch (tString) {
-                    case "plankWood":
-                        tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
-                        break;
-                    case "stoneNetherrack":
-                        tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
-                        break;
-                    case "stoneObsidian":
-                        tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
-                        break;
-                    case "stoneEndstone":
-                        tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
-                        break;
-                    default:
-                        tItemDataMap.put(chr, (ItemData) in);
-                        break;
+            switch (in) {
+                case ItemStack itemStack -> {
+                    tItemStackMap.put(chr, GTUtility.copy(in));
+                    tItemDataMap.put(chr, GTOreDictUnificator.getItemData(itemStack));
                 }
-                ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
-                if (tStack == null) tRemoveRecipe = false;
-                else tItemStackMap.put(chr, tStack);
-                aRecipe[idx + 1] = in.toString();
-            } else if (in instanceof String) {
-                if (in.equals(OreDictNames.craftingChest.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
-                else if (in.equals(OreDictNames.craftingBook.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
-                else if (in.equals(OreDictNames.craftingPiston.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
-                else if (in.equals(OreDictNames.craftingFurnace.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
-                else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
-                else if (in.equals(OreDictNames.craftingAnvil.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
-                if (tStack == null) tRemoveRecipe = false;
-                else tItemStackMap.put(chr, tStack);
-            } else {
-                throw new IllegalArgumentException();
+                case ItemData itemData -> {
+                    String tString = in.toString();
+                    switch (tString) {
+                        case "plankWood":
+                            tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
+                            break;
+                        case "stoneNetherrack":
+                            tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
+                            break;
+                        case "stoneObsidian":
+                            tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
+                            break;
+                        case "stoneEndstone":
+                            tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
+                            break;
+                        default:
+                            tItemDataMap.put(chr, itemData);
+                            break;
+                    }
+                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    if (tStack == null) tRemoveRecipe = false;
+                    else tItemStackMap.put(chr, tStack);
+                    aRecipe[idx + 1] = in.toString();
+                }
+                case String s -> {
+                    if (in.equals(OreDictNames.craftingChest.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
+                    else if (in.equals(OreDictNames.craftingBook.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
+                    else if (in.equals(OreDictNames.craftingPiston.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
+                    else if (in.equals(OreDictNames.craftingFurnace.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
+                    else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
+                    else if (in.equals(OreDictNames.craftingAnvil.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
+                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    if (tStack == null) tRemoveRecipe = false;
+                    else tItemStackMap.put(chr, tStack);
+                }
+                case null, default -> throw new IllegalArgumentException();
             }
         }
 
@@ -636,6 +528,63 @@ public class BWUtil {
             aEnchantmentsAdded,
             aEnchantmentLevelsAdded,
             aRecipe).setMirrored(aMirrored);
+    }
+
+    public static boolean areCraftingInputsOnlyMaterial(Object input, Materials material) {
+        if (!(input instanceof List<?>) && !(input instanceof Object[])) {
+            return false;
+        }
+
+        ArrayList<List<?>> lists = new ArrayList<>();
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+
+        if (input instanceof List<?>listInput) {
+            for (Object entry : listInput) {
+                if (entry instanceof List<?>list) {
+                    lists.add(list);
+                } else if (entry instanceof ItemStack stack) {
+                    stacks.add(stack);
+                }
+            }
+        } else if (input instanceof Object[]arrayInput) {
+            for (Object entry : arrayInput) {
+                if (entry instanceof List<?>list) {
+                    lists.add(list);
+                } else if (entry instanceof ItemStack stack) {
+                    stacks.add(stack);
+                }
+            }
+        }
+
+        for (List<?> list : lists) {
+            if (list.isEmpty()) {
+                continue;
+            }
+
+            Object first = list.get(0);
+            if (!(first instanceof ItemStack stack)) {
+                return false;
+            }
+
+            stacks.add(stack);
+        }
+
+        if (stacks.isEmpty()) {
+            return false;
+        }
+
+        for (ItemStack stack : stacks) {
+            ItemData association = GTOreDictUnificator.getAssociation(stack);
+            if (!BWUtil.checkStackAndPrefix(association)) {
+                return false;
+            }
+
+            if (association.mMaterial.mMaterial != material) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static void shortSleep(long nanos) {

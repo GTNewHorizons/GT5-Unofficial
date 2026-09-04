@@ -68,5 +68,5 @@ public interface IDualInputHatch extends IMetaTileEntity, ISmartInputHatch {
         }
         return rList.toArray(new FluidStack[rList.size()]);
 
-    };
+    }
 }
