@@ -127,6 +127,7 @@ import static gregtech.common.items.IDMetaItem02.Food_IceCream_CottonCandy;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Diesel;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_ElectronicBlast;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Engineers;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Explosive;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_FrenchVanilla;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_GrapeMatterManipulator;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_HoneyBeeBowl;
@@ -2586,6 +2587,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                     400,
                     2,
                     100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Explosive.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Explosive.ID,
+                "gt.item.food.icecream_explosive.name",
+                "gt.item.food.icecream_explosive.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false).setExplosive(150f),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Trophy.set(
             addItemWithLocalizationKeys(
