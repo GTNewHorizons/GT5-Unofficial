@@ -54,7 +54,8 @@ public final class EyeOfHarmonyTests {
 
         MTEEyeOfHarmony controller = (MTEEyeOfHarmony) helper.gtnh()
             .metaTileEntity(controllerPos);
-        controller.setInventorySlotContents(controller.getControllerSlotIndex(), new ItemStack(ModBlocks.getBlock("DD")));
+        controller
+            .setInventorySlotContents(controller.getControllerSlotIndex(), new ItemStack(ModBlocks.getBlock("DD")));
 
         double excess = (PRELOADED_FLUID + PENULTIMATE_FILL_CHUNK + FINAL_FILL_CHUNK) / 10_000_000_000.0 - 1;
         double overflowPenalty = 1 - Math.exp(-(30 * excess) * (30 * excess));
