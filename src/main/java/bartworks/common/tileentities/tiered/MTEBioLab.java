@@ -40,6 +40,7 @@ import bartworks.util.BioData;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -86,36 +87,36 @@ public class MTEBioLab extends MTEBasicMachine {
     public MTEBioLab(int aID, String aName, String aNameRegional, int aTier) {
         // spotless:off
         super(aID, aName, aNameRegional, aTier, 1, (String) null, 6, 2, TextureFactory.of(
-            TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")),
-            TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE_GLOW")).glow().build()
+            TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")),
+            TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE_GLOW")).glow().build()
         ),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE")),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_GLOW")).glow().build()
+                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/fluid_extractor/OVERLAY_SIDE")),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/fluid_extractor/OVERLAY_SIDE_GLOW")).glow().build()
             ),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_ACTIVE")),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_ACTIVE_GLOW")).glow().build()
+                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/microwave/OVERLAY_FRONT_ACTIVE")),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/microwave/OVERLAY_FRONT_ACTIVE_GLOW")).glow().build()
             ),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT")),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/microwave/OVERLAY_FRONT_GLOW")).glow().build()
+                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/microwave/OVERLAY_FRONT")),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/microwave/OVERLAY_FRONT_GLOW")).glow().build()
             ),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW")).glow().build() /* this is topactive */
+                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW")).glow().build() /* this is topactive */
             ),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT")),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW")).glow().build() /* this is top */
+                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/chemical_reactor/OVERLAY_FRONT")),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW")).glow().build() /* this is top */
             ),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE")),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE_GLOW")).glow().build()
+                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE")),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE_GLOW")).glow().build()
             ),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM")),
-                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional("basicmachines/polarizer/OVERLAY_BOTTOM_GLOW")).glow().build()
+                TextureFactory.of(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/polarizer/OVERLAY_BOTTOM")),
+                TextureFactory.builder().addIcon(Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain,"basicmachines/polarizer/OVERLAY_BOTTOM_GLOW")).glow().build()
             ));
         // spotless:on
         initPredicatesAndOutputSuppliers();

@@ -9,15 +9,15 @@ import gregtech.api.interfaces.IIconContainer;
 
 public class GTCustomAlphaBlockIconContainer extends GTCustomOptionalBlockIconContainer {
 
-    GTCustomAlphaBlockIconContainer(@NotNull String aIconName) {
-        super(aIconName);
+    GTCustomAlphaBlockIconContainer(@NotNull String domain, @NotNull String aIconName) {
+        super(domain, aIconName);
     }
 
     // 2026-02-03: Counted 160 unique Block Custom Alpha Icons, so 255 will avoid resize until 162 entries
     private static final Map<String, GTCustomAlphaBlockIconContainer> INSTANCES = new ConcurrentHashMap<>(256);
 
-    public static @NotNull IIconContainer create(@NotNull String aIconName) {
-        return INSTANCES.computeIfAbsent(aIconName, GTCustomAlphaBlockIconContainer::new);
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String aIconName) {
+        return INSTANCES.computeIfAbsent(aIconName, key -> new GTCustomAlphaBlockIconContainer(domain, key));
     }
 
     @Override

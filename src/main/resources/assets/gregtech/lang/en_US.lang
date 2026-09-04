@@ -1812,6 +1812,15 @@ gt.mbtt.structure.neutron_accelerator=Neutron Accelerator
 gt.mbtt.structure.neutron_sensor=Neutron Sensor
 gt.mbtt.structure.yot_hatch=YOTHatch
 gt.mbtt.structure.no_air_gaps_fluid_cells_different_tiers=No air gaps allowed, but the fluid cell blocks can be different tiers
+gt.mbtt.structure.front_center_3rd_layer=Front center, 3rd layer
+gt.mbtt.structure.front_center_8th_layer=Front center, 8th layer
+gt.mbtt.structure.any_casing_around_controller=Any casing around controller
+gt.mbtt.structure.any_side_bottom_edge_casing=Any side bottom edge casing
+gt.mbtt.structure.any_outer_iridium_casing_2nd_to_top_layer=Any outer iridium casing on the 2nd to top layer
+gt.mbtt.structure.any_casing_or_frame_box_at_conveyor_start=Any casing or frame box at front of conveyor belt
+gt.mbtt.structure.any_casing_at_conveyor_end=Any casing at end of conveyor belt
+gt.mbtt.structure.any_bottom_edge_concrete=Any bottom edge concrete
+gt.mbtt.structure.any_magic_casing=Any magic casing
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -1828,6 +1837,9 @@ gt.mbtt.machine_type.heat_exchanger_ehe=Heat Exchanger, EHE
 gt.mbtt.machine_type.neutron_activator=Neutron Activator, NA
 gt.mbtt.machine_type.precise_assembler=Precise Assembler, Assembler, PrAss
 gt.mbtt.machine_type.fluid_tank=Fluid Tank
+gt.mbtt.machine_type.component_assembler_coal=High-Capacity Component Assembler, CoAL
+gt.mbtt.machine_type.coolant_tower=Coolant Tower
+gt.mbtt.machine_type.essentia_smeltery_les=Essentia Smeltery, LES
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
