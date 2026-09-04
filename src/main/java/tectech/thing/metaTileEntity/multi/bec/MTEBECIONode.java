@@ -606,7 +606,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
 
         // This has to be done after the step pausing logic, to prevent erroneous clogging shutdowns
-        // We can safely stop the machine here because we only get to this point if we're incremeting the progress
+        // We can safely stop the machine here because we only get to this point if we're incrementing the progress
         // (subtick or otherwise).
         if (this.slowdowns > 3) {
             this.stopMachine(CLOGGED);
