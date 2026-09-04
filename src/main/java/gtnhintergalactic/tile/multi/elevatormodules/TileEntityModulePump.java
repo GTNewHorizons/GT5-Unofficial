@@ -7,7 +7,7 @@ import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,6 +23,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -399,7 +400,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_PUMP_MODULE");
+        engraving = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_SIDE_PUMP_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -441,6 +442,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         return fluid.getLocalizedName();
     }
 
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModulePumpT1 extends TileEntityModulePump {
 
         /** Voltage tier of this module */
@@ -513,28 +515,22 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t1.desc1"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.desc3"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.desc4"))
-
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t1.desc5"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT2"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk1"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addController("Front center, 4th layer")
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addOutputHatch("1+", "Any casing", 1)
+                .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
     }
 
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModulePumpT2 extends TileEntityModulePump {
 
         /** Voltage tier of this module */
@@ -607,29 +603,22 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t2.desc1"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.desc3"))
-
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.desc4"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t2.desc5"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT3"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk2"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addController("Front center, 4th layer")
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addOutputHatch("1+", "Any casing", 1)
+                .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
     }
 
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModulePumpT3 extends TileEntityModulePump {
 
         /** Voltage tier of this module */
@@ -702,25 +691,17 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t3.desc1"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.desc3"))
-
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.desc4"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t3.desc5"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT4"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk3"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addController("Front center, 4th layer")
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addOutputHatch("1+", "Any casing", 1)
+                .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
     }

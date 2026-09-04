@@ -303,7 +303,7 @@ public class Loaders {
             Loaders.NeutronAccelerators[i] = new MTENeutronAccelerator(
                 neutronAcceleratorIDs[i],
                 "Neutron Accelerator " + GTValues.VN[i],
-                "Neutron Accelerator " + GTValues.VN[i],
+                "",
                 i).getStackForm(1L);
         }
         Loaders.NS = new MTENeutronSensor(MetaTileEntityIDs.NeutronSensor.ID, "Neutron Sensor", "Neutron Sensor", 5)
@@ -548,7 +548,7 @@ public class Loaders {
         RecipeLoader.InitLoadRecipe();
         RecipeLoader2.InitLoadRecipe();
         FuelRecipeLoader.RegisterFuel();
-        NaquadahReworkRecipeLoader.RecipeLoad();
+        NaquadahRecipeLoader.RecipeLoad();
     }
 
     public static void postInitLoad() {

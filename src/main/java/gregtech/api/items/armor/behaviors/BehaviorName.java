@@ -14,7 +14,6 @@ public enum BehaviorName {
     OmniMovement(EnumRarity.rare),
     Jetpack(EnumRarity.uncommon),
     JetpackHover(EnumRarity.uncommon),
-    JetpackPerfectHover(EnumRarity.rare),
     FireImmunity(EnumRarity.common),
     StepAssist(EnumRarity.common),
     GogglesOfRevealing(EnumRarity.uncommon),
@@ -33,6 +32,7 @@ public enum BehaviorName {
     MilkInfusion(EnumRarity.uncommon),
     HoloInventory(EnumRarity.uncommon),
     Terrasteel(EnumRarity.uncommon),
+    Soulbound(EnumRarity.common),
     Levitation(EnumRarity.epic)
     //
     ;

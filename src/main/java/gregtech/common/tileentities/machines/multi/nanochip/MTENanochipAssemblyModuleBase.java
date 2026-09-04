@@ -124,7 +124,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     public int getMaxRecipeDuration() {
         return ((NACRecipeMapBackend) (this.getRecipeMap()
-            .getBackend())).getMaxDuration();
+            .getBackend())).getMaxDuration(-1);
     }
 
     protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> vacuumConveyorInputs = new VacuumConveyorHatchMap<>();
@@ -354,7 +354,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 // Store the color of this hatch for each ItemStack
                 byte conveyorColor = conveyor.getColorization();
                 for (ItemStack stack : itemsInHatch) {
-                    GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(stack);
+                    GTUtility.ItemId id = GTUtility.ItemId.createWithoutNBT(stack);
                     // Merge stack into the input map, so we have a list of entries that are all unique.
                     inputs.merge(
                         id,
@@ -685,11 +685,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return vacuumConveyorOutputs.findAnyColoredHatch(color);
     }
 
-    protected boolean removeItemFromInputByColor(ItemStack stack, byte color) {
+    protected boolean removeItemFromInputByColor(ItemStack stack, byte color, boolean withName) {
         int totalToConsome = stack.stackSize;
         List<MTEHatchVacuumConveyorInput> hatches = vacuumConveyorInputs.findColoredHatches(color);
         for (MTEHatchVacuumConveyorInput inputHatch : hatches) {
-            int amountConsumed = inputHatch.tryConsume(stack);
+            int amountConsumed = inputHatch.tryConsume(stack, withName);
             totalToConsome -= amountConsumed;
             if (totalToConsome <= 0) {
                 return true;
@@ -726,7 +726,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
         // Look up component from this output fake stack and unify it with the packet inside the output hatch
         CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(aStack);
-        CircuitComponentPacket outputPacket = new CircuitComponentPacket(component, aStack.stackSize);
+        String customName = GTUtility.getStackCustomName(aStack);
+        CircuitComponentPacket outputPacket = new CircuitComponentPacket(component, aStack.stackSize, customName);
         hatch.unifyPacket(outputPacket);
     }
 
@@ -806,24 +807,20 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setBoolean("connected", isConnected());
 
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         if (tag.hasKey("connected")) {
             if (tag.getBoolean("connected")) {
-                currentTip.add(translateToLocal("GT5U.tooltip.nac.interface.connected"));
+                list.add(translateToLocal("GT5U.tooltip.nac.interface.connected"));
             } else {
-                currentTip.add(translateToLocal("GT5U.tooltip.nac.interface.disconnected"));
+                list.add(translateToLocal("GT5U.tooltip.nac.interface.disconnected"));
             }
 
         }

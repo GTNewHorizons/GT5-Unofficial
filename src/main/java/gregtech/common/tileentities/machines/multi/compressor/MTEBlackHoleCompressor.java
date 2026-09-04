@@ -491,38 +491,30 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setByte("blackHoleStatus", blackHoleStatus);
         tag.setFloat("blackHoleStability", blackHoleStability);
-        tag.setInteger("parallels", getMaxParallelRecipes());
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("parallels"));
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         if (tag.getByte("blackHoleStatus") != 1) {
             if (tag.getFloat("blackHoleStability") > 0) {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.DARK_PURPLE
                         + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.active"));
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
                         "GT5U.waila.black_hole_compressor.stability",
                         "" + EnumChatFormatting.BOLD + Math.round(tag.getFloat("blackHoleStability"))));
             } else {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.RED
                         + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.unstable"));
             }
-        } else currentTip.add(
+        } else list.add(
             EnumChatFormatting.DARK_PURPLE
                 + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.offline"));
     }

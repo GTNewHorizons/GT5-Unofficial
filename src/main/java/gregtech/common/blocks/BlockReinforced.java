@@ -137,6 +137,7 @@ public class BlockReinforced extends GTGenericBlock {
                 13));
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(Items.coal, 1, 1),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { ItemList.Block_BrittleCharcoal.get(1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Block_Powderbarrel.get(1L),

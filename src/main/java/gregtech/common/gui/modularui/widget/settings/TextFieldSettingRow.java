@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.widget.settings;
 
+import java.util.function.Supplier;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -13,13 +15,14 @@ import gregtech.common.gui.modularui.widget.WidgetConfigurator;
 import it.unimi.dsi.fastutil.Pair;
 
 @Desugar
-record TextFieldSettingRow(IKey label, IStringValue<?> value, WidgetConfigurator<TextFieldWidget> configure)
-    implements ISettingRow<TextFieldWidget> {
+record TextFieldSettingRow(IKey label, IStringValue<?> value, WidgetConfigurator<TextFieldWidget> configure,
+    Supplier<? extends TextFieldWidget> widgetConstructor) implements ISettingRow<TextFieldWidget> {
 
     @Override
     public @NotNull Pair<IKey, TextFieldWidget> build(ModularPanel panel, PanelSyncManager syncManager,
         SettingsPanel settings) {
-        TextFieldWidget textFieldWidget = new TextFieldWidget().value(value)
+        TextFieldWidget textFieldWidget = widgetConstructor.get()
+            .value(value)
             .width(80);
 
         if (configure != null) configure.configure(panel, syncManager, textFieldWidget);

@@ -20,29 +20,28 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofTileAdd
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -53,66 +52,73 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import bartworks.API.modularUI.BWUITextures;
-import bartworks.MainMod;
 import bartworks.common.items.ItemStonageRotors;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.common.tileentities.classic.TileEntityRotorBlock;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GUITextureSet;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.objects.ItemData;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.common.items.IDMetaTool01;
-import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.MTEWindmillGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.nei.RecipeDisplayInfo;
 
 public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
-    implements ISurvivalConstructable, IGetTitleColor {
+    implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
-    private static final IIcon[] iIcons = new IIcon[2];
-    private static final IIconContainer[] iIconContainers = new IIconContainer[2];
-    private static final ITexture[] iTextures = new ITexture[3];
+    private static final int MAX_PARALLELS = 16;
 
     private TileEntityRotorBlock rotorBlock;
     private int mDoor = 0;
     private int mHardenedClay = 0;
-    private int mMulti = 16;
+
+    private enum WindLevel {
+        NON_EXISTENT,
+        PRETTY_LOW,
+        COMMON,
+        RATHER_STRONG,
+        VERY_STRONG,
+        TOO_STRONG
+    }
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    private static final int VERTICAL_OFFSET = 11;
+    private static final int HORIZONTAL_OFFSET = 3;
+    private static final int DEPTH_OFFSET = 0;
+    private static final int RECIPE_DURATION_MULTI = 8;
+
+    private final OverclockDescriber overclockDescriber;
+
+    private final Set<TileEntityDispenser> tileEntityDispensers = new HashSet<>();
 
     public MTEWindmill(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        this.overclockDescriber = createOverclockDescriber();
     }
 
     private MTEWindmill(String aName) {
         super(aName);
+        this.overclockDescriber = createOverclockDescriber();
     }
 
     private static final IStructureElement<MTEWindmill> DISPENSER_OR_CLAY = new IStructureElement<>() {
@@ -126,6 +132,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             }
 
             if (block == Blocks.hardened_clay && world.getBlockMetadata(x, y, z) == 0) {
+                t.mHardenedClay++;
+                return true;
+            }
+
+            if (block == Blocks.stained_hardened_clay) {
                 t.mHardenedClay++;
                 return true;
             }
@@ -152,48 +163,78 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         }
     };
 
-    private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEWindmill> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEWindmill>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] { { "       ", "       ", "       ", "   p   ", "       ", "       ", "       " },
-                    { "       ", "       ", "  ppp  ", "  p p  ", "  ppp  ", "       ", "       " },
-                    { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
-                    { " ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
-                    { " ppspp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
-                    { " ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
-                    { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
-                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
-                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  cdc  ", "       " },
-                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
-                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
-                    { " bb~bb ", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", " bbbbb " }, }))
+        // spotless:off
+        .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
+            { "       ", "       ", "       ", "   p   ", "       ", "       ", "       " },
+            { "       ", "       ", "  ppp  ", "  p p  ", "  ppp  ", "       ", "       " },
+            { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
+            { " ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
+            { " pprpp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
+            { " ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
+            { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
+            { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
+            { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  cdc  ", "       " },
+            { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
+            { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
+            { " bb~bb ", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", " bbbbb " }}))
+        // spotless:on
         .addElement('p', ofBlockAnyMeta(Blocks.planks))
-        .addElement(
-            'c',
-            ofChain(
-                onElementPass(t -> t.mHardenedClay++, ofBlock(Blocks.hardened_clay, 0)),
-                ofTileAdder(MTEWindmill::addDispenserToOutputSet, Blocks.hardened_clay, 0),
-                onElementPass(t -> t.mDoor++, new IStructureElementNoPlacement<MTEWindmill>() {
+        .addElement('c', ofChain(onElementPass(t -> t.mHardenedClay++, new IStructureElement<MTEWindmill>() {
 
-                    private final IStructureElement<MTEWindmill> delegate = ofBlock(Blocks.wooden_door, 0);
+            @Override
+            public boolean check(MTEWindmill t, World world, int x, int y, int z) {
+                Block block = world.getBlock(x, y, z);
+                return block == Blocks.hardened_clay || block == Blocks.stained_hardened_clay;
+            }
 
-                    @Override
-                    public boolean check(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z) {
-                        return this.delegate.check(gt_tileEntity_windmill, world, x, y, z);
-                    }
+            @Override
+            public boolean couldBeValid(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+                return check(t, world, x, y, z);
+            }
 
-                    @Override
-                    public boolean spawnHint(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z,
-                        ItemStack trigger) {
-                        return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
-                    }
-                })))
+            @Override
+            public boolean spawnHint(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticle(world, x, y, z, Blocks.hardened_clay, 0);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+                return world.setBlock(x, y, z, Blocks.hardened_clay, 0, 3);
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                Item plainItem = Item.getItemFromBlock(Blocks.hardened_clay);
+                Item stainedItem = Item.getItemFromBlock(Blocks.stained_hardened_clay);
+                return BlocksToPlace.create(is -> {
+                    Item item = is.getItem();
+                    return item == plainItem || item == stainedItem;
+                });
+            }
+        }),
+            ofTileAdder(MTEWindmill::addDispenserToOutputSet, Blocks.hardened_clay, 0),
+            onElementPass(t -> t.mDoor++, new IStructureElementNoPlacement<MTEWindmill>() {
+
+                private final IStructureElement<MTEWindmill> delegate = ofBlock(Blocks.wooden_door, 0);
+
+                @Override
+                public boolean check(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z) {
+                    return this.delegate.check(gt_tileEntity_windmill, world, x, y, z);
+                }
+
+                @Override
+                public boolean spawnHint(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z,
+                    ItemStack trigger) {
+                    return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
+                }
+            })))
         .addElement('d', DISPENSER_OR_CLAY)
         .addElement('b', ofBlock(Blocks.brick_block, 0))
-        .addElement('s', new IStructureElement<>() {
+        .addElement('r', new IStructureElement<>() {
 
             @Override
             public boolean check(MTEWindmill t, World world, int x, int y, int z) {
@@ -240,151 +281,149 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Macerator")
-            .addInfo("A primitive Grinder powered by Kinetic energy")
-            .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
-            .addInfo("Please use the Primitive Rotor")
-            .addInfo("Macerates 16 items at a time")
+        tt.addMachineType("Windmill, Macerator")
+            .addInfo("A primitive Grinder powered by " + EnumChatFormatting.AQUA + "Kinetic Energy")
+            .addInfo("Macerates up to" + EnumChatFormatting.GOLD + " 16 " + EnumChatFormatting.GRAY + "items at a time")
+            .addInfo("The amount of parallels is determined by " + EnumChatFormatting.AQUA + "Wind Speed")
+            .addInfo("Parallels determine how many items are processed per recipe")
+            .addInfo("Processing time is the same regardless of parallels")
+            .addInfo(
+                EnumChatFormatting.AQUA + "Wind Speed "
+                    + EnumChatFormatting.GRAY
+                    + "can be determined using the "
+                    + EnumChatFormatting.YELLOW
+                    + "Simple Wind Meter")
+            .addInfo("Rotor can be put in the " + EnumChatFormatting.BLUE + "Primitive Kinetic Shaftbox")
+            .addInfo("Will not work if wind is non-existent or too strong")
+            .addInfo(EnumChatFormatting.RED + "12.5% " + EnumChatFormatting.GRAY + "speed")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.GOLD + "2"
+                    + EnumChatFormatting.GRAY
+                    + " parallels: "
+                    + EnumChatFormatting.WHITE
+                    + "Low")
+            .addInfo(
+                EnumChatFormatting.GOLD + "4"
+                    + EnumChatFormatting.GRAY
+                    + " parallels: "
+                    + EnumChatFormatting.DARK_GREEN
+                    + "Common")
+            .addInfo(
+                EnumChatFormatting.GOLD + "8"
+                    + EnumChatFormatting.GRAY
+                    + " parallels: "
+                    + EnumChatFormatting.GOLD
+                    + "Rather strong")
+            .addInfo(
+                EnumChatFormatting.GOLD + "16"
+                    + EnumChatFormatting.GRAY
+                    + " parallels: "
+                    + EnumChatFormatting.DARK_RED
+                    + "Very Strong")
             .beginStructureBlock(7, 12, 7, true)
             .addController("Front bottom center")
-            .addCasing("100", "Wood Planks (any type)", false)
-            .addCasing("40-47", "Terracotta (plain)", false)
             .addCasing("44", "Bricks", false)
-            .addMiscHatch("1", "Primitive Kinetic Shaftbox", "Front center", 1)
-            .addMiscHatch("1+", "Dispenser", "Any terracotta", 2)
-            .addMiscHatch("0-1", "Oak Door", "Any terracotta", 2)
+            .addCasing("40-47", "Terracotta (any color)", false)
+            .addCasing("100", "Wooden Planks (any)", false)
+            .addCasing("1", "Primitive Kinetic Shaftbox", false)
+            .addOtherStructurePart("Dispenser", "Any Terracotta", 1)
+            .addStructureHint("tile.BWRotorBlock.0.name", 1)
             .toolTipFinisher();
         return tt;
     }
 
-    private final Set<TileEntityDispenser> tileEntityDispensers = new HashSet<>();
-
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mMaxProgresstime > 0) this.mProgresstime += this.rotorBlock.getGrindPower();
         if (!this.rotorBlock.rotorSlot.isEmpty()) this.setRotorDamage(this.rotorBlock, this.rotorBlock.getGrindPower());
         return this.rotorBlock.getGrindPower() > 0;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return true;
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (this.rotorBlock != null) {
+            if (this.isAllowedToWork()) {
+                if (this.rotorBlock.rotorSlot.isEmpty()) stopMachine(ShutDownReasonRegistry.NO_ROTOR);
+                if (getWindLevel(this.rotorBlock) == WindLevel.TOO_STRONG)
+                    stopMachine(ShutDownReasonRegistry.WIND_HIGH);
+                if (getWindLevel(this.rotorBlock) == WindLevel.NON_EXISTENT)
+                    stopMachine(ShutDownReasonRegistry.WIND_LOW);
+            }
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
-    public boolean doRandomMaintenanceDamage() {
-        return true;
-    }
-
-    private float[] multiplierRecipe(ItemStack itemStack) {
-        // will return max and min value of the multiplier, the average of these is used to calculate the multiplier.
-        final Item item = itemStack.getItem();
-        if (item == Items.wheat) {
-            return new float[] { 1.13f, 1.5f };
-        }
-        final Block block = Block.getBlockFromItem(item);
-        if (item == Items.bone || block == Blocks.glowstone || block == Blocks.pumpkin) {
-            return new float[] { 0.8f, 1f };
-        }
-        if (block == Blocks.gravel || block == Blocks.cobblestone
-            || block == Blocks.stone
-            || block == Blocks.sandstone
-            || block == Blocks.clay
-            || block == Blocks.hardened_clay
-            || block == Blocks.stained_hardened_clay
-            || block == Blocks.wool
-            || block == Blocks.netherrack
-            || block == Blocks.log
-            || block == Blocks.log2) {
-            return new float[] { 1f, 1.5f };
-        }
-        final ItemData association = GTOreDictUnificator.getAssociation(itemStack);
-        final OrePrefixes prefix = association == null ? null : association.mPrefix;
-        if (prefix == null || association.mMaterial == null
-            || association.mMaterial.mMaterial == null
-            || association.mMaterial.mMaterial.getDust(1) == null) {
-            return new float[] { 1f, 1f };
-        }
-        if (OrePrefixes.ore == prefix || OrePrefixes.oreNetherrack == prefix
-            || OrePrefixes.oreEndstone == prefix
-            || OrePrefixes.oreBlackgranite == prefix
-            || OrePrefixes.oreRedgranite == prefix
-            || OrePrefixes.oreMarble == prefix
-            || OrePrefixes.oreBasalt == prefix) {
-            return new float[] { 0.5f, 1f };
-        }
-        if (OrePrefixes.stone == prefix || OrePrefixes.stoneBricks == prefix
-            || OrePrefixes.stoneChiseled == prefix
-            || OrePrefixes.stoneCobble == prefix
-            || OrePrefixes.stoneCracked == prefix
-            || OrePrefixes.stoneMossy == prefix
-            || OrePrefixes.stoneMossyBricks == prefix
-            || OrePrefixes.stoneSmooth == prefix
-            || OrePrefixes.cobblestone == prefix) {
-            return new float[] { 1f, 1.5f };
-        }
-        return new float[] { 1f, 1f };
+    protected @NotNull CheckRecipeResult doCheckRecipe() {
+        processingLogic.setInputItems(getControllerSlot());
+        return processingLogic.process();
     }
 
     @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
-        ItemStack itemStack = getControllerSlot();
-        if (itemStack == null || itemStack.getItem() == null) return CheckRecipeResultRegistry.NO_RECIPE;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        if (this.mOutputItems == null) this.mOutputItems = new ItemStack[2];
-
-        GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
-            .caching(false)
-            .items(itemStack)
-            .voltage(V[1])
-            .find();
-        if (tRecipe == null) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        if (tRecipe.getOutput(0) != null) {
-            // Decrease input stack by appropriate amount (Not always 1)
-            for (int i = 0; i < this.mMulti; i++) {
-                if (!tRecipe.isRecipeInputEqual(true, null, itemStack)) {
-                    this.mMulti = i;
-                    break;
-                }
+            @Override
+            @Nonnull
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return OverclockCalculator.ofNoOverclock(recipe)
+                    .setDurationModifier(RECIPE_DURATION_MULTI);
             }
-            this.updateSlots();
-            this.mOutputItems[0] = tRecipe.getOutput(0);
-            float[] mRecipe = this.multiplierRecipe(itemStack);
-            float multiper = Math.min(
-                mRecipe[1],
-                Math.max(
-                    mRecipe[0],
-                    2f * (float) Math.sqrt((float) 1 / (this.rotorBlock.getWindStrength() + 1))
-                        * this.OutputMultiplier(this.rotorBlock)
-                        * (mRecipe[0] + mRecipe[1])));
-            int amount = (int) Math.floor(multiper * (this.mOutputItems[0].stackSize * this.mMulti));
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getParallels);
+    }
 
-            // Split ItemStack --by gtpp
-            List<ItemStack> splitStacks = new ArrayList<>();
-            while (amount > this.mOutputItems[0].getMaxStackSize()) {
-                ItemStack tmp = this.mOutputItems[0].copy();
-                tmp.stackSize = this.mOutputItems[0].getMaxStackSize();
-                amount -= this.mOutputItems[0].getMaxStackSize();
-                splitStacks.add(tmp);
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(V[1]);
+        logic.setAvailableAmperage(MAX_PARALLELS);
+        logic.setAmperageOC(false);
+        logic.setMaxTierSkips(0);
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.maceratorRecipes;
+    }
+
+    @Override
+    public int getItemOutputLimit() {
+        return 1;
+    }
+
+    @Override
+    public @Nullable OverclockDescriber getOverclockDescriber() {
+        return overclockDescriber;
+    }
+
+    private static OverclockDescriber createOverclockDescriber() {
+        return new OverclockDescriber((byte) 1) {
+
+            @Override
+            public @NotNull String getTierString() {
+                return StatCollector.translateToLocal("GT5U.nei.display.windmill");
             }
-            ItemStack tmp = this.mOutputItems[0].copy();
-            tmp.stackSize = amount;
-            splitStacks.add(tmp);
-            this.mOutputItems = splitStacks.toArray(new ItemStack[0]);
-        }
-        this.mMaxProgresstime = tRecipe.mDuration * 2 * 100 * this.mMulti / this.getSpeed(this.rotorBlock);
-        this.mMulti = 16;
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+
+            @Override
+            public @NotNull OverclockCalculator createCalculator(@NotNull OverclockCalculator template,
+                @NotNull GTRecipe recipe) {
+                return OverclockCalculator.ofNoOverclock(recipe)
+                    .setDurationModifier(RECIPE_DURATION_MULTI);
+            }
+
+            @Override
+            public void drawEnergyInfo(@NotNull RecipeDisplayInfo recipeInfo) {
+                return;
+            }
+        };
     }
 
     @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
-        this.getBaseMetaTileEntity()
-            .disableWorking();
+        IGregTechTileEntity tileEntity = this.getBaseMetaTileEntity();
+        tileEntity.setShutDownReason(reason);
+        tileEntity.setShutdownStatus(true);
+        tileEntity.disableWorking();
     }
 
     public boolean addDispenserToOutputSet(TileEntity aTileEntity) {
@@ -409,45 +448,46 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             if (GTUtility.isStackInvalid(stack)) continue;
 
             for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
-                for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
-                    if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
-                        && stack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
-                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
-                            ItemStack merge = tHatch.getStackInSlot(i)
-                                .copy();
-                            merge.stackSize = stack.stackSize + tHatch.getStackInSlot(i).stackSize;
-                            tHatch.setInventorySlotContents(i, merge);
-                        } else {
-                            tHatch.setInventorySlotContents(i, stack.copy());
-                        }
+                if (stack.stackSize <= 0) break;
 
-                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
-                            return true;
+                for (int i = 0; i < tHatch.getSizeInventory(); i++) {
+                    if (stack.stackSize <= 0) break;
+
+                    if (tHatch.getStackInSlot(i) == null) {
+                        ItemStack insertStack = stack.copy();
+                        insertStack.stackSize = Math.min(insertStack.getMaxStackSize(), insertStack.stackSize);
+                        tHatch.setInventorySlotContents(i, insertStack);
+                        stack.stackSize -= insertStack.stackSize;
+                    } else if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
+                        && (tHatch.getStackInSlot(i).stackSize < stack.getMaxStackSize())) {
+                            ItemStack otherStack = tHatch.getStackInSlot(i);
+                            int put = Math.min(otherStack.getMaxStackSize() - otherStack.stackSize, stack.stackSize);
+                            otherStack.stackSize += put;
+                            stack.stackSize -= put;
                         }
-                        tHatch.setInventorySlotContents(i, null);
-                        return false;
-                    }
                 }
             }
         }
-
-        return false;
+        return true;
     }
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
+
         this.tileEntityDispensers.clear();
         this.mDoor = 0;
         this.mHardenedClay = 0;
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0, errors)) return;
+
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
+
+        checkCasingMin(errors, this.mHardenedClay, 40);
         if (this.tileEntityDispensers.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
         }
         if (this.mDoor > 2) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
         }
-        checkCasingMin(errors, this.mHardenedClay, 40);
     }
 
     @Override
@@ -475,108 +515,63 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             IGregTechDeviceInformation.encode("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        MTEWindmill.iIcons[0] = Blocks.brick_block.getIcon(0, 0);
-        MTEWindmill.iIconContainers[0] = new IIconContainer() {
-
-            @Override
-            public IIcon getIcon() {
-                return MTEWindmill.iIcons[0];
-            }
-
-            @Override
-            public IIcon getOverlayIcon() {
-                return null;
-            }
-
-            @Override
-            public ResourceLocation getTextureFile() {
-                return new ResourceLocation("brick");
-            }
-        };
-
-        MTEWindmill.iIcons[1] = aBlockIconRegister.registerIcon(MainMod.MOD_ID + ":windmill_top");
-        MTEWindmill.iIconContainers[1] = new IIconContainer() {
-
-            @Override
-            public IIcon getIcon() {
-                return MTEWindmill.iIcons[1];
-            }
-
-            @Override
-            public IIcon getOverlayIcon() {
-                return null;
-            }
-
-            @Override
-            public ResourceLocation getTextureFile() {
-                return new ResourceLocation(MainMod.MOD_ID + ":windmill_top");
-            }
-        };
-    }
-
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
 
-        ITexture[] ret = new ITexture[6];
-
-        if (this.isClientSide()) {
-
-            if (facing == side || side == ForgeDirection.DOWN) {
-                MTEWindmill.iTextures[0] = TextureFactory.of(MTEWindmill.iIconContainers[0]);
-                Arrays.fill(ret, MTEWindmill.iTextures[0]);
-            } else if (side == ForgeDirection.UP) {
-                MTEWindmill.iTextures[1] = TextureFactory.of(MTEWindmill.iIconContainers[1]);
-                Arrays.fill(ret, MTEWindmill.iTextures[1]);
-            } else {
-                MTEWindmill.iTextures[2] = TextureFactory.of(Textures.BlockIcons.COVER_WOOD_PLATE);
-                Arrays.fill(ret, MTEWindmill.iTextures[2]);
-            }
+        if (facing == side) {
+            return new ITexture[] { TextureFactory.of(Blocks.brick_block), TextureFactory.builder()
+                .addIcon(OVERLAY_TOP_STEAM_MACERATOR)
+                .extFacing()
+                .build() };
+        } else {
+            return new ITexture[] { TextureFactory.of(Blocks.brick_block) };
         }
-        return ret;
-    }
-
-    public boolean isClientSide() {
-        if (this.getBaseMetaTileEntity()
-            .getWorld() != null)
-            return this.getBaseMetaTileEntity()
-                .getWorld().isRemote
-                    ? FMLCommonHandler.instance()
-                        .getSide() == Side.CLIENT
-                    : FMLCommonHandler.instance()
-                        .getEffectiveSide() == Side.CLIENT;
-        return FMLCommonHandler.instance()
-            .getEffectiveSide() == Side.CLIENT;
     }
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        this.buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 3, 11, 0);
+        this.buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 11, 0, elementBudget, env, false, true);
+        return this.survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            HORIZONTAL_OFFSET,
+            VERTICAL_OFFSET,
+            DEPTH_OFFSET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
-    public float OutputMultiplier(TileEntityRotorBlock rotorBlock) {
-        ItemStack stack = rotorBlock.rotorSlot.get();
-        if (stack == null || !(stack.getItem() instanceof ItemStonageRotors rotor)) {
-            return 1;
-        }
-        return rotor.getmRotor();
+    private int getParallels() {
+        WindLevel wind = getWindLevel(this.rotorBlock);
+        if (invalidWindLevel()) return 0;
+        return (int) Math.pow(2, wind.ordinal());
     }
 
-    public int getSpeed(TileEntityRotorBlock rotorBlock) {
-        ItemStack stack = rotorBlock.rotorSlot.get();
-        if (stack == null || !(stack.getItem() instanceof ItemStonageRotors rotor)) {
-            return 1;
-        }
-        return rotor.getSpeed();
+    private float currentWind(TileEntityRotorBlock rotorBlock) {
+        if (rotorBlock == null) return 0;
+        return rotorBlock.getWindStrength();
+    }
+
+    private WindLevel getWindLevel(TileEntityRotorBlock rotorBlock) {
+        float windSpeed = currentWind(rotorBlock);
+        return windSpeed < 1f ? WindLevel.NON_EXISTENT
+            : windSpeed < 10f ? WindLevel.PRETTY_LOW
+                : windSpeed < 20f ? WindLevel.COMMON
+                    : windSpeed < 30f ? WindLevel.RATHER_STRONG
+                        : windSpeed < 50f ? WindLevel.VERY_STRONG : WindLevel.TOO_STRONG;
+    }
+
+    private boolean invalidWindLevel() {
+        return getWindLevel(this.rotorBlock) == WindLevel.NON_EXISTENT
+            || getWindLevel(this.rotorBlock) == WindLevel.TOO_STRONG;
     }
 
     public void setRotorDamage(TileEntityRotorBlock rotorBlock, int damage) {
@@ -589,85 +584,24 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public GUITextureSet getGUITextureSet() {
-        return new GUITextureSet().setMainBackground(BWUITextures.BACKGROUND_BROWN)
-            .setItemSlot(BWUITextures.SLOT_BROWN)
-            .setTitleTab(
-                BWUITextures.TAB_TITLE_BROWN,
-                BWUITextures.TAB_TITLE_DARK_BROWN,
-                BWUITextures.TAB_TITLE_ANGULAR_BROWN);
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEWindmillGui(this);
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(BWUITextures.PICTURE_BW_LOGO_47X20)
-                .setSize(47, 20)
-                .setPos(123, 59));
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.COKE_OVEN;
     }
 
     @Override
-    public int getTitleColor() {
-        return this.COLOR_TITLE_WHITE.get();
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return true;
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(this.inventoryHandler, 1).setBackground(
-                this.getGUITextureSet()
-                    .getItemSlot())
-                .setPos(59, 35))
-            .widget(new DrawableWidget() {
-
-                private static final int DIVIDER = 125;
-
-                @Override
-                public void onScreenUpdate() {
-                    super.onScreenUpdate();
-                    if (MTEWindmill.this.mMaxProgresstime > 0) {
-                        if (System.currentTimeMillis() / DIVIDER % 40 == 30)
-                            this.setDrawable(BWUITextures.PICTURE_WINDMILL_ROTATING[3]);
-                        else if (System.currentTimeMillis() / DIVIDER % 40 == 20)
-                            this.setDrawable(BWUITextures.PICTURE_WINDMILL_ROTATING[2]);
-                        else if (System.currentTimeMillis() / DIVIDER % 40 == 10)
-                            this.setDrawable(BWUITextures.PICTURE_WINDMILL_ROTATING[1]);
-                        else if (System.currentTimeMillis() / DIVIDER % 40 == 0)
-                            this.setDrawable(BWUITextures.PICTURE_WINDMILL_ROTATING[0]);
-                    } else {
-                        this.setDrawable(BWUITextures.PICTURE_WINDMILL_EMPTY);
-                    }
-                }
-            }.setDrawable(BWUITextures.PICTURE_WINDMILL_EMPTY)
-                .setPos(85, 27)
-                .setSize(32, 32))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> this.mMaxProgresstime, val -> this.mMaxProgresstime = val))
-            .widget(
-                new ItemDrawable(
-                    () -> this.mMachine && !this.getBaseMetaTileEntity()
-                        .isActive()
-                            ? MetaGeneratedTool01.INSTANCE
-                                .getToolWithStats(IDMetaTool01.SOFTMALLET.ID, 1, null, null, null)
-                            : null).asWidget()
-                                .setPos(66, 66))
-            .widget(
-                new FakeSyncWidget.BooleanSyncer(
-                    () -> this.getBaseMetaTileEntity()
-                        .isActive(),
-                    val -> this.getBaseMetaTileEntity()
-                        .setActive(val)))
-            .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(this.COLOR_TEXT_WHITE.get())
-                    .setMaxWidth(150)
-                    .setEnabled(widget -> !this.mMachine)
-                    .setPos(92, 22))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> this.mMachine, val -> this.mMachine = val));
+    public boolean doRandomMaintenanceDamage() {
+        return true;
     }
 
     @Override
@@ -679,4 +613,15 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     public boolean supportsSingleRecipeLocking() {
         return false;
     }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    public boolean canBeMuffled() {
+        return false;
+    }
+
 }

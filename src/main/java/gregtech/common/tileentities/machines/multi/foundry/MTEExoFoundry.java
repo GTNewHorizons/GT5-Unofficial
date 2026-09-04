@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.SolidifierHatch;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE;
@@ -64,7 +65,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -101,6 +102,7 @@ import gregtech.common.render.shader.Uniform;
 import gregtech.common.render.shader.VertexAttribute;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
+import io.netty.buffer.ByteBuf;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
@@ -218,7 +220,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement(
             'H',
-            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch, OutputBus, InputBus, Energy.or(ExoticEnergy))
+            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch.or(SolidifierHatch), OutputBus, InputBus, Energy.or(ExoticEnergy))
                 .hint(1)
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
@@ -858,7 +860,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // spotless:off
         ringShader = FOUNDRY.bake();
         if (!ringShader.isValid()) {
-            GTMod.GT_FML_LOGGER.error("Failed to initialize exo foundry shader");
+            GTLoggers.GT_FML_LOGGER.error("Failed to initialize exo foundry shader");
             releaseRender();
             return;
         }
@@ -871,7 +873,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             ring = WavefrontVBOBuilder.compileToVBO(model, ringShader.vertexFormat());
             ffpRing = WavefrontVBOBuilder.compileToVBO(model);
         } catch (RuntimeException e) {
-            GTMod.GT_FML_LOGGER.error("Failed to load exo foundry ring model", e);
+            GTLoggers.GT_FML_LOGGER.error("Failed to load exo foundry ring model", e);
             releaseRender();
             return;
         }
@@ -1017,26 +1019,25 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
      * Sends on world load, on module set, on screwdriver right click, and on structure check
      */
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("multiTier", foundryData.tier);
-        tag.setInteger("module1OR", foundryData.modules[0].ordinal());
-        tag.setInteger("module2OR", foundryData.modules[1].ordinal());
-        tag.setInteger("module3OR", foundryData.modules[2].ordinal());
-        tag.setInteger("module4OR", foundryData.modules[3].ordinal());
-        tag.setBoolean("shouldRender", shouldRender);
-        return tag;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(foundryData.tier);
+        buffer.writeInt(foundryData.modules[0].ordinal());
+        buffer.writeInt(foundryData.modules[1].ordinal());
+        buffer.writeInt(foundryData.modules[2].ordinal());
+        buffer.writeInt(foundryData.modules[3].ordinal());
+        buffer.writeBoolean(shouldRender);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        foundryData.tier = data.getInteger("multiTier");
-        foundryData.modules[0] = FoundryModule.values()[data.getInteger("module1OR")];
-        foundryData.modules[1] = FoundryModule.values()[data.getInteger("module2OR")];
-        foundryData.modules[2] = FoundryModule.values()[data.getInteger("module3OR")];
-        foundryData.modules[3] = FoundryModule.values()[data.getInteger("module4OR")];
-        shouldRender = data.getBoolean("shouldRender");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        foundryData.tier = buffer.readInt();
+        foundryData.modules[0] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[1] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[2] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[3] = FoundryModule.values()[buffer.readInt()];
+        shouldRender = buffer.readBoolean();
     }
 
     // data class

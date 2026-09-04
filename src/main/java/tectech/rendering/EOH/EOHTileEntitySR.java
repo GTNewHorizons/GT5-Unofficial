@@ -5,7 +5,7 @@ import static tectech.rendering.EOH.EOHRenderingUtils.renderOuterSpaceShell;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -38,7 +38,7 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
         if (world == null) return; // Just in-case
 
         // Smooth global animation clock
-        float time = world.getTotalWorldTime() + partialTicks;
+        double time = (double) world.getTotalWorldTime() + partialTicks;
 
         eyeModel.translation((float) x + 0.5f, (float) y + 0.5f, (float) z + 0.5f);
 
@@ -47,7 +47,7 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
         GL11.glDisable(GL11.GL_BLEND);
 
         // For LOD calculations.
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        EntityLivingBase player = Minecraft.getMinecraft().renderViewEntity;
         renderOuterSpaceShell(eyeModel, player.getDistance(x, y, z));
         renderOrbitObjects(te, time);
         EOHRenderingUtils.renderEOHStar(eyeModel, IItemRenderer.ItemRenderType.INVENTORY, time, te.getStarSize());
@@ -55,7 +55,7 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
         RenderState.restore(GL11.GL_BLEND, blendWas);
     }
 
-    private void renderOrbitObjects(TileEntityEyeOfHarmony te, float time) {
+    private void renderOrbitObjects(TileEntityEyeOfHarmony te, double time) {
 
         var objects = te.getOrbitingObjects();
 

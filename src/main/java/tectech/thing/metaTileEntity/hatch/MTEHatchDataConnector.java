@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -52,9 +53,9 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_D_ACTIVE = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_ACTIVE");
-        EM_D_SIDES = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_SIDES");
-        EM_D_CONN = Textures.BlockIcons.custom("iconsets/EM_DATA_CONN");
+        EM_D_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_EM_D_ACTIVE");
+        EM_D_SIDES = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_EM_D_SIDES");
+        EM_D_CONN = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_DATA_CONN");
     }
 
     @Override

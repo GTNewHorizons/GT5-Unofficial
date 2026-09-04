@@ -2,6 +2,7 @@ package gregtech.loaders.preload;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.Forestry;
@@ -44,6 +45,7 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
+import codechicken.nei.api.API;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
@@ -79,7 +81,6 @@ import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTLog;
 import gregtech.common.tileentities.automation.MTEChestBuffer;
 import gregtech.common.tileentities.automation.MTEFilter;
 import gregtech.common.tileentities.automation.MTEItemDistributor;
@@ -118,6 +119,7 @@ import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
 import gregtech.common.tileentities.machines.basic.MTEDrawerFramer;
+import gregtech.common.tileentities.machines.basic.MTEIceCreamMachine;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
@@ -1715,25 +1717,16 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerLocker() {
-        ItemList.Locker_ULV
-            .set(new MTELocker(LOCKER_ULV.ID, "locker.tier.00", "Ultra Low Voltage Locker", 0).getStackForm(1L));
-        ItemList.Locker_LV.set(new MTELocker(LOCKER_LV.ID, "locker.tier.01", "Low Voltage Locker", 1).getStackForm(1L));
-        ItemList.Locker_MV
-            .set(new MTELocker(LOCKER_MV.ID, "locker.tier.02", "Medium Voltage Locker", 2).getStackForm(1L));
-        ItemList.Locker_HV
-            .set(new MTELocker(LOCKER_HV.ID, "locker.tier.03", "High Voltage Locker", 3).getStackForm(1L));
-        ItemList.Locker_EV
-            .set(new MTELocker(LOCKER_EV.ID, "locker.tier.04", "Extreme Voltage Locker", 4).getStackForm(1L));
-        ItemList.Locker_IV
-            .set(new MTELocker(LOCKER_IV.ID, "locker.tier.05", "Insane Voltage Locker", 5).getStackForm(1L));
-        ItemList.Locker_LuV
-            .set(new MTELocker(LOCKER_LuV.ID, "locker.tier.06", "Ludicrous Voltage Locker", 6).getStackForm(1L));
-        ItemList.Locker_ZPM
-            .set(new MTELocker(LOCKER_ZPM.ID, "locker.tier.07", "ZPM Voltage Locker", 7).getStackForm(1L));
-        ItemList.Locker_UV
-            .set(new MTELocker(LOCKER_UV.ID, "locker.tier.08", "Ultimate Voltage Locker", 8).getStackForm(1L));
-        ItemList.Locker_MAX
-            .set(new MTELocker(LOCKER_UHV.ID, "locker.tier.09", "Highly Ultimate Voltage Locker", 9).getStackForm(1L));
+        ItemList.Locker_ULV.set(new MTELocker(LOCKER_ULV.ID, "locker.tier.00", "", 0).getStackForm(1L));
+        ItemList.Locker_LV.set(new MTELocker(LOCKER_LV.ID, "locker.tier.01", "", 1).getStackForm(1L));
+        ItemList.Locker_MV.set(new MTELocker(LOCKER_MV.ID, "locker.tier.02", "", 2).getStackForm(1L));
+        ItemList.Locker_HV.set(new MTELocker(LOCKER_HV.ID, "locker.tier.03", "", 3).getStackForm(1L));
+        ItemList.Locker_EV.set(new MTELocker(LOCKER_EV.ID, "locker.tier.04", "", 4).getStackForm(1L));
+        ItemList.Locker_IV.set(new MTELocker(LOCKER_IV.ID, "locker.tier.05", "", 5).getStackForm(1L));
+        ItemList.Locker_LuV.set(new MTELocker(LOCKER_LuV.ID, "locker.tier.06", "", 6).getStackForm(1L));
+        ItemList.Locker_ZPM.set(new MTELocker(LOCKER_ZPM.ID, "locker.tier.07", "", 7).getStackForm(1L));
+        ItemList.Locker_UV.set(new MTELocker(LOCKER_UV.ID, "locker.tier.08", "", 8).getStackForm(1L));
+        ItemList.Locker_MAX.set(new MTELocker(LOCKER_UHV.ID, "locker.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerScanner() {
@@ -1791,51 +1784,36 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerRockBreaker() {
-        ItemList.Machine_LV_RockBreaker.set(
-            new MTERockBreaker(ROCK_BREAKER_LV.ID, "basicmachine.rockbreaker.tier.01", "Basic Rock Breaker", 1)
-                .getStackForm(1L));
-        ItemList.Machine_MV_RockBreaker.set(
-            new MTERockBreaker(ROCK_BREAKER_MV.ID, "basicmachine.rockbreaker.tier.02", "Advanced Rock Breaker", 2)
-                .getStackForm(1L));
-        ItemList.Machine_HV_RockBreaker.set(
-            new MTERockBreaker(ROCK_BREAKER_HV.ID, "basicmachine.rockbreaker.tier.03", "Advanced Rock Breaker II", 3)
-                .getStackForm(1L));
-        ItemList.Machine_EV_RockBreaker.set(
-            new MTERockBreaker(ROCK_BREAKER_EV.ID, "basicmachine.rockbreaker.tier.04", "Advanced Rock Breaker III", 4)
-                .getStackForm(1L));
-        ItemList.Machine_IV_RockBreaker.set(
-            new MTERockBreaker(
-                ROCK_BREAKER_IV.ID,
-                "basicmachine.rockbreaker.tier.05",
-                "Cryogenic Magma Solidifier R-8200",
-                5).getStackForm(1L));
-        ItemList.RockBreakerLuV.set(
-            new MTERockBreaker(ROCK_BREAKER_LuV.ID, "rockbreaker.tier.06", "Cryogenic Magma Solidifier R-9200", 6)
-                .getStackForm(1L));
+        ItemList.Machine_LV_RockBreaker
+            .set(new MTERockBreaker(ROCK_BREAKER_LV.ID, "basicmachine.rockbreaker.tier.01", "", 1).getStackForm(1L));
+        ItemList.Machine_MV_RockBreaker
+            .set(new MTERockBreaker(ROCK_BREAKER_MV.ID, "basicmachine.rockbreaker.tier.02", "", 2).getStackForm(1L));
+        ItemList.Machine_HV_RockBreaker
+            .set(new MTERockBreaker(ROCK_BREAKER_HV.ID, "basicmachine.rockbreaker.tier.03", "", 3).getStackForm(1L));
+        ItemList.Machine_EV_RockBreaker
+            .set(new MTERockBreaker(ROCK_BREAKER_EV.ID, "basicmachine.rockbreaker.tier.04", "", 4).getStackForm(1L));
+        ItemList.Machine_IV_RockBreaker
+            .set(new MTERockBreaker(ROCK_BREAKER_IV.ID, "basicmachine.rockbreaker.tier.05", "", 5).getStackForm(1L));
+        ItemList.RockBreakerLuV
+            .set(new MTERockBreaker(ROCK_BREAKER_LuV.ID, "rockbreaker.tier.06", "", 6).getStackForm(1L));
 
-        ItemList.RockBreakerZPM.set(
-            new MTERockBreaker(ROCK_BREAKER_ZPM.ID, "rockbreaker.tier.07", "Cryogenic Magma Solidifier R-10200", 7)
-                .getStackForm(1L));
+        ItemList.RockBreakerZPM
+            .set(new MTERockBreaker(ROCK_BREAKER_ZPM.ID, "rockbreaker.tier.07", "", 7).getStackForm(1L));
 
-        ItemList.RockBreakerUV.set(
-            new MTERockBreaker(ROCK_BREAKER_UV.ID, "rockbreaker.tier.08", "Cryogenic Magma Solidifier R-11200", 8)
-                .getStackForm(1L));
+        ItemList.RockBreakerUV
+            .set(new MTERockBreaker(ROCK_BREAKER_UV.ID, "rockbreaker.tier.08", "", 8).getStackForm(1L));
 
-        ItemList.RockBreakerUHV.set(
-            new MTERockBreaker(ROCK_BREAKER_UHV.ID, "rockbreaker.tier.09", "Cryogenic Magma Solidifier R-12200", 9)
-                .getStackForm(1L));
+        ItemList.RockBreakerUHV
+            .set(new MTERockBreaker(ROCK_BREAKER_UHV.ID, "rockbreaker.tier.09", "", 9).getStackForm(1L));
 
-        ItemList.RockBreakerUEV.set(
-            new MTERockBreaker(ROCK_BREAKER_UEV.ID, "rockbreaker.tier.10", "Cryogenic Magma Solidifier R-13200", 10)
-                .getStackForm(1L));
+        ItemList.RockBreakerUEV
+            .set(new MTERockBreaker(ROCK_BREAKER_UEV.ID, "rockbreaker.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.RockBreakerUIV.set(
-            new MTERockBreaker(ROCK_BREAKER_UIV.ID, "rockbreaker.tier.11", "Cryogenic Magma Solidifier R-14200", 11)
-                .getStackForm(1L));
+        ItemList.RockBreakerUIV
+            .set(new MTERockBreaker(ROCK_BREAKER_UIV.ID, "rockbreaker.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.RockBreakerUMV.set(
-            new MTERockBreaker(ROCK_BREAKER_UMV.ID, "rockbreaker.tier.12", "Cryogenic Magma Solidifier R-15200", 12)
-                .getStackForm(1L));
+        ItemList.RockBreakerUMV
+            .set(new MTERockBreaker(ROCK_BREAKER_UMV.ID, "rockbreaker.tier.12", "", 12).getStackForm(1L));
     }
 
     private static void registerIndustrialApiary() {
@@ -2199,324 +2177,183 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerChestBuffer() {
-        ItemList.Automation_ChestBuffer_ULV.set(
-            new MTEChestBuffer(
-                CHEST_BUFFER_ULV.ID,
-                "automation.chestbuffer.tier.00",
-                "Ultra Low Voltage Chest Buffer",
-                0).getStackForm(1L));
-        ItemList.Automation_ChestBuffer_LV.set(
-            new MTEChestBuffer(CHEST_BUFFER_LV.ID, "automation.chestbuffer.tier.01", "Low Voltage Chest Buffer", 1)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_MV.set(
-            new MTEChestBuffer(CHEST_BUFFER_MV.ID, "automation.chestbuffer.tier.02", "Medium Voltage Chest Buffer", 2)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_HV.set(
-            new MTEChestBuffer(CHEST_BUFFER_HV.ID, "automation.chestbuffer.tier.03", "High Voltage Chest Buffer", 3)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_EV.set(
-            new MTEChestBuffer(CHEST_BUFFER_EV.ID, "automation.chestbuffer.tier.04", "Extreme Voltage Chest Buffer", 4)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_IV.set(
-            new MTEChestBuffer(CHEST_BUFFER_IV.ID, "automation.chestbuffer.tier.05", "Insane Voltage Chest Buffer", 5)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_LuV.set(
-            new MTEChestBuffer(
-                CHEST_BUFFER_LuV.ID,
-                "automation.chestbuffer.tier.06",
-                "Ludicrous Voltage Chest Buffer",
-                6).getStackForm(1L));
-        ItemList.Automation_ChestBuffer_ZPM.set(
-            new MTEChestBuffer(CHEST_BUFFER_ZPM.ID, "automation.chestbuffer.tier.07", "ZPM Voltage Chest Buffer", 7)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_UV.set(
-            new MTEChestBuffer(CHEST_BUFFER_UV.ID, "automation.chestbuffer.tier.08", "Ultimate Voltage Chest Buffer", 8)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_UHV.set(
-            new MTEChestBuffer(
-                CHEST_BUFFER_UHV.ID,
-                "automation.chestbuffer.tier.09",
-                "Highly Ultimate Voltage Chest Buffer",
-                9).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_ULV
+            .set(new MTEChestBuffer(CHEST_BUFFER_ULV.ID, "automation.chestbuffer.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_LV
+            .set(new MTEChestBuffer(CHEST_BUFFER_LV.ID, "automation.chestbuffer.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_MV
+            .set(new MTEChestBuffer(CHEST_BUFFER_MV.ID, "automation.chestbuffer.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_HV
+            .set(new MTEChestBuffer(CHEST_BUFFER_HV.ID, "automation.chestbuffer.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_EV
+            .set(new MTEChestBuffer(CHEST_BUFFER_EV.ID, "automation.chestbuffer.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_IV
+            .set(new MTEChestBuffer(CHEST_BUFFER_IV.ID, "automation.chestbuffer.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_LuV
+            .set(new MTEChestBuffer(CHEST_BUFFER_LuV.ID, "automation.chestbuffer.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_ZPM
+            .set(new MTEChestBuffer(CHEST_BUFFER_ZPM.ID, "automation.chestbuffer.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_UV
+            .set(new MTEChestBuffer(CHEST_BUFFER_UV.ID, "automation.chestbuffer.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_UHV
+            .set(new MTEChestBuffer(CHEST_BUFFER_UHV.ID, "automation.chestbuffer.tier.09", "", 9).getStackForm(1L));
 
-        ItemList.Automation_ChestBuffer_UEV.set(
-            new MTEChestBuffer(
-                CHEST_BUFFER_UEV.ID,
-                "automation.chestbuffer.tier.10",
-                "Ultra High Voltage Chest Buffer",
-                10).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_UEV
+            .set(new MTEChestBuffer(CHEST_BUFFER_UEV.ID, "automation.chestbuffer.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.Automation_ChestBuffer_UIV.set(
-            new MTEChestBuffer(CHEST_BUFFER_UIV.ID, "automation.chestbuffer.tier.11", "UIV Voltage Chest Buffer", 11)
-                .getStackForm(1L));
+        ItemList.Automation_ChestBuffer_UIV
+            .set(new MTEChestBuffer(CHEST_BUFFER_UIV.ID, "automation.chestbuffer.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.Automation_ChestBuffer_UMV.set(
-            new MTEChestBuffer(CHEST_BUFFER_UMV.ID, "automation.chestbuffer.tier.12", "UMV Voltage Chest Buffer", 12)
-                .getStackForm(1L));
+        ItemList.Automation_ChestBuffer_UMV
+            .set(new MTEChestBuffer(CHEST_BUFFER_UMV.ID, "automation.chestbuffer.tier.12", "", 12).getStackForm(1L));
     }
 
     private static void registerItemFilter() {
-        ItemList.Automation_Filter_ULV.set(
-            new MTEFilter(ITEM_FILTER_ULV.ID, "automation.filter.tier.00", "Ultra Low Voltage Item Filter", 0)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_LV.set(
-            new MTEFilter(ITEM_FILTER_LV.ID, "automation.filter.tier.01", "Low Voltage Item Filter", 1)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_MV.set(
-            new MTEFilter(ITEM_FILTER_MV.ID, "automation.filter.tier.02", "Medium Voltage Item Filter", 2)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_HV.set(
-            new MTEFilter(ITEM_FILTER_HV.ID, "automation.filter.tier.03", "High Voltage Item Filter", 3)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_EV.set(
-            new MTEFilter(ITEM_FILTER_EV.ID, "automation.filter.tier.04", "Extreme Voltage Item Filter", 4)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_IV.set(
-            new MTEFilter(ITEM_FILTER_IV.ID, "automation.filter.tier.05", "Insane Voltage Item Filter", 5)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_LuV.set(
-            new MTEFilter(ITEM_FILTER_LuV.ID, "automation.filter.tier.06", "Ludicrous Voltage Item Filter", 6)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_ZPM.set(
-            new MTEFilter(ITEM_FILTER_ZPM.ID, "automation.filter.tier.07", "ZPM Voltage Item Filter", 7)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_UV.set(
-            new MTEFilter(ITEM_FILTER_UV.ID, "automation.filter.tier.08", "Ultimate Voltage Item Filter", 8)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_MAX.set(
-            new MTEFilter(ITEM_FILTER_UHV.ID, "automation.filter.tier.09", "Highly Ultimate Voltage Item Filter", 9)
-                .getStackForm(1L));
+        ItemList.Automation_Filter_ULV
+            .set(new MTEFilter(ITEM_FILTER_ULV.ID, "automation.filter.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_Filter_LV
+            .set(new MTEFilter(ITEM_FILTER_LV.ID, "automation.filter.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_Filter_MV
+            .set(new MTEFilter(ITEM_FILTER_MV.ID, "automation.filter.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_Filter_HV
+            .set(new MTEFilter(ITEM_FILTER_HV.ID, "automation.filter.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_Filter_EV
+            .set(new MTEFilter(ITEM_FILTER_EV.ID, "automation.filter.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_Filter_IV
+            .set(new MTEFilter(ITEM_FILTER_IV.ID, "automation.filter.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_Filter_LuV
+            .set(new MTEFilter(ITEM_FILTER_LuV.ID, "automation.filter.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_Filter_ZPM
+            .set(new MTEFilter(ITEM_FILTER_ZPM.ID, "automation.filter.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_Filter_UV
+            .set(new MTEFilter(ITEM_FILTER_UV.ID, "automation.filter.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_Filter_MAX
+            .set(new MTEFilter(ITEM_FILTER_UHV.ID, "automation.filter.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerTypeFilter() {
-        ItemList.Automation_TypeFilter_ULV.set(
-            new MTETypeFilter(TYPE_FILTER_ULV.ID, "automation.typefilter.tier.00", "Ultra Low Voltage Type Filter", 0)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_LV.set(
-            new MTETypeFilter(TYPE_FILTER_LV.ID, "automation.typefilter.tier.01", "Low Voltage Type Filter", 1)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_MV.set(
-            new MTETypeFilter(TYPE_FILTER_MV.ID, "automation.typefilter.tier.02", "Medium Voltage Type Filter", 2)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_HV.set(
-            new MTETypeFilter(TYPE_FILTER_HV.ID, "automation.typefilter.tier.03", "High Voltage Type Filter", 3)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_EV.set(
-            new MTETypeFilter(TYPE_FILTER_EV.ID, "automation.typefilter.tier.04", "Extreme Voltage Type Filter", 4)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_IV.set(
-            new MTETypeFilter(TYPE_FILTER_IV.ID, "automation.typefilter.tier.05", "Insane Voltage Type Filter", 5)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_LuV.set(
-            new MTETypeFilter(TYPE_FILTER_LuV.ID, "automation.typefilter.tier.06", "Ludicrous Voltage Type Filter", 6)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_ZPM.set(
-            new MTETypeFilter(TYPE_FILTER_ZPM.ID, "automation.typefilter.tier.07", "ZPM Voltage Type Filter", 7)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_UV.set(
-            new MTETypeFilter(TYPE_FILTER_UV.ID, "automation.typefilter.tier.08", "Ultimate Voltage Type Filter", 8)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_MAX.set(
-            new MTETypeFilter(
-                TYPE_FILTER_UHV.ID,
-                "automation.typefilter.tier.09",
-                "Highly Ultimate Voltage Type Filter",
-                9).getStackForm(1L));
+        ItemList.Automation_TypeFilter_ULV
+            .set(new MTETypeFilter(TYPE_FILTER_ULV.ID, "automation.typefilter.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_TypeFilter_LV
+            .set(new MTETypeFilter(TYPE_FILTER_LV.ID, "automation.typefilter.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_TypeFilter_MV
+            .set(new MTETypeFilter(TYPE_FILTER_MV.ID, "automation.typefilter.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_TypeFilter_HV
+            .set(new MTETypeFilter(TYPE_FILTER_HV.ID, "automation.typefilter.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_TypeFilter_EV
+            .set(new MTETypeFilter(TYPE_FILTER_EV.ID, "automation.typefilter.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_TypeFilter_IV
+            .set(new MTETypeFilter(TYPE_FILTER_IV.ID, "automation.typefilter.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_TypeFilter_LuV
+            .set(new MTETypeFilter(TYPE_FILTER_LuV.ID, "automation.typefilter.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_TypeFilter_ZPM
+            .set(new MTETypeFilter(TYPE_FILTER_ZPM.ID, "automation.typefilter.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_TypeFilter_UV
+            .set(new MTETypeFilter(TYPE_FILTER_UV.ID, "automation.typefilter.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_TypeFilter_MAX
+            .set(new MTETypeFilter(TYPE_FILTER_UHV.ID, "automation.typefilter.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerRegulator() {
-        ItemList.Automation_Regulator_ULV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_ULV.ID, "automation.regulator.tier.00", "Ultra Low Voltage Regulator", 0)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_LV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_LV.ID, "automation.regulator.tier.01", "Low Voltage Regulator", 1)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_MV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_MV.ID, "automation.regulator.tier.02", "Medium Voltage Regulator", 2)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_HV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_HV.ID, "automation.regulator.tier.03", "High Voltage Regulator", 3)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_EV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_EV.ID, "automation.regulator.tier.04", "Extreme Voltage Regulator", 4)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_IV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_IV.ID, "automation.regulator.tier.05", "Insane Voltage Regulator", 5)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_LuV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_LuV.ID, "automation.regulator.tier.06", "Ludicrous Voltage Regulator", 6)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_ZPM.set(
-            new MTERegulator(VOLTAGE_REGULATOR_ZPM.ID, "automation.regulator.tier.07", "ZPM Voltage Regulator", 7)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_UV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_UV.ID, "automation.regulator.tier.08", "Ultimate Voltage Regulator", 8)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_MAX.set(
-            new MTERegulator(
-                VOLTAGE_REGULATOR_UHV.ID,
-                "automation.regulator.tier.09",
-                "Highly Ultimate Voltage Regulator",
-                9).getStackForm(1L));
+        ItemList.Automation_Regulator_ULV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_ULV.ID, "automation.regulator.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_Regulator_LV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_LV.ID, "automation.regulator.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_Regulator_MV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_MV.ID, "automation.regulator.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_Regulator_HV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_HV.ID, "automation.regulator.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_Regulator_EV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_EV.ID, "automation.regulator.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_Regulator_IV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_IV.ID, "automation.regulator.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_Regulator_LuV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_LuV.ID, "automation.regulator.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_Regulator_ZPM
+            .set(new MTERegulator(VOLTAGE_REGULATOR_ZPM.ID, "automation.regulator.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_Regulator_UV
+            .set(new MTERegulator(VOLTAGE_REGULATOR_UV.ID, "automation.regulator.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_Regulator_MAX
+            .set(new MTERegulator(VOLTAGE_REGULATOR_UHV.ID, "automation.regulator.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerSuperBuffer() {
-        ItemList.Automation_SuperBuffer_ULV.set(
-            new MTESuperBuffer(
-                SUPER_BUFFER_ULV.ID,
-                "automation.superbuffer.tier.00",
-                "Ultra Low Voltage Super Buffer",
-                0).getStackForm(1L));
-        ItemList.Automation_SuperBuffer_LV.set(
-            new MTESuperBuffer(SUPER_BUFFER_LV.ID, "automation.superbuffer.tier.01", "Low Voltage Super Buffer", 1)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_MV.set(
-            new MTESuperBuffer(SUPER_BUFFER_MV.ID, "automation.superbuffer.tier.02", "Medium Voltage Super Buffer", 2)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_HV.set(
-            new MTESuperBuffer(SUPER_BUFFER_HV.ID, "automation.superbuffer.tier.03", "High Voltage Super Buffer", 3)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_EV.set(
-            new MTESuperBuffer(SUPER_BUFFER_EV.ID, "automation.superbuffer.tier.04", "Extreme Voltage Super Buffer", 4)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_IV.set(
-            new MTESuperBuffer(SUPER_BUFFER_IV.ID, "automation.superbuffer.tier.05", "Insane Voltage Super Buffer", 5)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_LuV.set(
-            new MTESuperBuffer(
-                SUPER_BUFFER_LuV.ID,
-                "automation.superbuffer.tier.06",
-                "Ludicrous Voltage Super Buffer",
-                6).getStackForm(1L));
-        ItemList.Automation_SuperBuffer_ZPM.set(
-            new MTESuperBuffer(SUPER_BUFFER_ZPM.ID, "automation.superbuffer.tier.07", "ZPM Voltage Super Buffer", 7)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_UV.set(
-            new MTESuperBuffer(SUPER_BUFFER_UV.ID, "automation.superbuffer.tier.08", "Ultimate Voltage Super Buffer", 8)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_MAX.set(
-            new MTESuperBuffer(
-                SUPER_BUFFER_UHV.ID,
-                "automation.superbuffer.tier.09",
-                "Highly Ultimate Voltage Super Buffer",
-                9).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_ULV
+            .set(new MTESuperBuffer(SUPER_BUFFER_ULV.ID, "automation.superbuffer.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_LV
+            .set(new MTESuperBuffer(SUPER_BUFFER_LV.ID, "automation.superbuffer.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_MV
+            .set(new MTESuperBuffer(SUPER_BUFFER_MV.ID, "automation.superbuffer.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_HV
+            .set(new MTESuperBuffer(SUPER_BUFFER_HV.ID, "automation.superbuffer.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_EV
+            .set(new MTESuperBuffer(SUPER_BUFFER_EV.ID, "automation.superbuffer.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_IV
+            .set(new MTESuperBuffer(SUPER_BUFFER_IV.ID, "automation.superbuffer.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_LuV
+            .set(new MTESuperBuffer(SUPER_BUFFER_LuV.ID, "automation.superbuffer.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_ZPM
+            .set(new MTESuperBuffer(SUPER_BUFFER_ZPM.ID, "automation.superbuffer.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_UV
+            .set(new MTESuperBuffer(SUPER_BUFFER_UV.ID, "automation.superbuffer.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_MAX
+            .set(new MTESuperBuffer(SUPER_BUFFER_UHV.ID, "automation.superbuffer.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerItemDistributor() {
         ItemList.Automation_ItemDistributor_ULV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_ULV.ID,
-                "automation.itemdistributor.tier.00",
-                "Ultra Low Voltage Item Distributor",
-                0).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_ULV.ID, "automation.itemdistributor.tier.00", "", 0)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_LV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_LV.ID,
-                "automation.itemdistributor.tier.01",
-                "Low Voltage Item Distributor",
-                1).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_LV.ID, "automation.itemdistributor.tier.01", "", 1)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_MV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_MV.ID,
-                "automation.itemdistributor.tier.02",
-                "Medium Voltage Item Distributor",
-                2).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_MV.ID, "automation.itemdistributor.tier.02", "", 2)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_HV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_HV.ID,
-                "automation.itemdistributor.tier.03",
-                "High Voltage Item Distributor",
-                3).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_HV.ID, "automation.itemdistributor.tier.03", "", 3)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_EV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_EV.ID,
-                "automation.itemdistributor.tier.04",
-                "Extreme Voltage Item Distributor",
-                4).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_EV.ID, "automation.itemdistributor.tier.04", "", 4)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_IV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_IV.ID,
-                "automation.itemdistributor.tier.05",
-                "Insane Voltage Item Distributor",
-                5).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_IV.ID, "automation.itemdistributor.tier.05", "", 5)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_LuV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_LuV.ID,
-                "automation.itemdistributor.tier.06",
-                "Ludicrous Voltage Item Distributor",
-                6).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_LuV.ID, "automation.itemdistributor.tier.06", "", 6)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_ZPM.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_ZPM.ID,
-                "automation.itemdistributor.tier.07",
-                "ZPM Voltage Item Distributor",
-                7).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_ZPM.ID, "automation.itemdistributor.tier.07", "", 7)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_UV.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_UV.ID,
-                "automation.itemdistributor.tier.08",
-                "Ultimate Voltage Item Distributor",
-                8).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_UV.ID, "automation.itemdistributor.tier.08", "", 8)
+                .getStackForm(1L));
         ItemList.Automation_ItemDistributor_MAX.set(
-            new MTEItemDistributor(
-                ITEM_DISTRIBUTOR_UHV.ID,
-                "automation.itemdistributor.tier.09",
-                "Highly Ultimate Voltage Item Distributor",
-                9).getStackForm(1L));
+            new MTEItemDistributor(ITEM_DISTRIBUTOR_UHV.ID, "automation.itemdistributor.tier.09", "", 9)
+                .getStackForm(1L));
     }
 
     private static void registerRecipeFilter() {
-        ItemList.Automation_RecipeFilter_ULV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_ULV.ID,
-                "automation.recipefilter.tier.00",
-                "Ultra Low Voltage Recipe Filter",
-                0).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_LV.set(
-            new MTERecipeFilter(RECIPE_FILTER_LV.ID, "automation.recipefilter.tier.01", "Low Voltage Recipe Filter", 1)
-                .getStackForm(1L));
-        ItemList.Automation_RecipeFilter_MV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_MV.ID,
-                "automation.recipefilter.tier.02",
-                "Medium Voltage Recipe Filter",
-                2).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_HV.set(
-            new MTERecipeFilter(RECIPE_FILTER_HV.ID, "automation.recipefilter.tier.03", "High Voltage Recipe Filter", 3)
-                .getStackForm(1L));
-        ItemList.Automation_RecipeFilter_EV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_EV.ID,
-                "automation.recipefilter.tier.04",
-                "Extreme Voltage Recipe Filter",
-                4).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_IV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_IV.ID,
-                "automation.recipefilter.tier.05",
-                "Insane Voltage Recipe Filter",
-                5).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_LuV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_LuV.ID,
-                "automation.recipefilter.tier.06",
-                "Ludicrous Voltage Recipe Filter",
-                6).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_ZPM.set(
-            new MTERecipeFilter(RECIPE_FILTER_ZPM.ID, "automation.recipefilter.tier.07", "ZPM Voltage Recipe Filter", 7)
-                .getStackForm(1L));
-        ItemList.Automation_RecipeFilter_UV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_UV.ID,
-                "automation.recipefilter.tier.08",
-                "Ultimate Voltage Recipe Filter",
-                8).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_MAX.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_UHV.ID,
-                "automation.recipefilter.tier.09",
-                "Highly Ultimate Voltage Recipe Filter",
-                9).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_ULV
+            .set(new MTERecipeFilter(RECIPE_FILTER_ULV.ID, "automation.recipefilter.tier.00", "", 0).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_LV
+            .set(new MTERecipeFilter(RECIPE_FILTER_LV.ID, "automation.recipefilter.tier.01", "", 1).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_MV
+            .set(new MTERecipeFilter(RECIPE_FILTER_MV.ID, "automation.recipefilter.tier.02", "", 2).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_HV
+            .set(new MTERecipeFilter(RECIPE_FILTER_HV.ID, "automation.recipefilter.tier.03", "", 3).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_EV
+            .set(new MTERecipeFilter(RECIPE_FILTER_EV.ID, "automation.recipefilter.tier.04", "", 4).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_IV
+            .set(new MTERecipeFilter(RECIPE_FILTER_IV.ID, "automation.recipefilter.tier.05", "", 5).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_LuV
+            .set(new MTERecipeFilter(RECIPE_FILTER_LuV.ID, "automation.recipefilter.tier.06", "", 6).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_ZPM
+            .set(new MTERecipeFilter(RECIPE_FILTER_ZPM.ID, "automation.recipefilter.tier.07", "", 7).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_UV
+            .set(new MTERecipeFilter(RECIPE_FILTER_UV.ID, "automation.recipefilter.tier.08", "", 8).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_MAX
+            .set(new MTERecipeFilter(RECIPE_FILTER_UHV.ID, "automation.recipefilter.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerMachineHull() {
@@ -2530,73 +2367,61 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEBasicHullSteelBricks(HULL_CAST_IRON.ID, "hull.steel_bricked", "Bricked Cast Iron Hull", 0)
                 .getStackForm(1L));
 
-        ItemList.Hull_ULV.set(new MTEBasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0).getStackForm(1L));
-        ItemList.Hull_LV.set(new MTEBasicHull(HULL_LV.ID, "hull.tier.01", "LV Machine Hull", 1).getStackForm(1L));
-        ItemList.Hull_MV.set(new MTEBasicHull(HULL_MV.ID, "hull.tier.02", "MV Machine Hull", 2).getStackForm(1L));
-        ItemList.Hull_HV.set(new MTEBasicHull(HULL_HV.ID, "hull.tier.03", "HV Machine Hull", 3).getStackForm(1L));
-        ItemList.Hull_EV.set(new MTEBasicHull(HULL_EV.ID, "hull.tier.04", "EV Machine Hull", 4).getStackForm(1L));
-        ItemList.Hull_IV.set(new MTEBasicHull(HULL_IV.ID, "hull.tier.05", "IV Machine Hull", 5).getStackForm(1L));
-        ItemList.Hull_LuV.set(new MTEBasicHull(HULL_LuV.ID, "hull.tier.06", "LuV Machine Hull", 6).getStackForm(1L));
-        ItemList.Hull_ZPM.set(new MTEBasicHull(HULL_ZPM.ID, "hull.tier.07", "ZPM Machine Hull", 7).getStackForm(1L));
-        ItemList.Hull_UV.set(new MTEBasicHull(HULL_UV.ID, "hull.tier.08", "UV Machine Hull", 8).getStackForm(1L));
-        ItemList.Hull_MAX.set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "UHV Machine Hull", 9).getStackForm(1L));
+        ItemList.Hull_ULV.set(new MTEBasicHull(HULL_ULV.ID, "hull.tier.00", "", 0).getStackForm(1L));
+        ItemList.Hull_LV.set(new MTEBasicHull(HULL_LV.ID, "hull.tier.01", "", 1).getStackForm(1L));
+        ItemList.Hull_MV.set(new MTEBasicHull(HULL_MV.ID, "hull.tier.02", "", 2).getStackForm(1L));
+        ItemList.Hull_HV.set(new MTEBasicHull(HULL_HV.ID, "hull.tier.03", "", 3).getStackForm(1L));
+        ItemList.Hull_EV.set(new MTEBasicHull(HULL_EV.ID, "hull.tier.04", "", 4).getStackForm(1L));
+        ItemList.Hull_IV.set(new MTEBasicHull(HULL_IV.ID, "hull.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hull_LuV.set(new MTEBasicHull(HULL_LuV.ID, "hull.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hull_ZPM.set(new MTEBasicHull(HULL_ZPM.ID, "hull.tier.07", "", 7).getStackForm(1L));
+        ItemList.Hull_UV.set(new MTEBasicHull(HULL_UV.ID, "hull.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hull_MAX.set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "", 9).getStackForm(1L));
 
-        ItemList.Hull_UEV.set(new MTEBasicHull(HULL_UEV.ID, "hull.tier.10", "UEV Machine Hull", 10).getStackForm(1L));
+        ItemList.Hull_UEV.set(new MTEBasicHull(HULL_UEV.ID, "hull.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.Hull_UIV.set(new MTEBasicHull(HULL_UIV.ID, "hull.tier.11", "UIV Machine Hull", 11).getStackForm(1L));
+        ItemList.Hull_UIV.set(new MTEBasicHull(HULL_UIV.ID, "hull.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.Hull_UMV.set(new MTEBasicHull(HULL_UMV.ID, "hull.tier.12", "UMV Machine Hull", 12).getStackForm(1L));
+        ItemList.Hull_UMV.set(new MTEBasicHull(HULL_UMV.ID, "hull.tier.12", "", 12).getStackForm(1L));
 
-        ItemList.Hull_UXV.set(new MTEBasicHull(HULL_UXV.ID, "hull.tier.13", "UXV Machine Hull", 13).getStackForm(1L));
+        ItemList.Hull_UXV.set(new MTEBasicHull(HULL_UXV.ID, "hull.tier.13", "", 13).getStackForm(1L));
 
-        ItemList.Hull_MAXV.set(new MTEBasicHull(HULL_MAX.ID, "hull.tier.14", "MAX Machine Hull", 14).getStackForm(1L));
+        ItemList.Hull_MAXV.set(new MTEBasicHull(HULL_MAX.ID, "hull.tier.14", "", 14).getStackForm(1L));
     }
 
     private static void registerTransformer() {
-        ItemList.Transformer_LV_ULV.set(
-            new MTETransformer(transformer_LV_ULV.ID, "transformer.tier.00", "Ultra Low Voltage Transformer", 0)
-                .getStackForm(1L));
-        ItemList.Transformer_MV_LV.set(
-            new MTETransformer(transformer_MV_LV.ID, "transformer.tier.01", "Low Voltage Transformer", 1)
-                .getStackForm(1L));
-        ItemList.Transformer_HV_MV.set(
-            new MTETransformer(transformer_HV_MV.ID, "transformer.tier.02", "Medium Voltage Transformer", 2)
-                .getStackForm(1L));
-        ItemList.Transformer_EV_HV.set(
-            new MTETransformer(transformer_EV_HV.ID, "transformer.tier.03", "High Voltage Transformer", 3)
-                .getStackForm(1L));
-        ItemList.Transformer_IV_EV.set(
-            new MTETransformer(transformer_IV_EV.ID, "transformer.tier.04", "Extreme Transformer", 4).getStackForm(1L));
-        ItemList.Transformer_LuV_IV.set(
-            new MTETransformer(transformer_LuV_IV.ID, "transformer.tier.05", "Insane Transformer", 5).getStackForm(1L));
-        ItemList.Transformer_ZPM_LuV.set(
-            new MTETransformer(transformer_ZPM_LuV.ID, "transformer.tier.06", "Ludicrous Transformer", 6)
-                .getStackForm(1L));
-        ItemList.Transformer_UV_ZPM.set(
-            new MTETransformer(transformer_UV_ZPM.ID, "transformer.tier.07", "ZPM Voltage Transformer", 7)
-                .getStackForm(1L));
-        ItemList.Transformer_MAX_UV.set(
-            new MTETransformer(transformer_UHV_UV.ID, "transformer.tier.08", "Ultimate Transformer", 8)
-                .getStackForm(1L));
-        ItemList.Transformer_UEV_UHV.set(
-            new MTETransformer(TRANSFORMER_UEV_UHV.ID, "transformer.tier.09", "Highly Ultimate Transformer", 9)
-                .getStackForm(1L));
+        ItemList.Transformer_LV_ULV
+            .set(new MTETransformer(transformer_LV_ULV.ID, "transformer.tier.00", "", 0).getStackForm(1L));
+        ItemList.Transformer_MV_LV
+            .set(new MTETransformer(transformer_MV_LV.ID, "transformer.tier.01", "", 1).getStackForm(1L));
+        ItemList.Transformer_HV_MV
+            .set(new MTETransformer(transformer_HV_MV.ID, "transformer.tier.02", "", 2).getStackForm(1L));
+        ItemList.Transformer_EV_HV
+            .set(new MTETransformer(transformer_EV_HV.ID, "transformer.tier.03", "", 3).getStackForm(1L));
+        ItemList.Transformer_IV_EV
+            .set(new MTETransformer(transformer_IV_EV.ID, "transformer.tier.04", "", 4).getStackForm(1L));
+        ItemList.Transformer_LuV_IV
+            .set(new MTETransformer(transformer_LuV_IV.ID, "transformer.tier.05", "", 5).getStackForm(1L));
+        ItemList.Transformer_ZPM_LuV
+            .set(new MTETransformer(transformer_ZPM_LuV.ID, "transformer.tier.06", "", 6).getStackForm(1L));
+        ItemList.Transformer_UV_ZPM
+            .set(new MTETransformer(transformer_UV_ZPM.ID, "transformer.tier.07", "", 7).getStackForm(1L));
+        ItemList.Transformer_MAX_UV
+            .set(new MTETransformer(transformer_UHV_UV.ID, "transformer.tier.08", "", 8).getStackForm(1L));
+        ItemList.Transformer_UEV_UHV
+            .set(new MTETransformer(TRANSFORMER_UEV_UHV.ID, "transformer.tier.09", "", 9).getStackForm(1L));
 
-        ItemList.Transformer_UIV_UEV.set(
-            new MTETransformer(TRANSFORMER_UIV_UEV.ID, "transformer.tier.10", "Extremely Ultimate Transformer", 10)
-                .getStackForm(1L));
+        ItemList.Transformer_UIV_UEV
+            .set(new MTETransformer(TRANSFORMER_UIV_UEV.ID, "transformer.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.Transformer_UMV_UIV.set(
-            new MTETransformer(TRANSFORMER_UMV_UIV.ID, "transformer.tier.11", "Insanely Ultimate Transformer", 11)
-                .getStackForm(1L));
+        ItemList.Transformer_UMV_UIV
+            .set(new MTETransformer(TRANSFORMER_UMV_UIV.ID, "transformer.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.Transformer_UXV_UMV.set(
-            new MTETransformer(TRANSFORMER_UXV_UMV.ID, "transformer.tier.12", "Mega Ultimate Transformer", 12)
-                .getStackForm(1L));
+        ItemList.Transformer_UXV_UMV
+            .set(new MTETransformer(TRANSFORMER_UXV_UMV.ID, "transformer.tier.12", "", 12).getStackForm(1L));
 
-        ItemList.Transformer_MAX_UXV.set(
-            new MTETransformer(TRANSFORMER_MAX_UXV.ID, "transformer.tier.13", "Extended Mega Ultimate Transformer", 13)
-                .getStackForm(1L));
+        ItemList.Transformer_MAX_UXV
+            .set(new MTETransformer(TRANSFORMER_MAX_UXV.ID, "transformer.tier.13", "", 13).getStackForm(1L));
     }
 
     private void registerChemicalBath() {
@@ -8110,108 +7935,107 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerDynamoHatch() {
-        ItemList.Hatch_Dynamo_ULV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_ULV.ID, "hatch.dynamo.tier.00", "ULV Dynamo Hatch", 0).getStackForm(1L));
+        ItemList.Hatch_Dynamo_ULV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_ULV.ID, "hatch.dynamo.tier.00", "", 0).getStackForm(1L));
         ItemList.Hatch_Dynamo_LV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_LV.ID, "hatch.dynamo.tier.01", "LV Dynamo Hatch", 1).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_LV.ID, "hatch.dynamo.tier.01", "", 1).getStackForm(1L));
         ItemList.Hatch_Dynamo_MV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_MV.ID, "hatch.dynamo.tier.02", "MV Dynamo Hatch", 2).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_MV.ID, "hatch.dynamo.tier.02", "", 2).getStackForm(1L));
         ItemList.Hatch_Dynamo_HV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_HV.ID, "hatch.dynamo.tier.03", "HV Dynamo Hatch", 3).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_HV.ID, "hatch.dynamo.tier.03", "", 3).getStackForm(1L));
         ItemList.Hatch_Dynamo_EV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_EV.ID, "hatch.dynamo.tier.04", "EV Dynamo Hatch", 4).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_EV.ID, "hatch.dynamo.tier.04", "", 4).getStackForm(1L));
         ItemList.Hatch_Dynamo_IV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_IV.ID, "hatch.dynamo.tier.05", "IV Dynamo Hatch", 5).getStackForm(1L));
-        ItemList.Hatch_Dynamo_LuV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_LuV.ID, "hatch.dynamo.tier.06", "LuV Dynamo Hatch", 6).getStackForm(1L));
-        ItemList.Hatch_Dynamo_ZPM.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_ZPM.ID, "hatch.dynamo.tier.07", "ZPM Dynamo Hatch", 7).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_IV.ID, "hatch.dynamo.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Dynamo_LuV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_LuV.ID, "hatch.dynamo.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Dynamo_ZPM
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_ZPM.ID, "hatch.dynamo.tier.07", "", 7).getStackForm(1L));
         ItemList.Hatch_Dynamo_UV
-            .set(new MTEHatchDynamo(DYNAMO_HATCH_UV.ID, "hatch.dynamo.tier.08", "UV Dynamo Hatch", 8).getStackForm(1L));
-        ItemList.Hatch_Dynamo_UHV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_UHV.ID, "hatch.dynamo.tier.09", "UHV Dynamo Hatch", 9).getStackForm(1L));
-        ItemList.Hatch_Dynamo_UEV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_UEV.ID, "hatch.dynamo.tier.10", "UEV Dynamo Hatch", 10).getStackForm(1L));
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UV.ID, "hatch.dynamo.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UHV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UHV.ID, "hatch.dynamo.tier.09", "", 9).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UEV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UEV.ID, "hatch.dynamo.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.Hatch_Dynamo_UIV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_UIV.ID, "hatch.dynamo.tier.11", "UIV Dynamo Hatch", 11).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UIV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UIV.ID, "hatch.dynamo.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.Hatch_Dynamo_UMV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_UMV.ID, "hatch.dynamo.tier.12", "UMV Dynamo Hatch", 12).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UMV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UMV.ID, "hatch.dynamo.tier.12", "", 12).getStackForm(1L));
 
-        ItemList.Hatch_Dynamo_UXV.set(
-            new MTEHatchDynamo(DYNAMO_HATCH_UXV.ID, "hatch.dynamo.tier.13", "UXV Dynamo Hatch", 13).getStackForm(1L));
+        ItemList.Hatch_Dynamo_UXV
+            .set(new MTEHatchDynamo(DYNAMO_HATCH_UXV.ID, "hatch.dynamo.tier.13", "", 13).getStackForm(1L));
     }
 
     private static void registerEnergyHatch() {
-        ItemList.Hatch_Energy_ULV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_ULV.ID, "hatch.energy.tier.00", "ULV Energy Hatch", 0).getStackForm(1L));
+        ItemList.Hatch_Energy_ULV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_ULV.ID, "hatch.energy.tier.00", "", 0).getStackForm(1L));
         ItemList.Hatch_Energy_LV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_LV.ID, "hatch.energy.tier.01", "LV Energy Hatch", 1).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_LV.ID, "hatch.energy.tier.01", "", 1).getStackForm(1L));
         ItemList.Hatch_Energy_MV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_MV.ID, "hatch.energy.tier.02", "MV Energy Hatch", 2).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_MV.ID, "hatch.energy.tier.02", "", 2).getStackForm(1L));
         ItemList.Hatch_Energy_HV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_HV.ID, "hatch.energy.tier.03", "HV Energy Hatch", 3).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_HV.ID, "hatch.energy.tier.03", "", 3).getStackForm(1L));
         ItemList.Hatch_Energy_EV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_EV.ID, "hatch.energy.tier.04", "EV Energy Hatch", 4).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_EV.ID, "hatch.energy.tier.04", "", 4).getStackForm(1L));
         ItemList.Hatch_Energy_IV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_IV.ID, "hatch.energy.tier.05", "IV Energy Hatch", 5).getStackForm(1L));
-        ItemList.Hatch_Energy_LuV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_LuV.ID, "hatch.energy.tier.06", "LuV Energy Hatch", 6).getStackForm(1L));
-        ItemList.Hatch_Energy_ZPM.set(
-            new MTEHatchEnergy(ENERGY_HATCH_ZPM.ID, "hatch.energy.tier.07", "ZPM Energy Hatch", 7).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_IV.ID, "hatch.energy.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Energy_LuV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_LuV.ID, "hatch.energy.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Energy_ZPM
+            .set(new MTEHatchEnergy(ENERGY_HATCH_ZPM.ID, "hatch.energy.tier.07", "", 7).getStackForm(1L));
         ItemList.Hatch_Energy_UV
-            .set(new MTEHatchEnergy(ENERGY_HATCH_UV.ID, "hatch.energy.tier.08", "UV Energy Hatch", 8).getStackForm(1L));
-        ItemList.Hatch_Energy_UHV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_UHV.ID, "hatch.energy.tier.09", "UHV Energy Hatch", 9).getStackForm(1L));
-        ItemList.Hatch_Energy_UEV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_UEV.ID, "hatch.energy.tier.10", "UEV Energy Hatch", 10).getStackForm(1L));
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UV.ID, "hatch.energy.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Energy_UHV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UHV.ID, "hatch.energy.tier.09", "", 9).getStackForm(1L));
+        ItemList.Hatch_Energy_UEV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UEV.ID, "hatch.energy.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.Hatch_Energy_UIV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_UIV.ID, "hatch.energy.tier.11", "UIV Energy Hatch", 11).getStackForm(1L));
+        ItemList.Hatch_Energy_UIV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UIV.ID, "hatch.energy.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.Hatch_Energy_UMV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_UMV.ID, "hatch.energy.tier.12", "UMV Energy Hatch", 12).getStackForm(1L));
+        ItemList.Hatch_Energy_UMV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UMV.ID, "hatch.energy.tier.12", "", 12).getStackForm(1L));
 
-        ItemList.Hatch_Energy_UXV.set(
-            new MTEHatchEnergy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "UXV Energy Hatch", 13).getStackForm(1L));
+        ItemList.Hatch_Energy_UXV
+            .set(new MTEHatchEnergy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "", 13).getStackForm(1L));
 
-        ItemList.DebugEnergyHatch.set(
-            new MTEHatchEnergyDebug(ENERGY_HATCH_DEBUG.ID, "hatch.energy.debug", "Debug Energy Hatch", 14)
-                .getStackForm(1L));
+        ItemList.DebugEnergyHatch
+            .set(new MTEHatchEnergyDebug(ENERGY_HATCH_DEBUG.ID, "hatch.energy.debug", "", 14).getStackForm(1L));
     }
 
     private static void registerInputHatch() {
         ItemList.Hatch_Input_ULV
-            .set(new MTEHatchInput(INPUT_HATCH_ULV.ID, "hatch.input.tier.00", "Input Hatch (ULV)", 0).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_ULV.ID, "hatch.input.tier.00", "", 0).getStackForm(1L));
         ItemList.Hatch_Input_LV
-            .set(new MTEHatchInput(INPUT_HATCH_LV.ID, "hatch.input.tier.01", "Input Hatch (LV)", 1).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_LV.ID, "hatch.input.tier.01", "", 1).getStackForm(1L));
         ItemList.Hatch_Input_MV
-            .set(new MTEHatchInput(INPUT_HATCH_MV.ID, "hatch.input.tier.02", "Input Hatch (MV)", 2).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_MV.ID, "hatch.input.tier.02", "", 2).getStackForm(1L));
         ItemList.Hatch_Input_HV
-            .set(new MTEHatchInput(INPUT_HATCH_HV.ID, "hatch.input.tier.03", "Input Hatch (HV)", 3).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_HV.ID, "hatch.input.tier.03", "", 3).getStackForm(1L));
         ItemList.Hatch_Input_EV
-            .set(new MTEHatchInput(INPUT_HATCH_EV.ID, "hatch.input.tier.04", "Input Hatch (EV)", 4).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_EV.ID, "hatch.input.tier.04", "", 4).getStackForm(1L));
         ItemList.Hatch_Input_IV
-            .set(new MTEHatchInput(INPUT_HATCH_IV.ID, "hatch.input.tier.05", "Input Hatch (IV)", 5).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_IV.ID, "hatch.input.tier.05", "", 5).getStackForm(1L));
         ItemList.Hatch_Input_LuV
-            .set(new MTEHatchInput(INPUT_HATCH_LuV.ID, "hatch.input.tier.06", "Input Hatch (LuV)", 6).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_LuV.ID, "hatch.input.tier.06", "", 6).getStackForm(1L));
         ItemList.Hatch_Input_ZPM
-            .set(new MTEHatchInput(INPUT_HATCH_ZPM.ID, "hatch.input.tier.07", "Input Hatch (ZPM)", 7).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_ZPM.ID, "hatch.input.tier.07", "", 7).getStackForm(1L));
         ItemList.Hatch_Input_UV
-            .set(new MTEHatchInput(INPUT_HATCH_UV.ID, "hatch.input.tier.08", "Input Hatch (UV)", 8).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_UV.ID, "hatch.input.tier.08", "", 8).getStackForm(1L));
         ItemList.Hatch_Input_UHV
-            .set(new MTEHatchInput(INPUT_HATCH_UHV.ID, "hatch.input.tier.09", "Input Hatch (UHV)", 9).getStackForm(1L));
-        ItemList.Hatch_Input_UEV.set(
-            new MTEHatchInput(INPUT_HATCH_UEV.ID, "hatch.input.tier.10", "Input Hatch (UEV)", 10).getStackForm(1L));
-        ItemList.Hatch_Input_UIV.set(
-            new MTEHatchInput(INPUT_HATCH_UIV.ID, "hatch.input.tier.11", "Input Hatch (UIV)", 11).getStackForm(1L));
-        ItemList.Hatch_Input_UMV.set(
-            new MTEHatchInput(INPUT_HATCH_UMV.ID, "hatch.input.tier.12", "Input Hatch (UMV)", 12).getStackForm(1L));
-        ItemList.Hatch_Input_UXV.set(
-            new MTEHatchInput(INPUT_HATCH_UXV.ID, "hatch.input.tier.13", "Input Hatch (UXV)", 13).getStackForm(1L));
-        ItemList.Hatch_Input_MAX.set(
-            new MTEHatchInput(INPUT_HATCH_MAX.ID, "hatch.input.tier.14", "Input Hatch (MAX)", 14).getStackForm(1L));
+            .set(new MTEHatchInput(INPUT_HATCH_UHV.ID, "hatch.input.tier.09", "", 9).getStackForm(1L));
+        ItemList.Hatch_Input_UEV
+            .set(new MTEHatchInput(INPUT_HATCH_UEV.ID, "hatch.input.tier.10", "", 10).getStackForm(1L));
+        ItemList.Hatch_Input_UIV
+            .set(new MTEHatchInput(INPUT_HATCH_UIV.ID, "hatch.input.tier.11", "", 11).getStackForm(1L));
+        ItemList.Hatch_Input_UMV
+            .set(new MTEHatchInput(INPUT_HATCH_UMV.ID, "hatch.input.tier.12", "", 12).getStackForm(1L));
+        ItemList.Hatch_Input_UXV
+            .set(new MTEHatchInput(INPUT_HATCH_UXV.ID, "hatch.input.tier.13", "", 13).getStackForm(1L));
+        ItemList.Hatch_Input_MAX
+            .set(new MTEHatchInput(INPUT_HATCH_MAX.ID, "hatch.input.tier.14", "", 14).getStackForm(1L));
         ItemList.Hatch_Input_Debug.set(
             new MTEHatchInputDebug(INPUT_HATCH_DEBUG.ID, "hatch.input.debug", "Debug Input Hatch", 14)
                 .getStackForm(1L));
@@ -8219,75 +8043,35 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerQuadrupleInputHatch() {
         ItemList.Hatch_Input_Multi_2x2_EV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_EV.ID,
-                4,
-                "hatch.multi.input.tier.01",
-                "Quadruple Input Hatch (EV)",
-                4).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_EV.ID, 4, "hatch.multi.input.tier.01", "", 4)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_IV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_IV.ID,
-                4,
-                "hatch.multi.input.tier.02",
-                "Quadruple Input Hatch (IV)",
-                5).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_IV.ID, 4, "hatch.multi.input.tier.02", "", 5)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_LuV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_LuV.ID,
-                4,
-                "hatch.multi.input.tier.03",
-                "Quadruple Input Hatch (LuV)",
-                6).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_LuV.ID, 4, "hatch.multi.input.tier.03", "", 6)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_ZPM.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_ZPM.ID,
-                4,
-                "hatch.multi.input.tier.04",
-                "Quadruple Input Hatch (ZPM)",
-                7).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_ZPM.ID, 4, "hatch.multi.input.tier.04", "", 7)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UV.ID,
-                4,
-                "hatch.multi.input.tier.05",
-                "Quadruple Input Hatch (UV)",
-                8).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UV.ID, 4, "hatch.multi.input.tier.05", "", 8)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UHV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UHV.ID,
-                4,
-                "hatch.multi.input.tier.06",
-                "Quadruple Input Hatch (UHV)",
-                9).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UHV.ID, 4, "hatch.multi.input.tier.06", "", 9)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UEV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UEV.ID,
-                4,
-                "hatch.multi.input.tier.07",
-                "Quadruple Input Hatch (UEV)",
-                10).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UEV.ID, 4, "hatch.multi.input.tier.07", "", 10)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UIV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UIV.ID,
-                4,
-                "hatch.multi.input.tier.08",
-                "Quadruple Input Hatch (UIV)",
-                11).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UIV.ID, 4, "hatch.multi.input.tier.08", "", 11)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UMV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UMV.ID,
-                4,
-                "hatch.multi.input.tier.09",
-                "Quadruple Input Hatch (UMV)",
-                12).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UMV.ID, 4, "hatch.multi.input.tier.09", "", 12)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UXV.set(
-            new MTEHatchMultiInput(
-                QUADRUPLE_INPUT_HATCHES_UXV.ID,
-                4,
-                "hatch.multi.input.tier.10",
-                "Quadruple Input Hatch (UXV)",
-                13).getStackForm(1L));
+            new MTEHatchMultiInput(QUADRUPLE_INPUT_HATCHES_UXV.ID, 4, "hatch.multi.input.tier.10", "", 13)
+                .getStackForm(1L));
 
         ItemList.Hatch_Input_Multi_2x2_Humongous.set(
             new MTEHatchQuadrupleHumongous(
@@ -8298,36 +8082,36 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerOutputHatch() {
-        ItemList.Hatch_Output_ULV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_ULV.ID, "hatch.output.tier.00", "Output Hatch (ULV)", 0).getStackForm(1L));
-        ItemList.Hatch_Output_LV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_LV.ID, "hatch.output.tier.01", "Output Hatch (LV)", 1).getStackForm(1L));
-        ItemList.Hatch_Output_MV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_MV.ID, "hatch.output.tier.02", "Output Hatch (MV)", 2).getStackForm(1L));
-        ItemList.Hatch_Output_HV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_HV.ID, "hatch.output.tier.03", "Output Hatch (HV)", 3).getStackForm(1L));
-        ItemList.Hatch_Output_EV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_EV.ID, "hatch.output.tier.04", "Output Hatch (EV)", 4).getStackForm(1L));
-        ItemList.Hatch_Output_IV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_IV.ID, "hatch.output.tier.05", "Output Hatch (IV)", 5).getStackForm(1L));
-        ItemList.Hatch_Output_LuV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_LuV.ID, "hatch.output.tier.06", "Output Hatch (LuV)", 6).getStackForm(1L));
-        ItemList.Hatch_Output_ZPM.set(
-            new MTEHatchOutput(OUTPUT_HATCH_ZPM.ID, "hatch.output.tier.07", "Output Hatch (ZPM)", 7).getStackForm(1L));
-        ItemList.Hatch_Output_UV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UV.ID, "hatch.output.tier.08", "Output Hatch (UV)", 8).getStackForm(1L));
-        ItemList.Hatch_Output_UHV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UHV.ID, "hatch.output.tier.09", "Output Hatch (UHV)", 9).getStackForm(1L));
-        ItemList.Hatch_Output_UEV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UEV.ID, "hatch.output.tier.10", "Output Hatch (UEV)", 10).getStackForm(1L));
-        ItemList.Hatch_Output_UIV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UIV.ID, "hatch.output.tier.11", "Output Hatch (UIV)", 11).getStackForm(1L));
-        ItemList.Hatch_Output_UMV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UMV.ID, "hatch.output.tier.12", "Output Hatch (UMV)", 12).getStackForm(1L));
-        ItemList.Hatch_Output_UXV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_UXV.ID, "hatch.output.tier.13", "Output Hatch (UXV)", 13).getStackForm(1L));
-        ItemList.Hatch_Output_MAX.set(
-            new MTEHatchOutput(OUTPUT_HATCH_MAX.ID, "hatch.output.tier.14", "Output Hatch (MAX)", 14).getStackForm(1L));
+        ItemList.Hatch_Output_ULV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_ULV.ID, "hatch.output.tier.00", "", 0).getStackForm(1L));
+        ItemList.Hatch_Output_LV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_LV.ID, "hatch.output.tier.01", "", 1).getStackForm(1L));
+        ItemList.Hatch_Output_MV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_MV.ID, "hatch.output.tier.02", "", 2).getStackForm(1L));
+        ItemList.Hatch_Output_HV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_HV.ID, "hatch.output.tier.03", "", 3).getStackForm(1L));
+        ItemList.Hatch_Output_EV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_EV.ID, "hatch.output.tier.04", "", 4).getStackForm(1L));
+        ItemList.Hatch_Output_IV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_IV.ID, "hatch.output.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Output_LuV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_LuV.ID, "hatch.output.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Output_ZPM
+            .set(new MTEHatchOutput(OUTPUT_HATCH_ZPM.ID, "hatch.output.tier.07", "", 7).getStackForm(1L));
+        ItemList.Hatch_Output_UV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UV.ID, "hatch.output.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Output_UHV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UHV.ID, "hatch.output.tier.09", "", 9).getStackForm(1L));
+        ItemList.Hatch_Output_UEV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UEV.ID, "hatch.output.tier.10", "", 10).getStackForm(1L));
+        ItemList.Hatch_Output_UIV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UIV.ID, "hatch.output.tier.11", "", 11).getStackForm(1L));
+        ItemList.Hatch_Output_UMV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UMV.ID, "hatch.output.tier.12", "", 12).getStackForm(1L));
+        ItemList.Hatch_Output_UXV
+            .set(new MTEHatchOutput(OUTPUT_HATCH_UXV.ID, "hatch.output.tier.13", "", 13).getStackForm(1L));
+        ItemList.Hatch_Output_MAX
+            .set(new MTEHatchOutput(OUTPUT_HATCH_MAX.ID, "hatch.output.tier.14", "", 14).getStackForm(1L));
     }
 
     private static void registerVoidHatch() {
@@ -8349,7 +8133,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchOutputBusCompressed(
                 HATCH_OUTPUT_BUS_COMPRESSED_1.ID,
                 "hatch.comp-output-bus.tier.00",
-                "Compressed Output Bus (LuV)",
+                "",
                 VoltageIndex.LuV,
                 256).getStackForm(1));
 
@@ -8357,7 +8141,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchOutputBusCompressed(
                 HATCH_OUTPUT_BUS_COMPRESSED_2.ID,
                 "hatch.comp-output-bus.tier.01",
-                "Compressed Output Bus (ZPM)",
+                "",
                 VoltageIndex.ZPM,
                 2048).getStackForm(1));
 
@@ -8365,7 +8149,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchOutputBusCompressed(
                 HATCH_OUTPUT_BUS_COMPRESSED_3.ID,
                 "hatch.comp-output-bus.tier.02",
-                "Compressed Output Bus (UV)",
+                "",
                 VoltageIndex.UV,
                 16384).getStackForm(1));
 
@@ -8373,7 +8157,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchOutputBusCompressed(
                 HATCH_OUTPUT_BUS_COMPRESSED_4.ID,
                 "hatch.comp-output-bus.tier.03",
-                "Compressed Output Bus (UHV)",
+                "",
                 VoltageIndex.UHV,
                 131072).getStackForm(1));
 
@@ -8413,7 +8197,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInputBusCompressed(
                 HATCH_INPUT_BUS_COMPRESSED_1.ID,
                 "hatch.comp-input-bus.tier.00",
-                "Compressed Input Bus (LuV)",
+                "",
                 VoltageIndex.LuV,
                 256).getStackForm(1));
 
@@ -8421,7 +8205,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInputBusCompressed(
                 HATCH_INPUT_BUS_COMPRESSED_2.ID,
                 "hatch.comp-input-bus.tier.01",
-                "Compressed Input Bus (ZPM)",
+                "",
                 VoltageIndex.ZPM,
                 2048).getStackForm(1));
 
@@ -8429,7 +8213,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInputBusCompressed(
                 HATCH_INPUT_BUS_COMPRESSED_3.ID,
                 "hatch.comp-input-bus.tier.02",
-                "Compressed Input Bus (UV)",
+                "",
                 VoltageIndex.UV,
                 16384).getStackForm(1));
 
@@ -8437,7 +8221,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInputBusCompressed(
                 HATCH_INPUT_BUS_COMPRESSED_4.ID,
                 "hatch.comp-input-bus.tier.03",
-                "Compressed Input Bus (UHV)",
+                "",
                 VoltageIndex.UHV,
                 131072).getStackForm(1));
 
@@ -8476,56 +8260,51 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerQuantumTank() {
         ItemList.Quantum_Tank_LV
-            .set(new MTEQuantumTank(QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));
+            .set(new MTEQuantumTank(QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "", 6).getStackForm(1L));
         ItemList.Quantum_Tank_MV
-            .set(new MTEQuantumTank(QUANTUM_TANK_MV.ID, "quantum.tank.tier.07", "Quantum Tank II", 7).getStackForm(1L));
-        ItemList.Quantum_Tank_HV.set(
-            new MTEQuantumTank(QUANTUM_TANK_HV.ID, "quantum.tank.tier.08", "Quantum Tank III", 8).getStackForm(1L));
+            .set(new MTEQuantumTank(QUANTUM_TANK_MV.ID, "quantum.tank.tier.07", "", 7).getStackForm(1L));
+        ItemList.Quantum_Tank_HV
+            .set(new MTEQuantumTank(QUANTUM_TANK_HV.ID, "quantum.tank.tier.08", "", 8).getStackForm(1L));
         ItemList.Quantum_Tank_EV
-            .set(new MTEQuantumTank(QUANTUM_TANK_EV.ID, "quantum.tank.tier.09", "Quantum Tank IV", 9).getStackForm(1L));
+            .set(new MTEQuantumTank(QUANTUM_TANK_EV.ID, "quantum.tank.tier.09", "", 9).getStackForm(1L));
         ItemList.Quantum_Tank_IV
-            .set(new MTEQuantumTank(QUANTUM_TANK_IV.ID, "quantum.tank.tier.10", "Quantum Tank V", 10).getStackForm(1L));
+            .set(new MTEQuantumTank(QUANTUM_TANK_IV.ID, "quantum.tank.tier.10", "", 10).getStackForm(1L));
         ItemList.Debug_Fluid_Tank
             .set(new MTEDebugTank(DEBUG_FLUID_TANK.ID, "quantum.tank.debug", "Debug Fluid Tank", 10).getStackForm(1L));
     }
 
     private static void registerQuantumChest() {
-        ItemList.Quantum_Chest_LV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_LV.ID, "quantum.chest.tier.06", "Quantum Chest I", 6).getStackForm(1L));
-        ItemList.Quantum_Chest_MV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_MV.ID, "quantum.chest.tier.07", "Quantum Chest II", 7).getStackForm(1L));
-        ItemList.Quantum_Chest_HV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_HV.ID, "quantum.chest.tier.08", "Quantum Chest III", 8).getStackForm(1L));
-        ItemList.Quantum_Chest_EV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_EV.ID, "quantum.chest.tier.09", "Quantum Chest IV", 9).getStackForm(1L));
-        ItemList.Quantum_Chest_IV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_IV.ID, "quantum.chest.tier.10", "Quantum Chest V", 10).getStackForm(1L));
+        ItemList.Quantum_Chest_LV
+            .set(new MTEQuantumChest(QUANTUM_CHEST_LV.ID, "quantum.chest.tier.06", "", 6).getStackForm(1L));
+        ItemList.Quantum_Chest_MV
+            .set(new MTEQuantumChest(QUANTUM_CHEST_MV.ID, "quantum.chest.tier.07", "", 7).getStackForm(1L));
+        ItemList.Quantum_Chest_HV
+            .set(new MTEQuantumChest(QUANTUM_CHEST_HV.ID, "quantum.chest.tier.08", "", 8).getStackForm(1L));
+        ItemList.Quantum_Chest_EV
+            .set(new MTEQuantumChest(QUANTUM_CHEST_EV.ID, "quantum.chest.tier.09", "", 9).getStackForm(1L));
+        ItemList.Quantum_Chest_IV
+            .set(new MTEQuantumChest(QUANTUM_CHEST_IV.ID, "quantum.chest.tier.10", "", 10).getStackForm(1L));
     }
 
     private static void registerSuperTank() {
-        ItemList.Super_Tank_LV
-            .set(new MTESuperTank(SUPER_TANK_LV.ID, "super.tank.tier.01", "Super Tank I", 1).getStackForm(1L));
-        ItemList.Super_Tank_MV
-            .set(new MTESuperTank(SUPER_TANK_MV.ID, "super.tank.tier.02", "Super Tank II", 2).getStackForm(1L));
-        ItemList.Super_Tank_HV
-            .set(new MTESuperTank(SUPER_TANK_HV.ID, "super.tank.tier.03", "Super Tank III", 3).getStackForm(1L));
-        ItemList.Super_Tank_EV
-            .set(new MTESuperTank(SUPER_TANK_EV.ID, "super.tank.tier.04", "Super Tank IV", 4).getStackForm(1L));
-        ItemList.Super_Tank_IV
-            .set(new MTESuperTank(SUPER_TANK_IV.ID, "super.tank.tier.05", "Super Tank V", 5).getStackForm(1L));
+        ItemList.Super_Tank_LV.set(new MTESuperTank(SUPER_TANK_LV.ID, "super.tank.tier.01", "", 1).getStackForm(1L));
+        ItemList.Super_Tank_MV.set(new MTESuperTank(SUPER_TANK_MV.ID, "super.tank.tier.02", "", 2).getStackForm(1L));
+        ItemList.Super_Tank_HV.set(new MTESuperTank(SUPER_TANK_HV.ID, "super.tank.tier.03", "", 3).getStackForm(1L));
+        ItemList.Super_Tank_EV.set(new MTESuperTank(SUPER_TANK_EV.ID, "super.tank.tier.04", "", 4).getStackForm(1L));
+        ItemList.Super_Tank_IV.set(new MTESuperTank(SUPER_TANK_IV.ID, "super.tank.tier.05", "", 5).getStackForm(1L));
     }
 
     private static void registerSuperChest() {
         ItemList.Super_Chest_LV
-            .set(new MTESuperChest(SUPER_CHEST_LV.ID, "super.chest.tier.01", "Super Chest I", 1).getStackForm(1L));
+            .set(new MTESuperChest(SUPER_CHEST_LV.ID, "super.chest.tier.01", "", 1).getStackForm(1L));
         ItemList.Super_Chest_MV
-            .set(new MTESuperChest(SUPER_CHEST_MV.ID, "super.chest.tier.02", "Super Chest II", 2).getStackForm(1L));
+            .set(new MTESuperChest(SUPER_CHEST_MV.ID, "super.chest.tier.02", "", 2).getStackForm(1L));
         ItemList.Super_Chest_HV
-            .set(new MTESuperChest(SUPER_CHEST_HV.ID, "super.chest.tier.03", "Super Chest III", 3).getStackForm(1L));
+            .set(new MTESuperChest(SUPER_CHEST_HV.ID, "super.chest.tier.03", "", 3).getStackForm(1L));
         ItemList.Super_Chest_EV
-            .set(new MTESuperChest(SUPER_CHEST_EV.ID, "super.chest.tier.04", "Super Chest IV", 4).getStackForm(1L));
+            .set(new MTESuperChest(SUPER_CHEST_EV.ID, "super.chest.tier.04", "", 4).getStackForm(1L));
         ItemList.Super_Chest_IV
-            .set(new MTESuperChest(SUPER_CHEST_IV.ID, "super.chest.tier.05", "Super Chest V", 5).getStackForm(1L));
+            .set(new MTESuperChest(SUPER_CHEST_IV.ID, "super.chest.tier.05", "", 5).getStackForm(1L));
     }
 
     private static void registerLongDistancePipe() {
@@ -8546,6 +8325,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     private static void registerAE2Hatches() {
         ItemList.Hatch_Output_Bus_ME
             .set(new MTEHatchOutputBusME(OUTPUT_BUS_ME.ID, "hatch.output_bus.me", "Output Bus (ME)").getStackForm(1L));
+        API.setAliases(ItemList.Hatch_Output_Bus_ME.get(1L), "gt.alias.debug");
         ItemList.Hatch_Input_Bus_ME.set(
             new MTEHatchInputBusME(INPUT_BUS_ME.ID, false, "hatch.input_bus.me.basic", "Stocking Input Bus (ME)")
                 .getStackForm(1L));
@@ -8566,6 +8346,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Stocking Input Hatch (ME)").getStackForm(1L));
         ItemList.Hatch_Output_ME
             .set(new MTEHatchOutputME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)").getStackForm(1L));
+        API.setAliases(ItemList.Hatch_Output_ME.get(1L), "gt.alias.debug");
         ItemList.Hatch_CraftingInput_Bus_ME.set(
             new MTEHatchCraftingInputME(
                 CRAFTING_INPUT_ME.ID,
@@ -8587,31 +8368,31 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchPatternProvider(
                 INPUT_BUS_PATTERN_PROVIDER_IV.ID,
                 "hatch.pattern_provider.crafting.tier.05",
-                "Crafting Pattern Provider (IV)",
+                "",
                 5).getStackForm(1L));
         ItemList.Hatch_PatternProvider_Crafting_LuV.set(
             new MTEHatchPatternProvider(
                 INPUT_BUS_PATTERN_PROVIDER_LuV.ID,
                 "hatch.pattern_provider.crafting.tier.06",
-                "Crafting Pattern Provider (LuV)",
+                "",
                 6).getStackForm(1L));
         ItemList.Hatch_PatternProvider_Crafting_ZPM.set(
             new MTEHatchPatternProvider(
                 INPUT_BUS_PATTERN_PROVIDER_ZPM.ID,
                 "hatch.pattern_provider.crafting.tier.07",
-                "Crafting Pattern Provider (ZPM)",
+                "",
                 7).getStackForm(1L));
         ItemList.Hatch_PatternProvider_Crafting_UV.set(
             new MTEHatchPatternProvider(
                 INPUT_BUS_PATTERN_PROVIDER_UV.ID,
                 "hatch.pattern_provider.crafting.tier.08",
-                "Crafting Pattern Provider (UV)",
+                "",
                 8).getStackForm(1L));
         ItemList.Hatch_PatternProvider_Crafting_UHV.set(
             new MTEHatchPatternProvider(
                 INPUT_BUS_PATTERN_PROVIDER_UHV.ID,
                 "hatch.pattern_provider.crafting.tier.09",
-                "Crafting Pattern Provider (UHV)",
+                "",
                 9).getStackForm(1L));
     }
 
@@ -8621,26 +8402,26 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerInputBus() {
-        ItemList.Hatch_Input_Bus_ULV.set(
-            new MTEHatchInputBus(INPUT_BUS_ULV.ID, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_LV.set(
-            new MTEHatchInputBus(INPUT_BUS_LV.ID, "hatch.input_bus.tier.01", "Input Bus (LV)", 1).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_MV.set(
-            new MTEHatchInputBus(INPUT_BUS_MV.ID, "hatch.input_bus.tier.02", "Input Bus (MV)", 2).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_HV.set(
-            new MTEHatchInputBus(INPUT_BUS_HV.ID, "hatch.input_bus.tier.03", "Input Bus (HV)", 3).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_EV.set(
-            new MTEHatchInputBus(INPUT_BUS_EV.ID, "hatch.input_bus.tier.04", "Input Bus (EV)", 4).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_IV.set(
-            new MTEHatchInputBus(INPUT_BUS_IV.ID, "hatch.input_bus.tier.05", "Input Bus (IV)", 5).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_LuV.set(
-            new MTEHatchInputBus(INPUT_BUS_LuV.ID, "hatch.input_bus.tier.06", "Input Bus (LuV)", 6).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_ZPM.set(
-            new MTEHatchInputBus(INPUT_BUS_ZPM.ID, "hatch.input_bus.tier.07", "Input Bus (ZPM)", 7).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_UV.set(
-            new MTEHatchInputBus(INPUT_BUS_UV.ID, "hatch.input_bus.tier.08", "Input Bus (UV)", 8).getStackForm(1L));
-        ItemList.Hatch_Input_Bus_MAX.set(
-            new MTEHatchInputBus(INPUT_BUS_UHV.ID, "hatch.input_bus.tier.09", "Input Bus (UHV)", 9).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_ULV
+            .set(new MTEHatchInputBus(INPUT_BUS_ULV.ID, "hatch.input_bus.tier.00", "", 0).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_LV
+            .set(new MTEHatchInputBus(INPUT_BUS_LV.ID, "hatch.input_bus.tier.01", "", 1).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_MV
+            .set(new MTEHatchInputBus(INPUT_BUS_MV.ID, "hatch.input_bus.tier.02", "", 2).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_HV
+            .set(new MTEHatchInputBus(INPUT_BUS_HV.ID, "hatch.input_bus.tier.03", "", 3).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_EV
+            .set(new MTEHatchInputBus(INPUT_BUS_EV.ID, "hatch.input_bus.tier.04", "", 4).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_IV
+            .set(new MTEHatchInputBus(INPUT_BUS_IV.ID, "hatch.input_bus.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_LuV
+            .set(new MTEHatchInputBus(INPUT_BUS_LuV.ID, "hatch.input_bus.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_ZPM
+            .set(new MTEHatchInputBus(INPUT_BUS_ZPM.ID, "hatch.input_bus.tier.07", "", 7).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_UV
+            .set(new MTEHatchInputBus(INPUT_BUS_UV.ID, "hatch.input_bus.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Input_Bus_MAX
+            .set(new MTEHatchInputBus(INPUT_BUS_UHV.ID, "hatch.input_bus.tier.09", "", 9).getStackForm(1L));
 
         ItemList.Hatch_Input_Bus_Debug.set(
             new MTEHatchInputBusDebug(INPUT_BUS_DEBUG.ID, "hatch.input_bus.debug", "Debug Input Bus", 9)
@@ -8648,60 +8429,48 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerOutputBus() {
-        ItemList.Hatch_Output_Bus_ULV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_ULV.ID, "hatch.output_bus.tier.00", "Output Bus (ULV)", 0)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_Bus_LV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_LV.ID, "hatch.output_bus.tier.01", "Output Bus (LV)", 1).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_MV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_MV.ID, "hatch.output_bus.tier.02", "Output Bus (MV)", 2).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_HV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_HV.ID, "hatch.output_bus.tier.03", "Output Bus (HV)", 3).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_EV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_EV.ID, "hatch.output_bus.tier.04", "Output Bus (EV)", 4).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_IV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_IV.ID, "hatch.output_bus.tier.05", "Output Bus (IV)", 5).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_LuV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_LuV.ID, "hatch.output_bus.tier.06", "Output Bus (LuV)", 6)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_Bus_ZPM.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_ZPM.ID, "hatch.output_bus.tier.07", "Output Bus (ZPM)", 7)
-                .getStackForm(1L));
-        ItemList.Hatch_Output_Bus_UV.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_UV.ID, "hatch.output_bus.tier.08", "Output Bus (UV)", 8).getStackForm(1L));
-        ItemList.Hatch_Output_Bus_MAX.set(
-            new MTEHatchOutputBus(OUTPUT_BUS_UHV.ID, "hatch.output_bus.tier.09", "Output Bus (UHV)", 9)
-                .getStackForm(1L));
+        ItemList.Hatch_Output_Bus_ULV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_ULV.ID, "hatch.output_bus.tier.00", "", 0).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_LV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_LV.ID, "hatch.output_bus.tier.01", "", 1).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_MV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_MV.ID, "hatch.output_bus.tier.02", "", 2).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_HV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_HV.ID, "hatch.output_bus.tier.03", "", 3).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_EV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_EV.ID, "hatch.output_bus.tier.04", "", 4).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_IV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_IV.ID, "hatch.output_bus.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_LuV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_LuV.ID, "hatch.output_bus.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_ZPM
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_ZPM.ID, "hatch.output_bus.tier.07", "", 7).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_UV
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_UV.ID, "hatch.output_bus.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Output_Bus_MAX
+            .set(new MTEHatchOutputBus(OUTPUT_BUS_UHV.ID, "hatch.output_bus.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerMufflerHatch() {
-        ItemList.Hatch_Muffler_LV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_LV.ID, "hatch.muffler.tier.01", "Muffler Hatch (LV)", 1)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_MV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_MV.ID, "hatch.muffler.tier.02", "Muffler Hatch (MV)", 2)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_HV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_HV.ID, "hatch.muffler.tier.03", "Muffler Hatch (HV)", 3)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_EV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_EV.ID, "hatch.muffler.tier.04", "Muffler Hatch (EV)", 4)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_IV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_IV.ID, "hatch.muffler.tier.05", "Muffler Hatch (IV)", 5)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_LuV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_LuV.ID, "hatch.muffler.tier.06", "Muffler Hatch (LuV)", 6)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_ZPM.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_ZPM.ID, "hatch.muffler.tier.07", "Muffler Hatch (ZPM)", 7)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_UV.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_UV.ID, "hatch.muffler.tier.08", "Muffler Hatch (UV)", 8)
-                .getStackForm(1L));
-        ItemList.Hatch_Muffler_MAX.set(
-            new MTEHatchMuffler(MUFFLER_HATCH_UHV.ID, "hatch.muffler.tier.09", "Muffler Hatch (UHV)", 9)
-                .getStackForm(1L));
+        ItemList.Hatch_Muffler_LV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_LV.ID, "hatch.muffler.tier.01", "", 1).getStackForm(1L));
+        API.setAliases(ItemList.Hatch_Muffler_LV.get(1L), "gt.alias.debug");
+        ItemList.Hatch_Muffler_MV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_MV.ID, "hatch.muffler.tier.02", "", 2).getStackForm(1L));
+        ItemList.Hatch_Muffler_HV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_HV.ID, "hatch.muffler.tier.03", "", 3).getStackForm(1L));
+        ItemList.Hatch_Muffler_EV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_EV.ID, "hatch.muffler.tier.04", "", 4).getStackForm(1L));
+        ItemList.Hatch_Muffler_IV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_IV.ID, "hatch.muffler.tier.05", "", 5).getStackForm(1L));
+        ItemList.Hatch_Muffler_LuV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_LuV.ID, "hatch.muffler.tier.06", "", 6).getStackForm(1L));
+        ItemList.Hatch_Muffler_ZPM
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_ZPM.ID, "hatch.muffler.tier.07", "", 7).getStackForm(1L));
+        ItemList.Hatch_Muffler_UV
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_UV.ID, "hatch.muffler.tier.08", "", 8).getStackForm(1L));
+        ItemList.Hatch_Muffler_MAX
+            .set(new MTEHatchMuffler(MUFFLER_HATCH_UHV.ID, "hatch.muffler.tier.09", "", 9).getStackForm(1L));
     }
 
     private static void registerBoiler() {
@@ -8720,632 +8489,248 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerBatteryBuffer1x1() {
         ItemList.Battery_Buffer_1by1_ULV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_ULV.ID,
-                "batterybuffer.01.tier.00",
-                "Ultra Low Voltage Battery Buffer",
-                0,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_ULV.ID, "batterybuffer.01.tier.00", "", 0, "", 1)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_LV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_LV.ID,
-                "batterybuffer.01.tier.01",
-                "Low Voltage Battery Buffer",
-                1,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_LV.ID, "batterybuffer.01.tier.01", "", 1, "", 1)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_MV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_MV.ID,
-                "batterybuffer.01.tier.02",
-                "Medium Voltage Battery Buffer",
-                2,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_MV.ID, "batterybuffer.01.tier.02", "", 2, "", 1)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_HV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_HV.ID,
-                "batterybuffer.01.tier.03",
-                "High Voltage Battery Buffer",
-                3,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_HV.ID, "batterybuffer.01.tier.03", "", 3, "", 1)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_EV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_EV.ID,
-                "batterybuffer.01.tier.04",
-                "Extreme Voltage Battery Buffer",
-                4,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_EV.ID, "batterybuffer.01.tier.04", "", 4, "", 1)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_IV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_IV.ID,
-                "batterybuffer.01.tier.05",
-                "Insane Voltage Battery Buffer",
-                5,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_IV.ID, "batterybuffer.01.tier.05", "", 5, "", 1)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_LuV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_LuV.ID,
-                "batterybuffer.01.tier.06",
-                "Ludicrous Voltage Battery Buffer",
-                6,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_LuV.ID, "batterybuffer.01.tier.06", "", 6, "", 1)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_ZPM.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_ZPM.ID,
-                "batterybuffer.01.tier.07",
-                "ZPM Voltage Battery Buffer",
-                7,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_ZPM.ID, "batterybuffer.01.tier.07", "", 7, "", 1)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_UV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UV.ID,
-                "batterybuffer.01.tier.08",
-                "Ultimate Voltage Battery Buffer",
-                8,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UV.ID, "batterybuffer.01.tier.08", "", 8, "", 1)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_UHV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UHV.ID,
-                "batterybuffer.01.tier.09",
-                "Highly Ultimate Voltage Battery Buffer",
-                9,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UHV.ID, "batterybuffer.01.tier.09", "", 9, "", 1)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UEV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UEV.ID,
-                "batterybuffer.01.tier.10",
-                "Extremely Ultimate Battery Buffer",
-                10,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UEV.ID, "batterybuffer.01.tier.10", "", 10, "", 1)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UIV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UIV.ID,
-                "batterybuffer.01.tier.11",
-                "Insanely Ultimate Battery Buffer",
-                11,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UIV.ID, "batterybuffer.01.tier.11", "", 11, "", 1)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UMV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UMV.ID,
-                "batterybuffer.01.tier.12",
-                "Mega Ultimate Battery Buffer",
-                12,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UMV.ID, "batterybuffer.01.tier.12", "", 12, "", 1)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UXV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UXV.ID,
-                "batterybuffer.01.tier.13",
-                "Extended Mega Ultimate Battery Buffer",
-                13,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UXV.ID, "batterybuffer.01.tier.13", "", 13, "", 1)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_MAXV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_MAX.ID,
-                "batterybuffer.01.tier.14",
-                "Maximum Battery Buffer",
-                14,
-                "",
-                1).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_MAX.ID, "batterybuffer.01.tier.14", "", 14, "", 1)
+                .getStackForm(1L));
     }
 
     private static void registerBatteryBuffer2x2() {
         ItemList.Battery_Buffer_2by2_ULV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_ULV.ID,
-                "batterybuffer.04.tier.00",
-                "Ultra Low Voltage Battery Buffer",
-                0,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_ULV.ID, "batterybuffer.04.tier.00", "", 0, "", 4)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_LV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_LV.ID,
-                "batterybuffer.04.tier.01",
-                "Low Voltage Battery Buffer",
-                1,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_LV.ID, "batterybuffer.04.tier.01", "", 1, "", 4)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_MV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_MV.ID,
-                "batterybuffer.04.tier.02",
-                "Medium Voltage Battery Buffer",
-                2,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_MV.ID, "batterybuffer.04.tier.02", "", 2, "", 4)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_HV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_HV.ID,
-                "batterybuffer.04.tier.03",
-                "High Voltage Battery Buffer",
-                3,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_HV.ID, "batterybuffer.04.tier.03", "", 3, "", 4)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_EV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_EV.ID,
-                "batterybuffer.04.tier.04",
-                "Extreme Voltage Battery Buffer",
-                4,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_EV.ID, "batterybuffer.04.tier.04", "", 4, "", 4)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_IV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_IV.ID,
-                "batterybuffer.04.tier.05",
-                "Insane Voltage Battery Buffer",
-                5,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_IV.ID, "batterybuffer.04.tier.05", "", 5, "", 4)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_LuV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_LuV.ID,
-                "batterybuffer.04.tier.06",
-                "Ludicrous Voltage Battery Buffer",
-                6,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_LuV.ID, "batterybuffer.04.tier.06", "", 6, "", 4)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_ZPM.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_ZPM.ID,
-                "batterybuffer.04.tier.07",
-                "ZPM Voltage Battery Buffer",
-                7,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_ZPM.ID, "batterybuffer.04.tier.07", "", 7, "", 4)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_UV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UV.ID,
-                "batterybuffer.04.tier.08",
-                "Ultimate Voltage Battery Buffer",
-                8,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UV.ID, "batterybuffer.04.tier.08", "", 8, "", 4)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_UHV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UHV.ID,
-                "batterybuffer.04.tier.09",
-                "Highly Ultimate Voltage Battery Buffer",
-                9,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UHV.ID, "batterybuffer.04.tier.09", "", 9, "", 4)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UEV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UEV.ID,
-                "batterybuffer.04.tier.10",
-                "Extremely Ultimate Battery Buffer",
-                10,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UEV.ID, "batterybuffer.04.tier.10", "", 10, "", 4)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UIV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UIV.ID,
-                "batterybuffer.04.tier.11",
-                "Insanely Ultimate Battery Buffer",
-                11,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UIV.ID, "batterybuffer.04.tier.11", "", 11, "", 4)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UMV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UMV.ID,
-                "batterybuffer.04.tier.12",
-                "Mega Ultimate Battery Buffer",
-                12,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UMV.ID, "batterybuffer.04.tier.12", "", 12, "", 4)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UXV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UXV.ID,
-                "batterybuffer.04.tier.13",
-                "Extended Mega Ultimate Battery Buffer",
-                13,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UXV.ID, "batterybuffer.04.tier.13", "", 13, "", 4)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_MAXV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_MAX.ID,
-                "batterybuffer.04.tier.14",
-                "Maximum Battery Buffer",
-                14,
-                "",
-                4).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_MAX.ID, "batterybuffer.04.tier.14", "", 14, "", 4)
+                .getStackForm(1L));
     }
 
     private static void registerBatteryBuffer3x3() {
         ItemList.Battery_Buffer_3by3_ULV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_ULV.ID,
-                "batterybuffer.09.tier.00",
-                "Ultra Low Voltage Battery Buffer",
-                0,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_ULV.ID, "batterybuffer.09.tier.00", "", 0, "", 9)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_LV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_LV.ID,
-                "batterybuffer.09.tier.01",
-                "Low Voltage Battery Buffer",
-                1,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_LV.ID, "batterybuffer.09.tier.01", "", 1, "", 9)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_MV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_MV.ID,
-                "batterybuffer.09.tier.02",
-                "Medium Voltage Battery Buffer",
-                2,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_MV.ID, "batterybuffer.09.tier.02", "", 2, "", 9)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_HV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_HV.ID,
-                "batterybuffer.09.tier.03",
-                "High Voltage Battery Buffer",
-                3,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_HV.ID, "batterybuffer.09.tier.03", "", 3, "", 9)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_EV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_EV.ID,
-                "batterybuffer.09.tier.04",
-                "Extreme Voltage Battery Buffer",
-                4,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_EV.ID, "batterybuffer.09.tier.04", "", 4, "", 9)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_IV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_IV.ID,
-                "batterybuffer.09.tier.05",
-                "Insane Voltage Battery Buffer",
-                5,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_IV.ID, "batterybuffer.09.tier.05", "", 5, "", 9)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_LuV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_LuV.ID,
-                "batterybuffer.09.tier.06",
-                "Ludicrous Voltage Battery Buffer",
-                6,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_LuV.ID, "batterybuffer.09.tier.06", "", 6, "", 9)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_ZPM.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_ZPM.ID,
-                "batterybuffer.09.tier.07",
-                "ZPM Voltage Battery Buffer",
-                7,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_ZPM.ID, "batterybuffer.09.tier.07", "", 7, "", 9)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_UV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UV.ID,
-                "batterybuffer.09.tier.08",
-                "Ultimate Voltage Battery Buffer",
-                8,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UV.ID, "batterybuffer.09.tier.08", "", 8, "", 9)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_UHV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UHV.ID,
-                "batterybuffer.09.tier.09",
-                "Highly Ultimate Voltage Battery Buffer",
-                9,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UHV.ID, "batterybuffer.09.tier.09", "", 9, "", 9)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UEV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UEV.ID,
-                "batterybuffer.09.tier.10",
-                "Extremely Ultimate Battery Buffer",
-                10,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UEV.ID, "batterybuffer.09.tier.10", "", 10, "", 9)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UIV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UIV.ID,
-                "batterybuffer.09.tier.11",
-                "Insanely Ultimate Battery Buffer",
-                11,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UIV.ID, "batterybuffer.09.tier.11", "", 11, "", 9)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UMV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UMV.ID,
-                "batterybuffer.09.tier.12",
-                "Mega Ultimate Battery Buffer",
-                12,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UMV.ID, "batterybuffer.09.tier.12", "", 12, "", 9)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UXV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UXV.ID,
-                "batterybuffer.09.tier.13",
-                "Extended Mega Ultimate Battery Buffer",
-                13,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UXV.ID, "batterybuffer.09.tier.13", "", 13, "", 9)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_MAXV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_MAX.ID,
-                "batterybuffer.09.tier.14",
-                "Maximum Battery Buffer",
-                14,
-                "",
-                9).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_MAX.ID, "batterybuffer.09.tier.14", "", 14, "", 9)
+                .getStackForm(1L));
     }
 
     private static void registerBatteryBuffer4x4() {
         ItemList.Battery_Buffer_4by4_ULV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_ULV.ID,
-                "batterybuffer.16.tier.00",
-                "Ultra Low Voltage Battery Buffer",
-                0,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_ULV.ID, "batterybuffer.16.tier.00", "", 0, "", 16)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_LV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_LV.ID,
-                "batterybuffer.16.tier.01",
-                "Low Voltage Battery Buffer",
-                1,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_LV.ID, "batterybuffer.16.tier.01", "", 1, "", 16)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_MV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_MV.ID,
-                "batterybuffer.16.tier.02",
-                "Medium Voltage Battery Buffer",
-                2,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_MV.ID, "batterybuffer.16.tier.02", "", 2, "", 16)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_HV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_HV.ID,
-                "batterybuffer.16.tier.03",
-                "High Voltage Battery Buffer",
-                3,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_HV.ID, "batterybuffer.16.tier.03", "", 3, "", 16)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_EV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_EV.ID,
-                "batterybuffer.16.tier.04",
-                "Extreme Voltage Battery Buffer",
-                4,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_EV.ID, "batterybuffer.16.tier.04", "", 4, "", 16)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_IV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_IV.ID,
-                "batterybuffer.16.tier.05",
-                "Insane Voltage Battery Buffer",
-                5,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_IV.ID, "batterybuffer.16.tier.05", "", 5, "", 16)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_LuV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_LuV.ID,
-                "batterybuffer.16.tier.06",
-                "Ludicrous Voltage Battery Buffer",
-                6,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_LuV.ID, "batterybuffer.16.tier.06", "", 6, "", 16)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_ZPM.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_ZPM.ID,
-                "batterybuffer.16.tier.07",
-                "ZPM Voltage Battery Buffer",
-                7,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_ZPM.ID, "batterybuffer.16.tier.07", "", 7, "", 16)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UV.ID,
-                "batterybuffer.16.tier.08",
-                "Ultimate Voltage Battery Buffer",
-                8,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UV.ID, "batterybuffer.16.tier.08", "", 8, "", 16)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UHV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UHV.ID,
-                "batterybuffer.16.tier.09",
-                "Highly Ultimate Voltage Battery Buffer",
-                9,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UHV.ID, "batterybuffer.16.tier.09", "", 9, "", 16)
+                .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UEV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UEV.ID,
-                "batterybuffer.16.tier.10",
-                "Extremely Ultimate Battery Buffer",
-                10,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UEV.ID, "batterybuffer.16.tier.10", "", 10, "", 16)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UIV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UIV.ID,
-                "batterybuffer.16.tier.11",
-                "Insanely Ultimate Battery Buffer",
-                11,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UIV.ID, "batterybuffer.16.tier.11", "", 11, "", 16)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UMV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UMV.ID,
-                "batterybuffer.16.tier.12",
-                "Mega Ultimate Battery Buffer",
-                12,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UMV.ID, "batterybuffer.16.tier.12", "", 12, "", 16)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UXV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UXV.ID,
-                "batterybuffer.16.tier.13",
-                "Extended Mega Ultimate Battery Buffer",
-                13,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UXV.ID, "batterybuffer.16.tier.13", "", 13, "", 16)
+                .getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_MAXV.set(
-            new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_MAX.ID,
-                "batterybuffer.16.tier.14",
-                "Maximum Battery Buffer",
-                14,
-                "",
-                16).getStackForm(1L));
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_MAX.ID, "batterybuffer.16.tier.14", "", 14, "", 16)
+                .getStackForm(1L));
     }
 
     private static void registerCharger4x4() {
         ItemList.Battery_Charger_4by4_ULV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_ULV.ID,
-                "batterycharger.16.tier.00",
-                "Ultra Low Voltage Battery Charger",
-                0,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_ULV.ID, "batterycharger.16.tier.00", "", 0, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_LV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_LV.ID,
-                "batterycharger.16.tier.01",
-                "Low Voltage Battery Charger",
-                1,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_LV.ID, "batterycharger.16.tier.01", "", 1, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_MV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_MV.ID,
-                "batterycharger.16.tier.02",
-                "Medium Voltage Battery Charger",
-                2,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_MV.ID, "batterycharger.16.tier.02", "", 2, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_HV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_HV.ID,
-                "batterycharger.16.tier.03",
-                "High Voltage Battery Charger",
-                3,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_HV.ID, "batterycharger.16.tier.03", "", 3, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_EV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_EV.ID,
-                "batterycharger.16.tier.04",
-                "Extreme Voltage Battery Charger",
-                4,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_EV.ID, "batterycharger.16.tier.04", "", 4, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_IV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_IV.ID,
-                "batterycharger.16.tier.05",
-                "Insane Voltage Battery Charger",
-                5,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_IV.ID, "batterycharger.16.tier.05", "", 5, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_LuV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_LuV.ID,
-                "batterycharger.16.tier.06",
-                "Ludicrous Voltage Battery Charger",
-                6,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_LuV.ID, "batterycharger.16.tier.06", "", 6, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_ZPM.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_ZPM.ID,
-                "batterycharger.16.tier.07",
-                "ZPM Voltage Battery Charger",
-                7,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_ZPM.ID, "batterycharger.16.tier.07", "", 7, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_UV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_UV.ID,
-                "batterycharger.16.tier.08",
-                "Ultimate Voltage Battery Charger",
-                8,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_UV.ID, "batterycharger.16.tier.08", "", 8, "", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_UHV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_BY_4_UHV.ID,
-                "batterycharger.16.tier.09",
-                "Highly Ultimate Voltage Battery Charger",
-                9,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_BY_4_UHV.ID, "batterycharger.16.tier.09", "", 9, "", 4).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UEV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_4_UEV.ID,
-                "batterycharger.16.tier.10",
-                "Extremely Ultimate Battery Charger",
-                10,
-                "",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_4_UEV.ID, "batterycharger.16.tier.10", "", 10, "", 4).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UIV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_4_UIV.ID,
-                "batterycharger.16.tier.11",
-                "Insanely Ultimate Battery Charger",
-                11,
-                "",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_4_UIV.ID, "batterycharger.16.tier.11", "", 11, "", 4).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UMV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_4_UMV.ID,
-                "batterycharger.16.tier.12",
-                "Mega Ultimate Battery Charger",
-                12,
-                "",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_4_UMV.ID, "batterycharger.16.tier.12", "", 12, "", 4).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UXV.set(
-            new MTECharger(
-                BATTERY_CHARGER_4_4_UXV.ID,
-                "batterycharger.16.tier.13",
-                "Extended Mega Ultimate Battery Charger",
-                13,
-                "",
-                4).getStackForm(1L));
+            new MTECharger(BATTERY_CHARGER_4_4_UXV.ID, "batterycharger.16.tier.13", "", 13, "", 4).getStackForm(1L));
     }
 
     private void registerCircuitAssembler() {
@@ -9533,311 +8918,147 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private void registerWetTransformer() {
-        ItemList.WetTransformer_LV_ULV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_LV_ULV.ID,
-                "wettransformer.tier.00",
-                "Ultra Low Voltage Power Transformer",
-                0).getStackForm(1L));
+        ItemList.WetTransformer_LV_ULV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_LV_ULV.ID, "wettransformer.tier.00", "", 0).getStackForm(1L));
 
         ItemList.WetTransformer_MV_LV.set(
             new MTEWetTransformer(WET_TRANSFORMER_MV_LV.ID, "wetransformer.tier.01", "Low Voltage Power Transformer", 1)
                 .getStackForm(1L));
 
-        ItemList.WetTransformer_HV_MV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_HV_MV.ID,
-                "wettransformer.tier.02",
-                "Medium Voltage Power Transformer",
-                2).getStackForm(1L));
+        ItemList.WetTransformer_HV_MV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_HV_MV.ID, "wettransformer.tier.02", "", 2).getStackForm(1L));
 
-        ItemList.WetTransformer_EV_HV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_EV_HV.ID,
-                "wettransformer.tier.03",
-                "High Voltage Power Transformer",
-                3).getStackForm(1L));
+        ItemList.WetTransformer_EV_HV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_EV_HV.ID, "wettransformer.tier.03", "", 3).getStackForm(1L));
 
-        ItemList.WetTransformer_IV_EV.set(
-            new MTEWetTransformer(WET_TRANSFORMER_IV_EV.ID, "wettransformer.tier.04", "Extreme Power Transformer", 4)
-                .getStackForm(1L));
+        ItemList.WetTransformer_IV_EV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_IV_EV.ID, "wettransformer.tier.04", "", 4).getStackForm(1L));
 
-        ItemList.WetTransformer_LuV_IV.set(
-            new MTEWetTransformer(WET_TRANSFORMER_LuV_IV.ID, "wettransformer.tier.05", "Insane Power Transformer", 5)
-                .getStackForm(1L));
+        ItemList.WetTransformer_LuV_IV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_LuV_IV.ID, "wettransformer.tier.05", "", 5).getStackForm(1L));
 
-        ItemList.WetTransformer_ZPM_LuV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_ZPM_LuV.ID,
-                "wettransformer.tier.06",
-                "Ludicrous Power Transformer",
-                6).getStackForm(1L));
+        ItemList.WetTransformer_ZPM_LuV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_ZPM_LuV.ID, "wettransformer.tier.06", "", 6).getStackForm(1L));
 
-        ItemList.WetTransformer_UV_ZPM.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_UV_ZPM.ID,
-                "wettransformer.tier.07",
-                "ZPM Voltage Power Transformer",
-                7).getStackForm(1L));
+        ItemList.WetTransformer_UV_ZPM
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UV_ZPM.ID, "wettransformer.tier.07", "", 7).getStackForm(1L));
 
-        ItemList.WetTransformer_UHV_UV.set(
-            new MTEWetTransformer(WET_TRANSFORMER_UHV_UV.ID, "wettransformer.tier.08", "Ultimate Power Transformer", 8)
-                .getStackForm(1L));
+        ItemList.WetTransformer_UHV_UV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UHV_UV.ID, "wettransformer.tier.08", "", 8).getStackForm(1L));
 
-        ItemList.WetTransformer_UEV_UHV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_UEV_UHV.ID,
-                "wettransformer.tier.09",
-                "Highly Ultimate Power Transformer",
-                9).getStackForm(1L));
+        ItemList.WetTransformer_UEV_UHV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UEV_UHV.ID, "wettransformer.tier.09", "", 9).getStackForm(1L));
 
-        ItemList.WetTransformer_UIV_UEV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_UIV_UEV.ID,
-                "wettransformer.tier.10",
-                "Extremely Ultimate Power Transformer",
-                10).getStackForm(1L));
+        ItemList.WetTransformer_UIV_UEV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UIV_UEV.ID, "wettransformer.tier.10", "", 10).getStackForm(1L));
 
-        ItemList.WetTransformer_UMV_UIV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_UMV_UIV.ID,
-                "wettransformer.tier.11",
-                "Insanely Ultimate Power Transformer",
-                11).getStackForm(1L));
+        ItemList.WetTransformer_UMV_UIV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UMV_UIV.ID, "wettransformer.tier.11", "", 11).getStackForm(1L));
 
-        ItemList.WetTransformer_UXV_UMV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_UXV_UMV.ID,
-                "wettransformer.tier.12",
-                "Mega Ultimate Power Transformer",
-                12).getStackForm(1L));
+        ItemList.WetTransformer_UXV_UMV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_UXV_UMV.ID, "wettransformer.tier.12", "", 12).getStackForm(1L));
 
-        ItemList.WetTransformer_MAX_UXV.set(
-            new MTEWetTransformer(
-                WET_TRANSFORMER_MAX_UXV.ID,
-                "wettransformer.tier.13",
-                "Extended Mega Ultimate Power Transformer",
-                13).getStackForm(1L));
+        ItemList.WetTransformer_MAX_UXV
+            .set(new MTEWetTransformer(WET_TRANSFORMER_MAX_UXV.ID, "wettransformer.tier.13", "", 13).getStackForm(1L));
     }
 
     private void registerHighAmpTransformer() {
         ItemList.Transformer_HA_UEV_UHV.set(
-            new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UEV_UHV.ID,
-                "transformer.ha.tier.09",
-                "Highly Ultimate Hi-Amp Transformer",
-                9).getStackForm(1L));
+            new MTETransformerHiAmp(HIGH_AMP_TRANSFORMER_UEV_UHV.ID, "transformer.ha.tier.09", "", 9).getStackForm(1L));
         ItemList.Transformer_HA_UIV_UEV.set(
-            new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UIV_UEV.ID,
-                "transformer.ha.tier.10",
-                "Extremely Ultimate Hi-Amp Transformer",
-                10).getStackForm(1L));
+            new MTETransformerHiAmp(HIGH_AMP_TRANSFORMER_UIV_UEV.ID, "transformer.ha.tier.10", "", 10)
+                .getStackForm(1L));
         ItemList.Transformer_HA_UMV_UIV.set(
-            new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UMV_UIV.ID,
-                "transformer.ha.tier.11",
-                "Insanely Ultimate Hi-Amp Transformer",
-                11).getStackForm(1L));
+            new MTETransformerHiAmp(HIGH_AMP_TRANSFORMER_UMV_UIV.ID, "transformer.ha.tier.11", "", 11)
+                .getStackForm(1L));
         ItemList.Transformer_HA_UXV_UMV.set(
-            new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UXV_UMV.ID,
-                "transformer.ha.tier.12",
-                "Mega Ultimate Hi-Amp Transformer",
-                12).getStackForm(1L));
+            new MTETransformerHiAmp(HIGH_AMP_TRANSFORMER_UXV_UMV.ID, "transformer.ha.tier.12", "", 12)
+                .getStackForm(1L));
         ItemList.Transformer_HA_MAX_UXV.set(
-            new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_MAX_UXV.ID,
-                "transformer.ha.tier.13",
-                "Extended Mega Ultimate Hi-Amp Transformer",
-                13).getStackForm(1L));
+            new MTETransformerHiAmp(HIGH_AMP_TRANSFORMER_MAX_UXV.ID, "transformer.ha.tier.13", "", 13)
+                .getStackForm(1L));
 
     }
 
     private void registerTurboCharger4By4() {
         ItemList.Battery_TurboCharger_4by4_ULV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_ULV.ID,
-                "batteryturbocharger.16.tier.00",
-                "Ultra Low Voltage Turbo Charger",
-                0,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_ULV.ID, "batteryturbocharger.16.tier.00", "", 0, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_LV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_LV.ID,
-                "batteryturbocharger.16.tier.01",
-                "Low Voltage Turbo Charger",
-                1,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_LV.ID, "batteryturbocharger.16.tier.01", "", 1, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_MV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_MV.ID,
-                "batteryturbocharger.16.tier.02",
-                "Medium Voltage Turbo Charger",
-                2,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_MV.ID, "batteryturbocharger.16.tier.02", "", 2, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_HV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_HV.ID,
-                "batteryturbocharger.16.tier.03",
-                "High Voltage Turbo Charger",
-                3,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_HV.ID, "batteryturbocharger.16.tier.03", "", 3, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_EV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_EV.ID,
-                "batteryturbocharger.16.tier.04",
-                "Extreme Voltage Turbo Charger",
-                4,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_EV.ID, "batteryturbocharger.16.tier.04", "", 4, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_IV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_IV.ID,
-                "batteryturbocharger.16.tier.05",
-                "Insane Voltage Turbo Charger",
-                5,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_IV.ID, "batteryturbocharger.16.tier.05", "", 5, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_LuV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_LuV.ID,
-                "batteryturbocharger.16.tier.06",
-                "Ludicrous Voltage Turbo Charger",
-                6,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_LuV.ID, "batteryturbocharger.16.tier.06", "", 6, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_ZPM.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_ZPM.ID,
-                "batteryturbocharger.16.tier.07",
-                "ZPM Voltage Turbo Charger",
-                7,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_ZPM.ID, "batteryturbocharger.16.tier.07", "", 7, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_UV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_UV.ID,
-                "batteryturbocharger.16.tier.08",
-                "Ultimate Voltage Turbo Charger",
-                8,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_UV.ID, "batteryturbocharger.16.tier.08", "", 8, "", 4).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_UHV.set(
-            new MTETurboCharger(
-                TURBO_CHARGER_UHV.ID,
-                "batteryturbocharger.16.tier.09",
-                "Highly Ultimate Voltage Turbo Charger",
-                9,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+            new MTETurboCharger(TURBO_CHARGER_UHV.ID, "batteryturbocharger.16.tier.09", "", 9, "", 4).getStackForm(1L));
 
     }
 
     private static void registerWirelessEnergyHatch() {
         ItemList.Wireless_Hatch_Energy_ULV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_ULV.ID,
-                "hatch.wireless.receiver.tier.00",
-                "ULV Wireless Energy Hatch",
-                0).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_ULV.ID, "hatch.wireless.receiver.tier.00", "", 0)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_LV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_LV.ID,
-                "hatch.wireless.receiver.tier.01",
-                "LV Wireless Energy Hatch",
-                1).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_LV.ID, "hatch.wireless.receiver.tier.01", "", 1)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_MV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_MV.ID,
-                "hatch.wireless.receiver.tier.02",
-                "MV Wireless Energy Hatch",
-                2).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_MV.ID, "hatch.wireless.receiver.tier.02", "", 2)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_HV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_HV.ID,
-                "hatch.wireless.receiver.tier.03",
-                "HV Wireless Energy Hatch",
-                3).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_HV.ID, "hatch.wireless.receiver.tier.03", "", 3)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_EV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_EV.ID,
-                "hatch.wireless.receiver.tier.04",
-                "EV Wireless Energy Hatch",
-                4).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_EV.ID, "hatch.wireless.receiver.tier.04", "", 4)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_IV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_IV.ID,
-                "hatch.wireless.receiver.tier.05",
-                "IV Wireless Energy Hatch",
-                5).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_IV.ID, "hatch.wireless.receiver.tier.05", "", 5)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_LuV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_LuV.ID,
-                "hatch.wireless.receiver.tier.06",
-                "LuV Wireless Energy Hatch",
-                6).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_LuV.ID, "hatch.wireless.receiver.tier.06", "", 6)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_ZPM.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_ZPM.ID,
-                "hatch.wireless.receiver.tier.07",
-                "ZPM Wireless Energy Hatch",
-                7).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_ZPM.ID, "hatch.wireless.receiver.tier.07", "", 7)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UV.ID,
-                "hatch.wireless.receiver.tier.08",
-                "UV Wireless Energy Hatch",
-                8).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UV.ID, "hatch.wireless.receiver.tier.08", "", 8)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UHV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UHV.ID,
-                "hatch.wireless.receiver.tier.09",
-                "UHV Wireless Energy Hatch",
-                9).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UHV.ID, "hatch.wireless.receiver.tier.09", "", 9)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UEV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UEV.ID,
-                "hatch.wireless.receiver.tier.10",
-                "UEV Wireless Energy Hatch",
-                10).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UEV.ID, "hatch.wireless.receiver.tier.10", "", 10)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UIV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UIV.ID,
-                "hatch.wireless.receiver.tier.11",
-                "UIV Wireless Energy Hatch",
-                11).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UIV.ID, "hatch.wireless.receiver.tier.11", "", 11)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UMV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UMV.ID,
-                "hatch.wireless.receiver.tier.12",
-                "UMV Wireless Energy Hatch",
-                12).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UMV.ID, "hatch.wireless.receiver.tier.12", "", 12)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UXV.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_UXV.ID,
-                "hatch.wireless.receiver.tier.13",
-                "UXV Wireless Energy Hatch",
-                13).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_UXV.ID, "hatch.wireless.receiver.tier.13", "", 13)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_MAX.set(
-            new MTEWirelessEnergy(
-                WIRELESS_HATCH_ENERGY_MAX.ID,
-                "hatch.wireless.receiver.tier.14",
-                "MAX Wireless Energy Hatch",
-                14).getStackForm(1L));
+            new MTEWirelessEnergy(WIRELESS_HATCH_ENERGY_MAX.ID, "hatch.wireless.receiver.tier.14", "", 14)
+                .getStackForm(1L));
     }
 
     private static void registerLightningRods() {
@@ -10062,6 +9283,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTENameRemover(NAME_REMOVER.ID, "fix.name.remover", "Name Remover", 0).getStackForm(1L));
     }
 
+    private static void registerIceCreamMachine() {
+        ItemList.Ice_Cream_Machine.set(
+            new MTEIceCreamMachine(ICE_CREAM_MACHINE.ID, "gt.icecreammachine", "Ice Cream Machine", 2)
+                .getStackForm(1L));
+    }
+
     private static void registerModificationTable() {
         ItemList.ModificationTable.set(
             new MTEModificationTable(MODIFICATION_TABLE.ID, "modificationtable", "Modification Table")
@@ -10120,7 +9347,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Registering MetaTileEntities.");
+        GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntities.");
         registerMachineHull();
         registerTransformer();
         registerDynamoHatch();
@@ -10231,6 +9458,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerPrinter();
         registerOven();
         registerNameRemover();
+        registerIceCreamMachine();
         registerModificationTable();
         registerAirFilters();
         registerNacHatches();

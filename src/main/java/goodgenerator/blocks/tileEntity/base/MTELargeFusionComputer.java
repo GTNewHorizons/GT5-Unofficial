@@ -617,21 +617,6 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         return true;
     }
 
-    protected String createParallelText() {
-        return "Has " + EnumChatFormatting.WHITE
-            + "(1 + "
-            + EnumChatFormatting.LIGHT_PURPLE
-            + "Machine Tier"
-            + EnumChatFormatting.WHITE
-            + " - "
-            + EnumChatFormatting.GREEN
-            + "Recipe Tier"
-            + EnumChatFormatting.WHITE
-            + ") * 64"
-            + EnumChatFormatting.GOLD
-            + " Parallels";
-    }
-
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;

@@ -51,7 +51,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import appeng.api.AEApi;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
@@ -708,7 +708,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 aNBT.setTag("mLink", link);
             }
         } catch (Exception t) {
-            GTMod.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
+            GTLoggers.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
         }
     }
 
@@ -759,7 +759,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                         Math.min(send_amounts.length, mLink.mSendAmounts.length));
                 }
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
+                GTLoggers.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
             }
         }
     }

@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
@@ -7,7 +8,6 @@ import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 
@@ -98,7 +98,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @Override
     public IStructureDefinition<MTEBECStorage> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
             .withHatches(1, 20, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
@@ -151,7 +151,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         tt.beginStructureBlock(45, 17, 45, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-storage.controller-pos"))
             .addCasing("1236", ElectromagneticWaveguide.getLocalizedName(), false)
-            .addCasing("1045", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("1045", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
             .addCasing("896", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("568", PeaceEnforcementCasing.getLocalizedName(), false)
             .addCasing("508", CondensateGuidanceCoil.getLocalizedName(), false)
@@ -167,7 +167,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     }
 
     @Override
-    protected ITexture getCasingTexture() {
+    public ITexture getCasingTexture() {
         return FineStructureConstantManipulator.getCasingTexture();
     }
 

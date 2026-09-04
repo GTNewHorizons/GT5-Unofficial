@@ -125,6 +125,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NO_REPAIR.getKey(), GTGuiTextures.OVERLAY_TOO_DAMAGED);
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NONE.getKey(), GTGuiTextures.OVERLAY_MANUAL_SHUTDOWN);
         this.shutdownReasonTextureMap.put("computation_loss", GTGuiTextures.OVERLAY_COMPUTATION_LOSS);
+        this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NO_ROTOR.getKey(), GTGuiTextures.OVERLAY_ROTOR);
+        this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.WIND_LOW.getKey(), GTGuiTextures.OVERLAY_WIND);
+        this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.WIND_HIGH.getKey(), GTGuiTextures.OVERLAY_WIND);
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey(),
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.incomplete"));
@@ -140,6 +143,15 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         this.shutdownReasonTooltipMap.put(
             "computation_loss",
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.computation_loss"));
+        this.shutdownReasonTooltipMap.put(
+            ShutDownReasonRegistry.NO_ROTOR.getKey(),
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.norotor"));
+        this.shutdownReasonTooltipMap.put(
+            ShutDownReasonRegistry.WIND_LOW.getKey(),
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.windlow"));
+        this.shutdownReasonTooltipMap.put(
+            ShutDownReasonRegistry.WIND_HIGH.getKey(),
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.windhigh"));
     }
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {

@@ -608,7 +608,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
 
     // BEC
-    SuperconductivePlasmaEnergyConduit
+    CoherencePreservingPlasmaConduit
         (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(17, 0, 0)),
     ElectromagneticallyIsolatedCasing
         (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),
@@ -917,8 +917,6 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCustomMachineCasings, 2, gtpp(2,4)),
     RuggedBotmiumMachineCasing
         (() -> ModBlocks.blockCustomMachineCasings, 3, gtpp(3,4)),
-
-    // GregtechMetaCasingBlocksPipeGearbox - skipped, unused, uncraftable
 
     // ------------------ Tectech Casings -----------------
 

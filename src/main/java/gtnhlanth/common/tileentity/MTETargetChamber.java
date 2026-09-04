@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.HatchElement.BeamlineInput;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -15,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineInput;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -47,7 +48,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
@@ -61,6 +61,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
@@ -70,7 +71,7 @@ import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber>
+public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IStructureDefinition<MTETargetChamber> STRUCTURE_DEFINITION;
@@ -79,6 +80,11 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
     private final ArrayList<MTEHatchInputBus> mMaskInputBusses = new ArrayList<>();
     private GTRecipe lastRecipe;
+    private int lastTCRecipeRate;
+    private float lastTCRecipeMinFocus;
+    private float lastTCRecipeMinEnergy;
+    private float lastTCRecipeMaxEnergy;
+    private int lastTCRecipeInputParticle = -1;
 
     // spotless:off
     static {
@@ -120,7 +126,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         return block == ItemRegistry.bw_glasses[0];
     }
 
-    // distinct bus registration in order to check masks only in one hatch
+    // distinct bus registration to check masks only in one hatch
     private boolean addMaskInputBus(IGregTechTileEntity te, int casingIndex) {
         if (te == null) return false;
         var mte = te.getMetaTileEntity();
@@ -128,6 +134,52 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         bus.updateTexture(casingIndex);
         bus.updateCraftingIcon(getMachineCraftingIcon());
         return mMaskInputBusses.add(bus);
+    }
+
+    @Override
+    protected void incrementProgressTime() {
+        if (this.lastTCRecipeInputParticle >= 0) {
+            BeamInformation inputInfo = this.getInputInformation();
+            if (inputInfo == null) return;
+            float inputEnergy = inputInfo.getEnergy();
+            float inputRate = inputInfo.getRate();
+            int inputParticle = inputInfo.getParticleId();
+            float inputFocus = inputInfo.getFocus();
+
+            if (inputEnergy < this.lastTCRecipeMinEnergy) {
+                return;
+            } else if (inputEnergy > this.lastTCRecipeMaxEnergy) {
+                return;
+            }
+            if (inputFocus < this.lastTCRecipeMinFocus) return;
+            if (inputParticle != this.lastTCRecipeInputParticle) return;
+            if (inputRate < this.lastTCRecipeRate) return;
+            mProgresstime++;
+            return;
+        }
+        mProgresstime++;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("lastTCRecipeRate", this.lastTCRecipeRate);
+        aNBT.setFloat("lastTCRecipeMinFocus", this.lastTCRecipeMinFocus);
+        aNBT.setFloat("lastTCRecipeMinEnergy", this.lastTCRecipeMinEnergy);
+        aNBT.setFloat("lastTCRecipeMaxEnergy", this.lastTCRecipeMaxEnergy);
+        aNBT.setInteger("lastTCRecipeInputParticle", this.lastTCRecipeInputParticle);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.lastTCRecipeRate = aNBT.getInteger("lastTCRecipeRate");
+        this.lastTCRecipeMinFocus = aNBT.getFloat("lastTCRecipeMinFocus");
+        this.lastTCRecipeMinEnergy = aNBT.getFloat("lastTCRecipeMinEnergy");
+        this.lastTCRecipeMaxEnergy = aNBT.getFloat("lastTCRecipeMaxEnergy");
+        this.lastTCRecipeInputParticle = aNBT.hasKey("lastTCRecipeInputParticle")
+            ? aNBT.getInteger("lastTCRecipeInputParticle")
+            : -1;
     }
 
     @Override
@@ -152,10 +204,12 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     public MTETargetChamber(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+        this.hasMaintenanceChecks = true;
     }
 
     public MTETargetChamber(String name) {
         super(name);
+        this.hasMaintenanceChecks = true;
     }
 
     @Override
@@ -289,7 +343,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         BeamInformation inputInfo = this.getInputInformation();
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
         float inputEnergy = inputInfo.getEnergy();
-        float inputRate = inputInfo.getRate();
+        int inputRate = inputInfo.getRate();
         int inputParticle = inputInfo.getParticleId();
         float inputFocus = inputInfo.getFocus();
 
@@ -301,8 +355,14 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         if (inputFocus < metadata.minFocus) return CheckRecipeResultRegistry.NO_RECIPE;
         if (inputParticle != metadata.particleID) return CheckRecipeResultRegistry.NO_RECIPE;
 
+        this.lastTCRecipeMinFocus = metadata.minFocus;
+        this.lastTCRecipeMinEnergy = metadata.minEnergy;
+        this.lastTCRecipeMaxEnergy = metadata.maxEnergy;
+        this.lastTCRecipeInputParticle = metadata.particleID;
+        this.lastTCRecipeRate = inputRate;
+
         // 5 seconds per integer multiple over the rate
-        float progressTime = metadata.amount / inputRate * 5 * TickTime.SECOND;
+        float progressTime = calculateProgressTime(metadata.amount, inputRate);
         int batchAmount = 1;
         if (progressTime < 1) { // Subticking
             batchAmount = (int) Math.round(1.0 / progressTime);
@@ -360,9 +420,13 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
+    private static float calculateProgressTime(int particleAmount, int particleRate) {
+        return (float) particleAmount / particleRate * 5 * TickTime.SECOND;
+    }
+
     @Nullable
     private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mBeamlineInputHatches) {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
             if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
             return in.dataPacket.getContent();
         }
