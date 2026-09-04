@@ -176,7 +176,8 @@ public class MTEHatchVoid extends MTEHatchOutput implements IOutputHatch {
         }
 
         @Override
-        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack, long totalPerParallel, long perParallel) {
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack, long totalPerParallel,
+            long perParallel) {
             return MTEHatchVoid.this.storePartial(stack, true);
         }
 

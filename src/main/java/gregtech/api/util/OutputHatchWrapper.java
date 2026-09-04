@@ -85,7 +85,8 @@ public class OutputHatchWrapper implements IOutputHatch {
         }
 
         @Override
-        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack, long totalPerParallel, long perParallel) {
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack, long totalPerParallel,
+            long perParallel) {
             if (!hatch.isFilteredToFluid(id)) return false;
             return transaction.storePartial(id, stack, totalPerParallel, perParallel);
         }
