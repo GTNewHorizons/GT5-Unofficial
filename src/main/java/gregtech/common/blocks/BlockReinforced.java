@@ -233,7 +233,7 @@ public class BlockReinforced extends GTGenericBlock {
         return switch (meta) {
             case 0 -> 60.0F;
             case 1 -> 400.0F;
-            case 2, 3, 10 -> 5.0F;
+            case 2, 3, 10 -> Blocks.iron_block.getBlockHardness(world, x, y, z);
             case 4, 5, 6, 7 -> 0.5F;
             case 8 -> 150.0F;
             case 9 -> 200.0F;
