@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
@@ -510,9 +511,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         List<Map.Entry<ItemRowKey, Long>> sortedEntries = itemDisplayMap.entrySet()
             .stream()
             .sorted((a, b) -> {
-                double expectedA = a.getValue() * a.getKey()
+                double expectedA = (double) a.getValue() * a.getKey()
                     .chance() / 10000.0;
-                double expectedB = b.getValue() * b.getKey()
+                double expectedB = (double) b.getValue() * b.getKey()
                     .chance() / 10000.0;
 
                 if (expectedA == expectedB) {
@@ -573,9 +574,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         final List<Map.Entry<FluidRowKey, Long>> sortedEntryList = fluidDisplayMap.entrySet()
             .stream()
             .sorted((a, b) -> {
-                double expectedA = a.getValue() * a.getKey()
+                double expectedA = (double) a.getValue() * a.getKey()
                     .chance() / 10000.0;
-                double expectedB = b.getValue() * b.getKey()
+                double expectedB = (double) b.getValue() * b.getKey()
                     .chance() / 10000.0;
 
                 if (expectedA == expectedB) {
@@ -724,9 +725,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 "GT5U.gui.text.fluid_amount_display_chance",
                 "",
                 shortenedCount,
+                getFluidUnit(),
                 GTUtility.formatOutputChance(chance)) + rateShort;
         }
-        return StatCollector.translateToLocalFormatted("GT5U.gui.text.fluid_amount_display", "", shortenedCount)
+        return StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.fluid_amount_display", "", shortenedCount, getFluidUnit())
             + rateShort;
     }
 

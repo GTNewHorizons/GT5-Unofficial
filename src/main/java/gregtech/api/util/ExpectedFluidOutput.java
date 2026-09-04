@@ -21,7 +21,7 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 public record ExpectedFluidOutput(FluidStack stack, long amount, int chance) {
 
     public double expected() {
-        return amount * chance / 10000.0;
+        return (double) amount * chance / 10000.0;
     }
 
     public boolean isChanced() {

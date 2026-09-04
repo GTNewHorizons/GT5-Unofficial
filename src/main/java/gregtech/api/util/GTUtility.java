@@ -4202,7 +4202,7 @@ public class GTUtility {
         int maxProgressTicks) {
         if (chance == 10000) return appendRate(isLiquid, amount, isFormatShortened, maxProgressTicks);
 
-        final double expected = amount * chance / 10000.0;
+        final double expected = (double) amount * chance / 10000.0;
         if (isFormatShortened) return appendRate(isLiquid, expected, true, maxProgressTicks);
 
         return EnumChatFormatting.RESET
@@ -4222,7 +4222,7 @@ public class GTUtility {
 
     /// Formats a chance on the 10000 scale as a percentage, for example 6667 as "66.67%".
     public static String formatOutputChance(int chance) {
-        return formatNumber(chance / 10000.0) + "%";
+        return formatNumber(chance / 100.0) + "%";
     }
 
     private static String rateLines(boolean isLiquid, double amount, int maxProgressTicks) {
