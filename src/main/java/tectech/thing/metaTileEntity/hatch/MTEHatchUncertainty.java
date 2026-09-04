@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -94,8 +95,8 @@ public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/UC");
-        ScreenON = Textures.BlockIcons.custom("iconsets/UC_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC_ACTIVE");
     }
 
     @Override

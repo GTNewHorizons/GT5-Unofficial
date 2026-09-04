@@ -2691,65 +2691,91 @@ public class Textures {
 
         /**
          * Registers a Custom Block {@link IIconContainer}
-         *
-         * @param aIconName The unique identifier of the icon container.
+         * 
+         * @param domain    The resource domain
+         * @param aIconName The colon-free resource path of the icon container
          * @return The {@link IIconContainer} instance
          */
+        public static @NotNull IIconContainer custom(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomBlockIconContainer.create(domain, aIconName);
+        }
+
+        /**
+         * @deprecated This method is a stub for external mods calling the old API
+         */
+        @Deprecated
         public static @NotNull IIconContainer custom(@NotNull String aIconName) {
-            return GTCustomBlockIconContainer.create(aIconName);
+            ResourceLocation location = aIconName.indexOf(':') < 0 ? Mods.GregTech.getResourceLocation(aIconName)
+                : new ResourceLocation(aIconName);
+            return custom(location.getResourceDomain(), location.getResourcePath());
         }
 
         /**
          * Registers a Custom Optional Block {@link IIconContainer}
          *
-         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         * @param domain    The resource domain
+         * @param aIconName The colon-free {@code path/name} icon path<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @return The {@link IIconContainer} instance
          */
+        public static @NotNull IIconContainer customOptional(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomOptionalBlockIconContainer.create(domain, aIconName);
+        }
+
+        /**
+         * @deprecated This method is a stub for external mods calling the old API
+         */
+        @Deprecated
         public static @NotNull IIconContainer customOptional(@NotNull String aIconName) {
-            return GTCustomOptionalBlockIconContainer.create(aIconName);
+            ResourceLocation location = aIconName.indexOf(':') < 0 ? Mods.GregTech.getResourceLocation(aIconName)
+                : new ResourceLocation(aIconName);
+            return customOptional(location.getResourceDomain(), location.getResourcePath());
         }
 
         /**
          * Registers a Custom Alpha-blended Block {@link IIconContainer} (to be rendered in pass 1)
          *
-         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         * @param domain    The resource domain
+         * @param aIconName The colon-free {@code path/name} icon path<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer customAlpha(@NotNull String aIconName) {
-            return GTCustomAlphaBlockIconContainer.create(aIconName);
+        public static @NotNull IIconContainer customAlpha(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomAlphaBlockIconContainer.create(domain, aIconName);
         }
 
         /**
          * Registers a Custom Alpha-blended Block {@link IIconContainer} (to be rendered in pass 1) whose icon and
          * _OVERLAY textures are both optional, delegating to the given fallback container when neither exists
          *
-         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         * @param domain    The resource domain of the texture
+         * @param aIconName The colon-free {@code path/name} icon path<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @param fallback  The {@link IIconContainer} to delegate to when no texture exists for this icon.
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer customAlphaFallback(@NotNull String aIconName,
+        public static @NotNull IIconContainer customAlphaFallback(@NotNull String domain, @NotNull String aIconName,
             @NotNull IIconContainer fallback) {
-            return GTCustomAlphaFallbackBlockIconContainer.create(aIconName, fallback);
+            return GTCustomAlphaFallbackBlockIconContainer.create(domain, aIconName, fallback);
         }
 
         /**
          * Registers a Block {@link IIconContainer} for a {@link TextureSet}
          *
-         * @param setName The name of the TextureSet
-         * @param prefix  The prefix for the file name
+         * @param domain  The resource domain
+         * @param setName The colon-free name of the TextureSet
+         * @param prefix  The colon-free prefix for the file name
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
-            return GTTextureSetBlockIconContainer.create(setName, prefix, null);
+        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix) {
+            return GTTextureSetBlockIconContainer.create(domain, setName, prefix, null);
         }
 
-        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
-            IIconRegister register) {
-            return GTTextureSetBlockIconContainer.create(setName, prefix, register);
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix, IIconRegister register) {
+            return GTTextureSetBlockIconContainer.create(domain, setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
@@ -2854,29 +2880,32 @@ public class Textures {
          * Each custom item icon consists of a main icon, an overlay, or both.
          * At least one of the icon or overlay must be present; individually, each is optional.
          *
-         * @param aIconName The unique identifier of the custom item icon container.
+         * @param domain    The resource domain.
+         * @param aIconName The colon-free resource path of the custom item icon container.
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer custom(@NotNull String aIconName) {
-            return GTCustomItemIconContainer.create(aIconName);
+        public static @NotNull IIconContainer custom(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomItemIconContainer.create(domain, aIconName);
         }
 
         /**
          * Registers a Item {@link IIconContainer} for a {@link TextureSet}
          *
-         * @param setName The name of the TextureSet
-         * @param prefix  The prefix for the file name
+         * @param domain  The resource domain
+         * @param setName The colon-free name of the TextureSet
+         * @param prefix  The colon-free prefix for the file name
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
-            return GTTextureSetItemIconContainer.create(setName, prefix, null);
+        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix) {
+            return GTTextureSetItemIconContainer.create(domain, setName, prefix, null);
         }
 
-        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
-            IIconRegister register) {
-            return GTTextureSetItemIconContainer.create(setName, prefix, register);
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix, IIconRegister register) {
+            return GTTextureSetItemIconContainer.create(domain, setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
