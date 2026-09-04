@@ -264,6 +264,7 @@ public enum CircuitComponent {
 
     ProcessedChipOpticalCPU(1100, "gt.circuitcomponent.processed.opticalcpu", () -> ChipOpticalCPU, true),
     ProcessedOpticalRAM(1101, "gt.circuitcomponent.processed.opticalram", () -> OpticalRAM, true),
+    ProcessedPerfectedRam(1102, "gt.circuitcomponent.processed.opticalperfectedram", () -> null, true),
 
     // Superconductors
     // IDs: 1200-1299 CC, 1300-1399 PC

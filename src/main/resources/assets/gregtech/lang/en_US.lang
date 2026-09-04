@@ -3312,6 +3312,7 @@ gt.circuitcomponent.processed.chiprawadvancedcrystal=Coordinated Raw Advanced Cr
 
 gt.circuitcomponent.processed.opticalcpu=Organized Optically Perfected CPU
 gt.circuitcomponent.processed.opticalram=Organized Optically Compatible Memory
+gt.circuitcomponent.processed.opticalperfectedram=Organized Optically Perfected Memory
 
 gt.circuitcomponent.processed.superconductorluv=Attuned Superconductor LuV Wire
 gt.circuitcomponent.processed.superconductorzpm=Attuned Superconductor ZPM Wire
