@@ -10,6 +10,7 @@ import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.common.config.Gregtech;
 
 public class GTFoodStat implements IFoodStat {
 
@@ -99,14 +100,17 @@ public class GTFoodStat implements IFoodStat {
                 }
             }
             if (mExplosive) {
+                final boolean dealDamage = Gregtech.general.explosiveFoodDamage;
                 new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setSmoking(true)
                     .setFlaming(true)
-                    .setStrength(mExplosionStrength)
+                    .setStrength(dealDamage ? mExplosionStrength : 0f)
                     .setPosition(aPlayer.posX, aPlayer.posY, aPlayer.posZ)
                     .setEntity(aPlayer)
                     .setWorld(aPlayer.worldObj)
                     .run();
-                aPlayer.attackEntityFrom(GTDamageSources.getExplodingDamage(), Float.MAX_VALUE);
+                if (dealDamage) {
+                    aPlayer.attackEntityFrom(GTDamageSources.getExplodingDamage(), Float.MAX_VALUE);
+                }
             }
         }
     }
