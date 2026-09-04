@@ -1,12 +1,12 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
 import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -73,7 +73,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
     @Override
     public IStructureDefinition<MTEBECGenerator> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing);
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
@@ -100,7 +100,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-generator.controller-pos"))
             .addCasing("236", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("232", FineStructureConstantManipulator.getLocalizedName(), false)
-            .addCasing("216", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("216", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
             .addCasing("184", PeaceEnforcementCasing.getLocalizedName(), false)
             .addCasing("136-158", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("148", ElectromagneticWaveguide.getLocalizedName(), false)
@@ -117,7 +117,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     }
 
     @Override
-    protected ITexture getCasingTexture() {
+    public ITexture getCasingTexture() {
         return ElectromagneticallyIsolatedCasing.getCasingTexture();
     }
 
