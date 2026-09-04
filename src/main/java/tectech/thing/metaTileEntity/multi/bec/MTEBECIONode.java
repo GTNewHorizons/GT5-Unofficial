@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
@@ -7,7 +8,6 @@ import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTDataUtils.oneshot;
@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -173,7 +174,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @Override
     public IStructureDefinition<MTEBECIONode> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
             .withHatches(1, 32, Arrays.asList(InputBus, OutputBus, NaniteHatch.INSTANCE, ControllerHatch.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
@@ -210,7 +211,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         tt.beginStructureBlock(7, 23, 13, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))
-            .addCasing("94", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("94", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
             .addCasing("88", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("56", ElectromagneticWaveguide.getLocalizedName(), false)
             .addCasing("18-48", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
@@ -240,8 +241,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     @Override
-    protected ITexture getCasingTexture() {
-        return SuperconductivePlasmaEnergyConduit.getCasingTexture();
+    public ITexture getCasingTexture() {
+        return CoherencePreservingPlasmaConduit.getCasingTexture();
     }
 
     @Override
@@ -387,6 +388,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         loadRequiredNanites(recipe.mDuration, Arrays.asList(this.requiredNanites));
 
         state = NodeState.Crafting;
+
+        if (losHatch != null) {
+            losHatch.setBeamActive(true);
+        }
     }
 
     private void clearCurrentRecipe() {
@@ -397,6 +402,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         assemblerEUt = 0;
         state = NodeState.Idle;
         setRequiredTier(null);
+
+        if (losHatch != null) {
+            losHatch.setBeamActive(false);
+        }
     }
 
     @Nonnegative
@@ -540,11 +549,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         this.slowdowns = assembler.getSlowdowns(requiredCondensate.keySet());
 
-        if (this.slowdowns > 3) {
-            this.stopMachine(CLOGGED);
-            return;
-        }
-
         int parallelsDivisor = this.parallelRecipesInProgress;
         int aboveTierDivisor = 1 << Math.abs(this.requiredTier.tier - providedTier.tier);
         int slowdownDivisor = Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
@@ -599,6 +603,14 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             if (nextStep != null) {
                 nextProgress = Math.min(nextProgress, nextStep.start);
             }
+        }
+
+        // This has to be done after the step pausing logic, to prevent erroneous clogging shutdowns
+        // We can safely stop the machine here because we only get to this point if we're incrementing the progress
+        // (subtick or otherwise).
+        if (this.slowdowns > 3) {
+            this.stopMachine(CLOGGED);
+            return;
         }
 
         for (var required : this.requiredCondensate.object2LongEntrySet()) {
@@ -1089,7 +1101,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                 setMaxParallel(value);
             }
         };
-        speedDivisorParameter = new IntegerParameter(
+        speedDivisorParameter = new SpeedDivisorParameter(
             1,
             "GT5U.gui.text.bec-speed-divisor",
             SPEED_DIVISOR_PARAMETER,
@@ -1103,5 +1115,22 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @Override
     public List<Parameter<?, ?>> getParameters() {
         return List.of(minParallelParameter, maxParallelParameter, speedDivisorParameter);
+    }
+
+    private class SpeedDivisorParameter extends IntegerParameter {
+
+        public SpeedDivisorParameter(Integer value, String langKey, String nbtKey, Supplier<Integer> min,
+            Supplier<Integer> max, Object... langArgs) {
+            super(value, langKey, nbtKey, min, max, langArgs);
+        }
+
+        @Override
+        public void setValue(Integer value) {
+            super.setValue(value);
+
+            // Reset the subtick counter to avoid tick accumulation exploits (set speed divisor high, put first step
+            // nanite, wait, set speed divisor low - finishes recipe on next tick).
+            MTEBECIONode.this.subtickCounter = 0;
+        }
     }
 }

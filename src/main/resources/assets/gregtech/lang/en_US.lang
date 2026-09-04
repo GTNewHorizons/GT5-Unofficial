@@ -8693,7 +8693,7 @@ achievement.item.PolychromeChevron=Stargate Chevron of Polychrome Contest
 achievement.item.PolychromeChevron.desc=Pick up this item to see the recipe in NEI
 achievement.item.PolychromeFramePart=Stargate Frame Part of Polychrome Contest
 achievement.item.PolychromeFramePart.desc=Pick up this item to see the recipe in NEI
-achievement.gt.blockmachines.hatch.nanite-detector=Nanite Detector Hatch
+achievement.gt.blockmachines.hatch.nanite-detector=Nanite Tier Detector Hatch
 achievement.gt.blockmachines.hatch.nanite-detector.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.hatch.bec=Bose-Einstein Condensate Hatch
 achievement.gt.blockmachines.hatch.bec.desc=Pick up this item to see the recipe in NEI
@@ -9032,6 +9032,7 @@ gt.blockcasings.bec.3.name=Conflict Inducement Casing
 gt.blockcasings.bec.4.name=Peace Enforcement Casing
 gt.blockcasings.bec.5.name=Condensate Transformative Coil
 gt.blockcasings.bec.6.name=Condensate Guidance Coil
+gt.blockglass1.em-glass-bec.tooltip=BEC Glass
 
 gt.blockglass1.0.name=Chemical Grade Glass
 gt.blockglass1.1.name=Electron-Permeable Neutronium Coated Glass
@@ -9380,7 +9381,7 @@ gt.item.meta_material.waveguide.pristine.name=Pristine Waveguide
 
 # BEC Machines
 gt.blockmachines.hatch.bec.name=Bose-Einstein Condensate Hatch
-gt.blockmachines.hatch.nanite-detector.name=Nanite Detector Hatch
+gt.blockmachines.hatch.nanite-detector.name=Nanite Tier Detector Hatch
 gt.blockmachines.hatch.io-node-controller.name=Teleportation Node Controller Hatch
 gt.blockmachines.hatch.condensate-detector.name=Bose-Einstein Condensate Detector Hatch
 gt.blockmachines.hatch.line-of-sight-connector.name=Line-Of-Sight Connector Hatch
@@ -9388,7 +9389,7 @@ gt.blockmachines.hatch.line-of-sight-connector.name=Line-Of-Sight Connector Hatc
 gt.blockmachines.multi.bec.generator.name=Bose-Einstein Condensate Entanglement Apparatus
 gt.blockmachines.multi.bec.storage.name=Bose-Einstein Condensate Containment Field
 gt.blockmachines.multi.bec.assembler.name=Bose-Einstein Condensate Observation Array
-gt.blockmachines.multi.bec.io-node.name=Observation Array Teleportation Node
+gt.blockmachines.multi.bec.io-node.name=Bose-Einstein Condensate Teleportation Node
 gt.blockmachines.multi.bec.diode.name=Bose-Einstein Condensate Maxwell Gate
 
 gt.blockmachines.pipe.bec.name=Bose-Einstein Condensate Conduit
@@ -9418,6 +9419,8 @@ GT5U.gui.text.pause-next-step=Pause Next Step
 GT5U.gui.text.providing-nanites=Providing Nanites:
 GT5U.gui.text.available-condensate=Available Condensate:
 GT5U.gui.text.bec-stored-condensate=Stored Condensate:
+GT5U.gui.text.nanite-detector-analog=Analog
+GT5U.gui.text.nanite-detector-tier=Tier %s
 
 # BEC I/O Node Structure Hints
 GT5U.tooltip.bec-ionode.controller-pos=Front center, 12th layer
