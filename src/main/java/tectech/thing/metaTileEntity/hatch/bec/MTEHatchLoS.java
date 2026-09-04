@@ -333,9 +333,9 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
 
         isRenderer = buffer.readBoolean();
         canRender = buffer.readBoolean();
+        boolean connected = buffer.readBoolean();
         beamActive = buffer.readBoolean();
 
-        boolean connected = buffer.readBoolean();
         if (connected) {
             connection = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
         } else {
