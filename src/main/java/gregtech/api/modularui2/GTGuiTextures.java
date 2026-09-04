@@ -1005,29 +1005,32 @@ public final class GTGuiTextures {
         .toList()
         .toArray(new UITexture[0]);
 
+    // These textures are stored in the items area since they're doing double duty as a ghost outline icon for the
+    // toolbox's broken tool animation. The texture atlas that handles item rendering expects its textures to be in
+    // the textures/items/ folder and won't entertain other options.
     public static final UITexture OVERLAY_TOOLBOX_WRENCH = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_wrench")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_wrench")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_WIRE_CUTTER = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_wire_cutter")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_wire_cutter")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_SCREWDRIVER = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_screwdriver")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_screwdriver")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_SOFT_MALLET = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_soft_mallet")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_soft_mallet")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_HARD_HAMMER = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_hard_hammer")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_hard_hammer")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_CROWBAR = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_crowbar")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_crowbar")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_SOLDERING_IRON = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_soldering_iron")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_soldering_iron")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_BATTERY = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_battery")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_battery")
         .build();
 
     public static final UITexture OVERLAY_SLOT_TURBINE = UITexture.builder()
@@ -1854,6 +1857,11 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/picture/nanochip_logo")
         .fullImage()
         .name(GTTextureIds.PICTURE_LOGO_NANOCHIP)
+        .build();
+
+    public static final UITexture PICTURE_NANOCHIP_ARROW = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/nanochip_arrow")
+        .fullImage()
         .build();
 
     public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()

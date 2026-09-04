@@ -86,6 +86,7 @@ import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
+import gregtech.api.net.GTPacketRequestOregenPattern;
 import gregtech.api.net.cape.GTPacketSetCape;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.ColorsMetadataSection;
@@ -137,6 +138,7 @@ import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
+import gregtech.common.tileentities.machines.multi.nanochip.VacuumConveyorPipeClientStateManager;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
@@ -381,6 +383,8 @@ public class GTClient extends GTProxy {
         mFirstTick = false;
         GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
         GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
+        // The server pushes this on login, ask again now that there is a world in case that push was missed
+        GTValues.NW.sendToServer(new GTPacketRequestOregenPattern());
 
         if (!Minecraft.getMinecraft()
             .isSingleplayer()) {
@@ -407,6 +411,7 @@ public class GTClient extends GTProxy {
             mPreference = new GTClientPreference();
             final boolean renderIndicatorsOnHatch = GTMod.proxy.mRenderIndicatorsOnHatch;
             GTPreLoad.loadClientConfig();
+            GTRendererBlock.clearInventoryDisplayListCache();
             if (renderIndicatorsOnHatch != GTMod.proxy.mRenderIndicatorsOnHatch) {
                 for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                     if (GregTechAPI.METATILEENTITIES[i] instanceof CommonMetaTileEntity metaTileEntity) {
@@ -640,6 +645,9 @@ public class GTClient extends GTProxy {
     public void onWorldUnload(WorldEvent.Unload event) {
         super.onWorldUnload(event);
         RenderOverlay.onWorldUnload(event.world);
+        if (event.world.isRemote) {
+            VacuumConveyorPipeClientStateManager.INSTANCE.clear();
+        }
     }
 
     @SubscribeEvent

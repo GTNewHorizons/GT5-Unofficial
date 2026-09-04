@@ -23,6 +23,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -399,7 +400,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_PUMP_MODULE");
+        engraving = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_SIDE_PUMP_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 

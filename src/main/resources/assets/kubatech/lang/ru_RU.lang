@@ -236,3 +236,9 @@ kubatech.multiblock.MegaIndustrialApiary.wood_slab=Деревянная плит
 kubatech.multiblock.MegaIndustrialApiary.flower=Цветок (зависит от пчелы)
 kubatech.multiblock.MegaIndustrialApiary.any_casing_luv=Любой блок корпуса (LuV+)
 kubatech.multiblock.MegaIndustrialApiary.footer=Используйте обычную или дистиллированную воду, размещается вручную
+
+# Multiblocks
+gt.blockmachines.htgr.name=Высокотемпературный газоохлаждаемый реактор
+gt.blockmachines.industrialarcfurnace.controller.tier.single.name=Промышленная дуговая печь
+gt.blockmachines.multimachine.defusioncrafter.name=Draconic Evolution термоядерный крафтер
+gt.blockmachines.multimachine.extremegreenhouse.name=Экстремальная промышленная теплица
