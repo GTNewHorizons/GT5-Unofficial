@@ -173,6 +173,16 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         return getMaxItemCount();
     }
 
+    public long getTrueItemCount() {
+        long count = getItemCount();
+        ItemStack storedItem = getItemStack();
+        if (GTUtility.isStackValid(mInventory[1])
+            && (GTUtility.isStackInvalid(storedItem) || GTUtility.areStacksEqual(mInventory[1], storedItem))) {
+            count += mInventory[1].stackSize;
+        }
+        return count;
+    }
+
     @Override
     public ItemStack getExtraItemStack() {
         return mInventory[1];
@@ -390,14 +400,14 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
-        return aIndex == 1 && isOutputFacing(side);
+        return aIndex == 1 && isItemOutputSide(side);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
-        if (aIndex != 0 || !isInputFacing(side)) return false;
+        if (aIndex != 0 || !isItemInputSide(side)) return false;
         if ((mInventory[0] != null && !GTUtility.areStacksEqual(mInventory[0], aStack))) return false;
         return isItemInputAllowed(aStack);
     }
@@ -409,12 +419,15 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection side) {
+    public boolean isValidItem(ItemStack item) {
+        return isItemInputAllowed(item);
+    }
+
+    protected boolean isItemInputSide(ForgeDirection side) {
         return true;
     }
 
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
+    protected boolean isItemOutputSide(ForgeDirection side) {
         return true;
     }
 
@@ -442,17 +455,17 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     protected ItemSink getItemSink(ForgeDirection side) {
-        return isInputFacing(side) ? new ItemIOImpl(side) : null;
+        return isItemInputSide(side) ? new ItemIOImpl(side) : null;
     }
 
     @Override
     protected ItemSource getItemSource(ForgeDirection side) {
-        return isOutputFacing(side) ? new ItemIOImpl(side) : null;
+        return isItemOutputSide(side) ? new ItemIOImpl(side) : null;
     }
 
     @Override
     protected ItemIO getItemIO(ForgeDirection side) {
-        return new ItemIOImpl(side);
+        return isItemInputSide(side) || isItemOutputSide(side) ? new ItemIOImpl(side) : null;
     }
 
     @Override
@@ -492,10 +505,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         ItemStack is = getItemStack();
         if (GTUtility.isStackInvalid(is)) return;
-        long realItemCount = getItemCount();
-        if (GTUtility.isStackValid(mInventory[1]) && GTUtility.areStacksEqual(mInventory[1], is))
-            realItemCount += mInventory[1].stackSize;
-        tag.setLong("itemCount", realItemCount);
+        tag.setLong("itemCount", getTrueItemCount());
         tag.setTag("itemType", is.writeToNBT(new NBTTagCompound()));
     }
 
@@ -586,7 +596,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
             @Override
             public ItemStack extract(int amount, boolean forced) {
-                if (!isOutputFacing(side)) return null;
+                if (!isItemOutputSide(side)) return null;
                 switch (getCurrentSlot()) {
                     case 0 -> {
                         int toExtract = Math.min(amount, getItemCount());
@@ -640,7 +650,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             @Override
             public int insert(ImmutableItemStack stack, boolean forced) {
                 int remaining = stack.getStackSize();
-                if (!isInputFacing(side) || !isItemInputAllowed(stack.toStackFast())) return remaining;
+                if (!isItemInputSide(side) || !isItemInputAllowed(stack.toStackFast())) return remaining;
                 if (isVoidAllItems()) return 0;
 
                 if (getCurrentSlot() == 1) {

@@ -3,12 +3,15 @@ package gregtech.common.gui.modularui.singleblock.base;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.item.ItemStack;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiDraw;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
@@ -38,8 +41,10 @@ public class MTESuperChestGui extends MTETieredMachineBlockBaseGui<MTESuperChest
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue itemCountSyncer = new IntSyncValue(machine::getItemCount);
+        LongSyncValue itemCountSyncer = new LongSyncValue(machine::getTrueItemCount);
         syncManager.syncValue("itemCount", itemCountSyncer);
+        GenericSyncValue<ItemStack, ?> lockedItemSyncer = GenericSyncValue.forItem(machine::getLockedItem, null);
+        syncManager.syncValue("lockedItem", lockedItemSyncer);
 
         ParentWidget<?> screen = CommonWidgets.createFluidScreen(ITEM_SCREEN_WIDTH, ITEM_SCREEN_HEIGHT)
             .child(
@@ -51,14 +56,14 @@ public class MTESuperChestGui extends MTETieredMachineBlockBaseGui<MTESuperChest
                             .asWidget()
                             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE))
                     .child(
-                        IKey.dynamic(() -> formatNumber(itemCountSyncer.getIntValue()))
+                        IKey.dynamic(() -> formatNumber(itemCountSyncer.getLongValue()))
                             .asWidget()
                             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)))
             .child(new ItemSlot() {
 
                 @Override
                 protected void drawSlotAmountText(int amount, String text) {
-                    GuiDraw.drawStandardSlotAmountText(itemCountSyncer.getIntValue(), text, getArea());
+                    GuiDraw.drawStandardSlotAmountText(itemCountSyncer.getLongValue(), text, getArea());
                 }
             }.slot(new ModularSlot(machine.inventoryHandler, 2).accessibility(false, false))
                 .bottomRel(0)
@@ -89,9 +94,9 @@ public class MTESuperChestGui extends MTETieredMachineBlockBaseGui<MTESuperChest
                             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE))
                     .child(
                         IKey.dynamic(
-                            () -> machine.getLockedItem() == null
+                            () -> lockedItemSyncer.getValue() == null
                                 ? translateToLocal("GT5U.machines.digitalchest.lockitem.empty")
-                                : machine.getLockedItem()
+                                : lockedItemSyncer.getValue()
                                     .getDisplayName())
                             .asWidget()
                             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)))

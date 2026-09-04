@@ -28,7 +28,7 @@ public class MTESuperChest extends MTEQuantumChest {
     private boolean mVoidAll;
     private boolean mLockItems;
     private boolean mAllowInputFromOutputSide;
-    private boolean mOutputToSlot;
+    private boolean mOutputToSlot = true;
     private ItemStack lockedItem;
 
     public MTESuperChest(int aID, String aName, String aNameRegional, int aTier) {
@@ -56,7 +56,7 @@ public class MTESuperChest extends MTEQuantumChest {
         if (mVoidAll) nbt.setBoolean("mVoidAll", true);
         if (mLockItems) nbt.setBoolean("mLockItems", true);
         if (mAllowInputFromOutputSide) nbt.setBoolean("mAllowInputFromOutputSide", true);
-        if (mOutputToSlot) nbt.setBoolean("mOutputToSlot", true);
+        nbt.setBoolean("mOutputToSlot", mOutputToSlot);
         if (mLockItems && lockedItem != null) {
             nbt.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
         }
@@ -82,9 +82,10 @@ public class MTESuperChest extends MTEQuantumChest {
         super.loadNBTData(nbt);
         mOutputItems = nbt.getBoolean("mOutputItems");
         mVoidAll = nbt.getBoolean("mVoidAll");
+        if (mVoidAll) super.setVoidOverflow(false);
         mLockItems = nbt.getBoolean("mLockItems") && !mVoidAll;
         mAllowInputFromOutputSide = nbt.getBoolean("mAllowInputFromOutputSide");
-        mOutputToSlot = nbt.getBoolean("mOutputToSlot");
+        mOutputToSlot = !nbt.hasKey("mOutputToSlot") || nbt.getBoolean("mOutputToSlot");
         lockedItem = mLockItems && nbt.hasKey("lockedItem")
             ? ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("lockedItem"))
             : null;
@@ -103,13 +104,8 @@ public class MTESuperChest extends MTEQuantumChest {
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection side) {
+    protected boolean isItemInputSide(ForgeDirection side) {
         return mAllowInputFromOutputSide || side != getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -125,7 +121,7 @@ public class MTESuperChest extends MTEQuantumChest {
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long timer) {
         super.onPostTick(baseMetaTileEntity, timer);
-        if (baseMetaTileEntity.isServerSide() && mOutputItems && getItemStack() != null && timer % 20 == 0) {
+        if (baseMetaTileEntity.isServerSide() && mOutputItems && timer % 20 == 0) {
             GTItemTransfer transfer = new GTItemTransfer();
             transfer.push(baseMetaTileEntity, baseMetaTileEntity.getFrontFacing());
             transfer.transfer();
@@ -146,7 +142,6 @@ public class MTESuperChest extends MTEQuantumChest {
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer player, float x, float y, float z,
         ItemStack tool) {
-        if (side != getBaseMetaTileEntity().getFrontFacing()) return;
         if (player.isSneaking()) {
             mDisableFilter = !mDisableFilter;
             GTUtility.sendChatTrans(player, "GT5U.hatch.disableFilter." + mDisableFilter);
@@ -181,7 +176,8 @@ public class MTESuperChest extends MTEQuantumChest {
 
     @Override
     public void setVoidOverflow(boolean voidOverflow) {
-        super.setVoidOverflow(!mVoidAll && voidOverflow);
+        if (voidOverflow) mVoidAll = false;
+        super.setVoidOverflow(voidOverflow);
     }
 
     public boolean isLockItems() {
@@ -189,7 +185,7 @@ public class MTESuperChest extends MTEQuantumChest {
     }
 
     public void lockItems(boolean lockItems) {
-        if (mVoidAll) return;
+        if (mVoidAll && lockItems) return;
         mLockItems = lockItems;
         if (!lockItems) {
             lockedItem = null;
@@ -219,7 +215,7 @@ public class MTESuperChest extends MTEQuantumChest {
     }
 
     public void setLockedItem(ItemStack item) {
-        if (mVoidAll) return;
+        if (mVoidAll && GTUtility.isStackValid(item)) return;
         if (GTUtility.isStackInvalid(item)) {
             lockedItem = null;
             mLockItems = false;
@@ -232,6 +228,14 @@ public class MTESuperChest extends MTEQuantumChest {
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTESuperChestGui(this).build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    public String[] getDescription() {
+        String[] description = super.getDescription().clone();
+        description[1] = "Use a screwdriver to toggle input from the output side";
+        description[2] = "Sneak with a screwdriver to toggle the item filter";
+        return description;
     }
 
     @Override
