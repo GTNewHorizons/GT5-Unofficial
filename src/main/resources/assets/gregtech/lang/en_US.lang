@@ -2022,7 +2022,7 @@ GT5U.coil.MAX=Eternal
 
 gt.recipe.nanochip.conversion=Nanochip Conversion Complex
 gt.recipe.nanochip.assemblymatrix=Nanochip Assembly Matrix
-gt.recipe.nanochip.smdprocessor=Part Preparation Apparatus
+gt.recipe.nanochip.partprocessor=Part Processing Apparatus
 gt.recipe.nanochip.boardprocessor=Full-Board Immersion Device
 gt.recipe.nanochip.etchingarray=Ultra-high Energy Etching Array
 gt.recipe.nanochip.cuttingchamber=Nanoprecision Cutting Chamber
@@ -2325,6 +2325,7 @@ GT5U.recipes.not_consume=Does not get consumed in the process
 GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but not get consumed
 GT5U.recipes.chance.consume=Consume Chance: %s
 GT5U.recipes.chance.output=Output Chance: %s
+GT5U.recipes.chance.unorganized=Has a %d%% chance to output an unorganized version instead
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
@@ -3222,9 +3223,9 @@ GT5U.tooltip.nac.module.optical_organizer.body.water=Grade §b%s§7 / §2%s§7 /
 GT5U.tooltip.nac.module.optical_organizer.body.water34=%s Water Cost
 GT5U.tooltip.nac.module.optical_organizer.body.water56=%s Duration Modifier
 GT5U.tooltip.nac.module.optical_organizer.body.water78=%s EU Cost
-GT5U.tooltip.nac.module.smd_processor.name=SMD Processor
-GT5U.tooltip.nac.module.smd_processor.flavor.1=Processing the core logical components of circuits requires a lot of thought...
-GT5U.tooltip.nac.module.smd_processor.action=Processes your SMD %s
+GT5U.tooltip.nac.module.part_processor.name=Part Processor
+GT5U.tooltip.nac.module.part_processor.flavor.1=Processing the core logical components of circuits requires a lot of thought...
+GT5U.tooltip.nac.module.part_processor.action=Processes your %s
 GT5U.tooltip.nac.module.splitter.name=Splitter
 GT5U.tooltip.nac.module.splitter.flavor.1=The crux of the whole operation!
 GT5U.tooltip.nac.module.splitter.action=Organizes all your %s
@@ -3284,6 +3285,20 @@ gt.circuitcomponent.cable.processed.opticalfiber=Split Optical Fiber Cable
 gt.circuitcomponent.processed.wireinfinity=Spooled Infinity Wire
 gt.circuitcomponent.processed.wirehypogen=Spooled Hypogen Wire
 gt.circuitcomponent.processed.wiremagmatter=Spooled Magmatter Wire
+gt.circuitcomponent.processed.wireshijima=Spooled Shijima Wire
+gt.circuitcomponent.processed.wiretairitsu=Spooled Tairitsu Wire
+gt.circuitcomponent.processed.wirechuritsu=Spooled Churitsu Wire
+gt.circuitcomponent.processed.entangled.wireshijima=Entangled Shijima Wire
+gt.circuitcomponent.processed.entangled.wiretairitsu=Entangled Tairitsu Wire
+gt.circuitcomponent.processed.entangled.wirechuritsu=Entangled Churitsu Wire
+gt.circuitcomponent.processed.etched.wireshijima=Settled Shijima Wire
+gt.circuitcomponent.processed.etched.wiretairitsu=Settled Tairitsu Wire
+gt.circuitcomponent.processed.wirewhitedwarfmatter=Spooled White Dwarf Matter Wire
+gt.circuitcomponent.processed.wireblackdwarfmatter=Spooled Black Dwarf Matter Wire
+gt.circuitcomponent.processed.wireuniversium=Spooled Universium Wire
+gt.circuitcomponent.processed.entangled.wirewhitedwarfmatter=Entangled White Dwarf Matter Wire
+gt.circuitcomponent.processed.entangled.wireblackdwarfmatter=Entangled Black Dwarf Matter Wire
+gt.circuitcomponent.processed.entangled.wireuniversium=Entangled Universium Wire
 
 gt.circuitcomponent.processed.asmd.resistor=Prepared Advanced SMD Resistor
 gt.circuitcomponent.processed.asmd.transistor=Prepared Advanced SMD Transistor
@@ -3303,6 +3318,12 @@ gt.circuitcomponent.processed.board.optical=Purified Optical Circuit Board
 gt.circuitcomponent.processed.neuroprocessingunit=Coordinated Neuro Processing Unit
 gt.circuitcomponent.processed.board.bioprocessingunit=Coordinated Bio Processing Unit
 gt.circuitcomponent.processed.board.livingbiochip=Coordinated Living Bio Chip
+gt.circuitcomponent.processed.board.unrefined.pico=Unrefined Pico Board
+gt.circuitcomponent.processed.board.unrefined.quantum=Unrefined Quantum Board
+gt.circuitcomponent.processed.board.unrefined.planck=Unrefined Planck Board
+gt.circuitcomponent.processed.board.pico=Purified Pico Board
+gt.circuitcomponent.processed.board.quantum=Purified Quantum Board
+gt.circuitcomponent.processed.board.planck=Purified Planck Board
 
 gt.circuitcomponent.processed.chipnanocpu=Cut Nanocomponent CPU Chips
 gt.circuitcomponent.processed.chipram=Cut Random Access Memory Chips
@@ -3323,6 +3344,7 @@ gt.circuitcomponent.processed.chiprawadvancedcrystal=Coordinated Raw Advanced Cr
 
 gt.circuitcomponent.processed.opticalcpu=Organized Optically Perfected CPU
 gt.circuitcomponent.processed.opticalram=Organized Optically Compatible Memory
+gt.circuitcomponent.processed.opticalperfectedram=Organized Optically Perfected Memory
 
 gt.circuitcomponent.processed.superconductorluv=Attuned Superconductor LuV Wire
 gt.circuitcomponent.processed.superconductorzpm=Attuned Superconductor ZPM Wire
@@ -3360,9 +3382,34 @@ gt.circuitcomponent.bolt.processed.cosmicneutronium=Filed Cosmic Neutronium Bolt
 gt.circuitcomponent.bolt.processed.chromaticglass=Filed Chromatic Glass Bolt
 gt.circuitcomponent.bolt.processed.umvsuperconductor=Filed UMV Superconductor Base Bolt
 gt.circuitcomponent.bolt.processed.whitedwarfmatter=Filed White Dwarf Matter Bolt
+
+gt.circuitcomponent.circuit.processed.opticalprocessor=Unorganized Optical Processor
+gt.circuitcomponent.circuit.processed.opticalassembly=Unorganized Optical Assembly
+gt.circuitcomponent.circuit.processed.opticalcomputer=Unorganized Optical Supercomputer
+gt.circuitcomponent.circuit.processed.opticalmainframe=Unorganized Optical Mainframe
+
 gt.circuitcomponent.plate.processed.rhugnor=Stripped Rhugnor Plate
 gt.circuitcomponent.plate.processed.metastableoganesson=Stripped Metastable Oganesson Plate
 gt.circuitcomponent.plate.processed.hexanite=Stripped Hexanite Plate
+
+gt.circuitcomponent.specialty.processed.etchedoptical=Etched Optical Mainframes
+gt.circuitcomponent.specialty.processed.picocpu=Assembled Pico CPU
+
+gt.circuitcomponent.specialty.processed.organizedpico=Organized Pico Circuit
+gt.circuitcomponent.specialty.processed.etchedpicos=Etched Pico Circuits
+gt.circuitcomponent.specialty.processed.quantumcpu=Assembled Quantum CPU
+gt.circuitcomponent.specialty.processed.compressionresidue=Quantum Compression Residue
+gt.circuitcomponent.specialty.processed.bundledpeace=Bundled Peace Wire
+
+gt.circuitcomponent.specialty.processed.organizedquantum=Organized Quantum Circuit
+gt.circuitcomponent.specialty.processed.etchedquantums=Etched Quantum Circuits
+gt.circuitcomponent.specialty.processed.unrefinedplanckcpu=Unrefined Planck CPU
+gt.circuitcomponent.specialty.processed.planckcpu=Planck CPU
+gt.circuitcomponent.specialty.processed.collapsingresidue=Planck Collapsing Residue
+gt.circuitcomponent.specialty.processed.bundledharmony=Bundled Harmony Wire
+gt.circuitcomponent.specialty.processed.calabiyaumanifold=Calabi-Yau Manifold
+
+
 
 # NAC Machines
 gt.blockmachines.vacuum.pipe.name=Vacuum Conveyor Pipe
@@ -9685,7 +9732,7 @@ gt.blockmachines.multimachine.nanochipmodule.cuttingchamber.name=Nanoprecision C
 gt.blockmachines.multimachine.nanochipmodule.encasementwrapper.name=Nanometer Encasement Wrapper
 gt.blockmachines.multimachine.nanochipmodule.etchingarray.name=Ultra-high Energy Etching Array
 gt.blockmachines.multimachine.nanochipmodule.opticalorganizer.name=Optically Optimized Organizer
-gt.blockmachines.multimachine.nanochipmodule.smdprocessor.name=Part Preparation Apparatus
+gt.blockmachines.multimachine.nanochipmodule.part_processor.name=Part Processing Apparatus
 gt.blockmachines.multimachine.nanochipmodule.splitter.name=Nanopart Splitter
 gt.blockmachines.multimachine.nanochipmodule.superconductorsplitter.name=Superconductive Strand Splitter
 gt.blockmachines.multimachine.nanochipmodule.wiretracer.name=Nanoprecision Wire Tracer

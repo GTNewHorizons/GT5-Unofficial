@@ -43,6 +43,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -509,7 +510,26 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             // not output to normal busses
             // Then use addVCOutput to convert these back into CCs in the right hatch
             this.currentParallel = simulatedParallelHelper.getCurrentParallel();
-            this.mOutputItems = simulatedParallelHelper.getItemOutputs();
+
+            // Check for any XOR outputs to determine what to output
+            ItemStack[] originalOutputs = simulatedParallelHelper.getItemOutputs();
+            if (supportsXOROutput()) {
+                ItemStack[] newOutputs = new ItemStack[originalOutputs.length];
+                for (int i = 0; i < originalOutputs.length; i++) {
+                    ItemStack output = originalOutputs[i];
+                    CircuitComponent cc = CircuitComponent.tryGetFromFakeStack(output);
+                    if (cc != null && cc.xorResult != null && XSTR.XSTR_INSTANCE.nextInt(10000) > cc.xorSuccessChance) {
+                        // XOR result exists, failed the chance check, output the failure CC instead
+                        newOutputs[i] = cc.xorResult.getFakeStack(output.stackSize);
+                    } else {
+                        // No CC found or no XOR result, continue as normal
+                        newOutputs[i] = output;
+                    }
+                }
+                this.mOutputItems = newOutputs;
+            } else {
+                this.mOutputItems = originalOutputs;
+            }
 
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
@@ -521,6 +541,10 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
 
         return result;
+    }
+
+    protected boolean supportsXOROutput() {
+        return false;
     }
 
     /**
