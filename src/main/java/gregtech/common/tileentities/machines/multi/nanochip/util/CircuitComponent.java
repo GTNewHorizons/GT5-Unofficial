@@ -204,9 +204,9 @@ public enum CircuitComponent {
         406,
         "gt.circuitcomponent.livingbiochip",
         () -> ItemList.Circuit_Parts_Chip_Bioware.get(1)),
-    BoardPicoUnrefined(407, "gt.circuitcomponent.processed.board.unrefined.pico",()->null,true),
-    BoardQuantumUnrefined(408, "gt.circuitcomponent.processed.board.unrefined.quantum",()->null,true),
-    BoardPlanckUnrefined(409, "gt.circuitcomponent.processed.board.unrefined.planck",()->null,true),
+    BoardPico(407, "gt.circuitcomponent.processed.board.pico",()->null,true),
+    BoardQuantum(408, "gt.circuitcomponent.processed.board.quantum",()->null,true),
+    BoardPlanck(409, "gt.circuitcomponent.processed.board.planck",()->null,true),
 
     ProcessedBoardMultifiberglassElite(500, "gt.circuitcomponent.processed.board.multifiberelite", () -> BoardMultifiberglassElite, true),
     ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", () -> BoardWetwareLifesupport, true),
@@ -215,9 +215,9 @@ public enum CircuitComponent {
     ProcessedNeuroProcessingUnit(504, "gt.circuitcomponent.processed.neuroprocessingunit", () -> NeuroProcessingUnit, true),
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
     ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
-    BoardPico(507, "gt.circuitcomponent.processed.board.pico",()->BoardPicoUnrefined,true),
-    BoardQuantum(508, "gt.circuitcomponent.processed.board.quantum",()->BoardQuantumUnrefined,true),
-    BoardPlanck(509, "gt.circuitcomponent.processed.board.planck",()->BoardPlanckUnrefined,true),
+    CleansedBoardPico(507, "gt.circuitcomponent.processed.board.cleansedpico",()->BoardPico,true),
+    CleansedBoardQuantum(508, "gt.circuitcomponent.processed.board.cleansedquantum",()->BoardQuantum,true),
+    CleansedBoardPlanck(509, "gt.circuitcomponent.processed.board.cleansedplanck",()->BoardPlanck,true),
 
     // Wafers and chips
     // IDs: 600-699 CC, 700-799 PC
@@ -525,10 +525,11 @@ public enum CircuitComponent {
         "gt.circuitcomponent.thermalsuperconductor",
         () -> ItemList.Thermal_Superconductor.get(1)),
     ScrewEnrichedNaquadahAlloy(1918, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.screw,1)),
-    ScrewQuantum(1919, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> MaterialsAlloy.QUANTUM.getScrew(1)),
-    ScrewEternity(1920, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
     ScrewQuantum(1919, "gt.circuitcomponent.screw.quantum", ()-> MaterialsAlloy.QUANTUM.getScrew(1)),
     ScrewEternity(1920, "gt.circuitcomponent.screw.eternity", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
+    ScrewRhugnor(1921, "gt.circuitcomponent.screw.rhugnor", ()-> MaterialsElements.STANDALONE.RHUGNOR.getScrew(1)),
+    ScrewMetastableOganesson(1922, "gt.circuitcomponent.screw.metastableoganesson", ()-> GGMaterial.metastableOganesson.get(OrePrefixes.screw,1)),
+    ScrewHexanite(1923, "gt.circuitcomponent.screw.hexanite", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Hexanite, 1)),
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
