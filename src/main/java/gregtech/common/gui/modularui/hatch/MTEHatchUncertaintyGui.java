@@ -101,7 +101,7 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
                                     new DynamicDrawable(
                                         () -> GTGuiTextures.TT_PICTURE_UNCERTAINTY_INDICATOR
                                             .withColorOverride(
-                                                Color.argb(1f, 1f, 1f, matrixSyncer[index].getShortValue() / 1000f))
+                                                okabeItoColor(bucketFor(matrixSyncer[index].getShortValue())))
                                             .asIcon()
                                             .size(8))))
                 .center()
@@ -118,27 +118,27 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
                 case 1: // ooo oxo ooo
                     if (index == 4) return status == 0 ? valid : invalid;
                     break;
-                case 2: // ooo xox ooo
-                    if (index == 3) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 5) return (status & 2) == 0 ? valid : invalid;
+                case 2: // oxo ooo oxo
+                    if (index == 1) return (status & 1) == 0 ? valid : invalid;
+                    if (index == 7) return (status & 2) == 0 ? valid : invalid;
                     break;
                 case 3: // oxo xox oxo
-                    if (index == 1) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 3) return (status & 2) == 0 ? valid : invalid;
-                    if (index == 5) return (status & 4) == 0 ? valid : invalid;
-                    if (index == 7) return (status & 8) == 0 ? valid : invalid;
+                    if (index == 3) return (status & 1) == 0 ? valid : invalid;
+                    if (index == 1) return (status & 2) == 0 ? valid : invalid;
+                    if (index == 7) return (status & 4) == 0 ? valid : invalid;
+                    if (index == 5) return (status & 8) == 0 ? valid : invalid;
                     break;
                 case 4: // xox ooo xox
                     if (index == 0) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 2) return (status & 2) == 0 ? valid : invalid;
-                    if (index == 6) return (status & 4) == 0 ? valid : invalid;
+                    if (index == 6) return (status & 2) == 0 ? valid : invalid;
+                    if (index == 2) return (status & 4) == 0 ? valid : invalid;
                     if (index == 8) return (status & 8) == 0 ? valid : invalid;
                     break;
                 case 5: // xox oxo xox
                     if (index == 0) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 2) return (status & 2) == 0 ? valid : invalid;
+                    if (index == 6) return (status & 2) == 0 ? valid : invalid;
                     if (index == 4) return (status & 4) == 0 ? valid : invalid;
-                    if (index == 6) return (status & 8) == 0 ? valid : invalid;
+                    if (index == 2) return (status & 8) == 0 ? valid : invalid;
                     if (index == 8) return (status & 16) == 0 ? valid : invalid;
                     break;
             }
@@ -208,5 +208,23 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
     @Override
     protected boolean doesAddGregTechLogo() {
         return false;
+    }
+
+    private static int bucketFor(short v) {
+        if (v < 250) return 1;
+        if (v < 500) return 2;
+        if (v < 750) return 3;
+        return 4;
+    }
+
+    private static int okabeItoColor(int bucket) {
+        // Safe colors for all colorblind type.
+        return switch (bucket) {
+            case 1 -> Color.argb(255, 255, 255, 255); // white
+            case 2 -> Color.argb(240, 228, 66, 255); // yellow
+            case 3 -> Color.argb(230, 159, 0, 255); // orange
+            case 4 -> Color.argb(213, 94, 0, 255); // vermillion
+            default -> Color.argb(255, 255, 255, 255); // white (fallback, same as bucket 1)
+        };
     }
 }
