@@ -531,3 +531,5 @@ gt.blockmachines.largefusioncomputer5.name=Compact Fusion Computer Mk-V
 gt.blockmachines.neutronactivator.name=Neutron Activator
 gt.blockmachines.preciseassembler.name=Precise Auto-Assembler MT-3662
 gt.blockmachines.yottafluidtank.name=YOTTank
+gt.blockmachines.neutron_accelerator.name=Neutron Accelerator %s
+gt.blockmachines.neutron_accelerator.desc=Uses Energy to Accelerate the Neutrons!\nMax consumption: %s EU/t\nEvery EU gets converted into 10-20 eV Neutron Kinetic Energy.

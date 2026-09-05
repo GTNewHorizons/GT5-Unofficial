@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -31,6 +32,7 @@ import tectech.util.CommonValues;
 /**
  * Created by Tec on 26.02.2017.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
 
     private static IIconContainer EMpipe;
@@ -55,9 +57,9 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMpipe = Textures.BlockIcons.custom("iconsets/EM_DATA");
-        EMbar = Textures.BlockIcons.custom("iconsets/EM_BAR");
-        EMbarActive = Textures.BlockIcons.custom("iconsets/EM_BAR_ACTIVE");
+        EMpipe = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_DATA");
+        EMbar = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BAR");
+        EMbarActive = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_BAR_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

@@ -9,6 +9,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCreativeUncertainty extends MTEHatchUncertainty {
 
     public MTEHatchCreativeUncertainty(int aID, String aName, String aNameRegional, int aTier) {

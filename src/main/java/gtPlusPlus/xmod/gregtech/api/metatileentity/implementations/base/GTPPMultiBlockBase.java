@@ -945,7 +945,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                             + StatCollector.translateToLocal("GTPP.machines.tier")
                             + ": "
                             + EnumChatFormatting.GREEN
-                            + GTValues.VOLTAGE_NAMES[(int) getInputTier()])
+                            + GTValues.getLocalizedLongVoltageName((int) getInputTier()))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getInputTier() > 0))
@@ -956,7 +956,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                             + StatCollector.translateToLocal("GTPP.machines.tier")
                             + ": "
                             + EnumChatFormatting.GREEN
-                            + GTValues.VOLTAGE_NAMES[(int) getOutputTier()])
+                            + GTValues.getLocalizedLongVoltageName((int) getOutputTier()))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getOutputTier() > 0))
