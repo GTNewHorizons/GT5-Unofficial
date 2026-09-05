@@ -81,4 +81,9 @@ public class AntimatterRenderBlock extends Block {
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World worldIn, int x, int y, int z) {
         return null;
     }
+
+    @Override
+    public int getRenderType() {
+        return -1;
+    }
 }
