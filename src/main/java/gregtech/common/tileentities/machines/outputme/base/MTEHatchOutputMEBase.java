@@ -590,7 +590,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
 
     public long getCellAvailableSpace() {
         if (handler != null && handler.getCellInv() instanceof CellInventory<?>cellInv) {
-            cacheCapacity = cellInv.getRemainingItemCount();
+            return cellInv.getRemainingItemCount();
         }
         return 0;
     }
