@@ -270,7 +270,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     amount = Math.min(amount, stack.stackSize);
                     cache.insert(id, amount);
                     stack.stackSize -= amount;
-                    return stack.stackSize == 0;
+                    return amount > 0;
                 }
             }
 

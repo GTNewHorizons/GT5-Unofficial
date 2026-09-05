@@ -609,7 +609,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     amount = Math.min(amount, stack.amount);
                     cache.insert(id, amount);
                     stack.amount -= amount;
-                    return stack.amount == 0;
+                    return amount > 0;
                 }
             }
             if (!hasAvailableSpace() || !isFilteredTo(id)) {
