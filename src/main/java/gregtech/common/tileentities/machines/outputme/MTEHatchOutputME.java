@@ -533,7 +533,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputTransaction.IRecipeCheckAware,
-        IOutputTransaction.IProtectOutputAware, IOutputTransaction.IDynamicCapacityOutputAware {
+        IOutputTransaction.IProtectOutputAware {
 
         private final AECacheCounter<GTUtility.FluidId> cache = new AECacheCounter<>();
         private final long availableSpace;
@@ -566,14 +566,19 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         private void updateFlags() {
-            isDynamicCapacity = isRecipeCheck && isProtectOutput && getCheckMode() && !provider.isDistribution();
+            // only false when cache mode on and is distribution
+            isDynamicCapacity = isRecipeCheck && isProtectOutput
+                && getCheckMode()
+                && (!provider.getCacheMode() || !provider.isDistribution())
+                && !provider.canVoidOverflow();
             allowAnyInput = !getCheckMode() && availableSpace > 0;
             if (!isRecipeCheck) {
                 allowAnyInput |= provider.getLastInputTick() == provider.getTickCounter();
             }
         }
 
-        public boolean isDynamicCapacity() {
+        @Override
+        public boolean needsTotalParallelData() {
             return isDynamicCapacity;
         }
 
@@ -588,16 +593,33 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         @Override
-        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack, long totalPerParallel,
+            long perParallel) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
-            if (isRecipeCheck && shouldCheckCell()) {
-                IAEFluidStack input = AEFluidStack.create(stack);
-                IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
-                int inserted = (int) (stack.amount - (rejected == null ? 0 : rejected.getStackSize()));
-                cache.insert(id, inserted);
-                stack.amount -= inserted;
-                return stack.amount == 0;
+            if (isRecipeCheck) {
+                if (shouldCheckCell()) {
+                    IAEFluidStack input = AEFluidStack.create(stack);
+                    if (isDynamicCapacity) {
+                        long cellAvailableSpace = provider.getCellAvailableSpace();
+                        int parallels = Math.clamp(cellAvailableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                        long amount = Math.min(parallels * perParallel, cellAvailableSpace - cache.getTotal());
+                        amount = Math.min(amount, stack.amount);
+                        input.setStackSize(amount);
+                    }
+                    IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
+                    int inserted = (int) (input.getStackSize() - (rejected == null ? 0 : rejected.getStackSize()));
+                    cache.insert(id, inserted);
+                    stack.amount -= inserted;
+                    return inserted > 0;
+                } else if (isDynamicCapacity) {
+                    int parallels = Math.clamp(availableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                    long amount = Math.min(parallels * perParallel, availableSpace - cache.getTotal());
+                    amount = Math.min(amount, stack.amount);
+                    cache.insert(id, amount);
+                    stack.amount -= amount;
+                    return amount > 0;
+                }
             }
             if (!hasAvailableSpace() || !isFilteredTo(id)) {
                 return false;
