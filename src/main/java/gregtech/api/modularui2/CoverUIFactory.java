@@ -10,11 +10,13 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.AbstractUIFactory;
 import com.cleanroommc.modularui.factory.GuiManager;
 
+import gregtech.GTMod;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.Cover;
 
@@ -52,29 +54,32 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
     }
 
     @Override
-    public @NotNull IGuiHolder<CoverGuiData> getGuiHolder(CoverGuiData data) {
+    public @Nullable IGuiHolder<CoverGuiData> getGuiHolder(CoverGuiData data) {
         TileEntity tile = data.getTileEntity();
-        // TODO: Figure out a more graceful way to handle mismatches.
+
         if (!(tile instanceof ICoverable coverable)) {
-            throw new RuntimeException(
-                String.format(
-                    "TileEntity at %s, %s, %s is not an instance of ICoverable!",
-                    tile.xCoord,
-                    tile.yCoord,
-                    tile.zCoord));
+            GTMod.GT_FML_LOGGER.warn(
+                "TileEntity at {}, {}, {} is not an instance of ICoverable!",
+                tile.xCoord,
+                tile.yCoord,
+                tile.zCoord);
+            return null;
         }
+
         Cover cover = coverable.getCoverAtSide(data.getSide());
-        if (!(cover.getCoverID() == data.getCoverID())) {
-            throw new RuntimeException(
-                String.format(
-                    "Cover at %s, %s, %s on side %s is not the expected kind! Expected %s, got %s",
-                    tile.xCoord,
-                    tile.yCoord,
-                    tile.zCoord,
-                    data.getSide(),
-                    data.getCoverID(),
-                    cover.getCoverID()));
+
+        if (cover.getCoverID() != data.getCoverID()) {
+            GTMod.GT_FML_LOGGER.warn(
+                "Cover at {}, {}, {} on side {} is not the expected kind! Expected {}, got {}",
+                tile.xCoord,
+                tile.yCoord,
+                tile.zCoord,
+                data.getSide(),
+                data.getCoverID(),
+                cover.getCoverID());
+            return null;
         }
+
         return cover;
     }
 
