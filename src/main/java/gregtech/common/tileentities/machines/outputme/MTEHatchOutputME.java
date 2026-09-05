@@ -599,7 +599,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             if (isRecipeCheck) {
                 if (shouldCheckCell()) {
                     IAEFluidStack input = AEFluidStack.create(stack);
-                    if (isDynamicCapacity) {
+                    if (isDynamicCapacity && !provider.canVoidOverflow()) {
                         long cellAvailableSpace = provider.getCellAvailableSpace();
                         int parallels = Math.clamp(cellAvailableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
                         long amount = Math.min(parallels * perParallel, cellAvailableSpace - cache.getTotal());

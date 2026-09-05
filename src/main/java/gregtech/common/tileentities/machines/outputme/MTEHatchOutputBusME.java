@@ -259,7 +259,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             if (isRecipeCheck) {
                 if (shouldCheckCell()) {
                     IAEItemStack input = AEItemStack.create(stack);
-                    if (isDynamicCapacity) {
+                    if (isDynamicCapacity && !provider.canVoidOverflow()) {
                         long cellAvailableSpace = provider.getCellAvailableSpace();
                         int parallels = Math.clamp(cellAvailableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
                         long amount = Math.min(parallels * perParallel, cellAvailableSpace - cache.getTotal());
