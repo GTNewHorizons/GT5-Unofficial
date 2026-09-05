@@ -80,6 +80,11 @@ public class OutputHatchWrapper implements IOutputHatch {
         }
 
         @Override
+        public boolean isDynamicCapacity() {
+            return transaction.isDynamicCapacity();
+        }
+
+        @Override
         public boolean hasAvailableSpace() {
             return transaction.hasAvailableSpace();
         }
