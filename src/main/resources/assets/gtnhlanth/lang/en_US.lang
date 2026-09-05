@@ -163,6 +163,7 @@ item.particle.name=Particle
 particle.photon=Photon
 particle.zboson=Z Boson
 particle.wboson=W Boson
+particle.glueball=Glueball
 particle.higgs=Higgs Boson
 particle.graviton=Graviton
 particle.electron=Electron
@@ -178,6 +179,7 @@ particle.omega=Omega
 particle.eta=Eta
 particle.jpsi=J/Psi
 particle.upsilon=Upsilon
+particle.pion=Pion
 particle.alpha=Alpha
 
 beamcrafting.energy_A=min Energy 1
