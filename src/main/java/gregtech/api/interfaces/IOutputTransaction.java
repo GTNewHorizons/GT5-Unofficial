@@ -20,11 +20,15 @@ public interface IOutputTransaction<ID, T> {
      * Fills one slot with the given stack, then subtracts the amount stored from the stack's stackSize. This modifies
      * this transaction's internal state.
      *
-     * @param id    The stack's id, to avoid allocations.
-     * @param stack The stack to inject.
+     * @param id               The stack's id, to avoid allocations.
+     * @param stack            The stack to inject.
+     * @param totalPerParallel The total parallel weight of all pending outputs valid for this transaction. If
+     *                         {@link #needsTotalParallelData()} returns false, this value is undefined and must not be
+     *                         used.
+     * @param perParallel      The parallel weight.
      * @return True when stacks were injected into a slot, false otherwise.
      */
-    boolean storePartial(ID id, @NotNull T stack);
+    boolean storePartial(ID id, @NotNull T stack, long totalPerParallel, long perParallel);
 
     /**
      * Signals to the transaction that this stack will never be stored again, allowing it to skip partially filled
@@ -49,16 +53,7 @@ public interface IOutputTransaction<ID, T> {
         void setProtectOutput(boolean isProtectOutput);
     }
 
-    /**
-     * Represents an output that may have a finite capacity but allows for dynamic resource allocation.
-     */
-    interface IDynamicCapacityOutputAware {
-
-        /**
-         * Checks if this output has a finite capacity but allows for dynamic resource allocation.
-         *
-         * @return true if it is, false otherwise
-         */
-        boolean isDynamicCapacity();
+    default boolean needsTotalParallelData() {
+        return false;
     }
 }
