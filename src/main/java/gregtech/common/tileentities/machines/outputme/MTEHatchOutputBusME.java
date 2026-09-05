@@ -272,7 +272,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     int inserted = (int) (stack.stackSize - (rejected == null ? 0 : rejected.getStackSize()));
                     cache.insert(id, inserted);
                     stack.stackSize -= inserted;
-                    return stack.stackSize == 0;
+                    return inserted > 0;
                 } else if (isDynamicCapacity) {
                     cache.insert(id, amount);
                     stack.stackSize -= amount;
