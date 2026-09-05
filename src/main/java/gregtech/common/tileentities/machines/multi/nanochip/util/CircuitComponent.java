@@ -525,8 +525,6 @@ public enum CircuitComponent {
         "gt.circuitcomponent.thermalsuperconductor",
         () -> ItemList.Thermal_Superconductor.get(1)),
     ScrewEnrichedNaquadahAlloy(1918, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.screw,1)),
-    ScrewQuantum(1919, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> MaterialsAlloy.QUANTUM.getScrew(1)),
-    ScrewEternity(1920, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
     ScrewQuantum(1919, "gt.circuitcomponent.screw.quantum", ()-> MaterialsAlloy.QUANTUM.getScrew(1)),
     ScrewEternity(1920, "gt.circuitcomponent.screw.eternity", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
 
@@ -710,7 +708,7 @@ public enum CircuitComponent {
         this.circuitType = circuitType;
 
         this.iconString = isProcessed ? PROCESSED_DIRECTORY + name().toLowerCase() : name().toLowerCase();
-        codechicken.nei.api.API.hideItem(getFakeStack(1)); // shows all CC items from nei if commented.
+        // codechicken.nei.api.API.hideItem(getFakeStack(1)); // shows all CC items from nei if commented.
     }
 
     public String getLocalizedName() {
