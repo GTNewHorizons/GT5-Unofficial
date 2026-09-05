@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.outputme.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.common.covers.modes.FilterType.BLACKLIST;
 import static gregtech.common.covers.modes.FilterType.WHITELIST;
 
@@ -27,7 +26,6 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -121,6 +119,15 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         String getEnableKey();
 
         String getDisableKey();
+
+        @NotNull
+        String getLangPrefix();
+
+        @NotNull
+        String getUnitSuffix();
+
+        @Nullable
+        String getLocalizedName(NBTTagCompound nbt);
     }
 
     private final Environment<T> env;
@@ -762,8 +769,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
                         nameGetter.apply(s) + ": "
                             + EnumChatFormatting.GOLD
                             + formatNumber(s.getStackSize())
-                            + " "
-                            + getFluidUnit()
+                            + env.getUnitSuffix()
                             + EnumChatFormatting.RESET);
                 });
         }
@@ -779,8 +785,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.hatch.output_me.cache_capacity",
                 EnumChatFormatting.GOLD + formatNumber(getCacheCapacity())
-                    + " "
-                    + getFluidUnit()
+                    + env.getUnitSuffix()
                     + EnumChatFormatting.RESET));
         processInfoData(langBaseKey, nameGetter, getCacheList(), ss);
         if (cacheMode && cell != null) {
@@ -797,63 +802,48 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     }
 
     @SideOnly(Side.CLIENT)
-    public static class WailaHelper {
+    private void processWailaAdvancedBody(List<String> ss, String listKey, String countKey, NBTTagCompound tag) {
+        NBTTagList stacks = tag.getTagList(listKey, 10);
+        int stackCount = tag.getInteger(countKey);
+        String prefix = env.getLangPrefix();
 
-        @Nullable
-        private static String getLocalizedName(String prefix, NBTTagCompound stackTag) {
-            if ("fluid".equals(prefix)) {
-                FluidStack fluid = FluidStack.loadFluidStackFromNBT(stackTag);
-                return fluid == null ? null : fluid.getLocalizedName();
-            }
-            ItemStack stack = ItemStack.loadItemStackFromNBT(stackTag);
-            return stack == null ? null : stack.getDisplayName();
+        if (stackCount == 0) {
+            ss.add(StatCollector.translateToLocal("GT5U.waila.hatch.outputme." + prefix + "_cache_empty"));
+            return;
+        }
+        String detailKey = "GT5U.waila.hatch.outputme." + prefix + "_cache_detail" + (stackCount > 1 ? "s" : "");
+        ss.add(StatCollector.translateToLocalFormatted(detailKey, stackCount));
+
+        for (int i = 0; i < stacks.tagCount(); i++) {
+            NBTTagCompound stackTag = stacks.getCompoundTagAt(i);
+            // Names must be resolved client-side, otherwise a dedicated server sends its own localization
+            String name = env.getLocalizedName(stackTag);
+            if (name == null) continue;
+
+            ss.add(
+                String.format(
+                    "%s: %s%s%s",
+                    name,
+                    EnumChatFormatting.GOLD,
+                    formatNumber(stackTag.getLong("Amount")),
+                    env.getUnitSuffix() + EnumChatFormatting.RESET));
         }
 
-        private static void processWailaAdvancedBody(String prefix, List<String> ss, String listKey, String countKey,
-            NBTTagCompound tag) {
-            NBTTagList stacks = tag.getTagList(listKey, 10);
-            int stackCount = tag.getInteger(countKey);
-
-            if (stackCount == 0) {
-                ss.add(StatCollector.translateToLocal("GT5U.waila.hatch.outputme." + prefix + "_cache_empty"));
-                return;
-            }
+        if (stackCount > stacks.tagCount()) {
             ss.add(
                 StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.hatch.outputme." + prefix + "_cache_detail",
-                    stackCount,
-                    stackCount > 1 ? "s" : ""));
-
-            for (int i = 0; i < stacks.tagCount(); i++) {
-                NBTTagCompound stackTag = stacks.getCompoundTagAt(i);
-                // Names must be resolved client-side, otherwise a dedicated server sends its own localization
-                String name = getLocalizedName(prefix, stackTag);
-                if (name == null) continue;
-
-                ss.add(
-                    String.format(
-                        "%s: %s%s%s",
-                        name,
-                        EnumChatFormatting.GOLD,
-                        formatNumber(stackTag.getLong("Amount")),
-                        EnumChatFormatting.RESET));
-            }
-
-            if (stackCount > stacks.tagCount()) {
-                ss.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.hatch.outputme." + prefix + "_cache_detail.more",
-                        stackCount - stacks.tagCount()));
-            }
+                    "GT5U.waila.hatch.outputme." + prefix + "_cache_detail.more",
+                    stackCount - stacks.tagCount()));
         }
+    }
 
-        public static void getWailaAdvancedBody(String prefix, List<String> ss, IWailaDataAccessor accessor) {
-            NBTTagCompound tag = accessor.getNBTData();
-            processWailaAdvancedBody(prefix, ss, "stacks", "stackCount", tag);
-            if (tag.hasKey("cacheCount")) {
-                ss.add(StatCollector.translateToLocal("GT5U.waila.hatch.outputme.storage_cache"));
-                processWailaAdvancedBody(prefix, ss, "cacheStacks", "cacheCount", tag);
-            }
+    @SideOnly(Side.CLIENT)
+    public void getWailaAdvancedBody(List<String> ss, IWailaDataAccessor accessor) {
+        NBTTagCompound tag = accessor.getNBTData();
+        processWailaAdvancedBody(ss, "stacks", "stackCount", tag);
+        if (tag.hasKey("cacheCount")) {
+            ss.add(StatCollector.translateToLocal("GT5U.waila.hatch.outputme.storage_cache"));
+            processWailaAdvancedBody(ss, "cacheStacks", "cacheCount", tag);
         }
     }
 }
