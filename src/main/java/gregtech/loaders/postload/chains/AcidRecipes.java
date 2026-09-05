@@ -79,7 +79,7 @@ public class AcidRecipes {
             .addTo(UniversalChemical);
         // Chlorosulfonic Acid Line
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.PhosphorousPentoxide.getDust(7))
+            .itemInputs(Materials.PhosphorusPentoxide.getDust(7))
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 4000))
             .fluidOutputs(Materials.PhosphorusChlorineMixture.getFluid(2000L), Materials.Water.getFluid(5000L))
             .duration(24 * SECONDS)

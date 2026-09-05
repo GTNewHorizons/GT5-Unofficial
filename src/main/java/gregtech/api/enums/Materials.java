@@ -601,7 +601,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials NitricOxide;
     public static Materials Phenol;
     public static Materials PhosphoricAcid;
-    public static Materials PhosphorousPentoxide;
+    public static Materials PhosphorusPentoxide;
     public static Materials PolyphenyleneSulfide;
     public static Materials Polystyrene;
     public static Materials PolyvinylAcetate;
