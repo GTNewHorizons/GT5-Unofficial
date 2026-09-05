@@ -702,9 +702,15 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         final ForgeDirection effectiveSide = (!hasCoverAtSide(side)) ? wrenchingSide : side;
         Cover effectiveSideCover = getCoverAtSide(effectiveSide);
         if (isClientSide()) {
+            final ItemStack tCurrentItemClient = aPlayer.inventory.getCurrentItem();
+            // The server handles these tools the same regardless of sneaking, so mirror that here too.
+            if (isAlwaysHandledGtTool(tCurrentItemClient)) {
+                return true;
+            }
+
             // Place/configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                return (effectiveSideCover.hasCoverGUI());
+                return predictSneakRightclick(tCurrentItemClient, effectiveSide, effectiveSideCover);
             }
         }
         if (isServerSide()) {
@@ -835,6 +841,59 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         }
 
         return false;
+    }
+
+    /**
+     * Tools the {@code isServerSide()} branch above always handles the same way regardless of {@code isSneaking()}.
+     */
+    private static boolean isAlwaysHandledGtTool(ItemStack tCurrentItem) {
+        return tCurrentItem != null && (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList));
+    }
+
+    /**
+     * Client-side prediction of whether a sneak rightclick with this item will be handled by
+     * {@code isServerSide()} above, so callers relying on the return value (e.g. Backhand) don't see a false
+     * failure.
+     */
+    private boolean predictSneakRightclick(ItemStack tCurrentItem, ForgeDirection effectiveSide,
+        Cover effectiveSideCover) {
+        if (tCurrentItem == null) {
+            return effectiveSideCover.hasCoverGUI();
+        }
+
+        if (getColorization() >= 0 && GTUtility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
+            return true;
+        }
+
+        if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)) {
+            return true;
+        }
+
+        if (hasCoverAtSide(effectiveSide)) {
+            if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
+                return true;
+            }
+            return effectiveSideCover.hasCoverGUI();
+        }
+
+        if (CoverRegistry.isCover(tCurrentItem)) {
+            // Checks the real placement conditions so an unplaceable cover correctly reports failure.
+            return CoverRegistry.getCoverPlacer(tCurrentItem)
+                .isCoverPlaceable(effectiveSide, tCurrentItem, this)
+                && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem);
+        }
+
+        return effectiveSideCover.hasCoverGUI();
     }
 
     @Override
