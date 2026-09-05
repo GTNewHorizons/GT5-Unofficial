@@ -257,23 +257,24 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             if (isRecipeCheck) {
-                long amount = stack.stackSize;
-                if (isDynamicCapacity) {
-                    int parallels = Math.clamp(availableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
-                    amount = Math.min(parallels * perParallel, availableSpace - cache.getTotal());
-                    amount = Math.min(amount, stack.stackSize);
-                }
                 if (shouldCheckCell()) {
                     IAEItemStack input = AEItemStack.create(stack);
                     if (isDynamicCapacity) {
+                        long cellAvailableSpace = provider.getCellAvailableSpace();
+                        int parallels = Math.clamp(cellAvailableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                        long amount = Math.min(parallels * perParallel, cellAvailableSpace - cache.getTotal());
+                        amount = Math.min(amount, stack.stackSize);
                         input.setStackSize(amount);
                     }
                     IAEItemStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
-                    int inserted = (int) (amount - (rejected == null ? 0 : rejected.getStackSize()));
+                    int inserted = (int) (input.getStackSize() - (rejected == null ? 0 : rejected.getStackSize()));
                     cache.insert(id, inserted);
                     stack.stackSize -= inserted;
                     return inserted > 0;
                 } else if (isDynamicCapacity) {
+                    int parallels = Math.clamp(availableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                    long amount = Math.min(parallels * perParallel, availableSpace - cache.getTotal());
+                    amount = Math.min(amount, stack.stackSize);
                     cache.insert(id, amount);
                     stack.stackSize -= amount;
                     return amount > 0;
