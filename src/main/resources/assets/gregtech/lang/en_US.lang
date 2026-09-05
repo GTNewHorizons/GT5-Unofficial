@@ -6251,8 +6251,8 @@ GT5U.waila.machine.input=§6Input:
 GT5U.waila.machine.output=§bOutput: §e%s
 GT5U.waila.machine.render_item=§a%s§7x %s
 GT5U.waila.machine.more_items=And %s more...
-GT5U.waila.machine.use_steam=Using §e%s Steam L/t
-GT5U.waila.machine.eu_bar=Stored energy: %s%%
+GT5U.waila.machine.use_steam=Using §e%s L/s Steam
+GT5U.waila.machine.eu_bar=Stored EU: %s (%s%%)
 
 GT5U.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
 GT5U.waila.multiblock.status.efficiency=  Efficiency: %f%%
