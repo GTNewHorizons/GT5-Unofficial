@@ -2619,9 +2619,11 @@ GT5U.machines.large_boiler.gui.fluid_burn=Fluid fuel burns for: §9%s§rs/§9%s�
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
-GT5U.type_filter.representation_slot.tooltip=§7Left click to cycle forward
-GT5U.type_filter.representation_slot.tooltip.1=§7Right click to cycle back
-GT5U.type_filter.representation_slot.tooltip.2=§7Click with an item to set filter
+GT5U.machines.type_filter.select=Select Type
+GT5U.type_filter.representation_slot.tooltip=§7Left click to select type
+GT5U.type_filter.representation_slot.tooltip.1=§7Shift + Left click to cycle forward
+GT5U.type_filter.representation_slot.tooltip.2=§7Shift + Right click to cycle back
+GT5U.type_filter.representation_slot.tooltip.3=§7Shift + click with an item to set filter
 
 channels.gregtech.manipulator=Decides the tier of QFT manipulator blocks. Starts at §6Neutron Pulse Manipulator§r at value 1 and ends at §6SpaceTime Continuum Ripper§r at value 4.
 channels.gregtech.shielding=Decides the tier of QFT shielding blocks. Starts at §6Neutron Shielding Core§r at value 1 and ends at §6SpaceTime Bending Core§r at value 4.
