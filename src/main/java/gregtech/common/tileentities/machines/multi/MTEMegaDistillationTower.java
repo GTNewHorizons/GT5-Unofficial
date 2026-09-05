@@ -366,27 +366,27 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     // the top hatch layer is at index 2h-1. the final hatch layer is at index 2h.
 
     protected int getCurrentLayerBottomOutputHatchCount() {
-        int currentLayer = (height * 2) - 2;
+        int currentOutputLayer = height * 2 - 1;
         if (outputHatchesPerLayer.isEmpty()) return 0;
 
-        return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
-            : outputHatchesPerLayer.get(currentLayer)
+        return outputHatchesPerLayer.size() < currentOutputLayer || currentOutputLayer <= 0 ? 0
+            : outputHatchesPerLayer.get(currentOutputLayer - 1)
                 .size();
     }
 
     protected int getCurrentLayerTopOutputHatchCount() {
-        int currentLayer = (height * 2) - 1;
+        int currentOutputLayer = height * 2;
         if (outputHatchesPerLayer.isEmpty()) return 0;
 
-        return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
-            : outputHatchesPerLayer.get(currentLayer)
+        return outputHatchesPerLayer.size() < currentOutputLayer || currentOutputLayer <= 0 ? 0
+            : outputHatchesPerLayer.get(currentOutputLayer - 1)
                 .size();
     }
 
     protected int getFinalLayerOutputHatchCount() {
-        int currentLayer = height * 2; // in a max dt (height 5), this is index 10. so height*2
-        return outputHatchesPerLayer.size() < currentLayer + 1 || height <= 0 ? 0
-            : outputHatchesPerLayer.get(currentLayer)
+        int currentOutputLayer = height * 2 + 1; // 11 for max height
+        return outputHatchesPerLayer.size() < currentOutputLayer || currentOutputLayer <= 0 ? 0
+            : outputHatchesPerLayer.get(currentOutputLayer - 1)
                 .size();
     }
 
