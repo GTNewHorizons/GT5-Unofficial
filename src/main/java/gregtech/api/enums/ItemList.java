@@ -3135,6 +3135,7 @@ public enum ItemList implements IItemContainer {
     Settled_WDM_Wire,
     Quelled_BDM_Wire,
     Settled_BDM_Wire,
+    CalabiYauManifold,
 
     CultureNullBioCulture,
     CultureSaccharomycesCerevisiae,

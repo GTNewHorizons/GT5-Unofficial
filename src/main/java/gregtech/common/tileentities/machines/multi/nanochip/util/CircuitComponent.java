@@ -443,10 +443,11 @@ public enum CircuitComponent {
     //Planck Chain
      CollapsingResidue(1818, "gt.circuitcomponent.specialty.processed.collapsingresidue",null,true),
      ProcessedOrganizedQuantumCircuit(1819,"gt.circuitcomponent.specialty.processed.organizedquantum",null,true),
-     ProcessedEtchedQuantumCircuits(1814,"gt.circuitcomponent.specialty.processed.etchedquantums",null,true),
-     UnrefinedPlanckCPU(1815,"gt.circuitcomponent.specialty.processed.unrefinedplanckcpu",null,true),
-     PlanckCPU(1816,"gt.circuitcomponent.specialty.processed.sisterspool",()->ItemList.Planck_CPU.get(1)),
-     BundledHarmony(1817,"gt.circuitcomponent.specialty.processed.bundledharmony",null,true),
+     ProcessedEtchedQuantumCircuits(1820,"gt.circuitcomponent.specialty.processed.etchedquantums",null,true),
+     UnrefinedPlanckCPU(1821,"gt.circuitcomponent.specialty.processed.unrefinedplanckcpu",null,true),
+     PlanckCPU(1822,"gt.circuitcomponent.specialty.processed.sisterspool",()->ItemList.Planck_CPU.get(1)),
+     BundledHarmony(1823,"gt.circuitcomponent.specialty.processed.bundledharmony",null,true),
+    CalabiYauManifold(1824,"gt.circuitcomponent.specialty.processed.calabiyaumanifold", ()->ItemList.CalabiYauManifold.get(1)),
 
     // Bolts and other small components
     // IDs: 1900-1999 CC, 2000-2099 PC
