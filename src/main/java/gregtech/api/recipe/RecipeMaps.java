@@ -1937,7 +1937,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
         .of("gt.recipe.nanochip.etchingarray", NACRecipeMapBackend::new)
-        .maxIO(2, 1, 2, 0)
+        .maxIO(2, 2, 2, 0)
         .minInputs(0, 0)
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
@@ -1947,7 +1947,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
         .of("gt.recipe.nanochip.wiretracer", NACRecipeMapBackend::new)
-        .maxIO(1, 1, 0, 0)
+        .maxIO(2, 4, 0, 0)
         .minInputs(1, 0)
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
