@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -556,7 +557,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaAdvancedBody(itemStack, ss, accessor, config);
-        MTEHatchOutputMEBase.WailaHelper.getWailaAdvancedBody("item", ss, accessor);
+        provider.getWailaAdvancedBody(ss, accessor);
     }
 
     @Override
@@ -566,6 +567,22 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             "GT5U.infodata.hatch.output_bus_me",
             (IAEItemStack s) -> s.getItem()
                 .getItemStackDisplayName(s.getItemStack()));
+    }
+
+    @Override
+    public @NotNull String getLangPrefix() {
+        return "item";
+    }
+
+    @Override
+    public @NotNull String getUnitSuffix() {
+        return "";
+    }
+
+    @Override
+    public @Nullable String getLocalizedName(NBTTagCompound nbt) {
+        ItemStack stack = ItemStack.loadItemStackFromNBT(nbt);
+        return stack == null ? null : stack.getDisplayName();
     }
 
     @Override
