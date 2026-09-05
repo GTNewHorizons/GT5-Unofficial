@@ -569,7 +569,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             // only false when cache mode on and is distribution
             isDynamicCapacity = isRecipeCheck && isProtectOutput
                 && getCheckMode()
-                && (!provider.getCacheMode() || !provider.isDistribution());
+                && (!provider.getCacheMode() || !provider.isDistribution())
+                && !provider.canVoidOverflow();
             allowAnyInput = !getCheckMode() && availableSpace > 0;
             if (!isRecipeCheck) {
                 allowAnyInput |= provider.getLastInputTick() == provider.getTickCounter();
@@ -599,7 +600,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             if (isRecipeCheck) {
                 if (shouldCheckCell()) {
                     IAEFluidStack input = AEFluidStack.create(stack);
-                    if (isDynamicCapacity && !provider.canVoidOverflow()) {
+                    if (isDynamicCapacity) {
                         long cellAvailableSpace = provider.getCellAvailableSpace();
                         int parallels = Math.clamp(cellAvailableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
                         long amount = Math.min(parallels * perParallel, cellAvailableSpace - cache.getTotal());
