@@ -111,7 +111,7 @@ public class Godforge implements Runnable {
                     MaterialsElements.getInstance().RUTHENIUM.getDust(1),
                     MaterialsElements.getInstance().RHENIUM.getDust(1),
                     MaterialsElements.getInstance().RHODIUM.getDust(1),
-                    MaterialsElements.getInstance().IODINE.getDust(1),
+                    WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 1),
                     MaterialsElements.getInstance().HAFNIUM.getDust(1),
                     MaterialsElements.getInstance().CURIUM.getDust(1) };
 
