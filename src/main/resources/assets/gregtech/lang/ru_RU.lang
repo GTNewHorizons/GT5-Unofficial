@@ -7408,10 +7408,6 @@ GT5U.infodata.parallel.current=Текущая параллель: %s
 GT5U.infodata.max_energy_income_tier=Предел подачи энергии: %s EU/t(*2A) тир: %s
 GT5U.infodata.problems_efficiency=Проблемы: %s Эффективность: %s
 GT5U.infodata.cable.failed=§cНе удалось получить данные энергоузла§r
-GT5U.infodata.cable.amperage=Ампераж: %s / %s A
-GT5U.infodata.cable.voltage_out=Выходной dольтаж: %s / %s EU/t
-GT5U.infodata.cable.avg_amperage=Ср. ампераж (20t): %s A
-GT5U.infodata.cable.avg_output=Ср. выход (20t): %s EU/t
 
 GT5U.infodata.hatch.output=§9Выходной шлюз§r
 GT5U.infodata.hatch.output.fluid=Хранящаяся жидкость: §6%s§r

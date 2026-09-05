@@ -6210,6 +6210,8 @@ nei.options.inventory.search.chemicalFormulaSearchMode.1=Prefix: %s
 nei.options.inventory.search.chemicalFormulaSearchMode.2=Never
 
 # Waila
+GT5U.waila.cable.throughput=Throughput: §a%s§r EU/t (%s A)
+GT5U.waila.cable.avg=Avg (20t): §e%s§r EU/t (%s A)
 GT5U.waila.cover=Cover (%s): %s
 GT5U.waila.cover.current_facing=Current Facing
 GT5U.waila.energy.stored=Stored: §a%s§r EU / §e%s§r EU
@@ -7809,10 +7811,9 @@ GT5U.infodata.parallel.current=Current Parallel: %s
 GT5U.infodata.max_energy_income_tier=Max Energy Income: %s EU/t(*2A) Tier: %s
 GT5U.infodata.problems_efficiency=Problems: %s Efficiency: %s
 GT5U.infodata.cable.failed=§cFailed to get Power Node info§r
-GT5U.infodata.cable.amperage=Amperage: %s / %s A
-GT5U.infodata.cable.voltage_out=Voltage Out: %s / %s EU/t
-GT5U.infodata.cable.avg_amperage=Avg Amperage (20t): %s A
-GT5U.infodata.cable.avg_output=Avg Output (20t): %s EU/t
+GT5U.infodata.cable.voltage=Voltage: %s / %s V
+GT5U.infodata.cable.throughput=Throughput: %s / %s EU/t (%s / %s A)
+GT5U.infodata.cable.avg=Avg (20t): %s EU/t (%s A)
 
 GT5U.infodata.hatch.output=§9Output Hatch§r
 GT5U.infodata.hatch.output.fluid=Stored Fluid: §6%s§r
