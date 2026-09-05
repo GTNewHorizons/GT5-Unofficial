@@ -80,8 +80,8 @@ public class OutputHatchWrapper implements IOutputHatch {
         }
 
         @Override
-        public boolean isDynamicCapacity() {
-            return transaction.isDynamicCapacity();
+        public boolean needsTotalParallelData() {
+            return transaction.needsTotalParallelData();
         }
 
         @Override

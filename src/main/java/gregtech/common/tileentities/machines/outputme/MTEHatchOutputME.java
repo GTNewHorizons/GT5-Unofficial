@@ -576,7 +576,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         @Override
-        public boolean isDynamicCapacity() {
+        public boolean needsTotalParallelData() {
             return isDynamicCapacity;
         }
 

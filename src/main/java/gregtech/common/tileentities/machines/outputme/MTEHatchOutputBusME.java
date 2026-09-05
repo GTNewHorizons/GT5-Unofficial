@@ -237,7 +237,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         }
 
         @Override
-        public boolean isDynamicCapacity() {
+        public boolean needsTotalParallelData() {
             return isDynamicCapacity;
         }
 

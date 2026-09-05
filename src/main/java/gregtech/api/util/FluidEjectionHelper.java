@@ -189,7 +189,7 @@ public class FluidEjectionHelper {
 
         public boolean storePartial(IOutputHatchTransaction transaction, Iterable<FluidParallelData> pendingOutputs) {
             long totalPerParallel = perParallel;
-            if (transaction.isDynamicCapacity()) {
+            if (transaction.needsTotalParallelData()) {
                 for (FluidParallelData other : pendingOutputs) {
                     if (!transaction.isFiltered() || transaction.isFilteredTo(other.id)) {
                         totalPerParallel += other.perParallel;

@@ -201,7 +201,7 @@ public class ItemEjectionHelper {
 
         public boolean storePartial(IOutputBusTransaction transaction, Iterable<ItemParallelData> pendingOutputs) {
             long totalPerParallel = perParallel;
-            if (transaction.isDynamicCapacity()) {
+            if (transaction.needsTotalParallelData()) {
                 for (ItemParallelData other : pendingOutputs) {
                     if (!transaction.isFiltered() || transaction.isFilteredTo(other.id)) {
                         totalPerParallel += other.perParallel;

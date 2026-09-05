@@ -22,8 +22,7 @@ public interface IOutputTransaction<ID, T> {
      *
      * @param id               The stack's id, to avoid allocations.
      * @param stack            The stack to inject.
-     * @param totalPerParallel The total parallel weight of all pending outputs valid for this transaction. Only
-     *                         relevant for dynamic capacity outputs.
+     * @param totalPerParallel The total parallel weight of all pending outputs valid for this transaction. If {@link #needsTotalParallelData()} returns false, this value is undefined and must not be used.
      * @param perParallel      The parallel weight.
      * @return True when stacks were injected into a slot, false otherwise.
      */
@@ -52,12 +51,7 @@ public interface IOutputTransaction<ID, T> {
         void setProtectOutput(boolean isProtectOutput);
     }
 
-    /**
-     * Checks if this output has a finite capacity but allows for dynamic resource allocation.
-     *
-     * @return true if it is, false otherwise
-     */
-    default boolean isDynamicCapacity() {
+    default boolean needsTotalParallelData() {
         return false;
     }
 }
