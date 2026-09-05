@@ -87,6 +87,7 @@ public enum CircuitComponent {
         14,
         "gt.circuitcomponent.wireuniversium",
         () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Universium, 1)),
+
     ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", () -> WireNiobiumTitanium, true),
     ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", () -> WireYttriumBariumCuprate, true),
     ProcessedWireLumiium(102, "gt.circuitcomponent.processed.wirelumiium", () -> WireLumiium, true),
@@ -113,10 +114,10 @@ public enum CircuitComponent {
     EntangledWireWhiteDwarfMatter(120,"gt.circuitcomponent.processed.entangled.wirewhitedwarfmatter", null,true),
     EntangledWireBlackDwarfMatter(121,"gt.circuitcomponent.processed.entangled.wireblackdwarfmatter", null,true),
     EntangledWireUniversium(122,"gt.circuitcomponent.processed.entangled.wireuniversium", null,true),
-    QuelledWireWhiteDwarfMatter(123,"gt.circuitcomponent.processed.etched.wireuniversium", ()-> ItemList.Quelled_WDM_Wire.get(1)),// TODO: spinmatron step
-    SettledWireWhiteDwarfMatter(124,"gt.circuitcomponent.processed.etched.wireuniversium", ()-> ItemList.Settled_WDM_Wire.get(1)),
-    QuelledWireBlackDwarfMatter(125,"gt.circuitcomponent.processed.etched.wireuniversium", ()-> ItemList.Quelled_BDM_Wire.get(1)),
-    SettledWireBlackDwarfMatter(126,"gt.circuitcomponent.processed.etched.wireuniversium", ()->ItemList.Settled_BDM_Wire.get(1)), // TODO: spinmatron step
+    QuelledWireWhiteDwarfMatter(123,"gt.circuitcomponent.processed.quelled.wirewhitedwarfmatter", ()-> ItemList.Quelled_WDM_Wire.get(1)),// TODO: spinmatron step
+    SettledWireWhiteDwarfMatter(124,"gt.circuitcomponent.processed.settled.wirewhitedwarfmatter", ()-> ItemList.Settled_WDM_Wire.get(1)),
+    QuelledWireBlackDwarfMatter(125,"gt.circuitcomponent.processed.quelled.wireblackdwarfmatter", ()-> ItemList.Quelled_BDM_Wire.get(1)),
+    SettledWireBlackDwarfMatter(126,"gt.circuitcomponent.processed.settled.wireblackdwarfmatter", ()->ItemList.Settled_BDM_Wire.get(1)), // TODO: spinmatron step
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
     // 200-209 reserved for normal SMDs, if they are ever needed
@@ -447,7 +448,7 @@ public enum CircuitComponent {
      UnrefinedPlanckCPU(1821,"gt.circuitcomponent.specialty.processed.unrefinedplanckcpu",null,true),
      PlanckCPU(1822,"gt.circuitcomponent.specialty.processed.sisterspool",()->ItemList.Planck_CPU.get(1)),
      BundledHarmony(1823,"gt.circuitcomponent.specialty.processed.bundledharmony",null,true),
-    CalabiYauManifold(1824,"gt.circuitcomponent.specialty.processed.calabiyaumanifold", ()->ItemList.CalabiYauManifold.get(1)),
+     CalabiYauManifold(1824,"gt.circuitcomponent.specialty.processed.calabiyaumanifold", ()->ItemList.CalabiYauManifold.get(1)),
 
     // Bolts and other small components
     // IDs: 1900-1999 CC, 2000-2099 PC
@@ -526,6 +527,8 @@ public enum CircuitComponent {
     ScrewEnrichedNaquadahAlloy(1918, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.screw,1)),
     ScrewQuantum(1919, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> MaterialsAlloy.QUANTUM.getScrew(1)),
     ScrewEternity(1920, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
+    ScrewQuantum(1919, "gt.circuitcomponent.screw.quantum", ()-> MaterialsAlloy.QUANTUM.getScrew(1)),
+    ScrewEternity(1920, "gt.circuitcomponent.screw.eternity", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
