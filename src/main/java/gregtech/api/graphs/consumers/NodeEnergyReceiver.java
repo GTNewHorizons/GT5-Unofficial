@@ -1,7 +1,5 @@
 package gregtech.api.graphs.consumers;
 
-import java.util.ArrayList;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -12,6 +10,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.graphs.ConsumerList;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.pollution.Pollution;
@@ -22,7 +21,7 @@ public class NodeEnergyReceiver extends ConsumerNode {
     int mRestRF = 0;
 
     public NodeEnergyReceiver(int aNodeValue, IEnergyReceiver aTileEntity, ForgeDirection side,
-        ArrayList<ConsumerNode> aConsumers) {
+        ConsumerList aConsumers) {
         super(aNodeValue, (TileEntity) aTileEntity, side, aConsumers);
     }
 

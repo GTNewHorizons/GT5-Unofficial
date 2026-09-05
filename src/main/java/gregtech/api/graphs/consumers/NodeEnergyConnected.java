@@ -1,16 +1,15 @@
 package gregtech.api.graphs.consumers;
 
-import java.util.ArrayList;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.graphs.ConsumerList;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 
 public class NodeEnergyConnected extends ConsumerNode {
 
     public NodeEnergyConnected(int aNodeValue, IEnergyConnected aTileEntity, ForgeDirection side,
-        ArrayList<ConsumerNode> aConsumers) {
+        ConsumerList aConsumers) {
         super(aNodeValue, (TileEntity) aTileEntity, side, aConsumers);
     }
 

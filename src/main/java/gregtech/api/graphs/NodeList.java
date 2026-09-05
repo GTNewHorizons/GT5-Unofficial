@@ -10,6 +10,11 @@ public class NodeList {
         this.mNodes = mNodes;
     }
 
+    public void reset(Node[] nodes) {
+        this.mNodes = nodes;
+        this.mCounter = 0;
+    }
+
     Node getNextNode() {
         if (++mCounter < mNodes.length) return mNodes[mCounter];
         else return null;
