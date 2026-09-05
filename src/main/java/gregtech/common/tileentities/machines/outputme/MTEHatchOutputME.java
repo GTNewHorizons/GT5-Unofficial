@@ -566,10 +566,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         private void updateFlags() {
+            // only false when cache mode on and is distribution
             isDynamicCapacity = isRecipeCheck && isProtectOutput
                 && getCheckMode()
-                && !provider.getCacheMode()
-                && !provider.isDistribution();
+                && (!provider.getCacheMode() || !provider.isDistribution());
             allowAnyInput = !getCheckMode() && availableSpace > 0;
             if (!isRecipeCheck) {
                 allowAnyInput |= provider.getLastInputTick() == provider.getTickCounter();
