@@ -229,7 +229,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         private void updateFlags() {
             isDynamicCapacity = isRecipeCheck && isProtectOutput
                 && getCheckMode()
-                && (!provider.getCacheMode() || !provider.isDistribution());
+                && !provider.getCacheMode()
+                && !provider.isDistribution();
             allowAnyInput = !getCheckMode() && availableSpace > 0;
             if (!isRecipeCheck) {
                 allowAnyInput |= provider.getLastInputTick() == provider.getTickCounter();
@@ -257,17 +258,23 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             if (isRecipeCheck) {
+                long amount = stack.stackSize;
+                if (isDynamicCapacity) {
+                    int parallels = Math.clamp(availableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                    amount = Math.min(parallels * perParallel, availableSpace - cache.getTotal());
+                    amount = Math.min(amount, stack.stackSize);
+                }
                 if (shouldCheckCell()) {
                     IAEItemStack input = AEItemStack.create(stack);
+                    if (isDynamicCapacity) {
+                        input.setStackSize(amount);
+                    }
                     IAEItemStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
                     int inserted = (int) (stack.stackSize - (rejected == null ? 0 : rejected.getStackSize()));
                     cache.insert(id, inserted);
                     stack.stackSize -= inserted;
                     return stack.stackSize == 0;
                 } else if (isDynamicCapacity) {
-                    int parallels = Math.clamp(availableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
-                    long amount = Math.min(parallels * perParallel, availableSpace - cache.getTotal());
-                    amount = Math.min(amount, stack.stackSize);
                     cache.insert(id, amount);
                     stack.stackSize -= amount;
                     return amount > 0;
