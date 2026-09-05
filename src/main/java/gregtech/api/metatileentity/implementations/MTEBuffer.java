@@ -20,6 +20,7 @@ import java.util.stream.IntStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -445,9 +446,9 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
 
                 transfer.setMaxTotalTransferred(toTransfer);
             } else {
-                if (!hasTargetRoomForTransfer(igte)) return;
-
-                transfer.setFilter(stack -> stack.getStackSize() >= mTargetStackSize);
+                transfer.setFilter(
+                    stack -> stack.getStackSize() >= mTargetStackSize
+                        && hasTargetRoomForTransfer(igte, stack.toStack()));
                 transfer.setMaxItemsPerTransfer(mTargetStackSize);
             }
         }
@@ -463,22 +464,47 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
         }
     }
 
-    private boolean hasTargetRoomForTransfer(IGregTechTileEntity igte) {
-        var target = igte.getTileEntityAtSide(igte.getBackFacing());
-        if (!(target instanceof IInventory targetInv)) return true;
+    private boolean hasTargetRoomForTransfer(IGregTechTileEntity igte, ItemStack stackToTransfer) {
+        if (stackToTransfer == null || stackToTransfer.stackSize <= 0) return false;
+        if (!(igte.getTileEntityAtSide(igte.getBackFacing()) instanceof final IInventory targetInv)) return true;
 
-        for (int i = 0; i < targetInv.getSizeInventory(); i++) {
-            ItemStack existing = targetInv.getStackInSlot(i);
-            int available;
-            if (existing == null) {
-                available = targetInv.getInventoryStackLimit();
-            } else {
-                available = Math.min(existing.getMaxStackSize(), targetInv.getInventoryStackLimit())
-                    - existing.stackSize;
+        if (targetInv instanceof final ISidedInventory sided) {
+            final var side = igte.getBackFacing().getOpposite().ordinal();
+            final var accessibleSlots = sided.getAccessibleSlotsFromSide(side);
+            if (accessibleSlots == null) return false;
+
+            int accAvailable = 0;
+            for (final var slot : accessibleSlots) {
+                if (!sided.canInsertItem(slot, stackToTransfer, side)
+                    || !targetInv.isItemValidForSlot(slot, stackToTransfer)) continue;
+
+                accAvailable += getAvailableSpaceInSlot(targetInv, slot, stackToTransfer);
+                if (accAvailable >= mTargetStackSize) return true;
             }
-            if (available >= mTargetStackSize) return true;
+        } else {
+            int accAvailable = 0;
+            for (int i = 0; i < targetInv.getSizeInventory(); i++) {
+                if (!targetInv.isItemValidForSlot(i, stackToTransfer)) continue;
+
+                accAvailable += getAvailableSpaceInSlot(targetInv, i, stackToTransfer);
+                if (accAvailable >= mTargetStackSize) return true;
+            }
         }
+
         return false;
+    }
+
+    private int getAvailableSpaceInSlot(IInventory inv, int slot, ItemStack stackToTransfer) {
+        final var existing = inv.getStackInSlot(slot);
+        final var maxSlotCap = Math.min(stackToTransfer.getMaxStackSize(), inv.getInventoryStackLimit());
+
+        if (existing == null) {
+            return maxSlotCap;
+        } else
+            if (existing.isItemEqual(stackToTransfer) && ItemStack.areItemStackTagsEqual(existing, stackToTransfer)) {
+                return Math.max(0, maxSlotCap - existing.stackSize);
+            }
+        return 0;
     }
 
     protected int getMovableInventoryEnd() {
