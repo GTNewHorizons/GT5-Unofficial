@@ -44,7 +44,7 @@ public class CircuitComponentItemRenderer implements IItemRenderer {
             GL11.glScalef(0.7f, 0.7f, 0);
 
             ItemStack realItem = cc.realComponent.get();
-
+            if(realItem == null) return; // in case a CC is relying on a real item that is yet to be implemented.
             if (realItem.getItem() instanceof ItemBlock) {
                 RenderHelper.enableGUIStandardItemLighting();
                 RenderItem.getInstance()
