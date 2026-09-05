@@ -468,7 +468,8 @@ public class MTEHatchOutput extends MTEHatch
         }
 
         @Override
-        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack, long totalPerParallel,
+            long perParallel) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
             int amount = Math.min(availableSpace, stack.amount);
             if (amount <= 0) return false;

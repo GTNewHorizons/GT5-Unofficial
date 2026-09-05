@@ -6299,7 +6299,7 @@ GT5U.waila.machine.output=§bOutput: §e%s
 GT5U.waila.machine.render_item=§a%s§7x %s
 GT5U.waila.machine.more_items=And %s more...
 GT5U.waila.machine.use_steam=Using §e%s L/s Steam
-GT5U.waila.machine.eu_bar=Stored energy: %s%%
+GT5U.waila.machine.eu_bar=Stored EU: %s (%s%%)
 
 GT5U.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
 GT5U.waila.multiblock.status.efficiency=  Efficiency: %f%%
@@ -9449,6 +9449,8 @@ GT5U.gui.text.nanite_threshold=Nanite Tier
 GT5U.gui.text.provided_nanite=§7Provided Nanite: %s§f
 GT5U.gui.text.nanite_desc=§b%s§7 x §6%s§7
 GT5U.gui.text.required_nanite=§7Required Nanite: %s
+GT5U.gui.text.next_nanite=§7Next Nanite: %s §7at progress §6%s§f
+GT5U.gui.text.next_nanite_none=§7Next Nanite: None§f
 GT5U.gui.text.required_condensate=§7Required Condensate:
 GT5U.gui.text.remaining_condensate=  §7%s §6%s / %s§f
 GT5U.gui.text.ionode_status=§7Status: %s
