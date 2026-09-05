@@ -609,7 +609,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                         input.setStackSize(amount);
                     }
                     IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
-                    int inserted = (int) (stack.amount - (rejected == null ? 0 : rejected.getStackSize()));
+                    int inserted = (int) (amount - (rejected == null ? 0 : rejected.getStackSize()));
                     cache.insert(id, inserted);
                     stack.amount -= inserted;
                     return inserted > 0;

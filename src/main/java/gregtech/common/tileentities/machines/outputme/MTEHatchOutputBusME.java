@@ -269,7 +269,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                         input.setStackSize(amount);
                     }
                     IAEItemStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
-                    int inserted = (int) (stack.stackSize - (rejected == null ? 0 : rejected.getStackSize()));
+                    int inserted = (int) (amount - (rejected == null ? 0 : rejected.getStackSize()));
                     cache.insert(id, inserted);
                     stack.stackSize -= inserted;
                     return inserted > 0;
