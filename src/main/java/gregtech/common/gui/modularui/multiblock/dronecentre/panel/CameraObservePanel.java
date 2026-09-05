@@ -1,5 +1,8 @@
 package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -9,6 +12,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,6 +38,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.GTMod;
+import gregtech.api.util.GTUtility;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.gui.modularui.multiblock.dronecentre.widget.CameraViewportWidget;
@@ -463,8 +468,9 @@ public class CameraObservePanel extends ModularPanel {
                     ItemStack outputStack = ItemStack.loadItemStackFromNBT(itemNBT);
                     if (outputStack != null) {
                         String name = outputStack.getDisplayName();
-                        int count = tag.getInteger("outputItemCount" + i);
-                        newInfo.add("§b" + name + " x" + count);
+                        long count = tag.getLong("outputItemCount" + i);
+                        newInfo
+                            .add("§b" + name + " x" + formatNumber(count) + outputChance(tag, "outputItemChance" + i));
                     }
                 }
 
@@ -474,8 +480,9 @@ public class CameraObservePanel extends ModularPanel {
                     if (!internalName.isEmpty()) {
                         net.minecraftforge.fluids.Fluid fluid = FluidRegistry.getFluid(internalName);
                         String fluidName = fluid != null ? new FluidStack(fluid, 1).getLocalizedName() : internalName;
-                        int count = tag.getInteger("outputFluidCount" + i);
-                        newInfo.add("§3" + fluidName + " x" + count + "L");
+                        long count = tag.getLong("outputFluidCount" + i);
+                        newInfo.add(
+                            "§3" + fluidName + " x" + formatFluid(count) + outputChance(tag, "outputFluidChance" + i));
                     }
                 }
 
@@ -562,6 +569,11 @@ public class CameraObservePanel extends ModularPanel {
 
         this.currentRecipeInfo.clear();
         this.currentRecipeInfo.addAll(formatted);
+    }
+
+    private static String outputChance(NBTTagCompound tag, String key) {
+        if (!tag.hasKey(key)) return "";
+        return " @ " + EnumChatFormatting.YELLOW + GTUtility.formatOutputChance(tag.getInteger(key));
     }
 
     public static String cleanWailaLine(String line) {

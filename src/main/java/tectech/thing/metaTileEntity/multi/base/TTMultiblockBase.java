@@ -28,7 +28,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
@@ -565,28 +564,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         aNBT.setBoolean("eVoid", eSafeVoid);
         aNBT.setBoolean("eBoom", eDismantleBoom);
         aNBT.setBoolean("eOK", mMachine);
-        // Ensures compatibility
-        if (mOutputItems != null) {
-            aNBT.setInteger("mOutputItemsLength", mOutputItems.length);
-            for (int i = 0; i < mOutputItems.length; i++) {
-                if (mOutputItems[i] != null) {
-                    GTUtility.saveItem(aNBT, "mOutputItem" + i, mOutputItems[i]);
-                }
-            }
-        }
-
-        // Ensures compatibility
-        if (mOutputFluids != null) {
-            aNBT.setInteger("mOutputFluidsLength", mOutputFluids.length);
-            for (int i = 0; i < mOutputFluids.length; i++) {
-                if (mOutputFluids[i] != null) {
-                    NBTTagCompound tNBT = new NBTTagCompound();
-                    mOutputFluids[i].writeToNBT(tNBT);
-                    aNBT.setTag("mOutputFluids" + i, tNBT);
-                }
-            }
-        }
-
         aNBT.setInteger("eOutputStackCount", 0);
         aNBT.removeTag("outputEM");
         // TODO: REMOVE AFTER NEW PARAMETER PORT COMPLETE
@@ -646,24 +623,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         eSafeVoid = aNBT.getBoolean("eVoid");
         eDismantleBoom = aNBT.getBoolean("eBoom");
         mMachine = aNBT.getBoolean("eOK");
-
-        // Ensures compatibility
-        int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
-        if (aOutputItemsLength > 0) {
-            mOutputItems = new ItemStack[aOutputItemsLength];
-            for (int i = 0; i < mOutputItems.length; i++) {
-                mOutputItems[i] = GTUtility.loadItem(aNBT, "mOutputItem" + i);
-            }
-        }
-
-        // Ensures compatibility
-        int aOutputFluidsLength = aNBT.getInteger("mOutputFluidsLength");
-        if (aOutputFluidsLength > 0) {
-            mOutputFluids = new FluidStack[aOutputFluidsLength];
-            for (int i = 0; i < mOutputFluids.length; i++) {
-                mOutputFluids[i] = GTUtility.loadFluid(aNBT, "mOutputFluids" + i);
-            }
-        }
 
         if (aNBT.hasKey("eParamsIn") && aNBT.hasKey("eParamsOut") && aNBT.hasKey("eParamsB")) {
             NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
