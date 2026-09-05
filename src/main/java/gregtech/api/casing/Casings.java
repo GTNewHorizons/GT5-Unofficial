@@ -250,7 +250,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings8, 4, gt(1, 3, 4)),
     EuropiumReinforcedRadiationProofMachineCasing
         (() -> GregTechAPI.sBlockCasings8, 5, gt(1, 3, 5)),
-    AdvancedRhodiumPlatedPalladiumMachineCasing
+    SecureRhodiumPlatedPalladiumMachineCasing
         (() -> GregTechAPI.sBlockCasings8, 6, gt(1, 3, 6)),
     AdvancedIridiumPlatedMachineCasing
         (() -> GregTechAPI.sBlockCasings8, 7, gt(1, 3, 7)),

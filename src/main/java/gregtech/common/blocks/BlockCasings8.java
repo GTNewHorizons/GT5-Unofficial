@@ -30,7 +30,7 @@ public class BlockCasings8 extends BlockCasingsAbstract {
         register(3, ItemList.Casing_MiningBlackPlutonium);
         register(4, ItemList.Casing_ExtremeEngineIntake);
         register(5, ItemList.Casing_AdvancedRadiationProof);
-        register(6, ItemList.Casing_Advanced_Rhodium_Palladium);
+        register(6, ItemList.Casing_Secure_Rhodium_Palladium);
         register(7, ItemList.Casing_Advanced_Iridium);
         register(8, ItemList.Casing_Magical);
         register(10, ItemList.RadiantNaquadahAlloyCasing);

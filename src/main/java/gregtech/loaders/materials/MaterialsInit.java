@@ -61,6 +61,7 @@ public class MaterialsInit {
         loadMagicMaterials();
         loadBotaniaMaterials();
         loadKevlarLine();
+        loadnButyllithium();
         loadAluminiumOres();
         loadUEVPlusMaterials();
         loadGTNHMaterials();
@@ -14755,167 +14756,22 @@ public class MaterialsInit {
     }
 
     private static void loadKevlarLine() {
-        Materials.DiphenylmethaneDiisocyanate = loadDiphenylmethaneDiisocyanate();
-        Materials.DiaminodiphenylmethanMixture = loadDiaminodiphenylmethanMixture();
-        Materials.DiphenylmethaneDiisocyanateMixture = loadDiphenylmethaneDiisocyanateMixture();
-        Materials.Butyraldehyde = loadButyraldehyde();
-        Materials.Isobutyraldehyde = loadIsobutyraldehyde();
-        Materials.NickelTetracarbonyl = loadNickelTetracarbonyl();
-        Materials.KevlarCatalyst = loadKevlarCatalyst();
         Materials.EthyleneOxide = loadEthyleneOxide();
-        Materials.SiliconOil = loadSiliconOil();
         Materials.Ethyleneglycol = loadEthyleneglycol();
-        Materials.Acetaldehyde = loadAcetaldehyde();
-        Materials.Pentaerythritol = loadPentaerythritol();
         Materials.PolyurethaneResin = loadPolyurethaneResin();
-        Materials.NMethylIIPyrrolidone = loadNMethylIIPyrrolidone();
         Materials.TerephthaloylChloride = loadTerephthaloylChloride();
-        Materials.Acetylene = loadAcetylene();
         Materials.IVNitroaniline = loadIVNitroaniline();
         Materials.ParaPhenylenediamine = loadParaPhenylenediamine();
-        Materials.Methylamine = loadMethylamine();
-        Materials.Trimethylamine = loadTrimethylamine();
-        Materials.GammaButyrolactone = loadGammaButyrolactone();
-        Materials.CalciumCarbide = loadCalciumCarbide();
-        Materials.LiquidCrystalKevlar = loadLiquidCrystalKevlar();
-        Materials.IIButinIIVdiol = loadIIButinIIVdiol();
-        Materials.NickelAluminide = loadNickelAluminide();
-        Materials.RaneyNickelActivated = loadRaneyNickelActivated();
-        Materials.BismuthIIIOxide = loadBismuthIIIOxide();
-        Materials.ThionylChloride = loadThionylChloride();
-        Materials.SulfurDichloride = loadSulfurDichloride();
-        Materials.DimethylTerephthalate = loadDimethylTerephthalate();
         Materials.Kevlar = loadKevlar();
+        Materials.LiquidCrystalKevlar = loadLiquidCrystalKevlar();
         Materials.TerephthalicAcid = loadTerephthalicAcid();
+        Materials.Hexachloroxylene = loadHexachloroxylene();
         Materials.IIIDimethylbenzene = loadIIIDimethylbenzene();
         Materials.IVDimethylbenzene = loadIVDimethylbenzene();
-        Materials.CobaltIINaphthenate = loadCobaltIINaphthenate();
         Materials.NaphthenicAcid = loadNaphthenicAcid();
-        Materials.CobaltIIHydroxide = loadCobaltIIHydroxide();
-        Materials.CobaltIIAcetate = loadCobaltIIAcetate();
-        Materials.CobaltIINitrate = loadCobaltIINitrate();
-        Materials.OrganorhodiumCatalyst = loadOrganorhodiumCatalyst();
-        Materials.SodiumBorohydride = loadSodiumBorohydride();
-        Materials.RhodiumChloride = loadRhodiumChloride();
-        Materials.Triphenylphosphene = loadTriphenylphosphene();
         Materials.PhosphorusTrichloride = loadPhosphorusTrichloride();
-        Materials.SodiumHydride = loadSodiumHydride();
-        Materials.TrimethylBorate = loadTrimethylBorate();
-        Materials.SodiumMethoxide = loadSodiumMethoxide();
-    }
-
-    private static Materials loadDiphenylmethaneDiisocyanate() {
-        return new MaterialBuilder().setName("DiphenylmethaneDiisocyanate")
-            .setDefaultLocalName("4,4'-Diphenylmethane Diisocyanate")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeYellow)
-            .setARGB(0x00ffe632)
-            .addDustItems()
-            .setMeltingPoint(310)
-            .addMaterial(Materials.Carbon, 15)
-            .addMaterial(Materials.Hydrogen, 10)
-            .addMaterial(Materials.Nitrogen, 2)
-            .addMaterial(Materials.Oxygen, 2)
-            .addAspect(TCAspects.TERRA, 1)
-            .addAspect(TCAspects.VENENUM, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadDiaminodiphenylmethanMixture() {
-        return new MaterialBuilder().setName("DiaminodiphenylmethanMixture")
-            .setDefaultLocalName("Diaminodiphenylmethane Mixture")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeYellow)
-            .setARGB(0x00fff37a)
-            .addCell()
-            .addFluid()
-            .setMeltingPoint(365)
-            .addMaterial(Materials.Carbon, 13)
-            .addMaterial(Materials.Hydrogen, 14)
-            .addMaterial(Materials.Nitrogen, 2)
-            .addAspect(TCAspects.AQUA, 1)
-            .addAspect(TCAspects.VENENUM, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadDiphenylmethaneDiisocyanateMixture() {
-        return new MaterialBuilder().setName("DiphenylmethaneDiisocyanateMixture")
-            .setDefaultLocalName("Diphenylmethane Diisocyanate Mixture")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeYellow)
-            .setARGB(0x00ffe632)
-            .addCell()
-            .addFluid()
-            .setMeltingPoint(310)
-            .addMaterial(Materials.Carbon, 15)
-            .addMaterial(Materials.Hydrogen, 10)
-            .addMaterial(Materials.Nitrogen, 2)
-            .addMaterial(Materials.Oxygen, 2)
-            .addAspect(TCAspects.AQUA, 1)
-            .addAspect(TCAspects.VENENUM, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadButyraldehyde() {
-        return new MaterialBuilder().setName("Butyraldehyde")
-            .setDefaultLocalName("Butyraldehyde")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeWhite)
-            .addCell()
-            .addFluid()
-            .setMeltingPoint(176)
-            .addMaterial(Materials.Carbon, 4)
-            .addMaterial(Materials.Hydrogen, 8)
-            .addMaterial(Materials.Oxygen, 1)
-            .addAspect(TCAspects.AQUA, 1)
-            .addAspect(TCAspects.IGNIS, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadIsobutyraldehyde() {
-        return new MaterialBuilder().setName("Isobutyraldehyde")
-            .setDefaultLocalName("Isobutyraldehyde")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeWhite)
-            .addCell()
-            .addFluid()
-            .setMeltingPoint(208)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Carbon, 4)
-            .addMaterial(Materials.Hydrogen, 8)
-            .addMaterial(Materials.Oxygen, 1)
-            .addAspect(TCAspects.AQUA, 1)
-            .addAspect(TCAspects.IGNIS, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadNickelTetracarbonyl() {
-        return new MaterialBuilder().setName("NickelTetracarbonyl")
-            .setDefaultLocalName("Nickel Tetracarbonyl")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeWhite)
-            .addCell()
-            .addFluid()
-            .setMeltingPoint(256)
-            .addMaterial(Materials.Carbon, 4)
-            .addMaterial(Materials.Nickel, 1)
-            .addMaterial(Materials.Oxygen, 4)
-            .addAspect(TCAspects.AQUA, 1)
-            .addAspect(TCAspects.METALLUM, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadKevlarCatalyst() {
-        return new MaterialBuilder().setName("PolyurethaneCatalystADust")
-            .setDefaultLocalName("Polyurethane Catalyst A")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeBlack)
-            .setARGB(0x00323232)
-            .addDustItems()
-            .setMeltingPoint(300)
-            .addAspect(TCAspects.AQUA, 1)
-            .addAspect(TCAspects.LUCRUM, 1)
-            .constructMaterial();
+        Materials.PhosgenatedMDIMixture = loadPhosgenatedMDIMixture();
+        Materials.MethyleneDiphenylDiisocyanate = loadMethyleneDiphenylDiisocyanate();
     }
 
     private static Materials loadEthyleneOxide() {
@@ -14931,19 +14787,6 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 1)
             .addAspect(TCAspects.AQUA, 1)
             .addAspect(TCAspects.IGNIS, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadSiliconOil() {
-        return new MaterialBuilder().setName("SiliconOil")
-            .setDefaultLocalName("Silicon Oil")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeWhite)
-            .addCell()
-            .addFluid()
-            .setMeltingPoint(473)
-            .addAspect(TCAspects.AQUA, 1)
-            .addAspect(TCAspects.MACHINA, 1)
             .constructMaterial();
     }
 
@@ -14963,37 +14806,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadAcetaldehyde() {
-        return new MaterialBuilder().setName("Acetaldehyde")
-            .setDefaultLocalName("Acetaldehyde")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeWhite)
-            .addCell()
-            .addGas()
-            .setMeltingPoint(150)
-            .addMaterial(Materials.Carbon, 2)
-            .addMaterial(Materials.Hydrogen, 4)
-            .addMaterial(Materials.Oxygen, 1)
-            .addAspect(TCAspects.AQUA, 1)
-            .addAspect(TCAspects.IGNIS, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadPentaerythritol() {
-        return new MaterialBuilder().setName("Pentaerythritol")
-            .setDefaultLocalName("Pentaerythritol")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeWhite)
-            .addDustItems()
-            .setMeltingPoint(533)
-            .addMaterial(Materials.Carbon, 5)
-            .addMaterial(Materials.Hydrogen, 12)
-            .addMaterial(Materials.Oxygen, 4)
-            .addAspect(TCAspects.TERRA, 1)
-            .addAspect(TCAspects.LUCRUM, 1)
-            .constructMaterial();
-    }
-
     private static Materials loadPolyurethaneResin() {
         return new MaterialBuilder().setName("PolyurethaneResin")
             .setDefaultLocalName("Polyurethane Resin")
@@ -15005,30 +14817,13 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadNMethylIIPyrrolidone() {
-        return new MaterialBuilder().setName("NMethylpyrolidone")
-            .setDefaultLocalName("N-Methyl-2-pyrrolidone")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeWhite)
-            .addCell()
-            .addFluid()
-            .setMeltingPoint(249)
-            .addMaterial(Materials.Carbon, 5)
-            .addMaterial(Materials.Hydrogen, 9)
-            .addMaterial(Materials.Nitrogen, 1)
-            .addMaterial(Materials.Oxygen, 1)
-            .addAspect(TCAspects.TERRA, 1)
-            .addAspect(TCAspects.VENENUM, 1)
-            .constructMaterial();
-    }
-
     private static Materials loadTerephthaloylChloride() {
         return new MaterialBuilder().setName("TerephthaloylChloride")
             .setDefaultLocalName("Terephthaloyl Chloride")
             .setIconSet(TextureSet.SET_POWDER)
             .setColor(Dyes.dyeGreen)
             .setARGB(0x0000ff0c)
-            .addDustItems()
+            .addFluid()
             .setMeltingPoint(355)
             .addMaterial(Materials.Carbon, 8)
             .addMaterial(Materials.Hydrogen, 4)
@@ -15036,20 +14831,6 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 2)
             .addAspect(TCAspects.TERRA, 1)
             .addAspect(TCAspects.VITREUS, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadAcetylene() {
-        // TODO: Add to JUPITER Athmosphere and Enceladus and to moon of Saturn
-        return new MaterialBuilder().setName("Acetylene")
-            .setDefaultLocalName("Acetylene")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeWhite)
-            .addCell()
-            .addGas()
-            .setMeltingPoint(192)
-            .addMaterial(Materials.Carbon, 2)
-            .addMaterial(Materials.Hydrogen, 2)
             .constructMaterial();
     }
 
@@ -15077,73 +14858,13 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_POWDER)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00fbec5d)
-            .addDustItems()
+            .addFluid()
             .setMeltingPoint(293)
             .addMaterial(Materials.Carbon, 6)
             .addMaterial(Materials.Hydrogen, 8)
             .addMaterial(Materials.Nitrogen, 2)
             .addAspect(TCAspects.TERRA, 1)
             .addAspect(TCAspects.VITREUS, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadMethylamine() {
-        return new MaterialBuilder().setName("Methylamine")
-            .setDefaultLocalName("Methylamine")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeGray)
-            .setARGB(0x00414469)
-            .addCell()
-            .addGas()
-            .setMeltingPoint(180)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Carbon, 1)
-            .addMaterial(Materials.Hydrogen, 5)
-            .addMaterial(Materials.Nitrogen, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadTrimethylamine() {
-        return new MaterialBuilder().setName("Trimethylamine")
-            .setDefaultLocalName("Trimethylamine")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeGray)
-            .setARGB(0x00694469)
-            .addCell()
-            .addGas()
-            .setMeltingPoint(156)
-            .addElectrolyzerRecipe()
-            .addMaterial(Materials.Carbon, 3)
-            .addMaterial(Materials.Hydrogen, 9)
-            .addMaterial(Materials.Nitrogen, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadGammaButyrolactone() {
-        return new MaterialBuilder().setName("GammaButyrolactone")
-            .setDefaultLocalName("gamma-Butyrolactone")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeYellow)
-            .setARGB(0x00ffff97)
-            .addCell()
-            .addFluid()
-            .setMeltingPoint(229)
-            .addMaterial(Materials.Carbon, 4)
-            .addMaterial(Materials.Hydrogen, 6)
-            .addMaterial(Materials.Oxygen, 2)
-            .constructMaterial();
-    }
-
-    private static Materials loadCalciumCarbide() {
-        return new MaterialBuilder().setName("CacliumCarbide")
-            .setDefaultLocalName("Calcium Carbide")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeGray)
-            .setARGB(0x00ebebeb)
-            .addDustItems()
-            .setMeltingPoint(2430)
-            .addMaterial(Materials.Calcium, 1)
-            .addMaterial(Materials.Carbon, 2)
             .constructMaterial();
     }
 
@@ -15159,100 +14880,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadIIButinIIVdiol() {
-        return new MaterialBuilder().setName("2Butin14diol")
-            .setDefaultLocalName("2-Butin-1,4-diol")
-            .setIconSet(TextureSet.SET_POWDER)
-            .setColor(Dyes.dyeYellow)
-            .setARGB(0x00f7f7b4)
-            .addDustItems()
-            .setMeltingPoint(331)
-            .addMaterial(Materials.Carbon, 4)
-            .addMaterial(Materials.Hydrogen, 6)
-            .addMaterial(Materials.Oxygen, 2)
-            .constructMaterial();
-    }
-
-    private static Materials loadNickelAluminide() {
-        return new MaterialBuilder().setName("NickelAluminide")
-            .setDefaultLocalName("Nickel Aluminide")
-            .setIconSet(TextureSet.SET_METALLIC)
-            .setColor(Dyes.dyeGray)
-            .setARGB(0x00e6e6e6)
-            .addDustItems()
-            .addMetalItems()
-            .setMeltingPoint(1_668)
-            .setBlastFurnaceTemp(1_668)
-            .setBlastFurnaceRequired(true)
-            .setAutoGenerateBlastFurnaceRecipes(false)
-            .addMaterial(Materials.Nickel, 1)
-            .addMaterial(Materials.Aluminium, 3)
-            .constructMaterial();
-    }
-
-    private static Materials loadRaneyNickelActivated() {
-        return new MaterialBuilder().setName("RaneyNickelActivated")
-            .setDefaultLocalName("Raney Nickel")
-            .setIconSet(TextureSet.SET_POWDER)
-            .setColor(Dyes.dyeGray)
-            .setARGB(0x00e6e6e6)
-            .addDustItems()
-            .setMeltingPoint(1_955)
-            .addMaterial(Materials.Nickel, 1)
-            .addMaterial(Materials.Aluminium, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadBismuthIIIOxide() {
-        return new MaterialBuilder().setName("BismuthIIIOxide")
-            .setDefaultLocalName("Bismuth Oxide")
-            .setIconSet(TextureSet.SET_POWDER)
-            .setColor(Dyes.dyeBlack)
-            .setARGB(0x00323232)
-            .addDustItems()
-            .setMeltingPoint(1090)
-            .addMaterial(Materials.Bismuth, 2)
-            .addMaterial(Materials.Oxygen, 3)
-            .constructMaterial();
-    }
-
-    private static Materials loadThionylChloride() {
-        // SOCl2
-        return new MaterialBuilder().setName("ThionylChloride")
-            .setDefaultLocalName("Thionyl Chloride")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeWhite)
-            .addCell()
-            .addFluid()
-            .constructMaterial();
-    }
-
-    private static Materials loadSulfurDichloride() {
-        // SCl2
-        return new MaterialBuilder().setName("SulfurDichloride")
-            .setDefaultLocalName("Sulfur Dichloride")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeRed)
-            .setARGB(0x00c80000)
-            .addCell()
-            .addFluid()
-            .constructMaterial();
-    }
-
-    private static Materials loadDimethylTerephthalate() {
-        return new MaterialBuilder().setName("DimethylTerephthalate")
-            .setDefaultLocalName("Dimethyl Terephthalate")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeWhite)
-            .addCell()
-            .addFluid()
-            .setMeltingPoint(415)
-            .addMaterial(Materials.Carbon, 10)
-            .addMaterial(Materials.Hydrogen, 10)
-            .addMaterial(Materials.Oxygen, 4)
-            .constructMaterial();
-    }
-
     private static Materials loadKevlar() {
         return new MaterialBuilder().setName("Kevlar")
             .setDefaultLocalName("Kevlar")
@@ -15261,11 +14888,11 @@ public class MaterialsInit {
             .setARGB(0x00f0f078)
             .addDustItems()
             .addMetalItems()
-            .addGearItems()
             .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STRETCHY)
+            .addSubTag(SubTag.NO_RECIPES)
             .constructMaterial();
     }
 
@@ -15280,6 +14907,20 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 8)
             .addMaterial(Materials.Hydrogen, 6)
             .addMaterial(Materials.Oxygen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadHexachloroxylene() {
+        return new MaterialBuilder().setName("Hexachloroxylene")
+            .setDefaultLocalName("Hexachloroxylene")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addFluid()
+            .setMeltingPoint(480)
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Chlorine, 6)
             .constructMaterial();
     }
 
@@ -15313,21 +14954,6 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadCobaltIINaphthenate() {
-        return new MaterialBuilder().setName("Cobalt(II)Naphthenate")
-            .setDefaultLocalName("Cobalt II Naphthenate")
-            .setIconSet(TextureSet.SET_DULL)
-            .setColor(Dyes.dyeBrown)
-            .setARGB(0x008f5f27)
-            .addDustItems()
-            .setMeltingPoint(413)
-            .addMaterial(Materials.Cobalt, 1)
-            .addMaterial(Materials.Carbon, 22)
-            .addMaterial(Materials.Hydrogen, 14)
-            .addMaterial(Materials.Oxygen, 4)
-            .constructMaterial();
-    }
-
     private static Materials loadNaphthenicAcid() {
         return new MaterialBuilder().setName("NaphthenicAcid")
             .setDefaultLocalName("Naphthenic Acid")
@@ -15339,48 +14965,94 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadCobaltIIHydroxide() {
-        return new MaterialBuilder().setName("CobaltIIHydroxide")
-            .setDefaultLocalName("Cobalt II Hydroxide")
-            .setChemicalFormula("Co(OH)₂")
-            .setIconSet(TextureSet.SET_POWDER)
-            .setColor(Dyes.dyePurple)
-            .setARGB(0x00e58cef)
+    private static Materials loadPhosphorusTrichloride() {
+        return new MaterialBuilder().setName("PhosphorusTrichloride")
+            .setDefaultLocalName("Phosphorus Trichloride")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addFluid()
             .addDustItems()
-            .setMeltingPoint(441)
-            .addMaterial(Materials.Cobalt, 1)
-            .addMaterial(Materials.Hydrogen, 2)
+            .setMeltingPoint(179)
+            .addMaterial(Materials.Phosphorus, 1)
+            .addMaterial(Materials.Chlorine, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadPhosgenatedMDIMixture() {
+        return new MaterialBuilder().setName("PhosgenatedMDIMixture")
+            .setDefaultLocalName("Phosgenated MDI Mixture")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .addCell()
+            .addFluid()
+            .addDustItems()
+            .setMeltingPoint(179)
+            .addMaterial(Materials.Carbon, 15)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Nitrogen, 2)
             .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
-    private static Materials loadCobaltIIAcetate() {
-        return new MaterialBuilder().setName("Cobalt(II)Acetate")
-            .setDefaultLocalName("Cobalt II Acetate")
-            .setIconSet(TextureSet.SET_POWDER)
-            .setColor(Dyes.dyePurple)
-            .setARGB(0x00dba2e5)
+    private static Materials loadMethyleneDiphenylDiisocyanate() {
+        return new MaterialBuilder().setName("MethyleneDiphenylDiisocyanate")
+            .setDefaultLocalName("Methylene Diphenyl Diisocyanate")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .addCell()
+            .addFluid()
             .addDustItems()
-            .setMeltingPoint(413)
-            .addMaterial(Materials.Carbon, 4)
-            .addMaterial(Materials.Hydrogen, 6)
-            .addMaterial(Materials.Cobalt, 1)
-            .addMaterial(Materials.Oxygen, 4)
+            .setMeltingPoint(179)
+            .addMaterial(Materials.Carbon, 15)
+            .addMaterial(Materials.Hydrogen, 10)
+            .addMaterial(Materials.Nitrogen, 2)
+            .addMaterial(Materials.Oxygen, 2)
             .constructMaterial();
     }
 
-    private static Materials loadCobaltIINitrate() {
-        return new MaterialBuilder().setName("Cobalt(II)Nitrate")
-            .setDefaultLocalName("Cobalt II Nitrate")
-            .setChemicalFormula("Co(NO₃)₂")
-            .setIconSet(TextureSet.SET_POWDER)
-            .setColor(Dyes.dyeRed)
-            .setARGB(0x00aa0000)
-            .addDustItems()
-            .setMeltingPoint(373)
-            .addMaterial(Materials.Cobalt, 1)
-            .addMaterial(Materials.Nitrogen, 2)
-            .addMaterial(Materials.Oxygen, 6)
+    private static void loadnButyllithium() {
+        Materials.Butyraldehyde = loadButyraldehyde();
+        Materials.Isobutyraldehyde = loadIsobutyraldehyde();
+        Materials.SodiumBorohydride = loadSodiumBorohydride();
+        Materials.SodiumHydride = loadSodiumHydride();
+        Materials.SodiumMethoxide = loadSodiumMethoxide();
+        Materials.TrimethylBorate = loadTrimethylBorate();
+        Materials.RhodiumChloride = loadRhodiumChloride();
+        Materials.Triphenylphosphene = loadTriphenylphosphene();
+        Materials.OrganorhodiumCatalyst = loadOrganorhodiumCatalyst();
+    }
+
+    private static Materials loadButyraldehyde() {
+        return new MaterialBuilder().setName("Butyraldehyde")
+            .setDefaultLocalName("Butyraldehyde")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addFluid()
+            .setMeltingPoint(176)
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIsobutyraldehyde() {
+        return new MaterialBuilder().setName("Isobutyraldehyde")
+            .setDefaultLocalName("Isobutyraldehyde")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addFluid()
+            .setMeltingPoint(208)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
             .constructMaterial();
     }
 
@@ -15433,20 +15105,6 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 18)
             .addMaterial(Materials.Hydrogen, 15)
             .addMaterial(Materials.Phosphorus, 1)
-            .constructMaterial();
-    }
-
-    private static Materials loadPhosphorusTrichloride() {
-        return new MaterialBuilder().setName("PhosphorusTrichloride")
-            .setDefaultLocalName("Phosphorus Trichloride")
-            .setIconSet(TextureSet.SET_FLUID)
-            .setColor(Dyes.dyeWhite)
-            .addCell()
-            .addFluid()
-            .addDustItems()
-            .setMeltingPoint(179)
-            .addMaterial(Materials.Phosphorus, 1)
-            .addMaterial(Materials.Chlorine, 3)
             .constructMaterial();
     }
 
