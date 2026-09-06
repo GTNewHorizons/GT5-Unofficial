@@ -32,21 +32,26 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
     protected ResourceLocation iconResource, iconFallbackResource;
     protected ResourceLocation iconOverlayResource, iconOverlayFallbackResource;
 
-    private GTTextureSetBlockIconContainer(@NotNull Pair<String, String> pair) {
-        this(pair.getLeft(), pair.getRight(), null);
+    private GTTextureSetBlockIconContainer(@NotNull String domain, @NotNull Pair<String, String> pair) {
+        this(domain, pair.getLeft(), pair.getRight(), null);
     }
 
-    private GTTextureSetBlockIconContainer(@NotNull String setName, @NotNull String prefix,
+    private GTTextureSetBlockIconContainer(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
         @Nullable IIconRegister override) {
-        this.iconName = createIconName(setName, prefix);
-        this.fallbackIconName = createIconName(TextureSetFallback, prefix);
-        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(iconName);
-        iconFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(fallbackIconName);
+        String iconPath = createIconName(setName, prefix);
+        String fallbackIconPath = createIconName(TextureSetFallback, prefix);
+        this.iconName = ResourceUtils.getIconRegisterName(domain, iconPath);
+        this.fallbackIconName = ResourceUtils.getIconRegisterName(domain, fallbackIconPath);
+        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, iconPath);
+        iconFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, fallbackIconPath);
 
-        this.iconOverlayName = createIconName(setName, prefix + OverlaySuffix);
-        this.fallbackIconOverlayName = createIconName(TextureSetFallback, prefix + OverlaySuffix);
-        iconOverlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(iconOverlayName);
-        iconOverlayFallbackResource = ResourceUtils.getCompleteBlockTextureResourceLocation(fallbackIconOverlayName);
+        String iconOverlayPath = createIconName(setName, prefix + OverlaySuffix);
+        String fallbackIconOverlayPath = createIconName(TextureSetFallback, prefix + OverlaySuffix);
+        this.iconOverlayName = ResourceUtils.getIconRegisterName(domain, iconOverlayPath);
+        this.fallbackIconOverlayName = ResourceUtils.getIconRegisterName(domain, fallbackIconOverlayPath);
+        iconOverlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, iconOverlayPath);
+        iconOverlayFallbackResource = ResourceUtils
+            .getCompleteBlockTextureResourceLocation(domain, fallbackIconOverlayPath);
 
         if (override != null) {
             run(override);
@@ -59,12 +64,13 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
     // 2026-13-05: Counted 1782 unique Block TextureSetIcons, so 2.5K will avoid resize until 1920 entries
     private static Map<Pair<String, String>, IIconContainer> INSTANCES = new HashMap<>(2520);
 
-    public static @NotNull IIconContainer create(@NotNull String setName, @NotNull String prefix,
-        IIconRegister override) {
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String setName,
+        @NotNull String prefix, IIconRegister override) {
         if (override != null) {
-            return new GTTextureSetBlockIconContainer(setName, prefix, override);
+            return new GTTextureSetBlockIconContainer(domain, setName, prefix, override);
         }
-        return INSTANCES.computeIfAbsent(Pair.of(setName, prefix), GTTextureSetBlockIconContainer::new);
+        return INSTANCES
+            .computeIfAbsent(Pair.of(setName, prefix), key -> new GTTextureSetBlockIconContainer(domain, key));
     }
 
     public static void cleanup() {

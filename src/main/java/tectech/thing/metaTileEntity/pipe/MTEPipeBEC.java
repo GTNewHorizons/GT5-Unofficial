@@ -65,8 +65,8 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
                 .toArray(GTValues.emptyStringArray));
     }
 
-    private static final ImmutableColor BACKGROUND = RGBColor.fromRGB(0xd3ebed);
-    private static final ImmutableColor BASE_FG = RGBColor.fromRGB(0x3d3e41);
+    private static final ImmutableColor BACKGROUND = RGBColor.fromRGB(0x26252e);
+    private static final ImmutableColor BASE_FG = RGBColor.fromRGB(0xdee6e6);
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity base, ForgeDirection side, int aConnections, int colorIndex,

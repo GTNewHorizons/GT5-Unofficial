@@ -531,3 +531,5 @@ gt.blockmachines.largefusioncomputer5.name=Компьютер компактно
 gt.blockmachines.neutronactivator.name=Нейтронный активатор
 gt.blockmachines.preciseassembler.name=Прецизионный авто-сборщик MT-3662
 gt.blockmachines.yottafluidtank.name=YOTТанк
+gt.blockmachines.neutron_accelerator.name=%s Ускоритель нейтронов
+gt.blockmachines.neutron_accelerator.desc=Введите энергию для ускорения нейтронов!\nМакс. потребление: %s EU/t\nEU преобразуется в 10-20 eV кинетическую энергию нейтронов.

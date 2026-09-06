@@ -15,6 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -23,6 +24,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.factory.IVacuumStora
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import it.unimi.dsi.fastutil.Pair;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor implements IVacuumStorage {
 
     public MTEHatchVacuumConveyorOutput(int aID, String aName, String aNameRegional, int aTier) {
