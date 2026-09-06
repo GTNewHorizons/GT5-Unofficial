@@ -3,6 +3,7 @@ package gtPlusPlus.core.item;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
+import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.BOLT;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FINEWIRE;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FOIL;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.GEAR;
@@ -421,6 +422,9 @@ public final class ModItems {
 
         // Small Gear
         MaterialUtils.generateComponentAndAssignToAMaterial(SMALLGEAR, MaterialsElements.STANDALONE.HYPOGEN);
+
+        // Bolt
+        MaterialUtils.generateComponentAndAssignToAMaterial(BOLT, MaterialsElements.STANDALONE.RHUGNOR);
 
         // Special Sillyness
         new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
