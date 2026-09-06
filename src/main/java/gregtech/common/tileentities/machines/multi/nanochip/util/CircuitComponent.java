@@ -101,23 +101,11 @@ public enum CircuitComponent {
     ProcessedWireShijima(109, "gt.circuitcomponent.processed.wireshijima", () -> WireShijima, true),
     ProcessedWireTairitsu(110, "gt.circuitcomponent.processed.wiretairitsu", () -> WireTairitsu, true),
     ProcessedWireChuritsu(111, "gt.circuitcomponent.processed.wirechuritsu", () -> WireChuritsu, true),
-    EntangledWireShijima(112,"gt.circuitcomponent.processed.entangled.wireshijima", null,true),
-    EntangledWireTairitsu(113,"gt.circuitcomponent.processed.entangled.wiretairitsu", null,true),
-    EntangledWireChuritsu(114,"gt.circuitcomponent.processed.entangled.wirechuritsu", null,true),
-    SettledWireShijima(115,"gt.circuitcomponent.processed.etched.wireshijima",null,true),
-    SettledWireTairitsu(116,"gt.circuitcomponent.processed.etched.wiretairitsu",null,true),
-
 
     ProcessedWireWhiteDwarfMatter(117, "gt.circuitcomponent.processed.wirewhitedwarfmatter", () -> WireWhiteDwarfMatter, true),
     ProcessedWireBlackDwarfMatter(118, "gt.circuitcomponent.processed.wireblackdwarfmatter", () -> WireBlackDwarfMatter, true),
     ProcessedWireUniversium(119, "gt.circuitcomponent.processed.wireuniversium", () -> WireUniversium, true),
-    EntangledWireWhiteDwarfMatter(120,"gt.circuitcomponent.processed.entangled.wirewhitedwarfmatter", null,true),
-    EntangledWireBlackDwarfMatter(121,"gt.circuitcomponent.processed.entangled.wireblackdwarfmatter", null,true),
-    EntangledWireUniversium(122,"gt.circuitcomponent.processed.entangled.wireuniversium", null,true),
-    QuelledWireWhiteDwarfMatter(123,"gt.circuitcomponent.processed.quelled.wirewhitedwarfmatter", ()-> ItemList.Quelled_WDM_Wire.get(1)),// TODO: spinmatron step
-    SettledWireWhiteDwarfMatter(124,"gt.circuitcomponent.processed.settled.wirewhitedwarfmatter", ()-> ItemList.Settled_WDM_Wire.get(1)),
-    QuelledWireBlackDwarfMatter(125,"gt.circuitcomponent.processed.quelled.wireblackdwarfmatter", ()-> ItemList.Quelled_BDM_Wire.get(1)),
-    SettledWireBlackDwarfMatter(126,"gt.circuitcomponent.processed.settled.wireblackdwarfmatter", ()->ItemList.Settled_BDM_Wire.get(1)), // TODO: spinmatron step
+
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
     // 200-209 reserved for normal SMDs, if they are ever needed
@@ -215,9 +203,9 @@ public enum CircuitComponent {
     ProcessedNeuroProcessingUnit(504, "gt.circuitcomponent.processed.neuroprocessingunit", () -> NeuroProcessingUnit, true),
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
     ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
-    CleansedBoardPico(507, "gt.circuitcomponent.processed.board.cleansedpico",()->BoardPico,true),
-    CleansedBoardQuantum(508, "gt.circuitcomponent.processed.board.cleansedquantum",()->BoardQuantum,true),
-    CleansedBoardPlanck(509, "gt.circuitcomponent.processed.board.cleansedplanck",()->BoardPlanck,true),
+    CleansedBoardPico(507, "gt.circuitcomponent.processed.board.cleansedpico",()-> BoardPico,true),
+    CleansedBoardQuantum(508, "gt.circuitcomponent.processed.board.cleansedquantum",()-> BoardQuantum,true),
+    CleansedBoardPlanck(509, "gt.circuitcomponent.processed.board.cleansedplanck",()-> BoardPlanck,true),
 
     // Wafers and chips
     // IDs: 600-699 CC, 700-799 PC
@@ -426,29 +414,54 @@ public enum CircuitComponent {
     ProcessedPicoCircuitCasing(1802, "gt.circuitcomponent.casing.processed.pico", null, true),
     ProcessedQuantumCircuitCasing(1803, "gt.circuitcomponent.casing.processed.quantum", null, true),
     ProcessedPlanckCircuitCasing(1804, "gt.circuitcomponent.casing.processed.planck", null, true),
-    ProcessedCoiledThermalSuperconductor(1805, "gt.circuitcomponent.other.processed.coiledthermalsuperconductor", null, true),
+    ProcessedCoiledThermalSuperconductor(1805, "gt.circuitcomponent.planck.processed.coiledthermalsuperconductor", null, true),
     ProcessedCircuitOpticalProcessor(1806,"gt.circuitcomponent.circuit.processed.opticalprocessor", null, true),
     ProcessedCircuitOpticalAssembly(1807,"gt.circuitcomponent.circuit.processed.opticalassembly", null, true),
     ProcessedCircuitOpticalComputer(1808,"gt.circuitcomponent.circuit.processed.opticalcomputer", null, true),
     ProcessedCircuitOpticalMainframe(1809,"gt.circuitcomponent.circuit.processed.opticalmainframe", null, true),
+
     // Pico Chain
-    ProcessedEtchedOptical(1810,"gt.circuitcomponent.specialty.processed.etchedoptical",null,true),
-    PicoCPU(1811,"gt.circuitcomponent.specialty.processed.picocpu",null,true),
+    OpticalMainframeRack(1810,"gt.circuitcomponent.pico.processed.opticalmainframerack",null,true),
+    PicoCPU(1811,"gt.circuitcomponent.pico.processed.picocpu",null,true),
+
     //Quantum Chain
-    CompressionResidue(1812, "gt.circuitcomponent.specialty.processed.compressionresidue",null,true),
-    ProcessedOrganizedPicoCircuit(1813,"gt.circuitcomponent.specialty.processed.organizedpico",null,true),
-    ProcessedEtchedPicoCircuits(1814,"gt.circuitcomponent.specialty.processed.etchedpicos",null,true),
-    QuantumCPU(1815,"gt.circuitcomponent.specialty.processed.quantumcpu",null,true),
-    SisterSpool(1816,"gt.circuitcomponent.specialty.processed.sisterspool",null,true),
-    BundledPeace(1817,"gt.circuitcomponent.specialty.processed.bundledpeace",null,true),
+    CompressionResidue(1812, "gt.circuitcomponent.quantum.processed.compressionresidue",null,true),
+    OrganizedPicoCircuit(1813,"gt.circuitcomponent.quantum.processed.organizedpicocircuit",null,true),
+    PicoCircuitRack(1814,"gt.circuitcomponent.quantum.processed.picocircuitrack",null,true),
+    QuantumCPU(1815,"gt.circuitcomponent.quantum.processed.quantumcpu",null,true),
+
+    DisorderlySpool(1816,"gt.circuitcomponent.quantum.processed.disorderlyspool",null,true),
+
+    EntangledSuppressionStrands(1817,"gt.circuitcomponent.quantum.processed.positivewirestrands", null,true),
+    EntangledAnnihilationStrands(1818,"gt.circuitcomponent.quantum.processed.negativewirestrands", null,true),
+    AlienatedStrands(1819,"gt.circuitcomponent.quantum.processed.neutralwirestrands", null,true),
+
+    SilencedStrands(1820,"gt.circuitcomponent.quantum.processed.silencedstrands",null,true),
+    SettledStrands(1821,"gt.circuitcomponent.quantum.processed.settledstrands",null,true),
+
+    BundledUnityWire(1822,"gt.circuitcomponent.quantum.processed.bundledunitywire",null,true),
+
     //Planck Chain
-    CollapsingResidue(1818, "gt.circuitcomponent.specialty.processed.collapsingresidue",null,true),
-    ProcessedOrganizedQuantumCircuit(1819,"gt.circuitcomponent.specialty.processed.organizedquantum",null,true),
-    ProcessedEtchedQuantumCircuits(1820,"gt.circuitcomponent.specialty.processed.etchedquantums",null,true),
-    UnrefinedPlanckCPU(1821,"gt.circuitcomponent.specialty.processed.unrefinedplanckcpu",null,true),
-    PlanckCPU(1822,"gt.circuitcomponent.specialty.processed.sisterspool",()->ItemList.Planck_CPU.get(1)),
-    BundledHarmony(1823,"gt.circuitcomponent.specialty.processed.bundledharmony",null,true),
-    CalabiYauManifold(1824,"gt.circuitcomponent.specialty.processed.calabiyaumanifold", ()->ItemList.CalabiYauManifold.get(1)),
+    CollapsingResidue(1823, "gt.circuitcomponent.planck.processed.collapsingresidue",null,true),
+    OrganizedQuantumCircuit(1824,"gt.circuitcomponent.planck.processed.organizedquantumcircuit",null,true),
+    LostQuantumCircuitRack(1825,"gt.circuitcomponent.planck.processed.lostquantumcircuitrack", () -> ItemList.LostQuantumCircuitRack.get(1)),
+    RealizedQuantumCircuitRack(1826,"gt.circuitcomponent.planck.processed.realizedquantumcircuitrack", () -> ItemList.RealizedQuantumCircuitRack.get(1)),
+    PlanckCPU(1827,"gt.circuitcomponent.planck.processed.planckcpu",null,true),
+
+    SupermassiveSpool(1828,"gt.circuitcomponent.planck.processed.supermassivespool", null,true),
+
+    MicrocosmicStrands(1829,"gt.circuitcomponent.planck.processed.microcosmstrands", null,true),
+    MacrocosmicStrands(1830,"gt.circuitcomponent.planck.processed.macrocosmstrands", () -> ItemList.MacrocosmicStrands.get(1)),
+    CosmologicalStrands(1831,"gt.circuitcomponent.planck.processed.cosmologicalstrands", null,true),
+
+    IsolatedWhiteDwarfMatterStrands(1832,"gt.circuitcomponent.planck.processed.isolatedwdmstrands", () -> ItemList.IsolatedWDMStrands.get(1)),
+    ReboundWhiteDwarfMatterStrands(1833,"gt.circuitcomponent.planck.processed.reboundwdmstrands", () -> ItemList.ReboundWDMStrands.get(1)),
+    IsolatedBlackDwarfMatterStrands(1834,"gt.circuitcomponent.planck.processed.isolatedbdmstrands", () -> ItemList.IsolatedBDMStrands.get(1)),
+    ReboundBlackDwarfMatterStrands(1835,"gt.circuitcomponent.planck.processed.reboundbdmstrands", null,true),
+
+    BundledStellarHarmonyWire(1836,"gt.circuitcomponent.planck.processed.bundledharmony",null,true),
+
+    CalabiYauManifold(1837,"gt.circuitcomponent.planck.processed.calabiyaumanifold", ()->ItemList.CalabiYauManifold.get(1)),
 
     // Bolts and other small components
     // IDs: 1900-1999 CC, 2000-2099 PC
@@ -527,9 +540,9 @@ public enum CircuitComponent {
     ScrewEnrichedNaquadahAlloy(1918, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.screw,1)),
     ScrewQuantum(1919, "gt.circuitcomponent.screw.quantum", ()-> MaterialsAlloy.QUANTUM.getScrew(1)),
     ScrewEternity(1920, "gt.circuitcomponent.screw.eternity", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
-    ScrewRhugnor(1921, "gt.circuitcomponent.screw.rhugnor", ()-> MaterialsElements.STANDALONE.RHUGNOR.getScrew(1)),
-    ScrewMetastableOganesson(1922, "gt.circuitcomponent.screw.metastableoganesson", ()-> GGMaterial.metastableOganesson.get(OrePrefixes.screw,1)),
-    ScrewHexanite(1923, "gt.circuitcomponent.screw.hexanite", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Hexanite, 1)),
+    BoltRhugnor(1921, "gt.circuitcomponent.bolt.rhugnor", ()-> MaterialsElements.STANDALONE.RHUGNOR.getBolt(1)),
+    BoltMetastableOganesson(1922, "gt.circuitcomponent.bolt.metastableoganesson", ()-> GGMaterial.metastableOganesson.get(OrePrefixes.bolt,1)),
+    BoltHexanite(1923, "gt.circuitcomponent.bolt.hexanite", ()-> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Hexanite, 1)),
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
@@ -622,10 +635,10 @@ public enum CircuitComponent {
         2118,
         "gt.circuitcomponent.planckcircuit",
         () -> getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
-    PlanckManifold(
+    RawManifoldBud(
         2119,
-        "gt.circuitcomponent.planckmanifold",
-        () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE),
+        "gt.circuitcomponent.rawmanifoldbud",
+        () -> ItemList.RawManifoldBud.get(1), CircuitCalibration.NONE),
     ;
 
     static {

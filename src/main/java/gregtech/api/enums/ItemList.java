@@ -3129,13 +3129,18 @@ public enum ItemList implements IItemContainer {
     FirewallProjectionNanochipCasing,
     ComplexNanochipGlass,
     Gravitational_Lens,
-    Planck_Manifold,
-    Planck_CPU,
-    Quelled_WDM_Wire,
-    Settled_WDM_Wire,
-    Quelled_BDM_Wire,
-    Settled_BDM_Wire,
+
     CalabiYauManifold,
+    RawManifoldBud,
+    BlossomingManifoldBud,
+
+    IsolatedWDMStrands,
+    ReboundWDMStrands,
+    MacrocosmicStrands,
+    IsolatedBDMStrands,
+
+    LostQuantumCircuitRack,
+    RealizedQuantumCircuitRack,
 
     CultureNullBioCulture,
     CultureSaccharomycesCerevisiae,

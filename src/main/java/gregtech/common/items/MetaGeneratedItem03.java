@@ -30,7 +30,9 @@ import static gregtech.common.items.IDMetaItem03.Armor_Chip_T1;
 import static gregtech.common.items.IDMetaItem03.Armor_Chip_T2;
 import static gregtech.common.items.IDMetaItem03.Armor_Chip_T3;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
+import static gregtech.common.items.IDMetaItem03.Blossoming_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
+import static gregtech.common.items.IDMetaItem03.Calabi_Yau_Manifold;
 import static gregtech.common.items.IDMetaItem03.Circuit_AdvancedIntegrated;
 import static gregtech.common.items.IDMetaItem03.Circuit_BasicElectronic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
@@ -224,11 +226,15 @@ import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_TERRIT
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_UNLIGHT;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_WINTER;
 import static gregtech.common.items.IDMetaItem03.Intensely_Bonded_Netherite_Nanoparticles;
+import static gregtech.common.items.IDMetaItem03.Isolated_BDM_Strands;
+import static gregtech.common.items.IDMetaItem03.Isolated_WDM_Strands;
 import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
+import static gregtech.common.items.IDMetaItem03.Lost_Quantum_Circuit_Rack;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MAX_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
+import static gregtech.common.items.IDMetaItem03.Macrocosmic_Strands;
 import static gregtech.common.items.IDMetaItem03.Manafly;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_ElectrograviticValve1;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_ElectrograviticValve2;
@@ -267,7 +273,6 @@ import static gregtech.common.items.IDMetaItem03.Optical_Cpu_Containment_Housing
 import static gregtech.common.items.IDMetaItem03.Optically_Compatible_Memory;
 import static gregtech.common.items.IDMetaItem03.Optically_Perfected_CPU;
 import static gregtech.common.items.IDMetaItem03.Phononic_Seed_Crystal;
-import static gregtech.common.items.IDMetaItem03.Planck_Manifold;
 import static gregtech.common.items.IDMetaItem03.Prismarine_Precipitate;
 import static gregtech.common.items.IDMetaItem03.Prismatic_Crystal;
 import static gregtech.common.items.IDMetaItem03.PseudoStar;
@@ -280,6 +285,9 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
+import static gregtech.common.items.IDMetaItem03.Raw_Manifold_Bud;
+import static gregtech.common.items.IDMetaItem03.Realized_Quantum_Circuit_Rack;
+import static gregtech.common.items.IDMetaItem03.Rebound_WDM_Strands;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.StableBaryonContainmentUnit;
@@ -1957,13 +1965,62 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Gravitational_Lens.ID,
                 "gt.item.gravitational_lens.name",
                 "gt.item.gravitational_lens.tooltip"));
-        ItemList.Planck_Manifold
+
+        // Planck Circuit Manifold Chain
+        ItemList.CalabiYauManifold
             .set(
                 addItemWithLocalizationKeys(
-                    Planck_Manifold.ID,
-                    "gt.item.planck_manifold.name",
-                    "gt.item.planck_manifold.tooltip"))
+                    Calabi_Yau_Manifold.ID,
+                    "gt.item.calabi_yau_manifold.name",
+                    "gt.item.calabi_yau_manifold.tooltip"))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.RawManifoldBud
+            .set(
+                addItemWithLocalizationKeys(
+                    Raw_Manifold_Bud.ID,
+                    "gt.item.raw_manifold_bud.name",
+                    "gt.item.raw_manifold_bud.tooltip"))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.BlossomingManifoldBud
+            .set(
+                addItemWithLocalizationKeys(
+                    Blossoming_Manifold_Bud.ID,
+                    "gt.item.blossoming_manifold_bud.name",
+                    "gt.item.blossoming_manifold_bud.tooltip"))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+
+        // Planck Wire Chain
+        ItemList.IsolatedWDMStrands.set(
+            addItemWithLocalizationKeys(
+                Isolated_WDM_Strands.ID,
+                "gt.item.isolated_wdm_strands.name",
+                "gt.item.isolated_wdm_strands.tooltip"));
+        ItemList.ReboundWDMStrands.set(
+            addItemWithLocalizationKeys(
+                Rebound_WDM_Strands.ID,
+                "gt.item.rebound_wdm_strands.name",
+                "gt.item.rebound_wdm_strands.tooltip"));
+        ItemList.MacrocosmicStrands.set(
+            addItemWithLocalizationKeys(
+                Macrocosmic_Strands.ID,
+                "gt.item.macrocosmic_strands.name",
+                "gt.item.macrocosmic_strands.tooltip"));
+        ItemList.IsolatedBDMStrands.set(
+            addItemWithLocalizationKeys(
+                Isolated_BDM_Strands.ID,
+                "gt.item.isolated_bdm_strands.name",
+                "gt.item.isolated_bdm_strands.tooltip"));
+        // Planck CPU Chain
+        ItemList.LostQuantumCircuitRack.set(
+            addItemWithLocalizationKeys(
+                Lost_Quantum_Circuit_Rack.ID,
+                "gt.item.lost_quantum_circuit_rack.name",
+                "gt.item.lost_quantum_circuit_rack.tooltip"));
+        ItemList.RealizedQuantumCircuitRack.set(
+            addItemWithLocalizationKeys(
+                Realized_Quantum_Circuit_Rack.ID,
+                "gt.item.realized_quantum_circuit_rack.name",
+                "gt.item.realized_quantum_circuit_rack.tooltip"));
 
         registerMetaMaterials();
 

@@ -227,7 +227,19 @@ public enum IDMetaItem03 {
     Circuit_Chip_PlPIC(275),
     Circuit_Silicon_Wafer8(276),
     Gravitational_Lens(277),
-    Planck_Manifold(278),
+
+    Calabi_Yau_Manifold(278),
+    Raw_Manifold_Bud(279),
+    Blossoming_Manifold_Bud(280),
+
+    Isolated_WDM_Strands(281),
+    Rebound_WDM_Strands(282),
+    Macrocosmic_Strands(283),
+    Isolated_BDM_Strands(284),
+
+    Lost_Quantum_Circuit_Rack(285),
+    Realized_Quantum_Circuit_Rack(286),
+
     StableBaryonContainmentUnit(300),
     StableLeptonContainmentUnit(301),
     StableMesonContainmentUnit(302),
