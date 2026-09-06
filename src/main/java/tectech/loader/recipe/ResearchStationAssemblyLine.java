@@ -2286,7 +2286,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { CHRONOMATIC_GLASS.getFluidStack(384 * INGOTS), Materials.Infinity.getMolten(48 * INGOTS),
                 MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(48 * INGOTS),
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(16 * INGOTS) },
-            ItemList.SuperconductivePlasmaEnergyConduit.get(4),
+            ItemList.CoherencePreservingPlasmaConduit.get(4),
             60 * SECONDS,
             (int) TierEU.RECIPE_UIV);
 

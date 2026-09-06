@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
@@ -7,7 +8,6 @@ import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 
@@ -104,7 +104,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
     @Override
     public IStructureDefinition<MTEBECAssembler> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing);
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
@@ -153,7 +153,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         tt.beginStructureBlock(61, 31, 31, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.controller-pos"))
             .addCasing("1700", FineStructureConstantManipulator.getLocalizedName(), false)
-            .addCasing("1515", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("1515", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
             .addCasing("1444-1458", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("838", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("790", PeaceEnforcementCasing.getLocalizedName(), false)
@@ -181,8 +181,8 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     }
 
     @Override
-    protected ITexture getCasingTexture() {
-        return SuperconductivePlasmaEnergyConduit.getCasingTexture();
+    public ITexture getCasingTexture() {
+        return CoherencePreservingPlasmaConduit.getCasingTexture();
     }
 
     @Override
