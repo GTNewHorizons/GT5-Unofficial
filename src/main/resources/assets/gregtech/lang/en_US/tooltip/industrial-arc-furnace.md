@@ -17,4 +17,5 @@ Only furnace-smeltable ores, no blasting
 If queued ore exceeds capacity, startup ends immediately
 If no ores enter for {red:{var:ore_idle_ticks}} ticks, startup ends immediately
 Outputs molten metals
+{gray:{hr}}
 Right-click with Screwdriver to change mode
