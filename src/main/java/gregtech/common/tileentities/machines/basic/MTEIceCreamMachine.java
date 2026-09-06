@@ -137,7 +137,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
     private static final long TICKS_PER_DAY = 24000L;
     /** Minimum/maximum number of successful crafts allowed per day before the machine is set as broken */
     private static final int MIN_DAILY_CRAFTS = 1;
-    private static final int MAX_DAILY_CRAFTS = 8;
+    private static final int MAX_DAILY_CRAFTS = 6;
 
     private static ItemStack[] sRepairItems;
 
