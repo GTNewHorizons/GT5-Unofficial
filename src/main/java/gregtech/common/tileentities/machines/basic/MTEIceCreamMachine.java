@@ -202,9 +202,19 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
 
     /** Requested repair item logic - Consumes on SpecialSlot and fixes the machine */
     private void tryRepair() {
-        if (mRepairItemIndex < 0) return;
         final ItemStack special = getSpecialSlot();
         if (special == null) return;
+
+        // Duct Tape as a universal repair item. Does not bypass requested item
+        if (mRepairItemIndex < 0) {
+            if (GTUtility.areStacksEqual(special, ItemList.Duct_Tape.get(1L), true)) {
+                special.stackSize -= 1;
+                if (special.stackSize <= 0) mInventory[getSpecialSlotIndex()] = null;
+                mBrokenToday = false;
+            }
+            return;
+        }
+
         final ItemStack needed = getRepairItems()[mRepairItemIndex];
         if (special.getItem() != needed.getItem() || special.getItemDamage() != needed.getItemDamage()
             || special.stackSize < needed.stackSize) return;
