@@ -472,6 +472,10 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addCasing("56", "Infinity Block", false)
             .addCasing("9", "Infinity Frame Box", false)
             .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Four"))
+            .addCasing("56", "Block of White Dwarf Matter", false)
+            .addCasing("9", "SpaceTime Frame Box", false)
+            .addStructureInfo("")
             .addStructureFooter("Rotors go in the controller, not the rotor assemblies")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
@@ -606,7 +610,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                amountToDrain = GTUtility.getTier(recipe.mEUt) * 10;
+                amountToDrain = Math.max(1, GTUtility.getTier(recipe.mEUt)) * 10;
                 euMultiplier = 1;
                 if (!checkFluid(5 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
