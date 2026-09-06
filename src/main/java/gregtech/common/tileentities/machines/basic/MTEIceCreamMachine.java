@@ -130,7 +130,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
     }
 
     /** Chance out of 100 that the machine works on that day */
-    private static final int WORK_CHANCE_PERCENT = 30;
+    private static final int WORK_CHANCE_PERCENT = 35;
     /** Chance out of 100 that it also asks for a repair item */
     private static final int REPAIR_REQUEST_CHANCE_PERCENT = 40;
     private static final int BROKEN_TOOLTIP_COUNT = 12;
