@@ -13,6 +13,8 @@
 
 package bartworks.common.tileentities.tiered;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -22,6 +24,7 @@ import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEEnergyDistributor extends MTETransformer {
 
     public MTEEnergyDistributor(int aID, String aName, String aNameRegional, int aTier) {
@@ -92,6 +95,12 @@ public class MTEEnergyDistributor extends MTETransformer {
     @Override
     public long maxEUStore() {
         return 512L + GTValues.V[this.mTier] * 320L;
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocal("tile.energydistributor.name") + " " + GTValues.VN[this.mTier];
     }
 
     @Override

@@ -423,6 +423,11 @@ public class Client {
     @Config.LangKey("GT5U.gui.config.client.tooltip")
     public static class Tooltip {
 
+        @Config.Comment("Enabled show energy capacity of machines")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Energy Capacity")
+        public boolean showEnergyCapacity;
+
         @Config.Comment("Enabled show Formula")
         @Config.DefaultBoolean(true)
         @Config.Name("Show Formula")

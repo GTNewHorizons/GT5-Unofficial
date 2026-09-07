@@ -48,7 +48,7 @@ public class AcidRecipes {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.ThoriumElutionAdsorbent.getFluid(8000L))
             .itemOutputs(Materials.Chrome.getDust(4))
-            .outputChances(5500)
+            .outputChances(4500)
             .fluidOutputs(Materials.ImpureFranciumSolution.getFluid(4500L), Materials.Ammonia.getGas(3500L))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)

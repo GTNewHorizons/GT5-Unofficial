@@ -518,15 +518,19 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 World w = getBaseMetaTileEntity().getWorld();
                 float t = (float) getVoltageTierExact();
                 ArrayList<ItemStack> inputs = getStoredInputs();
+                boolean storageChanged = false;
                 for (ItemStack input : inputs) {
                     if (beeRoot.getType(input) == EnumBeeType.QUEEN) {
                         BeeSimulator bs = new BeeSimulator(input, w, t);
                         if (bs.isValid) {
                             mStorage.add(bs);
-                            onStorageContentChanged(false);
+                            storageChanged = true;
                         }
                     }
                     if (mStorage.size() >= mMaxSlots) break;
+                }
+                if (storageChanged) {
+                    onStorageContentChanged(false);
                 }
                 updateSlots();
             } else if (mPrimaryMode == MODE_PRIMARY_OUTPUT && !mStorage.isEmpty()) { // output mode

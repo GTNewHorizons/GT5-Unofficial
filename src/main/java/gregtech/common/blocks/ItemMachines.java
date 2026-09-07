@@ -62,6 +62,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.config.Client;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
 import gregtech.crossmod.backhand.Backhand;
@@ -119,10 +120,12 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                                     TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                         }
                     }
-                    aList.add(
-                        translateToLocalFormatted(
-                            "gt.tileentity.eup_store",
-                            TooltipHelper.euCapacityText(gtTileEntity.getEUCapacity())));
+                    if (Client.tooltip.showEnergyCapacity) {
+                        aList.add(
+                            translateToLocalFormatted(
+                                "gt.tileentity.eup_store",
+                                TooltipHelper.euCapacityText(gtTileEntity.getEUCapacity())));
+                    }
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
@@ -225,15 +228,14 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        String aName = super.getItemStackDisplayName(aStack);
         final short aDamage = (short) getDamage(aStack);
-        final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
-        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length && metaTE != null) {
-            if (metaTE instanceof ILocalizedMetaPipeEntity localMetaTE) {
-                return localMetaTE.getLocalizedName();
+        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length) {
+            final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
+            if (metaTE != null) {
+                return metaTE.getLocalName();
             }
         }
-        return aName;
+        return super.getItemStackDisplayName(aStack);
     }
 
     @Override

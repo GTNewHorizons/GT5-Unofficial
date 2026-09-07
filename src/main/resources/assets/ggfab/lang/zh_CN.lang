@@ -17,3 +17,6 @@ ggfab.info.biome=群系:
 ggfab.tooltip.linked_input_bus.change_freq_warn=如果这是最后一个本频道的输入总线，改变频道会使剩余的内容物洒在地上！
 ggfab.tooltip.linked_input_bus.private=私有频道不会与其余玩家共享
 ggfab.tooltip.linked_input_bus.private.1=如果这是最后一个本频道的输入总线，改变频道会使剩余的内容物洒在地上！
+
+# Multiblocks
+gt.blockmachines.ggfab.machine.adv_assline.name=进阶装配线

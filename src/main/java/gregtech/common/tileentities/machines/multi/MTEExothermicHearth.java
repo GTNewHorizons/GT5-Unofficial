@@ -256,7 +256,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addController("Front center, 4th layer")
             .addCasing("1800-1918", "Hearth Casing", false)
             .addCasing("925", "Heat Proof Machine Casing", false)
-            .addCasing("860", "Heating Coil", true)
+            .addCasing("864", "Heating Coil", true)
             .addCasing("780", "Thermal Containment Casing", false)
             .addCasing("426", "Radiant Naquadah Alloy Casing", false)
             .addCasing("332", "Any Tiered Glass", true)
