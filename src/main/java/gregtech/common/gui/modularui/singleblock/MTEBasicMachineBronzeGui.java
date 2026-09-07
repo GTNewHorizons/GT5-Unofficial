@@ -2,6 +2,10 @@ package gregtech.common.gui.modularui.singleblock;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
+import gregtech.api.util.GTUtility;
+import gregtech.common.modularui2.widget.GTProgressWidget;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -80,5 +84,12 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
         BooleanSyncValue ventingSyncer = new BooleanSyncValue(machine::needsSteamVenting);
         syncManager.syncValue("venting", ventingSyncer);
         errorMap.put(ventingSyncer, machine.mTooltipCache.getData("GT5U.machines.stalled_vent.tooltip"));
+    }
+
+    @Override
+    protected String createTooltipForProgressBar() {
+        byte machineTier = 1;
+        String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
+        return StatCollector.translateToLocalFormatted("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
     }
 }
