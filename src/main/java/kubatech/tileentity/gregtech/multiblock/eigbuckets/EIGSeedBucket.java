@@ -79,7 +79,7 @@ public class EIGSeedBucket extends EIGBucket {
 
     private EIGSeedBucket(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack seed) {
         super(seed, 1, null);
-        this.isInfusedSeed = isInfusedSeedItem(seed);
+        this.isInfusedSeed = InfusedSeedItem(seed);
         this.recalculateDrops(greenhouse);
     }
 
@@ -119,17 +119,14 @@ public class EIGSeedBucket extends EIGBucket {
         return this.isValid();
     }
 
-    private static boolean isInfusedSeedItem(ItemStack seed) {
-        return seed.getItem()
-            .getClass()
-            .getName()
-            .equals("thaumic.tinkerer.common.item.ItemInfusedSeeds");
+    private static boolean InfusedSeedItem(ItemStack seed) {
+        return seed.getItem() instanceof ItemInfusedSeeds;
     }
 
     public void recalculateDrops(MTEExtremeIndustrialGreenhouse greenhouse) {
         this.isValid = false;
 
-        if (isInfusedSeedItem(this.seed)) {
+        if (InfusedSeedItem(this.seed)) {
             if (recalculateDropsForInfusedSeed(greenhouse)) {
                 this.isValid = true;
             }
@@ -206,13 +203,12 @@ public class EIGSeedBucket extends EIGBucket {
             while (Math.random() < pSeed) {
                 seedstack++;
             }
-            
+
             if (entropyTendency > 0) {
                 ItemStack seedDrop = this.seed.copy();
                 seedDrop.stackSize = seedstack;
                 cumulativeDrops.addDrop(seedDrop, seedstack);
             }
-            
 
             double pLoot = (double) orderTendency / 75.0;
             do {
