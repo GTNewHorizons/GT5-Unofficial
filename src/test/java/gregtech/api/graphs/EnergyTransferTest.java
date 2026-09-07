@@ -87,7 +87,7 @@ class EnergyTransferTest {
         }
     }
 
-    private static MTECable cable(Class<? extends MTECable> type, BaseMetaPipeEntity base) {
+    static MTECable cable(Class<? extends MTECable> type, BaseMetaPipeEntity base) {
         MTECable cable = type == MTECable.class ? spy(new MTECable("test", 0.5f, null, 0, 1, 32, false, false))
             : type == GTPPMTECable.class
                 ? spy(
@@ -111,7 +111,7 @@ class EnergyTransferTest {
         return cable;
     }
 
-    private static PowerNode root(BaseMetaPipeEntity base, ConsumerNode... consumers) {
+    static PowerNode root(BaseMetaPipeEntity base, ConsumerNode... consumers) {
         PowerNode root = new PowerNode(1, base, new ArrayList<>(List.of(consumers)));
         root.mHighestNodeValue = consumers.length + 1;
         for (int i = 0; i < consumers.length; i++) {

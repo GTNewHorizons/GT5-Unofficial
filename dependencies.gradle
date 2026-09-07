@@ -135,6 +135,7 @@ dependencies {
     testImplementation(platform('org.junit:junit-bom:5.14.1'))
     testImplementation('org.junit.jupiter:junit-jupiter')
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("com.github.GTNewHorizons:Galacticraft:3.4.33-GTNH:dev") { transitive = false }
     testImplementation("org.mockito:mockito-core:5.+")
     testImplementation("it.unimi.dsi:fastutil:8.5.18")
     testImplementation("org.joml:joml:1.10.8")
