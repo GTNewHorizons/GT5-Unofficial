@@ -425,6 +425,13 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             aVoltage = aDynamo.maxEUOutput();
             aAmpsToInject = (int) (leftToInject / aVoltage);
             aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
+            // Keep the legacy loop for callbacks and for the amps + 1 overflow case.
+            if (aVoltage > 0 && aAmpsToInject > 1 && aAmpsToInject < Integer.MAX_VALUE && isFullNativeDynamo(aDynamo)) {
+                long amps = Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+                injected += aVoltage * amps;
+                if (amps < aDynamo.maxAmperesOut()) injected += aRemainder;
+                continue;
+            }
             long powerGain;
             for (int i = 0; i < Math.min(aDynamo.maxAmperesOut(), aAmpsToInject + 1); i++) {
                 if (i == Math.min(aDynamo.maxAmperesOut(), aAmpsToInject)) {
