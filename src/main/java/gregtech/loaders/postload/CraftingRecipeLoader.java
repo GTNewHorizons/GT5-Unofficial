@@ -343,8 +343,7 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { "RRR", "RhR", "R R", 'R', OrePrefixes.ring.get(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             new ItemStack(Items.chainmail_boots, 1),
-            bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES
+            bits_no_remove_buffered | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "R R", "RhR", 'R', OrePrefixes.ring.get(Materials.Steel) });
 
@@ -1935,7 +1934,7 @@ public class CraftingRecipeLoader implements Runnable {
             bits | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 1, 88), 'F',
-                OrePrefixes.frameGt.get(Materials.Chrome) });
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.frameGt) });
 
         if (Forestry.isModLoaded()) {
 

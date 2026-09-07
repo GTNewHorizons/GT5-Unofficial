@@ -494,7 +494,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     /**
      * @return Computes a (cached) array of all input items, combined by type into stacks. Do not mutate.
      */
-    private @NotNull RecipeItemInput @NotNull [] getCachedCombinedItemInputs() {
+    public @NotNull RecipeItemInput @NotNull [] getCachedCombinedItemInputs() {
         if (mergedInputCache != null) {
             if (mInputs != inputsAtCacheTime) {
                 throw new IllegalStateException(
@@ -1088,7 +1088,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         private static void checkInvalidRecipes() {
             int invalidCount = 0;
-            GT_FML_LOGGER.error("Started assline validation");
+            GT_FML_LOGGER.info("Started assline validation");
             for (RecipeAssemblyLine recipe : sAssemblylineRecipes) {
                 if (recipe.getPersistentHash() == 0) {
                     invalidCount++;

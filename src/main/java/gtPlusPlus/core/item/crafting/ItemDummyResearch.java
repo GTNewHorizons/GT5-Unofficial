@@ -21,12 +21,6 @@ public class ItemDummyResearch extends ItemGenericToken {
     public enum ASSEMBLY_LINE_RESEARCH {
 
         RESEARCH_1_CONTAINMENT("Containment Fields", "Advanced scientific study"),
-        RESEARCH_2_BASIC_CHEM("Basic Chemistry", "Time to start at the beginning"),
-        RESEARCH_3_ADV_CHEM("Advanced Chemistry", "Best learn more than chemical equations"),
-        RESEARCH_4_BASIC_PHYSICS("Basic Physics", "Fundamental laws of motion"),
-        RESEARCH_5_ADV_PHYSICS("Advanced Physics", "Advanced knowledge!"),
-        RESEARCH_6_BASIC_METALLURGY("Basic Metallurgy", "Information about material smelting"),
-        RESEARCH_7_ADV_METALLURGY("Advanced Metallurgy", "Advanced Material Sciences!"),
         RESEARCH_8_TURBINE_AUTOMATION("Turbine Automation", "You really don't want to share this with anyone!"),
         RESEARCH_9_CLOAKING("Cloaking Technologies", "Sneaking around like a mouse"),
         RESEARCH_10_SPARGING("Gas Sparging", "Blowing gas for results"),

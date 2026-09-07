@@ -6,4 +6,7 @@ A {gold:{item:gregtech:gt.blockmachines:15754}} can only push condensate from th
 Using a {gold:{item:gregtech:gt.metaitem.01:32730}} on the controller will enable or disable transfers.
 Consumes {green:1A UIV} while active, regardless of the network's status.
 {dark_gray:{hr}}
-Condensate can be filtered in the parameters window.
+Condensate can be filtered in the parameters window, with one filter slot per condensate type.
+When no filters are set, all condensate is allowed through.
+Attaching fluid input hatches overrides the filters, mapping each contained fluid to its condensate.
+Stocking input hatches use their configured fluids.

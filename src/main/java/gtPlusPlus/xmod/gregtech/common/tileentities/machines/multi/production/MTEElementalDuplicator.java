@@ -19,13 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -52,8 +47,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDuplicator>
     implements ISurvivalConstructable {
@@ -354,20 +347,5 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
         }
         tItems.removeAll(Collections.singleton(null));
         return tItems;
-    }
-
-    @Override
-    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
-    }
-
-    @Override
-    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
-        IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        list.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("maxParallelRecipes"));
     }
 }

@@ -65,15 +65,15 @@ public class ScannerHandlerLoader {
         }
         if (Mods.GalaxySpace.isModLoaded()) {
             GALACTICRAFT_SCHEMATIC_LOOKUP
-                .put(GTModHandler.getModItem(Mods.GalacticraftMars.ID, "item.SchematicTier4", 1L, 0), (short) 4);
+                .put(GTModHandler.getModItem(Mods.GalaxySpace.ID, "item.SchematicTier4", 1L, 0), (short) 4);
             GALACTICRAFT_SCHEMATIC_LOOKUP
-                .put(GTModHandler.getModItem(Mods.GalacticraftMars.ID, "item.SchematicTier5", 1L, 0), (short) 5);
+                .put(GTModHandler.getModItem(Mods.GalaxySpace.ID, "item.SchematicTier5", 1L, 0), (short) 5);
             GALACTICRAFT_SCHEMATIC_LOOKUP
-                .put(GTModHandler.getModItem(Mods.GalacticraftMars.ID, "item.SchematicTier6", 1L, 0), (short) 6);
+                .put(GTModHandler.getModItem(Mods.GalaxySpace.ID, "item.SchematicTier6", 1L, 0), (short) 6);
             GALACTICRAFT_SCHEMATIC_LOOKUP
-                .put(GTModHandler.getModItem(Mods.GalacticraftMars.ID, "item.SchematicTier7", 1L, 0), (short) 7);
+                .put(GTModHandler.getModItem(Mods.GalaxySpace.ID, "item.SchematicTier7", 1L, 0), (short) 7);
             GALACTICRAFT_SCHEMATIC_LOOKUP
-                .put(GTModHandler.getModItem(Mods.GalacticraftMars.ID, "item.SchematicTier8", 1L, 0), (short) 8);
+                .put(GTModHandler.getModItem(Mods.GalaxySpace.ID, "item.SchematicTier8", 1L, 0), (short) 8);
         }
         if (Mods.GalacticraftAmunRa.isModLoaded()) {
             // shuttle, doesn't have a dream craft chip, consider removal or implementation of chip

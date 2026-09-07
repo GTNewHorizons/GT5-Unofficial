@@ -84,7 +84,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
 
     @Override
     public String getMachineType() {
-        return "Reactor";
+        return "Molten Salt Reactor, LFTR";
     }
 
     @Override

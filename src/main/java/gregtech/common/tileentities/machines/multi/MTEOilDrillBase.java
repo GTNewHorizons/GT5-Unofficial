@@ -67,6 +67,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.WorkAreaChunk;
 import gregtech.common.misc.workarea.IWorkAreaProvider;
 import gregtech.common.misc.workarea.WorkAreaProviderRegistry;
+import io.netty.buffer.ByteBuf;
 
 public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetricsExporter, IWorkAreaProvider {
 
@@ -75,7 +76,6 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     private static final String NBT_SHOW_WORK_AREA = "showWorkArea";
     private static final String NBT_CHUNK_RANGE_CONFIG = "chunkRangeConfig";
-    private static final String NBT_ACTIVE_OIL_FIELD_CHUNKS = "activeOilFieldChunks";
 
     private final ArrayList<ChunkCoordIntPair> mOilFieldChunks = new ArrayList<>();
     private final Set<Long> activeOilFieldChunkKeys = new HashSet<>();
@@ -183,53 +183,29 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = new NBTTagCompound();
-
-        data.setInteger(NBT_CHUNK_RANGE_CONFIG, chunkRangeConfig);
-        data.setBoolean(NBT_SHOW_WORK_AREA, showWorkArea);
-
-        int[] activeChunks = new int[activeOilFieldChunkKeys.size() * 2];
-        int index = 0;
-
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(chunkRangeConfig);
+        buffer.writeBoolean(showWorkArea);
+        buffer.writeInt(activeOilFieldChunkKeys.size());
         for (long chunkKey : activeOilFieldChunkKeys) {
-            activeChunks[index++] = (int) (chunkKey >> 32); // chunkX
-            activeChunks[index++] = (int) chunkKey; // chunkZ
+            buffer.writeLong(chunkKey);
         }
-
-        data.setIntArray(NBT_ACTIVE_OIL_FIELD_CHUNKS, activeChunks);
-
-        return data;
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        if (data == null) {
-            return;
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        chunkRangeConfig = buffer.readInt();
+        invalidateWorkAreaCache();
+
+        showWorkArea = buffer.readBoolean();
+
+        int size = buffer.readInt();
+        activeOilFieldChunkKeys.clear();
+        for (int i = 0; i < size; i++) {
+            activeOilFieldChunkKeys.add(buffer.readLong());
         }
-
-        if (data.hasKey(NBT_CHUNK_RANGE_CONFIG)) {
-            chunkRangeConfig = data.getInteger(NBT_CHUNK_RANGE_CONFIG);
-            invalidateWorkAreaCache();
-        }
-
-        if (data.hasKey(NBT_SHOW_WORK_AREA)) {
-            showWorkArea = data.getBoolean(NBT_SHOW_WORK_AREA);
-        }
-
-        if (data.hasKey(NBT_ACTIVE_OIL_FIELD_CHUNKS)) {
-            activeOilFieldChunkKeys.clear();
-
-            int[] activeChunks = data.getIntArray(NBT_ACTIVE_OIL_FIELD_CHUNKS);
-
-            for (int i = 0; i + 1 < activeChunks.length; i += 2) {
-                int chunkX = activeChunks[i];
-                int chunkZ = activeChunks[i + 1];
-
-                activeOilFieldChunkKeys.add(packChunkKey(chunkX, chunkZ));
-            }
-        }
-
         updateWorkAreaRendererRegistration();
     }
 

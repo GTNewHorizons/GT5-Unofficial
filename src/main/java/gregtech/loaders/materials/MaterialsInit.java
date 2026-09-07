@@ -8578,7 +8578,7 @@ public class MaterialsInit {
 
     private static Materials loadPhosphorousPentoxide() {
         return new MaterialBuilder().setName("PhosphorousPentoxide")
-            .setDefaultLocalName("Phosphorous Pentoxide")
+            .setDefaultLocalName("Phosphorus Pentoxide")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00dcdc00)

@@ -45,3 +45,6 @@ ggfab.tt.advassline.structure.layer3=§fLayer 3: §7Grate Machine Casing, Assemb
 ggfab.tt.advassline.structure.layer2=§fLayer 2: §7Any Tiered Glass, Assembly Line Casing, Any Tiered Glass
 ggfab.tt.advassline.structure.layer1=§fLayer 1: §7Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing
 ggfab.tt.advassline.structure.footer=Up to 16 total slices, each one allows for 1 more item in recipes
+
+# Multiblocks
+gt.blockmachines.ggfab.machine.adv_assline.name=Advanced Assembly Line

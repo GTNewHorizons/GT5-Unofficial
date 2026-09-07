@@ -1,0 +1,91 @@
+name: Forbidden source usage
+
+on:
+  pull_request:
+    branches: [ master, main, release/** ]
+  push:
+    branches: [ master, main, release/** ]
+
+jobs:
+  test-forbidden-usage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v5
+
+      - name: Test forbidden getModItem and GameRegistry calls
+        shell: bash
+        run: |
+          failed=0
+          check_forbidden() {
+            if grep -Enr -- "$1" src/main/java; then
+              failed=1
+            else
+              result=$?
+              if (( result > 1 )); then
+                exit "$result"
+              fi
+            fi
+          }
+
+          forbidden_mods='BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin'
+          forbidden_mod_ids='BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN'
+
+          for call in getModItem findItem findItemStack findBlock; do
+            check_forbidden "${call}\\(.*(${forbidden_mods})"
+            check_forbidden "${call}\\(Mods\\..*(${forbidden_mods})"
+            check_forbidden "${call}\\(Mods\\.ModIDs\\..*(${forbidden_mod_ids})"
+            check_forbidden "${call}\\(ModIDs\\..*(${forbidden_mod_ids})"
+            check_forbidden "${call}\\(.*(${forbidden_mod_ids})"
+            check_forbidden "${call}\\(\".*\", .*)"
+          done
+
+          if (( failed )); then
+            echo '::error title=Forbidden registry access::test-forbidden-getmoditems failed; see matching lines above.'
+            exit 1
+          fi
+
+      - name: Test forbidden isModLoaded calls
+        if: ${{ !cancelled() && steps.checkout.outcome == 'success' }}
+        shell: bash
+        run: |
+          failed=0
+          check_forbidden() {
+            if grep -Enr -- "$1" src/main/java; then
+              failed=1
+            else
+              result=$?
+              if (( result > 1 )); then
+                exit "$result"
+              fi
+            fi
+          }
+
+          check_forbidden '(BartWorks|GalactiGreg|GGFab|GoodGenerator|GTNHIntergalactic|GTNHLanthanides|GregTech|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.isModLoaded'
+          check_forbidden 'isModLoaded\(".*"\)'
+          check_forbidden '@(Optional\.|)Method\(modid = ".*"\)'
+          check_forbidden '@(Optional\.|)Interface\(.*modid = ".*".*\)'
+
+          if (( failed )); then
+            echo '::error title=Forbidden mod loading check::test-forbidden-ismodloaded failed; see matching lines above.'
+            exit 1
+          fi
+
+      - name: Test forbidden System.out/System.err calls
+        if: ${{ !cancelled() && steps.checkout.outcome == 'success' }}
+        shell: bash
+        run: |
+          if grep -Enr 'System\.(out|err)\.print' src/main/java; then
+            echo '::error title=Forbidden standard output::test-forbidden-sysout failed; see matching lines above.'
+            exit 1
+          fi
+
+      - name: Test forbidden Scala imports
+        if: ${{ !cancelled() && steps.checkout.outcome == 'success' }}
+        shell: bash
+        run: |
+          if grep -Enr 'import scala\.' src/main/java; then
+            echo '::error title=Forbidden Scala dependency::test-scala-presence failed; see matching lines above.'
+            exit 1
+          fi

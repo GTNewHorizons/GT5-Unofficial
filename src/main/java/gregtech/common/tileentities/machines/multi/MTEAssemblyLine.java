@@ -92,7 +92,12 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         .addElement(
             'e',
             ofChain(
-                Energy.newAny(16, 4, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
+                buildHatchAdder(MTEAssemblyLine.class).atLeast(Energy)
+                    .casingIndex(16)
+                    .hint(4)
+                    .allowOnly(ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH)
+                    .continueIfSuccess()
+                    .build(),
                 ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'd',

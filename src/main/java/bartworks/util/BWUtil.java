@@ -25,25 +25,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 
-import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-
-import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
@@ -57,7 +48,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.GlassTier;
 
 public class BWUtil {
 
@@ -271,105 +261,6 @@ public class BWUtil {
             ret.add(OreDictionary.getOreName(oreID));
         }
         return ret;
-    }
-
-    /**
-     * @deprecated use gregtech.api.util.GTStructureUtility.chainAllGlasses
-     */
-    @Deprecated
-    public static <T> IStructureElement<T> ofGlassTiered(byte mintier, byte maxtier, byte notset,
-        BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots) {
-        return new IStructureElement<>() {
-
-            private final IStructureElement<T> placementDelegate = BorosilicateGlass
-                .ofBoroGlass(notset, mintier, maxtier, setter, getter);
-
-            @Override
-            public boolean check(T te, World world, int x, int y, int z) {
-                if (world.isAirBlock(x, y, z)) return false;
-                Block block = world.getBlock(x, y, z);
-                int meta = world.getBlockMetadata(x, y, z);
-
-                int glassTier = GlassTier.getGlassBlockTier(block, meta);
-
-                // If it is not a glass, the tier will be 0.
-                if (glassTier == 0 || glassTier == notset || glassTier < mintier || glassTier > maxtier) return false;
-
-                if (getter.apply(te) == notset) setter.accept(te, (byte) glassTier);
-                return getter.apply(te) == glassTier;
-            }
-
-            @Override
-            public boolean couldBeValid(T te, World world, int x, int y, int z, ItemStack trigger) {
-                if (world.isAirBlock(x, y, z)) return false;
-                Block block = world.getBlock(x, y, z);
-                int meta = world.getBlockMetadata(x, y, z);
-
-                int glassTier = GlassTier.getGlassBlockTier(block, meta);
-
-                // If it is not a glass, the tier will be 0.
-                return glassTier != 0 && glassTier != notset && glassTier >= mintier && glassTier <= maxtier;
-            }
-
-            @Override
-            public boolean spawnHint(T te, World world, int x, int y, int z, ItemStack itemStack) {
-                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), aDots - 1);
-                return true;
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return this.placementDelegate.placeBlock(t, world, x, y, z, trigger);
-            }
-
-            @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
-                return this.placementDelegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
-            }
-        };
-    }
-
-    @Deprecated
-    public static <T> IStructureElement<T> ofGlassTieredMixed(byte mintier, byte maxtier, int aDots) {
-        return new IStructureElement<>() {
-
-            private final IStructureElement<T> placementDelegate = BorosilicateGlass
-                .ofBoroGlass((byte) 0, mintier, maxtier, (v1, v2) -> {}, v1 -> (byte) 0);
-
-            @Override
-            public boolean check(T te, World world, int x, int y, int z) {
-                if (world.isAirBlock(x, y, z)) return false;
-                Block block = world.getBlock(x, y, z);
-                int meta = world.getBlockMetadata(x, y, z);
-                int glassTier = GlassTier.getGlassBlockTier(block, meta);
-
-                if (glassTier == 0) return false; // Not a glass.
-                return glassTier >= mintier && glassTier <= maxtier;
-            }
-
-            @Override
-            public boolean couldBeValid(T te, World world, int x, int y, int z, ItemStack trigger) {
-                return check(te, world, x, y, z);
-            }
-
-            @Override
-            public boolean spawnHint(T te, World world, int x, int y, int z, ItemStack itemStack) {
-                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), aDots - 1);
-                return true;
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return this.placementDelegate.placeBlock(t, world, x, y, z, trigger);
-            }
-
-            @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
-                return this.placementDelegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
-            }
-        };
     }
 
     public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {

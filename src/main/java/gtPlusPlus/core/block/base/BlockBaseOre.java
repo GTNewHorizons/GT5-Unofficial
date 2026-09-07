@@ -33,6 +33,7 @@ import gtPlusPlus.core.material.Material;
 public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
 
     private final Material blockMaterial;
+    private volatile ITexture[][] textureCache;
 
     public BlockBaseOre(final Material material, final BlockTypes blockType) {
         super(
@@ -99,6 +100,9 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
     @Override
     @Nullable
     public ITexture[][] getTextures(int metadata) {
+        ITexture[][] cached = textureCache;
+        if (cached != null) return cached;
+
         ITexture oreTexture = TextureFactory
             .of(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.getTextureIndex()], blockMaterial.getRGBA());
 
@@ -108,6 +112,7 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
             out[i] = new ITexture[] { StoneType.Stone.getTexture(i), oreTexture };
         }
 
+        textureCache = out;
         return out;
     }
 
