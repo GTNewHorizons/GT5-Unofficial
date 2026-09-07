@@ -1704,8 +1704,9 @@ public class GTProxy implements IFuelHandler {
                 if (aPrefix.skipActiveUnification()) {
                     GTOreDictUnificator.addToBlacklist(aEvent.Ore);
                 }
+                String tName = aEvent.Name.substring(aPrefix.getName().length());
                 if (aPrefix != aPrefix.mPrefixInto) {
-                    String tNewName = aEvent.Name.replaceFirst(aPrefix.toString(), aPrefix.mPrefixInto.toString());
+                    String tNewName = aPrefix.mPrefixInto.getName() + tName;
                     if (!GTOreDictUnificator.isRegisteringOres()) {
                         GTLoggers.GT_ORE_DICT_LOGGER.info(
                             "{} uses a depricated Prefix, and is getting re-registered as {}",
@@ -1715,7 +1716,6 @@ public class GTProxy implements IFuelHandler {
                     GTOreDictUnificator.registerOre(tNewName, aEvent.Ore);
                     return;
                 }
-                String tName = aEvent.Name.replaceFirst(aPrefix.toString(), "");
                 if (!tName.isEmpty()) {
                     char firstChar = tName.charAt(0);
                     if (Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar)
