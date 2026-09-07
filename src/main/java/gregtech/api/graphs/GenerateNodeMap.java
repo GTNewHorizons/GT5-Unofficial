@@ -133,34 +133,38 @@ public abstract class GenerateNodeMap {
         return tThisNode;
     }
 
-    // go over the pipes until we see a valid tile entity that needs a node
+    // Walk degree-two runs without consuming a stack frame per cable.
     protected Pair getNextValidTileEntity(TileEntity aTileEntity, ArrayList<MetaPipeEntity> aPipes, ForgeDirection side,
         HashSet<Node> aNodeMap) {
-        if (!isPipe(aTileEntity)) return new Pair(aTileEntity, side);
+        walk: while (true) {
+            if (!isPipe(aTileEntity)) return new Pair(aTileEntity, side);
 
-        final BaseMetaPipeEntity tPipe = (BaseMetaPipeEntity) aTileEntity;
-        final MetaPipeEntity tMetaPipe = (MetaPipeEntity) tPipe.getMetaTileEntity();
-        final Node tNode = tPipe.getNode();
-        if (tNode != null && aNodeMap.contains(tNode)) return null;
+            final BaseMetaPipeEntity tPipe = (BaseMetaPipeEntity) aTileEntity;
+            final MetaPipeEntity tMetaPipe = (MetaPipeEntity) tPipe.getMetaTileEntity();
+            final Node tNode = tPipe.getNode();
+            if (tNode != null && aNodeMap.contains(tNode)) return null;
 
-        final ForgeDirection tSideOpposite = side.getOpposite();
-        if (!tMetaPipe.isConnectedAtSide(tSideOpposite)) return null;
+            final ForgeDirection tSideOpposite = side.getOpposite();
+            if (!tMetaPipe.isConnectedAtSide(tSideOpposite)) return null;
 
-        final int tConnections = getNumberOfConnections(tMetaPipe);
-        if (tConnections != 2) return new Pair(aTileEntity, side);
+            final int tConnections = getNumberOfConnections(tMetaPipe);
+            if (tConnections != 2) return new Pair(aTileEntity, side);
 
-        for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
-            if (s == tSideOpposite || !(tMetaPipe.isConnectedAtSide(s))) continue;
-            final TileEntity tNewTileEntity = tPipe.getTileEntityAtSide(s);
-            if (tNewTileEntity == null) return new Pair(aTileEntity, side);
-            if (isPipe(tNewTileEntity)) {
-                aPipes.add(tMetaPipe);
-                return getNextValidTileEntity(tNewTileEntity, aPipes, s, aNodeMap);
-            } else {
-                return new Pair(aTileEntity, s);
+            for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
+                if (s == tSideOpposite || !(tMetaPipe.isConnectedAtSide(s))) continue;
+                final TileEntity tNewTileEntity = tPipe.getTileEntityAtSide(s);
+                if (tNewTileEntity == null) return new Pair(aTileEntity, side);
+                if (isPipe(tNewTileEntity)) {
+                    aPipes.add(tMetaPipe);
+                    aTileEntity = tNewTileEntity;
+                    side = s;
+                    continue walk;
+                } else {
+                    return new Pair(aTileEntity, s);
+                }
             }
+            return null;
         }
-        return null;
     }
 
     // check if the tile entity is the correct pipe
