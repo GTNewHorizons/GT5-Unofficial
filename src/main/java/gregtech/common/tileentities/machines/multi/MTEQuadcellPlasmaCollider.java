@@ -173,7 +173,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Collider, QPC")
+        tt.addMachineType("Plasma Collider, Quadcell, QPC")
             .beginStructureBlock(23, 13, 9, true)
             .addController("Front center, 2nd layer")
             .addInfo("Burns certain Plasmas to generate power")
@@ -258,7 +258,13 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
                     + RESIDUE_CONVERSION_DIVISOR
                     + "L of Plasma burned")
             .addSupportAny()
-            .addStructureInfo("")
+            .addCasing("280", "Plasma Collider Casing", false)
+            .addCasing("126", "Plasma Collider Glass", false)
+            .addCasing("56", "Superconducting Coil Block", false)
+            .addCasing("36", "Quadcell Driving Casing", false)
+            .addDynamoHatch("1", "Any Plasma Collider Casing", 1)
+            .addInputHatch("1", "Any Plasma Collider Casing", 1)
+            .addOutputHatch("1", "Any Plasma Collider Casing", 1)
             .toolTipFinisher();
         return tt;
     }
