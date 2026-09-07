@@ -437,14 +437,15 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
         Set<Integer> visited = new HashSet<>();
         for (int i = start; i <= end; i++) {
-            List<Pair<Integer, GTRecipe>> asteroidsAtDistance = asteroids.get(i)
-                .stream()
-                .filter(
-                    asteroid -> asteroid.second()
-                        .getMetadata(IGRecipeMaps.MODULE_TIER) <= multiblock.getModuleTier())
-                .toList();
-
-            for (Pair<Integer, GTRecipe> asteroid : asteroidsAtDistance) visited.add(asteroid.first());
+            List<Pair<Integer, GTRecipe>> asteroidsAtDistance = asteroids.get(i);
+            if (asteroidsAtDistance != null) {
+                asteroidsAtDistance.stream()
+                    .filter(
+                        asteroid -> asteroid.second()
+                            .getMetadata(IGRecipeMaps.MODULE_TIER) <= multiblock.getModuleTier())
+                    .toList();
+                for (Pair<Integer, GTRecipe> asteroid : asteroidsAtDistance) visited.add(asteroid.first());
+            }
         }
 
         Grid asteroidGrid = new Grid()
