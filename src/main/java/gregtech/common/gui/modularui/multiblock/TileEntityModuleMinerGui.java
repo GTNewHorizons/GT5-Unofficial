@@ -518,6 +518,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 : GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
             if (!filterContainsOre(ore)) {
                 int j = findFirstEmptySlot(visited);
+                if (j == -1) return;
+
                 filterModularSlots[j].putStack(ore);
                 filterSlots[j].getSyncHandler()
                     .updateFromClient(ore, 0);
