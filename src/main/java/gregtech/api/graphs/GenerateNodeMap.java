@@ -3,7 +3,10 @@ package gregtech.api.graphs;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Set;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -16,8 +19,28 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 // generates the node map
 public abstract class GenerateNodeMap {
 
+    // Scratch for one walk, preserving the protected walk's existing null return on loops.
+    private Pair loopClosure;
+
     // clearing the node map to make sure it is gone on reset
     public static void clearNodeMap(Node aNode, int aReturnNodeValue) {
+        clearNodeMap(aNode, aReturnNodeValue, Collections.newSetFromMap(new IdentityHashMap<>()));
+    }
+
+    private static void clearNodeMap(Node aNode, int aReturnNodeValue, Set<Node> visited) {
+        if (!visited.add(aNode)) return;
+        // Detach shared metadata without following its cycles or touching an excluded parent.
+        if (aNode.alternateEdges != null) {
+            ArrayList<Node.AlternateEdge> edges = aNode.alternateEdges;
+            aNode.alternateEdges = null;
+            for (Node.AlternateEdge edge : edges) {
+                Node other = edge.first == aNode ? edge.second : edge.first;
+                if (other.alternateEdges != null) {
+                    other.alternateEdges.remove(edge);
+                    if (other.alternateEdges.isEmpty()) other.alternateEdges = null;
+                }
+            }
+        }
         if (aNode.mTileEntity instanceof BaseMetaPipeEntity tPipe) {
             tPipe.setNode(null);
             tPipe.setNodePath(null);
@@ -34,7 +57,7 @@ public abstract class GenerateNodeMap {
             }
             final Node tNextNode = aNode.mNeighbourNodes[side];
             if (tNextNode == null) continue;
-            if (tNextNode.mNodeValue != aReturnNodeValue) clearNodeMap(tNextNode, aNode.mNodeValue);
+            if (tNextNode.mNodeValue != aReturnNodeValue) clearNodeMap(tNextNode, aNode.mNodeValue, visited);
             aNode.mNeighbourNodes[side] = null;
         }
     }
@@ -60,7 +83,18 @@ public abstract class GenerateNodeMap {
             final TileEntity tNextTileEntity = aPipe.getTileEntityAtSide(side);
             if (tNextTileEntity == null) continue;
             final ArrayList<MetaPipeEntity> tNewPipes = new ArrayList<>();
+            loopClosure = null;
             final Pair nextTileEntity = getNextValidTileEntity(tNextTileEntity, tNewPipes, side, tNodeMap);
+            final Pair closure = loopClosure;
+            loopClosure = null;
+            if (nextTileEntity == null && closure != null) {
+                retainAlternateEdge(
+                    aPipeNode,
+                    side,
+                    ((BaseMetaPipeEntity) closure.mTileEntity).getNode(),
+                    closure.mSide.getOpposite(),
+                    tNewPipes);
+            }
             if (nextTileEntity != null) {
                 final Node tNextNode = generateNode(
                     nextTileEntity.mTileEntity,
@@ -82,6 +116,33 @@ public abstract class GenerateNodeMap {
             }
         }
         aPipe.reloadLocks();
+    }
+
+    private static void retainAlternateEdge(Node first, ForgeDirection firstSide, Node second,
+        ForgeDirection secondSide, ArrayList<MetaPipeEntity> pipes) {
+        if (first == null || second == null) return;
+        if (first.alternateEdges != null) {
+            for (Node.AlternateEdge edge : first.alternateEdges) {
+                if (edge.first == first && edge.firstSide == firstSide
+                    || edge.second == first && edge.secondSide == firstSide) return;
+            }
+        }
+        for (MetaPipeEntity pipe : pipes) {
+            if (!(pipe.getBaseMetaTileEntity() instanceof BaseMetaPipeEntity base) || base.isInvalid()
+                || base.getMetaTileEntity() != pipe) return;
+        }
+        Node.AlternateEdge edge = new Node.AlternateEdge(
+            first,
+            firstSide,
+            second,
+            secondSide,
+            pipes.toArray(new MetaPipeEntity[0]));
+        if (first.alternateEdges == null) first.alternateEdges = new ArrayList<>();
+        first.alternateEdges.add(edge);
+        if (second != first) {
+            if (second.alternateEdges == null) second.alternateEdges = new ArrayList<>();
+            second.alternateEdges.add(edge);
+        }
     }
 
     // on a valid tile entity create a new node
@@ -142,7 +203,14 @@ public abstract class GenerateNodeMap {
             final BaseMetaPipeEntity tPipe = (BaseMetaPipeEntity) aTileEntity;
             final MetaPipeEntity tMetaPipe = (MetaPipeEntity) tPipe.getMetaTileEntity();
             final Node tNode = tPipe.getNode();
-            if (tNode != null && aNodeMap.contains(tNode)) return null;
+            if (tNode != null && aNodeMap.contains(tNode)) {
+                // Preserve this walk's null return and DFS tree; retain only power topology metadata.
+                if (this instanceof GenerateNodeMapPower && !tPipe.isInvalid()
+                    && tMetaPipe.isConnectedAtSide(side.getOpposite())) {
+                    loopClosure = new Pair(aTileEntity, side);
+                }
+                return null;
+            }
 
             final ForgeDirection tSideOpposite = side.getOpposite();
             if (!tMetaPipe.isConnectedAtSide(tSideOpposite)) return null;
