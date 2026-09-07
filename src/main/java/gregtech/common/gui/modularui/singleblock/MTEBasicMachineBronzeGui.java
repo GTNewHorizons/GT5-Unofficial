@@ -85,7 +85,7 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
 
     @Override
     protected String createTooltipForProgressBar() {
-        String tierName = GTUtility.getColoredTierNameFromTier(1);
+        String tierName = GTUtility.getColoredTierNameFromTier((byte) 1);
         return StatCollector.translateToLocalFormatted("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
     }
 }
