@@ -105,6 +105,7 @@ import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -1595,9 +1596,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             aAmpsToInject = (int) (leftToInject / aVoltage);
             aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
             ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
-            for (int i = 0; i < ampsOnCurrentHatch; i++) {
-                aDynamo.getBaseMetaTileEntity()
-                    .increaseStoredEnergyUnits(aVoltage, false);
+            if (ampsOnCurrentHatch <= 1 || !isFullNativeDynamo(aDynamo)) {
+                for (int i = 0; i < ampsOnCurrentHatch; i++) {
+                    aDynamo.getBaseMetaTileEntity()
+                        .increaseStoredEnergyUnits(aVoltage, false);
+                }
             }
             injected += aVoltage * ampsOnCurrentHatch;
             if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
@@ -1612,9 +1615,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             aAmpsToInject = (int) (leftToInject / aVoltage);
             aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
             ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
-            for (int i = 0; i < ampsOnCurrentHatch; i++) {
-                aDynamo.getBaseMetaTileEntity()
-                    .increaseStoredEnergyUnits(aVoltage, false);
+            if (ampsOnCurrentHatch <= 1 || !isFullNativeDynamo(aDynamo)) {
+                for (int i = 0; i < ampsOnCurrentHatch; i++) {
+                    aDynamo.getBaseMetaTileEntity()
+                        .increaseStoredEnergyUnits(aVoltage, false);
+                }
             }
             injected += aVoltage * ampsOnCurrentHatch;
             if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
@@ -1624,6 +1629,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
         return injected > 0;
+    }
+
+    /**
+     * Only these exact implementations reject full storage without callbacks. Accepted packets must retain their
+     * individual dirty notifications, and external implementations must retain even rejected calls.
+     */
+    protected static boolean isFullNativeDynamo(MTEHatch dynamo) {
+        if (dynamo.getClass() != MTEHatchDynamoMulti.class || dynamo.maxAmperesOut() <= 1) return false;
+        IGregTechTileEntity base = dynamo.getBaseMetaTileEntity();
+        return base != null && base.getClass() == BaseMetaTileEntity.class
+            && base.getMetaTileEntity() == dynamo
+            && base.getStoredEU() >= base.getEUCapacity();
     }
 
     /**
