@@ -598,12 +598,20 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         long temp_stored = 0L;
 
+        // Each hatch uses the same starting limits; the net delta is applied after wireless/maintenance below.
+        final long inputLimit = mEnergyHatches.isEmpty() && mEnergyHatchesTT.isEmpty() && mEnergyTunnelsTT.isEmpty() ? 0
+            : getPowerToDraw(Long.MAX_VALUE);
+        final long outputLimit = mDynamoHatches.isEmpty() && mDynamoHatchesTT.isEmpty() && mDynamoTunnelsTT.isEmpty()
+            ? 0
+            : getPowerToPush(Long.MAX_VALUE);
+
         // Draw energy from GT hatches
         for (MTEHatchEnergy eHatch : super.mEnergyHatches) {
             if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
-            final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
+            final long hatchWatts = eHatch.maxEUInput() * eHatch.maxAmperesIn();
+            final long power = inputLimit == 0 ? 0 : min(hatchWatts, inputLimit);
             if (eHatch.getEUVar() >= power) {
                 eHatch.setEUVar(eHatch.getEUVar() - power);
                 temp_stored += power;
@@ -616,7 +624,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             if (eDynamo == null || !eDynamo.isValid()) {
                 continue;
             }
-            final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
+            final long power = min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), outputLimit);
             if (power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
                 eDynamo.setEUVar(eDynamo.getEUVar() + power);
                 temp_stored -= power;
@@ -629,7 +637,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
-            final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
+            final long hatchWatts = eHatch.maxEUInput() * eHatch.maxAmperesIn();
+            final long power = inputLimit == 0 ? 0 : min(hatchWatts, inputLimit);
             if (eHatch.getEUVar() >= power) {
                 eHatch.setEUVar(eHatch.getEUVar() - power);
                 temp_stored += power;
@@ -642,7 +651,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             if (eDynamo == null || !eDynamo.isValid()) {
                 continue;
             }
-            final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
+            final long power = min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), outputLimit);
             if (power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
                 eDynamo.setEUVar(eDynamo.getEUVar() + power);
                 temp_stored -= power;
@@ -656,7 +665,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 continue;
             }
             final long ttLaserWattage = eHatch.maxEUInput() * eHatch.getAmperes() - (eHatch.getAmperes() / 20);
-            final long power = getPowerToDraw(ttLaserWattage);
+            final long power = inputLimit == 0 ? 0 : min(ttLaserWattage, inputLimit);
             if (eHatch.getEUVar() >= power) {
                 eHatch.setEUVar(eHatch.getEUVar() - power);
                 temp_stored += power;
@@ -670,7 +679,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 continue;
             }
             final long ttLaserWattage = eDynamo.maxEUOutput() * eDynamo.Amperes - (eDynamo.Amperes / 20);
-            final long power = getPowerToPush(ttLaserWattage);
+            final long power = min(ttLaserWattage, outputLimit);
             if (power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
                 eDynamo.setEUVar(eDynamo.getEUVar() + power);
                 temp_stored -= power;
