@@ -7,17 +7,121 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 
 import gregtech.api.graphs.paths.PowerNodePath;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 
 class EnergyGraphConstructionTest {
+
+    @ParameterizedTest
+    @ValueSource(ints = { 64, 16384 })
+    void longRunKeepsOrderedCompressionAndCanBeCleared(int length) {
+        try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
+            servers.when(MinecraftServer::getServer)
+                .thenReturn(mock(MinecraftServer.class));
+            World world = mock(World.class);
+            BaseMetaPipeEntity[] pipes = new BaseMetaPipeEntity[length];
+            long loss = 0;
+            for (int i = 0; i < length; i++) {
+                BaseMetaPipeEntity base = new BaseMetaPipeEntity();
+                base.xCoord = i;
+                base.yCoord = 64;
+                base.setWorldObj(world);
+                MTECable cable = new MTECable("long-run", 0.5f, null, 1 + i % 3, 4, 128, false, false);
+                cable.mConnections = (byte) (ForgeDirection.WEST.flag
+                    | (i + 1 < length ? ForgeDirection.EAST.flag : 0));
+                cable.setBaseMetaTileEntity(base);
+                pipes[i] = base;
+                if (i > 0 && i + 1 < length) loss += cable.mCableLossPerMeter;
+            }
+            when(world.blockExists(anyInt(), anyInt(), anyInt())).thenReturn(true);
+            int[] walkDepth = { 0 };
+            when(world.getTileEntity(anyInt(), eq(64), eq(0))).thenAnswer(call -> {
+                int x = call.getArgument(0);
+                if (x == length - 1) {
+                    for (StackTraceElement frame : Thread.currentThread()
+                        .getStackTrace()) {
+                        if (frame.getClassName()
+                            .equals(GenerateNodeMap.class.getName())
+                            && frame.getMethodName()
+                                .equals("getNextValidTileEntity"))
+                            walkDepth[0]++;
+                    }
+                }
+                return x < 0 || x >= length ? null : pipes[x];
+            });
+            assertDoesNotThrow(() -> new GenerateNodeMapPower(pipes[0]));
+            assertEquals(1, walkDepth[0]);
+            verify(world, times(length)).getTileEntity(anyInt(), eq(64), eq(0));
+            Node root = pipes[0].getNode();
+            assertEquals(2, root.mHighestNodeValue);
+            assertEquals(1, root.mConsumers.size());
+            assertSame(pipes[length - 1], root.mConsumers.get(0).mTileEntity);
+            PowerNodePath path = (PowerNodePath) root.mNodePaths[ForgeDirection.EAST.ordinal()];
+            assertEquals(length - 2, path.getPipes().length);
+            assertEquals(loss, path.getLoss());
+            for (int i = 1; i + 1 < length; i++) {
+                assertSame(pipes[i].getMetaTileEntity(), path.getPipes()[i - 1]);
+                assertSame(path, pipes[i].getNodePath());
+            }
+            GenerateNodeMap.clearNodeMap(root, -1);
+            for (BaseMetaPipeEntity pipe : pipes) {
+                assertNull(pipe.getNode());
+                assertNull(pipe.getNodePath());
+            }
+        }
+    }
+
+    @Test
+    void bentWalkKeepsMembersAndTerminalSideForEveryStoppingCondition() throws Exception {
+        // Exercise the walk directly so stopping at a branch cannot be hidden by later DFS work.
+        GenerateNodeMap map = mock(GenerateNodeMap.class, CALLS_REAL_METHODS);
+        BaseMetaPipeEntity first = pipe(1, ForgeDirection.WEST, ForgeDirection.UP);
+        BaseMetaPipeEntity bend = pipe(2, ForgeDirection.DOWN, ForgeDirection.NORTH);
+        BaseMetaPipeEntity end = pipe(3, ForgeDirection.SOUTH, ForgeDirection.EAST);
+        when(first.getTileEntityAtSide(ForgeDirection.UP)).thenReturn(bend);
+        when(bend.getTileEntityAtSide(ForgeDirection.NORTH)).thenReturn(end);
+        TileEntity consumer = mock(TileEntity.class);
+        for (int stop = 0; stop < 5; stop++) {
+            MTECable cable = (MTECable) end.getMetaTileEntity();
+            when(cable.isConnectedAtSide(ForgeDirection.SOUTH)).thenReturn(stop != 3);
+            when(cable.isConnectedAtSide(ForgeDirection.UP)).thenReturn(stop == 2);
+            when(end.getTileEntityAtSide(ForgeDirection.EAST)).thenReturn(stop == 0 ? consumer : null);
+            HashSet<Node> visited = new HashSet<>();
+            if (stop == 4) {
+                Node existing = mock(Node.class);
+                when(end.getNode()).thenReturn(existing);
+                visited.add(existing);
+            }
+            ArrayList<MetaPipeEntity> members = new ArrayList<>();
+            Object result = map.getNextValidTileEntity(first, members, ForgeDirection.EAST, visited);
+            assertArrayEquals(new Object[] { first.getMetaTileEntity(), bend.getMetaTileEntity() }, members.toArray());
+            if (stop >= 3) {
+                assertNull(result);
+            } else {
+                assertNotNull(result);
+                var tileField = result.getClass()
+                    .getField("mTileEntity");
+                var sideField = result.getClass()
+                    .getField("mSide");
+                tileField.setAccessible(true);
+                sideField.setAccessible(true);
+                assertSame(end, tileField.get(result));
+                assertEquals(stop == 0 ? ForgeDirection.EAST : ForgeDirection.NORTH, sideField.get(result));
+            }
+        }
+    }
 
     @Test
     void connectedRunKeepsOrderedMembersAndLossAcrossChunkBorder() {
