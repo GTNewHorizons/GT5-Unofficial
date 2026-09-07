@@ -6328,7 +6328,8 @@ GT5U.waila.mebf.parallel=Current Parallel Modifier: §6%s
 GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
 GT5U.waila.boiler.temperature=§aTemperature: §6%s
 GT5U.waila.boiler.fuel_empty=§cFuel empty
-
+GT5U.waila.monster_repellent.working_range=Range: §a%s§r blocks
+GT5U.waila.monster_repellent.unpowered=Unpowered
 
 GT5U.waila.mvf.speedboost=Current Speed Modifier: §a%s
 GT5U.waila.mvf.cryotheum=Current Cryotheum Drain: §3%s§r/s
