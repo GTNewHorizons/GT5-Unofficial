@@ -769,7 +769,7 @@ public class GTMod {
             }
         }
         for (ItemStack tOutput : tStacks) {
-            if (!proxy.mRegisteredOres.contains(tOutput)) {
+            if (!proxy.isRegisteredOre(tOutput)) {
                 GTOreDictUnificator.setStack(tOutput);
             } else {
                 logMultilineError(GT_FML_LOGGER, generateGTErr01Message(tOutput));
