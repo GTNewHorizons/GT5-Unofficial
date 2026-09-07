@@ -77,15 +77,18 @@ public class TextureSet {
         for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.VALUES) {
             switch (type.texture) {
                 case BLOCK:
-                    mTextures[type.ordinal()] = Textures.BlockIcons.textureSet(aSetName, type.suffix);
+                    mTextures[type.ordinal()] = Textures.BlockIcons
+                        .textureSet(Mods.GregTech.resourceDomain, aSetName, type.suffix);
                     break;
                 case BLOCK_WITH_ALPHA:
-                    mTextures[type.ordinal()] = Textures.BlockIcons
-                        .customAlpha(Textures.TextureMaterialIconDirectory + aSetName + type.suffix);
+                    mTextures[type.ordinal()] = Textures.BlockIcons.customAlpha(
+                        Mods.GregTech.resourceDomain,
+                        Textures.TextureMaterialIconDirectory + aSetName + type.suffix);
                     break;
                 case ITEM:
                 default:
-                    mTextures[type.ordinal()] = Textures.ItemIcons.textureSet(aSetName, type.suffix);
+                    mTextures[type.ordinal()] = Textures.ItemIcons
+                        .textureSet(Mods.GregTech.resourceDomain, aSetName, type.suffix);
                     break;
             }
         }
@@ -117,15 +120,18 @@ public class TextureSet {
                 // Override this specific icon
                 switch (type.texture) {
                     case BLOCK:
-                        mTextures[type.ordinal()] = Textures.BlockIcons.textureSet(mSetName, type.suffix);
+                        mTextures[type.ordinal()] = Textures.BlockIcons
+                            .textureSet(Mods.GregTech.resourceDomain, mSetName, type.suffix);
                         break;
                     case BLOCK_WITH_ALPHA:
-                        mTextures[type.ordinal()] = Textures.BlockIcons
-                            .customAlpha(Textures.TextureMaterialIconDirectory + mSetName + type.suffix);
+                        mTextures[type.ordinal()] = Textures.BlockIcons.customAlpha(
+                            Mods.GregTech.resourceDomain,
+                            Textures.TextureMaterialIconDirectory + mSetName + type.suffix);
                         break;
                     case ITEM:
                     default:
-                        mTextures[type.ordinal()] = Textures.ItemIcons.textureSet(mSetName, type.suffix);
+                        mTextures[type.ordinal()] = Textures.ItemIcons
+                            .textureSet(Mods.GregTech.resourceDomain, mSetName, type.suffix);
                         break;
                 }
             } else {
@@ -183,6 +189,7 @@ public class TextureSet {
 
         for (StoneType stoneType : StoneType.VALUES) {
             mStoneOreTextures[slot][stoneType.ordinal()] = Textures.BlockIcons.customAlphaFallback(
+                Mods.GregTech.resourceDomain,
                 Textures.TextureMaterialIconDirectory + "CUSTOM/"
                     + mStoneOreTextureSetName
                     + "/"

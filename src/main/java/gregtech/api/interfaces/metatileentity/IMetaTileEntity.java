@@ -433,6 +433,19 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     @interface SkipGenerateDescription {}
 
     /**
+     * Skip adding the name to <code>GregTech.lang</code>.
+     * <p>
+     * Use it when the class builds its name at runtime by overriding {@link #getLocalName()}, e.g. from a shared key
+     * formatted with the tier, so that no per instance name key is generated.
+     *
+     * @apiNote This annotation is only effective when annotated to subclasses of {@link IMetaTileEntity}.
+     * @see #getLocalName()
+     */
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface SkipGenerateName {}
+
+    /**
      * In case the Output Voltage varies.
      */
     String getSpecialVoltageToolTip();

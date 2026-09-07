@@ -360,3 +360,5 @@ gt.blockmachines.largefusioncomputer5.name=压缩核聚变反应堆控制电脑 
 gt.blockmachines.neutronactivator.name=中子活化器
 gt.blockmachines.preciseassembler.name=精密自动组装机MT-3662
 gt.blockmachines.yottafluidtank.name=YOT储罐
+gt.blockmachines.neutron_accelerator.name=%s中子加速器
+gt.blockmachines.neutron_accelerator.desc=消耗能量加速中子！\n最大EU消耗：%s EU/t\n每EU转化为10-20eV中子动能。

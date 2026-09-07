@@ -12,9 +12,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEQuantumChest extends MTEDigitalChestBase {
 
     public int mItemCount = 0;
@@ -27,6 +31,13 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
 
     public MTEQuantumChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.quantum.chest.name", GTUtility.getRomanNumeral(mTier - 5));
     }
 
     @Override

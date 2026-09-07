@@ -87,13 +87,15 @@ public class SplitterRule {
         // No input color means wildcard, accept any color
         if (!inputColors.isEmpty() && !inputColors.contains(color)) return false;
 
-        // If no items in the filter set match the given item, do not apply this rule
-        // Also try the normal item representation
+        // If no items in the filter set match the given item, do not apply this rule.
+        // If no items are set, then we can still apply this rule.
+        // Also try the normal item representation.
         ItemStack realStack = CircuitComponent.tryGetRealStack(item);
-        boolean passed = false;
+        boolean passed = false, foundStack = false;
         String testDisplayName = GTUtility.getStackCustomName(item);
         for (ItemStack filterStack : filterStacks.getStacks()) {
             if (filterStack == null) continue;
+            foundStack = true;
             String filterDisplayName = GTUtility.getStackCustomName(filterStack);
             if (Objects.equals(testDisplayName, filterDisplayName)
                 && (filterStack.isItemEqual(item) || (realStack != null && filterStack.isItemEqual(realStack)))) {
@@ -101,7 +103,9 @@ public class SplitterRule {
                 break;
             }
         }
-        if (!passed) return false;
+        // Return false if we found a stack in the splitter rule, and our rule does not apply to the checked stack.
+        // If we never found a stack in our rules, then we should continue anyway, all items match this rule.
+        if (foundStack && !passed) return false;
 
         // If a redstone mode is set
         if (redstoneMode != null) {
