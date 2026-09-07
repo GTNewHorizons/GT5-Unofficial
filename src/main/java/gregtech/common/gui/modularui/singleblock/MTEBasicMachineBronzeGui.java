@@ -2,10 +2,6 @@ package gregtech.common.gui.modularui.singleblock;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.widgets.ProgressWidget;
-import gregtech.api.util.GTUtility;
-import gregtech.common.modularui2.widget.GTProgressWidget;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -20,6 +16,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.metatileentity.implementations.MTEBasicMachineBronze;
 import gregtech.api.recipe.BasicUIProperties;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gregtech.common.gui.modularui.widget.SteamGaugeWidget;
 
