@@ -56,8 +56,9 @@ public abstract class GenerateNodeMap {
             if (side == aInvalidSide) {
                 continue;
             }
+            if (tMetaPipe != null && !tMetaPipe.isConnectedAtSide(side)) continue;
             final TileEntity tNextTileEntity = aPipe.getTileEntityAtSide(side);
-            if (tNextTileEntity == null || (tMetaPipe != null && !tMetaPipe.isConnectedAtSide(side))) continue;
+            if (tNextTileEntity == null) continue;
             final ArrayList<MetaPipeEntity> tNewPipes = new ArrayList<>();
             final Pair nextTileEntity = getNextValidTileEntity(tNextTileEntity, tNewPipes, side, tNodeMap);
             if (nextTileEntity != null) {

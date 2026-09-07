@@ -233,12 +233,17 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
         final BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         if (!(tBase.getNode() instanceof PowerNode tNode)) return 0;
         int tPlace = 0;
-        final Node[] tToPower = new Node[tNode.mConsumers.size()];
+        Node[] tToPower = null;
         if (tNode.mHadVoltage) {
             for (ConsumerNode consumer : tNode.mConsumers) {
-                if (consumer.needsEnergy()) tToPower[tPlace++] = consumer;
+                if (consumer.needsEnergy()) {
+                    if (tToPower == null) tToPower = new Node[tNode.mConsumers.size()];
+                    tToPower[tPlace++] = consumer;
+                }
             }
+            if (tToPower == null) return 0;
         } else {
+            tToPower = new Node[tNode.mConsumers.size()];
             tNode.mHadVoltage = true;
             for (ConsumerNode consumer : tNode.mConsumers) {
                 tToPower[tPlace++] = consumer;
