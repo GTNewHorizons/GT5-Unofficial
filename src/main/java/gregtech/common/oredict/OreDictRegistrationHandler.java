@@ -399,7 +399,7 @@ public final class OreDictRegistrationHandler {
 
     public final HashSet<ItemStack> registeredOres = new HashSet<>(32768);
     private final HashSet<OreDictRegistration> registrations = new HashSet<>();
-    private boolean oreDictProcessingActive = false;
+    private boolean bufferRegistrationProcessing = true;
 
     public void registerOre(OreDictionary.OreRegisterEvent event) {
         ModContainer container = Loader.instance()
@@ -439,7 +439,7 @@ public final class OreDictRegistrationHandler {
             }
 
             String oreOriginPath = modId + " -> " + oreName;
-            if (oreDictProcessingActive || GregTechAPI.sPostloadStarted || GregTechAPI.sLoadFinished) {
+            if (!bufferRegistrationProcessing) {
                 oreOriginPath = originalModId + " --Late--> " + oreName;
             }
 
@@ -636,13 +636,9 @@ public final class OreDictRegistrationHandler {
         GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
 
         OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, material, modId);
-        if (!oreDictProcessingActive || !GregTechAPI.sUnificationEntriesRegistered) {
+        if (bufferRegistrationProcessing) {
             registrations.add(registration);
         } else {
-            registrations.clear();
-        }
-
-        if (oreDictProcessingActive) {
             registration.registerRecipes();
         }
     }
@@ -897,8 +893,8 @@ public final class OreDictRegistrationHandler {
     }
 
     @SuppressWarnings("deprecation")
-    public void activateOreDictProcessing() {
-        oreDictProcessingActive = true;
+    public void processBufferedRegistrations() {
+        bufferRegistrationProcessing = false;
 
         ProgressManager.ProgressBar progressBar = proxy.isClientSide()
             ? ProgressManager.push("Register materials", registrations.size())
@@ -924,6 +920,8 @@ public final class OreDictRegistrationHandler {
         if (progressBar != null) {
             ProgressManager.pop(progressBar);
         }
+
+        registrations.clear();
     }
 
     public void registerUnificationEntries() {
