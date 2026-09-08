@@ -104,7 +104,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addInfo("No hard limit on EU/t output - scales with fuel input")
             .addInfo(
                 EnumChatFormatting.YELLOW
-                    + "Do not insert rocket fuel while disabled - it will be voided when enabled!"
+                    + "Do not insert rocket fuel while disabled - it will be consumed when enabled!"
                     + EnumChatFormatting.GRAY)
             .addInfo("Consumes 1% of current EU/t in Air per tick")
             .addInfo("Air is supplied only through Air Intake Hatches")
