@@ -1037,11 +1037,11 @@ public class RecipeLoader {
         // SeaweedAsh
         GTModHandler.addSmeltingRecipe(
             GTModHandler.getModItem(PamsHarvestCraft.ID, "seaweedItem", 1),
-            WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dustSmall, 1));
+            WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 1));
 
         // SeaweedConcentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 2))
+            .itemInputs(WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 8))
             .itemOutputs(Materials.Calcite.getDust(1))
             .fluidInputs(Materials.DilutedSulfuricAcid.getFluid(1_200))
             .fluidOutputs(WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(1_200))
