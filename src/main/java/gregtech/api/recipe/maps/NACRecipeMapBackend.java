@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
+import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -57,7 +58,9 @@ public class NACRecipeMapBackend extends RecipeMapBackend {
     }
 
     private void addRecipeDuration(GTRecipe recipe) {
-        int tier = GTUtility.getTier(recipe.mEUt);
+        // Try get casing tier first, in the case of assembly matrix
+        int tier = recipe
+            .getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, (int) GTUtility.getTier(recipe.mEUt));
         for (int i = tier; i < maxDurations.length; i++) {
             maxDurations[i] = Math.max(maxDurations[i], recipe.mDuration);
         }
