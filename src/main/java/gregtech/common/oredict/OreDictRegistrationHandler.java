@@ -24,7 +24,6 @@ import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ManualOreDictTweaks;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
@@ -976,7 +975,7 @@ public final class OreDictRegistrationHandler {
             }
 
             boolean overwrite = registration.modId != null
-                && ManualOreDictTweaks.shouldOredictBeOverwritten(registration.modId, registration.oreName);
+                && OreDictUnificationOverrides.contains(registration.modId, registration.oreName);
 
             GTOreDictUnificator.set(registration.prefix, registration.material, registration.stack, overwrite, true);
         }
