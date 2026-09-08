@@ -48,7 +48,12 @@ public class CoverPump extends CoverIOBase {
         IFluidHandler source = export ? current : toAccess;
         IFluidHandler dest = export ? toAccess : current;
         ForgeDirection drainSide = export ? coverSide : coverSide.getOpposite();
-        GTUtility.moveFluid(source, dest, drainSide, mTransferRate, this::canTransferFluid);
+        GTUtility.moveFluid(
+            source,
+            dest,
+            drainSide,
+            GTUtility.mulSafe(mTransferRate, this.getTickRate()),
+            this::canTransferFluid);
     }
 
     protected boolean canTransferFluid(FluidStack fluid) {
