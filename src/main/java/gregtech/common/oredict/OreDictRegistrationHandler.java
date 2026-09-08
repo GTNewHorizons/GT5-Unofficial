@@ -946,7 +946,6 @@ public final class OreDictRegistrationHandler {
             GTOreDictUnificator.set(registration.prefix, registration.material, registration.stack, overwrite, true);
         }
 
-        GregTechAPI.sUnificationEntriesRegistered = true;
         GTRecipe.reInit();
     }
 
