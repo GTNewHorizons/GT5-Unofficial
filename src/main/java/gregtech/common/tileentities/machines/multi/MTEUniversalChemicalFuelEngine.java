@@ -163,7 +163,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
             .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop")
             .addInfo(
                 "If the amount of energy to be produced is higher "
-                    + "than the dynamo hatch can handle then all produced energy will void")
+                    + "than the dynamo hatch can handle, then all produced energy will void")
             .addSeparator()
             .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
             .addInfo("The higher the amount of promoter, the higher the efficiency")
@@ -178,7 +178,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
                     + ROCKET_EFFICIENCY_COEFFICIENT)
             .addSeparator()
             .addInfo(
-                "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
+                "If you forget to supply Combustion Promoter, this engine will consume all the fuel "
                     + EnumChatFormatting.YELLOW
                     + "without outputting energy")
             .addInfo(
