@@ -19,9 +19,9 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -111,13 +111,33 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addInfo("If air runs out, it shuts down and requires manual restart")
             .addInfo("Minimum fuel input: 5 L/s")
             .addSeparator()
-            .addInfo("Consumes 1000 L of " + EnumChatFormatting.GOLD + mLubricantName + EnumChatFormatting.GRAY + " per hour")
+            .addInfo(
+                "Consumes 1000 L of " + EnumChatFormatting.GOLD
+                    + mLubricantName
+                    + EnumChatFormatting.GRAY
+                    + " per hour")
             .addInfo("Takes 100 seconds to warm up to full efficiency")
             .addSeparator()
-            .addInfo("Optional boost: supply 0.3% of current EU/t in " + EnumChatFormatting.GOLD + mCoolantName + EnumChatFormatting.GRAY + " per tick")
-            .addInfo("Boosting triples the soft caps and " + EnumChatFormatting.GOLD + mLubricantName + EnumChatFormatting.GRAY + " consumption")
+            .addInfo(
+                "Optional boost: supply 0.3% of current EU/t in " + EnumChatFormatting.GOLD
+                    + mCoolantName
+                    + EnumChatFormatting.GRAY
+                    + " per tick")
+            .addInfo(
+                "Boosting triples the soft caps and " + EnumChatFormatting.GOLD
+                    + mLubricantName
+                    + EnumChatFormatting.GRAY
+                    + " consumption")
             .addInfo("Fuel efficiency decreases after the soft caps below")
-            .addInfo("Soft caps: " + EnumChatFormatting.RED + "49k EU/t" + EnumChatFormatting.GRAY + " and " + EnumChatFormatting.RED + "94k EU/t" + EnumChatFormatting.GRAY + " (unboosted)")
+            .addInfo(
+                "Soft caps: " + EnumChatFormatting.RED
+                    + "49k EU/t"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.RED
+                    + "94k EU/t"
+                    + EnumChatFormatting.GRAY
+                    + " (unboosted)")
             .addSupportAny()
             .beginStructureBlock(3, 3, 10, false)
             .addController("Front center, 2nd layer")
