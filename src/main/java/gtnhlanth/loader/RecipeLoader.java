@@ -1056,7 +1056,7 @@ public class RecipeLoader {
             .fluidInputs(WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2_000))
             .fluidOutputs(WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(200))
             .eut(TierEU.RECIPE_HV)
-            .duration(38 * SECONDS)
+            .duration(30 * SECONDS)
             .addTo(centrifugeRecipes);
 
         // IODINE-END
