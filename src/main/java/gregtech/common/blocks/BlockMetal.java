@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import static gregtech.api.enums.Mods.NotEnoughItems;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,8 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.client.DynamicLangManager;
 
+import java.util.Arrays;
+
 public class BlockMetal extends BlockStorage {
 
     public Materials[] mMats;
@@ -23,6 +26,7 @@ public class BlockMetal extends BlockStorage {
     public IIconContainer[] mBlockIcons;
     public boolean mHideBlocks;
     public static boolean mNEIisLoaded = NotEnoughItems.isModLoaded();
+    public static final int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
 
     public BlockMetal(String aName, Materials[] aMats, OrePrefixes aPrefix, IIconContainer[] aBlockIcons) {
         super(ItemStorage.class, aName, Material.iron);
@@ -78,4 +82,9 @@ public class BlockMetal extends BlockStorage {
         }
     }
 
+    @Override
+    public int getRenderType() {
+        if (Arrays.asList(mMats).contains(Materials.MHDCSM)) return RENDER_ID;
+        return super.getRenderType();
+    }
 }

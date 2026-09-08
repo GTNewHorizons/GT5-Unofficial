@@ -127,6 +127,7 @@ import gregtech.common.render.FluidDisplayStackRenderer;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
+import gregtech.common.render.MHDCSMBlockRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.RenderInit;
@@ -220,6 +221,7 @@ public class GTClient extends GTProxy {
         super.onInitialization(event);
         RenderingRegistry.registerBlockHandler(new GTRendererBlock());
         RenderingRegistry.registerBlockHandler(new GTRendererCasing());
+        RenderingRegistry.registerBlockHandler(new MHDCSMBlockRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityLaser.class, new LaserRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityWormhole.class, new WormholeRenderer());
