@@ -15,7 +15,7 @@ import java.util.List;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -401,7 +401,7 @@ public final class OreDictRegistrationHandler {
     private final HashSet<OreDictRegistration> registrations = new HashSet<>();
     private boolean oreDictProcessingActive = false;
 
-    public void registerOre(OreRegisterEvent event) {
+    public void registerOre(OreDictionary.OreRegisterEvent event) {
         ModContainer container = Loader.instance()
             .activeModContainer();
         String modId = container == null ? "UNKNOWN" : container.getModId();
@@ -454,20 +454,17 @@ public final class OreDictRegistrationHandler {
 
             registeredOres.add(stack);
 
-            if (handleSpecialOreRegistration(event, oreOriginPath)) {
+            if (handleSpecialOreRegistration(oreName, stack, oreOriginPath)) {
                 return;
             }
 
-            processOreRegistration(event, modId, oreOriginPath);
+            processOreRegistration(oreName, stack, modId, oreOriginPath);
         } catch (Exception e) {
             GT_FML_LOGGER.error("Could not register ore (oredict name={}, item stack={})", event.Name, event.Ore, e);
         }
     }
 
-    private boolean handleSpecialOreRegistration(OreRegisterEvent event, String oreOriginPath) {
-        String oreName = event.Name;
-        ItemStack stack = event.Ore;
-
+    private boolean handleSpecialOreRegistration(String oreName, ItemStack stack, String oreOriginPath) {
         if (IGNORED_ITEMS.contains(oreName)) {
             if (!oreName.startsWith("item")) {
                 return false;
@@ -580,10 +577,7 @@ public final class OreDictRegistrationHandler {
         return false;
     }
 
-    private void processOreRegistration(OreRegisterEvent event, String modId, String oreOriginPath) {
-        String oreName = event.Name;
-        ItemStack stack = event.Ore;
-
+    private void processOreRegistration(String oreName, ItemStack stack, String modId, String oreOriginPath) {
         OrePrefixes prefix = OrePrefixes.getOrePrefix(oreName);
         Materials material = Materials._NULL;
 
@@ -641,7 +635,7 @@ public final class OreDictRegistrationHandler {
                 if (validFirstChar) {
                     if (prefix.isMaterialBased()) {
                         material = Materials.get(materialName);
-                        if (processMaterialRegistration(event, prefix, material, oreOriginPath)) {
+                        if (processMaterialRegistration(oreName, stack, prefix, material, oreOriginPath)) {
                             return;
                         }
                     } else {
@@ -657,7 +651,7 @@ public final class OreDictRegistrationHandler {
                 return;
             }
 
-            registerPrefixAliases(event, prefix, materialName);
+            registerPrefixAliases(stack, prefix, materialName);
         }
 
         GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
@@ -674,10 +668,8 @@ public final class OreDictRegistrationHandler {
         }
     }
 
-    private static boolean processMaterialRegistration(OreRegisterEvent event, OrePrefixes prefix, Materials material,
-        String oreOriginPath) {
-
-        ItemStack stack = event.Ore;
+    private static boolean processMaterialRegistration(String oreName, ItemStack stack, OrePrefixes prefix,
+        Materials material, String oreOriginPath) {
 
         if (material != material.mMaterialInto) {
             GTOreDictUnificator.registerOre(prefix, material.mMaterialInto, stack);
@@ -696,7 +688,7 @@ public final class OreDictRegistrationHandler {
 
         if (material == Materials._NULL) {
             for (Dyes dye : Dyes.VALUES) {
-                if (event.Name.endsWith(
+                if (oreName.endsWith(
                     dye.name()
                         .substring("dye".length()))) {
                     GTOreDictUnificator.addToBlacklist(stack);
@@ -716,13 +708,15 @@ public final class OreDictRegistrationHandler {
 
         material.add(GTUtility.copyAmount(1, stack));
 
-        registerThaumcraftAspects(event, prefix, material);
-        registerMaterialAliases(event, prefix, material);
+        registerThaumcraftAspects(oreName, stack, prefix, material);
+        registerMaterialAliases(stack, prefix, material);
 
         return prefix.isUnifiable() && !material.mUnifiable;
     }
 
-    private static void registerThaumcraftAspects(OreRegisterEvent event, OrePrefixes prefix, Materials material) {
+    private static void registerThaumcraftAspects(String oreName, ItemStack stack, OrePrefixes prefix,
+        Materials material) {
+
         if (GregTechAPI.sThaumcraftCompat == null || !prefix.doGenerateItem(material) || prefix.isIgnored(material)) {
             return;
         }
@@ -739,13 +733,10 @@ public final class OreDictRegistrationHandler {
             }
         }
 
-        GregTechAPI.sThaumcraftCompat
-            .registerThaumcraftAspectsToItem(GTUtility.copyAmount(1, event.Ore), aspects, event.Name);
+        GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(GTUtility.copyAmount(1, stack), aspects, oreName);
     }
 
-    private static void registerMaterialAliases(OreRegisterEvent event, OrePrefixes prefix, Materials material) {
-        ItemStack stack = event.Ore;
-
+    private static void registerMaterialAliases(ItemStack stack, OrePrefixes prefix, Materials material) {
         switch (prefix.getName()) {
             case "crystal" -> {
                 if (material == Materials.CertusQuartz || material == Materials.NetherQuartz
@@ -879,9 +870,7 @@ public final class OreDictRegistrationHandler {
         }
     }
 
-    private static void registerPrefixAliases(OreRegisterEvent event, OrePrefixes prefix, String materialName) {
-        ItemStack stack = event.Ore;
-
+    private static void registerPrefixAliases(ItemStack stack, OrePrefixes prefix, String materialName) {
         switch (prefix.getName()) {
             case "dye" -> {
                 if (GTUtility.isStringValid(materialName)) {
