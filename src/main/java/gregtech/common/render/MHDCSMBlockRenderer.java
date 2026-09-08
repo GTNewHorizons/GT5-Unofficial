@@ -1,6 +1,5 @@
 package gregtech.common.render;
 
-import gregtech.common.config.Client;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -15,6 +14,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.common.blocks.BlockMetal;
+import gregtech.common.config.Client;
 
 public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
 
