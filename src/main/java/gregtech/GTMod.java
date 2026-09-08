@@ -104,6 +104,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
+import gregtech.common.oredict.OreDictUnificationOverrides;
 import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
@@ -402,7 +403,6 @@ public class GTMod {
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
-        proxy.registerUnificationEntries();
         new FuelLoader().run();
         new FissionFuelLoader().run();
 
@@ -453,8 +453,6 @@ public class GTMod {
                 }
             }
         }
-
-        proxy.registerUnificationEntries();
 
         new BookAndLootLoader().run();
         new ItemMaxStacksizeLoader().run();
@@ -636,6 +634,7 @@ public class GTMod {
             GT_FML_LOGGER
                 .info("Executed 2nd pass of delayed Crafting Recipes ({}). Have another Cake.", stopwatch.stop());
         }
+        OreDictUnificationOverrides.apply();
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
     }

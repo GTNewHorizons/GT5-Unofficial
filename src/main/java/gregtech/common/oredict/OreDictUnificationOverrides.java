@@ -11,13 +11,16 @@ import static gregtech.api.enums.Mods.RandomThings;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.Translocator;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 
-final class OreDictUnificationOverrides {
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
 
-    private static final HashMap<String, HashSet<String>> overrides = new HashMap<>();
+public final class OreDictUnificationOverrides {
+
+    // oreName -> modId
+    private static final HashMap<String, String> preferredMods = new HashMap<>();
+    private static final HashMap<String, OreDictRegistration> candidates = new HashMap<>();
 
     static {
         add(GregTech.ID, "dustAlumina");
@@ -42,11 +45,27 @@ final class OreDictUnificationOverrides {
     private OreDictUnificationOverrides() {}
 
     private static void add(String modId, String... oreNames) {
-        overrides.put(modId, new HashSet<>(Arrays.asList(oreNames)));
+        for (String oreName : oreNames) {
+            preferredMods.put(oreName, modId);
+        }
     }
 
-    static boolean contains(String modId, String oreName) {
-        HashSet<String> modOverrides = overrides.get(modId);
-        return modOverrides != null && modOverrides.contains(oreName);
+    static void capture(OreDictRegistration registration) {
+        if (registration.modId == null) return;
+        if (!registration.modId.equals(preferredMods.get(registration.oreName))) return;
+        if (!registration.prefix.isUnifiable()) return;
+
+        candidates.put(registration.oreName, registration);
+    }
+
+    public static void apply() {
+        for (OreDictRegistration registration : candidates.values()) {
+            if (GTOreDictUnificator.isBlacklisted(registration.stack)) continue;
+            GTOreDictUnificator.set(registration.prefix, registration.material, registration.stack, true, true);
+        }
+
+        candidates.clear();
+        GTOreDictUnificator.resetUnificationEntries();
+        GTRecipe.reInit();
     }
 }
