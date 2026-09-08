@@ -416,19 +416,14 @@ public final class OreDictRegistrationHandler {
         if (event == null || event.Ore == null
             || event.Ore.getItem() == null
             || event.Name == null
-            || event.Name.isEmpty()
-            || event.Name.replace("_", "")
-                .length() - event.Name.length() == 9) {
+            || event.Name.isEmpty()) {
 
             String reportingModId = originalModId.equals(GregTech.ID) ? "UNKNOWN" : originalModId;
+            String message = reportingModId
+                + " did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.";
 
-            GTLoggers.GT_ORE_DICT_LOGGER.info(
-                "{} did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.",
-                reportingModId);
-
-            throw new IllegalArgumentException(
-                reportingModId
-                    + " did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.");
+            GTLoggers.GT_ORE_DICT_LOGGER.info(message);
+            throw new IllegalArgumentException(message);
         }
 
         try {
@@ -579,7 +574,11 @@ public final class OreDictRegistrationHandler {
 
     private void processOreRegistration(String oreName, ItemStack stack, String modId, String oreOriginPath) {
         OrePrefixes prefix = OrePrefixes.getOrePrefix(oreName);
-        Materials material = Materials._NULL;
+
+        if (prefix == null) {
+            GTLoggers.GT_ORE_DICT_LOGGER.info("{} prefix is null and won't be processed", oreOriginPath);
+            return;
+        }
 
         if (prefix == OrePrefixes.nugget && modId.equals(Thaumcraft.ID)
             && stack.getItem()
@@ -588,71 +587,51 @@ public final class OreDictRegistrationHandler {
             return;
         }
 
-        if (prefix == null) {
-            if (oreName.toLowerCase()
-                .equals(oreName)) {
-                GTLoggers.GT_ORE_DICT_LOGGER.info("{} is invalid due to being solely lowercased.", oreOriginPath);
-                return;
-            }
-
-            if (oreName.toUpperCase()
-                .equals(oreName)) {
-                GTLoggers.GT_ORE_DICT_LOGGER.info("{} is invalid due to being solely uppercased.", oreOriginPath);
-                return;
-            }
-
-            if (Character.isUpperCase(oreName.charAt(0))) {
-                GTLoggers.GT_ORE_DICT_LOGGER
-                    .info("{} is invalid due to the first character being uppercased.", oreOriginPath);
-            }
-        } else {
-            if (prefix.skipActiveUnification()) {
-                GTOreDictUnificator.addToBlacklist(stack);
-            }
-
-            String materialName = oreName.substring(
-                prefix.getName()
-                    .length());
-
-            if (prefix != prefix.mPrefixInto) {
-                String newName = prefix.mPrefixInto.getName() + materialName;
-                if (!GTOreDictUnificator.isRegisteringOres()) {
-                    GTLoggers.GT_ORE_DICT_LOGGER.info(
-                        "{} uses a deprecated Prefix, and is getting re-registered as {}",
-                        oreOriginPath,
-                        newName);
-                }
-                GTOreDictUnificator.registerOre(newName, stack);
-                return;
-            }
-
-            if (!materialName.isEmpty()) {
-                char firstChar = materialName.charAt(0);
-                boolean validFirstChar = Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar)
-                    || firstChar == '_'
-                    || Character.isDigit(firstChar);
-
-                if (validFirstChar) {
-                    if (prefix.isMaterialBased()) {
-                        material = Materials.get(materialName);
-                        if (processMaterialRegistration(oreName, stack, prefix, material, oreOriginPath)) {
-                            return;
-                        }
-                    } else {
-                        prefix.add(GTUtility.copyAmount(1, stack));
-                    }
-                }
-            } else if (prefix.isSelfReferencing()) {
-                prefix.add(GTUtility.copyAmount(1, stack));
-            } else {
-                GTLoggers.GT_ORE_DICT_LOGGER
-                    .info("{} uses a Prefix as full OreDict Name, and is therefor invalid.", oreOriginPath);
-                stack.setStackDisplayName("Invalid OreDictionary Tag");
-                return;
-            }
-
-            registerPrefixAliases(stack, prefix, materialName);
+        if (prefix.skipActiveUnification()) {
+            GTOreDictUnificator.addToBlacklist(stack);
         }
+
+        Materials material = Materials._NULL;
+        String materialName = oreName.substring(
+            prefix.getName()
+                .length());
+
+        if (prefix != prefix.mPrefixInto) {
+            String newName = prefix.mPrefixInto.getName() + materialName;
+            if (!GTOreDictUnificator.isRegisteringOres()) {
+                GTLoggers.GT_ORE_DICT_LOGGER
+                    .info("{} uses a deprecated Prefix, and is getting re-registered as {}", oreOriginPath, newName);
+            }
+            GTOreDictUnificator.registerOre(newName, stack);
+            return;
+        }
+
+        if (!materialName.isEmpty()) {
+            char firstChar = materialName.charAt(0);
+            boolean validFirstChar = Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar)
+                || firstChar == '_'
+                || Character.isDigit(firstChar);
+
+            if (validFirstChar) {
+                if (prefix.isMaterialBased()) {
+                    material = Materials.get(materialName);
+                    if (processMaterialRegistration(oreName, stack, prefix, material, oreOriginPath)) {
+                        return;
+                    }
+                } else {
+                    prefix.add(GTUtility.copyAmount(1, stack));
+                }
+            }
+        } else if (prefix.isSelfReferencing()) {
+            prefix.add(GTUtility.copyAmount(1, stack));
+        } else {
+            GTLoggers.GT_ORE_DICT_LOGGER
+                .info("{} uses a Prefix as full OreDict Name, and is therefor invalid.", oreOriginPath);
+            stack.setStackDisplayName("Invalid OreDictionary Tag");
+            return;
+        }
+
+        registerPrefixAliases(stack, prefix, materialName);
 
         GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
 
@@ -936,7 +915,7 @@ public final class OreDictRegistrationHandler {
             }
 
             if (progressBar != null) {
-                progressBar.step(registration.material == null ? "" : registration.material.getLocalizedName());
+                progressBar.step(registration.material.getLocalizedName());
             }
 
             registration.registerRecipes();
@@ -951,7 +930,7 @@ public final class OreDictRegistrationHandler {
         GTOreDictUnificator.resetUnificationEntries();
 
         for (OreDictRegistration registration : registrations) {
-            if (registration.prefix == null || !registration.prefix.isUnifiable() || registration.material == null) {
+            if (!registration.prefix.isUnifiable()) {
                 continue;
             }
 
