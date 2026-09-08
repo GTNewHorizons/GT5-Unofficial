@@ -7,6 +7,7 @@ import static gregtech.api.enums.OrePrefixes.blockCasingAdvanced;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
@@ -133,12 +134,14 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
@@ -1059,6 +1062,19 @@ public class RecipeLoader {
             .duration(30 * SECONDS)
             .addTo(centrifugeRecipes);
 
+        // SeaweedByproducts
+        GTValues.RA.stdBuilder()
+            .fluidInputs(WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(6_000))
+            .itemOutputs(
+                WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 60),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Arsenic, 8),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 6),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 2))
+            .fluidOutputs(MaterialsElements.getInstance().BROMINE.getFluidStack(200))
+            .metadata(CentrifugeRecipeKey.INSTANCE, true)
+            .eut(TierEU.RECIPE_UEV)
+            .duration(3 * SECONDS)
+            .addTo(centrifugeNonCellRecipes);
         // IODINE-END
 
         // 2MnO2 + 2KOH + KClO3 = 2KMnO4 + H2O + KCl
