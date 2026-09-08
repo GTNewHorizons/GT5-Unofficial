@@ -2,13 +2,15 @@ package gregtech.common.blocks;
 
 import static gregtech.api.enums.Mods.NotEnoughItems;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import java.util.Arrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -16,8 +18,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.client.DynamicLangManager;
-
-import java.util.Arrays;
 
 public class BlockMetal extends BlockStorage {
 
@@ -84,7 +84,8 @@ public class BlockMetal extends BlockStorage {
 
     @Override
     public int getRenderType() {
-        if (Arrays.asList(mMats).contains(Materials.MHDCSM)) return RENDER_ID;
+        if (Arrays.asList(mMats)
+            .contains(Materials.MHDCSM)) return RENDER_ID;
         return super.getRenderType();
     }
 }

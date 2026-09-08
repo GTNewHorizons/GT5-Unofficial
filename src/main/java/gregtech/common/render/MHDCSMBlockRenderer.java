@@ -1,13 +1,5 @@
 package gregtech.common.render;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.ISBRInventoryContext;
-import gregtech.api.render.SBRContextHolder;
-import gregtech.common.blocks.BlockMetal;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -15,8 +7,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.src.FMLRenderAccessLibrary;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
+import gregtech.common.blocks.BlockMetal;
 
 public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
 
@@ -37,9 +34,10 @@ public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
         return _texturesLoaded;
     }
 
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+        RenderBlocks renderer) {
         if (world.getBlockMetadata(x, y, z) != mhdcsm_meta) {
-            return FMLRenderAccessLibrary.renderWorldBlock(renderer, world, x, y ,z, block, GTRendererCasing.mRenderID);
+            return FMLRenderAccessLibrary.renderWorldBlock(renderer, world, x, y, z, block, GTRendererCasing.mRenderID);
         }
         if (!texturesLoaded()) {
             return false;
@@ -62,13 +60,13 @@ public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
                     boolean face = taxicabDistance == 1;
                     boolean edge = taxicabDistance == 2;
                     boolean corner = taxicabDistance == 3;
-                    if ((face || edge) && canConnectTo(block, x+rx, y+ry, z+rz)) {
+                    if ((face || edge) && canConnectTo(block, x + rx, y + ry, z + rz)) {
                         // only handle diagonals with blocks
                         if (edge) {
                             int neighborCount = 0;
-                            if (rx != 0 && canConnectTo(block, x+rx, y, z)) neighborCount++;
-                            if (ry != 0 && canConnectTo(block, x, y+ry, z)) neighborCount++;
-                            if (rz != 0 && canConnectTo(block, x, y, z+rz)) neighborCount++;
+                            if (rx != 0 && canConnectTo(block, x + rx, y, z)) neighborCount++;
+                            if (ry != 0 && canConnectTo(block, x, y + ry, z)) neighborCount++;
+                            if (rz != 0 && canConnectTo(block, x, y, z + rz)) neighborCount++;
                             if (neighborCount != 2) continue;
                         }
                         renderer.renderAllFaces = true;
@@ -85,15 +83,15 @@ public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
                         renderer.renderAllFaces = false;
                     } else if (face) {
                         // prevents Z-fighting with non-solid blocks
-                        float depthAdjustment = world.getBlock(x+rx, y+ry, z+rz).isOpaqueCube() ? 0 : 0.0001f;
+                        float depthAdjustment = world.getBlock(x + rx, y + ry, z + rz)
+                            .isOpaqueCube() ? 0 : 0.0001f;
                         renderer.setRenderBounds(
                             depthAdjustment,
                             depthAdjustment,
                             depthAdjustment,
                             1 - depthAdjustment,
                             1 - depthAdjustment,
-                            1 - depthAdjustment
-                        );
+                            1 - depthAdjustment);
                         renderer.renderFromInside = true;
                         // spotless:off
                         if      (rx == -1) renderer.renderFaceXNeg(block, x, y, z, textureHalo);
@@ -179,7 +177,8 @@ public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
 
     public static boolean canConnectTo(Block block, int x, int y, int z) {
         IBlockAccess world = Minecraft.getMinecraft().theWorld;
-        return world.getBlock(x, y, z).isAssociatedBlock(block) && world.getBlockMetadata(x, y, z) == mhdcsm_meta;
+        return world.getBlock(x, y, z)
+            .isAssociatedBlock(block) && world.getBlockMetadata(x, y, z) == mhdcsm_meta;
     }
 
     @Override
