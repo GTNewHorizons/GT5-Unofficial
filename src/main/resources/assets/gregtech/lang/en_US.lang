@@ -6328,7 +6328,8 @@ GT5U.waila.mebf.parallel=Current Parallel Modifier: §6%s
 GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
 GT5U.waila.boiler.temperature=§aTemperature: §6%s
 GT5U.waila.boiler.fuel_empty=§cFuel empty
-
+GT5U.waila.monster_repellent.working_range=Range: §a%s§r blocks
+GT5U.waila.monster_repellent.unpowered=Unpowered
 
 GT5U.waila.mvf.speedboost=Current Speed Modifier: §a%s
 GT5U.waila.mvf.cryotheum=Current Cryotheum Drain: §3%s§r/s
@@ -8039,21 +8040,21 @@ GT5U.infodata.super_tank.name=§9Super Tank§r
 GT5U.word_accelerator.mode.blocks=Blocks
 GT5U.word_accelerator.mode.tile_entities=TileEntities
 
-GT5U.voltage_names.ultra_low_voltage=Ultra Low
-GT5U.voltage_names.low_voltage=Low
-GT5U.voltage_names.medium_voltage=Medium
-GT5U.voltage_names.high_voltage=High
-GT5U.voltage_names.extreme_voltage=Extreme
-GT5U.voltage_names.insane_voltage=Insane
-GT5U.voltage_names.ludicrous_voltage=Ludicrous
-GT5U.voltage_names.zpm_voltage=ZPM
-GT5U.voltage_names.ultimate_voltage=Ultimate
-GT5U.voltage_names.ultimate_high_voltage=Highly Ultimate
-GT5U.voltage_names.ultimate_extreme_voltage=Extremely Ultimate
-GT5U.voltage_names.ultimate_insane_voltage=Insanely Ultimate
-GT5U.voltage_names.ultimate_mega_voltage=Mega Ultimate
-GT5U.voltage_names.ultimate_extended_mega_voltage=Extended Mega Ultimate
-GT5U.voltage_names.maximum_voltage=Maximum
+GT5U.voltage_names.ultra_low_voltage=Ultra Low Voltage
+GT5U.voltage_names.low_voltage=Low Voltage
+GT5U.voltage_names.medium_voltage=Medium Voltage
+GT5U.voltage_names.high_voltage=High Voltage
+GT5U.voltage_names.extreme_voltage=Extreme Voltage
+GT5U.voltage_names.insane_voltage=Insane Voltage
+GT5U.voltage_names.ludicrous_voltage=Ludicrous Voltage
+GT5U.voltage_names.zpm_voltage=ZPM Voltage
+GT5U.voltage_names.ultimate_voltage=Ultimate Voltage
+GT5U.voltage_names.ultimate_high_voltage=Highly Ultimate Voltage
+GT5U.voltage_names.ultimate_extreme_voltage=Extremely Ultimate Voltage
+GT5U.voltage_names.ultimate_insane_voltage=Insanely Ultimate Voltage
+GT5U.voltage_names.ultimate_mega_voltage=Mega Ultimate Voltage
+GT5U.voltage_names.ultimate_extended_mega_voltage=Extended Mega Ultimate Voltage
+GT5U.voltage_names.maximum_voltage=Maximum Voltage
 GT5U.voltage_names.error_voltage_report_this=Error Voltage, report this
 
 
