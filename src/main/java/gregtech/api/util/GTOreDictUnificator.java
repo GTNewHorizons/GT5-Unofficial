@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -56,9 +57,27 @@ public class GTOreDictUnificator {
      * The Blacklist just prevents the Item from being unificated into something else. Useful if you have things like
      * the Industrial Diamond, which is better than regular Diamond, but also usable in absolutely all Diamond Recipes.
      */
-    public static void addToBlacklist(ItemStack aStack) {
-        if (GTUtility.isStackValid(aStack) && !GTUtility.isStackInStackSet(aStack, sNoUnificationList))
-            sNoUnificationList.add(aStack);
+    public static void addToBlacklist(ItemStack stack) {
+        if (GTUtility.isStackInvalid(stack) || isBlacklisted(stack)) {
+            return;
+        }
+
+        sNoUnificationList.add(stack);
+
+        if (Items.feather.getDamage(stack) == WILDCARD) {
+            Item item = stack.getItem();
+            for (Entry<ItemStack, ItemData> entry : sItemStack2DataMap.entrySet()) {
+                if (entry.getKey()
+                    .getItem() == item) {
+                    entry.getValue().mBlackListed = true;
+                }
+            }
+        } else {
+            ItemData itemData = sItemStack2DataMap.get(stack);
+            if (itemData != null) {
+                itemData.mBlackListed = true;
+            }
+        }
     }
 
     public static boolean isBlacklisted(ItemStack aStack) {
@@ -188,10 +207,6 @@ public class GTOreDictUnificator {
         if (itemData == null || !itemData.hasValidPrefixMaterialData() || (useBlackList && itemData.mBlackListed)) {
             return GTUtility.copyOrNull(stack);
         }
-        if (useBlackList && !GregTechAPI.sUnificationEntriesRegistered && isBlacklisted(stack)) {
-            itemData.mBlackListed = true;
-            return GTUtility.copyOrNull(stack);
-        }
         if (itemData.mUnificationTarget == null) {
             itemData.mUnificationTarget = sName2StackMap.get(itemData.toString());
         }
@@ -226,10 +241,6 @@ public class GTOreDictUnificator {
         if (GTUtility.isStackInvalid(stack)) return null;
         ItemData itemData = getAssociation(stack);
         if (itemData == null || !itemData.hasValidPrefixMaterialData() || (useBlackList && itemData.mBlackListed)) {
-            return stack;
-        }
-        if (useBlackList && !GregTechAPI.sUnificationEntriesRegistered && isBlacklisted(stack)) {
-            itemData.mBlackListed = true;
             return stack;
         }
         if (itemData.mUnificationTarget == null) {
@@ -283,11 +294,6 @@ public class GTOreDictUnificator {
         if (aStackPrefixData == null || !aStackPrefixData.hasValidPrefixMaterialData())
             return GTUtility.areStacksEqual(aStack, unified_tStack, true);
         else if (aStackPrefixData.mBlackListed) {
-            if (GTUtility.areStacksEqual(aStack, unified_tStack, true)) return true;
-            else alreadyCompared = true;
-        }
-        if (!alreadyCompared && !GregTechAPI.sUnificationEntriesRegistered && isBlacklisted(aStack)) {
-            aStackPrefixData.mBlackListed = true;
             if (GTUtility.areStacksEqual(aStack, unified_tStack, true)) return true;
             else alreadyCompared = true;
         }
@@ -360,6 +366,7 @@ public class GTOreDictUnificator {
 
     public static void setItemData(ItemStack aStack, ItemData aData) {
         if (GTUtility.isStackInvalid(aStack) || aData == null) return;
+        aData.mBlackListed |= isBlacklisted(aStack);
         ItemData tData = getItemData(aStack);
         if (tData == null || !tData.hasValidPrefixMaterialData()) {
             if (tData != null) for (Object tObject : tData.mExtraData)
@@ -392,6 +399,7 @@ public class GTOreDictUnificator {
                     GTRecipeRegistrator.registerMaterialRecycling(aStack, aData);
             }
         } else {
+            tData.mBlackListed |= aData.mBlackListed;
             for (Object tObject : aData.mExtraData)
                 if (!tData.mExtraData.contains(tObject)) tData.mExtraData.add(tObject);
         }
