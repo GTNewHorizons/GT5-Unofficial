@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -99,22 +100,24 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Generating Power from Rocket Fuels")
-            .addInfo("Supply GT++ Rocket Fuels and 1000L of " + mLubricantName + " per hour")
-            .addInfo("Produces as much energy as you put fuel in, with optional boosting")
-            .addInfo("This multi doesn't accept fluids if not enabled - enable it first!")
-            .addInfo("Consumes 2000L/s of air and pollutes 1500 gibbl/s per 16384 eu/t produced")
-            .addInfo("Place 1-8 Air Intake Hatches on the sides to maintain Air input")
-            .addInfo("If it runs out of air, it will shut down and have to be manually restarted")
-            .addInfo("Supply 3L of " + mCoolantName + " per second, per 1000 EU/t to boost")
-            .addInfo("Takes 3x the amount of " + mLubricantName + " and maintains efficiency")
-            .addInfo("Fuel efficiency starts at ~160%, falls more slowly at higher EU/t if boosted")
-            .addInfo("If producing more than 30k EU/t, fuel efficiency will be lower:")
-            .addInfo("(These thresholds are 3x higher when boosted, boosted values displayed second)")
-            .addInfo("- 75% of max fuel efficiency at 53k or 159k EU/t output energy")
-            .addInfo("- 50% of max fuel efficiency at 69k or 207k EU/t output energy")
-            .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
-            .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))")
+            .addInfo("Generates power from rocket fuels")
+            .addInfo("No hard limit on EU/t output - scales with fuel input")
+            .addInfo(
+                EnumChatFormatting.YELLOW
+                    + "Do not insert rocket fuel while disabled - it will be voided when enabled!"
+                    + EnumChatFormatting.GRAY)
+            .addInfo("Consumes 1% of current EU/t in Air per second")
+            .addInfo("Air is supplied only through Air Intake Hatches")
+            .addInfo("If air runs out, it shuts down and requires manual restart")
+            .addInfo("Minimum fuel input: 5 L/s")
+            .addSeparator()
+            .addInfo("Consumes 1000 L of " + EnumChatFormatting.GOLD + mLubricantName + EnumChatFormatting.GRAY + " per hour")
+            .addInfo("Takes 90 seconds to warm up to full efficiency")
+            .addSeparator()
+            .addInfo("Optional boost: supply 0.3% of current EU/t in " + EnumChatFormatting.GOLD + mCoolantName + EnumChatFormatting.GRAY + " per second")
+            .addInfo("Boosting triples the soft caps and " + EnumChatFormatting.GOLD + mLubricantName + EnumChatFormatting.GRAY + " consumption")
+            .addInfo("Fuel efficiency decreases after the soft caps below")
+            .addInfo("Soft caps: " + EnumChatFormatting.RED + "49k EU/t" + EnumChatFormatting.GRAY + " and " + EnumChatFormatting.RED + "94k EU/t" + EnumChatFormatting.GRAY + " (unboosted)")
             .addSupportAny()
             .beginStructureBlock(3, 3, 10, false)
             .addController("Front center, 2nd layer")
