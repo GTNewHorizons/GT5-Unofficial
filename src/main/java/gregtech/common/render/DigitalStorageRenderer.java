@@ -73,7 +73,6 @@ public final class DigitalStorageRenderer {
     private static final ITexture[] EMPTY_TEXTURES = new ITexture[0];
     private static final ITexture GLASS_TEXTURE = TextureFactory.of(OVERLAY_SCREEN_GLASS);
     private static final ThreadLocal<GTRendererBlock> STANDARD_RENDERER = ThreadLocal.withInitial(GTRendererBlock::new);
-    private static final ThreadLocal<FluidStack> INVENTORY_FLUID = new ThreadLocal<>();
 
     static {
         FRAME_BOXES.put(UP, pixelBox(0, 14, 0, 16, 16, 16));
@@ -164,24 +163,32 @@ public final class DigitalStorageRenderer {
 
         renderInventoryFaces(ctx, textures);
         renderTankWindows(ctx, windowCasings);
-        FluidStack fluidStack = INVENTORY_FLUID.get();
-        if (fluidStack != null) {
-            renderTankFluid(fluidStack, mte.getDisplayFillLevel(fluidStack.amount), 0, 0, 0);
-        }
         restoreFullBounds(ctx);
         return true;
     }
 
-    public static void renderTankItem(ItemStack stack, RenderBlocks renderBlocks) {
+    public static void renderTankItem(ItemStack stack, MTEDigitalTankBase mte, RenderBlocks renderBlocks) {
+        GlStateManager.pushMatrix();
+        try {
+            renderBlocks.renderBlockAsItem(GregTechAPI.sBlockMachines, stack.getItemDamage(), 1.0F);
+        } finally {
+            GlStateManager.popMatrix();
+        }
+
+        // Draw fluid after the block renderer has finished the casing batch.
         FluidStack fluidStack = stack.hasTagCompound() ? FluidStack.loadFluidStackFromNBT(
             stack.getTagCompound()
                 .getCompoundTag("mFluid"))
             : null;
-        INVENTORY_FLUID.set(fluidStack);
+        if (fluidStack == null) return;
+        GlStateManager.pushMatrix();
         try {
-            renderBlocks.renderBlockAsItem(GregTechAPI.sBlockMachines, stack.getItemDamage(), 1.0F);
+            // Use the same rotation and offset as the casing.
+            GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+            renderTankFluid(fluidStack, mte.getDisplayFillLevel(fluidStack.amount), 0, 0, 0);
         } finally {
-            INVENTORY_FLUID.remove();
+            GlStateManager.popMatrix();
         }
     }
 
