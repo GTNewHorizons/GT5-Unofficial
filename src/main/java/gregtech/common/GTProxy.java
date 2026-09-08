@@ -1184,7 +1184,7 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void activateOreDictHandler() {
-        oreDictRegistrationHandler.activateOreDictHandler();
+        oreDictRegistrationHandler.activateOreDictProcessing();
     }
 
     public boolean isRegisteredOre(ItemStack stack) {
