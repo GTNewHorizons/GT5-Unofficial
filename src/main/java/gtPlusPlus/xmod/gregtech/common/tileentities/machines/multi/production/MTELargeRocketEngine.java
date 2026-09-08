@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -19,9 +21,9 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -66,6 +68,14 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     public static final String mCasingName = "Turbodyne Casing";
     public static final String mGearboxName = "Inconel Reinforced Casing";
 
+    private static final int LUBRICANT_CONSUMPTION_PER_HOUR = 1000;
+    private static final int MIN_FUEL_INPUT_PER_SECOND = 5;
+    private static final int COOLANT_BOOST_PERCENT = 3;
+    private static final int WARMUP_TICKS = 2000;
+    private static final int AIR_PERCENT = 1;
+    private static final int SOFT_CAP_1 = 49_000;
+    private static final int SOFT_CAP_2 = 94_000;
+
     private static Fluid sAirFluid = null;
     private static FluidStack sAirFluidStack = null;
 
@@ -104,20 +114,46 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addInfo("No hard limit on EU/t output - scales with fuel input")
             .addInfo(
                 EnumChatFormatting.YELLOW
-                    + "Do not insert rocket fuel while disabled - it will be consumed when enabled!"
+                    + "Do not insert rocket fuel while disabled - it will be buffered and consumed all at once when enabled!"
                     + EnumChatFormatting.GRAY)
-            .addInfo("Consumes 1% of current EU/t in Air per tick")
+            .addInfo("Consumes " + AIR_PERCENT + "% of current EU/t in Air per tick")
             .addInfo("Air is supplied only through Air Intake Hatches")
             .addInfo("If air runs out, it shuts down and requires manual restart")
-            .addInfo("Minimum fuel input: 5 L/s")
+            .addInfo("Minimum fuel input: " + formatFluid(MIN_FUEL_INPUT_PER_SECOND) + "/s")
             .addSeparator()
-            .addInfo("Consumes 1000 L of " + EnumChatFormatting.GOLD + mLubricantName + EnumChatFormatting.GRAY + " per hour")
-            .addInfo("Takes 100 seconds to warm up to full efficiency")
+            .addInfo(
+                "Consumes " + formatFluid(LUBRICANT_CONSUMPTION_PER_HOUR)
+                    + " of "
+                    + EnumChatFormatting.GOLD
+                    + mLubricantName
+                    + EnumChatFormatting.GRAY
+                    + " per hour")
+            .addInfo("Takes " + WARMUP_TICKS / 20 + " seconds to warm up to full efficiency")
             .addSeparator()
-            .addInfo("Optional boost: supply 0.3% of current EU/t in " + EnumChatFormatting.GOLD + mCoolantName + EnumChatFormatting.GRAY + " per tick")
-            .addInfo("Boosting triples the soft caps and " + EnumChatFormatting.GOLD + mLubricantName + EnumChatFormatting.GRAY + " consumption")
+            .addInfo(
+                "Optional boost: supply " + formatFluid(COOLANT_BOOST_PERCENT)
+                    + " of "
+                    + EnumChatFormatting.GOLD
+                    + mCoolantName
+                    + EnumChatFormatting.GRAY
+                    + " per 1000 EU/t output")
+            .addInfo(
+                "Boosting triples the soft caps and " + EnumChatFormatting.GOLD
+                    + mLubricantName
+                    + EnumChatFormatting.GRAY
+                    + " consumption")
             .addInfo("Fuel efficiency decreases after the soft caps below")
-            .addInfo("Soft caps: " + EnumChatFormatting.RED + "49k EU/t" + EnumChatFormatting.GRAY + " and " + EnumChatFormatting.RED + "94k EU/t" + EnumChatFormatting.GRAY + " (unboosted)")
+            .addInfo(
+                "Soft caps: " + EnumChatFormatting.RED
+                    + formatNumber(SOFT_CAP_1)
+                    + " EU/t"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.RED
+                    + formatNumber(SOFT_CAP_2)
+                    + " EU/t"
+                    + EnumChatFormatting.GRAY
+                    + " (unboosted)")
             .addSupportAny()
             .beginStructureBlock(3, 3, 10, false)
             .addController("Front center, 2nd layer")
