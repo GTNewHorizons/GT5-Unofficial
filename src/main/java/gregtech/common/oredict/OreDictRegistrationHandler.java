@@ -175,7 +175,6 @@ public final class OreDictRegistrationHandler {
             "glowstone",
             "whiteStone",
             "stoneSlab",
-            "transdimBlock",
             "clayBowl",
             "clayPlate",
             "ceramicBowl",
@@ -335,7 +334,6 @@ public final class OreDictRegistrationHandler {
             "aluminiumStick",
             "alumiteStick",
             "oilsandsOre",
-            "copperWire",
             "superconductorWire",
             "sulfuricAcid",
             "conveyorBelt",
@@ -442,7 +440,7 @@ public final class OreDictRegistrationHandler {
                 oreOriginPath = originalModId + " --Late--> " + oreName;
             }
 
-            if (stack.getItem() instanceof ItemBlock || GTUtility.getBlockFromStack(stack) != Blocks.air) {
+            if (GTUtility.getBlockFromStack(stack) != Blocks.air) {
                 GTOreDictUnificator.addToBlacklist(stack);
             }
 
@@ -460,15 +458,7 @@ public final class OreDictRegistrationHandler {
 
     private boolean handleSpecialOreRegistration(String oreName, ItemStack stack, String oreOriginPath) {
         if (IGNORED_ITEMS.contains(oreName)) {
-            if (!oreName.startsWith("item")) {
-                return false;
-            }
-
             GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
-
-            if (oreName.equals("itemCopperWire")) {
-                GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, stack);
-            }
             if (oreName.equals("itemRubber")) {
                 GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Rubber, stack);
             }
