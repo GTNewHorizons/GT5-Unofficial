@@ -106,15 +106,15 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                 EnumChatFormatting.YELLOW
                     + "Do not insert rocket fuel while disabled - it will be voided when enabled!"
                     + EnumChatFormatting.GRAY)
-            .addInfo("Consumes 1% of current EU/t in Air per second")
+            .addInfo("Consumes 1% of current EU/t in Air per tick")
             .addInfo("Air is supplied only through Air Intake Hatches")
             .addInfo("If air runs out, it shuts down and requires manual restart")
             .addInfo("Minimum fuel input: 5 L/s")
             .addSeparator()
             .addInfo("Consumes 1000 L of " + EnumChatFormatting.GOLD + mLubricantName + EnumChatFormatting.GRAY + " per hour")
-            .addInfo("Takes 90 seconds to warm up to full efficiency")
+            .addInfo("Takes 100 seconds to warm up to full efficiency")
             .addSeparator()
-            .addInfo("Optional boost: supply 0.3% of current EU/t in " + EnumChatFormatting.GOLD + mCoolantName + EnumChatFormatting.GRAY + " per second")
+            .addInfo("Optional boost: supply 0.3% of current EU/t in " + EnumChatFormatting.GOLD + mCoolantName + EnumChatFormatting.GRAY + " per tick")
             .addInfo("Boosting triples the soft caps and " + EnumChatFormatting.GOLD + mLubricantName + EnumChatFormatting.GRAY + " consumption")
             .addInfo("Fuel efficiency decreases after the soft caps below")
             .addInfo("Soft caps: " + EnumChatFormatting.RED + "49k EU/t" + EnumChatFormatting.GRAY + " and " + EnumChatFormatting.RED + "94k EU/t" + EnumChatFormatting.GRAY + " (unboosted)")
@@ -128,6 +128,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addMaintenanceHatch("1", "Any center casing", 1, 2)
             .addMufflerHatch("1", "Back center casing", 3)
             .addInputHatch("1+", "Any side or bottom center casing", 1)
+            .addPollutionAmount(getPollutionPerSecond(null))
             .toolTipFinisher();
         return tt;
     }
