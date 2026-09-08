@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -32,8 +33,8 @@ public final class DigitalStorageItemRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         IMetaTileEntity mte = ItemMachines.getMetaTileEntity(item);
-        if (mte instanceof MTEDigitalTankBase tank) {
-            DigitalStorageRenderer.renderTankItem(item, tank);
+        if (mte instanceof MTEDigitalTankBase) {
+            DigitalStorageRenderer.renderTankItem(item, (RenderBlocks) data[0]);
         } else {
             delegate.renderItem(type, item, data);
         }

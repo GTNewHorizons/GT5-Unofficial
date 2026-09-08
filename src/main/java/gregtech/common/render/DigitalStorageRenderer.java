@@ -172,15 +172,13 @@ public final class DigitalStorageRenderer {
         return true;
     }
 
-    public static void renderTankItem(ItemStack stack, MTEDigitalTankBase mte) {
+    public static void renderTankItem(ItemStack stack, RenderBlocks renderBlocks) {
         FluidStack fluidStack = stack.hasTagCompound() ? FluidStack.loadFluidStackFromNBT(
             stack.getTagCompound()
                 .getCompoundTag("mFluid"))
             : null;
         INVENTORY_FLUID.set(fluidStack);
         try {
-            RenderBlocks renderBlocks = new RenderBlocks();
-            renderBlocks.useInventoryTint = true;
             renderBlocks.renderBlockAsItem(GregTechAPI.sBlockMachines, stack.getItemDamage(), 1.0F);
         } finally {
             INVENTORY_FLUID.remove();
