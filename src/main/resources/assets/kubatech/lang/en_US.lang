@@ -385,3 +385,9 @@ kubatech.multiblock.MegaIndustrialApiary.wood_slab=Wood Slab
 kubatech.multiblock.MegaIndustrialApiary.flower=Flower (depends on bee)
 kubatech.multiblock.MegaIndustrialApiary.any_casing_luv=Any casing (LuV+)
 kubatech.multiblock.MegaIndustrialApiary.footer=Use regular or distilled water, place manually
+
+# Multiblocks
+gt.blockmachines.htgr.name=High Temperature Gas-cooled Reactor
+gt.blockmachines.industrialarcfurnace.controller.tier.single.name=Industrial Arc Furnace
+gt.blockmachines.multimachine.defusioncrafter.name=Draconic Evolution Fusion Crafter
+gt.blockmachines.multimachine.extremegreenhouse.name=Extreme Industrial Greenhouse

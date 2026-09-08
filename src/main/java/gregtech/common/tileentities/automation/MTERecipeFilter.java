@@ -9,6 +9,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -16,15 +17,19 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTESpecialFilter;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.MTERecipeFilterGui;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTERecipeFilter extends MTESpecialFilter {
 
     public RecipeMap<?> mRecipeMap;
@@ -32,12 +37,7 @@ public class MTERecipeFilter extends MTESpecialFilter {
     public int mRotationIndex = 0;
 
     public MTERecipeFilter(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Filters 1 Recipe Type", "Use Screwdriver to regulate output stack size" });
+        super(aID, aName, aNameRegional, aTier, GTValues.emptyStringArray);
     }
 
     public MTERecipeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription,
@@ -67,6 +67,20 @@ public class MTERecipeFilter extends MTESpecialFilter {
 
     public void setRotationIndex(int rotationIndex) {
         this.mRotationIndex = rotationIndex;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.automation.recipefilter.desc");
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.automation.recipefilter.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override

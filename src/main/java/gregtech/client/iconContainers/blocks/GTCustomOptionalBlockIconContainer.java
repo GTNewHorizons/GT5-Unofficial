@@ -14,8 +14,8 @@ import gregtech.api.util.client.ResourceUtils;
 
 public class GTCustomOptionalBlockIconContainer extends GTCustomBlockIconContainer {
 
-    GTCustomOptionalBlockIconContainer(@NotNull String aIconName) {
-        super(aIconName);
+    GTCustomOptionalBlockIconContainer(@NotNull String domain, @NotNull String aIconName) {
+        super(domain, aIconName);
     }
 
     @Override
@@ -27,8 +27,8 @@ public class GTCustomOptionalBlockIconContainer extends GTCustomBlockIconContain
     // 2026-02-03: Counted 3723 unique Block Custom Optional Icons, so 5K will avoid resize until 3840 entries
     private static final Map<String, GTCustomOptionalBlockIconContainer> INSTANCES = new ConcurrentHashMap<>(5120);
 
-    public static @NotNull IIconContainer create(@NotNull String aIconName) {
-        return INSTANCES.computeIfAbsent(aIconName, GTCustomOptionalBlockIconContainer::new);
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String aIconName) {
+        return INSTANCES.computeIfAbsent(aIconName, key -> new GTCustomOptionalBlockIconContainer(domain, key));
     }
 
     @Override
@@ -38,6 +38,8 @@ public class GTCustomOptionalBlockIconContainer extends GTCustomBlockIconContain
         // This makes the block _OVERLAY icon totally optional
         if (ResourceUtils.resourceExists(overlayResource)) {
             mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
+        } else {
+            mOverlay = null;
         }
     }
 }

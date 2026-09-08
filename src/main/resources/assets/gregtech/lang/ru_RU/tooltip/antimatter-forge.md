@@ -28,5 +28,5 @@
 1. {fluid:molten.shirabon} = {gold:0.05}
 2. {fluid:molten.magnetohydrodynamicallyconstrainedstarmatter} = {gold:0.10}
 {aqua:{bold:{underline:А}}}{aqua:ктивационная стабилизация} (Использует {dark_aqua:Антиматерию}^(1/3) Л жидкости за цикл)
-1. {fluid:naquadah based liquid fuel mkv (depleted)} = {aqua:0.05}
-2. {fluid:naquadah based liquid fuel mkvi (depleted)} = {aqua:0.10}
+1. {fluid:naquadah based liquid fuel mk-v (depleted)} = {aqua:0.05}
+2. {fluid:naquadah based liquid fuel mk-vi (depleted)} = {aqua:0.10}

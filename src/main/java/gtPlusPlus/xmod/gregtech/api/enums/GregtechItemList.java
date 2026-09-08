@@ -860,7 +860,6 @@ public enum GregtechItemList implements IItemContainer {
 
     // Misc
     CustomCoalCoke,
-    BlueprintBase,
     MiningExplosives,
     AlkalusDisk,
     WitherGuard,

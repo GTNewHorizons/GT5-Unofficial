@@ -39,6 +39,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -47,6 +48,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -96,6 +98,7 @@ import kubatech.gui.modularui2.MTEHighTempGasCooledReactorGui;
 import kubatech.loaders.HTGRLoader;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHighTempGasCooledReactor>
     implements ISurvivalConstructable {
 
@@ -323,108 +326,48 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Breeder Reactor, HTGR")
-            .addInfo(
-                "Uses up to " + EnumChatFormatting.RED
-                    + formatNumber(CONVERSION_FACTOR * 100)
-                    + EnumChatFormatting.GRAY
-                    + "% of fuel per operation, "
-                    + EnumChatFormatting.RED
-                    + "10"
-                    + EnumChatFormatting.GRAY
-                    + "% of this value is flat and "
-                    + EnumChatFormatting.RED
-                    + "90"
-                    + EnumChatFormatting.GRAY
-                    + "% dependent on the formula y=1-(1-x)^3 (x is % fill level)")
-            .addInfo(
-                "Maintenance problems decrease the efficiency of cooling by " + EnumChatFormatting.RED
-                    + "20"
-                    + EnumChatFormatting.GRAY
-                    + "% for each issue")
-            .addInfo(
-                "Uses " + EnumChatFormatting.RED
-                    + formatNumber(POWER_USAGE)
-                    + EnumChatFormatting.GRAY
-                    + " EU/t increasing by up to "
-                    + EnumChatFormatting.RED
-                    + formatNumber(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1)
-                    + EnumChatFormatting.GRAY
-                    + " times when lacking Helium Gas")
-            .addInfo(
-                "Helium gas increases effectiveness of heat exchangers linearly up to " + EnumChatFormatting.RED
-                    + "100"
-                    + EnumChatFormatting.GRAY
-                    + "% at max capacity")
-            .addInfo(
-                "The Reactor loses " + EnumChatFormatting.RED
-                    + formatNumber(HELIUM_LOST_PER_CYCLE * 100)
-                    + EnumChatFormatting.GRAY
-                    + "% helium per operation and requires at least "
-                    + EnumChatFormatting.RED
-                    + formatNumber(100 * MIN_HELIUM_NEEDED / HELIUM_NEEDED)
-                    + EnumChatFormatting.GRAY
-                    + "% helium to start operation")
-            .addInfo(
-                "One Operation takes longer based on reactor fill level (between " + EnumChatFormatting.RED
-                    + formatNumber(BASE_PROCESSING_TIME / 20)
-                    + EnumChatFormatting.GRAY
-                    + "s and "
-                    + EnumChatFormatting.RED
-                    + formatNumber((BASE_PROCESSING_TIME + SCALING_PROCESSING_TIME) / 20)
-                    + EnumChatFormatting.GRAY
-                    + "s)")
-            .addInfo(
-                "Providing coolant/water/both speeds up recipe by " + EnumChatFormatting.RED
-                    + formatNumber(COOLANT_SPEEDUP * 20 * 100)
-                    + EnumChatFormatting.GRAY
-                    + "%/"
-                    + EnumChatFormatting.RED
-                    + formatNumber(WATER_SPEEDUP * 20 * 100)
-                    + EnumChatFormatting.GRAY
-                    + "%/"
-                    + EnumChatFormatting.RED
-                    + formatNumber(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100))
-                    + EnumChatFormatting.GRAY
-                    + "% total recipe time/second")
-            .addInfo(
-                "The amount of necessary fluid for maximum bonus speed scales with TRISO Balls, "
-                    + EnumChatFormatting.RED
-                    + formatNumber(COOLANT_PER_BALL)
-                    + EnumChatFormatting.GRAY
-                    + " coolant/tick/ball and "
-                    + EnumChatFormatting.RED
-                    + formatNumber(WATER_PER_BALL)
-                    + EnumChatFormatting.GRAY
-                    + " distilled water/tick/ball")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.breeder_reactor_htgr"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "high-temperature-gas-cooled-reactor"),
+                ImmutableMap.<String, Object>builder()
+                    .put("fuel_percent", formatNumber(CONVERSION_FACTOR * 100))
+                    .put("power", formatNumber(POWER_USAGE))
+                    .put("power_penalty", formatNumber(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1))
+                    .put("helium_lost", formatNumber(HELIUM_LOST_PER_CYCLE * 100))
+                    .put("min_helium", formatNumber(100 * MIN_HELIUM_NEEDED / HELIUM_NEEDED))
+                    .put("min_time", formatNumber(BASE_PROCESSING_TIME / 20))
+                    .put("max_time", formatNumber((BASE_PROCESSING_TIME + SCALING_PROCESSING_TIME) / 20))
+                    .put("coolant_speedup", formatNumber(COOLANT_SPEEDUP * 20 * 100))
+                    .put("water_speedup", formatNumber(WATER_SPEEDUP * 20 * 100))
+                    .put("total_speedup", formatNumber((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100))
+                    .put("coolant_per_ball", formatNumber(COOLANT_PER_BALL))
+                    .put("water_per_ball", formatNumber(WATER_PER_BALL))
+                    .build())
             .beginStructureBlock(27, 15, 16, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("273", "Beryllium Integrated Reactor Casing", false)
-            .addCasing("272", "Pressure Containment Casing", false)
-            .addCasing("164", "Tungsten Frame Box", false)
-            .addCasing("162", "Graphite Moderator Casing", false)
-            .addCasing("45", "Tungstensteel Pipe Casing", false)
-            .addCasing("41", "Insulated Fluid Pipe Casing", false)
-            .addCasing("30", "Titanium Pipe Casing", false)
-            .addCasing("24", "Cable Casing", false)
-            .addCasing("23", "IV Machine Casing", false)
-            .addCasing("20", "Refined Graphite Block", false)
-            .addCasing("17", "Steel Pipe Casing", false)
-            .addCasing("3", "Pump Machine Casing", false)
-            .addCasing("2", "Motor Machine Casing", false)
-            .addCasing("1", "Processor Machine Casing", false)
-            .addEnergyHatch("1", "Any top pump casing", 1)
-            .addMaintenanceHatch("1", "Any top pump casing", 1)
-            .addInputBus("1+", "Top of reactor (TRISO Balls)", 2)
-            .addInputHatch(
-                "3+",
-                "Any top pump casing (helium), bottom of tall tower (coolant), top of short tower (distilled water)",
-                1,
-                5,
-                6)
-            .addOutputBus("1+", "Bottom of reactor (Burned Out TRISO Balls)", 3)
-            .addOutputHatch("2+", "Top of tall tower (hot coolant), bottom of short tower (steam)", 4, 7)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("273", Casings.BerylliumIntegratedReactorCasing.getLocalizedName(), false)
+            .addCasing("272", Casings.PressureContainmentCasing.getLocalizedName(), false)
+            .addCasing("164", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("162", Casings.GraphiteModeratorCasing.getLocalizedName(), false)
+            .addCasing("45", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
+            .addCasing("41", Casings.InsulatedFluidPipeCasing.getLocalizedName(), false)
+            .addCasing("30", Casings.TitaniumPipeCasing.getLocalizedName(), false)
+            .addCasing("24", Casings.CableCasing.getLocalizedName(), false)
+            .addCasing("23", Casings.IVMachineCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.RefinedGraphiteBlock.getLocalizedName(), false)
+            .addCasing("17", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing("3", Casings.PumpMachineCasing.getLocalizedName(), false)
+            .addCasing("2", Casings.MotorMachineCasing.getLocalizedName(), false)
+            .addCasing("1", Casings.ProcessorMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_top_pump_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_top_pump_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.top_of_reactor_triso"), 2)
+            .addInputHatch("3+", StatCollector.translateToLocal("gt.mbtt.structure.htgr_input_hatches"), 1, 5, 6)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.bottom_of_reactor_burned_triso"), 3)
+            .addOutputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.htgr_output_hatches"), 4, 7)
             .toolTipFinisher(AuthorKuba, AuthorPxx500);
+        // spotless:on
         return tt;
     }
 

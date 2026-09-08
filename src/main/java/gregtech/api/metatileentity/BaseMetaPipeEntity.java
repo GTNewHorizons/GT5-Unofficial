@@ -202,7 +202,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             }
             if (isServerSide) {
                 if (mTickTimer > 10) {
-                    handleConnectionsChangeServer();
+                    syncConnectionToClient();
                     handleUpdateDataChangeServer();
                     handleSidedRedstoneChangeServer();
                 }
@@ -237,7 +237,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
     }
 
-    private void handleConnectionsChangeServer() {
+    public final void syncConnectionToClient() {
         if (mConnections == oldConnections) {
             return;
         }
@@ -1127,12 +1127,12 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public void onNeighborBlockChange(int aX, int aY, int aZ) {
         if (canAccessData()) {
             final IMetaTileEntity meta = getMetaTileEntity();
-            if (meta instanceof MetaPipeEntity) {
+            if (meta instanceof MetaPipeEntity pipe) {
                 // Trigger a checking of connections in case someone placed down a block that the pipe/wire shouldn't be
                 // connected to.
                 // However; don't do it immediately in case the world isn't finished loading
                 // (This caused issues with AE2 GTEU p2p connections.
-                ((MetaPipeEntity) meta).setCheckConnections();
+                pipe.setCheckConnections();
             }
         }
     }

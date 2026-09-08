@@ -20,6 +20,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -27,9 +28,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.MTEItemDistributorGui;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEItemDistributor extends MTEBuffer {
 
     private static final int NBT_BYTE_ARRAY = 7;
@@ -39,14 +43,7 @@ public class MTEItemDistributor extends MTEBuffer {
     private byte currentSideItemCount = 0;
 
     public MTEItemDistributor(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            28,
-            new String[] { "Distributes Items between different Machine Sides", "Default Items per Machine Side: 0",
-                "Use Screwdriver to increase/decrease Items per Side" });
+        super(aID, aName, aNameRegional, aTier, 28, GTValues.emptyStringArray);
     }
 
     public MTEItemDistributor(String aName, int aTier, int aInvSlotCount, String[] aDescription,
@@ -60,6 +57,20 @@ public class MTEItemDistributor extends MTEBuffer {
 
     public void setItemsPerSide(int index, byte itemsPerSide) {
         this.itemsPerSide[index] = itemsPerSide;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.automation.itemdistributor.desc");
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.automation.itemdistributor.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override

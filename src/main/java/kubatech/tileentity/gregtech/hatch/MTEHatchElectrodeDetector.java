@@ -19,9 +19,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import kubatech.tileentity.gregtech.gui.MTEElectrodeDetectorHatchGui;
+import kubatech.tileentity.gregtech.gui.MTEHatchElectrodeDetectorGui;
 
-public class MTEElectrodeDetectorHatch extends MTEHatch {
+public class MTEHatchElectrodeDetector extends MTEHatch {
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
@@ -31,7 +31,7 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
     private boolean isOn = false;
     private ThresholdType thresholdType = ThresholdType.DURABILITY;
 
-    public MTEElectrodeDetectorHatch(int aID, String aName, String aNameRegional) {
+    public MTEHatchElectrodeDetector(int aID, String aName, String aNameRegional) {
         super(
             aID,
             aName,
@@ -43,13 +43,13 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
                 "Right click to open the GUI and setting." });
     }
 
-    public MTEElectrodeDetectorHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchElectrodeDetector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEElectrodeDetectorHatch(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new MTEHatchElectrodeDetector(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
 
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEElectrodeDetectorHatchGui(this).build(guiData, syncManager, uiSettings);
+        return new MTEHatchElectrodeDetectorGui(this).build(guiData, syncManager, uiSettings);
     }
 
     @Override

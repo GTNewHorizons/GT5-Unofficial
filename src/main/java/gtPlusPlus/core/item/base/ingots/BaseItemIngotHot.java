@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -59,7 +60,7 @@ public class BaseItemIngotHot extends BaseItemIngot {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister i) {
         IIconContainer container = Textures.ItemIcons
-            .textureSetWithRegister("METALLIC", "/" + OrePrefixes.ingotHot.getName(), i);
+            .textureSetWithRegister(Mods.GregTech.resourceDomain, "METALLIC", "/" + OrePrefixes.ingotHot.getName(), i);
         iconBase = container.getIcon();
         iconOverlay = container.getOverlayIcon();
     }

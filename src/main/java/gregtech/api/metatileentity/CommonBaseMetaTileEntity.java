@@ -6,9 +6,7 @@ import static gregtech.GTLoggers.GT_FML_LOGGER;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.IllegalFormatException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +14,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -43,7 +42,8 @@ import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.Gregtech;
+import gregtech.crossmod.ae2.ChatComponentGhostCircuitSuffix;
+import gregtech.crossmod.ae2.ChatComponentNonConsumedItemsSuffix;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
@@ -622,8 +622,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public String getInterfaceNameSuffix() {
-        StringBuilder suffix = new StringBuilder();
+    public IChatComponent getInterfaceNameSuffix() {
+        IChatComponent suffix = null;
 
         // Ghost + physical circuit suffix
         List<Integer> circuitNumbers = new ArrayList<>();
@@ -638,28 +638,19 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             circuitNumbers.addAll(provider.getPhysicalCircuitNumbers());
         }
         if (!circuitNumbers.isEmpty()) {
-            String joined = circuitNumbers.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining(", "));
-            try {
-                suffix.append(String.format(Gregtech.machines.ghostCircuitSuffixFormat, joined));
-            } catch (IllegalFormatException ignored) {}
+            suffix = new ChatComponentGhostCircuitSuffix(circuitNumbers);
         }
 
         // Non-consumed items suffix (e.g. molds in Extruder)
         if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof INonConsumedItemDisplay provider) {
             List<ItemStack> items = provider.getNonConsumedInputDisplayItems();
             if (!items.isEmpty()) {
-                String joined = items.stream()
-                    .map(CommonBaseMetaTileEntity::getShortItemDisplayName)
-                    .collect(Collectors.joining(", "));
-                try {
-                    suffix.append(String.format(Gregtech.machines.itemSlotsSuffixFormat, joined));
-                } catch (IllegalFormatException ignored) {}
+                IChatComponent itemSuffix = new ChatComponentNonConsumedItemsSuffix(items);
+                suffix = suffix == null ? itemSuffix : suffix.appendSibling(itemSuffix);
             }
         }
 
-        return !suffix.isEmpty() ? suffix.toString() : null;
+        return suffix;
     }
 
     /**

@@ -1152,14 +1152,11 @@ public class Assembler implements Runnable {
                 ItemList.Transformer_UIV_UEV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 2),
-                GTOreDictUnificator
-                    .get(OrePrefixes.plate, BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium), 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4),
                 new ItemStack(bw_realglas, 2, 7))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UEV.get(1))
-            .fluidInputs(
-                BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium)
-                    .getMolten(2 * INGOTS))
+            .fluidInputs(Materials.Infinity.getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -1169,14 +1166,11 @@ public class Assembler implements Runnable {
                 ItemList.Transformer_UMV_UIV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 2),
-                GTOreDictUnificator
-                    .get(OrePrefixes.plate, BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium), 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 4),
                 new ItemStack(bw_realglas, 2, 8))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UIV.get(1))
-            .fluidInputs(
-                BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium)
-                    .getMolten(2 * INGOTS))
+            .fluidInputs(Materials.TranscendentMetal.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);

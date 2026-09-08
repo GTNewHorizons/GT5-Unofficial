@@ -40,7 +40,6 @@ import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
-import gtPlusPlus.core.item.general.ItemBlueprint;
 import gtPlusPlus.core.item.general.ItemBufferCore;
 import gtPlusPlus.core.item.general.ItemCloakingDevice;
 import gtPlusPlus.core.item.general.ItemGenericToken;
@@ -100,8 +99,6 @@ public final class ModItems {
 
         GregtechItemList.AlkalusDisk.set(
             new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, "Unknown Use", EnumRarity.rare, false));
-
-        GregtechItemList.BlueprintBase.set(new ItemBlueprint("itemBlueprint"));
 
         // Half Complete Casings
         Item halfCompleteCasings = new ItemHalfCompleteCasings(

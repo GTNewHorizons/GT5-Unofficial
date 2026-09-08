@@ -149,6 +149,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     @Override
+    public ITexture[][] getInventoryTextures() {
+        return getOrCreateInventoryTextures();
+    }
+
+    @Override
     public ITexture getCasingTexture() {
         if (texturePage > 0 || textureIndex > 0) {
             return Textures.BlockIcons.casingTexturePages[texturePage][textureIndex];
@@ -183,6 +188,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
         if (newTexturePage == texturePage && newTextureIndex == textureIndex) return;
         texturePage = newTexturePage;
         textureIndex = newTextureIndex;
+        clearInventoryTextureCache();
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
@@ -205,6 +211,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
         super.readFromStream(buffer);
         texturePage = buffer.readInt();
         textureIndex = buffer.readInt();
+        clearInventoryTextureCache();
     }
 
     /**

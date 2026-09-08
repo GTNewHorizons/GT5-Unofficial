@@ -1934,7 +1934,7 @@ public class CraftingRecipeLoader implements Runnable {
             bits | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 1, 88), 'F',
-                OrePrefixes.frameGt.get(Materials.Chrome) });
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.frameGt) });
 
         if (Forestry.isModLoaded()) {
 
