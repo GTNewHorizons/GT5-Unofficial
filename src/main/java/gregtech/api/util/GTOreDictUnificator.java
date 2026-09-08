@@ -112,11 +112,20 @@ public class GTOreDictUnificator {
         isAddingOre--;
     }
 
-    public static ItemStack getFirstOre(Object aName, long aAmount) {
-        if (GTUtility.isStringInvalid(aName)) return null;
-        ItemStack tStack = sName2StackMap.get(aName.toString());
-        if (GTUtility.isStackValid(tStack)) return GTUtility.copyAmount(aAmount, tStack);
-        return GTUtility.copyAmount(aAmount, getOresImmutable(aName).toArray());
+    public static ItemStack getFirstOre(Object name, long amount) {
+        if (GTUtility.isStringInvalid(name)) return null;
+        return GTUtility.copyAmount(amount, getFirstOre_nocopy(name.toString()));
+    }
+
+    public static ItemStack getFirstOre_nocopy(String name) {
+        ItemStack stack = sName2StackMap.get(name);
+        if (GTUtility.isStackValid(stack)) return stack;
+
+        for (ItemStack ore : getOresImmutable(name)) {
+            if (ore != null) return ore;
+        }
+
+        return null;
     }
 
     public static ItemStack get(Object aName, long aAmount) {
@@ -208,7 +217,7 @@ public class GTOreDictUnificator {
             return GTUtility.copyOrNull(stack);
         }
         if (itemData.mUnificationTarget == null) {
-            itemData.mUnificationTarget = sName2StackMap.get(itemData.toString());
+            itemData.mUnificationTarget = getFirstOre_nocopy(itemData.toString());
         }
         final ItemStack rStack = itemData.mUnificationTarget;
         if (GTUtility.isStackInvalid(rStack)) {
@@ -244,7 +253,7 @@ public class GTOreDictUnificator {
             return stack;
         }
         if (itemData.mUnificationTarget == null) {
-            itemData.mUnificationTarget = sName2StackMap.get(itemData.toString());
+            itemData.mUnificationTarget = getFirstOre_nocopy(itemData.toString());
         }
         ItemStack rStack = itemData.mUnificationTarget;
         if (GTUtility.isStackInvalid(rStack)) {
@@ -297,8 +306,9 @@ public class GTOreDictUnificator {
             if (GTUtility.areStacksEqual(aStack, unified_tStack, true)) return true;
             else alreadyCompared = true;
         }
-        if (aStackPrefixData.mUnificationTarget == null)
-            aStackPrefixData.mUnificationTarget = sName2StackMap.get(aStackPrefixData.toString());
+        if (aStackPrefixData.mUnificationTarget == null) {
+            aStackPrefixData.mUnificationTarget = getFirstOre_nocopy(aStackPrefixData.toString());
+        }
         rStack = aStackPrefixData.mUnificationTarget;
         if (GTUtility.isStackInvalid(rStack))
             return !alreadyCompared && GTUtility.areStacksEqual(aStack, unified_tStack, true);

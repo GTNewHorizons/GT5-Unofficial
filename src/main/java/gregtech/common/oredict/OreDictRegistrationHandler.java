@@ -33,7 +33,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTProxy;
@@ -636,6 +635,17 @@ public final class OreDictRegistrationHandler {
         GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
 
         OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, material, modId);
+
+        if (registration.prefix.isUnifiable()) {
+            GTOreDictUnificator.addAssociation(
+                registration.prefix,
+                registration.material,
+                registration.stack,
+                GTOreDictUnificator.isBlacklisted(registration.stack));
+        }
+
+        OreDictUnificationOverrides.capture(registration);
+
         if (bufferRegistrationProcessing) {
             registrations.add(registration);
         } else {
@@ -922,31 +932,6 @@ public final class OreDictRegistrationHandler {
         }
 
         registrations.clear();
-    }
-
-    public void registerUnificationEntries() {
-        GTOreDictUnificator.resetUnificationEntries();
-
-        for (OreDictRegistration registration : registrations) {
-            if (!registration.prefix.isUnifiable()) {
-                continue;
-            }
-
-            boolean blacklisted = GTOreDictUnificator.isBlacklisted(registration.stack);
-            GTOreDictUnificator
-                .addAssociation(registration.prefix, registration.material, registration.stack, blacklisted);
-
-            if (blacklisted) {
-                continue;
-            }
-
-            boolean overwrite = registration.modId != null
-                && OreDictUnificationOverrides.contains(registration.modId, registration.oreName);
-
-            GTOreDictUnificator.set(registration.prefix, registration.material, registration.stack, overwrite, true);
-        }
-
-        GTRecipe.reInit();
     }
 
     public boolean isRegisteredOre(ItemStack stack) {

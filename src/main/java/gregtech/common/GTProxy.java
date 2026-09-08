@@ -1191,10 +1191,6 @@ public class GTProxy implements IFuelHandler {
         return oreDictRegistrationHandler.isRegisteredOre(stack);
     }
 
-    public void registerUnificationEntries() {
-        oreDictRegistrationHandler.registerUnificationEntries();
-    }
-
     @SubscribeEvent
     public void onFluidContainerRegistration(FluidContainerRegistry.FluidContainerRegisterEvent aFluidEvent) {
         if ((aFluidEvent.data.filledContainer.getItem() == Items.potionitem)
