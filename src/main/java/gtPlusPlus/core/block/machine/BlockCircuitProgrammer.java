@@ -123,6 +123,11 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
     }
 
     @Override
+    protected boolean usesSidedTextures() {
+        return false;
+    }
+
+    @Override
     public final IIcon getIcon(int side, int meta) {
         IIcon sideIcon = Textures.BlockIcons.CIRCUIT_PROGRAMMER_SIDE.getIcon();
         IIcon topIcon = Textures.BlockIcons.CIRCUIT_PROGRAMMER_TOP.getIcon();
