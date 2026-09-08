@@ -2,19 +2,29 @@ package gregtech.common.oredict;
 
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTUtility;
 
 final class OreDictRegistration {
 
+    @NotNull
     final String oreName;
+    @NotNull
     final ItemStack stack;
+    @NotNull
     final OrePrefixes prefix;
+    @NotNull
     final Materials material;
+    @Nullable
     final String modId;
 
-    OreDictRegistration(String oreName, ItemStack stack, OrePrefixes prefix, Materials material, String modId) {
+    OreDictRegistration(@NotNull String oreName, @NotNull ItemStack stack, @NotNull OrePrefixes prefix,
+        @NotNull Materials material, @Nullable String modId) {
+
         this.oreName = oreName;
         this.stack = stack;
         this.prefix = prefix;
@@ -23,7 +33,7 @@ final class OreDictRegistration {
     }
 
     void registerRecipes() {
-        if (stack == null || stack.getItem() == null || prefix == null || prefix.isIgnored(material)) {
+        if (stack.getItem() == null || prefix.isIgnored(material)) {
             return;
         }
 
@@ -31,7 +41,6 @@ final class OreDictRegistration {
             stack.stackSize = 1;
         }
 
-        prefix
-            .processOre(material == null ? Materials._NULL : material, oreName, modId, GTUtility.copyAmount(1, stack));
+        prefix.processOre(material, oreName, modId, GTUtility.copyAmount(1, stack));
     }
 }
