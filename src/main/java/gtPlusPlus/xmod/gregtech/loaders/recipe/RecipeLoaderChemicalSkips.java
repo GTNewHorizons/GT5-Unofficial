@@ -207,7 +207,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Titanium.getDust(64),
                 Materials.TungstenSteel.getDust(64),
                 Materials.Tantalum.getDust(64),
-                Materials.Indium.getDust(64),
+                MaterialsElements.getInstance().RHENIUM.getDust(64),
                 Materials.Niobium.getDust(64),
                 MaterialsElements.getInstance().HAFNIUM.getDust(64))
             .duration(20 * SECONDS)

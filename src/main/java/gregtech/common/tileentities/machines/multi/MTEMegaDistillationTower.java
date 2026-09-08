@@ -371,7 +371,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int currentLayer = (height * 2) - 2;
         if (outputHatchesPerLayer.isEmpty()) return 0;
 
-        return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }
@@ -380,14 +380,14 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int currentLayer = (height * 2) - 1;
         if (outputHatchesPerLayer.isEmpty()) return 0;
 
-        return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }
 
     protected int getFinalLayerOutputHatchCount() {
         int currentLayer = height * 2; // in a max dt (height 5), this is index 10. so height*2
-        return outputHatchesPerLayer.size() < currentLayer + 1 || height <= 0 ? 0
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }

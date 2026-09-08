@@ -257,7 +257,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .beginStructureBlock(63, 49, 63, false)
             .addController("Middle of structure, 9th layer")
             // Nanochip Reinforcement Casing
-            .addCasing("3956", translateToLocal("gt.blockcasings12.2.name"), false)
+            .addCasing("3958", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Complex Glass
             .addCasing("2226", translateToLocal("gt.blockglass1.8.name"), false)
             // Nanochip Mesh Interface Casing

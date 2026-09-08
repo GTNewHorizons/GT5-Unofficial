@@ -1907,20 +1907,38 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean addFluidOutputsByLayer(@NotNull List<FluidStack> outputFluids,
         List<? extends List<? extends IOutputHatch>> hatchesByLayer, boolean protectFluids,
         @Nullable List<FluidStack> remaining) {
+        int size = outputFluids.size();
+        if (size == 0) return true;
+
+        int index = 0;
         boolean succeed = true;
-        for (int i = 0; i < outputFluids.size(); i++) {
-            FluidStack fluidStack = outputFluids.get(i);
-            if (!GTUtility.isStackValid(fluidStack)) {
-                if (remaining != null) remaining.add(null);
+        int startIndex = 0;
+
+        for (int i = 0; i < size; i++) {
+            FluidStack stack = outputFluids.get(i);
+            if (i == startIndex || (stack.isFluidEqual(outputFluids.get(startIndex))
+                && outputFluids.get(i - 1).amount == Integer.MAX_VALUE)) {
                 continue;
             }
-            FluidStack stack = fluidStack.copy();
-            if (i < hatchesByLayer.size()) {
-                addFluidOutput(stack, hatchesByLayer.get(i), protectFluids, remaining);
+            if (index >= hatchesByLayer.size()) {
+                if (remaining != null) {
+                    remaining.addAll(outputFluids.subList(startIndex, size));
+                }
+                return false;
             }
-            if (stack.amount > 0) {
+            List<FluidStack> mergedFluids = outputFluids.subList(startIndex, i);
+            if (!addFluidOutputs(mergedFluids, hatchesByLayer.get(index), protectFluids, remaining)) {
                 succeed = false;
             }
+            index++;
+            startIndex = i;
+        }
+        List<FluidStack> mergedFluids = outputFluids.subList(startIndex, size);
+        if (index >= hatchesByLayer.size()) {
+            succeed = false;
+            if (remaining != null) remaining.addAll(mergedFluids);
+        } else if (!addFluidOutputs(mergedFluids, hatchesByLayer.get(index), protectFluids, remaining)) {
+            succeed = false;
         }
         return succeed;
     }
