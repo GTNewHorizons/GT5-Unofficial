@@ -21,6 +21,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -120,8 +122,9 @@ public class MTEIndustrialExtruderLegacy extends GTPPMultiBlockBase<MTEIndustria
         checkHatch(errors);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 
