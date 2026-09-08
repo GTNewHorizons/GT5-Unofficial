@@ -38,7 +38,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTProxy;
-import gregtech.common.OreDictEventContainer;
 
 public final class OreDictRegistrationHandler {
 
@@ -399,9 +398,9 @@ public final class OreDictRegistrationHandler {
             "redalloyInsulated",
             "infusedteslatiteBundled"));
 
-    public final HashSet<ItemStack> registeredOres = new HashSet<>(10000);
-    private final HashSet<OreDictEventContainer> oreDictEvents = new HashSet<>();
-    private boolean oreDictActivated = false;
+    public final HashSet<ItemStack> registeredOres = new HashSet<>(32768);
+    private final HashSet<OreDictRegistration> registrations = new HashSet<>();
+    private boolean oreDictProcessingActive = false;
 
     public void registerOre(OreRegisterEvent event) {
         ModContainer container = Loader.instance()
@@ -446,7 +445,7 @@ public final class OreDictRegistrationHandler {
             }
 
             String oreOriginPath = modId + " -> " + oreName;
-            if (oreDictActivated || GregTechAPI.sPostloadStarted || GregTechAPI.sLoadFinished) {
+            if (oreDictProcessingActive || GregTechAPI.sPostloadStarted || GregTechAPI.sLoadFinished) {
                 oreOriginPath = originalModId + " --Late--> " + oreName;
             }
 
@@ -664,15 +663,15 @@ public final class OreDictRegistrationHandler {
 
         GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
 
-        OreDictEventContainer ore = new OreDictEventContainer(event, prefix, material, modId);
-        if (!oreDictActivated || !GregTechAPI.sUnificationEntriesRegistered) {
-            oreDictEvents.add(ore);
+        OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, material, modId);
+        if (!oreDictProcessingActive || !GregTechAPI.sUnificationEntriesRegistered) {
+            registrations.add(registration);
         } else {
-            oreDictEvents.clear();
+            registrations.clear();
         }
 
-        if (oreDictActivated) {
-            OreDictEventContainer.registerRecipes(ore);
+        if (oreDictProcessingActive) {
+            registration.registerRecipes();
         }
     }
 
@@ -931,28 +930,28 @@ public final class OreDictRegistrationHandler {
     }
 
     @SuppressWarnings("deprecation")
-    public void activateOreDictHandler() {
-        oreDictActivated = true;
+    public void activateOreDictProcessing() {
+        oreDictProcessingActive = true;
 
         ProgressManager.ProgressBar progressBar = proxy.isClientSide()
-            ? ProgressManager.push("Register materials", oreDictEvents.size())
+            ? ProgressManager.push("Register materials", registrations.size())
             : null;
 
         int progress = 5;
-        int eventsUntilProgressLog = oreDictEvents.size() / 20 - 1;
+        int eventsUntilProgressLog = registrations.size() / 20 - 1;
 
-        for (OreDictEventContainer event : oreDictEvents) {
+        for (OreDictRegistration registration : registrations) {
             if (--eventsUntilProgressLog == 0) {
                 GT_FML_LOGGER.info("Baking : {}%", progress);
-                eventsUntilProgressLog = oreDictEvents.size() / 20 - 1;
+                eventsUntilProgressLog = registrations.size() / 20 - 1;
                 progress += 5;
             }
 
             if (progressBar != null) {
-                progressBar.step(event.mMaterial == null ? "" : event.mMaterial.getLocalizedName());
+                progressBar.step(registration.material == null ? "" : registration.material.getLocalizedName());
             }
 
-            OreDictEventContainer.registerRecipes(event);
+            registration.registerRecipes();
         }
 
         if (progressBar != null) {
@@ -963,22 +962,23 @@ public final class OreDictRegistrationHandler {
     public void registerUnificationEntries() {
         GTOreDictUnificator.resetUnificationEntries();
 
-        for (OreDictEventContainer ore : oreDictEvents) {
-            if (ore.mPrefix == null || !ore.mPrefix.isUnifiable() || ore.mMaterial == null) {
+        for (OreDictRegistration registration : registrations) {
+            if (registration.prefix == null || !registration.prefix.isUnifiable() || registration.material == null) {
                 continue;
             }
 
-            boolean blacklisted = GTOreDictUnificator.isBlacklisted(ore.mEvent.Ore);
-            GTOreDictUnificator.addAssociation(ore.mPrefix, ore.mMaterial, ore.mEvent.Ore, blacklisted);
+            boolean blacklisted = GTOreDictUnificator.isBlacklisted(registration.stack);
+            GTOreDictUnificator
+                .addAssociation(registration.prefix, registration.material, registration.stack, blacklisted);
 
             if (blacklisted) {
                 continue;
             }
 
-            boolean overwrite = ore.mModID != null
-                && ManualOreDictTweaks.shouldOredictBeOverwritten(ore.mModID, ore.mEvent.Name);
+            boolean overwrite = registration.modId != null
+                && ManualOreDictTweaks.shouldOredictBeOverwritten(registration.modId, registration.oreName);
 
-            GTOreDictUnificator.set(ore.mPrefix, ore.mMaterial, ore.mEvent.Ore, overwrite, true);
+            GTOreDictUnificator.set(registration.prefix, registration.material, registration.stack, overwrite, true);
         }
 
         GregTechAPI.sUnificationEntriesRegistered = true;
