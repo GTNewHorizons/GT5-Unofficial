@@ -214,6 +214,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         if (mRepairItemIndex < 0) {
             heldStack.stackSize -= 1;
             mBrokenToday = false;
+            getBaseMetaTileEntity().markInventoryBeenModified();
             return;
         }
 
@@ -223,6 +224,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         heldStack.stackSize -= needed.stackSize;
         mBrokenToday = false;
         mRepairItemIndex = -1;
+        getBaseMetaTileEntity().markInventoryBeenModified();
     }
 
     @Override
