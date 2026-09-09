@@ -19,69 +19,86 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 
+/**
+ * Centralizes OreDictionary alias handling.
+ * <p>
+ * Most aliases are declared up front and stored as actions keyed by the source OreDict name.
+ * When an ore is registered, {@link #registerAliases} looks up and applies all direct aliases for
+ * that name. If no direct alias exists, it falls back to {@code registerSpecialAliases} for cases
+ * that need dynamic logic or side effects instead of a simple source-to-target mapping.
+ * <p>
+ * {@code aliasToOreDict} registers an ore under another OreDict name.<br>
+ * {@code aliasToPrefix} registers an ore under another prefix.<br>
+ * {@code aliasToMaterial} registers an ore under another prefix and material.
+ */
 final class OreDictAliases {
 
-    private static final HashMap<String, List<Consumer<ItemStack>>> aliases = new HashMap<>();
+    private static final HashMap<String, List<Consumer<ItemStack>>> ALIASES = new HashMap<>();
 
     static {
-        registerMaterialAlias(OrePrefixes.crystal, Materials.CertusQuartz, OrePrefixes.gem);
-        registerMaterialAlias(OrePrefixes.crystal, Materials.NetherQuartz, OrePrefixes.gem);
-        registerMaterialAlias(OrePrefixes.crystal, Materials.Fluix, OrePrefixes.gem);
+        aliasToPrefix(OrePrefixes.crystal, Materials.CertusQuartz, OrePrefixes.gem);
+        aliasToPrefix(OrePrefixes.crystal, Materials.NetherQuartz, OrePrefixes.gem);
+        aliasToPrefix(OrePrefixes.crystal, Materials.Fluix, OrePrefixes.gem);
 
-        registerMaterialAlias(OrePrefixes.gem, Materials.Lapis, Dyes.dyeBlue);
-        registerMaterialAlias(OrePrefixes.gem, Materials.Sodalite, Dyes.dyeBlue);
-        registerMaterialAlias(OrePrefixes.gem, Materials.Lazurite, Dyes.dyeCyan);
-        registerMaterialAlias(OrePrefixes.gem, Materials.InfusedAir, "shardAir");
-        registerMaterialAlias(OrePrefixes.gem, Materials.InfusedWater, "shardWater");
-        registerMaterialAlias(OrePrefixes.gem, Materials.InfusedFire, "shardFire");
-        registerMaterialAlias(OrePrefixes.gem, Materials.InfusedEarth, "shardEarth");
-        registerMaterialAlias(OrePrefixes.gem, Materials.InfusedOrder, "shardOrder");
-        registerMaterialAlias(OrePrefixes.gem, Materials.InfusedEntropy, "shardEntropy");
-        registerMaterialAlias(OrePrefixes.gem, Materials.Chocolate, Dyes.dyeBrown);
+        aliasToOreDict(OrePrefixes.gem, Materials.Lapis, Dyes.dyeBlue.name());
+        aliasToOreDict(OrePrefixes.gem, Materials.Sodalite, Dyes.dyeBlue.name());
+        aliasToOreDict(OrePrefixes.gem, Materials.Lazurite, Dyes.dyeCyan.name());
+        aliasToOreDict(OrePrefixes.gem, Materials.InfusedAir, "shardAir");
+        aliasToOreDict(OrePrefixes.gem, Materials.InfusedWater, "shardWater");
+        aliasToOreDict(OrePrefixes.gem, Materials.InfusedFire, "shardFire");
+        aliasToOreDict(OrePrefixes.gem, Materials.InfusedEarth, "shardEarth");
+        aliasToOreDict(OrePrefixes.gem, Materials.InfusedOrder, "shardOrder");
+        aliasToOreDict(OrePrefixes.gem, Materials.InfusedEntropy, "shardEntropy");
+        aliasToOreDict(OrePrefixes.gem, Materials.Chocolate, Dyes.dyeBrown.name());
 
-        registerMaterialAlias(OrePrefixes.gem, Materials.CertusQuartz, OrePrefixes.item);
-        registerMaterialAlias(OrePrefixes.gem, Materials.CertusQuartz, OrePrefixes.crystal);
-        registerMaterialAlias(OrePrefixes.gem, Materials.CertusQuartz, OreDictNames.craftingQuartz);
-        registerMaterialAlias(OrePrefixes.gem, Materials.NetherQuartz, OrePrefixes.item);
-        registerMaterialAlias(OrePrefixes.gem, Materials.NetherQuartz, OrePrefixes.crystal);
-        registerMaterialAlias(OrePrefixes.gem, Materials.NetherQuartz, OreDictNames.craftingQuartz);
-        registerMaterialAlias(OrePrefixes.gem, Materials.Fluix, OrePrefixes.crystal);
-        registerMaterialAlias(OrePrefixes.gem, Materials.Fluix, OreDictNames.craftingQuartz);
-        registerMaterialAlias(OrePrefixes.gem, Materials.Quartz, OrePrefixes.crystal);
-        registerMaterialAlias(OrePrefixes.gem, Materials.Quartz, OreDictNames.craftingQuartz);
-        registerMaterialAlias(OrePrefixes.gem, Materials.Quartzite, OrePrefixes.crystal);
-        registerMaterialAlias(OrePrefixes.gem, Materials.Quartzite, OreDictNames.craftingQuartz);
+        aliasToPrefix(OrePrefixes.gem, Materials.CertusQuartz, OrePrefixes.item);
+        aliasToPrefix(OrePrefixes.gem, Materials.CertusQuartz, OrePrefixes.crystal);
+        aliasToOreDict(OrePrefixes.gem, Materials.CertusQuartz, OreDictNames.craftingQuartz.name());
 
-        registerMaterialAlias(OrePrefixes.cableGt01, Materials.Tin, OreDictNames.craftingWireTin);
-        registerMaterialAlias(OrePrefixes.cableGt01, Materials.AnyCopper, OreDictNames.craftingWireCopper);
-        registerMaterialAlias(OrePrefixes.cableGt01, Materials.Gold, OreDictNames.craftingWireGold);
-        registerMaterialAlias(OrePrefixes.cableGt01, Materials.AnyIron, OreDictNames.craftingWireIron);
+        aliasToPrefix(OrePrefixes.gem, Materials.NetherQuartz, OrePrefixes.item);
+        aliasToPrefix(OrePrefixes.gem, Materials.NetherQuartz, OrePrefixes.crystal);
+        aliasToOreDict(OrePrefixes.gem, Materials.NetherQuartz, OreDictNames.craftingQuartz.name());
 
-        registerMaterialAlias(OrePrefixes.plate, Materials.Polyethylene, OrePrefixes.sheet);
-        registerMaterialAlias(OrePrefixes.plate, Materials.Rubber, OrePrefixes.sheet);
-        registerMaterialAlias(OrePrefixes.plate, Materials.Silicon, OrePrefixes.item);
+        aliasToPrefix(OrePrefixes.gem, Materials.Fluix, OrePrefixes.crystal);
+        aliasToOreDict(OrePrefixes.gem, Materials.Fluix, OreDictNames.craftingQuartz.name());
 
-        registerMaterialAlias(OrePrefixes.dust, Materials.Salt, "itemSalt");
-        registerMaterialAlias(OrePrefixes.dust, Materials.Wood, "pulpWood");
-        registerMaterialAlias(OrePrefixes.dust, Materials.Wheat, "foodFlour");
-        registerMaterialAlias(OrePrefixes.dust, Materials.Lapis, Dyes.dyeBlue);
-        registerMaterialAlias(OrePrefixes.dust, Materials.Sodalite, Dyes.dyeBlue);
-        registerMaterialAlias(OrePrefixes.dust, Materials.Lazurite, Dyes.dyeCyan);
-        registerMaterialAlias(OrePrefixes.dust, Materials.Cocoa, Dyes.dyeBrown);
-        registerMaterialAlias(OrePrefixes.dust, Materials.Cocoa, "foodCocoapowder");
-        registerMaterialAlias(OrePrefixes.dust, Materials.Coffee, Dyes.dyeBrown);
-        registerMaterialAlias(OrePrefixes.dust, Materials.BrownLimonite, Dyes.dyeBrown);
-        registerMaterialAlias(OrePrefixes.dust, Materials.YellowLimonite, Dyes.dyeYellow);
+        aliasToPrefix(OrePrefixes.gem, Materials.Quartz, OrePrefixes.crystal);
+        aliasToOreDict(OrePrefixes.gem, Materials.Quartz, OreDictNames.craftingQuartz.name());
 
-        registerMaterialAlias(OrePrefixes.ingot, Materials.Rubber, "itemRubber");
+        aliasToPrefix(OrePrefixes.gem, Materials.Quartzite, OrePrefixes.crystal);
+        aliasToOreDict(OrePrefixes.gem, Materials.Quartzite, OreDictNames.craftingQuartz.name());
 
-        registerPrefixAlias(OrePrefixes.stoneSmooth, "", "stone");
-        registerPrefixAlias(OrePrefixes.stoneCobble, "", "cobblestone");
-        registerPrefixAlias(OrePrefixes.sheet, "Plastic", OrePrefixes.plate, Materials.Polyethylene);
-        registerPrefixAlias(OrePrefixes.sheet, "Rubber", OrePrefixes.plate, Materials.Rubber);
-        registerPrefixAlias(OrePrefixes.crafting, "WireCopper", OrePrefixes.wire, Materials.Copper);
-        registerPrefixAlias(OrePrefixes.wood, "Rubber", "logRubber");
-        registerPrefixAlias(OrePrefixes.food, "Cocoapowder", OrePrefixes.dust, Materials.Cocoa);
+        aliasToOreDict(OrePrefixes.cableGt01, Materials.Tin, OreDictNames.craftingWireTin.name());
+        aliasToOreDict(OrePrefixes.cableGt01, Materials.AnyCopper, OreDictNames.craftingWireCopper.name());
+        aliasToOreDict(OrePrefixes.cableGt01, Materials.Gold, OreDictNames.craftingWireGold.name());
+        aliasToOreDict(OrePrefixes.cableGt01, Materials.AnyIron, OreDictNames.craftingWireIron.name());
+
+        aliasToPrefix(OrePrefixes.plate, Materials.Polyethylene, OrePrefixes.sheet);
+        aliasToPrefix(OrePrefixes.plate, Materials.Rubber, OrePrefixes.sheet);
+        aliasToPrefix(OrePrefixes.plate, Materials.Silicon, OrePrefixes.item);
+
+        aliasToOreDict(OrePrefixes.dust, Materials.Salt, "itemSalt");
+        aliasToOreDict(OrePrefixes.dust, Materials.Wood, "pulpWood");
+        aliasToOreDict(OrePrefixes.dust, Materials.Wheat, "foodFlour");
+        aliasToOreDict(OrePrefixes.dust, Materials.Lapis, Dyes.dyeBlue.name());
+        aliasToOreDict(OrePrefixes.dust, Materials.Sodalite, Dyes.dyeBlue.name());
+        aliasToOreDict(OrePrefixes.dust, Materials.Lazurite, Dyes.dyeCyan.name());
+        aliasToOreDict(OrePrefixes.dust, Materials.Cocoa, Dyes.dyeBrown.name());
+        aliasToOreDict(OrePrefixes.dust, Materials.Cocoa, "foodCocoapowder");
+        aliasToOreDict(OrePrefixes.dust, Materials.Coffee, Dyes.dyeBrown.name());
+        aliasToOreDict(OrePrefixes.dust, Materials.BrownLimonite, Dyes.dyeBrown.name());
+        aliasToOreDict(OrePrefixes.dust, Materials.YellowLimonite, Dyes.dyeYellow.name());
+
+        aliasToOreDict(OrePrefixes.ingot, Materials.Rubber, "itemRubber");
+
+        aliasToOreDict("stoneSmooth", "stone");
+        aliasToOreDict("stoneCobble", "cobblestone");
+        aliasToOreDict("woodRubber", "logRubber");
+
+        aliasToMaterial("sheetPlastic", OrePrefixes.plate, Materials.Polyethylene);
+        aliasToMaterial("sheetRubber", OrePrefixes.plate, Materials.Rubber);
+        aliasToMaterial("craftingWireCopper", OrePrefixes.wire, Materials.Copper);
+        aliasToMaterial("foodCocoapowder", OrePrefixes.dust, Materials.Cocoa);
     }
 
     private OreDictAliases() {}
@@ -89,10 +106,10 @@ final class OreDictAliases {
     static void registerAliases(String oreName, ItemStack stack, OrePrefixes prefix, Materials material,
         String materialName) {
 
-        List<Consumer<ItemStack>> aliases = OreDictAliases.aliases.get(oreName);
-        if (aliases != null) {
-            for (Consumer<ItemStack> alias : aliases) {
-                alias.accept(stack);
+        List<Consumer<ItemStack>> actions = ALIASES.get(oreName);
+        if (actions != null) {
+            for (Consumer<ItemStack> action : actions) {
+                action.accept(stack);
             }
             return;
         }
@@ -155,36 +172,26 @@ final class OreDictAliases {
         }
     }
 
-    private static void registerMaterialAlias(OrePrefixes sourcePrefix, Materials sourceMaterial,
-        OrePrefixes targetPrefix) {
-
-        registerAlias(
-            sourcePrefix.get(sourceMaterial)
-                .toString(),
-            stack -> GTOreDictUnificator.registerOre(targetPrefix, sourceMaterial, stack));
+    private static void aliasToPrefix(OrePrefixes sourcePrefix, Materials material, OrePrefixes targetPrefix) {
+        String oreName = sourcePrefix.getName() + material.getName();
+        addAlias(oreName, stack -> GTOreDictUnificator.registerOre(targetPrefix, material, stack));
     }
 
-    private static void registerMaterialAlias(OrePrefixes sourcePrefix, Materials sourceMaterial, Object target) {
-        registerAlias(
-            sourcePrefix.get(sourceMaterial)
-                .toString(),
-            stack -> GTOreDictUnificator.registerOre(target, stack));
+    private static void aliasToOreDict(OrePrefixes sourcePrefix, Materials material, String targetOreName) {
+        String oreName = sourcePrefix.getName() + material.getName();
+        aliasToOreDict(oreName, targetOreName);
     }
 
-    private static void registerPrefixAlias(OrePrefixes sourcePrefix, String sourceMaterial, Object target) {
-        registerAlias(sourcePrefix.getName() + sourceMaterial, stack -> GTOreDictUnificator.registerOre(target, stack));
+    private static void aliasToOreDict(String oreName, String targetOreName) {
+        addAlias(oreName, stack -> GTOreDictUnificator.registerOre(targetOreName, stack));
     }
 
-    private static void registerPrefixAlias(OrePrefixes sourcePrefix, String sourceMaterial, OrePrefixes targetPrefix,
-        Materials targetMaterial) {
-
-        registerAlias(
-            sourcePrefix.getName() + sourceMaterial,
-            stack -> GTOreDictUnificator.registerOre(targetPrefix, targetMaterial, stack));
+    private static void aliasToMaterial(String oreName, OrePrefixes targetPrefix, Materials targetMaterial) {
+        addAlias(oreName, stack -> GTOreDictUnificator.registerOre(targetPrefix, targetMaterial, stack));
     }
 
-    private static void registerAlias(String sourceName, Consumer<ItemStack> alias) {
-        aliases.computeIfAbsent(sourceName, ignored -> new ArrayList<>())
-            .add(alias);
+    private static void addAlias(String oreName, Consumer<ItemStack> action) {
+        ALIASES.computeIfAbsent(oreName, ignored -> new ArrayList<>())
+            .add(action);
     }
 }
