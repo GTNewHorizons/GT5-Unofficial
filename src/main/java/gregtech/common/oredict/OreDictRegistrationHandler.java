@@ -27,7 +27,6 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeRegistrator;
@@ -443,10 +442,7 @@ public final class OreDictRegistrationHandler {
                     GTRecipeRegistrator.sRodMaterialList.add(material);
                 } else if (material == Materials.Wood) {
                     GTOreDictUnificator.addToBlacklist(stack);
-                } else if (material == Materials.Tin || material == Materials.Lead
-                    || material == Materials.SolderingAlloy) {
-                        GTOreDictUnificator.registerOre(ToolDictNames.craftingToolSolderingMetal, stack);
-                    }
+                }
             }
             case "dust" -> {
                 if (material == Materials.Salt) {
