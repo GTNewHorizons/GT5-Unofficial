@@ -337,9 +337,8 @@ public final class OreDictRegistrationHandler {
                 }
             }
             case "crafting" -> {
-                switch (materialName) {
-                    case "ToolSolderingMetal" -> GregTechAPI.registerSolderingMetal(stack);
-                    case "IndustrialDiamond" -> GTOreDictUnificator.addToBlacklist(stack);
+                if (materialName.equals("IndustrialDiamond")) {
+                    GTOreDictUnificator.addToBlacklist(stack);
                 }
             }
         }
