@@ -471,14 +471,6 @@ public final class OreDictRegistrationHandler {
             case "ingot" -> {
                 if (material == Materials.Rubber) {
                     GTOreDictUnificator.registerOre("itemRubber", stack);
-                } else if (material == Materials.FierySteel) {
-                    GTOreDictUnificator.registerOre("fieryIngot", stack);
-                } else if (material == Materials.IronWood) {
-                    GTOreDictUnificator.registerOre("ironwood", stack);
-                } else if (material == Materials.Steeleaf) {
-                    GTOreDictUnificator.registerOre("steeleaf", stack);
-                } else if (material == Materials.Knightmetal) {
-                    GTOreDictUnificator.registerOre("knightmetal", stack);
                 }
             }
             default -> {}
