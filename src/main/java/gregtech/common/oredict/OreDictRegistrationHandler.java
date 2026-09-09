@@ -4,8 +4,6 @@ import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TinkerConstruct;
-import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +27,6 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
-import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
@@ -496,25 +493,7 @@ public final class OreDictRegistrationHandler {
                     GTOreDictUnificator.registerOre("steeleaf", stack);
                 } else if (material == Materials.Knightmetal) {
                     GTOreDictUnificator.registerOre("knightmetal", stack);
-                } else if (material == Materials.Brass && stack.getItemDamage() == 2
-                    && stack.getUnlocalizedName()
-                        .equals("item.ingotBrass")
-                    && new ItemStack(stack.getItem(), 1, 0).getUnlocalizedName()
-                        .contains("red")) {
-                            GTOreDictUnificator
-                                .set(OrePrefixes.ingot, Materials.RedAlloy, new ItemStack(stack.getItem(), 1, 0));
-                            GTOreDictUnificator
-                                .set(OrePrefixes.ingot, Materials.BlueAlloy, new ItemStack(stack.getItem(), 1, 1));
-                            GTOreDictUnificator
-                                .set(OrePrefixes.ingot, Materials.Brass, new ItemStack(stack.getItem(), 1, 2));
-
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(new ItemStack(stack.getItem(), 1, 3))
-                                .itemOutputs(new ItemStack(stack.getItem(), 16, 4))
-                                .duration(20 * SECONDS)
-                                .eut(TierEU.RECIPE_ULV)
-                                .addTo(cutterRecipes);
-                        }
+                }
             }
             default -> {}
         }
