@@ -314,12 +314,12 @@ public final class OreDictRegistrationHandler {
                 }
             }
             case "plank" -> {
-                if (material == Materials.Wood) {
+                if (materialName.equals("Wood")) {
                     GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M));
                 }
             }
             case "slab" -> {
-                if (material == Materials.Wood) {
+                if (materialName.equals("Wood")) {
                     GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M / 2));
                 }
             }
