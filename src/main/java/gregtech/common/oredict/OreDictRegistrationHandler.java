@@ -8,7 +8,6 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -23,13 +22,9 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
-import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTProxy;
 
@@ -251,37 +246,28 @@ public final class OreDictRegistrationHandler {
             GTOreDictUnificator.addToBlacklist(stack);
         }
 
-        Materials material = Materials._NULL;
         String materialName = oreName.substring(
             prefix.getName()
                 .length());
 
-        if (!materialName.isEmpty()) {
-            char firstChar = materialName.charAt(0);
-            boolean validFirstChar = Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar)
-                || firstChar == '_'
-                || Character.isDigit(firstChar);
-
-            if (validFirstChar) {
-                if (prefix.isMaterialBased()) {
-                    material = Materials.get(materialName);
-                    if (processMaterialRegistration(oreName, stack, prefix, material, oreOriginPath)) {
-                        return;
-                    }
-                } else {
-                    prefix.add(GTUtility.copyAmount(1, stack));
-                }
-            }
-        } else if (prefix.isSelfReferencing()) {
-            prefix.add(GTUtility.copyAmount(1, stack));
-        } else {
+        if (materialName.isEmpty() && !prefix.isSelfReferencing()) {
             GTLoggers.GT_ORE_DICT_LOGGER
                 .info("{} uses a Prefix as full OreDict Name, and is therefor invalid.", oreOriginPath);
             stack.setStackDisplayName("Invalid OreDictionary Tag");
             return;
         }
 
-        registerPrefixAliases(stack, prefix, materialName);
+        Materials material = prefix.isMaterialBased() ? Materials.get(materialName) : Materials._NULL;
+
+        OreDictAliases.registerAliases(oreName, stack, prefix, material, materialName);
+
+        if (!prefix.isIgnored(material)) {
+            prefix.add(GTUtility.copyAmount(1, stack));
+        }
+
+        if (prefix.isMaterialBased() && processMaterialRegistration(oreName, stack, prefix, material, oreOriginPath)) {
+            return;
+        }
 
         GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
 
@@ -318,23 +304,16 @@ public final class OreDictRegistrationHandler {
             return true;
         }
 
-        if (!prefix.isIgnored(material)) {
-            prefix.add(GTUtility.copyAmount(1, stack));
-        }
-
         if (material == Materials._NULL) {
             for (Dyes dye : Dyes.VALUES) {
-                if (oreName.endsWith(
-                    dye.name()
-                        .substring("dye".length()))) {
+                String dyeName = dye.name()
+                    .substring("dye".length());
+                if (oreName.endsWith(dyeName)) {
                     GTOreDictUnificator.addToBlacklist(stack);
-                    GTLoggers.GT_ORE_DICT_LOGGER.info(
-                        "{} Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.",
-                        oreOriginPath);
+                    GTLoggers.GT_ORE_DICT_LOGGER.info("{} is a colored ore and is being blacklisted", oreOriginPath);
                     return true;
                 }
             }
-
             return true;
         }
 
@@ -344,184 +323,24 @@ public final class OreDictRegistrationHandler {
 
         material.add(GTUtility.copyAmount(1, stack));
 
-        registerThaumcraftAspects(oreName, stack, prefix, material);
-        registerMaterialAliases(stack, prefix, material);
-
-        return prefix.isUnifiable() && !material.mUnifiable;
-    }
-
-    private static void registerThaumcraftAspects(String oreName, ItemStack stack, OrePrefixes prefix,
-        Materials material) {
-
-        if (GregTechAPI.sThaumcraftCompat == null || !prefix.doGenerateItem(material) || prefix.isIgnored(material)) {
-            return;
-        }
-
-        List<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
-        for (TCAspects.TC_AspectStack aspect : prefix.mAspects) {
-            aspect.addToAspectList(aspects);
-        }
-
-        long materialAmount = prefix.getMaterialAmount();
-        if (materialAmount >= GTValues.M || materialAmount < 0) {
-            for (TCAspects.TC_AspectStack aspect : material.mAspects) {
+        if (GregTechAPI.sThaumcraftCompat != null && prefix.doGenerateItem(material) && !prefix.isIgnored(material)) {
+            ArrayList<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
+            for (TCAspects.TC_AspectStack aspect : prefix.mAspects) {
                 aspect.addToAspectList(aspects);
             }
+
+            long materialAmount = prefix.getMaterialAmount();
+            if (materialAmount >= GTValues.M || materialAmount < 0) {
+                for (TCAspects.TC_AspectStack aspect : material.mAspects) {
+                    aspect.addToAspectList(aspects);
+                }
+            }
+
+            GregTechAPI.sThaumcraftCompat
+                .registerThaumcraftAspectsToItem(GTUtility.copyAmount(1, stack), aspects, oreName);
         }
 
-        GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(GTUtility.copyAmount(1, stack), aspects, oreName);
-    }
-
-    private static void registerMaterialAliases(ItemStack stack, OrePrefixes prefix, Materials material) {
-        switch (prefix.getName()) {
-            case "crystal" -> {
-                if (material == Materials.CertusQuartz || material == Materials.NetherQuartz
-                    || material == Materials.Fluix) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.gem, material, stack);
-                }
-            }
-            case "gem" -> {
-                if (material == Materials.Lapis || material == Materials.Sodalite) {
-                    GTOreDictUnificator.registerOre(Dyes.dyeBlue, stack);
-                } else if (material == Materials.Lazurite) {
-                    GTOreDictUnificator.registerOre(Dyes.dyeCyan, stack);
-                } else if (material == Materials.InfusedAir || material == Materials.InfusedWater
-                    || material == Materials.InfusedFire
-                    || material == Materials.InfusedEarth
-                    || material == Materials.InfusedOrder
-                    || material == Materials.InfusedEntropy) {
-                        GTOreDictUnificator.registerOre("shard" + material.mName.substring("Infused".length()), stack);
-                    } else if (material == Materials.Chocolate) {
-                        GTOreDictUnificator.registerOre(Dyes.dyeBrown, stack);
-                    } else if (material == Materials.CertusQuartz || material == Materials.NetherQuartz) {
-                        GTOreDictUnificator.registerOre(OrePrefixes.item.get(material), stack);
-                        GTOreDictUnificator.registerOre(OrePrefixes.crystal, material, stack);
-                        GTOreDictUnificator.registerOre(OreDictNames.craftingQuartz, stack);
-                    } else if (material == Materials.Fluix || material == Materials.Quartz
-                        || material == Materials.Quartzite) {
-                            GTOreDictUnificator.registerOre(OrePrefixes.crystal, material, stack);
-                            GTOreDictUnificator.registerOre(OreDictNames.craftingQuartz, stack);
-                        }
-            }
-            case "cableGt01" -> {
-                if (material == Materials.Tin) {
-                    GTOreDictUnificator.registerOre(OreDictNames.craftingWireTin, stack);
-                } else if (material == Materials.AnyCopper) {
-                    GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, stack);
-                } else if (material == Materials.Gold) {
-                    GTOreDictUnificator.registerOre(OreDictNames.craftingWireGold, stack);
-                } else if (material == Materials.AnyIron) {
-                    GTOreDictUnificator.registerOre(OreDictNames.craftingWireIron, stack);
-                }
-            }
-            case "lens" -> {
-                if (material.contains(SubTag.TRANSPARENT) && material.mColor != Dyes._NULL) {
-                    String color = material.mColor.name();
-                    if (color.startsWith("dye")) color = color.substring(3);
-                    GTOreDictUnificator.registerOre("craftingLens" + color, stack);
-                }
-            }
-            case "plate" -> {
-                if (material == Materials.Polyethylene || material == Materials.Rubber) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.sheet, material, stack);
-                } else if (material == Materials.Silicon) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.item, material, stack);
-                } else if (material == Materials.Wood) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                    GTOreDictUnificator.registerOre(OrePrefixes.plank, material, stack);
-                }
-            }
-            case "cell" -> {
-                if (material == Materials.Empty) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                }
-            }
-            case "gearGt" -> GTOreDictUnificator.registerOre(OrePrefixes.gear, material, stack);
-            case "stick" -> {
-                if (!GTRecipeRegistrator.sRodMaterialList.contains(material)) {
-                    GTRecipeRegistrator.sRodMaterialList.add(material);
-                } else if (material == Materials.Wood) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                }
-            }
-            case "dust" -> {
-                if (material == Materials.Salt) {
-                    GTOreDictUnificator.registerOre("itemSalt", stack);
-                } else if (material == Materials.Wood) {
-                    GTOreDictUnificator.registerOre("pulpWood", stack);
-                } else if (material == Materials.Wheat) {
-                    GTOreDictUnificator.registerOre("foodFlour", stack);
-                } else if (material == Materials.Lapis) {
-                    GTOreDictUnificator.registerOre(Dyes.dyeBlue, stack);
-                } else if (material == Materials.Lazurite) {
-                    GTOreDictUnificator.registerOre(Dyes.dyeCyan, stack);
-                } else if (material == Materials.Sodalite) {
-                    GTOreDictUnificator.registerOre(Dyes.dyeBlue, stack);
-                } else if (material == Materials.Cocoa) {
-                    GTOreDictUnificator.registerOre(Dyes.dyeBrown, stack);
-                    GTOreDictUnificator.registerOre("foodCocoapowder", stack);
-                } else if (material == Materials.Coffee) {
-                    GTOreDictUnificator.registerOre(Dyes.dyeBrown, stack);
-                } else if (material == Materials.BrownLimonite) {
-                    GTOreDictUnificator.registerOre(Dyes.dyeBrown, stack);
-                } else if (material == Materials.YellowLimonite) {
-                    GTOreDictUnificator.registerOre(Dyes.dyeYellow, stack);
-                }
-            }
-            case "ingot" -> {
-                if (material == Materials.Rubber) {
-                    GTOreDictUnificator.registerOre("itemRubber", stack);
-                }
-            }
-            default -> {}
-        }
-    }
-
-    private static void registerPrefixAliases(ItemStack stack, OrePrefixes prefix, String materialName) {
-        switch (prefix.getName()) {
-            case "dye" -> {
-                if (GTUtility.isStringValid(materialName)) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.dye, stack);
-                }
-            }
-            case "stoneSmooth" -> GTOreDictUnificator.registerOre("stone", stack);
-            case "stoneCobble" -> GTOreDictUnificator.registerOre("cobblestone", stack);
-            case "plank" -> {
-                if (materialName.equals("Wood")) {
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M));
-                }
-            }
-            case "slab" -> {
-                if (materialName.equals("Wood")) {
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M / 2));
-                }
-            }
-            case "sheet" -> {
-                if (materialName.equals("Plastic")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Polyethylene, stack);
-                } else if (materialName.equals("Rubber")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Rubber, stack);
-                }
-            }
-            case "crafting" -> {
-                switch (materialName) {
-                    case "ToolSolderingMetal" -> GregTechAPI.registerSolderingMetal(stack);
-                    case "IndustrialDiamond" -> GTOreDictUnificator.addToBlacklist(stack);
-                    case "WireCopper" -> GTOreDictUnificator.registerOre(OrePrefixes.wire, Materials.Copper, stack);
-                }
-            }
-            case "wood" -> {
-                if (materialName.equals("Rubber")) {
-                    GTOreDictUnificator.registerOre("logRubber", stack);
-                }
-            }
-            case "food" -> {
-                if (materialName.equals("Cocoapowder")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.dust, Materials.Cocoa, stack);
-                }
-            }
-            default -> {}
-        }
+        return prefix.isUnifiable() && !material.mUnifiable;
     }
 
     @SuppressWarnings("deprecation")
