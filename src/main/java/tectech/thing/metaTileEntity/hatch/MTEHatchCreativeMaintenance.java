@@ -10,10 +10,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
@@ -21,6 +23,7 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
 
     private static IIconContainer face;
@@ -50,7 +53,7 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        face = Textures.BlockIcons.custom("iconsets/OVERLAY_FULLAUTOMAINTENANCE");
+        face = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_FULLAUTOMAINTENANCE");
     }
 
     @Override

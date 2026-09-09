@@ -222,7 +222,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialLibAPI.getStack(Materials.Titanium, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Tantalum, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.Indium, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Rhenium, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Niobium, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Hafnium, Shapes.dust, 64))
             .duration(20 * SECONDS)

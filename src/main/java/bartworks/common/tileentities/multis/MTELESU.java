@@ -70,6 +70,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELESU extends MTEMultiBlockBase {
 
     private static final byte TEXID_SIDE = 0;

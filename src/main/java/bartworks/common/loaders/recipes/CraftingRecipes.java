@@ -423,8 +423,7 @@ public class CraftingRecipes implements Runnable {
 
         // BioLabs
         GTModHandler.addCraftingRecipe(
-            new MTEBioLab(BioLab_HV.ID, "bw.biolabHV", StatCollector.translateToLocal("tile.biolab.name"), 3)
-                .getStackForm(1L),
+            new MTEBioLab(BioLab_HV.ID, "bw.biolabHV", "", 3).getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1L), 'W',
@@ -434,8 +433,7 @@ public class CraftingRecipes implements Runnable {
                 OrePrefixes.circuit.oreDictName(Circuits.HV.materialName()), 'C', ItemList.MACHINE_HULLS[3].get(1L) });
 
         GTModHandler.addCraftingRecipe(
-            new MTEBioLab(BioLab_EV.ID, "bw.biolabEV", StatCollector.translateToLocal("tile.biolab.name"), 4)
-                .getStackForm(1L),
+            new MTEBioLab(BioLab_EV.ID, "bw.biolabEV", "", 4).getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1L), 'W',
@@ -445,8 +443,7 @@ public class CraftingRecipes implements Runnable {
                 OrePrefixes.circuit.oreDictName(Circuits.EV.materialName()), 'C', ItemList.MACHINE_HULLS[4].get(1L) });
 
         GTModHandler.addCraftingRecipe(
-            new MTEBioLab(BioLab_IV.ID, "bw.biolabIV", StatCollector.translateToLocal("tile.biolab.name"), 5)
-                .getStackForm(1L),
+            new MTEBioLab(BioLab_IV.ID, "bw.biolabIV", "", 5).getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L), 'W',
@@ -456,8 +453,7 @@ public class CraftingRecipes implements Runnable {
                 OrePrefixes.circuit.oreDictName(Circuits.IV.materialName()), 'C', ItemList.MACHINE_HULLS[5].get(1L) });
 
         GTModHandler.addCraftingRecipe(
-            new MTEBioLab(BioLab_LuV.ID, "bw.biolabLuV", StatCollector.translateToLocal("tile.biolab.name"), 6)
-                .getStackForm(1L),
+            new MTEBioLab(BioLab_LuV.ID, "bw.biolabLuV", "", 6).getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.RhodiumPlatedPalladium, 1L), 'W',
@@ -467,8 +463,7 @@ public class CraftingRecipes implements Runnable {
                 OrePrefixes.circuit.oreDictName(Circuits.LuV.materialName()), 'C', ItemList.MACHINE_HULLS[6].get(1L) });
 
         GTModHandler.addCraftingRecipe(
-            new MTEBioLab(BioLab_ZPM.ID, "bw.biolabZPM", StatCollector.translateToLocal("tile.biolab.name"), 7)
-                .getStackForm(1L),
+            new MTEBioLab(BioLab_ZPM.ID, "bw.biolabZPM", "", 7).getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1L), 'W',
@@ -478,8 +473,7 @@ public class CraftingRecipes implements Runnable {
                 OrePrefixes.circuit.oreDictName(Circuits.ZPM.materialName()), 'C', ItemList.MACHINE_HULLS[7].get(1L) });
 
         GTModHandler.addCraftingRecipe(
-            new MTEBioLab(BioLab_UV.ID, "bw.biolabUV", StatCollector.translateToLocal("tile.biolab.name"), 8)
-                .getStackForm(1L),
+            new MTEBioLab(BioLab_UV.ID, "bw.biolabUV", "", 8).getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmium, 1L),
                 'W', GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NaquadahAlloy, 1L), 'P',
@@ -488,8 +482,7 @@ public class CraftingRecipes implements Runnable {
                 OrePrefixes.circuit.oreDictName(Circuits.UV.materialName()), 'C', ItemList.MACHINE_HULLS[8].get(1L) });
 
         GTModHandler.addCraftingRecipe(
-            new MTEBioLab(BioLab_UHV.ID, "bw.biolabUHV", StatCollector.translateToLocal("tile.biolab.name"), 9)
-                .getStackForm(1L),
+            new MTEBioLab(BioLab_UHV.ID, "bw.biolabUHV", "", 9).getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1L), 'W',
@@ -499,8 +492,7 @@ public class CraftingRecipes implements Runnable {
                 OrePrefixes.circuit.oreDictName(Circuits.UHV.materialName()), 'C', ItemList.MACHINE_HULLS[9].get(1L) });
 
         GTModHandler.addCraftingRecipe(
-            new MTEBioLab(BioLab_UEV.ID, "bw.biolabUEV", StatCollector.translateToLocal("tile.biolab.name"), 10)
-                .getStackForm(1L),
+            new MTEBioLab(BioLab_UEV.ID, "bw.biolabUEV", "", 10).getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1L), 'W',
@@ -511,8 +503,7 @@ public class CraftingRecipes implements Runnable {
                 ItemList.MACHINE_HULLS[10].get(1L) });
 
         GTModHandler.addCraftingRecipe(
-            new MTEBioLab(BioLab_UIV.ID, "bw.biolabUIV", StatCollector.translateToLocal("tile.biolab.name"), 11)
-                .getStackForm(1L),
+            new MTEBioLab(BioLab_UIV.ID, "bw.biolabUIV", "", 11).getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1L), 'W',
@@ -523,8 +514,7 @@ public class CraftingRecipes implements Runnable {
                 ItemList.MACHINE_HULLS[11].get(1L) });
 
         GTModHandler.addCraftingRecipe(
-            new MTEBioLab(BioLab_UMV.ID, "bw.biolabUMV", StatCollector.translateToLocal("tile.biolab.name"), 12)
-                .getStackForm(1L),
+            new MTEBioLab(BioLab_UMV.ID, "bw.biolabUMV", "", 12).getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L), 'W',

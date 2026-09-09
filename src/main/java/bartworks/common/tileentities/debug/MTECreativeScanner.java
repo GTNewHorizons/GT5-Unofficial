@@ -20,10 +20,12 @@ import org.apache.commons.lang3.ArrayUtils;
 import bartworks.util.BWTooltipReference;
 import gregtech.api.enums.MachineType;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.tileentities.machines.basic.MTEScanner;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECreativeScanner extends MTEScanner {
 
     public MTECreativeScanner(int aID, String aName, String aNameRegional, int aTier) {

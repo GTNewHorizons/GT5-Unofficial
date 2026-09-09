@@ -607,7 +607,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
 
     // BEC
-    SuperconductivePlasmaEnergyConduit
+    CoherencePreservingPlasmaConduit
         (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(17, 0, 0)),
     ElectromagneticallyIsolatedCasing
         (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),
@@ -863,17 +863,24 @@ public enum Casings implements ICasing {
     GallifreyanTimeDilationFieldGenerator(() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 8, gt(7, 56)),
 
     // Godforge Casings
-    SingularityReinforcedStellarShieldingCasing(() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 0, gt(7, 64)),
-    CelestialMatterGuidanceCasing(() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 1, gt(7, 65)),
-    BoundlessGravitationallySeveredStructureCasing(() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 2,
-        gt(7, 66)),
-    TranscendentallyAmplifiedMagneticConfinementCasing(() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 3,
-        gt(7, 67)),
-    StellarEnergySiphonCasing(() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 4, gt(7, 68)),
-    RemoteGravitonFlowModulator(() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 5, gt(7, 69)),
-    MedialGravitonFlowModulator(() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 6, gt(7, 70)),
-    CentralGravitonFlowModulator(() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 7, gt(7, 71)),
-    HarmonicPhononTransmissionConduit(() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 8, gt(7, 72)),
+    SingularityReinforcedStellarShieldingCasing
+        (() -> TTCasingsContainer.GodforgeCasings, 0, gt(7,64)),
+    CelestialMatterGuidanceCasing
+        (() -> TTCasingsContainer.GodforgeCasings, 1, gt(7,65)),
+    BoundlessGravitationallySeveredStructureCasing
+        (() -> TTCasingsContainer.GodforgeCasings, 2, gt(7,66)),
+    TranscendentallyAmplifiedMagneticConfinementCasing
+        (() -> TTCasingsContainer.GodforgeCasings, 3, gt(7,67)),
+    StellarEnergySiphonCasing
+        (() -> TTCasingsContainer.GodforgeCasings, 4, gt(7,68)),
+    RemoteGravitonFlowModulator
+        (() -> TTCasingsContainer.GodforgeCasings, 5, gt(7,69)),
+    MedialGravitonFlowModulator
+        (() -> TTCasingsContainer.GodforgeCasings, 6, gt(7,70)),
+    CentralGravitonFlowModulator
+        (() -> TTCasingsContainer.GodforgeCasings, 7, gt(7,71)),
+    HarmonicPhononTransmissionConduit
+        (() -> TTCasingsContainer.GodforgeCasings, 8, gt(7,72)),
 
     QuantumGlass(() -> BlockQuantumGlass.INSTANCE, 0, -1),
 

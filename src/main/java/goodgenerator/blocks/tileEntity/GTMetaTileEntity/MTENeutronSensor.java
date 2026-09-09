@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import crazypants.enderio.Log;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IIconContainer;
@@ -28,9 +29,10 @@ public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
 
     public static final String COPIED_DATA_IDENTIFIER = "neutronSensor";
 
-    private static final IIconContainer textureFont = Textures.BlockIcons.custom("icons/NeutronSensorFont");
+    private static final IIconContainer textureFont = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/NeutronSensorFont");
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons
-        .customOptional("icons/NeutronSensorFont_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/NeutronSensorFont_GLOW");
 
     protected int threshold = 0;
     protected boolean inverted = false;

@@ -1493,6 +1493,9 @@ public class Textures {
             OVERLAY_HATCH_CONDENSATE_DETECTOR = createOptional("OVERLAY_HATCH_CONDENSATE_DETECTOR"),
             OVERLAY_HATCH_CONDENSATE_DETECTOR_GLOW = createOptional("OVERLAY_HATCH_CONDENSATE_DETECTOR_GLOW"),
 
+            OVERLAY_HATCH_IO_NODE_CONTROLLER = createOptional("OVERLAY_HATCH_IO_NODE_CONTROLLER"),
+            OVERLAY_HATCH_IO_NODE_CONTROLLER_GLOW = createOptional("OVERLAY_HATCH_IO_NODE_CONTROLLER_GLOW"),
+
             OVERLAY_ADV_PUMP = createOptional("OVERLAY_ADV_PUMP"),
             OVERLAY_TELEPORTER = createOptional("OVERLAY_TELEPORTER"),
             OVERLAY_TELEPORTER_GLOW = createOptional("OVERLAY_TELEPORTER_GLOW"),
@@ -2682,23 +2685,45 @@ public class Textures {
 
         /**
          * Registers a Custom Block {@link IIconContainer}
-         *
-         * @param aIconName The unique identifier of the icon container.
+         * 
+         * @param domain    The resource domain
+         * @param aIconName The colon-free resource path of the icon container
          * @return The {@link IIconContainer} instance
          */
+        public static @NotNull IIconContainer custom(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomBlockIconContainer.create(domain, aIconName);
+        }
+
+        /**
+         * @deprecated This method is a stub for external mods calling the old API
+         */
+        @Deprecated
         public static @NotNull IIconContainer custom(@NotNull String aIconName) {
-            return GTCustomBlockIconContainer.create(aIconName);
+            ResourceLocation location = aIconName.indexOf(':') < 0 ? Mods.GregTech.getResourceLocation(aIconName)
+                : new ResourceLocation(aIconName);
+            return custom(location.getResourceDomain(), location.getResourcePath());
         }
 
         /**
          * Registers a Custom Optional Block {@link IIconContainer}
          *
-         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         * @param domain    The resource domain
+         * @param aIconName The colon-free {@code path/name} icon path<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @return The {@link IIconContainer} instance
          */
+        public static @NotNull IIconContainer customOptional(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomOptionalBlockIconContainer.create(domain, aIconName);
+        }
+
+        /**
+         * @deprecated This method is a stub for external mods calling the old API
+         */
+        @Deprecated
         public static @NotNull IIconContainer customOptional(@NotNull String aIconName) {
-            return GTCustomOptionalBlockIconContainer.create(aIconName);
+            ResourceLocation location = aIconName.indexOf(':') < 0 ? Mods.GregTech.getResourceLocation(aIconName)
+                : new ResourceLocation(aIconName);
+            return customOptional(location.getResourceDomain(), location.getResourcePath());
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
@@ -2801,25 +2826,28 @@ public class Textures {
          * Each custom item icon consists of a main icon, an overlay, or both.
          * At least one of the icon or overlay must be present; individually, each is optional.
          *
-         * @param aIconName The unique identifier of the custom item icon container.
+         * @param domain    The resource domain.
+         * @param aIconName The colon-free resource path of the custom item icon container.
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer custom(@NotNull String aIconName) {
-            return GTCustomItemIconContainer.create(aIconName);
+        public static @NotNull IIconContainer custom(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomItemIconContainer.create(domain, aIconName);
         }
 
         /**
          * Registers a Custom Item {@link IIconContainer} whose overlay is the named texture, not the
          * {@code _OVERLAY} sibling of {@code aIconName}.
          *
-         * @param aIconName    The identifier of the icon drawn first, which the item's colour tints.
-         * @param aOverlayName The identifier of the untinted layer drawn over it.
+         * @param domain       The resource domain.
+         * @param aIconName    The colon-free path of the icon drawn first, which the item colour tints.
+         * @param aOverlayName The colon-free path of the untinted layer drawn over it.
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer custom(@NotNull String aIconName, @NotNull String aOverlayName) {
-            return GTCustomItemIconContainer.create(aIconName, aOverlayName);
+        public static @NotNull IIconContainer custom(@NotNull String domain, @NotNull String aIconName,
+            @NotNull String aOverlayName) {
+            return GTCustomItemIconContainer.create(domain, aIconName, aOverlayName);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {

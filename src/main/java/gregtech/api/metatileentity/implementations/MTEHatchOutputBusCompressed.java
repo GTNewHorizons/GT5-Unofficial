@@ -44,8 +44,10 @@ import appeng.api.storage.data.IItemList;
 import appeng.util.InventoryAdaptor;
 import appeng.util.inv.IMEAdaptor;
 import appeng.util.item.AEItemStack;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IOutputBusTransaction;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -54,6 +56,8 @@ import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusCompressedGui;
 import gregtech.common.inventory.AEInventory;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IMEMonitor<IAEItemStack> {
 
     public final int slotCount;
@@ -95,6 +99,15 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
         this.busSlots = prototype.busSlots;
 
         this.inventory = new BusInventory(slotCount);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        // The same class serves the compressed and the quantum buses, which are named apart.
+        final String key = mName.startsWith("hatch.quantum") ? "gt.blockmachines.hatch.quantum-output-bus.name"
+            : "gt.blockmachines.hatch.comp-output-bus.name";
+        return StatCollector.translateToLocalFormatted(key, GTValues.VN[mTier]);
     }
 
     @Override
@@ -362,7 +375,7 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
         }
 
         @Override
-        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack, long totalPerParallel, long perParallel) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             IAEItemStack rejected = inventory.injectItems(AEItemStack.create(stack), Actionable.MODULATE, null);

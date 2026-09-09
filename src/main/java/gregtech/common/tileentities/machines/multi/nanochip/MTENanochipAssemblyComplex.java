@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -34,6 +33,7 @@ import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableMap;
@@ -257,7 +257,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .beginStructureBlock(63, 49, 63, false)
             .addController("Middle of structure, 9th layer")
             // Nanochip Reinforcement Casing
-            .addCasing("3956", translateToLocal("gt.blockcasings12.2.name"), false)
+            .addCasing("3958", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Complex Glass
             .addCasing("2226", translateToLocal("gt.blockglass1.8.name"), false)
             // Nanochip Mesh Interface Casing
@@ -401,7 +401,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     // stack
     // should be consumed
     private boolean routeToHatches(List<MTEHatchVacuumConveyor> hatches, byte color, CircuitComponent component,
-        int amount) {
+        int amount, String customName) {
         // If no hatches were passed, we can't route
         if (hatches == null) return false;
         // Find the first hatch that can be used for routing
@@ -418,7 +418,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     continue;
                 }
                 // Now we can route our components to this hatch
-                CircuitComponentPacket packet = new CircuitComponentPacket(component, amount);
+                CircuitComponentPacket packet = new CircuitComponentPacket(component, amount, customName);
                 // Merge with the already existing hatch contents
                 outputHatch.unifyPacket(packet);
                 return true;
@@ -442,13 +442,15 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             if (recipe == null) continue;
             // If one existed, we have the component now
             CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            // We also need to keep track of the custom name from the original stack, if there was one
+            String customName = GTUtility.getStackCustomName(stack.stack);
             // Find destination hatch. Note that we already know that this bus is a valid MTE, see
             // getStoredInputsWithBus
             byte busColor = stack.bus.getBaseMetaTileEntity()
                 .getColorization();
             ArrayList<MTEHatchVacuumConveyor> destinationHatches = vacuumConveyors.findColoredHatches(busColor);
             // Try to route to the set of destination hatches
-            boolean routed = routeToHatches(destinationHatches, busColor, component, stack.stack.stackSize);
+            boolean routed = routeToHatches(destinationHatches, busColor, component, stack.stack.stackSize, customName);
             // If successful, consume the input
             if (routed) {
                 stack.bus.removeAllResource(stack.stack);
@@ -466,25 +468,41 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 if (hatch instanceof MTEHatchVacuumConveyorInput) {
                     // Skip empty hatches
                     if (hatch.contents == null) continue;
-                    Map<CircuitComponent, Long> contents = hatch.contents.getComponents();
+                    Map<CircuitComponent, List<MutablePair<String, Long>>> contents = hatch.contents.getComponents();
                     // Use Iterator to protect against ConcurrentModificationException
-                    Iterator<Map.Entry<CircuitComponent, Long>> iterator = contents.entrySet()
+                    var iterator = contents.entrySet()
                         .iterator();
                     while (iterator.hasNext()) {
-                        Map.Entry<CircuitComponent, Long> entry = iterator.next();
+                        var entry = iterator.next();
                         CircuitComponent component = entry.getKey();
-                        long amount = entry.getValue();
-                        if (component.realComponent != null) {
-                            long ejected = ejectCircuitComponent(ejectionHelper, component, amount);
+                        if (component.realComponent == null) continue;
+
+                        var namedAmounts = entry.getValue();
+                        var innerItr = namedAmounts.iterator();
+                        boolean failedSomething = false;
+
+                        while (innerItr.hasNext()) {
+                            var pair = innerItr.next();
+                            long ejected = ejectCircuitComponent(
+                                ejectionHelper,
+                                component,
+                                pair.getRight(),
+                                pair.getLeft());
                             if (ejected > 0) {
-                                long originalAmount = contents.get(component);
+                                long originalAmount = pair.getRight();
                                 long newAmount = originalAmount - ejected;
                                 if (newAmount == 0) {
-                                    iterator.remove();
+                                    innerItr.remove();
                                 } else {
-                                    entry.setValue(newAmount);
+                                    pair.setRight(newAmount);
+                                    failedSomething = true;
                                 }
+                            } else {
+                                failedSomething = true;
                             }
+                        }
+                        if (!failedSomething) {
+                            iterator.remove();
                         }
                     }
                 }
@@ -495,12 +513,17 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     // Outputs a CC to the output bus as a real item, attempting to fit as much as possible in one operation
-    private long ejectCircuitComponent(ItemEjectionHelper helper, CircuitComponent component, long amount) {
+    private long ejectCircuitComponent(ItemEjectionHelper helper, CircuitComponent component, long amount,
+        String customName) {
         long ejected = 0;
         while (amount > 0) {
             int maxEject = (int) Math.min(Integer.MAX_VALUE, amount);
             ItemStack toOutput = GTUtility.copyAmountUnsafe(maxEject, component.realComponent.get());
             if (toOutput == null) break;
+
+            if (customName != null) {
+                toOutput.setStackDisplayName(customName);
+            }
 
             int amountEjected = helper.ejectStack(toOutput);
             ejected += amountEjected;

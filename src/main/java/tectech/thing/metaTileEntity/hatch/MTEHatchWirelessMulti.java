@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
@@ -14,6 +15,7 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -23,6 +25,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.math.LongMath;
 
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -32,6 +35,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.common.gui.modularui.hatch.MTEHatchWirelessMultiGui;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     public final long precisionMultiplier = LongMath.pow(10, 15);
@@ -54,6 +58,15 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     public MTEHatchWirelessMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, null, aAmp);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.hatch.energywirelessmulti.name",
+            GTValues.VN[mTier],
+            formatNumber(maxAmperes));
     }
 
     @Override

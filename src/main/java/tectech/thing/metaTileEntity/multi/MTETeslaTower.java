@@ -51,6 +51,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.FluidShapes;
@@ -585,8 +586,8 @@ public class MTETeslaTower extends TTMultiblockBase
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER");
-        ScreenON = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_TOWER");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_TOWER_ACTIVE");
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -55,8 +56,8 @@ public class MTEHatchObjectHolder extends MTEHatch implements ISmartInputHatch {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_H_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_HOLDER_ACTIVE");
-        EM_H = Textures.BlockIcons.custom("iconsets/EM_HOLDER");
+        EM_H_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_HOLDER_ACTIVE");
+        EM_H = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_HOLDER");
     }
 
     @Override

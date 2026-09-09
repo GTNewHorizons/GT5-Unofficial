@@ -1,21 +1,25 @@
 package gregtech.api.recipe.maps;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
+import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class NACRecipeMapBackend extends RecipeMapBackend {
 
-    private int maxDuration;
+    private final int[] maxDurations = new int[GTValues.V.length];
 
     public NACRecipeMapBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder);
@@ -37,7 +41,7 @@ public class NACRecipeMapBackend extends RecipeMapBackend {
     @Override
     public void clearRecipes() {
         super.clearRecipes();
-        maxDuration = 0;
+        Arrays.fill(maxDurations, 0);
     }
 
     @Override
@@ -47,17 +51,23 @@ public class NACRecipeMapBackend extends RecipeMapBackend {
     }
 
     private void rebuildMaxDuration() {
-        maxDuration = 0;
+        Arrays.fill(maxDurations, 0);
         for (GTRecipe recipe : getAllRecipes()) {
             addRecipeDuration(recipe);
         }
     }
 
     private void addRecipeDuration(GTRecipe recipe) {
-        maxDuration = Math.max(maxDuration, recipe.mDuration);
+        // Try get casing tier first, in the case of assembly matrix
+        int tier = recipe
+            .getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, (int) GTUtility.getTier(recipe.mEUt));
+        for (int i = tier; i < maxDurations.length; i++) {
+            maxDurations[i] = Math.max(maxDurations[i], recipe.mDuration);
+        }
     }
 
-    public int getMaxDuration() {
-        return maxDuration;
+    public int getMaxDuration(int tier) {
+        if (tier == -1) return maxDurations[maxDurations.length - 1];
+        return maxDurations[tier];
     }
 }

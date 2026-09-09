@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
 import appeng.api.util.DimensionalCoord;
+import gregtech.api.util.GTUtility;
 import io.netty.buffer.ByteBuf;
 
 public class PacketTeleportPlayer extends GTPacket {
@@ -55,14 +55,15 @@ public class PacketTeleportPlayer extends GTPacket {
         int x = this.coords[0];
         int y = this.coords[1];
         int z = this.coords[2];
-        ServerConfigurationManager manager = player.mcServer.getConfigurationManager();
         if (this.teleportPlayer) { // Check if player is allowed to tp
             if (player.dimension != this.dim) {
-                manager.transferPlayerToDimension(player, this.dim);
+                GTUtility.moveEntityToDimensionAtCoords(player, this.dim, x + 0.5, y + 1, z + 0.5);
+            } else {
+                player.playerNetServerHandler
+                    .setPlayerLocation(x + 0.5, y + 1, z + 0.5, player.cameraYaw, player.cameraPitch);
+                // try not to tp the player into the hull
             }
-            player.playerNetServerHandler
-                .setPlayerLocation(x + 0.5, y + 1, z + 0.5, player.cameraYaw, player.cameraPitch);
-            // try not to tp the player into the hull
+
         }
         ArrayList<DimensionalCoord> list = new ArrayList<>();
         list.add(new DimensionalCoord(x, y, z, this.dim));

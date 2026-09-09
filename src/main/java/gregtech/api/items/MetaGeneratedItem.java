@@ -38,6 +38,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IFoodStat;
@@ -87,6 +88,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final BitSet mEnabledItems;
     public final BitSet mVisibleItems;
     public final IIcon[][] mIconList;
+    private final BitSet mItemsWithoutBaseIcon = new BitSet();
 
     public final ConcurrentHashMap<Short, IFoodStat> mFoodStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
@@ -314,6 +316,10 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return this;
     }
 
+    protected final void setNoBaseIcon(int itemId) {
+        if (itemId >= 0 && itemId < mItemAmount) mItemsWithoutBaseIcon.set(itemId);
+    }
+
     /**
      *
      * @param aMetaValue the Meta Value of the Item you want to set it to. [0 - 32765]
@@ -467,8 +473,15 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                 mIconList[i][k] = aIconRegister.registerIcon(
                     GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
             }
-            mIconList[i][0] = aIconRegister
-                .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
+            Long[] electricStats = mElectricStats.get((short) (i + mOffset));
+            if (mItemsWithoutBaseIcon.get(i)) {
+                mIconList[i][0] = Textures.InvisibleIcon.INVISIBLE_ICON;
+            } else if (mIconList[i].length > 1 && electricStats != null && electricStats[3] < 0) {
+                mIconList[i][0] = mIconList[i][1];
+            } else {
+                mIconList[i][0] = aIconRegister
+                    .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
+            }
         }
     }
 

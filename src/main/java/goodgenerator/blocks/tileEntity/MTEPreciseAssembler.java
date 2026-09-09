@@ -49,6 +49,7 @@ import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -86,12 +87,14 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("iconsets/OVERLAY_QCHEST");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QCHEST");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QCHEST_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEPreciseAssembler> multiDefinition = null;
     protected int casingAmount;

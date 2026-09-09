@@ -1,7 +1,6 @@
 package gregtech.loaders.postload;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
-import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
@@ -52,7 +51,6 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -427,15 +425,12 @@ public class GTPostLoad {
 
         ProgressManager.ProgressBar progressBar = ProgressManager
             .push("Register materials", replaceVanillaItemsSet.size());
-        if (BetterLoadingScreen.isModLoaded()) {
-            GTCLSCompat.doActualRegistrationCLS(progressBar, replaceVanillaItemsSet);
-            GTCLSCompat.pushToDisplayProgress();
-        } else {
-            replaceVanillaItemsSet.forEach(m -> {
-                progressBar.step(MaterialUtils.localName(m));
-                doActualRegistration(m);
-            });
+
+        for (Material material : replaceVanillaItemsSet) {
+            progressBar.step(MaterialUtils.localizedName(material));
+            doActualRegistration(material);
         }
+
         ProgressManager.pop(progressBar);
         // noinspection UnstableApiUsage// stable enough for project
         GT_FML_LOGGER.debug("Replaced Vanilla Materials ({}). Have a Cake.", stopwatch.stop());

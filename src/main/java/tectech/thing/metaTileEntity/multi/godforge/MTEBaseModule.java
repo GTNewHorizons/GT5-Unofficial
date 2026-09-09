@@ -26,6 +26,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -409,8 +410,8 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenON = Textures.BlockIcons.custom("iconsets/GODFORGE_MODULE_ACTIVE");
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/SCREEN_OFF");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/GODFORGE_MODULE_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/SCREEN_OFF");
         super.registerIcons(aBlockIconRegister);
     }
 

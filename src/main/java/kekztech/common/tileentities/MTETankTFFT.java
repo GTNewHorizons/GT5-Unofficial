@@ -46,6 +46,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.fluid.GTFluidTank;
@@ -200,11 +201,14 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
         }
     }
 
-    private static final IIconContainer TEXTURE_TFFT = Textures.BlockIcons.custom("iconsets/TFFT");
-    private static final IIconContainer TEXTURE_TFFT_GLOW = Textures.BlockIcons.customOptional("iconsets/TFFT_GLOW");
-    private static final IIconContainer TEXTURE_TFFT_ACTIVE = Textures.BlockIcons.custom("iconsets/TFFT_ACTIVE");
+    private static final IIconContainer TEXTURE_TFFT = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/TFFT");
+    private static final IIconContainer TEXTURE_TFFT_GLOW = Textures.BlockIcons
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/TFFT_GLOW");
+    private static final IIconContainer TEXTURE_TFFT_ACTIVE = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/TFFT_ACTIVE");
     private static final IIconContainer TEXTURE_TFFT_ACTIVE_GLOW = Textures.BlockIcons
-        .customOptional("iconsets/TFFT_ACTIVE_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/TFFT_ACTIVE_GLOW");
     private static final int CASING_TEXTURE_ID_1 = (12 << 7) | 127;
     private static final int CASING_TEXTURE_ID_2 = 176;
 

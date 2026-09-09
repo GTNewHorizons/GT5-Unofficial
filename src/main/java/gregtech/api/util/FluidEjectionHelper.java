@@ -135,7 +135,7 @@ public class FluidEjectionHelper {
                 }
 
                 // Fill at most one slot with the remaining fluids
-                if (output.storePartial(transaction)) {
+                if (output.storePartial(transaction, pendingOutputs)) {
                     break;
                 } else {
                     // If we couldn't insert anything into the hatch, go to the next one
@@ -187,16 +187,18 @@ public class FluidEjectionHelper {
             this.tmpStack = id.getFluidStack();
         }
 
-        public boolean storePartial(IOutputHatchTransaction transaction) {
-            boolean isSharedOutput = transaction instanceof IOutputHatchTransaction.IDynamicCapacityOutputAware sharedOutput
-                && sharedOutput.isDynamicCapacity();
-            long targetAmount = remainingAmount;
-            if (isSharedOutput) {
-                targetAmount = Math.min(remainingAmount, perParallel);
+        public boolean storePartial(IOutputHatchTransaction transaction, Iterable<FluidParallelData> pendingOutputs) {
+            long totalPerParallel = perParallel;
+            if (transaction.needsTotalParallelData()) {
+                for (FluidParallelData other : pendingOutputs) {
+                    if (!transaction.isFiltered() || transaction.isFilteredTo(other.id)) {
+                        totalPerParallel += other.perParallel;
+                    }
+                }
             }
-            int amount = (int) Math.min(targetAmount, Integer.MAX_VALUE);
+            int amount = (int) Math.min(remainingAmount, Integer.MAX_VALUE);
             tmpStack.amount = amount;
-            transaction.storePartial(id, tmpStack);
+            transaction.storePartial(id, tmpStack, totalPerParallel, perParallel);
             long actuallyInsert = amount - tmpStack.amount;
             remainingAmount -= actuallyInsert;
             return actuallyInsert > 0;

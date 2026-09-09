@@ -39,6 +39,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
@@ -143,6 +144,12 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     @Override
     public ModuleTypes getModuleType() {
         return ModuleTypes.AssemblyMatrix;
+    }
+
+    @Override
+    public int getMaxRecipeDuration() {
+        return ((NACRecipeMapBackend) (this.getRecipeMap()
+            .getBackend())).getMaxDuration(getCasingTier());
     }
 
     @Override

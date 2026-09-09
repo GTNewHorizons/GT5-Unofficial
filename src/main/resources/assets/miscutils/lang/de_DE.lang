@@ -1887,3 +1887,8 @@ tile.blockDarkWorldPortal.name=Portalstein für die Dunkle Welt
 tile.blockDarkWorldGround.name=Grundstein der Dunklen Welt
 tile.blockDarkWorldGround2.name=Grundstein der Dunklen Welt
 tile.blockDarkWorldPortalFrame.name=Portalrahmen für die Dunkle Welt
+
+# Multiblocks
+gt.blockmachines.quantumforcetransformer.controller.tier.single.name=Quantenkrafttransformator
+gt.blockmachines.solartower.controller.tier.single.name=Solarturm
+gt.blockmachines.sparge.controller.single.name=Spargerturm-Controller

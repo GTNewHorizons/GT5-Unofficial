@@ -311,7 +311,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private String createTooltipForProgressBar() {
+    protected String createTooltipForProgressBar() {
         final byte machineTier = machine.mTier;
         String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
         return StatCollector.translateToLocalFormatted("GT5U.machines.nei_transfer.voltage.tooltip", tierName);

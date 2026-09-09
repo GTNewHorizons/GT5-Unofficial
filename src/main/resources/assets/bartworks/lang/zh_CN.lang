@@ -162,3 +162,17 @@ itemGroup.bw.MetaItems.0=BartWorks电路更新物品
 BW.infoData.BioVat.expectedProduction=预期产量: §a%s §r%%
 BW.infoData.BioVat.production=产量
 #This zh_CN.lang is translated by huajijam for bartworks (19/7/19)
+
+# Multiblocks
+gt.blockmachines.bw.biovat.name=细菌培养缸
+gt.blockmachines.bw.manualtrafo.name=可调变压器
+gt.blockmachines.bw.windmill.name=风车
+gt.blockmachines.circuitassemblyline.name=电路装配线
+gt.blockmachines.dehp.name=深地热泵
+gt.blockmachines.lesu.name=LESU
+gt.blockmachines.megablastfurnace.name=巨型工业高炉
+gt.blockmachines.megachemicalreactor.name=巨型化学反应釜
+gt.blockmachines.megadistillationtower.name=巨型蒸馏塔
+gt.blockmachines.megaoilcracker.name=巨型石油裂化机
+gt.blockmachines.megavacuumfreezer.name=巨型真空冷冻机
+gt.blockmachines.thtr.name=钍高温反应堆

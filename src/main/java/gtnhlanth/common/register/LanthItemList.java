@@ -163,6 +163,8 @@ public final class LanthItemList {
 
         for (MaskList mask : MaskList.values()) {
 
+            if (mask == MaskList.ERROR) continue;
+
             String english = mask.getEnglishName();
 
             String descSpectrum = mask.getSpectrum();

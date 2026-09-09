@@ -23,6 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
@@ -179,12 +180,12 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
     /// The fluid fill each cell draws under its container, tinted per fluid at render. One texture serves every
     /// [CellType].
-    private static final String CELL_FILL = "gregtech:materials/NONE/cell";
+    private static final String CELL_FILL = "materials/NONE/cell";
 
     /// The untinted container each [CellType] draws over its fill: the same two base textures
     /// [gregtech.api.enums.materials.CellShapes] gives the cell and plasma-cell shapes.
-    private static final String CELL_BASE = "gregtech:materials/cell_base";
-    private static final String CELL_PLASMA_BASE = "gregtech:materials/cell_plasma_base";
+    private static final String CELL_BASE = "materials/cell_base";
+    private static final String CELL_PLASMA_BASE = "materials/cell_plasma_base";
 
     /** Cell type specifies the cell capacity, appearance, and item name format. */
     private enum CellType {
@@ -245,7 +246,8 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         if (INSTANCE == null) INSTANCE = new MetaGeneratedItem98();
 
         for (CellType cellType : CellType.values()) {
-            INSTANCE.iconContainerMap.put(cellType, Textures.ItemIcons.custom(CELL_FILL, cellType.baseIcon));
+            INSTANCE.iconContainerMap
+                .put(cellType, Textures.ItemIcons.custom(Mods.GregTech.resourceDomain, CELL_FILL, cellType.baseIcon));
         }
     }
 

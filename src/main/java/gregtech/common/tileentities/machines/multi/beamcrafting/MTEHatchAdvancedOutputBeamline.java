@@ -21,6 +21,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchAdvancedOutputBeamlineGui;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
     // specifically for the Particle value in the input map, will save with id

@@ -44,8 +44,10 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import gregtech.GTLoggers;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -60,6 +62,8 @@ import gregtech.common.gui.modularui.util.ProxiedItemHandlerModifiable;
 import gregtech.common.inventory.AEInventory;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchInputBusCompressed extends MTEHatchInputBus
     implements IMEMonitor<IAEItemStack>, IRecipeProcessingAwareHatch, IDataCopyable {
 
@@ -133,6 +137,15 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
                 super.setStackInSlot(slot, stack);
             }
         };
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        // The same class serves the compressed and the quantum buses, which are named apart.
+        final String key = mName.startsWith("hatch.quantum") ? "gt.blockmachines.hatch.quantum-input-bus.name"
+            : "gt.blockmachines.hatch.comp-input-bus.name";
+        return StatCollector.translateToLocalFormatted(key, GTValues.VN[mTier]);
     }
 
     @Override

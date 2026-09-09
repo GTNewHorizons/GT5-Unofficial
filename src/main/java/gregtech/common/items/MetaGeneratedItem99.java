@@ -16,6 +16,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
@@ -50,9 +51,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     /// The fluid fill and the two untinted containers, the same textures
     /// [gregtech.api.enums.materials.CellShapes] gives the cell shapes. One fill serves every material here;
     /// a material with bespoke cell art draws it from its own `CellShapes` shape instead.
-    private static final String CELL_FILL = "gregtech:materials/NONE/cell";
-    private static final String CELL_BASE = "gregtech:materials/cell_base";
-    private static final String CELL_PLASMA_BASE = "gregtech:materials/cell_plasma_base";
+    private static final String CELL_FILL = "materials/NONE/cell";
+    private static final String CELL_BASE = "materials/cell_base";
+    private static final String CELL_PLASMA_BASE = "materials/cell_plasma_base";
 
     /**
      * Assignment of metadata IDs: 0 - 999: Molten cells 10_000 - 15_999: Cracked fluid cells (# IDs used is
@@ -63,8 +64,10 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     /// The tinted fluid fill drawn under an untinted container. Built as a field, not per lookup, because a
     /// [gregtech.client.iconContainers.items.GTCustomItemIconContainer] enters the texture stitch when it is
     /// constructed and nothing may be added after the stitch.
-    private final IIconContainer moltenCellIcon = Textures.ItemIcons.custom(CELL_FILL, CELL_PLASMA_BASE);
-    private final IIconContainer crackedCellIcon = Textures.ItemIcons.custom(CELL_FILL, CELL_BASE);
+    private final IIconContainer moltenCellIcon = Textures.ItemIcons
+        .custom(Mods.GregTech.resourceDomain, CELL_FILL, CELL_PLASMA_BASE);
+    private final IIconContainer crackedCellIcon = Textures.ItemIcons
+        .custom(Mods.GregTech.resourceDomain, CELL_FILL, CELL_BASE);
 
     public MetaGeneratedItem99() {
         super("metaitem.99", (short) (10_000 + NUM_CRACKED_CELL_TYPES * 1_000), (short) 0);

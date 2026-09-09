@@ -96,7 +96,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
                     'H',
                     lazy(
                         x -> HatchElementBuilder.<AntimatterGenerator>builder()
-                            .anyOf(HatchElement.ExoticDynamo)
+                            .anyOf(HatchElement.LaserSource)
                             .casingIndex(x.textureIndex(2))
                             .hint(2)
                             .buildAndChain(Loaders.gravityStabilizationCasing, 0)))
@@ -225,7 +225,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(MAIN_NAME, 17, 41, 0, errors)) return;
         if (mExoticDynamoHatches.isEmpty()) {
-            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.ExoticDynamo, 0, 1));
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.LaserSource, 0, 1));
         }
         checkHasInputHatch(errors);
     }

@@ -2313,7 +2313,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 48 * INGOTS),
                 MaterialUtils.anyFluid(Materials.CelestialTungsten, 48 * INGOTS),
                 MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 16 * INGOTS) },
-            ItemList.SuperconductivePlasmaEnergyConduit.get(4),
+            ItemList.CoherencePreservingPlasmaConduit.get(4),
             60 * SECONDS,
             (int) TierEU.RECIPE_UIV);
 

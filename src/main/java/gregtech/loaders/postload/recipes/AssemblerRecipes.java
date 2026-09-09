@@ -3111,7 +3111,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_UIV.get(1),
-                MaterialLibAPI.getStack(Materials.BlackPlutonium, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plate, 4),
                 GTOreDictUnificator.get("wireGt16NetherStar", 4))
             .itemOutputs(ItemRegistry.energyDistributor[11])
             .duration(5 * SECONDS)
@@ -3121,7 +3121,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_UMV.get(1),
-                MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plate, 4),
                 GTOreDictUnificator.get("wireGt16Quantium", 4))
             .itemOutputs(ItemRegistry.energyDistributor[12])
             .duration(5 * SECONDS)

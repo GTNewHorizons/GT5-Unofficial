@@ -103,10 +103,14 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         this.setCreativeTab(initCreativeTab());
         // Register the block last.
         GameRegistry.registerBlock(this, getItemBlockClass(), getUnlocalBlockName());
-        if (Utils.isClient()) {
+        if (Utils.isClient() && usesSidedTextures()) {
             // Handle Textures
             handleTextures();
         }
+    }
+
+    protected boolean usesSidedTextures() {
+        return true;
     }
 
     /**

@@ -1,5 +1,7 @@
 package gregtech.api.material;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
@@ -91,7 +93,10 @@ public final class GTMaterialIcons {
 
     /// Whether the item atlas ships a file for an icon identifier.
     public static boolean itemTextureExists(String path) {
-        return ResourceUtils.resourceExists(ResourceUtils.getCompleteItemTextureResourceLocation(path));
+        int separator = path.indexOf(':');
+        String domain = separator < 0 ? GregTech.resourceDomain : path.substring(0, separator);
+        String key = separator < 0 ? path : path.substring(separator + 1);
+        return ResourceUtils.resourceExists(ResourceUtils.getCompleteItemTextureResourceLocation(domain, key));
     }
 
     private static IIconContainer intern(Map<String, Map<Material, IIconContainer>> containers, String name,

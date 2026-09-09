@@ -1,15 +1,13 @@
 package gtPlusPlus.core.block.general.antigrief;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -17,6 +15,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Textures;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
@@ -26,7 +25,6 @@ public class BlockWitherProof extends Block {
     public BlockWitherProof() {
         super(Material.redstoneLight);
         this.setBlockName(StringUtils.sanitizeString("blockBlackGate"));
-        this.setBlockTextureName(GTPlusPlus.ID + ":" + "blockFrameGt");
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         this.setHardness(-1F);
         this.setResistance(5000.0F);
@@ -48,8 +46,8 @@ public class BlockWitherProof extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(final IIconRegister iIcon) {
-        this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + "blockFrameGt");
+    public IIcon getIcon(int side, int meta) {
+        return Textures.BlockIcons.CONTAINMENT_FRAME.getIcon();
     }
 
     @Override

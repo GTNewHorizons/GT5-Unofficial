@@ -1757,7 +1757,7 @@ public enum ItemList implements IItemContainer {
     Casing_Beryllium_Integrated_Reactor,
     Casing_Refined_Graphite,
 
-    SuperconductivePlasmaEnergyConduit,
+    CoherencePreservingPlasmaConduit,
     ElectromagneticallyIsolatedCasing,
     FineStructureConstantManipulator,
     ConflictInducementCasing,
@@ -2885,6 +2885,7 @@ public enum ItemList implements IItemContainer {
     Augment_MilkInfusion,
     Augment_HoloInventory,
     Augment_Terrasteel,
+    Augment_Soulbound,
 
     CompressedOutputBusLuV,
     CompressedOutputBusZPM,
@@ -3289,7 +3290,9 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_ConfettiQuestbook,
     Ice_Cream_PitOfDoomAndDespair,
     Ice_Cream_MasterOfDreams,
-
+    Ice_Cream_Explosive,
+    // Reserved for Ice creams, don't you dare (to 700)
+    Ice_Cream_Trophy
     // semicolon after the comment to reduce merge conflicts
     ;
 

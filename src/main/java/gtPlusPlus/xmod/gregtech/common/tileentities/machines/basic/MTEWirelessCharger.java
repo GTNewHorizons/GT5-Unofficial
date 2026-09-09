@@ -33,6 +33,8 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItemManager;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirelessCharger {
 
     private enum ChargeMode {
@@ -74,6 +76,13 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     public MTEWirelessCharger(final String name, final int tier, final String[] description,
         final ITexture[][][] textures, final int slotCount) {
         super(name, tier, slotCount, description, textures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.wificharger.name", GTUtility.getRomanNumeral(mTier));
     }
 
     @Override

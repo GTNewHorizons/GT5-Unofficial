@@ -1,7 +1,6 @@
 package gregtech.client.iconContainers.items;
 
 import static gregtech.GTLoggers.GT_ICON_LOGGER;
-import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,17 +22,13 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
     protected String mIconName, mOverlayName;
     protected ResourceLocation iconResource, overlayResource;
 
-    GTCustomItemIconContainer(@NotNull String aIconName, @NotNull String aOverlayName) {
-        mIconName = qualify(aIconName);
-        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
-        mOverlayName = qualify(aOverlayName);
-        overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
+    GTCustomItemIconContainer(@NotNull String domain, @NotNull String aIconName, @NotNull String aOverlayName) {
+        mIconName = ResourceUtils.getIconRegisterName(domain, aIconName);
+        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, aIconName);
+        mOverlayName = ResourceUtils.getIconRegisterName(domain, aOverlayName);
+        overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, aOverlayName);
         GregTechAPI.sGTItemIconload.add(this);
         logRegisterIcons();
-    }
-
-    private static String qualify(@NotNull String aIconName) {
-        return aIconName.contains(":") ? aIconName : GregTech.resourceDomain + ":" + aIconName;
     }
 
     protected void logRegisterIcons() {
@@ -44,14 +39,15 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
     // 2026-13-05: Currently unused
     private static Map<List<String>, IIconContainer> INSTANCES = new HashMap<>();
 
-    public static @NotNull IIconContainer create(@NotNull String aIconName) {
-        return create(aIconName, aIconName + Textures.OverlaySuffix);
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String aIconName) {
+        return create(domain, aIconName, aIconName + Textures.OverlaySuffix);
     }
 
-    public static @NotNull IIconContainer create(@NotNull String aIconName, @NotNull String aOverlayName) {
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String aIconName,
+        @NotNull String aOverlayName) {
         return INSTANCES.computeIfAbsent(
-            List.of(aIconName, aOverlayName),
-            key -> new GTCustomItemIconContainer(aIconName, aOverlayName));
+            List.of(domain, aIconName, aOverlayName),
+            key -> new GTCustomItemIconContainer(domain, aIconName, aOverlayName));
     }
 
     public static void cleanup() {

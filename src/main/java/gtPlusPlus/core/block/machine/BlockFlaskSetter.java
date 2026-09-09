@@ -127,6 +127,11 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
     }
 
     @Override
+    protected boolean usesSidedTextures() {
+        return false;
+    }
+
+    @Override
     public final IIcon getIcon(int side, int meta) {
         IIcon sideIcon = Textures.BlockIcons.VOLUMETRIC_FLASK_CONFIGURATOR_SIDE.getIcon();
         IIcon topIcon = Textures.BlockIcons.VOLUMETRIC_FLASK_CONFIGURATOR_TOP.getIcon();

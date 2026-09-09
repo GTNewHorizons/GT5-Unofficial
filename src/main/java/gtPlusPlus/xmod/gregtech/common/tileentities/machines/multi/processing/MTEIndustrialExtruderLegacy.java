@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.common.tileentities.machines.multi.MTEIndustrialExtruder.ExtruderHatchElement.ExtrusionBus;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -91,7 +94,7 @@ public class MTEIndustrialExtruderLegacy extends GTPPMultiBlockBase<MTEIndustria
                 .addElement(
                     'C',
                     buildHatchAdder(MTEIndustrialExtruderLegacy.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .atLeast(InputBus.or(ExtrusionBus), OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
@@ -119,8 +122,9 @@ public class MTEIndustrialExtruderLegacy extends GTPPMultiBlockBase<MTEIndustria
         checkHatch(errors);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 

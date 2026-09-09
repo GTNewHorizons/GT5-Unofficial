@@ -28,7 +28,7 @@ public class AntimatterRenderBlock extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        blockIcon = iconRegister.registerIcon("gregtech:iconsets/TRANSPARENT");
+        // Rendered by TESR; no block-atlas sprite required.
     }
 
     @Override
@@ -80,5 +80,10 @@ public class AntimatterRenderBlock extends Block {
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World worldIn, int x, int y, int z) {
         return null;
+    }
+
+    @Override
+    public int getRenderType() {
+        return -1;
     }
 }

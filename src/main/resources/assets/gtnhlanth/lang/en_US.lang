@@ -189,3 +189,11 @@ tooltip.gtnhlanth.particle.rest_mass=Rest Mass: %f MeV
 tooltip.gtnhlanth.particle.charge=Charge: %s e
 tooltip.gtnhlanth.photomask.desc_spectrum=Suitable for the %s segment of the electromagnetic spectrum and lower
 tooltip.gtnhlanth.photomask.max_uses=Max Uses: %d
+
+# Multiblocks
+gt.blockmachines.digester.name=Digester
+gt.blockmachines.dissolution_tank.name=Dissolution Tank
+gt.blockmachines.linear_accelerator.name=Linear Accelerator
+gt.blockmachines.source_chamber.name=Source Chamber
+gt.blockmachines.synchrotron.name=Synchrotron
+gt.blockmachines.target_chamber.name=Target Chamber
