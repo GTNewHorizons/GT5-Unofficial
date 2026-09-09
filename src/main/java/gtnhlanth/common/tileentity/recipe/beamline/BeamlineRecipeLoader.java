@@ -155,7 +155,7 @@ public class BeamlineRecipeLoader {
                     .focus(99)
                     .build())
             .duration(20)
-            .eut(TierEU.RECIPE_UV)
+            .eut(TierEU.RECIPE_ZPM)
             .addTo(sourceChamberRecipes);
 
         /*
