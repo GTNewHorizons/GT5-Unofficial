@@ -16,18 +16,9 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import gregtech.api.casing.Casings;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.util.GTStreamUtil;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -45,11 +36,16 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -65,6 +61,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialDehydrator extends MTEExtendedPowerMultiBlockBase<MTEIndustrialDehydrator>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -204,7 +201,8 @@ public class MTEIndustrialDehydrator extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing, int colorIndex, boolean active, boolean redstoneLevel) {
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel) {
         return Textures.BlockIcons.createTextureWithCasing(
             this,
             side,
@@ -213,8 +211,7 @@ public class MTEIndustrialDehydrator extends MTEExtendedPowerMultiBlockBase<MTEI
             TexturesGtBlock.oMCAIndustrialDehydrator,
             TexturesGtBlock.oMCAIndustrialDehydratorGlow,
             TexturesGtBlock.oMCAIndustrialDehydratorActive,
-            TexturesGtBlock.oMCAIndustrialDehydratorActiveGlow
-            );
+            TexturesGtBlock.oMCAIndustrialDehydratorActiveGlow);
     }
 
     @Override
@@ -278,7 +275,8 @@ public class MTEIndustrialDehydrator extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         setMachineMode(nextMachineMode());
         GTUtility
             .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
