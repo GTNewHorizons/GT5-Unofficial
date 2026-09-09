@@ -60,7 +60,6 @@ public final class OreDictRegistrationHandler {
             "itemKnife",
             "itemHammer",
             "itemChisel",
-            "itemRubber",
             "itemEssence",
             "itemIlluminatedPanel",
             "itemSkull",
@@ -416,28 +415,20 @@ public final class OreDictRegistrationHandler {
     }
 
     private boolean handleSpecialOreRegistration(String oreName, ItemStack stack, String oreOriginPath) {
-        if (IGNORED_ITEMS.contains(oreName)) {
-            GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
-            if (oreName.equals("itemRubber")) {
-                GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Rubber, stack);
-            }
-            return true;
-        }
-
-        if (IGNORED_NAMES.contains(oreName)) {
+        if (IGNORED_ITEMS.contains(oreName) || IGNORED_NAMES.contains(oreName)) {
             GTLoggers.GT_ORE_DICT_LOGGER.info("{} is getting ignored via hardcode.", oreOriginPath);
             return true;
         }
 
         if (INVALID_NAMES.contains(oreName)) {
-            GTLoggers.GT_ORE_DICT_LOGGER.info("{} is wrongly registered and therefor getting ignored.", oreOriginPath);
+            GTLoggers.GT_ORE_DICT_LOGGER.info("{} is wrongly registered and therefore getting ignored.", oreOriginPath);
             return true;
         }
 
         if (oreName.contains(" ")) {
             GTLoggers.GT_ORE_DICT_LOGGER
                 .info("{} is getting re-registered because the OreDict Name containing invalid spaces.", oreOriginPath);
-            GTOreDictUnificator.registerOre(oreName.replace(" ", ""), GTUtility.copyAmount(1, stack));
+            GTOreDictUnificator.registerOre(oreName.replace(" ", ""), stack);
             stack.setStackDisplayName("Invalid OreDictionary Tag");
             return true;
         }
@@ -447,7 +438,7 @@ public final class OreDictRegistrationHandler {
             || oreName.contains(".")
             || oreName.contains("$")) {
             GTLoggers.GT_ORE_DICT_LOGGER
-                .info("{} is using a private Prefix and is therefor getting ignored properly.", oreOriginPath);
+                .info("{} is using a private Prefix and is therefore getting ignored properly.", oreOriginPath);
             return true;
         }
 
@@ -456,6 +447,7 @@ public final class OreDictRegistrationHandler {
             case "cobblestone" -> GTOreDictUnificator.registerOre("stoneCobble", stack);
             case "shardOrder" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedOrder, stack);
             case "shardEntropy" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, stack);
+            case "itemRubber" -> GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Rubber, stack);
             case "compressedAluminum" -> GTOreDictUnificator
                 .registerOre(OrePrefixes.compressed, Materials.Aluminium, stack);
             default -> {
