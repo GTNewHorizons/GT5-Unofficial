@@ -412,6 +412,7 @@ public class GTClient extends GTProxy {
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
             mPreference = new GTClientPreference();
             final boolean renderIndicatorsOnHatch = GTMod.proxy.mRenderIndicatorsOnHatch;
+            final boolean renderMHDCSMFancy = GTMod.proxy.mRenderMHDCSMFancy;
             GTPreLoad.loadClientConfig();
             GTRendererBlock.clearInventoryDisplayListCache();
             if (renderIndicatorsOnHatch != GTMod.proxy.mRenderIndicatorsOnHatch) {
@@ -422,6 +423,9 @@ public class GTClient extends GTProxy {
                 }
             }
             if (e.isWorldRunning) {
+                if (renderMHDCSMFancy != GTMod.proxy.mRenderMHDCSMFancy) {
+                    Minecraft.getMinecraft().renderGlobal.loadRenderers();
+                }
                 GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
                 GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
             }

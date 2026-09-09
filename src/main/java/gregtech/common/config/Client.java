@@ -291,8 +291,9 @@ public class Client {
         @Config.DefaultBoolean(true)
         public boolean renderUniversiumFancy;
 
-        @Config.Comment("Enables or disables MHDCSM block rendering. Accessibility option.")
+        @Config.Comment("Enables or disables fancy MHDCSM block rendering. Accessibility option.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Fancy MHDCSM Block Rendering")
         public boolean renderMHDCSMFancy;
     }
 

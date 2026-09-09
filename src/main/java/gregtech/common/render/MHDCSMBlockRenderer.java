@@ -11,10 +11,10 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.common.blocks.BlockMetal;
-import gregtech.common.config.Client;
 
 public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
 
@@ -37,7 +37,7 @@ public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
 
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
         RenderBlocks renderer) {
-        if (world.getBlockMetadata(x, y, z) != mhdcsm_meta || !Client.render.renderMHDCSMFancy) {
+        if (world.getBlockMetadata(x, y, z) != mhdcsm_meta || !GTMod.proxy.mRenderMHDCSMFancy) {
             return FMLRenderAccessLibrary.renderWorldBlock(renderer, world, x, y, z, block, GTRendererCasing.mRenderID);
         }
         if (!texturesLoaded()) {
@@ -115,7 +115,7 @@ public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-        if (metadata != mhdcsm_meta || !Client.render.renderMHDCSMFancy) {
+        if (metadata != mhdcsm_meta || !GTMod.proxy.mRenderMHDCSMFancy) {
             FMLRenderAccessLibrary.renderInventoryBlock(renderer, block, metadata, GTRendererCasing.mRenderID);
             return;
         }
