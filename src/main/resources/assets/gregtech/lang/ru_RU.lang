@@ -293,6 +293,215 @@ gt.blockmachines.hatch.pattern_provider.name=Провайдер шаблонов
 gt.blockmachines.rockbreaker.name=Криогенный отвердитель магмы R-%s
 gt.blockmachines.locker.desc=Хранит и перезаряжает броню\nНажмите отвёрткой чтобы сменить тип
 gt.blockmachines.hatch.multi.input.name=Счетверенный входной шлюз (%s)
+gt.blockmachines.antimatterhatch.name=Шлюз антиматерии
+
+gt.blockmachines.basicgenerator.diesel.tier.04.name=Генератор внутреннего сгорания с турбонаддувом
+gt.blockmachines.basicgenerator.diesel.tier.05.name=Совершенный генератор внутреннего сгорания
+gt.blockmachines.basicgenerator.rtg.tier.01.name=Радиоизотопный термоэлектрический генератор
+gt.blockmachines.basicgenerator.rtg.tier.01.tooltip=Требуется Пеллета РИТЭГ\nТопливо измеряется в minecraft дней (проверьте с помощью сканера)\nРИТЭГ изменяет выходной вольтаж в зависимости от топлива\nГенерирует энергию с эффективностью %s%% за тик\nВыходной вольтаж: %s EU/t\nДобавлено: §2Alkalus §7- §c[GT++]
+
+gt.blockmachines.boiler.bronze.name=Маленький угольный бойлер
+gt.blockmachines.boiler.bronze.tooltip=Ранний способ получения паровой энергии\nПроизводит 120Л пара в секунду\nПроизводит 20 загрязнения в секунду
+gt.blockmachines.boiler.lava.name=Укреплённый лавовый бойлер
+gt.blockmachines.boiler.lava.tooltip=Бойлер, работающий на лаве\nПроизводит 600Л пара в секунду\nПроизводит 20 загрязнения в секунду\nРасходует 3,0Л лавы каждые 20 тиков при полном нагреве
+gt.blockmachines.boiler.solar.name=Солнечный паровой бойлер
+gt.blockmachines.boiler.steel.name=Большой угольный бойлер
+gt.blockmachines.boiler.steel.tooltip=Быстрее, чем бронзовый бойлер\nПроизводит 300Л пара в секунду\nПроизводит 30 загрязнения в секунду
+gt.blockmachines.boiler.steel.solar.name=Продвинутый солнечный бойлер
+
+gt.blockmachines.bronzemachine.alloysmelter.name=Паровая сплавоплавильная печь
+gt.blockmachines.bronzemachine.alloysmelter.tooltip=Комбинированная плавильня\nТип механизма: §eСплавоплавильная печь§r
+gt.blockmachines.bronzemachine.compressor.name=Паровой компрессор
+gt.blockmachines.bronzemachine.compressor.tooltip=Сжатие предметов\nТип механизма: §eКомпрессор§r
+gt.blockmachines.bronzemachine.extractor.name=Паровой экстрактор
+gt.blockmachines.bronzemachine.extractor.tooltip=Извлечение вашей первой резины\nТип механизма: §eЭкстрактор§r
+gt.blockmachines.bronzemachine.furnace.name=Паровая печь
+gt.blockmachines.bronzemachine.furnace.tooltip=Выплавка вещей с помощью сжатого пара\nТип механизма: §eПечь§r
+gt.blockmachines.bronzemachine.hammer.name=Паровой кузнечный молот
+gt.blockmachines.bronzemachine.hammer.tooltip=Кузнечный молот\nТип механизма: §eКузнечный молот§r
+gt.blockmachines.bronzemachine.macerator.name=Паровой дробитель
+gt.blockmachines.bronzemachine.macerator.tooltip=Дробит ваши руды\nТип механизма: §eДробитель§r
+
+gt.blockmachines.bw.radiohatchhv.name=Радио шлюз
+gt.blockmachines.bw.radiohatchhv.tooltip=Камера радиоактивных предметов для мультиблоков\nИспользуйте отвёртку чтобы установить уровень сдерживания\nДобавлено §abartimaeusnek - §2BartWorks§7
+
+gt.blockmachines.compressedfluidhatch.name=Шлюз для жидкого воздуха
+gt.blockmachines.creative_debug_scanner.name=Творческий сканер отладки
+gt.blockmachines.debug.tt.certain.name=Решитель неопределенности
+gt.blockmachines.debugstructurewriter.name=Отладочный инструмент записи структур
+
+gt.blockmachines.electricboiler.1.tier.single.name=Продвинутый бойлер [LV]
+gt.blockmachines.electricboiler.1.tier.single.tooltip=Производит 750Л пара в секунду\nПроизводит 35 загрязнения/сек\nПотребляет топливо только при температуре ниже 100°C\nТопливо с временем горения больше 500 более эффективно.\nНе взрывается при отсутствии воды\nДобавлено: §2Alkalus §7- §c[GT++]
+gt.blockmachines.electricboiler.2.tier.single.name=Продвинутый бойлер [MV]
+gt.blockmachines.electricboiler.2.tier.single.tooltip=Производит 1500Л пара в секунду\nПроизводит 50 загрязнения/сек\nПотребляет топливо только при температуре ниже 100°C\nТопливо с временем горения больше 500 более эффективно.\nНе взрывается при отсутствии воды\nДобавлено: §2Alkalus §7- §c[GT++]
+gt.blockmachines.electricboiler.3.tier.single.name=Продвинутый бойлер [HV]
+gt.blockmachines.electricboiler.3.tier.single.tooltip=Производит 2250Л пара в секунду\nПроизводит 65 загрязнения/сек\nПотребляет топливо только при температуре ниже 100°C\nТопливо с временем горения больше 500 более эффективно.\nНе взрывается при отсутствии воды\nДобавлено: §2Alkalus §7- §c[GT++]
+
+gt.blockmachines.electrodedetectorhatch.name=Люк детектора электродов
+gt.blockmachines.electrodedetectorhatch.tooltip=Может быть установлен в электрическую дуговую печь.\nВыходной сигнал редстоуна согласно урону электрода используется в механизме.\nПКМ чтобы открыть интерфейс и настройки.
+
+gt.blockmachines.electrodehatch.name=Хранилище электродов
+gt.blockmachines.electrodehatch.tooltip=Содержит электрод
+
+gt.blockmachines.fix.name.remover.name=Очиститель названий
+gt.blockmachines.fix.name.remover.tooltip=Удаляет различные NBT-теги, а также модули. §nПервый слот§r — предмет, с которого нужно удалить NBT-теги. §nВторой слот§r — одна из следующих схем: §lСхема 1:§r попытаться исправить повреждённые руды, удалив тег отображаемого имени; §lСхема 3:§r удалить тег стекирования Railcraft; §lСхема 4:§r удалить тег ремонта наковальней; §lСхема 5:§r удалить краску с кожаной брони; §lСхема 6:§r удалить цвет спрея с предметов GT; §lСхема 7:§r удалить улучшение выхлопной системы с механизмов GT; §lСхема 24:§r удалить всё, включая модули. Будьте осторожны: восстановить удалённые модули не получится. §lБез схемы:§r удалить всё, кроме модулей
+
+gt.blockmachines.focus_input_bus.name=Входной люк фокусировки
+gt.blockmachines.focus_input_bus.tooltip=Input Bus for Foci
+
+gt.blockmachines.ggfab.machine.linked_input_bus.name=Связанный входной люк
+gt.blockmachines.giantoutputhatch.name=Гигантский выходной шлюз
+gt.blockmachines.gt.icecreammachine.name=Ice Cream Machine
+
+gt.blockmachines.hatch.advancedbeamlineoutput.name=Выходной люк фильтруемого пучка
+gt.blockmachines.hatch.air.intake.tier.00.name=Воздухозаборный шлюз
+gt.blockmachines.hatch.air.intake.tier.01.name=Экстремальный воздухозаборный шлюз
+gt.blockmachines.hatch.air.intake.tier.01.tooltip=Для ввода жидкости в мультиблоки\nЁмкость: 256,000Л\nТир шлюза: §bZPM§r\nНЕ ЗАГРАЖДАЙТЕ ВХОД!\nВсасывает воздух из окружающей среды\nСоздает 40,000Л воздуха каждые 20 тиков\n§7Добавлено: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.air.intake.tier.02.name=Атмосферный воздухозаборный шлюз
+gt.blockmachines.hatch.beamlineinput.name=Входной шлюз установки для литографии
+gt.blockmachines.hatch.beamlineoutput.name=Выходной шлюз установки для литографии
+gt.blockmachines.hatch.blackholeutility.name=Сервисный люк чёрной дыры
+gt.blockmachines.hatch.blackholeutility.tooltip=Опциональный люк для Сдерживающего поле псевдостабильной чёрной дыры.\nСтатический режим: Выдаёт постоянный сигнал красного камня, когда чёрная дыра открыта\nИмпульсный режим: Выдаёт импульс каждую секунду, пока чёрная дыра открыта\nИмпульс идеально синхронизирован с внутренним таймингом механизма\nНажмите ПКМ, чтобы открыть GUI и изменить настройки.
+gt.blockmachines.hatch.catalystbulk.name=Объёмное хранилище катализаторов
+gt.blockmachines.hatch.catalystbulk.tooltip=Выделенное хранилище катализатора\nСохраняет своё содержимое при сборе
+gt.blockmachines.hatch.catalysts.name=Хранилище катализаторов
+gt.blockmachines.hatch.catalysts.tooltip=Выделенное хранилище катализатора\nДобавлено: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.cokeoven.name=Люк коксовой печи
+gt.blockmachines.hatch.cokeoven.tooltip=Люк для автоматизации коксовой печи\n§m------------------------------\n§aРежимы§7: Ввод, Вывод, Вывод (жидкости)\nЦиклический режим с помощью отвертки
+gt.blockmachines.hatch.crafting_input.me.name=Входной буфер создания (МЭ)
+gt.blockmachines.hatch.crafting_input.me.item_only.name=Входной люк создания (МЭ)
+gt.blockmachines.hatch.crafting_input.proxy.name=Входной прокси создания
+gt.blockmachines.hatch.datain.wireless.tier.12.name=Клиентский шлюз облачных вычислений
+gt.blockmachines.hatch.datain.wireless.tier.12.tooltip=Беспроводной ввод данных в мультиблок
+gt.blockmachines.hatch.datainass.wireless.tier.12.name=Беспроводной входной разъём для сборочной линии
+gt.blockmachines.hatch.dataout.wireless.tier.12.name=Серверный шлюз облачных вычислений
+gt.blockmachines.hatch.dataout.wireless.tier.12.tooltip=Беспроводной вывод данных из мультиблока
+gt.blockmachines.hatch.dataoutass.wireless.tier.12.name=Беспроводной разъем для банка данных
+gt.blockmachines.hatch.dataoutass.wireless.tier.12.tooltip=§9Tec§1Tech§9: Elemental Matter\nБеспроводной квантовый вывод данных из мультиблока\nВысокоскоростное подключение к интернету
+gt.blockmachines.hatch.degasifiercontrol.name=Люк управления дегазатором
+gt.blockmachines.hatch.degasifiercontrol.tooltip=Может быть установлен в установку остаточной дегазации и деконтаминации воды.\nВыводит уровень сигнал красного камня на основе текущего управляющего сигнала.
+gt.blockmachines.hatch.dronedownlink.name=Модуля связи с дроном
+gt.blockmachines.hatch.dronedownlink.tooltip=Встроенный мощный навигационный маяк!
+gt.blockmachines.hatch.heatsensor.name=Тепловой датчик
+gt.blockmachines.hatch.heatsensor.tooltip=Считывает температуру механизма.\nПодаёт сигнал красного камня, если температура выше установленного порога.\nЩёлкните правой кнопкой мыши, чтобы открыть интерфейс и изменить настройки.
+gt.blockmachines.hatch.input.debug.name=Отладочный входной шлюз
+gt.blockmachines.hatch.input.me.name=Продвинутый входной шлюз снабжения (МЭ)
+gt.blockmachines.hatch.input.me.basic.name=Входной шлюз снабжения (МЭ)
+gt.blockmachines.hatch.input_battery.tier.00.name=Люк зарядки (MV)
+gt.blockmachines.hatch.input_battery.tier.00.tooltip=Люк для зарядки предметов в мультиблоке\nВместимость: 4 слота\nДобавлено: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.input_battery.tier.01.name=Люк зарядки (EV)
+gt.blockmachines.hatch.input_battery.tier.01.tooltip=Люк для зарядки предметов в мультиблоке\nВместимость: 16 слотов\nДобавлено: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.input_bus.debug.name=Отладочный входной люк
+gt.blockmachines.hatch.input_bus.elementalorbholder.name=Хранилище сфер данных
+gt.blockmachines.hatch.input_bus.elementalorbholder.tooltip=Содержит сферы данных для элементарного дубликатора\nМожно вставить/извлечь слот схемы\nНеобходимо использовать схему для выбора слота (1-16)\nДобавлено: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.input_bus.me.name=Продвинутый входной люк снабжения (МЭ)
+gt.blockmachines.hatch.input_bus.me.basic.name=Входной люк снабжения (МЭ)
+gt.blockmachines.hatch.input_bus.tier.steam.name=Входной люк (Пар)
+gt.blockmachines.hatch.lenshousing.name=Хранилище линз
+gt.blockmachines.hatch.lensindicator.name=Индикатор линз
+gt.blockmachines.hatch.lensindicator.tooltip=Может быть установлен в очистной установке с UV‑обработкой.\nВыдаёт сигнал редстоуна, когда запрашивается замена линзы.
+gt.blockmachines.hatch.mag_hatch.name=Отсек для электромагнитов
+gt.blockmachines.hatch.mag_hatch.tooltip=Содержит электромагнит для промышленного электромагнитного сепаратора
+gt.blockmachines.hatch.maintenance.name=Люк техобслуживания
+gt.blockmachines.hatch.maintenance.tooltip=Для техобслуживания мультиблока\nИспользуйте инструменты для устранения проблем.
+gt.blockmachines.hatch.maintenance.auto.name=Полу-автоматический люк техобслуживания
+gt.blockmachines.hatch.maintenance.auto.tooltip=Для автоматического обслуживания мультиблоков\nРасходует 4 Изоленты, 2 Капсулы смазки,\n4 Стальных винта, и 2 HV Электросхемы\nЗа каждый авторемонт.
+gt.blockmachines.hatch.milling.name=Хранилище измельчающих шариков
+gt.blockmachines.hatch.milling.tooltip=Спец хранилище для измельчающих шариков\nДобавлено: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.multi.input.tier.11.name=Счетверенный огромный входной шлюз
+gt.blockmachines.hatch.multi.input.tier.11.tooltip=Для ввода жидкости в мультиблоки\nЁмкость: 500,000,000 Л\nМожет вместить 4 типа жидкости.
+gt.blockmachines.hatch.nanite.name=Хранилище нанитов
+gt.blockmachines.hatch.nanite.tooltip=Содержит наниты для использования в мультиблоках\nСохраняет своё содержимое при сборе
+gt.blockmachines.hatch.nanite.singularity.name=Сингулярное хранилище нанитов
+gt.blockmachines.hatch.nanite.singularity.tooltip=Содержит наниты для использования в мультиблоках\nСохраняет своё содержимое при сборе
+gt.blockmachines.hatch.output.me.name=Выходной шлюз (МЭ)
+gt.blockmachines.hatch.output.me.tooltip=Выход жидкости из мультиблока\nЁмкость: 0 Л\nЩёлкните ПКМ с отвёрткой, чтобы ограничить вывод\nМожно ограничить вывод предметами и/или паром/без пара/одной определённой жидкостью\nОграниченные выходные шлюзы имеют приоритет при выводе жидкостей мультиблоком.
+gt.blockmachines.hatch.output_battery.tier.00.name=Люк разрядки (MV)
+gt.blockmachines.hatch.output_battery.tier.00.tooltip=Люк для разрядки предметов в мультиблоке\nВместимость: 4 слота\nДобавлено: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.output_battery.tier.01.name=Люк разрядки (EV)
+gt.blockmachines.hatch.output_battery.tier.01.tooltip=Люк для разрядки предметов в мультиблоке\nВместимость: 16 слотов\nДобавлено: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.output_bus.me.name=Выходной люк (МЭ)
+gt.blockmachines.hatch.output_bus.me.tooltip=Для вывода предметов из мультиблока\nВместимость: 25 стаков\nЛКМ флешкой, чтобы сохранить настройку фильтра\nПКМ флешкой, чтобы загрузить настройку фильтра
+gt.blockmachines.hatch.output_bus.tier.steam.name=Выходной люк (Пар)
+gt.blockmachines.hatch.phsensor.name=Датчик pH
+gt.blockmachines.hatch.phsensor.tooltip=Может быть установлен в установке pH нейтрализации воды.\nВыводит сигнал красного камня в соответствии с текущим значением pH.\nПКМ чтобы открыть GUI и изменить настройки.
+gt.blockmachines.hatch.splitter.redstone.name=Входной переключатель редстоуна
+gt.blockmachines.hatch.toxicresiduesensor.name=Сенсор токсичных отходов
+gt.blockmachines.hatch.toxicresiduesensor.tooltip=Считывает токсичные отходы большого нейтрализационного генератора\nЩелкните ПКМ, чтобы открыть GUI и изменить настройки.
+gt.blockmachines.hatch.turbine.name=Узел ротора
+gt.blockmachines.hatch.turbine.tooltip=Держатель ротора турбины для XL турбин\nПКМ паяльником, чтобы сбросить связь с контроллером\nПКМ ключом, чтобы снять турбину\nПКМ отвёрткой для технической информации\nShift+ПКМ ключом чтобы повернуть\nShift+ПКМ отвёрткой чтобы отключить анимацию\nДобавлено: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.turbine.input.tier.00.name=Корпусный люк турбины
+gt.blockmachines.hatch.void.tier.00.name=Пустотный шлюз
+gt.blockmachines.hatch.void_bus.tier.00.name=Пустотный люк
+gt.blockmachines.hatch.water.intake.tier.00.name=Шлюз водохранилища
+gt.blockmachines.hatch.wireless.transmitter.energized.tier.12.name=Наэлектризованный беспроводной энерговывод UMV
+
+gt.blockmachines.hpmachine.alloysmelter.name=Сплавоплавильная печь высокого давления
+gt.blockmachines.hpmachine.alloysmelter.tooltip=Комбинированная плавильня\nТип механизма: §eСплавоплавильная печь§r
+gt.blockmachines.hpmachine.compressor.name=Паровой компрессор высокого давления
+gt.blockmachines.hpmachine.compressor.tooltip=Сжатие предметов\nТип механизма: §eКомпрессор§r
+gt.blockmachines.hpmachine.extractor.name=Паровой экстрактор высокого давления
+gt.blockmachines.hpmachine.extractor.tooltip=Извлечение вашей первой резины\nТип механизма: §eЭкстрактор§r
+gt.blockmachines.hpmachine.furnace.name=Паровая печь высокого давления
+gt.blockmachines.hpmachine.furnace.tooltip=Выплавка вещей с помощью сжатого пара\nТип механизма: §eПечь§r
+gt.blockmachines.hpmachine.hammer.name=Паровой кузнечный молот высокого давления
+gt.blockmachines.hpmachine.hammer.tooltip=Кузнечный молот\nТип механизма: §eКузнечный молот§r
+gt.blockmachines.hpmachine.macerator.name=Паровой дробитель высокого давления
+gt.blockmachines.hpmachine.macerator.tooltip=Дробит ваши руды\nТип механизма: §eДробитель§r
+
+gt.blockmachines.hull.bronze.name=Бронзовый корпус
+gt.blockmachines.hull.bronze_bricked.name=Кирпичный бронзовый корпус
+gt.blockmachines.hull.steel.name=Стальной корпус
+gt.blockmachines.hull.steel_bricked.name=Чугунный кирпичный корпус
+
+gt.blockmachines.humongousinputhatch.name=Огромный входной шлюз
+
+gt.blockmachines.infinite.chest.tier.01.name=Бесконечный предметный сундук
+gt.blockmachines.infinite.chest.tier.01.tooltip=Этот сундук хранит 101,250 предметов\nДобавлено: §2Alkalus §7- §c[GT++]
+
+gt.blockmachines.long.distance.pipeline.fluid.name=Трубопровод для жидкости на дальнее расстояние
+gt.blockmachines.long.distance.pipeline.item.name=Трубопровод для предметов на дальнее расстояние
+
+gt.blockmachines.machine.tffthatch.name=TFFT Мульти I/O шлюз
+gt.blockmachines.machine.tffthatch.tooltip=Универсальный доступ для TFFT
+
+gt.blockmachines.modificationtable.name=Стол модификации
+gt.blockmachines.modificationtable.tooltip=§bModifies Modular Mechanisms\nCan be used to alter Mechanical Armor\nInsert armor, then frame, then energy core, then augments\nRemove all augments before removing frame or core
+
+gt.blockmachines.multimachine.brickedblastfurnace.name=Кирпичная доменная печь
+
+gt.blockmachines.neutron_sensor.name=Сенсор нейтронов
+gt.blockmachines.neutron_sensor.tooltip=Может быть установлен в Нейтронный активатор.\nВыводит сигнал красного камня в соответствии с кинетич. энергией нейтронов.\nПКМ чтобы открыть GUI и настройки.
+
+gt.blockmachines.pollutioncreator.01.tier.single.name=Устройство для борьбы со смогом
+gt.blockmachines.pollutioncreator.01.tier.single.tooltip=Загрязнение небес.\nПолезный механизм отладки для создания загрязнения.\nДобавлено: §2Alkalus §7- §c[GT++]
+
+gt.blockmachines.pollutiondetector.01.tier.single.name=Устройство обнаружения загрязнения
+gt.blockmachines.pollutiondetector.01.tier.single.tooltip=Сообщает вам, живете ли вы уже в Гвалиоре.\nПКМ для проверки уровня загрязнения.\nНастройте с помощью отвёртки количество выходного редстоун сигнала.\nНе потребляет энергию.\nДобавлено: §2Alkalus §7- §c[GT++]
+
+gt.blockmachines.quantum.tank.debug.name=Отладочный жидкостный резервуар
+gt.blockmachines.quantum.tank.debug.tooltip=Хранит 2,147,483,640 Л жидкости\nСохраняет своё содержимое при сборе
+
+gt.blockmachines.redstone.lamp.name=Лампа управляемая красным камнем
+gt.blockmachines.redstone.lamp.tooltip=Лампа управляемая красным камнем\nДобавлено: §2Alkalus §7- §c[GT++]
+
+gt.blockmachines.solarreflector.simple.single.name=Солнечный отражатель
+gt.blockmachines.solarreflector.simple.single.tooltip=Часть движения "Чистая зеленая энергия"\nУкажите мне на Солнечную башню\nДобавлено: §2Alkalus §7- §c[GT++]
+
+gt.blockmachines.tesseract.generator.name=Тессеракт генератор
+gt.blockmachines.tesseract.generator.tooltip=Generates a Tesseract for the attached Inventory\nConnect with pipes to insert items\nConsumes 512EU/t for same dimension transfers\nConsumes 2048EU/t for cross dimensional transfers\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.tesseract.terminal.name=Терминал тессеракта
+gt.blockmachines.tesseract.terminal.tooltip=Accesses Tesseract Generators remotely\nConnect with pipes to extract items or fluids\nOutputs from the back face\nConsumes 512EU/t for same dimension transfers\nConsumes 2048EU/t for cross dimensional transfers\nAdded by: §2Alkalus §7- §c[GT++]
+
+gt.blockmachines.vacuum.hatch.input.name=Входной вакуумный конвейер
+gt.blockmachines.vacuum.hatch.output.name=Выходной вакуумный конвейер
+
+gt.blockmachines.voidminer1.name=Пустотный шахтёр I
+gt.blockmachines.voidminer2.name=Пустотный шахтёр II
+gt.blockmachines.voidminer3.name=Пустотный шахтёр III
+
+gt.blockmachines.yottafluidtankhatch.name=YOTшлюз
+gt.blockmachines.yottafluidtankhatch.tooltip=Специальный порт ввода/вывода для AE2FC.\nYOTТанк напрямую подключен к системе хранения жидкости AE.\nИспользуйте отвёртку чтобы установить приоритет хранения\nИспользуйте паяльник для установки режима чтения/записи\nИспользуйте кусачки, чтобы включить/отключить липкий режим
 gt.blockmachines.hull.name=%s Корпус механизма
 gt.blockmachines.advancedmachine.dehydrator.tier.01.name=Химический дегидратор I
 gt.blockmachines.advancedmachine.dehydrator.tier.02.name=Химический дегидратор II
@@ -1789,6 +1998,12 @@ gt.mbtt.structure.any_casing_or_frame_box_at_conveyor_start=Любой блок 
 gt.mbtt.structure.any_casing_at_conveyor_end=Любой блок корпуса в конце конвейерной ленты
 gt.mbtt.structure.any_bottom_edge_concrete=Любой бетон по нижнему краю
 gt.mbtt.structure.any_magic_casing=Любой магический корпус
+gt.mbtt.structure.any_steel_machine_casing=Любой стальной корпус механизма
+gt.mbtt.structure.any_top_pump_casing=Любой насосный корпус сверху
+gt.mbtt.structure.top_of_reactor_triso=Сверху реактора (шарики TRISO)
+gt.mbtt.structure.bottom_of_reactor_burned_triso=Снизу реактора (отработанные шарики TRISO)
+gt.mbtt.structure.htgr_input_hatches=Любой насосный корпус сверху (гелий), низ высокой башни (хладагент), верх низкой башни (дистиллированная вода)
+gt.mbtt.structure.htgr_output_hatches=Верх высокой башни (горячий хладагент), низ низкой башни (пар)
 gt.mbtt.machine_type.restorer=Восстановитель
 gt.mbtt.machine_type.fusion_reactor=Термоядерный реактор
 gt.mbtt.machine_type.antimatter_forge=Кузница антиматерии, SSASS
@@ -1800,6 +2015,8 @@ gt.mbtt.machine_type.fluid_tank=Жидкостный резервуар
 gt.mbtt.machine_type.component_assembler_coal=Высокопроизводительный сборщик компонентов, CoAL
 gt.mbtt.machine_type.coolant_tower=Градирня
 gt.mbtt.machine_type.essentia_smeltery_les=Плавильня эссенции, LES
+gt.mbtt.machine_type.breeder_reactor_htgr=Реактор-размножитель, HTGR
+gt.mbtt.machine_type.arc_furnace_iaf=Дуговая печь, IAF
 
 gt.mbtt.machine_type.spacetime_manipulator=Пространственно-временной манипулятор, EOH
 GT5U.MBTT.HatchInfo=Любой %s
@@ -2854,7 +3071,7 @@ GT5U.gui.text.structure_error.missing_dispenser=Нет раздатчика
 GT5U.gui.text.structure_error.too_many_doors=Слишком много дверей (максимум 1)
 GT5U.gui.text.structure_error.need_exactly_one_beamline_output=Нужен ровно 1 выходной шлюз луча
 GT5U.gui.text.structure_error.need_exactly_one_beamline_input=Нужен ровно 1 входной шлюз луча
-GT5U.gui.text.structure_error.need_exactly_one_focus_input=Нужен ровно 1 входной шлюз фокусировки
+GT5U.gui.text.structure_error.need_exactly_one_focus_input=Нужен ровно 1 входной шлюз маски
 GT5U.gui.text.structure_error.missing_essentia_output_hatch=Нет выходного шлюза эссенции
 GT5U.gui.text.structure_error.missing_neutron_accelerator=Нет ускорителя нейтронов
 GT5U.gui.text.structure_error.missing_data_hatch=Нет шлюза для ввода данных
