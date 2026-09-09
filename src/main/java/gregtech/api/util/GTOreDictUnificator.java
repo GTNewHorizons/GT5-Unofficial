@@ -476,7 +476,7 @@ public class GTOreDictUnificator {
             if (GTUtility.areStacksEqual(itemStack, aStack, true)) return false;
 
         isRegisteringOre++;
-        OreDictionary.registerOre(tName, GTUtility.copyAmount(1, aStack));
+        OreDictionary.registerOre(tName, aStack);
         isRegisteringOre--;
         return true;
     }
