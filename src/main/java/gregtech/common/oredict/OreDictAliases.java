@@ -7,25 +7,14 @@ import java.util.function.Consumer;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipeRegistrator;
-import gregtech.api.util.GTUtility;
 
 /**
- * Centralizes OreDictionary alias handling.
- * <p>
- * Most aliases are declared up front and stored as actions keyed by the source OreDict name.
- * When an ore is registered, {@link #registerAliases} looks up and applies all direct aliases for
- * that name. If no direct alias exists, it falls back to {@code registerSpecialAliases} for cases
- * that need dynamic logic or side effects instead of a simple source-to-target mapping.
+ * Centralizes OreDictionary alias registration.
  * <p>
  * {@code aliasToOreDict} registers an ore under another OreDict name.<br>
  * {@code aliasToPrefix} registers an ore under another prefix.<br>
@@ -43,13 +32,13 @@ final class OreDictAliases {
         aliasToOreDict(OrePrefixes.gem, Materials.Lapis, Dyes.dyeBlue.name());
         aliasToOreDict(OrePrefixes.gem, Materials.Sodalite, Dyes.dyeBlue.name());
         aliasToOreDict(OrePrefixes.gem, Materials.Lazurite, Dyes.dyeCyan.name());
+        aliasToOreDict(OrePrefixes.gem, Materials.Chocolate, Dyes.dyeBrown.name());
         aliasToOreDict(OrePrefixes.gem, Materials.InfusedAir, "shardAir");
         aliasToOreDict(OrePrefixes.gem, Materials.InfusedWater, "shardWater");
         aliasToOreDict(OrePrefixes.gem, Materials.InfusedFire, "shardFire");
         aliasToOreDict(OrePrefixes.gem, Materials.InfusedEarth, "shardEarth");
         aliasToOreDict(OrePrefixes.gem, Materials.InfusedOrder, "shardOrder");
         aliasToOreDict(OrePrefixes.gem, Materials.InfusedEntropy, "shardEntropy");
-        aliasToOreDict(OrePrefixes.gem, Materials.Chocolate, Dyes.dyeBrown.name());
 
         aliasToPrefix(OrePrefixes.gem, Materials.CertusQuartz, OrePrefixes.item);
         aliasToPrefix(OrePrefixes.gem, Materials.CertusQuartz, OrePrefixes.crystal);
@@ -76,18 +65,19 @@ final class OreDictAliases {
         aliasToPrefix(OrePrefixes.plate, Materials.Polyethylene, OrePrefixes.sheet);
         aliasToPrefix(OrePrefixes.plate, Materials.Rubber, OrePrefixes.sheet);
         aliasToPrefix(OrePrefixes.plate, Materials.Silicon, OrePrefixes.item);
+        aliasToPrefix(OrePrefixes.plate, Materials.Wood, OrePrefixes.plank);
 
-        aliasToOreDict(OrePrefixes.dust, Materials.Salt, "itemSalt");
-        aliasToOreDict(OrePrefixes.dust, Materials.Wood, "pulpWood");
-        aliasToOreDict(OrePrefixes.dust, Materials.Wheat, "foodFlour");
         aliasToOreDict(OrePrefixes.dust, Materials.Lapis, Dyes.dyeBlue.name());
         aliasToOreDict(OrePrefixes.dust, Materials.Sodalite, Dyes.dyeBlue.name());
         aliasToOreDict(OrePrefixes.dust, Materials.Lazurite, Dyes.dyeCyan.name());
-        aliasToOreDict(OrePrefixes.dust, Materials.Cocoa, Dyes.dyeBrown.name());
-        aliasToOreDict(OrePrefixes.dust, Materials.Cocoa, "foodCocoapowder");
-        aliasToOreDict(OrePrefixes.dust, Materials.Coffee, Dyes.dyeBrown.name());
         aliasToOreDict(OrePrefixes.dust, Materials.BrownLimonite, Dyes.dyeBrown.name());
         aliasToOreDict(OrePrefixes.dust, Materials.YellowLimonite, Dyes.dyeYellow.name());
+        aliasToOreDict(OrePrefixes.dust, Materials.Coffee, Dyes.dyeBrown.name());
+        aliasToOreDict(OrePrefixes.dust, Materials.Cocoa, Dyes.dyeBrown.name());
+        aliasToOreDict(OrePrefixes.dust, Materials.Cocoa, "foodCocoapowder");
+        aliasToOreDict(OrePrefixes.dust, Materials.Salt, "itemSalt");
+        aliasToOreDict(OrePrefixes.dust, Materials.Wood, "pulpWood");
+        aliasToOreDict(OrePrefixes.dust, Materials.Wheat, "foodFlour");
 
         aliasToOreDict(OrePrefixes.ingot, Materials.Rubber, "itemRubber");
 
@@ -103,72 +93,12 @@ final class OreDictAliases {
 
     private OreDictAliases() {}
 
-    static void registerAliases(String oreName, ItemStack stack, OrePrefixes prefix, Materials material,
-        String materialName) {
-
+    static void registerAliases(String oreName, ItemStack stack) {
         List<Consumer<ItemStack>> actions = ALIASES.get(oreName);
         if (actions != null) {
             for (Consumer<ItemStack> action : actions) {
                 action.accept(stack);
             }
-            return;
-        }
-
-        registerSpecialAliases(stack, prefix, material, materialName);
-    }
-
-    private static void registerSpecialAliases(ItemStack stack, OrePrefixes prefix, Materials material,
-        String materialName) {
-
-        switch (prefix.getName()) {
-            case "dye" -> {
-                if (GTUtility.isStringValid(materialName)) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.dye, stack);
-                }
-            }
-            case "lens" -> {
-                if (material.contains(SubTag.TRANSPARENT) && material.mColor != Dyes._NULL) {
-                    String color = material.mColor.name();
-                    if (color.startsWith("dye")) color = color.substring(3);
-                    GTOreDictUnificator.registerOre("craftingLens" + color, stack);
-                }
-            }
-            case "plate" -> {
-                if (material == Materials.Wood) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                    GTOreDictUnificator.registerOre(OrePrefixes.plank, material, stack);
-                }
-            }
-            case "cell" -> {
-                if (material == Materials.Empty) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                }
-            }
-            case "gearGt" -> GTOreDictUnificator.registerOre(OrePrefixes.gear, material, stack);
-            case "stick" -> {
-                if (!GTRecipeRegistrator.sRodMaterialList.contains(material)) {
-                    GTRecipeRegistrator.sRodMaterialList.add(material);
-                } else if (material == Materials.Wood) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                }
-            }
-            case "plank" -> {
-                if (materialName.equals("Wood")) {
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M));
-                }
-            }
-            case "slab" -> {
-                if (materialName.equals("Wood")) {
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M / 2));
-                }
-            }
-            case "crafting" -> {
-                switch (materialName) {
-                    case "ToolSolderingMetal" -> GregTechAPI.registerSolderingMetal(stack);
-                    case "IndustrialDiamond" -> GTOreDictUnificator.addToBlacklist(stack);
-                }
-            }
-            default -> {}
         }
     }
 

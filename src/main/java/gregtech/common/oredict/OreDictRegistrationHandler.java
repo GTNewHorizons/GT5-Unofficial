@@ -23,8 +23,11 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTProxy;
 
@@ -259,7 +262,8 @@ public final class OreDictRegistrationHandler {
 
         Materials material = prefix.isMaterialBased() ? Materials.get(materialName) : Materials._NULL;
 
-        OreDictAliases.registerAliases(oreName, stack, prefix, material, materialName);
+        OreDictAliases.registerAliases(oreName, stack);
+        handleSpecialRegistration(stack, prefix, material, materialName);
 
         if (!prefix.isIgnored(material)) {
             prefix.add(GTUtility.copyAmount(1, stack));
@@ -287,6 +291,57 @@ public final class OreDictRegistrationHandler {
             registrations.add(registration);
         } else {
             registration.registerRecipes();
+        }
+    }
+
+    private static void handleSpecialRegistration(ItemStack stack, OrePrefixes prefix, Materials material,
+        String materialName) {
+
+        switch (prefix.getName()) {
+            case "dye" -> GTOreDictUnificator.registerOre(OrePrefixes.dye, stack);
+            case "gearGt" -> GTOreDictUnificator.registerOre(OrePrefixes.gear, material, stack);
+            case "lens" -> {
+                if (material.contains(SubTag.TRANSPARENT) && material.mColor != Dyes._NULL) {
+                    String color = material.mColor.name();
+                    if (color.startsWith("dye")) color = color.substring(3);
+                    GTOreDictUnificator.registerOre("craftingLens" + color, stack);
+                }
+            }
+
+            case "plate" -> {
+                if (material == Materials.Wood) {
+                    GTOreDictUnificator.addToBlacklist(stack);
+                }
+            }
+            case "plank" -> {
+                if (material == Materials.Wood) {
+                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M));
+                }
+            }
+            case "slab" -> {
+                if (material == Materials.Wood) {
+                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M / 2));
+                }
+            }
+
+            case "cell" -> {
+                if (material == Materials.Empty) {
+                    GTOreDictUnificator.addToBlacklist(stack);
+                }
+            }
+            case "stick" -> {
+                if (!GTRecipeRegistrator.sRodMaterialList.contains(material)) {
+                    GTRecipeRegistrator.sRodMaterialList.add(material);
+                } else if (material == Materials.Wood) {
+                    GTOreDictUnificator.addToBlacklist(stack);
+                }
+            }
+            case "crafting" -> {
+                switch (materialName) {
+                    case "ToolSolderingMetal" -> GregTechAPI.registerSolderingMetal(stack);
+                    case "IndustrialDiamond" -> GTOreDictUnificator.addToBlacklist(stack);
+                }
+            }
         }
     }
 
