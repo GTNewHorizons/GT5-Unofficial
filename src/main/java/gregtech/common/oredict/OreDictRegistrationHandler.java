@@ -29,15 +29,11 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
+import gregtech.common.config.OPStuff;
 
 public final class OreDictRegistrationHandler {
 
-    private final GTProxy proxy;
-
-    public OreDictRegistrationHandler(GTProxy proxy) {
-        this.proxy = proxy;
-    }
+    private OreDictRegistrationHandler() {}
 
     private static final HashSet<String> IGNORED_NAMES = new HashSet<>(
         Arrays.asList(
@@ -124,11 +120,11 @@ public final class OreDictRegistrationHandler {
             "planks",
             "woodRod"));
 
-    public final HashSet<ItemStack> registeredOres = new HashSet<>(32768);
-    private final HashSet<OreDictRegistration> registrations = new HashSet<>();
-    private boolean bufferRegistrationProcessing = true;
+    private static final HashSet<ItemStack> registeredOres = new HashSet<>(32768);
+    private static final HashSet<OreDictRegistration> registrations = new HashSet<>();
+    private static boolean bufferRegistrationProcessing = true;
 
-    public void registerOre(OreDictionary.OreRegisterEvent event) {
+    public static void registerOre(OreDictionary.OreRegisterEvent event) {
         ModContainer container = Loader.instance()
             .activeModContainer();
         String modId = container == null ? "UNKNOWN" : container.getModId();
@@ -160,7 +156,7 @@ public final class OreDictRegistrationHandler {
             stack.stackSize = 1;
 
             // Skip Tinker Construct ore registrations except for blocks
-            if (proxy.mIgnoreTcon && originalModId.equals(TinkerConstruct.ID)
+            if (OPStuff.ignoreTinkerConstruct && originalModId.equals(TinkerConstruct.ID)
                 && !(stack.getItem() instanceof ItemBlock)) {
                 return;
             }
@@ -186,7 +182,7 @@ public final class OreDictRegistrationHandler {
         }
     }
 
-    private boolean handleSpecialOreRegistration(String oreName, ItemStack stack, String oreOriginPath) {
+    private static boolean handleSpecialOreRegistration(String oreName, ItemStack stack, String oreOriginPath) {
         if (IGNORED_NAMES.contains(oreName)) {
             GTLoggers.GT_ORE_DICT_LOGGER.info("{} is getting ignored via hardcode.", oreOriginPath);
             return true;
@@ -230,7 +226,7 @@ public final class OreDictRegistrationHandler {
         return true;
     }
 
-    private void processOreRegistration(String oreName, ItemStack stack, String modId, String oreOriginPath) {
+    private static void processOreRegistration(String oreName, ItemStack stack, String modId, String oreOriginPath) {
         OrePrefixes prefix = OrePrefixes.getOrePrefix(oreName);
 
         if (prefix == null) {
@@ -402,12 +398,10 @@ public final class OreDictRegistrationHandler {
     }
 
     @SuppressWarnings("deprecation")
-    public void processBufferedRegistrations() {
+    public static void processBufferedRegistrations() {
         bufferRegistrationProcessing = false;
 
-        ProgressManager.ProgressBar progressBar = proxy.isClientSide()
-            ? ProgressManager.push("Register materials", registrations.size())
-            : null;
+        ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", registrations.size());
 
         int progress = 5;
         int eventsUntilProgressLog = registrations.size() / 20 - 1;
@@ -419,21 +413,15 @@ public final class OreDictRegistrationHandler {
                 progress += 5;
             }
 
-            if (progressBar != null) {
-                progressBar.step(registration.material.getLocalizedName());
-            }
-
+            progressBar.step(registration.material.getLocalizedName());
             registration.registerRecipes();
         }
 
-        if (progressBar != null) {
-            ProgressManager.pop(progressBar);
-        }
-
+        ProgressManager.pop(progressBar);
         registrations.clear();
     }
 
-    public boolean isRegisteredOre(ItemStack stack) {
+    public static boolean isRegisteredOre(ItemStack stack) {
         return registeredOres.contains(stack);
     }
 }
