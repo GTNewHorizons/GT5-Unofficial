@@ -444,6 +444,14 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
+    // empty body to prevent any explosion
+    @Override
+    public final void explodeMultiblock() {}
+
+    // empty body to prevent any explosion
+    @Override
+    public void doExplosion(long aExplosionPower) {}
+
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, WIDTH_OFFSET, HEIGHT_OFFSET, DEPTH_OFFSET);
