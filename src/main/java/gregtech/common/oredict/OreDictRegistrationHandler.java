@@ -125,12 +125,8 @@ public final class OreDictRegistrationHandler {
 
     private static final HashSet<String> IGNORED_NAMES = new HashSet<>(
         Arrays.asList(
-            "grubBee",
             "chainLink",
             "candyCane",
-            "bRedString",
-            "bVial",
-            "bFlask",
             "anorthositeSmooth",
             "migmatiteSmooth",
             "slateSmooth",
@@ -141,7 +137,6 @@ public final class OreDictRegistrationHandler {
             "honeyDrop",
             "lumpClay",
             "honeyEqualssugar",
-            "flourEqualswheat",
             "bluestoneInsulated",
             "blockWaterstone",
             "blockSand",
@@ -156,24 +151,13 @@ public final class OreDictRegistrationHandler {
             "mobHead",
             "mobEgg",
             "enderFlower",
-            "enderChest",
             "clayHardened",
             "dayGemMaterial",
             "nightGemMaterial",
-            "snowLayer",
-            "bPlaceholder",
-            "hardenedClay",
-            "eternalLifeEssence",
             "sandstone",
             "wheatRice",
-            "transdimBlock",
             "bambooBasket",
-            "lexicaBotania",
-            "livingwoodTwig",
-            "redstoneCrystal",
-            "pestleAndMortar",
             "glowstone",
-            "whiteStone",
             "stoneSlab",
             "clayBowl",
             "clayPlate",
@@ -184,9 +168,6 @@ public final class OreDictRegistrationHandler {
             "ceramicCup",
             "batteryBox",
             "transmutationStone",
-            "torchRedstoneActive",
-            "coal",
-            "charcoal",
             "cloth",
             "cobblestoneSlab",
             "stoneBrickSlab",
@@ -223,7 +204,6 @@ public final class OreDictRegistrationHandler {
             "cableRedNet",
             "stoneBowl",
             "crafterWood",
-            "taintedSoil",
             "brickXyEngineering",
             "breederUranium",
             "wireMill",
@@ -242,14 +222,9 @@ public final class OreDictRegistrationHandler {
             "aquaRegia",
             "leatherSeal",
             "leatherSlimeSeal",
-            "hambone",
-            "slimeball",
             "clay",
             "enrichedUranium",
             "camoPaste",
-            "antiBlock",
-            "burntQuartz",
-            "salmonRaw",
             "blockHopper",
             "blockEnderObsidian",
             "blockIcestone",
@@ -286,7 +261,6 @@ public final class OreDictRegistrationHandler {
     private static final HashSet<String> INVALID_NAMES = new HashSet<>(
         Arrays.asList(
             "diamondShard",
-            "redstoneRoot",
             "obsidianStick",
             "bloodstoneOre",
             "universalCable",
@@ -369,25 +343,10 @@ public final class OreDictRegistrationHandler {
             "wood",
             "stick",
             "sticks",
-            "naquadah",
             "obsidianRod",
             "stoneRod",
-            "thaumiumRod",
-            "steelRod",
-            "netherrackRod",
             "woodRod",
-            "ironRod",
-            "cactusRod",
-            "flintRod",
-            "copperRod",
-            "cobaltRod",
-            "alumiteRod",
-            "blueslimeRod",
-            "arditeRod",
-            "manyullynRod",
             "bronzeRod",
-            "boneRod",
-            "slimeRod",
             "redalloyBundled",
             "bluestoneBundled",
             "infusedteslatiteInsulated",
@@ -470,13 +429,16 @@ public final class OreDictRegistrationHandler {
             return true;
         }
 
-        if (oreName.equals("stone")) {
-            GTOreDictUnificator.registerOre("stoneSmooth", stack);
+        if (INVALID_NAMES.contains(oreName)) {
+            GTLoggers.GT_ORE_DICT_LOGGER.info("{} is wrongly registered and therefor getting ignored.", oreOriginPath);
             return true;
         }
 
-        if (oreName.equals("cobblestone")) {
-            GTOreDictUnificator.registerOre("stoneCobble", stack);
+        if (oreName.contains(" ")) {
+            GTLoggers.GT_ORE_DICT_LOGGER
+                .info("{} is getting re-registered because the OreDict Name containing invalid spaces.", oreOriginPath);
+            GTOreDictUnificator.registerOre(oreName.replace(" ", ""), GTUtility.copyAmount(1, stack));
+            stack.setStackDisplayName("Invalid OreDictionary Tag");
             return true;
         }
 
@@ -489,76 +451,19 @@ public final class OreDictRegistrationHandler {
             return true;
         }
 
-        if (oreName.equals("copperWire")) {
-            GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, stack);
-            return false;
-        }
-
-        if (oreName.equals("oreHeeEndrium")) {
-            GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Endium, stack);
-            return false;
-        }
-
-        if (oreName.equals("sheetPlastic")) {
-            GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Polyethylene, stack);
-            return false;
-        }
-
-        if (oreName.startsWith("shard")) {
-            switch (oreName) {
-                case "shardAir" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedAir, stack);
-                case "shardWater" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedWater, stack);
-                case "shardFire" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedFire, stack);
-                case "shardEarth" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEarth, stack);
-                case "shardOrder" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedOrder, stack);
-                case "shardEntropy" -> GTOreDictUnificator
-                    .registerOre(OrePrefixes.gem, Materials.InfusedEntropy, stack);
-                default -> {
-                    return false;
-                }
+        switch (oreName) {
+            case "stone" -> GTOreDictUnificator.registerOre("stoneSmooth", stack);
+            case "cobblestone" -> GTOreDictUnificator.registerOre("stoneCobble", stack);
+            case "shardOrder" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedOrder, stack);
+            case "shardEntropy" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, stack);
+            case "compressedAluminum" -> GTOreDictUnificator
+                .registerOre(OrePrefixes.compressed, Materials.Aluminium, stack);
+            default -> {
+                return false;
             }
-            return true;
         }
 
-        if (oreName.equals("fieryIngot")) {
-            GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.FierySteel, stack);
-            return true;
-        }
-
-        if (oreName.equals("ironwood")) {
-            GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.IronWood, stack);
-            return true;
-        }
-
-        if (oreName.equals("steeleaf")) {
-            GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Steeleaf, stack);
-            return true;
-        }
-
-        if (oreName.equals("knightmetal")) {
-            GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Knightmetal, stack);
-            return true;
-        }
-
-        if (oreName.equals("compressedAluminum")) {
-            GTOreDictUnificator.registerOre(OrePrefixes.compressed, Materials.Aluminium, stack);
-            return true;
-        }
-
-        if (oreName.contains(" ")) {
-            GTLoggers.GT_ORE_DICT_LOGGER
-                .info("{} is getting re-registered because the OreDict Name containing invalid spaces.", oreOriginPath);
-            GTOreDictUnificator.registerOre(oreName.replace(" ", ""), GTUtility.copyAmount(1, stack));
-            stack.setStackDisplayName("Invalid OreDictionary Tag");
-            return true;
-        }
-
-        if (INVALID_NAMES.contains(oreName)) {
-            GTLoggers.GT_ORE_DICT_LOGGER.info("{} is wrongly registered and therefor getting ignored.", oreOriginPath);
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     private void processOreRegistration(String oreName, ItemStack stack, String modId, String oreOriginPath) {
