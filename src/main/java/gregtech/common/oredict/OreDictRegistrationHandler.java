@@ -257,16 +257,6 @@ public final class OreDictRegistrationHandler {
             prefix.getName()
                 .length());
 
-        if (prefix != prefix.mPrefixInto) {
-            String newName = prefix.mPrefixInto.getName() + materialName;
-            if (!GTOreDictUnificator.isRegisteringOres()) {
-                GTLoggers.GT_ORE_DICT_LOGGER
-                    .info("{} uses a deprecated Prefix, and is getting re-registered as {}", oreOriginPath, newName);
-            }
-            GTOreDictUnificator.registerOre(newName, stack);
-            return;
-        }
-
         if (!materialName.isEmpty()) {
             char firstChar = materialName.charAt(0);
             boolean validFirstChar = Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar)
