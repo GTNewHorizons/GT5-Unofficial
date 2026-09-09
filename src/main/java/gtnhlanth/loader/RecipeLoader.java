@@ -405,21 +405,6 @@ public class RecipeLoader {
             'H',
             ItemList.Hull_LuV.get(1));
 
-        // Focus Input Bus
-        GameRegistry.addShapedRecipe(
-            LanthItemList.BEAMLINE_FOCUS_INPUT_BUS,
-            "MCM",
-            "McM",
-            "RCR",
-            'M',
-            WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 1),
-            'C',
-            ItemList.Conveyor_Module_HV.get(1),
-            'R',
-            ItemList.Robot_Arm_HV.get(1),
-            'c',
-            new ItemStack(Blocks.chest, 1, 32767));
-
         // Target Receptacle, same thing as Focus Manipulator basically
         GTValues.RA.stdBuilder()
             .fluidInputs(
