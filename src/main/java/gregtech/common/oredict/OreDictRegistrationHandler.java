@@ -297,6 +297,10 @@ public final class OreDictRegistrationHandler {
     private static void handleSpecialRegistration(ItemStack stack, OrePrefixes prefix, Materials material,
         String materialName) {
 
+        if (prefix.isMaterialBased() && material == Materials._NULL) {
+            return;
+        }
+
         switch (prefix.getName()) {
             case "dye" -> GTOreDictUnificator.registerOre(OrePrefixes.dye, stack);
             case "gearGt" -> GTOreDictUnificator.registerOre(OrePrefixes.gear, material, stack);
