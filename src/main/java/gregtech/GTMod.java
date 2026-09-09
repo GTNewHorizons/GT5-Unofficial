@@ -104,6 +104,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
+import gregtech.common.oredict.OreDictRegistrationHandler;
 import gregtech.common.oredict.OreDictUnificationOverrides;
 import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
@@ -768,7 +769,7 @@ public class GTMod {
             }
         }
         for (ItemStack tOutput : tStacks) {
-            if (!proxy.isRegisteredOre(tOutput)) {
+            if (!OreDictRegistrationHandler.isRegisteredOre(tOutput)) {
                 GTOreDictUnificator.setStack(tOutput);
             } else {
                 logMultilineError(GT_FML_LOGGER, generateGTErr01Message(tOutput));

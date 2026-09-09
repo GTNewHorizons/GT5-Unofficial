@@ -188,7 +188,6 @@ public class GTProxy implements IFuelHandler {
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
     public boolean mChangeWoodenVanillaTools = true;
-    public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
     public boolean mChangeHarvestLevels = false;
     public boolean mGTBees = true;
@@ -371,8 +370,6 @@ public class GTProxy implements IFuelHandler {
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
     public SyncedKeybind CTRL_KEYBIND;
 
-    private final OreDictRegistrationHandler oreDictRegistrationHandler = new OreDictRegistrationHandler(this);
-
     static {
         oreDictBurnTimes.put("dustTinyWood", 11);
         oreDictBurnTimes.put("dustTinySodium", 44);
@@ -467,7 +464,6 @@ public class GTProxy implements IFuelHandler {
             GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
         }
         GregTechAPI.sPreloadStarted = true;
-        this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
         this.replicatorExponent = OPStuff.replicatorExponent;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
@@ -1179,16 +1175,8 @@ public class GTProxy implements IFuelHandler {
     }
 
     @SubscribeEvent
-    public void registerOre(OreDictionary.OreRegisterEvent aEvent) {
-        oreDictRegistrationHandler.registerOre(aEvent);
-    }
-
-    public void activateOreDictHandler() {
-        oreDictRegistrationHandler.processBufferedRegistrations();
-    }
-
-    public boolean isRegisteredOre(ItemStack stack) {
-        return oreDictRegistrationHandler.isRegisteredOre(stack);
+    public void registerOre(OreDictionary.OreRegisterEvent event) {
+        OreDictRegistrationHandler.registerOre(event);
     }
 
     @SubscribeEvent
