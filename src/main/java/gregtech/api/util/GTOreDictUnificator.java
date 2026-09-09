@@ -154,14 +154,13 @@ public class GTOreDictUnificator {
 
     public static ItemStack get(Object aName, ItemStack aReplacement, long aAmount, boolean aMentionPossibleTypos,
         boolean aNoInvalidAmounts) {
+
         if (aNoInvalidAmounts && aAmount < 1) return null;
-        final ItemStack stackFromName = sName2StackMap.get(aName.toString());
-        if (stackFromName != null) return GTUtility.copyAmount(aAmount, stackFromName);
-        if (aMentionPossibleTypos) {
-            GT_ORE_DICT_LOGGER.error("Unknown Key for Unification, Typo? {}", aName);
-        }
+
         final ItemStack stackFirstOre = getFirstOre(aName, aAmount);
         if (stackFirstOre != null) return GTUtility.copyAmount(aAmount, stackFirstOre);
+
+        if (aMentionPossibleTypos) GT_ORE_DICT_LOGGER.error("Unknown Key for Unification, Typo? {}", aName);
         return GTUtility.copyAmount(aAmount, aReplacement);
     }
 
