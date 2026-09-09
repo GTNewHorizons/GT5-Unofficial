@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -66,8 +67,8 @@ public class MTEHatchCapacitor extends MTEHatch {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        TM_H_ACTIVE = Textures.BlockIcons.custom("iconsets/TM_TESLA_CAPS_ACTIVE");
-        TM_H = Textures.BlockIcons.custom("iconsets/TM_TESLA_CAPS");
+        TM_H_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_CAPS_ACTIVE");
+        TM_H = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_CAPS");
     }
 
     @Override

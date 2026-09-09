@@ -1,5 +1,6 @@
 package gregtech.api;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
@@ -39,7 +40,6 @@ import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.GTCreativeTab;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -248,11 +248,10 @@ public class GregTechAPI {
      *         Null-Pointer into it.
      */
     public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
-        if (!GregTechAPI.sPreloadFinished) GTLog.err.println(
-            "GregTechAPI ERROR: " + aOreStack.getItem()
-                + "."
-                + aOreStack.getItemDamage()
-                + " - OreDict Unification Entries are not registered now, please call it in the postload phase.");
+        if (!GregTechAPI.sPreloadFinished) GT_FML_LOGGER.error(
+            "GregTechAPI ERROR: {}.{} - OreDict Unification Entries are not registered now, please call it in the postload phase.",
+            aOreStack.getItem(),
+            aOreStack.getItemDamage());
         return GTOreDictUnificator.get(true, aOreStack);
     }
 
@@ -347,8 +346,8 @@ public class GregTechAPI {
         try {
             return new BaseMetaTileEntity();
         } catch (Exception e) {
-            GTLog.err.println("GTMod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error("GTMod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
+            GT_FML_LOGGER.error(e);
             throw new RuntimeException(e);
         }
     }

@@ -329,6 +329,23 @@ public class Client {
         @Config.Comment({ "The color preset of the waila progress bar", "Set to Custom to specify your own color" })
         @Config.DefaultEnum("Green")
         public TTRenderGTProgressBar.ProgressBarColor ProgressBarColor = TTRenderGTProgressBar.ProgressBarColor.Green;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Facing")
+        public boolean showFacing;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Idle")
+        public boolean showIdle;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Working Disable")
+        public boolean showWorkingDisable;
+
+        @Config.Comment("if true, shows the live EU/t throughput of a cable in its Waila tooltip.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Cable Throughput")
+        public boolean showCableThroughput;
     }
 
     @Config.LangKey("GT5U.gui.config.client.nei")
@@ -410,6 +427,11 @@ public class Client {
 
     @Config.LangKey("GT5U.gui.config.client.tooltip")
     public static class Tooltip {
+
+        @Config.Comment("Enabled show energy capacity of machines")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Energy Capacity")
+        public boolean showEnergyCapacity;
 
         @Config.Comment("Enabled show Formula")
         @Config.DefaultBoolean(true)

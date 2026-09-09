@@ -226,6 +226,7 @@ public class BioRecipes {
         // Shapeless Recipe
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.WoodBrick.get(2),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new ItemStack[] { GregtechItemList.WoodPellet.get(1), GregtechItemList.WoodPellet.get(1),
                 GregtechItemList.WoodPellet.get(1), GregtechItemList.WoodPellet.get(1),
                 GregtechItemList.WoodPellet.get(1), GregtechItemList.WoodPellet.get(1),

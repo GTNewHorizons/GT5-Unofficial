@@ -1,5 +1,6 @@
 package gregtech.common;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugOrevein;
 import static gregtech.api.enums.GTValues.oreveinPlacerOres;
 import static gregtech.api.enums.GTValues.oreveinPlacerOresMultiplier;
@@ -26,7 +27,6 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
 import gregtech.common.worldgen.IWorldgenLayer;
@@ -78,7 +78,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
     private ShortShortPair validateHeights(short min, short max) {
         if (max < (min + 9)) {
-            GTLog.out.println("Oremix " + this.mWorldGenName + " has invalid Min/Max heights!");
+            GT_FML_LOGGER.debug("Oremix {} has invalid Min/Max heights!", this.mWorldGenName);
             max = (short) (min + 9);
         }
         return ShortShortImmutablePair.of(min, max);
@@ -272,14 +272,14 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
     private int validateWorldgen(World world, String biome) {
         if (mWorldGenName.equals("NoOresInVein")) {
-            if (debugOrevein) GTLog.out.println(" NoOresInVein");
+            if (debugOrevein) GT_FML_LOGGER.debug(" NoOresInVein");
             // Return a special empty orevein
             return NO_OVERLAP_AIR_BLOCK;
         }
         String dimName = DimensionDef.getDimensionName(world);
         if (!mAllowedDimensions.contains(dimName)) {
             // The following code can be used for debugging, but it spams in logs
-            // if (debugOrevein) { GTLog.out.println( "Wrong dimension" ); }
+            // if (debugOrevein) { GT_FML_LOGGER.debug( "Wrong dimension" ); }
             return WRONG_DIMENSION;
         }
 
@@ -348,20 +348,15 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         int limitEastX, int limitNorthZ, int limitSouthZ) {
 
         if (debugOrevein && !dryRun) {
-            GTLog.out.print(
-                "Trying Orevein:" + this.mWorldGenName
-                    + " Dimension="
-                    + world.provider.getDimensionName()
-                    + " mX="
-                    + chunkX / 16
-                    + " mZ="
-                    + chunkZ / 16
-                    + " oreseedX="
-                    + seedX / 16
-                    + " oreseedZ="
-                    + seedZ / 16
-                    + " cY="
-                    + veinMinY);
+            GT_FML_LOGGER.debug(
+                "Trying Orevein:{} Dimension={} mX={} mZ={} oreseedX={} oreseedZ={} cY={}",
+                this.mWorldGenName,
+                world.provider.getDimensionName(),
+                chunkX / 16,
+                chunkZ / 16,
+                seedX / 16,
+                seedZ / 16,
+                veinMinY);
         }
         double dx = chunkX / 16 - seedX / 16;
         double dz = chunkZ / 16 - seedZ / 16;
@@ -447,26 +442,18 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
             }
         }
         if (debugOrevein && !dryRun) {
-            GTLog.out.println(
-                " wXVein" + veinWestX
-                    + " eXVein"
-                    + veinEastX
-                    + " nZVein"
-                    + veinNorthZ
-                    + " sZVein"
-                    + veinSouthZ
-                    + " locDen="
-                    + localDensity
-                    + " Den="
-                    + this.mDensity
-                    + " Sec="
-                    + placeCount[1]
-                    + " Spo="
-                    + placeCount[3]
-                    + " Bet="
-                    + placeCount[2]
-                    + " Pri="
-                    + placeCount[0]);
+            GT_FML_LOGGER.debug(
+                " wXVein{} eXVein{} nZVein{} sZVein{} locDen={} Den={} Sec={} Spo={} Bet={} Pri={}",
+                veinWestX,
+                veinEastX,
+                veinNorthZ,
+                veinSouthZ,
+                localDensity,
+                this.mDensity,
+                placeCount[1],
+                placeCount[3],
+                placeCount[2],
+                placeCount[0]);
         }
         // Something (at least the bottom layer must have 1 block) must have been placed, return true
         return ORE_PLACED;

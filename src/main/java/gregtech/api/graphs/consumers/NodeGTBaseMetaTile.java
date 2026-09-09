@@ -23,6 +23,7 @@ public class NodeGTBaseMetaTile extends ConsumerNode {
     @Override
     public boolean needsEnergy() {
         BaseMetaTileEntity tTileEntity = (BaseMetaTileEntity) mTileEntity;
-        return super.needsEnergy() && tTileEntity.getStoredEU() < tTileEntity.getEUCapacity();
+        // a tile out of input amperes rejects everything until its own tick, no point walking the network to it
+        return super.needsEnergy() && tTileEntity.canAcceptEnergyThisTick();
     }
 }

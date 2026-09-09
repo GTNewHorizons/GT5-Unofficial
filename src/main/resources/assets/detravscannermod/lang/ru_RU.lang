@@ -33,7 +33,7 @@ tooltip.detrav.scanner.usage.1=ПКМ по бедроку для поиска ж
 tooltip.detrav.scanner.usage.2=ПКМ по воздуху для сканирования!
 tooltip.detrav.scanner.usage.3=Shift+ПКМ по воздуху для переключения режимов!
 tooltip.detrav.scanner.usage.4=Двойной клик по любой записи для инвертирования фонового цвета!
-tooltip.detrav.scanner.success.chance=Шанс успешного сканирования:
+tooltip.detrav.scanner.success.chance=Шанс успешного сканирования: %s%%
 tooltip.detrav.scanner.distance.0=рядом с тобой (0 чанков отсюда), близко к тебе (1-2)
 tooltip.detrav.scanner.distance.1=на среднем расстоянии (3-5), на большом расстоянии (6-8), далеко (9+)
 

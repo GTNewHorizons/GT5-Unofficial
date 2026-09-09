@@ -99,7 +99,7 @@ public class MobHandlerLoader {
                 MTE.getBaseMetaTileEntity()
                     .getZCoord());
             for (MobDrop o : this.mOutputs) {
-                if (voidAllDamagedAndEnchantedItems && (o.damages != null || o.enchantable != null)) continue;
+                if (voidAllDamagedAndEnchantedItems && o.enchantable != null) continue;
                 int chance = o.chance;
 
                 double dChance = (double) chance / 100d;
@@ -144,6 +144,7 @@ public class MobHandlerLoader {
                             }
                         }
                     }
+                    if (voidAllDamagedAndEnchantedItems && s.isItemDamaged()) continue;
                     stacks.add(s);
                 }
             }

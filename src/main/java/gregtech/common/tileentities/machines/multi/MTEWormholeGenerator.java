@@ -51,7 +51,9 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import appeng.api.AEApi;
-import gregtech.GTMod;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
@@ -322,8 +324,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
@@ -708,7 +711,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 aNBT.setTag("mLink", link);
             }
         } catch (Exception t) {
-            GTMod.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
+            GTLoggers.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
         }
     }
 
@@ -759,7 +762,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                         Math.min(send_amounts.length, mLink.mSendAmounts.length));
                 }
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
+                GTLoggers.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
             }
         }
     }

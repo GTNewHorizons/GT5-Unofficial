@@ -26,7 +26,7 @@ import galacticgreg.api.SpecialBlockComb;
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.dynconfig.DynamicDimensionConfig;
 import galacticgreg.dynconfig.DynamicDimensionConfig.AsteroidConfig;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MurmurHash;
@@ -82,7 +82,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         long post = profileWorldGen ? System.nanoTime() : 0;
 
         if (profileWorldGen) {
-            GTMod.GT_FML_LOGGER
+            GTLoggers.GT_FML_LOGGER
                 .info("Generated {} {} in {} us ({} seeds)", chunkX, chunkZ, (int) ((post - pre) / 1e3), seeds);
         }
 

@@ -1,11 +1,13 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -13,6 +15,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -21,12 +24,14 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.common.gui.modularui.hatch.MTEHatchEnergyTunnelGui;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 16.12.2016.
  */
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnectsToEnergyTunnel {
 
     public MTEHatchEnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
@@ -35,6 +40,18 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
 
     public MTEHatchEnergyTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        // The legendary hatch carries a name of its own instead of the tier and amperage pattern.
+        if (getLocalNameKey().equals("gt.blockmachines.hatch.energytunnel.tier.14.name"))
+            return StatCollector.translateToLocal(getLocalNameKey());
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.hatch.energytunnel.name",
+            GTValues.VN[mTier],
+            formatNumber(maxAmperes));
     }
 
     @Override
@@ -75,6 +92,15 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchEnergyTunnel(mName, mTier, Amperes, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        IGregTechTileEntity front = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
+        if (front != null && front.getMetaTileEntity() instanceof MTEPipeLaser laser) {
+            laser.setCheckConnections();
+        }
     }
 
     @Override

@@ -142,7 +142,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     }
 
     private Grid createParticleButtonGrid(PanelSyncManager syncManager) {
-        Particle[] particles = Particle.values();
+        Particle[] particles = Particle.VALUES;
 
         return new Grid()
             .gridOfWidthElements(

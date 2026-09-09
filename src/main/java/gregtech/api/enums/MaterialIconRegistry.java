@@ -204,6 +204,7 @@ public class MaterialIconRegistry {
         ;
         // spotless:on
 
+        public static final IconType[] VALUES = values();
         public final String suffix;
         public final TextureType texture;
 

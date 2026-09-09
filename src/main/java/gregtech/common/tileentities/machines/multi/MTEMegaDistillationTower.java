@@ -103,9 +103,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 {"        FFF    ","     EAEFDF    ","    E F EFFFFF ","   E  H  EFFBFF","   AFHCHFAFBDBF","   E  H  EFFBFF","    E F E  FFF ","     EAE       ","               "},
                 {"               ","     GGG D     ","    G   G      ","   G  H  G  B  ","   G HCH G BDB ","   G  H  G  B  ","    G   G      ","     GGG       ","               "},
                 {"               ","     EAE D     "," F  E   E    F "," F E  H  E  BF "," FFA HCH A BDB "," F E  H  E  BF "," F  E   E    F ","     EAE       ","               "},
-                {"               ","     EAE DDD   "," F  E   E    F ","3  E  H  E  B B","3HHHHHCH A BDBB","3  E  H  E  B B"," F  E   E    F ","     EAE       ","               "},
-                {"               ","     GGG   D   "," F  G   G    F ","3HHHHHH  G  BBB","3CCCCCCH G BDD2","3HHHHHH  G  BBB"," F  G   G    F ","     GGG       ","               "},
-                {"               ","     EAE   D   "," F  E   E    F ","3  E     E  B B","3HHHHHH  A BDBB","3  E     E  B B"," F  E   E    F ","     EAE       ","               "},
+                {"               ","     EAE DDD   "," F  E   E    F ","7  E  H  E  B B","7HHHHHCH A BDBB","7  E  H  E  B B"," F  E   E    F ","     EAE       ","               "},
+                {"               ","     GGG   D   "," F  G   G    F ","7HHHHHH  G  BBB","3CCCCCCH G BDD2","7HHHHHH  G  BBB"," F  G   G    F ","     GGG       ","               "},
+                {"               ","     EAE   D   "," F  E   E    F ","7  E     E  B B","7HHHHHH  A BDBB","7  E     E  B B"," F  E   E    F ","     EAE       ","               "},
                 {"     GGG   G   ","    GEAEG GDG  "," F GE   EGEGEF "," FGE     EGEBE "," FAA     AGBDB "," FGE     EGEBE "," F GE   EG   F ","    GEAEG      ","     GGG       "},
                 {"  EEG111GE111  "," EEEE   EEEDEE ","EEEE     EEEEEE","1EE       EEBE1","111       1BDB1","1EE       EEBE1","EEEE     EE1EEE"," EEEE   EEE1EE ","  EEG111GE111  "},
                 {" GEEG111GEGGGE "," E         D E ","EE           EE","G             G","G           D G","G             G","EE           EE"," E           E "," GEEG111GEGGGE "},
@@ -172,6 +172,12 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                     .casingIndex(Casings.BronzePipeCasing.textureId)
                     .hint(3)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
+            .addElement(
+                '7',
+                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(InputHatch)
+                    .casingIndex(Casings.BronzePlatedBricks.textureId)
+                    .hint(3)
+                    .buildAndChain(Casings.StrongBronzeMachineCasing.asElement()))
             // middle slice hatches
             .addElement(
                 '4',
@@ -363,7 +369,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int currentLayer = (height * 2) - 2;
         if (outputHatchesPerLayer.isEmpty()) return 0;
 
-        return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }
@@ -372,14 +378,14 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int currentLayer = (height * 2) - 1;
         if (outputHatchesPerLayer.isEmpty()) return 0;
 
-        return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }
 
     protected int getFinalLayerOutputHatchCount() {
         int currentLayer = height * 2; // in a max dt (height 5), this is index 10. so height*2
-        return outputHatchesPerLayer.size() < currentLayer + 1 || height <= 0 ? 0
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }
@@ -429,11 +435,33 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        List<FluidStack> mergedFluids = new ArrayList<>();
+        int index = 0;
         boolean succeed = true;
-        for (int i = 0; i < outputFluids.length && i < this.outputHatchesPerLayer.size(); i++) {
-            FluidStack stack = outputFluids[i].copy();
-            addOutputPartial(stack, outputHatchesPerLayer.get(i));
-            if (stack.amount > 0) succeed = false;
+
+        for (FluidStack stack : outputFluids) {
+            if (mergedFluids.isEmpty() || (stack.isFluidEqual(mergedFluids.getFirst())
+                && mergedFluids.getLast().amount == Integer.MAX_VALUE)) {
+                mergedFluids.add(stack);
+                continue;
+            }
+            if (index >= outputHatchesPerLayer.size()) {
+                succeed = false;
+                break;
+            }
+            if (!addFluidOutputs(mergedFluids.toArray(new FluidStack[0]), outputHatchesPerLayer.get(index))) {
+                succeed = false;
+            }
+            mergedFluids.clear();
+            mergedFluids.add(stack);
+            index++;
+        }
+        if (!mergedFluids.isEmpty()) {
+            if (index >= outputHatchesPerLayer.size()) {
+                succeed = false;
+            } else if (!addFluidOutputs(mergedFluids.toArray(new FluidStack[0]), outputHatchesPerLayer.get(index))) {
+                succeed = false;
+            }
         }
         return succeed;
     }

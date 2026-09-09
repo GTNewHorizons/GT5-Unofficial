@@ -18,12 +18,12 @@ import gtnhlanth.common.beamline.Particle;
 
 public class ItemParticle extends Item {
 
-    public static final int NUMBER_OF_SUBTYPES = Particle.values().length;
+    public static final int NUMBER_OF_SUBTYPES = Particle.VALUES.length;
     private static final String[] names = new String[NUMBER_OF_SUBTYPES];
 
     static {
         for (int i = 0; i < NUMBER_OF_SUBTYPES; i++) {
-            Particle particle = Particle.values()[i];
+            Particle particle = Particle.VALUES[i];
             names[i] = particle.getName();
         }
     }
@@ -71,7 +71,7 @@ public class ItemParticle extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         int i = MathHelper.clamp_int(stack.getItemDamage(), 0, NUMBER_OF_SUBTYPES - 1);
-        Particle particle = Particle.values()[i];
+        Particle particle = Particle.VALUES[i];
         return particle.getLocalisedName();
 
     }
@@ -80,7 +80,7 @@ public class ItemParticle extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         int i = MathHelper.clamp_int(stack.getItemDamage(), 0, NUMBER_OF_SUBTYPES - 1);
-        Particle particle = Particle.values()[i];
+        Particle particle = Particle.VALUES[i];
         float restMass = particle.getMass();
         float charge = particle.getCharge();
         String chargeSpecial = particle.getChargeSpecial();

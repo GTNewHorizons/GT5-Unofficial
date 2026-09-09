@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convertSmelting;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -187,6 +188,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 : GTOreDictUnificator.get(OrePrefixes.ingot, material.mDirectSmelting, 1L);
         }
 
-        if (smeltingOutput != null) GTModHandler.addSmeltingRecipe(stack, smeltingOutput);
+        if (smeltingOutput != null) GTModHandler.addSmeltingRecipe(
+            stack,
+            convertSmelting(material, GTOreDictUnificator.getAssociation(stack).mPrefix, smeltingOutput));
     }
 }

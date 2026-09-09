@@ -329,6 +329,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("itemCount", getItemCount());
         if (getItemStack() != null) aNBT.setTag("itemStack", getItemStack().writeToNBT(new NBTTagCompound()));
+        aNBT.setBoolean("outputLocked", isOutputSlotLocked);
     }
 
     @Override
@@ -336,6 +337,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
         if (aNBT.hasKey("itemCount")) setItemCount(aNBT.getInteger("itemCount"));
         if (aNBT.hasKey("itemStack"))
             setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("itemStack")));
+        if (aNBT.hasKey("outputLocked")) isOutputSlotLocked = aNBT.getBoolean("outputLocked");
     }
 
     @Override

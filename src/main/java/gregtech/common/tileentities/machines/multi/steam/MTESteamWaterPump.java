@@ -319,10 +319,8 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         int tierMachine = tag.getInteger("mSetTier");
         String tierMachineText;
@@ -334,12 +332,12 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
             tierMachineText = String.valueOf(tierMachine);
         }
 
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.BLUE
                 + tierMachineText
                 + EnumChatFormatting.RESET);
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.biomes.humidity") + " "
                 + EnumChatFormatting.BLUE
                 + tag.getFloat("humidity")
@@ -348,9 +346,8 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("humidity", currentHumidity * 100);
         tag.setInteger("mSetTier", mSetTier);
     }

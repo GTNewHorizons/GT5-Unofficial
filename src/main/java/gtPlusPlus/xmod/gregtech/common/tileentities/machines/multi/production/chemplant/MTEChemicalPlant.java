@@ -43,6 +43,8 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.MetaTileEntityIDs;
@@ -452,8 +454,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         return false;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_CHEMICAL;
     }
 
@@ -687,8 +690,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         registerChemplantCatalyst(GregtechItemList.BrownMetalCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.OrangeMetalCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.PurpleMetalCatalyst.get(1));
-        registerChemplantCatalyst(GregtechItemList.RedMetalCatalyst.get(1));
-        registerChemplantCatalyst(GregtechItemList.YellowMetalCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.PinkMetalCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.FormaldehydeCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.SolidAcidCatalyst.get(1));

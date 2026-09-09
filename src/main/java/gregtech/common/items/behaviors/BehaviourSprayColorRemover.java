@@ -21,4 +21,8 @@ public class BehaviourSprayColorRemover extends BehaviourSprayColor {
             .removeColor();
     }
 
+    @Override
+    public int getDye(final ItemStack itemStack) {
+        return -1;
+    }
 }

@@ -234,7 +234,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemOutputs(Materials.Silicon.getIngots(1), Materials.Ash.getDust(1))
             .outputChances(10000, 1111)
             .fluidOutputs(Materials.CarbonMonoxide.getGas(2_000))
-            .duration(4 * SECONDS)
+            .duration(20 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);

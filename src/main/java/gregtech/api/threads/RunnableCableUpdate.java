@@ -8,7 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
@@ -77,7 +77,7 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
                 }
             }
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error(
+            GTLoggers.GT_FML_LOGGER.error(
                 "Well this update was broken... {}, {}, {}, mWorld={{} @dimId {}}",
                 initialX,
                 initialY,

@@ -17,7 +17,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import codechicken.enderstorage.api.EnderStorageDyeTool;
+import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
@@ -25,7 +28,8 @@ import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 
-public class BehaviourSprayColor extends BehaviourNone {
+@Optional.Interface(iface = "codechicken.enderstorage.api.EnderStorageDyeTool", modid = Mods.ModIDs.ENDER_STORAGE)
+public class BehaviourSprayColor extends BehaviourNone implements EnderStorageDyeTool {
 
     private final ItemStack mEmpty;
     private final ItemStack mUsed;
@@ -210,5 +214,19 @@ public class BehaviourSprayColor extends BehaviourNone {
         aList.add(StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.uses", tRemainingPaint));
         aList.add(StatCollector.translateToLocal("gt.behaviour.unstackable"));
         return aList;
+    }
+
+    @Override
+    public int getDye(final ItemStack itemStack) {
+        return this.mColor;
+    }
+
+    @Override
+    public void expendToolUse(final ItemStack itemStack) {
+        final NBTTagCompound nbt = ItemStackNBT.get(itemStack);
+        final long uses = getUses(itemStack, nbt);
+        if (uses > 0) {
+            setRemainingUses(itemStack, nbt, uses - 1);
+        }
     }
 }

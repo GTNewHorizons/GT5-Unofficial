@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableMap;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.OreMixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
@@ -142,7 +142,7 @@ public class GT5OreLayerHelper {
                 ItemStack stack = OreManager.getStack(info, 1);
 
                 if (stack == null) {
-                    GTMod.GT_FML_LOGGER.warn(
+                    GTLoggers.GT_FML_LOGGER.warn(
                         "Ore stack for vein was null: {} (vein: {}, index: {})",
                         ores[veinLayer],
                         veinName,

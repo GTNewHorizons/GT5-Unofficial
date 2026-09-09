@@ -1,6 +1,6 @@
 package gregtech.common.misc;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergy;
 
 import java.math.BigInteger;

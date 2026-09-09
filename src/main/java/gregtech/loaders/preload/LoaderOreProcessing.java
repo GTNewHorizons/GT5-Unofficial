@@ -1,6 +1,7 @@
 package gregtech.loaders.preload;
 
-import gregtech.api.util.GTLog;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import gregtech.loaders.oreprocessing.ProcessingAll;
 import gregtech.loaders.oreprocessing.ProcessingBlock;
 import gregtech.loaders.oreprocessing.ProcessingBolt;
@@ -48,7 +49,7 @@ public class LoaderOreProcessing implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Register Ore processing.");
+        GT_FML_LOGGER.debug("GTMod: Register Ore processing.");
         new ProcessingAll();
         new ProcessingBlock();
         new ProcessingBolt();

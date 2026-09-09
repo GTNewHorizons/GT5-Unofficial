@@ -1293,6 +1293,26 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                         new FakeSyncWidget.ItemStackSyncer(() -> usedQueen, val -> usedQueen = val),
                         builder,
                         (widget, val) -> widget.notifyTooltipChange())
+                    .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(() -> mSpeed, val -> {}),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
+                    .attachSyncer(
+                        new FakeSyncWidget.ItemStackSyncer(() -> getStackInSlot(upgradeSlot), val -> {}),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
+                    .attachSyncer(
+                        new FakeSyncWidget.ItemStackSyncer(() -> getStackInSlot(upgradeSlot + 1), val -> {}),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
+                    .attachSyncer(
+                        new FakeSyncWidget.ItemStackSyncer(() -> getStackInSlot(upgradeSlot + 2), val -> {}),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
+                    .attachSyncer(
+                        new FakeSyncWidget.ItemStackSyncer(() -> getStackInSlot(upgradeSlot + 3), val -> {}),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
                     .setPos(163, 19)
                     .setSize(7, 18))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {

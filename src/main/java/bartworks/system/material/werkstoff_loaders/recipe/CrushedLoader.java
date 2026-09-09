@@ -73,15 +73,15 @@ public class CrushedLoader implements IWerkstoffRunnable {
             .getProcessingMaterialTierEU() < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dustImpure),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushed) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dustPure),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushedPurified) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dust),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushedCentrifuged) });
         }
 

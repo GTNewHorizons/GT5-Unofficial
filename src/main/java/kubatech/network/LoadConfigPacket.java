@@ -45,7 +45,7 @@ public class LoadConfigPacket implements IMessage {
 
         @Override
         public IMessage onMessage(LoadConfigPacket message, MessageContext ctx) {
-            kubatech.info("Received KubaTech config, parsing");
+            kubatech.LOG.info("Received KubaTech config, parsing");
             return null;
         }
     }

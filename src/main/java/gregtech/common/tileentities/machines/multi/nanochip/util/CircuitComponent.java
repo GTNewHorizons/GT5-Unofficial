@@ -627,14 +627,28 @@ public enum CircuitComponent {
         return new ItemStack(CircuitComponentFakeItem.INSTANCE, amount, this.metaId);
     }
 
+    public static CircuitComponent tryGetFromMetaId(int metaId) {
+        return META_IDS.get(metaId);
+    }
+
     public static CircuitComponent tryGetFromFakeStack(ItemStack stack) {
-        if (!META_IDS.containsKey(stack.getItemDamage())) return null;
-        return getFromFakeStackUnsafe(stack);
+        return tryGetFromMetaId(stack.getItemDamage());
     }
 
     public static CircuitComponent getFromFakeStackUnsafe(ItemStack stack) {
         // If this throws an IndexOutOfBounds exception, there is a bug
-        return META_IDS.get(stack.getItemDamage());
+        return tryGetFromMetaId(stack.getItemDamage());
+    }
+
+    /**
+     * Try to get a real stack representation from a CC fake ItemStack. Will not work for PCs.
+     */
+    public static ItemStack tryGetRealStack(ItemStack stack) {
+        if (stack == null) return null;
+        if (stack.getItem() != CircuitComponentFakeItem.INSTANCE) return null;
+        CircuitComponent cc = tryGetFromFakeStack(stack);
+        if (cc == null || cc.isProcessed || cc.realComponent == null) return null;
+        return cc.realComponent.get();
     }
 
     public static class CircuitComponentStack {

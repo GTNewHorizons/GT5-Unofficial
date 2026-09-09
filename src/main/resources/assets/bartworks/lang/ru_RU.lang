@@ -266,3 +266,16 @@ tooltip.cal.imprintedWith=Imprinted with: %s
 chat.cal.mode.0=Режим: Сборочная линия электросхем
 chat.cal.mode.1=Режим: Сборщик электросхем
 #Liquids
+
+# Multiblocks
+gt.blockmachines.bw.biovat.name=Бактериальный чан
+gt.blockmachines.bw.manualtrafo.name=Ручной трансформатор
+gt.blockmachines.bw.windmill.name=Мельница
+gt.blockmachines.circuitassemblyline.name=Сборочная линия электросхем
+gt.blockmachines.dehp.name=Геотермальный тепловой насос
+gt.blockmachines.megablastfurnace.name=Мега электрическая доменная печь
+gt.blockmachines.megachemicalreactor.name=Мега химический реактор
+gt.blockmachines.megadistillationtower.name=Мега ректификационная колонна
+gt.blockmachines.megaoilcracker.name=Мега установка крекинга нефти
+gt.blockmachines.megavacuumfreezer.name=Мега вакуумный морозильник
+gt.blockmachines.thtr.name=Ториумный высокотемпературный реактор

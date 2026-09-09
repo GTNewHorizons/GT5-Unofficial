@@ -11,7 +11,7 @@ const vec3 MAX = vec3(1.0, 1.0, 1.0);
 const vec3 glow_color = vec3(0.0, 0.65, 1.0); // The glow color, RGB
 const float cableHeight = 512.0;
 
-vec3 frontWave(in vec3 color, in vec2 uv, in float t, in float sections, in float speed) {
+vec3 frontWave(in vec3 color, in float t) {
     float front = t;
     float y = v_yPos / cableHeight;
     float dist = abs(front - y);
@@ -28,6 +28,6 @@ void main() {
     ? 1.0 : 0.0;
 
     vec4 tex = texture2D(u_BlockTex, v_TexCoord);
-    vec3 col = frontWave(glow_color, v_TexCoord, u_Time, 1.0, -10.0);
+    vec3 col = frontWave(glow_color, u_Time);
     gl_FragColor = vec4(min(tex.rgb + col * glowMul, MAX), tex.a);
 }

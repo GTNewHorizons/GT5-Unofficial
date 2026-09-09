@@ -1,6 +1,6 @@
 package kubatech.api.eig;
 
-import static kubatech.kubatech.error;
+import static kubatech.kubatech.LOG;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -92,7 +92,7 @@ public abstract class EIGMode {
     private void dealWithDuplicateFactoryId(String factoryId) {
         if (this.factories.containsKey(factoryId)) {
             // TODO: Check with devs to see if they want a throw instead.
-            error("Duplicate EIG bucket index detected!!!: " + factoryId);
+            LOG.error("Duplicate EIG bucket index detected!!!: {}", factoryId);
             // remove duplicate from ordered list
             this.orderedFactories.remove(this.factories.get(factoryId));
         }
@@ -136,18 +136,18 @@ public abstract class EIGMode {
             // validate nbt
             NBTTagCompound bucketNBT = bucketNBTList.getCompoundTagAt(i);
             if (bucketNBT.hasNoTags()) {
-                error("Empty nbt bucket found in EIG nbt.");
+                LOG.error("Empty nbt bucket found in EIG nbt.");
                 continue;
             }
             if (!bucketNBT.hasKey("type", 8)) {
-                error("Failed to identify bucket type in EIG nbt.");
+                LOG.error("Failed to identify bucket type in EIG nbt.");
                 continue;
             }
             // identify bucket type
             String bucketType = bucketNBT.getString("type");
             IEIGBucketFactory factory = factories.getOrDefault(bucketType, null);
             if (factory == null) {
-                error("failed to find EIG bucket factory for type: " + bucketType);
+                LOG.error("failed to find EIG bucket factory for type: {}", bucketType);
                 continue;
             }
             // restore bucket

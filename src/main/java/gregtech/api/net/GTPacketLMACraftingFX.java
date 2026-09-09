@@ -1,6 +1,6 @@
 package gregtech.api.net;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.io.IOException;
 
@@ -13,7 +13,6 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GTLog;
 import gregtech.client.LMACraftingFX;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -56,7 +55,7 @@ public class GTPacketLMACraftingFX extends GTPacket {
             buffer.writeInt(data.length);
             buffer.writeBytes(data);
         } catch (IOException e) {
-            GTLog.out.println("Could not serialize LMA ItemStack");
+            GT_FML_LOGGER.debug("Could not serialize LMA ItemStack");
             GT_FML_LOGGER.error(e);;
         }
     }
@@ -76,7 +75,7 @@ public class GTPacketLMACraftingFX extends GTPacket {
         try {
             itemStack = AEItemStack.loadItemStackFromPacket(stackBuffer);
         } catch (IOException e) {
-            GTLog.out.println("Could not deserialize LMA ItemStack");
+            GT_FML_LOGGER.debug("Could not deserialize LMA ItemStack");
             throw new IllegalStateException(e);
         }
 

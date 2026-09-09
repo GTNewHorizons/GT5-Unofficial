@@ -336,6 +336,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         this.excessFuel += (int) (fuelValue % 80);
                         burnTime += this.excessFuel / 80;
                         this.excessFuel %= 80;
+                        burnTime = LargeBoilerFuelBackend.getBurntimeRatioTicks(burnTime, 20);
                         setupBoilerRecipe(burnTime, getEfficiencyIncrease(), false);
                         tInput.stackSize -= 1;
                         updateSlots();
@@ -595,13 +596,11 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         double steamPerTick = tag.getDouble("largeBoilerSteamPerTick");
         if (steamPerTick > 0D) {
-            currentTip.add(
+            list.add(
                 StatCollector.translateToLocalFormatted(
                     isSuperheated() ? "GT5U.waila.large_boiler.superheated_steam_output"
                         : "GT5U.waila.large_boiler.steam_output",
@@ -610,7 +609,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         }
         double waterPerTick = tag.getDouble("largeBoilerWaterPerTick");
         if (waterPerTick > 0D) {
-            currentTip.add(
+            list.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.large_boiler.water_consumption",
                     formatNumber(waterPerTick),
@@ -619,9 +618,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setDouble("largeBoilerSteamPerTick", getCurrentSteamOutputPerTick());
         tag.setDouble("largeBoilerEnergyPerTick", getCurrentEnergyOutputPerTick());
         tag.setDouble("largeBoilerWaterPerTick", getCurrentWaterConsumptionPerTick());

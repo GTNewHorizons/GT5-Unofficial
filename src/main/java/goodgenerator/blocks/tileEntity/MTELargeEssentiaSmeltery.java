@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -47,6 +48,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -75,14 +77,17 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_On");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/LargeEssentiaSmeltery_On");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .customOptional("icons/LargeEssentiaSmeltery_On_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_Off");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/LargeEssentiaSmeltery_On_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/LargeEssentiaSmeltery_Off");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .customOptional("icons/LargeEssentiaSmeltery_Off_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/LargeEssentiaSmeltery_Off_GLOW");
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -230,31 +235,28 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Essentia Smeltery, LES")
-            .addInfo("Necessary evil")
-            .addInfo("Advanced Essentia smelting technology")
-            .addInfo("Maximum parallel = 2^Tier * (Length - 1)")
-            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length")
-            .addInfo("Energy Hatch tier: HV+")
-            .addInfo("You can find more information about this machine in the Thaumonomicon")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.essentia_smeltery_les"))
+            .addMarkdown(new ResourceLocation("gregtech", "large-essentia-smeltery"))
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(5, 5, 5, 5, 5, 9, true)
-            .addController("Front center, 3rd layer")
-            .addCasing("24-84", "Magic Casing", false)
-            .addCasing("12-28", "Essentia Diffusion Cell", true)
-            .addCasing("6-14", "Warded Glass", false)
-            .addCasing("3-7", "Thaumium Alchemical Furnace", false)
-            .addCasing("3-7", "Essentia Filter Casing", false)
-            .addEnergyHatch("1+", "Any magic casing", 1)
-            .addMaintenanceHatch("1", "Any magic casing", 1)
-            .addMufflerHatch("3-7", "Top center casings", 2)
-            .addInputAny("1+", "Any magic casing", 1)
-            .addMiscHatch("1+", "Essentia Output Hatch", "Any magic casing", 1)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("24-84", StatCollector.translateToLocal("magicCasing.0.name"), false)
+            .addCasing("12-28", StatCollector.translateToLocal("essentiaCell.name"), true)
+            .addCasing("6-14", StatCollector.translateToLocal("tile.blockCosmeticOpaque.2.name"), false)
+            .addCasing("3-7", StatCollector.translateToLocal("tile.advAlchFurnace.name"), false)
+            .addCasing("3-7", StatCollector.translateToLocal("essentiaFilterCasing.0.name"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_magic_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_magic_casing"), 1)
+            .addMufflerHatch("3-7", StatCollector.translateToLocal("gt.mbtt.structure.any_top_center_casing"), 2)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_magic_casing"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("essentiaOutputHatch.0.name"), StatCollector.translateToLocal("gt.mbtt.structure.any_magic_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

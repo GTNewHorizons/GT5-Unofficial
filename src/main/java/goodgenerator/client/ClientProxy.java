@@ -5,6 +5,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import goodgenerator.client.render.AntimatterRenderer;
 import goodgenerator.common.CommonProxy;
+import gregtech.common.render.RenderInit;
 
 public class ClientProxy extends CommonProxy {
 
@@ -18,6 +19,7 @@ public class ClientProxy extends CommonProxy {
         super.init(event);
 
         new AntimatterRenderer();
+        RenderInit.onResourceReload(AntimatterRenderer::reload);
     }
 
     @Override

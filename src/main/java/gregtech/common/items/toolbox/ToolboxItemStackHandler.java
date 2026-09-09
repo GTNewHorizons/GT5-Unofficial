@@ -22,7 +22,7 @@ public class ToolboxItemStackHandler extends ItemStackHandler {
     private final ItemStack toolboxStack;
 
     public ToolboxItemStackHandler(final ItemStack toolbox) {
-        super(ToolboxSlot.values().length);
+        super(ToolboxSlot.VALUES.length);
         this.toolboxStack = toolbox;
         int currentTool = ItemGTToolbox.NO_TOOL_SELECTED;
 

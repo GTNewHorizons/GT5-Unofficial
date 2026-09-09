@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
 import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BloodArsenal;
@@ -57,6 +57,7 @@ public class GlassTier {
     private static final List<Pair<Block, Integer>> mainGlass = new ArrayList<>(
         Collections.nCopies(maxTier + 1 - minTier, null));
     private static final List<Pair<Block, Integer>> glassList = new ArrayList<>();
+    private static final List<String> tierLangKeys = new ArrayList<>();
 
     /**
      * Register a glass as a tiered glass.
@@ -95,6 +96,10 @@ public class GlassTier {
      */
     public static int getMaxTierIndex() {
         return maxTier - minTier + 1;
+    }
+
+    public static List<String> getTierLangKeys() {
+        return tierLangKeys;
     }
 
     /**
@@ -153,6 +158,7 @@ public class GlassTier {
         public static void run() {
             registerGlassAsTiered();
             registerGlassOreDicts();
+            registerGlassLangKeys();
         }
 
         private static void registerGlassAsTiered() {
@@ -250,6 +256,15 @@ public class GlassTier {
                     entry.getKey()
                         .getRight());
                 OreDictionary.registerOre(oreName, itemStack);
+            }
+        }
+
+        private static void registerGlassLangKeys() {
+            for (int i = 0; i < minTier; i++) {
+                tierLangKeys.add("");
+            }
+            for (int i = minTier; i <= maxTier; i++) {
+                tierLangKeys.add("GT5U.MBTT.Glass." + String.format("%02d", i));
             }
         }
     }

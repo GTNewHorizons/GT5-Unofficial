@@ -62,6 +62,8 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import bartworks.API.enums.CircuitImprint;
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.API.recipe.BartWorksRecipeMaps;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -419,8 +421,9 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         if (machineMode == MACHINEMODE_CAL) logic.setSpecialSlotItem(this.circuitImprint.imprint.get(1));
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return GTCEU_LOOP_ASSEMBLER;
     }
 
@@ -676,24 +679,23 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
                 + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger("mode")));
-        if (tag.hasKey("ImprintedWith") && tag.getInteger("mode") == 0) currenttip.add(
-            StatCollector.translateToLocalFormatted(
-                "tooltip.cal.imprintedWith",
-                EnumChatFormatting.YELLOW + tag.getString("ImprintedWith")));
+        if (tag.hasKey("ImprintedWith") && tag.getInteger("mode") == 0) {
+            list.add(
+                StatCollector.translateToLocalFormatted(
+                    "tooltip.cal.imprintedWith",
+                    EnumChatFormatting.YELLOW + tag.getString("ImprintedWith")));
+        }
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         String imprintedWith = this.getTypeForDisplay();
         if (!imprintedWith.isEmpty()) tag.setString("ImprintedWith", imprintedWith);
         tag.setInteger("mode", machineMode);

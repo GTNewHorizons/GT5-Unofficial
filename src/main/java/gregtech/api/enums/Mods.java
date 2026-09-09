@@ -50,6 +50,7 @@ public enum Mods implements IMod {
     BrandonsCore(ModIDs.BRANDONS_CORE),
     BuildCraftCore(ModIDs.BUILD_CRAFT_CORE),
     BuildCraftBuilders(ModIDs.BUILD_CRAFT_BUILDERS),
+    BuildCraftEnergy(ModIDs.BUILD_CRAFT_ENERGY),
     BuildCraftFactory(ModIDs.BUILD_CRAFT_FACTORY),
     BuildCraftRobotics(ModIDs.BUILD_CRAFT_ROBOTICS),
     BuildCraftSilicon(ModIDs.BUILD_CRAFT_SILICON),
@@ -217,6 +218,7 @@ public enum Mods implements IMod {
     ToroHealth(ModIDs.TORO_HEALTH),
     Translocator(ModIDs.TRANSLOCATOR),
     UniversalSingularities(ModIDs.UNIVERSAL_SINGULARITIES),
+    VariableHorizons(ModIDs.VARIABLE_HORIZONS),
     VendingMachine(ModIDs.VENDING_MACHINE),
     VisualProspecting(ModIDs.VISUAL_PROSPECTING),
     WailaPlugins(ModIDs.WAILA_PLUGINS),
@@ -391,6 +393,7 @@ public enum Mods implements IMod {
         public static final String BRANDONS_CORE = "BrandonsCore";
         public static final String BUILD_CRAFT_CORE = "BuildCraft|Core",
             BUILD_CRAFT_BUILDERS = "BuildCraft|Builders",
+            BUILD_CRAFT_ENERGY = "BuildCraft|Energy",
             BUILD_CRAFT_FACTORY = "BuildCraft|Factory",
             BUILD_CRAFT_ROBOTICS = "BuildCraft|Robotics",
             BUILD_CRAFT_SILICON = "BuildCraft|Silicon",
@@ -559,6 +562,7 @@ public enum Mods implements IMod {
         public static final String TORO_HEALTH = "torohealthmod";
         public static final String TRANSLOCATOR = "Translocator";
         public static final String UNIVERSAL_SINGULARITIES = "universalsingularities";
+        public static final String VARIABLE_HORIZONS = "variablehorizons";
         public static final String VENDING_MACHINE = "vendingmachine";
         public static final String VISUAL_PROSPECTING = "visualprospecting";
         public static final String WAILA_PLUGINS = "wailaplugins";

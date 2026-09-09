@@ -254,9 +254,10 @@ public class NBTPersist {
 
                 JsonObject root = new JsonObject();
 
-                for (Map.Entry<String, NBTBase> nbtEntry : tagMap.entrySet()) {
-                    root.add(nbtEntry.getKey(), toJsonObjectExact(nbtEntry.getValue()));
-                }
+                tagMap.entrySet()
+                    .stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .forEach(nbtEntry -> root.add(nbtEntry.getKey(), toJsonObjectExact(nbtEntry.getValue())));
 
                 return root;
             }

@@ -64,7 +64,7 @@ public class TetherLineRenderer {
     }
 
     private void renderLineToPlayer(double pX, double pY, double pZ, int renderTick) {
-        Entity player = Minecraft.getMinecraft().thePlayer;
+        Entity player = Minecraft.getMinecraft().renderViewEntity;
 
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 

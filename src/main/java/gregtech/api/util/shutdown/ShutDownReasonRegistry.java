@@ -80,6 +80,21 @@ public class ShutDownReasonRegistry {
     @Nonnull
     public static final ShutDownReason NO_TURBINE = SimpleShutDownReason.ofNormal("no_turbine");
     /**
+     * No valid rotor found.
+     */
+    @Nonnull
+    public static final ShutDownReason NO_ROTOR = SimpleShutDownReason.ofNormal("no_rotor");
+    /**
+     * Not enough wind.
+     */
+    @Nonnull
+    public static final ShutDownReason WIND_LOW = SimpleShutDownReason.ofNormal("wind_low");
+    /**
+     * Wind is too strong.
+     */
+    @Nonnull
+    public static final ShutDownReason WIND_HIGH = SimpleShutDownReason.ofNormal("wind_high");
+    /**
      * No correct machine part in controller slot.
      */
     @Nonnull

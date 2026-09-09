@@ -308,6 +308,12 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             ThaumcraftApi.registerComplexObjectTag(aStack, getAspectList(aAspects));
             return true;
         }
+
+        if (!ThaumcraftApi.exists(aStack.getItem(), aStack.getItemDamage())) {
+            ThaumcraftApi.registerObjectTag(aStack, getAspectList(aAspects));
+            return true;
+        }
+
         AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
         if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
             ThaumcraftApi.registerObjectTag(aStack, getAspectList(aAspects));

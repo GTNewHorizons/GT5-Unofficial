@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.generators;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK;
 import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK_ACTIVE_GLOW;

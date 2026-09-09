@@ -271,13 +271,14 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFFSET,
             VERTICAL_OFFSET,
             DEPTH_OFFSET,
-            elementBudget,
+            realBudget,
             env,
             false,
             true);
@@ -298,7 +299,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setBoolean("cryotheum", isCryoEnabled);
         tag.setInteger("drain", (int) Math.floor(speedBoost * CRYOTHEUM_DRAIN_BASE));
@@ -311,23 +312,19 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                     .getLocalizedName());
             tag.setInteger("subspaceDrain", this.currentBoosterFluid.amount);
         }
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         boolean cryotheumActive = tag.getBoolean("cryotheum");
         float speedModifier = tag.getFloat("speedBoost");
-        currentTip.add(translateToLocalFormatted("GT5U.waila.mvf.speedboost", formatNumber(speedModifier)));
+        list.add(translateToLocalFormatted("GT5U.waila.mvf.speedboost", formatNumber(speedModifier)));
         if (cryotheumActive) {
-            currentTip.add(translateToLocalFormatted("GT5U.waila.mvf.cryotheum", formatFluid(tag.getInteger("drain"))));
+            list.add(translateToLocalFormatted("GT5U.waila.mvf.cryotheum", formatFluid(tag.getInteger("drain"))));
         }
         if (tag.getBoolean("subspaceCooling")) {
-            currentTip.add(
+            list.add(
                 translateToLocalFormatted(
                     "GT5U.waila.mvf.subspace",
                     formatFluid(tag.getInteger("subspaceDrain")),

@@ -1,6 +1,6 @@
 package tectech.mechanics.boseEinsteinCondensate;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.factory.standard.StandardFactoryGrid;
 
 public class BECFactoryGrid extends StandardFactoryGrid<BECFactoryGrid, BECFactoryElement, BECFactoryNetwork> {
@@ -14,17 +14,20 @@ public class BECFactoryGrid extends StandardFactoryGrid<BECFactoryGrid, BECFacto
 
     public static void onServerClosed() {
         if (!INSTANCE.networks.isEmpty()) {
-            GTMod.GT_FML_LOGGER.warn(
+            GTLoggers.GT_FML_LOGGER.warn(
                 "BECFactoryGrid had networks that weren't removed before the server stopped: this could indicate a memory leak.");
         }
 
         if (!INSTANCE.vertices.isEmpty()) {
-            GTMod.GT_FML_LOGGER.warn(
+            GTLoggers.GT_FML_LOGGER.warn(
                 "BECFactoryGrid had vertices that weren't removed before the server stopped: this could indicate a memory leak.");
         }
 
         // Make sure everything is unloaded, even if something didn't remove itself properly
+        clearAll();
+    }
 
+    public static void clearAll() {
         INSTANCE.networks.forEach(network -> {
             network.elements.forEach(element -> { element.setNetwork(null); });
 

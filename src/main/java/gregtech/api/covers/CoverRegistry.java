@@ -1,6 +1,6 @@
 package gregtech.api.covers;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -132,22 +132,13 @@ public final class CoverRegistry {
     }
 
     /**
-     * Set cover data on all sides of a coverable object.
+     * Set cover data on a side of a coverable object.
      *
      * @param coverable the coverable
-     * @param down      cover id
-     * @param up        cover id
-     * @param north     cover id
-     * @param south     cover id
-     * @param west      cover id
-     * @param east      cover id
+     * @param direction direction to attach the cover
+     * @param coverID   cover id
      */
-    public static void cover(ICoverable coverable, int down, int up, int north, int south, int west, int east) {
-        coverable.attachCover(buildCover(GTUtility.intToStack(down), ForgeDirection.DOWN, coverable));
-        coverable.attachCover(buildCover(GTUtility.intToStack(up), ForgeDirection.UP, coverable));
-        coverable.attachCover(buildCover(GTUtility.intToStack(north), ForgeDirection.NORTH, coverable));
-        coverable.attachCover(buildCover(GTUtility.intToStack(south), ForgeDirection.SOUTH, coverable));
-        coverable.attachCover(buildCover(GTUtility.intToStack(west), ForgeDirection.WEST, coverable));
-        coverable.attachCover(buildCover(GTUtility.intToStack(east), ForgeDirection.EAST, coverable));
+    public static void cover(ICoverable coverable, ForgeDirection direction, int coverID) {
+        coverable.attachCover(buildCover(GTUtility.intToStack(coverID), direction, coverable));
     }
 }
