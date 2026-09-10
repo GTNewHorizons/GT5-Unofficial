@@ -94,21 +94,21 @@ public class GTOreDictUnificator {
 
     public static void set(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack, boolean aOverwrite,
         boolean aAlreadyRegistered) {
-        if (aMaterial == null || aPrefix == null
-            || GTUtility.isStackInvalid(aStack)
-            || Items.feather.getDamage(aStack) == WILDCARD) return;
+
+        if (aMaterial == null || aPrefix == null || GTUtility.isStackInvalid(aStack)) return;
+        if (Items.feather.getDamage(aStack) == WILDCARD) return;
+
         isAddingOre++;
         aStack = GTUtility.copyAmount(1, aStack);
         if (!aAlreadyRegistered) registerOre(aPrefix.get(aMaterial), aStack);
         addAssociation(aPrefix, aMaterial, aStack, isBlacklisted(aStack));
-        if (aOverwrite || GTUtility.isStackInvalid(
-            sName2StackMap.get(
-                aPrefix.get(aMaterial)
-                    .toString())))
-            sName2StackMap.put(
-                aPrefix.get(aMaterial)
-                    .toString(),
-                aStack);
+
+        String oreName = aPrefix.get(aMaterial)
+            .toString();
+        if (aOverwrite || GTUtility.isStackInvalid(sName2StackMap.get(oreName))) {
+            resetUnificationTarget(oreName);
+            sName2StackMap.put(oreName, aStack);
+        }
         isAddingOre--;
     }
 
