@@ -3324,10 +3324,10 @@ GT5U.gui.text.nac.module.boardprocessor.impurity=Impurity
 
 GT5U.gui.text.nac.module.status.connected=Connected to Main Complex
 GT5U.gui.text.nac.module.status.disconnected=Disconnected from Main Complex
-GT5U.gui.text.nac.module.disable_all_button_on.1=All modules enabled
-GT5U.gui.text.nac.module.disable_all_button_on.2=Press to disable all modules
-GT5U.gui.text.nac.module.disable_all_button_off.1=All modules disabled
-GT5U.gui.text.nac.module.disable_all_button_off.2=Press to enable all modules
+GT5U.gui.text.nac.module.disable_all_button_on.1=§aAll modules enabled
+GT5U.gui.text.nac.module.disable_all_button_on.2=§7Press to disable all modules
+GT5U.gui.text.nac.module.disable_all_button_off.1=§cAll modules disabled
+GT5U.gui.text.nac.module.disable_all_button_off.2=§7Press to enable all modules
 
 # NAC Info Panel
 GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
