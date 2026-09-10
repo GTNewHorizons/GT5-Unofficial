@@ -210,6 +210,10 @@ public final class OreDictRegistrationHandler {
             return true;
         }
 
+        if (oreName.equals("copperWire")) {
+            GT_FML_LOGGER.info("we caught copperWire: {} {} {}", oreName, stack, oreOriginPath);
+        }
+
         switch (oreName) {
             case "stone" -> GTOreDictUnificator.registerOre("stoneSmooth", stack);
             case "cobblestone" -> GTOreDictUnificator.registerOre("stoneCobble", stack);
