@@ -441,7 +441,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             inputRate,
             targetEnergyeV / 1000.0,
             numCycles,
-            1 * SECOND); // relies on all LHC "recipes" being 20t long
+            1 * SECOND, // relies on all LHC "recipes" being 20t long
+            multiblock.boostMode);
         double finalBeamEnergyKeV = result[0];
         int finalRate = (int) result[1];
         long finalEUt = (long) result[2];

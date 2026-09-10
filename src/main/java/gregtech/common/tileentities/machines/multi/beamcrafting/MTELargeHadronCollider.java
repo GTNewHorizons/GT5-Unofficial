@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_ACCELERATOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_ACCELERATOR_GLOW;
@@ -17,6 +18,7 @@ import static java.lang.Math.max;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -27,6 +29,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -69,17 +72,23 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     private static final int MACHINEMODE_ACCELERATOR = 0;
     private static final int MACHINEMODE_COLLIDER = 1;
 
+    public static final int BOOST_NONE = 0;
+    public static final int BOOST_QGP = 1;
+    public static final int BOOST_MAGMATTER = 2;
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_EM = "EM";
     private static final String STRUCTURE_PIECE_WEAK = "Weak";
     private static final String STRUCTURE_PIECE_STRONG = "Strong";
     private static final String STRUCTURE_PIECE_GRAV = "Grav";
 
-    public static final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
+    public static final float MAXIMUM_PARTICLE_ENERGY_keV = 1_000_000_000; // 2TeV collision energy max
     public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
     public static final float RATE_SCALE_FACTOR = 1.3F;
     public static final int RATE_NERF_CUTOFF = 15000;
     public static final float RATE_NERF_POWER = 0.5F;
+    public static final float RATE_NERF_POWER_QGP = 0.75F;
+    public static final float RATE_NERF_POWER_MAGMATTER = 1.0F;
     public static final float MASSLESS_PARTICLE_THRESHOLD = 0.5F;
     public static final float OVERALL_POWER_MULT_FACTOR = 1F; // reminder: update tooltip text if this is not set to 1
 
@@ -90,6 +99,9 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     private int outputRate;
     private int outputParticleID;
     private float outputFocus;
+
+    public int boostMode = BOOST_NONE;
+    public int boostActive = BOOST_NONE;
 
     public double playerTargetBeamEnergyeV = 1_000_000_000;
     public int playerTargetAccelerationCycles = 10;
@@ -114,6 +126,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("machineMode", machineMode);
+        aNBT.setInteger("boostMode", boostMode);
+        aNBT.setInteger("boostActive", boostActive);
         if (cachedOutputParticle != null) {
             aNBT.setFloat("energy", cachedOutputParticle.getEnergy());
             aNBT.setInteger("rate", cachedOutputParticle.getRate());
@@ -140,6 +154,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         machineMode = aNBT.getInteger("machineMode");
+        boostMode = aNBT.getInteger("boostMode");
+        boostActive = aNBT.getInteger("boostActive");
         if (aNBT.hasKey("energy") && aNBT.hasKey("rate") && aNBT.hasKey("particleId") && aNBT.hasKey("focus")) {
             cachedOutputParticle = new BeamInformation(
                 aNBT.getFloat("energy"),
@@ -204,7 +220,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         .addElement(
             'C', // collider casing
-            buildHatchAdder(MTELargeHadronCollider.class).atLeast(Energy, ExoticEnergy)
+            buildHatchAdder(MTELargeHadronCollider.class).atLeast(Energy, ExoticEnergy, InputHatch)
                 .casingIndex(Casings.ColliderCasing.getTextureId())
                 .hint(1)
                 .buildAndChain(Casings.ColliderCasing.asElement()))
@@ -401,6 +417,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 "Entrance to accelerator ring",
                 2)
             .addEnergyHatch("1+", "Any casing", 1)
+            .addInputHatch("1","Any casing",7)
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.AQUA + "CMS Module " + EnumChatFormatting.BLUE + "(E)")
             .addCasing(
@@ -586,7 +603,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             if (outRate < RATE_NERF_CUTOFF) {
                 outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
             } else {
-                outRate = outRate + (int) Math.ceil(Math.pow(outRate * (RATE_SCALE_FACTOR - 1), RATE_NERF_POWER));
+                outRate = outRate + (int) Math.ceil(Math.pow(outRate * (RATE_SCALE_FACTOR - 1), rateNerfPowerForBoost(boostActive)));
             }
         }
 
@@ -608,15 +625,45 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         return perCyclePowerCost(1, cycleIndex) * progressTime * keV_EU_RATIO;
     }
 
+    public static float rateNerfPowerForBoost(int boostMode){
+        return switch (boostMode) {
+            case BOOST_QGP -> RATE_NERF_POWER_QGP;
+            case BOOST_MAGMATTER -> RATE_NERF_POWER_MAGMATTER;
+            default -> RATE_NERF_POWER;
+        };
+    }
+
+    public static FluidStack boostFluidStack(int boostMode, int amount){
+        return switch (boostMode) {
+            case BOOST_QGP -> Materials.QuarkGluonPlasma.getFluid(amount);
+            case BOOST_MAGMATTER -> Materials.MagMatter.getMolten(amount);
+            default -> null;
+        };
+    }
+
+    private static int boostFluidCost(int rate){
+        return (int) Math.ceil(10.0 * Math.sqrt(rate));
+    }
+
+    private boolean consumeBoostFluid(int rate){
+        FluidStack needed = boostFluidStack(boostActive, boostFluidCost(rate));
+        if (needed == null) return false;
+        if (!depleteInput(needed,true)) return false; // simulate consumption and fail if not enough present
+        depleteInput(needed,false);
+        return true;
+    }
+
     public static double[] simulateAccelerator(double inputEnergyKeV, int inputRate, double targetEnergyKeV,
-        int numCycles, int progressTime) {
+        int numCycles, int progressTime, int boostMode) {
 
         if (numCycles < 0) numCycles = 0;
         if (inputRate < 1) inputRate = 1;
 
+        float nerfPower = rateNerfPowerForBoost(boostMode);
+
         // mirrors accelerateParticle
 
-        double outEnergy = inputEnergyKeV;
+        double outEnergy =  (boostMode == BOOST_NONE) ? inputEnergyKeV : MAXIMUM_PARTICLE_ENERGY_keV;
         int outRate = inputRate;
         long EUtCost = 0;
 
@@ -630,7 +677,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 if (outRate < RATE_NERF_CUTOFF) {
                     outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
                 } else {
-                    outRate = outRate + (int) Math.ceil(Math.pow(outRate * (RATE_SCALE_FACTOR - 1), RATE_NERF_POWER));
+                    outRate = outRate + (int) Math.ceil(Math.pow(outRate * (RATE_SCALE_FACTOR - 1), nerfPower));
                 }
             }
             EUtCost = perCyclePowerCost(outRate, c + 1);
@@ -644,6 +691,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         cachedOutputParticle = null;
         accelerationCycleCounter = 0;
         machineMode = MACHINEMODE_ACCELERATOR;
+        boostActive = BOOST_NONE;
     }
 
     @Override
@@ -694,9 +742,23 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             this.mMaxProgresstime = TickTime.SECOND;
 
             if (cachedOutputParticle == null) {
-                cachedOutputParticle = inputInfo.copy();
                 initialParticleInfo = inputInfo.copy();
                 accelerationCycleCounter = 0;
+                boostActive = boostMode; // locked for this run
+
+                if (boostActive == BOOST_NONE){
+                    cachedOutputParticle = inputInfo.copy();
+                } else {
+                    if (!consumeBoostFluid(inputInfo.getRate())){
+                        stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
+                        return CheckRecipeResultRegistry.NO_RECIPE;
+                    }
+                    cachedOutputParticle = new BeamInformation(
+                        MAXIMUM_PARTICLE_ENERGY_keV,
+                        inputInfo.getRate(),
+                        inputInfo.getParticleId(),
+                        inputInfo.getFocus());
+                }
                 lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
             } else {
                 if (!cachedOutputParticle.getParticle()
@@ -712,6 +774,10 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                     lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
 
                     if (accelerationCycleCounter < playerTargetAccelerationCycles) {
+                        if (boostActive != BOOST_NONE && !consumeBoostFluid(cachedOutputParticle.getRate())){
+                            stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
+                            return CheckRecipeResultRegistry.NO_RECIPE;
+                        }
                         cachedOutputParticle = accelerateParticle(cachedOutputParticle);
                         accelerationCycleCounter += 1;
                     } else {
