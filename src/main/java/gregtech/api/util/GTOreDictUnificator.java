@@ -67,11 +67,12 @@ public class GTOreDictUnificator {
         if (Items.feather.getDamage(stack) == WILDCARD) {
             unificationWildcardBlacklist.add(stack.getItem());
         } else {
-            unificationBlacklist.add(GTItemStack.internalCopyStack(stack));
+            unificationBlacklist.add(stack);
         }
     }
 
     public static boolean isBlacklisted(ItemStack stack) {
+        if (stack == null) return false;
         return unificationBlacklist.contains(stack) || unificationWildcardBlacklist.contains(stack.getItem());
     }
 

@@ -246,7 +246,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         // Handle familiar prefixes for GT items
         ItemData tPrefixMaterial = GTOreDictUnificator.getAssociation(aResult);
-        if (tPrefixMaterial != null && !GTOreDictUnificator.isBlacklisted(aResult)
+        if (tPrefixMaterial != null && tPrefixMaterial.hasValidPrefixMaterialData()
+            && !GTOreDictUnificator.isBlacklisted(aResult)
             && !tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty()) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                 tResults.add(GTOreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
