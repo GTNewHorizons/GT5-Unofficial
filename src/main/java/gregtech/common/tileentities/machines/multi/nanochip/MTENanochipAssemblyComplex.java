@@ -216,7 +216,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         checkHasOutputBus(errors);
         if (!errors.isEmpty()) return;
 
-        updateModuleEU(this.matrixPowerPortion);
+        updateModuleEU(this.matrixPowerPortion, true);
     }
 
     @Override
@@ -721,7 +721,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     public void setMatrixPowerPortion(int portion) {
-        if (matrixPowerPortion != portion && updateModuleEU(portion)) {
+        if (matrixPowerPortion != portion && updateModuleEU(portion, false)) {
             matrixPowerPortion = portion;
         }
     }
@@ -730,14 +730,14 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return matrixPowerPortion;
     }
 
-    private boolean updateModuleEU(long newPortion) {
+    private boolean updateModuleEU(long newPortion, boolean force) {
         int matrix = 0;
         int nonMatrix = 0;
         for (MTENanochipAssemblyModuleBase<?> module : modules) {
             ModuleTypes type = module.getModuleType();
             if (type == ModuleTypes.Splitter) continue;
 
-            if (module.mMaxProgresstime > 0) {
+            if (!force && module.mMaxProgresstime > 0) {
                 return false;
             }
 
