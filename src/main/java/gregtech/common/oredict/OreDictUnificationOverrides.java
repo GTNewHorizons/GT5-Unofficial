@@ -1,5 +1,6 @@
 package gregtech.common.oredict;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.DraconicEvolution;
@@ -13,13 +14,17 @@ import static gregtech.api.enums.Mods.Translocator;
 
 import java.util.HashMap;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 
 public final class OreDictUnificationOverrides {
 
     // oreName -> modId
     private static final HashMap<String, String> preferredMods = new HashMap<>();
+    private static boolean unificationComplete = false;
 
     static {
         add(GregTech.ID, "dustAlumina");
@@ -55,12 +60,22 @@ public final class OreDictUnificationOverrides {
         if (!registration.prefix.isUnifiable()) return;
         if (GTOreDictUnificator.isBlacklisted(registration.stack)) return;
 
+        ItemStack previousTarget = GTOreDictUnificator.getFirstOre_nocopy(registration.oreName);
+        if (GTUtility.isStackValid(previousTarget) && !GTUtility.areStacksEqual(previousTarget, registration.stack)) {
+            GTOreDictUnificator.resetUnificationTarget(registration.oreName);
+            if (unificationComplete) {
+                // If you see this log, consider fixing the mod that registered an OreDict entry too late
+                GT_FML_LOGGER.warn(
+                    "Late OreDict override for {} detected after unification completed. Existing recipes may now contain stale items",
+                    registration.oreName);
+            }
+        }
+
         GTOreDictUnificator.set(registration.prefix, registration.material, registration.stack, true, true);
     }
 
     public static void finalizeUnification() {
-        // In case some recipes were created before the desired ItemStack became canonical
-        GTOreDictUnificator.resetUnificationEntries();
+        unificationComplete = true;
         GTRecipe.reInit();
     }
 }
