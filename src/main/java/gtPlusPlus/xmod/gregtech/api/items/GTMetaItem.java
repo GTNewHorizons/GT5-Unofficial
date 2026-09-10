@@ -86,7 +86,9 @@ public abstract class GTMetaItem extends GTMetaItemBase {
             this.mEnabledItems.set(aID);
             this.mVisibleItems.set(aID);
             GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
-            GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            if (!aToolTip.isEmpty()) {
+                GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            }
             final List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (final Object tRandomData : aRandomData) {

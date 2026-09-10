@@ -48,3 +48,18 @@ gui.detrav.scanner.tooltip.ore_depth=Y: %d
 gui.detrav.scanner.tooltip.mark_hint=右键标记
 gui.detrav.scanner.search.hint=搜索...
 gui.detrav.scanner.hint.invert=双击反转背景
+
+# Prospector scanners
+gt.detrav.metatool.01.10.name=探矿仪（IV）
+gt.detrav.metatool.01.100.name=电子探矿仪（LuV）
+gt.detrav.metatool.01.102.name=电子探矿仪（ZPM）
+gt.detrav.metatool.01.104.name=电子探矿仪（UV）
+gt.detrav.metatool.01.106.name=电子探矿仪（UHV）
+gt.detrav.metatool.01.12.name=探矿仪（LuV）
+gt.detrav.metatool.01.14.name=探矿仪（ZPM）
+gt.detrav.metatool.01.16.name=探矿仪（UV）
+gt.detrav.metatool.01.18.name=探矿仪（UHV）
+gt.detrav.metatool.01.2.name=探矿仪（LV）
+gt.detrav.metatool.01.4.name=探矿仪（MV）
+gt.detrav.metatool.01.6.name=探矿仪（HV）
+gt.detrav.metatool.01.8.name=探矿仪（EV）

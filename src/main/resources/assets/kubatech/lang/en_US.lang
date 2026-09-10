@@ -391,3 +391,26 @@ gt.blockmachines.htgr.name=High Temperature Gas-cooled Reactor
 gt.blockmachines.industrialarcfurnace.controller.tier.single.name=Industrial Arc Furnace
 gt.blockmachines.multimachine.defusioncrafter.name=Draconic Evolution Fusion Crafter
 gt.blockmachines.multimachine.extremegreenhouse.name=Extreme Industrial Greenhouse
+
+# HTGR fuel items
+item.HTGRBISOPebbleCompoundPlutonium.name=BISO pebble compound (Plutonium)
+item.HTGRBISOPebbleCompoundThorium.name=BISO pebble compound (Thorium)
+item.HTGRBISOPebbleCompoundUranium.name=BISO pebble compound (Uranium)
+item.HTGRBurnedOutTRISOBallPlutonium.name=Burned out TRISO Ball (Plutonium)
+item.HTGRBurnedOutTRISOBallThorium.name=Burned out TRISO Ball (Thorium)
+item.HTGRBurnedOutTRISOBallUranium.name=Burned out TRISO Ball (Uranium)
+item.HTGRBurnedOutTRISOPebblePlutonium.name=Burned out TRISO Pebble (Plutonium)
+item.HTGRBurnedOutTRISOPebbleThorium.name=Burned out TRISO Pebble (Thorium)
+item.HTGRBurnedOutTRISOPebbleUranium.name=Burned out TRISO Pebble (Uranium)
+item.HTGRHTGRFuelMixturePlutonium.name=HTGR fuel mixture (Plutonium)
+item.HTGRHTGRFuelMixtureThorium.name=HTGR fuel mixture (Thorium)
+item.HTGRHTGRFuelMixtureUranium.name=HTGR fuel mixture (Uranium)
+item.HTGRTRISOBallPlutonium.name=TRISO ball (Plutonium)
+item.HTGRTRISOBallThorium.name=TRISO ball (Thorium)
+item.HTGRTRISOBallUranium.name=TRISO ball (Uranium)
+item.HTGRTRISOPebbleCompoundPlutonium.name=TRISO pebble compound (Plutonium)
+item.HTGRTRISOPebbleCompoundThorium.name=TRISO pebble compound (Thorium)
+item.HTGRTRISOPebbleCompoundUranium.name=TRISO pebble compound (Uranium)
+item.HTGRTRISOPebblePlutonium.name=TRISO pebble (Plutonium)
+item.HTGRTRISOPebbleThorium.name=TRISO pebble (Thorium)
+item.HTGRTRISOPebbleUranium.name=TRISO pebble (Uranium)

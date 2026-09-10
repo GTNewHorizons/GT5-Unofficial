@@ -96,3 +96,26 @@ gt.blockmachines.htgr.name=高温气冷反应堆
 gt.blockmachines.industrialarcfurnace.controller.tier.single.name=工业电弧炉
 gt.blockmachines.multimachine.defusioncrafter.name=龙研聚合装置
 gt.blockmachines.multimachine.extremegreenhouse.name=极限工业温室
+
+# HTGR fuel items
+item.HTGRBISOPebbleCompoundPlutonium.name=BISO复合材料（钚）
+item.HTGRBISOPebbleCompoundThorium.name=BISO复合材料（钍）
+item.HTGRBISOPebbleCompoundUranium.name=BISO复合材料（铀）
+item.HTGRBurnedOutTRISOBallPlutonium.name=枯竭TRISO燃料球（钚）
+item.HTGRBurnedOutTRISOBallThorium.name=枯竭TRISO燃料球（钍）
+item.HTGRBurnedOutTRISOBallUranium.name=枯竭TRISO燃料球（铀）
+item.HTGRBurnedOutTRISOPebblePlutonium.name=枯竭TRISO燃料丸（钚）
+item.HTGRBurnedOutTRISOPebbleThorium.name=枯竭TRISO燃料丸（钍）
+item.HTGRBurnedOutTRISOPebbleUranium.name=枯竭TRISO燃料丸（铀）
+item.HTGRHTGRFuelMixturePlutonium.name=HTGR混合燃料（钚）
+item.HTGRHTGRFuelMixtureThorium.name=HTGR混合燃料（钍）
+item.HTGRHTGRFuelMixtureUranium.name=HTGR混合燃料（铀）
+item.HTGRTRISOBallPlutonium.name=TRISO燃料球（钚）
+item.HTGRTRISOBallThorium.name=TRISO燃料球（钍）
+item.HTGRTRISOBallUranium.name=TRISO燃料球（铀）
+item.HTGRTRISOPebbleCompoundPlutonium.name=TRISO复合材料（钚）
+item.HTGRTRISOPebbleCompoundThorium.name=TRISO复合材料（钍）
+item.HTGRTRISOPebbleCompoundUranium.name=TRISO复合材料（铀）
+item.HTGRTRISOPebblePlutonium.name=TRISO燃料丸（钚）
+item.HTGRTRISOPebbleThorium.name=TRISO燃料丸（钍）
+item.HTGRTRISOPebbleUranium.name=TRISO燃料丸（铀）

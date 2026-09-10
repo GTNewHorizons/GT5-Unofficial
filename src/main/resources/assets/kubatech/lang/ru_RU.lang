@@ -242,3 +242,26 @@ gt.blockmachines.htgr.name=Высокотемпературный газоохл
 gt.blockmachines.industrialarcfurnace.controller.tier.single.name=Промышленная дуговая печь
 gt.blockmachines.multimachine.defusioncrafter.name=Draconic Evolution термоядерный крафтер
 gt.blockmachines.multimachine.extremegreenhouse.name=Экстремальная промышленная теплица
+
+# HTGR fuel items
+item.HTGRBISOPebbleCompoundPlutonium.name=Топливная смесь пеллеты BISO (Плутоний)
+item.HTGRBISOPebbleCompoundThorium.name=Топливная смесь пеллеты BISO (Торий)
+item.HTGRBISOPebbleCompoundUranium.name=Топливная смесь пеллеты BISO (Уран)
+item.HTGRBurnedOutTRISOBallPlutonium.name=Отработанный шарик пеллеты TRISO (Плутоний)
+item.HTGRBurnedOutTRISOBallThorium.name=Отработанный шарик пеллеты TRISO (Торий)
+item.HTGRBurnedOutTRISOBallUranium.name=Отработанный шарик пеллеты TRISO (Уран)
+item.HTGRBurnedOutTRISOPebblePlutonium.name=Отработанная пеллета TRISO (Плутоний)
+item.HTGRBurnedOutTRISOPebbleThorium.name=Отработанная пеллета TRISO (Торий)
+item.HTGRBurnedOutTRISOPebbleUranium.name=Отработанная пеллета TRISO (Уран)
+item.HTGRHTGRFuelMixturePlutonium.name=HTGR топливная смесь (Плутоний)
+item.HTGRHTGRFuelMixtureThorium.name=HTGR топливная смесь (Торий)
+item.HTGRHTGRFuelMixtureUranium.name=HTGR топливная смесь (Уран)
+item.HTGRTRISOBallPlutonium.name=Шарик TRISO (Плутоний)
+item.HTGRTRISOBallThorium.name=Шарик TRISO (Торий)
+item.HTGRTRISOBallUranium.name=Шарик TRISO (Уран)
+item.HTGRTRISOPebbleCompoundPlutonium.name=Топливная смесь пеллеты TRISO (Плутоний)
+item.HTGRTRISOPebbleCompoundThorium.name=Топливная смесь пеллеты TRISO (Торий)
+item.HTGRTRISOPebbleCompoundUranium.name=Топливная смесь пеллеты TRISO (Уран)
+item.HTGRTRISOPebblePlutonium.name=Пеллета TRISO (Плутоний)
+item.HTGRTRISOPebbleThorium.name=Пеллета TRISO (Торий)
+item.HTGRTRISOPebbleUranium.name=Пеллета TRISO (Уран)
