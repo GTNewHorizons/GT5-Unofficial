@@ -3810,6 +3810,11 @@ GT5U.gui.text.LHC.setparams=Set Operating Parameters
 GT5U.gui.text.LHC.calc.resultheader=Collision Energy | Rate | Power Draw
 GT5U.gui.text.LHC.probtable.title=Particle Probabilities
 GT5U.gui.text.LHC.probtable.collisionenergyeV=Collision Energy (eV)
+GT5U.gui.text.LHC.boostmode=Beam Booster
+GT5U.gui.text.LHC.boostmode.none=Booster Fluid: None
+GT5U.gui.text.LHC.boostmode.qgp=Booster Fluid: Quark-Gluon Plasma
+GT5U.gui.text.LHC.boostmode.magmatter=Booster Fluid: Magmatter
+GT5U.gui.text.LHC.boostmode.restart=Restart machine to apply
 GT5U.gui.text.beamcrafter.guiheadercrafting=Current Particles Required
 GT5U.gui.text.beamcrafter.guiheaderbuffer=Current Particle Buffer
 
@@ -3852,7 +3857,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in 
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §9Beam Energy§7 by §3EU Consumed in cycle§7 * §f0.1eV§7 / §6Beam Rate§7,
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=until the §9Target Beam Energy§7 is reached, or the §dmaximum number of cycles§7 is reached
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §9Target Beam Energy§7 is reached, add §f0.3§7 * §6Beam Rate§7 to the current §6Beam Rate§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f15000§7, add (§f0.3§7 * §6Beam Rate§7)^§f0.5§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f15000§7, add (§f0.3§7 * §6Beam Rate§7)^§40.5§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=to the current §6Beam Rate§7 instead
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§3Power§7 cost starts at §f1A§7 of §fUV§7 per §6Beam Rate§7 and increases quadratically
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=with the §dnumber of completed cycles§7
@@ -3864,17 +3869,23 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip18=then collide to generat
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19=The §bCollision Energy§7 is two times the §9Beam Energy§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20=If the §bCollision Energy§7 exceeds the rest mass of a particle, that particle will start
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21=appearing in the outputs
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22=A particle output can only appear in the modules that correspond to the forces that
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23=interact with that particle
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24=For example, Neutrinos cannot appear in the Strong force module, §fALICE§7, since they do
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25=not interact via the strong force
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26=§fFiltered Beam Output Hatches§7 will allow you to see the list of possible outputs, and
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27=filter them
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28=There are four LHC modules, marked by the letter on top of the module:
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29=§bE - Electromagnetism§7 - Charged Matter Sensor (§bCMS§7)
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30=§2W - Weak Interaction§7 - Advanced Total Lepton Assimilation Snare (§2ATLAS§7)
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip31=§fS - Strong Force§7 - Absolute Lattice Integrated Chromodynamic Encapsulator (§fALICE§7)
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip32=§5G - Gravity§7 - Localized Horizon Curvature Binder (§5LHCb§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22=§fFiltered Beam Output Hatches§7 and the Probability Table will allow you to see the list of 
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23=possible outputs, and filter them
+
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24=§c§l§oBooster Fluids§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25=§fBooster Fluids§7 can be supplied to enhance the LHC §4scaling exponent§7 for 
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26=§6Beam Rates§7 above §f15000§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27=§fNo fluid§7 - §40.5§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28=§fDegenerate Quark-Gluon Plasma§7 - §40.75§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29=§fMolten Magmatter§7 - §41§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30=The §9Beam Energy§7 is immediately set to §f1TeV§7, and §6Beam Rate§7 L of fluid is consumed every cycle 
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip31=If the §fBooster Fluid§7 supplied is changed, the beam must be re-accelerated from scratch
+
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip32=There are four LHC modules, marked by the letter on top of the module:
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip33=§bE - Electromagnetism§7 - Charged Matter Sensor (§bCMS§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip34=§2W - Weak Interaction§7 - Advanced Total Lepton Assimilation Snare (§2ATLAS§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip35=§fS - Strong Force§7 - Absolute Lattice Integrated Chromodynamic Encapsulator (§fALICE§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip36=§5G - Gravity§7 - Localized Horizon Curvature Binder (§5LHCb§7)
 
 gt.blockmachines.multimachine.beamcrafting.ttcontroller=Front center
 gt.blockmachines.multimachine.beamcrafting.ttehatch=Energy Hatch
