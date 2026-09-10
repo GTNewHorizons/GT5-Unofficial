@@ -579,7 +579,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
-        return AxisAlignedBB.getBoundingBox(x - 40, y - 40, z - 40, x + 40, y + 40, z + 40);
+        return AxisAlignedBB.getBoundingBox(x - 12, y - 12, z - 12, x + 12, y + 12, z + 12);
     }
 
     private double lerp(double start, double end, double t) {
