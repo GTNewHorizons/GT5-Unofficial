@@ -22,6 +22,7 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
@@ -47,6 +48,7 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
@@ -579,18 +581,25 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     .sliderSize(2, 14)
                     .size(102, 14)
                     .tooltipDynamic(t -> {
+                        boolean moduleRunning = false;
                         int matrix = 0;
                         int nonMatrix = 0;
                         for (MTENanochipAssemblyModuleBase<?> module : multiblock.getModules()) {
                             ModuleTypes type = module.getModuleType();
                             if (type == ModuleTypes.Splitter) continue;
+                            if (module.mMaxProgresstime > 0) moduleRunning = true;
+
                             if (type == ModuleTypes.AssemblyMatrix) matrix++;
                             else nonMatrix++;
                         }
 
                         if (matrix + nonMatrix == 0) {
-                            t.addLine("No modules installed");
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.none"));
                             return;
+                        }
+
+                        if (moduleRunning) {
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.running"));
                         }
 
                         int portion = portionSync.getIntValue();
@@ -603,19 +612,36 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         long perMatrixPortion = matrixFullPortion / Math.max(1, matrix);
                         long perNonMatrixPortion = nonMatrixFullPortion / Math.max(1, nonMatrix);
 
-                        if (matrix > 0) {
+                        if (matrix == 0) {
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.no_matrix"));
+                        } else if (matrix == 1) {
                             t.addLine(
-                                String.format("Per Matrix: %s EU/t", GTUtility.scientificFormat(perMatrixPortion)));
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.matrix",
+                                    portion,
+                                    GTUtility.scientificFormat(perMatrixPortion)));
                         } else {
-                            t.addLine("No matrix modules installed");
-                        }
-                        if (nonMatrix > 0) {
                             t.addLine(
-                                String.format(
-                                    "Per Non-matrix: %s EU/t",
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.matrix_mult",
+                                    portion,
+                                    GTUtility.scientificFormat(perMatrixPortion)));
+                        }
+
+                        if (nonMatrix == 0) {
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.no_nonmatrix"));
+                        } else if (nonMatrix == 1) {
+                            t.addLine(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.nonmatrix",
+                                    100 - portion,
                                     GTUtility.scientificFormat(perNonMatrixPortion)));
                         } else {
-                            t.addLine("No non-matrix modules installed");
+                            t.addLine(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.nonmatrix_mult",
+                                    100 - portion,
+                                    GTUtility.scientificFormat(perNonMatrixPortion)));
                         }
                     })
                     .tooltipShowUpTimer(TOOLTIP_DELAY)
@@ -673,14 +699,48 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return Flow.column()
             .width(18)
-            .height(38)
+            .height(58)
             .top(2)
             .marginLeft(3)
             .mainAxisAlignment(Alignment.MainAxis.END)
             .reverseLayout(true)
             .childPadding(2)
             .child(createPowerSwitchButton())
-            .child(createStructureUpdateButton(syncManager));
+            .child(createStructureUpdateButton(syncManager))
+            .child(createToggleModulesButton(panel, syncManager));
+    }
+
+    protected ButtonWidget<?> createToggleModulesButton(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue allModuleSync = syncManager.findSyncHandler("allModuleToggle", BooleanSyncValue.class);
+
+        return new ButtonWidget<>().size(18)
+            .background(new DynamicDrawable(() -> {
+                if (allModuleSync.getBoolValue()) {
+                    return GTGuiTextures.BUTTON_NANOCHIP_PRESSED;
+                }
+                return GTGuiTextures.BUTTON_NANOCHIP;
+            }))
+            .overlay(new DynamicDrawable(() -> {
+                if (allModuleSync.getBoolValue()) {
+                    return GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_ON;
+                }
+                return GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_OFF;
+            }))
+            .onMousePressed(_ -> {
+                syncManager.callSyncedAction("toggleModules", buf -> buf.writeBoolean(!allModuleSync.getBoolValue()));
+                return true;
+            })
+            .tooltipDynamic(t -> {
+                if (allModuleSync.getBoolValue()) {
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_on.1"));
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_on.2"));
+                } else {
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_off.1"));
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_off.2"));
+                }
+            })
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .tooltipAutoUpdate(true);
     }
 
     @Override
@@ -720,6 +780,12 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             "matrixPowerPortion",
             new IntSyncValue(multiblock::getMatrixPowerPortion, multiblock::setMatrixPowerPortion).allowC2S());
         syncManager.syncValue("maxInputEU", new LongSyncValue(multiblock::getMaxInputEu));
+        syncManager.syncValue("allModuleToggle", new BooleanSyncValue(multiblock::getAllModuleToggle));
+
+        syncManager.registerSyncedAction("toggleModules", Side.SERVER, buf -> {
+            boolean to = buf.readBoolean();
+            multiblock.toggleAllModules(to);
+        });
     }
 
     List<String> NOptions = Arrays.asList(

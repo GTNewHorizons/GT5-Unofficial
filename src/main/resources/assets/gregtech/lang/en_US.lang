@@ -3284,7 +3284,6 @@ GT5U.gui.text.button.cryotheum.disabled=Cryotheum Cooling: §4Disabled
 
 # NAC Keys
 GT5U.gui.text.recipe_result.nac.missing_water=Insufficient Water Supplied
-GT5U.gui.text.recipe_result.nac.waiting_for_power=Waiting For Power
 GT5U.gui.text.recipe_result.nac.no_valid_hatch_color=No VCO with color %s found
 GT5U.gui.text.nac.amount=Amount: %s
 GT5U.gui.text.nac.splitter.redstone_level=Current Redstone Level
@@ -3311,11 +3310,24 @@ GT5U.gui.text.nac.bar.label.cosmics=Cosmics Circuits
 GT5U.gui.text.nac.bar.label.temporals=Temporally Transcendent Circuits
 GT5U.gui.text.nac.bar.label.specials=High-Grade Specialty Circuits
 
+GT5U.gui.text.nac.energybar.tooltip.none=No modules installed
+GT5U.gui.text.nac.energybar.tooltip.no_matrix=No matrix modules installed
+GT5U.gui.text.nac.energybar.tooltip.no_nonmatrix=No non-matrix modules installed
+GT5U.gui.text.nac.energybar.tooltip.running=§cCannot update value while running
+GT5U.gui.text.nac.energybar.tooltip.matrix=§dMatrix portion: %d%% (%s EU/t)
+GT5U.gui.text.nac.energybar.tooltip.matrix_mult=§dMatrix portion: %d%% (%s EU/t each)
+GT5U.gui.text.nac.energybar.tooltip.nonmatrix=§3Non-matrix portion: %d%% (%s EU/t)
+GT5U.gui.text.nac.energybar.tooltip.nonmatrix_mult=§3Non-matrix portion: %d%% (%s EU/t each)
+
 GT5U.gui.text.nac.module.boardprocessor.flush_tank_auto=Flush automatically at
 GT5U.gui.text.nac.module.boardprocessor.impurity=Impurity
 
 GT5U.gui.text.nac.module.status.connected=Connected to Main Complex
 GT5U.gui.text.nac.module.status.disconnected=Disconnected from Main Complex
+GT5U.gui.text.nac.module.disable_all_button_on.1=All modules enabled
+GT5U.gui.text.nac.module.disable_all_button_on.2=Press to disable all modules
+GT5U.gui.text.nac.module.disable_all_button_off.1=All modules disabled
+GT5U.gui.text.nac.module.disable_all_button_off.2=Press to enable all modules
 
 # NAC Info Panel
 GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
@@ -3494,6 +3506,7 @@ GT5U.tooltip.nac.hatch.vc.base.4=§eOutputs from recipes with inputs from a colo
 GT5U.tooltip.nac.hatch.vc.base.5=§ewill be placed in a Vacuum Conveyor Output of the corresponding color
 GT5U.tooltip.nac.module.scanner.current_eu=§eCurrent EU Stored: %s
 GT5U.tooltip.nac.module.scanner.total_buffer=§aTotal EU Buffer Size: %s
+GT5U.tooltip.nac.module.scanner.available_eut=§eMax EU/t: %s
 
 GT5U.tooltip.nac.color_grid.click_select=Click to select
 GT5U.tooltip.nac.color_grid.selected=Selected

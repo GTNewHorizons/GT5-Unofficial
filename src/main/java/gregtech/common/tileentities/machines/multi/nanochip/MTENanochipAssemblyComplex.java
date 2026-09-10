@@ -101,6 +101,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     // 1 to 99, representing 1 to 99% power portioned to matrix
     private int matrixPowerPortion = 25;
 
+    private boolean allModuleToggle = true;
+
     public CircuitCalibration.CalibrationThreshold currentThreshold;
 
     public static final IStructureDefinition<MTENanochipAssemblyComplex> STRUCTURE_DEFINITION = StructureDefinition
@@ -214,7 +216,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         checkHasOutputBus(errors);
         if (!errors.isEmpty()) return;
 
-        updateModuleEU();
+        updateModuleEU(this.matrixPowerPortion);
     }
 
     @Override
@@ -691,6 +693,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             aNBT.setIntArray("currentBlock", currentBlock.writeToIntArray());
         }
         aNBT.setInteger("matrixPortion", matrixPowerPortion);
+        aNBT.setBoolean("allModuleToggle", allModuleToggle);
     }
 
     @Override
@@ -705,6 +708,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         setCurrentThreshold(CircuitCalibration.getCurrentCalibration(this));
         if (aNBT.hasKey("currentBlock")) currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
         if (aNBT.hasKey("matrixPortion")) matrixPowerPortion = aNBT.getInteger("matrixPortion");
+        if (aNBT.hasKey("allModuleToggle")) allModuleToggle = aNBT.getBoolean("allModuleToggle");
     }
 
     public List<MTENanochipAssemblyModuleBase<?>> getModules() {
@@ -717,9 +721,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     public void setMatrixPowerPortion(int portion) {
-        if (matrixPowerPortion != portion) {
+        if (matrixPowerPortion != portion && updateModuleEU(portion)) {
             matrixPowerPortion = portion;
-            updateModuleEU();
         }
     }
 
@@ -727,19 +730,24 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return matrixPowerPortion;
     }
 
-    private void updateModuleEU() {
+    private boolean updateModuleEU(long newPortion) {
         int matrix = 0;
         int nonMatrix = 0;
         for (MTENanochipAssemblyModuleBase<?> module : modules) {
             ModuleTypes type = module.getModuleType();
             if (type == ModuleTypes.Splitter) continue;
+
+            if (module.mMaxProgresstime > 0) {
+                return false;
+            }
+
             if (type == ModuleTypes.AssemblyMatrix) matrix++;
             else nonMatrix++;
         }
 
         long totalEUt = this.getMaxInputEu();
 
-        long matrixFullPortion = (long) ((matrixPowerPortion / 100.0f) * totalEUt);
+        long matrixFullPortion = (long) ((newPortion / 100.0f) * totalEUt);
         long nonMatrixFullPortion = totalEUt - matrixFullPortion;
 
         long perMatrixPortion = matrixFullPortion / Math.max(1, matrix);
@@ -761,6 +769,23 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 module.setBufferSize(nonMatrixBufferSize.multiply(BigInteger.valueOf(2L * maxDuration)));
             }
         }
+
+        return true;
+    }
+
+    public void toggleAllModules(boolean on) {
+        for (var module : modules) {
+            if (on) {
+                module.enableWorking();
+            } else {
+                module.disableWorking();
+            }
+        }
+        allModuleToggle = on;
+    }
+
+    public boolean getAllModuleToggle() {
+        return allModuleToggle;
     }
 
     @Override
@@ -769,7 +794,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTENanochipAssemblyComplexGui(this);
     }
 
