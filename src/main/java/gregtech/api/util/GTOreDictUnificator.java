@@ -121,11 +121,14 @@ public class GTOreDictUnificator {
         ItemStack stack = sName2StackMap.get(name);
         if (GTUtility.isStackValid(stack)) return stack;
 
+        ItemStack firstStack = null;
         for (ItemStack ore : getOresImmutable(name)) {
-            if (ore != null) return ore;
+            if (ore != null) {
+                if (!isBlacklisted(ore)) return ore;
+                if (firstStack == null) firstStack = ore;
+            }
         }
-
-        return null;
+        return firstStack;
     }
 
     public static ItemStack get(Object aName, long aAmount) {

@@ -121,7 +121,7 @@ final class OreDictAliases {
     }
 
     private static void addAlias(String oreName, Consumer<ItemStack> action) {
-        ALIASES.computeIfAbsent(oreName, ignored -> new ArrayList<>())
+        ALIASES.computeIfAbsent(oreName, _ -> new ArrayList<>())
             .add(action);
     }
 }
