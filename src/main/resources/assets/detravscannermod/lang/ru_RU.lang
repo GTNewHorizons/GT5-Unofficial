@@ -50,16 +50,5 @@ gui.detrav.scanner.search.hint=Поиск...
 gui.detrav.scanner.hint.invert=Двойной клик для инверсии фона
 
 # Prospector scanners
-gt.detrav.metatool.01.10.name=Геологический сканер (IV)
-gt.detrav.metatool.01.100.name=Электрический геологический сканер (LuV)
-gt.detrav.metatool.01.102.name=Электрический геологический сканер (ZPM)
-gt.detrav.metatool.01.104.name=Электрический геологический сканер (UV)
-gt.detrav.metatool.01.106.name=Электрический геологический сканер (UHV)
-gt.detrav.metatool.01.12.name=Геологический сканер (LuV)
-gt.detrav.metatool.01.14.name=Геологический сканер (ZPM)
-gt.detrav.metatool.01.16.name=Геологический сканер (UV)
-gt.detrav.metatool.01.18.name=Геологический сканер (UHV)
-gt.detrav.metatool.01.2.name=Геологический сканер (LV)
-gt.detrav.metatool.01.4.name=Геологический сканер (MV)
-gt.detrav.metatool.01.6.name=Геологический сканер (HV)
-gt.detrav.metatool.01.8.name=Геологический сканер (EV)
+gt.detrav.metatool.01.name=Геологический сканер (%s)
+gt.detrav.metatool.01.electric.name=Электрический геологический сканер (%s)

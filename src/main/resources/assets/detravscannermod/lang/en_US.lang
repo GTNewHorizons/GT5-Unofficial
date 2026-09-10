@@ -50,16 +50,5 @@ gui.detrav.scanner.search.hint=Search...
 gui.detrav.scanner.hint.invert=Double-click to invert background
 
 # Prospector scanners
-gt.detrav.metatool.01.10.name=Prospector's Scanner (IV)
-gt.detrav.metatool.01.100.name=Electric Prospector's Scanner (LuV)
-gt.detrav.metatool.01.102.name=Electric Prospector's Scanner (ZPM)
-gt.detrav.metatool.01.104.name=Electric Prospector's Scanner (UV)
-gt.detrav.metatool.01.106.name=Electric Prospector's Scanner (UHV)
-gt.detrav.metatool.01.12.name=Prospector's Scanner (LuV)
-gt.detrav.metatool.01.14.name=Prospector's Scanner (ZPM)
-gt.detrav.metatool.01.16.name=Prospector's Scanner (UV)
-gt.detrav.metatool.01.18.name=Prospector's Scanner (UHV)
-gt.detrav.metatool.01.2.name=Prospector's Scanner (LV)
-gt.detrav.metatool.01.4.name=Prospector's Scanner (MV)
-gt.detrav.metatool.01.6.name=Prospector's Scanner (HV)
-gt.detrav.metatool.01.8.name=Prospector's Scanner (EV)
+gt.detrav.metatool.01.name=Prospector's Scanner (%s)
+gt.detrav.metatool.01.electric.name=Electric Prospector's Scanner (%s)
