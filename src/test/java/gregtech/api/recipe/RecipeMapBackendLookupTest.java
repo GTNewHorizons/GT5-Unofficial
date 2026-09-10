@@ -639,7 +639,6 @@ class RecipeMapBackendLookupTest {
         try {
             GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.MV));
             ItemData equivalentData = new ItemData(circuit, Materials.MV);
-            equivalentData.mBlackListed = true;
             GTOreDictUnificator.setItemData(equivalent, equivalentData);
             GTOreDictUnificator.resetUnificationEntries();
 
