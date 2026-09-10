@@ -2,24 +2,13 @@
 kubaitem.defc_schematic_t1.tip=Diesen Bauplan kann man in Pluto Dungeons finden
 
 # HTGR fuel items
-item.HTGRBISOPebbleCompoundPlutonium.name=BISO pebble compound (Plutonium)
-item.HTGRBISOPebbleCompoundThorium.name=BISO pebble compound (Thorium)
-item.HTGRBISOPebbleCompoundUranium.name=BISO pebble compound (Uranium)
-item.HTGRBurnedOutTRISOBallPlutonium.name=Burned out TRISO Ball (Plutonium)
-item.HTGRBurnedOutTRISOBallThorium.name=Burned out TRISO Ball (Thorium)
-item.HTGRBurnedOutTRISOBallUranium.name=Burned out TRISO Ball (Uranium)
-item.HTGRBurnedOutTRISOPebblePlutonium.name=Burned out TRISO Pebble (Plutonium)
-item.HTGRBurnedOutTRISOPebbleThorium.name=Burned out TRISO Pebble (Thorium)
-item.HTGRBurnedOutTRISOPebbleUranium.name=Burned out TRISO Pebble (Uranium)
-item.HTGRHTGRFuelMixturePlutonium.name=HTGR fuel mixture (Plutonium)
-item.HTGRHTGRFuelMixtureThorium.name=HTGR fuel mixture (Thorium)
-item.HTGRHTGRFuelMixtureUranium.name=HTGR fuel mixture (Uranium)
-item.HTGRTRISOBallPlutonium.name=TRISO ball (Plutonium)
-item.HTGRTRISOBallThorium.name=TRISO ball (Thorium)
-item.HTGRTRISOBallUranium.name=TRISO ball (Uranium)
-item.HTGRTRISOPebbleCompoundPlutonium.name=TRISO pebble compound (Plutonium)
-item.HTGRTRISOPebbleCompoundThorium.name=TRISO pebble compound (Thorium)
-item.HTGRTRISOPebbleCompoundUranium.name=TRISO pebble compound (Uranium)
-item.HTGRTRISOPebblePlutonium.name=TRISO pebble (Plutonium)
-item.HTGRTRISOPebbleThorium.name=TRISO pebble (Thorium)
-item.HTGRTRISOPebbleUranium.name=TRISO pebble (Uranium)
+item.HTGR.fuel.Plutonium=Plutonium
+item.HTGR.fuel.Thorium=Thorium
+item.HTGR.fuel.Uranium=Uranium
+item.HTGRBISOPebbleCompound.name=BISO pebble compound (%s)
+item.HTGRBurnedOutTRISOBall.name=Burned out TRISO Ball (%s)
+item.HTGRBurnedOutTRISOPebble.name=Burned out TRISO Pebble (%s)
+item.HTGRHTGRFuelMixture.name=HTGR fuel mixture (%s)
+item.HTGRTRISOBall.name=TRISO ball (%s)
+item.HTGRTRISOPebble.name=TRISO pebble (%s)
+item.HTGRTRISOPebbleCompound.name=TRISO pebble compound (%s)
