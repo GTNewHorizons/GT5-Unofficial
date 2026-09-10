@@ -117,7 +117,6 @@ import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumChlorideC
 import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumExtractingNanoResin;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumOreConcentrate;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -408,21 +407,6 @@ public class RecipeLoader {
             ItemList.Robot_Arm_LuV.get(1),
             'H',
             ItemList.Hull_LuV.get(1));
-
-        // Focus Input Bus
-        GameRegistry.addShapedRecipe(
-            LanthItemList.BEAMLINE_FOCUS_INPUT_BUS,
-            "MCM",
-            "McM",
-            "RCR",
-            'M',
-            WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 1),
-            'C',
-            ItemList.Conveyor_Module_HV.get(1),
-            'R',
-            ItemList.Robot_Arm_HV.get(1),
-            'c',
-            new ItemStack(Blocks.chest, 1, 32767));
 
         // Target Receptacle, same thing as Focus Manipulator basically
         GTValues.RA.stdBuilder()
