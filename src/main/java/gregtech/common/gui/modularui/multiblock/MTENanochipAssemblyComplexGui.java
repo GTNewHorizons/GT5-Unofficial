@@ -1,11 +1,13 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.modularui2.GTGuiTextures.PROGRESSBAR_NANOCHIP_CALIBRATION;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CALIBRATION_MAX;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -28,6 +30,7 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -39,12 +42,14 @@ import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
@@ -471,7 +476,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     public Flow createMainColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createMainColumn(panel, syncManager).child(createTitleColumn(panel, syncManager));
+        return super.createMainColumn(panel, syncManager).child(createTitleColumn(panel, syncManager))
+            .child(createPowerSlider(panel, syncManager));
     }
 
     private Flow createTitleColumn(ModularPanel panel, PanelSyncManager syncManager) {
@@ -489,6 +495,131 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         IKey.dynamic(
                             () -> titleSync.getStringValue() + "\n"
                                 + translateToLocal("GT5U.gui.text.nac.nameplate"))));
+    }
+
+    private Widget<?> createPowerSlider(ModularPanel panel, PanelSyncManager syncManager) {
+        IntSyncValue portionSync = syncManager.findSyncHandler("matrixPowerPortion", IntSyncValue.class);
+        LongSyncValue maxEUSync = syncManager.findSyncHandler("maxInputEU", LongSyncValue.class);
+
+        return new ParentWidget<>().size(102, 14)
+            .marginTop(4)
+            .child(new SegmentedBarWidget(100, 1, () -> {
+                int matrix = 0;
+                int nonMatrix = 0;
+                for (MTENanochipAssemblyModuleBase<?> module : multiblock.getModules()) {
+                    ModuleTypes type = module.getModuleType();
+                    if (type == ModuleTypes.Splitter) continue;
+                    if (type == ModuleTypes.AssemblyMatrix) matrix++;
+                    else nonMatrix++;
+                }
+
+                int matrixFullPortion = portionSync.getIntValue();
+                int nonMatrixFullPortion = 100 - matrixFullPortion;
+
+                int[] matrixSegmentAmounts;
+                if (matrix > 0) {
+                    matrixSegmentAmounts = new int[matrix];
+                    int matrixPerPortion = matrixFullPortion / matrix;
+                    Arrays.fill(matrixSegmentAmounts, matrixPerPortion);
+                    int matrixMod = matrixFullPortion % matrix;
+                    if (matrixMod != 0) {
+                        int idx = 0;
+                        while (matrixMod != 0) {
+                            matrixSegmentAmounts[idx] += 1;
+                            matrixMod--;
+                            idx += 1;
+                            if (idx >= matrixSegmentAmounts.length) idx = 0;
+                        }
+                    }
+                } else {
+                    matrixSegmentAmounts = new int[] { matrixFullPortion };
+                }
+
+                int[] nonMatrixSegmentAmounts;
+                if (nonMatrix > 0) {
+                    nonMatrixSegmentAmounts = new int[nonMatrix];
+                    int nonMatrixPerPortion = nonMatrixFullPortion / nonMatrix;
+                    Arrays.fill(nonMatrixSegmentAmounts, nonMatrixPerPortion);
+                    int nonMatrixMod = nonMatrixFullPortion % nonMatrix;
+                    if (nonMatrixMod != 0) {
+                        int idx = 0;
+                        while (nonMatrixMod != 0) {
+                            nonMatrixSegmentAmounts[idx] += 1;
+                            nonMatrixMod--;
+                            idx += 1;
+                            if (idx >= nonMatrixSegmentAmounts.length) idx = 0;
+                        }
+                    }
+                } else {
+                    nonMatrixSegmentAmounts = new int[] { nonMatrixFullPortion };
+                }
+
+                List<SegmentedBarWidget.SegmentInfo> segments = new ArrayList<>();
+
+                if (matrix != 0) {
+                    for (int val : matrixSegmentAmounts) {
+                        segments.add(new SegmentedBarWidget.SegmentInfo(() -> val, Color.PINK, ""));
+                    }
+                } else {
+                    segments.add(new SegmentedBarWidget.SegmentInfo(() -> matrixFullPortion, Color.GREY, ""));
+                }
+                if (nonMatrix != 0) {
+                    for (int val : nonMatrixSegmentAmounts) {
+                        segments.add(new SegmentedBarWidget.SegmentInfo(() -> val, Color.CYAN, ""));
+                    }
+                } else {
+                    segments.add(new SegmentedBarWidget.SegmentInfo(() -> nonMatrixFullPortion, Color.GREY, ""));
+                }
+
+                return segments;
+            }).size(102, 14))
+            .child(
+                new SliderWidget().bounds(1, 99)
+                    .value(new DoubleValue.Dynamic(portionSync::getIntValue, val -> portionSync.setIntValue((int) val)))
+                    .sliderSize(2, 14)
+                    .size(102, 14)
+                    .tooltipDynamic(t -> {
+                        int matrix = 0;
+                        int nonMatrix = 0;
+                        for (MTENanochipAssemblyModuleBase<?> module : multiblock.getModules()) {
+                            ModuleTypes type = module.getModuleType();
+                            if (type == ModuleTypes.Splitter) continue;
+                            if (type == ModuleTypes.AssemblyMatrix) matrix++;
+                            else nonMatrix++;
+                        }
+
+                        if (matrix + nonMatrix == 0) {
+                            t.addLine("No modules installed");
+                            return;
+                        }
+
+                        int portion = portionSync.getIntValue();
+
+                        long totalEUt = maxEUSync.getLongValue();
+
+                        long matrixFullPortion = (long) ((portion / 100.0f) * totalEUt);
+                        long nonMatrixFullPortion = totalEUt - matrixFullPortion;
+
+                        long perMatrixPortion = matrixFullPortion / Math.max(1, matrix);
+                        long perNonMatrixPortion = nonMatrixFullPortion / Math.max(1, nonMatrix);
+
+                        if (matrix > 0) {
+                            t.addLine(
+                                String.format("Per Matrix: %s EU/t", GTUtility.scientificFormat(perMatrixPortion)));
+                        } else {
+                            t.addLine("No matrix modules installed");
+                        }
+                        if (nonMatrix > 0) {
+                            t.addLine(
+                                String.format(
+                                    "Per Non-matrix: %s EU/t",
+                                    GTUtility.scientificFormat(perNonMatrixPortion)));
+                        } else {
+                            t.addLine("No non-matrix modules installed");
+                        }
+                    })
+                    .tooltipShowUpTimer(TOOLTIP_DELAY)
+                    .tooltipAutoUpdate(true));
     }
 
     @Override
@@ -584,6 +715,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .build();
 
         syncManager.syncValue("modulesList", linkedModules);
+
+        syncManager.syncValue(
+            "matrixPowerPortion",
+            new IntSyncValue(multiblock::getMatrixPowerPortion, multiblock::setMatrixPowerPortion).allowC2S());
+        syncManager.syncValue("maxInputEU", new LongSyncValue(multiblock::getMaxInputEu));
     }
 
     List<String> NOptions = Arrays.asList(

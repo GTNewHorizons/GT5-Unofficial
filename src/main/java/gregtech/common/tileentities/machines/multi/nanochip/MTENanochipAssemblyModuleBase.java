@@ -561,10 +561,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return copiedRecipe;
     }
 
-    public int getPriority() {
-        return 1;
-    }
-
     protected BigInteger euBufferSize = BigInteger.ZERO;
     protected BigInteger currentEU = BigInteger.ZERO;
     /** EU the last power-starved recipe needed; gates the increaseStoredEU() recheck so it fires once, not per tick. */
@@ -623,7 +619,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
+        return new String[] { String.format("Available EU/t: %s", GTUtility.scientificFormat(this.availableEUt)),
             translateToLocalFormatted(
                 "GT5U.tooltip.nac.module.scanner.current_eu",
                 GTUtility.scientificFormat(currentEU)),

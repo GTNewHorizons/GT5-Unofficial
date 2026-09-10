@@ -81,6 +81,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibrat
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
@@ -96,6 +97,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final int CALIBRATION_MAX = BATCH_SIZE * HISTORY_BLOCKS;
     public final Queue<CircuitBatch> circuitHistory = new ArrayDeque<>();
     private CircuitBatch currentBlock;
+
+    // 1 to 99, representing 1 to 99% power portioned to matrix
+    private int matrixPowerPortion = 25;
 
     public CircuitCalibration.CalibrationThreshold currentThreshold;
 
@@ -210,16 +214,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         checkHasOutputBus(errors);
         if (!errors.isEmpty()) return;
 
-        modules.sort((module1, module2) -> module2.getPriority() - module1.getPriority());
-
-        for (MTENanochipAssemblyModuleBase<?> module : modules) {
-            final int maxDurationOfModuleRecipe = module.getMaxRecipeDuration();
-            // multiply by 2 so there is no stuttering in between fully saturated recipes
-            BigInteger bufferSize = BigInteger.valueOf(this.getMaxInputEu());
-            bufferSize = bufferSize.multiply(BigInteger.valueOf(maxDurationOfModuleRecipe * 2L));
-            module.setBufferSize(bufferSize);
-            module.setAvailableEUt(this.getMaxInputEu());
-        }
+        updateModuleEU();
     }
 
     @Override
@@ -695,6 +690,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (currentBlock != null) {
             aNBT.setIntArray("currentBlock", currentBlock.writeToIntArray());
         }
+        aNBT.setInteger("matrixPortion", matrixPowerPortion);
     }
 
     @Override
@@ -708,6 +704,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         }
         setCurrentThreshold(CircuitCalibration.getCurrentCalibration(this));
         if (aNBT.hasKey("currentBlock")) currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
+        if (aNBT.hasKey("matrixPortion")) matrixPowerPortion = aNBT.getInteger("matrixPortion");
     }
 
     public List<MTENanochipAssemblyModuleBase<?>> getModules() {
@@ -717,6 +714,53 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public void setModules(List<MTENanochipAssemblyModuleBase<?>> incomingList) {
         this.modules.clear();
         this.modules.addAll(incomingList);
+    }
+
+    public void setMatrixPowerPortion(int portion) {
+        if (matrixPowerPortion != portion) {
+            matrixPowerPortion = portion;
+            updateModuleEU();
+        }
+    }
+
+    public int getMatrixPowerPortion() {
+        return matrixPowerPortion;
+    }
+
+    private void updateModuleEU() {
+        int matrix = 0;
+        int nonMatrix = 0;
+        for (MTENanochipAssemblyModuleBase<?> module : modules) {
+            ModuleTypes type = module.getModuleType();
+            if (type == ModuleTypes.Splitter) continue;
+            if (type == ModuleTypes.AssemblyMatrix) matrix++;
+            else nonMatrix++;
+        }
+
+        long totalEUt = this.getMaxInputEu();
+
+        long matrixFullPortion = (long) ((matrixPowerPortion / 100.0f) * totalEUt);
+        long nonMatrixFullPortion = totalEUt - matrixFullPortion;
+
+        long perMatrixPortion = matrixFullPortion / Math.max(1, matrix);
+        long perNonMatrixPortion = nonMatrixFullPortion / Math.max(1, nonMatrix);
+
+        BigInteger matrixBufferSize = BigInteger.valueOf(perMatrixPortion);
+        BigInteger nonMatrixBufferSize = BigInteger.valueOf(perNonMatrixPortion);
+
+        for (MTENanochipAssemblyModuleBase<?> module : modules) {
+            ModuleTypes type = module.getModuleType();
+            if (type == ModuleTypes.Splitter) continue;
+
+            int maxDuration = module.getMaxRecipeDuration();
+            if (type == ModuleTypes.AssemblyMatrix) {
+                module.setAvailableEUt(perMatrixPortion);
+                module.setBufferSize(matrixBufferSize.multiply(BigInteger.valueOf(2L * maxDuration)));
+            } else {
+                module.setAvailableEUt(perNonMatrixPortion);
+                module.setBufferSize(nonMatrixBufferSize.multiply(BigInteger.valueOf(2L * maxDuration)));
+            }
+        }
     }
 
     @Override
