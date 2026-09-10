@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -39,6 +40,11 @@ public class BlockMetal extends BlockStorage {
                     GTOreDictUnificator.set(aPrefix, materials, new ItemStack(this, 1, i));
                 } else {
                     GTOreDictUnificator.registerOre(aPrefix.get(materials), new ItemStack(this, 1, i));
+                }
+                if (aPrefix == OrePrefixes.block && materials == Materials.Aluminium) {
+                    // Some addons (e.g. MagicBees) still look up the American spelling in the
+                    // OreDictionary, so register it as an alias alongside blockAluminium.
+                    OreDictionary.registerOre("blockAluminum", new ItemStack(this, 1, i));
                 }
             }
         }
