@@ -141,6 +141,7 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.item.MaskList;
@@ -1065,7 +1066,9 @@ public class RecipeLoader {
 
         // SeaweedByproducts
         GTValues.RA.stdBuilder()
-            .fluidInputs(WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(6_000))
+            .fluidInputs(
+                WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(6_000),
+                (new FluidStack(GTPPFluids.Nitrobenzene, 12_000)))
             .itemOutputs(
                 WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 60),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Arsenic, 8),
