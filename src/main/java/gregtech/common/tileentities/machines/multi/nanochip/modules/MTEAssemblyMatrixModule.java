@@ -44,6 +44,7 @@ import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
@@ -188,6 +189,11 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
                     "GT5U.tooltip.nac.module.assembly_matrix.body.1",
                     TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.body.2"))
+            .addInfo(
+                translateToLocalFormatted(
+                    "GT5U.tooltip.nac.module.assembly_matrix.body.3",
+                    TooltipHelper.EFF_COLOR,
+                    TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.2")))
@@ -240,6 +246,14 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         int machineTier = getCasingTier();
         if (machineTier >= recipeTier) return CheckRecipeResultRegistry.SUCCESSFUL;
         return CheckRecipeResultRegistry.insufficientMachineTier(recipeTier);
+    }
+
+    @Override
+    protected float getEUDiscountModifier(@NotNull GTRecipe recipe) {
+        // assumes machine tier is always >= recipe tier as that is done in validateRecipe
+        int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 1);
+        int machineTier = getCasingTier();
+        return (float) Math.pow(0.95, machineTier - recipeTier);
     }
 
     @Override
