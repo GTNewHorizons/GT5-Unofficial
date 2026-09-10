@@ -20,7 +20,6 @@ public final class OreDictUnificationOverrides {
 
     // oreName -> modId
     private static final HashMap<String, String> preferredMods = new HashMap<>();
-    private static final HashMap<String, OreDictRegistration> candidates = new HashMap<>();
 
     static {
         add(GregTech.ID, "dustAlumina");
@@ -50,21 +49,17 @@ public final class OreDictUnificationOverrides {
         }
     }
 
-    static void capture(OreDictRegistration registration) {
+    static void handle(OreDictRegistration registration) {
         if (registration.modId == null) return;
         if (!registration.modId.equals(preferredMods.get(registration.oreName))) return;
         if (!registration.prefix.isUnifiable()) return;
+        if (GTOreDictUnificator.isBlacklisted(registration.stack)) return;
 
-        candidates.put(registration.oreName, registration);
+        GTOreDictUnificator.set(registration.prefix, registration.material, registration.stack, true, true);
     }
 
-    public static void apply() {
-        for (OreDictRegistration registration : candidates.values()) {
-            if (GTOreDictUnificator.isBlacklisted(registration.stack)) continue;
-            GTOreDictUnificator.set(registration.prefix, registration.material, registration.stack, true, true);
-        }
-
-        candidates.clear();
+    public static void finalizeUnification() {
+        // In case some recipes were created before the desired ItemStack became canonical
         GTOreDictUnificator.resetUnificationEntries();
         GTRecipe.reInit();
     }

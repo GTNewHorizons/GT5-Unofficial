@@ -281,7 +281,7 @@ public final class OreDictRegistrationHandler {
                 GTOreDictUnificator.isBlacklisted(registration.stack));
         }
 
-        OreDictUnificationOverrides.capture(registration);
+        OreDictUnificationOverrides.handle(registration);
 
         if (bufferRegistrationProcessing) {
             registrations.add(registration);
