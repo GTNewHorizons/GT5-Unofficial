@@ -210,10 +210,6 @@ public final class OreDictRegistrationHandler {
             return true;
         }
 
-        if (oreName.equals("copperWire")) {
-            GT_FML_LOGGER.info("we caught copperWire: {} {} {}", oreName, stack, oreOriginPath);
-        }
-
         switch (oreName) {
             case "stone" -> GTOreDictUnificator.registerOre("stoneSmooth", stack);
             case "cobblestone" -> GTOreDictUnificator.registerOre("stoneCobble", stack);
@@ -278,11 +274,7 @@ public final class OreDictRegistrationHandler {
         OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, material, modId);
 
         if (registration.prefix.isUnifiable()) {
-            GTOreDictUnificator.addAssociation(
-                registration.prefix,
-                registration.material,
-                registration.stack,
-                GTOreDictUnificator.isBlacklisted(registration.stack));
+            GTOreDictUnificator.addAssociation(registration.prefix, registration.material, registration.stack);
         }
 
         OreDictUnificationOverrides.handle(registration);

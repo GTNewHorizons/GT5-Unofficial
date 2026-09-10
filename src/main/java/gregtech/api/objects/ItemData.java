@@ -17,26 +17,19 @@ public class ItemData {
     public final OrePrefixes mPrefix;
     public final MaterialStack mMaterial;
     public final MaterialStack[] mByProducts;
-    public boolean mBlackListed = false;
     public ItemStack mUnificationTarget = null;
 
-    public ItemData(OrePrefixes aPrefix, Materials aMaterial, boolean aBlackListed) {
+    public ItemData(OrePrefixes aPrefix, Materials aMaterial) {
         mPrefix = aPrefix;
         mMaterial = aMaterial == null ? null : new MaterialStack(aMaterial, aPrefix.getMaterialAmount());
-        mBlackListed = aBlackListed;
         mByProducts = aPrefix.mSecondaryMaterial == null || aPrefix.mSecondaryMaterial.mMaterial == null
             ? EMPTY_MATERIALSTACK_ARRAY
             : new MaterialStack[] { aPrefix.mSecondaryMaterial.clone() };
     }
 
-    public ItemData(OrePrefixes aPrefix, Materials aMaterial) {
-        this(aPrefix, aMaterial, false);
-    }
-
     public ItemData(MaterialStack aMaterial, MaterialStack... aByProducts) {
         mPrefix = null;
         mMaterial = aMaterial.mMaterial == null ? null : aMaterial.clone();
-        mBlackListed = true;
         if (aByProducts == null) {
             mByProducts = EMPTY_MATERIALSTACK_ARRAY;
         } else {
@@ -60,7 +53,6 @@ public class ItemData {
 
     public ItemData(ItemData... aData) {
         mPrefix = null;
-        mBlackListed = true;
 
         ArrayList<MaterialStack> aList = new ArrayList<>(), rList = new ArrayList<>();
 
