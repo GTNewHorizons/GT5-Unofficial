@@ -549,8 +549,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     protected BigInteger euBufferSize = BigInteger.ZERO;
     protected BigInteger currentEU = BigInteger.ZERO;
-    /** EU the last power-starved recipe needed; gates the increaseStoredEU() recheck so it fires once, not per tick. */
-    private BigInteger pendingPowerRequirement = null;
 
     public void setBufferSize(BigInteger buffer) {
         this.euBufferSize = buffer;
