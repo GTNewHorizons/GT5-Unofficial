@@ -443,6 +443,8 @@ public class GTMod {
             return;
         }
 
+        OreDictUnificationOverrides.finalizeUnification();
+
         // Seems only used by GGFab so far
         for (Runnable tRunnable : GregTechAPI.sBeforeGTPostload) {
             tRunnable.run();
@@ -640,7 +642,6 @@ public class GTMod {
             GT_FML_LOGGER
                 .info("Executed 2nd pass of delayed Crafting Recipes ({}). Have another Cake.", stopwatch.stop());
         }
-        OreDictUnificationOverrides.finalizeUnification();
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
     }

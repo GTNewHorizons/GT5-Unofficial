@@ -492,6 +492,14 @@ public class GTOreDictUnificator {
         for (ItemData tPrefixMaterial : sItemStack2DataMap.values()) tPrefixMaterial.mUnificationTarget = null;
     }
 
+    public static void resetUnificationTarget(String oreName) {
+        for (ItemData data : sItemStack2DataMap.values()) {
+            if (oreName.equals(data.toString())) {
+                data.mUnificationTarget = null;
+            }
+        }
+    }
+
     public static ItemStack getGem(MaterialStack aMaterial) {
         return aMaterial == null ? null : getGem(aMaterial.mMaterial, aMaterial.mAmount);
     }
