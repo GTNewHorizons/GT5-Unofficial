@@ -1054,13 +1054,14 @@ public class RecipeLoader {
 
         // Iodine
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Benzene.getCells(1))
             .itemOutputs(WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 1))
-            .fluidInputs(WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2_000))
+            .fluidInputs(
+                WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2_000),
+                Materials.Chlorobenzene.getFluid(2_000))
             .fluidOutputs(WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(200))
             .eut(TierEU.RECIPE_HV)
             .duration(30 * SECONDS)
-            .addTo(centrifugeRecipes);
+            .addTo(centrifugeNonCellRecipes);
 
         // SeaweedByproducts
         GTValues.RA.stdBuilder()
