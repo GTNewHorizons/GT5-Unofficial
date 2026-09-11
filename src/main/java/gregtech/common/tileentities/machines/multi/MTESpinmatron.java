@@ -109,12 +109,14 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     private static final String STRUCTURE_TIER_2 = "t2";
     private static final String STRUCTURE_TIER_3 = "t3";
     private static final String STRUCTURE_TIER_4 = "t4";
-    private static final IIconContainer TEXTURE_CONTROLLER = Textures.BlockIcons.custom("iconsets/TFFT");
+    private static final IIconContainer TEXTURE_CONTROLLER = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/TFFT");
     private static final IIconContainer TEXTURE_CONTROLLER_GLOW = Textures.BlockIcons
-        .customOptional("iconsets/TFFT_GLOW");
-    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE = Textures.BlockIcons.custom("iconsets/TFFT_ACTIVE");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/TFFT_GLOW");
+    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/TFFT_ACTIVE");
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = Textures.BlockIcons
-        .customOptional("iconsets/TFFT_ACTIVE_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/TFFT_ACTIVE_GLOW");
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
 
     private int ticker = 1; // just increments and drains (amountToDrain) of the given
@@ -470,6 +472,10 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addCasing("56", "Infinity Block", false)
             .addCasing("9", "Infinity Frame Box", false)
             .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Four"))
+            .addCasing("56", "Block of White Dwarf Matter", false)
+            .addCasing("9", "SpaceTime Frame Box", false)
+            .addStructureInfo("")
             .addStructureFooter("Rotors go in the controller, not the rotor assemblies")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
@@ -604,7 +610,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                amountToDrain = GTUtility.getTier(recipe.mEUt) * 10;
+                amountToDrain = Math.max(1, GTUtility.getTier(recipe.mEUt)) * 10;
                 euMultiplier = 1;
                 if (!checkFluid(5 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)

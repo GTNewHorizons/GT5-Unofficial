@@ -76,27 +76,57 @@ public class ResourceUtils {
     }
 
     /**
-     * Get the complete resource location from the short local resource location key.
+     * Get the domain-qualified resource name expected by an icon register.
      *
+     * @param domain       The namespace of the resource
+     * @param resourcePath The colon-free local resource path
+     * @return The domain-qualified resource name
+     */
+    public static @NotNull String getIconRegisterName(@NotNull String domain, @NotNull String resourcePath) {
+        validateResourcePath(resourcePath);
+        return domain + ":" + resourcePath;
+    }
+
+    /**
+     * Get the complete resource location from a domain and a short, colon-free local resource location key.
+     *
+     * @param domain      The namespace of the resource (e.g.: gregtech)
      * @param basePath    The base path for the resource (e.g.: textures/blocks/)
      * @param ext         The file name extension of the resource (e.g.: .png)
-     * @param resourceKey The local resource location key (without textures/blocks|items and without the filename
-     *                    extension)
+     * @param resourceKey The colon-free local resource location key (without textures/blocks|items and without the
+     *                    filename extension)
      * @return The complete ResourceLocation pointing to the resource file
      */
-    public static @NotNull ResourceLocation getCompleteResourceLocation(@NotNull String basePath, @NotNull String ext,
+    public static @NotNull ResourceLocation getCompleteResourceLocation(@NotNull String domain,
+        @NotNull String basePath, @NotNull String ext, @NotNull String resourceKey) {
+        validateResourcePath(resourceKey);
+        return new ResourceLocation(domain, basePath + resourceKey + ext);
+    }
+
+    public static @NotNull ResourceLocation getCompleteBlockTextureResourceLocation(@NotNull String domain,
         @NotNull String resourceKey) {
-        final int i = resourceKey.indexOf(':');
-        final String domain = (i <= 0) ? "" : resourceKey.substring(0, i);
-        final String path = (i < 0) ? resourceKey : resourceKey.substring(i + 1);
-        return new ResourceLocation(domain, basePath + path + ext);
+        return getCompleteResourceLocation(domain, "textures/blocks/", ".png", resourceKey);
     }
 
+    /**
+     * @deprecated This method is a stub for external mods calling the old API
+     */
+    @Deprecated
     public static @NotNull ResourceLocation getCompleteBlockTextureResourceLocation(@NotNull String resourceKey) {
-        return getCompleteResourceLocation("textures/blocks/", ".png", resourceKey);
+        final int separator = resourceKey.indexOf(':');
+        final String domain = separator <= 0 ? "" : resourceKey.substring(0, separator);
+        final String path = separator < 0 ? resourceKey : resourceKey.substring(separator + 1);
+        return getCompleteBlockTextureResourceLocation(domain, path);
     }
 
-    public static @NotNull ResourceLocation getCompleteItemTextureResourceLocation(String resourceKey) {
-        return getCompleteResourceLocation("textures/items/", ".png", resourceKey);
+    public static @NotNull ResourceLocation getCompleteItemTextureResourceLocation(@NotNull String domain,
+        String resourceKey) {
+        return getCompleteResourceLocation(domain, "textures/items/", ".png", resourceKey);
+    }
+
+    private static void validateResourcePath(@NotNull String resourcePath) {
+        if (resourcePath.indexOf(':') >= 0) {
+            throw new IllegalStateException("wrong path to resource specified");
+        }
     }
 }

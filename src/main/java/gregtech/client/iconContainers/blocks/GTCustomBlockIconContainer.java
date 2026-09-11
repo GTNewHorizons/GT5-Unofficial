@@ -1,7 +1,6 @@
 package gregtech.client.iconContainers.blocks;
 
 import static gregtech.GTLoggers.GT_ICON_LOGGER;
-import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,12 +21,13 @@ public class GTCustomBlockIconContainer extends AbstractBlockIconContainer imple
     protected final String mIconName, mOverlayName;
     protected IIcon mIcon, mOverlay = null;
 
-    GTCustomBlockIconContainer(@NotNull String aIconName) {
-        mIconName = aIconName.contains(":") ? aIconName : GregTech.getResourcePath(aIconName);
-        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
+    GTCustomBlockIconContainer(@NotNull String domain, @NotNull String aIconName) {
+        mIconName = ResourceUtils.getIconRegisterName(domain, aIconName);
+        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, aIconName);
 
-        mOverlayName = mIconName + Textures.OverlaySuffix;
-        overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mOverlayName);
+        mOverlayName = ResourceUtils.getIconRegisterName(domain, aIconName + Textures.OverlaySuffix);
+        overlayResource = ResourceUtils
+            .getCompleteBlockTextureResourceLocation(domain, aIconName + Textures.OverlaySuffix);
         GregTechAPI.sGTBlockIconload.add(this);
         logRegisterIcons();
     }
@@ -40,8 +40,8 @@ public class GTCustomBlockIconContainer extends AbstractBlockIconContainer imple
     // 2026-13-05: Counted 36 unique Block TextureSetIcons, so 52 will avoid resize until 50 entries
     private static Map<String, GTCustomBlockIconContainer> INSTANCES = new HashMap<>(52);
 
-    public static @NotNull IIconContainer create(@NotNull String aIconName) {
-        return INSTANCES.computeIfAbsent(aIconName, GTCustomBlockIconContainer::new);
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String aIconName) {
+        return INSTANCES.computeIfAbsent(aIconName, key -> new GTCustomBlockIconContainer(domain, key));
     }
 
     public static void cleanup() {

@@ -7,8 +7,8 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -44,12 +44,11 @@ public final class GTRecipeLookup {
         GTRecipeLookupBranch branch, int index) {
         boolean lastIngredient = index == ingredients.size() - 1;
         for (GTRecipeLookupIngredient ingredient : ingredients.get(index)) {
-            Map<GTRecipeLookupIngredient, Node> nodes = branch.nodesFor(ingredient);
-            Node node = nodes.get(ingredient);
+            Node node = branch.getNode(ingredient);
 
             if (lastIngredient) {
                 if (node == null) {
-                    nodes.put(ingredient, Node.leaf(recipe));
+                    branch.putNode(ingredient, Node.leaf(recipe));
                     continue;
                 }
                 if (!node.containsRecipe(recipe)) {
@@ -61,7 +60,7 @@ public final class GTRecipeLookup {
             GTRecipeLookupBranch childBranch;
             if (node == null) {
                 childBranch = new GTRecipeLookupBranch();
-                nodes.put(ingredient, Node.branch(childBranch));
+                branch.putNode(ingredient, Node.branch(childBranch));
             } else if (node.branch != null) {
                 childBranch = node.branch;
             } else {
@@ -75,14 +74,13 @@ public final class GTRecipeLookup {
 
     static final class Node {
 
-        private @Nullable List<GTRecipe> recipes;
+        private @Nullable GTRecipe recipe;
+        private @Nullable List<GTRecipe> additionalRecipes;
         private @Nullable GTRecipeLookupBranch branch;
 
         static Node leaf(GTRecipe recipe) {
             Node node = new Node();
-            List<GTRecipe> recipes = new ArrayList<>(1);
-            recipes.add(recipe);
-            node.recipes = recipes;
+            node.recipe = recipe;
             return node;
         }
 
@@ -93,14 +91,19 @@ public final class GTRecipeLookup {
         }
 
         void addRecipe(GTRecipe recipe) {
-            if (recipes == null) {
-                recipes = new ArrayList<>(1);
+            if (this.recipe == null) {
+                this.recipe = recipe;
+                return;
             }
-            recipes.add(recipe);
+            if (additionalRecipes == null) {
+                additionalRecipes = new ArrayList<>(1);
+            }
+            additionalRecipes.add(recipe);
         }
 
         boolean containsRecipe(GTRecipe recipe) {
-            return recipes != null && recipes.contains(recipe);
+            return Objects.equals(recipe, this.recipe)
+                || additionalRecipes != null && additionalRecipes.contains(recipe);
         }
     }
 
@@ -174,8 +177,11 @@ public final class GTRecipeLookup {
                     stack.push(new SearchFrame(node.branch));
                 }
 
-                if (node.recipes != null && !node.recipes.isEmpty()) {
-                    leafIterator = node.recipes.iterator();
+                if (node.recipe != null) {
+                    if (node.additionalRecipes != null) {
+                        leafIterator = node.additionalRecipes.iterator();
+                    }
+                    return node.recipe;
                 }
             }
         }
