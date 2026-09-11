@@ -180,14 +180,18 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
             .addInfo("Burns certain Plasmas to generate power")
             .addInfo(
                 "Set " + EnumChatFormatting.GREEN
-                    + "Drain Rate ("+getFluidUnit()+"/s)"
+                    + "Drain Rate ("
+                    + getFluidUnit()
+                    + "/s)"
                     + EnumChatFormatting.GRAY
                     + " of Plasmas in the Controller")
             .addSeparator()
-            .addInfo("Will burn Plasmas up to " + EnumChatFormatting.GREEN + "X "+getFluidUnit()+"/s")
+            .addInfo("Will burn Plasmas up to " + EnumChatFormatting.GREEN + "X " + getFluidUnit() + "/s")
             .addInfo(
                 "Plasmas have varying " + EnumChatFormatting.AQUA
-                    + "Densities (EU/"+getFluidUnit()+")"
+                    + "Densities (EU/"
+                    + getFluidUnit()
+                    + ")"
                     + EnumChatFormatting.GRAY
                     + " and provide "
                     + EnumChatFormatting.WHITE
@@ -209,7 +213,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
                     EnumChatFormatting.GOLD,
                     formatNumber(PlasmaType.FORCE.maxDR),
                     formatNumber(PlasmaType.FORCE.density),
-                    "+20% EU/"+getFluidUnit()))
+                    "+20% EU/" + getFluidUnit()))
             .addInfo(
                 getPlasmaTextFormatted(
                     "Runite",
@@ -223,7 +227,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
                     EnumChatFormatting.DARK_GREEN,
                     formatNumber(PlasmaType.CELESTIAL.maxDR),
                     formatNumber(PlasmaType.CELESTIAL.density),
-                    "+5% EU/"+getFluidUnit()+", +5% chance to not consume Plasma"))
+                    "+5% EU/" + getFluidUnit() + ", +5% chance to not consume Plasma"))
             .addInfo(
                 getPlasmaTextFormatted(
                     "Orikalkum",
@@ -255,9 +259,12 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
                 "Periodically outputs " + EnumChatFormatting.DARK_AQUA
                     + "Collision Residue"
                     + EnumChatFormatting.GRAY
-                    + " at a rate of 1"+getFluidUnit()+" per "
+                    + " at a rate of 1"
+                    + getFluidUnit()
+                    + " per "
                     + RESIDUE_CONVERSION_DIVISOR
-                    + getFluidUnit()+" of Plasma burned")
+                    + getFluidUnit()
+                    + " of Plasma burned")
             .addSupportAny()
             .addCasing("280", "Plasma Collider Casing", false)
             .addCasing("126", "Plasma Collider Glass", false)
