@@ -134,7 +134,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         return false;
     }
 
-    // Ghost block 
+    // Ghost block
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
@@ -162,8 +162,9 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         final int x = base.getXCoord();
         final int y = base.getYCoord();
         final int z = base.getZCoord();
+        // Silent removal
         if (world.getBlock(x, y + 1, z) == GregTechAPI.sBlockGhostSpace) {
-            world.func_147480_a(x, y + 1, z, false);
+            world.setBlockToAir(x, y + 1, z);
         }
     }
 
