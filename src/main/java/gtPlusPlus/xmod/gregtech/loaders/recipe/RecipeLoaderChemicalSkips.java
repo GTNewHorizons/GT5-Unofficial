@@ -344,10 +344,8 @@ public class RecipeLoaderChemicalSkips {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTBees.combs.getStackForType(CombType.KEVLAR, 24), Materials.Carbon.getDust(64))
                 .fluidInputs(Materials.Nitrogen.getGas(16_000), Materials.Hydrogen.getGas(16_000))
-                .fluidOutputs(
-                    Materials.PolyurethaneResin.getFluid(32_000),
-                    Materials.LiquidCrystalKevlar.getFluid(32 * INGOTS),
-                    Materials.Kevlar.getMolten(1 * STACKS))
+                .itemOutputs(ItemList.WovenKevlar.get(32))
+                .fluidOutputs(Materials.PolyurethaneResin.getFluid(32_000), Materials.Kevlar.getMolten(1 * STACKS))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .metadata(QFT_CATALYST, GregtechItemList.UltimatePlasticCatalyst.get(0))

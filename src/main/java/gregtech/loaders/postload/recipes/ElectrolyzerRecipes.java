@@ -356,28 +356,6 @@ public class ElectrolyzerRecipes implements Runnable {
             .eut(60)
             .addTo(electrolyzerRecipes);
 
-        // CH5N = C + 5H + N
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1))
-            .itemOutputs(Materials.Carbon.getDust(1), Materials.Nitrogen.getCells(1))
-            .fluidInputs(Materials.Methylamine.getGas(1_000))
-            .fluidOutputs(Materials.Hydrogen.getGas(5_000))
-            .duration(5 * SECONDS + 12 * TICKS)
-            .eut(90)
-            .addTo(electrolyzerRecipes);
-
-        // C3H9N = 3C + 9H + N
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1))
-            .itemOutputs(Materials.Carbon.getDust(3), Materials.Nitrogen.getCells(1))
-            .fluidInputs(Materials.Trimethylamine.getGas(1_000))
-            .fluidOutputs(Materials.Hydrogen.getGas(9_000))
-            .duration(10 * SECONDS + 8 * TICKS)
-            .eut(90)
-            .addTo(electrolyzerRecipes);
-
         // C2H4O2 = 2C + 2H2 + O2
 
         GTValues.RA.stdBuilder()

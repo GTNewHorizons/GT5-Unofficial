@@ -1392,6 +1392,7 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_ZPM)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
+
     }
 
     public static void InitLoadRecipe() {

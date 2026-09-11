@@ -2419,7 +2419,6 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }),
     KEVLAR(GTBranchDefinition.IC2, "Kevlar", false, new Color(0x2d542f), new Color(0xa2baa3), beeSpecies -> {
         beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.KEVLAR), 0.075f);
-        beeSpecies.addSpecialty(Materials.Kevlar.getNuggets(1), 0.01f);
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(COLD);
         beeSpecies.setHasEffect();
