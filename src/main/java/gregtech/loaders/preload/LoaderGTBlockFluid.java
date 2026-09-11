@@ -75,6 +75,7 @@ import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockDecorativeFrame;
 import gregtech.common.blocks.BlockFenceMetal;
 import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.blocks.BlockGhostSpace;
 import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.blocks.BlockGranites;
 import gregtech.common.blocks.BlockLaser;
@@ -760,6 +761,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockGlass1 = new BlockGlass1();
         GregTechAPI.sBlockTintedGlass = new BlockTintedIndustrialGlass();
         GregTechAPI.sLaserRender = new BlockLaser();
+        GregTechAPI.sBlockGhostSpace = new BlockGhostSpace();
         GT_FML_LOGGER.debug("GTMod: Adding Renderer Blocks.");
         GregTechAPI.sWormholeRender = new BlockRenderer<>("wormholerenderer", RenderingTileEntityWormhole::new);
         GregTechAPI.sBlackholeRender = new BlockRenderer<>("blackholerenderer", RenderingTileEntityBlackhole::new);
