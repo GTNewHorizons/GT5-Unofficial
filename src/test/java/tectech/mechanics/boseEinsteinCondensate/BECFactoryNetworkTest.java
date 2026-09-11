@@ -6,7 +6,9 @@ import static org.mockito.Mockito.*;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -16,6 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.factory.RoutedNode;
+import gregtech.api.factory.routing.VisitorResult;
 import it.unimi.dsi.fastutil.Pair;
 
 class BECFactoryNetworkTest {
@@ -364,6 +367,27 @@ class BECFactoryNetworkTest {
         assertDoesNotThrow(() -> network.injectCondensate(generator, fluidStack));
         // No BECInventory reachable → inventories empty → early return → stack unchanged
         assertEquals(100L, fluidStack.getStackSize(), "no storage in cycle → condensate should be unchanged");
+    }
+
+    @Test
+    void routeTraversalVisitsEachNodeOnceAcrossConvergingPaths() {
+        StubGenerator left = new StubGenerator();
+        StubGenerator right = new StubGenerator();
+        generator.routedNeighbors = List.of(left, right);
+        left.routedNeighbors = List.of(storage);
+        right.routedNeighbors = List.of(storage);
+        network.addElement(generator);
+        network.addElement(left);
+        network.addElement(right);
+        network.addElement(storage);
+
+        Set<NotableBECFactoryElement> visited = new HashSet<>();
+        network.routeTracker.iterateNetworkBFS(generator, step -> {
+            assertTrue(visited.add(step.node()), "a converging route must not visit the same node twice");
+            return VisitorResult.Continue;
+        });
+
+        assertEquals(4, visited.size());
     }
 
     @Test

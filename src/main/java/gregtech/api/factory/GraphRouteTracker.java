@@ -102,19 +102,22 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
         updateEdgesIfNeeded();
 
         StepQueue<TNotable, TRouteInfo> queue = new StepQueue<>();
+        Set<TNotable> visited = new HashSet<>();
 
         queue.add(new NetworkStep<>(start, zero, null));
 
         NetworkStep<TNotable, TRouteInfo> step;
 
         while ((step = queue.takeFront()) != null) {
+            if (!visited.add(step.node())) continue;
+
             VisitorResult result = visitor.visit(step);
 
             if (result == VisitorResult.Break) break;
             if (result == VisitorResult.SkipNode) continue;
 
             for (var edge : edges.getOrDefault(step.node(), emptyNodeArray())) {
-                if (!step.contains(edge.element())) {
+                if (!visited.contains(edge.element())) {
                     queue.add(
                         new NetworkStep<>(
                             edge.element(),
