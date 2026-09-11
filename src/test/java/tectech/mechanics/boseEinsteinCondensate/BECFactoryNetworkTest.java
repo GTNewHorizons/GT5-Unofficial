@@ -405,22 +405,23 @@ class BECFactoryNetworkTest {
     }
 
     @Test
-    void differentFiltersOnConvergingPathsRemainReachable() {
+    void differentFiltersOnConvergingPathsRemainReachableFromDownstreamView() {
         Fluid fluidA = mock(Fluid.class);
         Fluid fluidB = mock(Fluid.class);
+        StubGenerator downstreamViewer = new StubGenerator();
         StubFilter pathA = new StubFilter(fluidA);
         StubFilter pathB = new StubFilter(fluidB);
-        generator.routedNeighbors = List.of(pathA, pathB);
+        downstreamViewer.routedNeighbors = List.of(pathA, pathB);
         pathA.routedNeighbors = List.of(storage);
         pathB.routedNeighbors = List.of(storage);
         storage.contents.put(fluidA, 300L);
         storage.contents.put(fluidB, 500L);
-        network.addElement(generator);
+        network.addElement(downstreamViewer);
         network.addElement(pathA);
         network.addElement(pathB);
         network.addElement(storage);
 
-        CondensateList result = network.getStoredCondensate(generator);
+        CondensateList result = network.getStoredCondensate(downstreamViewer);
 
         assertEquals(300L, result.getLong(fluidA));
         assertEquals(500L, result.getLong(fluidB));
