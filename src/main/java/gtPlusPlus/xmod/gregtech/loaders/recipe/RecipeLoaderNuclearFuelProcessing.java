@@ -295,9 +295,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsFluorides.NEPTUNYL_FLUORIDE.getDust(1))
             .itemOutputs(MaterialsElements.getInstance().NEPTUNIUM.getDust(1))
-            .fluidOutputs(
-                Materials.Oxygen.getGas(2_000),
-                Materials.Fluorine.getGas(2_000))
+            .fluidOutputs(Materials.Oxygen.getGas(2_000), Materials.Fluorine.getGas(2_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 7201) // Naquadah coils
@@ -312,12 +310,8 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialsFluorides.TECHNETIUM_HEXAFLUORIDE.getFluidStack(1_000),
                 Materials.Water.getFluid(1_000))
             .itemInputs(Materials.SodiumHydroxide.getDust(2))
-            .itemOutputs(
-                MaterialMisc.TECHNETIUM_DIOXIDE.getDust(1),
-                MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
-            .fluidOutputs(
-                Materials.HydrofluoricAcid.getFluid(4_000),
-                Materials.Oxygen.getGas(1_000))
+            .itemOutputs(MaterialMisc.TECHNETIUM_DIOXIDE.getDust(1), MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000), Materials.Oxygen.getGas(1_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(CHEMPLANT_CASING_TIER, 4) // Titanium
@@ -333,21 +327,13 @@ public class RecipeLoaderNuclearFuelProcessing {
     }
 
     // SeF6 + 2NaOH + H2O -> SeO2 (dust) + 4HF + 2NaF + O (Exxon, titanium casing)
-    // Yields the SeO2 DUST form, which feeds the existing dust -> fluid -> selenious acid -> selenium chain
-    // (RecipesSeleniumProcessing). Mirrors the Tc line: NaOH captures F as NaF (stable) + O (inert) instead of reactive F2.
-    // Balanced: Se +6 -> +4, O -2 -> 0; all 6 F recovered (4 HF + 2 NaF).
+    // Yields SeO2 dust, which feeds the existing dust -> fluid -> selenious acid -> selenium chain.
     private static void seleniumLine() {
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                MaterialsFluorides.SELENIUM_HEXAFLUORIDE.getFluidStack(1_000),
-                Materials.Water.getFluid(1_000))
+            .fluidInputs(MaterialsFluorides.SELENIUM_HEXAFLUORIDE.getFluidStack(1_000), Materials.Water.getFluid(1_000))
             .itemInputs(Materials.SodiumHydroxide.getDust(2))
-            .itemOutputs(
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1),
-                MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
-            .fluidOutputs(
-                Materials.HydrofluoricAcid.getFluid(4_000),
-                Materials.Oxygen.getGas(1_000))
+            .itemOutputs(MaterialMisc.SELENIUM_DIOXIDE.getDust(1), MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000), Materials.Oxygen.getGas(1_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(CHEMPLANT_CASING_TIER, 4) // Titanium
@@ -359,9 +345,7 @@ public class RecipeLoaderNuclearFuelProcessing {
     // UF4 + 2H2O -> UO2 + 4HF (un-make UF4; LCR recycling)
     private static void uraniumLine() {
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(1_000),
-                Materials.Water.getFluid(2_000))
+            .fluidInputs(MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(1_000), Materials.Water.getFluid(2_000))
             .itemOutputs(MaterialsFluorides.URANYL_FLUORIDE.getDust(1))
             .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000))
             .duration(60 * SECONDS)
@@ -380,9 +364,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .addTo(vacuumFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                MaterialsFluorides.URANIUM_TETRAFLUORIDE.getFluidStack(1_000),
-                Materials.Water.getFluid(2_000))
+            .fluidInputs(MaterialsFluorides.URANIUM_TETRAFLUORIDE.getFluidStack(1_000), Materials.Water.getFluid(2_000))
             .itemOutputs(Materials.Uraninite.getDust(1))
             .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000))
             .duration(60 * SECONDS)
@@ -390,7 +372,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .addTo(UniversalChemical);
     }
 
-    // ZrF4 + 2H2O -> ZrO2 + 4HF (un-make ZrF4; ZrO2 feeds the existing Zr line)
+    // ZrF4 + 2H2O -> ZrO2 + 4HF (un-make ZrF4; Zirconia feeds into zirconium lanthanides line)
     private static void zirconiumLine() {
         GTValues.RA.stdBuilder()
             .fluidInputs(
