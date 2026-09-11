@@ -3872,7 +3872,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21=appearing in the output
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22=§fFiltered Beam Output Hatches§7 and the Probability Table will allow you to see the list of 
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23=possible outputs, and filter them
 
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24=§c§l§oBooster Fluids§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24=§c§nBooster Fluids§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25=§fBooster Fluids§7 can be supplied to enhance the LHC §4scaling exponent§7 for 
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26=§6Beam Rates§7 above §f15000§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27=§fNo fluid§7 - §40.5§7
