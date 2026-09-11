@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -29,6 +30,7 @@ import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class RecipeLoaderNuclearFuelProcessing {
 
@@ -273,6 +275,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         technetiumLine();
         seleniumLine();
         uraniumLine();
+        zirconiumLine();
     }
 
     // NpF6 + 2H2O -> NpO2F2 + 4HF (hydrolysis, recovers 2/3 of the fluorine; Exxon, titanium casing)
@@ -381,6 +384,19 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialsFluorides.URANIUM_TETRAFLUORIDE.getFluidStack(1_000),
                 Materials.Water.getFluid(2_000))
             .itemOutputs(Materials.Uraninite.getDust(1))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
+    }
+
+    // ZrF4 + 2H2O -> ZrO2 + 4HF (un-make ZrF4; ZrO2 feeds the existing Zr line)
+    private static void zirconiumLine() {
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(1_000),
+                Materials.Water.getFluid(2_000))
+            .itemOutputs(WerkstoffMaterialPool.Zirconia.get(OrePrefixes.dust, 1))
             .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
