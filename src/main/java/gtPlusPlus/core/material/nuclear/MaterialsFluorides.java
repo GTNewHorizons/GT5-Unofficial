@@ -228,7 +228,6 @@ public class MaterialsFluorides {
         new MaterialStack(MaterialsElements.getInstance().FLUORINE, 6));
 
     // NpO2F2 (neptunyl fluoride) - LFTR byproduct reprocessing intermediate
-    // Dust is tinted pink-ish (Np oxyfluorides are pink) via the material's rgba (dusts auto-tint from it).
     public static final Material NEPTUNYL_FLUORIDE = new Material(
         "Neptunyl Fluoride",
         MaterialState.SOLID,
@@ -243,7 +242,6 @@ public class MaterialsFluorides {
         new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2));
 
     // UO2F2 (uranyl fluoride) - LFTR byproduct reprocessing intermediate
-    // Dust is tinted bright orange (uranyl compounds are orange) via the material's rgba (dusts auto-tint from it).
     public static final Material URANYL_FLUORIDE = new Material(
         "Uranyl Fluoride",
         MaterialState.SOLID,
