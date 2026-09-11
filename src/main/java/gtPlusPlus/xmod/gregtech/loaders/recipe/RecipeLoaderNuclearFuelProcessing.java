@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.recipe.RecipeMaps.coldTrapRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
@@ -23,6 +24,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RecipeLoaderNuclearFuelProcessing {
 
@@ -73,12 +75,12 @@ public class RecipeLoaderNuclearFuelProcessing {
             .itemOutputs(
                 ItemList.Cell_Empty.get(5),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1))
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1))
             .outputChances(10000, 10000, 500, 500, 500, 250, 250, 250)
             .fluidInputs(MaterialsNuclides.LiFThF4.getFluidStack(10000))
             .fluidOutputs(MaterialsNuclides.UF6F2.getFluidStack(1500))
@@ -92,12 +94,12 @@ public class RecipeLoaderNuclearFuelProcessing {
                 ItemList.Cell_Empty.get(4),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(1),
                 MaterialsFluorides.BERYLLIUM_FLUORIDE.getCell(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1))
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1))
             .outputChances(10000, 10000, 10000, 1000, 1000, 1000, 500, 500, 500)
             .fluidInputs(MaterialsNuclides.LiFBeF2ThF4.getFluidStack(10000))
             .fluidOutputs(MaterialsNuclides.UF6F2.getFluidStack(3000))
@@ -111,12 +113,12 @@ public class RecipeLoaderNuclearFuelProcessing {
             .itemOutputs(
                 ItemList.Cell_Empty.get(4),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(2),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1))
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1))
             .outputChances(10000, 10000, 1000, 1000, 1000, 1000, 1000, 1000)
             .fluidInputs(MaterialsNuclides.Sparged_LiFThF4.getFluidStack(10000))
             .fluidOutputs(MaterialsNuclides.UF6F2.getFluidStack(3000))
@@ -130,12 +132,12 @@ public class RecipeLoaderNuclearFuelProcessing {
                 ItemList.Cell_Empty.get(2),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(2),
                 MaterialsFluorides.BERYLLIUM_FLUORIDE.getCell(2),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1))
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1))
             .outputChances(10000, 10000, 10000, 2000, 2000, 2000, 2000, 2000, 2000)
             .fluidInputs(MaterialsNuclides.Sparged_LiFBeF2ThF4.getFluidStack(10000))
             .fluidOutputs(MaterialsNuclides.UF6F2.getFluidStack(6000))
@@ -254,5 +256,13 @@ public class RecipeLoaderNuclearFuelProcessing {
             .duration(15 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(fissionFuelProcessingRecipes);
+
+        // Pa dust -> Pa-233 dust: converts legacy plain-Pa dust into the decaying isotope
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialsElements.getInstance().PROTACTINIUM.getDust(1))
+            .itemOutputs(GregtechItemList.Protactinium233Dust.get(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(centrifugeRecipes);
     }
 }
