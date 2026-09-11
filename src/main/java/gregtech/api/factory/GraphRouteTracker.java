@@ -98,6 +98,9 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
         return EMPTY_NODE_ARRAY;
     }
 
+    /**
+     * Visits each node at most once; alternate paths to an already visited node are not exposed to the visitor.
+     */
     public void iterateNetworkBFS(TNotable start, NetworkVisitor<TNotable, TRouteInfo> visitor) {
         updateEdgesIfNeeded();
 
