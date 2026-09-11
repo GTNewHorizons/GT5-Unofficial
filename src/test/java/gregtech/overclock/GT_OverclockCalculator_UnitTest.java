@@ -209,6 +209,20 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
+    void weirdPerfectParallelOC_Test() {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(3840L)
+            .setEUt(V[12])
+            .setDuration(3200)
+            .setParallel(48)
+            .setAmperage(18)
+            .setEUtDiscount(0.8)
+            .setAmperageOC(true)
+            .enablePerfectOC()
+            .calculate();
+        assertEquals(V[12] * 18, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
     void weirdParallelOC_Test() {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[8])

@@ -258,8 +258,8 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
                     .setMachineHeat((int) getCoilLevel().getHeat());
             }
         }.noRecipeCaching()
-            .setSpeedBonus(1F / 2.2F)
-            .setEuModifier(0.5F)
+            .setSpeedBonus(1.0D / 2.2D)
+            .setEuModifier(0.5D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

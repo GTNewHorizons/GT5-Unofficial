@@ -412,8 +412,7 @@ public class OverclockCalculator {
         int regularOverclocks = overclocks - heatOverclocks;
 
         // Adjust power consumption and processing time based on overclocks.
-        calculatedConsumption = (long) Math
-            .ceil(snapToTwoDecimals(recipePower) * GTUtility.powInt(eutIncreasePerOC, overclocks));
+        calculatedConsumption = (long) Math.ceil(recipePower * GTUtility.powInt(eutIncreasePerOC, overclocks));
         duration /= GTUtility.powInt(durationDecreasePerHeatOC, heatOverclocks);
         duration /= GTUtility.powInt(durationDecreasePerOC, regularOverclocks);
         calculatedDuration = (int) Math.max(duration, 1);
@@ -500,7 +499,7 @@ public class OverclockCalculator {
     /**
      * Returns the number of tiers above compareBase that powerTier is.
      * If powerTier is less than compareBase, returns -1.
-     * 
+     *
      * @param powerTier
      * @param compareBase
      * @return tiers above the compareBase.
@@ -513,23 +512,6 @@ public class OverclockCalculator {
             return (int) GTUtility.log4(scaledPowerTier / Math.max(scaledCompareBase, 32L * scale));
         } else {
             return (int) GTUtility.log4((long) (powerTier / Math.max(compareBase, 32.0)));
-        }
-    }
-
-    /**
-     * Snaps a double value to two decimal places.
-     * If the value is too large, it returns the original value.
-     * 
-     * @param val
-     * @return value snapped to two decimal places, or the original value if too large.
-     */
-    public static double snapToTwoDecimals(double val) {
-        final long scale = 100L;
-        if (val < (double) Long.MAX_VALUE / scale) {
-            long scaledVal = Math.round(val * scale);
-            return (double) scaledVal / scale;
-        } else {
-            return val;
         }
     }
 }
