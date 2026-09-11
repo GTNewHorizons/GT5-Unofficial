@@ -14,6 +14,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
 import net.minecraftforge.fluids.FluidStack;
 
@@ -271,6 +272,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         neptuniumLine();
         technetiumLine();
         seleniumLine();
+        uraniumLine();
     }
 
     // NpF6 + 2H2O -> NpO2F2 + 4HF (hydrolysis, recovers 2/3 of the fluorine; Exxon, titanium casing)
@@ -347,5 +349,41 @@ public class RecipeLoaderNuclearFuelProcessing {
             .eut(TierEU.RECIPE_IV)
             .metadata(CHEMPLANT_CASING_TIER, 4) // Titanium
             .addTo(chemicalPlantRecipes);
+    }
+
+    // UF6 + 2H2O -> UO2F2 + 4HF (hydrolysis; Exxon, titanium casing)
+    // UO2F2 + H2 -> UO2 + 2HF (reduction; UO2 = uraninite; TPV coils)
+    // UF4 + 2H2O -> UO2 + 4HF (un-make UF4; LCR recycling)
+    private static void uraniumLine() {
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(1_000),
+                Materials.Water.getFluid(2_000))
+            .itemOutputs(MaterialsFluorides.URANYL_FLUORIDE.getDust(1))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .metadata(CHEMPLANT_CASING_TIER, 4) // Titanium
+            .addTo(chemicalPlantRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialsFluorides.URANYL_FLUORIDE.getDust(1))
+            .fluidInputs(Materials.Hydrogen.getGas(1_000))
+            .itemOutputs(Materials.Uraninite.getDust(1))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(2_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .metadata(COIL_HEAT, 4501) // TPV coils
+            .addTo(vacuumFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                MaterialsFluorides.URANIUM_TETRAFLUORIDE.getFluidStack(1_000),
+                Materials.Water.getFluid(2_000))
+            .itemOutputs(Materials.Uraninite.getDust(1))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
     }
 }
