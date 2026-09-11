@@ -6,6 +6,8 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 
+import com.brandon3055.draconicevolution.common.tileentities.multiblocktiles.reactor.ReactorExplosion;
+
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IFoodStat;
@@ -101,15 +103,26 @@ public class GTFoodStat implements IFoodStat {
             }
             if (mExplosive) {
                 final boolean dealDamage = Gregtech.general.explosiveFoodDamage;
-                new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setSmoking(true)
-                    .setFlaming(true)
-                    .setStrength(dealDamage ? mExplosionStrength : 0f)
-                    .setPosition(aPlayer.posX, aPlayer.posY, aPlayer.posZ)
-                    .setEntity(aPlayer)
-                    .setWorld(aPlayer.worldObj)
-                    .run();
                 if (dealDamage) {
+                    // Draconic Evolution's reactor explosion
+                    final ReactorExplosion explosion = new ReactorExplosion(
+                        aPlayer.worldObj,
+                        (int) aPlayer.posX,
+                        (int) aPlayer.posY,
+                        (int) aPlayer.posZ,
+                        mExplosionStrength);
+                    while (!explosion.isDead()) {
+                        explosion.updateProcess();
+                    }
                     aPlayer.attackEntityFrom(GTDamageSources.getExplodingDamage(), Float.MAX_VALUE);
+                } else {
+                    new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setSmoking(true)
+                        .setFlaming(true)
+                        .setStrength(0f)
+                        .setPosition(aPlayer.posX, aPlayer.posY, aPlayer.posZ)
+                        .setEntity(aPlayer)
+                        .setWorld(aPlayer.worldObj)
+                        .run();
                 }
             }
         }
