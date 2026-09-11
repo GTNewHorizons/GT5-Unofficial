@@ -412,7 +412,8 @@ public class OverclockCalculator {
         int regularOverclocks = overclocks - heatOverclocks;
 
         // Adjust power consumption and processing time based on overclocks.
-        calculatedConsumption = (long) Math.ceil(snapToTwoDecimals(recipePower) * GTUtility.powInt(eutIncreasePerOC, overclocks));
+        calculatedConsumption = (long) Math
+            .ceil(snapToTwoDecimals(recipePower) * GTUtility.powInt(eutIncreasePerOC, overclocks));
         duration /= GTUtility.powInt(durationDecreasePerHeatOC, heatOverclocks);
         duration /= GTUtility.powInt(durationDecreasePerOC, regularOverclocks);
         calculatedDuration = (int) Math.max(duration, 1);
@@ -499,6 +500,7 @@ public class OverclockCalculator {
     /**
      * Returns the number of tiers above compareBase that powerTier is.
      * If powerTier is less than compareBase, returns -1.
+     * 
      * @param powerTier
      * @param compareBase
      * @return tiers above the compareBase.
@@ -517,6 +519,7 @@ public class OverclockCalculator {
     /**
      * Snaps a double value to two decimal places.
      * If the value is too large, it returns the original value.
+     * 
      * @param val
      * @return value snapped to two decimal places, or the original value if too large.
      */
