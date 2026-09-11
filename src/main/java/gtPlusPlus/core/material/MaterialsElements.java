@@ -191,6 +191,7 @@ public final class MaterialsElements {
         74,
         false,
         "I",
+        false,
         0); // Not a GT Inherited Material
     public final Material XENON = new Material(
         "Xenon",
