@@ -101,7 +101,7 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
                                     new DynamicDrawable(
                                         () -> GTGuiTextures.TT_PICTURE_UNCERTAINTY_INDICATOR
                                             .withColorOverride(
-                                                Color.argb(1f, 1f, 1f, matrixSyncer[index].getShortValue() / 1000f))
+                                                okabeItoColor(bucketFor(matrixSyncer[index].getShortValue())))
                                             .asIcon()
                                             .size(8))))
                 .center()
@@ -208,5 +208,23 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
     @Override
     protected boolean doesAddGregTechLogo() {
         return false;
+    }
+
+    private static int bucketFor(short v) {
+        if (v < 250) return 1;
+        if (v < 500) return 2;
+        if (v < 750) return 3;
+        return 4;
+    }
+
+    private static int okabeItoColor(int bucket) {
+        // Safe colors for all colorblind type.
+        return switch (bucket) {
+            case 1 -> Color.argb(255, 255, 255, 255); // white
+            case 2 -> Color.argb(240, 228, 66, 255); // yellow
+            case 3 -> Color.argb(230, 159, 0, 255); // orange
+            case 4 -> Color.argb(213, 94, 0, 255); // vermillion
+            default -> Color.argb(255, 255, 255, 255); // white (fallback, same as bucket 1)
+        };
     }
 }
