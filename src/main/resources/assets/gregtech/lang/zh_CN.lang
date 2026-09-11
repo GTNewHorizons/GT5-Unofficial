@@ -33,7 +33,7 @@ GT5U.MBTT.InputHatch=输入仓
 GT5U.MBTT.OutputBus=输出总线
 GT5U.MBTT.OutputHatch=输出仓
 GT5U.MBTT.Causes=产生
-GT5U.MBTT.PPS=点/秒污染
+GT5U.MBTT.PPS=%s 点/秒污染
 GT5U.MBTT.Hold=按住
 GT5U.MBTT.Display=以显示结构指导
 GT5U.MBTT.StructureHint=多种可选方块或任意等级方块
@@ -1472,6 +1472,215 @@ gt.blockmachines.hatch.pattern_provider.name=合成样板供应器（%s）
 gt.blockmachines.rockbreaker.name=低温岩浆固化者R-%s
 gt.blockmachines.locker.desc=存储装甲并为其充能\n用螺丝刀右键以更改样式
 gt.blockmachines.hatch.multi.input.name=四重输入仓（%s）
+gt.blockmachines.antimatterhatch.name=反物质仓
+
+gt.blockmachines.basicgenerator.diesel.tier.04.name=涡轮增压内燃发电机
+gt.blockmachines.basicgenerator.diesel.tier.05.name=终极化学能释放者
+gt.blockmachines.basicgenerator.rtg.tier.01.name=放射性同位素温差发电机
+gt.blockmachines.basicgenerator.rtg.tier.01.tooltip=需要放射性同位素燃料靶丸\n燃烧时间的单位为游戏日（可使用扫描仪查看）\n输出电压取决于所用的燃料\n每刻以%s%%的效率产生能源。\n输出电压：%s EU/t\n添加者：§2Alkalus §7- §c[GT++]
+
+gt.blockmachines.boiler.bronze.name=小型燃煤锅炉
+gt.blockmachines.boiler.bronze.tooltip=获得蒸汽能源的早期手段\n每秒生产120L的蒸汽\n每秒产生20点污染
+gt.blockmachines.boiler.lava.name=强化岩浆锅炉
+gt.blockmachines.boiler.lava.tooltip=一个消耗岩浆的锅炉\n每秒生产600升的蒸汽\n每秒产生20点污染\n预热完成后，每20t消耗3.0L岩浆
+gt.blockmachines.boiler.solar.name=简易太阳能锅炉
+gt.blockmachines.boiler.steel.name=高压燃煤锅炉
+gt.blockmachines.boiler.steel.tooltip=比青铜锅炉要快\n每秒生产300L的蒸汽\n每秒产生30点污染
+gt.blockmachines.boiler.steel.solar.name=高级太阳能锅炉
+
+gt.blockmachines.bronzemachine.alloysmelter.name=蒸汽合金炉
+gt.blockmachines.bronzemachine.alloysmelter.tooltip=熔炼合金\n机器类型：§e合金炉§r
+gt.blockmachines.bronzemachine.compressor.name=蒸汽压缩机
+gt.blockmachines.bronzemachine.compressor.tooltip=压缩物品\n机器类型：§e压缩机§r
+gt.blockmachines.bronzemachine.extractor.name=蒸汽提取机
+gt.blockmachines.bronzemachine.extractor.tooltip=提取你的第一块橡胶\n机器类型：§e提取机§r
+gt.blockmachines.bronzemachine.furnace.name=蒸汽熔炉
+gt.blockmachines.bronzemachine.furnace.tooltip=使用压缩蒸汽熔炼物品\n机器类型：§e熔炉§r
+gt.blockmachines.bronzemachine.hammer.name=蒸汽锻造锤
+gt.blockmachines.bronzemachine.hammer.tooltip=锻造锤\n机器类型：§e锻造锤§r
+gt.blockmachines.bronzemachine.macerator.name=蒸汽研磨机
+gt.blockmachines.bronzemachine.macerator.tooltip=粉碎你的矿石\n机器类型：§e研磨机§r
+
+gt.blockmachines.bw.radiohatchhv.name=放射仓
+gt.blockmachines.bw.radiohatchhv.tooltip=多方块机器的放射性物品输入仓\n使用螺丝刀设置抑制等级\n添加者：bartimaeusnek，模组：§2BartWorks§7
+
+gt.blockmachines.compressedfluidhatch.name=液态空气仓
+gt.blockmachines.creative_debug_scanner.name=Debug扫描仪
+gt.blockmachines.debug.tt.certain.name=Debug未定元解析器
+gt.blockmachines.debugstructurewriter.name=Debug结构打印机
+
+gt.blockmachines.electricboiler.1.tier.single.name=进阶锅炉[LV]
+gt.blockmachines.electricboiler.1.tier.single.tooltip=生产蒸汽：750L/s\n每秒产生§535§7点污染\n只在温度低于100℃时消耗燃料\n燃烧时间大于500的燃料更有效\n干烧不会爆炸\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.electricboiler.2.tier.single.name=进阶锅炉[MV]
+gt.blockmachines.electricboiler.2.tier.single.tooltip=生产蒸汽：1500L/s\n每秒产生§550§7点污染\n只在温度低于100℃时消耗燃料\n燃烧时间大于500的燃料更有效\n干烧不会爆炸\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.electricboiler.3.tier.single.name=进阶锅炉[HV]
+gt.blockmachines.electricboiler.3.tier.single.tooltip=生产蒸汽：2250L/s\n每秒产生§565§7点污染\n只在温度低于100℃时消耗燃料\n燃烧时间大于500的燃料更有效\n干烧不会爆炸\n添加者：§2Alkalus §7- §c[GT++]
+
+gt.blockmachines.electrodedetectorhatch.name=电极探测仓
+gt.blockmachines.electrodedetectorhatch.tooltip=可安装于电弧炉。\n根据机器中所用电极的损坏程度输出红石信号。\n右键单击打开GUI进行设置。
+
+gt.blockmachines.electrodehatch.name=电极仓
+gt.blockmachines.electrodehatch.tooltip=容纳电极。
+
+gt.blockmachines.fix.name.remover.name=去命名器
+gt.blockmachines.fix.name.remover.tooltip=移除各种NBT标签以及覆盖板\n \n§n第一插槽§r\n你想要移除NBT的物品\n \n§n第二插槽§r\n以下的某种编程电路:\n§l电路1：§r  尝试通过移除显示名称标签以修复破损矿石\n§l电路3：§r  移除RC堆叠标签\n§l电路4：§r  移除铁砧修复标签\n§l电路5：§r  移除皮革护甲染色\n§l电路6：§r  移除GT物品喷漆颜色\n§l电路7：§r  移除GT机器上的静音升级\n§l电路24：§r 移除一切，包括覆盖板。注意：覆盖板无法回收！\n \n§l无电路：§r移除除了覆盖板外的所有
+
+gt.blockmachines.focus_input_bus.name=聚焦输入总线
+gt.blockmachines.focus_input_bus.tooltip=焦点处物品的输入总线
+
+gt.blockmachines.ggfab.machine.linked_input_bus.name=共享输入总线
+gt.blockmachines.giantoutputhatch.name=巨型输出仓
+gt.blockmachines.gt.icecreammachine.name=冰淇凌机
+
+gt.blockmachines.hatch.advancedbeamlineoutput.name=过滤式束流输出仓
+gt.blockmachines.hatch.air.intake.tier.00.name=进气仓
+gt.blockmachines.hatch.air.intake.tier.01.name=超级进气仓
+gt.blockmachines.hatch.air.intake.tier.01.tooltip=多方块机器的流体输入端\n容量：256,000 L\n仓室等级：§bZPM§r\n§c请勿阻塞输入！\n从周围环境吸入空气\n每20tick生成40000L空气\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.air.intake.tier.02.name=大气层进气仓
+gt.blockmachines.hatch.beamlineinput.name=束流输入仓
+gt.blockmachines.hatch.beamlineoutput.name=束流输出仓
+gt.blockmachines.hatch.blackholeutility.name=黑洞多功能仓
+gt.blockmachines.hatch.blackholeutility.tooltip=亚稳态黑洞遏制场的可选仓室。\n静态模式：黑洞打开时发出恒定的红石信号\n脉冲模式：黑洞打开时每秒发射一个脉冲\n脉冲与机器的内部时钟完全同步\n右键以打开GUI和更改设置.
+gt.blockmachines.hatch.catalystbulk.name=大宗催化剂仓
+gt.blockmachines.hatch.catalystbulk.tooltip=专用催化剂存储\n拆卸后保留其内容物
+gt.blockmachines.hatch.catalysts.name=催化剂仓
+gt.blockmachines.hatch.catalysts.tooltip=专用催化剂存储\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.cokeoven.name=焦炉仓
+gt.blockmachines.hatch.cokeoven.tooltip=用于自动化焦炉生产的仓室\n§m------------------------------\n§a模式§7：输入，输出，输出（流体）\n使用螺丝刀切换模式
+gt.blockmachines.hatch.crafting_input.me.name=样板输入总成（ME）
+gt.blockmachines.hatch.crafting_input.me.item_only.name=样板输入总线（ME）
+gt.blockmachines.hatch.crafting_input.proxy.name=样板输入镜像
+gt.blockmachines.hatch.datain.wireless.tier.12.name=云算力数据客户仓
+gt.blockmachines.hatch.datain.wireless.tier.12.tooltip=多方块机器的无线算力输入端
+gt.blockmachines.hatch.datainass.wireless.tier.12.name=装配线无线接收接口
+gt.blockmachines.hatch.dataout.wireless.tier.12.name=云算力数据服务仓
+gt.blockmachines.hatch.dataout.wireless.tier.12.tooltip=多方块机器的无线算力输出端
+gt.blockmachines.hatch.dataoutass.wireless.tier.12.name=数据库无线发送接口
+gt.blockmachines.hatch.dataoutass.wireless.tier.12.tooltip=§9Tec§1Tech§9：万物基石\n多方块机器的无线配方数据输出端\n高速网络连接
+gt.blockmachines.hatch.degasifiercontrol.name=除气机控制仓
+gt.blockmachines.hatch.degasifiercontrol.tooltip=可安装于除气机净化单元。\n基于当前控制信号输出对应强度的红石信号。
+gt.blockmachines.hatch.dronedownlink.name=无人机下行模块
+gt.blockmachines.hatch.dronedownlink.tooltip=内置强大的导航信标！
+gt.blockmachines.hatch.heatsensor.name=热传感器仓
+gt.blockmachines.hatch.heatsensor.tooltip=读取机器的温度。\n温度高于阈值时发出红石信号。\n右键以打开GUI和更改设置。
+gt.blockmachines.hatch.input.debug.name=Debug输入仓
+gt.blockmachines.hatch.input.me.name=进阶存储输入仓（ME）
+gt.blockmachines.hatch.input.me.basic.name=存储输入仓（ME）
+gt.blockmachines.hatch.input_battery.tier.00.name=电池输入总线（MV）
+gt.blockmachines.hatch.input_battery.tier.00.tooltip=多方块机器的电池箱充电接口\n容量：4格\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.input_battery.tier.01.name=电池输入总线（EV）
+gt.blockmachines.hatch.input_battery.tier.01.tooltip=多方块机器的电池箱充电接口\n容量：16格\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.input_bus.debug.name=Debug输入总线
+gt.blockmachines.hatch.input_bus.elementalorbholder.name=数据球仓
+gt.blockmachines.hatch.input_bus.elementalorbholder.tooltip=为大型元素复制机存储数据球\n电路板槽可以插入/拔出\n必须使用编程电路指定生效数据球（1-16）\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.input_bus.me.name=进阶存储输入总线（ME）
+gt.blockmachines.hatch.input_bus.me.basic.name=存储输入总线（ME）
+gt.blockmachines.hatch.input_bus.tier.steam.name=输入总线（蒸汽）
+gt.blockmachines.hatch.lenshousing.name=透镜仓
+gt.blockmachines.hatch.lensindicator.name=透镜指示仓
+gt.blockmachines.hatch.lensindicator.tooltip=可安装于紫外线处理净化单元。\n当需求更换透镜时输出红石信号。
+gt.blockmachines.hatch.mag_hatch.name=电磁铁支架
+gt.blockmachines.hatch.mag_hatch.tooltip=在磁通量效应监视器中安置电磁铁
+gt.blockmachines.hatch.maintenance.name=维护仓
+gt.blockmachines.hatch.maintenance.tooltip=用以维修多方块机器\n使用工具来解决问题。
+gt.blockmachines.hatch.maintenance.auto.name=自动维护仓
+gt.blockmachines.hatch.maintenance.auto.tooltip=用于自动维护多方块机器\n每次消耗4个航空胶带，2个润滑油单元\n4个钢螺丝和2个高级电路板\n以自动维护多方块机器。
+gt.blockmachines.hatch.milling.name=研磨球仓
+gt.blockmachines.hatch.milling.tooltip=专用研磨球存储\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.multi.input.tier.11.name=巨型四重输入仓
+gt.blockmachines.hatch.multi.input.tier.11.tooltip=多方块机器的流体输入端\n容量：500,000,000L\n可容纳4种流体。
+gt.blockmachines.hatch.nanite.name=纳米蜂群收容总线
+gt.blockmachines.hatch.nanite.tooltip=存储用于多方块结构的纳米蜂群\n拆卸后保留其内容物
+gt.blockmachines.hatch.nanite.singularity.name=奇点纳米蜂群收容总线
+gt.blockmachines.hatch.nanite.singularity.tooltip=存储用于多方块结构的纳米蜂群\n拆卸后保留其内容物
+gt.blockmachines.hatch.output.me.name=输出仓（ME）
+gt.blockmachines.hatch.output.me.tooltip=多方块机器的流体输出端\n容量：0 L\n用螺丝刀右键以限制自动输出\n可以被设定为仅输出/仅不输出 物品/蒸汽/流体\n被设定过的输出仓在多方块中拥有更高的优先级
+gt.blockmachines.hatch.output_battery.tier.00.name=电池输出总线（MV）
+gt.blockmachines.hatch.output_battery.tier.00.tooltip=多方块机器的电池箱放电接口\n容量：4格\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.output_battery.tier.01.name=电池输出总线（EV）
+gt.blockmachines.hatch.output_battery.tier.01.tooltip=多方块机器的电池箱放电接口\n容量：16格\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.output_bus.me.name=输出总线（ME）
+gt.blockmachines.hatch.output_bus.me.tooltip=多方块机器的物品输出端\n容量：25组\n手持闪存左键以保存过滤配置\n手持闪存右键以加载过滤配置
+gt.blockmachines.hatch.output_bus.tier.steam.name=输出总线（蒸汽）
+gt.blockmachines.hatch.phsensor.name=pH传感器仓
+gt.blockmachines.hatch.phsensor.tooltip=可安装于pH中和净化单元。\n基于当前pH值输出红石信号。\n右键以打开GUI和更改设置。
+gt.blockmachines.hatch.splitter.redstone.name=分流器红石输入端口
+gt.blockmachines.hatch.toxicresiduesensor.name=毒性残留物感应仓
+gt.blockmachines.hatch.toxicresiduesensor.tooltip=读取大型中和引擎的毒性残留物读数\n右键点击打开GUI界面以更改设置。
+gt.blockmachines.hatch.turbine.name=转子仓
+gt.blockmachines.hatch.turbine.tooltip=特大涡轮的转子仓\n手持电烙铁右键以重置控制器连接\n手持扳手右键以移除转子\n手持螺丝刀右键以显示技术信息\n手持扳手Shift+右键以旋转\n手持螺丝刀Shift+右键以禁用动画\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.turbine.input.tier.00.name=涡轮仓
+gt.blockmachines.hatch.void.tier.00.name=虚空仓
+gt.blockmachines.hatch.void_bus.tier.00.name=虚空总线
+gt.blockmachines.hatch.water.intake.tier.00.name=蓄水仓
+gt.blockmachines.hatch.wireless.transmitter.energized.tier.12.name=充能无线动力仓
+
+gt.blockmachines.hpmachine.alloysmelter.name=高压合金炉
+gt.blockmachines.hpmachine.alloysmelter.tooltip=联合熔炉\n机器类型：§e合金炉§r
+gt.blockmachines.hpmachine.compressor.name=高压蒸汽压缩机
+gt.blockmachines.hpmachine.compressor.tooltip=压缩物品\n机器类型：§e压缩机§r
+gt.blockmachines.hpmachine.extractor.name=高压蒸汽提取机
+gt.blockmachines.hpmachine.extractor.tooltip=提取你的第一块橡胶\n机器类型：§e提取机§r
+gt.blockmachines.hpmachine.furnace.name=高压蒸汽熔炉
+gt.blockmachines.hpmachine.furnace.tooltip=消耗蒸汽以熔炼物品\n机器类型：§e熔炉§r
+gt.blockmachines.hpmachine.hammer.name=高压蒸汽锻造锤
+gt.blockmachines.hpmachine.hammer.tooltip=锻造锤\n机器类型：§e锻造锤§r
+gt.blockmachines.hpmachine.macerator.name=高压蒸汽研磨机
+gt.blockmachines.hpmachine.macerator.tooltip=粉碎你的矿石\n机器类型：§e研磨机§r
+
+gt.blockmachines.hull.bronze.name=青铜机器外壳
+gt.blockmachines.hull.bronze_bricked.name=砖砌青铜机器外壳
+gt.blockmachines.hull.steel.name=钢机器外壳
+gt.blockmachines.hull.steel_bricked.name=砖砌铸铁机器外壳
+
+gt.blockmachines.humongousinputhatch.name=巨型输入仓
+
+gt.blockmachines.infinite.chest.tier.01.name=无限物品箱
+gt.blockmachines.infinite.chest.tier.01.tooltip=这个箱子可以存储101250个物品\n添加者：§2Alkalus §7- §c[GT++]
+
+gt.blockmachines.long.distance.pipeline.fluid.name=长距离流体管道控制方块
+gt.blockmachines.long.distance.pipeline.item.name=长距离物品管道控制方块
+
+gt.blockmachines.machine.tffthatch.name=TFFT多重输入/输出仓
+gt.blockmachines.machine.tffthatch.tooltip=TFFT的一站式访问节点
+
+gt.blockmachines.modificationtable.name=强化台
+gt.blockmachines.modificationtable.tooltip=§b改造模块化装甲\n可用于改造机械装甲\n依次放入装甲、骨架、能量核心和强化模块\n移除骨架或核心前，请先取出所有强化模块
+
+gt.blockmachines.multimachine.brickedblastfurnace.name=砖高炉
+
+gt.blockmachines.neutron_sensor.name=中子传感器
+gt.blockmachines.neutron_sensor.tooltip=可安装在中子活化器上。\n基于中子动能输出红石信号。\n右键以打开GUI进行设置。
+
+gt.blockmachines.pollutioncreator.01.tier.single.name=雾霾生成仪
+gt.blockmachines.pollutioncreator.01.tier.single.tooltip=将蓝天染黑\n用来产生污染的实用debug工具\n添加者：§2Alkalus §7- §c[GT++]
+
+gt.blockmachines.pollutiondetector.01.tier.single.name=污染探测仪
+gt.blockmachines.pollutiondetector.01.tier.single.tooltip=是的，你正居住在瓜廖尔\n右键查看污染水平\n用螺丝刀配置红石信号输出\n不消耗能源\n添加者：§2Alkalus §7- §c[GT++]
+
+gt.blockmachines.quantum.tank.debug.name=Debug 流体储罐
+gt.blockmachines.quantum.tank.debug.tooltip=可以存储2,147,483,640 L流体\n拆卸后保留其中流体
+
+gt.blockmachines.redstone.lamp.name=红石控制灯具
+gt.blockmachines.redstone.lamp.tooltip=红石控制灯具\n添加者：§2Alkalus §7- §c[GT++]
+
+gt.blockmachines.solarreflector.simple.single.name=太阳能反射器
+gt.blockmachines.solarreflector.simple.single.tooltip=清洁、绿色能源运动的一部分\n指一座太阳能塔给我看\n添加者：§2Alkalus §7- §c[GT++]
+
+gt.blockmachines.tesseract.generator.name=超立方体发生器
+gt.blockmachines.tesseract.generator.tooltip=为连接的容器生成一个超立方体\n使用管道连接即可输入物品\n同维度传输耗能 512EU/t\n跨维度传输耗能 2048EU/t\n添加者：§2Alkalus §7- §c[GT++]
+gt.blockmachines.tesseract.terminal.name=超立方体终端
+gt.blockmachines.tesseract.terminal.tooltip=远程访问超立方体发生器\n连接管道以提取物品或流体\n从背面输出\n同维度传输消耗512EU/t\n跨维度传输消耗2048EU/t\n添加者：§2Alkalus §7- §c[GT++]
+
+gt.blockmachines.vacuum.hatch.input.name=真空传送输入端口
+gt.blockmachines.vacuum.hatch.output.name=真空传送输出端口
+
+gt.blockmachines.voidminer1.name=虚空采矿场 I
+gt.blockmachines.voidminer2.name=虚空采矿场 II
+gt.blockmachines.voidminer3.name=虚空采矿场 III
+
+gt.blockmachines.yottafluidtankhatch.name=YOT仓
+gt.blockmachines.yottafluidtankhatch.tooltip=AE2FC的专用I/O端口。\n直接将YOT储罐连接到AE流体存储系统。\n使用螺丝刀设置存储优先级\n使用电烙铁设置读/写模式\n使用剪线钳启用/禁用黏性模式
 gt.blockmachines.hull.name=%s机器外壳
 gt.blockmachines.advancedmachine.dehydrator.tier.01.name=化学脱水机 I
 gt.blockmachines.advancedmachine.dehydrator.tier.02.name=化学脱水机 II
@@ -1516,3 +1725,99 @@ gt.blockmachines.hatch.dataaccess.adv.name=进阶数据访问仓
 gt.blockmachines.hatch.dataaccess.auto.name=自动数据访问仓
 gt.blockmachines.hatch.dataaccess.name=数据访问仓
 gt.blockmachines.hatch.dataaccess.desc=多方块机器的数据访问接口\n增加%s个额外的格子以放置闪存
+
+# Tools
+gt.metatool.empty.name=%s（空）
+gt.metatool.empty.tooltip=你需要为其充电
+
+gt.metatool.01.10.name=锯子
+gt.metatool.01.10.tooltip=同样可以采集冰块
+gt.metatool.01.12.name=锻造锤
+gt.metatool.01.12.tooltip=不采集矿石，直接粉碎
+gt.metatool.01.14.name=软锤
+gt.metatool.01.16.name=扳手
+gt.metatool.01.16.tooltip=按住左键以拆卸机器
+gt.metatool.01.18.name=锉
+gt.metatool.01.20.name=撬棍
+gt.metatool.01.20.tooltip=拆下覆盖板、旋转铁轨
+gt.metatool.01.22.name=螺丝刀
+gt.metatool.01.22.tooltip=调整机器与覆盖板
+gt.metatool.01.24.name=研钵
+gt.metatool.01.26.name=剪线钳
+gt.metatool.01.28.name=捕虫网
+gt.metatool.01.30.name=剪枝器
+gt.metatool.01.34.name=小刀
+gt.metatool.01.36.name=屠刀
+gt.metatool.01.36.tooltip=攻击速度很低
+gt.metatool.01.44.name=搋子
+gt.metatool.01.46.name=擀面杖
+gt.metatool.01.100.name=电钻（LV）
+gt.metatool.01.102.name=电钻（MV）
+gt.metatool.01.104.name=电钻（HV）
+gt.metatool.01.110.name=链锯（LV）
+gt.metatool.01.110.tooltip=同样可以采集冰块
+gt.metatool.01.112.name=链锯（MV）
+gt.metatool.01.112.tooltip=同样可以采集冰块
+gt.metatool.01.114.name=链锯（HV）
+gt.metatool.01.114.tooltip=同样可以采集冰块
+gt.metatool.01.120.name=扳手（LV）
+gt.metatool.01.120.tooltip=按住左键以拆卸机器
+gt.metatool.01.122.name=扳手（MV）
+gt.metatool.01.122.tooltip=按住左键以拆卸机器
+gt.metatool.01.124.name=扳手（HV）
+gt.metatool.01.124.tooltip=按住左键以拆卸机器
+gt.metatool.01.130.name=气锤（LV）
+gt.metatool.01.130.tooltip=粉碎岩石
+gt.metatool.01.132.name=气锤（MV）
+gt.metatool.01.132.tooltip=粉碎岩石
+gt.metatool.01.134.name=气锤（HV）
+gt.metatool.01.134.tooltip=粉碎岩石
+gt.metatool.01.140.name=圆锯（LV）
+gt.metatool.01.140.tooltip=并不适用于采集方块
+gt.metatool.01.142.name=圆锯（MV）
+gt.metatool.01.142.tooltip=并不适用于采集方块
+gt.metatool.01.144.name=圆锯（HV）
+gt.metatool.01.144.tooltip=并不适用于采集方块
+gt.metatool.01.150.name=螺丝刀（LV）
+gt.metatool.01.150.tooltip=调整机器与覆盖板
+gt.metatool.01.152.name=螺丝刀（MV）
+gt.metatool.01.152.tooltip=调整机器与覆盖板
+gt.metatool.01.154.name=螺丝刀（HV）
+gt.metatool.01.154.tooltip=调整机器与覆盖板
+gt.metatool.01.160.name=电烙铁（LV）
+gt.metatool.01.160.tooltip=修复短路的电路板。需要消耗身上携带的焊料。
+gt.metatool.01.162.name=电烙铁（MV）
+gt.metatool.01.162.tooltip=修复短路的电路板。需要消耗身上携带的焊料。
+gt.metatool.01.164.name=电烙铁（HV）
+gt.metatool.01.164.tooltip=修复短路的电路板。需要消耗身上携带的焊料。
+gt.metatool.01.170.name=小型涡轮
+gt.metatool.01.170.tooltip=大涡轮机使用的涡轮转子
+gt.metatool.01.172.name=涡轮
+gt.metatool.01.172.tooltip=大涡轮机使用的涡轮转子
+gt.metatool.01.174.name=大型涡轮
+gt.metatool.01.174.tooltip=大涡轮机使用的涡轮转子
+gt.metatool.01.176.name=巨型涡轮
+gt.metatool.01.176.tooltip=大涡轮机使用的涡轮转子
+gt.metatool.01.180.name=万能工具
+gt.metatool.01.180.tooltip=六合一工具！
+gt.metatool.01.182.name=万能工具（剪枝器）
+gt.metatool.01.184.name=万能工具（锉）
+gt.metatool.01.186.name=万能工具（小刀）
+gt.metatool.01.188.name=万能工具（锯）
+gt.metatool.01.188.tooltip=同样可以采集冰块
+gt.metatool.01.190.name=万能工具（螺丝刀）
+gt.metatool.01.190.tooltip=调整机器与覆盖板
+gt.metatool.01.192.name=万能工具（剪线钳）
+gt.metatool.01.194.name=装饰铲
+gt.metatool.01.196.name=剪线钳（LV）
+gt.metatool.01.196.tooltip=手持式电动剪线钳
+gt.metatool.01.198.name=剪线钳（MV）
+gt.metatool.01.198.tooltip=手持式电动剪线钳
+gt.metatool.01.200.name=剪线钳（HV）
+gt.metatool.01.200.tooltip=手持式电动剪线钳
+gt.metatool.01.202.name=锉（LV）
+gt.metatool.01.202.tooltip=手持式电动锉
+gt.metatool.01.204.name=锉（MV）
+gt.metatool.01.204.tooltip=手持式电动锉
+gt.metatool.01.206.name=锉（HV）
+gt.metatool.01.206.tooltip=手持式电动锉
