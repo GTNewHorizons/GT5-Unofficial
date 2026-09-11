@@ -375,7 +375,7 @@ public class OverclockCalculator {
         // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        int tiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) Math.ceil(recipePower), 32));
+        int tiersAbove = getTiersAbove(machinePower, recipePower);
 
         // If overclocking is disabled, use the base values and return.
         if (noOverclock) {
@@ -412,7 +412,7 @@ public class OverclockCalculator {
         int regularOverclocks = overclocks - heatOverclocks;
 
         // Adjust power consumption and processing time based on overclocks.
-        calculatedConsumption = (long) Math.ceil(recipePower * GTUtility.powInt(eutIncreasePerOC, overclocks));
+        calculatedConsumption = (long) Math.ceil(snapToTwoDecimals(recipePower) * GTUtility.powInt(eutIncreasePerOC, overclocks));
         duration /= GTUtility.powInt(durationDecreasePerHeatOC, heatOverclocks);
         duration /= GTUtility.powInt(durationDecreasePerOC, regularOverclocks);
         calculatedDuration = (int) Math.max(duration, 1);
@@ -437,7 +437,7 @@ public class OverclockCalculator {
         final int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
         final int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
 
-        final int powerTiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) recipePower, 32));
+        final int powerTiersAbove = getTiersAbove(machinePower, recipePower);
         final int voltageTiersAbove = voltageTierMachine - voltageTierRecipe;
 
         // Special handling for laser overclocking.
@@ -494,5 +494,39 @@ public class OverclockCalculator {
         }
 
         return Math.ceil(heatMultiplier * regularMultiplier * correctionMultiplier);
+    }
+
+    /**
+     * Returns the number of tiers above compareBase that powerTier is.
+     * If powerTier is less than compareBase, returns -1.
+     * @param powerTier
+     * @param compareBase
+     * @return tiers above the compareBase.
+     */
+    public static int getTiersAbove(double powerTier, double compareBase) {
+        final long scale = 100L; // Scale to avoid floating point precision issues
+        if (powerTier < (double) Long.MAX_VALUE / scale) {
+            long scaledPowerTier = Math.round(powerTier * scale);
+            long scaledCompareBase = Math.round(compareBase * scale);
+            return (int) GTUtility.log4(scaledPowerTier / Math.max(scaledCompareBase, 32L * scale));
+        } else {
+            return (int) GTUtility.log4((long) (powerTier / Math.max(compareBase, 32.0)));
+        }
+    }
+
+    /**
+     * Snaps a double value to two decimal places.
+     * If the value is too large, it returns the original value.
+     * @param val
+     * @return value snapped to two decimal places, or the original value if too large.
+     */
+    public static double snapToTwoDecimals(double val) {
+        final long scale = 100L;
+        if (val < (double) Long.MAX_VALUE / scale) {
+            long scaledVal = Math.round(val * scale);
+            return (double) scaledVal / scale;
+        } else {
+            return val;
+        }
     }
 }
