@@ -59,6 +59,20 @@ class BECFactoryNetworkTest {
         }
     }
 
+    static class StubFilter extends StubGenerator {
+
+        private final Fluid allowed;
+
+        StubFilter(Fluid allowed) {
+            this.allowed = allowed;
+        }
+
+        @Override
+        public boolean allowsCondensateThrough(Fluid condensate) {
+            return condensate == allowed;
+        }
+    }
+
     /** Storage stub: BECFactoryElement + NotableBECFactoryElement + BECInventory. */
     static class StubStorage implements BECFactoryElement, NotableBECFactoryElement, BECInventory {
 
@@ -388,6 +402,28 @@ class BECFactoryNetworkTest {
         });
 
         assertEquals(4, visited.size());
+    }
+
+    @Test
+    void differentFiltersOnConvergingPathsRemainReachable() {
+        Fluid fluidA = mock(Fluid.class);
+        Fluid fluidB = mock(Fluid.class);
+        StubFilter pathA = new StubFilter(fluidA);
+        StubFilter pathB = new StubFilter(fluidB);
+        generator.routedNeighbors = List.of(pathA, pathB);
+        pathA.routedNeighbors = List.of(storage);
+        pathB.routedNeighbors = List.of(storage);
+        storage.contents.put(fluidA, 300L);
+        storage.contents.put(fluidB, 500L);
+        network.addElement(generator);
+        network.addElement(pathA);
+        network.addElement(pathB);
+        network.addElement(storage);
+
+        CondensateList result = network.getStoredCondensate(generator);
+
+        assertEquals(300L, result.getLong(fluidA));
+        assertEquals(500L, result.getLong(fluidB));
     }
 
     @Test
