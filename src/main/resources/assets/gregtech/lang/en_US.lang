@@ -3876,8 +3876,8 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24=§c§nBooster Fluids§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25=§fBooster Fluids§7 can be supplied to enhance the LHC §4scaling exponent§7 for 
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26=§6Beam Rates§7 above §f15000§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27=§fNo fluid§7 - §40.5§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28=§fDegenerate Quark-Gluon Plasma§7 - §40.75§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29=§fMolten Magmatter§7 - §41§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28=§fDegenerate Quark-Gluon Plasma§7 - §40.7§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29=§fMolten Magmatter§7 - §40.9§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30=The §9Beam Energy§7 is immediately set to §f1TeV§7, and §6Beam Rate§7 L of fluid is consumed every cycle 
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip31=If the §fBooster Fluid§7 supplied is changed, the beam must be re-accelerated from scratch
 

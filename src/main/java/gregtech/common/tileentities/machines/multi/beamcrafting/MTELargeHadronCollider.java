@@ -87,8 +87,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static final float RATE_SCALE_FACTOR = 1.3F;
     public static final int RATE_NERF_CUTOFF = 15000;
     public static final float RATE_NERF_POWER = 0.5F;
-    public static final float RATE_NERF_POWER_QGP = 0.75F;
-    public static final float RATE_NERF_POWER_MAGMATTER = 1.0F;
+    public static final float RATE_NERF_POWER_QGP = 0.7F;
+    public static final float RATE_NERF_POWER_MAGMATTER = 0.9F;
     public static final float MASSLESS_PARTICLE_THRESHOLD = 0.5F;
     public static final float OVERALL_POWER_MULT_FACTOR = 1F; // reminder: update tooltip text if this is not set to 1
 
