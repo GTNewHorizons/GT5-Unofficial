@@ -369,7 +369,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int currentLayer = (height * 2) - 2;
         if (outputHatchesPerLayer.isEmpty()) return 0;
 
-        return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }
@@ -378,14 +378,14 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int currentLayer = (height * 2) - 1;
         if (outputHatchesPerLayer.isEmpty()) return 0;
 
-        return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }
 
     protected int getFinalLayerOutputHatchCount() {
         int currentLayer = height * 2; // in a max dt (height 5), this is index 10. so height*2
-        return outputHatchesPerLayer.size() < currentLayer + 1 || height <= 0 ? 0
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }
@@ -435,11 +435,33 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        List<FluidStack> mergedFluids = new ArrayList<>();
+        int index = 0;
         boolean succeed = true;
-        for (int i = 0; i < outputFluids.length && i < this.outputHatchesPerLayer.size(); i++) {
-            FluidStack stack = outputFluids[i].copy();
-            addOutputPartial(stack, outputHatchesPerLayer.get(i));
-            if (stack.amount > 0) succeed = false;
+
+        for (FluidStack stack : outputFluids) {
+            if (mergedFluids.isEmpty() || (stack.isFluidEqual(mergedFluids.getFirst())
+                && mergedFluids.getLast().amount == Integer.MAX_VALUE)) {
+                mergedFluids.add(stack);
+                continue;
+            }
+            if (index >= outputHatchesPerLayer.size()) {
+                succeed = false;
+                break;
+            }
+            if (!addFluidOutputs(mergedFluids.toArray(new FluidStack[0]), outputHatchesPerLayer.get(index))) {
+                succeed = false;
+            }
+            mergedFluids.clear();
+            mergedFluids.add(stack);
+            index++;
+        }
+        if (!mergedFluids.isEmpty()) {
+            if (index >= outputHatchesPerLayer.size()) {
+                succeed = false;
+            } else if (!addFluidOutputs(mergedFluids.toArray(new FluidStack[0]), outputHatchesPerLayer.get(index))) {
+                succeed = false;
+            }
         }
         return succeed;
     }

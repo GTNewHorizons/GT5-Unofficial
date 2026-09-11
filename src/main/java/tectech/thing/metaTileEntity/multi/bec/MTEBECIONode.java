@@ -484,6 +484,23 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         return this.recipeSteps.get(index);
     }
 
+    /// Finds the first step after the current one that requires a different nanite than the current step. Consecutive
+    /// steps using the same nanite are skipped, so the returned step is where the required nanite actually changes.
+    /// Returns null when idle or when the current nanite is required for the remainder of the recipe.
+    private @Nullable RecipeStep getNextNaniteSwitch() {
+        RecipeStep step = getCurrentStep();
+
+        if (step == null) return null;
+
+        for (int i = step.index + 1; i < this.recipeSteps.size(); i++) {
+            RecipeStep next = this.recipeSteps.get(i);
+
+            if (next.nanite != step.nanite) return next;
+        }
+
+        return null;
+    }
+
     private static final ShutDownReason CLOGGED = SimpleShutDownReason.ofCritical("bec_clogged");
 
     @Override
@@ -706,6 +723,23 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @OCMethod
     public @Nullable NaniteTier getRequiredTier() {
         return requiredTier;
+    }
+
+    /// The nanite that will be required once the current nanite's steps are finished, or null if the current nanite is
+    /// required until the recipe completes (or nothing is running).
+    @OCMethod
+    public @Nullable NaniteTier getNextNaniteTier() {
+        RecipeStep next = getNextNaniteSwitch();
+
+        return next == null ? null : next.nanite;
+    }
+
+    /// The progress (in ticks) at which the required nanite changes to [#getNextNaniteTier()], or -1 if it never does.
+    @OCMethod
+    public int getNextNaniteSwitchProgress() {
+        RecipeStep next = getNextNaniteSwitch();
+
+        return next == null ? -1 : next.start;
     }
 
     @OCMethod

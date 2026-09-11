@@ -809,6 +809,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         if (parallelAmount > 1) {
             chance -= stellarPlasmaOverflowProbabilityAdjustment;
         } else {
+            // Intentional: pity compares the base recipe chance before overflow penalties are applied.
             if (chance == previousRecipeChance && pityChance >= 1) {
                 chance = 1;
             }
