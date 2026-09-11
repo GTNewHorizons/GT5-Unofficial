@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -34,6 +35,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -130,6 +132,39 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
+    }
+
+    // Ghost block 
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+
+        final World world = aBaseMetaTileEntity.getWorld();
+        final int x = aBaseMetaTileEntity.getXCoord();
+        final int y = aBaseMetaTileEntity.getYCoord();
+        final int z = aBaseMetaTileEntity.getZCoord();
+        if (!world.getBlock(x, y + 1, z)
+            .isReplaceable(world, x, y + 1, z)) {
+            world.func_147480_a(x, y, z, true);
+            return;
+        }
+        world.setBlock(x, y + 1, z, GregTechAPI.sBlockGhostSpace);
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        final IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (!base.isServerSide()) return;
+
+        final World world = base.getWorld();
+        final int x = base.getXCoord();
+        final int y = base.getYCoord();
+        final int z = base.getZCoord();
+        if (world.getBlock(x, y + 1, z) == GregTechAPI.sBlockGhostSpace) {
+            world.func_147480_a(x, y + 1, z, false);
+        }
     }
 
     /** Chance out of 100 that the machine works on that day */
