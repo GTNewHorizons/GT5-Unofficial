@@ -184,7 +184,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
             .setDuration(RECIPE_DURATION)
             .setParallel(originalMaxParallel);
 
-        maxParallel = GTUtility.longToInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()));
+        maxParallel = calculator.calculateMaxParallelUnderOneTick();
 
         int maxParallelBeforeBatchMode = maxParallel;
         if (isBatchModeEnabled()) {

@@ -417,7 +417,7 @@ public class ParallelHelper {
                 maxParallel = GTUtility.safeInt((long) (maxParallel / calculator.getDurationUnderOneTickSupplier()), 0);
             }
         } else {
-            maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
+            maxParallel = calculator.calculateMaxParallelUnderOneTick();
         }
         int maxParallelBeforeBatchMode = maxParallel;
         if (batchMode) {
