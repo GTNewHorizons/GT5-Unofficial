@@ -227,6 +227,21 @@ public class MaterialsFluorides {
         new MaterialStack(MaterialsElements.getInstance().SELENIUM, 1),
         new MaterialStack(MaterialsElements.getInstance().FLUORINE, 6));
 
+    // NpO2F2 (neptunyl fluoride) - LFTR byproduct reprocessing intermediate
+    // Dust is tinted pink-ish (Np oxyfluorides are pink) via the material's rgba (dusts auto-tint from it).
+    public static final Material NEPTUNYL_FLUORIDE = new Material(
+        "Neptunyl Fluoride",
+        MaterialState.SOLID,
+        new short[] { 0xf2, 0xa0, 0xb4 }, // pink-ish
+        -1,
+        -1,
+        -1,
+        -1,
+        false,
+        new MaterialStack(MaterialsElements.getInstance().NEPTUNIUM, 1),
+        new MaterialStack(MaterialsElements.getInstance().OXYGEN, 2),
+        new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2));
+
     public static final Material SODIUM_FLUORIDE = new Material(
         "Sodium Fluoride", // Material Name
         MaterialState.PURE_LIQUID, // State

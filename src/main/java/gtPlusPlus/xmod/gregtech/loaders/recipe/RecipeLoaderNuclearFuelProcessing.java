@@ -7,6 +7,7 @@ import static gregtech.api.recipe.RecipeMaps.coldTrapRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fissionFuelProcessingRecipes;
 import static gregtech.api.recipe.RecipeMaps.reactorProcessingUnitRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFurnaceRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -264,5 +265,33 @@ public class RecipeLoaderNuclearFuelProcessing {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
+
+        neptuniumLine();
+    }
+
+    // NpF6 + 2H2O -> NpO2F2 + 4HF (hydrolysis, recovers 2/3 of the fluorine; Exxon, titanium casing)
+    // NpO2F2 -> Np + O2 + F2 (vacuum decomposition, Naquadah coils)
+    private static void neptuniumLine() {
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                MaterialsFluorides.NEPTUNIUM_HEXAFLUORIDE.getFluidStack(1_000),
+                Materials.Water.getFluid(2_000))
+            .itemOutputs(MaterialsFluorides.NEPTUNYL_FLUORIDE.getDust(1))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .metadata(CHEMPLANT_CASING_TIER, 4) // Titanium
+            .addTo(chemicalPlantRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialsFluorides.NEPTUNYL_FLUORIDE.getDust(1))
+            .itemOutputs(MaterialsElements.getInstance().NEPTUNIUM.getDust(1))
+            .fluidOutputs(
+                Materials.Oxygen.getGas(2_000),
+                Materials.Fluorine.getGas(2_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .metadata(COIL_HEAT, 7201) // Naquadah coils
+            .addTo(vacuumFurnaceRecipes);
     }
 }

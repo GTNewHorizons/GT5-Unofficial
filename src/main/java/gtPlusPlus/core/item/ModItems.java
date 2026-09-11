@@ -672,6 +672,7 @@ public final class ModItems {
         GregtechItemList.TinyLi2CO3CaOH2Dust.set(Li2CO3CaOH2[2]);
 
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(MaterialsFluorides.SODIUM_FLUORIDE, false);
+        MaterialUtils.generateSpecialDustAndAssignToAMaterial(MaterialsFluorides.NEPTUNYL_FLUORIDE, false);
 
         Item[] Li2BeF4 = ItemUtils.generateSpecialUseDusts(
             "Li2BeF4",
