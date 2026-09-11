@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.recipe.RecipeMaps.coldTrapRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fissionFuelProcessingRecipes;
 import static gregtech.api.recipe.RecipeMaps.reactorProcessingUnitRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFurnaceRecipes;
@@ -21,6 +22,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gtPlusPlus.core.fluids.GTPPFluids;
+import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
@@ -267,6 +269,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .addTo(centrifugeRecipes);
 
         neptuniumLine();
+        technetiumLine();
     }
 
     // NpF6 + 2H2O -> NpO2F2 + 4HF (hydrolysis, recovers 2/3 of the fluorine; Exxon, titanium casing)
@@ -293,5 +296,33 @@ public class RecipeLoaderNuclearFuelProcessing {
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 7201) // Naquadah coils
             .addTo(vacuumFurnaceRecipes);
+    }
+
+    // TcF6 + 2NaOH + H2O -> TcO2 + 4HF + 2NaF + O (Exxon, titanium casing)
+    // TcO2 -> Tc + O2 (electrolysis)
+    private static void technetiumLine() {
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                MaterialsFluorides.TECHNETIUM_HEXAFLUORIDE.getFluidStack(1_000),
+                Materials.Water.getFluid(1_000))
+            .itemInputs(Materials.SodiumHydroxide.getDust(2))
+            .itemOutputs(
+                MaterialMisc.TECHNETIUM_DIOXIDE.getDust(1),
+                MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
+            .fluidOutputs(
+                Materials.HydrofluoricAcid.getFluid(4_000),
+                Materials.Oxygen.getGas(1_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .metadata(CHEMPLANT_CASING_TIER, 4) // Titanium
+            .addTo(chemicalPlantRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialMisc.TECHNETIUM_DIOXIDE.getDust(1))
+            .itemOutputs(MaterialsElements.getInstance().TECHNETIUM.getDust(1))
+            .fluidOutputs(Materials.Oxygen.getGas(2_000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(electrolyzerRecipes);
     }
 }
