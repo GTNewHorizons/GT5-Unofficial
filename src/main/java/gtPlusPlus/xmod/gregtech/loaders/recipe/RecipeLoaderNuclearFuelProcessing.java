@@ -270,6 +270,7 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         neptuniumLine();
         technetiumLine();
+        seleniumLine();
     }
 
     // NpF6 + 2H2O -> NpO2F2 + 4HF (hydrolysis, recovers 2/3 of the fluorine; Exxon, titanium casing)
@@ -324,5 +325,27 @@ public class RecipeLoaderNuclearFuelProcessing {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(electrolyzerRecipes);
+    }
+
+    // SeF6 + 2NaOH + H2O -> SeO2 (dust) + 4HF + 2NaF + O (Exxon, titanium casing)
+    // Yields the SeO2 DUST form, which feeds the existing dust -> fluid -> selenious acid -> selenium chain
+    // (RecipesSeleniumProcessing). Mirrors the Tc line: NaOH captures F as NaF (stable) + O (inert) instead of reactive F2.
+    // Balanced: Se +6 -> +4, O -2 -> 0; all 6 F recovered (4 HF + 2 NaF).
+    private static void seleniumLine() {
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                MaterialsFluorides.SELENIUM_HEXAFLUORIDE.getFluidStack(1_000),
+                Materials.Water.getFluid(1_000))
+            .itemInputs(Materials.SodiumHydroxide.getDust(2))
+            .itemOutputs(
+                MaterialMisc.SELENIUM_DIOXIDE.getDust(1),
+                MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
+            .fluidOutputs(
+                Materials.HydrofluoricAcid.getFluid(4_000),
+                Materials.Oxygen.getGas(1_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .metadata(CHEMPLANT_CASING_TIER, 4) // Titanium
+            .addTo(chemicalPlantRecipes);
     }
 }
