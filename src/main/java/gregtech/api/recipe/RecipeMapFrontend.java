@@ -322,6 +322,10 @@ public class RecipeMapFrontend {
     }
 
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        drawNEIOverlays(neiCachedRecipe, 0);
+    }
+
+    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe, int cycleticks) {
         for (PositionedStack stack : neiCachedRecipe.mInputs) {
             if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
                 drawNEIOverlayForInput(fixed);

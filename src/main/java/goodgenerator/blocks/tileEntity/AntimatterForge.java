@@ -32,6 +32,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.items.GGMaterial;
@@ -50,6 +51,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -68,14 +70,14 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
-    private static final FluidStack[] magneticUpgrades = { Materials.TengamPurified.getMolten(1L),
-        Materials.Time.getMolten(1L), Materials.MagMatter.getMolten(1L) };
-    private static final FluidStack[] gravityUpgrades = { Materials.SpaceTime.getMolten(1L),
-        Materials.Space.getMolten(1L), Materials.Eternity.getMolten(1L) };
-    private static final FluidStack[] containmentUpgrades = { GGMaterial.shirabon.getMolten(1),
-        Materials.MHDCSM.getMolten(1L) };
-    private static final FluidStack[] activationUpgrades = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
-        GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
+    private static final FluidStack[] magneticUpgrades = { Materials.TengamPurified.getMolten(0L),
+        Materials.Time.getMolten(0L), Materials.MagMatter.getMolten(0L) };
+    private static final FluidStack[] gravityUpgrades = { Materials.SpaceTime.getMolten(0L),
+        Materials.Space.getMolten(0L), Materials.Eternity.getMolten(0L) };
+    private static final FluidStack[] containmentUpgrades = { GGMaterial.shirabon.getMolten(0),
+        Materials.MHDCSM.getMolten(0L) };
+    private static final FluidStack[] activationUpgrades = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(0),
+        GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(0) };
     private static final FluidStack ZERO_ANTIMATTER = Materials.Antimatter.getFluid(0);
 
     public static final String MAIN_NAME = "antimatterForge";
@@ -96,6 +98,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     private final float[] modifiers = { 0.0f, 0.0f, 0.0f, 0.0f };
     private final FluidStack[] upgradeFluids = { null, null, null, null };
+    private static final float[] fluidConsumptionExponents = { 0.5f, 0.5f, 2.0f / 7.0f, 1.0f / 3.0f };
     private final int[] fluidConsumptions = { 0, 0, 0, 0 };
 
     private final int speed = 20;
@@ -345,14 +348,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         // Check for upgrade fluids
         long containedProtomatter = 0;
 
-        fluidConsumptions[MAGNETIC_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
-        fluidConsumptions[GRAVITY_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
-        fluidConsumptions[CONTAINMENT_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 2.0f / 7.0f));
-        fluidConsumptions[ACTIVATION_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 1.0f / 3.0f));
-
-        for (int i = 0; i < modifiers.length; i++) {
-            modifiers[i] = 0.0f;
-            upgradeFluids[i] = null;
+        for (int modifierId = 0; modifierId < modifiers.length; modifierId++) {
+            fluidConsumptions[modifierId] = (int) Math
+                .ceil(Math.pow(totalAntimatterAmount, fluidConsumptionExponents[modifierId]));
+            modifiers[modifierId] = 0.0f;
+            upgradeFluids[modifierId] = null;
         }
 
         List<FluidStack> inputFluids = getStoredFluids();
@@ -573,6 +573,30 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 .encode("gg.infodata.antimatter_forge.change", formatNumber(getAntimatterChange())));
     }
 
+    public static FluidStack[] getMagneticUpgrades() {
+        return magneticUpgrades;
+    }
+
+    public static FluidStack[] getGravityUpgrades() {
+        return gravityUpgrades;
+    }
+
+    public static FluidStack[] getContainmentUpgrades() {
+        return containmentUpgrades;
+    }
+
+    public static FluidStack[] getActivationUpgrades() {
+        return activationUpgrades;
+    }
+
+    public static float[] getFluidConsumptionExponents() {
+        return fluidConsumptionExponents;
+    }
+
+    public static int getBaseConsumption() {
+        return BASE_CONSUMPTION;
+    }
+
     public long getAntimatterAmount() {
         return this.guiAntimatterAmount;
     }
@@ -587,6 +611,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     public long getAntimatterChange() {
         return this.guiAntimatterChange;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return GoodGeneratorRecipeMaps.antimatterForgeRecipes;
     }
 
     @Override
