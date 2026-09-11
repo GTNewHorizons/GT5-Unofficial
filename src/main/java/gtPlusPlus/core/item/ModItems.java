@@ -673,6 +673,7 @@ public final class ModItems {
 
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(MaterialsFluorides.SODIUM_FLUORIDE, false);
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(MaterialsFluorides.NEPTUNYL_FLUORIDE, false);
+        MaterialUtils.generateSpecialDustAndAssignToAMaterial(MaterialsFluorides.URANYL_FLUORIDE, false);
 
         Item[] Li2BeF4 = ItemUtils.generateSpecialUseDusts(
             "Li2BeF4",
