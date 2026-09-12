@@ -21,11 +21,20 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
- * Invisible block that reserves extra space for a machine whose model is taller than one block. Any MTE can use
- * the shared instance ({@code GregTechAPI.sBlockGhostSpace}): on placement, place it in the extra space and forward
- * clicks to the real block. When either this block or the GT machine directly below it is destroyed by any means,
- * the other is destroyed too. Has no identity of its own - WAILA icon/name are derived live from whatever block is
- * below it.
+ * Invisible block that reserves one extra cell of space for a machine whose model doesn't fit in a single block.
+ * Any MTE can use the shared instance ({@code GregTechAPI.sBlockGhostSpace}): on placement, put it in the extra
+ * cell directly above the machine, and forward clicks to the real block. When either this block or the GT machine
+ * below it is destroyed by any means, the other is destroyed too. Has no identity of its own - WAILA icon/name are
+ * derived live from whatever block owns it.
+ * <p>
+ * Restrictions:
+ * <ul>
+ * <li>The owning machine is always looked up directly below this block ({@code y - 1}). A machine that can be
+ * rotated so its extra space ends up somewhere other than "above me" (e.g. upside-down, or extending sideways) is
+ * not supported without changing this lookup.</li>
+ * <li>Only a single adjacent cell is reserved. A machine needing more than one extra cell (e.g. spanning 3+ blocks)
+ * is not supported - there is no chaining through multiple ghost blocks.</li>
+ * </ul>
  */
 public class BlockGhostSpace extends Block implements IGregtechWailaProvider {
 
