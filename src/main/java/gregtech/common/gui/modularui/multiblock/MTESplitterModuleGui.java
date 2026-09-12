@@ -23,6 +23,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -127,7 +128,10 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         panelResizer.widgetProvider((manager, _) -> {
             int w = multiblock.expandedRulesPanel ? 600 : 200;
             int h = multiblock.expandedRulesPanel ? 306 : 170;
+            UITexture bg = multiblock.expandedRulesPanel ? GTGuiTextures.BACKGROUND_NANOCHIP_LARGE
+                : GTGuiTextures.BACKGROUND_NANOCHIP;
             ui.size(w, h);
+            ui.background(bg);
 
             registerRuleSyncAction(manager);
 
