@@ -234,6 +234,19 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
+    void weirdParallelOCV2_Test() {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(2)
+            .setEUt(V[8])
+            .setDuration(300)
+            .setParallel(18)
+            .setAmperage(4)
+            .setEUtDiscount(0.9)
+            .setAmperageOC(true)
+            .calculate();
+        assertEquals(530842, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
     void weirdParallelAndAmpsOC_Test() {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[8])

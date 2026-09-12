@@ -359,7 +359,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        tag.setDouble("speedup", speedup);
+        tag.setFloat("speedup", (float) speedup);
     }
 
     @Override
@@ -368,7 +368,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
         list.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
-                + String.format("%.1f%%", 100 * tag.getDouble("speedup")));
+                + String.format("%.1f%%", 100 * tag.getFloat("speedup")));
     }
 
     @Override

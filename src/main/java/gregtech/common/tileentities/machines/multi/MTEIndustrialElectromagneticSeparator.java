@@ -72,7 +72,7 @@ public class MTEIndustrialElectromagneticSeparator
         Iron(8, 0.8D, 1.1D, false),
         Steel(24, 0.75D, 1.25D, false),
         Neodymium(48, 0.7D, 1.5D, false),
-        Samarium(96, 0.6D, 2D, false),
+        Samarium(96, 0.6D, 2.0D, false),
         Tengam(256, 0.5D, 2.5D, true);
 
         final int maxParallel;
