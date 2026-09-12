@@ -391,3 +391,15 @@ gt.blockmachines.htgr.name=High Temperature Gas-cooled Reactor
 gt.blockmachines.industrialarcfurnace.controller.tier.single.name=Industrial Arc Furnace
 gt.blockmachines.multimachine.defusioncrafter.name=Draconic Evolution Fusion Crafter
 gt.blockmachines.multimachine.extremegreenhouse.name=Extreme Industrial Greenhouse
+
+# HTGR fuel items
+item.HTGR.fuel.Plutonium=Plutonium
+item.HTGR.fuel.Thorium=Thorium
+item.HTGR.fuel.Uranium=Uranium
+item.HTGRBISOPebbleCompound.name=BISO pebble compound (%s)
+item.HTGRBurnedOutTRISOBall.name=Burned out TRISO Ball (%s)
+item.HTGRBurnedOutTRISOPebble.name=Burned out TRISO Pebble (%s)
+item.HTGRHTGRFuelMixture.name=HTGR fuel mixture (%s)
+item.HTGRTRISOBall.name=TRISO ball (%s)
+item.HTGRTRISOPebble.name=TRISO pebble (%s)
+item.HTGRTRISOPebbleCompound.name=TRISO pebble compound (%s)
