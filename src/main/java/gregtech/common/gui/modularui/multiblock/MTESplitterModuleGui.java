@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.UpOrDown;
 import com.cleanroommc.modularui.api.drawable.IIcon;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -346,6 +347,11 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                         return Result.SUCCESS;
                     }
                     return super.onMousePressed(mouseButton);
+                }
+
+                @Override
+                public boolean onMouseScroll(UpOrDown scrollDirection, int amount) {
+                    return false;
                 }
             }.syncHandler(
                 syncManager.getOrCreateSyncHandler(
