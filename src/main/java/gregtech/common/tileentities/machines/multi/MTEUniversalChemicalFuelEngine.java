@@ -30,6 +30,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.FormatOptions;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -67,11 +68,11 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     private static final int OFFSET_Z = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
-    protected final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
-    protected final double ROCKET_EFFICIENCY_COEFFICIENT = 0.005D;
-    protected final double EFFICIENCY_CEILING = 1.5D;
-    protected final int HEATING_TIMER = TickTime.SECOND * 10;
+    private static final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
+    private static final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
+    private static final double ROCKET_EFFICIENCY_COEFFICIENT = 0.005D;
+    private static final double EFFICIENCY_CEILING = 1.5D;
+    private static final int HEATING_TIMER = TickTime.SECOND * 10;
 
     private long tEff;
     private int heatingTicks;
@@ -157,29 +158,35 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Engine, UCFE")
             .addInfo("BURNING BURNING BURNING")
-            .addInfo("Use combustible liquid to generate power")
-            .addInfo("You need to supply Combustion Promoter to keep it running")
-            .addInfo("It will consume all the fuel and combustion promoter in the hatch every second")
-            .addInfo("Energy output to the dynamo will be distributed over the next second")
-            .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop")
             .addInfo(
-                "If the amount of energy to be produced is higher "
-                    + "than the dynamo hatch can handle then all produced energy will void")
-            .addInfo("When turned on, there is a 10-second period where the machine will not stop")
-            .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed")
-            .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
-            .addInfo("The higher the amount of promoter, the higher the efficiency")
+                "Reacts combustion promoter with gas, diesel, or rocket fuel to generate power with up to 150% efficiency")
+            .addInfo("No soft caps or upper limits on power output, other than the dynamo hatch size")
             .addInfo(
-                "Follows an exponential curve exp(-C/(p/x))*1.5, "
-                    + "where x is the amount of fuel in liters, p is the amount of promoter in liters")
-            .addInfo("and C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
-            .addInfo("It creates sqrt(Current Output Power) pollution every second")
+                "No power is produced without " + EnumChatFormatting.GOLD
+                    + "Combustion Promoter"
+                    + EnumChatFormatting.GRAY)
+            .addInfo("Excess power is voided if the dynamo hatch is full or the output exceeds the dynamo throughput")
+            .addSeparator()
+            .addInfo("Efficiency is determined by the ratio (R) of combustion promoter to fuel")
+            .addInfo("The more combustion promoter, the higher the efficiency")
             .addInfo(
-                "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
-                    + EnumChatFormatting.YELLOW
-                    + "without outputting energy")
-            .addInfo("The efficiency is up to 150%")
+                "Follows an exponential curve " + EnumChatFormatting.AQUA
+                    + "exp(-C/R) * 1.5"
+                    + EnumChatFormatting.GRAY
+                    + ", where C is a constant based on the fuel type")
+            .addInfo(
+                "Gas/Diesel Fuel: C="
+                    + formatNumber(GAS_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3))
+                    + " | Rocket Fuel: C="
+                    + formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+            .addSeparator()
+            .addInfo(
+                "Produces " + EnumChatFormatting.DARK_PURPLE
+                    + "sqrt(EU/t)"
+                    + EnumChatFormatting.GRAY
+                    + " pollution per second")
             .addSupportAny()
+            .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 13, true)
             .addController("Front center, 3rd layer")
             .addCasing("100-115", "Stable Titanium Machine Casing", false)
