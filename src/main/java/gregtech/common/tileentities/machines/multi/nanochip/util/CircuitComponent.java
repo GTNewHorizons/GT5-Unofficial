@@ -180,10 +180,7 @@ public enum CircuitComponent {
         403,
         "gt.circuitcomponent.board.optical",
         () -> ItemList.Circuit_Board_Optical.get(1)),
-    NeuroProcessingUnit(
-        404,
-        "gt.circuitcomponent.neuroprocessingunit",
-        () -> ItemList.Circuit_Chip_NeuroCPU.get(1)),
+    // id 404 unused
     BioProcessingUnit(
         405,
         "gt.circuitcomponent.bioprocessingunit",
@@ -200,7 +197,7 @@ public enum CircuitComponent {
     ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", () -> BoardWetwareLifesupport, true),
     ProcessedBoardBioMutated(502, "gt.circuitcomponent.processed.board.biomutated", () -> BoardBioMutated, true),
     ProcessedBoardOptical(503, "gt.circuitcomponent.processed.board.optical", () -> BoardOptical, true),
-    ProcessedNeuroProcessingUnit(504, "gt.circuitcomponent.processed.neuroprocessingunit", () -> NeuroProcessingUnit, true),
+    // id 504 unused
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
     ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
     CleansedBoardPico(507, "gt.circuitcomponent.processed.board.cleansedpico",()-> BoardPico,true),
@@ -268,10 +265,7 @@ public enum CircuitComponent {
 
     // Crystal components
     // IDs: 800-899 CC, 900-999 PC
-    ChipCrystalCPU(
-        800,
-        "gt.circuitcomponent.chipcrystalcpu",
-        () -> ItemList.Circuit_Chip_CrystalCPU.get(1)),
+    // id 800 unused
     ChipCrystalSoC(
         801,
         "gt.circuitcomponent.chipcrystalsoc",
@@ -285,7 +279,7 @@ public enum CircuitComponent {
         "gt.circuitcomponent.chiprawadvancedcrystal",
         () -> ItemList.Circuit_Chip_CrystalSoC2.get(1)),
 
-    ProcessedChipCrystalCPU(900, "gt.circuitcomponent.processed.chipcrystalcpu", () -> ChipCrystalCPU, true),
+    // id 900 unused
     ProcessedChipCrystalSoC(901, "gt.circuitcomponent.processed.chipcrystalsoc", () -> ChipCrystalSoC, true),
     ProcessedChipLivingCrystal(902, "gt.circuitcomponent.processed.chiplivingcrystal", () -> ChipLivingCrystal, true),
     ProcessedChipRawAdvancedCrystal(903, "gt.circuitcomponent.processed.chiprawadvancedcrystal", () -> ChipRawAdvancedCrystal, true),
@@ -303,7 +297,6 @@ public enum CircuitComponent {
 
     ProcessedChipOpticalCPU(1100, "gt.circuitcomponent.processed.opticalcpu", () -> ChipOpticalCPU, true),
     ProcessedOpticalRAM(1101, "gt.circuitcomponent.processed.opticalram", () -> OpticalRAM, true),
-    ProcessedPerfectedRam(1102, "gt.circuitcomponent.processed.opticalperfectedram", () -> null, true),
 
     // Superconductors
     // IDs: 1200-1299 CC, 1300-1399 PC
