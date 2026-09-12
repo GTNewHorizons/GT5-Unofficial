@@ -209,7 +209,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void weirdPerfectParallelOC_Test() {
+    void weirdParallelPerfectOC_Test() {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(3840L)
             .setEUt(V[12])
             .setDuration(3200)

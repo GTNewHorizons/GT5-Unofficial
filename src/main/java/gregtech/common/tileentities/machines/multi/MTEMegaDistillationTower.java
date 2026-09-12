@@ -531,7 +531,6 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
-
     private static final double DISTILLERY_SPEED = 2.0D;
     private static final double DISTILLERY_EU_EFFICIENCY = 0.5D;
 

@@ -497,21 +497,24 @@ public class OverclockCalculator {
     }
 
     /**
-     * Returns the number of tiers above compareBase that powerTier is.
-     * If powerTier is less than compareBase, returns -1.
+     * Returns the number of tiers above compareBase that power is.
+     * If power is less than compareBase, returns -1.
      *
-     * @param powerTier
+     * @param power
      * @param compareBase
      * @return tiers above the compareBase.
      */
-    public static int getTiersAbove(double powerTier, double compareBase) {
+    public static int getTiersAbove(double power, double compareBase) {
+        if (power < compareBase) {
+            return -1;
+        }
         final long scale = 100L; // Scale to avoid floating point precision issues
-        if (powerTier < (double) Long.MAX_VALUE / scale) {
-            long scaledPowerTier = Math.round(powerTier * scale);
+        if (power < Long.MAX_VALUE / scale) {
+            long scaledPower = Math.round(power * scale);
             long scaledCompareBase = Math.round(compareBase * scale);
-            return (int) GTUtility.log4(scaledPowerTier / Math.max(scaledCompareBase, 32L * scale));
+            return (int) GTUtility.log4(scaledPower / Math.max(scaledCompareBase, 32L * scale));
         } else {
-            return (int) GTUtility.log4((long) (powerTier / Math.max(compareBase, 32.0)));
+            return (int) GTUtility.log4((long) (power / Math.max(compareBase, 32.0)));
         }
     }
 }

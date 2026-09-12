@@ -182,7 +182,8 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
                     + " Parallels per "
                     + TooltipHelper.coloredText("Voltage", TooltipHelper.TIER_COLOR)
                     + " Tier")
-            .addInfo(TooltipHelper.speedText((float) SPEED) + " - " + TooltipHelper.speedText((float) MAX_SPEED) + " Speed")
+            .addInfo(
+                TooltipHelper.speedText((float) SPEED) + " - " + TooltipHelper.speedText((float) MAX_SPEED) + " Speed")
             .addInfo(
                 TooltipHelper.coloredText("Parallels", TooltipHelper.PARALLEL_COLOR) + " and "
                     + TooltipHelper.coloredText("Speed", TooltipHelper.SPEED_COLOR)
