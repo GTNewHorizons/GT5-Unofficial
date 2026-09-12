@@ -1803,3 +1803,34 @@ gt.metatool.01.file.name=锉（%s）
 gt.metatool.01.202.tooltip=手持式电动锉
 gt.metatool.01.204.tooltip=手持式电动锉
 gt.metatool.01.206.tooltip=手持式电动锉
+
+# Side names
+gt.lang.face.any=任意面
+gt.lang.face.back=背面
+gt.lang.face.bottom=底面
+gt.lang.face.front=正面
+gt.lang.face.left=左面
+gt.lang.face.none=无
+gt.lang.face.right=右面
+gt.lang.face.top=顶面
+
+# Named item copies
+gt.metaitem.01.32707.with.CopyOfTheOrb.name=数据球的副本
+gt.metaitem.01.32707.with.OrbToCopy.name=要复制的数据球
+gt.metaitem.01.32707.with.OrbToOverwrite.name=要覆盖的数据球
+gt.metaitem.01.32708.with.AnalyzedProspectionData.name=勘探数据分析报告
+gt.metaitem.01.32708.with.CopyOfTheStick.name=闪存的副本
+gt.metaitem.01.32708.with.RawProspectionData.name=原始勘探数据
+gt.metaitem.01.32708.with.ReadsResearchResult.name=读取研究结果
+gt.metaitem.01.32708.with.ScannedBookData.name=已扫描书本数据
+gt.metaitem.01.32708.with.ScannedMapData.name=已扫描地图数据
+gt.metaitem.01.32708.with.ScannedSchematic.name=已扫描设计图
+gt.metaitem.01.32708.with.StickToCopy.name=要复制的闪存
+gt.metaitem.01.32708.with.StickToOverwrite.name=要覆盖的闪存
+gt.metaitem.01.32708.with.StickToSaveItTo.name=保存到的闪存
+gt.metaitem.01.32708.with.WithPunchCardData.name=存有穿孔卡片数据
+gt.metaitem.01.32708.with.WithScannedBookData.name=存有扫描的书本数据
+gt.metaitem.01.32708.with.WithScannedMapData.name=存有扫描的地图数据
+gt.metaitem.01.32708.with.WritesResearchResult.name=写入研究结果
+gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=免费！在侧面放置岩浆
+gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=免费！在顶部放置岩浆
