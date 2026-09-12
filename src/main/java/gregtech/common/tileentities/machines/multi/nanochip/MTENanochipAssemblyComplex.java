@@ -685,6 +685,18 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
+    public void setItemNBT(NBTTagCompound nbt) {
+        super.setItemNBT(nbt);
+        NBTTagList history = new NBTTagList();
+        for (CircuitBatch batch : circuitHistory) {
+            history.appendTag(new NBTTagIntArray(batch.writeToIntArray()));
+        }
+        if (currentBlock != null) {
+            nbt.setIntArray("currentBlock", currentBlock.writeToIntArray());
+        }
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         NBTTagList history = new NBTTagList();

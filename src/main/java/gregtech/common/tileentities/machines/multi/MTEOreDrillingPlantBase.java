@@ -32,6 +32,8 @@ import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -359,8 +361,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         syncWorkAreaData();
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_MINER;
     }
 

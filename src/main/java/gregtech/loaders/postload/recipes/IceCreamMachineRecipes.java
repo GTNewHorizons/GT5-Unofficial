@@ -106,6 +106,42 @@ public class IceCreamMachineRecipes implements Runnable {
         addRecipe(ItemList.Ice_Cream_PitOfDoomAndDespair);
         addRecipe(ItemList.Ice_Cream_MasterOfDreams);
         addRecipe(ItemList.Ice_Cream_Explosive);
+        addRecipe(ItemList.Ice_Cream_NotFound404);
+        addRecipe(ItemList.Ice_Cream_AntimatterAffogato);
+        addRecipe(ItemList.Ice_Cream_Cheese);
+        addRecipe(ItemList.Ice_Cream_Chestmonster);
+        addRecipe(ItemList.Ice_Cream_CircuitBoardCrunch);
+        addRecipe(ItemList.Ice_Cream_CompileError);
+        addRecipe(ItemList.Ice_Cream_CrudeOil);
+        addRecipe(ItemList.Ice_Cream_Popsicle_Diamond);
+        addRecipe(ItemList.Ice_Cream_GraveDirtAndGummis);
+        addRecipe(ItemList.Ice_Cream_RubberDucky);
+        addRecipe(ItemList.Ice_Cream_DuctTape);
+        addRecipe(ItemList.Ice_Cream_Exotic);
+        addRecipe(ItemList.Ice_Cream_Popsicle_Grapquada);
+        addRecipe(ItemList.Ice_Cream_Grind);
+        addRecipe(ItemList.Ice_Cream_Foolish);
+        addRecipe(ItemList.Ice_Cream_LawnbaseSpecial);
+        addRecipe(ItemList.Ice_Cream_LunarLander);
+        addRecipe(ItemList.Ice_Cream_NaquadaNutSwirl);
+        addRecipe(ItemList.Ice_Cream_NaquadriaPlasmaParfait);
+        addRecipe(ItemList.Ice_Cream_NetherStarNutCrunch);
+        addRecipe(ItemList.Ice_Cream_NutsAndBolts);
+        addRecipe(ItemList.Ice_Cream_OverclockedEspresso);
+        addRecipe(ItemList.Ice_Cream_PeachPlasmaParfait);
+        addRecipe(ItemList.Ice_Cream_Pipegetti);
+        addRecipe(ItemList.Ice_Cream_Potato);
+        addRecipe(ItemList.Ice_Cream_Sorbet_Redstone);
+        addRecipe(ItemList.Ice_Cream_RocketFuelFloat);
+        addRecipe(ItemList.Ice_Cream_Popsicle_StrawberryYogurt);
+        addRecipe(ItemList.Ice_Cream_ThaumaturgesDelight);
+        addRecipe(ItemList.Ice_Cream_ThaumiumTruffle);
+        addRecipe(ItemList.Ice_Cream_TotallyInnocentRing);
+        addRecipe(ItemList.Ice_Cream_Transcendent);
+        addRecipe(ItemList.Ice_Cream_VoidKitty);
+        addRecipe(ItemList.Ice_Cream_VoidMinersVanilla);
+        addRecipe(ItemList.Ice_Cream_Warped);
+        addRecipe(ItemList.Ice_Cream_WitchyWildberry);
     }
 
     private void addRecipe(ItemList flavor) {

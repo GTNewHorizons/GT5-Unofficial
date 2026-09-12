@@ -557,7 +557,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      */
     public GTRecipe transformRecipe(GTRecipe recipe) {
         double recipeDuration = recipe.mDuration * this.getModuleDurationModifier();
-        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier() * baseMulti.globalEUMultiplier;
+        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier(recipe) * baseMulti.globalEUMultiplier;
 
         CircuitCalibration recipeCalibration = recipe
             .getMetadataOrDefault(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE, null);
@@ -676,7 +676,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      * Applies an EU Discount
      * In case any specific module wants to control this value
      */
-    protected float getEUDiscountModifier() {
+    protected float getEUDiscountModifier(GTRecipe recipe) {
         return 1;
     }
 
@@ -707,19 +707,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     protected MTEHatchVacuumConveyorOutput findOutputHatch(byte color) {
         return vacuumConveyorOutputs.findAnyColoredHatch(color);
-    }
-
-    protected boolean removeItemFromInputByColor(ItemStack stack, byte color, boolean withName) {
-        int totalToConsome = stack.stackSize;
-        List<MTEHatchVacuumConveyorInput> hatches = vacuumConveyorInputs.findColoredHatches(color);
-        for (MTEHatchVacuumConveyorInput inputHatch : hatches) {
-            int amountConsumed = inputHatch.tryConsume(stack, withName);
-            totalToConsome -= amountConsumed;
-            if (totalToConsome <= 0) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
