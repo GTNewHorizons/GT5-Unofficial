@@ -907,7 +907,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 yield "This time not a lie";
             }
             case "6" -> "7";
-            case "joke" -> switch (MathUtils.randInt(1, 7)) {
+            case "joke" -> switch (MathUtils.randInt(1, 8)) {
                     case 1 -> "No time for jokes.";
                     case 2 -> "A rolling golem gathers no rust.";
                     case 3 -> "He was destroyed!";
@@ -915,6 +915,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     case 5 -> "I miss when waterline was bad";
                     case 6 -> "Waiter! Waiter! More lineslop please!";
                     case 7 -> "Don't even joke, lad.";
+                    case 8 -> "Waiting for power.";
                     default -> "what if the world was made of pudding";
                 };
             case "why did the chicken cross the road" -> switch (MathUtils.randInt(1, 10)) {
@@ -948,6 +949,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
                 + " "
                 + COptions.get(MathUtils.randInt(0, COptions.size() - 1));
+            case "waiting for power", "waiting for power." -> "Those who know.";
             default -> switch (MathUtils.randInt(1, 10)) {
                     case 1 -> "It is certain";
                     case 2 -> "It is decidedly so";
