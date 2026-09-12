@@ -691,6 +691,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (currentBlock != null) {
             nbt.setIntArray("currentBlock", currentBlock.writeToIntArray());
         }
+        nbt.setInteger("matrixPortion", matrixPowerPortion);
     }
 
     @Override
