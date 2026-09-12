@@ -86,14 +86,14 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         .addElement(
             'B',
             GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING.use(
-                ofBlocksTiered(
-                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta + 1 : null,
-                    IntStream.range(0, 14)
-                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                        .collect(Collectors.toList()),
-                    -1,
-                    MTEAssemblyMatrixModule::setCasingTier,
-                    MTEAssemblyMatrixModule::getCasingTier)))
+            ofBlocksTiered(
+                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta + 1 : null,
+                IntStream.range(0, 14)
+                    .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                    .collect(Collectors.toList()),
+                -1,
+                MTEAssemblyMatrixModule::setCasingTier,
+                MTEAssemblyMatrixModule::getCasingTier)))
         // Nanochip Mesh Interface Casing
         .addElement('C', Casings.NanochipMeshInterfaceCasing.asElement())
         // Nanochip Reinforcement Casing
