@@ -8011,7 +8011,7 @@ public class MaterialsInit {
         Materials.NitricOxide = loadNitricOxide();
         Materials.Phenol = loadPhenol();
         Materials.PhosphoricAcid = loadPhosphoricAcid();
-        Materials.PhosphorousPentoxide = loadPhosphorousPentoxide();
+        Materials.PhosphorusPentoxide = loadPhosphorusPentoxide();
         Materials.PolyphenyleneSulfide = loadPolyphenyleneSulfide();
         Materials.Polystyrene = loadPolystyrene();
         Materials.PolyvinylAcetate = loadPolyvinylAcetate();
@@ -8579,8 +8579,8 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadPhosphorousPentoxide() {
-        return new MaterialBuilder().setName("PhosphorousPentoxide")
+    private static Materials loadPhosphorusPentoxide() {
+        return new MaterialBuilder().setName("PhosphorusPentoxide")
             .setDefaultLocalName("Phosphorus Pentoxide")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)

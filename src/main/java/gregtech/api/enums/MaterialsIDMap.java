@@ -473,7 +473,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(662, Materials.WoodTar);
         r(663, Materials.Dimethyldichlorosilane);
         r(664, Materials.Chloromethane);
-        r(665, Materials.PhosphorousPentoxide);
+        r(665, Materials.PhosphorusPentoxide);
         r(666, Materials.Tetrafluoroethylene);
         r(667, Materials.HydrofluoricAcid);
         r(668, Materials.Chloroform);
