@@ -519,7 +519,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      */
     public GTRecipe transformRecipe(GTRecipe recipe) {
         double recipeDuration = recipe.mDuration * this.getModuleDurationModifier();
-        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier() * baseMulti.globalEUMultiplier;
+        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier(recipe) * baseMulti.globalEUMultiplier;
 
         CircuitCalibration recipeCalibration = recipe
             .getMetadataOrDefault(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE, null);
@@ -637,7 +637,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      * Applies an EU Discount
      * In case any specific module wants to control this value
      */
-    protected float getEUDiscountModifier() {
+    protected float getEUDiscountModifier(GTRecipe recipe) {
         return 1;
     }
 
