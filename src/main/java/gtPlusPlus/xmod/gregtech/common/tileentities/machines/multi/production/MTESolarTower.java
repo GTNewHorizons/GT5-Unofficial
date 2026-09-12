@@ -275,6 +275,11 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                         }
 
                         @Override
+                        public boolean isFluidElement(MTESolarTower t) {
+                            return delegate.isFluidElement(t);
+                        }
+
+                        @Override
                         public PlaceResult survivalPlaceBlock(MTESolarTower t, World world, int x, int y, int z,
                             ItemStack trigger, AutoPlaceEnvironment env) {
                             return delegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
