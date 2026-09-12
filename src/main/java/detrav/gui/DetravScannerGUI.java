@@ -24,7 +24,6 @@ import detrav.client.DetravOreMarker;
 import detrav.client.DetravOreMarkerRenderer;
 import detrav.gui.textures.DetravMapTexture;
 import detrav.items.DetravMetaGeneratedTool01;
-import gregtech.api.util.GTUtility;
 
 /**
  * Created by wital_000 on 21.03.2016.
@@ -425,7 +424,8 @@ public class DetravScannerGUI extends GuiScreen {
                     info.add(
                         StatCollector.translateToLocal("gui.detrav.scanner.pollution") + ": "
                             + formatNumber(amount)
-                            + GTUtility.trans("203", " gibbl"));
+                            + " "
+                            + StatCollector.translateToLocal("gui.detrav.scanner.gibbl"));
                 }
 
                 func_146283_a(info, x, y);
