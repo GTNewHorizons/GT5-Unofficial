@@ -9628,3 +9628,36 @@ gt.metaitem.01.32708.with.WithScannedMapData.name=С отсканированн�
 gt.metaitem.01.32708.with.WritesResearchResult.name=Записывает результат исследования
 gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=ЭТО БЕСПЛАТНО! Поместите лаву сбоку
 gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=ЭТО БЕСПЛАТНО! Поместите лаву сверху
+
+# Chat messages
+GT5U.chat.cover.connectable=Соединяемый: %s
+
+# Multiblock maintenance issues
+GT5U.gui.multimachine.maintenance.wrench=Труба расшаталась. (Ключ)
+GT5U.gui.multimachine.maintenance.screwdriver=Винты ослабли. (Отвёртка)
+GT5U.gui.multimachine.maintenance.soft_mallet=Что-то застряло. (Киянка)
+GT5U.gui.multimachine.maintenance.hammer=Обшивка помята. (Молоток)
+GT5U.gui.multimachine.maintenance.soldering=Схема перегорела. (Паяльник)
+GT5U.gui.multimachine.maintenance.crowbar=Этому там не место. (Монтировка)
+GT5U.gui.multimachine.missing_turbine_rotor=Отсутствует ротор для турбины
+GT5U.gui.multimachine.incomplete_structure=Незавершённая структура.
+
+# Transformer
+GT5U.gui.transformer.step_down=Понижение, вход: %1$s В %2$s А, выход: %3$s В %4$s А
+GT5U.gui.transformer.step_up=Повышение, вход: %1$s В %2$s А, выход: %3$s В %4$s А
+
+# Recipe requirements in NEI
+GT5U.nei.needs_low_gravity=Нужна низкая гравитация
+GT5U.nei.needs_cleanroom=Нужна чистая комната
+GT5U.nei.needs_cleanroom_low_gravity=Нужна низкая гравитация и чистая комната
+GT5U.nei.scan_for_assembly_line=Сканирование для Сборочной линии
+GT5U.nei.deprecated_recipe=Устаревший рецепт
+GT5U.nei.compression.hip_unit=Требуется HIP устройство
+GT5U.nei.compression.stabilized_black_hole=Требуется стабилизированная чёрная дыра
+GT5U.nei.pcb_factory.tier=Завод печатных плат тир: %s
+GT5U.nei.pcb_factory.upgrade_required=Требуется улучшение: %s
+GT5U.nei.pcb_factory.upgrade_bio=Био
+GT5U.nei.solar_factory.tier_required=Требуется тир мульти: %s
+
+# Item tooltips
+GT5U.tooltip.switch_metadata.sneak_right_click=Shift+ПКМ, чтобы изменить режим

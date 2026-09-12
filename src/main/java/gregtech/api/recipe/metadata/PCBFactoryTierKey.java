@@ -1,6 +1,6 @@
 package gregtech.api.recipe.metadata;
 
-import static gregtech.api.util.GTUtility.trans;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -25,6 +25,6 @@ public class PCBFactoryTierKey extends RecipeMetadataKey<Integer> {
     @Override
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         int tier = cast(value, 1);
-        recipeInfo.drawText(trans("336", "PCB Factory Tier: ") + tier);
+        recipeInfo.drawText(translateToLocalFormatted("GT5U.nei.pcb_factory.tier", tier));
     }
 }

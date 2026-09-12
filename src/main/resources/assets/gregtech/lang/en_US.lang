@@ -10074,3 +10074,36 @@ gt.metaitem.01.32708.with.WithScannedMapData.name=With Scanned Map Data
 gt.metaitem.01.32708.with.WritesResearchResult.name=Writes Research result
 gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=IT'S FREE! Place Lava on Side
 gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=IT'S FREE! Place Lava on Top
+
+# Chat messages
+GT5U.chat.cover.connectable=Connectable: %s
+
+# Multiblock maintenance issues
+GT5U.gui.multimachine.maintenance.wrench=Pipe is loose. (Wrench)
+GT5U.gui.multimachine.maintenance.screwdriver=Screws are loose. (Screwdriver)
+GT5U.gui.multimachine.maintenance.soft_mallet=Something is stuck. (Soft Mallet)
+GT5U.gui.multimachine.maintenance.hammer=Platings are dented. (Hammer)
+GT5U.gui.multimachine.maintenance.soldering=Circuitry burned out. (Soldering)
+GT5U.gui.multimachine.maintenance.crowbar=That doesn't belong there. (Crowbar)
+GT5U.gui.multimachine.missing_turbine_rotor=Missing Turbine Rotor
+GT5U.gui.multimachine.incomplete_structure=Incomplete Structure.
+
+# Transformer
+GT5U.gui.transformer.step_down=Step Down, In: %1$sV %2$sA, Out: %3$sV %4$sA
+GT5U.gui.transformer.step_up=Step Up, In: %1$sV %2$sA, Out: %3$sV %4$sA
+
+# Recipe requirements in NEI
+GT5U.nei.needs_low_gravity=Needs Low Gravity
+GT5U.nei.needs_cleanroom=Needs Cleanroom
+GT5U.nei.needs_cleanroom_low_gravity=Needs Cleanroom & LowGrav
+GT5U.nei.scan_for_assembly_line=Scan for Assembly Line
+GT5U.nei.deprecated_recipe=Deprecated Recipe
+GT5U.nei.compression.hip_unit=Requires HIP Unit
+GT5U.nei.compression.stabilized_black_hole=Requires Stabilized Black Hole
+GT5U.nei.pcb_factory.tier=PCB Factory Tier: %s
+GT5U.nei.pcb_factory.upgrade_required=Upgrade Required: %s
+GT5U.nei.pcb_factory.upgrade_bio=Bio
+GT5U.nei.solar_factory.tier_required=Multi Tier required: %s
+
+# Item tooltips
+GT5U.tooltip.switch_metadata.sneak_right_click=Sneak Rightclick to switch Mode
