@@ -18,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.GTUtility.powInt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -456,7 +457,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     }
 
     public double getEuModifier() {
-        return Math.pow(0.9, this.heatLevel.getTier() + 1);
+        return powInt(0.9D, this.heatLevel.getTier() + 1);
     }
 
     @Override

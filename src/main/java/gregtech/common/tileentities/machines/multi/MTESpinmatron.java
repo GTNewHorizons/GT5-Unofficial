@@ -95,8 +95,8 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     public boolean tier2Fluid = false;
     public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
     public int RP = 0;
-    public float speed = 3F;
-    public float euMultiplier = 1;
+    public double speed = 3.0D;
+    public double euMultiplier = 1.0D;
     private final int horizontalOffset = 8; // base offset for tier 1
     private final int verticalOffset = 8; // base offset for tier 2
     private final int depthOffset = 2;
@@ -624,8 +624,8 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                     return CheckRecipeResultRegistry.NO_RECIPE;
 
                 getSpeed();
-                setSpeedBonus(1F / speed);
-                setEuModifier(0.7 * euMultiplier);
+                setSpeedBonus(1.0D / speed);
+                setEuModifier(0.7D * euMultiplier);
                 return super.validateRecipe(recipe);
             }
 
@@ -776,10 +776,10 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         return RP;
     }
 
-    public float getSpeed() {
-        speed = 3F;
+    public double getSpeed() {
+        speed = 3.0D;
         if (mode == 0.0) {
-            speed = 4.0F;
+            speed = 4.0D;
         }
         return speed;
     }

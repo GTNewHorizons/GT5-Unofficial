@@ -76,10 +76,10 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final int OFFSET_Z = 1;
 
     private static final int BASE_PARALLEL_PER_TIER = 4;
-    private static final float SPEED = 2f;
-    private static final float EXTRA_SPEED = 1f;
-    private static final float MAX_SPEED = SPEED + EXTRA_SPEED;
-    private static final float EU_EFFICIENCY = 0.9f;
+    private static final double SPEED = 2.0D;
+    private static final double EXTRA_SPEED = 1.0D;
+    private static final double MAX_SPEED = SPEED + EXTRA_SPEED;
+    private static final double EU_EFFICIENCY = 0.9D;
 
     private int momentum = 0;
     private int runningTickCounter = 0;
@@ -182,13 +182,13 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
                     + " Parallels per "
                     + TooltipHelper.coloredText("Voltage", TooltipHelper.TIER_COLOR)
                     + " Tier")
-            .addInfo(TooltipHelper.speedText(SPEED) + " - " + TooltipHelper.speedText(MAX_SPEED) + " Speed")
+            .addInfo(TooltipHelper.speedText((float) SPEED) + " - " + TooltipHelper.speedText((float) MAX_SPEED) + " Speed")
             .addInfo(
                 TooltipHelper.coloredText("Parallels", TooltipHelper.PARALLEL_COLOR) + " and "
                     + TooltipHelper.coloredText("Speed", TooltipHelper.SPEED_COLOR)
                     + " increase as the machine gains momentum")
             .addInfo("Momentum is lost at four times the rate it is gained")
-            .addStaticEuEffInfo(EU_EFFICIENCY)
+            .addStaticEuEffInfo((float) EU_EFFICIENCY)
             .addInfo("Disable animations with a screwdriver")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)
@@ -223,12 +223,12 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     private Double getSpeedWithMomentum() {
-        return 1D / (SPEED + EXTRA_SPEED * momentum / 100);
+        return 1.0D / (SPEED + EXTRA_SPEED * momentum / 100D);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) ((BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / 100F)
+        return (int) ((BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / 100D)
             * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 

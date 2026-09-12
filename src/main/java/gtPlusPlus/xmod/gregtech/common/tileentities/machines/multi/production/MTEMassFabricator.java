@@ -272,7 +272,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                 }
                 return super.findRecipeMatches(map);
             }
-        }.setEuModifier(0.8)
+        }.setEuModifier(0.8D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
