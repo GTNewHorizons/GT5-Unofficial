@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -343,41 +344,24 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public boolean addOutput(FluidStack aLiquid) {
-        if (aLiquid == null) return false;
-        FluidStack stack = aLiquid.copy();
-        for (List<MTEHatchOutput> hatches : mOutputHatchesByLayer) {
-            addOutputPartial(stack, hatches);
-            if (stack.amount == 0) return true;
-        }
-        return false;
-    }
-
-    @Override
-    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
-        boolean succeed = true;
+    public boolean addFluidOutputs(@NotNull List<FluidStack> outputFluids, @Nullable List<FluidStack> remaining) {
         if (machineMode == MACHINEMODE_TOWER) {
             // dt mode
-            for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
-                FluidStack tStack = outputFluids[i].copy();
-                addOutputPartial(tStack, mOutputHatchesByLayer.get(i));
-                if (tStack.amount > 0) {
-                    succeed = false;
-                }
-            }
+            return addFluidOutputsByLayer(outputFluids, mOutputHatchesByLayer, remaining);
         } else {
+            boolean succeed = true;
             // distillery mode
-            for (FluidStack outputFluidStack : outputFluids) {
-                if (!addOutput(outputFluidStack)) {
+            for (FluidStack stack : outputFluids) {
+                if (!addFluidOutputByLayer(stack.copy(), mOutputHatchesByLayer, remaining)) {
                     succeed = false;
                 }
             }
+            return succeed;
         }
-        return succeed;
     }
 
     @Override
-    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+    public List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
         return getOutputHatchesByLayers(toOutput, mOutputHatchesByLayer);
     }
 

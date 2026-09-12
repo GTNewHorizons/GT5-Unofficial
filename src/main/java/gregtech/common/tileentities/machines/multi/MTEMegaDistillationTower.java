@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
@@ -434,40 +436,12 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
-        List<FluidStack> mergedFluids = new ArrayList<>();
-        int index = 0;
-        boolean succeed = true;
-
-        for (FluidStack stack : outputFluids) {
-            if (mergedFluids.isEmpty() || (stack.isFluidEqual(mergedFluids.getFirst())
-                && mergedFluids.getLast().amount == Integer.MAX_VALUE)) {
-                mergedFluids.add(stack);
-                continue;
-            }
-            if (index >= outputHatchesPerLayer.size()) {
-                succeed = false;
-                break;
-            }
-            if (!addFluidOutputs(mergedFluids.toArray(new FluidStack[0]), outputHatchesPerLayer.get(index))) {
-                succeed = false;
-            }
-            mergedFluids.clear();
-            mergedFluids.add(stack);
-            index++;
-        }
-        if (!mergedFluids.isEmpty()) {
-            if (index >= outputHatchesPerLayer.size()) {
-                succeed = false;
-            } else if (!addFluidOutputs(mergedFluids.toArray(new FluidStack[0]), outputHatchesPerLayer.get(index))) {
-                succeed = false;
-            }
-        }
-        return succeed;
+    public boolean addFluidOutputs(@NotNull List<FluidStack> outputFluids, @Nullable List<FluidStack> remaining) {
+        return addFluidOutputsByLayer(outputFluids, outputHatchesPerLayer, remaining);
     }
 
     @Override
-    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+    public List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
         return this.getOutputHatchesByLayers(toOutput, this.outputHatchesPerLayer);
     }
 
