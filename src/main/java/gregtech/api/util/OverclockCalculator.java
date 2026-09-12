@@ -158,14 +158,20 @@ public class OverclockCalculator {
         return this;
     }
 
-    /** Sets an EUtDiscount. 0.9 is 10% less energy. 1.1 is 10% more energy */
+    /**
+     * Sets an EUtDiscount. 0.9 is 10% less energy. 1.1 is 10% more energy
+     * Only accept real double type for the parameter, else its behavior is undefined.
+     */
     @Nonnull
     public OverclockCalculator setEUtDiscount(double aEUtDiscount) {
         this.eutModifier = aEUtDiscount;
         return this;
     }
 
-    /** Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower */
+    /**
+     * Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower
+     * Only accept real double type for the parameter, else its behavior is undefined.
+     */
     @Nonnull
     public OverclockCalculator setDurationModifier(double aSpeedBoost) {
         this.durationModifier = aSpeedBoost;
