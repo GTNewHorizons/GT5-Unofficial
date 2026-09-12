@@ -181,7 +181,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
                     + formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
             .addSeparator()
             .addInfo(
-                "Produces " + EnumChatFormatting.LIGHT_PURPLE
+                "Produces " + EnumChatFormatting.DARK_PURPLE
                     + "sqrt(EU/t)"
                     + EnumChatFormatting.GRAY
                     + " pollution per second")
