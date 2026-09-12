@@ -3776,8 +3776,8 @@ GT5U.chat.turbine.fitting.loose=Режим: Форсированный - Уве�
 GT5U.chat.turbine.fitting.tight=Режим: Оптимальный - Высокая эффективность
 GT5U.chat.machine.processing.enable=Прогресс механизма: Включён
 GT5U.chat.machine.processing.disable=Прогресс механизма: Отключён
-GT5U.chat.machine.redstone_output_set.strong=Выход красного камня на стороне %s установлен на: Сильный
-GT5U.chat.machine.redstone_output_set.weak=Выход красного камня на стороне %s установлен на: Слабый
+GT5U.chat.machine.redstone_output_set.strong=%s сторона: выход красного камня установлен на сильный
+GT5U.chat.machine.redstone_output_set.weak=%s сторона: выход красного камня установлен на слабый
 GT5U.chat.machine.auto_input.disable=Авто-ввод: Отключён
 GT5U.chat.machine.auto_input.enable=Авто-ввод: Включён
 GT5U.chat.machine.auto_output.disable=Авто-вывод: Отключён
@@ -4297,21 +4297,21 @@ GT5U.config.waila.WailaTransformerVoltageTier=Показать тир вольт
 GT5U.config.waila.WailaAverageNS=Показывать среднее время мультиблоков в нс в Waila
 
 # Cover tabs
-GT5U.interface.coverTabs.down=нижней
-GT5U.interface.coverTabs.up=верхней
-GT5U.interface.coverTabs.north=северной
-GT5U.interface.coverTabs.south=южной
-GT5U.interface.coverTabs.west=западной
-GT5U.interface.coverTabs.east=восточной
-GT5U.interface.coverTabs.cover_on=Модуль на %s стороне: %s
-GT5U.interface.coverTabs.emits_redstone=Излучает сильный сигнал красного камня на стороне %s
+GT5U.interface.coverTabs.down=Нижняя
+GT5U.interface.coverTabs.up=Верхняя
+GT5U.interface.coverTabs.north=Северная
+GT5U.interface.coverTabs.south=Южная
+GT5U.interface.coverTabs.west=Западная
+GT5U.interface.coverTabs.east=Восточная
+GT5U.interface.coverTabs.cover_on=Модуль: %2$s (%1$s)
+GT5U.interface.coverTabs.emits_redstone=Излучает сильный сигнал красного камня %s
 
 GT5U.interface.coverTabs.redstone.bottom=снизу
 GT5U.interface.coverTabs.redstone.top=сверху
-GT5U.interface.coverTabs.redstone.north=север
-GT5U.interface.coverTabs.redstone.south=юг
-GT5U.interface.coverTabs.redstone.west=запад
-GT5U.interface.coverTabs.redstone.east=восток
+GT5U.interface.coverTabs.redstone.north=с севера
+GT5U.interface.coverTabs.redstone.south=с юга
+GT5U.interface.coverTabs.redstone.west=с запада
+GT5U.interface.coverTabs.redstone.east=с востока
 GT5U.interface.coverTabs.redstone.unknown=<неизвестно>
 
 ## Redstone Receiver
@@ -9615,3 +9615,34 @@ gt.metatool.01.204.name=Напильник (MV)
 gt.metatool.01.204.tooltip=Ручной электрический напильник
 gt.metatool.01.206.name=Напильник (HV)
 gt.metatool.01.206.tooltip=Ручной электрический напильник
+
+# Side names
+gt.lang.face.any=Любая сторона
+gt.lang.face.back=Задняя сторона
+gt.lang.face.bottom=Нижняя сторона
+gt.lang.face.front=Передняя сторона
+gt.lang.face.left=Левая сторона
+gt.lang.face.none=Нет стороны
+gt.lang.face.right=Правая сторона
+gt.lang.face.top=Верхняя сторона
+
+# Named item copies
+gt.metaitem.01.32707.with.CopyOfTheOrb.name=Копия сферы
+gt.metaitem.01.32707.with.OrbToCopy.name=Сфера копирования
+gt.metaitem.01.32707.with.OrbToOverwrite.name=Сфера для перезаписи
+gt.metaitem.01.32708.with.AnalyzedProspectionData.name=Проанализированные данные геологоразведки
+gt.metaitem.01.32708.with.CopyOfTheStick.name=Копия флешки
+gt.metaitem.01.32708.with.RawProspectionData.name=Необработанные данные геологоразведки
+gt.metaitem.01.32708.with.ReadsResearchResult.name=Читает результат исследования
+gt.metaitem.01.32708.with.ScannedBookData.name=Отсканированные данные книги
+gt.metaitem.01.32708.with.ScannedMapData.name=Отсканированные данные карты
+gt.metaitem.01.32708.with.ScannedSchematic.name=Отсканированная схема
+gt.metaitem.01.32708.with.StickToCopy.name=Флешка с копией
+gt.metaitem.01.32708.with.StickToOverwrite.name=Флешка для записи
+gt.metaitem.01.32708.with.StickToSaveItTo.name=Флешка для сохранения её в
+gt.metaitem.01.32708.with.WithPunchCardData.name=С данными перфокарты
+gt.metaitem.01.32708.with.WithScannedBookData.name=С отсканированными данными книги
+gt.metaitem.01.32708.with.WithScannedMapData.name=С отсканированными данными карты
+gt.metaitem.01.32708.with.WritesResearchResult.name=Записывает результат исследования
+gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=ЭТО БЕСПЛАТНО! Поместите лаву сбоку
+gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=ЭТО БЕСПЛАТНО! Поместите лаву сверху
