@@ -96,3 +96,15 @@ gt.blockmachines.htgr.name=高温气冷反应堆
 gt.blockmachines.industrialarcfurnace.controller.tier.single.name=工业电弧炉
 gt.blockmachines.multimachine.defusioncrafter.name=龙研聚合装置
 gt.blockmachines.multimachine.extremegreenhouse.name=极限工业温室
+
+# HTGR fuel items
+item.HTGR.fuel.Plutonium=钚
+item.HTGR.fuel.Thorium=钍
+item.HTGR.fuel.Uranium=铀
+item.HTGRBISOPebbleCompound.name=BISO复合材料（%s）
+item.HTGRBurnedOutTRISOBall.name=枯竭TRISO燃料球（%s）
+item.HTGRBurnedOutTRISOPebble.name=枯竭TRISO燃料丸（%s）
+item.HTGRHTGRFuelMixture.name=HTGR混合燃料（%s）
+item.HTGRTRISOBall.name=TRISO燃料球（%s）
+item.HTGRTRISOPebble.name=TRISO燃料丸（%s）
+item.HTGRTRISOPebbleCompound.name=TRISO复合材料（%s）
