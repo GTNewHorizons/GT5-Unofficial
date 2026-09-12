@@ -156,12 +156,12 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
 
     @Override
     protected float getEUDiscountModifier() {
-        return 1f / (GTUtility.log4ceil(laserAmps) - 3);
+        return 1f / (GTUtility.log4ceil(laserAmps) - 3 + (baseMulti.crystalT3Active ? 1 : 0));
     }
 
     @Override
     protected float getModuleDurationModifier() {
-        return 1f / (Math.max(1, laserTier - 9));
+        return 1f / (Math.max(1, laserTier - 9 + (baseMulti.crystalT3Active ? 1 : 0)));
     }
 
     @Override
