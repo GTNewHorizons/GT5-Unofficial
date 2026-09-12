@@ -30,6 +30,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.FormatOptions;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -157,36 +158,33 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Engine, UCFE")
             .addInfo("BURNING BURNING BURNING")
-            .addInfo("Use combustible liquid to generate power")
-            .addInfo("You need to supply Combustion Promoter to generate power")
-            .addInfo("Energy is passed to the dynamo over the next second")
-            .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop")
             .addInfo(
-                "If the amount of energy to be produced is higher "
-                    + "than the dynamo hatch can handle, then all produced energy will void")
-            .addSeparator()
-            .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
-            .addInfo("The higher the amount of promoter, the higher the efficiency")
+                "Reacts combustion promoter with gas, diesel, or rocket fuel to generate power with up to 150% efficiency")
+            .addInfo("No soft caps or upper limits on power output, other than the dynamo hatch size")
             .addInfo(
-                "Follows an exponential curve exp(-C/(p/x))*1.5, "
-                    + "where x is the amount of fuel in liters, p is the amount of promoter in liters")
-            .addInfo(
-                "C depends on the fuel type. Diesel: C=" + DIESEL_EFFICIENCY_COEFFICIENT
-                    + "; Gas: C="
-                    + GAS_EFFICIENCY_COEFFICIENT
-                    + "; Rocket fuel: C="
-                    + ROCKET_EFFICIENCY_COEFFICIENT)
-            .addSeparator()
-            .addInfo(
-                "If you forget to supply Combustion Promoter, this engine will consume all the fuel "
-                    + EnumChatFormatting.YELLOW
-                    + "without outputting energy")
-            .addInfo(
-                "The efficiency is up to " + EnumChatFormatting.GOLD
-                    + formatNumber(EFFICIENCY_CEILING * 100)
-                    + "%"
+                "No power is produced without " + EnumChatFormatting.GOLD
+                    + "Combustion Promoter"
                     + EnumChatFormatting.GRAY)
-            .addInfo("Creates sqrt(Current Output Power) pollution per second")
+            .addInfo("Excess power is voided if the dynamo hatch is full or the output exceeds the dynamo throughput")
+            .addSeparator()
+            .addInfo("Efficiency is determined by the ratio (R) of combustion promoter to fuel")
+            .addInfo("The more combustion promoter, the higher the efficiency")
+            .addInfo(
+                "Follows an exponential curve " + EnumChatFormatting.AQUA
+                    + "exp(-C/R) * 1.5"
+                    + EnumChatFormatting.GRAY
+                    + ", where C is a constant based on the fuel type")
+            .addInfo(
+                "Gas/Diesel Fuel: C="
+                    + formatNumber(GAS_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3))
+                    + " | Rocket Fuel: C="
+                    + formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+            .addSeparator()
+            .addInfo(
+                "Produces " + EnumChatFormatting.LIGHT_PURPLE
+                    + "sqrt(EU/t)"
+                    + EnumChatFormatting.GRAY
+                    + " pollution per second")
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 13, true)
