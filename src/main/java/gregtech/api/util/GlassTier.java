@@ -207,6 +207,7 @@ public class GlassTier {
 
             // --- ZPM ---
             addCustomGlass(ItemRegistry.bw_realglas, 4, 7, 0); // Iridium Borosilicate
+            addCustomGlass(GregTechAPI.sBlockGlass1, 11, 7, 1);
 
             // --- UV ---
             addCustomGlass(ItemRegistry.bw_realglas, 5, 8, 0); // Osmium Borosilicate

@@ -8,4 +8,11 @@ public class Predicates {
     public static boolean isPositive(SyncHandler<?> sh) {
         return sh instanceof IntSyncValue intSyncValue && intSyncValue.getIntValue() > 0;
     }
+
+    public static boolean arePositive(SyncHandler<?>... shs) {
+        for (SyncHandler<?> sh : shs) {
+            if (!isPositive(sh)) return false;
+        }
+        return true;
+    }
 }

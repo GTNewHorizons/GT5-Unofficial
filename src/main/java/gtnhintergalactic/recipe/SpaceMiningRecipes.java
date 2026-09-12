@@ -443,7 +443,7 @@ public class SpaceMiningRecipes {
             new int[] { 2000, 2000, 2000, 1000, 2000, 2000, 3000, 3000, 3000, 3000, 3000, 3000 },
             new Materials[] { Materials.MeteoricIron, Materials.DeepIron, Materials.Mytryl, Materials.BlackPlutonium,
                 Materials.CallistoIce, Materials.Ledox, Materials.Alduorite, Materials.Rubracium, Materials.Vulcanite,
-                Materials.Vyroxeres, Materials.Ceruclase, Materials.Orichalcum },
+                Materials.Vyroxeres, Materials.Ceruclase, Materials.Orikalkum },
             OrePrefixes.oreEndstone,
             20,
             50,

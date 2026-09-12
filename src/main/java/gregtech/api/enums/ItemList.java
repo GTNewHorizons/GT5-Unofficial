@@ -2254,6 +2254,9 @@ public enum ItemList implements IItemContainer {
     CasingHearth,
     CasingFridge,
     CasingNaquadahReinforcedDistillation,
+    CasingPlasmaCollider,
+    CasingQuadcellDriving,
+    GlassPlasmaCollider,
     AlgaeCasing,
     NaquadahReactorCasing,
     EntropicProcessor,
@@ -3329,7 +3332,8 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_Warped,
     Ice_Cream_WitchyWildberry,
     // Reserved for Ice creams, don't you dare (to 700)
-    Ice_Cream_Trophy
+    Ice_Cream_Trophy,
+    QuadcellPlasmaCollider,
     // semicolon after the comment to reduce merge conflicts
     ;
 

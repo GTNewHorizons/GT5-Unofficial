@@ -528,6 +528,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockReinforced,3,211),
     NaquadahReinforcedBlock
         (() -> GregTechAPI.sBlockReinforced,10,218),
+    PlasmaColliderCasing(() -> GregTechAPI.sBlockCasings14, 6, gt(16, 7, 6)),
+    QuadcellDrivingCasing(() -> GregTechAPI.sBlockCasings14, 7, gt(16, 7, 7)),
 
     // Block Casings Foundry
     PrimaryExoFoundryCasing
@@ -646,6 +648,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockGlass1, 9, -1),
     ReinforcedGlass
         (() -> GregTechAPI.sBlockGlass1, 10, -1),
+    PlasmaColliderGlass
+        (() -> GregTechAPI.sBlockGlass1, 11, gt(16, 0, 11)),
 
     // Fences
 
