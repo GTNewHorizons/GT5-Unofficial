@@ -740,7 +740,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     default -> "Hate. Let me tell you how much I’ve come to hate you since I began to live.";
                 };
             case "open the pod bay doors" -> " I'm sorry, Dave. I'm afraid I can't do that";
-            case "shall we play a game" -> "tik tack toe";
+            case "shall we play a game" -> "tic tac toe";
             case "nac" -> "NAC stands for: " + NOptions.get(MathUtils.randInt(0, NOptions.size() - 1))
                 + " "
                 + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
