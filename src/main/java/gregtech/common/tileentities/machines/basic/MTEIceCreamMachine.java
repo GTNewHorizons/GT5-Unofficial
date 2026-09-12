@@ -144,6 +144,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         final int x = aBaseMetaTileEntity.getXCoord();
         final int y = aBaseMetaTileEntity.getYCoord();
         final int z = aBaseMetaTileEntity.getZCoord();
+        if (world.getBlock(x, y + 1, z) == GregTechAPI.sBlockGhostSpace) return;
         if (!world.getBlock(x, y + 1, z)
             .isReplaceable(world, x, y + 1, z)) {
             world.func_147480_a(x, y, z, true);
