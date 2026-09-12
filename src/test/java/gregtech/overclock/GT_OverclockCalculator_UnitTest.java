@@ -209,6 +209,20 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
+    void weirdParallelPerfectOC_Test() {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(3840L)
+            .setEUt(V[12])
+            .setDuration(3200)
+            .setParallel(48)
+            .setAmperage(18)
+            .setEUtDiscount(0.8)
+            .setAmperageOC(true)
+            .enablePerfectOC()
+            .calculate();
+        assertEquals(V[12] * 18, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
     void weirdParallelOC_Test() {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[8])
@@ -217,6 +231,19 @@ class GT_OverclockCalculator_UnitTest {
             .calculate();
         assertEquals(1024 / GTUtility.powInt(2, 5), calculator.getDuration(), messageDuration);
         assertEquals(VP[6] * 8, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void weirdParallelOCV2_Test() {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(2)
+            .setEUt(V[8])
+            .setDuration(300)
+            .setParallel(18)
+            .setAmperage(4)
+            .setEUtDiscount(0.9)
+            .setAmperageOC(true)
+            .calculate();
+        assertEquals(530842, calculator.getConsumption(), messageEUt);
     }
 
     @Test

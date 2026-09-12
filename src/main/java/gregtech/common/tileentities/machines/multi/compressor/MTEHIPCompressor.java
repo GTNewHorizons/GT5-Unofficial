@@ -337,13 +337,13 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                setSpeedBonus(1F / 3.5F);
-                setEuModifier(0.75F);
+                setSpeedBonus(1.0D / 3.5D);
+                setEuModifier(0.75D);
 
                 // Nerf when heated
                 if (overheated) {
-                    setSpeedBonus(2.5F);
-                    setEuModifier(1.1F);
+                    setSpeedBonus(2.5D);
+                    setEuModifier(1.1D);
                 }
 
                 // If Black Hole required, no recipe
