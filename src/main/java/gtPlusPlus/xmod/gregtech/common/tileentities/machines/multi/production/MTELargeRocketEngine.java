@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -19,6 +21,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -65,6 +68,14 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     public static final String mCasingName = "Turbodyne Casing";
     public static final String mGearboxName = "Inconel Reinforced Casing";
 
+    private static final int LUBRICANT_CONSUMPTION_PER_HOUR = 1000;
+    private static final int MIN_FUEL_INPUT_PER_SECOND = 5;
+    private static final int COOLANT_BOOST_PERCENT = 3;
+    private static final int WARMUP_TICKS = 2000;
+    private static final int AIR_PERCENT = 1;
+    private static final int SOFT_CAP_1 = 49_000;
+    private static final int SOFT_CAP_2 = 94_000;
+
     private static Fluid sAirFluid = null;
     private static FluidStack sAirFluidStack = null;
 
@@ -99,22 +110,50 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Generating Power from Rocket Fuels")
-            .addInfo("Supply GT++ Rocket Fuels and 1000L of " + mLubricantName + " per hour")
-            .addInfo("Produces as much energy as you put fuel in, with optional boosting")
-            .addInfo("This multi doesn't accept fluids if not enabled - enable it first!")
-            .addInfo("Consumes 2000L/s of air and pollutes 1500 gibbl/s per 16384 eu/t produced")
-            .addInfo("Place 1-8 Air Intake Hatches on the sides to maintain Air input")
-            .addInfo("If it runs out of air, it will shut down and have to be manually restarted")
-            .addInfo("Supply 3L of " + mCoolantName + " per second, per 1000 EU/t to boost")
-            .addInfo("Takes 3x the amount of " + mLubricantName + " and maintains efficiency")
-            .addInfo("Fuel efficiency starts at ~160%, falls more slowly at higher EU/t if boosted")
-            .addInfo("If producing more than 30k EU/t, fuel efficiency will be lower:")
-            .addInfo("(These thresholds are 3x higher when boosted, boosted values displayed second)")
-            .addInfo("- 75% of max fuel efficiency at 53k or 159k EU/t output energy")
-            .addInfo("- 50% of max fuel efficiency at 69k or 207k EU/t output energy")
-            .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
-            .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))")
+            .addInfo("Generates power from rocket fuels")
+            .addInfo("No hard limit on EU/t output - scales with fuel input")
+            .addInfo(
+                EnumChatFormatting.YELLOW
+                    + "Do not insert rocket fuel while disabled - it will be buffered and consumed all at once when enabled!"
+                    + EnumChatFormatting.GRAY)
+            .addInfo("Consumes " + AIR_PERCENT + "% of current EU/t in Air per tick")
+            .addInfo("Air is supplied only through Air Intake Hatches")
+            .addInfo("If air runs out, it shuts down and requires manual restart")
+            .addInfo("Minimum fuel input: " + formatFluid(MIN_FUEL_INPUT_PER_SECOND) + "/s")
+            .addSeparator()
+            .addInfo(
+                "Consumes " + formatFluid(LUBRICANT_CONSUMPTION_PER_HOUR)
+                    + " of "
+                    + EnumChatFormatting.GOLD
+                    + mLubricantName
+                    + EnumChatFormatting.GRAY
+                    + " per hour")
+            .addInfo("Takes " + WARMUP_TICKS / 20 + " seconds to warm up to full efficiency")
+            .addSeparator()
+            .addInfo(
+                "Optional boost: supply " + formatFluid(COOLANT_BOOST_PERCENT)
+                    + " of "
+                    + EnumChatFormatting.GOLD
+                    + mCoolantName
+                    + EnumChatFormatting.GRAY
+                    + " per 1000 EU/t output")
+            .addInfo(
+                "Boosting triples the soft caps and " + EnumChatFormatting.GOLD
+                    + mLubricantName
+                    + EnumChatFormatting.GRAY
+                    + " consumption")
+            .addInfo("Fuel efficiency decreases after the soft caps below")
+            .addInfo(
+                "Soft caps: " + EnumChatFormatting.RED
+                    + formatNumber(SOFT_CAP_1)
+                    + " EU/t"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.RED
+                    + formatNumber(SOFT_CAP_2)
+                    + " EU/t"
+                    + EnumChatFormatting.GRAY
+                    + " (unboosted)")
             .addSupportAny()
             .beginStructureBlock(3, 3, 10, false)
             .addController("Front center, 2nd layer")
@@ -125,6 +164,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addMaintenanceHatch("1", "Any center casing", 1, 2)
             .addMufflerHatch("1", "Back center casing", 3)
             .addInputHatch("1+", "Any side or bottom center casing", 1)
+            .addPollutionAmount(getPollutionPerSecond(null))
             .toolTipFinisher();
         return tt;
     }
