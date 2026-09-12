@@ -30,6 +30,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.internal.IDraconicCompat;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
@@ -142,6 +143,10 @@ public class GregTechAPI {
      * Registers Aspects to Thaumcraft. This Object might be {@code null} if Thaumcraft isn't installed.
      */
     public static IThaumcraftCompat sThaumcraftCompat;
+    /**
+     * Draconic Evolution compat. This Object might be {@code null} if Draconic Evolution isn't installed.
+     */
+    public static IDraconicCompat sDraconicCompat;
     /**
      * The Lists below are executed at their respective timings. Useful to do things at a particular moment in time. The
      * Lists are not Threaded - a native Java interface is used for their execution. Add your "commands" in the

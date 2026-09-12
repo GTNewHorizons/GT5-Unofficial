@@ -835,6 +835,9 @@ public class GTProxy implements IFuelHandler {
         if (Thaumcraft.isModLoaded()) {
             GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
         }
+        if (Mods.DraconicEvolution.isModLoaded()) {
+            GregTechAPI.sDraconicCompat = new GTDraconicCompat();
+        }
         GregTechAPI.sPreloadStarted = true;
         this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
         this.replicatorExponent = OPStuff.replicatorExponent;
