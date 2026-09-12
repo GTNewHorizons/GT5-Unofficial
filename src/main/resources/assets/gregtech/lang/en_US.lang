@@ -10043,3 +10043,34 @@ gt.metatool.01.file.name=File (%s)
 gt.metatool.01.202.tooltip=Hand-held electric filing device
 gt.metatool.01.204.tooltip=Hand-held electric filing device
 gt.metatool.01.206.tooltip=Hand-held electric filing device
+
+# Side names
+gt.lang.face.any=Any Side
+gt.lang.face.back=Back
+gt.lang.face.bottom=Bottom
+gt.lang.face.front=Front
+gt.lang.face.left=Left
+gt.lang.face.none=None
+gt.lang.face.right=Right
+gt.lang.face.top=Top
+
+# Named item copies
+gt.metaitem.01.32707.with.CopyOfTheOrb.name=Copy of the Orb
+gt.metaitem.01.32707.with.OrbToCopy.name=Orb to copy
+gt.metaitem.01.32707.with.OrbToOverwrite.name=Orb to overwrite
+gt.metaitem.01.32708.with.AnalyzedProspectionData.name=Analyzed Prospection Data
+gt.metaitem.01.32708.with.CopyOfTheStick.name=Copy of the Stick
+gt.metaitem.01.32708.with.RawProspectionData.name=Raw Prospection Data
+gt.metaitem.01.32708.with.ReadsResearchResult.name=Reads Research result
+gt.metaitem.01.32708.with.ScannedBookData.name=Scanned Book Data
+gt.metaitem.01.32708.with.ScannedMapData.name=Scanned Map Data
+gt.metaitem.01.32708.with.ScannedSchematic.name=Scanned Schematic
+gt.metaitem.01.32708.with.StickToCopy.name=Stick to copy
+gt.metaitem.01.32708.with.StickToOverwrite.name=Stick to overwrite
+gt.metaitem.01.32708.with.StickToSaveItTo.name=Stick to save it to
+gt.metaitem.01.32708.with.WithPunchCardData.name=With Punch Card Data
+gt.metaitem.01.32708.with.WithScannedBookData.name=With Scanned Book Data
+gt.metaitem.01.32708.with.WithScannedMapData.name=With Scanned Map Data
+gt.metaitem.01.32708.with.WritesResearchResult.name=Writes Research result
+gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=IT'S FREE! Place Lava on Side
+gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=IT'S FREE! Place Lava on Top
