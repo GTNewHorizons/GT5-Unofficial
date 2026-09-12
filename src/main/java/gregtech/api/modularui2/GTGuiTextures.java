@@ -1521,6 +1521,7 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/overlay_button/plus_small");
     public static final UITexture OVERLAY_BUTTON_PLUS_LARGE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/plus_large");
+    public static final UITexture OVERLAY_BUTTON_RESIZE_PANEL = fullImageGT("overlay_button/resize_panel");
 
     public static final UITexture OVERLAY_BUTTON_WIRELESS_ON = fullImage(
         Mods.ModIDs.KEKZ_TECH,
