@@ -86,7 +86,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                 {" D         D ","DBAAAAAAAAABD"," A         A "," AE E E E EA "," FE E E E EF "," AE E E E EA "," A         A ","DBAAAAAAAAABD"," D         D "},
                 {" D         D ","DBAAAAAAAAABD"," AE E E E EA "," L         R "," LE E E E ER "," L         R "," AE E E E EA ","DBAAAAAAAAABD"," D         D "},
                 {" D         D ","DBAAAAAAAAABD"," FE E E E EF "," LE E E E ER "," LCCCCCCCCCR "," LE E E E ER "," FE E E E EF ","DBAAAAAAAAABD"," D         D "},
-                {" D         D ","DBAAAAAAAAABD"," AE E E E EA "," L         R "," LE       ER "," L         R "," AE E E E EA ","DBAAAAAAAAABD"," D         D "},
+                {" D         D ","DBAAAAAAAAABD"," AE E E E EA "," L         R "," LE E E E ER "," L         R "," AE E E E EA ","DBAAAAAAAAABD"," D         D "},
                 {" D         D ","DBAAAAAAAAABD"," A         A "," AE E E E EA "," FE E E E EF "," AE E E E EA "," A         A ","DBAAAAAAAAABD"," D         D "},
                 {"DBBBBB~BBBBBD","DBBBBBBBBBBBD","DBBBBBBBBBBBD","DBBBBBBBBBBBD","DBBBBBBBBBBBD","DBBBBBBBBBBBD","DBBBBBBBBBBBD","DBBBBBBBBBBBD","DBBBBBBBBBBBD"}
             }))
@@ -212,7 +212,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             .addCasing("162", "Any Tiered Glass", true)
             .addCasing("145-151", "Naquadah Reinforced Distillation Casing", false)
             .addCasing("84", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("77", "Heating Coil", true)
+            .addCasing("80", "Heating Coil", true)
             .addCasing("14", "Naquadah Sheetmetal", false)
             .addCasing("9", "Steel Pipe Casing", false)
             .addEnergyHatch("1+", "Any reinforced distillation casing", 1)
