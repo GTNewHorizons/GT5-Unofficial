@@ -65,6 +65,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     public List<SplitterRule> rules = new ArrayList<>();
     public final RedstoneChannelInfo redstoneChannelInfo = new RedstoneChannelInfo();
     public final ArrayList<MTEHatchSplitterRedstone> redstoneHatches = new ArrayList<>();
+    public boolean expandedRulesPanel = false;
 
     public static final IStructureDefinition<MTESplitterModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTESplitterModule>builder()
