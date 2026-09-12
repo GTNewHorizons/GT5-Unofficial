@@ -1796,8 +1796,8 @@ public final class RecipeMaps {
         .neiItemInputsGetter(recipe -> {
             BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
             if (metadata == null) return GTValues.emptyItemStackArray;
-            ItemStack particleStack_A = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID_A);
-            ItemStack particleStack_B = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID_B);
+            ItemStack particleStack_A = new ItemStack(LanthItemList.PARTICLE_ITEM, 0, metadata.particleID_A);
+            ItemStack particleStack_B = new ItemStack(LanthItemList.PARTICLE_ITEM, 0, metadata.particleID_B);
 
             List<ItemStack> ret = new ArrayList<>();
             ret.addAll(Arrays.asList(recipe.mInputs));
