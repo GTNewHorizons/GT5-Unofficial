@@ -173,6 +173,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.1"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.2"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.3"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.4"))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
             .beginStructureBlock(7, 7, 7, false)
