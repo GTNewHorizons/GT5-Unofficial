@@ -48,3 +48,7 @@ gui.detrav.scanner.tooltip.ore_depth=Y: %d
 gui.detrav.scanner.tooltip.mark_hint=右键标记
 gui.detrav.scanner.search.hint=搜索...
 gui.detrav.scanner.hint.invert=双击反转背景
+
+# Prospector scanners
+gt.detrav.metatool.01.name=探矿仪（%s）
+gt.detrav.metatool.01.electric.name=电子探矿仪（%s）
