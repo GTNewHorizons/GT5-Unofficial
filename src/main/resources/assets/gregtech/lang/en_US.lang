@@ -7064,11 +7064,15 @@ GT5U.gui.button.vm.tt.void=§cWill be voided
 GT5U.gui.button.vm.tt.novoid=§aWill not be voided
 
 #Quad-Cell Plasma Collider GUI
-GT5U.gui.button.qpc.configure=Configure plasmas
+GT5U.gui.button.qpc.configure.1=Left-Click to configure Plasmas
+GT5U.gui.button.qpc.configure.2=Right-Click to configure Scale
 GT5U.gui.text.qpc.plasma_display=%s: %s/s
 GT5U.gui.text.qpc.expected_rate=Expected Drain Rates:
 GT5U.gui.text.qpc.residue=Producing %s/s residue 
 GT5U.gui.text.qpc.generating=Generating %s EU/t
+GT5U.gui.text.qpc.scale=Configure Scale
+GT5U.gui.text.qpc.scale.text.1=Set Scale (1-30)
+GT5U.gui.text.qpc.scale.text.2=Scale multiplies both initial Drain Rate and Cycle Time
 
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pick up this item to see the recipe in NEI

@@ -4,10 +4,12 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider.RESIDUE_CONVERSION_DIVISOR;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -81,6 +83,8 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
         syncManager.syncValue(
             "ResidueOutput",
             new IntSyncValue(() -> multiblock.drainedSinceLastOutput / Math.max(1, multiblock.residueCycles)));
+        syncManager
+            .syncValue("scale", new IntSyncValue(() -> multiblock.scale, val -> multiblock.scale = val).allowC2S());
     }
 
     @Override
@@ -125,7 +129,7 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
 
     @Override
     protected Flow createButtonColumn(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createButtonColumn(parent, syncManager).child(createConfigurationButton());
+        return super.createButtonColumn(parent, syncManager).child(createConfigurationButton(syncManager, parent));
     }
 
     @Override
@@ -304,14 +308,61 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
                             .marginLeft(2)));
     }
 
-    protected IWidget createConfigurationButton() {
+    protected IWidget createConfigurationButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler scalePanel = syncManager
+            .syncedPanel("scalePanel", true, (p_syncManager, syncHandler) -> openScalePanel(syncManager, parent));
         return new ButtonWidget<>().size(18)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
-                multiblock.terminalSwitch = !multiblock.terminalSwitch;
+                // on left-click, swtich the terminal
+                if (d == 0) multiblock.terminalSwitch = !multiblock.terminalSwitch;
+                // on right-click, open a side-panel to adjust scale
+                if (d == 1) {
+                    if (!scalePanel.isPanelOpen()) {
+                        scalePanel.openPanel();
+                    } else {
+                        scalePanel.closePanel();
+                    }
+                }
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(StatCollector.translateToLocal("GT5U.gui.button.qpc.configure")))
+            .tooltipBuilder(
+                t -> t.addLine(translateToLocal("GT5U.gui.button.qpc.configure.1"))
+                    .addLine(translateToLocal("GT5U.gui.button.qpc.configure.2")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
+    private static final int WIDTH = 120;
+    private static final int HEIGHT = 50;
+    private static final int PADDING_SIDES = 4;
+    private static final int SCALE_MAX = 30;
+
+    private ModularPanel openScalePanel(PanelSyncManager syncManager, ModularPanel parent) {
+        ModularPanel returnPanel = new ModularPanel("scalePanel").size(WIDTH, HEIGHT)
+            .relative(parent)
+            .leftRel(1)
+            .topRel(0.8f);
+
+        IntSyncValue scaleSync = syncManager.findSyncHandler("scale", IntSyncValue.class);
+        Flow holdingColumn = Flow.column()
+            .full()
+            .paddingTop(4);
+        holdingColumn.child(
+            IKey.lang("GT5U.gui.text.qpc.scale")
+                .asWidget()
+                .marginBottom(4));
+        holdingColumn.child(
+            new TextFieldWidget().formatAsInteger(true)
+                .addTooltipLine(translateToLocal("GT5U.gui.text.qpc.scale.text.1"))
+                .addTooltipLine(translateToLocal("GT5U.gui.text.qpc.scale.text.2"))
+                .numbersInt(1, SCALE_MAX)
+                .setTextAlignment(Alignment.CENTER)
+                .defaultNumber(1)
+                .value(scaleSync)
+                .size(WIDTH - PADDING_SIDES * 2, 18));
+
+        returnPanel.child(holdingColumn);
+
+        return returnPanel;
     }
 }

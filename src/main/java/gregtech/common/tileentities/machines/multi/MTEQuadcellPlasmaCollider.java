@@ -185,6 +185,13 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
                     + "/s)"
                     + EnumChatFormatting.GRAY
                     + " of Plasmas in the Controller")
+            .addInfo(
+                "Drains the configured " + EnumChatFormatting.GREEN
+                    + "Drain Rate"
+                    + EnumChatFormatting.GRAY
+                    + " of each plasma at the start of each Cycle")
+            .addInfo("Set Scale of Machine in the controller")
+            .addInfo("Scale linearly increases Cycle time and Drain Amount")
             .addSeparator()
             .addInfo("Will burn Plasmas up to " + EnumChatFormatting.GREEN + "X " + getFluidUnit() + "/s")
             .addInfo(
@@ -295,6 +302,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     private static final int CYCLE_TIME = 20;
+    public int scale = 1;
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
@@ -336,10 +344,10 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         float nonDrainChance = (RUNITE_CURRENT_BOOST + CELESTIAL_TUNGSTEN_CURRENT_BOOST) * ORIKALKUM_CURRENT_BOOST; // <1
         long euRate = 0;
 
-        FluidStack forceStack = PlasmaType.FORCE.getFluid(FORCE_CURRENT_DR);
-        FluidStack runiteStack = PlasmaType.RUNITE.getFluid(RUNITE_CURRENT_DR);
-        FluidStack celestialtungstenStack = PlasmaType.CELESTIAL.getFluid(CELESTIAL_TUNGSTEN_CURRENT_DR);
-        FluidStack orikalkumStack = PlasmaType.ORIKALKUM.getFluid(ORIKALKUM_CURRENT_DR);
+        FluidStack forceStack = PlasmaType.FORCE.getFluid(FORCE_CURRENT_DR * scale);
+        FluidStack runiteStack = PlasmaType.RUNITE.getFluid(RUNITE_CURRENT_DR * scale);
+        FluidStack celestialtungstenStack = PlasmaType.CELESTIAL.getFluid(CELESTIAL_TUNGSTEN_CURRENT_DR * scale);
+        FluidStack orikalkumStack = PlasmaType.ORIKALKUM.getFluid(ORIKALKUM_CURRENT_DR * scale);
 
         // if fluid can't be drained, turn off and clear all bonuses
         if (FORCE_CURRENT_DR > 0) {
@@ -376,10 +384,10 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
                 drainedSinceLastOutput = 0;
             }
 
-            drainedSinceLastOutput += FORCE_CURRENT_DR;
-            drainedSinceLastOutput += RUNITE_CURRENT_DR;
-            drainedSinceLastOutput += CELESTIAL_TUNGSTEN_CURRENT_DR;
-            drainedSinceLastOutput += ORIKALKUM_CURRENT_DR;
+            drainedSinceLastOutput += FORCE_CURRENT_DR * scale;
+            drainedSinceLastOutput += RUNITE_CURRENT_DR * scale;
+            drainedSinceLastOutput += CELESTIAL_TUNGSTEN_CURRENT_DR * scale;
+            drainedSinceLastOutput += ORIKALKUM_CURRENT_DR * scale;
             residueCycles++;
         } else {
             residueCycles = 0;
@@ -389,7 +397,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         lEUt += euRate;
         mEfficiency = 10000;
         mEfficiencyIncrease = 10000;
-        mMaxProgresstime = CYCLE_TIME;
+        mMaxProgresstime = CYCLE_TIME * scale;
         recipesDone++;
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -499,6 +507,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         this.CELESTIAL_TUNGSTEN_CURRENT_BOOST = aNBT.getInteger("CelestialBoost");
         this.ORIKALKUM_CURRENT_BOOST = aNBT.getInteger("OrikalkumBoost");
         this.shouldRender = aNBT.getBoolean("shouldRender");
+        this.scale = aNBT.getInteger("scale");
     }
 
     @Override
@@ -513,6 +522,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         aNBT.setFloat("CelestialBoost", CELESTIAL_TUNGSTEN_CURRENT_BOOST);
         aNBT.setFloat("OrikalkumBoost", ORIKALKUM_CURRENT_BOOST);
         aNBT.setBoolean("shouldRender", shouldRender);
+        aNBT.setInteger("scale", scale);
     }
 
     @Override
