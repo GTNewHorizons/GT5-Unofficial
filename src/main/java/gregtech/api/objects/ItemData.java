@@ -2,7 +2,6 @@ package gregtech.api.objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
@@ -13,30 +12,22 @@ public class ItemData {
 
     private static final MaterialStack[] EMPTY_MATERIALSTACK_ARRAY = new MaterialStack[0];
 
-    public final List<Object> mExtraData = new GTArrayList<>(false, 1);
     public final OrePrefixes mPrefix;
     public final MaterialStack mMaterial;
     public final MaterialStack[] mByProducts;
-    public boolean mBlackListed = false;
     public ItemStack mUnificationTarget = null;
 
-    public ItemData(OrePrefixes aPrefix, Materials aMaterial, boolean aBlackListed) {
+    public ItemData(OrePrefixes aPrefix, Materials aMaterial) {
         mPrefix = aPrefix;
         mMaterial = aMaterial == null ? null : new MaterialStack(aMaterial, aPrefix.getMaterialAmount());
-        mBlackListed = aBlackListed;
         mByProducts = aPrefix.mSecondaryMaterial == null || aPrefix.mSecondaryMaterial.mMaterial == null
             ? EMPTY_MATERIALSTACK_ARRAY
             : new MaterialStack[] { aPrefix.mSecondaryMaterial.clone() };
     }
 
-    public ItemData(OrePrefixes aPrefix, Materials aMaterial) {
-        this(aPrefix, aMaterial, false);
-    }
-
     public ItemData(MaterialStack aMaterial, MaterialStack... aByProducts) {
         mPrefix = null;
         mMaterial = aMaterial.mMaterial == null ? null : aMaterial.clone();
-        mBlackListed = true;
         if (aByProducts == null) {
             mByProducts = EMPTY_MATERIALSTACK_ARRAY;
         } else {
@@ -60,7 +51,6 @@ public class ItemData {
 
     public ItemData(ItemData... aData) {
         mPrefix = null;
-        mBlackListed = true;
 
         ArrayList<MaterialStack> aList = new ArrayList<>(), rList = new ArrayList<>();
 

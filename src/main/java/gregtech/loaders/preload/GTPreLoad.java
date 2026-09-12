@@ -247,7 +247,10 @@ public class GTPreLoad {
             final String reEnable = mMTTags.get(i);
             OrePrefixes tPrefix = OrePrefixes.getOrePrefix(reEnable);
             if (tPrefix != null) {
-                Materials tName = Materials.get(reEnable.replaceFirst(tPrefix.toString(), ""));
+                Materials tName = Materials.get(
+                    reEnable.substring(
+                        tPrefix.getName()
+                            .length()));
                 tPrefix.mDisabledItems.remove(tName);
                 tPrefix.mGeneratedItems.add(tName);
                 if (tPrefix == OrePrefixes.screw) {
