@@ -372,8 +372,6 @@ public class GTOreDictUnificator {
         if (GTUtility.isStackInvalid(aStack) || aData == null) return;
         ItemData tData = getItemData(aStack);
         if (tData == null || !tData.hasValidPrefixMaterialData()) {
-            if (tData != null) for (Object tObject : tData.mExtraData)
-                if (!aData.mExtraData.contains(tObject)) aData.mExtraData.add(tObject);
             if (aStack.stackSize > 1) {
                 if (aData.mMaterial != null) aData.mMaterial.mAmount /= aStack.stackSize;
                 for (MaterialStack tMaterial : aData.mByProducts) tMaterial.mAmount /= aStack.stackSize;
@@ -401,9 +399,6 @@ public class GTOreDictUnificator {
                 if (!aData.hasValidPrefixData() || aData.mPrefix.isRecyclable())
                     GTRecipeRegistrator.registerMaterialRecycling(aStack, aData);
             }
-        } else {
-            for (Object tObject : aData.mExtraData)
-                if (!tData.mExtraData.contains(tObject)) tData.mExtraData.add(tObject);
         }
     }
 

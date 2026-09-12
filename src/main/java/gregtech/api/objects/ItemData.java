@@ -2,7 +2,6 @@ package gregtech.api.objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
@@ -13,7 +12,6 @@ public class ItemData {
 
     private static final MaterialStack[] EMPTY_MATERIALSTACK_ARRAY = new MaterialStack[0];
 
-    public final List<Object> mExtraData = new GTArrayList<>(false, 1);
     public final OrePrefixes mPrefix;
     public final MaterialStack mMaterial;
     public final MaterialStack[] mByProducts;
