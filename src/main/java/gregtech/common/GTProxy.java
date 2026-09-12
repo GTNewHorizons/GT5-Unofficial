@@ -641,6 +641,8 @@ public class GTProxy implements IFuelHandler {
     public boolean mRenderTileAmbientOcclusion = true;
     /** This enables rendering of glowing textures */
     public boolean mRenderGlowTextures = true;
+    /** This enables fancy rendering of MHDCSM blocks */
+    public boolean mRenderMHDCSMFancy = false;
     /** Render flipped textures */
     public boolean mRenderFlippedMachinesFlipped = true;
     /** This enables indicators on input/output hatches */

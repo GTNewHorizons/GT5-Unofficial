@@ -127,6 +127,7 @@ import gregtech.common.render.FluidDisplayStackRenderer;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
+import gregtech.common.render.MHDCSMBlockRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.RenderInit;
@@ -220,6 +221,7 @@ public class GTClient extends GTProxy {
         super.onInitialization(event);
         RenderingRegistry.registerBlockHandler(new GTRendererBlock());
         RenderingRegistry.registerBlockHandler(new GTRendererCasing());
+        RenderingRegistry.registerBlockHandler(new MHDCSMBlockRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityLaser.class, new LaserRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityWormhole.class, new WormholeRenderer());
@@ -410,6 +412,7 @@ public class GTClient extends GTProxy {
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
             mPreference = new GTClientPreference();
             final boolean renderIndicatorsOnHatch = GTMod.proxy.mRenderIndicatorsOnHatch;
+            final boolean renderMHDCSMFancy = GTMod.proxy.mRenderMHDCSMFancy;
             GTPreLoad.loadClientConfig();
             GTRendererBlock.clearInventoryDisplayListCache();
             if (renderIndicatorsOnHatch != GTMod.proxy.mRenderIndicatorsOnHatch) {
@@ -420,6 +423,9 @@ public class GTClient extends GTProxy {
                 }
             }
             if (e.isWorldRunning) {
+                if (renderMHDCSMFancy != GTMod.proxy.mRenderMHDCSMFancy) {
+                    Minecraft.getMinecraft().renderGlobal.loadRenderers();
+                }
                 GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
                 GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
             }
