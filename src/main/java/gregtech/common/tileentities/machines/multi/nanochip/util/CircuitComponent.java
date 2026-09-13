@@ -226,14 +226,7 @@ public enum CircuitComponent {
         604,
         "gt.circuitcomponent.chipasoc",
         () -> ItemList.Circuit_Chip_SoC2.get(1)),
-    ChipPikoPIC(
-        605,
-        "gt.circuitcomponent.chippikopic",
-        () -> ItemList.Circuit_Chip_PPIC.get(1)),
-    ChipQuantumPIC(
-        606,
-        "gt.circuitcomponent.chipquantumpic",
-        () -> ItemList.Circuit_Chip_QPIC.get(1)),
+    // id 605, 606 unused
     ChipAttoPIC(
         607,
         "gt.circuitcomponent.chipattopic",
@@ -256,8 +249,7 @@ public enum CircuitComponent {
     ProcessedChipNOR(702, "gt.circuitcomponent.processed.chipnor", () -> ChipNOR, true),
     ProcessedChipNAND(703, "gt.circuitcomponent.processed.chipnand", () -> ChipNAND, true),
     ProcessedChipASOC(704, "gt.circuitcomponent.processed.chipasoc", () -> ChipASOC, true),
-    ProcessedChipPikoPIC(705, "gt.circuitcomponent.processed.chippikopic", () -> ChipPikoPIC, true),
-    ProcessedChipQuantumPIC(706, "gt.circuitcomponent.processed.chipquantumpic", () -> ChipQuantumPIC, true),
+    // id 705, 706 unused
     ProcessedChipAttoPIC(707, "gt.circuitcomponent.processed.chipattopic", () -> ChipAttoPIC, true),
     ProcessedChipZeptoPIC(708, "gt.circuitcomponent.processed.chipzeptopic", () -> ChipZeptoPIC, true),
     ProcessedChipYoctoPIC(709, "gt.circuitcomponent.processed.chipyoctopic", () -> ChipYoctoPIC, true),
