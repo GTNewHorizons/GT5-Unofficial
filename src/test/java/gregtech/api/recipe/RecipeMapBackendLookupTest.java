@@ -583,8 +583,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.HV));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.HV));
+            GTOreDictUnificator.addAssociation(circuit, Materials.HV, representative);
+            GTOreDictUnificator.addAssociation(circuit, Materials.HV, equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             backend.compileRecipe(
@@ -637,9 +637,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.MV));
-            ItemData equivalentData = new ItemData(circuit, Materials.MV);
-            GTOreDictUnificator.setItemData(equivalent, equivalentData);
+            GTOreDictUnificator.addAssociation(circuit, Materials.MV, representative);
+            GTOreDictUnificator.addAssociation(circuit, Materials.MV, equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             backend.compileRecipe(
@@ -780,8 +779,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.LV));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.LV));
+            GTOreDictUnificator.addAssociation(circuit, Materials.LV, representative);
+            GTOreDictUnificator.addAssociation(circuit, Materials.LV, equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             List<GTRecipeLookupIngredient> group = new ArrayList<>();

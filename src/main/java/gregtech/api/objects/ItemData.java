@@ -108,7 +108,7 @@ public class ItemData {
 
             for (MaterialStack material : itemData.mByProducts) {
                 if (material.mAmount > 0) {
-                    mergeMaterial(materials, itemData.mMaterial);
+                    mergeMaterial(materials, material);
                 }
             }
         }

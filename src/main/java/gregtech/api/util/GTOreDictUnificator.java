@@ -400,10 +400,10 @@ public class GTOreDictUnificator {
         }
 
         sItemStack2DataMap.put(stack, data);
-        processRecycling(stack, data);
+        processRecycling(stack, data, prevData);
     }
 
-    private static void processRecycling(ItemStack stack, ItemData data) {
+    private static void processRecycling(ItemStack stack, ItemData data, ItemData prevData) {
         if (data.hasValidMaterialData()) {
             long recyclableMaterialAmount = 0;
 
@@ -427,13 +427,21 @@ public class GTOreDictUnificator {
             batchRegisteredRecyclingRecipes = true;
 
             for (Entry<ItemStack, ItemData> entry : sItemStack2DataMap.entrySet()) {
-                if (data.hasExplicitComposition || !data.hasValidPrefixData() || data.mPrefix.isRecyclable()) {
-                    GTRecipeRegistrator.registerMaterialRecycling(entry.getKey(), entry.getValue());
+                ItemStack entryStack = entry.getKey();
+                ItemData entryData = entry.getValue();
+
+                if (shouldRegisterMaterialRecycling(entryData)) {
+                    GTRecipeRegistrator.registerMaterialRecycling(entryStack, entryData);
                 }
             }
-        } else if (data.hasExplicitComposition || !data.hasValidPrefixData() || data.mPrefix.isRecyclable()) {
+        } else if (shouldRegisterMaterialRecycling(data) && !shouldRegisterMaterialRecycling(prevData)) {
             GTRecipeRegistrator.registerMaterialRecycling(stack, data);
         }
+    }
+
+    private static boolean shouldRegisterMaterialRecycling(ItemData data) {
+        if (data == null) return false;
+        return data.hasExplicitComposition || !data.hasValidPrefixData() || data.mPrefix.isRecyclable();
     }
 
     public static void removeItemData(ItemStack aStack) {
