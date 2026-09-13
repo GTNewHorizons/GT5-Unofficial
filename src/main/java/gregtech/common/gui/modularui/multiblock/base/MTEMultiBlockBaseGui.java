@@ -49,7 +49,6 @@ import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
@@ -278,9 +277,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IntSyncValue startupCheckSyncer = new IntSyncValue(multiblock::getmStartUpCheck);
-        StringSyncValue machineModeSyncer = new StringSyncValue(multiblock::getMachineModeName);
         syncManager.syncValue("startupCheck", startupCheckSyncer);
-        syncManager.syncValue("machineModeName", machineModeSyncer);
 
         return new ListWidget<>().fullWidth()
             .crossAxisAlignment(Alignment.CrossAxis.START)
@@ -289,7 +286,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 () -> IKey
                     .dynamic(
                         () -> StatCollector
-                            .translateToLocalFormatted("gt.interact.desc.mb.mode", machineModeSyncer.getStringValue()))
+                            .translateToLocalFormatted("gt.interact.desc.mb.mode", multiblock.getMachineModeName()))
                     .asWidget()
                     .marginBottom(2)
                     .fullWidth())
@@ -339,13 +336,16 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected IWidget createShutdownReasonWidget(PanelSyncManager syncManager) {
-        StringSyncValue shutdownReasonSync = (StringSyncValue) syncManager
-            .getSyncHandlerFromMapKey("shutdownDisplayString:0");
-        return IKey.dynamic(shutdownReasonSync::getValue)
+        return IKey.dynamic(
+            () -> baseMetaTileEntity.getLastShutDownReason()
+                .getDisplayString())
             .asWidget()
             .fullWidth()
             .marginBottom(2)
-            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutdownReasonSync.getValue()));
+            .setEnabledIf(
+                widget -> shouldShutdownReasonBeDisplayed(
+                    baseMetaTileEntity.getLastShutDownReason()
+                        .getDisplayString()));
     }
 
     protected boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
@@ -1108,22 +1108,20 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected IWidget createShutdownReasonHoverableTerminal(PanelSyncManager syncManager) {
         BooleanSyncValue wasShutdownSyncer = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("wasShutdown:0");
-        StringSyncValue shutDownReasonSyncer = (StringSyncValue) syncManager
-            .getSyncHandlerFromMapKey("shutdownReasonKey:0");
         return new HoverableIcon(new DynamicDrawable(() -> {
             if (wasShutdownSyncer.getBoolValue()) {
-                return getTextureForReason(shutDownReasonSyncer.getValue());
+                return getTextureForReason(getShutDownReasonKey());
             }
             return null;
         }).asIcon()).asWidget()
             .size(18, 18)
             .tooltipBuilder(t -> {
                 if (wasShutdownSyncer.getBoolValue()) {
-                    t.add(getToolTipForReason(shutDownReasonSyncer.getValue()));
+                    t.add(getToolTipForReason(getShutDownReasonKey()));
                 }
             })
             .tooltipAutoUpdate(true)
-            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(shutDownReasonSyncer.getValue()));
+            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed(getShutDownReasonKey()));
     }
 
     protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
@@ -1224,16 +1222,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue("shutdownReason", shutdownReasonSyncer);
 
         syncManager.syncValue(
-            "shutdownDisplayString",
-            new StringSyncValue(
-                () -> baseMetaTileEntity.getLastShutDownReason()
-                    .getDisplayString()));
-        syncManager.syncValue(
-            "shutdownReasonKey",
-            new StringSyncValue(
-                () -> baseMetaTileEntity.getLastShutDownReason()
-                    .getKey()));
-        syncManager.syncValue(
             "checkRecipeResult",
             GenericSyncValue.builder(CheckRecipeResult.class)
                 .getter(multiblock::getCheckRecipeResult)
@@ -1281,6 +1269,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
         // Widget Specific
         BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(multiblock::isAllowedToWork, bool -> {
+            // This setter also runs on the client when the value is synced from the server. Toggling the machine there
+            // would overwrite state the server just sent, such as the shutdown reason.
+            if (!baseMetaTileEntity.isServerSide()) return;
             if (isPowerSwitchDisabled()) return;
             if (bool) multiblock.enableWorking();
             else {
@@ -1347,6 +1338,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected void setMachineModeIcons() {}
 
     // Method for registering Icons/Tooltip Text to specific ShutDownReasons. Override for custom icons/conditions.
+
+    protected String getShutDownReasonKey() {
+        return baseMetaTileEntity.getLastShutDownReason()
+            .getKey();
+    }
 
     protected UITexture getTextureForReason(String key) {
         return this.shutdownReasonTextureMap.getOrDefault(key, null);
