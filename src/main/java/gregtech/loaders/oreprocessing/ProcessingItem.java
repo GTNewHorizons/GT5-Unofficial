@@ -22,7 +22,6 @@ public class ProcessingItem implements gregtech.api.interfaces.IOreRecipeRegistr
             case "itemWheat" -> GTOreDictUnificator.addItemData(aStack, new ItemData(Materials.Wheat, 3628800L));
             case "itemManganese" -> GTOreDictUnificator
                 .addItemData(aStack, new ItemData(Materials.Manganese, 3628800L));
-            case "itemSalt" -> GTOreDictUnificator.addItemData(aStack, new ItemData(Materials.Salt, 3628800L));
             case "itemMagnesium" -> GTOreDictUnificator
                 .addItemData(aStack, new ItemData(Materials.Magnesium, 3628800L));
             case "itemPhosphorite" -> GTOreDictUnificator
