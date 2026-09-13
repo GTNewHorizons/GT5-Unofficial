@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT_STOP;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
+import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT_CONTINUE;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -44,6 +45,8 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -53,7 +56,11 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.fluid.FluidBlockRequirement;
+import com.gtnewhorizon.structurelib.fluid.FluidFillPolicy;
+import com.gtnewhorizon.structurelib.fluid.IFluidSource;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
+import com.gtnewhorizon.structurelib.structure.FluidAutoplace;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
@@ -103,6 +110,13 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElement<T> ofAnyWater(boolean allowFlowing) {
+        // One bucket is what a block of water costs, and a position that already holds any water of the right kind is
+        // good enough when flowing water is accepted as well.
+        FluidBlockRequirement water = FluidBlockRequirement.of(
+            Blocks.water,
+            0,
+            new FluidStack(FluidRegistry.WATER, 1000),
+            allowFlowing ? FluidFillPolicy.ANY_FILLED : FluidFillPolicy.EXACT_STATE);
         return new IStructureElement<>() {
 
             @Override
@@ -137,9 +151,28 @@ public class GTStructureUtility {
             }
 
             @Override
+            public boolean isFluidElement(T t) {
+                // This position is meant to hold water, so it neither has to be built before another fluid is placed,
+                // nor does fluid flowing into it do any harm.
+                return true;
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                if (check(t, world, x, y, z)) return SKIP;
+                // Fill this position with the water the player is carrying, and only leave it to the other
+                // alternatives of this element, e.g. accepting air, when there is no water to be had. That way a
+                // missing bucket is not reported as an error for a structure that is allowed to stay empty here.
+                IFluidSource source = env.getEffectiveFluidSource();
+                if (source == null || !source.takeAll(water.cost(), true)) return REJECT_CONTINUE;
+                return FluidAutoplace.tryPlace(world, x, y, z, env, water);
+            }
+
+            @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
-                return BlocksToPlace.create(Blocks.water, 0);
+                return BlocksToPlace.createFluid(water);
             }
         };
     }
@@ -953,6 +986,11 @@ public class GTStructureUtility {
                 return backing.placeBlock(t, world, x, y, z, transform.apply(trigger));
             }
 
+            @Override
+            public boolean isFluidElement(T t) {
+                return backing.isFluidElement(t);
+            }
+
             @Nullable
             @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
@@ -1028,6 +1066,12 @@ public class GTStructureUtility {
 
     public static <T> IStructureElement<T> noSurvivalAutoplace(IStructureElement<T> element) {
         return new ProxyStructureElement<>(element) {
+
+            @Override
+            public boolean isFluidElement(T t) {
+                // Nothing is ever placed here, so this position is not one that autoplace will fill with fluid.
+                return false;
+            }
 
             @Override
             public PlaceResult survivalPlaceBlock(T multi, World world, int x, int y, int z, ItemStack trigger,
@@ -1257,6 +1301,11 @@ public class GTStructureUtility {
         @Override
         public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
             return proxiedElement.placeBlock(t, world, x, y, z, trigger);
+        }
+
+        @Override
+        public boolean isFluidElement(T t) {
+            return proxiedElement.isFluidElement(t);
         }
 
         @Override
