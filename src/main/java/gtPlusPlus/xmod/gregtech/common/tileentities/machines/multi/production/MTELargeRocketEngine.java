@@ -75,6 +75,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     private static final int AIR_PERCENT = 1;
     private static final int SOFT_CAP_1 = 49_000;
     private static final int SOFT_CAP_2 = 94_000;
+    private static final int BOOST_OUTPUT_UNIT_EUT = 1_000;
 
     private static Fluid sAirFluid = null;
     private static FluidStack sAirFluidStack = null;
@@ -128,7 +129,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     + mLubricantName
                     + EnumChatFormatting.GRAY
                     + " per hour")
-            .addInfo("Takes " + WARMUP_TICKS / 20 + " seconds to warm up to full efficiency")
+            .addInfo("Takes " + formatNumber(WARMUP_TICKS / 20) + " seconds to warm up to full efficiency")
             .addSeparator()
             .addInfo(
                 "Optional boost: supply " + formatFluid(COOLANT_BOOST_PERCENT)
@@ -136,7 +137,9 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     + EnumChatFormatting.GOLD
                     + mCoolantName
                     + EnumChatFormatting.GRAY
-                    + " per 1000 EU/t output")
+                    + " per "
+                    + formatNumber(BOOST_OUTPUT_UNIT_EUT)
+                    + " EU/t output")
             .addInfo(
                 "Boosting triples the soft caps and " + EnumChatFormatting.GOLD
                     + mLubricantName
