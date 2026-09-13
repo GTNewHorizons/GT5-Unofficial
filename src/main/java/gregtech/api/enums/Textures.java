@@ -2691,7 +2691,7 @@ public class Textures {
 
         /**
          * Registers a Custom Block {@link IIconContainer}
-         * 
+         *
          * @param domain    The resource domain
          * @param aIconName The colon-free resource path of the icon container
          * @return The {@link IIconContainer} instance
@@ -2859,6 +2859,11 @@ public class Textures {
             HALO = create("HALO"),
             HALO_FUZZY = create("HALO_FUZZY"),
             MASK_VOLTAGE_COIL = create("MASK_VOLTAGE_COIL"),
+            MASK_SUPERMASSIVE = create("MASK_SUPERMASSIVE"),
+            MASK_STRANDS = create("MASK_STRANDS"),
+            MASK_SPOOL = create("MASK_SPOOL"),
+            MASK_HARMONY = create("MASK_HARMONY"),
+            MASK_ENCASEMENT = create("MASK_ENCASEMENT"),
             JACKHAMMER_BASE = create("JACKHAMMER_BASE");
         // spotless:on
 
