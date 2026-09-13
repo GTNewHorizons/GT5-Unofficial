@@ -57,7 +57,12 @@ public enum BioCultureEnum {
         BioDataEnum.Bacterialsludgebac, BioDataEnum.Bacterialsludgebac, new Color(10, 62, 13),
         ItemList.CultureCorynebacteriumSludgeMarsensis),
     MutagenBacteriaASpatio("Mutagen Bacteria a Spatio", 17, EnumRarity.rare, false, BioDataEnum.Mutagen,
-        BioDataEnum.Mutagen, new Color(29, 149, 50), ItemList.CultureMutagenBacteriaASpatio),;
+        BioDataEnum.Mutagen, new Color(29, 149, 50), ItemList.CultureMutagenBacteriaASpatio),
+    PenicilliumChrysogenum("Penicillium chrysogenum", 18, EnumRarity.uncommon, true, BioDataEnum.PenicilliumChrysogenum,
+        BioDataEnum.PenicilliumChrysogenum, new Color(200, 230, 200), ItemList.CulturePenicilliumChrysogenum),
+    SaccharomycesCerevisiaeVarPenicillium("Saccharomyces cerevisiae var Penicillium", 19, EnumRarity.epic, true,
+        BioDataEnum.SaccharomycesCerevisiae, BioDataEnum.PenicilliumChrysogenum, new Color(120, 160, 120),
+        ItemList.CultureSaccharomycesCerevisiaeVarPenicillium),;
 
     public static final List<BioCulture> BIO_CULTURES = new ArrayList<>();
     public static final List<ItemStack> BIO_CULTURE_STACKS = new ArrayList<>();

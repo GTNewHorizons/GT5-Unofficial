@@ -52,6 +52,8 @@ public enum BioDataEnum {
     Bacterialsludgebac("BacterialSludgeBac", 15, EnumRarity.uncommon, 30_00, VoltageIndex.EV,
         ItemList.DNABacterialsludgebac, ItemList.PlasmidBacterialsludgebac),
     Mutagen("Mutagen", 16, EnumRarity.rare, 15_00, VoltageIndex.EV, ItemList.DNAMutagen, ItemList.PlasmidMutagen),
+    PenicilliumChrysogenum("Penicillium chrysogenum", 17, EnumRarity.uncommon, 75_00, VoltageIndex.HV,
+        ItemList.DNAPenicilliumChrysogenum, ItemList.PlasmidPenicilliumChrysogenum),
 
     ;
 

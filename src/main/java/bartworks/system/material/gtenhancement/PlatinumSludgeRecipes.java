@@ -16,6 +16,7 @@ package bartworks.system.material.gtenhancement;
 import static bartworks.system.material.WerkstoffLoader.AcidicIridiumSolution;
 import static bartworks.system.material.WerkstoffLoader.AcidicOsmiumSolution;
 import static bartworks.system.material.WerkstoffLoader.AmmoniumChloride;
+import static bartworks.system.material.WerkstoffLoader.AmmoniumSulfate;
 import static bartworks.system.material.WerkstoffLoader.AquaRegia;
 import static bartworks.system.material.WerkstoffLoader.CalciumChloride;
 import static bartworks.system.material.WerkstoffLoader.CrudeRhMetall;
@@ -227,6 +228,32 @@ public final class PlatinumSludgeRecipes {
             .circuit(9)
             .fluidInputs(Materials.Ammonia.getGas(64_000), Materials.HydrochloricAcid.getFluid(64_000))
             .fluidOutputs(AmmoniumChloride.getFluidOrGas(64_000))
+            .duration(3 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        // Ammonium Sulfate
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Ammonia.getCells(2))
+            .circuit(1)
+            .itemOutputs(AmmoniumSulfate.get(cell, 1))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1_000))
+            .duration(15 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.SulfuricAcid.getCells(1))
+            .circuit(1)
+            .itemOutputs(Materials.Empty.getCells(1))
+            .fluidInputs(Materials.Ammonia.getGas(2_000))
+            .fluidOutputs(AmmoniumSulfate.getFluidOrGas(1_000))
+            .duration(15 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(chemicalReactorRecipes);
+        GTValues.RA.stdBuilder()
+            .circuit(9)
+            .fluidInputs(Materials.Ammonia.getGas(128_000), Materials.SulfuricAcid.getFluid(64_000))
+            .fluidOutputs(AmmoniumSulfate.getFluidOrGas(64_000))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);

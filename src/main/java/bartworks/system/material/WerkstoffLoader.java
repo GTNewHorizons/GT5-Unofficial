@@ -1561,6 +1561,19 @@ public class WerkstoffLoader {
             .addMetalItems(),
         104,
         TextureSet.SET_SHINY);
+    public static final Werkstoff AmmoniumSulfate = new Werkstoff(
+        new short[] { 0xff, 0xfa, 0xf0 },
+        "Ammonium Sulfate",
+        subscriptNumbers("(NH4)2SO4"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        105,
+        TextureSet.SET_FLUID,
+        // No Byproducts
+        Pair.of(Materials.Ammonium, 2),
+        Pair.of(Materials.SulfuricAcid, 1));
 
     // Extracted from GalaxySpace
     public static final Werkstoff LiquidHelium = new Werkstoff(

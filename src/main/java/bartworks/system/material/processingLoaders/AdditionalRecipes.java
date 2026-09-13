@@ -54,7 +54,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraftforge.fluids.Fluid;
@@ -81,7 +80,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gtPlusPlus.core.fluids.GTPPFluids;
 
@@ -216,34 +214,37 @@ public class AdditionalRecipes {
             .fake()
             .addTo(bioLabRecipes);
 
-        FluidStack[] easyFluids = { Materials.Water.getFluid(1_000), GTModHandler.getDistilledWater(1_000) };
-        for (FluidStack fluidStack : easyFluids) {
-            for (BioCulture bioCulture : BioCultureEnum.BIO_CULTURES) {
-                if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(new ItemStack(Items.sugar, 64))
-                        .special(BioCultureEnum.getPetriDish(bioCulture))
-                        .circuit(1)
-                        .fluidInputs(fluidStack)
-                        .fluidOutputs(new FluidStack(bioCulture.getFluid(), 10))
-                        .metadata(GLASS, 3)
-                        .duration(50 * SECONDS)
-                        .eut(TierEU.RECIPE_MV)
-                        .addTo(bacterialVatRecipes);
+        for (BioCulture bioCulture : BioCultureEnum.BIO_CULTURES) {
+            if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
+                GTValues.RA.stdBuilder()
+                    .special(BioCultureEnum.getPetriDish(bioCulture))
+                    .circuit(1)
+                    .fluidInputs(Materials.Glucose.getFluid(10))
+                    .fluidOutputs(new FluidStack(bioCulture.getFluid(), 1))
+                    .metadata(GLASS, 3)
+                    .duration(50 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(bacterialVatRecipes);
 
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            ItemList.EmptyPetriDish.get(1),
-                            fluidStack.equals(Materials.Water.getFluid(1_000)) ? Materials.Water.getCells(1)
-                                : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1_000))
-                                    .get(0))
-                        .itemOutputs(BioCultureEnum.getPetriDish(bioCulture), Materials.Empty.getCells(1))
-                        .outputChances(bioCulture.getChance(), 100_00)
-                        .fluidInputs(new FluidStack(bioCulture.getFluid(), 1_000))
-                        .duration(25 * SECONDS)
-                        .eut(TierEU.RECIPE_HV)
-                        .addTo(bioLabRecipes);
-                }
+                GTValues.RA.stdBuilder()
+                    .itemInputs(ItemList.EmptyPetriDish.get(1))
+                    .fluidInputs(Materials.Water.getFluid(1_000))
+                    .itemOutputs(BioCultureEnum.getPetriDish(bioCulture), Materials.Empty.getCells(1))
+                    .outputChances(bioCulture.getChance(), 100_00)
+                    .fluidInputs(new FluidStack(bioCulture.getFluid(), 1_000))
+                    .duration(25 * SECONDS)
+                    .eut(TierEU.RECIPE_HV)
+                    .addTo(bioLabRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(ItemList.EmptyPetriDish.get(1))
+                    .fluidInputs(GTModHandler.getDistilledWater(1_000))
+                    .itemOutputs(BioCultureEnum.getPetriDish(bioCulture), Materials.Empty.getCells(1))
+                    .outputChances(bioCulture.getChance(), 100_00)
+                    .fluidInputs(new FluidStack(bioCulture.getFluid(), 1_000))
+                    .duration(25 * SECONDS)
+                    .eut(TierEU.RECIPE_HV)
+                    .addTo(bioLabRecipes);
             }
         }
 

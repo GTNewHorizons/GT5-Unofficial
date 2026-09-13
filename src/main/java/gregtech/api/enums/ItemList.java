@@ -3149,6 +3149,8 @@ public enum ItemList implements IItemContainer {
     CultureBinniBacteria,
     CultureCorynebacteriumSludgeMarsensis,
     CultureMutagenBacteriaASpatio,
+    CulturePenicilliumChrysogenum,
+    CultureSaccharomycesCerevisiaeVarPenicillium,
 
     DNABetaLactamase,
     DNASaccharomycesCerevisiae,
@@ -3167,6 +3169,7 @@ public enum ItemList implements IItemContainer {
     DNABinnibacteria,
     DNABacterialsludgebac,
     DNAMutagen,
+    DNAPenicilliumChrysogenum,
 
     PlasmidBetaLactamase,
     PlasmidSaccharomycesCerevisiae,
@@ -3185,12 +3188,14 @@ public enum ItemList implements IItemContainer {
     PlasmidBinnibacteria,
     PlasmidBacterialsludgebac,
     PlasmidMutagen,
+    PlasmidPenicilliumChrysogenum,
 
     EmptyPetriDish,
     EmptyPlasmid,
     EmptyDNAFlask,
     DetergentPowder,
     Agarose,
+    Pancrea,
     IncubationModule,
     PlasmaMembrane,
     MetaMaterial_Shielding1,
