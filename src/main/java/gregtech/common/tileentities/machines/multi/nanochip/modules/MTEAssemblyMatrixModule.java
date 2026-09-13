@@ -258,16 +258,10 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
-    public int getPriority() {
-        return -1;
-    }
-
-    @Override
     protected boolean supportsXOROutput() {
         return true;
     }
 
-    @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setInteger("tier", machineTier);
