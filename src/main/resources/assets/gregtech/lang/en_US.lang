@@ -3608,6 +3608,8 @@ gt.circuitcomponent.bolt.processed.whitedwarfmatter=Filed White Dwarf Matter Bol
 gt.circuitcomponent.plate.processed.rhugnor=Stripped Rhugnor Plate
 gt.circuitcomponent.plate.processed.metastableoganesson=Stripped Metastable Oganesson Plate
 gt.circuitcomponent.plate.processed.hexanite=Stripped Hexanite Plate
+gt.circuitcomponent.unattunedcircuitry=Unattuned Circuitry
+gt.circuitcomponent.primedunattunedcircuitry=Primed Unattuned Circuitry
 
 # NAC Machines
 gt.blockmachines.vacuum.pipe.name=Vacuum Conveyor Pipe

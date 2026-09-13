@@ -159,6 +159,7 @@ public enum CircuitComponent {
         406,
         "gt.circuitcomponent.livingbiochip",
         () -> ItemList.Circuit_Parts_Chip_Bioware.get(1)),
+    UnattunedCircuitry(407,"gt.circuitcomponent.unattunedcircuitry",()->null,true),
 
     ProcessedBoardMultifiberglassElite(500, "gt.circuitcomponent.processed.board.multifiberelite", () -> BoardMultifiberglassElite, true),
     ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", () -> BoardWetwareLifesupport, true),
@@ -545,6 +546,12 @@ public enum CircuitComponent {
         2119,
         "gt.circuitcomponent.planckmanifold",
         () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE),
+    PrimedUnattunedCircuitry(2120,"gt.circuitcomponent.primedunattunedcircuitry",CircuitCalibration.PRIMITIVE),
+    NandChip(2121,"gt.circuitcomponent.nandchip",()->ItemList.NandChip.get(1),CircuitCalibration.PRIMITIVE),
+    Microprocessor(2122,"gt.circuitcomponent.microprocessor",()->ItemList.Circuit_Microprocessor.get(1),CircuitCalibration.PRIMITIVE),
+    IntegratedProcessor(2123,"gt.circuitcomponent.integratedprocessor",()->ItemList.Circuit_Processor.get(1),CircuitCalibration.PRIMITIVE),
+    NanoProcessor(2124,"gt.circuitcomponent.nanoprocessor",()->ItemList.Circuit_Nanoprocessor.get(1),CircuitCalibration.PRIMITIVE),
+    QuantumProcessor(2125,"gt.circuitcomponent.quantumprocessor", ()->ItemList.Circuit_Quantumprocessor.get(1), CircuitCalibration.PRIMITIVE)
     ;
 
     // spotless:on
@@ -593,6 +600,12 @@ public enum CircuitComponent {
         this(id, nameKey, realComponent, null, false, circuitType);
     }
 
+    // CC constructor for circuits not meant to be taken out of the NAC
+    // and instead further used, while counting for calibration
+    CircuitComponent(int id, String nameKey, CircuitCalibration circuitType) {
+        this(id, nameKey, null, null, true, circuitType);
+    }
+
     // PC constructor
     CircuitComponent(int id, String nameKey, Supplier<CircuitComponent> ccSupplier, boolean isProcessed) {
         this(id, nameKey, null, ccSupplier, isProcessed, CircuitCalibration.NONE);
@@ -615,7 +628,7 @@ public enum CircuitComponent {
         this.circuitType = circuitType;
 
         this.iconString = isProcessed ? PROCESSED_DIRECTORY + name().toLowerCase() : name().toLowerCase();
-        codechicken.nei.api.API.hideItem(getFakeStack(1));
+        if (!isProcessed) codechicken.nei.api.API.hideItem(getFakeStack(1));
     }
 
     public String getLocalizedName() {
