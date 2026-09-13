@@ -77,9 +77,16 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     MTEExtendedPowerMultiBlockBase<T> implements ISurvivalConstructable, NanochipTooltipValues, ICasingTextureProvider {
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
-    protected static final String[][] base_structure = new String[][] { { " VV~VV ", "       ", " VVVVV " },
-        { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { "VPPPPPV", " ZZZZZ ", "VPPPPPV" },
-        { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { " VVVVV ", "       ", " VVVVV " } };
+    // spotless:off
+    protected static final String[][] base_structure = new String[][] {
+        { " VV~VV ", "       ", " VVVVV " },
+        { "VPPPPPV", " ZZZZZ ", "VVVVVVV" },
+        { "VPPPPPV", " ZZZZZ ", "VVVVVVV" },
+        { "VPPPPPV", " ZZZZZ ", "VVVVVVV" },
+        { "VPPPPPV", " ZZZZZ ", "VVVVVVV" },
+        { "VPPPPPV", " ZZZZZ ", "VVVVVVV" },
+        { " VVVVV ", "       ", " VVVVV " } };
+    // spotless:on
 
     protected static final int BASE_STRUCTURE_OFFSET_X = 3;
     protected static final int BASE_STRUCTURE_OFFSET_Y = 0;
