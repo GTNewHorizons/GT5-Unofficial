@@ -48,3 +48,7 @@ gui.detrav.scanner.tooltip.ore_depth=Y: %d
 gui.detrav.scanner.tooltip.mark_hint=Right-click to mark
 gui.detrav.scanner.search.hint=Search...
 gui.detrav.scanner.hint.invert=Double-click to invert background
+
+# Prospector scanners
+gt.detrav.metatool.01.name=Prospector's Scanner (%s)
+gt.detrav.metatool.01.electric.name=Electric Prospector's Scanner (%s)
