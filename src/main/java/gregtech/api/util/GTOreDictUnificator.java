@@ -55,7 +55,7 @@ public class GTOreDictUnificator {
     private static final Set<Item> unificationWildcardBlacklist = new ReferenceOpenHashSet<>();
 
     private static int isRegisteringOre = 0, isAddingOre = 0;
-    private static boolean mRunThroughTheList = true;
+    private static boolean batchRegisteredRecyclingRecipes = false;
 
     /**
      * The Blacklist just prevents the Item from being unificated into something else. Useful if you have things like
@@ -347,34 +347,43 @@ public class GTOreDictUnificator {
         return rList;
     }
 
+    /**
+     * Adds material composition data for a stack. Does not override a composition when it already exists.
+     */
     public static void addItemData(ItemStack stack, ItemData data) {
-        if (GTUtility.isStackValid(stack) && getItemData(stack) == null && data != null) setItemData(stack, data);
+        if (GTUtility.isStackInvalid(stack) || data == null) return;
+
+        ItemData prevData = getItemData(stack);
+        if (prevData == null || !prevData.hasExplicitComposition) {
+            setItemData(stack, data);
+        }
     }
 
+    /**
+     * Adds material composition data for a stack. Does not override a composition when it already exists.
+     */
     public static void addItemDataFromInputs(ItemStack output, Object... inputs) {
         int length = inputs.length;
-        ItemData[] tData = new ItemData[length];
+        ItemData[] dataInputs = new ItemData[length];
         for (int i = 0; i < length; i++) {
-            if (inputs[i] instanceof ItemStack) {
-                tData[i] = GTOreDictUnificator.getItemData((ItemStack) inputs[i]);
-            } else if (inputs[i] instanceof ItemData) {
-                tData[i] = (ItemData) inputs[i];
+            if (inputs[i] instanceof ItemStack stack) {
+                dataInputs[i] = getItemData(stack);
+            } else if (inputs[i] instanceof ItemData data) {
+                dataInputs[i] = data;
             } else {
                 throw new IllegalArgumentException("Illegal item data: " + inputs[i]);
             }
         }
-        if (GTUtility.arrayContainsNonNull(tData)) {
-            GTOreDictUnificator.addItemData(output, new ItemData(tData));
+        if (GTUtility.arrayContainsNonNull(dataInputs)) {
+            addItemData(output, new ItemData(dataInputs));
         }
     }
 
+    /**
+     * Sets material composition data for a stack, for example from stack recipe ingredients.
+     */
     public static void setItemData(ItemStack stack, ItemData data) {
         if (GTUtility.isStackInvalid(stack) || data == null) return;
-
-        ItemData prevData = getItemData(stack);
-        if (prevData != null && prevData.hasValidPrefixMaterialData()) {
-            return;
-        }
 
         if (stack.stackSize > 1) {
             if (data.mMaterial != null) data.mMaterial.mAmount /= stack.stackSize;
@@ -384,10 +393,20 @@ public class GTOreDictUnificator {
             stack = GTUtility.copyAmount(1, stack);
         }
 
-        sItemStack2DataMap.put(stack, data);
+        // Preserve association when it already exists
+        ItemData prevData = getItemData(stack);
+        if (prevData != null && prevData.hasValidPrefixMaterialData()) {
+            data = new ItemData(prevData, data);
+        }
 
+        sItemStack2DataMap.put(stack, data);
+        processRecycling(stack, data);
+    }
+
+    private static void processRecycling(ItemStack stack, ItemData data) {
         if (data.hasValidMaterialData()) {
             long recyclableMaterialAmount = 0;
+
             if (!data.mMaterial.mMaterial.contains(SubTag.NO_RECYCLING)) {
                 recyclableMaterialAmount += data.mMaterial.mAmount >= 0 ? data.mMaterial.mAmount : M;
             }
@@ -403,19 +422,16 @@ public class GTOreDictUnificator {
             }
         }
 
-        if (mRunThroughTheList) {
-            if (GregTechAPI.sLoadStarted) {
-                mRunThroughTheList = false;
+        if (!batchRegisteredRecyclingRecipes) {
+            if (!GregTechAPI.sLoadStarted) return;
+            batchRegisteredRecyclingRecipes = true;
 
-                for (Entry<ItemStack, ItemData> entry : sItemStack2DataMap.entrySet()) {
-                    ItemStack entryStack = entry.getKey();
-                    ItemData entryData = entry.getValue();
-                    if (!entryData.hasValidPrefixData() || entryData.mPrefix.isRecyclable()) {
-                        GTRecipeRegistrator.registerMaterialRecycling(entryStack, entryData);
-                    }
+            for (Entry<ItemStack, ItemData> entry : sItemStack2DataMap.entrySet()) {
+                if (data.hasExplicitComposition || !data.hasValidPrefixData() || data.mPrefix.isRecyclable()) {
+                    GTRecipeRegistrator.registerMaterialRecycling(entry.getKey(), entry.getValue());
                 }
             }
-        } else if (!data.hasValidPrefixData() || data.mPrefix.isRecyclable()) {
+        } else if (data.hasExplicitComposition || !data.hasValidPrefixData() || data.mPrefix.isRecyclable()) {
             GTRecipeRegistrator.registerMaterialRecycling(stack, data);
         }
     }
@@ -427,16 +443,43 @@ public class GTOreDictUnificator {
         sItemStack2DataMap.remove(aStack);
     }
 
+    /**
+     * Adds an OreDict association for a stack.
+     * <p>
+     * An OreDict association identifies the prefix and material represented by an OreDict name, for example
+     * {@code plateIron} as {@code OrePrefixes.plate + Materials.Iron}. It is used for OreDict lookup and unification.
+     * <p>
+     * If an association already exists, it is not being rewritten.
+     * If a composition already exists, association gets merged with composition.
+     * If the association material is not the same as the composition material, the association material wins.
+     */
     public static void addAssociation(OrePrefixes prefix, Materials material, ItemStack stack) {
         if (prefix == null || material == null || GTUtility.isStackInvalid(stack)) return;
 
         if (Items.feather.getDamage(stack) == WILDCARD) {
             for (byte i = 0; i < 16; i++) {
-                setItemData(GTUtility.copyAmountAndMetaData(1, i, stack), new ItemData(prefix, material));
+                addAssociationForStack(prefix, material, GTUtility.copyAmountAndMetaData(1, i, stack));
             }
         }
 
-        setItemData(stack, new ItemData(prefix, material));
+        addAssociationForStack(prefix, material, stack);
+    }
+
+    private static void addAssociationForStack(OrePrefixes prefix, Materials material, ItemStack stack) {
+        ItemData prevData = getItemData(stack);
+
+        // Keep the existing OreDict association
+        if (prevData != null && prevData.hasValidPrefixMaterialData()) {
+            return;
+        }
+
+        // Merge association with existing composition
+        ItemData association = new ItemData(prefix, material);
+        if (prevData != null && prevData.hasExplicitComposition) {
+            association = new ItemData(association, prevData);
+        }
+
+        setItemData(stack, association);
     }
 
     @Nullable
