@@ -1,11 +1,13 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.modularui2.GTGuiTextures.PROGRESSBAR_NANOCHIP_CALIBRATION;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CALIBRATION_MAX;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -20,6 +22,7 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
@@ -28,6 +31,7 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -39,12 +43,15 @@ import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
@@ -471,7 +478,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     public Flow createMainColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createMainColumn(panel, syncManager).child(createTitleColumn(panel, syncManager));
+        return super.createMainColumn(panel, syncManager).child(createTitleColumn(panel, syncManager))
+            .child(createPowerSlider(panel, syncManager));
     }
 
     private Flow createTitleColumn(ModularPanel panel, PanelSyncManager syncManager) {
@@ -489,6 +497,155 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         IKey.dynamic(
                             () -> titleSync.getStringValue() + "\n"
                                 + translateToLocal("GT5U.gui.text.nac.nameplate"))));
+    }
+
+    private Widget<?> createPowerSlider(ModularPanel panel, PanelSyncManager syncManager) {
+        IntSyncValue portionSync = syncManager.findSyncHandler("matrixPowerPortion", IntSyncValue.class);
+        LongSyncValue maxEUSync = syncManager.findSyncHandler("maxInputEU", LongSyncValue.class);
+
+        return new ParentWidget<>().size(102, 14)
+            .marginTop(4)
+            .child(new SegmentedBarWidget(100, 1, () -> {
+                int matrix = 0;
+                int nonMatrix = 0;
+                for (MTENanochipAssemblyModuleBase<?> module : multiblock.getModules()) {
+                    ModuleTypes type = module.getModuleType();
+                    if (type == ModuleTypes.Splitter) continue;
+                    if (type == ModuleTypes.AssemblyMatrix) matrix++;
+                    else nonMatrix++;
+                }
+
+                int matrixFullPortion = portionSync.getIntValue();
+                int nonMatrixFullPortion = 100 - matrixFullPortion;
+
+                int[] matrixSegmentAmounts;
+                if (matrix > 0) {
+                    matrixSegmentAmounts = new int[matrix];
+                    int matrixPerPortion = matrixFullPortion / matrix;
+                    Arrays.fill(matrixSegmentAmounts, matrixPerPortion);
+                    int matrixMod = matrixFullPortion % matrix;
+                    if (matrixMod != 0) {
+                        int idx = 0;
+                        while (matrixMod != 0) {
+                            matrixSegmentAmounts[idx] += 1;
+                            matrixMod--;
+                            idx += 1;
+                            if (idx >= matrixSegmentAmounts.length) idx = 0;
+                        }
+                    }
+                } else {
+                    matrixSegmentAmounts = new int[] { matrixFullPortion };
+                }
+
+                int[] nonMatrixSegmentAmounts;
+                if (nonMatrix > 0) {
+                    nonMatrixSegmentAmounts = new int[nonMatrix];
+                    int nonMatrixPerPortion = nonMatrixFullPortion / nonMatrix;
+                    Arrays.fill(nonMatrixSegmentAmounts, nonMatrixPerPortion);
+                    int nonMatrixMod = nonMatrixFullPortion % nonMatrix;
+                    if (nonMatrixMod != 0) {
+                        int idx = 0;
+                        while (nonMatrixMod != 0) {
+                            nonMatrixSegmentAmounts[idx] += 1;
+                            nonMatrixMod--;
+                            idx += 1;
+                            if (idx >= nonMatrixSegmentAmounts.length) idx = 0;
+                        }
+                    }
+                } else {
+                    nonMatrixSegmentAmounts = new int[] { nonMatrixFullPortion };
+                }
+
+                List<SegmentedBarWidget.SegmentInfo> segments = new ArrayList<>();
+
+                if (matrix != 0) {
+                    for (int val : matrixSegmentAmounts) {
+                        segments.add(new SegmentedBarWidget.SegmentInfo(() -> val, Color.PINK, ""));
+                    }
+                } else {
+                    segments.add(new SegmentedBarWidget.SegmentInfo(() -> matrixFullPortion, Color.GREY, ""));
+                }
+                if (nonMatrix != 0) {
+                    for (int val : nonMatrixSegmentAmounts) {
+                        segments.add(new SegmentedBarWidget.SegmentInfo(() -> val, Color.CYAN, ""));
+                    }
+                } else {
+                    segments.add(new SegmentedBarWidget.SegmentInfo(() -> nonMatrixFullPortion, Color.GREY, ""));
+                }
+
+                return segments;
+            }).size(102, 14))
+            .child(
+                new SliderWidget().bounds(1, 99)
+                    .value(new DoubleValue.Dynamic(portionSync::getIntValue, val -> portionSync.setIntValue((int) val)))
+                    .sliderSize(2, 14)
+                    .size(102, 14)
+                    .tooltipDynamic(t -> {
+                        boolean moduleRunning = false;
+                        int matrix = 0;
+                        int nonMatrix = 0;
+                        for (MTENanochipAssemblyModuleBase<?> module : multiblock.getModules()) {
+                            ModuleTypes type = module.getModuleType();
+                            if (type == ModuleTypes.Splitter) continue;
+                            if (module.mMaxProgresstime > 0) moduleRunning = true;
+
+                            if (type == ModuleTypes.AssemblyMatrix) matrix++;
+                            else nonMatrix++;
+                        }
+
+                        if (matrix + nonMatrix == 0) {
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.none"));
+                            return;
+                        }
+
+                        if (moduleRunning) {
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.running"));
+                        }
+
+                        int portion = portionSync.getIntValue();
+
+                        long totalEUt = maxEUSync.getLongValue();
+
+                        long matrixFullPortion = (long) ((portion / 100.0f) * totalEUt);
+                        long nonMatrixFullPortion = totalEUt - matrixFullPortion;
+
+                        long perMatrixPortion = matrixFullPortion / Math.max(1, matrix);
+                        long perNonMatrixPortion = nonMatrixFullPortion / Math.max(1, nonMatrix);
+
+                        if (matrix == 0) {
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.no_matrix"));
+                        } else if (matrix == 1) {
+                            t.addLine(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.matrix",
+                                    portion,
+                                    GTUtility.scientificFormat(perMatrixPortion)));
+                        } else {
+                            t.addLine(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.matrix_mult",
+                                    portion,
+                                    GTUtility.scientificFormat(perMatrixPortion)));
+                        }
+
+                        if (nonMatrix == 0) {
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.no_nonmatrix"));
+                        } else if (nonMatrix == 1) {
+                            t.addLine(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.nonmatrix",
+                                    100 - portion,
+                                    GTUtility.scientificFormat(perNonMatrixPortion)));
+                        } else {
+                            t.addLine(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.nonmatrix_mult",
+                                    100 - portion,
+                                    GTUtility.scientificFormat(perNonMatrixPortion)));
+                        }
+                    })
+                    .tooltipShowUpTimer(TOOLTIP_DELAY)
+                    .tooltipAutoUpdate(true));
     }
 
     @Override
@@ -542,14 +699,48 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return Flow.column()
             .width(18)
-            .height(38)
+            .height(58)
             .top(2)
             .marginLeft(3)
             .mainAxisAlignment(Alignment.MainAxis.END)
             .reverseLayout(true)
             .childPadding(2)
             .child(createPowerSwitchButton())
-            .child(createStructureUpdateButton(syncManager));
+            .child(createStructureUpdateButton(syncManager))
+            .child(createToggleModulesButton(panel, syncManager));
+    }
+
+    protected ButtonWidget<?> createToggleModulesButton(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue allModuleSync = syncManager.findSyncHandler("allModuleToggle", BooleanSyncValue.class);
+
+        return new ButtonWidget<>().size(18)
+            .background(new DynamicDrawable(() -> {
+                if (allModuleSync.getBoolValue()) {
+                    return GTGuiTextures.BUTTON_NANOCHIP_PRESSED;
+                }
+                return GTGuiTextures.BUTTON_NANOCHIP;
+            }))
+            .overlay(new DynamicDrawable(() -> {
+                if (allModuleSync.getBoolValue()) {
+                    return GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_ON;
+                }
+                return GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_OFF;
+            }))
+            .onMousePressed(_ -> {
+                syncManager.callSyncedAction("toggleModules", buf -> buf.writeBoolean(!allModuleSync.getBoolValue()));
+                return true;
+            })
+            .tooltipDynamic(t -> {
+                if (allModuleSync.getBoolValue()) {
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_on.1"));
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_on.2"));
+                } else {
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_off.1"));
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_off.2"));
+                }
+            })
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .tooltipAutoUpdate(true);
     }
 
     @Override
@@ -584,6 +775,17 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .build();
 
         syncManager.syncValue("modulesList", linkedModules);
+
+        syncManager.syncValue(
+            "matrixPowerPortion",
+            new IntSyncValue(multiblock::getMatrixPowerPortion, multiblock::setMatrixPowerPortion).allowC2S());
+        syncManager.syncValue("maxInputEU", new LongSyncValue(multiblock::getMaxInputEu));
+        syncManager.syncValue("allModuleToggle", new BooleanSyncValue(multiblock::getAllModuleToggle));
+
+        syncManager.registerSyncedAction("toggleModules", Side.SERVER, buf -> {
+            boolean to = buf.readBoolean();
+            multiblock.toggleAllModules(to);
+        });
     }
 
     List<String> NOptions = Arrays.asList(
@@ -705,7 +907,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 yield "This time not a lie";
             }
             case "6" -> "7";
-            case "joke" -> switch (MathUtils.randInt(1, 7)) {
+            case "joke" -> switch (MathUtils.randInt(1, 8)) {
                     case 1 -> "No time for jokes.";
                     case 2 -> "A rolling golem gathers no rust.";
                     case 3 -> "He was destroyed!";
@@ -713,6 +915,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     case 5 -> "I miss when waterline was bad";
                     case 6 -> "Waiter! Waiter! More lineslop please!";
                     case 7 -> "Don't even joke, lad.";
+                    case 8 -> "Waiting for power.";
                     default -> "what if the world was made of pudding";
                 };
             case "why did the chicken cross the road" -> switch (MathUtils.randInt(1, 10)) {
@@ -746,6 +949,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
                 + " "
                 + COptions.get(MathUtils.randInt(0, COptions.size() - 1));
+            case "waiting for power", "waiting for power." -> "Those who know.";
             default -> switch (MathUtils.randInt(1, 10)) {
                     case 1 -> "It is certain";
                     case 2 -> "It is decidedly so";

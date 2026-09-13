@@ -65,6 +65,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     public List<SplitterRule> rules = new ArrayList<>();
     public final RedstoneChannelInfo redstoneChannelInfo = new RedstoneChannelInfo();
     public final ArrayList<MTEHatchSplitterRedstone> redstoneHatches = new ArrayList<>();
+    public boolean expandedRulesPanel = false;
 
     public static final IStructureDefinition<MTESplitterModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTESplitterModule>builder()
@@ -291,8 +292,14 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
                             if (customName != null) {
                                 stackToOutput.setStackDisplayName(customName);
                             }
-                            this.addVCOutput(stackToOutput, group.get(busIndex));
-                            this.removeItemFromInputByColor(stackToOutput, currentDye, true);
+
+                            int consumed = conveyor.tryConsume(stackToOutput, true);
+                            if (consumed == itemsForThisBus) {
+                                this.addVCOutput(stackToOutput, group.get(busIndex));
+                            } else if (consumed > 0) {
+                                // In case we for some reason could not extract all from the hatch
+                                this.addVCOutput(GTUtility.copyAmount(consumed, stackToOutput), group.get(busIndex));
+                            }
                         }
                     }
                 }

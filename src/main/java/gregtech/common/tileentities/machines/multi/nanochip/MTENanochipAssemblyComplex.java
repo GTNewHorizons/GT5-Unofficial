@@ -81,6 +81,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibrat
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
@@ -96,6 +97,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final int CALIBRATION_MAX = BATCH_SIZE * HISTORY_BLOCKS;
     public final Queue<CircuitBatch> circuitHistory = new ArrayDeque<>();
     private CircuitBatch currentBlock;
+
+    // 1 to 99, representing 1 to 99% power portioned to matrix
+    private int matrixPowerPortion = 25;
+
+    private boolean allModuleToggle = true;
 
     public CircuitCalibration.CalibrationThreshold currentThreshold;
 
@@ -210,16 +216,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         checkHasOutputBus(errors);
         if (!errors.isEmpty()) return;
 
-        modules.sort((module1, module2) -> module2.getPriority() - module1.getPriority());
-
-        for (MTENanochipAssemblyModuleBase<?> module : modules) {
-            final int maxDurationOfModuleRecipe = module.getMaxRecipeDuration();
-            // multiply by 2 so there is no stuttering in between fully saturated recipes
-            BigInteger bufferSize = BigInteger.valueOf(this.getMaxInputEu());
-            bufferSize = bufferSize.multiply(BigInteger.valueOf(maxDurationOfModuleRecipe * 2L));
-            module.setBufferSize(bufferSize);
-            module.setAvailableEUt(this.getMaxInputEu());
-        }
+        updateModuleEU(this.matrixPowerPortion, true);
     }
 
     @Override
@@ -694,6 +691,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (currentBlock != null) {
             nbt.setIntArray("currentBlock", currentBlock.writeToIntArray());
         }
+        nbt.setInteger("matrixPortion", matrixPowerPortion);
     }
 
     @Override
@@ -707,6 +705,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (currentBlock != null) {
             aNBT.setIntArray("currentBlock", currentBlock.writeToIntArray());
         }
+        aNBT.setInteger("matrixPortion", matrixPowerPortion);
+        aNBT.setBoolean("allModuleToggle", allModuleToggle);
     }
 
     @Override
@@ -720,6 +720,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         }
         setCurrentThreshold(CircuitCalibration.getCurrentCalibration(this));
         if (aNBT.hasKey("currentBlock")) currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
+        if (aNBT.hasKey("matrixPortion")) matrixPowerPortion = aNBT.getInteger("matrixPortion");
+        if (aNBT.hasKey("allModuleToggle")) allModuleToggle = aNBT.getBoolean("allModuleToggle");
     }
 
     public List<MTENanochipAssemblyModuleBase<?>> getModules() {
@@ -731,13 +733,81 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         this.modules.addAll(incomingList);
     }
 
+    public void setMatrixPowerPortion(int portion) {
+        if (matrixPowerPortion != portion && updateModuleEU(portion, false)) {
+            matrixPowerPortion = portion;
+        }
+    }
+
+    public int getMatrixPowerPortion() {
+        return matrixPowerPortion;
+    }
+
+    private boolean updateModuleEU(long newPortion, boolean force) {
+        int matrix = 0;
+        int nonMatrix = 0;
+        for (MTENanochipAssemblyModuleBase<?> module : modules) {
+            ModuleTypes type = module.getModuleType();
+            if (type == ModuleTypes.Splitter) continue;
+
+            if (!force && module.mMaxProgresstime > 0) {
+                return false;
+            }
+
+            if (type == ModuleTypes.AssemblyMatrix) matrix++;
+            else nonMatrix++;
+        }
+
+        long totalEUt = this.getMaxInputEu();
+
+        long matrixFullPortion = (long) ((newPortion / 100.0f) * totalEUt);
+        long nonMatrixFullPortion = totalEUt - matrixFullPortion;
+
+        long perMatrixPortion = matrixFullPortion / Math.max(1, matrix);
+        long perNonMatrixPortion = nonMatrixFullPortion / Math.max(1, nonMatrix);
+
+        BigInteger matrixBufferSize = BigInteger.valueOf(perMatrixPortion);
+        BigInteger nonMatrixBufferSize = BigInteger.valueOf(perNonMatrixPortion);
+
+        for (MTENanochipAssemblyModuleBase<?> module : modules) {
+            ModuleTypes type = module.getModuleType();
+            if (type == ModuleTypes.Splitter) continue;
+
+            int maxDuration = module.getMaxRecipeDuration();
+            if (type == ModuleTypes.AssemblyMatrix) {
+                module.setAvailableEUt(perMatrixPortion);
+                module.setBufferSize(matrixBufferSize.multiply(BigInteger.valueOf(2L * maxDuration)));
+            } else {
+                module.setAvailableEUt(perNonMatrixPortion);
+                module.setBufferSize(nonMatrixBufferSize.multiply(BigInteger.valueOf(2L * maxDuration)));
+            }
+        }
+
+        return true;
+    }
+
+    public void toggleAllModules(boolean on) {
+        for (var module : modules) {
+            if (on) {
+                module.enableWorking();
+            } else {
+                module.disableWorking();
+            }
+        }
+        allModuleToggle = on;
+    }
+
+    public boolean getAllModuleToggle() {
+        return allModuleToggle;
+    }
+
     @Override
     public boolean supportsMaintenanceIssueHoverable() {
         return false;
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTENanochipAssemblyComplexGui(this);
     }
 
