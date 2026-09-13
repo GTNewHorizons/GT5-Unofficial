@@ -62,6 +62,23 @@ public enum CircuitComponent {
         8,
         "gt.circuitcomponent.wiremagmatter",
         () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MagMatter, 1)),
+    WireCopper(
+        9,
+        "gt.circuitcomponent.wirecopper",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 1)),
+    WireRedAlloy(
+        10,
+        "gt.circuitcomponent.wireredalloy",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.RedAlloy, 1)),
+    WireElectrum(
+        11,
+        "gt.circuitcomponent.wireelectrum",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 1)),
+    WirePlatinum(
+        12,
+        "gt.circuitcomponent.wireplatinum",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 1)),
+
 
     ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", () -> WireNiobiumTitanium, true),
     ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", () -> WireYttriumBariumCuprate, true),
@@ -72,6 +89,10 @@ public enum CircuitComponent {
     ProcessedWireInfinity(106, "gt.circuitcomponent.processed.wireinfinity", () -> WireInfinity, true),
     ProcessedWireHypogen(107, "gt.circuitcomponent.processed.wirehypogen", () -> WireHypogen, true),
     ProcessedWireMagMatter(108, "gt.circuitcomponent.processed.wiremagmatter", () -> WireMagMatter, true),
+    ProcessedWireCopper(109,"gt.circuitcomponent.processed.wirecopper", () -> WireCopper, true),
+    ProcessedWireRedAlloy(109,"gt.circuitcomponent.processed.wireredalloy", () -> WireRedAlloy, true),
+    ProcessedWireElectrum(109,"gt.circuitcomponent.processed.wireelectrum", () -> WireElectrum, true),
+    ProcessedWirePlatinum(109,"gt.circuitcomponent.processed.wireplatinum", () -> WirePlatinum, true),
 
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
@@ -450,6 +471,11 @@ public enum CircuitComponent {
         1917,
         "gt.circuitcomponent.thermalsuperconductor",
         () -> ItemList.Thermal_Superconductor.get(1)),
+    BoltCopper(1918,"gt.circuitcomponent.bolt.copper",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Copper, 1)),
+    BoltRedAlloy(1919,"gt.circuitcomponent.bolt.redalloy",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.RedAlloy, 1)),
+    BoltPlatinum(1920,"gt.circuitcomponent.bolt.platinum",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Platinum, 1)),
+    BoltNiobiumTitanium(1921,"gt.circuitcomponent.bolt.niobiumtitanium",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.NiobiumTitanium, 1)),
+
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
@@ -461,7 +487,10 @@ public enum CircuitComponent {
     ProcessedPlateRhugnor(2007, "gt.circuitcomponent.plate.processed.rhugnor", () -> PlateRhugnor, true),
     ProcessedBoltWhiteDwarfMatter(2008, "gt.circuitcomponent.bolt.processed.whitedwarfmatter", () -> BoltWhiteDwarfMatter, true),
     ProcessedPlateHexanite(2009, "gt.circuitcomponent.plate.processed.hexanite", () -> PlateHexanite, true),
-
+    ProcessedBoltCopper(2010,"gt.circuitcomponent.bolt.processed.copper",()->BoltCopper,true),
+    ProcessedBoltRedAlloy(2011,"gt.circuitcomponent.bolt.processed.redalloy",()->BoltRedAlloy,true),
+    ProcessedBoltPlatinum(2012,"gt.circuitcomponent.bolt.processed.platinum",()->BoltPlatinum,true),
+    ProcessedBoltNiobiumTitanium(2013,"gt.circuitcomponent.bolt.processed.niobiumtitanium",()->BoltNiobiumTitanium,true),
     // Circuits
     // IDs: 2100-2199
     // The first three circuits in a line can be recursively used in the assembly matrix, and all of them can be turned
