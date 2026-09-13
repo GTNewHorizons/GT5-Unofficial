@@ -468,83 +468,83 @@ public enum CircuitComponent {
     CrystalProcessor(
         2100,
         "gt.circuitcomponent.crystalprocessor",
-        () -> ItemList.Circuit_Crystalprocessor.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Crystalprocessor.get(1), CircuitCalibration.CRYSTAL, 0.125f),
     CrystalAssembly(
         2101,
         "gt.circuitcomponent.crystalasssembly",
-        () -> ItemList.Circuit_Crystalcomputer.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Crystalcomputer.get(1), CircuitCalibration.CRYSTAL,0.25f),
     CrystalComputer(
         2102,
         "gt.circuitcomponent.crystalcomputer",
-        () -> ItemList.Circuit_Ultimatecrystalcomputer.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Ultimatecrystalcomputer.get(1), CircuitCalibration.CRYSTAL,0.5f),
     CrystalMainframe(
         2103,
         "gt.circuitcomponent.crystalmainframe",
-        () -> ItemList.Circuit_Crystalmainframe.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Crystalmainframe.get(1), CircuitCalibration.CRYSTAL,1),
     WetwareProcessor(
         2104,
         "gt.circuitcomponent.wetwareprocessor",
-        () -> ItemList.Circuit_Neuroprocessor.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Neuroprocessor.get(1), CircuitCalibration.WETWARE, 0.125f),
     WetwareAssembly(
         2105,
         "gt.circuitcomponent.wetwareassembly",
-        () -> ItemList.Circuit_Wetwarecomputer.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Wetwarecomputer.get(1), CircuitCalibration.WETWARE,0.25f),
     WetwareComputer(
         2106,
         "gt.circuitcomponent.wetwarecomputer",
-        () -> ItemList.Circuit_Wetwaresupercomputer.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Wetwaresupercomputer.get(1), CircuitCalibration.WETWARE,0.5f),
     WetwareMainframe(
         2107,
         "gt.circuitcomponent.wetwaremainframe",
-        () -> ItemList.Circuit_Wetwaremainframe.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Wetwaremainframe.get(1), CircuitCalibration.WETWARE,1),
     BiowareProcessor(
         2108,
         "gt.circuitcomponent.biowareprocessor",
-        () -> ItemList.Circuit_Bioprocessor.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Bioprocessor.get(1), CircuitCalibration.BIO,0.125f),
     BiowareAssembly(
         2109,
         "gt.circuitcomponent.biowareassembly",
-        () -> ItemList.Circuit_Biowarecomputer.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Biowarecomputer.get(1), CircuitCalibration.BIO,0.25f),
     BiowareComputer(
         2110,
         "gt.circuitcomponent.biowarecomputer",
-        () -> ItemList.Circuit_Biowaresupercomputer.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Biowaresupercomputer.get(1), CircuitCalibration.BIO,0.5f),
     BiowareMainframe(
         2111,
         "gt.circuitcomponent.biowaremainframe",
-        () -> ItemList.Circuit_Biomainframe.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Biomainframe.get(1), CircuitCalibration.BIO,1),
     OpticalProcessor(
         2112,
         "gt.circuitcomponent.opticalprocessor",
-        () -> ItemList.Circuit_OpticalProcessor.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalProcessor.get(1), CircuitCalibration.OPTICAL,0.125f),
     OpticalAssembly(
         2113,
         "gt.circuitcomponent.opticalassembly",
-        () -> ItemList.Circuit_OpticalAssembly.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalAssembly.get(1), CircuitCalibration.OPTICAL,0.25f),
     OpticalComputer(
         2114,
         "gt.circuitcomponent.opticalcomputer",
-        () -> ItemList.Circuit_OpticalComputer.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalComputer.get(1), CircuitCalibration.OPTICAL,0.5f),
     OpticalMainframe(
         2115,
         "gt.circuitcomponent.opticalmainframe",
-        () -> ItemList.Circuit_OpticalMainframe.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalMainframe.get(1), CircuitCalibration.OPTICAL,1),
     PicoCircuit(
         2116,
         "gt.circuitcomponent.picocircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+        () -> getModItem(NewHorizonsCoreMod.ID, "PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL,1),
     QuantumCircuit(
         2117,
         "gt.circuitcomponent.quantumcircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+        () -> getModItem(NewHorizonsCoreMod.ID, "QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL,1),
     PlanckCircuit(
         2118,
         "gt.circuitcomponent.planckcircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+        () -> getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL,1),
     PlanckManifold(
         2119,
         "gt.circuitcomponent.planckmanifold",
-        () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE),
+        () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE,0),
     ;
 
     // spotless:on
@@ -570,6 +570,7 @@ public enum CircuitComponent {
 
     // Tier used for calibration
     public final CircuitCalibration circuitType;
+    public float weight = 0;
 
     // CC constructor
     CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent) {
@@ -589,8 +590,10 @@ public enum CircuitComponent {
     // 8 - Temporally Transcendent
     // 64 - Special Temporary circuits - Piko/Quantum
 
-    CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent, CircuitCalibration circuitType) {
+    CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent, CircuitCalibration circuitType,
+        float weight) {
         this(id, nameKey, realComponent, null, false, circuitType);
+        this.weight = weight;
     }
 
     // PC constructor
