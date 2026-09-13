@@ -109,6 +109,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     public void unifyPacket(CircuitComponentPacket packet) {
         if (contents == null) contents = packet;
         else contents.unifyWith(packet);
+        this.markDirty();
         // Components are fake items kept outside mInventory, so the inventory-dirty flag never fires for them. Push a
         // recipe check directly so a module waiting on these inputs restarts the moment a component arrives.
         if (packet != null && !packet.isEmpty()) {

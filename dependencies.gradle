@@ -146,6 +146,7 @@ dependencies {
 
     // For testing
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.13:dev')
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:NotEnoughEnergistics:1.7.41:dev')
 
     // For Magical Maintenance Hatch Testing
     // runtimeOnlyNonPublishable("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
@@ -161,7 +162,7 @@ dependencies {
     // For testing involving the quantum computer
     // runtimeOnlyNonPublishable(deobf('https://forum.industrial-craft.net/core/attachment/4519-gravisuite-1-7-10-2-0-3-jar'))
 
-    devOnlyNonPublishable("com.github.GTNewHorizons:Horizon-QA:0.14.0:dev")
+    devOnlyNonPublishable("com.github.GTNewHorizons:Horizon-QA:0.14.1:dev")
     // jvmDowngrader
     compileOnly 'javax.xml.bind:jaxb-api:2.3.1'
 

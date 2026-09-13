@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Textures;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 
 public class CircuitComponentFakeItem extends GTGenericItem {
@@ -60,23 +61,23 @@ public class CircuitComponentFakeItem extends GTGenericItem {
     public IIcon getIconFromDamage(int meta) {
         IIcon icon = iconMap.get(meta);
         if (icon != null) return icon;
-        else return iconMap.get(-1);
-        /*
-         * // If the component stores an icon, use that
-         * CircuitComponent component = CircuitComponent.getFromMetaDataUnsafe(meta);
-         * if (component.hasIcon()) return component.getIcon();
-         * // Else just use the texture that should be assigned to it
-         * return super.getIconFromDamage(meta);
-         */
+
+        CircuitComponent component = CircuitComponent.tryGetFromMetaId(meta);
+        if (component == null || component.realComponent == null) return Textures.InvisibleIcon.INVISIBLE_ICON;
+
+        ItemStack realComponent = component.realComponent.get();
+        if (realComponent == null) return Textures.InvisibleIcon.INVISIBLE_ICON;
+
+        IIcon realIcon = realComponent.getIconIndex();
+        return realIcon == null ? Textures.InvisibleIcon.INVISIBLE_ICON : realIcon;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         for (CircuitComponent component : CircuitComponent.VALUES) {
-            if (component.iconString != null) iconMap
+            if (component.isProcessed && component.iconString != null) iconMap
                 .put(component.metaId, iconRegister.registerIcon(GregTech.ID + TextureLocation + component.iconString));
         }
-        iconMap.put(-1, iconRegister.registerIcon(GregTech.ID + TextureLocation + "circuitcomponent_default"));
     }
 }

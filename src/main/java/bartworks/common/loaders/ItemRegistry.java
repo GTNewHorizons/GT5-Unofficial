@@ -175,14 +175,14 @@ public class ItemRegistry {
         new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TitaniumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TungstenSteelReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":LuVTierMaterialReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":RhodiumPlatedPalladiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":IridiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":OsmiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
             MainMod.MOD_ID + ":ThoriumYttriumGlass", MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":CosmicNeutroniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock", },
         MainMod.BIO_TAB);
     public static final Block bw_deprecatedglass2 = new BWBlocksGlass2(

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -25,11 +26,13 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -49,7 +52,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule;
 
-public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitterModule> {
+public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitterModule> implements IDataCopyable {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int SPLITTER_OFFSET_X = 3;
@@ -62,6 +65,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     public List<SplitterRule> rules = new ArrayList<>();
     public final RedstoneChannelInfo redstoneChannelInfo = new RedstoneChannelInfo();
     public final ArrayList<MTEHatchSplitterRedstone> redstoneHatches = new ArrayList<>();
+    public boolean expandedRulesPanel = false;
 
     public static final IStructureDefinition<MTESplitterModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTESplitterModule>builder()
@@ -154,6 +158,12 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.splitter.body.2"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.body.3", TOOLTIP_COLOR, TOOLTIP_COLOR))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.body.4", TOOLTIP_CCs))
+            .addInfo(
+                translateToLocalFormatted(
+                    "GT5U.tooltip.nac.module.splitter.body.5",
+                    TOOLTIP_COLORED,
+                    TOOLTIP_VCOs,
+                    TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.splitter.flavor.1")))
             .beginStructureBlock(7, 5, 7, false)
@@ -282,14 +292,28 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
                             if (customName != null) {
                                 stackToOutput.setStackDisplayName(customName);
                             }
-                            this.addVCOutput(stackToOutput, group.get(busIndex));
-                            this.removeItemFromInputByColor(stackToOutput, currentDye, true);
+
+                            int consumed = conveyor.tryConsume(stackToOutput, true);
+                            if (consumed == itemsForThisBus) {
+                                this.addVCOutput(stackToOutput, group.get(busIndex));
+                            } else if (consumed > 0) {
+                                // In case we for some reason could not extract all from the hatch
+                                this.addVCOutput(GTUtility.copyAmount(consumed, stackToOutput), group.get(busIndex));
+                            }
                         }
                     }
                 }
             }
         }
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound nbt) {
+        super.setItemNBT(nbt);
+        nbt.setByteArray("bufferSize", this.euBufferSize.toByteArray());
+        nbt.setByteArray("currentEU", this.currentEU.toByteArray());
+        nbt.setTag("rules", createRulesTagList());
     }
 
     @Override
@@ -324,6 +348,28 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTESplitterModuleGui(this);
+    }
+
+    public static final String COPIED_DATA_IDENTIFIER = "nacSplitter";
+
+    @Override
+    public @Nullable NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setTag("rules", createRulesTagList());
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        rules = loadRulesTagList(nbt.getTagList("rules", Constants.NBT.TAG_COMPOUND));
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
     }
 
     public static class RedstoneChannelInfo {
