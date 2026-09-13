@@ -709,7 +709,7 @@ public enum CircuitComponent {
         this.circuitType = circuitType;
 
         this.iconString = isProcessed ? PROCESSED_DIRECTORY + name().toLowerCase() : name().toLowerCase();
-        // codechicken.nei.api.API.hideItem(getFakeStack(1)); // shows all CC items from nei if commented.
+        if (!isProcessed) codechicken.nei.api.API.hideItem(getFakeStack(1)); // shows all PC items in NEI
     }
 
     public String getLocalizedName() {
