@@ -439,8 +439,8 @@ public enum CircuitComponent {
     MacrocosmicStrands(1830,"gt.circuitcomponent.planck.processed.macrocosmstrands", () -> ItemList.MacrocosmicStrands.get(1)),
     CosmologicalStrands(1831,"gt.circuitcomponent.planck.processed.cosmologicalstrands", null,true),
 
-    IsolatedWhiteDwarfMatterStrands(1832,"gt.circuitcomponent.planck.processed.isolatedwdmstrands", () -> ItemList.IsolatedWDMStrands.get(1)),
-    ReboundWhiteDwarfMatterStrands(1833,"gt.circuitcomponent.planck.processed.reboundwdmstrands", () -> ItemList.ReboundWDMStrands.get(1)),
+    PulsatingWhiteDwarfMatterStrands(1832,"gt.circuitcomponent.planck.processed.pulsatingwdmstrands", () -> ItemList.PulsatingWDMStrands.get(1)),
+    UnboundWhiteDwarfMatterStrands(1833,"gt.circuitcomponent.planck.processed.unboundwdmstrands", () -> ItemList.UnboundWDMStrands.get(1)),
     IsolatedBlackDwarfMatterStrands(1834,"gt.circuitcomponent.planck.processed.isolatedbdmstrands", () -> ItemList.IsolatedBDMStrands.get(1)),
     ReboundBlackDwarfMatterStrands(1835,"gt.circuitcomponent.planck.processed.reboundbdmstrands", null,true),
 

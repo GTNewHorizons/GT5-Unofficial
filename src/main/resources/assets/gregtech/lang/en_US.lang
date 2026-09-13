@@ -9705,10 +9705,10 @@ gt.item.raw_manifold_bud.tooltip=Needs to be shown what to do
 gt.item.blossoming_manifold_bud.name=Blossoming Manifold Bud
 gt.item.blossoming_manifold_bud.tooltip=Strings spilling out like light!
 
-gt.item.isolated_wdm_strands.name=Isolated Microcosmic Wire Strands
-gt.item.isolated_wdm_strands.tooltip=
-gt.item.rebound_wdm_strands.name=Rebound Microcosmic Wire Strands
-gt.item.rebound_wdm_strands.tooltip=
+gt.item.pulsating_wdm_strands.name=Pulsating Microcosmic Wire Strands
+gt.item.pulsating_wdm_strands.tooltip=
+gt.item.unbound_wdm_strands.name=Unbound Microcosmic Wire Strands
+gt.item.unbound_wdm_strands.tooltip=
 gt.item.macrocosmic_strands.name=Macrocosmic Wire Strands
 gt.item.macrocosmic_strands.tooltip=
 gt.item.isolated_bdm_strands.name=Isolated Macrocosmic Wire Strands

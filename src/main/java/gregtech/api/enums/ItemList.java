@@ -3134,8 +3134,8 @@ public enum ItemList implements IItemContainer {
     RawManifoldBud,
     BlossomingManifoldBud,
 
-    IsolatedWDMStrands,
-    ReboundWDMStrands,
+    PulsatingWDMStrands,
+    UnboundWDMStrands,
     MacrocosmicStrands,
     IsolatedBDMStrands,
 

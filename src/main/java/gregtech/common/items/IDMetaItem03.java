@@ -232,8 +232,8 @@ public enum IDMetaItem03 {
     Raw_Manifold_Bud(279),
     Blossoming_Manifold_Bud(280),
 
-    Isolated_WDM_Strands(281),
-    Rebound_WDM_Strands(282),
+    Pulsating_WDM_Strands(281),
+    Unbound_WDM_Strands(282),
     Macrocosmic_Strands(283),
     Isolated_BDM_Strands(284),
 

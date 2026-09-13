@@ -227,7 +227,6 @@ import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_UNLIGH
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_WINTER;
 import static gregtech.common.items.IDMetaItem03.Intensely_Bonded_Netherite_Nanoparticles;
 import static gregtech.common.items.IDMetaItem03.Isolated_BDM_Strands;
-import static gregtech.common.items.IDMetaItem03.Isolated_WDM_Strands;
 import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.Lost_Quantum_Circuit_Rack;
@@ -276,6 +275,7 @@ import static gregtech.common.items.IDMetaItem03.Phononic_Seed_Crystal;
 import static gregtech.common.items.IDMetaItem03.Prismarine_Precipitate;
 import static gregtech.common.items.IDMetaItem03.Prismatic_Crystal;
 import static gregtech.common.items.IDMetaItem03.PseudoStar;
+import static gregtech.common.items.IDMetaItem03.Pulsating_WDM_Strands;
 import static gregtech.common.items.IDMetaItem03.Quark_Catalyst_Housing;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Bottom;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Charm;
@@ -287,7 +287,6 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
 import static gregtech.common.items.IDMetaItem03.Raw_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Realized_Quantum_Circuit_Rack;
-import static gregtech.common.items.IDMetaItem03.Rebound_WDM_Strands;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.StableBaryonContainmentUnit;
@@ -306,6 +305,7 @@ import static gregtech.common.items.IDMetaItem03.ULV_Coil;
 import static gregtech.common.items.IDMetaItem03.UMV_Coil;
 import static gregtech.common.items.IDMetaItem03.UV_Coil;
 import static gregtech.common.items.IDMetaItem03.UXV_Coil;
+import static gregtech.common.items.IDMetaItem03.Unbound_WDM_Strands;
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
@@ -1990,16 +1990,16 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             .setRender(new CosmicNeutroniumMetaItemRenderer());
 
         // Planck Wire Chain
-        ItemList.IsolatedWDMStrands.set(
+        ItemList.PulsatingWDMStrands.set(
             addItemWithLocalizationKeys(
-                Isolated_WDM_Strands.ID,
-                "gt.item.isolated_wdm_strands.name",
-                "gt.item.isolated_wdm_strands.tooltip"));
-        ItemList.ReboundWDMStrands.set(
+                Pulsating_WDM_Strands.ID,
+                "gt.item.pulsating_wdm_strands.name",
+                "gt.item.pulsating_wdm_strands.tooltip"));
+        ItemList.UnboundWDMStrands.set(
             addItemWithLocalizationKeys(
-                Rebound_WDM_Strands.ID,
-                "gt.item.rebound_wdm_strands.name",
-                "gt.item.rebound_wdm_strands.tooltip"));
+                Unbound_WDM_Strands.ID,
+                "gt.item.unbound_wdm_strands.name",
+                "gt.item.unbound_wdm_strands.tooltip"));
         ItemList.MacrocosmicStrands.set(
             addItemWithLocalizationKeys(
                 Macrocosmic_Strands.ID,
