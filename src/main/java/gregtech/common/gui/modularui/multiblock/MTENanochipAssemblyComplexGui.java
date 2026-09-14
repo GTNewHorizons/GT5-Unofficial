@@ -229,6 +229,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         TextWidget<?> calibrationBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.1");
         TextWidget<?> calibrationBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.2");
         TextWidget<?> calibrationBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.3");
+        TextWidget<?> calibrationBody4 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.4");
+        TextWidget<?> calibrationBody5 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.5");
+
         TextWidget<?> lineSpecificsHeader = createHeader("GT5U.gui.text.nac.info.line_specifics.header");
         ButtonWidget<?> linesSpecificsToC = createToCEntry(
             textList,
@@ -274,7 +277,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             "GT5U.gui.text.nac.info.line_specifics.bioware.calibration.effect2");
         TextWidget<?> biowareBody3 = createTextEntry(
             "GT5U.gui.text.nac.info.line_specifics.bioware.calibration.effect3");
-        TextWidget<?> opticalHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.optical.header");
+        TextWidget<?> opticalHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.optical.header");
         TextWidget<?> opticalPowerDistribution = createTextEntry(
             "GT5U.gui.text.nac.info.line_specifics.optical.power_distribution");
         TextWidget<?> opticalModuleCount = createTextEntry(
@@ -317,6 +321,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         textList.child(calibrationBody1);
         textList.child(calibrationBody2);
         textList.child(calibrationBody3);
+        textList.child(calibrationBody4);
+        textList.child(calibrationBody5);
 
         textList.child(lineSpecificsHeader);
         textList.child(lineSpecificsBody1);
