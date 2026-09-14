@@ -99,7 +99,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 2, 0, 0)
             .setColor(new short[] {103, 90, 104, 0})
             .setRarity(EnumRarity.common)
-            .setProtection(0.7f)
+            .setProtection(0.75f)
         ),
         Medium(ItemList.Armor_Frame_Medium, new FrameBuilder()
             .setId("Medium")
@@ -115,7 +115,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(2, 0, 1, 0)
             .setColor(new short[] {74, 78, 87, 0})
             .setRarity(EnumRarity.common)
-            .setProtection(0.8f)
+            .setProtection(0.75f)
         ),
 
         Nimble(ItemList.Armor_Frame_Nimble, new FrameBuilder()
@@ -124,7 +124,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 3, 1, 0)
             .setColor(new short[] {182, 35, 40, 0})
             .setRarity(EnumRarity.uncommon)
-            .setProtection(0.8f)
+            .setProtection(0.85f)
         ),
         Adaptive(ItemList.Armor_Frame_Adaptive, new FrameBuilder()
             .setId("Adaptive")
@@ -140,7 +140,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(3, 0, 2, 0)
             .setColor(new short[] {44, 33, 35, 0})
             .setRarity(EnumRarity.uncommon)
-            .setProtection(0.9f)
+            .setProtection(0.85f)
         ),
 
         Lightning(ItemList.Armor_Frame_Lightning, new FrameBuilder()
@@ -149,7 +149,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 4, 1, 1)
             .setColor(new short[] {121, 84, 206, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(0.9f)
+            .setProtection(0.95f)
         ),
         Morphic(ItemList.Armor_Frame_Morphic, new FrameBuilder()
             .setId("Morphic")
@@ -165,7 +165,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(4, 1, 1, 1)
             .setColor(new short[] {113, 88, 78, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(0.99f)
+            .setProtection(0.95f)
         ),
 
         Infinity(ItemList.Armor_Frame_Infinity, new FrameBuilder()
