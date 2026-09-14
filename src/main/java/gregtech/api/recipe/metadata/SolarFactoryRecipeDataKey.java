@@ -1,6 +1,6 @@
 package gregtech.api.recipe.metadata;
 
-import static gregtech.api.util.GTUtility.trans;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import javax.annotation.Nullable;
 
@@ -20,7 +20,8 @@ public class SolarFactoryRecipeDataKey extends RecipeMetadataKey<SolarFactoryRec
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         SolarFactoryRecipeData metadata = cast(value);
         if (metadata.tierRequired != 0) {
-            recipeInfo.drawText(trans("510", "Tier required: ") + metadata.tierRequired);
+            recipeInfo
+                .drawText(translateToLocalFormatted("GT5U.nei.solar_factory.tier_required", metadata.tierRequired));
         }
     }
 }
