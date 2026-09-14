@@ -3794,41 +3794,42 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.wrench"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mWrench && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.screwdriver"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mScrewdriver && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.soft_mallet"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSoftMallet && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftMallet, val -> mSoftMallet = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.hammer"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mHardHammer && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("136", "Circuitry burned out. (Soldering)"))
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.soldering"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSolderingTool && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("137", "That doesn't belong there. (Crowbar)"))
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.crowbar"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mCrowbar && mMachine))
@@ -3963,7 +3964,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         screenElements.widget(
-            new TextWidget(GTUtility.trans("144", "Missing Turbine Rotor")).setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(translateToLocal("GT5U.gui.multimachine.missing_turbine_rotor"))
+                .setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> {
                     if (getBaseMetaTileEntity().isAllowedToWork()) return false;
