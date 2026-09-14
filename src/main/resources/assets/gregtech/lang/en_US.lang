@@ -10107,4 +10107,4 @@ GT5U.nei.pcb_factory.upgrade_bio=Bio
 GT5U.nei.solar_factory.tier_required=Multi Tier required: %s
 
 # Item tooltips
-GT5U.tooltip.switch_metadata.sneak_right_click=Sneak Rightclick to switch Mode
+GT5U.tooltip.switch_metadata.sneak_right_click=Sneak right-click to switch mode
