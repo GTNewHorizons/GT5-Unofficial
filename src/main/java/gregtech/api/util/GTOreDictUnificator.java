@@ -98,8 +98,8 @@ public class GTOreDictUnificator {
         String oreName = aPrefix.get(aMaterial)
             .toString();
         if (aOverwrite || GTUtility.isStackInvalid(sName2StackMap.get(oreName))) {
-            resetUnificationTarget(oreName);
             sName2StackMap.put(oreName, aStack);
+            updateUnificationTarget(oreName, aStack);
         }
         isAddingOre--;
     }
@@ -553,10 +553,26 @@ public class GTOreDictUnificator {
         for (ItemData tPrefixMaterial : sItemStack2DataMap.values()) tPrefixMaterial.mUnificationTarget = null;
     }
 
-    public static void resetUnificationTarget(String oreName) {
-        for (ItemData data : sItemStack2DataMap.values()) {
-            if (oreName.equals(data.toString())) {
-                data.mUnificationTarget = null;
+    private static void updateUnificationTarget(String oreName, ItemStack target) {
+        for (ItemStack stack : getOresImmutable(oreName)) {
+            updateUnificationTarget(stack, target);
+        }
+    }
+
+    private static void updateUnificationTarget(ItemStack stack, ItemStack target) {
+        ItemData data = getAssociation(stack);
+        if (data != null) {
+            data.mUnificationTarget = target;
+        }
+
+        if (Items.feather.getDamage(stack) == WILDCARD) {
+            ItemStack lookupStack = new ItemStack(stack.getItem(), 1, 0);
+            for (byte meta = 0; meta < 16; meta++) {
+                lookupStack.setItemDamage(meta);
+                data = getAssociation(lookupStack);
+                if (data != null) {
+                    data.mUnificationTarget = target;
+                }
             }
         }
     }
