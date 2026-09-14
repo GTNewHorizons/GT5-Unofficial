@@ -329,7 +329,7 @@ public class HatchElementBuilder<T> {
         return this;
     }
 
-        public IGTHatchAdder<? super T> getAdder() {
+    public IGTHatchAdder<? super T> getAdder() {
         return mAdder;
     }
 
