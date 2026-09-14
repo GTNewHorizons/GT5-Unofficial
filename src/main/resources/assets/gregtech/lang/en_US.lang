@@ -9773,7 +9773,6 @@ GT5U.tooltip.eye-of-harmony.any-boundary-casing=Any boundary casing
 GT5U.tooltip.research-station.footer=§aData Sticks go in the controller
 
 # Forge of Gods Structure Hints
-GT5U.tooltip.forge-of-gods.output-bus-pos=Around controller (ME only)
 GT5U.tooltip.forge-of-gods.module=Forge of the Gods Module
 GT5U.tooltip.forge-of-gods.module-pos=Any side center shielding casing
 GT5U.tooltip.forge-of-gods.second-ring=Second Ring
