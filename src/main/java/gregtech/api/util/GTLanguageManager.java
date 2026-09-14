@@ -212,21 +212,10 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_129", "Energy");
         addStringLocalization("Interaction_DESCRIPTION_Index_130", "Fluids");
         addStringLocalization("Interaction_DESCRIPTION_Index_131", "Items");
-        addStringLocalization("Interaction_DESCRIPTION_Index_132", "Pipe is loose. (Wrench)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_133", "Screws are loose. (Screwdriver)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_134", "Something is stuck. (Soft Mallet)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_135", "Platings are dented. (Hammer)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_136", "Circuitry burned out. (Soldering)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_137", "That doesn't belong there. (Crowbar)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_138", "Incomplete Structure.");
+        // 132 to 138 moved to lang files
         // NOTE: the below key is used in HydroEnergy, take care to fix it there when this line is removed
         addStringLocalization("Interaction_DESCRIPTION_Index_143", "Missing Mining Pipe");
-        addStringLocalization("Interaction_DESCRIPTION_Index_144", "Missing Turbine Rotor");
-        addStringLocalization("Interaction_DESCRIPTION_Index_145", "Step Down, In: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_146", "Step Up, In: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_147", "A, Out: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_148", "V ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_149", "A");
+        // 144 to 149 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_151", "Does not get consumed in the process");
         addStringLocalization("Interaction_DESCRIPTION_Index_152", "Total: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_153", "Usage: ");
@@ -235,9 +224,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_156", "Voltage: unspecified");
         addStringLocalization("Interaction_DESCRIPTION_Index_157", "Amperage: unspecified");
         addStringLocalization("Interaction_DESCRIPTION_Index_158", "Time: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_159", "Needs Low Gravity");
-        addStringLocalization("Interaction_DESCRIPTION_Index_160", "Needs Cleanroom");
-        addStringLocalization("Interaction_DESCRIPTION_Index_160.1", "Needs Cleanroom & LowGrav");
+        // 159, 160 and 160.1 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_161", " secs");
         addStringLocalization("Interaction_DESCRIPTION_Index_162", "Name: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_163", " MetaData: ");
@@ -278,14 +265,14 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_200.1", "Automatic Item Shuffling: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_201", "Nothing");
         addStringLocalization("Interaction_DESCRIPTION_Index_202", "Pollution in Chunk: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_203", " gibbl");
+        // 203 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_204", "No Pollution in Chunk! HAYO!");
-        addStringLocalization("Interaction_DESCRIPTION_Index_206", "Scan for Assembly Line");
+        // 206 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_208", " L");
         addStringLocalization("Interaction_DESCRIPTION_Index_209", " ticks");
         addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " tick");
         addStringLocalization("Interaction_DESCRIPTION_Index_210", "Average: %.2f L/sec");
-        addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
+        // 216 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_219", "Extended Facing: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222", "Fluid threshold");
@@ -359,15 +346,13 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_323", "L");
         addStringLocalization("Interaction_DESCRIPTION_Index_324", "Now");
         addStringLocalization("Interaction_DESCRIPTION_Index_325", "Max");
-        addStringLocalization("Interaction_DESCRIPTION_Index_330", "Sneak Rightclick to switch Mode");
+        // 330 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_331", "AND Gate");
         addStringLocalization("Interaction_DESCRIPTION_Index_332", "NAND Gate");
         addStringLocalization("Interaction_DESCRIPTION_Index_333", "OR Gate");
         addStringLocalization("Interaction_DESCRIPTION_Index_334", "NOR Gate");
         addStringLocalization("Interaction_DESCRIPTION_Index_335", "Gate Mode");
-        addStringLocalization("Interaction_DESCRIPTION_Index_336", "PCB Factory Tier: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_337", "Upgrade Required: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_338", "Bio");
+        // 336, 337 and 338 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_343", "Use Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
@@ -375,11 +360,9 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_505", "Enable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_506", "Disable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_507", "Safe Mode");
-        addStringLocalization("Interaction_DESCRIPTION_Index_508", "Requires Stabilized Black Hole");
-        addStringLocalization("Interaction_DESCRIPTION_Index_509", "Requires HIP Unit");
-        addStringLocalization("Interaction_DESCRIPTION_Index_510", "Multi Tier required: ");
+        // 508, 509 and 510 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_602", "Use Private Frequency");
-        addStringLocalization("Interaction_DESCRIPTION_Index_756", "Connectable: ");
+        // 756 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_ANY", "Any");
 
         addStringLocalization(FACE_ANY, "Any Side");
