@@ -22,6 +22,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public class LoaderGTOreDictionary implements Runnable {
 
@@ -30,9 +31,7 @@ public class LoaderGTOreDictionary implements Runnable {
         GT_FML_LOGGER.debug("GTMod: Register OreDict Entries of Non-GT-Items.");
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Empty, ItemList.Cell_Empty.get(1L));
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Lava, ItemList.Cell_Lava.get(1L));
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.Lava, GTModHandler.getIC2Item("lavaCell", 1L));
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Water, ItemList.Cell_Water.get(1L));
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.Water, GTModHandler.getIC2Item("waterCell", 1L));
         GTOreDictUnificator.set(
             OrePrefixes.cell,
             Materials.Creosote,
@@ -64,11 +63,6 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.set(OrePrefixes.ore, Materials.Diamond, new ItemStack(Blocks.diamond_ore, 1));
         GTOreDictUnificator.set(OrePrefixes.ore, Materials.Emerald, new ItemStack(Blocks.emerald_ore, 1));
         GTOreDictUnificator.set(OrePrefixes.ore, Materials.NetherQuartz, new ItemStack(Blocks.quartz_ore, 1));
-        GTOreDictUnificator.set(OrePrefixes.ingot, Materials.Copper, GTModHandler.getIC2Item("copperIngot", 1L));
-        GTOreDictUnificator.set(OrePrefixes.ingot, Materials.Tin, GTModHandler.getIC2Item("tinIngot", 1L));
-        GTOreDictUnificator.set(OrePrefixes.ingot, Materials.Lead, GTModHandler.getIC2Item("leadIngot", 1L));
-        GTOreDictUnificator.set(OrePrefixes.ingot, Materials.Bronze, GTModHandler.getIC2Item("bronzeIngot", 1L));
-        GTOreDictUnificator.set(OrePrefixes.ingot, Materials.Silver, GTModHandler.getIC2Item("silverIngot", 1L));
         GTOreDictUnificator.set(OrePrefixes.gem, Materials.Lapis, new ItemStack(Items.dye, 1, 4));
         GTOreDictUnificator.set(OrePrefixes.gem, Materials.EnderEye, new ItemStack(Items.ender_eye, 1));
         GTOreDictUnificator.set(OrePrefixes.gem, Materials.EnderPearl, new ItemStack(Items.ender_pearl, 1));
@@ -105,8 +99,12 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.registerOre(OreDictNames.craftingAnvil, new ItemStack(Blocks.anvil, 1));
         GTOreDictUnificator
             .registerOre(OreDictNames.craftingAnvil, GTModHandler.getModItem(Railcraft.ID, "anvil", 1L, 0));
-        GTOreDictUnificator
-            .registerOre(OreDictNames.craftingIndustrialDiamond, ItemList.IC2_Industrial_Diamond.get(1L));
+
+        // We need to somehow blacklist the stack first, but .get() returns the unificated vanilla diamond instead
+        ItemStack industrialDiamond = GTUtility
+            .copyAmount(1, ItemList.IC2_Industrial_Diamond.getInternalStack_unsafe());
+        GTOreDictUnificator.addToBlacklist(industrialDiamond);
+        GTOreDictUnificator.registerOre(OreDictNames.craftingIndustrialDiamond, industrialDiamond);
 
         GTOreDictUnificator
             .registerOre(OrePrefixes.stone, Materials.Basalt, GTModHandler.getModItem(Railcraft.ID, "cube", 1L, 6));

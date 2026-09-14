@@ -105,7 +105,6 @@ import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
 import gregtech.common.oredict.OreDictRegistrationHandler;
-import gregtech.common.oredict.OreDictUnificationOverrides;
 import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
@@ -443,8 +442,6 @@ public class GTMod {
             return;
         }
 
-        OreDictUnificationOverrides.finalizeUnification();
-
         // Seems only used by GGFab so far
         for (Runnable tRunnable : GregTechAPI.sBeforeGTPostload) {
             tRunnable.run();
@@ -519,7 +516,7 @@ public class GTMod {
         GT_FML_LOGGER.info(
             "If your Log stops here, you were too impatient. Wait a bit more next time, before killing Minecraft with the Task Manager.");
 
-        GTPostLoad.activateOreDictHandler();
+        GTPostLoad.processOreDictRegistrations();
         GTPostLoad.replaceVanillaMaterials();
         GTPostLoad.removeIc2Recipes(
             aMaceratorRecipeList,

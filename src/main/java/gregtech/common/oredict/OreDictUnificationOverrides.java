@@ -2,11 +2,13 @@ package gregtech.common.oredict;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
+import static gregtech.api.enums.Mods.MagicBees;
 import static gregtech.api.enums.Mods.ProjectRedCore;
 import static gregtech.api.enums.Mods.RandomThings;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -41,6 +43,26 @@ public final class OreDictUnificationOverrides {
             "nuggetElvenElementium",
             "nuggetManasteel",
             "nuggetTerrasteel");
+
+        // After the OreDict improvements, some items naturally changed the unificated item stack.
+        // By default, it's taken by whichever mod who registered an oredict first.
+        // Restore the initial unification state so players don't have to deal with useless items
+        add(
+            GregTech.ID,
+            "blockAmber",
+            "blockLead",
+            "blockMagnesium",
+            "blockMithril",
+            "blockPlatinum",
+            "blockTungsten",
+            "ingotBloodInfusedIron",
+            "ingotIchorium",
+            "nuggetIchorium",
+            "rawOreMeteoricIron",
+            "stickDesh",
+            "cellCreosote");
+        add(BartWorks.ID, "blockSalt");
+        add(MagicBees.ID, "nuggetEmerald");
     }
 
     private OreDictUnificationOverrides() {}
@@ -55,7 +77,6 @@ public final class OreDictUnificationOverrides {
         if (registration.modId == null) return;
         if (!registration.modId.equals(preferredMods.get(registration.oreName))) return;
         if (!registration.prefix.isUnifiable()) return;
-        if (GTOreDictUnificator.isBlacklisted(registration.stack)) return;
 
         if (unificationComplete) {
             // If you see this log, consider fixing the mod that registered an OreDict entry too late

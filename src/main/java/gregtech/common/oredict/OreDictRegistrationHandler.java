@@ -1,7 +1,6 @@
 package gregtech.common.oredict;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 
@@ -22,6 +21,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
@@ -121,28 +121,20 @@ public final class OreDictRegistrationHandler {
             "woodRod"));
 
     private static final HashSet<ItemStack> registeredOres = new HashSet<>(32768);
-    private static final HashSet<OreDictRegistration> registrations = new HashSet<>();
+    private static final ArrayList<OreDictRegistration> registrations = new ArrayList<>();
     private static boolean bufferRegistrationProcessing = true;
 
     public static void registerOre(OreDictionary.OreRegisterEvent event) {
         ModContainer container = Loader.instance()
             .activeModContainer();
         String modId = container == null ? "UNKNOWN" : container.getModId();
-        String originalModId = modId;
-
-        if (GTOreDictUnificator.isRegisteringOres()) {
-            modId = GregTech.ID;
-        } else if (modId.equals(GregTech.ID)) {
-            modId = "UNKNOWN";
-        }
 
         if (event == null || event.Ore == null
             || event.Ore.getItem() == null
             || event.Name == null
             || event.Name.isEmpty()) {
 
-            String reportingModId = originalModId.equals(GregTech.ID) ? "UNKNOWN" : originalModId;
-            String message = reportingModId
+            String message = modId
                 + " did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.";
 
             GTLoggers.GT_ORE_DICT_LOGGER.info(message);
@@ -156,15 +148,12 @@ public final class OreDictRegistrationHandler {
             stack.stackSize = 1;
 
             // Skip Tinker Construct ore registrations except for blocks
-            if (OPStuff.ignoreTinkerConstruct && originalModId.equals(TinkerConstruct.ID)
+            if (OPStuff.ignoreTinkerConstruct && modId.equals(TinkerConstruct.ID)
                 && !(stack.getItem() instanceof ItemBlock)) {
                 return;
             }
 
-            String oreOriginPath = modId + " -> " + oreName;
-            if (!bufferRegistrationProcessing) {
-                oreOriginPath = originalModId + " --Late--> " + oreName;
-            }
+            String oreOriginPath = modId + (bufferRegistrationProcessing ? " -> " : " --Late--> ") + oreName;
 
             if (GTUtility.getBlockFromStack(stack) != Blocks.air) {
                 GTOreDictUnificator.addToBlacklist(stack);
@@ -271,12 +260,18 @@ public final class OreDictRegistrationHandler {
 
         GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
 
-        OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, material, modId);
+        // GT++ registers cells for these materials that contain different fluids from their BartWorks counterparts.
+        // They share OreDict names but must not unify. Remove this once the duplicate cells are removed.
+        boolean excludeGtppCells = Mods.GTPlusPlus.ID.equals(modId)
+            && (oreName.equals("cellIodine") || oreName.equals("cellNeon")
+                || oreName.equals("cellKrypton")
+                || oreName.equals("cellXenon"));
 
-        if (registration.prefix.isUnifiable()) {
-            GTOreDictUnificator.addAssociation(registration.prefix, registration.material, registration.stack);
+        if (prefix.isUnifiable() && !excludeGtppCells) {
+            GTOreDictUnificator.addAssociation(prefix, material, stack);
         }
 
+        OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, material, modId);
         OreDictUnificationOverrides.handle(registration);
 
         if (bufferRegistrationProcessing) {
@@ -329,11 +324,6 @@ public final class OreDictRegistrationHandler {
                 if (!GTRecipeRegistrator.sRodMaterialList.contains(material)) {
                     GTRecipeRegistrator.sRodMaterialList.add(material);
                 } else if (material == Materials.Wood) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                }
-            }
-            case "crafting" -> {
-                if (materialName.equals("IndustrialDiamond")) {
                     GTOreDictUnificator.addToBlacklist(stack);
                 }
             }
