@@ -39,11 +39,11 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
@@ -148,12 +148,6 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
-    public int getMaxRecipeDuration() {
-        return ((NACRecipeMapBackend) (this.getRecipeMap()
-            .getBackend())).getMaxDuration(getCasingTier());
-    }
-
-    @Override
     public IStructureDefinition<MTEAssemblyMatrixModule> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
@@ -171,7 +165,9 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         for (ItemStack stack : outputItems) {
             CircuitComponent circuitComponent = CircuitComponent.tryGetFromFakeStack(stack);
             if (circuitComponent != null && baseMulti != null) {
-                baseMulti.addToHistory(circuitComponent.circuitType, stack.stackSize);
+                baseMulti.addToHistory(
+                    circuitComponent.circuitType,
+                    (int) Math.max(1, stack.stackSize * circuitComponent.weight));
             }
         }
         return super.addItemOutputs(outputItems);
@@ -189,6 +185,11 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
                     "GT5U.tooltip.nac.module.assembly_matrix.body.1",
                     TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.body.2"))
+            .addInfo(
+                translateToLocalFormatted(
+                    "GT5U.tooltip.nac.module.assembly_matrix.body.3",
+                    TooltipHelper.EFF_COLOR,
+                    TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.2")))
@@ -244,8 +245,11 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
-    public int getPriority() {
-        return -1;
+    protected float getEUDiscountModifier(@NotNull GTRecipe recipe) {
+        // assumes machine tier is always >= recipe tier as that is done in validateRecipe
+        int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 1);
+        int machineTier = getCasingTier();
+        return (float) Math.pow(0.95, machineTier - recipeTier);
     }
 
     @Override

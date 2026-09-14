@@ -1834,3 +1834,36 @@ gt.metaitem.01.32708.with.WithScannedMapData.name=存有扫描的地图数据
 gt.metaitem.01.32708.with.WritesResearchResult.name=写入研究结果
 gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=免费！在侧面放置岩浆
 gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=免费！在顶部放置岩浆
+
+# Chat messages
+GT5U.chat.cover.connectable=可连接：%s
+
+# Multiblock maintenance issues
+GT5U.gui.multimachine.maintenance.wrench=管道松了。（扳手）
+GT5U.gui.multimachine.maintenance.screwdriver=螺丝没拧紧。（螺丝刀）
+GT5U.gui.multimachine.maintenance.soft_mallet=有什么东西卡住了。（软锤）
+GT5U.gui.multimachine.maintenance.hammer=板子凹凸不平。（锤）
+GT5U.gui.multimachine.maintenance.soldering=电路短路了。（电烙铁）
+GT5U.gui.multimachine.maintenance.crowbar=有个零件不应该在这里。（撬棍）
+GT5U.gui.multimachine.missing_turbine_rotor=缺少涡轮转子
+GT5U.gui.multimachine.incomplete_structure=结构不完整。
+
+# Transformer
+GT5U.gui.transformer.step_down=降压模式，输入：%1$s伏 %2$s安，输出：%3$s伏 %4$s安
+GT5U.gui.transformer.step_up=升压模式，输入：%1$s伏 %2$s安，输出：%3$s伏 %4$s安
+
+# Recipe requirements in NEI
+GT5U.nei.needs_low_gravity=需要低重力环境
+GT5U.nei.needs_cleanroom=需要超净间
+GT5U.nei.needs_cleanroom_low_gravity=需要超净间与低重力环境
+GT5U.nei.scan_for_assembly_line=装配线配方扫描
+GT5U.nei.deprecated_recipe=弃用配方/合成表
+GT5U.nei.compression.hip_unit=需要热等静压装置
+GT5U.nei.compression.stabilized_black_hole=需要稳定的黑洞
+GT5U.nei.pcb_factory.tier=PCB工厂等级：%s
+GT5U.nei.pcb_factory.upgrade_required=需要升级：%s
+GT5U.nei.pcb_factory.upgrade_bio=生物仓
+GT5U.nei.solar_factory.tier_required=所需多方块等级：%s
+
+# Item tooltips
+GT5U.tooltip.switch_metadata.sneak_right_click=Shift+右键以切换模式
