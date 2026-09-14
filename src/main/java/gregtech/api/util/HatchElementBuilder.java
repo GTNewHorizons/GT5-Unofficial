@@ -318,7 +318,6 @@ public class HatchElementBuilder<T> {
         }
         return "unspecified GT hatch";
     }
-    // endregion
 
     public HatchElementBuilder<T> continueIfSuccess() {
         mNoStop = true;
@@ -329,6 +328,55 @@ public class HatchElementBuilder<T> {
         mNoStop = false;
         return this;
     }
+
+        public IGTHatchAdder<? super T> getAdder() {
+        return mAdder;
+    }
+
+    public int getCasingIndex() {
+        return mCasingIndex;
+    }
+
+    public int getHint() {
+        return mHint;
+    }
+
+    public BiPredicate<? super T, ? super IGregTechTileEntity> getShouldSkip() {
+        return mShouldSkip;
+    }
+
+    public BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> getHatchItemFilter() {
+        return mHatchItemFilter;
+    }
+
+    public Supplier<String> getHatchItemType() {
+        return mHatchItemType;
+    }
+
+    public Predicate<? super T> getReject() {
+        return mReject;
+    }
+
+    public Supplier<List<String>> getDescriptionNames() {
+        return mDescriptionNames;
+    }
+
+    public boolean isCacheHint() {
+        return mCacheHint;
+    }
+
+    public boolean isNoStop() {
+        return mNoStop;
+    }
+
+    public boolean isExclusive() {
+        return mExclusive;
+    }
+
+    public EnumSet<ForgeDirection> getDisallowedDirection() {
+        return mDisallowedDirection;
+    }
+    // endregion
 
     /**
      * Help automatic hatch side determination code by ruling out some directions. Note the automatic hatch side
