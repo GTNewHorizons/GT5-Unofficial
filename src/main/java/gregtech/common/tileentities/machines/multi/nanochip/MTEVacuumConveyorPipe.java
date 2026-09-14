@@ -130,7 +130,8 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
 
     @Override
     public boolean canConnectOnSide(ForgeDirection side) {
-        return true;
+        return !this.getBaseMetaTileEntity()
+            .hasCoverAtSide(side);
     }
 
     @Override
@@ -146,10 +147,12 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte) {
-                if (igte.getColorization() == base.getColorization()) {
-                    if (igte.getMetaTileEntity() instanceof VacuumFactoryElement element) {
-                        if (element.canConnectOnSide(dir.getOpposite())) {
-                            neighbours.add(element);
+                if (!base.hasCoverAtSide(dir)) {
+                    if (igte.getColorization() == base.getColorization()) {
+                        if (igte.getMetaTileEntity() instanceof VacuumFactoryElement element) {
+                            if (element.canConnectOnSide(dir.getOpposite())) {
+                                neighbours.add(element);
+                            }
                         }
                     }
                 }
@@ -264,13 +267,12 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     @Override
     public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
+        if (baseMetaTile.hasCoverAtSide(side)) return false;
         TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(side);
-        if (tTileEntity != null) {
-            IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-            if (meta == null) return false;
-            return meta instanceof VacuumFactoryElement;
-        }
-        return false;
+        if (tTileEntity == null) return false;
+        IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+        if (meta == null) return false;
+        return meta instanceof VacuumFactoryElement;
     }
 
     @Override
@@ -295,6 +297,12 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     @Override
     public void onColorChangeServer(byte color) {
         super.onColorChangeServer(color);
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
+    }
+
+    @Override
+    protected void onCoverChangedServer() {
+        super.onCoverChangedServer();
         VacuumFactoryGrid.INSTANCE.updateElement(this);
     }
 }
