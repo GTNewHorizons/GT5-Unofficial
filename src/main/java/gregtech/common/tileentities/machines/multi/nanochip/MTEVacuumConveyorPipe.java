@@ -146,8 +146,8 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         if (base == null || base.isDead() || base.getColorization() == -1) return;
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte) {
-                if (!base.hasCoverAtSide(dir)) {
+            if (!base.hasCoverAtSide(dir)) {
+                if (base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte) {
                     if (igte.getColorization() == base.getColorization()) {
                         if (igte.getMetaTileEntity() instanceof VacuumFactoryElement element) {
                             if (element.canConnectOnSide(dir.getOpposite())) {
@@ -272,6 +272,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         if (tTileEntity == null) return false;
         IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
         if (meta == null) return false;
+        if (((IGregTechTileEntity) tTileEntity).hasCoverAtSide(side.getOpposite())) return false;
         return meta instanceof VacuumFactoryElement;
     }
 
