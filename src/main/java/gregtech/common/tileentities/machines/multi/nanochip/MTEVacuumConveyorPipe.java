@@ -200,11 +200,11 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
         if (!isConnectedAtSide(side)) {
             if (connect(side) > 0) {
-                GTUtility.sendChatTrans(entityPlayer, GTUtility.trans("214", "Connected"));
+                GTUtility.sendChatTrans(entityPlayer, "GT5U.chat.connected");
             }
         } else {
             disconnect(side);
-            GTUtility.sendChatTrans(entityPlayer, GTUtility.trans("215", "Disconnected"));
+            GTUtility.sendChatTrans(entityPlayer, "GT5U.chat.disconnected");
         }
         VacuumFactoryGrid.INSTANCE.updateElement(this);
     }
