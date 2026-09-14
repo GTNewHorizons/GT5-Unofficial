@@ -312,7 +312,7 @@ public class HatchElementBuilder<T> {
         return this;
     }
 
-    private String getHint() {
+    public String getHatchItemTypeName() {
         if (mHatchItemType != null) {
             return mHatchItemType.get();
         }
@@ -337,7 +337,7 @@ public class HatchElementBuilder<T> {
         return mCasingIndex;
     }
 
-    public int getMHint() {
+    public int getHint() {
         return mHint;
     }
 
@@ -596,8 +596,8 @@ public class HatchElementBuilder<T> {
                     && mAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) mCasingIndex);
             }
 
-            private String getHint() {
-                return HatchElementBuilder.this.getHint();
+            private String getHatchItemTypeName() {
+                return HatchElementBuilder.this.getHatchItemTypeName();
             }
 
             @Override
@@ -652,7 +652,7 @@ public class HatchElementBuilder<T> {
                 if (mDescriptionNames != null) {
                     return mDescriptionNames.get();
                 }
-                return Collections.singletonList(getHint());
+                return Collections.singletonList(getHatchItemTypeName());
             }
 
             @Deprecated
@@ -681,7 +681,7 @@ public class HatchElementBuilder<T> {
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
                 if (!GTStructureChannels.HATCH.hasValue(trigger) && !mExclusive) {
-                    String type = getHint();
+                    String type = getHatchItemTypeName();
                     env.getChatter()
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_placeable", type));
                     return PlaceResult.REJECT;
@@ -689,7 +689,7 @@ public class HatchElementBuilder<T> {
                 ItemStack taken = env.getSource()
                     .takeOne(mHatchItemFilter.apply(t, trigger), true);
                 if (GTUtility.isStackInvalid(taken)) {
-                    String type = getHint();
+                    String type = getHatchItemTypeName();
                     env.getChatter()
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
                     return PlaceResult.REJECT;
