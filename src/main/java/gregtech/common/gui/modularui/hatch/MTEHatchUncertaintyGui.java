@@ -170,7 +170,7 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
                     .asWidget()
                     .size(10)
                     .textAlign(Alignment.Center)
-                    .scale(0.5f)
+                    .scale(0.4f)
                     .color(Color.WHITE.main)
                     .shadow(true))
                 .center()
