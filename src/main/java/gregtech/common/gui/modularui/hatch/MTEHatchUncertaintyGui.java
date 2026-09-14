@@ -162,17 +162,21 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
         BooleanSyncValue valueAssistSyncer = syncManager.findSyncHandler("valueAssist", BooleanSyncValue.class);
 
         matrixWidget.child(
-            new Grid().gridOfWidthHeight(
-                4,
-                4,
-                (x, y, index) -> IKey.dynamic(
-                    () -> valueAssistSyncer.getBoolValue() ? Integer.toString(matrixSyncer[index].getShortValue()) : "")
-                    .asWidget()
-                    .size(10)
-                    .textAlign(Alignment.Center)
-                    .scale(0.4f)
-                    .color(Color.WHITE.main)
-                    .shadow(true))
+            new Grid()
+                .gridOfWidthHeight(
+                    4,
+                    4,
+                    (x, y, index) -> IKey
+                        .dynamic(
+                            () -> valueAssistSyncer.getBoolValue()
+                                ? Integer.toString(Math.round(matrixSyncer[index].getShortValue() / 10f))
+                                : "")
+                        .asWidget()
+                        .size(10)
+                        .textAlign(Alignment.Center)
+                        .scale(0.5f)
+                        .color(Color.WHITE.main)
+                        .shadow(true))
                 .center()
                 .minElementMargin(1)
                 .coverChildren());
