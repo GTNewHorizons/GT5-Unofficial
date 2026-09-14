@@ -337,7 +337,7 @@ public class HatchElementBuilder<T> {
         return mCasingIndex;
     }
 
-    public int getHint() {
+    public int getMHint() {
         return mHint;
     }
 
