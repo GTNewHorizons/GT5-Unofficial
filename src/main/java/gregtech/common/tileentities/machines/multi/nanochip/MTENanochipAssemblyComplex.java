@@ -92,6 +92,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     public static final int CASING_INDEX_WHITE = Casings.NanochipMeshInterfaceCasing.textureId;
 
+    // How many seconds of power should each module buffer
+    private static final BigInteger MODULE_BUFFER_SECONDS = BigInteger.valueOf(20 * SECONDS);
+
     public static final int BATCH_SIZE = 1000;
     public static final int HISTORY_BLOCKS = 100;
     public static final int CALIBRATION_MAX = BATCH_SIZE * HISTORY_BLOCKS;
@@ -766,20 +769,21 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         long perMatrixPortion = matrixFullPortion / Math.max(1, matrix);
         long perNonMatrixPortion = nonMatrixFullPortion / Math.max(1, nonMatrix);
 
-        BigInteger matrixBufferSize = BigInteger.valueOf(perMatrixPortion);
-        BigInteger nonMatrixBufferSize = BigInteger.valueOf(perNonMatrixPortion);
+        BigInteger matrixBufferSize = BigInteger.valueOf(perMatrixPortion)
+            .multiply(MODULE_BUFFER_SECONDS);
+        BigInteger nonMatrixBufferSize = BigInteger.valueOf(perNonMatrixPortion)
+            .multiply(MODULE_BUFFER_SECONDS);
 
         for (MTENanochipAssemblyModuleBase<?> module : modules) {
             ModuleTypes type = module.getModuleType();
             if (type == ModuleTypes.Splitter) continue;
 
-            int maxDuration = module.getMaxRecipeDuration();
             if (type == ModuleTypes.AssemblyMatrix) {
                 module.setAvailableEUt(perMatrixPortion);
-                module.setBufferSize(matrixBufferSize.multiply(BigInteger.valueOf(2L * maxDuration)));
+                module.setBufferSize(matrixBufferSize);
             } else {
                 module.setAvailableEUt(perNonMatrixPortion);
-                module.setBufferSize(nonMatrixBufferSize.multiply(BigInteger.valueOf(2L * maxDuration)));
+                module.setBufferSize(nonMatrixBufferSize);
             }
         }
 

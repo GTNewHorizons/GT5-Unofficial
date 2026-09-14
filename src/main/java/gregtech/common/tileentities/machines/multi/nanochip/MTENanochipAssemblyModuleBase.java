@@ -47,7 +47,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
@@ -127,11 +126,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public void clearBaseMulti() {
         this.baseMulti = null;
         disconnect();
-    }
-
-    public int getMaxRecipeDuration() {
-        return ((NACRecipeMapBackend) (this.getRecipeMap()
-            .getBackend())).getMaxDuration(-1);
     }
 
     protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> vacuumConveyorInputs = new VacuumConveyorHatchMap<>();
