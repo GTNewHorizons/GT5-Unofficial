@@ -1392,6 +1392,24 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_ZPM)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
+
+        // Plasma Collider Driving Casing
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemRefer.Compact_Fusion_Coil_T0.get(1),
+                ItemRefer.Speeding_Pipe.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 8),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 1))
+            .itemOutputs(ItemList.CasingQuadcellDriving.get(1))
+            .fluidInputs(
+                Materials.NaquadahEnriched.getMolten(576),
+                MaterialsElements.STANDALONE.RUNITE.getFluidStack(576),
+                MaterialsElements.STANDALONE.FORCE.getFluidStack(576))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }
 
     public static void InitLoadRecipe() {
