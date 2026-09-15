@@ -153,8 +153,8 @@ public class MTEIndustrialElectrolyzerLegacy extends GTPPMultiBlockBase<MTEIndus
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 2.8F)
-            .setEuModifier(0.9F)
+            .setSpeedBonus(1.0D / 2.8D)
+            .setEuModifier(0.9D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

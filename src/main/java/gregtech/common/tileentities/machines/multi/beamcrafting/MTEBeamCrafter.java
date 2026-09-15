@@ -451,7 +451,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 }
                 return result;
             }
-        }.setEuModifier(0) // Set eu/t to 0 for parallel calculation
+        }.setEuModifier(0.0D) // Set eu/t to 0 for parallel calculation
             .setMaxParallel(MAX_PARALLEL)
             .setUnlimitedTierSkips();
     }
