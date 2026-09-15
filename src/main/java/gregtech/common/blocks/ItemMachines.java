@@ -99,33 +99,14 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 }
                 addDescription(aList, metaTileEntity, tDamage);
                 metaTileEntity.addAdditionalTooltipInformation(aStack, aList);
-                if (gtTileEntity.getEUCapacity() > 0L) {
-                    if (!(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
-                        if (gtTileEntity.getInputVoltage() > 0L) {
-                            aList.add(
-                                StatCollector.translateToLocalFormatted(
-                                    "gt.tileentity.eup_in",
-                                    TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
-                        }
-                        if (gtTileEntity.getOutputVoltage() > 0L) {
-                            aList.add(
-                                StatCollector.translateToLocalFormatted(
-                                    "gt.tileentity.eup_out",
-                                    TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
-                        }
-                        if (gtTileEntity.getOutputAmperage() > 1L) {
-                            aList.add(
-                                StatCollector.translateToLocalFormatted(
-                                    "gt.tileentity.amperage",
-                                    TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
-                        }
-                    }
-                    if (Client.tooltip.showEnergyCapacity) {
-                        aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_store",
-                                TooltipHelper.euCapacityText(gtTileEntity.getEUCapacity())));
-                    }
+                if (!(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
+                    metaTileEntity.addEnergyTooltipInformation(aList);
+                }
+                if (gtTileEntity.getEUCapacity() > 0L && Client.tooltip.showEnergyCapacity) {
+                    aList.add(
+                        translateToLocalFormatted(
+                            "gt.tileentity.eup_store",
+                            TooltipHelper.euCapacityText(gtTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();

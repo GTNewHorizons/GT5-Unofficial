@@ -3406,23 +3406,23 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
 
         for (int i = 1; i < 15; i++) {
-            ItemList.WIRELESS_ENERGY_COVERS[i - 1].set(
-                addItemWithLocalizationKeysAndArgs(
-                    Cover_Wireless_Energy_LV.ID + i - 1,
-                    "gt.item.wireless_energy_cover.name",
-                    new Object[] { GTValues.VN[i] },
-                    "gt.item.wireless_energy_cover.tooltip",
-                    new Object[] {
-                        StatCollector
-                            .translateToLocalFormatted("gt.tileentity.amperage", EnumChatFormatting.YELLOW + "2"),
-                        StatCollector.translateToLocalFormatted(
-                            "gt.tileentity.eup_in",
-                            EnumChatFormatting.GREEN + formatNumber(GTValues.V[i])
-                                + " ("
-                                + GTUtility.getColoredTierNameFromTier((byte) i)
-                                + EnumChatFormatting.GREEN
-                                + ")") },
-                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
+            ItemList.WIRELESS_ENERGY_COVERS[i - 1]
+                .set(
+                    addItemWithLocalizationKeysAndArgs(
+                        Cover_Wireless_Energy_LV.ID + i - 1,
+                        "gt.item.wireless_energy_cover.name",
+                        new Object[] { GTValues.VN[i] },
+                        "gt.item.wireless_energy_cover.tooltip",
+                        new Object[] { StatCollector
+                            .translateToLocalFormatted("gt.tileentity.amperage_in", EnumChatFormatting.YELLOW + "2"),
+                            StatCollector.translateToLocalFormatted(
+                                "gt.tileentity.eup_in",
+                                EnumChatFormatting.GREEN + formatNumber(GTValues.V[i])
+                                    + " ("
+                                    + GTUtility.getColoredTierNameFromTier((byte) i)
+                                    + EnumChatFormatting.GREEN
+                                    + ")") },
+                        new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         }
         ItemList.Cover_Wireless_Energy_Debug.set(
             addItemWithLocalizationKeys(

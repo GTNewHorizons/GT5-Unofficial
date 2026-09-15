@@ -106,6 +106,7 @@ public class MTEHatchEnergy extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalized("gt.blockmachines.energy_hatch.desc");
+        // A single energy hatch only supplies one amp to the multiblock, extra hatches unlock the second one.
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.energy_hatch.desc", maxAmperesIn(), 1);
     }
 }

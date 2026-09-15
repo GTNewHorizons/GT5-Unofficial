@@ -40,7 +40,9 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mTier = (byte) Math.max(0, Math.min(aTier, 14));
-        mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : new String[] { aDescription };
+        // An empty description means no description, it must not turn into an empty tooltip line.
+        mDescriptionArray = aDescription == null || aDescription.isEmpty() ? GTValues.emptyStringArray
+            : new String[] { aDescription };
         // must always be the last call!
         if (GTMod.GT.isClientSide()) mTextures = getTextureSet(aTextures);
         else mTextures = null;
