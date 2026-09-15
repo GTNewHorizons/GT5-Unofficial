@@ -403,8 +403,6 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
                 if (input.stackSize <= 0) {
                     player.inventory.setItemStack(null);
                 }
-                playerMP.isChangingQuantityOnly = false;
-                playerMP.updateHeldItem();
             } else {
                 // Extract to cursor
                 var bucket = multiblock.buckets.get(slotIdx);
@@ -419,9 +417,9 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
                         player.entityDropItem(outputs[i], 0.f);
                     }
                 }
-                playerMP.isChangingQuantityOnly = false;
-                playerMP.updateHeldItem();
             }
+            playerMP.isChangingQuantityOnly = false;
+            playerMP.updateHeldItem();
         }
     }
 

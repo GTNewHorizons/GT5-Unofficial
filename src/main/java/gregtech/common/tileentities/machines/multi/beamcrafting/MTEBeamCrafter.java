@@ -310,7 +310,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .addController("Front center, 3rd layer")
             .addCasing(
                 "224-227",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
                 false)
             .addCasing("26", "Any Tiered Glass", false)
             .addCasing(

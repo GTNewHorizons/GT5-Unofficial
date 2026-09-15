@@ -1,5 +1,6 @@
 package gregtech.common;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugSmallOres;
 
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
@@ -139,16 +139,13 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
             }
         }
         if (debugSmallOres) {
-            GTLog.out.println(
-                "Small Ore:" + this.mWorldGenName
-                    + " @ DimName="
-                    + world.provider.getDimensionName()
-                    + " mX="
-                    + chunkX / 16
-                    + " mZ="
-                    + chunkZ / 16
-                    + " ore="
-                    + count);
+            GT_FML_LOGGER.debug(
+                "Small Ore:{} @ DimName={} mX={} mZ={} ore={}",
+                this.mWorldGenName,
+                world.provider.getDimensionName(),
+                chunkX / 16,
+                chunkZ / 16,
+                count);
         }
         return true;
     }

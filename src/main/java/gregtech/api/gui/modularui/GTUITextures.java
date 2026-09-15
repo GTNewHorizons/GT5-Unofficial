@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
@@ -112,7 +111,7 @@ public class GTUITextures {
 
     public static final UITexture[] OVERLAY_SLOTS_NUMBER = IntStream.range(0, 12)
         .mapToObj(i -> UITexture.fullImage(GregTech.ID, "gui/overlay_slot/number_" + i))
-        .collect(Collectors.toList())
+        .toList()
         .toArray(new UITexture[0]);
 
     // spotless:off

@@ -47,7 +47,7 @@ public interface IItemContainer {
 
     default IItemContainer setRender(IItemRenderer aRender) {
         return this;
-    };
+    }
 
     default @Nonnull String getDisplayName() {
         ItemStack stack = get(1);

@@ -109,7 +109,7 @@ public class ToolAngleGrinder extends GTTool {
         aPlayer.triggerAchievement(AchievementList.buildSword);
         try {
             GTMod.achievements.issueAchievement(aPlayer, "tools");
-        } catch (final Exception e) {}
+        } catch (final Exception ignored) {}
     }
 
     @Override

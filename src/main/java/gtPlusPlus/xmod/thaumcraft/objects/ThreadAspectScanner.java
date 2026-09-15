@@ -110,7 +110,7 @@ public class ThreadAspectScanner extends Thread {
             for (String key : y) {
                 if (mAllGameContent.containsKey(key)) {
                     ArrayList<ItemStack> group = mAllGameContent.get(key);
-                    if (group == null || group.size() == 0) {
+                    if (group == null || group.isEmpty()) {
                         continue;
                     }
                     for (ItemStack stack : group) {

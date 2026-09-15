@@ -119,7 +119,7 @@ public enum FoundryModule {
     // This value changes the brightness of all rings
     private static final int HDR_MULTIPLIER = 12;
 
-    private FoundryModule(String display, String shortname, String structid, ItemStack icon, UITexture texture, Color c,
+    FoundryModule(String display, String shortname, String structid, ItemStack icon, UITexture texture, Color c,
         EnumChatFormatting color, int voltageTier, Consumer<FoundryData> statFunction) {
         this.displayName = display;
         this.shorthand = shortname;

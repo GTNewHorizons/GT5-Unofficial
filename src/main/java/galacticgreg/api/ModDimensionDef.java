@@ -1,5 +1,7 @@
 package galacticgreg.api;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -142,7 +144,7 @@ public class ModDimensionDef {
                 else if (tLst.size() > 1) tGen = tLst.get(random.nextInt(tLst.size()));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return tGen;
     }

@@ -3844,6 +3844,8 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 6)
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 3)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
             .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
@@ -4356,7 +4358,8 @@ public class MaterialsInit {
     private static Materials loadUUAmplifier() {
         return new MaterialBuilder().setName("UUAmplifier")
             .setDefaultLocalName("UU-Amplifier")
-            .setChemicalFormula("Accelerates the Mass Fabricator", true)
+            .setChemicalFormula("\u2020")
+            .setFlavorText("Accelerates the Mass Fabricator")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyePink)
             .setARGB(0x00600080)
@@ -4367,6 +4370,8 @@ public class MaterialsInit {
     private static Materials loadUUMatter() {
         return new MaterialBuilder().setName("UUMatter")
             .setDefaultLocalName("UU-Matter")
+            .setChemicalFormula("\u2217")
+            .setFlavorText("Universally usable matter")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyePink)
             .setARGB(0x008000c4)
@@ -8577,7 +8582,7 @@ public class MaterialsInit {
 
     private static Materials loadPhosphorousPentoxide() {
         return new MaterialBuilder().setName("PhosphorousPentoxide")
-            .setDefaultLocalName("Phosphorous Pentoxide")
+            .setDefaultLocalName("Phosphorus Pentoxide")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00dcdc00)
@@ -13361,6 +13366,7 @@ public class MaterialsInit {
     private static Materials loadBedrockium() {
         return new MaterialBuilder().setName("Bedrockium")
             .setDefaultLocalName("Bedrockium")
+            .setFlavorText("Layer of sediment shielding a painful abyss")
             .setIconSet(TextureSet.SET_BEDROCKIUM)
             .setColor(Dyes.dyeBlack)
             .addOreItems()
@@ -15907,6 +15913,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("DimensionallyTranscendentResidue")
             .setDefaultLocalName("Dimensionally Transcendent Residue")
             .setChemicalFormula(CustomGlyphs.SPARKLES + "-" + CustomGlyphs.EMPTY_SET)
+            .setFlavorText("Sticky")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlack)
             .setARGB(0x01000000)
@@ -16007,6 +16014,7 @@ public class MaterialsInit {
     private static Materials loadRawStarMatter() {
         return new MaterialBuilder().setName("RawStarMatter")
             .setDefaultLocalName("Condensed Raw Stellar Plasma Mixture")
+            .setFlavorText("Flesh of a main-sequence star")
             .setChemicalFormula(CustomGlyphs.GALAXY)
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyePurple)
@@ -16020,6 +16028,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("WhiteDwarfMatter")
             .setDefaultLocalName("White Dwarf Matter")
             .setChemicalFormula("∅")
+            .setFlavorText("Heart of a dead star")
             .setIconSet(TextureSet.SET_WHITE_DWARF_MATTER)
             .setColor(Dyes.dyePurple)
             .setMeltingPoint(0)
@@ -16040,6 +16049,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("BlackDwarfMatter")
             .setDefaultLocalName("Black Dwarf Matter")
             .setChemicalFormula(">>∅<<")
+            .setFlavorText("Shadow of a dead star")
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyePurple)
             .setARGB(0xff000000)
@@ -16061,6 +16071,7 @@ public class MaterialsInit {
     private static Materials loadTime() {
         return new MaterialBuilder().setName("temporalFluid")
             .setDefaultLocalName("Tachyon Rich Temporal Fluid")
+            .setFlavorText("Everlasting and everpresent")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyePurple)
             .setARGB(0xff6401ff)
@@ -16073,6 +16084,7 @@ public class MaterialsInit {
     private static Materials loadSpace() {
         return new MaterialBuilder().setName("spatialFluid")
             .setDefaultLocalName("Spatially Enlarged Fluid")
+            .setFlavorText("Expands and attenuates simultaneously")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyePurple)
             .setARGB(0xff6401ff)
@@ -16110,6 +16122,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Eternity")
             .setDefaultLocalName("Eternity")
             .setChemicalFormula("En⦼")
+            .setFlavorText("\u7121\u6975")
             .setIconSet(TextureSet.SET_ETERNITY)
             .setTool(20_971_520, 26, 1.0f)
             .setMeltingPoint(0)
@@ -16132,6 +16145,7 @@ public class MaterialsInit {
     private static Materials loadPrimordialMatter() {
         return new MaterialBuilder().setName("PrimordialMatter")
             .setDefaultLocalName("Liquid Primordial Matter")
+            .setFlavorText("ΩK = 0.0007 ± 0.0019")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBlue)
             .setARGB(0x00ffffff)
@@ -16146,6 +16160,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Magmatter")
             .setDefaultLocalName("Magmatter")
             .setChemicalFormula("M⎋")
+            .setFlavorText("Magnetic monopole matter")
             .setIconSet(TextureSet.SET_MAGMATTER)
             .setTool(167_772_160, 26, 1.0f)
             .addDustItems()
@@ -16218,6 +16233,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("SixPhasedCopper")
             .setDefaultLocalName("Six-Phased Copper")
             .setChemicalFormula("✢")
+            .setFlavorText("Mixture of copper variants from archaic FTB mods")
             .setIconSet(TextureSet.SET_SHINY)
             .setARGB(0x00ff7814)
             .setTool(20_971_520, 26, 1.0f)
@@ -16303,6 +16319,7 @@ public class MaterialsInit {
     private static Materials loadDimensionallyShiftedSuperfluid() {
         return new MaterialBuilder().setName("dimensionallyshiftedsuperfluid")
             .setDefaultLocalName("Dimensionally Shifted Superfluid")
+            .setFlavorText("Hyperbolic elbow grease")
             .setIconSet(TextureSet.SET_DIMENSIONALLY_SHIFTED_SUPER_FLUID)
             .setARGB(0x00ffffff)
             .addCell()
@@ -16498,6 +16515,7 @@ public class MaterialsInit {
     private static Materials loadAntimatter() {
         return new MaterialBuilder().setName("Antimatter")
             .setDefaultLocalName("Semi-Stable Antimatter")
+            .setFlavorText("Dirac's mistake")
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00ffffff)
             .addCell()
@@ -16509,6 +16527,7 @@ public class MaterialsInit {
     private static Materials loadProtomatter() {
         return new MaterialBuilder().setName("Protomatter")
             .setDefaultLocalName("Protomatter")
+            .setFlavorText("This is what they make chicken nuggets out of")
             .setIconSet(TextureSet.SET_FLUID)
             .setARGB(0x00ffffff)
             .addCell()

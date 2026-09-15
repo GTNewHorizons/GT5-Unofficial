@@ -162,47 +162,22 @@ kekztech.infodata.tank.tfft.auto_voiding=Авто-уничтожение: %b
 kekztech.structure.glass_incompatible=§cНесовместимая конфигурация стекла
 
 kekztech.multiblock.LapotronicSuperCapacitor.machine_type=Хранилище энергии, LSC
-kekztech.multiblock.LapotronicSuperCapacitor.desc1=Теряет энергию в размере 1% от общей ёмкости каждые 24 часа
-kekztech.multiblock.LapotronicSuperCapacitor.desc2=Ограничение §c%s§7 EU/t пассивных потерь на %s§7 конденсатор
-kekztech.multiblock.LapotronicSuperCapacitor.desc3=Пассивные потери увеличиваются в §4100§7-кратно для каждого конденсатора более высокого тира
-kekztech.multiblock.LapotronicSuperCapacitor.desc4=Пассивные потери умножаются на количество имеющихся проблем с техобслуживанием
-kekztech.multiblock.LapotronicSuperCapacitor.desc5=Стеклянная оболочка должна быть на 3 тира ниже тира самого высокого конденсатора
-kekztech.multiblock.LapotronicSuperCapacitor.desc6=Для увеличения ёмкости добавьте больше конденсаторов или лучшие конденсаторы
-kekztech.multiblock.LapotronicSuperCapacitor.desc7=Беспроводной режим можно включить ПКМ отвёрткой
-kekztech.multiblock.LapotronicSuperCapacitor.desc8=Этот режим может быть включен только при наличии в мультиблоке %s§7+ конденсатора.
-kekztech.multiblock.LapotronicSuperCapacitor.desc9=При включении режима каждые §9%s§7 тиков ЛСК будет пытаться восстановить свой баланс по
-kekztech.multiblock.LapotronicSuperCapacitor.desc10=беспроводной EU сети.
-kekztech.multiblock.LapotronicSuperCapacitor.desc11=Если в ЛСК меньше, чем §c%s§7(%s§7) EU,
-kekztech.multiblock.LapotronicSuperCapacitor.desc12=он будет забирать EU из сети и добавлять их в ЛСК.
-kekztech.multiblock.LapotronicSuperCapacitor.desc13=Если больше, ЛСК отправит §4§l§nвсе излишки§r§7 в сеть, убирая их из ЛСК
-kekztech.multiblock.LapotronicSuperCapacitor.desc14=Это может привести к обесточиванию вашей базы, будьте осторожны
-kekztech.multiblock.LapotronicSuperCapacitor.desc15=Порог увеличивается в §4100§7-кратно для каждого конденсатора более высокого тира
 kekztech.multiblock.LapotronicSuperCapacitor.casing=Лазуротроновый корпус суперконденсатора
 kekztech.multiblock.LapotronicSuperCapacitor.capacitor=Лазуротроновый конденсатор
 kekztech.multiblock.LapotronicSuperCapacitor.structure_footer=Не менее 50% конденсаторов должны быть непустыми
 
 kekztech.multiblock.SOFuelCell.machine_type=Газовая турбина, SOFC
-kekztech.multiblock.SOFuelCell.desc1=Окисляет газовое топливо для выработки электроэнергии, не загрязняя окружающую среду
-kekztech.multiblock.SOFuelCell.desc2=Расходует до %sEU стоимости топлива с эффективностью до 100% в каждую секунду
-kekztech.multiblock.SOFuelCell.desc5=Дополнительно, требуется %sЛ/с кислородного газа
-kekztech.multiblock.SOFuelCellMK1.desc3=Для производства пара требуется, чтобы SOFC сначала полностью нагрелся
-kekztech.multiblock.SOFuelCellMK1.desc4=Выводит %sEU/t и %sЛ/с пара
 kekztech.multiblock.SOFuelCellMK1.electrolyte_unit=Керамический электролитный блок YSZ
-kekztech.multiblock.SOFuelCellMK2.desc3=Нитробензол и другие виды газового топлива свыше 1,000 EU/л более эффективны
-kekztech.multiblock.SOFuelCellMK2.desc3b=Для производства перегретого (SH) пара требуется, чтобы SOFC сначала полностью нагрелся
-kekztech.multiblock.SOFuelCellMK2.desc4=Выводит %sEU/t и %sЛ/с перегретого пара
 kekztech.multiblock.SOFuelCellMK2.electrolyte_unit=Керамический электролитный блок GDC
 
 kekztech.multiblock.TankTFFT.machine_type=Жидкостный резервуар
-kekztech.multiblock.TankTFFT.desc1=Высокотехнологичный жидкостный резервуар, вмещающий до 25 различных жидкостей!
-kekztech.multiblock.TankTFFT.desc2=Для каждой жидкости отводится 1/25 от общей ёмкости, переполнение не допускается
-kekztech.multiblock.TankTFFT.desc3=ПКМ отвёрткой по контроллеру включит уничтожение излишек
-kekztech.multiblock.TankTFFT.desc4=Объем хранения жидкости и эксплуатационные расходы зависят от используемых блоков хранения жидкостей
-kekztech.multiblock.TankTFFT.desc5=Примечание по запиранию шлюза:
-kekztech.multiblock.TankTFFT.desc6=Используйте Интегральную схему в слоте GUI, чтобы ограничить выход жидкости
-kekztech.multiblock.TankTFFT.desc7=Индекс хранящейся жидкости можно получить с помощью Трикодера
 kekztech.multiblock.TankTFFT.multi_io_hatch=T.F.F.T Мульти I/O шлюз
 kekztech.multiblock.TankTFFT.any_casing_glass_adjacent=Любой блок корпуса/стекла, соприкасающийся с блоком хранения жидкости
 kekztech.multiblock.TankTFFT.field_storage_block=Блок хранения жидкостей
 kekztech.multiblock.TankTFFT.footer1=Воздушные зазоры не допускаются, но блоки хранения могут быть разных тиров
 kekztech.multiblock.TankTFFT.footer2=Разместите жидкостную шину хранения на Мульти I/O шлюзе, чтобы работать со всеми жидкостями одновременно 
+
+# Multiblocks
+gt.blockmachines.multimachine.fuelcellmk1.name=Твердооксидная топливная ячейка Mk-I
+gt.blockmachines.multimachine.fuelcellmk2.name=Твердооксидная топливная ячейка Mk-II
+gt.blockmachines.multimachine.supercapacitor.name=Лазуротроновый суперконденсатор

@@ -49,8 +49,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTERadioHatchGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 
-public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
+public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, ISmartInputHatch {
 
     public int sievert;
     private long timer = 1;
@@ -153,6 +154,8 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
             return;
         }
 
+        int oldSievert = this.sievert;
+
         if (this.mass > 0) {
             ++this.timer;
             if (this.decayTime == 0 || this.decayTime > 0 && this.timer % this.decayTime == 0) {
@@ -233,6 +236,8 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                 }
             }
         }
+
+        if (oldSievert != this.sievert) notifyWatchers();
     }
 
     @Override

@@ -247,7 +247,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!(aPlayer instanceof EntityPlayerMP player)) {
-            return false;
+            return true;
         }
         if (tryLinkDataStick(aPlayer)) {
             return true;
@@ -370,7 +370,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             toggleReverseRecipes();

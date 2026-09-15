@@ -51,6 +51,14 @@ public class Pulverizer implements Runnable {
             .recipeCategory(RecipeCategories.maceratorRecycling)
             .addTo(maceratorRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.chainmail_boots, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 1))
+            .duration(Materials.Steel.getMass() * TICKS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.maceratorRecycling)
+            .addTo(maceratorRecipes);
+
         // recycling Long Distance Pipes
         {
             GTValues.RA.stdBuilder()

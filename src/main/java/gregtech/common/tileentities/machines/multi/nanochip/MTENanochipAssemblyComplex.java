@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -34,6 +33,7 @@ import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableMap;
@@ -81,6 +81,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibrat
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
@@ -91,11 +92,19 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     public static final int CASING_INDEX_WHITE = Casings.NanochipMeshInterfaceCasing.textureId;
 
+    // How many seconds of power should each module buffer
+    private static final BigInteger MODULE_BUFFER_SECONDS = BigInteger.valueOf(20 * SECONDS);
+
     public static final int BATCH_SIZE = 1000;
     public static final int HISTORY_BLOCKS = 100;
     public static final int CALIBRATION_MAX = BATCH_SIZE * HISTORY_BLOCKS;
     public final Queue<CircuitBatch> circuitHistory = new ArrayDeque<>();
     private CircuitBatch currentBlock;
+
+    // 1 to 99, representing 1 to 99% power portioned to matrix
+    private int matrixPowerPortion = 25;
+
+    private boolean allModuleToggle = true;
 
     public CircuitCalibration.CalibrationThreshold currentThreshold;
 
@@ -210,16 +219,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         checkHasOutputBus(errors);
         if (!errors.isEmpty()) return;
 
-        modules.sort((module1, module2) -> module2.getPriority() - module1.getPriority());
-
-        for (MTENanochipAssemblyModuleBase<?> module : modules) {
-            final int maxDurationOfModuleRecipe = module.getMaxRecipeDuration();
-            // multiply by 2 so there is no stuttering in between fully saturated recipes
-            BigInteger bufferSize = BigInteger.valueOf(this.getMaxInputEu());
-            bufferSize = bufferSize.multiply(BigInteger.valueOf(maxDurationOfModuleRecipe * 2L));
-            module.setBufferSize(bufferSize);
-            module.setAvailableEUt(this.getMaxInputEu());
-        }
+        updateModuleEU(this.matrixPowerPortion, true);
     }
 
     @Override
@@ -257,7 +257,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .beginStructureBlock(63, 49, 63, false)
             .addController("Middle of structure, 9th layer")
             // Nanochip Reinforcement Casing
-            .addCasing("3956", translateToLocal("gt.blockcasings12.2.name"), false)
+            .addCasing("3958", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Complex Glass
             .addCasing("2226", translateToLocal("gt.blockglass1.8.name"), false)
             // Nanochip Mesh Interface Casing
@@ -312,6 +312,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity instanceof MTENanochipAssemblyModuleBase<?>module) {
             module.connect(this);
+            // immediate recheck to prevent module from using outdated hatch during recipe check
+            // delay is already done by the main structure, this does not cause immediate recheck.
+            module.checkStructure(true, aTileEntity);
             return modules.add(module);
         }
         return false;
@@ -398,7 +401,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     // stack
     // should be consumed
     private boolean routeToHatches(List<MTEHatchVacuumConveyor> hatches, byte color, CircuitComponent component,
-        int amount) {
+        int amount, String customName) {
         // If no hatches were passed, we can't route
         if (hatches == null) return false;
         // Find the first hatch that can be used for routing
@@ -415,7 +418,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     continue;
                 }
                 // Now we can route our components to this hatch
-                CircuitComponentPacket packet = new CircuitComponentPacket(component, amount);
+                CircuitComponentPacket packet = new CircuitComponentPacket(component, amount, customName);
                 // Merge with the already existing hatch contents
                 outputHatch.unifyPacket(packet);
                 return true;
@@ -439,13 +442,15 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             if (recipe == null) continue;
             // If one existed, we have the component now
             CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            // We also need to keep track of the custom name from the original stack, if there was one
+            String customName = GTUtility.getStackCustomName(stack.stack);
             // Find destination hatch. Note that we already know that this bus is a valid MTE, see
             // getStoredInputsWithBus
             byte busColor = stack.bus.getBaseMetaTileEntity()
                 .getColorization();
             ArrayList<MTEHatchVacuumConveyor> destinationHatches = vacuumConveyors.findColoredHatches(busColor);
             // Try to route to the set of destination hatches
-            boolean routed = routeToHatches(destinationHatches, busColor, component, stack.stack.stackSize);
+            boolean routed = routeToHatches(destinationHatches, busColor, component, stack.stack.stackSize, customName);
             // If successful, consume the input
             if (routed) {
                 stack.bus.removeAllResource(stack.stack);
@@ -463,25 +468,41 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 if (hatch instanceof MTEHatchVacuumConveyorInput) {
                     // Skip empty hatches
                     if (hatch.contents == null) continue;
-                    Map<CircuitComponent, Long> contents = hatch.contents.getComponents();
+                    Map<CircuitComponent, List<MutablePair<String, Long>>> contents = hatch.contents.getComponents();
                     // Use Iterator to protect against ConcurrentModificationException
-                    Iterator<Map.Entry<CircuitComponent, Long>> iterator = contents.entrySet()
+                    var iterator = contents.entrySet()
                         .iterator();
                     while (iterator.hasNext()) {
-                        Map.Entry<CircuitComponent, Long> entry = iterator.next();
+                        var entry = iterator.next();
                         CircuitComponent component = entry.getKey();
-                        long amount = entry.getValue();
-                        if (component.realComponent != null) {
-                            long ejected = ejectCircuitComponent(ejectionHelper, component, amount);
+                        if (component.realComponent == null) continue;
+
+                        var namedAmounts = entry.getValue();
+                        var innerItr = namedAmounts.iterator();
+                        boolean failedSomething = false;
+
+                        while (innerItr.hasNext()) {
+                            var pair = innerItr.next();
+                            long ejected = ejectCircuitComponent(
+                                ejectionHelper,
+                                component,
+                                pair.getRight(),
+                                pair.getLeft());
                             if (ejected > 0) {
-                                long originalAmount = contents.get(component);
+                                long originalAmount = pair.getRight();
                                 long newAmount = originalAmount - ejected;
                                 if (newAmount == 0) {
-                                    iterator.remove();
+                                    innerItr.remove();
                                 } else {
-                                    entry.setValue(newAmount);
+                                    pair.setRight(newAmount);
+                                    failedSomething = true;
                                 }
+                            } else {
+                                failedSomething = true;
                             }
+                        }
+                        if (!failedSomething) {
+                            iterator.remove();
                         }
                     }
                 }
@@ -492,12 +513,17 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     // Outputs a CC to the output bus as a real item, attempting to fit as much as possible in one operation
-    private long ejectCircuitComponent(ItemEjectionHelper helper, CircuitComponent component, long amount) {
+    private long ejectCircuitComponent(ItemEjectionHelper helper, CircuitComponent component, long amount,
+        String customName) {
         long ejected = 0;
         while (amount > 0) {
             int maxEject = (int) Math.min(Integer.MAX_VALUE, amount);
             ItemStack toOutput = GTUtility.copyAmountUnsafe(maxEject, component.realComponent.get());
             if (toOutput == null) break;
+
+            if (customName != null) {
+                toOutput.setStackDisplayName(customName);
+            }
 
             int amountEjected = helper.ejectStack(toOutput);
             ejected += amountEjected;
@@ -610,7 +636,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         BigInteger drainedEnergy = BigInteger.ZERO;
                         // iterate over the modules, sending EU to fill their internal buffers
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
+                            // Connect first, since a module only runs its own structure check while connected.
                             module.connect(this);
+                            // But do not fill the buffer of a module whose own structure is incomplete.
+                            if (!module.mMachine) continue;
 
                             BigInteger moduleCapacity = module.getBufferSize();
                             BigInteger moduleStored = module.getCurrentEUStored();
@@ -656,6 +685,19 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
+    public void setItemNBT(NBTTagCompound nbt) {
+        super.setItemNBT(nbt);
+        NBTTagList history = new NBTTagList();
+        for (CircuitBatch batch : circuitHistory) {
+            history.appendTag(new NBTTagIntArray(batch.writeToIntArray()));
+        }
+        if (currentBlock != null) {
+            nbt.setIntArray("currentBlock", currentBlock.writeToIntArray());
+        }
+        nbt.setInteger("matrixPortion", matrixPowerPortion);
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         NBTTagList history = new NBTTagList();
@@ -666,6 +708,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (currentBlock != null) {
             aNBT.setIntArray("currentBlock", currentBlock.writeToIntArray());
         }
+        aNBT.setInteger("matrixPortion", matrixPowerPortion);
+        aNBT.setBoolean("allModuleToggle", allModuleToggle);
     }
 
     @Override
@@ -679,6 +723,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         }
         setCurrentThreshold(CircuitCalibration.getCurrentCalibration(this));
         if (aNBT.hasKey("currentBlock")) currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
+        if (aNBT.hasKey("matrixPortion")) matrixPowerPortion = aNBT.getInteger("matrixPortion");
+        if (aNBT.hasKey("allModuleToggle")) allModuleToggle = aNBT.getBoolean("allModuleToggle");
     }
 
     public List<MTENanochipAssemblyModuleBase<?>> getModules() {
@@ -690,13 +736,82 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         this.modules.addAll(incomingList);
     }
 
+    public void setMatrixPowerPortion(int portion) {
+        if (matrixPowerPortion != portion && updateModuleEU(portion, false)) {
+            matrixPowerPortion = portion;
+        }
+    }
+
+    public int getMatrixPowerPortion() {
+        return matrixPowerPortion;
+    }
+
+    private boolean updateModuleEU(long newPortion, boolean force) {
+        int matrix = 0;
+        int nonMatrix = 0;
+        for (MTENanochipAssemblyModuleBase<?> module : modules) {
+            ModuleTypes type = module.getModuleType();
+            if (type == ModuleTypes.Splitter) continue;
+
+            if (!force && module.mMaxProgresstime > 0) {
+                return false;
+            }
+
+            if (type == ModuleTypes.AssemblyMatrix) matrix++;
+            else nonMatrix++;
+        }
+
+        long totalEUt = this.getMaxInputEu();
+
+        long matrixFullPortion = (long) ((newPortion / 100.0f) * totalEUt);
+        long nonMatrixFullPortion = totalEUt - matrixFullPortion;
+
+        long perMatrixPortion = matrixFullPortion / Math.max(1, matrix);
+        long perNonMatrixPortion = nonMatrixFullPortion / Math.max(1, nonMatrix);
+
+        BigInteger matrixBufferSize = BigInteger.valueOf(perMatrixPortion)
+            .multiply(MODULE_BUFFER_SECONDS);
+        BigInteger nonMatrixBufferSize = BigInteger.valueOf(perNonMatrixPortion)
+            .multiply(MODULE_BUFFER_SECONDS);
+
+        for (MTENanochipAssemblyModuleBase<?> module : modules) {
+            ModuleTypes type = module.getModuleType();
+            if (type == ModuleTypes.Splitter) continue;
+
+            if (type == ModuleTypes.AssemblyMatrix) {
+                module.setAvailableEUt(perMatrixPortion);
+                module.setBufferSize(matrixBufferSize);
+            } else {
+                module.setAvailableEUt(perNonMatrixPortion);
+                module.setBufferSize(nonMatrixBufferSize);
+            }
+        }
+
+        return true;
+    }
+
+    public void toggleAllModules(boolean on) {
+        for (var module : modules) {
+            if (on) {
+                module.enableWorking();
+            } else {
+                module.disableWorking();
+            }
+        }
+        allModuleToggle = on;
+    }
+
+    public boolean getAllModuleToggle() {
+        return allModuleToggle;
+    }
+
     @Override
     public boolean supportsMaintenanceIssueHoverable() {
         return false;
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTENanochipAssemblyComplexGui(this);
     }
 

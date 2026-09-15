@@ -281,9 +281,8 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         // Display linked controller in Waila.
         if (tag.hasKey("controllers")) {
@@ -291,7 +290,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
             // If not all coordinates got saved, just clear the list.
             if (coordinates.length % 3 != 0) return;
             for (int i = 0; i < coordinates.length; i += 3) {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                         "GT5U.waila.pcb.upgrade_base.linked_to",
                         coordinates[i],
@@ -299,24 +298,24 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
                         coordinates[i + 2]));
             }
         } else {
-            currentTip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
+            list.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
         }
 
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
             int progresstime = tag.getInteger("mProgressTime");
             int maxProgresstime = tag.getInteger("mMaxProgressTime");
-            currentTip.add(
+            list.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.machine.in_progress",
                     (double) progresstime / 20,
                     (double) maxProgresstime / 20,
                     (Math.round((double) progresstime / maxProgresstime * 1000) / 10.0)));
         } else {
-            currentTip.add(StatCollector.translateToLocalFormatted("GT5U.waila.machine.idle"));
+            list.add(StatCollector.translateToLocalFormatted("GT5U.waila.machine.idle"));
         }
 
-        currentTip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.facing",
                 getFacingNameLocalized(
@@ -327,7 +326,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         boolean isActive = this.getBaseMetaTileEntity()
             .isActive();
@@ -340,7 +339,6 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
         if (!controllerCoords.isEmpty()) {
             tag.setTag("controllers", saveLinkDataToNBT());
         } else tag.removeTag("controllers");
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
     @Override

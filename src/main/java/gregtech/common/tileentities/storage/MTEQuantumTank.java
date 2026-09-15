@@ -1,13 +1,18 @@
 package gregtech.common.tileentities.storage;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEQuantumTank extends MTEDigitalTankBase {
 
     public MTEQuantumTank(int aID, String aName, String aNameRegional, int aTier) {
@@ -16,6 +21,13 @@ public class MTEQuantumTank extends MTEDigitalTankBase {
 
     public MTEQuantumTank(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.quantum.tank.name", GTUtility.getRomanNumeral(mTier - 5));
     }
 
     @Override
@@ -29,24 +41,20 @@ public class MTEQuantumTank extends MTEDigitalTankBase {
         if (mFluid == null) {
             return new String[] { "GT5U.infodata.quantum_tank.name", "GT5U.infodata.digital_tank.stored_fluid",
                 "GT5U.infodata.digital_tank.stored_fluid.empty",
-                EnumChatFormatting.GREEN + Integer.toString(0)
-                    + " L"
+                EnumChatFormatting.GREEN + formatFluid(0)
                     + EnumChatFormatting.RESET
                     + " "
                     + EnumChatFormatting.YELLOW
-                    + formatNumber(getCapacity())
-                    + " L"
+                    + formatFluid(getCapacity())
                     + EnumChatFormatting.RESET };
         }
         return new String[] { "GT5U.infodata.quantum_tank.name", "GT5U.infodata.digital_tank.stored_fluid",
             EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
-            EnumChatFormatting.GREEN + formatNumber(mFluid.amount)
-                + " L"
+            EnumChatFormatting.GREEN + formatFluid(mFluid.amount)
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + formatNumber(getCapacity())
-                + " L"
+                + formatFluid(getCapacity())
                 + EnumChatFormatting.RESET };
     }
 }

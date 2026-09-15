@@ -1,5 +1,8 @@
 package gregtech.common.gui.modularui.widget;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.value.sync.IIntSyncValue;
@@ -23,8 +26,8 @@ public class SteamGaugeWidget extends ParentWidget<SteamGaugeWidget> {
                     t -> t.addLine(
                         StatCollector.translateToLocalFormatted(
                             "GT5U.machines.steam.amount",
-                            steamStoredSyncer.getValue(),
-                            maxSteamSyncer.getValue())))
+                            formatNumber((Number) steamStoredSyncer.getValue()),
+                            formatFluid((Number) maxSteamSyncer.getValue()))))
                 .tooltipAutoUpdate(true));
         child(
             new CircularGaugeDrawable(() -> (double) steamStoredSyncer.getIntValue() / maxSteamSyncer.getIntValue())

@@ -335,11 +335,7 @@ public enum StoneType implements IStoneType {
     @Override
     public boolean isDimensionSpecific() {
         return switch (this) {
-            case Stone -> false;
-            case BlackGranite -> false;
-            case RedGranite -> false;
-            case Marble -> false;
-            case Basalt -> false;
+            case Stone, RedGranite, Marble, Basalt, BlackGranite -> false;
             default -> true;
         };
     }
@@ -347,10 +343,7 @@ public enum StoneType implements IStoneType {
     @Override
     public boolean isExtraneous() {
         return switch (this) {
-            case Stone -> false;
-            case Netherrack -> false;
-            case Endstone -> false;
-            case PackedIce -> false;
+            case Stone, Netherrack, Endstone, PackedIce -> false;
             default -> true;
         };
     }
@@ -420,7 +413,7 @@ public enum StoneType implements IStoneType {
     public static StoneType findStoneTypeByPrefix(OrePrefixes prefix) {
         var options = STONE_TYPES_BY_PREFIX.get(prefix);
 
-        if (options.isEmpty()) return null;
+        if (options == null || options.isEmpty()) return null;
 
         return options.getFirst();
     }

@@ -17,6 +17,7 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.GT_Version;
+import gregtech.api.enums.Mods;
 import gtneioreplugin.plugin.NEIPluginConfig;
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.util.CSVMaker;
@@ -25,7 +26,7 @@ import gtneioreplugin.util.GT5OreSmallHelper;
 import gtneioreplugin.util.GT5UndergroundFluidHelper;
 
 @Mod(
-    modid = GTNEIOrePlugin.MODID,
+    modid = Mods.ModIDs.N_E_I_ORE_PLUGIN,
     name = GTNEIOrePlugin.NAME,
     version = GTNEIOrePlugin.VERSION,
     dependencies = "required-after:gregtech;required-after:NotEnoughItems")
@@ -39,13 +40,12 @@ public class GTNEIOrePlugin {
         }
     }
 
-    public static final String MODID = "gtneioreplugin";
     public static final String NAME = "GT NEI Ore Plugin GT:NH Mod";
     public static final String VERSION = GT_Version.VERSION;
     public static final Logger LOG = LogManager.getLogger(NAME);
     public static File instanceDir;
 
-    @Mod.Instance(MODID)
+    @Mod.Instance(Mods.ModIDs.N_E_I_ORE_PLUGIN)
     public static GTNEIOrePlugin instance;
 
     @EventHandler

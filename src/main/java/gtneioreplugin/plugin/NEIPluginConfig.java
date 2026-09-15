@@ -14,6 +14,7 @@ import codechicken.nei.recipe.HandlerInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.StoneType;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
@@ -85,7 +86,7 @@ public class NEIPluginConfig implements IConfigureNEI {
                 new HandlerInfo.Builder(
                     "gtneioreplugin.plugin.gregtech5." + handler.getKey(),
                     GTNEIOrePlugin.NAME,
-                    GTNEIOrePlugin.MODID).setHeight(160)
+                    Mods.ModIDs.N_E_I_ORE_PLUGIN).setHeight(160)
                         .setShowFavoritesButton(false)
                         .setShowOverlayButton(false)
                         .setShiftY(-2)

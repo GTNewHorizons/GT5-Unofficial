@@ -12,6 +12,7 @@ import net.minecraft.world.chunk.Chunk;
 import com.falsepattern.chunk.api.DataManager;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.net.ClientMetaTrackerRegistry;
 import gregtech.api.net.IClientMetaTracker;
@@ -90,7 +91,7 @@ public class ClientMetaManager implements DataManager.PacketDataManager, DataMan
 
     @Override
     public String domain() {
-        return "gregtech";
+        return Mods.ModIDs.GREG_TECH;
     }
 
     @Override

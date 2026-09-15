@@ -7,11 +7,19 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
+import org.joml.Matrix4fStack;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
+import com.gtnewhorizon.gtnhlib.client.renderer.vertex.VertexFormat;
 
+import gregtech.GTLoggers;
+import gregtech.common.render.shader.RenderState;
+import gregtech.common.render.shader.ShaderHandle;
+import gregtech.common.render.shader.SharedShaders;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 
 public class NanoForgeRenderer extends TileEntitySpecialRenderer {
@@ -34,18 +42,43 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
     private static final float MAX_CHAOS_SPEED_UP = 2.0f;
     private static final float RING_ROTATION_NORMAL = 1.0f;
 
-    private void init() {
+    private static final Matrix4fStack modelMatrix = new Matrix4fStack(2);
+
+    public static void reload() {
+        initialized = false;
+        deleteModels();
+        if (!SharedShaders.ready()) return;
+        final VertexFormat format = SharedShaders.textured()
+            .vertexFormat();
         // spotless:off
-        coreTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/Core.png");
-        shieldTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/Shield.png");
-        ringTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/RING.png");
-        nanoforgeCoreModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-core.obj"));
-        nanoforgeShieldModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-shield.obj"));
-        nanoforgeRingOneModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-one.obj"));
-        nanoforgeRingTwoModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-two.obj"));
-        nanoforgeRingThreeModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-three.obj"));
-        initialized = true;
+        try {
+            coreTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/Core.png");
+            shieldTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/Shield.png");
+            ringTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/RING.png");
+            nanoforgeCoreModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-core.obj"), format);
+            nanoforgeShieldModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-shield.obj"), format);
+            nanoforgeRingOneModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-one.obj"), format);
+            nanoforgeRingTwoModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-two.obj"), format);
+            nanoforgeRingThreeModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-three.obj"), format);
+        } catch (RuntimeException e) {
+            GTLoggers.GT_FML_LOGGER.error("Failed to load nano forge models", e);
+            deleteModels();
+            return;
+        }
         // spotless:on
+        initialized = true;
+    }
+
+    private static void deleteModels() {
+        for (IVertexArrayObject model : new IVertexArrayObject[] { nanoforgeCoreModel, nanoforgeShieldModel,
+            nanoforgeRingOneModel, nanoforgeRingTwoModel, nanoforgeRingThreeModel }) {
+            if (model != null) model.delete();
+        }
+        nanoforgeCoreModel = null;
+        nanoforgeShieldModel = null;
+        nanoforgeRingOneModel = null;
+        nanoforgeRingTwoModel = null;
+        nanoforgeRingThreeModel = null;
     }
 
     private void renderNanoForge(RenderingTileEntityNanoForge tile, double x, double y, double z, float deltaT) {
@@ -62,25 +95,31 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
 
         tile.setTimer(timer);
 
+        final ShaderHandle shader = SharedShaders.textured();
+        shader.use();
+
         bindTexture(coreTexture);
-        renderCore(x, y, z, timer, tile.getRed(), tile.getGreen(), tile.getBlue());
+        renderCore(shader, x, y, z, timer, tile.getRed(), tile.getGreen(), tile.getBlue());
         bindTexture(ringTexture);
-        renderRingOne(x, y, z, timer);
-        renderRingTwo(x, y, z, timer);
-        renderRingThree(x, y, z, timer);
+        GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), 1f, 1f, 1f, 1f);
+        renderRingOne(shader, x, y, z, timer);
+        renderRingTwo(shader, x, y, z, timer);
+        renderRingThree(shader, x, y, z, timer);
         bindTexture(shieldTexture);
-        renderShield(x, y, z, timer);
+        renderShield(shader, x, y, z, timer);
+
+        ShaderProgram.clear();
     }
 
-    private void renderCore(double x, double y, double z, float timer, float r, float g, float b) {
+    private void renderCore(ShaderHandle shader, double x, double y, double z, float timer, float r, float g, float b) {
         float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, MAX_CHAOS_SPEED_UP);
         float chaosScale = Math.min(Math.max(chaos, 0.05f), 1);
-        GL11.glPushMatrix();
 
-        GL11.glTranslated(x + .5f, y + .5f, z + .5f);
-        GL11.glScalef(chaosScale, chaosScale, chaosScale);
-        GL11.glColor3f(r, g, b);
-        GL11.glRotatef(
+        GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), r, g, b, 1f);
+        modelMatrix.clear();
+        modelMatrix.translate((float) x + .5f, (float) y + .5f, (float) z + .5f);
+        modelMatrix.scale(chaosScale);
+        rotate(
             timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
             (float) (0.3 * sin(timer / SINUS_DIVIDER) + sin(timer / SINUS_DIVIDER * 0.5)
                 + 0.5 * sin(timer / SINUS_DIVIDER * 3)),
@@ -88,75 +127,75 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
                 + 0.3 * sin(timer / SINUS_DIVIDER * 3)),
             (float) (2 * sin(timer / SINUS_DIVIDER * 0.4) + sin(timer / SINUS_DIVIDER * 1.5)
                 + 1.2 * sin(timer / SINUS_DIVIDER * 1)));
+
+        shader.uploadModel(modelMatrix);
         nanoforgeCoreModel.render();
-        GL11.glColor3f(1.0f, 1.0f, 1.0f);
-
-        GL11.glPopMatrix();
     }
 
-    private void renderRingOne(double x, double y, double z, float timer) {
+    private void renderRingOne(ShaderHandle shader, double x, double y, double z, float timer) {
         float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, MAX_CHAOS_SPEED_UP);
-        GL11.glPushMatrix();
 
-        GL11.glTranslated(x + .5f, y + .5f, z + .5f);
-        GL11.glRotatef(
+        modelMatrix.clear();
+        modelMatrix.translate((float) x + .5f, (float) y + .5f, (float) z + .5f);
+        rotate(
             timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
             0f,
             0.5f + RING_ROTATION_NORMAL * chaos,
             0f);
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, applyRotationMajor(timer), 0f, 0f);
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, 0f, applyRotationMinor(timer));
+        rotate(timer * CHAOS_SPEED_MULTIPLIER * chaos, applyRotationMajor(timer), 0f, 0f);
+        rotate(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, 0f, applyRotationMinor(timer));
+        shader.uploadModel(modelMatrix);
         nanoforgeRingOneModel.render();
-
-        GL11.glPopMatrix();
     }
 
-    private void renderRingTwo(double x, double y, double z, float timer) {
+    private void renderRingTwo(ShaderHandle shader, double x, double y, double z, float timer) {
         float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, MAX_CHAOS_SPEED_UP);
-        GL11.glPushMatrix();
 
-        GL11.glTranslated(x + .5f, y + .5f, z + .5f);
-        GL11.glRotatef(
+        modelMatrix.clear();
+        modelMatrix.translate((float) x + .5f, (float) y + .5f, (float) z + .5f);
+        rotate(
             timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
             0.5f + RING_ROTATION_NORMAL * chaos,
             0f,
             0f);
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, 0f, applyRotationMajor(timer));
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, applyRotationMinor(timer), 0f);
+        rotate(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, 0f, applyRotationMajor(timer));
+        rotate(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, applyRotationMinor(timer), 0f);
+        shader.uploadModel(modelMatrix);
         nanoforgeRingTwoModel.render();
-
-        GL11.glPopMatrix();
     }
 
-    private void renderRingThree(double x, double y, double z, float timer) {
+    private void renderRingThree(ShaderHandle shader, double x, double y, double z, float timer) {
         float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, MAX_CHAOS_SPEED_UP);
-        GL11.glPushMatrix();
 
-        GL11.glTranslated(x + .5f, y + .5f, z + .5f);
-        GL11.glRotatef(
+        modelMatrix.clear();
+        modelMatrix.translate((float) x + .5f, (float) y + .5f, (float) z + .5f);
+        rotate(
             timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
             0f,
             0f,
             0.5f + RING_ROTATION_NORMAL * chaos);
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, applyRotationMajor(timer), 0f);
-        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, applyRotationMinor(timer), 0f, 0f);
+        rotate(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, applyRotationMajor(timer), 0f);
+        rotate(timer * CHAOS_SPEED_MULTIPLIER * chaos, applyRotationMinor(timer), 0f, 0f);
+        shader.uploadModel(modelMatrix);
         nanoforgeRingThreeModel.render();
-
-        GL11.glPopMatrix();
     }
 
-    private void renderShield(double x, double y, double z, float timer) {
+    private void renderShield(ShaderHandle shader, double x, double y, double z, float timer) {
         float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, MAX_CHAOS_SPEED_UP);
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT);
-        GL11.glPushMatrix();
+        final boolean blendWas = GL11.glGetBoolean(GL11.GL_BLEND);
+        final boolean depthTestWas = GL11.glGetBoolean(GL11.GL_DEPTH_TEST);
+        final boolean depthMaskWas = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
+        final long blendFuncWas = RenderState.savedBlendFunc();
 
-        GL11.glTranslated(x + .5f, y + .5f, z + .5f);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false); // Disable depth writing for transparency
-        GL11.glColor4f(1f, 1f, 1f, 0.4f);
-        GL11.glRotatef(
+
+        GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), 1f, 1f, 1f, 0.4f);
+        modelMatrix.clear();
+        modelMatrix.translate((float) x + .5f, (float) y + .5f, (float) z + .5f);
+        rotate(
             timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
             (float) (2 * sin(timer / SINUS_DIVIDER) + sin(timer / SINUS_DIVIDER * 0.5)
                 + 0.5 * sin(timer / SINUS_DIVIDER * 3)),
@@ -164,20 +203,21 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
                 + 0.3 * sin(timer / SINUS_DIVIDER * 3)),
             (float) (0.5 * sin(timer / SINUS_DIVIDER * 0.4) + sin(timer / SINUS_DIVIDER * 1.5)
                 + 1.2 * sin(timer / SINUS_DIVIDER * 1)));
+
+        shader.uploadModel(modelMatrix);
         nanoforgeShieldModel.render();
 
-        GL11.glPopMatrix();
-        GL11.glPopAttrib();
+        RenderState.restore(GL11.GL_BLEND, blendWas);
+        RenderState.restore(GL11.GL_DEPTH_TEST, depthTestWas);
+        GL11.glDepthMask(depthMaskWas);
+        RenderState.restoreBlendFunc(blendFuncWas);
     }
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
         if (!(tile instanceof RenderingTileEntityNanoForge nanoforge)) return;
 
-        if (!initialized) {
-            init();
-            if (!initialized) return;
-        }
+        if (!initialized) return;
 
         // Manually calculating deltaT - annoying minecraft
         long systemTime = System.currentTimeMillis() % (36_000_000);
@@ -190,6 +230,12 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         }
 
         renderNanoForge(nanoforge, x, y, z, deltaT);
+    }
+
+    private static void rotate(float degrees, float x, float y, float z) {
+        final float length = (float) Math.sqrt(x * x + y * y + z * z);
+        if (length == 0) return;
+        modelMatrix.rotate((float) Math.toRadians(degrees), x / length, y / length, z / length);
     }
 
     private static float applyRotationMajor(float f) {

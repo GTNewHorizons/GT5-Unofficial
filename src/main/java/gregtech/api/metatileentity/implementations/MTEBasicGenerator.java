@@ -65,6 +65,11 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     }
 
     @Override
+    public ITexture[][] getInventoryTextures() {
+        return getOrCreateInventoryTextures();
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         return mTextures[(active ? 5 : 0) + (side == facingDirection ? 0
@@ -219,7 +224,7 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
                     || solidFuelOverride(mInventory[getInputSlot()]))) {
                 long tFuelValue = getFuelValue(mInventory[getInputSlot()]);
                 if (tFuelValue <= 0) tFuelValue = getFuelValue(mInventory[getInputSlot()], true);
-                // System.out.println(" tFuelValue : " + tFuelValue );
+
                 if (tFuelValue > 0) {
                     ItemStack tEmptyContainer = getEmptyContainer(mInventory[getInputSlot()]);
                     if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tEmptyContainer)) {

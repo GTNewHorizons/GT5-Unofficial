@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -155,7 +154,7 @@ public class PowerNetworkBuilder {
     public void addNetwork(PowerNode node) {
         final List<ConsumerNode> consumers = node.mConsumers.stream()
             .filter(c -> !(c instanceof EmptyPowerConsumer) && this.flowVisited.add(c.mTileEntity))
-            .collect(Collectors.toList());
+            .toList();
         if (consumers.isEmpty()) return;
 
         processNode(consumers.get(0));

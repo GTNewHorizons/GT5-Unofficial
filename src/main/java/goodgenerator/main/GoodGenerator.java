@@ -19,7 +19,7 @@ import gregtech.api.enums.Mods;
 
 @SuppressWarnings("ALL")
 @Mod(
-    modid = GoodGenerator.MOD_ID,
+    modid = Mods.ModIDs.GOOD_GENERATOR,
     version = GoodGenerator.VERSION,
     dependencies = "required-after:IC2; " + "required-after:gregtech; "
         + "required-after:bartworks; "
@@ -29,7 +29,6 @@ import gregtech.api.enums.Mods;
         + "after:dreamcraft;")
 public final class GoodGenerator {
 
-    public static final String MOD_ID = "GoodGenerator";
     public static final String MOD_NAME = "Good Generator";
     public static final String VERSION = GT_Version.VERSION;
 
@@ -40,7 +39,7 @@ public final class GoodGenerator {
 
     static {}
 
-    @Mod.Instance(GoodGenerator.MOD_ID)
+    @Mod.Instance(Mods.ModIDs.GOOD_GENERATOR)
     public static GoodGenerator instance;
 
     @Mod.EventHandler

@@ -171,11 +171,6 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Casings getRotorCasing() {
-        return Casings.SteelPipeCasing;
-    }
-
-    @Override
     public boolean requiresOutputHatch() {
         return false;
     }

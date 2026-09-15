@@ -1,5 +1,7 @@
 package gregtech.common.networkanalyzer.net;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -33,7 +35,7 @@ public class GTPacketNetworkAnalyzer extends GTPacket {
         try {
             this.data.writeExternal(aOut);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            GT_FML_LOGGER.error(ex);
         }
     }
 

@@ -264,6 +264,12 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             .equals(fluid);
     }
 
+    public void resetFluidLockOnShiftBreak() {
+        if (mLockFluid && getFluidAmount() == 0) {
+            lockFluid(false);
+        }
+    }
+
     public boolean isOutputFluid() {
         return mOutputFluid;
     }

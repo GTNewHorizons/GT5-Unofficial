@@ -37,7 +37,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { " s ", "fPx", 'P', OrePrefixes.stick.get(aMaterial) });
         }
         if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_WORKING)) {

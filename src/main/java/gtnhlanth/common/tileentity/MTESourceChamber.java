@@ -3,7 +3,6 @@ package gtnhlanth.common.tileentity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.HatchElement.BeamlineOutput;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -14,12 +13,14 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineOutput;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA;
 
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,7 +40,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -50,6 +50,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
@@ -57,9 +58,9 @@ import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.SourceChamberMetadata;
-import gtnhlanth.util.DescTextLocalization;
 
-public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber>
+@IMetaTileEntity.SkipGenerateDescription
+public class MTESourceChamber extends MTEBeamMultiBase<MTESourceChamber>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IStructureDefinition<MTESourceChamber> STRUCTURE_DEFINITION;
@@ -138,34 +139,22 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.sc.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info1"))
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info2"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info3"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info4"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info5"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info6"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info7"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info8"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info9"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info10"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info11"))
+            .addMarkdown(new ResourceLocation("gregtech", "source-chamber"))
             .beginStructureBlock(5, 5, 6, true)
-            .addController("Front bottom center")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("56", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
             .addCasing("52", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
             .addCasing("16", LanthItemList.ELECTRODE_CASING.getLocalizedName(), false)
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), "Back center casing", 4)
-            .addEnergyHatch("1", "Any front bottom casing", 3)
-            .addMaintenanceHatch("1", "Any front bottom casing", 3)
-            .addInputAny("1", "Front center casing", 1)
-            .addOutputAny("1", "Behind controller", 2)
-            .addAir("Interior of the structure")
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 4)
+            .addEnergyHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_front_bottom_casing"), 3)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_front_bottom_casing"), 3)
+            .addInputAny("1", StatCollector.translateToLocal("gt.mbtt.structure.front_center_casing"), 1)
+            .addOutputBus("1", StatCollector.translateToLocal("gtnhlanth.tt.sc.structure.output_pos"), 2)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -229,11 +218,11 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     }
 
     private void outputPacketAfterRecipe() {
-        if (!mBeamlineOutputHatches.isEmpty()) {
+        if (!mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(outputEnergy, outputRate, outputParticle, outputFocus));
 
-            for (MTEHatchOutputBeamline o : mBeamlineOutputHatches) {
+            for (MTEHatchOutputBeamline o : mOutputBeamline) {
                 o.dataPacket = packet;
             }
         }

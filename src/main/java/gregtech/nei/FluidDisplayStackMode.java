@@ -6,5 +6,5 @@ public enum FluidDisplayStackMode {
     /** The default amount will be shown (the specific behaviour is undefined and implementation-specific). */
     UNDEFINED,
     /** No amount will be shown. */
-    HIDDEN;
+    HIDDEN
 }

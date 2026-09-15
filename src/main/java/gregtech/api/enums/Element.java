@@ -195,7 +195,7 @@ public enum Element {
     @Override
     public String toString() {
         if (this == Element._NULL) return "Empty";
-        return super.toString().replaceAll("_", "-");
+        return super.toString().replace("_", "-");
     }
 
     /**

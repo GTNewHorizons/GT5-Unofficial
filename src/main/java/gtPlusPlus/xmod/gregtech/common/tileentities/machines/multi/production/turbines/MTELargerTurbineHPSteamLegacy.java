@@ -94,7 +94,7 @@ public class MTELargerTurbineHPSteamLegacy extends MTELargerTurbineBaseLegacy {
                                         this.getBaseMetaTileEntity()
                                             .getOwnerName()),
                                 "efficientsteam");
-                        } catch (Exception e) {}
+                        } catch (Exception ignored) {}
                         achievement = true;
                     }
                 }

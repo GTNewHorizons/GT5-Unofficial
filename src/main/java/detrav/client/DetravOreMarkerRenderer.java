@@ -9,6 +9,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
@@ -90,10 +91,11 @@ public class DetravOreMarkerRenderer {
         if (markers.isEmpty()) return;
 
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if (player == null) return;
+        EntityLivingBase viewEntity = Minecraft.getMinecraft().renderViewEntity;
+        if (player == null || viewEntity == null) return;
 
         int dim = player.worldObj.provider.dimensionId;
-        Vec3 eyeVec = player.getPosition(event.partialTicks);
+        Vec3 eyeVec = viewEntity.getPosition(event.partialTicks);
         Vector3d eye = new Vector3d(eyeVec.xCoord, eyeVec.yCoord, eyeVec.zCoord);
         Vector3d centre = new Vector3d();
 

@@ -44,9 +44,7 @@ public class CoverMetricsTransmitter extends Cover {
         return coverable instanceof final IGregTechDeviceInformation device && device.isGivingInformation();
     }
 
-    @SuppressWarnings("SpellCheckingInspection")
     public static final String FREQUENCY_MSB_KEY = "gt.metricscover.freq_msb";
-    @SuppressWarnings("SpellCheckingInspection")
     public static final String FREQUENCY_LSB_KEY = "gt.metricscover.freq_lsb";
     public static final String MACHINE_KEY = "machine_name";
     public static final String CARD_STATE_KEY = "card_state";

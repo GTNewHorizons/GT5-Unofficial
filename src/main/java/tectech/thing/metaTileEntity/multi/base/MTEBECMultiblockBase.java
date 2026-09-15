@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
@@ -26,6 +25,7 @@ import gregtech.api.factory.RoutedNode;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.IStructureInstance;
@@ -45,7 +45,8 @@ import tectech.mechanics.boseEinsteinCondensate.NotableBECFactoryElement;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchBEC;
 
 public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TSelf>> extends TTMultiblockBase
-    implements ISurvivalConstructable, BECFactoryElement, NotableBECFactoryElement, IStructureProvider<TSelf> {
+    implements ISurvivalConstructable, BECFactoryElement, NotableBECFactoryElement, IStructureProvider<TSelf>,
+    ICasingTextureProvider {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
 
@@ -96,7 +97,8 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         return textures.toArray(new ITexture[0]);
     }
 
-    protected ITexture getCasingTexture() {
+    @Override
+    public ITexture getCasingTexture() {
         return MolecularCasing.getCasingTexture();
     }
 
@@ -154,11 +156,14 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     @Override
     @SuppressWarnings("unchecked")
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        if (!structure.checkStructure((TSelf) this, errors)) return;
+        if (!structure.checkStructure((TSelf) this, errors)) {
+            if (connectsToNetwork()) BECFactoryGrid.INSTANCE.updateElement(this);
+            return;
+        }
         structureInstanceInfo.validate(errors);
         structureInstanceInfo.onPostCheck((TSelf) this);
 
-        if (!Objects.equals(mPreviousBECHatches, mBECHatches)) {
+        if (!new HashSet<>(mPreviousBECHatches).equals(new HashSet<>(mBECHatches))) {
             BECFactoryGrid.INSTANCE.updateElement(this);
         }
     }
@@ -248,6 +253,26 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         if (GTUtility.isServer() && connectsToNetwork()) {
             BECFactoryGrid.INSTANCE.removeElement(this);
         }
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
+
+        if (GTUtility.isServer() && connectsToNetwork()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
+    }
+
+    @Override
+    public String[] getInfoData() {
+        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
+
+        if (connectsToNetwork()) {
+            data.add("BEC Network: " + (network == null ? "None" : network.id));
+        }
+
+        return data.toArray(new String[0]);
     }
 
     public enum BECHatches implements IHatchElement<MTEBECMultiblockBase<?>> {

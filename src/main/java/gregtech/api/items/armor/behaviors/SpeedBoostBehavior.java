@@ -128,8 +128,12 @@ public class SpeedBoostBehavior implements IArmorBehavior {
                 if (player.isSneaking()) {
                     player.moveEntity(0, -verticalSpeed, 0);
                 }
+
+                boolean isGuiOpen = context.getPlayer().worldObj.isRemote
+                    && (net.minecraft.client.Minecraft.getMinecraft().currentScreen != null);
+
                 if (ArmorActionManager.getKeybind("VANILLA_JUMP")
-                    .isKeyDown(player)) {
+                    .isKeyDown(player) && !isGuiOpen) {
                     player.moveEntity(0, verticalSpeed, 0);
                 }
             }

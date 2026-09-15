@@ -16,7 +16,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,6 +40,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -47,6 +48,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 /**
  * Created by danie_000 on 17.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static final int maxRepairedDamagePerOperation = 1000;
@@ -122,7 +124,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             return remove;
         } catch (Exception e) {
             if (ConfigHandler.debug.DEBUG_MODE) {
-                e.printStackTrace();
+                TecTech.LOGGER.error(e);
             }
         }
         return 0;
@@ -141,7 +143,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             return RF;
         } catch (Exception e) {
             if (ConfigHandler.debug.DEBUG_MODE) {
-                e.printStackTrace();
+                TecTech.LOGGER.error(e);
             }
         }
         return 0;
@@ -238,26 +240,22 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Restorer")
-            .addInfo("Simultaneously recharges and repairs equipment")
-            .addInfo("Stocking input buses are not supported")
-            .addInfo(EnumChatFormatting.GOLD + "Recharging" + EnumChatFormatting.GRAY + ": No max speed or energy loss")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Repairing"
-                    + EnumChatFormatting.GRAY
-                    + ": Max 1k durability/t, consumes 1k EU + 1L UUM per point")
+        // spotless:off
+        tt.addMachineType(translateToLocal("gt.mbtt.machine_type.restorer"))
+            .addMarkdown(new ResourceLocation("gregtech", "energy-infuser"))
             .addSupportAny()
             .beginStructureBlock(3, 5, 3, false)
-            .addController("Front center, 3rd layer")
+            .addController(translateToLocal("tt.keyword.Structure.FrontCenter3rd"))
             .addCasing("16", translateToLocal("gt.blockcasingsTT.7.name"), false)
             .addCasing("0-14", translateToLocal("gt.blockcasingsTT.0.name"), false)
             .addCasing("10", translateToLocal("gt.blockcasingsTT.4.name"), false)
-            .addEnergyHatch("1+", "Any high power casing", 1)
-            .addMaintenanceHatch("1", "Any high power casing", 1)
-            .addInputBus("1+", "Any high power casing", 1)
-            .addInputHatch("0+", "Any high power casing", 1)
-            .addOutputBus("1+", "Any high power casing", 1)
+            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .addInputBus("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .addInputHatch("0+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .addOutputBus("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

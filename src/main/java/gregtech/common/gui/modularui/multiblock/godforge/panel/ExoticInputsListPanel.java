@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.NUMBER_OF_INPUTS;
 import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.RECIPE_REFRESH_LIMIT;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -11,8 +10,8 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -57,7 +56,7 @@ public class ExoticInputsListPanel {
         // Create fluid slots
 
         // Panel rows
-        column.child(createFirstRow().marginTop(3));
+        column.child(createFirstRow(hypervisor).marginTop(3));
         column.child(createSecondRow(hypervisor));
         panel.child(column);
 
@@ -69,19 +68,9 @@ public class ExoticInputsListPanel {
 
         SyncActions.REFRESH_EXOTIC_RECIPE
             .registerFor(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST, hypervisor, hypervisor.getModule(Modules.EXOTIC));
-
-        for (int i = 0; i < NUMBER_OF_INPUTS; i++) {
-            hypervisor.getSyncManager(Modules.EXOTIC, Panels.EXOTIC_INPUTS_LIST)
-                .syncValue(
-                    "exotic_fluid_tanks",
-                    i,
-                    SyncHandlers.fluidSlot(hypervisor.getModule(Modules.EXOTIC).tankHandler.getFluidTank(i))
-                        .canDrainSlot(false)
-                        .canFillSlot(false));
-        }
     }
 
-    private static Flow createFirstRow() {
+    private static Flow createFirstRow(SyncHypervisor hypervisor) {
         Flow row = Flow.row()
             .size(72, 18);
 
@@ -89,7 +78,12 @@ public class ExoticInputsListPanel {
         row.child(
             SlotGroupWidget.builder()
                 .matrix("SSSS")
-                .key('S', index -> new FluidSlot().syncHandler("exotic_fluid_tanks", index))
+                .key(
+                    'S',
+                    index -> new FluidSlot().syncHandler(
+                        new FluidSlotSyncHandler(hypervisor.getModule(Modules.EXOTIC).fluidTanks[index])
+                            .canFillSlot(false)
+                            .canDrainSlot(false)))
                 .build());
 
         return row;
@@ -136,7 +130,12 @@ public class ExoticInputsListPanel {
         row.child(
             SlotGroupWidget.builder()
                 .matrix("SSS")
-                .key('S', index -> new FluidSlot().syncHandler("exotic_fluid_tanks", index + 4))
+                .key(
+                    'S',
+                    index -> new FluidSlot().syncHandler(
+                        new FluidSlotSyncHandler(hypervisor.getModule(Modules.EXOTIC).fluidTanks[index + 4])
+                            .canFillSlot(false)
+                            .canDrainSlot(false)))
                 .build());
 
         // All possible inputs panel button

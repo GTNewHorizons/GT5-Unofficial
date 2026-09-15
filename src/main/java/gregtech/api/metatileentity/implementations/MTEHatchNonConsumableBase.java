@@ -38,11 +38,12 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
 
 public abstract class MTEHatchNonConsumableBase extends MTEHatch
-    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, ISmartInputHatch {
 
     private ItemStack itemStack = null;
     private int itemCount = 0;
@@ -286,7 +287,10 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
             }
 
             meInventoryHandler.notifyListeners(count - savedCount, stack);
-            if (count != savedCount) getBaseMetaTileEntity().markDirty();
+            if (count != savedCount) {
+                getBaseMetaTileEntity().markDirty();
+                notifyWatchers();
+            }
         }
     }
 
@@ -325,6 +329,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("itemCount", getItemCount());
         if (getItemStack() != null) aNBT.setTag("itemStack", getItemStack().writeToNBT(new NBTTagCompound()));
+        aNBT.setBoolean("outputLocked", isOutputSlotLocked);
     }
 
     @Override
@@ -332,6 +337,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
         if (aNBT.hasKey("itemCount")) setItemCount(aNBT.getInteger("itemCount"));
         if (aNBT.hasKey("itemStack"))
             setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("itemStack")));
+        if (aNBT.hasKey("outputLocked")) isOutputSlotLocked = aNBT.getBoolean("outputLocked");
     }
 
     @Override

@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.UndergroundFluidNames;
 
 public class FluidColors {
@@ -25,7 +25,7 @@ public class FluidColors {
                     fluidColors.put(fluid.getID(), convertColorInt(fluid.getColor()));
                 }
             } else {
-                GTMod.GT_FML_LOGGER.error("[FluidColors] no registered fluid named " + value.name);
+                GTLoggers.GT_FML_LOGGER.error("[FluidColors] no registered fluid named {}", value.name);
             }
         }
     }
@@ -42,7 +42,7 @@ public class FluidColors {
         }
         final short[] color = fluidColors.get(fluidID);
         if (color == null) {
-            GTMod.GT_FML_LOGGER.error("Unknown fluid ID = " + fluidID + " This shouldn't happen!");
+            GTLoggers.GT_FML_LOGGER.error("Unknown fluid ID = {} This shouldn't happen!", fluidID);
             return new short[] { 0, 0, 0, 0 };
         }
         return color;

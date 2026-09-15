@@ -77,7 +77,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
     private int switchingToRemoteGuiTimeout = 0;
 
     private boolean wasLDown = false;
-    private boolean wasGDown = false;
+    private boolean wasRightClickDown = false;
     private boolean hadNightVisionBefore = false;
     private boolean wasTabDown = false;
     private boolean wasF5Down = false;
@@ -390,8 +390,8 @@ public class CameraViewportClientManager extends CameraViewportManager {
         }
         wasF5Down = isF5Down;
 
-        boolean isGDown = Keyboard.isKeyDown(Keyboard.KEY_G);
-        if (isGDown && !wasGDown) {
+        boolean isRightClickDown = Mouse.isButtonDown(1);
+        if (isRightClickDown && !wasRightClickDown) {
             int rx = CoordinatePacker.unpackX(this.hoveredMachineCoord);
             int ry = CoordinatePacker.unpackY(this.hoveredMachineCoord);
             int rz = CoordinatePacker.unpackZ(this.hoveredMachineCoord);
@@ -423,7 +423,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
                 }
             }
         }
-        wasGDown = isGDown;
+        wasRightClickDown = isRightClickDown;
 
         boolean isZoomIn = Keyboard.isKeyDown(Keyboard.KEY_EQUALS) || Keyboard.isKeyDown(Keyboard.KEY_ADD)
             || Keyboard.isKeyDown(Keyboard.KEY_PRIOR);

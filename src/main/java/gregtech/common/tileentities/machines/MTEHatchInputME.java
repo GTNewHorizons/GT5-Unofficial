@@ -171,9 +171,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (igte == null || !igte.isAllowedToWork()) return false;
 
         this.proxyCheckup();
-        if (!getProxy().isActive()) return false;
-
-        return true;
+        return getProxy().isActive();
     }
 
     @Override

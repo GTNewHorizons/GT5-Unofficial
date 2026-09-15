@@ -15,6 +15,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,6 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -33,6 +35,8 @@ import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -55,6 +59,7 @@ import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected IStructureDefinition<MTEExtremeHeatExchanger> multiDefinition = null;
@@ -138,6 +143,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             mHotFluidHatch = (MTEHatchInput) aMetaTileEntity;
             return true;
@@ -150,6 +156,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             mCooledFluidHatch = (MTEHatchOutput) aMetaTileEntity;
             return true;
@@ -218,50 +225,22 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger, EHE")
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc3"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc4"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc5"))
-            .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.ExtremeHeatExchanger.lava",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.ExtremeHeatExchanger.hotcoolant",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.ExtremeHeatExchanger.hotsolarsalt",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.plasma1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.plasma2"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.throttle1"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.multiblock.ExtremeHeatExchanger.throttle2", getFluidUnit()))
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.heat_exchanger_ehe"))
+            .addMarkdown(new ResourceLocation("gregtech", "extreme-heat-exchanger"), ImmutableMap.of("unit", getFluidUnit()))
             .beginStructureBlock(5, 6, 11, false)
-            .addController("Front bottom center")
-            .addCasing("25-120", "Robust Tungstensteel Machine Casing", false)
-            .addCasing("72", "EV+ Tiered Glass", false)
-            .addCasing("60", "Tungstensteel Pipe Casing", false)
-            .addCasing("48", "Pressure Resistant Wall", false)
-            .addMaintenanceHatch("1", "Any casing", 1, 2, 5)
-            .addInputHatch("2+", "Front center casing (hot fluid), any bottom casing (distilled water)", 1, 3)
-            .addOutputHatch("2+", "Back center casing (cool fluid), any top casing (steam)", 2, 4)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("25-120", StatCollector.translateToLocal("gt.blockcasings4.0.name"), false)
+            .addCasing("72", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]), false)
+            .addCasing("60", StatCollector.translateToLocal("gt.blockcasings2.15.name"), false)
+            .addCasing("48", StatCollector.translateToLocal("pressureResistantWalls.name"), false)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2, 5)
+            .addInputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.front_center_casing_or_any_bottom_casing"), 1, 3)
+            .addOutputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing_or_any_top_casing"), 2, 4)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

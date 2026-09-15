@@ -1871,6 +1871,7 @@ public enum MetaTileEntityIDs {
     UMV256ADynamoHatch(16034),
     UXV256ADynamoHatch(16035),
     FuelRefineFactory(16999),
+    ICE_CREAM_MACHINE(20000),
     CropsNHCropManagerLV(28001),
     CropsNHCropManagerMV(28002),
     CropsNHCropManagerHV(28003),

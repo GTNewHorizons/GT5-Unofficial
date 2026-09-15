@@ -116,15 +116,14 @@ public class EIGSeedBucket extends EIGBucket {
         if (!(item instanceof IPlantable)) return;
 
         // Order is important due to ItemNetherSeed being a child of both INetherSeed and ItemSeeds
-        if (item instanceof INetherSeed netherSeed) {
-            block = netherSeed.hodgepodge$getPlant(fakeWorld, 0, 0, 0);
-        } else if (item instanceof ItemSeeds itemSeeds) {
-            block = itemSeeds.getPlant(fakeWorld, 0, 0, 0);
-        } else if (item instanceof ItemSeedFood itemSeedFood) {
-            block = itemSeedFood.getPlant(fakeWorld, 0, 0, 0);
-        } else {
-            // We can't plant it, we can't handle it, get out.
-            return;
+        switch (item) {
+            case INetherSeed netherSeed -> block = netherSeed.hodgepodge$getPlant(fakeWorld, 0, 0, 0);
+            case ItemSeeds itemSeeds -> block = itemSeeds.getPlant(fakeWorld, 0, 0, 0);
+            case ItemSeedFood itemSeedFood -> block = itemSeedFood.getPlant(fakeWorld, 0, 0, 0);
+            default -> {
+                // We can't plant it, we can't handle it, get out.
+                return;
+            }
         }
 
         // Natura crops have an optimal harvest stage of 8.

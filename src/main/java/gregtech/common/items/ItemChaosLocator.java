@@ -21,7 +21,7 @@ import gregtech.common.gui.modularui.item.ChaosLocatorGui;
 public class ItemChaosLocator extends GTGenericItem implements IGuiHolder<GuiData> {
 
     public ItemChaosLocator(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
-        super(aUnlocalized, aEnglish, aEnglishTooltip);;
+        super(aUnlocalized, aEnglish, aEnglishTooltip);
         setMaxStackSize(1);
     }
 

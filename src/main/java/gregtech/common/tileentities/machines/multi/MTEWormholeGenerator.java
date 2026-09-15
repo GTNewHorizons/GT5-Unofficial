@@ -51,7 +51,9 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import appeng.api.AEApi;
-import gregtech.GTMod;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
@@ -287,18 +289,24 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
                 IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 
-                if (aMetaTileEntity == null) return false;
-
-                if (aMetaTileEntity instanceof MTEHatchEnergyMulti input) {
-                    input.updateTexture(aBaseCasingIndex);
-                    input.updateCraftingIcon(tile.getMachineCraftingIcon());
-                    tile.mSendHatches[mIndex] = input;
-                    return true;
-                } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti output) {
-                    output.updateTexture(aBaseCasingIndex);
-                    output.updateCraftingIcon(tile.getMachineCraftingIcon());
-                    tile.mReceiveHatches[mIndex] = output;
-                    return true;
+                switch (aMetaTileEntity) {
+                    case null -> {
+                        return false;
+                    }
+                    case MTEHatchEnergyMulti input -> {
+                        input.updateTexture(aBaseCasingIndex);
+                        input.updateCraftingIcon(tile.getMachineCraftingIcon());
+                        tile.mSendHatches[mIndex] = input;
+                        return true;
+                    }
+                    case MTEHatchDynamoMulti output -> {
+                        output.updateTexture(aBaseCasingIndex);
+                        output.updateCraftingIcon(tile.getMachineCraftingIcon());
+                        tile.mReceiveHatches[mIndex] = output;
+                        return true;
+                    }
+                    default -> {
+                    }
                 }
 
                 return false;
@@ -316,8 +324,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
@@ -366,12 +375,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
         destroyRenderBlock();
-    }
-
-    @Override
-    public void onDisableWorking() {
-        super.onDisableWorking();
-        // destroyRenderBlock();
     }
 
     @Override
@@ -708,7 +711,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 aNBT.setTag("mLink", link);
             }
         } catch (Exception t) {
-            GTMod.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
+            GTLoggers.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
         }
     }
 
@@ -759,7 +762,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                         Math.min(send_amounts.length, mLink.mSendAmounts.length));
                 }
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
+                GTLoggers.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
             }
         }
     }

@@ -4,9 +4,11 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -17,6 +19,7 @@ import ggfab.GGItemList;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -27,7 +30,8 @@ import gregtech.common.gui.modularui.hatch.MTEHatchSolidifierGui;
 import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport {
+@IMetaTileEntity.SkipGenerateName
+public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport, INonConsumedItemDisplay {
 
     public static final int moldSlot = 2;
     public static final int circuitSlot = 3;
@@ -79,6 +83,13 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.hatch.solidifier.name", GTUtility.getRomanNumeral(mTier - 4));
+    }
+
+    @Override
     public String[] getDescription() {
         return Utils.splitLocalizedFormattedWithAuthor(
             "gt.blockmachines.input_hatch_solidifier.desc",
@@ -103,6 +114,14 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchSolidifier(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        // the circuit is already shown by the ghost circuit suffix
+        ItemStack mold = getStackInSlot(moldSlot);
+        return INonConsumedItemDisplay.isDisplayableItem(mRecipeMap, mold) ? Collections.singletonList(mold)
+            : Collections.emptyList();
     }
 
     public List<ItemStack> getNonConsumableItems() {
@@ -138,7 +157,8 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex == moldSlot || super.isValidSlot(aIndex);
+        // the mold is a ghost item and the circuit is a configuration slot, neither may be dropped or picked up
+        return aIndex != moldSlot && aIndex != circuitSlot && super.isValidSlot(aIndex);
     }
 
     @Override
@@ -159,11 +179,6 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     @Override
     public int getCircuitSlotY() {
         return 63;
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override

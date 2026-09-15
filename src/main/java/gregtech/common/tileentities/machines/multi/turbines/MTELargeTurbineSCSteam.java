@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -25,9 +26,12 @@ import gregtech.api.util.TurbineStatCalculator;
 
 public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
 
-    private static final IIconContainer[] TURBINE_ON = { Textures.BlockIcons.custom("icons/turbines/TURBINE_05") };
-    private static final IIconContainer[] TURBINE_OFF = { Textures.BlockIcons.custom("icons/turbines/TURBINE_15") };
-    private static final IIconContainer[] TURBINE_EMPTY = { Textures.BlockIcons.custom("icons/turbines/TURBINE_25") };
+    private static final IIconContainer[] TURBINE_ON = {
+        Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_05") };
+    private static final IIconContainer[] TURBINE_OFF = {
+        Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_15") };
+    private static final IIconContainer[] TURBINE_EMPTY = {
+        Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_25") };
 
     public MTELargeTurbineSCSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

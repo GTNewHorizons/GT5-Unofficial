@@ -72,11 +72,6 @@ public class ItemGenericChemBase extends Item {
     }
 
     @Override
-    public boolean shouldRotateAroundWhenRendering() {
-        return super.shouldRotateAroundWhenRendering();
-    }
-
-    @Override
     public EnumRarity getRarity(ItemStack p_77613_1_) {
         return EnumRarity.common;
     }

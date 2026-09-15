@@ -43,6 +43,7 @@ import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
@@ -84,14 +85,15 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         // CoAL casing
         .addElement(
             'B',
-            ofBlocksTiered(
-                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta + 1 : null,
-                IntStream.range(0, 14)
-                    .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                    .collect(Collectors.toList()),
-                -1,
-                MTEAssemblyMatrixModule::setCasingTier,
-                MTEAssemblyMatrixModule::getCasingTier))
+            GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING.use(
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta + 1 : null,
+                    IntStream.range(0, 14)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -1,
+                    MTEAssemblyMatrixModule::setCasingTier,
+                    MTEAssemblyMatrixModule::getCasingTier)))
         // Nanochip Mesh Interface Casing
         .addElement('C', Casings.NanochipMeshInterfaceCasing.asElement())
         // Nanochip Reinforcement Casing
@@ -163,7 +165,9 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         for (ItemStack stack : outputItems) {
             CircuitComponent circuitComponent = CircuitComponent.tryGetFromFakeStack(stack);
             if (circuitComponent != null && baseMulti != null) {
-                baseMulti.addToHistory(circuitComponent.circuitType, stack.stackSize);
+                baseMulti.addToHistory(
+                    circuitComponent.circuitType,
+                    (int) Math.max(1, stack.stackSize * circuitComponent.weight));
             }
         }
         return super.addItemOutputs(outputItems);
@@ -181,6 +185,11 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
                     "GT5U.tooltip.nac.module.assembly_matrix.body.1",
                     TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.body.2"))
+            .addInfo(
+                translateToLocalFormatted(
+                    "GT5U.tooltip.nac.module.assembly_matrix.body.3",
+                    TooltipHelper.EFF_COLOR,
+                    TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.2")))
@@ -236,23 +245,23 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
-    public int getPriority() {
-        return -1;
+    protected float getEUDiscountModifier(@NotNull GTRecipe recipe) {
+        // assumes machine tier is always >= recipe tier as that is done in validateRecipe
+        int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 1);
+        int machineTier = getCasingTier();
+        return (float) Math.pow(0.95, machineTier - recipeTier);
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tier", machineTier);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             translateToLocal("GT5U.machines.tier") + ": "
                 + EnumChatFormatting.WHITE
                 + tag.getInteger("tier")

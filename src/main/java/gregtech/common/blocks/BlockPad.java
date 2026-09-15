@@ -183,7 +183,7 @@ public class BlockPad extends Block {
     @Override
     public boolean isOpaqueCube() {
         return false;
-    };
+    }
 
     @Override
     public boolean canPlaceBlockAt(World worldIn, int x, int y, int z) {

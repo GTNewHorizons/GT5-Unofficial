@@ -34,6 +34,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
@@ -155,13 +156,13 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     }
 
     @Override
-    protected float getEUDiscountModifier() {
-        return 1f / (GTUtility.log4ceil(laserAmps) - 3);
+    protected float getEUDiscountModifier(GTRecipe recipe) {
+        return 1f / (GTUtility.log4ceil(laserAmps) - 3 + (baseMulti.crystalT3Active ? 1 : 0));
     }
 
     @Override
     protected float getModuleDurationModifier() {
-        return 1f / (Math.max(1, laserTier - 9));
+        return 1f / (Math.max(1, laserTier - 9 + (baseMulti.crystalT3Active ? 1 : 0)));
     }
 
     @Override
@@ -173,6 +174,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.1"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.2"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.3"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.4"))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
             .beginStructureBlock(7, 7, 7, false)
@@ -208,21 +210,18 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setBoolean("installed", laserSource != null);
         tag.setInteger("laserAmps", laserAmps);
         tag.setInteger("laserTier", laserTier);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         if (tag.getBoolean("installed")) {
-            currentTip.add(
+            list.add(
                 EnumChatFormatting.LIGHT_PURPLE + translateToLocal("GT5U.tooltip.nac.module.etching_array.installed")
                     + ": "
                     + tag.getInteger("laserAmps")

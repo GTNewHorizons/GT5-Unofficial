@@ -270,9 +270,7 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
                             hintNumbers);
                         hasExoticHatches = true;
                     }
-                    default -> {
-                        addOtherStructurePart(ttHatch.getDisplayName(), info, hintNumbers);
-                    }
+                    default -> addOtherStructurePart(ttHatch.getDisplayName(), info, hintNumbers);
                 }
             } else {
                 // fallback for custom hatches

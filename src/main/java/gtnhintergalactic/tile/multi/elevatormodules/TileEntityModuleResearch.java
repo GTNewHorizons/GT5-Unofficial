@@ -2,7 +2,7 @@ package gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.enums.GTValues.V;
 
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +27,7 @@ import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
  *         RECIPE IS CURRENTLY TEMPORARILY COMMENTED OUT IN MachineLoader.java FYI
  *         BLOCK IS ALSO HIDDEN IN NEIGTNewHorizonsConfig.java IN COREMOD
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class TileEntityModuleResearch extends TileEntityModuleBase {
 
     /** Voltage tier of this module */
@@ -64,21 +65,18 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.research.desc0"))
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                    + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.research.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT2"))
+            .addMarkdown(new ResourceLocation("gregtech", "space-research-module"))
             .beginStructureBlock(1, 5, 2, false)
-            .addController("Front center, 4th layer")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("0-9", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-            .addInputAny("0+", "Any casing", 1)
-            .addOutputAny("0+", "Any casing", 1)
+            .addInputAny("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputAny("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

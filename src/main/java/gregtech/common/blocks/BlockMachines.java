@@ -1,6 +1,6 @@
 package gregtech.common.blocks;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
@@ -61,6 +61,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.IIconTexture;
+import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneLamp;
 
@@ -353,10 +354,10 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
         if (!GregTechAPI.sPostloadFinished) return;
-        GTLog.out.println("GTMod: Setting up Icon Register for Blocks");
+        GT_FML_LOGGER.debug("GTMod: Setting up Icon Register for Blocks");
         GregTechAPI.setBlockIconRegister(aIconRegister);
 
-        GTLog.out.println("GTMod: Registering MetaTileEntity specific Textures");
+        GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntity specific Textures");
         try {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {
@@ -364,18 +365,18 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
-        GTLog.out.println("GTMod: Starting Block Icon Load Phase");
+        GT_FML_LOGGER.debug("GTMod: Starting Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Starting Block Icon Load Phase");
         try {
             for (Runnable tRunnable : GregTechAPI.sGTBlockIconload) {
                 tRunnable.run();
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
-        GTLog.out.println("GTMod: Finished Block Icon Load Phase");
+        GT_FML_LOGGER.debug("GTMod: Finished Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Finished Block Icon Load Phase");
     }
 
@@ -532,6 +533,11 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
             if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
                 baseTE.setColorization((byte) -1);
+            }
+
+            if (tTileEntity instanceof IGregTechTileEntity gtTE
+                && gtTE.getMetaTileEntity() instanceof MTEDigitalTankBase tankMTE) {
+                tankMTE.resetFluidLockOnShiftBreak();
             }
         }
         // This delays deletion of the block until after getDrops

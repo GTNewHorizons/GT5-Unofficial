@@ -208,14 +208,8 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        switch (machineMode) {
-            case MACHINEMODE_OREWASH -> {
-                return RecipeMaps.oreWasherRecipes;
-            }
-            default -> {
-                return RecipeMaps.simpleWasherRecipes;
-            }
-        }
+        if (machineMode == MACHINEMODE_OREWASH) return RecipeMaps.oreWasherRecipes;
+        return RecipeMaps.simpleWasherRecipes;
     }
 
     @Nonnull
@@ -277,19 +271,13 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("mode", getMachineModeName());
     }
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

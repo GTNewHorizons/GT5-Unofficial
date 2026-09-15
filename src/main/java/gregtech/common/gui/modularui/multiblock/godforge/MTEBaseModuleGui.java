@@ -136,7 +136,6 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     @Override
     protected ToggleButton createPowerSwitchButton() {
         return super.createPowerSwitchButton().size(16)
-            .selectedBackground(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(new DynamicDrawable(() -> {
                 if (multiblock.isAllowedToWork()) {
                     return GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_ON;
@@ -152,7 +151,6 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     @Override
     protected IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
         return ((ToggleButton) super.createStructureUpdateButton(syncManager)).size(16)
-            .selectedBackground(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(new DynamicDrawable(() -> {
                 if (multiblock.getStructureUpdateTime() > -20) {
                     return GTGuiTextures.TT_OVERLAY_BUTTON_STRUCTURE_CHECK;
