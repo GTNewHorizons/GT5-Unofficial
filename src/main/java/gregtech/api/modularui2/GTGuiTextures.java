@@ -1813,7 +1813,7 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
-        public static final UITexture TT_PICTURE_UNCERTAINTY_ASSIST_OFF = UITexture.builder()
+    public static final UITexture TT_PICTURE_UNCERTAINTY_ASSIST_OFF = UITexture.builder()
         .location(MODID, "gui/overlay_button/uncertainty_assist_off")
         .fullImage()
         .canApplyTheme()
