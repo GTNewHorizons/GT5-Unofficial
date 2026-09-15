@@ -25,6 +25,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -76,6 +77,9 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             "calcNumCycles",
             new IntSyncValue(() -> multiblock.calcNumCycles, i -> multiblock.calcNumCycles = i).allowC2S());
         syncManager.syncValue(
+            "calcBoostMode",
+            new IntSyncValue(() -> multiblock.calcBoostMode, i -> multiblock.calcBoostMode = i).allowC2S());
+        syncManager.syncValue(
             "probTableCollisionEnergyeV",
             new DoubleSyncValue(
                 () -> multiblock.probTableCollisionEnergyeV,
@@ -88,7 +92,20 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         syncManager.syncValue(
             "accelerationCycleCounter",
             new IntSyncValue(() -> multiblock.accelerationCycleCounter, i -> multiblock.accelerationCycleCounter = i));
+        syncManager.syncValue(
+            "boostMode",
+            new IntSyncValue(() -> multiblock.boostMode, i -> multiblock.boostMode = i).allowC2S());
+        syncManager
+            .syncValue("boostActive", new IntSyncValue(() -> multiblock.boostActive, i -> multiblock.boostActive = i));
         syncManager.syncValue("EUt", new LongSyncValue(() -> multiblock.lEUt));
+    }
+
+    private static String boostModeLangKey(int boostMode) {
+        return switch (boostMode) {
+            case MTELargeHadronCollider.BOOST_QGP -> "GT5U.gui.text.LHC.boostmode.qgp";
+            case MTELargeHadronCollider.BOOST_MAGMATTER -> "GT5U.gui.text.LHC.boostmode.magmatter";
+            default -> "GT5U.gui.text.LHC.boostmode.none";
+        };
     }
 
     @Override
@@ -322,6 +339,10 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             .getSyncHandlerFromMapKey("playerTargetBeamEnergyeV:0");
         IntSyncValue playerTargetAccelerationCyclesSync = (IntSyncValue) syncManager
             .getSyncHandlerFromMapKey("playerTargetAccelerationCycles:0");
+        IntSyncValue boostModeSync = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("boostMode:0");
+        IntSyncValue boostActiveSync = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("boostActive:0");
+        DoubleSyncValue cachedOutputBeamEnergySync = (DoubleSyncValue) syncManager
+            .getSyncHandlerFromMapKey("cachedOutputBeamEnergy:0");
 
         return new ModularPanel("statsPanel").relative(parent)
             .leftRel(1)
@@ -357,7 +378,35 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                             .size(40, 14)
                             .marginRight(2)
                             .value(playerTargetAccelerationCyclesSync)
-                            .defaultNumber(10)));
+                            .defaultNumber(10))
+                    .child(new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.boostmode")).textAlign(Alignment.CENTER))
+                    .child(
+                        Flow.row()
+                            .coverChildren()
+                            .childPadding(4)
+                            .child(
+                                new CycleButtonWidget().size(18, 18)
+                                    .length(3)
+                                    .value(boostModeSync)
+                                    .overlay(GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
+                                    .tooltipDynamic(
+                                        t -> t.addLine(IKey.lang(boostModeLangKey(boostModeSync.getIntValue()))))
+                                    .tooltipAutoUpdate(true))
+                            .child(
+                                new TextWidget<>(
+                                    IKey.dynamic(
+                                        () -> StatCollector
+                                            .translateToLocal(boostModeLangKey(boostModeSync.getIntValue()))))
+                                                .textAlign(Alignment.CENTER)))
+                    .child(
+                        new TextWidget<>(
+                            IKey.dynamic(
+                                () -> (cachedOutputBeamEnergySync.getDoubleValue() > 0
+                                    && boostActiveSync.getIntValue() != boostModeSync.getIntValue())
+                                        ? EnumChatFormatting.YELLOW
+                                            + StatCollector.translateToLocal("GT5U.gui.text.LHC.boostmode.restart")
+                                        : "")).textAlign(Alignment.CENTER)));
+
     }
 
     private ModularPanel openCalculatorPanel(PanelSyncManager p_syncManager, ModularPanel parent,
@@ -369,6 +418,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         DoubleSyncValue calcTargetBeamEnergyeVSync = (DoubleSyncValue) syncManager
             .getSyncHandlerFromMapKey("calcTargetBeamEnergyeV:0");
         IntSyncValue calcNumCyclesSync = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("calcNumCycles:0");
+        IntSyncValue calcBoostModeSync = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("calcBoostMode:0");
 
         IKey resultKey = IKey.dynamic(
             () -> formatCalcResult(
@@ -377,7 +427,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                 calcInputBeamRateSync != null ? calcInputBeamRateSync.getIntValue() : multiblock.calcInputBeamRate,
                 calcTargetBeamEnergyeVSync != null ? calcTargetBeamEnergyeVSync.getDoubleValue()
                     : multiblock.calcTargetBeamEnergyeV,
-                calcNumCyclesSync != null ? calcNumCyclesSync.getIntValue() : multiblock.calcNumCycles));
+                calcNumCyclesSync != null ? calcNumCyclesSync.getIntValue() : multiblock.calcNumCycles,
+                calcBoostModeSync != null ? calcBoostModeSync.getIntValue() : multiblock.calcBoostMode));
 
         IKey resultHeaderKey = IKey.lang("GT5U.gui.text.LHC.calc.resultheader");
 
@@ -430,18 +481,38 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                             .size(40, 14)
                             .value(calcNumCyclesSync)
                             .setDefaultNumber(1))
-
+                    .child(new TextWidget<>(IKey.lang("GT5U.gui.text.LHC.boostmode")).textAlign(Alignment.CENTER))
+                    .child(
+                        Flow.row()
+                            .coverChildren()
+                            .childPadding(4)
+                            .child(
+                                new CycleButtonWidget().size(18, 18)
+                                    .length(3)
+                                    .value(calcBoostModeSync)
+                                    .overlay(GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
+                                    .tooltipDynamic(
+                                        t -> t.addLine(IKey.lang(boostModeLangKey(calcBoostModeSync.getIntValue()))))
+                                    .tooltipAutoUpdate(true))
+                            .child(
+                                new TextWidget<>(
+                                    IKey.dynamic(
+                                        () -> StatCollector
+                                            .translateToLocal(boostModeLangKey(calcBoostModeSync.getIntValue()))))
+                                                .textAlign(Alignment.CENTER)))
                     .child(new TextWidget<>(resultHeaderKey).textAlign(Alignment.CENTER))
                     .child(new TextWidget<>(resultKey).textAlign(Alignment.CENTER)));
     }
 
-    private String formatCalcResult(double inputEnergyeV, int inputRate, double targetEnergyeV, int numCycles) {
+    private String formatCalcResult(double inputEnergyeV, int inputRate, double targetEnergyeV, int numCycles,
+        int boostMode) {
         double[] result = MTELargeHadronCollider.simulateAccelerator(
             inputEnergyeV / 1000.0, // eV -> keV
             inputRate,
             targetEnergyeV / 1000.0,
             numCycles,
-            1 * SECOND); // relies on all LHC "recipes" being 20t long
+            1 * SECOND, // relies on all LHC "recipes" being 20t long
+            boostMode);
         double finalBeamEnergyKeV = result[0];
         int finalRate = (int) result[1];
         long finalEUt = (long) result[2];
