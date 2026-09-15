@@ -45,6 +45,7 @@ public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
         }
 
         Tessellator tessellator = Tessellator.instance;
+        tessellator.setBrightness(0xF000F0);
         tessellator.setColorOpaque_F(1.0f, 1.0f, 1.0f);
         renderer.enableAO = false;
 
@@ -122,46 +123,33 @@ public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
         if (!texturesLoaded()) return;
 
         Tessellator tessellator = Tessellator.instance;
-
+        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         renderer.setRenderBounds(pixel, pixel, pixel, 1 - pixel, 1 - pixel, 1 - pixel);
         tessellator.startDrawingQuads();
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, textureInner);
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, textureInner);
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, textureInner);
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, textureInner);
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, textureInner);
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, textureInner);
         tessellator.draw();
         renderer.setRenderBounds(0, 0, 0, 1, 1, 1);
         renderer.renderFromInside = true;
         tessellator.startDrawingQuads();
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, textureHalo);
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, textureHalo);
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, textureHalo);
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, textureHalo);
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, textureHalo);
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, textureHalo);
-        tessellator.setNormal(0.0f, 1.0f, 0.0f);
         tessellator.draw();
         renderer.renderFromInside = false;
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-
+        GL11.glEnable(GL11.GL_LIGHTING);
         block.setBlockBoundsForItemRender();
     }
 
