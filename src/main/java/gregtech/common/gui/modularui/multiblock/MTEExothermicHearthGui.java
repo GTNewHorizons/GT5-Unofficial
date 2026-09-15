@@ -24,6 +24,10 @@ public class MTEExothermicHearthGui extends MTEMultiBlockBaseGui<MTEExothermicHe
         syncManager.syncValue(
             "pyrotheum",
             new BooleanSyncValue(() -> multiblock.isPyroSupplied, val -> multiblock.isPyroSupplied = val).allowC2S());
+        syncManager.syncValue("overdrive", new BooleanSyncValue(()->multiblock.isOverdriveOn, val ->{
+            if(multiblock.isPyroSupplied) multiblock.isOverdriveOn=val;
+        }).allowC2S());
+
     }
 
     @Override
@@ -33,6 +37,13 @@ public class MTEExothermicHearthGui extends MTEMultiBlockBaseGui<MTEExothermicHe
                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_PYROTHEUM_ON)
                 .overlay(false, GTGuiTextures.OVERLAY_BUTTON_PYROTHEUM_OFF)
                 .tooltip(true, t -> t.add(translateToLocal("GT5U.gui.text.button.pyrotheum.enabled")))
-                .tooltip(false, t -> t.add(translateToLocal("GT5U.gui.text.button.pyrotheum.disabled"))));
+                .tooltip(false, t -> t.add(translateToLocal("GT5U.gui.text.button.pyrotheum.disabled"))))
+            .child(
+                new ToggleButton().syncHandler("overdrive")
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_PYROTHEUM_ON)
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_PYROTHEUM_OFF)
+                    .tooltip(true, t -> t.add(translateToLocal("GT5U.gui.text.button.overdrive.enabled")))
+                    .tooltip(false, t -> t.add(translateToLocal("GT5U.gui.text.button.overdrive.disabled"))))
+            ;
     }
 }
