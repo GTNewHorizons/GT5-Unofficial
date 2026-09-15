@@ -183,9 +183,7 @@ public class MTEBioLab extends MTEBasicMachine {
     @Override
     public String getLocalName() {
         if (!hasOwnLocalName()) return super.getLocalName();
-        final String key = "tile.biolab.tier." + String.format("%02d", mTier) + ".name";
-        final String name = StatCollector.translateToLocal(key);
-        return name.equals(key) ? StatCollector.translateToLocal("tile.biolab.name") + " " + GTValues.VN[mTier] : name;
+        return StatCollector.translateToLocal("tile.biolab.tier." + mTier + ".name");
     }
 
     @Override
