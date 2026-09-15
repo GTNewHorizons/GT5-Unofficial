@@ -397,7 +397,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     FluidStack[] fluids = inputFluids;
                     for (FluidStack fluid : fluids) {
                         if (fluid.getFluid()
-                            .equals(mNeptunium) && circuit >= 0 && circuit < outputCount) {
+                            .equals(mNeptunium) && circuit >= 0
+                            && circuit < outputCount) {
                             doNeptunium = true;
                         }
                         if (fluid.getFluid()
