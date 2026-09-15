@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -16,6 +18,7 @@ import org.mockito.MockedStatic;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.graphs.PowerNode;
+import gregtech.api.metatileentity.implementations.MTECable;
 
 class BaseMetaPipeEntityTest {
 
@@ -42,6 +45,38 @@ class BaseMetaPipeEntityTest {
             pipe.updateConnections();
 
             assertNull(pipe.getNode());
+            api.verify(() -> GregTechAPI.causeCableUpdate(world, 10, 20, 30));
+            api.verifyNoMoreInteractions();
+        }
+    }
+
+    @Test
+    void cableConnectionChangeImmediatelyRebuildsPowerNode() {
+        final BaseMetaPipeEntity pipe = new BaseMetaPipeEntity();
+        final World world = mock(World.class);
+        pipe.setWorldObj(world);
+        pipe.xCoord = 10;
+        pipe.yCoord = 20;
+        pipe.zCoord = 30;
+        pipe.mConnections = (byte) ForgeDirection.WEST.flag;
+        final MTECable cable = mock(MTECable.class);
+        when(cable.getBaseMetaTileEntity()).thenReturn(pipe);
+        pipe.setMetaTileEntity(cable);
+        cable.mConnections = 0;
+
+        final MinecraftServer server = mock(MinecraftServer.class);
+        try (MockedStatic<MinecraftServer> minecraft = mockStatic(MinecraftServer.class);
+            MockedStatic<GregTechAPI> api = mockStatic(GregTechAPI.class)) {
+            minecraft.when(MinecraftServer::getServer)
+                .thenReturn(server);
+            when(server.getTickCounter()).thenReturn(1);
+            final PowerNode oldNode = new PowerNode(0, pipe, new ArrayList<>());
+            pipe.setNode(oldNode);
+
+            pipe.updateConnections();
+
+            assertNotNull(pipe.getNode());
+            assertNotSame(oldNode, pipe.getNode());
             api.verify(() -> GregTechAPI.causeCableUpdate(world, 10, 20, 30));
             api.verifyNoMoreInteractions();
         }
