@@ -55,6 +55,7 @@ public class MaterialsInit {
         loadSuperconductors();
         loadWaterLineChemicals();
         loadRadoxLine();
+        loadGrowthMediumLine();
         loadNetheriteLine();
         loadPrismaticAcidLine();
         loadAcidRecipes();
@@ -14108,6 +14109,20 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x00cec8c4)
             .addFluid()
+            .constructMaterial();
+    }
+
+    private static void loadGrowthMediumLine() {
+        Materials.Glucose = loadGlucose();
+    }
+
+    private static Materials loadGlucose() {
+        return new MaterialBuilder().setName("Glucose")
+            .setDefaultLocalName("Glucose")
+            .setIconSet(TextureSet.SET_DULL)
+            .setARGB(0x00ffffe0)
+            .addFluid()
+            .addCell()
             .constructMaterial();
     }
 
