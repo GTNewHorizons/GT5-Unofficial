@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
@@ -100,7 +101,9 @@ public class GTGenericItem extends Item implements IProjectileItem {
             tooltip.add(GTLanguageManager.getTranslation(this.mTooltip));
         }
         if (GTModHandler.isElectricItem(stack)) {
-            tooltip.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", this.getTier(stack)));
+            tooltip.add(
+                StatCollector
+                    .translateToLocalFormatted("GT5U.tooltip.electric.tier.s", formatNumber(this.getTier(stack))));
         }
     }
 

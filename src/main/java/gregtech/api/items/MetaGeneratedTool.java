@@ -686,7 +686,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + translateToLocalFormatted(
                             "gt.item.desc.level",
                             tMaterial.getLocalizedName() + EnumChatFormatting.YELLOW,
-                            "" + getHarvestLevel(aStack, ""))
+                            formatNumber(getHarvestLevel(aStack, "")))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,

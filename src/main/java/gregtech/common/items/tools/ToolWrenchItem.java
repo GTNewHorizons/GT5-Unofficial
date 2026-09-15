@@ -515,7 +515,7 @@ public class ToolWrenchItem extends GTGenericItem implements IGTTool, IDamagable
                 + translateToLocalFormatted(
                     "gt.item.desc.level",
                     material.getLocalizedName() + EnumChatFormatting.YELLOW,
-                    "" + getHarvestLevel(stack, ""))
+                    formatNumber(getHarvestLevel(stack, "")))
                 + EnumChatFormatting.GRAY);
         list.add(
             EnumChatFormatting.WHITE

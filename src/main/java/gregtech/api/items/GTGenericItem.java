@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.List;
@@ -106,8 +107,8 @@ public class GTGenericItem extends Item implements IProjectileItem {
                 GTSplit.splitLocalizedFormatted(aList, mTooltip);
             }
         }
-        if (GTModHandler.isElectricItem(aStack))
-            aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", getTier(aStack)));
+        if (GTModHandler.isElectricItem(aStack)) aList.add(
+            StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier.s", formatNumber(getTier(aStack))));
         addAdditionalToolTips(aList, aStack, aPlayer);
     }
 

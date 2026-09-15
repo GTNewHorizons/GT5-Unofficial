@@ -1,13 +1,22 @@
 package gregtech.common.items.tools;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import java.util.List;
+
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.util.GTModHandler;
@@ -75,6 +84,43 @@ public class ToolWrenchElectricItem extends ToolWrenchItem implements ISpecialEl
         if (stack == null) return null;
         if (maxCharge > 0 && maxCharge != this.maxCharge) ItemStackNBT.setLong(stack, MAX_CHARGE_KEY, maxCharge);
         return stack;
+    }
+
+    /* ---------- DISPLAY ---------- */
+
+    /**
+     * Shows the stored energy where the hand wrench shows its durability. Without this an electric wrench would
+     * report nothing at all, since {@link gregtech.api.items.GTGenericItem} only knows how to describe a damage bar and
+     * these have none.
+     */
+    @Override
+    protected void addAdditionalToolTips(List<String> list, ItemStack stack, EntityPlayer player) {
+        if (getToolMaterial(stack) != Materials._NULL) {
+            list.add(
+                EnumChatFormatting.AQUA
+                    + translateToLocalFormatted(
+                        "gt.item.desc.eu_info",
+                        formatNumber(getRealCharge(stack)),
+                        formatNumber(getMaxChargeValue(stack)),
+                        formatNumber(voltage))
+                    + EnumChatFormatting.GRAY);
+        }
+        super.addAdditionalToolTips(list, stack, player);
+    }
+
+    /**
+     * Hands out fully charged wrenches, so that one spawned from NEI or the creative tab is usable straight away
+     * rather than being a flat battery.
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item item, CreativeTabs creativeTab, List list) {
+        final int firstAdded = list.size();
+        super.getSubItems(item, creativeTab, list);
+        for (int i = firstAdded; i < list.size(); i++) {
+            ItemStack stack = (ItemStack) list.get(i);
+            setCharge(stack, getMaxChargeValue(stack));
+        }
     }
 
     /* ---------- NO DURABILITY ---------- */
