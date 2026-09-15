@@ -227,6 +227,34 @@ public class MaterialsFluorides {
         new MaterialStack(MaterialsElements.getInstance().SELENIUM, 1),
         new MaterialStack(MaterialsElements.getInstance().FLUORINE, 6));
 
+    // NpO2F2 (neptunyl fluoride) - LFTR byproduct reprocessing intermediate
+    public static final Material NEPTUNYL_FLUORIDE = new Material(
+        "Neptunyl Fluoride",
+        MaterialState.SOLID,
+        new short[] { 0xf2, 0xa0, 0xb4 }, // pink-ish
+        -1,
+        -1,
+        -1,
+        -1,
+        false,
+        new MaterialStack(MaterialsElements.getInstance().NEPTUNIUM, 1),
+        new MaterialStack(MaterialsElements.getInstance().OXYGEN, 2),
+        new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2));
+
+    // UO2F2 (uranyl fluoride) - LFTR byproduct reprocessing intermediate
+    public static final Material URANYL_FLUORIDE = new Material(
+        "Uranyl Fluoride",
+        MaterialState.SOLID,
+        new short[] { 0xff, 0x8c, 0x00 }, // bright orange
+        -1,
+        -1,
+        -1,
+        -1,
+        false,
+        new MaterialStack(MaterialsElements.getInstance().URANIUM233, 1),
+        new MaterialStack(MaterialsElements.getInstance().OXYGEN, 2),
+        new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2));
+
     public static final Material SODIUM_FLUORIDE = new Material(
         "Sodium Fluoride", // Material Name
         MaterialState.PURE_LIQUID, // State
