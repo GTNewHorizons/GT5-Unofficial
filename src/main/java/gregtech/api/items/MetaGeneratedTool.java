@@ -43,8 +43,6 @@ import net.minecraftforge.event.world.BlockEvent;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
-import appeng.api.implementations.items.IAEWrench;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -56,6 +54,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
@@ -76,11 +75,10 @@ import mrtjp.projectred.api.IScrewdriver;
 @Optional.InterfaceList(
     value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.ModIDs.FORESTRY),
         @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.ModIDs.RAILCRAFT),
-        @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.ModIDs.BUILD_CRAFT_CORE),
         @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O),
         @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.ModIDs.PROJECT_RED_CORE), })
 public abstract class MetaGeneratedTool extends MetaBaseItem
-    implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
+    implements IDamagableItem, IGTTool, IToolGrafter, IToolCrowbar, ITool, IScrewdriver {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -113,13 +111,65 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     /* ---------- FOR ADDING CUSTOM ITEMS INTO THE REMAINING 766 RANGE ---------- */
 
+    /**
+     * Resolves the head material of any GregTech tool, whether it keeps the material in NBT (this class) or in the
+     * stack's metadata (the standalone items in {@code gregtech.common.items.tools}). Every {@link IToolStats}
+     * implementation calls this, so both families work with the same stats objects.
+     */
     public static Materials getPrimaryMaterial(ItemStack aStack) {
+        if (aStack == null) return Materials._NULL;
+        if (aStack.getItem() instanceof IGTTool tTool) return tTool.getToolMaterial(aStack);
+        return getPrimaryMaterialFromNBT(aStack);
+    }
+
+    private static Materials getPrimaryMaterialFromNBT(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
             if (aNBT != null) return Materials.getRealMaterial(aNBT.getString("PrimaryMaterial"));
         }
         return Materials._NULL;
+    }
+
+    @Override
+    public Materials getToolMaterial(ItemStack aStack) {
+        return getPrimaryMaterialFromNBT(aStack);
+    }
+
+    @Override
+    public long getStoredDamage(ItemStack aStack) {
+        return getToolDamage(aStack);
+    }
+
+    @Override
+    public long getMaxStoredDamage(ItemStack aStack) {
+        return getToolMaxDamage(aStack);
+    }
+
+    @Override
+    public long getStoredCharge(ItemStack aStack) {
+        return getElectricStats(aStack) == null ? 0 : getRealCharge(aStack);
+    }
+
+    @Override
+    public long getMaxStoredCharge(ItemStack aStack) {
+        Long[] tStats = getElectricStats(aStack);
+        return tStats == null ? 0 : Math.abs(tStats[0]);
+    }
+
+    @Override
+    public byte getMode(ItemStack aStack) {
+        return getToolMode(aStack);
+    }
+
+    @Override
+    public boolean setMode(ItemStack aStack, byte aMode) {
+        return setToolMode(aStack, aMode);
+    }
+
+    @Override
+    public byte getMaxMode(ItemStack aStack) {
+        return getToolMaxMode(aStack);
     }
 
     public static Materials getSecondaryMaterial(ItemStack aStack) {
@@ -185,11 +235,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 .orElse((byte) 0);
         }
 
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("GT.ToolStats");
-            if (aNBT != null) return aNBT.getByte("Mode");
+        if (aStack.getItem() instanceof MetaGeneratedTool) {
+            NBTTagCompound aNBT = aStack.getTagCompound();
+            if (aNBT != null) {
+                aNBT = aNBT.getCompoundTag("GT.ToolStats");
+                if (aNBT != null) return aNBT.getByte("Mode");
+            }
+            return 0;
         }
+        if (aStack.getItem() instanceof IGTTool tTool) return tTool.getMode(aStack);
         return 0;
     }
 
@@ -200,11 +254,11 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     public static void switchToolMode(final ItemStack currentItem) {
-        if (currentItem == null || (!(currentItem.getItem() instanceof MetaGeneratedTool item))) return;
-        byte maxMode = item.getToolMaxMode(currentItem);
+        if (currentItem == null || (!(currentItem.getItem() instanceof IGTTool item))) return;
+        byte maxMode = item.getMaxMode(currentItem);
         if (maxMode <= 1) return;
-        byte newMode = (byte) ((MetaGeneratedTool.getToolMode(currentItem) + 1) % maxMode);
-        MetaGeneratedTool.setToolMode(currentItem, newMode);
+        byte newMode = (byte) ((item.getMode(currentItem) + 1) % maxMode);
+        item.setMode(currentItem, newMode);
     }
 
     /**
@@ -836,26 +890,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         if (tStats != null) doDamage(aStack, tStats.getToolDamagePerEntityAttack());
     }
 
-    @Override
-    public boolean canWrench(EntityPlayer player, int x, int y, int z) {
-        if (player == null) return false;
-        return canWrench(player.getHeldItem(), player, x, y, z);
-    }
-
-    @Override
-    public boolean canWrench(ItemStack wrench, EntityPlayer player, int x, int y, int z) {
-        if (wrench == null) return false;
-        if (!isItemStackUsable(wrench)) return false;
-        IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
-        return tStats != null && tStats.isWrench();
-    }
-
-    @Override
-    public void wrenchUsed(EntityPlayer player, int x, int y, int z) {}
-
+    // EnderIO ITool. Only wrenches ever qualified, and the wrench is its own item now.
     @Override
     public boolean canUse(ItemStack stack, EntityPlayer player, int x, int y, int z) {
-        return canWrench(player, x, y, z);
+        return false;
     }
 
     // ProjectRed screwdriver
@@ -878,13 +916,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     @Override
     public void used(ItemStack stack, EntityPlayer player, int x, int y, int z) {}
 
+    // EnderIO IHideFacades, reached through ITool. Only wrenches ever hid facades, and the wrench is its own item now.
     @Override
     public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
-        if (player == null) return false;
-        if (player.getCurrentEquippedItem() == null) return false;
-        if (!isItemStackUsable(player.getCurrentEquippedItem())) return false;
-        IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
-        return tStats.isWrench();
+        return false;
     }
 
     @Override
@@ -920,6 +955,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         super.onCreated(aStack, aWorld, aPlayer);
     }
 
+    @Override
     public float getBlockStrength(ItemStack stack, Block block, EntityPlayer player, World world, int x, int y, int z,
         float defaultBlockStrength) {
         IToolStats toolStats = getToolStats(stack);

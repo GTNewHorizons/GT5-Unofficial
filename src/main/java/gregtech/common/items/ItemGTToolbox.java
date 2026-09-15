@@ -55,6 +55,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.item.IPickBlockHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -71,6 +72,7 @@ import gregtech.common.items.toolbox.ToolboxItemStackHandler;
 import gregtech.common.items.toolbox.ToolboxPickBlockDecider;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.items.toolbox.pickblock.PickResults;
+import gregtech.common.items.tools.ToolWrenchItem;
 import gregtech.crossmod.backhand.Backhand;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -262,9 +264,13 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                     "GT5U.item.toolbox.name_template.mode",
                     base,
                     toolName,
-                    potentialTool.map(currentTool -> currentTool.getItem() instanceof final MetaGeneratedTool mgToolItem
-                        ? mgToolItem.getToolModeName(currentTool)
-                        : "").orElse(""))
+                    potentialTool.map(currentTool -> {
+                        if (currentTool.getItem() instanceof final MetaGeneratedTool mgToolItem)
+                            return mgToolItem.getToolModeName(currentTool);
+                        if (currentTool.getItem() instanceof final ToolWrenchItem wrenchItem)
+                            return wrenchItem.getToolModeName(currentTool);
+                        return "";
+                    }).orElse(""))
                     : StatCollector.translateToLocalFormatted("GT5U.item.toolbox.name_template", base, toolName);
             })
             .orElse(base);
@@ -306,14 +312,19 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             // noinspection OptionalGetWithoutIsPresent
             final ItemStack tool = ToolboxUtil.getSelectedTool(toolbox)
                 .get();
-            final long maxDamage = MetaGeneratedTool.getToolMaxDamage(tool);
+            long maxDamage = 0;
+            long currentDamage = 0;
 
-            if (tool.getItem() instanceof final MetaGeneratedTool toolItem) {
-                final Long[] electricStats = toolItem.getElectricStats(tool);
-                if (electricStats != null) {
-                    charge += toolItem.getRealCharge(tool);
-                    maxCharge += Math.abs(electricStats[0]);
-                    voltageTier = (int) GTUtility.clamp(electricStats[2], 0, V.length - 1);
+            if (tool.getItem() instanceof final IGTTool toolItem) {
+                maxDamage = toolItem.getMaxStoredDamage(tool);
+                currentDamage = toolItem.getStoredDamage(tool);
+                final long toolMaxCharge = toolItem.getMaxStoredCharge(tool);
+                if (toolMaxCharge > 0) {
+                    charge += toolItem.getStoredCharge(tool);
+                    maxCharge += toolMaxCharge;
+                    if (tool.getItem() instanceof final IElectricItem electricTool) {
+                        voltageTier = GTUtility.clamp(electricTool.getTier(tool), 0, V.length - 1);
+                    }
                 }
             }
 
@@ -331,9 +342,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                         "GT5U.item.toolbox.tooltip.tool_durability",
                         StatCollector.translateToLocalFormatted(
                             "gt.item.desc.durability",
-                            EnumChatFormatting.GREEN + formatNumber(
-                                maxDamage - MetaGeneratedTool.getToolDamage(tool)
-                            ) + " ", " " + formatNumber(maxDamage))) + EnumChatFormatting.GRAY);
+                            EnumChatFormatting.GREEN + formatNumber(maxDamage - currentDamage) + " ",
+                            " " + formatNumber(maxDamage))) + EnumChatFormatting.GRAY);
         }
 
         final Optional<ItemStack> battery = ToolboxUtil.getBattery(toolbox);
@@ -447,7 +457,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         }
 
         return ToolboxUtil.getSelectedTool(toolbox).map(toolStack -> {
-            if (toolStack.getItem() instanceof final MetaGeneratedTool tool) {
+            if (toolStack.getItem() instanceof final IDamagableItem tool) {
                 final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
 
                 if (tool.doDamageToItem(toolStack, vanillaDamage)) {
@@ -669,7 +679,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
     public void onBlockBreakingEvent(BlockEvent.BreakEvent event) {
         getToolboxIfEquipped(event.getPlayer()).flatMap(ToolboxUtil::getSelectedTool).ifPresent(tool -> {
-            if (tool.getItem() instanceof final MetaGeneratedTool toolItem) {
+            if (tool.getItem() instanceof final IGTTool toolItem) {
                 IToolStats stats = toolItem.getToolStats(tool);
                 if (stats != null) {
                     TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
@@ -682,7 +692,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent aEvent) {
         getToolboxIfEquipped(aEvent.harvester).flatMap(ToolboxUtil::getSelectedTool)
             .ifPresent(tool -> {
-                if ((tool.getItem() instanceof MetaGeneratedTool toolItem)) {
+                if ((tool.getItem() instanceof IGTTool toolItem)) {
                     toolItem.onHarvestBlockEvent(
                         aEvent.drops,
                         tool,
@@ -704,15 +714,17 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     // region Vanilla Tool Harvesting Methods
     @Override
     public boolean canHarvestBlock(final Block block, final ItemStack toolbox) {
-        return ToolboxUtil.getSelectedTool(toolbox).map(
-            tool -> tool.getItem() instanceof final MetaGeneratedTool toolItem && toolItem.canHarvestBlock(block, tool))
+        return ToolboxUtil.getSelectedTool(toolbox)
+            .map(
+                tool -> tool.getItem() instanceof IGTTool && tool.getItem()
+                    .canHarvestBlock(block, tool))
             .orElse(false);
     }
 
     @Override
     public float getDigSpeed(final ItemStack toolbox, final Block block, final int metadata) {
         return ToolboxUtil.getSelectedTool(toolbox)
-            .filter(tool -> tool.getItem() instanceof MetaGeneratedTool)
+            .filter(tool -> tool.getItem() instanceof IGTTool)
             .map(
                 tool -> tool.getItem()
                     .getDigSpeed(tool, block, metadata))
@@ -766,7 +778,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     @Override
     public int getHarvestLevel(final ItemStack toolbox, final String toolClass) {
         return ToolboxUtil.getSelectedTool(toolbox)
-            .filter(tool -> tool.getItem() instanceof MetaGeneratedTool)
+            .filter(tool -> tool.getItem() instanceof IGTTool)
             .map(
                 tool -> tool.getItem()
                     .getHarvestLevel(tool, toolClass))

@@ -8,9 +8,11 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TCAspects;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.tools.GTToolItems;
 
 public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -41,11 +43,17 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
             && (!aMaterial.contains(SubTag.NO_SMASHING))) {
             // Crafting recipes
             {
-                GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE
-                        .getToolWithStats(IDMetaTool01.WRENCH.ID, 1, aMaterial, aMaterial, null),
-                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "IhI", "III", " I ", 'I', OrePrefixes.ingot.get(aMaterial) });
+                ItemStack tWrench = GTToolItems.WRENCH.registerMaterial(
+                    aMaterial,
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
+                if (tWrench != null) {
+                    GTModHandler.addCraftingRecipe(
+                        tWrench,
+                        GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                        new Object[] { "IhI", "III", " I ", 'I', OrePrefixes.ingot.get(aMaterial) });
+                }
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE
                         .getToolWithStats(IDMetaTool01.CROWBAR.ID, 1, aMaterial, aMaterial, null),

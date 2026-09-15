@@ -76,6 +76,7 @@ import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.hazards.HazardProtectionTooltip;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.IUpdatePlayerMovement;
 import gregtech.api.items.CircuitComponentFakeItem;
@@ -114,6 +115,7 @@ import gregtech.common.entity.EntityDrone;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
+import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.misc.GTCapeCommand;
 import gregtech.common.misc.GTPowerfailCommandClient;
 import gregtech.common.networkanalyzer.events.WorldOverlayRenderer;
@@ -240,6 +242,11 @@ public class GTClient extends GTProxy {
                 MinecraftForgeClient.registerItemRenderer(tItem, metaToolRenderer);
             }
         }
+        // The standalone tool items render the same way: a material-tinted head over a handle.
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.WRENCH, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.WRENCH_LV, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.WRENCH_MV, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.WRENCH_HV, metaToolRenderer);
 
         MinecraftForgeClient.registerItemRenderer(CircuitComponentFakeItem.INSTANCE, new CircuitComponentItemRenderer());
 
@@ -506,10 +513,12 @@ public class GTClient extends GTProxy {
         if (this.mTicksUntilNextCraftSound > 0) return;
         for (int i = 0; i < event.craftMatrix.getSizeInventory(); i++) {
             ItemStack stack = event.craftMatrix.getStackInSlot(i);
-            if (stack != null && stack.getItem() instanceof MetaGeneratedTool mgt) {
+            if (stack != null && stack.getItem() instanceof IGTTool mgt) {
                 IToolStats tStats = mgt.getToolStats(stack);
-                boolean playBreak = (MetaGeneratedTool.getToolDamage(stack) + tStats.getToolDamagePerContainerCraft())
-                    >= MetaGeneratedTool.getToolMaxDamage(stack);
+                if (tStats == null) continue;
+                long maxDamage = mgt.getMaxStoredDamage(stack);
+                boolean playBreak = maxDamage > 0
+                    && (mgt.getStoredDamage(stack) + tStats.getToolDamagePerContainerCraft()) >= maxDamage;
                 String sound = playBreak ? tStats.getBreakingSound() : tStats.getCraftingSound();
                 GTUtility.doSoundAtClient(sound, 1, 1.0F);
                 this.mTicksUntilNextCraftSound = 10;

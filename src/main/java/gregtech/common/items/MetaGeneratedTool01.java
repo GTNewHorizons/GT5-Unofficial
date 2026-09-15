@@ -50,10 +50,6 @@ import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
 import static gregtech.common.items.IDMetaTool01.WIRECUTTER_HV;
 import static gregtech.common.items.IDMetaTool01.WIRECUTTER_LV;
 import static gregtech.common.items.IDMetaTool01.WIRECUTTER_MV;
-import static gregtech.common.items.IDMetaTool01.WRENCH;
-import static gregtech.common.items.IDMetaTool01.WRENCH_HV;
-import static gregtech.common.items.IDMetaTool01.WRENCH_LV;
-import static gregtech.common.items.IDMetaTool01.WRENCH_MV;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -118,10 +114,6 @@ import gregtech.common.tools.ToolWireCutter;
 import gregtech.common.tools.ToolWireCutterHV;
 import gregtech.common.tools.ToolWireCutterLV;
 import gregtech.common.tools.ToolWireCutterMV;
-import gregtech.common.tools.ToolWrench;
-import gregtech.common.tools.ToolWrenchHV;
-import gregtech.common.tools.ToolWrenchLV;
-import gregtech.common.tools.ToolWrenchMV;
 import gregtech.common.tools.pocket.ToolPocketBranchCutter;
 import gregtech.common.tools.pocket.ToolPocketFile;
 import gregtech.common.tools.pocket.ToolPocketKnife;
@@ -171,17 +163,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L)),
             GregTechAPI.sSoftMalletList);
-        GregTechAPI.registerTool(
-            addTool(
-                WRENCH.ID,
-                "Wrench",
-                "Hold Leftclick to dismantle Machines",
-                new ToolWrench(),
-                ToolDictNames.craftingToolWrench,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-            GregTechAPI.sWrenchList);
         addTool(
             FILE.ID,
             "File",
@@ -340,36 +321,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
             new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
             new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
-        GregTechAPI.registerTool(
-            addTool(
-                WRENCH_LV.ID,
-                "",
-                "",
-                new ToolWrenchLV(),
-                ToolDictNames.craftingToolWrench,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-            GregTechAPI.sWrenchList);
-        GregTechAPI.registerTool(
-            addTool(
-                WRENCH_MV.ID,
-                "",
-                "",
-                new ToolWrenchMV(),
-                ToolDictNames.craftingToolWrench,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-            GregTechAPI.sWrenchList);
-        GregTechAPI.registerTool(
-            addTool(
-                WRENCH_HV.ID,
-                "",
-                "",
-                new ToolWrenchHV(),
-                ToolDictNames.craftingToolWrench,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-            GregTechAPI.sWrenchList);
         GregTechAPI.registerTool(
             addTool(
                 JACKHAMMER_LV.ID,
@@ -674,12 +625,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             CHAINSAW_LV.ID,
             CHAINSAW_MV.ID,
             CHAINSAW_HV.ID);
-        addTieredFamily(
-            "gt.metatool.01.wrench.name",
-            "gt.metatool.01.wrench.tooltip",
-            WRENCH_LV.ID,
-            WRENCH_MV.ID,
-            WRENCH_HV.ID);
         addTieredFamily(
             "gt.metatool.01.jackhammer.name",
             "gt.metatool.01.jackhammer.tooltip",

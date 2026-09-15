@@ -17,7 +17,6 @@ import static gregtech.common.items.IDMetaTool01.SAW;
 import static gregtech.common.items.IDMetaTool01.SCREWDRIVER;
 import static gregtech.common.items.IDMetaTool01.SOFTMALLET;
 import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
-import static gregtech.common.items.IDMetaTool01.WRENCH;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
@@ -36,6 +35,7 @@ import ggfab.util.GGUtils;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.common.items.tools.GTToolItems;
 
 @Mod(
     modid = Mods.ModIDs.G_G_FAB,
@@ -74,8 +74,7 @@ public class GigaGramFab {
             long plate = OrePrefixes.plate.getMaterialAmount(), ingot = OrePrefixes.ingot.getMaterialAmount(),
                 screw = OrePrefixes.screw.getMaterialAmount(), rod = OrePrefixes.stick.getMaterialAmount();
             GigaGramFabAPI.addSingleUseToolType(craftingToolFile, INSTANCE.mToolStats.get((short) FILE.ID), 2 * plate);
-            GigaGramFabAPI
-                .addSingleUseToolType(craftingToolWrench, INSTANCE.mToolStats.get((short) WRENCH.ID), 6 * ingot);
+            GigaGramFabAPI.addSingleUseToolType(craftingToolWrench, GTToolItems.WRENCH.getToolStats(), 6 * ingot);
             GigaGramFabAPI
                 .addSingleUseToolType(craftingToolCrowbar, INSTANCE.mToolStats.get((short) CROWBAR.ID), 3 * rod);
             GigaGramFabAPI.addSingleUseToolType(

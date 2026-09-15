@@ -14,6 +14,7 @@ import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
@@ -35,7 +36,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
-        MetaGeneratedTool item = (MetaGeneratedTool) stack.getItem();
+        IGTTool item = stack.getItem() instanceof IGTTool tool ? tool : null;
         GL11.glEnable(GL11.GL_BLEND);
         ItemRenderUtil.applyStandardItemTransform(type);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
@@ -47,10 +48,10 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
 
             if ((type == ItemRenderType.INVENTORY)
                 && (MetaGeneratedTool.getPrimaryMaterial(stack) != Materials._NULL)) {
-                if (GTMod.proxy.mRenderItemDurabilityBar) {
+                long maxDamage = item.getMaxStoredDamage(stack);
+                if (GTMod.proxy.mRenderItemDurabilityBar && maxDamage > 0L) {
                     IIconContainer iconContainer;
-                    long damage = MetaGeneratedTool.getToolDamage(stack);
-                    long maxDamage = MetaGeneratedTool.getToolMaxDamage(stack);
+                    long damage = item.getStoredDamage(stack);
                     if (damage <= 0L) {
                         iconContainer = Textures.ItemIcons.DURABILITY_BAR[8];
                     } else if (damage >= maxDamage) {
@@ -64,16 +65,16 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
 
                 if (GTMod.proxy.mRenderItemChargeBar) {
                     IIconContainer iconContainer;
-                    Long[] stats = item.getElectricStats(stack);
-                    if ((stats != null) && (stats[3] < 0L)) {
-                        long tCharge = item.getRealCharge(stack);
-                        if (tCharge <= 0L) {
+                    long maxCharge = item.getMaxStoredCharge(stack);
+                    if (maxCharge > 0L) {
+                        long charge = item.getStoredCharge(stack);
+                        if (charge <= 0L) {
                             iconContainer = Textures.ItemIcons.ENERGY_BAR[0];
-                        } else if (tCharge >= stats[0]) {
+                        } else if (charge >= maxCharge) {
                             iconContainer = Textures.ItemIcons.ENERGY_BAR[8];
                         } else {
                             iconContainer = Textures.ItemIcons.ENERGY_BAR[(7
-                                - (int) Math.max(0L, Math.min(6L, (stats[0] - tCharge) * 7L / stats[0])))];
+                                - (int) Math.max(0L, Math.min(6L, (maxCharge - charge) * 7L / maxCharge)))];
                         }
                     } else {
                         iconContainer = null;

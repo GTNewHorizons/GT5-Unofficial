@@ -18,6 +18,7 @@ import com.google.common.collect.Maps;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -170,19 +171,23 @@ public enum ToolboxSlot {
 
     private static Predicate<ItemStack> isItemInToolSet(GTHashSet... toolSet) {
         return (ItemStack itemStack) -> {
-            if (toolSet.length == 0 || !(itemStack.getItem() instanceof final MetaGeneratedTool mgTool)
-                || BANNED_TOOLS.contains(mgTool.getToolStats(itemStack).getClass())
-                || GTMod.proxy.toolboxBans.contains(mgTool)
-            ) {
+            if (toolSet.length == 0 || !(itemStack.getItem() instanceof final IGTTool tool)) {
+                return false;
+            }
+            final IToolStats stats = tool.getToolStats(itemStack);
+            if (stats == null || BANNED_TOOLS.contains(stats.getClass())
+                || GTMod.proxy.toolboxBans.contains(itemStack.getItem())) {
                 return false;
             }
 
-            final Long[] electricStats = mgTool.getElectricStats(itemStack);
             ItemStack copy = itemStack;
 
-            // Uncharged items aren't recognized as a valid tool, normally. Get around this by adding 1 EU to a copy of
-            // the tool, so we can determine if it's actually a tool of the relevant type.
-            if (electricStats != null && mgTool.getRealCharge(itemStack) == 0) {
+            // A discharged metadata-based electric tool sits on an "empty" metadata that is not in the tool lists, so
+            // it would not be recognized. Get around this by adding 1 EU to a copy of the tool. The standalone tool
+            // items keep the same metadata whatever their charge, so they need no such dance.
+            if (itemStack.getItem() instanceof final MetaGeneratedTool mgTool
+                && mgTool.getElectricStats(itemStack) != null
+                && mgTool.getRealCharge(itemStack) == 0) {
                 copy = itemStack.copy();
                 mgTool.charge(copy, 1, Integer.MAX_VALUE, true, false);
             }

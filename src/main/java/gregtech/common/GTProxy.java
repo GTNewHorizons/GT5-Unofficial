@@ -130,6 +130,7 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.fluid.GTFluidFactory;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -1495,7 +1496,7 @@ public class GTProxy implements IFuelHandler {
             .getCurrentEquippedItem();
         if (item == null) return;
 
-        if (item.getItem() instanceof MetaGeneratedTool tool) {
+        if (item.getItem() instanceof IGTTool tool) {
             IToolStats stats = tool.getToolStats(item);
             if (stats == null) return;
 
@@ -1513,7 +1514,7 @@ public class GTProxy implements IFuelHandler {
         ItemStack aStack = aEvent.harvester.getCurrentEquippedItem();
         if (aStack == null) return;
 
-        if ((aStack.getItem() instanceof MetaGeneratedTool tool)) {
+        if ((aStack.getItem() instanceof IGTTool tool)) {
             tool.onHarvestBlockEvent(
                 aEvent.drops,
                 aStack,
@@ -2504,8 +2505,8 @@ public class GTProxy implements IFuelHandler {
     public void onBlockBreakSpeedEvent(PlayerEvent.BreakSpeed aEvent) {
         if (aEvent.entityPlayer != null) {
             ItemStack aStack = aEvent.entityPlayer.getCurrentEquippedItem();
-            if ((aStack != null) && ((aStack.getItem() instanceof MetaGeneratedTool))) {
-                aEvent.newSpeed = ((MetaGeneratedTool) aStack.getItem()).onBlockBreakSpeedEvent(
+            if ((aStack != null) && ((aStack.getItem() instanceof IGTTool tool))) {
+                aEvent.newSpeed = tool.onBlockBreakSpeedEvent(
                     aEvent.newSpeed,
                     aStack,
                     aEvent.entityPlayer,

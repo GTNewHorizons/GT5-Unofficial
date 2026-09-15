@@ -165,6 +165,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IBlockContainer;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IHasIndexedTexture;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.ITexture;
@@ -173,7 +174,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemEnergyArmor;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
@@ -3236,7 +3236,7 @@ public class GTUtility {
             }
         }
 
-        inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
+        inputs.removeIf(x -> x.getItem() instanceof IGTTool);
 
         return Optional.of(
             new GTRecipe(
@@ -3315,7 +3315,7 @@ public class GTUtility {
         }
 
         // Remove tools from inputs in case a recipe has one as a direct Item or ItemStack reference
-        inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
+        inputs.removeIf(x -> x.getItem() instanceof IGTTool);
 
         return Optional.of(
             new GTRecipe(

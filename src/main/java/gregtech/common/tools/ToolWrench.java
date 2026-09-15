@@ -33,8 +33,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
-import gregtech.common.items.behaviors.BehaviourSwitchMode;
-import gregtech.common.items.behaviors.BehaviourWrench;
+import gregtech.common.items.tools.WrenchRotation;
 import ic2.api.tile.IWrenchable;
 
 public class ToolWrench extends GTTool {
@@ -91,7 +90,7 @@ public class ToolWrench extends GTTool {
             || GTToolHarvestHelper.isAppropriateMaterial(block, Material.piston)
             || block instanceof AEBaseTileBlock
             || GTToolHarvestHelper.isSpecialBlock(block, Blocks.crafting_table, Blocks.bookshelf)
-            || BehaviourWrench.isVanillaRotatable(block)
+            || WrenchRotation.isVanillaRotatable(block)
             || GTToolHarvestHelper.isIC2Wrenchable(block);
     }
 
@@ -106,12 +105,6 @@ public class ToolWrench extends GTTool {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? getPrimaryMaterial(aStack).mRGBa : null;
-    }
-
-    @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
-        aItem.addItemBehavior(aID, new BehaviourSwitchMode());
-        aItem.addItemBehavior(aID, new BehaviourWrench(100));
     }
 
     @Override

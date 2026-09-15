@@ -53,6 +53,7 @@ import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
 import ic2.api.recipe.IRecipeInput;
@@ -65,6 +66,10 @@ public class GTPostLoad {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
         GTMod.proxy.activateOreDictHandler();
+        // The handler above declares tool materials as it goes, and registering those ores while it is still
+        // iterating its own event collection would throw a ConcurrentModificationException. Now that it is done,
+        // those registrations can run.
+        GTToolItems.flushOreDictRegistrations();
 
         // noinspection UnstableApiUsage// Stable enough for this project
         GT_FML_LOGGER.info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());

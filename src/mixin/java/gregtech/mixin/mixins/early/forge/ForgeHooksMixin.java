@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
-import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
 
@@ -37,13 +37,13 @@ public class ForgeHooksMixin {
         ItemStack stack = player.getCurrentEquippedItem();
         if (stack != null) {
             final Item item = stack.getItem();
-            if (item instanceof MetaGeneratedTool tool) {
+            if (item instanceof IGTTool tool) {
                 return tool.getBlockStrength(stack, block, player, world, x, y, z, original);
             } else if (item instanceof ItemGTToolbox) {
                 return ToolboxUtil.getSelectedTool(stack)
-                    .filter(tool -> tool.getItem() instanceof MetaGeneratedTool)
+                    .filter(tool -> tool.getItem() instanceof IGTTool)
                     .map(
-                        tool -> ((MetaGeneratedTool) tool.getItem())
+                        tool -> ((IGTTool) tool.getItem())
                             .getBlockStrength(stack, block, player, world, x, y, z, original))
                     .orElse(original);
             }

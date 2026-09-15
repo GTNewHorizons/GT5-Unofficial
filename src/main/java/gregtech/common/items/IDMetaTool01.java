@@ -6,6 +6,8 @@ public enum IDMetaTool01 {
     SAW(10),
     HARDHAMMER(12),
     SOFTMALLET(14),
+    // The wrench moved to its own items (see gregtech.common.items.tools.GTToolItems), but its ids stay reserved:
+    // the Postea migration in PosteaTransformers matches old saved stacks by them, so they must never be reused.
     WRENCH(16),
     FILE(18),
     CROWBAR(20),
@@ -25,6 +27,7 @@ public enum IDMetaTool01 {
     CHAINSAW_LV(110),
     CHAINSAW_MV(112),
     CHAINSAW_HV(114),
+    // Reserved, see WRENCH above.
     WRENCH_LV(120),
     WRENCH_MV(122),
     WRENCH_HV(124),

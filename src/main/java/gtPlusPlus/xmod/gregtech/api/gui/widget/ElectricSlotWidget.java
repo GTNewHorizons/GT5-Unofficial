@@ -6,7 +6,7 @@ import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.interfaces.IGTTool;
 import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -26,7 +26,7 @@ public class ElectricSlotWidget extends SlotWidget {
     private ElectricSlotWidget(BaseSlot slot) {
         super(slot);
         setFilter(
-            stack -> (accepts(stack)) || (stack.getItem() instanceof MetaGeneratedTool)
+            stack -> (accepts(stack)) || (stack.getItem() instanceof IGTTool)
                 || (stack.getItem() instanceof IElectricItem));
     }
 

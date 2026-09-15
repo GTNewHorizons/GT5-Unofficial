@@ -1,7 +1,6 @@
-package gregtech.common.items.behaviors;
+package gregtech.common.items.tools;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.BooleanSupplier;
 
 import net.minecraft.block.Block;
@@ -9,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -19,65 +17,61 @@ import appeng.api.util.IOrientable;
 import appeng.tile.misc.TileInterface;
 import gregtech.GTLoggers;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.items.MetaBaseItem;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import ic2.api.tile.IWrenchable;
 import ic2.core.block.BlockRubWood;
 
-public class BehaviourWrench extends BehaviourNone {
+/**
+ * The "right click a block to turn it" half of a wrench.
+ * <p/>
+ * This used to live in {@code BehaviourWrench}, hung off {@link gregtech.api.items.MetaBaseItem}'s behaviour registry.
+ * The wrench is no longer a {@code MetaGeneratedTool} metadata, so the logic moved here, where a plain item can call
+ * it directly.
+ */
+public final class WrenchRotation {
 
-    private final int mCosts;
+    private WrenchRotation() {}
 
-    public BehaviourWrench(int aCosts) {
-        this.mCosts = aCosts;
-    }
+    /**
+     * Tries to rotate the block the player clicked.
+     *
+     * @param costs the durability (or energy) the rotation costs, in the unit where 100 is one durability point.
+     * @return whether the click was consumed.
+     */
+    public static boolean rotate(ToolWrenchItem item, ItemStack stack, EntityPlayer player, World world, int x, int y,
+        int z, ForgeDirection side, float hitX, float hitY, float hitZ, int costs) {
+        final Block block = world.getBlock(x, y, z);
+        if (block == null) return false;
 
-    @Override
-    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
-        final Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        if (aBlock == null) {
-            return false;
-        }
-        final int aMeta = aWorld.getBlockMetadata(aX, aY, aZ);
+        final int meta = world.getBlockMetadata(x, y, z);
         final short targetSideOrdinal = (short) GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ)
             .ordinal();
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-        final WrenchHandler handler = new WrenchHandler(
-            aBlock,
-            aMeta,
+        final Handler handler = new Handler(
+            block,
+            meta,
             targetSideOrdinal,
-            aTileEntity,
-            aPlayer,
-            aWorld,
-            aX,
-            aY,
-            aZ,
-            aStack,
-            (MetaGeneratedTool) aItem,
-            mCosts);
+            tileEntity,
+            player,
+            world,
+            x,
+            y,
+            z,
+            stack,
+            item,
+            costs);
 
         try {
-            return handler.handle() && !aWorld.isRemote;
+            return handler.handle() && !world.isRemote;
         } catch (Exception e) {
             GTLoggers.GT_FML_LOGGER.error("Error wrenching", e);
         }
         return false;
     }
 
-    /**
-     * <p>
-     * A class to simplify wrenching operation, stopping "checking creative", "trying to damage tool", "doing the logic"
-     * and "playing sound" again and again. This should have been a record, but it's not available in Java 8.
-     * </p>
-     * <p>
-     * {@link WrenchHandler#handle()} is the entry point of main logic.
-     * </p>
-     */
-    private static class WrenchHandler {
+    private static class Handler {
 
         boolean handle() {
             ForgeDirection direction = ForgeDirection.getOrientation(targetSideOrdinal);
@@ -201,11 +195,11 @@ public class BehaviourWrench extends BehaviourNone {
         private final int x, y, z, meta;
         private final ItemStack stack;
 
-        private final MetaGeneratedTool item;
+        private final ToolWrenchItem item;
         private final int costs;
 
-        public WrenchHandler(Block block, int meta, short targetSideOrdinal, TileEntity tileEntity, EntityPlayer player,
-            World world, int x, int y, int z, ItemStack stack, MetaGeneratedTool item, int costs) {
+        Handler(Block block, int meta, short targetSideOrdinal, TileEntity tileEntity, EntityPlayer player, World world,
+            int x, int y, int z, ItemStack stack, ToolWrenchItem item, int costs) {
             this.block = block;
             this.meta = meta;
             this.targetSideOrdinal = targetSideOrdinal;
@@ -221,15 +215,11 @@ public class BehaviourWrench extends BehaviourNone {
         }
 
         /**
-         * this will run the operation, damage the tool and play the sound if possible (creative mode or
-         * {@link MetaGeneratedTool#canWrench(EntityPlayer, int, int, int)})
+         * Runs the operation, charges the tool and plays the sound, if the player may use the wrench at all.
          *
-         * @param damage    damage to be applied to the wrench
+         * @param damage    cost to be applied to the wrench
          * @param operation the real operation of the click
          * @return true if the operation was successful
-         * @see #setBlockMeta(int, int)
-         * @see #rotateBlock(int, ForgeDirection)
-         * @see #rotateBlock(int, ForgeDirection)
          */
         boolean doWrenchOperation(int damage, BooleanSupplier operation) {
             if (player.capabilities.isCreativeMode || item.canWrench(player, x, y, z)) {
@@ -241,10 +231,6 @@ public class BehaviourWrench extends BehaviourNone {
                 }
             }
             return false;
-        }
-
-        Block getBlockAtSide(ForgeDirection side) {
-            return world.getBlock(x + side.offsetX, y + side.offsetY, z + side.offsetZ);
         }
 
         boolean setBlockMeta(int damage, int newMeta) {
@@ -262,7 +248,6 @@ public class BehaviourWrench extends BehaviourNone {
         private boolean setBlockMetadataWithNotify(int newMeta) {
             return world.setBlockMetadataWithNotify(x, y, z, newMeta, 3);
         }
-
     }
 
     public static boolean isVanillaRotatable(Block block) {
@@ -287,11 +272,5 @@ public class BehaviourWrench extends BehaviourNone {
 
     public static boolean isVanillaAllSideRotatable(Block block) {
         return GTUtility.arrayContains(block, Blocks.piston, Blocks.sticky_piston, Blocks.dispenser, Blocks.dropper);
-    }
-
-    @Override
-    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(StatCollector.translateToLocal("gt.behaviour.wrench"));
-        return aList;
     }
 }

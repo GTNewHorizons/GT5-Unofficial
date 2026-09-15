@@ -16,7 +16,8 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.GTLoggers;
 import gregtech.api.enums.ToolboxSlot;
-import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.interfaces.IGTTool;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.common.items.ItemGTToolbox;
 
 /**
@@ -178,8 +179,9 @@ public class ToolboxUtil {
         if (toolbox != null && toolbox.getItem() instanceof ItemGTToolbox) {
             final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
             handler.mutateCurrentTool(toolStack -> {
-                if (toolStack.getItem() instanceof final MetaGeneratedTool toolItem) {
-                    toolItem.doDamage(toolStack, toolItem.getToolStats(toolStack).getToolDamagePerEntityAttack());
+                if (toolStack.getItem() instanceof final IGTTool toolItem) {
+                    IToolStats stats = toolItem.getToolStats(toolStack);
+                    if (stats != null) toolItem.doDamage(toolStack, stats.getToolDamagePerEntityAttack());
                 }
             });
         }

@@ -105,6 +105,7 @@ import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.armor.MechArmorLoader;
+import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
@@ -179,6 +180,7 @@ public class LoaderGTBlockFluid implements Runnable {
         MetaGeneratedItem98.preInit();
         new MetaGeneratedItem99();
         new MetaGeneratedTool01();
+        GTToolItems.register();
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
         new ItemMagLevHarness();

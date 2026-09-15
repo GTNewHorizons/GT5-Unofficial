@@ -21,6 +21,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.items.tools.GTToolItems;
+import gregtech.common.items.tools.ToolWrenchElectricItem;
+import gregtech.common.items.tools.ToolWrenchItem;
 
 public class PosteaTransformers implements Runnable {
 
@@ -38,6 +41,7 @@ public class PosteaTransformers implements Runnable {
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
         registerBartworksLabPartTransformer();
+        registerWrenchTransformers();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -292,5 +296,80 @@ public class PosteaTransformers implements Runnable {
             return true;
         });
 
+    }
+
+    /* ---------- WRENCH SPLIT ---------- */
+
+    /**
+     * Metadata the wrench family used while it lived on {@code MetaGeneratedTool01}. Each tool occupied an even id for
+     * the charged item and the following odd id for the discharged one, so both are matched here. These ids stay
+     * reserved in {@code IDMetaTool01} and must not be reused, or old saves would migrate into the wrong tool.
+     */
+    private static final int OLD_WRENCH_META = 16;
+    private static final int OLD_WRENCH_LV_META = 120;
+    private static final int OLD_WRENCH_MV_META = 122;
+    private static final int OLD_WRENCH_HV_META = 124;
+
+    private static int wrenchItemId = -1;
+    private static int wrenchLVItemId = -1;
+    private static int wrenchMVItemId = -1;
+    private static int wrenchHVItemId = -1;
+
+    /**
+     * Converts wrenches saved under the old scheme -- one {@code gt.metatool.01} item whose metadata was the tool type
+     * and whose material was a string in NBT -- into the standalone wrench items, whose metadata is the material.
+     * Every other tool type on {@code gt.metatool.01} is left untouched.
+     */
+    private static void registerWrenchTransformers() {
+        ItemStackReplacementManager.registerIDResolver("gregtech:gt.tool.wrench", i -> wrenchItemId = i);
+        ItemStackReplacementManager.registerIDResolver("gregtech:gt.tool.wrench_lv", i -> wrenchLVItemId = i);
+        ItemStackReplacementManager.registerIDResolver("gregtech:gt.tool.wrench_mv", i -> wrenchMVItemId = i);
+        ItemStackReplacementManager.registerIDResolver("gregtech:gt.tool.wrench_hv", i -> wrenchHVItemId = i);
+
+        ItemStackReplacementManager
+            .addTransformationHandler("gregtech:gt.metatool.01", (name, nbt) -> convertWrench(nbt));
+    }
+
+    private static boolean convertWrench(NBTTagCompound nbt) {
+        final int oldMeta = nbt.getShort("Damage");
+        ToolWrenchItem newItem;
+        int newItemId;
+        switch (oldMeta - (oldMeta % 2)) {
+            case OLD_WRENCH_META -> {
+                newItem = GTToolItems.WRENCH;
+                newItemId = wrenchItemId;
+            }
+            case OLD_WRENCH_LV_META -> {
+                newItem = GTToolItems.WRENCH_LV;
+                newItemId = wrenchLVItemId;
+            }
+            case OLD_WRENCH_MV_META -> {
+                newItem = GTToolItems.WRENCH_MV;
+                newItemId = wrenchMVItemId;
+            }
+            case OLD_WRENCH_HV_META -> {
+                newItem = GTToolItems.WRENCH_HV;
+                newItemId = wrenchHVItemId;
+            }
+            // Some other tool type, or an item that was never a tool. Leave it alone.
+            default -> {
+                return false;
+            }
+        }
+        // The new item failed to register, or Postea could not resolve its runtime id. Rewriting the stack now would
+        // point it at nothing, so leave it as it is rather than destroying it.
+        if (newItem == null || newItemId < 0) return false;
+
+        final Materials material = Materials.getRealMaterial(
+            WrenchStackMigration.readToolStats(nbt)
+                .getString("PrimaryMaterial"));
+        final int newMeta = ToolWrenchItem.getMaterialMeta(material);
+        if (newMeta < 0) return false;
+
+        final boolean electric = newItem instanceof ToolWrenchElectricItem;
+        final long defaultMaxCharge = electric ? ((ToolWrenchElectricItem) newItem).getDefaultMaxCharge() : 0L;
+        WrenchStackMigration.rewriteWrenchStack(nbt, newMeta, electric, defaultMaxCharge);
+        IDExtenderCompat.setItemStackID(nbt, newItemId);
+        return true;
     }
 }

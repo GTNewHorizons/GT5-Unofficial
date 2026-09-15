@@ -75,6 +75,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gtPlusPlus.GTplusplus;
@@ -1179,9 +1180,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     protected void setupToolDisplay() {
         if (!mToolStacks.isEmpty()) return;
 
-        mToolStacks.put(
-            true + "WRENCH",
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.WRENCH.ID, 1, GOOD, Materials.Tungsten, null));
+        mToolStacks.put(true + "WRENCH", GTToolItems.WRENCH.getToolWithMaterial(GOOD));
         mToolStacks.put(
             true + "CROWBAR",
             MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.CROWBAR.ID, 1, GOOD, Materials.Tungsten, null));
@@ -1202,9 +1201,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             MetaGeneratedTool01.INSTANCE
                 .getToolWithStats(IDMetaTool01.SOLDERING_IRON_LV.ID, 1, GOOD, Materials.Tungsten, null));
 
-        mToolStacks.put(
-            false + "WRENCH",
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.WRENCH.ID, 1, BAD, Materials.Tungsten, null));
+        mToolStacks.put(false + "WRENCH", GTToolItems.WRENCH.getToolWithMaterial(BAD));
         mToolStacks.put(
             false + "CROWBAR",
             MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.CROWBAR.ID, 1, BAD, Materials.Tungsten, null));
