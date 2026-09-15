@@ -34,6 +34,8 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.graphs.GenerateNodeMap;
+import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Lock;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.paths.NodePath;
@@ -42,6 +44,7 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
+import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -234,6 +237,12 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             return;
         }
         mConnections = mMetaTileEntity.mConnections;
+        if (node != null) {
+            GenerateNodeMap.clearNodeMap(node, -1);
+            if (mMetaTileEntity instanceof MTECable) {
+                new GenerateNodeMapPower(this);
+            }
+        }
         GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
     }
 
@@ -800,7 +809,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
                             CoverRegistry.getCoverPlacer(tCurrentItem)
                                 .placeCover(aPlayer, tCurrentItem, this, effectiveSide);
-
+                            mMetaTileEntity.onCoverChangedServer();
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                             sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
@@ -812,6 +821,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             sendSoundToPlayers(SoundResource.RANDOM_BREAK, 1.0F, -1);
                             dropCover(effectiveSide, side);
+                            mMetaTileEntity.onCoverChangedServer();
                             mMetaTileEntity.markDirty();
                         }
                         return true;

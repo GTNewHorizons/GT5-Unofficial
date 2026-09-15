@@ -224,7 +224,9 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         Object... aOreDictNamesAndAspects) {
         if (aToolTip == null) aToolTip = "";
         if (aID >= 0 && aID < 32766 && aID % 2 == 0) {
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".name", aEnglish);
+            if (!aEnglish.isEmpty()) {
+                GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".name", aEnglish);
+            }
             if (!aToolTip.isEmpty()) {
                 GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
             }
@@ -1001,6 +1003,14 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return getDamage(aStack) % 2 == 1;
     }
 
+    /**
+     * @param aMeta the Meta Value of the charged tool
+     * @return the name of the charged tool, without the discharged suffix
+     */
+    protected String getChargedName(int aMeta) {
+        return translateToLocal(getUnlocalizedName() + "." + aMeta + ".name");
+    }
+
     @Override
     protected Function<ItemStack, String> getToolTipLocalizationFunction(ItemStack aStack) {
         if (isDischarged(aStack)) return tStack -> translateToLocal(EMPTY_TOOLTIP_KEY);
@@ -1010,10 +1020,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
         String result = isDischarged(aStack)
-            ? translateToLocalFormatted(
-                EMPTY_NAME_KEY,
-                translateToLocal(getUnlocalizedName() + "." + (getDamage(aStack) - 1) + ".name"))
-            : super.getItemStackDisplayName(aStack);
+            ? translateToLocalFormatted(EMPTY_NAME_KEY, getChargedName(getDamage(aStack) - 1))
+            : getChargedName(getDamage(aStack));
         final String toolMode = getToolModeName(aStack);
 
         if (toolMode != null) {

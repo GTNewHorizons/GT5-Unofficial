@@ -7,6 +7,7 @@ import static gregtech.api.enums.OrePrefixes.blockCasingAdvanced;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
@@ -132,12 +133,15 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.fluids.GTPPFluids;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
@@ -1021,11 +1025,11 @@ public class RecipeLoader {
         // SeaweedAsh
         GTModHandler.addSmeltingRecipe(
             GTModHandler.getModItem(PamsHarvestCraft.ID, "seaweedItem", 1),
-            WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dustSmall, 1));
+            WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 1));
 
         // SeaweedConcentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 2))
+            .itemInputs(WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 8))
             .itemOutputs(Materials.Calcite.getDust(1))
             .fluidInputs(Materials.DilutedSulfuricAcid.getFluid(1_200))
             .fluidOutputs(WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(1_200))
@@ -1035,14 +1039,30 @@ public class RecipeLoader {
 
         // Iodine
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Benzene.getCells(1))
             .itemOutputs(WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 1))
-            .fluidInputs(WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2_000))
+            .fluidInputs(
+                WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2_000),
+                Materials.Chlorobenzene.getFluid(2_000))
             .fluidOutputs(WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(200))
             .eut(TierEU.RECIPE_HV)
-            .duration(38 * SECONDS)
-            .addTo(centrifugeRecipes);
+            .duration(30 * SECONDS)
+            .addTo(centrifugeNonCellRecipes);
 
+        // SeaweedByproducts
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(6_000),
+                (new FluidStack(GTPPFluids.Nitrobenzene, 12_000)))
+            .itemOutputs(
+                WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 60),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Arsenic, 8),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 6),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 2))
+            .fluidOutputs(MaterialsElements.getInstance().BROMINE.getFluidStack(200))
+            .metadata(CentrifugeRecipeKey.INSTANCE, true)
+            .eut(TierEU.RECIPE_UEV)
+            .duration(3 * SECONDS)
+            .addTo(centrifugeNonCellRecipes);
         // IODINE-END
 
         // 2MnO2 + 2KOH + KClO3 = 2KMnO4 + H2O + KCl
