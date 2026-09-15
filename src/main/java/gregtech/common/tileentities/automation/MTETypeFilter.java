@@ -4,6 +4,9 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import net.minecraft.item.ItemStack;
@@ -51,6 +54,8 @@ public class MTETypeFilter extends MTESpecialFilter {
         OrePrefixes.oreBasalt,
         OrePrefixes.oreMarble);
 
+    private static List<OrePrefixes> selectablePrefixes;
+
     public MTETypeFilter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, GTValues.emptyStringArray);
     }
@@ -65,6 +70,26 @@ public class MTETypeFilter extends MTESpecialFilter {
 
     public void setRotationIndex(int rotationIndex) {
         this.mRotationIndex = rotationIndex;
+    }
+
+    public static List<OrePrefixes> getSelectablePrefixes() {
+        if (selectablePrefixes == null) {
+            selectablePrefixes = Arrays.stream(OrePrefixes.VALUES)
+                .filter(prefix -> !prefix.mPrefixedItems.isEmpty())
+                .collect(Collectors.toList());
+        }
+        return selectablePrefixes;
+    }
+
+    public int getPrefixIndex() {
+        return getSelectablePrefixes().indexOf(this.mPrefix);
+    }
+
+    public void setPrefixIndex(int prefixIndex) {
+        List<OrePrefixes> prefixes = getSelectablePrefixes();
+        if (prefixIndex < 0 || prefixIndex >= prefixes.size()) return;
+        this.mPrefix = prefixes.get(prefixIndex);
+        this.mRotationIndex = -1;
     }
 
     public String getPrefix() {
