@@ -67,6 +67,7 @@ import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -464,7 +465,8 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     }
 
     public double getEuModifier() {
-        return Math.pow(0.9, this.heatLevel.getTier() + 1);
+
+        return GTUtility.powInt(0.9, this.heatLevel.getTier() + 1);
     }
 
     @Override
@@ -500,7 +502,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
         list.add(
             StatCollector.translateToLocal("GT5U.multiblock.euModifier") + ": "
                 + EnumChatFormatting.WHITE
-                + dfTwo.format(Math.pow(0.9, tag.getInteger("coilTier") + 1) * 100)
+                + dfTwo.format(GTUtility.powInt(0.9, tag.getInteger("coilTier") + 1) * 100)
                 + "%");
     }
 
