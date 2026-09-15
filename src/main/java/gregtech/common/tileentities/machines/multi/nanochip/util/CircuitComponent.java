@@ -475,7 +475,7 @@ public enum CircuitComponent {
     BoltRedAlloy(1919,"gt.circuitcomponent.bolt.redalloy",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.RedAlloy, 1)),
     BoltPlatinum(1920,"gt.circuitcomponent.bolt.platinum",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Platinum, 1)),
     BoltNiobiumTitanium(1921,"gt.circuitcomponent.bolt.niobiumtitanium",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.NiobiumTitanium, 1)),
-
+    CasingDysprosium(1922,"gt.circuitcomponent.casing.dysprodium", ()->GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Dysprosium,1)),
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
