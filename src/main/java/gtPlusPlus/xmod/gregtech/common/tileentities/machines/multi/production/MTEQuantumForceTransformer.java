@@ -390,11 +390,14 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 doFermium = false;
                 doNeptunium = false;
 
+                // prevents neptunium plasma being consumed if there is nothing to focus
+                int circuit = findProgrammedCircuitNumber();
+                int outputCount = recipe.mOutputs.length + recipe.mFluidOutputs.length;
                 if (recipe.getMetadataOrDefault(GTRecipeConstants.QFT_FOCUS_TIER, 1) <= getFocusingTier()) {
                     FluidStack[] fluids = inputFluids;
                     for (FluidStack fluid : fluids) {
                         if (fluid.getFluid()
-                            .equals(mNeptunium)) {
+                            .equals(mNeptunium) && circuit >= 0 && circuit < outputCount) {
                             doNeptunium = true;
                         }
                         if (fluid.getFluid()
@@ -404,7 +407,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     }
                 }
 
-                chances = getOutputChances(recipe, doNeptunium ? findProgrammedCircuitNumber() : -1);
+                chances = getOutputChances(recipe, doNeptunium ? circuit : -1);
 
                 // Handle Fluid Mode. Add fluid that item can be turned into to fluidModeItems.
                 // null if Fluid Mode is disabled or item cannot be turned into fluid.
