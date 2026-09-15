@@ -1180,6 +1180,7 @@ gt.tileentity.amperage_in.batteries=Amperage IN: %s per chargeable battery
 gt.tileentity.amperage_out.batteries=Amperage OUT: %s per battery
 gt.tileentity.amperage_in.charger=Amperage IN: %1$s per chargeable battery, at least %2$s
 gt.tileentity.amperage_out.charger=Amperage OUT: %1$s per battery, at least %2$s
+gt.tileentity.customizable=§5C§du§4s§ct§eo§am§bi§3z§9a§1b§5l§de§r
 gt.tileentity.throughput=Throughput: %s
 gt.tileentity.eup_store=Capacity: %s
 gt.tileentity.tank_info=Contains Fluid: §e%s§7

@@ -2,6 +2,8 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.V;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -144,8 +146,11 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     }
 
     @Override
-    public boolean showsAmperageInTooltip() {
-        return false;
+    public void addEnergyTooltipInformation(List<String> tooltip) {
+        // Both the voltage and the amperage of this debug hatch are configured in its GUI.
+        final String customizable = StatCollector.translateToLocal("gt.tileentity.customizable");
+        tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.eup_in", customizable));
+        tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage_in", customizable));
     }
 
     @Override
