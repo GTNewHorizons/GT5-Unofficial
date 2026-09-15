@@ -16,6 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -30,6 +32,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
@@ -144,6 +148,14 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
     }
 
     private int ticker = 0;
+
+    @Override
+    public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+        if (!this.depleteInput(
+            MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, COOLANT_CONSUMED_PER_SEC),
+            true)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+        return super.validateRecipe(recipe);
+    }
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {

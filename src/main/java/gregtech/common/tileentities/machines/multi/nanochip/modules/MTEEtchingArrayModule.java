@@ -34,6 +34,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
@@ -155,13 +156,13 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     }
 
     @Override
-    protected float getEUDiscountModifier() {
-        return 1f / (GTUtility.log4ceil(laserAmps) - 3);
+    protected float getEUDiscountModifier(GTRecipe recipe) {
+        return 1f / (GTUtility.log4ceil(laserAmps) - 3 + (baseMulti.crystalT3Active ? 1 : 0));
     }
 
     @Override
     protected float getModuleDurationModifier() {
-        return 1f / (Math.max(1, laserTier - 9));
+        return 1f / (Math.max(1, laserTier - 9 + (baseMulti.crystalT3Active ? 1 : 0)));
     }
 
     @Override
@@ -173,6 +174,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.1"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.2"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.3"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.4"))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
             .beginStructureBlock(7, 7, 7, false)

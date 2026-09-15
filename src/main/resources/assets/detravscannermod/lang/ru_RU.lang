@@ -48,3 +48,7 @@ gui.detrav.scanner.tooltip.ore_depth=Y: %d
 gui.detrav.scanner.tooltip.mark_hint=ПКМ, чтобы отметить
 gui.detrav.scanner.search.hint=Поиск...
 gui.detrav.scanner.hint.invert=Двойной клик для инверсии фона
+
+# Prospector scanners
+gt.detrav.metatool.01.name=Геологический сканер (%s)
+gt.detrav.metatool.01.electric.name=Электрический геологический сканер (%s)

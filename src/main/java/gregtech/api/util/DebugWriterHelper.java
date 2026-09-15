@@ -57,7 +57,7 @@ public class DebugWriterHelper {
         registerBlockAssociation((block, meta, symbol) -> {
             String name = VANILLA_BLOCK_NAMES.get(block);
             if (name != null) {
-                return symbol + "-> " + "addElement('" + symbol + "', ofBlocks(Blocks." + name + ", " + meta + ")";
+                return symbol + "-> " + "addElement('" + symbol + "', ofBlock(Blocks." + name + ", " + meta + ")";
             }
             return null;
         });
@@ -72,7 +72,8 @@ public class DebugWriterHelper {
                             + symbol
                             + "', Casings."
                             + casing.name()
-                            + ".asElement()";
+                            + ".asElement()"
+                            + ")";
                     }
                 } catch (Exception ignored) {}
             }

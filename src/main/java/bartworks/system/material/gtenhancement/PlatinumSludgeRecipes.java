@@ -739,7 +739,6 @@ public final class PlatinumSludgeRecipes {
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
-            .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials.ReprecipitatedRhodium, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.RhodiumFilterCakeSolution, FluidShapes.fluidLiquid, 1_000))

@@ -242,3 +242,15 @@ gt.blockmachines.htgr.name=Высокотемпературный газоохл
 gt.blockmachines.industrialarcfurnace.controller.tier.single.name=Промышленная дуговая печь
 gt.blockmachines.multimachine.defusioncrafter.name=Draconic Evolution термоядерный крафтер
 gt.blockmachines.multimachine.extremegreenhouse.name=Экстремальная промышленная теплица
+
+# HTGR fuel items
+item.HTGR.fuel.Plutonium=Плутоний
+item.HTGR.fuel.Thorium=Торий
+item.HTGR.fuel.Uranium=Уран
+item.HTGRBISOPebbleCompound.name=Топливная смесь пеллеты BISO (%s)
+item.HTGRBurnedOutTRISOBall.name=Отработанный шарик пеллеты TRISO (%s)
+item.HTGRBurnedOutTRISOPebble.name=Отработанная пеллета TRISO (%s)
+item.HTGRHTGRFuelMixture.name=HTGR топливная смесь (%s)
+item.HTGRTRISOBall.name=Шарик TRISO (%s)
+item.HTGRTRISOPebble.name=Пеллета TRISO (%s)
+item.HTGRTRISOPebbleCompound.name=Топливная смесь пеллеты TRISO (%s)

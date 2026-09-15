@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
@@ -60,12 +61,14 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
@@ -987,11 +990,11 @@ public class RecipeLoader {
         // SeaweedAsh
         GTModHandler.addSmeltingRecipe(
             GTModHandler.getModItem(PamsHarvestCraft.ID, "seaweedItem", 1),
-            MaterialLibAPI.getStack(Materials.SeaweedAsh, Shapes.dustSmall, 1));
+            MaterialLibAPI.getStack(Materials.SeaweedAsh, Shapes.dust, 1));
 
         // SeaweedConcentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SeaweedAsh, Shapes.dust, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SeaweedAsh, Shapes.dust, 8))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 1_200))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SeaweedConcentrate, FluidShapes.fluidLiquid, 1_200))
@@ -1001,14 +1004,30 @@ public class RecipeLoader {
 
         // Iodine
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Benzene, CellShapes.cell, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Iodine, Shapes.dust, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SeaweedConcentrate, FluidShapes.fluidLiquid, 2_000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.SeaweedConcentrate, FluidShapes.fluidLiquid, 2_000),
+                MaterialLibAPI.getFluidStack(Materials.Chlorobenzene, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SeaweedByproducts, FluidShapes.fluidLiquid, 200))
             .eut(TierEU.RECIPE_HV)
-            .duration(38 * SECONDS)
-            .addTo(centrifugeRecipes);
+            .duration(30 * SECONDS)
+            .addTo(centrifugeNonCellRecipes);
 
+        // SeaweedByproducts
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.SeaweedByproducts, FluidShapes.fluidLiquid, 6_000),
+                new FluidStack(GTPPFluids.Nitrobenzene, 12_000))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.Iodine, Shapes.dust, 60),
+                MaterialLibAPI.getStack(Materials.Arsenic, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.Cadmium, Shapes.dust, 2))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.Bromine, 200))
+            .metadata(CentrifugeRecipeKey.INSTANCE, true)
+            .eut(TierEU.RECIPE_UEV)
+            .duration(3 * SECONDS)
+            .addTo(centrifugeNonCellRecipes);
         // IODINE-END
 
         // 2MnO2 + 2KOH + KClO3 = 2KMnO4 + H2O + KCl

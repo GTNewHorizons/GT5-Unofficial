@@ -87,7 +87,6 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -985,6 +984,22 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 this.tooltip = tooltip;
             }
 
+            /**
+             * A fuel item spells its base once and takes the fuel as an argument, so that the seven bases are not
+             * repeated for each of the three fuels.
+             */
+            @Override
+            public String getItemStackDisplayName(ItemStack stack) {
+                int meta = this.getDamage(stack);
+                if (meta < 0 || meta >= sHTGR_Bases.length * sHTGR_Fuel.length)
+                    return super.getItemStackDisplayName(stack);
+                Base_ base = sHTGR_Bases[meta % MATERIALS_PER_FUEL];
+                Fuel_ fuel = sHTGR_Fuel[meta / MATERIALS_PER_FUEL];
+                return StatCollector.translateToLocalFormatted(
+                    "item.HTGR" + base.sName + ".name",
+                    StatCollector.translateToLocal("item.HTGR.fuel." + fuel.sName));
+            }
+
             @Override
             public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean adv) {
                 if (this.tooltip.containsKey(this.getDamage(stack)))
@@ -1028,17 +1043,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 System.arraycopy(recycledItems, 0, this.recycledItems, 0, recycledItems.length);
                 this.recycleChances = recycleChances;
                 this.tooltip = tooltip;
-            }
-        }
-
-        private static class LangEntry_ {
-
-            public String sName;
-            public String sEnglish;
-
-            public LangEntry_(String a, String b) {
-                this.sName = a;
-                this.sEnglish = b;
             }
         }
 
@@ -1091,7 +1095,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 5000 / 4, 5000 / 4 },
                 "Multiplies coolant by 2"), };
         public static final CustomHTGRSimpleSubItemClass aHTGR_Materials;
-        static final ArrayList<LangEntry_> aHTGR_Localizations = new ArrayList<>();
 
         static {
             String[] sHTGR_Materials = new String[sHTGR_Bases.length * sHTGR_Fuel.length];
@@ -1099,8 +1102,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             int i = 0;
             for (Fuel_ fuel : sHTGR_Fuel) for (Base_ base : sHTGR_Bases) {
                 sHTGR_Materials[i] = "HTGR" + base.sName + fuel.sName;
-                aHTGR_Localizations.add(
-                    new LangEntry_("item." + sHTGR_Materials[i] + ".name", base.sEnglish + " (" + fuel.sEnglish + ")"));
                 if ((i + 1) % MATERIALS_PER_FUEL == USABLE_FUEL_INDEX + 1 && fuel.tooltip != null
                     && !fuel.tooltip.isEmpty()) tooltip.put(i, fuel.tooltip);
                 i++;
@@ -1109,8 +1110,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         }
 
         public static void registeraTHR_Materials() {
-            for (LangEntry_ iName : aHTGR_Localizations)
-                GTLanguageManager.addStringLocalization(iName.sName, iName.sEnglish);
             GameRegistry.registerItem(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, "bw.HTGRMaterials");
         }
     }

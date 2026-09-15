@@ -1108,11 +1108,11 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "X", "Y", "Z", 'X', "plateNaquadah", 'Y', "plateIridium", 'Z', "plateHSSS" });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(28L),
+            ItemList.IC2_Mixed_Metal_Ingot.get(30L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "X", "Y", "Z", 'X', "plateNaquadahAlloy", 'Y', "plateOsmiridium", 'Z', "plateHSSE" });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(30L),
+            ItemList.IC2_Mixed_Metal_Ingot.get(28L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "X", "Y", "Z", 'X', "plateNaquadahAlloy", 'Y', "plateOsmiridium", 'Z', "plateHSSG" });
         GTModHandler.addCraftingRecipe(

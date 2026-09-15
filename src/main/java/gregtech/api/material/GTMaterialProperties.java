@@ -56,6 +56,8 @@ public class GTMaterialProperties {
     /// Whether [#FORMULA] is a `GTLanguageManager` localization key rather than literal text (the legacy
     /// `setChemicalFormula` localized overload / the bartworks material's own localized-formula flag).
     public static final Property<Boolean> FORMULA_LOCALIZED = Property.of("gregtech", "formulaLocalized");
+    /// The literal flavor line shown in italics under the formula on every stack of the material.
+    public static final Property<String> FLAVOR_TEXT = Property.of("gregtech", "flavorText");
     public static final Property<EnumSet<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
         .of("gregtech", "generationFlags");
     public static final Property<MaterialRef> HANDLE_MATERIAL = Property.of("gregtech", "handleMaterial");

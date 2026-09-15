@@ -1,10 +1,10 @@
 package gregtech.api.factory.routing;
 
+import java.util.ArrayDeque;
+
 import com.github.bsideup.jabel.Desugar;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
 @Desugar
-public record NetworkStepList<N, R> (ObjectArrayList<NetworkStep<N, R>> steps) implements StepLike {
+public record NetworkStepList<N, R> (ArrayDeque<NetworkStep<N, R>> steps) implements StepLike {
 
 }
