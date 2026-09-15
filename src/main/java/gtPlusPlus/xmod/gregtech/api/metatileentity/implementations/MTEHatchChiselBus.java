@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -15,10 +16,12 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchChiselBusGui;
 import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchChiselBus extends MTEHatchInputBus {
 
     public final ItemStackHandler ghostTargets;
@@ -31,6 +34,13 @@ public class MTEHatchChiselBus extends MTEHatchInputBus {
     public MTEHatchChiselBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, getSlots(aTier), aDescription, aTextures);
         ghostTargets = new LimitingItemStackHandler(getGhostTargetCount(aTier), 1);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.hatch.chisel.name", GTUtility.getRomanNumeral(mTier));
     }
 
     @Override

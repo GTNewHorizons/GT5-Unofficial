@@ -29,7 +29,7 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
 
     // Antimatter 'Blob'
     private static final ShaderRecipe ANTIMATTER = ShaderRecipe.of(GoodGenerator.resourceDomain, "antimatter")
-        .required("u_Scale", "u_ScaleSnapshot", "u_Time", "u_TimeSnapshot")
+        .required("u_Scale", "u_ScaleSnapshot", "u_Time", "u_TransitionProgress")
         .constant("u_ColorCore", TileAntimatter.coreR, TileAntimatter.coreG, TileAntimatter.coreB)
         .constant("u_ColorSpike", TileAntimatter.spikeR, TileAntimatter.spikeG, TileAntimatter.spikeB)
         .constant("u_Opacity", 1f)
@@ -39,7 +39,7 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
     private static final Uniform AM_SCALE = ANTIMATTER.uniform("u_Scale");
     private static final Uniform AM_SCALE_SNAPSHOT = ANTIMATTER.uniform("u_ScaleSnapshot");
     private static final Uniform AM_TIME = ANTIMATTER.uniform("u_Time");
-    private static final Uniform AM_TIME_SNAPSHOT = ANTIMATTER.uniform("u_TimeSnapshot");
+    private static final Uniform AM_TRANSITION_PROGRESS = ANTIMATTER.uniform("u_TransitionProgress");
 
     private static ShaderHandle antimatterShader;
 
@@ -171,14 +171,14 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
         return null;
     }
 
-    private void renderAntimatter(TileAntimatter tile, double x, double y, double z, float timer) {
+    private void renderAntimatter(TileAntimatter tile, double x, double y, double z, double timer) {
         antimatterShader.use();
 
-        float angle = ((timer) % (20 * 60 * 60)) * tile.rotationSpeedMultiplier;
+        double angle = (timer % (20 * 60 * 60)) * tile.rotationSpeedMultiplier;
 
         modelMatrix.translation((float) x, (float) y, (float) z)
-            .rotateY(angle / 180f * (float) Math.PI)
-            .rotateX(angle / 8f / 180f * (float) Math.PI);
+            .rotateY((float) Math.toRadians(angle % 360))
+            .rotateX((float) Math.toRadians((angle / 8) % 360));
 
         float snapshotSize = tile.coreScaleSnapshot;
         snapshotSize *= modelNormalize;
@@ -187,11 +187,13 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
         targetSize *= modelNormalize;
         float coreSize = Math.min(targetSize, TileAntimatter.maximalRadius / (1 + tile.spikeFactor));
 
-        float realTime = timer / 20;
-        float snapTime = tile.timeSnapshot / 20;
+        // Wrap before float conversion to preserve sub-tick precision.
+        float realTime = (float) ((timer % 80) / 20);
+        float transitionProgress = (float) Math
+            .max(0, Math.min(1, (timer - tile.timeSnapshot) / (20.0 * tile.coreScaleTransitionTime)));
 
         GL20.glUniform1f(antimatterShader.loc(AM_TIME), realTime);
-        GL20.glUniform1f(antimatterShader.loc(AM_TIME_SNAPSHOT), snapTime);
+        GL20.glUniform1f(antimatterShader.loc(AM_TRANSITION_PROGRESS), transitionProgress);
         GL20.glUniform1f(antimatterShader.loc(AM_SCALE), coreSize);
         GL20.glUniform1f(antimatterShader.loc(AM_SCALE_SNAPSHOT), coreSizeSnapshot);
         final boolean cullWas = GL11.glGetBoolean(GL11.GL_CULL_FACE);
@@ -212,10 +214,11 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
         RenderState.restore(GL11.GL_CULL_FACE, cullWas);
     }
 
-    private void renderProtomatterBeam(TileAntimatter tile, double x, double y, double z, float timer) {
+    private void renderProtomatterBeam(TileAntimatter tile, double x, double y, double z, double timer) {
         protomatterShader.use();
 
-        GL20.glUniform1f(protomatterShader.loc(PM_TIME), timer);
+        // Wrap before float conversion to preserve sub-tick precision.
+        GL20.glUniform1f(protomatterShader.loc(PM_TIME), (float) (timer % 100));
         GL20.glUniform1f(protomatterShader.loc(PM_SCALE), tile.protomatterScale);
         GL20.glUniform3f(
             protomatterShader.loc(PM_COLOR),
@@ -231,7 +234,7 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
         ShaderProgram.clear();
     }
 
-    public void renderRing(TileAntimatter tile, double x, double y, double z, float timer) {
+    public void renderRing(TileAntimatter tile, double x, double y, double z) {
         tileRotation(tile, x, y, z);
 
         solidShader.use();
@@ -261,7 +264,7 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
         float ty = (float) y + 0.5f;
         float tz = (float) z + 0.5f;
 
-        float timer = tile.getWorldObj()
+        double timer = (double) tile.getWorldObj()
             .getWorldInfo()
             .getWorldTotalTime() + timeSinceLastTick;
         renderAntimatter(Antimatter, tx, ty, tz, timer);
@@ -269,6 +272,6 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
         if (!Antimatter.protomatterRender) return;
         renderProtomatterBeam(Antimatter, tx, ty, tz, timer);
 
-        renderRing(Antimatter, tx, ty, tz, timer);
+        renderRing(Antimatter, tx, ty, tz);
     }
 }

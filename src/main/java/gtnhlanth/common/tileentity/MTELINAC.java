@@ -4,8 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.HatchElement.BeamlineInput;
-import static gregtech.api.enums.HatchElement.BeamlineOutput;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -16,6 +14,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineInput;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineOutput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -60,6 +59,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
@@ -70,8 +70,7 @@ import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.Util;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
-    implements ISurvivalConstructable, ICasingTextureProvider {
+public class MTELINAC extends MTEBeamMultiBase<MTELINAC> implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IStructureDefinition<MTELINAC> STRUCTURE_DEFINITION;
 
@@ -160,10 +159,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
 
     public MTELINAC(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+        this.hasMaintenanceChecks = true;
     }
 
     public MTELINAC(String name) {
         super(name);
+        this.hasMaintenanceChecks = true;
     }
 
     @Override
@@ -272,11 +273,11 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
     }
 
     private void outputPacketAfterRecipe() {
-        if (!mBeamlineOutputHatches.isEmpty()) {
+        if (!mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(outputEnergy, outputRate, outputParticleID, outputFocus));
 
-            for (MTEHatchOutputBeamline o : mBeamlineOutputHatches) {
+            for (MTEHatchOutputBeamline o : mOutputBeamline) {
                 o.dataPacket = packet;
             }
         }
@@ -294,7 +295,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
 
     @Nullable
     private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mBeamlineInputHatches) {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
             if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
             return in.dataPacket.getContent();
         }

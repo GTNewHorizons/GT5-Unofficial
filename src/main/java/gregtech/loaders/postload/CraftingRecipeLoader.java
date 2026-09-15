@@ -1183,12 +1183,12 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Naquadah), 'Y',
                 OrePrefixes.plate.get(Materials.Iridium), 'Z', OrePrefixes.plate.get(Materials.HSSS) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(28L),
+            ItemList.IC2_Mixed_Metal_Ingot.get(30L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.NaquadahAlloy), 'Y',
                 OrePrefixes.plate.get(Materials.Osmiridium), 'Z', OrePrefixes.plate.get(Materials.HSSE) });
         GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Mixed_Metal_Ingot.get(30L),
+            ItemList.IC2_Mixed_Metal_Ingot.get(28L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.NaquadahAlloy), 'Y',
                 OrePrefixes.plate.get(Materials.Osmiridium), 'Z', OrePrefixes.plate.get(Materials.HSSG) });
@@ -1934,7 +1934,7 @@ public class CraftingRecipeLoader implements Runnable {
             bits | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 1, 88), 'F',
-                OrePrefixes.frameGt.get(Materials.Chrome) });
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.frameGt) });
 
         if (Forestry.isModLoaded()) {
 

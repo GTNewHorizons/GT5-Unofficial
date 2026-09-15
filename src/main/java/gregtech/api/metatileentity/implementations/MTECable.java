@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GalacticraftCore;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.Set;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -34,6 +36,7 @@ import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;
 import gregtech.api.graphs.PowerNodes;
 import gregtech.api.graphs.consumers.ConsumerNode;
+import gregtech.api.graphs.paths.CableReadout;
 import gregtech.api.graphs.paths.PowerNodePath;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
@@ -54,6 +57,7 @@ import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.config.Client;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
 import ic2.api.energy.EnergyNet;
@@ -75,6 +79,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     private String prefixKey;
 
     public int mTransferredAmperage = 0;
+
+    private static final String WAILA_THROUGHPUT_EUT = "cableThroughputEUt";
+    private static final String WAILA_THROUGHPUT_AMPS = "cableThroughputAmps";
+    private static final String WAILA_THROUGHPUT_AVG_EUT = "cableThroughputAvgEUt";
+    private static final String WAILA_THROUGHPUT_AVG_AMPS = "cableThroughputAvgAmps";
 
     public MTECable(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
         long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
@@ -746,29 +755,23 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
 
         path.reloadLocks();
 
-        final long currAmp = path.getAmperage();
-        final long currVoltage = path.getVoltage();
-
-        final double avgAmp = path.getAvgAmperage();
-        final double avgVoltage = path.getAvgVoltage();
-
-        final long maxVoltageOut = (mVoltage - mCableLossPerMeter) * mAmperage;
+        final CableReadout readout = path.getReadout();
 
         return new String[] {
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.cable.amperage",
-                EnumChatFormatting.GREEN + formatNumber(currAmp) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + formatNumber(mAmperage) + EnumChatFormatting.RESET),
+                "GT5U.infodata.cable.voltage",
+                EnumChatFormatting.GREEN + formatNumber(readout.voltage()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(readout.maxVoltage()) + EnumChatFormatting.RESET),
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.cable.voltage_out",
-                EnumChatFormatting.GREEN + formatNumber(currVoltage) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + formatNumber(maxVoltageOut) + EnumChatFormatting.RESET),
+                "GT5U.infodata.cable.throughput",
+                EnumChatFormatting.GREEN + formatNumber(readout.eut()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(readout.maxEut()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.GREEN + formatNumber(readout.amps()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(readout.maxAmps()) + EnumChatFormatting.RESET),
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.cable.avg_amperage",
-                EnumChatFormatting.YELLOW + formatNumber(avgAmp) + EnumChatFormatting.RESET),
-            IGregTechDeviceInformation.encode(
-                "GT5U.infodata.cable.avg_output",
-                EnumChatFormatting.YELLOW + formatNumber(avgVoltage) + EnumChatFormatting.RESET) };
+                "GT5U.infodata.cable.avg",
+                EnumChatFormatting.YELLOW + formatNumber(readout.avgEut()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(readout.avgAmps()) + EnumChatFormatting.RESET) };
     }
 
     @Override
@@ -842,6 +845,40 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
                 TooltipHelper.voltageText(mVoltage),
                 TooltipHelper.ampText(mAmperage),
                 TooltipHelper.cableLossText(mCableLossPerMeter)));
+
+        if (!Client.waila.showCableThroughput) return;
+
+        final NBTTagCompound tag = accessor.getNBTData();
+        if (tag == null || !tag.hasKey(WAILA_THROUGHPUT_EUT)) return;
+
+        currenttip.add(
+            translateToLocalFormatted(
+                "GT5U.waila.cable.throughput",
+                formatNumber(tag.getLong(WAILA_THROUGHPUT_EUT)),
+                formatNumber(tag.getLong(WAILA_THROUGHPUT_AMPS))));
+        currenttip.add(
+            translateToLocalFormatted(
+                "GT5U.waila.cable.avg",
+                formatNumber(tag.getDouble(WAILA_THROUGHPUT_AVG_EUT)),
+                formatNumber(tag.getDouble(WAILA_THROUGHPUT_AVG_AMPS))));
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+
+        final BaseMetaPipeEntity base = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        if (base == null || !(base.getNodePath() instanceof PowerNodePath path)) return;
+
+        // deliberately not calling path.reloadLocks() here: it mutates the shared lock state and walks every cable of
+        // the segment, and Waila polls this several times a second for every player looking at a cable
+        final CableReadout readout = path.getReadout();
+
+        tag.setLong(WAILA_THROUGHPUT_EUT, readout.eut());
+        tag.setLong(WAILA_THROUGHPUT_AMPS, readout.amps());
+        tag.setDouble(WAILA_THROUGHPUT_AVG_EUT, readout.avgEut());
+        tag.setDouble(WAILA_THROUGHPUT_AVG_AMPS, readout.avgAmps());
     }
 
     @Override

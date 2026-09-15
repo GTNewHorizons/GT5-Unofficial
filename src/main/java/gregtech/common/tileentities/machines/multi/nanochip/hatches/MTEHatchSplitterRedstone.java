@@ -26,6 +26,7 @@ import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchSplitterRedstoneGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSplitterRedstone extends MTEHatch {
 
     private byte redstoneInput = 0;

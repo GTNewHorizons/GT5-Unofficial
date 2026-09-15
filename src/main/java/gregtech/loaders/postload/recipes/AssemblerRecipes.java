@@ -3196,7 +3196,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_UIV.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NetherStar, 4))
             .itemOutputs(ItemRegistry.energyDistributor[11])
             .duration(5 * SECONDS)
@@ -3206,7 +3206,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_UMV.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 4))
             .itemOutputs(ItemRegistry.energyDistributor[12])
             .duration(5 * SECONDS)
@@ -6700,7 +6700,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 6),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Chrome, 1))
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.frameGt, 1))
             .itemOutputs(ItemList.Casing_Advanced_Rhodium_Palladium.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)

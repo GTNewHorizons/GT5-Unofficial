@@ -60,6 +60,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -74,6 +75,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
@@ -357,8 +359,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_CONTROLLER");
-        ScreenON = Textures.BlockIcons.custom("iconsets/EM_CONTROLLER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_CONTROLLER");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_CONTROLLER_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -1145,9 +1147,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
             eMaxAmpereFlow = 0;
             eMaxAmpereGen = 0;
-            // counts only full amps
+            // Regular energy hatches are rated at one amp of their voltage here; the debug hatch instead emulates its
+            // configured amperage, as MTEMultiBlockBase.setProcessingLogicPower also does.
             for (MTEHatchEnergy hatch : validMTEList(mEnergyHatches)) {
-                eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin;
+                long amps = hatch instanceof MTEHatchEnergyDebug ? hatch.maxWorkingAmperesIn() : 1;
+                eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin * amps;
             }
             for (MTEHatchEnergyMulti hatch : validMTEList(eEnergyMulti)) {
                 eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin * hatch.getAmperes();
@@ -1227,7 +1231,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(), tHatch.getEUVar());
             if (tHatch.getBaseMetaTileEntity()
                 .decreaseStoredEnergyUnits(euVar, false)) {
-                setEUVar(getEUVar() + euVar);
+                setEUVar(GTUtility.addSafe(getEUVar(), euVar));
             }
         }
         for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
@@ -1237,7 +1241,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(), tHatch.getEUVar());
             if (tHatch.getBaseMetaTileEntity()
                 .decreaseStoredEnergyUnits(euVar, false)) {
-                setEUVar(getEUVar() + euVar);
+                setEUVar(GTUtility.addSafe(getEUVar(), euVar));
             }
         }
     }
@@ -1266,13 +1270,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     // new method
     public boolean energyFlowOnRunningTick_EM(ItemStack aStack, boolean allowProduction) {
-        long euFlow = getPowerFlow() * eAmpereFlow; // quick scope sign
+        long euFlow = GTUtility.mulSafe(getPowerFlow(), eAmpereFlow); // quick scope sign
         if (allowProduction && euFlow > 0) {
-            addEnergyOutput_EM(getPowerFlow() * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
+            addEnergyOutput_EM(
+                GTUtility.fastDivMul(getPowerFlow(), getMaxEfficiency(aStack), mEfficiency),
+                eAmpereFlow);
         } else if (euFlow < 0) {
             if (!drainEnergyInput_EM(
                 getPowerFlow(),
-                getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
+                GTUtility.fastDivMul(getPowerFlow(), Math.max(1000L, mEfficiency), getMaxEfficiency(aStack)),
                 eAmpereFlow)) {
                 stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
@@ -1282,12 +1288,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     public boolean energyFlowOnRunningTick(ItemStack aStack, boolean allowProduction) {
-        long euFlow = getPowerFlow() * eAmpereFlow; // quick scope sign
+        long euFlow = GTUtility.mulSafe(getPowerFlow(), eAmpereFlow); // quick scope sign
         if (allowProduction && euFlow > 0) {
-            addEnergyOutput_EM(getPowerFlow() * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
+            addEnergyOutput_EM(
+                GTUtility.fastDivMul(getPowerFlow(), getMaxEfficiency(aStack), mEfficiency),
+                eAmpereFlow);
         } else if (euFlow < 0) {
             if (!drainEnergyInput(
-                getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
+                GTUtility.fastDivMul(getPowerFlow(), Math.max(1000L, mEfficiency), getMaxEfficiency(aStack)),
                 eAmpereFlow)) {
                 stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
@@ -1298,7 +1306,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     public long maxEUStore() {
-        return Math.max(maxEUinputMin * (eMaxAmpereFlow << 3), maxEUoutputMin * (eMaxAmpereGen << 3));
+        return Math.max(
+            GTUtility.mulSafe(maxEUinputMin << 3, eMaxAmpereFlow),
+            GTUtility.mulSafe(maxEUoutputMin << 3, eMaxAmpereGen));
     }
 
     @Override
@@ -1378,7 +1388,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     public boolean drainEnergyInput_EM(long EUtTierVoltage, long EUtEffective, long Amperes) {
-        long EUuse = EUtEffective * Amperes;
+        long EUuse = GTUtility.mulSafe(EUtEffective, Amperes);
         if (EUuse == 0) {
             return true;
         }
@@ -1412,7 +1422,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     public boolean drainEnergyInput(long EUtEffective, long Amperes) {
-        long EUuse = EUtEffective * Amperes;
+        long EUuse = GTUtility.mulSafe(EUtEffective, Amperes);
         if (EUuse == 0) {
             return true;
         }

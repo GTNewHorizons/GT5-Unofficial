@@ -1,10 +1,14 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,6 +20,7 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTESuperBusOutput extends MTEHatchOutputBus implements IAddGregtechLogo {
 
     public MTESuperBusOutput(int id, String name, String nameRegional, int tier) {
@@ -34,6 +39,16 @@ public class MTESuperBusOutput extends MTEHatchOutputBus implements IAddGregtech
      */
     public static int getSlots(int aTier) {
         return (1 + aTier) * 16;
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        // GT5U.MBTT.Deprecated colours the whole line, which suits a tooltip but not a name.
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.MBTT.Deprecated",
+            EnumChatFormatting.RESET + StatCollector
+                .translateToLocalFormatted("gt.blockmachines.hatch.superbus.output.name", GTValues.VN[mTier]));
     }
 
     @Override
