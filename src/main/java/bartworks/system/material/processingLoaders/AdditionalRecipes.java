@@ -219,7 +219,7 @@ public class AdditionalRecipes {
                 GTValues.RA.stdBuilder()
                     .special(BioCultureEnum.getPetriDish(bioCulture))
                     .circuit(1)
-                    .fluidInputs(Materials.Glucose.getFluid(10))
+                    .fluidInputs(Materials.Glucose.getFluid(5))
                     .fluidOutputs(new FluidStack(bioCulture.getFluid(), 1))
                     .metadata(GLASS, 3)
                     .duration(50 * SECONDS)
