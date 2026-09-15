@@ -80,9 +80,9 @@ public class MTEWetTransformer extends MTETransformer {
     @Override
     public String[] getDescription() {
         return GTSplit.splitLocalizedFormattedWithWarped(
-            "gt.blockmachines.transformer_advanced.desc",
-            super.getDescription()[0],
-            CommonValues.TEC_MARK_GENERAL);
+            "gt.blockmachines.transformer.half_mode_hint",
+            super.getDescription(),
+            new String[] { CommonValues.TEC_MARK_GENERAL });
     }
 
     @Override
@@ -98,6 +98,12 @@ public class MTEWetTransformer extends MTETransformer {
     @Override
     protected boolean hasHalfMode() {
         return true;
+    }
+
+    @Override
+    protected long idealAmperesIn(boolean stepDown, boolean halfMode) {
+        if (halfMode) return stepDown ? 8 : 32;
+        return stepDown ? 16 : 64;
     }
 
     @Override

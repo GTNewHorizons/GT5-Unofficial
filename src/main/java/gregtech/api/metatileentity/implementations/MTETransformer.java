@@ -201,6 +201,18 @@ public class MTETransformer extends MTETieredMachineBlock {
         return false;
     }
 
+    /**
+     * The amperage a transformer converts without counting its internal losses, which is what the description line
+     * shows. The values displayed by the amperage lines are the real limits instead.
+     *
+     * @param stepDown Whether the transformer steps down, which is the state of the soft mallet
+     * @param halfMode Whether the screwdriver half mode of the high amperage variants is active
+     * @return The ideal amperage of the given mode
+     */
+    protected long idealAmperesIn(boolean stepDown, boolean halfMode) {
+        return stepDown ? 1 : 4;
+    }
+
     @Override
     public boolean showsAmperageInTooltip() {
         return true;
@@ -394,9 +406,16 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocalFormatted(
-            "gt.blockmachines.transformer.desc",
-            GTUtility.getColoredTierNameFromVoltage(maxEUInput()) + EnumChatFormatting.GRAY,
-            GTUtility.getColoredTierNameFromVoltage(maxEUOutput()) + EnumChatFormatting.GRAY) };
+        // The line always describes the step down direction, the item itself can be switched after placement. The
+        // voltage ratio of a transformer is always four, which is why the output amperage is four times the input.
+        final long idealAmperesIn = idealAmperesIn(true, false);
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.transformer.desc",
+                TooltipHelper.coloredText(String.valueOf(idealAmperesIn), EnumChatFormatting.AQUA),
+                GTUtility.getColoredTierNameFromVoltage(V[mTier + 1]) + EnumChatFormatting.GRAY,
+                TooltipHelper.coloredText(String.valueOf(idealAmperesIn * 4L), EnumChatFormatting.AQUA),
+                GTUtility.getColoredTierNameFromVoltage(V[mTier]) + EnumChatFormatting.GRAY),
+            StatCollector.translateToLocal("gt.blockmachines.transformer.mode_hint") };
     }
 }

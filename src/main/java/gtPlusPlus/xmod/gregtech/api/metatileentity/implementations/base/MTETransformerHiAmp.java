@@ -12,8 +12,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETransformer;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
 @IMetaTileEntity.SkipGenerateName
@@ -51,6 +52,12 @@ public class MTETransformerHiAmp extends MTETransformer {
     @Override
     protected boolean hasHalfMode() {
         return true;
+    }
+
+    @Override
+    protected long idealAmperesIn(boolean stepDown, boolean halfMode) {
+        if (halfMode) return stepDown ? 2 : 8;
+        return stepDown ? 4 : 16;
     }
 
     @Override
@@ -104,9 +111,10 @@ public class MTETransformerHiAmp extends MTETransformer {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithPrefixAndAlkalus(
-            super.getDescription()[0],
-            "gt.blockmachines.transformer_advanced.desc");
+        return GTSplit.splitLocalizedFormattedWithWarped(
+            "gt.blockmachines.transformer.half_mode_hint",
+            super.getDescription(),
+            new String[] { GTPPCore.GT_Tooltip.get() });
     }
 
     @Override
