@@ -665,7 +665,7 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Quicklime.getDust(18),
                 Materials.Potash.getDust(9),
                 Materials.Magnesia.getDust(1),
-                Materials.PhosphorousPentoxide.getDust(2),
+                Materials.PhosphorusPentoxide.getDust(2),
                 Materials.SodaAsh.getDust(1),
                 Materials.BandedIron.getDust(4))
             .outputChances(6400, 6000, 4500, 10000, 10000, 10000)
