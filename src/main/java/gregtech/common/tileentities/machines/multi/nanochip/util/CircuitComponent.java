@@ -575,12 +575,12 @@ public enum CircuitComponent {
         2119,
         "gt.circuitcomponent.planckmanifold",
          () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE,0),
-    PrimedUnattunedCircuitry(2120,"gt.circuitcomponent.primedunattunedcircuitry",CircuitCalibration.PRIMITIVE),
-    NandChip(2121,"gt.circuitcomponent.nandchip",()->ItemList.NandChip.get(1),CircuitCalibration.PRIMITIVE),
-    Microprocessor(2122,"gt.circuitcomponent.microprocessor",()->ItemList.Circuit_Microprocessor.get(1),CircuitCalibration.PRIMITIVE),
-    IntegratedProcessor(2123,"gt.circuitcomponent.integratedprocessor",()->ItemList.Circuit_Processor.get(1),CircuitCalibration.PRIMITIVE),
-    NanoProcessor(2124,"gt.circuitcomponent.nanoprocessor",()->ItemList.Circuit_Nanoprocessor.get(1),CircuitCalibration.PRIMITIVE),
-    QuantumProcessor(2125,"gt.circuitcomponent.quantumprocessor", ()->ItemList.Circuit_Quantumprocessor.get(1), CircuitCalibration.PRIMITIVE)
+    PrimedUnattunedCircuitry(2120,"gt.circuitcomponent.primedunattunedcircuitry",CircuitCalibration.PRIMITIVE,0.5f),
+    NandChip(2121,"gt.circuitcomponent.nandchip",()->ItemList.NandChip.get(1),CircuitCalibration.PRIMITIVE,0),
+    Microprocessor(2122,"gt.circuitcomponent.microprocessor",()->ItemList.Circuit_Microprocessor.get(1),CircuitCalibration.PRIMITIVE,0),
+    IntegratedProcessor(2123,"gt.circuitcomponent.integratedprocessor",()->ItemList.Circuit_Processor.get(1),CircuitCalibration.PRIMITIVE,0),
+    NanoProcessor(2124,"gt.circuitcomponent.nanoprocessor",()->ItemList.Circuit_Nanoprocessor.get(1),CircuitCalibration.PRIMITIVE,0),
+    QuantumProcessor(2125,"gt.circuitcomponent.quantumprocessor", ()->ItemList.Circuit_Quantumprocessor.get(1), CircuitCalibration.PRIMITIVE,0)
 
     ;
 
@@ -635,8 +635,9 @@ public enum CircuitComponent {
 
     // CC constructor for circuits not meant to be taken out of the NAC
     // and instead further used, while counting for calibration
-    CircuitComponent(int id, String nameKey, CircuitCalibration circuitType) {
+    CircuitComponent(int id, String nameKey, CircuitCalibration circuitType, float weight) {
         this(id, nameKey, null, null, true, circuitType);
+        this.weight = weight;
     }
 
     // PC constructor

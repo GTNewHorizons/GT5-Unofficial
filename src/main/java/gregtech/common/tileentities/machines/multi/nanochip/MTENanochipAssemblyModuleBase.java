@@ -43,6 +43,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -99,6 +100,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     protected FluidStack[] fluidInputs = null;
     private byte outputColor = -1;
     private int currentParallel;
+    public static final XSTR random = XSTR.XSTR_INSTANCE;
 
     protected MTENanochipAssemblyComplex baseMulti;
 
