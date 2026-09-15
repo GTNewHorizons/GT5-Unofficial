@@ -4,6 +4,10 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
+/// Calculates the overclocks, energy consumption, and duration of a recipe on a machine.
+///
+/// Overclocks that push the duration below one tick lose speed. [#calculateMaxParallelUnderOneTick] converts that
+/// lost speed into parallels. Energy stays what the configured parallel costs at the full overclock count.
 public class OverclockCalculator {
 
     // Basic properties
@@ -365,26 +369,20 @@ public class OverclockCalculator {
     }
 
     protected void calculateOverclock() {
-        // Determine the base duration, using the custom supplier if available.
-        double duration = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
-            : this.duration * durationModifier;
+        double duration = calculateBaseDuration();
 
         // If currentParallel isn't set, assume full parallel usage.
         currentParallel = Math.max(currentParallel, parallel);
 
-        // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
-        double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
-        double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        int tiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) Math.ceil(recipePower), 32));
+        double recipePower = calculateRecipePower();
+        double machinePower = calculateMachinePower();
 
-        // If overclocking is disabled, use the base values and return.
         if (noOverclock) {
             calculatedConsumption = (long) Math.ceil(recipePower);
             calculatedDuration = (int) Math.ceil(duration);
             return;
         }
 
-        // Special handling for laser overclocking.
         if (laserOC) {
             final ResultLaserOCs calcOCs = calculateLaserOCs(recipePower, machinePower);
 
@@ -394,105 +392,66 @@ public class OverclockCalculator {
             return;
         }
 
-        // Limit overclocks allowed by power tier.
-        overclocks = Math.min(maxOverclocks, tiersAbove);
-
-        // If amperage overclocks are disabled, limit overclocks by voltage tier.
-        if (!amperageOC) {
-            int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
-            int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
-            overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
-        }
-
-        // Make sure overclocks don't go negative. This allows recipes needing >1A to run on a single hatch.
-        overclocks = Math.max(overclocks, 0);
-
-        // Split overclocks into heat-based and regular overclocks.
-        int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
+        overclocks = calculateOverclockCount(recipePower, machinePower);
+        int heatOverclocks = calculateHeatOverclocks(overclocks);
         int regularOverclocks = overclocks - heatOverclocks;
 
-        // Adjust power consumption and processing time based on overclocks.
         calculatedConsumption = (long) Math.ceil(recipePower * GTUtility.powInt(eutIncreasePerOC, overclocks));
         duration /= GTUtility.powInt(durationDecreasePerHeatOC, heatOverclocks);
         duration /= GTUtility.powInt(durationDecreasePerOC, regularOverclocks);
         calculatedDuration = (int) Math.max(duration, 1);
     }
 
-    /**
-     * Returns a multiplier to parallel based on much it is overclock too much. This doesn't count as calculating
-     */
-    public double calculateMultiplierUnderOneTick() {
-        // If overclocking is disabled, get no multiplier.
-        if (noOverclock) return 1;
+    /// Max parallel after converting the overclock speed lost below one tick into parallels, rounded up. Returns the
+    /// current parallel when no speed is lost. This doesn't count as calculating.
+    public int calculateMaxParallelUnderOneTick() {
+        if (noOverclock) return parallel;
+        double duration = calculateBaseDuration();
+        double speedup = calculateSpeedup();
+        if (speedup <= duration) return parallel;
+        return GTUtility.safeInt((long) Math.ceil(parallel * speedup / duration), 0);
+    }
 
-        // Determine the base duration, using the custom supplier if available.
-        final double duration = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
+    private double calculateBaseDuration() {
+        return durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
             : this.duration * durationModifier;
+    }
 
-        // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
-        final double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
-        final double machinePower = machineVoltage
-            * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
+    private double calculateRecipePower() {
+        return recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
+    }
 
-        final int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
-        final int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
+    private double calculateMachinePower() {
+        return machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
+    }
 
-        final int powerTiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) recipePower, 32));
-        final int voltageTiersAbove = voltageTierMachine - voltageTierRecipe;
+    /// Overclocks performed at the current parallel, ignoring laser mode. ULV counts as LV for tier purposes.
+    private int calculateOverclockCount(double recipePower, double machinePower) {
+        int tiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) Math.ceil(recipePower), 32));
+        int overclocks = Math.min(maxOverclocks, tiersAbove);
+        if (!amperageOC) {
+            int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
+            int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
+            overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
+        }
+        return Math.max(overclocks, 0);
+    }
 
-        // Special handling for laser overclocking.
+    private int calculateHeatOverclocks(int overclocks) {
+        return Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
+    }
+
+    /// Total duration divisor of every overclock performed at the current parallel.
+    private double calculateSpeedup() {
+        double recipePower = calculateRecipePower();
+        double machinePower = calculateMachinePower();
         if (laserOC) {
-            final ResultLaserOCs calcOCs = calculateLaserOCs(recipePower, machinePower);
-
-            final int neededOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerOC)));
-            final int overclocks = calcOCs.regularOverclocks + calcOCs.laserOverclocks;
-            final int extraOC = Math.max(overclocks - neededOverclocks, 0);
-            final double regularMultiplier = GTUtility.powInt(durationDecreasePerOC, extraOC);
-            final double correctionMultiplier;
-            if (overclocks >= neededOverclocks) {
-                correctionMultiplier = GTUtility.powInt(durationDecreasePerOC, neededOverclocks) / duration;
-            } else return 1.0;
-
-            return Math.ceil(correctionMultiplier * regularMultiplier);
+            ResultLaserOCs calcOCs = calculateLaserOCs(recipePower, machinePower);
+            return GTUtility.powInt(durationDecreasePerOC, calcOCs.regularOverclocks + calcOCs.laserOverclocks);
         }
-
-        // Limit overclocks allowed by power tier or voltage tier depending on whether amperage overclocks are used.
-        // Also limit overclocks to be non-negative. This is required for recipes that use >1A on a single hatch.
-        final int overclocks = GTUtility.clamp(maxOverclocks, 0, amperageOC ? powerTiersAbove : voltageTiersAbove);
-
-        // Split overclocks into heat-based and regular overclocks.
-        final int heatOverclocks = Math
-            .min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
-        final int regularOverclocks = overclocks - heatOverclocks;
-
-        // Compute the duration after heat overclocks have been applied.
-        final double durationAfterHeatOC = duration / GTUtility.powInt(durationDecreasePerHeatOC, heatOverclocks);
-
-        // Compute required heat overclocks to reach a sub-tick duration.
-        final int neededHeatOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerHeatOC)));
-
-        // Compute required regular overclocks to reach sub-tick duration after heat overclocks.
-        final int neededRegularOverclocks = (int) Math
-            .ceil((Math.log(durationAfterHeatOC) / Math.log(durationDecreasePerOC)));
-
-        // Compute the speedup of all the overclocks after sub-tick has been reached.
-        final int extraHeatOverclocks = Math.max(heatOverclocks - neededHeatOverclocks, 0);
-        final int extraRegularOverclocks = Math.max(regularOverclocks - neededRegularOverclocks, 0);
-        final double heatMultiplier = GTUtility.powInt(durationDecreasePerHeatOC, extraHeatOverclocks);
-        final double regularMultiplier = GTUtility.powInt(durationDecreasePerOC, extraRegularOverclocks);
-
-        // Compute a fractional multiplier that accounts for the speedup that is lost due to discretization.
-        double correctionMultiplier;
-        if (heatOverclocks >= neededHeatOverclocks) {
-            correctionMultiplier = GTUtility.powInt(durationDecreasePerHeatOC, neededHeatOverclocks) / duration;
-        } else if (regularOverclocks >= neededRegularOverclocks) {
-            correctionMultiplier = GTUtility.powInt(durationDecreasePerOC, neededRegularOverclocks)
-                / durationAfterHeatOC;
-        } else {
-            // Sub-tick is not achieved, so return unit.
-            return 1.0;
-        }
-
-        return Math.ceil(heatMultiplier * regularMultiplier * correctionMultiplier);
+        int overclocks = calculateOverclockCount(recipePower, machinePower);
+        int heatOverclocks = calculateHeatOverclocks(overclocks);
+        return GTUtility.powInt(durationDecreasePerHeatOC, heatOverclocks)
+            * GTUtility.powInt(durationDecreasePerOC, overclocks - heatOverclocks);
     }
 }
