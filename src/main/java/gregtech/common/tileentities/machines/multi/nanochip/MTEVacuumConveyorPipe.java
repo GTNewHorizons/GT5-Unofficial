@@ -146,17 +146,11 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         if (base == null || base.isDead() || base.getColorization() == -1) return;
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (!base.hasCoverAtSide(dir)) {
-                if (base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte) {
-                    if (igte.getColorization() == base.getColorization()) {
-                        if (igte.getMetaTileEntity() instanceof VacuumFactoryElement element) {
-                            if (element.canConnectOnSide(dir.getOpposite())) {
-                                neighbours.add(element);
-                            }
-                        }
-                    }
-                }
-            }
+            if (!(base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte)) continue;
+            if (igte.getColorization() != base.getColorization()) continue;
+            if (!(igte.getMetaTileEntity() instanceof VacuumFactoryElement element)) continue;
+            if (!element.canConnectOnSide(dir.getOpposite()) || !this.canConnectOnSide(dir)) continue;
+            neighbours.add(element);
         }
     }
 
@@ -188,16 +182,13 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         if (base == null || base.isDead() || base.getColorization() == -1) return;
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte) {
-                if (igte.getColorization() == base.getColorization()) {
-                    if (igte.getMetaTileEntity() instanceof VacuumFactoryElement element) {
-                        if (element.canConnectOnSide(dir.getOpposite())) {
-                            mConnections |= dir.flag;
-                        }
-                    }
-                }
-            }
+            if (!(base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte)) continue;
+            if (igte.getColorization() != base.getColorization()) continue;
+            if (!(igte.getMetaTileEntity() instanceof VacuumFactoryElement element)) continue;
+            if (!element.canConnectOnSide(dir.getOpposite()) || !this.canConnectOnSide(dir)) continue;
+            mConnections |= dir.flag;
         }
+
     }
 
     public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
@@ -305,5 +296,6 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     protected void onCoverChangedServer() {
         super.onCoverChangedServer();
         VacuumFactoryGrid.INSTANCE.updateElement(this);
+        setCheckConnections();
     }
 }
