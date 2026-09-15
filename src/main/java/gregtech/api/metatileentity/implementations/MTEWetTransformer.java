@@ -101,9 +101,8 @@ public class MTEWetTransformer extends MTETransformer {
     }
 
     @Override
-    protected long idealAmperesIn(boolean stepDown, boolean halfMode) {
-        if (halfMode) return stepDown ? 8 : 32;
-        return stepDown ? 16 : 64;
+    protected long idealAmperesIn() {
+        return 16;
     }
 
     @Override

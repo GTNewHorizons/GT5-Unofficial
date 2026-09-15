@@ -418,32 +418,29 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         final boolean hasInput = maxEUInput() > 0L;
         final boolean hasOutput = maxEUOutput() > 0L;
         final boolean showsAmperage = showsAmperageInTooltip();
+        final long amperesIn = showsAmperage && hasInput ? maxAmperesIn() : 0L;
+        final long amperesOut = showsAmperage && hasOutput ? maxAmperesOut() : 0L;
         if (hasInput) {
-            tooltip.add(
-                StatCollector
-                    .translateToLocalFormatted("gt.tileentity.eup_in", TooltipHelper.voltageText(maxEUInput())));
+            tooltip.add(energyLine("gt.tileentity.eup_in", TooltipHelper.voltageText(maxEUInput())));
         }
         if (hasOutput) {
-            tooltip.add(
-                StatCollector
-                    .translateToLocalFormatted("gt.tileentity.eup_out", TooltipHelper.voltageText(maxEUOutput())));
+            tooltip.add(energyLine("gt.tileentity.eup_out", TooltipHelper.voltageText(maxEUOutput())));
         }
-        if (hasInput && showsAmperage) {
-            final long amperesIn = maxAmperesIn();
-            if (amperesIn > 0L) {
-                tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gt.tileentity.amperage_in", TooltipHelper.ampText(amperesIn)));
-            }
+        if (amperesIn > 0L) {
+            tooltip.add(energyLine("gt.tileentity.amperage_in", TooltipHelper.ampText(amperesIn)));
         }
-        if (hasOutput && showsAmperage) {
-            final long amperesOut = maxAmperesOut();
-            if (amperesOut > 0L) {
-                tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gt.tileentity.amperage_out", TooltipHelper.ampText(amperesOut)));
-            }
+        if (amperesOut > 0L) {
+            tooltip.add(energyLine("gt.tileentity.amperage_out", TooltipHelper.ampText(amperesOut)));
         }
+    }
+
+    /**
+     * @param key    The translation key of the line
+     * @param values The formatted values of the line
+     * @return The translated energy line
+     */
+    protected static String energyLine(String key, Object... values) {
+        return StatCollector.translateToLocalFormatted(key, values);
     }
 
     /**

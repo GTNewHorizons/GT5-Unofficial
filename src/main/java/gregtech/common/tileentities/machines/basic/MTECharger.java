@@ -86,12 +86,12 @@ public class MTECharger extends MTEBasicBatteryBuffer {
         // The charger works with a higher amperage per battery than a plain battery buffer.
         addBatteryBufferVoltageLines(tooltip);
         tooltip.add(
-            StatCollector.translateToLocalFormatted(
+            energyLine(
                 "gt.tileentity.amperage_in.charger",
                 TooltipHelper.ampText(AMPERES_IN_PER_BATTERY),
                 TooltipHelper.ampText(MINIMUM_AMPERES_IN)));
         tooltip.add(
-            StatCollector.translateToLocalFormatted(
+            energyLine(
                 "gt.tileentity.amperage_out.charger",
                 TooltipHelper.ampText(AMPERES_OUT_PER_BATTERY),
                 TooltipHelper.ampText(MINIMUM_AMPERES_OUT)));

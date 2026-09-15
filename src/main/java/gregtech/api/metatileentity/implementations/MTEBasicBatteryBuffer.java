@@ -188,10 +188,8 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
      * @param tooltip The tooltip lines of the machine item
      */
     protected void addBatteryBufferVoltageLines(List<String> tooltip) {
-        tooltip.add(
-            StatCollector.translateToLocalFormatted("gt.tileentity.eup_in", TooltipHelper.voltageText(maxEUInput())));
-        tooltip.add(
-            StatCollector.translateToLocalFormatted("gt.tileentity.eup_out", TooltipHelper.voltageText(maxEUOutput())));
+        tooltip.add(energyLine("gt.tileentity.eup_in", TooltipHelper.voltageText(maxEUInput())));
+        tooltip.add(energyLine("gt.tileentity.eup_out", TooltipHelper.voltageText(maxEUOutput())));
     }
 
     @Override

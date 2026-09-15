@@ -214,10 +214,10 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     public void addEnergyTooltipInformation(List<String> tooltip) {
         // The voltage, amperage and direction of this debug machine are configured in its GUI.
         final String customizable = StatCollector.translateToLocal("gt.tileentity.customizable");
-        tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.eup_in", customizable));
-        tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.eup_out", customizable));
-        tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage_in", customizable));
-        tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage_out", customizable));
+        tooltip.add(energyLine("gt.tileentity.eup_in", customizable));
+        tooltip.add(energyLine("gt.tileentity.eup_out", customizable));
+        tooltip.add(energyLine("gt.tileentity.amperage_in", customizable));
+        tooltip.add(energyLine("gt.tileentity.amperage_out", customizable));
     }
 
     @Override

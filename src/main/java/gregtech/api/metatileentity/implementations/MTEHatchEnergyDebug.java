@@ -149,8 +149,8 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     public void addEnergyTooltipInformation(List<String> tooltip) {
         // Both the voltage and the amperage of this debug hatch are configured in its GUI.
         final String customizable = StatCollector.translateToLocal("gt.tileentity.customizable");
-        tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.eup_in", customizable));
-        tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage_in", customizable));
+        tooltip.add(energyLine("gt.tileentity.eup_in", customizable));
+        tooltip.add(energyLine("gt.tileentity.amperage_in", customizable));
     }
 
     @Override

@@ -202,55 +202,44 @@ public class MTETransformer extends MTETieredMachineBlock {
     }
 
     /**
-     * The amperage a transformer converts without counting its internal losses, which is what the description line
-     * shows. The values displayed by the amperage lines are the real limits instead.
-     *
-     * @param stepDown Whether the transformer steps down, which is the state of the soft mallet
-     * @param halfMode Whether the screwdriver half mode of the high amperage variants is active
-     * @return The ideal amperage of the given mode
+     * @return The amperage a transformer converts without counting its internal losses, which is what the description
+     *         line shows. The amperage lines list the real limits instead.
      */
-    protected long idealAmperesIn(boolean stepDown, boolean halfMode) {
-        return stepDown ? 1 : 4;
-    }
-
-    @Override
-    public boolean showsAmperageInTooltip() {
-        return true;
+    protected long idealAmperesIn() {
+        return 1;
     }
 
     @Override
     public void addEnergyTooltipInformation(List<String> tooltip) {
         // Both modes are listed, because the item can be switched into either of them after it is placed.
+        tooltip.add(energyLine("gt.tileentity.eup_in", modes(V[mTier + 1], V[mTier], false)));
+        tooltip.add(energyLine("gt.tileentity.eup_out", modes(V[mTier], V[mTier + 1], false)));
         tooltip.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.tileentity.eup_in",
-                TooltipHelper.voltageText(V[mTier + 1]) + " / " + TooltipHelper.voltageText(V[mTier])));
-        tooltip.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.tileentity.eup_out",
-                TooltipHelper.voltageText(V[mTier]) + " / " + TooltipHelper.voltageText(V[mTier + 1])));
-        tooltip.add(
-            StatCollector.translateToLocalFormatted(
+            energyLine(
                 "gt.tileentity.amperage_in",
-                TooltipHelper.ampText(maxAmperesIn(true, false)) + " / "
-                    + TooltipHelper.ampText(maxAmperesIn(false, false))));
+                modes(maxAmperesIn(true, false), maxAmperesIn(false, false), true)));
         tooltip.add(
-            StatCollector.translateToLocalFormatted(
+            energyLine(
                 "gt.tileentity.amperage_out",
-                TooltipHelper.ampText(maxAmperesOut(true, false)) + " / "
-                    + TooltipHelper.ampText(maxAmperesOut(false, false))));
+                modes(maxAmperesOut(true, false), maxAmperesOut(false, false), true)));
         if (hasHalfMode()) {
             tooltip.add(
-                StatCollector.translateToLocalFormatted(
+                energyLine(
                     "gt.tileentity.amperage_in.half",
-                    TooltipHelper.ampText(maxAmperesIn(true, true)) + " / "
-                        + TooltipHelper.ampText(maxAmperesIn(false, true))));
+                    modes(maxAmperesIn(true, true), maxAmperesIn(false, true), true)));
             tooltip.add(
-                StatCollector.translateToLocalFormatted(
+                energyLine(
                     "gt.tileentity.amperage_out.half",
-                    TooltipHelper.ampText(maxAmperesOut(true, true)) + " / "
-                        + TooltipHelper.ampText(maxAmperesOut(false, true))));
+                    modes(maxAmperesOut(true, true), maxAmperesOut(false, true), true)));
         }
+    }
+
+    /**
+     * @return The values of both modes, step down first, formatted for the tooltip
+     */
+    private static String modes(long stepDown, long stepUp, boolean amperage) {
+        return amperage ? TooltipHelper.ampText(stepDown) + " / " + TooltipHelper.ampText(stepUp)
+            : TooltipHelper.voltageText(stepDown) + " / " + TooltipHelper.voltageText(stepUp);
     }
 
     @Override
@@ -408,7 +397,7 @@ public class MTETransformer extends MTETieredMachineBlock {
     public String[] getDescription() {
         // The line always describes the step down direction, the item itself can be switched after placement. The
         // voltage ratio of a transformer is always four, which is why the output amperage is four times the input.
-        final long idealAmperesIn = idealAmperesIn(true, false);
+        final long idealAmperesIn = idealAmperesIn();
         return new String[] {
             StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.transformer.desc",
