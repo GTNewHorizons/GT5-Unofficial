@@ -461,6 +461,7 @@ public class GTPreLoad {
     public static void loadClientConfig() {
         GTMod.proxy.mRenderTileAmbientOcclusion = Client.render.renderTileAmbientOcclusion;
         GTMod.proxy.mRenderGlowTextures = Client.render.renderGlowTextures;
+        GTMod.proxy.mRenderMHDCSMFancy = Client.render.renderMHDCSMFancy;
         GTMod.proxy.mRenderFlippedMachinesFlipped = Client.render.renderFlippedMachinesFlipped;
         GTMod.proxy.mRenderIndicatorsOnHatch = Client.render.renderIndicatorsOnHatch;
         GTMod.proxy.mRenderDirtParticles = Client.render.renderDirtParticles;
