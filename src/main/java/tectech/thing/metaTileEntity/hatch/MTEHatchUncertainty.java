@@ -2,6 +2,9 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -228,15 +231,20 @@ public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
 
     @Override
     public String[] getDescription() {
-        String[] description = new String[mTier < 6 ? 4 : 3];
-        description[0] = CommonValues.TEC_MARK_EM;
-        description[1] = translateToLocal("gt.blockmachines.hatch.certain.desc.0");
-        description[2] = EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-            + translateToLocal("gt.blockmachines.hatch.certain.desc.1");
+        List<String> description = new ArrayList<>();
+        description.add(CommonValues.TEC_MARK_EM);
+        description.add(translateToLocal("gt.blockmachines.hatch.certain.desc.0"));
+        description.add(
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                + translateToLocal("gt.blockmachines.hatch.certain.desc.1"));
+        description.add(translateToLocal("gt.blockmachines.hatch.certain.desc.3"));
+        description.add(translateToLocal("gt.blockmachines.hatch.certain.desc.4"));
+        description.add(translateToLocal("gt.blockmachines.hatch.certain.desc.5"));
+        description.add(translateToLocal("gt.blockmachines.hatch.certain.desc.6"));
         if (mTier < 6) {
-            description[3] = EnumChatFormatting.DARK_RED + translateToLocal("gt.blockmachines.hatch.certain.desc.2");
+            description.add(EnumChatFormatting.DARK_RED + translateToLocal("gt.blockmachines.hatch.certain.desc.2"));
         }
-        return description;
+        return description.toArray(new String[0]);
     }
 
     private boolean balanceCheck(int sideLenY, short... masses) {
