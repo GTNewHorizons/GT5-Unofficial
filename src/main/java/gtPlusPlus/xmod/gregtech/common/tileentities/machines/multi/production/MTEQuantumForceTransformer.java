@@ -67,6 +67,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.ExpectedFluidOutput;
+import gregtech.api.util.ExpectedItemOutput;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -445,6 +447,17 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
                     return items.toArray(new ItemStack[0]);
                 })
+                    .setCustomExpectedItemOutputCalculation(parallel -> {
+                        List<ExpectedItemOutput> expected = new ArrayList<>();
+
+                        for (int i = 0; i < recipe.mOutputs.length; i++) {
+                            ItemStack item = recipe.getOutput(i);
+                            if (item == null || fluidModeItems[i] != null) continue;
+                            expected.add(new ExpectedItemOutput(item, (long) item.stackSize * parallel, chances[i]));
+                        }
+
+                        return expected;
+                    })
                     .setCustomFluidOutputCalculation(parallel -> {
                         ArrayList<FluidStack> fluids = new ArrayList<>();
 
@@ -472,6 +485,30 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         }
 
                         return fluids.toArray(new FluidStack[0]);
+                    })
+                    .setCustomExpectedFluidOutputCalculation(parallel -> {
+                        List<ExpectedFluidOutput> expected = new ArrayList<>();
+
+                        if (mFluidMode) {
+                            for (int i = 0; i < recipe.mOutputs.length; i++) {
+                                FluidStack fluid = fluidModeItems[i];
+                                if (fluid == null) continue;
+                                long amount = (long) fluid.amount * recipe.mOutputs[i].stackSize * parallel;
+                                expected.add(new ExpectedFluidOutput(fluid.copy(), amount, chances[i]));
+                            }
+                        }
+
+                        for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
+                            FluidStack fluid = recipe.getFluidOutput(i);
+                            if (fluid == null) continue;
+                            expected.add(
+                                new ExpectedFluidOutput(
+                                    fluid,
+                                    (long) fluid.amount * parallel,
+                                    chances[i + recipe.mOutputs.length]));
+                        }
+
+                        return expected;
                     });
             }
 
