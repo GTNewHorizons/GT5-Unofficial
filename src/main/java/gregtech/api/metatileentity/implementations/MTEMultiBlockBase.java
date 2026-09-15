@@ -1444,9 +1444,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         if (reason.wasCritical()) {
             sendSound(INTERRUPT_SOUND_INDEX);
-        }
-        if (makePowerfailEvents && reason == ShutDownReasonRegistry.POWER_LOSS) {
-            GTMod.proxy.powerfailTracker.createPowerfailEvent(igte);
+            if (makePowerfailEvents) {
+                GTMod.proxy.powerfailTracker.createPowerfailEvent(igte);
+            }
         }
     }
 
