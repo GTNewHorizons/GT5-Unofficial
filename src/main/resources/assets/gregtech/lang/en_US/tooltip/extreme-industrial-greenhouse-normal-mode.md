@@ -10,3 +10,4 @@ All crops are grown at the end of the operation
 Does not drop seeds
 Can consume up to {var:maxFertilizerUsagePerSeed} fertilizer per seed per cycle
 Boost per fertilizer: {var:fertilizerBonus}
+Support infused seeds, but 1 infused seed takes 8 common seeds' space

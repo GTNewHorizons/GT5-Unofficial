@@ -114,6 +114,7 @@ import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.CropRenderer;
 import kubatech.gui.modularui2.MTEExtremeIndustrialGreenhouseGui;
 import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
+import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGSeedBucket;
 
 @SuppressWarnings("unused")
 @IMetaTileEntity.SkipGenerateDescription
@@ -800,9 +801,15 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * @return The number of seeds in the EIG.
      */
     public int getTotalSeedCount() {
-        // null check is to prevent a occasional weird NPE from MUI
-        return this.buckets.parallelStream()
-            .reduce(0, (b, t) -> b + t.getSeedCount(), Integer::sum);
+        int total = 0;
+        for (EIGBucket bucket : this.buckets) {
+            if (bucket instanceof EIGSeedBucket) {
+                total += bucket.getSeedCount() * ((EIGSeedBucket) bucket).getSlotCost();
+            } else {
+                total += bucket.getSeedCount();
+            }
+        }
+        return total;
     }
 
     /**
