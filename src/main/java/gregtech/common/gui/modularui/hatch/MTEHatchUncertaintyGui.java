@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.hatch;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.stream.IntStream;
@@ -9,12 +10,15 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.ByteSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.ShortSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
@@ -63,6 +67,11 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
 
         // matrix widget
         screen.child(createMatrix(syncManager));
+
+        // value overlay toggle, sits right above the tectech logo
+        screen.child(
+            createValueAssistButton(syncManager).topRel(0)
+                .rightRel(0));
 
         // tt logo
         screen.child(
@@ -149,7 +158,45 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
             .minElementMargin(4)
             .coverChildren());
 
+        // values of the 16 cells, drawn on top of everything while the value assist is enabled
+        BooleanSyncValue valueAssistSyncer = syncManager.findSyncHandler("valueAssist", BooleanSyncValue.class);
+
+        matrixWidget.child(
+            new Grid()
+                .gridOfWidthHeight(
+                    4,
+                    4,
+                    (x, y, index) -> IKey
+                        .dynamic(
+                            () -> valueAssistSyncer.getBoolValue()
+                                ? Integer.toString(Math.round(matrixSyncer[index].getShortValue() / 10f))
+                                : "")
+                        .asWidget()
+                        .size(10)
+                        .textAlign(Alignment.Center)
+                        .scale(0.5f)
+                        .color(Color.WHITE.main)
+                        .shadow(true))
+                .center()
+                .minElementMargin(1)
+                .coverChildren());
+
         return matrixWidget;
+    }
+
+    private ToggleButton createValueAssistButton(PanelSyncManager syncManager) {
+        BooleanSyncValue valueAssistSyncer = syncManager.findSyncHandler("valueAssist", BooleanSyncValue.class);
+
+        return new ToggleButton().value(valueAssistSyncer)
+            .size(12)
+            .overlay(
+                IKey.str("123")
+                    .alignment(Alignment.Center)
+                    .scale(0.5f)
+                    .color(Color.WHITE.main)
+                    .shadow(true))
+            .tooltip(tooltip -> tooltip.add(IKey.lang("tt.gui.tooltip.uncertainty.value_assist")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     private Flow createButtonColumn(PanelSyncManager syncManager, int offset) {
@@ -203,6 +250,9 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
         syncManager.syncValue("selection", new ByteSyncValue(machine::getSelection, machine::setSelection).allowC2S());
         syncManager.syncValue("mode", new ByteSyncValue(machine::getMode, machine::setMode));
         syncManager.syncValue("status", new ByteSyncValue(machine::getStatus, machine::setStatus));
+        syncManager.syncValue(
+            "valueAssist",
+            new BooleanSyncValue(machine::isShowingValues, machine::setShowValues).allowC2S());
     }
 
     @Override
