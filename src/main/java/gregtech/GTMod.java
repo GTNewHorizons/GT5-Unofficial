@@ -303,7 +303,12 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onPreInitialization(FMLPreInitializationEvent event) {
+        // Keep string handling on English, mainly to avoid the Turkish dotless I breaking case conversions.
+        // Number and date formatting stays on the player's locale, other mods read it to format their own output.
+        final Locale formatLocale = Locale.getDefault(Locale.Category.FORMAT);
         Locale.setDefault(Locale.ENGLISH);
+        Locale.setDefault(Locale.Category.FORMAT, formatLocale);
+
         if (GregTechAPI.sPreloadStarted) {
             return;
         }

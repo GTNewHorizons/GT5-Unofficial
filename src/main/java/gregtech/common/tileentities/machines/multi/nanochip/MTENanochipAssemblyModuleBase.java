@@ -46,7 +46,6 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
@@ -60,7 +59,6 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyModuleBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
@@ -78,9 +76,16 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     MTEExtendedPowerMultiBlockBase<T> implements ISurvivalConstructable, NanochipTooltipValues, ICasingTextureProvider {
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
-    protected static final String[][] base_structure = new String[][] { { " VV~VV ", "       ", " VVVVV " },
-        { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { "VPPPPPV", " ZZZZZ ", "VPPPPPV" },
-        { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { " VVVVV ", "       ", " VVVVV " } };
+    // spotless:off
+    protected static final String[][] base_structure = new String[][] {
+        { " VV~VV ", "       ", " VVVVV " },
+        { "VPPPPPV", " ZZZZZ ", "VVVVVVV" },
+        { "VPPPPPV", " ZZZZZ ", "VVVVVVV" },
+        { "VPPPPPV", " ZZZZZ ", "VVVVVVV" },
+        { "VPPPPPV", " ZZZZZ ", "VVVVVVV" },
+        { "VPPPPPV", " ZZZZZ ", "VVVVVVV" },
+        { " VVVVV ", "       ", " VVVVV " } };
+    // spotless:on
 
     protected static final int BASE_STRUCTURE_OFFSET_X = 3;
     protected static final int BASE_STRUCTURE_OFFSET_Y = 0;
@@ -120,11 +125,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public void clearBaseMulti() {
         this.baseMulti = null;
         disconnect();
-    }
-
-    public int getMaxRecipeDuration() {
-        return ((NACRecipeMapBackend) (this.getRecipeMap()
-            .getBackend())).getMaxDuration(-1);
     }
 
     protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> vacuumConveyorInputs = new VacuumConveyorHatchMap<>();
@@ -490,17 +490,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         CheckRecipeResult result = simulatedParallelHelper.getResult();
         if (result.wasSuccessful()) {
 
-            BigInteger euToConsume = BigInteger.valueOf(simulatedParallelHelper.getCurrentParallel())
-                .multiply(BigInteger.valueOf(properRecipe.mDuration))
-                .multiply(BigInteger.valueOf(properRecipe.mEUt));
-
-            if (euToConsume.compareTo(this.currentEU) > 0) {
-                // Remember how much this recipe needs so increaseStoredEU() re-checks exactly once the buffer reaches
-                // it, instead of every tick while power trickles in.
-                pendingPowerRequirement = euToConsume;
-                return CheckRecipeResultRegistry.NAC_WAITING_FOR_POWER;
-            }
-
             // consume the inputs. note that the input itemstack is null as it is ignored.
             CCInputConsumer inputConsumer = new CCInputConsumer(this.vacuumConveyorInputs, this);
             inputConsumer.consume(properRecipe, simulatedParallelHelper.getCurrentParallel(), this.fluidInputs, null);
@@ -516,8 +505,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             mMaxProgresstime = properRecipe.mDuration;
             // Needs to be negative obviously to display correctly
             this.lEUt = -(long) properRecipe.mEUt * (long) this.currentParallel;
-            // Recipe started, so drop any pending power-wait target.
-            pendingPowerRequirement = null;
         }
 
         return result;
@@ -533,7 +520,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      */
     public GTRecipe transformRecipe(GTRecipe recipe) {
         double recipeDuration = recipe.mDuration * this.getModuleDurationModifier();
-        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier() * baseMulti.globalEUMultiplier;
+        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier(recipe) * baseMulti.globalEUMultiplier;
 
         CircuitCalibration recipeCalibration = recipe
             .getMetadataOrDefault(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE, null);
@@ -561,14 +548,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return copiedRecipe;
     }
 
-    public int getPriority() {
-        return 1;
-    }
-
     protected BigInteger euBufferSize = BigInteger.ZERO;
     protected BigInteger currentEU = BigInteger.ZERO;
-    /** EU the last power-starved recipe needed; gates the increaseStoredEU() recheck so it fires once, not per tick. */
-    private BigInteger pendingPowerRequirement = null;
 
     public void setBufferSize(BigInteger buffer) {
         this.euBufferSize = buffer;
@@ -587,6 +568,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         super.saveNBTData(aNBT);
         aNBT.setByteArray("bufferSize", this.euBufferSize.toByteArray());
         aNBT.setByteArray("currentEU", this.currentEU.toByteArray());
+        aNBT.setLong("availableEUt", this.availableEUt);
 
         aNBT.setBoolean("connected", this.isConnected);
         aNBT.setByte("outputColor", this.outputColor);
@@ -597,6 +579,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         super.loadNBTData(aNBT);
         this.euBufferSize = new BigInteger(aNBT.getByteArray("bufferSize"));
         this.currentEU = new BigInteger(aNBT.getByteArray("currentEU"));
+        this.availableEUt = aNBT.getLong("availableEUt");
         this.isConnected = aNBT.getBoolean("connected");
         // Default to -1 (unset) if missing from old saves
         this.outputColor = aNBT.hasKey("outputColor") ? aNBT.getByte("outputColor") : -1;
@@ -625,6 +608,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public String[] getInfoData() {
         return new String[] {
             translateToLocalFormatted(
+                "GT5U.tooltip.nac.module.scanner.available_eut",
+                GTUtility.scientificFormat(availableEUt)),
+            translateToLocalFormatted(
                 "GT5U.tooltip.nac.module.scanner.current_eu",
                 GTUtility.scientificFormat(currentEU)),
             translateToLocalFormatted(
@@ -652,7 +638,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      * Applies an EU Discount
      * In case any specific module wants to control this value
      */
-    protected float getEUDiscountModifier() {
+    protected float getEUDiscountModifier(GTRecipe recipe) {
         return 1;
     }
 
@@ -670,32 +656,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         BigInteger euToFull = euBufferSize.subtract(currentEU);
         BigInteger increasedEU = euToFull.min(maximumIncrease);
         currentEU = currentEU.add(increasedEU);
-        // When a recipe was blocked on NAC_WAITING_FOR_POWER, re-check only once the buffer has actually reached the
-        // amount that recipe needed - re-checking every tick as power trickles in would just fail until then.
-        // Throttled so a heavily loaded base can defer it further.
-        if (pendingPowerRequirement != null && mMaxProgresstime <= 0
-            && currentEU.compareTo(pendingPowerRequirement) >= 0) {
-            pendingPowerRequirement = null;
-            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
-        }
         return increasedEU;
     }
 
     protected MTEHatchVacuumConveyorOutput findOutputHatch(byte color) {
         return vacuumConveyorOutputs.findAnyColoredHatch(color);
-    }
-
-    protected boolean removeItemFromInputByColor(ItemStack stack, byte color, boolean withName) {
-        int totalToConsome = stack.stackSize;
-        List<MTEHatchVacuumConveyorInput> hatches = vacuumConveyorInputs.findColoredHatches(color);
-        for (MTEHatchVacuumConveyorInput inputHatch : hatches) {
-            int amountConsumed = inputHatch.tryConsume(stack, withName);
-            totalToConsome -= amountConsumed;
-            if (totalToConsome <= 0) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
