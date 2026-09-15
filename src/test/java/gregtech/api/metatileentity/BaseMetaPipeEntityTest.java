@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
@@ -58,8 +59,10 @@ class BaseMetaPipeEntityTest {
         pipe.yCoord = 20;
         pipe.zCoord = 30;
         pipe.mConnections = (byte) ForgeDirection.WEST.flag;
-        pipe.mMetaTileEntity = mock(MTECable.class);
-        pipe.mMetaTileEntity.mConnections = 0;
+        final MTECable cable = mock(MTECable.class);
+        when(cable.getBaseMetaTileEntity()).thenReturn(pipe);
+        pipe.setMetaTileEntity(cable);
+        cable.mConnections = 0;
 
         final MinecraftServer server = mock(MinecraftServer.class);
         try (MockedStatic<MinecraftServer> minecraft = mockStatic(MinecraftServer.class);
@@ -72,6 +75,7 @@ class BaseMetaPipeEntityTest {
 
             pipe.updateConnections();
 
+            assertNotNull(pipe.getNode());
             assertNotSame(oldNode, pipe.getNode());
             api.verify(() -> GregTechAPI.causeCableUpdate(world, 10, 20, 30));
             api.verifyNoMoreInteractions();
