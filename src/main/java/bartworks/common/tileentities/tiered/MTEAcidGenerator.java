@@ -151,10 +151,7 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     @Override
     public String getLocalName() {
         if (!hasOwnLocalName()) return super.getLocalName();
-        final String key = "tile.acidgenerator.tier." + String.format("%02d", mTier) + ".name";
-        final String name = StatCollector.translateToLocal(key);
-        return name.equals(key) ? StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[mTier]
-            : name;
+        return StatCollector.translateToLocal("tile.acidgenerator.tier." + mTier + ".name");
     }
 
     @Override
