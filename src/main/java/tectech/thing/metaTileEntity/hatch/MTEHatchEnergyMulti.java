@@ -205,6 +205,7 @@ public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyI
             false,
             mTier,
             maxAmperes,
+            maxAmperesIn(),
             "gt.blockmachines.hatch.energymulti.desc",
             maxAmperes + (maxAmperes >> 2),
             maxAmperes);
