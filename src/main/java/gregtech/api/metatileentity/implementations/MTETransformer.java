@@ -32,6 +32,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -164,16 +165,80 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public long maxAmperesOut() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? 4 : 1;
+        return maxAmperesOut(getBaseMetaTileEntity().isAllowedToWork(), isHalfMode());
     }
 
     @Override
     public long maxAmperesIn() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? 2 : 5;
+        return maxAmperesIn(getBaseMetaTileEntity().isAllowedToWork(), isHalfMode());
     }
 
-    public long displayedAmperesIn() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? 1 : 4;
+    /**
+     * @param stepDown Whether the transformer steps down, which is the state of the soft mallet
+     * @param halfMode Whether the screwdriver half mode of the high amperage variants is active
+     * @return The amperage this transformer provides in the given mode
+     */
+    protected long maxAmperesOut(boolean stepDown, boolean halfMode) {
+        return stepDown ? 4 : 1;
+    }
+
+    /**
+     * @param stepDown Whether the transformer steps down, which is the state of the soft mallet
+     * @param halfMode Whether the screwdriver half mode of the high amperage variants is active
+     * @return The amperage this transformer accepts in the given mode
+     */
+    protected long maxAmperesIn(boolean stepDown, boolean halfMode) {
+        return stepDown ? 2 : 5;
+    }
+
+    /** @return true while the screwdriver half mode is active, only the high amperage variants have one */
+    protected boolean isHalfMode() {
+        return false;
+    }
+
+    /** @return true if this transformer can be switched into a half mode with a screwdriver */
+    protected boolean hasHalfMode() {
+        return false;
+    }
+
+    @Override
+    public boolean showsAmperageInTooltip() {
+        return true;
+    }
+
+    @Override
+    public void addEnergyTooltipInformation(List<String> tooltip) {
+        // Both modes are listed, because the item can be switched into either of them after it is placed.
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "gt.tileentity.eup_in",
+                TooltipHelper.voltageText(V[mTier + 1]) + " / " + TooltipHelper.voltageText(V[mTier])));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "gt.tileentity.eup_out",
+                TooltipHelper.voltageText(V[mTier]) + " / " + TooltipHelper.voltageText(V[mTier + 1])));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "gt.tileentity.amperage_in",
+                TooltipHelper.ampText(maxAmperesIn(true, false)) + " / "
+                    + TooltipHelper.ampText(maxAmperesIn(false, false))));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "gt.tileentity.amperage_out",
+                TooltipHelper.ampText(maxAmperesOut(true, false)) + " / "
+                    + TooltipHelper.ampText(maxAmperesOut(false, false))));
+        if (hasHalfMode()) {
+            tooltip.add(
+                StatCollector.translateToLocalFormatted(
+                    "gt.tileentity.amperage_in.half",
+                    TooltipHelper.ampText(maxAmperesIn(true, true)) + " / "
+                        + TooltipHelper.ampText(maxAmperesIn(false, true))));
+            tooltip.add(
+                StatCollector.translateToLocalFormatted(
+                    "gt.tileentity.amperage_out.half",
+                    TooltipHelper.ampText(maxAmperesOut(true, true)) + " / "
+                        + TooltipHelper.ampText(maxAmperesOut(false, true))));
+        }
     }
 
     @Override
@@ -291,7 +356,7 @@ public class MTETransformer extends MTETieredMachineBlock {
                         : (RED + StatCollector.translateToLocal("GT5U.waila.transformer.step_up"))) + RESET,
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                         : tag.getLong("maxEUInput"),
-                    tag.getLong("displayedAmperesIn"),
+                    tag.getLong("maxAmperesIn"),
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                         : tag.getLong("maxEUOutput"),
                     tag.getLong("maxAmperesOut")));
@@ -323,7 +388,6 @@ public class MTETransformer extends MTETieredMachineBlock {
         tag.setBoolean("isAllowedToWork", getBaseMetaTileEntity().isAllowedToWork());
         tag.setLong("maxEUInput", maxEUInput());
         tag.setLong("maxAmperesIn", maxAmperesIn());
-        tag.setLong("displayedAmperesIn", displayedAmperesIn());
         tag.setLong("maxEUOutput", maxEUOutput());
         tag.setLong("maxAmperesOut", maxAmperesOut());
     }

@@ -82,11 +82,7 @@ public class MTEWetTransformer extends MTETransformer {
         return GTSplit.splitLocalizedFormattedWithWarped(
             "gt.blockmachines.transformer_advanced.desc",
             super.getDescription()[0],
-            CommonValues.TEC_MARK_GENERAL,
-            16,
-            64,
-            8,
-            32);
+            CommonValues.TEC_MARK_GENERAL);
     }
 
     @Override
@@ -95,27 +91,25 @@ public class MTEWetTransformer extends MTETransformer {
     }
 
     @Override
-    public long maxAmperesOut() {
-        if (mHalfMode) {
-            return getBaseMetaTileEntity().isAllowedToWork() ? 32 : 8;
-        }
-        return getBaseMetaTileEntity().isAllowedToWork() ? 64 : 16;
+    protected boolean isHalfMode() {
+        return mHalfMode;
     }
 
     @Override
-    public long maxAmperesIn() {
-        if (mHalfMode) {
-            return getBaseMetaTileEntity().isAllowedToWork() ? 10 : 40;
-        }
-        return getBaseMetaTileEntity().isAllowedToWork() ? 20 : 80;
+    protected boolean hasHalfMode() {
+        return true;
     }
 
     @Override
-    public long displayedAmperesIn() {
-        if (mHalfMode) {
-            return getBaseMetaTileEntity().isAllowedToWork() ? 8 : 32;
-        }
-        return getBaseMetaTileEntity().isAllowedToWork() ? 16 : 64;
+    protected long maxAmperesOut(boolean stepDown, boolean halfMode) {
+        if (halfMode) return stepDown ? 32 : 8;
+        return stepDown ? 64 : 16;
+    }
+
+    @Override
+    protected long maxAmperesIn(boolean stepDown, boolean halfMode) {
+        if (halfMode) return stepDown ? 10 : 40;
+        return stepDown ? 20 : 80;
     }
 
     @Override

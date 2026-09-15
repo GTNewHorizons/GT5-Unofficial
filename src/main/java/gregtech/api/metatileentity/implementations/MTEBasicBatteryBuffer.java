@@ -29,6 +29,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.singleblock.MTEBasicBatteryBufferGui;
 import ic2.api.item.IElectricItem;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -37,6 +38,12 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 @IMetaTileEntity.SkipGenerateDescription
 @IMetaTileEntity.SkipGenerateName
 public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
+
+    /** The amperage a single chargeable battery lets this buffer pull from the network. */
+    public static final long AMPERES_IN_PER_BATTERY = 2L;
+
+    /** The amperage a single battery lets this buffer push into the network. */
+    public static final long AMPERES_OUT_PER_BATTERY = 1L;
 
     public boolean mCharge = false, mDecharge = false;
     public int mBatteryCount = 0, mChargeableCount = 0;
@@ -148,12 +155,43 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
 
     @Override
     public long maxAmperesIn() {
-        return mChargeableCount * 2L;
+        return mChargeableCount * AMPERES_IN_PER_BATTERY;
     }
 
     @Override
     public long maxAmperesOut() {
-        return mBatteryCount;
+        return mBatteryCount * AMPERES_OUT_PER_BATTERY;
+    }
+
+    @Override
+    public boolean showsAmperageInTooltip() {
+        return true;
+    }
+
+    @Override
+    public void addEnergyTooltipInformation(List<String> tooltip) {
+        // The amperage of a battery buffer depends on the batteries inside it, so the rating per battery is shown.
+        addBatteryBufferVoltageLines(tooltip);
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "gt.tileentity.amperage_in.batteries",
+                TooltipHelper.ampText(AMPERES_IN_PER_BATTERY)));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "gt.tileentity.amperage_out.batteries",
+                TooltipHelper.ampText(AMPERES_OUT_PER_BATTERY)));
+    }
+
+    /**
+     * Adds the voltage lines shared by this family, as their voltage does not depend on the contents.
+     *
+     * @param tooltip The tooltip lines of the machine item
+     */
+    protected void addBatteryBufferVoltageLines(List<String> tooltip) {
+        tooltip.add(
+            StatCollector.translateToLocalFormatted("gt.tileentity.eup_in", TooltipHelper.voltageText(maxEUInput())));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted("gt.tileentity.eup_out", TooltipHelper.voltageText(maxEUOutput())));
     }
 
     @Override

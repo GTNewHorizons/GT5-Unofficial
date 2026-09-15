@@ -302,8 +302,10 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
             StatCollector.translateToLocalFormatted(
                 isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",
                 TooltipHelper.voltageText(GTValues.V[tier])));
-        additionalTooltips
-            .add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
+        additionalTooltips.add(
+            StatCollector.translateToLocalFormatted(
+                isDynamo ? "gt.tileentity.amperage_out" : "gt.tileentity.amperage_in",
+                TooltipHelper.ampText(amp)));
         if (author != null) {
             additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
         }

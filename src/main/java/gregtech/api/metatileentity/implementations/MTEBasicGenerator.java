@@ -93,6 +93,11 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     }
 
     @Override
+    public boolean showsAmperageInTooltip() {
+        return true;
+    }
+
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         openGui(aPlayer);
         return true;

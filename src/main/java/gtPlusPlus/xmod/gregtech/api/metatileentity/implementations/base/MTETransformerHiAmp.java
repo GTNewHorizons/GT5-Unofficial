@@ -44,27 +44,25 @@ public class MTETransformerHiAmp extends MTETransformer {
     }
 
     @Override
-    public long maxAmperesOut() {
-        if (this.mHalfMode) {
-            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 8L : 2L);
-        }
-        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 16L : 4L);
+    protected boolean isHalfMode() {
+        return mHalfMode;
     }
 
     @Override
-    public long maxAmperesIn() {
-        if (this.mHalfMode) {
-            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 3L : 12L);
-        }
-        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 6L : 24L);
+    protected boolean hasHalfMode() {
+        return true;
     }
 
     @Override
-    public long displayedAmperesIn() {
-        if (this.mHalfMode) {
-            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 2L : 8L);
-        }
-        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 4L : 16L);
+    protected long maxAmperesOut(boolean stepDown, boolean halfMode) {
+        if (halfMode) return stepDown ? 8 : 2;
+        return stepDown ? 16 : 4;
+    }
+
+    @Override
+    protected long maxAmperesIn(boolean stepDown, boolean halfMode) {
+        if (halfMode) return stepDown ? 3 : 12;
+        return stepDown ? 6 : 24;
     }
 
     @Override
@@ -108,11 +106,7 @@ public class MTETransformerHiAmp extends MTETransformer {
     public String[] getDescription() {
         return Utils.splitLocalizedFormattedWithPrefixAndAlkalus(
             super.getDescription()[0],
-            "gt.blockmachines.transformer_advanced.desc",
-            4,
-            16,
-            2,
-            8);
+            "gt.blockmachines.transformer_advanced.desc");
     }
 
     @Override

@@ -9,6 +9,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.tooltip.TooltipHelper;
 
 public final class MTEBasicMachineWithRecipeBuilder {
 
@@ -36,6 +37,8 @@ public final class MTEBasicMachineWithRecipeBuilder {
         private int fluidTankCapacityOverride = 0;
         private int machineAmperageOverride = 0;
         private int machineEUtMultiplier = 1;
+        private double ratedAmperage = 0;
+        private double ratedPowerUsage = 0;
         private SpecialEffects specialEffect = SpecialEffects.NONE;
 
         public Builder(int id) {
@@ -129,30 +132,45 @@ public final class MTEBasicMachineWithRecipeBuilder {
             return this;
         }
 
+        public OptionalStep setRatedAmperage(double amperage) {
+            if (amperage <= 0) throw new IllegalArgumentException("Rated amperage must be greater than 0");
+            this.ratedAmperage = amperage;
+            return this;
+        }
+
+        public OptionalStep setRatedPowerUsage(double powerUsage) {
+            if (powerUsage <= 0) throw new IllegalArgumentException("Rated power usage must be greater than 0");
+            this.ratedPowerUsage = powerUsage;
+            return this;
+        }
+
+        private static String formatRatedValue(double value) {
+            return value == Math.floor(value) ? Long.toString((long) value) : Double.toString(value);
+        }
+
         @Override
         public MTEBasicMachineWithRecipe build() {
             String[] finalDescription = description;
-            int extraDescriptionLines = (machineAmperageOverride != 0 ? 1 : 0) + (machineEUtMultiplier != 1 ? 1 : 0);
+            double ratedAmps = ratedAmperage != 0 ? ratedAmperage : machineAmperageOverride;
+            double ratedPower = ratedPowerUsage != 0 ? ratedPowerUsage : machineEUtMultiplier * 100;
+            int extraDescriptionLines = (ratedAmps != 0 ? 1 : 0) + (ratedPower != 100 ? 1 : 0);
             if (extraDescriptionLines > 0) {
                 finalDescription = Arrays.copyOf(description, description.length + extraDescriptionLines);
                 int descriptionIndex = description.length;
-                if (machineEUtMultiplier != 1) {
+                if (ratedPower != 100) {
                     finalDescription[descriptionIndex++] = EnumChatFormatting.GRAY
-                        + StatCollector.translateToLocal("GT5U.MBTT.PowerUsage")
+                        + StatCollector.translateToLocal("GT5U.MBTT.RatedPowerUsage")
                         + ": "
                         + EnumChatFormatting.RED
-                        + (machineEUtMultiplier * 100)
+                        + formatRatedValue(ratedPower)
                         + "%"
                         + EnumChatFormatting.RESET;
                 }
-                if (machineAmperageOverride != 0) {
+                if (ratedAmps != 0) {
                     finalDescription[descriptionIndex] = EnumChatFormatting.GRAY
-                        + StatCollector.translateToLocal("GT5U.MBTT.BaseAmperage")
+                        + StatCollector.translateToLocal("GT5U.MBTT.RatedAmperageIn")
                         + ": "
-                        + EnumChatFormatting.YELLOW
-                        + machineAmperageOverride
-                        + "A"
-                        + EnumChatFormatting.RESET;
+                        + TooltipHelper.coloredText(formatRatedValue(ratedAmps), EnumChatFormatting.AQUA);
                 }
             }
             MTEBasicMachineWithRecipe machine;
@@ -243,6 +261,10 @@ public final class MTEBasicMachineWithRecipeBuilder {
         OptionalStep setMachineAmperage(int amperage);
 
         OptionalStep setMachineEUtMultiplier(int multiplier);
+
+        OptionalStep setRatedAmperage(double amperage);
+
+        OptionalStep setRatedPowerUsage(double powerUsage);
 
         MTEBasicMachineWithRecipe build();
     }

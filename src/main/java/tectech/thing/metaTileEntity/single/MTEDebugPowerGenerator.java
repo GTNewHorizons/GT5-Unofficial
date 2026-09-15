@@ -208,6 +208,11 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     }
 
     @Override
+    public boolean showsAmperageInTooltip() {
+        return false;
+    }
+
+    @Override
     public long maxEUInput() {
         // could be set to Long.MAX_VALUE to avoid exploding
         return isProducing ? 0 : getActualVoltage();

@@ -201,7 +201,7 @@ gt.blockmachines.slot_count.desc=%s Slots
 gt.blockmachines.cable.desc=Max Voltage: %s\nMax Amperage: %s\nLoss/Meter/Ampere: %s
 gt.blockmachines.gt_frame.desc.format=Just something you can put covers on.
 gt.blockmachines.transformer.desc=%s -> %s (Use Soft Mallet to invert)
-gt.blockmachines.transformer_advanced.desc=Accepts %sA and outputs %sA\nToggle %sA/%sA half-mode with Screwdriver
+gt.blockmachines.transformer_advanced.desc=Use a Soft Mallet to switch between Step Up and Step Down\nUse a Screwdriver to toggle Half Mode
 gt.blockmachines.bronze_hull.desc=For your first Steam Machines
 gt.blockmachines.highpressure_hull.desc=For improved Steam Machines
 gt.blockmachines.basic_hull.desc=§rYou just need §5I§dm§4a§cg§ei§an§ba§3t§9i§1o§5n§r to use this.
@@ -1172,7 +1172,14 @@ gt.laserplatingtooltip=Engineered to withstand extreme temperatures
 # Tooltip info of tile-entities
 gt.tileentity.eup_in=Voltage IN: %s
 gt.tileentity.eup_out=Voltage OUT: %s
-gt.tileentity.amperage=Amperage: %s
+gt.tileentity.amperage_in=Amperage IN: %s
+gt.tileentity.amperage_out=Amperage OUT: %s
+gt.tileentity.amperage_in.half=Half Mode Amperage IN: %s
+gt.tileentity.amperage_out.half=Half Mode Amperage OUT: %s
+gt.tileentity.amperage_in.batteries=Amperage IN: %s per chargeable battery
+gt.tileentity.amperage_out.batteries=Amperage OUT: %s per battery
+gt.tileentity.amperage_in.charger=Amperage IN: %1$s per chargeable battery, at least %2$s
+gt.tileentity.amperage_out.charger=Amperage OUT: %1$s per battery, at least %2$s
 gt.tileentity.throughput=Throughput: %s
 gt.tileentity.eup_store=Capacity: %s
 gt.tileentity.tank_info=Contains Fluid: §e%s§7
@@ -1865,8 +1872,8 @@ GT5U.providesgashazmatprotection=Provides gas protection.
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
 GT5U.MBTT.MachineType=Machine Type
-GT5U.MBTT.PowerUsage=Power Usage
-GT5U.MBTT.BaseAmperage=Base Amperage
+GT5U.MBTT.RatedPowerUsage=Rated Power Usage
+GT5U.MBTT.RatedAmperageIn=Rated Amperage IN
 GT5U.MBTT.StaticParallels=Processes up to %s recipes at once
 GT5U.MBTT.Dimensions=Dimensions
 GT5U.MBTT.Hollow=(Hollow)

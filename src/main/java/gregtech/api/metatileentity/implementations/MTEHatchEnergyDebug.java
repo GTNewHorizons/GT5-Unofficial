@@ -144,6 +144,11 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     }
 
     @Override
+    public boolean showsAmperageInTooltip() {
+        return false;
+    }
+
+    @Override
     public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {
         if (baseMetaTileEntity.isServerSide()) fetchEnergy();
     }

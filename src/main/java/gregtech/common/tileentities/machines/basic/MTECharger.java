@@ -2,6 +2,8 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GTValues.V;
 
+import java.util.List;
+
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
@@ -13,10 +15,23 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 
 @IMetaTileEntity.SkipGenerateDescription
 @IMetaTileEntity.SkipGenerateName
 public class MTECharger extends MTEBasicBatteryBuffer {
+
+    /** The amperage a single chargeable battery lets this charger pull from the network. */
+    public static final long AMPERES_IN_PER_BATTERY = 8L;
+
+    /** The amperage this charger pulls even without a single chargeable battery installed. */
+    public static final long MINIMUM_AMPERES_IN = 4L;
+
+    /** The amperage a single battery lets this charger push into the network. */
+    public static final long AMPERES_OUT_PER_BATTERY = 4L;
+
+    /** The amperage this charger pushes even without a single battery installed. */
+    public static final long MINIMUM_AMPERES_OUT = 2L;
 
     public MTECharger(int aID, String aName, String aNameRegional, int aTier, String aDescription, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aDescription, aSlotCount);
@@ -58,12 +73,28 @@ public class MTECharger extends MTEBasicBatteryBuffer {
 
     @Override
     public long maxAmperesIn() {
-        return Math.max(mChargeableCount * 8L, 4L);
+        return Math.max(mChargeableCount * AMPERES_IN_PER_BATTERY, MINIMUM_AMPERES_IN);
     }
 
     @Override
     public long maxAmperesOut() {
-        return Math.max(mBatteryCount * 4L, 2L);
+        return Math.max(mBatteryCount * AMPERES_OUT_PER_BATTERY, MINIMUM_AMPERES_OUT);
+    }
+
+    @Override
+    public void addEnergyTooltipInformation(List<String> tooltip) {
+        // The charger works with a higher amperage per battery than a plain battery buffer.
+        addBatteryBufferVoltageLines(tooltip);
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "gt.tileentity.amperage_in.charger",
+                TooltipHelper.ampText(AMPERES_IN_PER_BATTERY),
+                TooltipHelper.ampText(MINIMUM_AMPERES_IN)));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "gt.tileentity.amperage_out.charger",
+                TooltipHelper.ampText(AMPERES_OUT_PER_BATTERY),
+                TooltipHelper.ampText(MINIMUM_AMPERES_OUT)));
     }
 
     protected long getTransferMultiplier() {

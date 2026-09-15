@@ -72,6 +72,11 @@ public class MTEBasicHull extends MTEBasicTank {
     }
 
     @Override
+    public boolean showsAmperageInTooltip() {
+        return true;
+    }
+
+    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

@@ -49,6 +49,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.capability.CleanroomReference;
 import gregtech.common.config.Client;
 import gregtech.common.gui.modularui.util.MTEItemStackHandler;
@@ -386,6 +387,63 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      */
     public long maxAmperesIn() {
         return 1;
+    }
+
+    /**
+     * Adds the voltage and amperage lines to the tooltip of this machine's item. Machines that have more than one
+     * operating mode, like the transformers which can step up or down, override this and list every mode.
+     *
+     * @param tooltip The tooltip lines of the machine item
+     */
+    public void addEnergyTooltipInformation(List<String> tooltip) {
+        addDefaultEnergyTooltipInformation(tooltip);
+    }
+
+    /**
+     * @return true if this machine has a fixed amperage that is worth showing in the item tooltip. Machines that draw
+     *         a variable amount of amps, like the single block processing machines, or whose amperage is determined by
+     *         something else, like the multiblocks whose energy hatches decide it, return false.
+     */
+    public boolean showsAmperageInTooltip() {
+        return true;
+    }
+
+    /**
+     * Adds one voltage and one amperage line for both directions, which is the layout used by machines that only have
+     * a single operating mode.
+     *
+     * @param tooltip The tooltip lines of the machine item
+     */
+    protected void addDefaultEnergyTooltipInformation(List<String> tooltip) {
+        final boolean hasInput = maxEUInput() > 0L;
+        final boolean hasOutput = maxEUOutput() > 0L;
+        final boolean showsAmperage = showsAmperageInTooltip();
+        if (hasInput) {
+            tooltip.add(
+                StatCollector
+                    .translateToLocalFormatted("gt.tileentity.eup_in", TooltipHelper.voltageText(maxEUInput())));
+        }
+        if (hasOutput) {
+            tooltip.add(
+                StatCollector
+                    .translateToLocalFormatted("gt.tileentity.eup_out", TooltipHelper.voltageText(maxEUOutput())));
+        }
+        if (hasInput && showsAmperage) {
+            final long amperesIn = maxAmperesIn();
+            if (amperesIn > 0L) {
+                tooltip.add(
+                    StatCollector
+                        .translateToLocalFormatted("gt.tileentity.amperage_in", TooltipHelper.ampText(amperesIn)));
+            }
+        }
+        if (hasOutput && showsAmperage) {
+            final long amperesOut = maxAmperesOut();
+            if (amperesOut > 0L) {
+                tooltip.add(
+                    StatCollector
+                        .translateToLocalFormatted("gt.tileentity.amperage_out", TooltipHelper.ampText(amperesOut)));
+            }
+        }
     }
 
     /**
