@@ -934,7 +934,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.multimachine.incomplete_structure"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val))
@@ -945,7 +946,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                             + StatCollector.translateToLocal("GTPP.machines.tier")
                             + ": "
                             + EnumChatFormatting.GREEN
-                            + GTValues.VOLTAGE_NAMES[(int) getInputTier()])
+                            + GTValues.getLocalizedLongVoltageName((int) getInputTier()))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getInputTier() > 0))
@@ -956,7 +957,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                             + StatCollector.translateToLocal("GTPP.machines.tier")
                             + ": "
                             + EnumChatFormatting.GREEN
-                            + GTValues.VOLTAGE_NAMES[(int) getOutputTier()])
+                            + GTValues.getLocalizedLongVoltageName((int) getOutputTier()))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getOutputTier() > 0))

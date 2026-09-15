@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -88,6 +89,9 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
     public static final ConcurrentHashMap<String, MetaGeneratedTool> sInstances = new ConcurrentHashMap<>();
+
+    private static final String EMPTY_NAME_KEY = "gt.metatool.empty.name";
+    private static final String EMPTY_TOOLTIP_KEY = "gt.metatool.empty.tooltip";
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
 
@@ -220,12 +224,12 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         Object... aOreDictNamesAndAspects) {
         if (aToolTip == null) aToolTip = "";
         if (aID >= 0 && aID < 32766 && aID % 2 == 0) {
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".name", aEnglish);
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
-            GTLanguageManager
-                .addStringLocalization(getUnlocalizedName() + "." + (aID + 1) + ".name", aEnglish + " (Empty)");
-            GTLanguageManager
-                .addStringLocalization(getUnlocalizedName() + "." + (aID + 1) + ".tooltip", "You need to recharge it");
+            if (!aEnglish.isEmpty()) {
+                GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".name", aEnglish);
+            }
+            if (!aToolTip.isEmpty()) {
+                GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
+            }
             mToolStats.put((short) aID, aToolStats);
             mToolStats.put((short) (aID + 1), aToolStats);
             aToolStats.onStatsAddedToTool(this, aID);
@@ -991,9 +995,33 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return true;
     }
 
+    /**
+     * A discharged tool reads the name of its charged counterpart, so that a tool spells its name once instead of
+     * twice.
+     */
+    private boolean isDischarged(ItemStack aStack) {
+        return getDamage(aStack) % 2 == 1;
+    }
+
+    /**
+     * @param aMeta the Meta Value of the charged tool
+     * @return the name of the charged tool, without the discharged suffix
+     */
+    protected String getChargedName(int aMeta) {
+        return translateToLocal(getUnlocalizedName() + "." + aMeta + ".name");
+    }
+
+    @Override
+    protected Function<ItemStack, String> getToolTipLocalizationFunction(ItemStack aStack) {
+        if (isDischarged(aStack)) return tStack -> translateToLocal(EMPTY_TOOLTIP_KEY);
+        return super.getToolTipLocalizationFunction(aStack);
+    }
+
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        String result = super.getItemStackDisplayName(aStack);
+        String result = isDischarged(aStack)
+            ? translateToLocalFormatted(EMPTY_NAME_KEY, getChargedName(getDamage(aStack) - 1))
+            : getChargedName(getDamage(aStack));
         final String toolMode = getToolModeName(aStack);
 
         if (toolMode != null) {

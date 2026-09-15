@@ -17,6 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
@@ -25,6 +26,7 @@ import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.WirelessDataStore;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     private List<RecipeAssemblyLine> recipes = null;

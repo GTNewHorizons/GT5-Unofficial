@@ -40,7 +40,6 @@ import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
-import gtPlusPlus.core.item.general.ItemBlueprint;
 import gtPlusPlus.core.item.general.ItemBufferCore;
 import gtPlusPlus.core.item.general.ItemCloakingDevice;
 import gtPlusPlus.core.item.general.ItemGenericToken;
@@ -100,8 +99,6 @@ public final class ModItems {
 
         GregtechItemList.AlkalusDisk.set(
             new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, "Unknown Use", EnumRarity.rare, false));
-
-        GregtechItemList.BlueprintBase.set(new ItemBlueprint("itemBlueprint"));
 
         // Half Complete Casings
         Item halfCompleteCasings = new ItemHalfCompleteCasings(
@@ -231,10 +228,6 @@ public final class ModItems {
         // Generic Chem Items
         Item genericChemItem = new ItemGenericChemBase();
 
-        GregtechItemList.RedMetalCatalyst.set(new ItemStack(genericChemItem))
-            .registerOre("catalystIronCopper");
-        GregtechItemList.YellowMetalCatalyst.set(new ItemStack(genericChemItem, 1, 1))
-            .registerOre("catalystTungstenNickel");
         GregtechItemList.BlueMetalCatalyst.set(new ItemStack(genericChemItem, 1, 2))
             .registerOre("catalystCobaltTitanium");
         GregtechItemList.OrangeMetalCatalyst.set(new ItemStack(genericChemItem, 1, 3))

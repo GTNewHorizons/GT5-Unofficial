@@ -33,6 +33,7 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDataCopyable;
@@ -59,7 +60,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
     public static final String COPIED_DATA_IDENTIFIER = "droneDownLink";
 
     private static final IIconContainer moduleActive = Textures.BlockIcons
-        .custom("iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
 
     public MTEHatchDroneDownLink(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);

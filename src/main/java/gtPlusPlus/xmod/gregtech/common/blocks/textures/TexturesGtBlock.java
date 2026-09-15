@@ -7,6 +7,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomOptionalBlockIconContainer;
 
@@ -130,37 +131,11 @@ public class TexturesGtBlock {
     // Custom Pipes
     public static final CustomIcon TEXTURE_PIPE_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_PIPE_T1");
     public static final CustomIcon TEXTURE_PIPE_GENERIC = new CustomIcon("iconsets/MACHINE_CASING_PIPE_GENERIC");
-    public static final CustomIcon TEXTURE_PIPE_BABBITALLOY = new CustomIcon(
-        "iconsets/MACHINE_CASING_PIPE_BABBITALLOY");
-    public static final CustomIcon TEXTURE_PIPE_INCONEL690 = new CustomIcon("iconsets/MACHINE_CASING_PIPE_INCONEL690");
-    public static final CustomIcon TEXTURE_PIPE_STELLITE = new CustomIcon("iconsets/MACHINE_CASING_PIPE_STELLITE");
-    public static final CustomIcon TEXTURE_PIPE_NITINOL60 = new CustomIcon("iconsets/MACHINE_CASING_PIPE_NITINOL60");
-    public static final CustomIcon TEXTURE_PIPE_LAFIUM = new CustomIcon("iconsets/MACHINE_CASING_PIPE_LAFIUM");
-    public static final CustomIcon TEXTURE_PIPE_CINOBITE = new CustomIcon("iconsets/MACHINE_CASING_PIPE_CINOBITE");
-    public static final CustomIcon TEXTURE_PIPE_TITANSTEEL = new CustomIcon("iconsets/MACHINE_CASING_PIPE_TITANSTEEL");
-    public static final CustomIcon TEXTURE_PIPE_ABYSSALALLOY = new CustomIcon(
-        "iconsets/MACHINE_CASING_PIPE_ABYSSALALLOY");
 
     // Custom Gearboxes
     public static final CustomIcon TEXTURE_GEARBOX_GRINDING_MILL = new CustomIcon(
         "TileEntities/MACHINE_CASING_GEARBOX_T1");
     public static final CustomIcon TEXTURE_GEARBOX_GENERIC = new CustomIcon("iconsets/MACHINE_CASING_GEARBOX_GENERIC");
-    public static final CustomIcon TEXTURE_GEARBOX_EGLINSTEEL = new CustomIcon(
-        "iconsets/MACHINE_CASING_GEARBOX_EGLINSTEEL");
-    public static final CustomIcon TEXTURE_GEARBOX_ABYSSALALLOY = new CustomIcon(
-        "iconsets/MACHINE_CASING_GEARBOX_ABYSSALALLOY");
-    public static final CustomIcon TEXTURE_GEARBOX_INCOLOYMA956 = new CustomIcon(
-        "iconsets/MACHINE_CASING_GEARBOX_INCOLOYMA956");
-    public static final CustomIcon TEXTURE_GEARBOX_INCONEL792 = new CustomIcon(
-        "iconsets/MACHINE_CASING_GEARBOX_INCONEL792");
-    public static final CustomIcon TEXTURE_GEARBOX_NITINOL60 = new CustomIcon(
-        "iconsets/MACHINE_CASING_GEARBOX_NITINOL60");
-    public static final CustomIcon TEXTURE_GEARBOX_PIKYONIUM = new CustomIcon(
-        "iconsets/MACHINE_CASING_GEARBOX_PIKYONIUM");
-    public static final CustomIcon TEXTURE_GEARBOX_TITANSTEEL = new CustomIcon(
-        "iconsets/MACHINE_CASING_GEARBOX_TITANSTEEL");
-    public static final CustomIcon TEXTURE_GEARBOX_ZERON100 = new CustomIcon(
-        "iconsets/MACHINE_CASING_GEARBOX_ZERON100");
 
     public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II = new CustomIcon("iconsets/MACHINE_CASING_FUSION_3");
     public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_INNER = new CustomIcon(
@@ -323,9 +298,9 @@ public class TexturesGtBlock {
     public static final CustomIcon Overlay_Machine_Controller_Advanced_Active = new CustomIcon(
         "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE");
     public static final IIconContainer Overlay_Machine_Controller_Advanced_Glow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_GLOW");
+        .create(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_GLOW");
     public static final IIconContainer Overlay_Machine_Controller_Advanced_Active_Glow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE_GLOW");
+        .create(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE_GLOW");
 
     // oMCA = Overlay_Machine_Controller_Advanced
     public static final CustomIcon oMCACokeOven = new CustomIcon("iconsets/controllerFaces/cokeOven");
@@ -353,9 +328,9 @@ public class TexturesGtBlock {
     public static final CustomIcon oMCATreeFarm = new CustomIcon("iconsets/controllerFaces/treeFarm");
     public static final CustomIcon oMCATreeFarmActive = new CustomIcon("iconsets/controllerFaces/treeFarmActive");
     public static final IIconContainer oMCATreeFarmGlow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/controllerFaces/treeFarmGlow");
+        .create(Mods.GregTech.resourceDomain, "iconsets/controllerFaces/treeFarmGlow");
     public static final IIconContainer oMCATreeFarmActiveGlow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/controllerFaces/treeFarmActiveGlow");
+        .create(Mods.GregTech.resourceDomain, "iconsets/controllerFaces/treeFarmActiveGlow");
 
     public static final CustomIcon oMCAIndustrialRockBreaker = new CustomIcon(
         "iconsets/controllerFaces/industrialRockBreaker");

@@ -39,6 +39,7 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
+import io.netty.buffer.ByteBuf;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -432,6 +433,19 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     @interface SkipGenerateDescription {}
 
     /**
+     * Skip adding the name to <code>GregTech.lang</code>.
+     * <p>
+     * Use it when the class builds its name at runtime by overriding {@link #getLocalName()}, e.g. from a shared key
+     * formatted with the tier, so that no per instance name key is generated.
+     *
+     * @apiNote This annotation is only effective when annotated to subclasses of {@link IMetaTileEntity}.
+     * @see #getLocalName()
+     */
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface SkipGenerateName {}
+
+    /**
      * In case the Output Voltage varies.
      */
     String getSpecialVoltageToolTip();
@@ -467,6 +481,15 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean renderInInventory(ISBRInventoryContext ctx);
 
     /**
+     * Returns a stable, read-only inventory texture model, or {@code null} when textures must be resolved per render.
+     */
+    @Nullable
+    @SideOnly(Side.CLIENT)
+    default ITexture[][] getInventoryTextures() {
+        return null;
+    }
+
+    /**
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
@@ -489,13 +512,31 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         // Seems no code need this, keep around for compat just in case
     }
 
-    default NBTTagCompound getDescriptionData() {
-        return null;
-    }
+    /**
+     * Ideally, you should only sync data that affects block appearance or sound here.
+     * <ul>
+     * <li>GUI data should be synced inside MUI2</li>
+     * <li>Waila data should be synced by the respective waila overrides.</li>
+     * </ul>
+     * <p>
+     * Make sure to call super method and always read the same amount of bytes in {@link #readFromStream(ByteBuf)}.
+     * <p>
+     * If you are writing an array, you should encode the length before the array to allow reading on the other side.
+     * Optional field can be either be encoded by an extra special value or an extra boolean.
+     *
+     * @param buffer write to this buffer
+     */
+    default void writeToStream(ByteBuf buffer) {}
 
-    default void onDescriptionPacket(NBTTagCompound data) {
-
-    }
+    /**
+     * See {@link #writeToStream(ByteBuf)} for more details.
+     * Make sure to call super method and always write the same amount of bytes on the other side.
+     * <p>
+     * You do not need to issue texture update, it will always be issued by the base TE on sync.
+     *
+     * @param buffer read from this buffer
+     */
+    default void readFromStream(ByteBuf buffer) {}
 
     /**
      * @return Actual color shown on GUI

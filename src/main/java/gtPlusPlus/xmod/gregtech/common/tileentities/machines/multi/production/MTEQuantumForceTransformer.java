@@ -78,6 +78,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import io.netty.buffer.ByteBuf;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<MTEQuantumForceTransformer>
@@ -389,11 +390,15 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 doFermium = false;
                 doNeptunium = false;
 
+                // prevents neptunium plasma being consumed if there is nothing to focus
+                int circuit = findProgrammedCircuitNumber();
+                int outputCount = recipe.mOutputs.length + recipe.mFluidOutputs.length;
                 if (recipe.getMetadataOrDefault(GTRecipeConstants.QFT_FOCUS_TIER, 1) <= getFocusingTier()) {
                     FluidStack[] fluids = inputFluids;
                     for (FluidStack fluid : fluids) {
                         if (fluid.getFluid()
-                            .equals(mNeptunium)) {
+                            .equals(mNeptunium) && circuit >= 0
+                            && circuit < outputCount) {
                             doNeptunium = true;
                         }
                         if (fluid.getFluid()
@@ -403,7 +408,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     }
                 }
 
-                chances = getOutputChances(recipe, doNeptunium ? findProgrammedCircuitNumber() : -1);
+                chances = getOutputChances(recipe, doNeptunium ? circuit : -1);
 
                 // Handle Fluid Mode. Add fluid that item can be turned into to fluidModeItems.
                 // null if Fluid Mode is disabled or item cannot be turned into fluid.
@@ -717,17 +722,15 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        if (data == null) data = new NBTTagCompound();
-        data.setBoolean("renderDisabled", renderDisabled);
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(renderDisabled);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        renderDisabled = data.getBoolean("renderDisabled");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        renderDisabled = buffer.readBoolean();
     }
 
     @Override

@@ -155,3 +155,7 @@ star.Ross128=Ross128
 solarsystem.Ross128System=Système-Ross128
 
 itemGroup.bw.MetaItems.0=Objets du Remaniement des Circuits BartWorks
+
+# Multiblocks
+gt.blockmachines.megachemicalreactor.name=Méga réacteur chimique 
+gt.blockmachines.megaoilcracker.name=Méga Craqueur

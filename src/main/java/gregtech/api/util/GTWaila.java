@@ -1,7 +1,5 @@
 package gregtech.api.util;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-
 import net.minecraft.util.StatCollector;
 
 import gregtech.common.config.Client;
@@ -47,12 +45,16 @@ public abstract class GTWaila {
             progressText = StatCollector
                 .translateToLocalFormatted("GT5U.waila.machine.progress_tick", progressTime, maxProgressTime);
         } else {
-            progressText = StatCollector.translateToLocalFormatted(
-                "GT5U.waila.machine.progress_second",
-                formatNumber(progressTime / 20),
-                formatNumber(maxProgressTime / 20));
+            String currentSeconds = String.format("%.2f", progressTime / 20.0);
+            String maxSeconds = String.format("%.2f", maxProgressTime / 20.0);
+            progressText = StatCollector
+                .translateToLocalFormatted("GT5U.waila.machine.progress_second", currentSeconds, maxSeconds);
         }
 
-        return TTRenderBar.create(progressText, 0xFFFF0000, 0xFF8B0000, (double) progressTime / maxProgressTime);
+        return TTRenderBar.create(
+            progressText,
+            ColorUtils.progressBarTop.getColor(),
+            ColorUtils.progressBarBottom.getColor(),
+            (double) progressTime / maxProgressTime);
     }
 }
