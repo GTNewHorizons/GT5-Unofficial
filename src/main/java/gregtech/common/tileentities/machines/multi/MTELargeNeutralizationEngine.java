@@ -108,6 +108,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int maxFluidUse = 200;
 
+    private final static FluidStack CONCENTRATED_BUTYLLITHIUM_SOLUTION = Materials.nButylLithiumSolutionConcentrated
+        .getFluid(1000L);
     private final static ItemStack FRANCIUM_HYDROXIDE_DUST = Materials.FranciumHydroxide.getDust(1);
     private final static ItemStack CAESIUM_HYDROXIDE_DUST = Materials.CaesiumHydroxide.getDust(1);
     private final static ItemStack POTASSIUM_HYDROXIDE_DUST = Materials.PotassiumHydroxide.getDust(1);
@@ -322,6 +324,12 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     "Francium Hydroxide",
                     500,
                     5))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.alkali_text",
+                    "Concentrated n-Butyl Lithium Solution",
+                    1000,
+                    "3000L"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.1"))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.2"))
@@ -467,7 +475,10 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private void useBooster() {
-        if (depleteInput(FRANCIUM_HYDROXIDE_DUST)) {
+        if (depleteInput(CONCENTRATED_BUTYLLITHIUM_SOLUTION)) {
+            this.boosterEUBoost = 10F;
+            this.boosterBoostTicks = 400;
+        } else if (depleteInput(FRANCIUM_HYDROXIDE_DUST)) {
             this.boosterEUBoost = 5F;
             this.boosterBoostTicks = 240;
         } else if (depleteInput(CAESIUM_HYDROXIDE_DUST)) {
