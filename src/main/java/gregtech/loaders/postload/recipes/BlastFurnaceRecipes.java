@@ -503,27 +503,6 @@ public class BlastFurnaceRecipes implements Runnable {
             .metadata(NO_GAS_CIRCUIT_CONFIG, 1)
             .addTo(BlastFurnaceWithGas);
 
-        // CaO + 3C = CaC2 + CO
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Quicklime.getDust(2), Materials.Carbon.getDust(3))
-            .itemOutputs(Materials.CalciumCarbide.getDust(3))
-            .fluidOutputs(Materials.CarbonMonoxide.getGas(1_000))
-            .duration(30 * SECONDS)
-            .eut((int) TierEU.RECIPE_HV)
-            .metadata(COIL_HEAT, 2573)
-            .addTo(blastFurnaceRecipes);
-
-        // Ni + 3Al = NiAl3
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Nickel.getDust(1), Materials.Aluminium.getDust(3))
-            .itemOutputs(Materials.NickelAluminide.getIngots(4))
-            .duration(45 * SECONDS)
-            .eut((int) TierEU.RECIPE_HV)
-            .metadata(COIL_HEAT, 1688)
-            .addTo(blastFurnaceRecipes);
-
         ItemStack[] tSiliconDioxide = new ItemStack[] { Materials.SiliconDioxide.getDust(3),
             Materials.NetherQuartz.getDust(3), Materials.CertusQuartz.getDust(3), Materials.Quartzite.getDust(6) };
 

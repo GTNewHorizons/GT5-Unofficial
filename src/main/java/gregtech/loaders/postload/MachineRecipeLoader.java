@@ -40,6 +40,7 @@ import gregtech.loaders.postload.recipes.IceCreamMachineRecipes;
 import gregtech.loaders.postload.recipes.ImplosionCompressorRecipes;
 import gregtech.loaders.postload.recipes.LaserEngraverRecipes;
 import gregtech.loaders.postload.recipes.LatheRecipes;
+import gregtech.loaders.postload.recipes.LayeringMachineRecipes;
 import gregtech.loaders.postload.recipes.MatterAmplifierRecipes;
 import gregtech.loaders.postload.recipes.MixerRecipes;
 import gregtech.loaders.postload.recipes.NEIHiding;
@@ -82,6 +83,7 @@ public class MachineRecipeLoader implements Runnable {
         new CircuitAssemblerRecipes().run();
         new CokeOvenRecipes().run();
         new CompressorRecipes().run();
+        new LayeringMachineRecipes().run();
         new CuttingRecipes().run();
         new DistilleryRecipes().run();
         new ElectrolyzerRecipes().run();
