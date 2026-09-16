@@ -1095,7 +1095,7 @@ public class Assembler implements Runnable {
             }
         }
 
-        // Buck Converter IV-UIV
+        // Buck Converter IV-UXV
         // Buck Converter IV
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1196,6 +1196,41 @@ public class Assembler implements Runnable {
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+
+        // Buck Converter UMV
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Transformer_UXV_UMV.get(1),
+                BaseRecipeLoader.getNHCoreModItem("Display", 1),
+                Circuits.UMV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 4),
+                new ItemStack(bw_realglas, 2, 9))
+            .itemOutputs(CustomItemList.Machine_BuckConverter_UMV.get(1))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(assemblerRecipes);
+
+        // Buck Converter UXV
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Transformer_MAX_UXV.get(1),
+                BaseRecipeLoader.getNHCoreModItem("Display", 1),
+                Circuits.UXV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Magmatter, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 4),
+                new ItemStack(bw_realglas, 2, 10))
+            .itemOutputs(CustomItemList.Machine_BuckConverter_UXV.get(1))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials.MagnetohydrodynamicallyConstrainedStarMatter,
+                    FluidShapes.fluidMolten,
+                    2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
 
         // Laser Dynamo
