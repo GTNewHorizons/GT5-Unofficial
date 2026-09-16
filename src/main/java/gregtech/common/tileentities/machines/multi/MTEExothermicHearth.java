@@ -247,14 +247,30 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                     + " with the parallel multiplier")
             .addSeparator()
             .addInfo(
-                "Optionally enable " + EnumChatFormatting.RED+
-                    "Overdrive"
+                "Optionally enable " + EnumChatFormatting.RED
+                    + "Overdrive"
                     + EnumChatFormatting.GRAY
                     + " to boost parallel multiplier cap to "
                     + EnumChatFormatting.GOLD
                     + "4x")
-            .addInfo(EnumChatFormatting.RED+"Overdrive"+EnumChatFormatting.GRAY+" also speeds up heating by "+EnumChatFormatting.RED+"5x"+EnumChatFormatting.GRAY+" and drain rate by "+EnumChatFormatting.DARK_RED+"10x")
-            .addInfo(EnumChatFormatting.RED+"Overdrive"+EnumChatFormatting.GRAY+" can only be enabled when "+EnumChatFormatting.GOLD+"Pyrotheum Heating"+EnumChatFormatting.GRAY+" is enabled")
+            .addInfo(
+                EnumChatFormatting.RED + "Overdrive"
+                    + EnumChatFormatting.GRAY
+                    + " also speeds up heating by "
+                    + EnumChatFormatting.RED
+                    + "5x"
+                    + EnumChatFormatting.GRAY
+                    + " and drain rate by "
+                    + EnumChatFormatting.DARK_RED
+                    + "10x")
+            .addInfo(
+                EnumChatFormatting.RED + "Overdrive"
+                    + EnumChatFormatting.GRAY
+                    + " can only be enabled when "
+                    + EnumChatFormatting.GOLD
+                    + "Pyrotheum Heating"
+                    + EnumChatFormatting.GRAY
+                    + " is enabled")
             .addSeparator()
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
@@ -297,7 +313,12 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         super.loadNBTData(aNBT);
         this.glassTier = aNBT.getInteger("glass");
         this.parallelModifier = aNBT.getFloat("parallelModifier");
-        this.isPyroSupplied = aNBT.getBoolean("pyro");
+        this.heatMode = aNBT.getInteger("heatMode");
+        // handle migration of old hearths, if pyro was on, the mode is set to 1. otherwise it will be 0.
+        if (aNBT.hasKey("pyro")) {
+            this.heatMode = MODE_PYRO;
+            aNBT.removeTag("pyro");
+        }
     }
 
     @Override
@@ -305,7 +326,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         super.saveNBTData(aNBT);
         aNBT.setInteger("glass", this.glassTier);
         aNBT.setFloat("parallelModifier", this.parallelModifier);
-        aNBT.setBoolean("pyro", this.isPyroSupplied);
+        aNBT.setInteger("heatMode", this.heatMode);
     }
 
     private boolean checkFluid(int amount) {
@@ -335,8 +356,10 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (isPyroSupplied) {
-                    if (!checkFluid((int) Math.floor(PYROTHEUM_DRAIN_BASE * parallelModifier * (isOverdriveOn ? 10 : 1))))
+                if (shouldPyrotheumBeSupplied()) {
+                    if (!checkFluid(
+                        (int) Math
+                            .floor(PYROTHEUM_DRAIN_BASE * parallelModifier * (heatMode == MODE_OVERDRIVE ? 10 : 1))))
                         return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 }
                 return recipe.mSpecialValue <= MTEExothermicHearth.this.heatingCapacity
@@ -346,10 +369,12 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
+    public boolean shouldPyrotheumBeSupplied() {
+        return heatMode >= MODE_PYRO;
+    }
+
     private int runningTickCounter = 0;
     private float parallelModifier = 1;
-    public boolean isPyroSupplied = false;
-    public boolean isOverdriveOn = false;
     private static final int PYROTHEUM_DRAIN_BASE = 250;
     // without pyrotheum, it should take 30 minutes to reach max multiplier (2x)
     // with pyrotheum, itll take 5 minutes.
@@ -358,31 +383,42 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     private static final float INCREMENT_PYRO = INCREMENT_BASE * 6;
     private static final float INCREMENT_OVERDRIVE = INCREMENT_PYRO * 5;
 
+    private static final int PARALLEL_BASE_CAP = 2;
+
+    public static final int MODE_NO_PYRO = 0;
+    public static final int MODE_PYRO = 1;
+    public static final int MODE_OVERDRIVE = 2;
+    public int heatMode = 0;
+
+    public void setHeatMode(int index) {
+        heatMode = index;
+    }
+
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         // every 5 seconds, increment the parallel modifier.
         runningTickCounter++;
         if (runningTickCounter % 20 == 0) { // drain pyrotheum and crash machine if enough isnt supplied
-            if (isPyroSupplied) {
+            if (shouldPyrotheumBeSupplied()) {
                 final FluidStack pyrotheum = new FluidStack(
                     TFFluids.fluidPyrotheum,
-                    (int) Math.floor(PYROTHEUM_DRAIN_BASE * parallelModifier * (isOverdriveOn ? 10 : 1)));
+                    (int) Math.floor(PYROTHEUM_DRAIN_BASE * parallelModifier * (heatMode == MODE_OVERDRIVE ? 10 : 1)));
                 if (!this.depleteInput(pyrotheum, false)) {
                     stopMachine(ShutDownReasonRegistry.outOfFluid(pyrotheum));
                     return false;
                 }
             }
         }
+        if (parallelModifier > PARALLEL_BASE_CAP && heatMode != MODE_OVERDRIVE) {
+            // in case overdrive is turned off when parallels are higher than 2
+            parallelModifier = PARALLEL_BASE_CAP;
+        }
 
-        if (runningTickCounter % 100 == 0) {
-            int allowedParallel = 2 + (isOverdriveOn && isPyroSupplied ? 2 : 0);
+        int allowedParallel = PARALLEL_BASE_CAP + (heatMode == MODE_OVERDRIVE ? 2 : 0);
+        if (runningTickCounter % 100 == 0 && parallelModifier < allowedParallel) {
             float increment = INCREMENT_BASE;
-            if(isPyroSupplied) {
-                increment = INCREMENT_PYRO;
-                if(isOverdriveOn) {
-                    increment = INCREMENT_OVERDRIVE;
-                }
-            }
+            if (heatMode == MODE_PYRO) increment = INCREMENT_PYRO;
+            if (heatMode == MODE_OVERDRIVE) increment = INCREMENT_OVERDRIVE;
             parallelModifier = Math.min(allowedParallel, parallelModifier + increment);
         }
         return super.onRunningTick(aStack);
@@ -401,9 +437,11 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        tag.setBoolean("pyrotheum", isPyroSupplied);
-        tag.setBoolean("overdrive",isOverdriveOn);
-        tag.setInteger("drain", (int) Math.floor(parallelModifier * PYROTHEUM_DRAIN_BASE * (isOverdriveOn?10:1)));
+        tag.setBoolean("pyrotheum", shouldPyrotheumBeSupplied());
+        tag.setBoolean("overdrive", heatMode == MODE_OVERDRIVE);
+        tag.setInteger(
+            "drain",
+            (int) Math.floor(parallelModifier * PYROTHEUM_DRAIN_BASE * (heatMode == MODE_OVERDRIVE ? 10 : 1)));
         tag.setFloat("parallelModifier", parallelModifier);
         tag.setInteger("heatingCapacity", heatingCapacity);
     }
@@ -418,7 +456,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             list.add(translateToLocalFormatted("GT5U.waila.mebf.pyrotheum", formatFluid(tag.getInteger("drain"))));
         }
         boolean overDriveOn = tag.getBoolean("overdrive");
-        if(overDriveOn){
+        if (overDriveOn) {
             list.add(translateToLocal("GT5U.waila.mebf.overdrive"));
         }
         list.add(
@@ -436,19 +474,21 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         info.add(StatCollector.translateToLocalFormatted("GT5U.EBF.heat.s", formatNumber(this.heatingCapacity)));
         info.add(
             translateToLocal(
-                this.isPyroSupplied ? "GT5U.gui.text.button.pyrotheum.enabled"
+                shouldPyrotheumBeSupplied() ? "GT5U.gui.text.button.pyrotheum.enabled"
                     : "GT5U.gui.text.button.pyrotheum.disabled"));
         info.add(
             translateToLocal(
-                this.isOverdriveOn ? "GT5U.gui.text.button.overdrive.enabled"
+                heatMode == MODE_OVERDRIVE ? "GT5U.gui.text.button.overdrive.enabled"
                     : "GT5U.gui.text.button.overdrive.disabled"));
         info.add(
             StatCollector.translateToLocalFormatted("GT5U.waila.mebf.parallel", formatNumber(this.parallelModifier)));
-        if (this.isPyroSupplied) {
+        if (shouldPyrotheumBeSupplied()) {
             info.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.mebf.pyrotheum",
-                    formatFluid((int) Math.floor(PYROTHEUM_DRAIN_BASE * this.parallelModifier * (this.isOverdriveOn ? 10 : 1)))));
+                    formatFluid(
+                        (int) Math.floor(
+                            PYROTHEUM_DRAIN_BASE * this.parallelModifier * (heatMode == MODE_OVERDRIVE ? 10 : 1)))));
         }
     }
 
