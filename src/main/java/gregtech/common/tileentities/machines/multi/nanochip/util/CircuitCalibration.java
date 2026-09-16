@@ -29,7 +29,7 @@ public enum CircuitCalibration {
     BIO(
         new CalibrationThreshold("Aware", 0.25, nac -> {nac.globalEUMultiplier = 0.8f;}),
         new CalibrationThreshold("Sentient", 0.5, nac -> {nac.globalDurationMultiplier = 0.8f;}),
-        new CalibrationThreshold("ALIVE!!!!!!!!!", 0.75, nac -> {nac.wetwareT3Active = true; nac.bioT3Active = true;})
+        new CalibrationThreshold("ALIVE!!!!!!!!!", 0.75, nac -> {nac.bioT3Active = true;})
     ),
     OPTICAL(
         new CalibrationThreshold("Tuned", 0.25, nac -> {nac.globalEUMultiplier = 0.8f;}),
