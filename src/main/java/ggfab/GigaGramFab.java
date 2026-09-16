@@ -15,7 +15,6 @@ import static gregtech.common.items.IDMetaTool01.FILE;
 import static gregtech.common.items.IDMetaTool01.HARDHAMMER;
 import static gregtech.common.items.IDMetaTool01.SAW;
 import static gregtech.common.items.IDMetaTool01.SCREWDRIVER;
-import static gregtech.common.items.IDMetaTool01.SOFTMALLET;
 import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
@@ -85,10 +84,8 @@ public class GigaGramFab {
                 craftingToolHardHammer,
                 INSTANCE.mToolStats.get((short) HARDHAMMER.ID),
                 6 * ingot);
-            GigaGramFabAPI.addSingleUseToolType(
-                craftingToolSoftMallet,
-                INSTANCE.mToolStats.get((short) SOFTMALLET.ID),
-                6 * ingot);
+            GigaGramFabAPI
+                .addSingleUseToolType(craftingToolSoftMallet, GTToolItems.SOFT_MALLET.getToolStats(), 6 * ingot);
             GigaGramFabAPI.addSingleUseToolType(
                 craftingToolScrewdriver,
                 INSTANCE.mToolStats.get((short) SCREWDRIVER.ID),

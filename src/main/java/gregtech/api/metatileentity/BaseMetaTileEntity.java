@@ -76,7 +76,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
-import gregtech.common.items.behaviors.BehaviourSoftMallet;
+import gregtech.common.items.tools.ToolSoftMalletItem;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.render.IMTERenderer;
 import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
@@ -1499,8 +1499,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
                             final int mode = MetaGeneratedTool.getToolMode(tCurrentItem);
                             final boolean shouldEnable = switch (mode) {
-                                case BehaviourSoftMallet.MODE_ACTIVATE -> true;
-                                case BehaviourSoftMallet.MODE_DEACTIVATE -> false;
+                                case ToolSoftMalletItem.MODE_ACTIVATE -> true;
+                                case ToolSoftMalletItem.MODE_DEACTIVATE -> false;
                                 default -> !mWorks;
                             };
 

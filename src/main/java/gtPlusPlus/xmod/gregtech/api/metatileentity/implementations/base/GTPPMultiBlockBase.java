@@ -1188,10 +1188,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             true + "HARDHAMMER",
             MetaGeneratedTool01.INSTANCE
                 .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, GOOD, Materials.Tungsten, null));
-        mToolStacks.put(
-            true + "SOFTMALLET",
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.SOFTMALLET.ID, 1, GOOD, Materials.Tungsten, null));
+        mToolStacks.put(true + "SOFTMALLET", GTToolItems.SOFT_MALLET.getToolWithMaterial(GOOD));
         mToolStacks.put(
             true + "SCREWDRIVER",
             MetaGeneratedTool01.INSTANCE
@@ -1209,10 +1206,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             false + "HARDHAMMER",
             MetaGeneratedTool01.INSTANCE
                 .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, BAD, Materials.Tungsten, null));
-        mToolStacks.put(
-            false + "SOFTMALLET",
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.SOFTMALLET.ID, 1, BAD, Materials.Tungsten, null));
+        mToolStacks.put(false + "SOFTMALLET", GTToolItems.SOFT_MALLET.getToolWithMaterial(BAD));
         mToolStacks.put(
             false + "SCREWDRIVER",
             MetaGeneratedTool01.INSTANCE

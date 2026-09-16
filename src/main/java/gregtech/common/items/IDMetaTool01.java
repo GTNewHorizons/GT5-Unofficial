@@ -5,9 +5,10 @@ public enum IDMetaTool01 {
     // Please pretty please, add your entries while conserving the order
     SAW(10),
     HARDHAMMER(12),
+    // The soft mallet and the wrench moved to their own items (see gregtech.common.items.tools.GTToolItems), but
+    // their ids stay reserved: the Postea migration in PosteaTransformers matches old saved stacks by them, so they
+    // must never be reused.
     SOFTMALLET(14),
-    // The wrench moved to its own items (see gregtech.common.items.tools.GTToolItems), but its ids stay reserved:
-    // the Postea migration in PosteaTransformers matches old saved stacks by them, so they must never be reused.
     WRENCH(16),
     FILE(18),
     CROWBAR(20),

@@ -20,6 +20,7 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.tools.GTToolItems;
@@ -1051,52 +1052,43 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.screw.get(Materials.Steel) });
             }
             case "toolHeadHammer", "toolHeadMallet" -> {
-                if (GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L) != null) {
+                // Soft mallets are their own item now; hard hammers still live on MetaGeneratedTool01. Both are
+                // built by the same four recipes, so resolve the output once. Each recipe gets its own copy, because
+                // addCraftingRecipe can edit the stack it is handed. A null output means the soft mallet has no
+                // metadata slot for this material, in which case there is no recipe to add.
+                final ItemStack tMalletOrHammer = aProducesSoftMallet
+                    ? GTToolItems.SOFT_MALLET.registerMaterial(
+                        aMaterial,
+                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                        new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L))
+                    : MetaGeneratedTool01.INSTANCE
+                        .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, aMaterial, aMaterial.mHandleMaterial, null);
+                if (tMalletOrHammer != null
+                    && GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
                             GTOreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L))
                         .circuit(14)
-                        .itemOutputs(
-                            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                                aProducesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,
-                                1,
-                                aMaterial,
-                                aMaterial.mHandleMaterial,
-                                null))
+                        .itemOutputs(GTUtility.copyAmount(1, tMalletOrHammer))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(assemblerRecipes);
                 }
-                if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
+                if (tMalletOrHammer != null && (aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
                     GTModHandler.addShapelessCraftingRecipe(
-                        MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                            aProducesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GTUtility.copyAmount(1, tMalletOrHammer),
                         GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                     GTModHandler.addCraftingRecipe(
-                        MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                            aProducesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GTUtility.copyAmount(1, tMalletOrHammer),
                         GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "XX ", "XXS", "XX ", 'X',
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(Materials.Wood)
                                 : OrePrefixes.ingot.get(aMaterial),
                             'S', OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                     GTModHandler.addCraftingRecipe(
-                        MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                            aProducesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GTUtility.copyAmount(1, tMalletOrHammer),
                         GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "XX ", "XXS", "XX ", 'X',
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(Materials.Wood)

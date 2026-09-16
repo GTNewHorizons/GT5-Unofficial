@@ -3,6 +3,7 @@ package gregtech.loaders.postload;
 import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -22,8 +23,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.items.tools.GTToolItems;
+import gregtech.common.items.tools.ToolItemBase;
 import gregtech.common.items.tools.ToolWrenchElectricItem;
-import gregtech.common.items.tools.ToolWrenchItem;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public class PosteaTransformers implements Runnable {
 
@@ -41,7 +44,7 @@ public class PosteaTransformers implements Runnable {
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
         registerBartworksLabPartTransformer();
-        registerWrenchTransformers();
+        registerStandaloneToolTransformers();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -298,78 +301,77 @@ public class PosteaTransformers implements Runnable {
 
     }
 
-    /* ---------- WRENCH SPLIT ---------- */
+    /* ---------- STANDALONE TOOL SPLIT ---------- */
 
     /**
-     * Metadata the wrench family used while it lived on {@code MetaGeneratedTool01}. Each tool occupied an even id for
-     * the charged item and the following odd id for the discharged one, so both are matched here. These ids stay
-     * reserved in {@code IDMetaTool01} and must not be reused, or old saves would migrate into the wrong tool.
+     * One tool type that has moved off {@code MetaGeneratedTool01} onto its own item.
+     * <p/>
+     * {@code oldMeta} is the metadata the type occupied on the old item. Each type held an even id for the charged
+     * item and the following odd id for the discharged one, so a saved stack is matched on its even id. Those ids stay
+     * reserved in {@code IDMetaTool01} and must never be reused, or old saves would migrate into the wrong tool.
+     * <p/>
+     * {@code runtimeId} is filled in by Postea: the numeric item id is not stable between installs, so it has to be
+     * resolved by registry name rather than assumed.
      */
-    private static final int OLD_WRENCH_META = 16;
-    private static final int OLD_WRENCH_LV_META = 120;
-    private static final int OLD_WRENCH_MV_META = 122;
-    private static final int OLD_WRENCH_HV_META = 124;
+    private static final class MigratedTool {
 
-    private static int wrenchItemId = -1;
-    private static int wrenchLVItemId = -1;
-    private static int wrenchMVItemId = -1;
-    private static int wrenchHVItemId = -1;
+        private final int oldMeta;
+        private final String newRegistryName;
+        private final Supplier<ToolItemBase> newItem;
+        private int runtimeId = -1;
 
-    /**
-     * Converts wrenches saved under the old scheme -- one {@code gt.metatool.01} item whose metadata was the tool type
-     * and whose material was a string in NBT -- into the standalone wrench items, whose metadata is the material.
-     * Every other tool type on {@code gt.metatool.01} is left untouched.
-     */
-    private static void registerWrenchTransformers() {
-        ItemStackReplacementManager.registerIDResolver("gregtech:gt.tool.wrench", i -> wrenchItemId = i);
-        ItemStackReplacementManager.registerIDResolver("gregtech:gt.tool.wrench_lv", i -> wrenchLVItemId = i);
-        ItemStackReplacementManager.registerIDResolver("gregtech:gt.tool.wrench_mv", i -> wrenchMVItemId = i);
-        ItemStackReplacementManager.registerIDResolver("gregtech:gt.tool.wrench_hv", i -> wrenchHVItemId = i);
-
-        ItemStackReplacementManager
-            .addTransformationHandler("gregtech:gt.metatool.01", (name, nbt) -> convertWrench(nbt));
+        private MigratedTool(int oldMeta, String newRegistryName, Supplier<ToolItemBase> newItem) {
+            this.oldMeta = oldMeta;
+            this.newRegistryName = newRegistryName;
+            this.newItem = newItem;
+        }
     }
 
-    private static boolean convertWrench(NBTTagCompound nbt) {
-        final int oldMeta = nbt.getShort("Damage");
-        ToolWrenchItem newItem;
-        int newItemId;
-        switch (oldMeta - (oldMeta % 2)) {
-            case OLD_WRENCH_META -> {
-                newItem = GTToolItems.WRENCH;
-                newItemId = wrenchItemId;
-            }
-            case OLD_WRENCH_LV_META -> {
-                newItem = GTToolItems.WRENCH_LV;
-                newItemId = wrenchLVItemId;
-            }
-            case OLD_WRENCH_MV_META -> {
-                newItem = GTToolItems.WRENCH_MV;
-                newItemId = wrenchMVItemId;
-            }
-            case OLD_WRENCH_HV_META -> {
-                newItem = GTToolItems.WRENCH_HV;
-                newItemId = wrenchHVItemId;
-            }
-            // Some other tool type, or an item that was never a tool. Leave it alone.
-            default -> {
-                return false;
-            }
+    private static final MigratedTool[] MIGRATED_TOOLS = {
+        new MigratedTool(14, "gregtech:gt.tool.soft_mallet", () -> GTToolItems.SOFT_MALLET),
+        new MigratedTool(16, "gregtech:gt.tool.wrench", () -> GTToolItems.WRENCH),
+        new MigratedTool(120, "gregtech:gt.tool.wrench_lv", () -> GTToolItems.WRENCH_LV),
+        new MigratedTool(122, "gregtech:gt.tool.wrench_mv", () -> GTToolItems.WRENCH_MV),
+        new MigratedTool(124, "gregtech:gt.tool.wrench_hv", () -> GTToolItems.WRENCH_HV), };
+
+    private static final Int2ObjectMap<MigratedTool> MIGRATED_TOOLS_BY_OLD_META = new Int2ObjectOpenHashMap<>();
+
+    /**
+     * Converts tools saved under the old scheme -- one {@code gt.metatool.01} item whose metadata was the tool type
+     * and whose material was a string in NBT -- into the standalone tool items, whose metadata is the material. Tool
+     * types that have not moved yet are left untouched.
+     */
+    private static void registerStandaloneToolTransformers() {
+        for (MigratedTool tool : MIGRATED_TOOLS) {
+            MIGRATED_TOOLS_BY_OLD_META.put(tool.oldMeta, tool);
+            ItemStackReplacementManager.registerIDResolver(tool.newRegistryName, i -> tool.runtimeId = i);
         }
+
+        ItemStackReplacementManager
+            .addTransformationHandler("gregtech:gt.metatool.01", (name, nbt) -> convertTool(nbt));
+    }
+
+    private static boolean convertTool(NBTTagCompound nbt) {
+        final int oldMeta = nbt.getShort("Damage");
+        final MigratedTool tool = MIGRATED_TOOLS_BY_OLD_META.get(oldMeta - (oldMeta % 2));
+        // Some other tool type, or an item that was never a tool. Leave it alone.
+        if (tool == null) return false;
+
+        final ToolItemBase newItem = tool.newItem.get();
         // The new item failed to register, or Postea could not resolve its runtime id. Rewriting the stack now would
         // point it at nothing, so leave it as it is rather than destroying it.
-        if (newItem == null || newItemId < 0) return false;
+        if (newItem == null || tool.runtimeId < 0) return false;
 
         final Materials material = Materials.getRealMaterial(
-            WrenchStackMigration.readToolStats(nbt)
+            MetaToolStackMigration.readToolStats(nbt)
                 .getString("PrimaryMaterial"));
-        final int newMeta = ToolWrenchItem.getMaterialMeta(material);
+        final int newMeta = ToolItemBase.getMaterialMeta(material);
         if (newMeta < 0) return false;
 
         final boolean electric = newItem instanceof ToolWrenchElectricItem;
         final long defaultMaxCharge = electric ? ((ToolWrenchElectricItem) newItem).getDefaultMaxCharge() : 0L;
-        WrenchStackMigration.rewriteWrenchStack(nbt, newMeta, electric, defaultMaxCharge);
-        IDExtenderCompat.setItemStackID(nbt, newItemId);
+        MetaToolStackMigration.rewriteToolStack(nbt, newMeta, electric, defaultMaxCharge);
+        IDExtenderCompat.setItemStackID(nbt, tool.runtimeId);
         return true;
     }
 }

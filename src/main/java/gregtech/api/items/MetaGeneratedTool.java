@@ -172,13 +172,28 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return getToolMaxMode(aStack);
     }
 
+    /**
+     * Resolves the handle material of any GregTech tool, whether it keeps the material in NBT (this class) or derives
+     * it from the head material (the standalone items in {@code gregtech.common.items.tools}).
+     */
     public static Materials getSecondaryMaterial(ItemStack aStack) {
+        if (aStack == null) return Materials._NULL;
+        if (aStack.getItem() instanceof IGTTool tTool) return tTool.getToolHandleMaterial(aStack);
+        return getSecondaryMaterialFromNBT(aStack);
+    }
+
+    private static Materials getSecondaryMaterialFromNBT(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
             if (aNBT != null) return Materials.getRealMaterial(aNBT.getString("SecondaryMaterial"));
         }
         return Materials._NULL;
+    }
+
+    @Override
+    public Materials getToolHandleMaterial(ItemStack aStack) {
+        return getSecondaryMaterialFromNBT(aStack);
     }
 
     /* ---------- INTERNAL OVERRIDES ---------- */

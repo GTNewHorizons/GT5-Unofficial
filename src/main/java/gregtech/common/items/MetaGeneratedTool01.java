@@ -37,7 +37,6 @@ import static gregtech.common.items.IDMetaTool01.SCREWDRIVER;
 import static gregtech.common.items.IDMetaTool01.SCREWDRIVER_HV;
 import static gregtech.common.items.IDMetaTool01.SCREWDRIVER_LV;
 import static gregtech.common.items.IDMetaTool01.SCREWDRIVER_MV;
-import static gregtech.common.items.IDMetaTool01.SOFTMALLET;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_HV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_LV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_MV;
@@ -102,7 +101,6 @@ import gregtech.common.tools.ToolScrewdriver;
 import gregtech.common.tools.ToolScrewdriverHV;
 import gregtech.common.tools.ToolScrewdriverLV;
 import gregtech.common.tools.ToolScrewdriverMV;
-import gregtech.common.tools.ToolSoftMallet;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
 import gregtech.common.tools.ToolTurbineHuge;
@@ -153,16 +151,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
             GregTechAPI.sHardHammerList);
-        GregTechAPI.registerTool(
-            addTool(
-                SOFTMALLET.ID,
-                "Soft Mallet",
-                "",
-                new ToolSoftMallet(),
-                ToolDictNames.craftingToolSoftMallet,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L)),
-            GregTechAPI.sSoftMalletList);
         addTool(
             FILE.ID,
             "File",

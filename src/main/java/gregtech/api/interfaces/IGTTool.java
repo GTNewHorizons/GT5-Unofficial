@@ -37,6 +37,12 @@ public interface IGTTool {
     Materials getToolMaterial(ItemStack stack);
 
     /**
+     * @return the material of this tool's handle, which is what a tool with a visible handle renders the lower half
+     *         of its icon from. Tools without a handle never ask for it.
+     */
+    Materials getToolHandleMaterial(ItemStack stack);
+
+    /**
      * @return the damage this tool has accumulated, in the internal unit where 100 is one durability point. Always 0
      *         for tools that do not wear out, such as the electric wrenches.
      */

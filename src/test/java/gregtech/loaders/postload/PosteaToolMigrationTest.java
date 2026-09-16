@@ -10,23 +10,28 @@ import net.minecraft.nbt.NBTTagList;
 import org.junit.jupiter.api.Test;
 
 /**
- * Drives {@link WrenchStackMigration#rewriteWrenchStack} over serialized stacks shaped exactly the way
+ * Drives {@link MetaToolStackMigration#rewriteToolStack} over serialized stacks shaped exactly the way
  * {@code MetaGeneratedTool.getToolWithStats()} wrote them, and checks what comes out the other side.
  * <p/>
- * Covers the two shapes that differ: a worn hand wrench, whose durability has to survive, and a part-charged
- * electric wrench, whose energy has to survive while its durability is deliberately dropped.
+ * Covers the shapes that differ: a worn hand tool, whose durability has to survive; a part-charged electric tool,
+ * whose energy has to survive while its durability is deliberately dropped; and a soft mallet, whose mode is the
+ * thing a player would most notice losing.
  */
-class PosteaWrenchMigrationTest {
+class PosteaToolMigrationTest {
 
-    /** Steel's sub id; the value itself does not matter here, only that it lands in the Damage field. */
+    /** Sub ids of the materials used below; the values themselves only have to land in the Damage field. */
     private static final int STEEL_META = 305;
 
+    private static final int WOOD_META = 809;
+
+    private static final int RUBBER_META = 880;
+
     /**
-     * Builds the NBT a wrench of the old system serialized to.
+     * Builds the NBT a tool of the old system serialized to.
      *
-     * @param toolMeta the old tool-type metadata, e.g. 16 for the hand wrench.
+     * @param toolMeta the old tool-type metadata, e.g. 16 for the hand wrench or 14 for the soft mallet.
      */
-    private static NBTTagCompound oldWrench(int toolMeta, String material, long damage, long maxDamage, byte mode,
+    private static NBTTagCompound oldTool(int toolMeta, String material, long damage, long maxDamage, byte mode,
         Long charge, Long maxCharge) {
         NBTTagCompound toolStats = new NBTTagCompound();
         toolStats.setByte("Mode", mode);
@@ -58,9 +63,9 @@ class PosteaWrenchMigrationTest {
     @Test
     void handWrenchKeepsItsDurabilityAndMode() {
         // A Steel hand wrench, half worn (max durability 100 * 512 = 51200 in the internal unit), in precise mode.
-        NBTTagCompound stack = oldWrench(16, "Steel", 25_600L, 51_200L, (byte) 2, null, null);
+        NBTTagCompound stack = oldTool(16, "Steel", 25_600L, 51_200L, (byte) 2, null, null);
 
-        WrenchStackMigration.rewriteWrenchStack(stack, STEEL_META, false, 0L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false, 0L);
 
         assertEquals(STEEL_META, stack.getShort("Damage"), "metadata should become the material");
         assertEquals((byte) 1, stack.getByte("Count"), "stack size must be untouched");
@@ -75,11 +80,11 @@ class PosteaWrenchMigrationTest {
 
     @Test
     void undamagedHandWrenchLosesItsTagEntirely() {
-        NBTTagCompound stack = oldWrench(16, "Steel", 0L, 51_200L, (byte) 0, null, null);
+        NBTTagCompound stack = oldTool(16, "Steel", 0L, 51_200L, (byte) 0, null, null);
         stack.getCompoundTag("tag")
             .removeTag("ench");
 
-        WrenchStackMigration.rewriteWrenchStack(stack, STEEL_META, false, 0L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false, 0L);
 
         assertEquals(STEEL_META, stack.getShort("Damage"));
         assertFalse(
@@ -90,9 +95,9 @@ class PosteaWrenchMigrationTest {
     @Test
     void electricWrenchKeepsItsChargeAndDropsItsDurability() {
         // An LV wrench built with a Lithium battery: the tier default capacity, half charged, and somewhat worn.
-        NBTTagCompound stack = oldWrench(120, "Steel", 4_000L, 51_200L, (byte) 0, 50_000L, 100_000L);
+        NBTTagCompound stack = oldTool(120, "Steel", 4_000L, 51_200L, (byte) 0, 50_000L, 100_000L);
 
-        WrenchStackMigration.rewriteWrenchStack(stack, STEEL_META, true, 100_000L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 100_000L);
 
         assertEquals(STEEL_META, stack.getShort("Damage"));
 
@@ -107,9 +112,9 @@ class PosteaWrenchMigrationTest {
     @Test
     void electricWrenchBelowDefaultCapacityRecordsIt() {
         // The Sodium battery variant of the same LV wrench: half the capacity, so the stack has to remember it.
-        NBTTagCompound stack = oldWrench(120, "Steel", 0L, 51_200L, (byte) 0, 10_000L, 50_000L);
+        NBTTagCompound stack = oldTool(120, "Steel", 0L, 51_200L, (byte) 0, 10_000L, 50_000L);
 
-        WrenchStackMigration.rewriteWrenchStack(stack, STEEL_META, true, 100_000L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 100_000L);
 
         NBTTagCompound tag = stack.getCompoundTag("tag");
         assertEquals(50_000L, tag.getLong("GT.MaxCharge"), "the smaller capacity must be recorded on the stack");
@@ -119,13 +124,45 @@ class PosteaWrenchMigrationTest {
     @Test
     void dischargedElectricWrenchStillConverts() {
         // Metadata 121: the odd, "empty" twin of the LV wrench that setCharge() switched the stack to.
-        NBTTagCompound stack = oldWrench(121, "Steel", 0L, 51_200L, (byte) 1, null, 100_000L);
+        NBTTagCompound stack = oldTool(121, "Steel", 0L, 51_200L, (byte) 1, null, 100_000L);
 
-        WrenchStackMigration.rewriteWrenchStack(stack, STEEL_META, true, 100_000L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 100_000L);
 
         assertEquals(STEEL_META, stack.getShort("Damage"));
         NBTTagCompound tag = stack.getCompoundTag("tag");
         assertEquals(0L, tag.getLong("GT.ItemCharge"), "an empty wrench stores no charge key");
         assertEquals(1, tag.getInteger("GT.ToolMode"), "the selected mode should carry over");
+    }
+
+    @Test
+    void softMalletKeepsItsDurabilityAndMode() {
+        // A Wood soft mallet in deactivate mode, a quarter worn. Max durability is 100 * mDurability * 8.
+        NBTTagCompound stack = oldTool(14, "Wood", 4_000L, 16_000L, (byte) 2, null, null);
+
+        MetaToolStackMigration.rewriteToolStack(stack, WOOD_META, false, 0L);
+
+        assertEquals(WOOD_META, stack.getShort("Damage"), "metadata should become the material");
+
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        assertEquals(4_000L, tag.getLong("GT.ToolDamage"), "durability damage should carry over unscaled");
+        assertEquals(
+            2,
+            tag.getInteger("GT.ToolMode"),
+            "deactivate mode should survive: a mallet swept along a row of machines relies on it");
+        assertFalse(tag.hasKey("GT.ToolStats"), "the old stats compound should be gone");
+        assertFalse(tag.hasKey("GT.ItemCharge"), "there is no electric soft mallet");
+    }
+
+    @Test
+    void softMalletOddTwinConverts() {
+        // Metadata 15: the odd id addTool() reserved next to every tool type, even a tool that is never electric.
+        NBTTagCompound stack = oldTool(15, "Rubber", 0L, 16_000L, (byte) 0, null, null);
+        stack.getCompoundTag("tag")
+            .removeTag("ench");
+
+        MetaToolStackMigration.rewriteToolStack(stack, RUBBER_META, false, 0L);
+
+        assertEquals(RUBBER_META, stack.getShort("Damage"));
+        assertFalse(stack.hasKey("tag"), "a fresh mallet needs no tag at all");
     }
 }

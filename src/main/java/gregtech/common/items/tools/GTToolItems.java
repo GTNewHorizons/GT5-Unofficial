@@ -3,6 +3,7 @@ package gregtech.common.items.tools;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.common.tools.ToolSoftMallet;
 import gregtech.common.tools.ToolWrench;
 import gregtech.common.tools.ToolWrenchHV;
 import gregtech.common.tools.ToolWrenchLV;
@@ -20,6 +21,7 @@ public final class GTToolItems {
     public static ToolWrenchElectricItem WRENCH_LV;
     public static ToolWrenchElectricItem WRENCH_MV;
     public static ToolWrenchElectricItem WRENCH_HV;
+    public static ToolSoftMalletItem SOFT_MALLET;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -71,6 +73,7 @@ public final class GTToolItems {
             1_600_000L,
             512L,
             3);
+        SOFT_MALLET = new ToolSoftMalletItem("tool.soft_mallet", new ToolSoftMallet(), "%material Soft Mallet");
     }
 
     /**
