@@ -65,12 +65,12 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
                 range = unpoweredRange;
             }
             if (prevRange != range) {
-                GTMod.proxy.tetherManager.registerPylon(this, range);
+                GTMod.proxy.tetherManager.registerPylon(mte, this, range);
             }
         } else {
             if (range != -1) {
                 mte.setActive(false);
-                GTMod.proxy.tetherManager.unregisterPylon(this);
+                GTMod.proxy.tetherManager.unregisterPylon(mte);
                 range = -1;
             }
         }
@@ -80,7 +80,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onRemoval() {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            GTMod.proxy.tetherManager.unregisterPylon(this);
+            GTMod.proxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
         }
     }
 
@@ -88,7 +88,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onUnload() {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            GTMod.proxy.tetherManager.unregisterPylon(this);
+            GTMod.proxy.tetherManager.unregisterPylon(getBaseMetaTileEntity());
         }
     }
 
@@ -191,6 +191,9 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
         playersConnected = Math.max(0, playersConnected);
     }
 
+    /**
+     * MV (2) = 16/32, HV (3) = 24/48, EV (4) = 32/64 (unpowered/powered)
+     */
     private static int getPylonRange(int tier, boolean powered) {
         return tier * BASE_PYLON_RANGE / (powered ? 1 : 2);
     }
