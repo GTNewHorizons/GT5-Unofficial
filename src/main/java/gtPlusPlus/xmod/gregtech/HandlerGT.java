@@ -4,7 +4,6 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.loaders.postload.recipes.CokeAndPyrolyseOven;
 import gtPlusPlus.core.handler.CompatHandler;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.GTPPBlocks;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderMolecularTransformer;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
@@ -20,7 +19,6 @@ public class HandlerGT {
         GregtechConduits.run();
         // Register Tile Entities
         CompatHandler.registerGregtechMachines();
-        MetaGeneratedGregtechTools.getInstance();
     }
 
     public static void postInit() {

@@ -19,13 +19,11 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
 public class AchievementHandler {
 
@@ -42,13 +40,9 @@ public class AchievementHandler {
             aBaseAchievementName,
             0,
             0,
-            MetaGeneratedGregtechTools.getInstance()
-                .getToolWithStats(
-                    MetaGeneratedGregtechTools.ANGLE_GRINDER,
-                    1,
-                    Materials.Osmium,
-                    Materials.Osmium,
-                    null),
+            // Was an Angle Grinder until that tool was removed. Any GT++ item works as the root icon; the
+            // Industrial Centrifuge is a flagship multiblock and is not the icon of any other achievement here.
+            GregtechItemList.Industrial_Centrifuge.get(1),
             "",
             true);
 

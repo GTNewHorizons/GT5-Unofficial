@@ -45,6 +45,7 @@ public class PosteaTransformers implements Runnable {
         registerIC2BlocksTransformer();
         registerBartworksLabPartTransformer();
         registerStandaloneToolTransformers();
+        registerRemovedToolTransformers();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -299,6 +300,17 @@ public class PosteaTransformers implements Runnable {
             return true;
         });
 
+    }
+
+    /* ---------- REMOVED TOOLS ---------- */
+
+    /**
+     * The GT++ tool item held nothing but the Angle Grinder and the Automatic Snips, both long deprecated and now
+     * deleted outright. Nothing replaces them, so any that are still lying around in old saves are dropped: without
+     * this, removing the item would greet the player with Forge's missing-registry-entry screen on world load.
+     */
+    private static void registerRemovedToolTransformers() {
+        ItemStackReplacementManager.ignoreMissingMapping("gregtech:gt.plusplus.metatool.01");
     }
 
     /* ---------- STANDALONE TOOL SPLIT ---------- */
