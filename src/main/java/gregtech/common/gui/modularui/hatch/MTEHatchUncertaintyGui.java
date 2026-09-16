@@ -189,12 +189,10 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
 
         return new ToggleButton().value(valueAssistSyncer)
             .size(12)
-            .overlay(
-                IKey.str("123")
-                    .alignment(Alignment.Center)
-                    .scale(0.5f)
-                    .color(Color.WHITE.main)
-                    .shadow(true))
+            .background(GTGuiTextures.BUTTON_STANDARD)
+            .overlay(false, GTGuiTextures.TT_PICTURE_UNCERTAINTY_ASSIST_OFF)
+            .overlay(true, GTGuiTextures.TT_PICTURE_UNCERTAINTY_ASSIST_ON)
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(tooltip -> tooltip.add(IKey.lang("tt.gui.tooltip.uncertainty.value_assist")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
