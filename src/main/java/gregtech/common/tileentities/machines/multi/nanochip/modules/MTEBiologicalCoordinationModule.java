@@ -181,7 +181,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         for (int i = 0; i < fluidInputs.length; i++) {
             FluidStack stack = fluidInputs[i];
             if (stack == null) continue;
-            if (baseMulti.wetwareT3Active) fluidInputs[i].amount/=2;
+            if (baseMulti.wetwareT3Active) fluidInputs[i].amount /= 2;
             if (baseMulti.bioT3Active) fluidInputs[i] = null;
         }
         transformedRecipe.setFluidInputs(ArrayExt.removeNullFluids(fluidInputs));
