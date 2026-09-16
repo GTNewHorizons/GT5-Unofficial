@@ -90,9 +90,9 @@ public enum CircuitComponent {
     ProcessedWireHypogen(107, "gt.circuitcomponent.processed.wirehypogen", () -> WireHypogen, true),
     ProcessedWireMagMatter(108, "gt.circuitcomponent.processed.wiremagmatter", () -> WireMagMatter, true),
     ProcessedWireCopper(109,"gt.circuitcomponent.processed.wirecopper", () -> WireCopper, true),
-    ProcessedWireRedAlloy(109,"gt.circuitcomponent.processed.wireredalloy", () -> WireRedAlloy, true),
-    ProcessedWireElectrum(109,"gt.circuitcomponent.processed.wireelectrum", () -> WireElectrum, true),
-    ProcessedWirePlatinum(109,"gt.circuitcomponent.processed.wireplatinum", () -> WirePlatinum, true),
+    ProcessedWireRedAlloy(110,"gt.circuitcomponent.processed.wireredalloy", () -> WireRedAlloy, true),
+    ProcessedWireElectrum(111,"gt.circuitcomponent.processed.wireelectrum", () -> WireElectrum, true),
+    ProcessedWirePlatinum(112,"gt.circuitcomponent.processed.wireplatinum", () -> WirePlatinum, true),
 
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
