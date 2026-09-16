@@ -87,7 +87,7 @@ class EnergyTransferTest {
         }
     }
 
-    private static MTECable cable(Class<? extends MTECable> type, BaseMetaPipeEntity base) {
+    static MTECable cable(Class<? extends MTECable> type, BaseMetaPipeEntity base) {
         MTECable cable = type == MTECable.class ? spy(new MTECable("test", 0.5f, null, 0, 1, 32, false, false))
             : type == GTPPMTECable.class
                 ? spy(
@@ -111,7 +111,7 @@ class EnergyTransferTest {
         return cable;
     }
 
-    private static PowerNode root(BaseMetaPipeEntity base, ConsumerNode... consumers) {
+    static PowerNode root(BaseMetaPipeEntity base, ConsumerNode... consumers) {
         PowerNode root = new PowerNode(1, base, new ArrayList<>(List.of(consumers)));
         root.mHighestNodeValue = consumers.length + 1;
         for (int i = 0; i < consumers.length; i++) {
@@ -163,6 +163,38 @@ class EnergyTransferTest {
             when(second.needsEnergy()).thenReturn(true);
             when(second.injectEnergy(32, 4)).thenReturn(1);
             assertEquals(1, cable.transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
+        }
+    }
+
+    @Test
+    void synchronousReentryChargesBothOffersToTheSamePath() {
+        try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
+            MinecraftServer server = mock(MinecraftServer.class);
+            servers.when(MinecraftServer::getServer)
+                .thenReturn(server);
+            when(server.getTickCounter()).thenReturn(1);
+            BaseMetaPipeEntity base = mock(BaseMetaPipeEntity.class);
+            MTECable cable = cable(MTECable.class, base);
+            ConsumerNode consumer = mock(ConsumerNode.class);
+            PowerNode root = root(base, consumer);
+            PowerNodePath path = new PowerNodePath(new MetaPipeEntity[] { cable });
+            root.mSelfPath = path;
+            when(consumer.needsEnergy()).thenReturn(true);
+            boolean[] nested = { false };
+            List<String> trace = new ArrayList<>();
+            when(consumer.injectEnergy(32, 1)).thenAnswer(call -> {
+                trace.add(nested[0] ? "inner" : "outer");
+                if (!nested[0]) {
+                    nested[0] = true;
+                    assertEquals(1, cable.transferElectricity(ForgeDirection.UNKNOWN, 32, 1, null));
+                }
+                return 1;
+            });
+            assertEquals(1, cable.transferElectricity(ForgeDirection.UNKNOWN, 32, 1, null));
+            assertEquals(List.of("outer", "inner"), trace);
+            when(server.getTickCounter()).thenReturn(2);
+            assertEquals(2, path.getAmperage());
+            assertEquals(64, path.getEnergy());
         }
     }
 
