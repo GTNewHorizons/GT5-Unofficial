@@ -24,6 +24,8 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizons.postea.api.CustomDataReplacementManager;
+import com.gtnewhorizons.postea.utility.VersionStamps;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
@@ -536,6 +538,9 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         @Override
         public void readFromNBT(NBTTagCompound tag) {
             data.clear();
+            CustomDataReplacementManager.transform("gregtech:linkedInputBusses", tag);
+            // every key of this tag is a channel, so the version stamps the transform left must not become one
+            tag.removeTag(VersionStamps.KEY);
             @SuppressWarnings("unchecked")
             Set<Map.Entry<String, NBTBase>> set = tag.tagMap.entrySet();
             for (Map.Entry<String, NBTBase> e : set) {
@@ -551,6 +556,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                     e.getValue()
                         .save());
             }
+            CustomDataReplacementManager.stamp(tag);
         }
 
         public SharedInventory get(Object channel) {
