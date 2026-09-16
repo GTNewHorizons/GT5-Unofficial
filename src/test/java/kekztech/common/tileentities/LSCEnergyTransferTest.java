@@ -22,7 +22,7 @@ class LSCEnergyTransferTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void allSixHatchLoopsUseTheSameLimits() throws Exception {
+    void allSixHatchLoopsShareRemainingBudgets() throws Exception {
         MTELapotronicSuperCapacitor lsc = spy(new MTELapotronicSuperCapacitor("energy-test"));
         IGregTechTileEntity base = mock(IGregTechTileEntity.class);
         doReturn(base).when(lsc)
@@ -60,13 +60,16 @@ class LSCEnergyTransferTest {
             ((java.util.Set<Object>) field.get(lsc)).add(hatches[i]);
         }
         lsc.onRunningTick(null);
-        for (var hatch : java.util.List.of(input, multi, tunnel)) verify(hatch).setEUVar(90);
-        for (var hatch : java.util.List.of(output, multiOutput, tunnelOutput)) verify(hatch).setEUVar(40);
-        verify(base).injectEnergyUnits(ForgeDirection.UNKNOWN, 30, 1);
-        verify(base).drainEnergyUnits(ForgeDirection.UNKNOWN, 120, 1);
+        verify(input).setEUVar(90);
+        verify(multi).setEUVar(100);
+        verify(tunnel).setEUVar(100);
+        verify(output).setEUVar(40);
+        verify(multiOutput).setEUVar(10);
+        verify(tunnelOutput).setEUVar(0);
+        verify(base).injectEnergyUnits(ForgeDirection.UNKNOWN, 10, 1);
+        verify(base).drainEnergyUnits(ForgeDirection.UNKNOWN, 50, 1);
         verify(capacity, times(1)).subtract(BigInteger.valueOf(50));
-        // Legacy deferred accounting permits offers above the starting balance; fixing it is separate work.
-        assertEquals(BigInteger.ZERO, lsc.getStored());
+        assertEquals(BigInteger.TEN, lsc.getStored());
     }
 
     @Test
@@ -126,7 +129,7 @@ class LSCEnergyTransferTest {
     }
 
     @Test
-    void fixedLimitsPreserveDeferredAccountingAndLargeBalances() {
+    void remainingBudgetsPreserveLargeBalances() {
         for (BigInteger stored : new BigInteger[] { BigInteger.ZERO, BigInteger.valueOf(50), BigInteger.valueOf(100),
             BigInteger.valueOf(110), BigInteger.valueOf(Long.MAX_VALUE)
                 .multiply(BigInteger.TEN) }) {
@@ -137,11 +140,11 @@ class LSCEnergyTransferTest {
                 .getBaseMetaTileEntity();
             lsc.setStored(stored);
             lsc.setCapacity(capacity);
-            long draw = stored.compareTo(capacity) >= 0 ? 0
+            long drawBudget = stored.compareTo(capacity) >= 0 ? 0
                 : capacity.subtract(stored)
-                    .min(BigInteger.valueOf(40))
+                    .min(BigInteger.valueOf(80))
                     .longValue();
-            long push = stored.min(BigInteger.valueOf(40))
+            long pushBudget = stored.min(BigInteger.valueOf(80))
                 .longValue();
             for (int i = 0; i < 2; i++) {
                 MTEHatchEnergy input = mock(MTEHatchEnergy.class);
@@ -158,14 +161,18 @@ class LSCEnergyTransferTest {
                 lsc.mDynamoHatches.add(output);
             }
             assertTrue(lsc.onRunningTick(null));
-            for (MTEHatchEnergy input : lsc.mEnergyHatches) verify(input).setEUVar(100 - draw);
-            for (MTEHatchDynamo output : lsc.mDynamoHatches) verify(output).setEUVar(push);
+            for (int i = 0; i < 2; i++) {
+                long draw = Math.min(40, drawBudget - 40L * i);
+                long push = Math.min(40, pushBudget - 40L * i);
+                verify(lsc.mEnergyHatches.get(i)).setEUVar(100 - Math.max(0, draw));
+                verify(lsc.mDynamoHatches.get(i)).setEUVar(Math.max(0, push));
+            }
             assertEquals(
-                stored.add(BigInteger.valueOf(2 * draw - 2 * push - lsc.getPassiveDischargeAmount()))
+                stored.add(BigInteger.valueOf(drawBudget - pushBudget - lsc.getPassiveDischargeAmount()))
                     .max(BigInteger.ZERO),
                 lsc.getStored());
-            verify(base).injectEnergyUnits(ForgeDirection.UNKNOWN, 2 * draw, 1);
-            verify(base).drainEnergyUnits(ForgeDirection.UNKNOWN, 2 * push, 1);
+            verify(base).injectEnergyUnits(ForgeDirection.UNKNOWN, drawBudget, 1);
+            verify(base).drainEnergyUnits(ForgeDirection.UNKNOWN, pushBudget, 1);
         }
     }
 

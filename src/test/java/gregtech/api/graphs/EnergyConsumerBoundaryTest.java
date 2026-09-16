@@ -194,13 +194,12 @@ class EnergyConsumerBoundaryTest {
         verify(rf, never()).getEnergyStored(any());
         when(rf.receiveEnergy(ForgeDirection.WEST, 236, true)).thenReturn(236);
         when(rf.receiveEnergy(ForgeDirection.WEST, 236, false)).thenReturn(236);
-        assertEquals(0, node.injectEnergy(32, 4));
-        // Known accounting bug: the rejected second call buffered 128 RF without returning a paid amp.
+        assertEquals(1, node.injectEnergy(32, 4));
         verify(rf).receiveEnergy(ForgeDirection.WEST, 236, false);
     }
 
     @Test
-    void gcCapacityGateAndUnpaidRemainderAreCurrentBehaviorNotAContract() {
+    void gcCapacityGateDoesNotBankUnpaidRemainder() {
         TileEntity tile = endpoint(IEnergyHandlerGC.class);
         IEnergyHandlerGC gc = (IEnergyHandlerGC) tile;
         float packet = 32 * EnergyConfigHandler.IC2_RATIO;
@@ -210,8 +209,7 @@ class EnergyConsumerBoundaryTest {
         verify(gc, never()).receiveEnergyGC(any(), anyFloat(), anyBoolean());
         when(gc.getMaxEnergyStoredGC(any())).thenReturn(packet);
         when(gc.receiveEnergyGC(any(), eq(packet), eq(false))).thenReturn(packet);
-        assertEquals(0, node.injectEnergy(32, 4));
-        // Known bug: this receipt spends the remainder created by the previously rejected offer.
+        assertEquals(1, node.injectEnergy(32, 4));
         verify(gc).receiveEnergyGC(any(), eq(packet), eq(false));
     }
 

@@ -108,7 +108,7 @@ class EnergyConsumerLifecycleTest {
     }
 
     @Test
-    void ic2EmitterIdentityAtChunkBorderRecordsInvertedLoadedCheck_currentKnownIssue() {
+    void ic2EmitterIdentityAtChunkBorderOnlyReadsLoadedNeighbor() {
         try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
             servers.when(MinecraftServer::getServer)
                 .thenReturn(mock(MinecraftServer.class));
@@ -123,12 +123,13 @@ class EnergyConsumerLifecycleTest {
             when(sink.acceptsEnergyFrom(any(), eq(ForgeDirection.WEST))).thenReturn(true);
             when(world.blockExists(15, 0, 0)).thenReturn(true);
             assertTrue(map.addConsumer(tile, ForgeDirection.WEST, 2, new ArrayList<>()));
-            verify(sink).acceptsEnergyFrom(null, ForgeDirection.WEST);
-            verify(world, never()).getTileEntity(anyInt(), anyInt(), anyInt());
-            when(world.blockExists(15, 0, 0)).thenReturn(false);
-            assertTrue(map.addConsumer(tile, ForgeDirection.WEST, 2, new ArrayList<>()));
             verify(sink).acceptsEnergyFrom(emitter, ForgeDirection.WEST);
             verify(world).getTileEntity(15, 0, 0);
+            clearInvocations(sink, world);
+            when(world.blockExists(15, 0, 0)).thenReturn(false);
+            assertTrue(map.addConsumer(tile, ForgeDirection.WEST, 2, new ArrayList<>()));
+            verify(sink).acceptsEnergyFrom(null, ForgeDirection.WEST);
+            verify(world, never()).getTileEntity(anyInt(), anyInt(), anyInt());
         }
     }
 

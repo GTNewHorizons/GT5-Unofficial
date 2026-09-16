@@ -1549,7 +1549,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
-        int injected = 0;
+        long injected = 0;
         long totalOutput = 0;
         long aFirstVoltageFound = -1;
         boolean aFoundMixedDynamos = false;
@@ -1587,17 +1587,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         long leftToInject;
         long aVoltage;
-        int aAmpsToInject;
-        int aRemainder;
-        int ampsOnCurrentHatch;
+        long aAmpsToInject;
+        long aRemainder;
+        long ampsOnCurrentHatch;
         for (MTEHatch aDynamo : validMTEList(mDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
-            aAmpsToInject = (int) (leftToInject / aVoltage);
-            aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
-            ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+            aAmpsToInject = leftToInject / aVoltage;
+            aRemainder = leftToInject - (aAmpsToInject * aVoltage);
+            ampsOnCurrentHatch = Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
             if (ampsOnCurrentHatch <= 1 || !isFullNativeDynamo(aDynamo)) {
-                for (int i = 0; i < ampsOnCurrentHatch; i++) {
+                for (long i = 0; i < ampsOnCurrentHatch; i++) {
                     aDynamo.getBaseMetaTileEntity()
                         .increaseStoredEnergyUnits(aVoltage, false);
                 }
@@ -1612,11 +1612,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         for (MTEHatch aDynamo : validMTEList(mExoticDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
-            aAmpsToInject = (int) (leftToInject / aVoltage);
-            aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
-            ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+            aAmpsToInject = leftToInject / aVoltage;
+            aRemainder = leftToInject - (aAmpsToInject * aVoltage);
+            ampsOnCurrentHatch = Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
             if (ampsOnCurrentHatch <= 1 || !isFullNativeDynamo(aDynamo)) {
-                for (int i = 0; i < ampsOnCurrentHatch; i++) {
+                for (long i = 0; i < ampsOnCurrentHatch; i++) {
                     aDynamo.getBaseMetaTileEntity()
                         .increaseStoredEnergyUnits(aVoltage, false);
                 }

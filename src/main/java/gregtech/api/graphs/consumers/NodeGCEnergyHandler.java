@@ -36,6 +36,7 @@ public class NodeGCEnergyHandler extends ConsumerNode {
             restGJ -= received;
             return ampsUsed;
         }
+        restGJ -= ampsUsed * gjOut;
         return 0;
     }
 }

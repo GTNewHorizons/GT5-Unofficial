@@ -65,7 +65,7 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
             int dZ = aTileEntity.zCoord + side.offsetZ;
             boolean crossesChuncks = dX >> 4 != aTileEntity.xCoord >> 4 || dZ >> 4 != aTileEntity.zCoord >> 4;
             TileEntity tNextTo = null;
-            if (!crossesChuncks || !aTileEntity.getWorldObj()
+            if (!crossesChuncks || aTileEntity.getWorldObj()
                 .blockExists(dX, dY, dZ))
                 tNextTo = aTileEntity.getWorldObj()
                     .getTileEntity(dX, dY, dZ);

@@ -72,21 +72,20 @@ class DynamoFillingTest {
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
-    void offeredCounterNarrowingAndRemainderStayUnchanged(boolean rocket) {
+    void offeredCounterSupportsMoreThanIntegerMaxEnergy(boolean rocket) {
         MTEHatchDynamoMulti hatch = new MTEHatchDynamoMulti("counter-test", 9, 1025, new String[0], null);
         attach(hatch, hatch.maxEUStore(), new ArrayList<>());
         long offer = hatch.maxEUOutput() * 1024 + 1;
         assertTrue(offer > Integer.MAX_VALUE);
-        // Current int accounting wraps, even though every packet is rejected. Correctness fix is separate.
-        assertFalse(machine(rocket, hatch).addEnergyOutputMultipleDynamos(offer, true));
+        assertTrue(machine(rocket, hatch).addEnergyOutputMultipleDynamos(offer, true));
         assertEquals(hatch.maxEUStore(), hatch.getEUVar());
     }
 
     @Test
-    void rocketAmpsPlusOneOverflowRetainsLegacyNoTransfer() {
+    void rocketSupportsIntegerMaxAmps() {
         MTEHatchDynamoMulti hatch = hatch(Integer.MAX_VALUE);
         BaseMetaTileEntity base = attach(hatch, hatch.maxEUStore(), new ArrayList<>());
-        assertFalse(machine(true, hatch).addEnergyOutputMultipleDynamos(32L * Integer.MAX_VALUE, true));
+        assertTrue(machine(true, hatch).addEnergyOutputMultipleDynamos(32L * Integer.MAX_VALUE, true));
         verify(base, never()).increaseStoredEnergyUnits(anyLong(), anyBoolean());
     }
 
