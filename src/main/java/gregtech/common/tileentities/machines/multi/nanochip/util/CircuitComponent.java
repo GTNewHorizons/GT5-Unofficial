@@ -180,7 +180,6 @@ public enum CircuitComponent {
         406,
         "gt.circuitcomponent.livingbiochip",
         () -> ItemList.Circuit_Parts_Chip_Bioware.get(1)),
-    UnattunedCircuitry(407,"gt.circuitcomponent.unattunedcircuitry",()->null,true),
 
     ProcessedBoardMultifiberglassElite(500, "gt.circuitcomponent.processed.board.multifiberelite", () -> BoardMultifiberglassElite, true),
     ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", () -> BoardWetwareLifesupport, true),
@@ -189,6 +188,7 @@ public enum CircuitComponent {
     ProcessedNeuroProcessingUnit(504, "gt.circuitcomponent.processed.neuroprocessingunit", () -> NeuroProcessingUnit, true),
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
     ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
+    UnattunedCircuitry(507,"gt.circuitcomponent.unattunedcircuitry",()->null,true),
 
     // Wafers and chips
     // IDs: 600-699 CC, 700-799 PC
