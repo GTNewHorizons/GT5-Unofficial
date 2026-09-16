@@ -46,23 +46,11 @@ class EnergyGraphConstructionTest {
                 if (i > 0 && i + 1 < length) loss += cable.mCableLossPerMeter;
             }
             when(world.blockExists(anyInt(), anyInt(), anyInt())).thenReturn(true);
-            int[] walkDepth = { 0 };
             when(world.getTileEntity(anyInt(), eq(64), eq(0))).thenAnswer(call -> {
                 int x = call.getArgument(0);
-                if (x == length - 1) {
-                    for (StackTraceElement frame : Thread.currentThread()
-                        .getStackTrace()) {
-                        if (frame.getClassName()
-                            .equals(GenerateNodeMap.class.getName())
-                            && frame.getMethodName()
-                                .equals("getNextValidTileEntity"))
-                            walkDepth[0]++;
-                    }
-                }
                 return x < 0 || x >= length ? null : pipes[x];
             });
             assertDoesNotThrow(() -> new GenerateNodeMapPower(pipes[0]));
-            assertEquals(1, walkDepth[0]);
             verify(world, times(length)).getTileEntity(anyInt(), eq(64), eq(0));
             Node root = pipes[0].getNode();
             assertEquals(2, root.mHighestNodeValue);

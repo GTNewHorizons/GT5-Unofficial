@@ -126,10 +126,11 @@ class EnergyConsumerBoundaryTest {
     }
 
     @Test
-    void strictOneAmpEndpointRetainsExactBoundaryAndReceiverSide() {
+    void cableHonorsMockedOneAmpBoundaryAndReceiverSide() {
         TileEntity tile = endpoint(IEnergyConnected.class);
         IEnergyConnected receiver = (IEnergyConnected) tile;
         AtomicLong demand = new AtomicLong(64);
+        // The mock defines the endpoint boundary; this verifies cable forwarding and accounting.
         when(receiver.injectEnergyUnits(ForgeDirection.WEST, 32, 4)).thenAnswer(call -> {
             if (demand.get() <= 32) return 0L;
             demand.addAndGet(-32);
@@ -145,10 +146,11 @@ class EnergyConsumerBoundaryTest {
     }
 
     @Test
-    void wholeBatchNativeEndpointKeepsOverfillAndSeparateRfStore() {
+    void cableHonorsMockedWholeBatchOverfillAndNativePrecedence() {
         TileEntity tile = endpoint(IEnergyConnected.class, IEnergyReceiver.class);
         IEnergyConnected receiver = (IEnergyConnected) tile;
         AtomicLong eu = new AtomicLong(39999);
+        // The mock defines the endpoint boundary; this verifies cable forwarding and protocol selection.
         when(receiver.inputEnergyFrom(ForgeDirection.WEST, false)).thenAnswer(call -> eu.get() < 40000);
         when(receiver.injectEnergyUnits(ForgeDirection.WEST, 32, 4)).thenAnswer(call -> {
             if (eu.get() >= 40000) return 0L;
@@ -164,15 +166,15 @@ class EnergyConsumerBoundaryTest {
     }
 
     @Test
-    void ic2PartialRemainderCountsOneAmpAndDemandIsRecheckedPerPacket() {
+    void ic2PartialRemainderCountsOneAmpAndDemandStopsPacketLoop() {
         TileEntity tile = endpoint(IEnergySink.class);
         IEnergySink sink = (IEnergySink) tile;
-        when(sink.getDemandedEnergy()).thenReturn(70.0);
-        when(sink.injectEnergy(ForgeDirection.WEST, 32, 32)).thenReturn(0.0, 12.0, 32.0);
+        when(sink.getDemandedEnergy()).thenReturn(70.0, 70.0, 38.0, 0.0);
+        when(sink.injectEnergy(ForgeDirection.WEST, 32, 32)).thenReturn(0.0, 12.0);
         ConsumerNode node = new NodeEnergySink(2, sink, ForgeDirection.WEST, new ArrayList<>());
         assertEquals(2, offer(cable(node), 32, 4));
-        verify(sink, times(3)).injectEnergy(ForgeDirection.WEST, 32, 32);
-        when(sink.getDemandedEnergy()).thenReturn(0.0);
+        verify(sink, times(2)).injectEnergy(ForgeDirection.WEST, 32, 32);
+        verify(sink, times(4)).getDemandedEnergy();
         assertFalse(node.needsEnergy());
         when(tile.isInvalid()).thenReturn(true);
         clearInvocations(sink);

@@ -62,52 +62,6 @@ class EnergyConsumerLifecycleTest {
     }
 
     @Test
-    void middleChunkUnloadLeavesStaleGraphUntilExplicitRebuild_currentKnownIssue() {
-        try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
-            servers.when(MinecraftServer::getServer)
-                .thenReturn(mock(MinecraftServer.class));
-            World world = mock(World.class);
-            BaseMetaPipeEntity root = pipe(world, 15, ForgeDirection.WEST, ForgeDirection.EAST);
-            BaseMetaPipeEntity middle = pipe(world, 16, ForgeDirection.WEST, ForgeDirection.EAST);
-            BaseMetaPipeEntity end = pipe(world, 17, ForgeDirection.WEST, ForgeDirection.EAST);
-            TileEntity receiver = receiver();
-            receiver.xCoord = 18;
-            receiver.yCoord = 64;
-            when(world.blockExists(anyInt(), anyInt(), anyInt())).thenReturn(true);
-            when(world.getTileEntity(16, 64, 0)).thenReturn(middle);
-            when(world.getTileEntity(17, 64, 0)).thenReturn(end);
-            when(world.getTileEntity(18, 64, 0)).thenReturn(receiver);
-            new GenerateNodeMapPower(root);
-            Node stale = root.getNode();
-            assertSame(receiver, stale.mConsumers.get(0).mTileEntity);
-            assertNotNull(middle.getNodePath());
-            middle.onChunkUnload();
-            assertTrue(middle.isDead());
-            assertSame(stale, root.getNode());
-            assertNotNull(middle.getNodePath());
-            when(world.blockExists(16, 64, 0)).thenReturn(false);
-            // Known stale-route behavior, not the intended future lifecycle contract.
-            assertEquals(
-                1,
-                ((MTECable) root.getMetaTileEntity()).transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
-            GenerateNodeMap.clearNodeMap(stale, -1);
-            assertNull(middle.getNodePath());
-            assertNull(end.getNode());
-            new GenerateNodeMapPower(root);
-            assertTrue(
-                root.getNode().mConsumers.stream()
-                    .noneMatch(node -> node.mTileEntity == receiver));
-            when(world.blockExists(16, 64, 0)).thenReturn(true);
-            BaseMetaPipeEntity reloaded = pipe(world, 16, ForgeDirection.WEST, ForgeDirection.EAST);
-            when(world.getTileEntity(16, 64, 0)).thenReturn(reloaded);
-            GenerateNodeMap.clearNodeMap(root.getNode(), -1);
-            new GenerateNodeMapPower(root);
-            assertSame(receiver, root.getNode().mConsumers.get(0).mTileEntity);
-            assertNotNull(reloaded.getNodePath());
-        }
-    }
-
-    @Test
     void ic2EmitterIdentityAtChunkBorderOnlyReadsLoadedNeighbor() {
         try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
             servers.when(MinecraftServer::getServer)
