@@ -31,6 +31,7 @@ import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;
@@ -240,6 +241,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
         if (amperage <= 0 || !getBaseMetaTileEntity().isServerSide()
             || (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN)) return 0;
         final BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        if (tBase.getNode() == null) new GenerateNodeMapPower(tBase);
         if (!(tBase.getNode() instanceof PowerNode tNode)) return 0;
         int tPlace = 0;
         Node[] tToPower = null;

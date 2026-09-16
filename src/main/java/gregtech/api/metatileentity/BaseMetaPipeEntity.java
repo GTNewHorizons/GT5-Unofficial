@@ -34,6 +34,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.Lock;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.paths.NodePath;
@@ -226,6 +227,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             onCoverUnload();
             mMetaTileEntity.onUnload();
         }
+        invalidateNodeMap();
         super.onUnload();
     }
 
@@ -433,12 +435,22 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     @Override
     public void invalidate() {
         tileEntityInvalid = false;
-        if (hasValidMetaTileEntity()) {
+        final boolean validMetaTileEntity = hasValidMetaTileEntity();
+        if (validMetaTileEntity) {
             mMetaTileEntity.onRemoval();
-            mMetaTileEntity.setBaseMetaTileEntity(null);
         }
+        invalidateNodeMap();
+        if (validMetaTileEntity) mMetaTileEntity.setBaseMetaTileEntity(null);
         leaveEnet();
         super.invalidate();
+    }
+
+    private void invalidateNodeMap() {
+        if (node != null) {
+            GenerateNodeMap.clearNodeMap(node, -1);
+        } else if (nodePath != null) {
+            nodePath.invalidateNodeMap();
+        }
     }
 
     @Override

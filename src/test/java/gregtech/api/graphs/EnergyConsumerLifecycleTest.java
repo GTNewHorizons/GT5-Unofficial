@@ -62,6 +62,58 @@ class EnergyConsumerLifecycleTest {
     }
 
     @Test
+    void middleChunkUnloadInvalidatesGraphAndAllowsTopologyRebuild() {
+        try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
+            MinecraftServer server = mock(MinecraftServer.class);
+            servers.when(MinecraftServer::getServer)
+                .thenReturn(server);
+            World world = mock(World.class);
+            BaseMetaPipeEntity root = pipe(world, 15, ForgeDirection.WEST, ForgeDirection.EAST);
+            BaseMetaPipeEntity middle = pipe(world, 16, ForgeDirection.WEST, ForgeDirection.EAST);
+            BaseMetaPipeEntity end = pipe(world, 17, ForgeDirection.WEST, ForgeDirection.EAST);
+            TileEntity receiver = receiver();
+            receiver.xCoord = 18;
+            receiver.yCoord = 64;
+            when(world.blockExists(anyInt(), anyInt(), anyInt())).thenReturn(true);
+            when(world.getTileEntity(16, 64, 0)).thenReturn(middle);
+            when(world.getTileEntity(17, 64, 0)).thenReturn(end);
+            when(world.getTileEntity(18, 64, 0)).thenReturn(receiver);
+            new GenerateNodeMapPower(root);
+            assertNotNull(middle.getNodePath());
+
+            when(world.blockExists(16, 64, 0)).thenReturn(false);
+            middle.onChunkUnload();
+
+            assertTrue(middle.isDead());
+            assertNull(root.getNode());
+            assertNull(middle.getNodePath());
+            assertNull(end.getNodePath());
+            assertEquals(
+                0,
+                ((MTECable) root.getMetaTileEntity()).transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
+            verify((IEnergyConnected) receiver, never()).injectEnergyUnits(any(), anyLong(), anyLong());
+
+            BaseMetaPipeEntity reloaded = pipe(world, 16, ForgeDirection.WEST, ForgeDirection.EAST);
+            when(world.blockExists(16, 64, 0)).thenReturn(true);
+            when(world.getTileEntity(16, 64, 0)).thenReturn(reloaded);
+            root.mConnections = (byte) (ForgeDirection.WEST.flag | ForgeDirection.EAST.flag);
+            BaseMetaTileEntity source = mock(BaseMetaTileEntity.class);
+            when(source.isServerSide()).thenReturn(true);
+            when(source.isEnetOutput()).thenReturn(true);
+            when(source.outputsEnergyTo(ForgeDirection.EAST, false)).thenReturn(true);
+            when(source.getIGregTechTileEntityAtSide(ForgeDirection.EAST)).thenReturn(root);
+            doCallRealMethod().when(source)
+                .generatePowerNodes();
+            when(server.getTickCounter()).thenReturn(1);
+            source.generatePowerNodes();
+            assertEquals(
+                1,
+                ((MTECable) root.getMetaTileEntity()).transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
+            assertNotNull(reloaded.getNodePath());
+        }
+    }
+
+    @Test
     void ic2EmitterIdentityAtChunkBorderOnlyReadsLoadedNeighbor() {
         try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
             servers.when(MinecraftServer::getServer)
