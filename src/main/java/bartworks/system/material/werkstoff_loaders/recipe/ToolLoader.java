@@ -347,16 +347,19 @@ public class ToolLoader implements IWerkstoffRunnable {
                 new Object[] { "fPh", " S ", 'S', stick.get(werkstoff.getBridgeMaterial()), 'P',
                     plate.get(werkstoff.getBridgeMaterial()) });
         }
-        GTModHandler.addCraftingRecipe(
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                IDMetaTool01.BUTCHERYKNIFE.ID,
-                1,
-                werkstoff.getBridgeMaterial(),
-                werkstoff.getBridgeMaterial(),
-                null),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PPf", "PP ", "Sh ", 'S', stick.get(werkstoff.getBridgeMaterial()), 'P',
-                plate.get(werkstoff.getBridgeMaterial()) });
+        ItemStack butcheryKnife = GTToolItems.BUTCHERY_KNIFE.registerMaterial(
+            werkstoff.getBridgeMaterial(),
+            ToolMaterialIndex.WERKSTOFF_META_OFFSET + werkstoff.getmID(),
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4L));
+        if (butcheryKnife != null) {
+            GTModHandler.addCraftingRecipe(
+                butcheryKnife,
+                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "PPf", "PP ", "Sh ", 'S', stick.get(werkstoff.getBridgeMaterial()), 'P',
+                    plate.get(werkstoff.getBridgeMaterial()) });
+        }
 
         registerElectricWrench(GTToolItems.WRENCH_LV, werkstoff, wrenchMeta);
         registerElectricWrench(GTToolItems.WRENCH_MV, werkstoff, wrenchMeta);

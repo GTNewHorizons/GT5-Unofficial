@@ -28,6 +28,7 @@ public enum IDMetaTool01 {
     UNIVERSALSPADE(32),
     // Reserved, see the note above.
     KNIFE(34),
+    // Reserved, see the note above.
     BUTCHERYKNIFE(36),
     PLUNGER(44),
     ROLLING_PIN(46),

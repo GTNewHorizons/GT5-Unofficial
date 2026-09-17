@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.common.tools.ToolBranchCutter;
+import gregtech.common.tools.ToolButcheryKnife;
 import gregtech.common.tools.ToolCrowbar;
 import gregtech.common.tools.ToolFile;
 import gregtech.common.tools.ToolFileHV;
@@ -60,6 +61,7 @@ public final class GTToolItems {
     public static ToolScoopItem SCOOP;
     public static ToolBranchCutterItem BRANCH_CUTTER;
     public static ToolKnifeItem KNIFE;
+    public static ToolButcheryKnifeItem BUTCHERY_KNIFE;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -195,6 +197,11 @@ public final class GTToolItems {
             "%material Branch Cutter",
             "");
         KNIFE = new ToolKnifeItem("tool.knife", new ToolKnife(), "%material Knife", "");
+        BUTCHERY_KNIFE = new ToolButcheryKnifeItem(
+            "tool.butchery_knife",
+            new ToolButcheryKnife(),
+            "%material Butchery Knife",
+            "Has a slow Attack Rate");
     }
 
     /**

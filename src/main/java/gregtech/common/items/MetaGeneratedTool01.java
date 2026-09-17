@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.common.items.IDMetaTool01.BUTCHERYKNIFE;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_HV;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_LV;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_MV;
@@ -53,7 +52,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.tools.ItemNetworkAnalyzer;
-import gregtech.common.tools.ToolButcheryKnife;
 import gregtech.common.tools.ToolBuzzSawHV;
 import gregtech.common.tools.ToolBuzzSawLV;
 import gregtech.common.tools.ToolBuzzSawMV;
@@ -94,15 +92,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     public MetaGeneratedTool01() {
         super("metatool.01");
         INSTANCE = this;
-        addTool(
-            BUTCHERYKNIFE.ID,
-            "Butchery Knife",
-            "Has a slow Attack Rate",
-            new ToolButcheryKnife(),
-            ToolDictNames.craftingToolBlade,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4L));
 
         addTool(
             PLUNGER.ID,
