@@ -58,6 +58,7 @@ public enum IDMetaTool01 {
     SCREWDRIVER_LV(150),
     SCREWDRIVER_MV(152),
     SCREWDRIVER_HV(154),
+    // Reserved, see the note above.
     SOLDERING_IRON_LV(160),
     SOLDERING_IRON_MV(162),
     SOLDERING_IRON_HV(164),

@@ -34,6 +34,7 @@ import gregtech.common.tools.ToolScrewdriverHV;
 import gregtech.common.tools.ToolScrewdriverLV;
 import gregtech.common.tools.ToolScrewdriverMV;
 import gregtech.common.tools.ToolSoftMallet;
+import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
 import gregtech.common.tools.ToolWireCutter;
 import gregtech.common.tools.ToolWireCutterHV;
@@ -92,6 +93,9 @@ public final class GTToolItems {
     public static ToolBuzzSawItem BUZZSAW_LV;
     public static ToolBuzzSawItem BUZZSAW_MV;
     public static ToolBuzzSawItem BUZZSAW_HV;
+    public static ToolSolderingIronItem SOLDERING_IRON_LV;
+    public static ToolSolderingIronItem SOLDERING_IRON_MV;
+    public static ToolSolderingIronItem SOLDERING_IRON_HV;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -307,6 +311,30 @@ public final class GTToolItems {
             new ToolBuzzSawHV(),
             "%material Buzzsaw (HV)",
             "Not suitable for harvesting Blocks",
+            1_600_000L,
+            512L,
+            3);
+        SOLDERING_IRON_LV = new ToolSolderingIronItem(
+            "tool.soldering_iron_lv",
+            new ToolSolderingIron(),
+            "%material Soldering Iron (LV)",
+            "Fixes burned out Circuits. Needs soldering materials in inventory.",
+            100_000L,
+            32L,
+            1);
+        SOLDERING_IRON_MV = new ToolSolderingIronItem(
+            "tool.soldering_iron_mv",
+            new ToolSolderingIron(),
+            "%material Soldering Iron (MV)",
+            "Fixes burned out Circuits. Needs soldering materials in inventory.",
+            400_000L,
+            128L,
+            2);
+        SOLDERING_IRON_HV = new ToolSolderingIronItem(
+            "tool.soldering_iron_hv",
+            new ToolSolderingIron(),
+            "%material Soldering Iron (HV)",
+            "Fixes burned out Circuits. Needs soldering materials in inventory.",
             1_600_000L,
             512L,
             3);

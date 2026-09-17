@@ -73,8 +73,6 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
-import gregtech.common.items.IDMetaTool01;
-import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
@@ -1185,20 +1183,14 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         mToolStacks.put(true + "HARDHAMMER", GTToolItems.HARD_HAMMER.getToolWithMaterial(GOOD));
         mToolStacks.put(true + "SOFTMALLET", GTToolItems.SOFT_MALLET.getToolWithMaterial(GOOD));
         mToolStacks.put(true + "SCREWDRIVER", GTToolItems.SCREWDRIVER.getToolWithMaterial(GOOD));
-        mToolStacks.put(
-            true + "SOLDERING_IRON_LV",
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.SOLDERING_IRON_LV.ID, 1, GOOD, Materials.Tungsten, null));
+        mToolStacks.put(true + "SOLDERING_IRON_LV", GTToolItems.SOLDERING_IRON_LV.getToolWithMaterial(GOOD));
 
         mToolStacks.put(false + "WRENCH", GTToolItems.WRENCH.getToolWithMaterial(BAD));
         mToolStacks.put(false + "CROWBAR", GTToolItems.CROWBAR.getToolWithMaterial(BAD));
         mToolStacks.put(false + "HARDHAMMER", GTToolItems.HARD_HAMMER.getToolWithMaterial(BAD));
         mToolStacks.put(false + "SOFTMALLET", GTToolItems.SOFT_MALLET.getToolWithMaterial(BAD));
         mToolStacks.put(false + "SCREWDRIVER", GTToolItems.SCREWDRIVER.getToolWithMaterial(BAD));
-        mToolStacks.put(
-            false + "SOLDERING_IRON_LV",
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.SOLDERING_IRON_LV.ID, 1, BAD, Materials.Tungsten, null));
+        mToolStacks.put(false + "SOLDERING_IRON_LV", GTToolItems.SOLDERING_IRON_LV.getToolWithMaterial(BAD));
 
         ItemStack aGlassPane1 = new ItemStack(Blocks.glass_pane, 1, 14); // Red
         ItemStack aGlassPane2 = new ItemStack(Blocks.glass_pane, 1, 5); // Lime

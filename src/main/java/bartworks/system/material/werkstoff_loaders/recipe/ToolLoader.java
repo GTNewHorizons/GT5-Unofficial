@@ -58,14 +58,13 @@ import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.items.tools.ToolFileElectricItem;
 import gregtech.common.items.tools.ToolMaterialIndex;
 import gregtech.common.items.tools.ToolScrewdriverElectricItem;
+import gregtech.common.items.tools.ToolSolderingIronItem;
 import gregtech.common.items.tools.ToolWireCutterElectricItem;
 import gregtech.common.items.tools.ToolWrenchElectricItem;
 
 public class ToolLoader implements IWerkstoffRunnable {
 
     // GTNH-Specific
-    public static final short SOLDERING_IRON_MV = 162;
-    public static final short SOLDERING_IRON_HV = 164;
 
     @Override
     public void run(Werkstoff werkstoff) {
@@ -142,111 +141,65 @@ public class ToolLoader implements IWerkstoffRunnable {
                         stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
             }
 
-            // LV Soldering Iron
-            GTModHandler.addCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    IDMetaTool01.SOLDERING_IRON_LV.ID,
-                    1,
-                    werkstoff.getBridgeMaterial(),
-                    Materials.Rubber,
-                    new long[] { 100000L, 32L, 1L, -1L }),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
-                    plate.get(Materials.AnyRubber), 'S', stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
-                    ItemList.Battery_RE_LV_Lithium.get(1L) });
-            GTModHandler.addCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    IDMetaTool01.SOLDERING_IRON_LV.ID,
-                    1,
-                    werkstoff.getBridgeMaterial(),
-                    Materials.Rubber,
-                    new long[] { 75000L, 32L, 1L, -1L }),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
-                    plate.get(Materials.AnyRubber), 'S', stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
-                    ItemList.Battery_RE_LV_Cadmium.get(1L) });
-            GTModHandler.addCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    IDMetaTool01.SOLDERING_IRON_LV.ID,
-                    1,
-                    werkstoff.getBridgeMaterial(),
-                    Materials.Rubber,
-                    new long[] { 50000L, 32L, 1L, -1L }),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
-                    plate.get(Materials.AnyRubber), 'S', stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
-                    ItemList.Battery_RE_LV_Sodium.get(1L) });
-            // MV Soldering Iron
-            GTModHandler.addCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    SOLDERING_IRON_MV,
-                    1,
-                    werkstoff.getBridgeMaterial(),
-                    Materials.Rubber,
-                    new long[] { 400000L, 128L, 2L, -1L }),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
-                    plate.get(Materials.AnyRubber), 'S', stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
-                    ItemList.Battery_RE_MV_Lithium.get(1L) });
-            GTModHandler.addCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    SOLDERING_IRON_MV,
-                    1,
-                    werkstoff.getBridgeMaterial(),
-                    Materials.Rubber,
-                    new long[] { 300000L, 128L, 2L, -1L }),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
-                    plate.get(Materials.AnyRubber), 'S', stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
-                    ItemList.Battery_RE_MV_Cadmium.get(1L) });
-            GTModHandler.addCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    SOLDERING_IRON_MV,
-                    1,
-                    werkstoff.getBridgeMaterial(),
-                    Materials.Rubber,
-                    new long[] { 200000L, 128L, 2L, -1L }),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
-                    plate.get(Materials.AnyRubber), 'S', stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
-                    ItemList.Battery_RE_MV_Sodium.get(1L) });
-            // HV Soldering Iron
-            GTModHandler.addCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    SOLDERING_IRON_HV,
-                    1,
-                    werkstoff.getBridgeMaterial(),
-                    Materials.StyreneButadieneRubber,
-                    new long[] { 1600000L, 512L, 3L, -1L }),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
-                    plate.get(Materials.StyreneButadieneRubber), 'S',
-                    stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
-                    ItemList.Battery_RE_HV_Lithium.get(1L) });
-            GTModHandler.addCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    SOLDERING_IRON_HV,
-                    1,
-                    werkstoff.getBridgeMaterial(),
-                    Materials.StyreneButadieneRubber,
-                    new long[] { 1200000L, 512L, 3L, -1L }),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
-                    plate.get(Materials.StyreneButadieneRubber), 'S',
-                    stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
-                    ItemList.Battery_RE_HV_Cadmium.get(1L) });
-            GTModHandler.addCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    SOLDERING_IRON_HV,
-                    1,
-                    werkstoff.getBridgeMaterial(),
-                    Materials.StyreneButadieneRubber,
-                    new long[] { 800000L, 512L, 3L, -1L }),
-                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
-                    plate.get(Materials.StyreneButadieneRubber), 'S',
-                    stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
-                    ItemList.Battery_RE_HV_Sodium.get(1L) });
+            // Electric soldering irons.
+            final int solderingIronMeta = ToolMaterialIndex.WERKSTOFF_META_OFFSET + werkstoff.getmID();
+            registerElectricSolderingIron(GTToolItems.SOLDERING_IRON_LV, werkstoff, solderingIronMeta);
+            registerElectricSolderingIron(GTToolItems.SOLDERING_IRON_MV, werkstoff, solderingIronMeta);
+            registerElectricSolderingIron(GTToolItems.SOLDERING_IRON_HV, werkstoff, solderingIronMeta);
+            addSolderingIronRecipe(
+                GTToolItems.SOLDERING_IRON_LV,
+                werkstoff,
+                100000L,
+                Materials.AnyRubber,
+                ItemList.Battery_RE_LV_Lithium);
+            addSolderingIronRecipe(
+                GTToolItems.SOLDERING_IRON_LV,
+                werkstoff,
+                75000L,
+                Materials.AnyRubber,
+                ItemList.Battery_RE_LV_Cadmium);
+            addSolderingIronRecipe(
+                GTToolItems.SOLDERING_IRON_LV,
+                werkstoff,
+                50000L,
+                Materials.AnyRubber,
+                ItemList.Battery_RE_LV_Sodium);
+            addSolderingIronRecipe(
+                GTToolItems.SOLDERING_IRON_MV,
+                werkstoff,
+                400000L,
+                Materials.AnyRubber,
+                ItemList.Battery_RE_MV_Lithium);
+            addSolderingIronRecipe(
+                GTToolItems.SOLDERING_IRON_MV,
+                werkstoff,
+                300000L,
+                Materials.AnyRubber,
+                ItemList.Battery_RE_MV_Cadmium);
+            addSolderingIronRecipe(
+                GTToolItems.SOLDERING_IRON_MV,
+                werkstoff,
+                200000L,
+                Materials.AnyRubber,
+                ItemList.Battery_RE_MV_Sodium);
+            addSolderingIronRecipe(
+                GTToolItems.SOLDERING_IRON_HV,
+                werkstoff,
+                1600000L,
+                Materials.StyreneButadieneRubber,
+                ItemList.Battery_RE_HV_Lithium);
+            addSolderingIronRecipe(
+                GTToolItems.SOLDERING_IRON_HV,
+                werkstoff,
+                1200000L,
+                Materials.StyreneButadieneRubber,
+                ItemList.Battery_RE_HV_Cadmium);
+            addSolderingIronRecipe(
+                GTToolItems.SOLDERING_IRON_HV,
+                werkstoff,
+                800000L,
+                Materials.StyreneButadieneRubber,
+                ItemList.Battery_RE_HV_Sodium);
 
             if (!werkstoff.hasItemType(gem)) {
                 GTModHandler.addCraftingRecipe(
@@ -862,5 +815,31 @@ public class ToolLoader implements IWerkstoffRunnable {
                 OrePrefixes.screw.get(casingMaterial), 'L', OrePrefixes.stickLong.get(werkstoff.getBridgeMaterial()),
                 'P', OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G', OrePrefixes.gearGt.get(casingMaterial),
                 'B', battery.get(1L) });
+    }
+
+    private static void registerElectricSolderingIron(ToolSolderingIronItem solderingIronItem, Werkstoff werkstoff,
+        int meta) {
+        solderingIronItem.registerMaterial(
+            werkstoff.getBridgeMaterial(),
+            meta,
+            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
+    }
+
+    /**
+     * Adds one electric soldering iron crafting recipe for a Werkstoff head material. Mirrors the
+     * GregTech-material version in {@code ProcessingToolOther}, except that the handle comes from the Werkstoff's
+     * own handle material rather than being fixed per tier -- which is how this loader always built it.
+     */
+    private static void addSolderingIronRecipe(ToolSolderingIronItem solderingIronItem, Werkstoff werkstoff,
+        long maxCharge, Materials rubber, ItemList battery) {
+        ItemStack solderingIron = solderingIronItem.getToolWithMaterial(werkstoff.getBridgeMaterial(), maxCharge);
+        if (solderingIron == null) return;
+        GTModHandler.addCraftingRecipe(
+            solderingIron,
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P', plate.get(rubber),
+                'S', stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L', battery.get(1L) });
     }
 }

@@ -20,7 +20,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
-import gregtech.common.items.behaviors.BehaviourScrewdriver;
 
 public class ToolSolderingIron extends GTTool {
 
@@ -97,11 +96,6 @@ public class ToolSolderingIron extends GTTool {
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
-    }
-
-    @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
-        aItem.addItemBehavior(aID, new BehaviourScrewdriver(1, 200));
     }
 
     @Override

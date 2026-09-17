@@ -13,11 +13,10 @@ import gregtech.api.util.GTUtility;
  * The "right click a block to adjust it" half of a screwdriver: stepping a redstone repeater's delay or a
  * comparator's mode.
  * <p/>
- * This used to live in {@code BehaviourScrewdriver}. The screwdriver is no longer a {@code MetaGeneratedTool}
- * metadata, so the logic moved here -- but the soldering iron still is one and still registers that behaviour, so
- * unlike the wrench and soft mallet helpers this one is called from both sides. That is why it takes the payment as a
- * {@link BooleanSupplier} rather than an item: the standalone tool spends its own durability or energy, while the
- * behaviour goes through {@code GTModHandler.damageOrDechargeItem} as it always did.
+ * This used to live in {@code BehaviourScrewdriver}, which both the screwdriver and the soldering iron registered.
+ * Both are standalone items now, so that behaviour is gone and they call this directly -- the screwdriver spending
+ * durability or energy depending on its tier, the soldering iron always energy. It takes the payment as a
+ * {@link BooleanSupplier} so that neither has to be named here.
  * <p/>
  * GregTech machines and covers are not handled here -- they pick the screwdriver out of
  * {@link gregtech.api.GregTechAPI#sScrewdriverList} themselves, in {@code BaseMetaTileEntity}.
