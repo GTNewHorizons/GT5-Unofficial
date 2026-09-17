@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.SolidifierHatch;
 import static gregtech.api.enums.Mods.GregTech;
@@ -220,7 +221,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement(
             'H',
-            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch.or(SolidifierHatch), OutputBus, InputBus, Energy.or(ExoticEnergy))
+            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch.or(SolidifierHatch), OutputBus, InputBus, Energy.or(ExoticEnergy), Maintenance)
                 .hint(1)
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
