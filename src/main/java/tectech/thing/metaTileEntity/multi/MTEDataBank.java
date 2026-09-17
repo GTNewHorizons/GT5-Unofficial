@@ -161,6 +161,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 + (long) (eStacksDataOutputs.size() + eWirelessStacksDataOutputs.size()) * eDataAccessHatches.size();
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
+            this.lEUt = this.mEUt;
             return SimpleCheckRecipeResult.ofSuccess("providing_data");
         }
         return SimpleCheckRecipeResult.ofFailure("no_data");

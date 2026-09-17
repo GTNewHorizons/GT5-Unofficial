@@ -57,6 +57,7 @@ import static gregtech.common.items.IDMetaTool01.WRENCH_MV;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.init.Blocks;
@@ -137,6 +138,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
 
     /** Meta Value of a charged electric tool to the name it spells, for the families that only differ by tier. */
     private static final Map<Integer, Supplier<String>> TIERED_NAMES = new HashMap<>();
+    private static final Map<Integer, String> TIERED_TOOLTIPS = new HashMap<>();
 
     public MetaGeneratedTool01() {
         super("metatool.01");
@@ -316,7 +318,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         addTool(
             CHAINSAW_LV.ID,
             "",
-            "Can also harvest Ice",
+            "",
             new ToolChainsawLV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -325,7 +327,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         addTool(
             CHAINSAW_MV.ID,
             "",
-            "Can also harvest Ice",
+            "",
             new ToolChainsawMV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -334,7 +336,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         addTool(
             CHAINSAW_HV.ID,
             "",
-            "Can also harvest Ice",
+            "",
             new ToolChainsawHV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -344,7 +346,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 WRENCH_LV.ID,
                 "",
-                "Hold Left Button to dismantle Machines",
+                "",
                 new ToolWrenchLV(),
                 ToolDictNames.craftingToolWrench,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
@@ -354,7 +356,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 WRENCH_MV.ID,
                 "",
-                "Hold Left Button to dismantle Machines",
+                "",
                 new ToolWrenchMV(),
                 ToolDictNames.craftingToolWrench,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
@@ -364,7 +366,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 WRENCH_HV.ID,
                 "",
-                "Hold Left Button to dismantle Machines",
+                "",
                 new ToolWrenchHV(),
                 ToolDictNames.craftingToolWrench,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
@@ -374,7 +376,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 JACKHAMMER_LV.ID,
                 "",
-                "Breaks Rocks into pieces",
+                "",
                 new ToolJackHammerLV(),
                 ToolDictNames.craftingToolJackHammer,
                 ToolDictNames.craftingToolHardHammer,
@@ -386,7 +388,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 JACKHAMMER_MV.ID,
                 "",
-                "Breaks Rocks into pieces",
+                "",
                 new ToolJackHammerMV(),
                 ToolDictNames.craftingToolJackHammer,
                 ToolDictNames.craftingToolHardHammer,
@@ -398,7 +400,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 JACKHAMMER_HV.ID,
                 "",
-                "Breaks Rocks into pieces",
+                "",
                 new ToolJackHammerHV(),
                 ToolDictNames.craftingToolJackHammer,
                 ToolDictNames.craftingToolHardHammer,
@@ -409,7 +411,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         addTool(
             BUZZSAW_LV.ID,
             "",
-            "Not suitable for harvesting Blocks",
+            "",
             new ToolBuzzSawLV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -418,7 +420,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         addTool(
             BUZZSAW_MV.ID,
             "",
-            "Not suitable for harvesting Blocks",
+            "",
             new ToolBuzzSawMV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -427,7 +429,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         addTool(
             BUZZSAW_HV.ID,
             "",
-            "Not suitable for harvesting Blocks",
+            "",
             new ToolBuzzSawHV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -437,7 +439,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 SCREWDRIVER_LV.ID,
                 "",
-                "Adjusts Covers and Machines",
+                "",
                 new ToolScrewdriverLV(),
                 ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -448,7 +450,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 SCREWDRIVER_MV.ID,
                 "",
-                "Adjusts Covers and Machines",
+                "",
                 new ToolScrewdriverMV(),
                 ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -459,7 +461,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 SCREWDRIVER_HV.ID,
                 "",
-                "Adjusts Covers and Machines",
+                "",
                 new ToolScrewdriverHV(),
                 ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -470,7 +472,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 SOLDERING_IRON_LV.ID,
                 "",
-                "Fixes burned out Circuits. Needs soldering materials in inventory.",
+                "",
                 new ToolSolderingIron(),
                 ToolDictNames.craftingToolSolderingIron,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -481,7 +483,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 SOLDERING_IRON_MV.ID,
                 "",
-                "Fixes burned out Circuits. Needs soldering materials in inventory.",
+                "",
                 new ToolSolderingIron(),
                 ToolDictNames.craftingToolSolderingIron,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -492,7 +494,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 SOLDERING_IRON_HV.ID,
                 "",
-                "Fixes burned out Circuits. Needs soldering materials in inventory.",
+                "",
                 new ToolSolderingIron(),
                 ToolDictNames.craftingToolSolderingIron,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
@@ -505,7 +507,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 WIRECUTTER_LV.ID,
                 "",
-                "Hand-held electric wire cutter",
+                "",
                 new ToolWireCutterLV(),
                 ToolDictNames.craftingToolWireCutter,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
@@ -516,7 +518,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 WIRECUTTER_MV.ID,
                 "",
-                "Hand-held electric wire cutter",
+                "",
                 new ToolWireCutterMV(),
                 ToolDictNames.craftingToolWireCutter,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
@@ -527,7 +529,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 WIRECUTTER_HV.ID,
                 "",
-                "Hand-held electric wire cutter",
+                "",
                 new ToolWireCutterHV(),
                 ToolDictNames.craftingToolWireCutter,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
@@ -539,7 +541,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         addTool(
             FILE_LV.ID,
             "",
-            "Hand-held electric filing device",
+            "",
             new ToolFileLV(),
             ToolDictNames.craftingToolFile,
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
@@ -548,7 +550,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         addTool(
             FILE_MV.ID,
             "",
-            "Hand-held electric filing device",
+            "",
             new ToolFileMV(),
             ToolDictNames.craftingToolFile,
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
@@ -557,7 +559,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         addTool(
             FILE_HV.ID,
             "",
-            "Hand-held electric filing device",
+            "",
             new ToolFileHV(),
             ToolDictNames.craftingToolFile,
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
@@ -654,36 +656,76 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
 
     /**
      * Registers the three tiers of an electric tool family under one name key, so that the tier becomes an argument
-     * instead of its own translation. The Meta Values are listed one by one because their layout is irregular.
+     * instead of its own translation. The Meta Values are listed one by one because their layout is irregular. A family
+     * whose tiers share a tooltip reads it from one key as well, or passes null when it has none.
      */
-    private static void addTieredFamily(String aNameKey, int aLV, int aMV, int aHV) {
+    private static void addTieredFamily(String aNameKey, String aToolTipKey, int aLV, int aMV, int aHV) {
         int[] tMetas = { aLV, aMV, aHV };
         for (int i = 0; i < tMetas.length; i++) {
             final String tTier = GTValues.VN[i + 1];
             TIERED_NAMES.put(tMetas[i], () -> StatCollector.translateToLocalFormatted(aNameKey, tTier));
+            if (aToolTipKey != null) TIERED_TOOLTIPS.put(tMetas[i], aToolTipKey);
         }
     }
 
     static {
-        addTieredFamily("gt.metatool.01.drill.name", DRILL_LV.ID, DRILL_MV.ID, DRILL_HV.ID);
-        addTieredFamily("gt.metatool.01.chainsaw.name", CHAINSAW_LV.ID, CHAINSAW_MV.ID, CHAINSAW_HV.ID);
-        addTieredFamily("gt.metatool.01.wrench.name", WRENCH_LV.ID, WRENCH_MV.ID, WRENCH_HV.ID);
-        addTieredFamily("gt.metatool.01.jackhammer.name", JACKHAMMER_LV.ID, JACKHAMMER_MV.ID, JACKHAMMER_HV.ID);
-        addTieredFamily("gt.metatool.01.buzzsaw.name", BUZZSAW_LV.ID, BUZZSAW_MV.ID, BUZZSAW_HV.ID);
-        addTieredFamily("gt.metatool.01.screwdriver.name", SCREWDRIVER_LV.ID, SCREWDRIVER_MV.ID, SCREWDRIVER_HV.ID);
+        addTieredFamily("gt.metatool.01.drill.name", null, DRILL_LV.ID, DRILL_MV.ID, DRILL_HV.ID);
+        addTieredFamily(
+            "gt.metatool.01.chainsaw.name",
+            "gt.metatool.01.chainsaw.tooltip",
+            CHAINSAW_LV.ID,
+            CHAINSAW_MV.ID,
+            CHAINSAW_HV.ID);
+        addTieredFamily(
+            "gt.metatool.01.wrench.name",
+            "gt.metatool.01.wrench.tooltip",
+            WRENCH_LV.ID,
+            WRENCH_MV.ID,
+            WRENCH_HV.ID);
+        addTieredFamily(
+            "gt.metatool.01.jackhammer.name",
+            "gt.metatool.01.jackhammer.tooltip",
+            JACKHAMMER_LV.ID,
+            JACKHAMMER_MV.ID,
+            JACKHAMMER_HV.ID);
+        addTieredFamily(
+            "gt.metatool.01.buzzsaw.name",
+            "gt.metatool.01.buzzsaw.tooltip",
+            BUZZSAW_LV.ID,
+            BUZZSAW_MV.ID,
+            BUZZSAW_HV.ID);
+        addTieredFamily(
+            "gt.metatool.01.screwdriver.name",
+            "gt.metatool.01.screwdriver.tooltip",
+            SCREWDRIVER_LV.ID,
+            SCREWDRIVER_MV.ID,
+            SCREWDRIVER_HV.ID);
         addTieredFamily(
             "gt.metatool.01.soldering_iron.name",
+            "gt.metatool.01.soldering_iron.tooltip",
             SOLDERING_IRON_LV.ID,
             SOLDERING_IRON_MV.ID,
             SOLDERING_IRON_HV.ID);
-        addTieredFamily("gt.metatool.01.wire_cutter.name", WIRECUTTER_LV.ID, WIRECUTTER_MV.ID, WIRECUTTER_HV.ID);
-        addTieredFamily("gt.metatool.01.file.name", FILE_LV.ID, FILE_MV.ID, FILE_HV.ID);
+        addTieredFamily(
+            "gt.metatool.01.wire_cutter.name",
+            "gt.metatool.01.wire_cutter.tooltip",
+            WIRECUTTER_LV.ID,
+            WIRECUTTER_MV.ID,
+            WIRECUTTER_HV.ID);
+        addTieredFamily("gt.metatool.01.file.name", "gt.metatool.01.file.tooltip", FILE_LV.ID, FILE_MV.ID, FILE_HV.ID);
     }
 
     @Override
     protected String getChargedName(int aMeta) {
         Supplier<String> tName = TIERED_NAMES.get(aMeta);
         return tName == null ? super.getChargedName(aMeta) : tName.get();
+    }
+
+    @Override
+    protected Function<ItemStack, String> getToolTipLocalizationFunction(ItemStack aStack) {
+        final String tKey = TIERED_TOOLTIPS.get(getDamage(aStack));
+        return tKey == null ? super.getToolTipLocalizationFunction(aStack)
+            : tStack -> StatCollector.translateToLocal(tKey);
     }
 
     private void initCraftingShapelessRecipes() {

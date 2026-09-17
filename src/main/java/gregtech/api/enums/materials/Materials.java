@@ -1120,7 +1120,7 @@ public class Materials {
     public static Material BastnasiteRarerEarthOxideSuspension;
     public static Material SamaricRareEarthConcentrate;
     public static Material NeodymiumRareEarthConcentrate;
-    public static Material LanthaniumChloride;
+    public static Material LanthanumChloride;
     public static Material NeodymiumOxide;
     public static Material FluorinatedSamaricConcentrate;
     public static Material CalciumFluoride;
@@ -24089,18 +24089,18 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "LaNd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
-        Materials.LanthaniumChloride = MaterialLibAPI.newMaterial("gregtech", "LanthaniumChloride", TextureSet.of("gregtech", "DULL"))
+        Materials.LanthanumChloride = MaterialLibAPI.newMaterial("gregtech", "LanthaniumChloride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF527066)
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)
-            .setProperty(GTMaterialProperties.LOCAL_NAME, "Lanthanium Chloride")
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Lanthanum Chloride")
             .setProperty(GTMaterialProperties.MELTING_POINT, 1123)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 1123)
             .setProperty(GTMaterialProperties.TOOL_SPEED, 1.603F)
             .setProperty(GTMaterialProperties.DURABILITY, 168)
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 2)
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
-            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lanthanum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LanthaniumChloride), 1L)))
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lanthanum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LanthanumChloride), 1L)))
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11121))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")

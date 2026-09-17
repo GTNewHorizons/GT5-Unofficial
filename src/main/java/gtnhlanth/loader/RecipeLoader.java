@@ -1086,7 +1086,7 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Lanthanum, Shapes.dust, 1))
             .circuit(1)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 3_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.LanthaniumChloride, Shapes.dust, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.LanthanumChloride, Shapes.dust, 4))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 3_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1096,7 +1096,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(GTUtility.getWater(3_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 6_000))
-            .itemInputs(MaterialLibAPI.getStack(Materials.LanthaniumChloride, Shapes.dust, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumChloride, Shapes.dust, 8))
             .itemOutputs(MaterialLibAPI.getStack(Materials.LanthanumOxide, Shapes.dust, 1))
             .duration(10 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1714,7 +1714,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Shapes.dust, 2))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.LanthaniumChloride, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.LanthanumChloride, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.NeodymiumOxide, Shapes.dust, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
             .duration(45 * SECONDS)
@@ -3435,7 +3435,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.ImpureLanthanumChloride, Shapes.dust, 36))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.LanthaniumChloride, Shapes.dust, 36),
+                MaterialLibAPI.getStack(Materials.LanthanumChloride, Shapes.dust, 36),
                 MaterialLibAPI.getStack(Materials.RarestEarthResidue, Shapes.dust, 5))
             .eut(TierEU.RECIPE_EV)
             .duration(5 * SECONDS)
