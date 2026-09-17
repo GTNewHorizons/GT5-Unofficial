@@ -19,7 +19,6 @@ import static gregtech.common.items.IDMetaTool01.POCKET_MULTITOOL;
 import static gregtech.common.items.IDMetaTool01.POCKET_SAW;
 import static gregtech.common.items.IDMetaTool01.POCKET_SCREWDRIVER;
 import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
-import static gregtech.common.items.IDMetaTool01.ROLLING_PIN;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_HV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_LV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_MV;
@@ -63,7 +62,6 @@ import gregtech.common.tools.ToolDrillMV;
 import gregtech.common.tools.ToolJackHammerHV;
 import gregtech.common.tools.ToolJackHammerLV;
 import gregtech.common.tools.ToolJackHammerMV;
-import gregtech.common.tools.ToolRollingPin;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
 import gregtech.common.tools.ToolTurbineHuge;
@@ -90,15 +88,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     public MetaGeneratedTool01() {
         super("metatool.01");
         INSTANCE = this;
-
-        addTool(
-            ROLLING_PIN.ID,
-            "Rolling Pin",
-            "",
-            new ToolRollingPin(),
-            ToolDictNames.craftingToolRollingPin,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L));
 
         addTool(
             DRILL_LV.ID,
@@ -463,27 +452,27 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 OrePrefixes.stone });
 
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Wood, Materials.Wood, null),
+            rollingPin(Materials.Wood),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.plank.get(Materials.Wood), 'S',
                 OrePrefixes.stick.get(Materials.Wood) });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Polyethylene, Materials.Polyethylene, null),
+            rollingPin(Materials.Polyethylene),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Polyethylene), 'S',
                 OrePrefixes.stick.get(Materials.Polyethylene) });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Aluminium, Materials.Aluminium, null),
+            rollingPin(Materials.Aluminium),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Aluminium), 'S',
                 OrePrefixes.stick.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.StainlessSteel, Materials.StainlessSteel, null),
+            rollingPin(Materials.StainlessSteel),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.stick.get(Materials.StainlessSteel) });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.IronWood, Materials.IronWood, null),
+            rollingPin(Materials.IronWood),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.IronWood), 'S',
                 OrePrefixes.stick.get(Materials.IronWood) });
@@ -508,5 +497,15 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
             new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L));
+    }
+
+    /**
+     * Declares the rolling pin for this material and returns a stack of it, for the fixed-material recipes above.
+     */
+    private static ItemStack rollingPin(Materials material) {
+        return GTToolItems.ROLLING_PIN.registerMaterial(
+            material,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L));
     }
 }
