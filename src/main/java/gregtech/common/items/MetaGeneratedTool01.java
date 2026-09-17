@@ -1,8 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.common.items.IDMetaTool01.BUZZSAW_HV;
-import static gregtech.common.items.IDMetaTool01.BUZZSAW_LV;
-import static gregtech.common.items.IDMetaTool01.BUZZSAW_MV;
 import static gregtech.common.items.IDMetaTool01.POCKET_BRANCHCUTTER;
 import static gregtech.common.items.IDMetaTool01.POCKET_FILE;
 import static gregtech.common.items.IDMetaTool01.POCKET_KNIFE;
@@ -40,7 +37,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.tools.ItemNetworkAnalyzer;
-import gregtech.common.tools.ToolBuzzSawHV;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTurbineHuge;
 import gregtech.common.tools.ToolTurbineLarge;
@@ -67,15 +63,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         super("metatool.01");
         INSTANCE = this;
 
-        addTool(
-            BUZZSAW_HV.ID,
-            "",
-            "",
-            new ToolBuzzSawHV(),
-            ToolDictNames.craftingToolSaw,
-            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
         GregTechAPI.registerTool(
             addTool(
                 SOLDERING_IRON_LV.ID,
@@ -205,12 +192,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     }
 
     static {
-        addTieredFamily(
-            "gt.metatool.01.buzzsaw.name",
-            "gt.metatool.01.buzzsaw.tooltip",
-            BUZZSAW_LV.ID,
-            BUZZSAW_MV.ID,
-            BUZZSAW_HV.ID);
         addTieredFamily(
             "gt.metatool.01.soldering_iron.name",
             "gt.metatool.01.soldering_iron.tooltip",

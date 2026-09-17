@@ -50,6 +50,7 @@ public enum IDMetaTool01 {
     JACKHAMMER_LV(130),
     JACKHAMMER_MV(132),
     JACKHAMMER_HV(134),
+    // Reserved, see the note above.
     BUZZSAW_LV(140),
     BUZZSAW_MV(142),
     BUZZSAW_HV(144),

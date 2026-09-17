@@ -5,6 +5,9 @@ import java.util.List;
 
 import gregtech.common.tools.ToolBranchCutter;
 import gregtech.common.tools.ToolButcheryKnife;
+import gregtech.common.tools.ToolBuzzSawHV;
+import gregtech.common.tools.ToolBuzzSawLV;
+import gregtech.common.tools.ToolBuzzSawMV;
 import gregtech.common.tools.ToolChainsawHV;
 import gregtech.common.tools.ToolChainsawLV;
 import gregtech.common.tools.ToolChainsawMV;
@@ -86,6 +89,9 @@ public final class GTToolItems {
     public static ToolJackHammerItem JACKHAMMER_LV;
     public static ToolJackHammerItem JACKHAMMER_MV;
     public static ToolJackHammerItem JACKHAMMER_HV;
+    public static ToolBuzzSawItem BUZZSAW_LV;
+    public static ToolBuzzSawItem BUZZSAW_MV;
+    public static ToolBuzzSawItem BUZZSAW_HV;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -277,6 +283,30 @@ public final class GTToolItems {
             new ToolJackHammerHV(),
             "%material Jackhammer (HV)",
             "Breaks Rocks into pieces",
+            1_600_000L,
+            512L,
+            3);
+        BUZZSAW_LV = new ToolBuzzSawItem(
+            "tool.buzzsaw_lv",
+            new ToolBuzzSawLV(),
+            "%material Buzzsaw (LV)",
+            "Not suitable for harvesting Blocks",
+            100_000L,
+            32L,
+            1);
+        BUZZSAW_MV = new ToolBuzzSawItem(
+            "tool.buzzsaw_mv",
+            new ToolBuzzSawMV(),
+            "%material Buzzsaw (MV)",
+            "Not suitable for harvesting Blocks",
+            400_000L,
+            128L,
+            2);
+        BUZZSAW_HV = new ToolBuzzSawItem(
+            "tool.buzzsaw_hv",
+            new ToolBuzzSawHV(),
+            "%material Buzzsaw (HV)",
+            "Not suitable for harvesting Blocks",
             1_600_000L,
             512L,
             3);
