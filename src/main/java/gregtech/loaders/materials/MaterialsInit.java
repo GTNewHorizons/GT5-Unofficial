@@ -14114,6 +14114,7 @@ public class MaterialsInit {
 
     private static void loadGrowthMediumLine() {
         Materials.Glucose = loadGlucose();
+        Materials.BioGrowthMediumBase = loadBioGrowthMediumBase();
     }
 
     private static Materials loadGlucose() {
@@ -14123,6 +14124,17 @@ public class MaterialsInit {
             .setARGB(0x00ffffe0)
             .addFluid()
             .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadBioGrowthMediumBase() {
+        return new MaterialBuilder().setName("BioGrowthMediumBase")
+            .setDefaultLocalName("Bio Catalyst Medium Base")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setARGB(0x00d99b6b)
+            .addCell()
+            .addFluid()
             .constructMaterial();
     }
 

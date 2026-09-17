@@ -934,6 +934,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     // region Growth Catalyst Line
     public static Materials Glucose;
+    public static Materials BioGrowthMediumBase;
     // endregion
 
     // region Netherite Line
