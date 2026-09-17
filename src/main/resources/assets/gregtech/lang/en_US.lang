@@ -7746,7 +7746,6 @@ gt.item.adv_sensor_card.tooltip.recipe_hint=Created by attaching a Metrics Trans
 gt.item.adv_sensor_card.tooltip.fried.1=§o§dThis thing looks completely fried...
 gt.item.adv_sensor_card.tooltip.fried.2=§cDestroyed due to metrics transmitter being removed
 gt.item.adv_sensor_card.tooltip.fried.3=§cor the machine being destroyed
-gt.item.adv_sensor_card.tooltip.machine=Machine: §b%s
 gt.item.adv_sensor_card.tooltip.frequency=Frequency: §b%s
 gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
 gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
@@ -9522,9 +9521,6 @@ gt.360k_Space_Coolantcell.name=360k Sp Coolant Cell
 gt.540k_Space_Coolantcell.name=540k Sp Coolant Cell
 gt.1080k_Space_Coolantcell.name=1080k Sp Coolant Cell
 gt.neutroniumHeatCapacitor.name=1G Neutronium Heat Capacitor
-
-# Coolant Cell shared tooltip key
-gt.item.desc.stored_heat=Stored Heat: %s
 
 # Breeder Cells
 gt.rodLithium.name=Fuel Rod (Lithium)
