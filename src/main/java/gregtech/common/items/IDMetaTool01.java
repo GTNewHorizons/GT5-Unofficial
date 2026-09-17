@@ -34,6 +34,7 @@ public enum IDMetaTool01 {
     PLUNGER(44),
     // Reserved, see the note above.
     ROLLING_PIN(46),
+    // Reserved, see the note above.
     DRILL_LV(100),
     DRILL_MV(102),
     DRILL_HV(104),

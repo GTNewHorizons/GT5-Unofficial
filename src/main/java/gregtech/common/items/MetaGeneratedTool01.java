@@ -6,9 +6,6 @@ import static gregtech.common.items.IDMetaTool01.BUZZSAW_MV;
 import static gregtech.common.items.IDMetaTool01.CHAINSAW_HV;
 import static gregtech.common.items.IDMetaTool01.CHAINSAW_LV;
 import static gregtech.common.items.IDMetaTool01.CHAINSAW_MV;
-import static gregtech.common.items.IDMetaTool01.DRILL_HV;
-import static gregtech.common.items.IDMetaTool01.DRILL_LV;
-import static gregtech.common.items.IDMetaTool01.DRILL_MV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_HV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_LV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_MV;
@@ -55,9 +52,6 @@ import gregtech.common.tools.ToolBuzzSawMV;
 import gregtech.common.tools.ToolChainsawHV;
 import gregtech.common.tools.ToolChainsawLV;
 import gregtech.common.tools.ToolChainsawMV;
-import gregtech.common.tools.ToolDrillHV;
-import gregtech.common.tools.ToolDrillLV;
-import gregtech.common.tools.ToolDrillMV;
 import gregtech.common.tools.ToolJackHammerHV;
 import gregtech.common.tools.ToolJackHammerLV;
 import gregtech.common.tools.ToolJackHammerMV;
@@ -87,30 +81,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         super("metatool.01");
         INSTANCE = this;
 
-        addTool(
-            DRILL_LV.ID,
-            "",
-            "",
-            new ToolDrillLV(),
-            ToolDictNames.craftingToolMiningDrill,
-            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
-        addTool(
-            DRILL_MV.ID,
-            "",
-            "",
-            new ToolDrillMV(),
-            ToolDictNames.craftingToolMiningDrill,
-            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
-        addTool(
-            DRILL_HV.ID,
-            "",
-            "",
-            new ToolDrillHV(),
-            ToolDictNames.craftingToolMiningDrill,
-            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             CHAINSAW_LV.ID,
             "",
@@ -330,7 +300,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     }
 
     static {
-        addTieredFamily("gt.metatool.01.drill.name", null, DRILL_LV.ID, DRILL_MV.ID, DRILL_HV.ID);
         addTieredFamily(
             "gt.metatool.01.chainsaw.name",
             "gt.metatool.01.chainsaw.tooltip",

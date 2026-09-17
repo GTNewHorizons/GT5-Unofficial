@@ -6,6 +6,9 @@ import java.util.List;
 import gregtech.common.tools.ToolBranchCutter;
 import gregtech.common.tools.ToolButcheryKnife;
 import gregtech.common.tools.ToolCrowbar;
+import gregtech.common.tools.ToolDrillHV;
+import gregtech.common.tools.ToolDrillLV;
+import gregtech.common.tools.ToolDrillMV;
 import gregtech.common.tools.ToolFile;
 import gregtech.common.tools.ToolFileHV;
 import gregtech.common.tools.ToolFileLV;
@@ -68,6 +71,9 @@ public final class GTToolItems {
     public static ToolPlungerItem PLUNGER;
     public static ToolRollingPinItem ROLLING_PIN;
     public static ToolTrowelItem TROWEL;
+    public static ToolDrillItem DRILL_LV;
+    public static ToolDrillItem DRILL_MV;
+    public static ToolDrillItem DRILL_HV;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -211,6 +217,9 @@ public final class GTToolItems {
         PLUNGER = new ToolPlungerItem("tool.plunger", new ToolPlunger(), "%material Plunger", "");
         ROLLING_PIN = new ToolRollingPinItem("tool.rolling_pin", new ToolRollingPin(), "%material Rolling Pin", "");
         TROWEL = new ToolTrowelItem("tool.trowel", new ToolTrowel(), "%material Decorator's Trowel", "");
+        DRILL_LV = new ToolDrillItem("tool.drill_lv", new ToolDrillLV(), "%material Drill (LV)", 100_000L, 32L, 1);
+        DRILL_MV = new ToolDrillItem("tool.drill_mv", new ToolDrillMV(), "%material Drill (MV)", 400_000L, 128L, 2);
+        DRILL_HV = new ToolDrillItem("tool.drill_hv", new ToolDrillHV(), "%material Drill (HV)", 1_600_000L, 512L, 3);
     }
 
     /**

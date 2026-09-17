@@ -75,8 +75,7 @@ public class GTAchievements {
             "driltime",
             2,
             4,
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.DRILL_LV.ID, 1, Materials.BlueSteel, Materials.StainlessSteel, null),
+            GTToolItems.DRILL_LV.getToolWithMaterial(Materials.BlueSteel),
             "tools",
             false);
         registerAchievement(
@@ -91,8 +90,7 @@ public class GTAchievements {
             "highpowerdrill",
             3,
             5,
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.DRILL_HV.ID, 1, Materials.TungstenSteel, Materials.TungstenSteel, null),
+            GTToolItems.DRILL_HV.getToolWithMaterial(Materials.TungstenSteel),
             "driltime",
             false);
         registerAchievement(
