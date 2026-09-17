@@ -56,6 +56,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_NANOCHIP)
         .build();
+    public static final UITexture BACKGROUND_NANOCHIP_LARGE = UITexture.builder()
+        .location(GregTech.ID, "gui/background/nanochip_default_large")
+        .imageSize(600, 306)
+        .adaptable(4)
+        .canApplyTheme()
+        .build();
     public static final UITexture BACKGROUND_TITLE_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/title_dark")
         .imageSize(28, 28)
@@ -216,6 +222,8 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_COMPUTATION_LOSS = UITexture
         .fullImage(GregTech.ID, "gui/icons/stalled_computation");
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
+    public static final UITexture OVERLAY_ROTOR = UITexture.fullImage(GregTech.ID, "gui/picture/noRotor");
+    public static final UITexture OVERLAY_WIND = UITexture.fullImage(GregTech.ID, "gui/picture/wind");
 
     public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture
         .fullImage(GregTech.ID, "gui/icons/maintenance_none");
@@ -1003,29 +1011,32 @@ public final class GTGuiTextures {
         .toList()
         .toArray(new UITexture[0]);
 
+    // These textures are stored in the items area since they're doing double duty as a ghost outline icon for the
+    // toolbox's broken tool animation. The texture atlas that handles item rendering expects its textures to be in
+    // the textures/items/ folder and won't entertain other options.
     public static final UITexture OVERLAY_TOOLBOX_WRENCH = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_wrench")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_wrench")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_WIRE_CUTTER = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_wire_cutter")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_wire_cutter")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_SCREWDRIVER = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_screwdriver")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_screwdriver")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_SOFT_MALLET = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_soft_mallet")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_soft_mallet")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_HARD_HAMMER = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_hard_hammer")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_hard_hammer")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_CROWBAR = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_crowbar")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_crowbar")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_SOLDERING_IRON = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_soldering_iron")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_soldering_iron")
         .build();
     public static final UITexture OVERLAY_TOOLBOX_BATTERY = UITexture.builder()
-        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_battery")
+        .location(GregTech.ID, "items/toolbox/toolbox_slot_battery")
         .build();
 
     public static final UITexture OVERLAY_SLOT_TURBINE = UITexture.builder()
@@ -1062,6 +1073,11 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
     public static final UITexture PROGRESSBAR_ARROW_BBF = fullImageColorableGT("progressbar/arrow_bbf");
+    public static final UITexture PROGRESSBAR_WINDMILL_GRINDSTONE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/windmill_grindstone")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_WINDMILL_GRINDSTONE)
+        .build();
     public static final UITexture PROGRESSBAR_BOILER_HEAT = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/boiler_heat")
         .fullImage()
@@ -1511,6 +1527,7 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/overlay_button/plus_small");
     public static final UITexture OVERLAY_BUTTON_PLUS_LARGE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/plus_large");
+    public static final UITexture OVERLAY_BUTTON_RESIZE_PANEL = fullImageGT("overlay_button/resize_panel");
 
     public static final UITexture OVERLAY_BUTTON_WIRELESS_ON = fullImage(
         Mods.ModIDs.KEKZ_TECH,
@@ -1796,6 +1813,16 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+    public static final UITexture TT_PICTURE_UNCERTAINTY_ASSIST_OFF = UITexture.builder()
+        .location(MODID, "gui/overlay_button/uncertainty_assist_off")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture TT_PICTURE_UNCERTAINTY_ASSIST_ON = UITexture.builder()
+        .location(MODID, "gui/overlay_button/uncertainty_assist_on")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     // endregion button overlay
 
     // region picture
@@ -1847,6 +1874,11 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/picture/nanochip_logo")
         .fullImage()
         .name(GTTextureIds.PICTURE_LOGO_NANOCHIP)
+        .build();
+
+    public static final UITexture PICTURE_NANOCHIP_ARROW = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/nanochip_arrow")
+        .fullImage()
         .build();
 
     public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()

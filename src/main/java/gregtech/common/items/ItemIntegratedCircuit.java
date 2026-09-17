@@ -85,7 +85,8 @@ public class ItemIntegratedCircuit extends GTGenericItem
             ItemList.Circuit_Integrated.getWithDamage(1L, 0L),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { OrePrefixes.circuit.get(Materials.LV) });
-        long bits = GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE;
+        long bits = GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+            | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
         GTModHandler.addCraftingRecipe(
             ItemList.Circuit_Integrated.getWithDamage(1L, 1L),
             bits,

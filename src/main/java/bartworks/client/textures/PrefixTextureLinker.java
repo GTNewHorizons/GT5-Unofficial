@@ -23,6 +23,7 @@ import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.MaterialIconRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
@@ -49,6 +50,7 @@ public class PrefixTextureLinker implements Runnable {
                             curr.put(
                                 (TextureSet) SET.get(null),
                                 Textures.BlockIcons.textureSet(
+                                    Mods.GregTech.resourceDomain,
                                     SET.getName()
                                         .substring(4),
                                     "/" + prefixes.getName()));
@@ -76,6 +78,7 @@ public class PrefixTextureLinker implements Runnable {
                             curr.put(
                                 (TextureSet) SET.get(null),
                                 Textures.ItemIcons.textureSet(
+                                    Mods.GregTech.resourceDomain,
                                     SET.getName()
                                         .substring(4),
                                     "/" + prefixes.getName()));

@@ -21,6 +21,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +56,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsOutput;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructable {
 
     // region variables
@@ -111,42 +113,24 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type")) // Machine Type: Data
-                                                                                              // Bank, DB
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
-                                                                                           // the Data Bank
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")) // Used to supply
-                                                                                           // Assembling Lines
-            // with more Data Sticks
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
-                                                                                           // Assembling Lines
-                                                                                           // access to
-                                                                                           // the same Data
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to
-                                                                                           // toggle
-                                                                                           // wireless mode
+        // spotless:off
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type"))
+            .addMarkdown(new ResourceLocation("gregtech", "data-bank"))
             .addSupportAny()
             .beginStructureBlock(5, 3, 3, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("18", "Computer Heat Vent", false)
-            .addCasing("3-16", "Computer Casing", false)
-            .addCasing("0-6", "High Power Casing", false)
-            .addEnergyHatch("1+", "Any high power casing", 1)
-            .addMaintenanceHatch("1", "Any high power casing", 1)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), "Any computer casing", 2)
-            .addMiscHatch(
-                "1+",
-                translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
-                "Any computer casing",
-                2)
-            .addMiscHatch(
-                "0+",
-                translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"),
-                "Any computer casing",
-                2)
+            .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("18", translateToLocal("gt.blockcasingsTT.2.name"), false)
+            .addCasing("3-16", translateToLocal("gt.blockcasingsTT.1.name"), false)
+            .addCasing("0-6", translateToLocal("gt.blockcasingsTT.0.name"), false)
+            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
+            .addMiscHatch("1+", translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
+            .addMiscHatch("0+", translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
             .addStructureInfo("")
-            .addStructureFooter("Use an assembly line reception connector to daisy-chain machines")
+            .addStructureFooter(translateToLocal("tt.keyword.Structure.DaisyChainAssemblyLine"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

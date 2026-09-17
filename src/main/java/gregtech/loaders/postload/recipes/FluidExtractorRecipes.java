@@ -532,6 +532,14 @@ public class FluidExtractorRecipes implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidExtractionRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.chainmail_boots, 1))
+            .fluidOutputs(Materials.Steel.getMolten(1 * INGOTS))
+            .duration(1 * SECONDS + 4 * TICKS)
+            .eut(60)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
+
         if (Forestry.isModLoaded()) {
             // Beecombs fluid extractor recipes
             // xenon

@@ -3,6 +3,8 @@ package gregtech.api.util;
 import static gregtech.GTLoggers.GT_EXPLOSION_LOGGER;
 import static gregtech.GTLoggers.GT_ICON_LOGGER;
 import static gregtech.GTLoggers.GT_ORE_DICT_LOGGER;
+import static gregtech.GTLoggers.GT_RECIPE_REMOVAL_LOGGER;
+import static gregtech.GTLoggers.GT_RECIPE_REMOVAL_LOGGER_ENABLED;
 
 import java.io.File;
 
@@ -70,6 +72,15 @@ public class GTLog {
         GT_ICON_LOGGER.info("* First column R|O tells if resource is (Required or Optional)  *");
         GT_ICON_LOGGER.info("* Second column is the resource path                            *");
         GT_ICON_LOGGER.info("*****************************************************************");
+    }
+
+    public static void configureRecipeRemovalLogger(File parentFile) {
+        configureRollingLogger(
+            GT_RECIPE_REMOVAL_LOGGER,
+            GT_RECIPE_REMOVAL_LOGGER_ENABLED,
+            new File(parentFile, "logs/UselessRecipeRemovals.log"),
+            new File(parentFile, "logs/UselessRecipeRemovals-%i.log"),
+            "GregTechUselessRecipeRemovalsFile");
     }
 
     private static void configureLogger(Logger apiLogger, boolean enabled) {

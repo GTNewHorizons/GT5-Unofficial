@@ -66,7 +66,7 @@ public interface IEnergyConnected extends IColoredTileEntity {
             }
 
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                if (usedAmperes > amperage) break;
+                if (usedAmperes >= amperage) break;
                 if (!emitter.outputsEnergyTo(side)) {
                     continue;
                 }

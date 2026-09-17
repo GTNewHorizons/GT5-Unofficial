@@ -235,7 +235,7 @@ public class RecipesGregTech {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2))
-            .circuit(20)
+            .circuit(1)
             .fluidInputs(FluidRegistry.getFluidStack("mobessence", 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.GeneticMutagen, 8_000))
             .duration(30 * SECONDS)
@@ -2090,7 +2090,10 @@ public class RecipesGregTech {
             nbt.setInteger("mCapacity", capacity);
             nbt.setBoolean("capacityInit", true);
             pumpWithNBT.setTagCompound(nbt);
-            GTModHandler.addShapelessCraftingRecipe(pumpWithNBT, new Object[] { handPump, tank });
+            GTModHandler.addShapelessCraftingRecipe(
+                pumpWithNBT,
+                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { handPump, tank });
         }
     }
 }

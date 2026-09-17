@@ -61,7 +61,6 @@ import gregtech.api.util.GTUtility;
 public class DustLoader implements IWerkstoffRunnable {
 
     @Override
-    @SuppressWarnings("unchecked")
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(dust)) {
             List<FluidStack> fluidComponents = new ArrayList<>();
@@ -83,8 +82,7 @@ public class DustLoader implements IWerkstoffRunnable {
                     .isEmpty()) {
 
                     for (Pair<ISubTagContainer, Integer> container : werkstoff.getContents()
-                        .getValue()
-                        .toArray(new Pair[0])) {
+                        .getValue()) {
                         final ISubTagContainer key = container.getKey();
                         final int value = container.getValue();
                         if (key instanceof Materials materialKey) {
@@ -313,20 +311,20 @@ public class DustLoader implements IWerkstoffRunnable {
                 .getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(dust),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "TTT", "TTT", "TTT", 'T', werkstoff.get(dustTiny) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(dust),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "TT ", "TT ", 'T',
                         WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff) });
                 GTModHandler.addCraftingRecipe(
                     WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff, 4),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { " T ", 'T', werkstoff.get(dust) });
                 GTModHandler.addCraftingRecipe(
                     WerkstoffLoader.getCorrespondingItemStack(dustTiny, werkstoff, 9),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "T  ", 'T', werkstoff.get(dust) });
             }
 

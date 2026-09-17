@@ -168,6 +168,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GT_FML_LOGGER.debug("GTMod: Register Items.");
 
         new ItemIntegratedCircuit();
+
         new MetaGeneratedItem01();
         new MetaGeneratedItem02();
         new MetaGeneratedItem03();

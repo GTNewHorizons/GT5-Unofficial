@@ -7,7 +7,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks3;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks4;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks5;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks6;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocksPipeGearbox;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaSpecialMachineCasings;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaSpecialMultiCasings;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaSpecialMultiCasings2;
@@ -29,6 +28,5 @@ public class GTPPBlocks {
         ModBlocks.blockSpecialMultiCasings = new GregtechMetaSpecialMultiCasings();
         ModBlocks.blockSpecialMultiCasings2 = new GregtechMetaSpecialMultiCasings2();
         ModBlocks.blockCustomMachineCasings = new GregtechMetaSpecialMachineCasings();
-        ModBlocks.blockCustomPipeGearCasings = new GregtechMetaCasingBlocksPipeGearbox();
     }
 }

@@ -8,12 +8,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTI
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -66,6 +64,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -602,14 +601,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     @Override
     public List<ItemStack> getNonConsumedInputDisplayItems() {
-        if (mRecipeMap == null) return Collections.emptyList();
-        Set<GTUtility.ItemId> nonConsumedIds = mRecipeMap.getNonConsumedInputItemIds();
-        if (nonConsumedIds.isEmpty()) return Collections.emptyList();
-
         List<ItemStack> result = new ArrayList<>();
         for (Slot slot : slots) {
-            if (slot == null || slot.config == null || GTUtility.isAnyIntegratedCircuit(slot.config)) continue;
-            if (nonConsumedIds.contains(GTUtility.ItemId.create(slot.config))) {
+            if (slot == null) continue;
+            if (INonConsumedItemDisplay.isDisplayableItem(mRecipeMap, slot.config)) {
                 result.add(slot.config);
             }
         }

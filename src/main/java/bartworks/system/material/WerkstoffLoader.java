@@ -15,7 +15,6 @@ package bartworks.system.material;
 
 import static bartworks.util.BWUtil.subscriptNumbers;
 import static bartworks.util.BWUtil.superscriptNumbers;
-import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.cell;
@@ -107,7 +106,6 @@ import bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsL
 import bartworks.system.material.werkstoff_loaders.registration.CasingRegistrator;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
-import bwcrossmod.cls.CLSCompat;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -1720,9 +1718,8 @@ public class WerkstoffLoader {
             long timepre = System.nanoTime();
             ProgressManager.ProgressBar progressBar = ProgressManager
                 .push("Register BW Materials", Werkstoff.werkstoffHashSet.size() + 1);
-            MainMod.BW_DEBUG_LOGGER.info("Loading Recipes{}", System.nanoTime() - timepre);
-            if (BetterLoadingScreen.isModLoaded()) {
-                CLSCompat.initCls();
+            if (MainMod.DEBUG) {
+                MainMod.BW_DEBUG_LOGGER.info("Loading Recipes{}", System.nanoTime() - timepre);
             }
 
             IWerkstoffRunnable[] werkstoffRunnables = { new ToolLoader(), new DustLoader(), new GemLoader(),
@@ -1731,39 +1728,42 @@ public class WerkstoffLoader {
                 new MultipleMetalLoader(), new MetalLoader(), new BlockLoader() };
 
             long timepreone = 0;
-            int pos = 0;
             for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-                timepreone = System.nanoTime();
-                MainMod.BW_DEBUG_LOGGER.info(
-                    "Werkstoff is null or id < 0 ? {} {}",
-                    werkstoff == null || werkstoff.getmID() < 0,
-                    System.nanoTime() - timepreone);
+                if (MainMod.DEBUG) {
+                    timepreone = System.nanoTime();
+                    MainMod.BW_DEBUG_LOGGER.info(
+                        "Werkstoff is null or id < 0 ? {} {}",
+                        werkstoff == null || werkstoff.getmID() < 0,
+                        System.nanoTime() - timepreone);
+                }
                 if (werkstoff == null || werkstoff.getmID() < 0) {
                     progressBar.step("");
                     continue;
                 }
-                if (BetterLoadingScreen.isModLoaded()) {
-                    CLSCompat.updateDisplay(werkstoff, pos);
+                progressBar.step(werkstoff.getLocalizedName());
+                if (MainMod.DEBUG) {
+                    MainMod.BW_DEBUG_LOGGER
+                        .info("Werkstoff: {} {}", werkstoff.getDefaultName(), System.nanoTime() - timepreone);
                 }
-                MainMod.BW_DEBUG_LOGGER
-                    .info("Werkstoff: {} {}", werkstoff.getDefaultName(), System.nanoTime() - timepreone);
                 for (IWerkstoffRunnable runnable : werkstoffRunnables) {
-                    String loaderName = runnable.getClass()
-                        .getSimpleName();
-                    MainMod.BW_DEBUG_LOGGER.info("{} started {}", loaderName, System.nanoTime() - timepreone);
+                    String loaderName = MainMod.DEBUG ? runnable.getClass()
+                        .getSimpleName() : null;
+                    if (MainMod.DEBUG) {
+                        MainMod.BW_DEBUG_LOGGER.info("{} started {}", loaderName, System.nanoTime() - timepreone);
+                    }
                     runnable.run(werkstoff);
-                    MainMod.BW_DEBUG_LOGGER.info("{} done {}", loaderName, System.nanoTime() - timepreone);
+                    if (MainMod.DEBUG) {
+                        MainMod.BW_DEBUG_LOGGER.info("{} done {}", loaderName, System.nanoTime() - timepreone);
+                    }
                 }
-                MainMod.BW_DEBUG_LOGGER.info("Done {}", System.nanoTime() - timepreone);
-                progressBar.step(werkstoff.getDefaultName());
-                pos++;
+                if (MainMod.DEBUG) {
+                    MainMod.BW_DEBUG_LOGGER.info("Done {}", System.nanoTime() - timepreone);
+                }
             }
-            MainMod.BW_DEBUG_LOGGER.info("Loading New Circuits {}", System.nanoTime() - timepreone);
+            if (MainMod.DEBUG) {
+                MainMod.BW_DEBUG_LOGGER.info("Loading New Circuits {}", System.nanoTime() - timepreone);
+            }
             CircuitPartsItem.init();
-
-            if (BetterLoadingScreen.isModLoaded()) {
-                CLSCompat.disableCls();
-            }
 
             progressBar.step("Load Additional Recipes");
             AdditionalRecipes.run();
@@ -1778,7 +1778,6 @@ public class WerkstoffLoader {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static void addSubTags() {
         WerkstoffLoader.CubicZirconia.getStats()
             .setDurOverride(Materials.Diamond.mDurability);
@@ -1824,8 +1823,7 @@ public class WerkstoffLoader {
 
         for (Werkstoff W : Werkstoff.werkstoffHashSet) {
             for (Pair<ISubTagContainer, Integer> pair : W.getContents()
-                .getValue()
-                .toArray(new Pair[0])) {
+                .getValue()) {
 
                 if (pair.getKey() instanceof Materials && pair.getKey() == Materials.Neodymium) {
                     W.add(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM);

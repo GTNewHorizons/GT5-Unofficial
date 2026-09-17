@@ -27,6 +27,7 @@ import java.util.function.UnaryOperator;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -57,6 +58,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTERockBreaker extends MTEBasicMachine {
 
     private static final Int2ObjectMap<Set<RockBreakerRecipe>> ROCK_BREAKER_RECIPES = new Int2ObjectOpenHashMap<>();
@@ -123,6 +125,14 @@ public class MTERockBreaker extends MTEBasicMachine {
 
     public MTERockBreaker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        // The lower tiers carry names of their own, only the solidifiers follow the model number pattern.
+        if (StatCollector.canTranslate(getLocalNameKey())) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.rockbreaker.name", 1000 * mTier + 3200);
     }
 
     @Override

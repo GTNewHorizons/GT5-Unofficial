@@ -1,6 +1,7 @@
 package gregtech.api.recipe;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.Chisel;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
@@ -77,13 +78,13 @@ import gregtech.api.recipe.maps.FormingPressBackend;
 import gregtech.api.recipe.maps.FoundryModuleFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.FurnaceBackend;
+import gregtech.api.recipe.maps.IceCreamMachineFrontend;
 import gregtech.api.recipe.maps.IsotopeDecayFrontend;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.MillingFrontend;
-import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
@@ -251,6 +252,22 @@ public final class RecipeMaps {
         .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Extractor.get(1)))
+        .build();
+    public static final RecipeMap<RecipeMapBackend> iceCreamMachineRecipes = RecipeMapBuilder
+        .of("gt.recipe.icecreammachine")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .slotOverlaysMUI2(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid
+                ? (isOutput ? GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD : GTGuiTextures.OVERLAY_SLOT_IN_STANDARD)
+                : null)
+        .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.Ice_Cream_Machine.get(1))
+                .setHeight(90)
+                .setShowFavoritesButton(false)
+                .setShowOverlayButton(false))
+        .frontend(IceCreamMachineFrontend::new)
         .build();
     public static final RecipeMap<RecyclerBackend> recyclerRecipes = RecipeMapBuilder
         .of("ic.recipe.recycler", RecyclerBackend::new)
@@ -1779,8 +1796,8 @@ public final class RecipeMaps {
         .neiItemInputsGetter(recipe -> {
             BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
             if (metadata == null) return GTValues.emptyItemStackArray;
-            ItemStack particleStack_A = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID_A);
-            ItemStack particleStack_B = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID_B);
+            ItemStack particleStack_A = new ItemStack(LanthItemList.PARTICLE_ITEM, 0, metadata.particleID_A);
+            ItemStack particleStack_B = new ItemStack(LanthItemList.PARTICLE_ITEM, 0, metadata.particleID_B);
 
             List<ItemStack> ret = new ArrayList<>();
             ret.addAll(Arrays.asList(recipe.mInputs));
@@ -1832,8 +1849,8 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .build();
 
-    public static final RecipeMap<NACRecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
-        .of("gt.recipe.nanochip.assemblymatrix", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.assemblymatrix", RecipeMapBackend::new)
         .maxIO(16, 1, 4, 0)
         .minInputs(0, 0)
         .recipeEmitter(builder -> {
@@ -1907,48 +1924,48 @@ public final class RecipeMaps {
         .frontend(AssemblyLineFrontend::new)
         .build();
 
-    public static final RecipeMap<NACRecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
-        .of("gt.recipe.nanochip.smdprocessor", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.smdprocessor", RecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
-        .of("gt.recipe.nanochip.boardprocessor", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.boardprocessor", RecipeMapBackend::new)
         .maxIO(1, 1, 1, 1)
         .minInputs(1, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
-        .of("gt.recipe.nanochip.etchingarray", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
+        .of("gt.recipe.nanochip.etchingarray", RecipeMapBackend::new)
         .maxIO(2, 1, 2, 0)
         .minInputs(0, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
-        .of("gt.recipe.nanochip.cuttingchamber", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
+        .of("gt.recipe.nanochip.cuttingchamber", RecipeMapBackend::new)
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 1)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
-        .of("gt.recipe.nanochip.wiretracer", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
+        .of("gt.recipe.nanochip.wiretracer", RecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
-        .of("gt.recipe.nanochip.superconductorsplitter", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
+        .of("gt.recipe.nanochip.superconductorsplitter", RecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
-        .of("gt.recipe.nanochip.opticalorganizer", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
+        .of("gt.recipe.nanochip.opticalorganizer", RecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipEncasementWrapper = RecipeMapBuilder
-        .of("gt.recipe.nanochip.encasementwrapper", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipEncasementWrapper = RecipeMapBuilder
+        .of("gt.recipe.nanochip.encasementwrapper", RecipeMapBackend::new)
         .maxIO(4, 1, 0, 0)
         .minInputs(1, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
-        .of("gt.recipe.nanochip.biologicalcoordinator", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
+        .of("gt.recipe.nanochip.biologicalcoordinator", RecipeMapBackend::new)
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 0)
         .build();
@@ -1969,8 +1986,10 @@ public final class RecipeMaps {
         .maxIO(0, 0, 1, 0)
         .neiSpecialInfoFormatter(
             recipeInfo -> Collections.singletonList(
-                StatCollector
-                    .translateToLocalFormatted("GT5U.nei.fuel", formatNumber(recipeInfo.recipe.mSpecialValue * 3000L))))
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.nei.fuel",
+                    formatNumber(recipeInfo.recipe.mSpecialValue * 3L),
+                    getFluidUnit())))
         .build();
     public static final RecipeMap<RecipeMapBackend> quantumForceTransformerRecipes = RecipeMapBuilder
         .of("gt.recipe.quantumforcesmelter")

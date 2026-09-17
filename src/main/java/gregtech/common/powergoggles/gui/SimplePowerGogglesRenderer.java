@@ -734,16 +734,10 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
     private PowerGogglesMeasurement[] getLastMeasurements(int count) {
         int stored = Math.min(count, Math.min(measurements.size(), lastMeasurementsCache.length));
-        int skip = measurements.size() - stored;
         int index = stored;
         Iterator<PowerGogglesMeasurement> iterator = measurements.descendingIterator();
         while (index > 0) {
-            PowerGogglesMeasurement measurement = iterator.next();
-            if (skip > 0) {
-                skip--;
-                continue;
-            }
-            lastMeasurementsCache[--index] = measurement;
+            lastMeasurementsCache[--index] = iterator.next();
         }
         lastMeasurementsCount = stored;
         return lastMeasurementsCache;

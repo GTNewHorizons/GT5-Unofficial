@@ -34,8 +34,10 @@ public class WirelessComputationPacket {
     private long download(long dataIn, long aTick) {
         if (!wirelessEnabled) return 0L;
 
-        // If the net hasn't been updated yet this tick, make sure to do so
-        if (lastUpdateTick < aTick) {
+        // If the net hasn't been updated yet this tick, make sure to do so.
+        // Use != instead of < so that a server/world restart (which resets the tick counter to 0
+        // while lastUpdateTick keeps its old larger value) re-arms the rotation instead of deadlocking it forever.
+        if (lastUpdateTick != aTick) {
             this.update();
             lastUpdateTick = aTick;
         }
@@ -67,8 +69,10 @@ public class WirelessComputationPacket {
     }
 
     private void upload(long dataOut, long aTick) {
-        // If the net hasn't been updated yet this tick, make sure to do so
-        if (lastUpdateTick < aTick) {
+        // If the net hasn't been updated yet this tick, make sure to do so.
+        // Use != instead of < so that a server/world restart (which resets the tick counter to 0
+        // while lastUpdateTick keeps its old larger value) re-arms the rotation instead of deadlocking it forever.
+        if (lastUpdateTick != aTick) {
             this.update();
             lastUpdateTick = aTick;
         }

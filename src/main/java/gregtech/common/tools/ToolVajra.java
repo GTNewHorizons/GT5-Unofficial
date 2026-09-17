@@ -11,32 +11,42 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.GuiFactories;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
 import gregtech.api.items.ItemTool;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.gui.modularui.item.VajraGui;
+import gregtech.crossmod.backhand.Backhand;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import mods.railcraft.common.blocks.machine.TileMultiBlock;
 import thaumcraft.common.tiles.TileOwned;
+import xonin.backhand.api.core.BackhandUtils;
 
-public class ToolVajra extends ItemTool implements IElectricItem {
+public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<PlayerInventoryGuiData> {
+
+    private static final String CREATIVE_BREAK_COOLDOWN_KEY = "creativeBreakCooldown";
+    private static final String LEGACY_CREATIVE_BREAK_COOLDOWN_KEY = "VajraCreativeBreakCooldown";
+    private static final String RIGHT_CLICK_DISABLED_KEY = "rightClickDisabled";
 
     public int maxCharge = (int) 1e8;
     public int baseCost = 3333;
@@ -66,6 +76,10 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int par4, int par5, int par6,
         EntityLivingBase entityLiving) {
         ElectricItem.manager.use(stack, baseCost, entityLiving);
+        int breakCooldown = getCreativeBreakCooldown(stack);
+        if (world.isRemote && breakCooldown > 0) {
+            Minecraft.getMinecraft().playerController.blockHitDelay = breakCooldown;
+        }
         return true;
     }
 
@@ -112,7 +126,59 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         list.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("gt.vajra.tooltip.flavor"));
         list.add(
             EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.vajra.tooltip.charge", VN[tier]));
-        list.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.vajra.tooltip.silk_touch"));
+        list.add(
+            EnumChatFormatting.YELLOW + StatCollector
+                .translateToLocalFormatted("gt.vajra.tooltip.silk_touch", getStateName(isSilkTouchEnabled(stack))));
+        list.add(
+            EnumChatFormatting.YELLOW + StatCollector.translateToLocalFormatted(
+                "gt.vajra.tooltip.creative_break_cooldown",
+                getCreativeBreakCooldown(stack)));
+        list.add(
+            EnumChatFormatting.YELLOW + StatCollector.translateToLocalFormatted(
+                "gt.vajra.tooltip.right_click_breaking",
+                getStateName(isRightClickEnabled(stack))));
+        list.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.vajra.tooltip.configure"));
+    }
+
+    private static String getStateName(boolean enabled) {
+        return StatCollector
+            .translateToLocal(enabled ? "GT5U.gui.button.feature_enabled" : "GT5U.gui.button.feature_disabled");
+    }
+
+    public static boolean isSilkTouchEnabled(ItemStack stack) {
+        return ItemStackNBT.hasKey(stack, "ench");
+    }
+
+    public static void setSilkTouchEnabled(ItemStack stack, boolean enabled) {
+        if (enabled) {
+            if (!isSilkTouchEnabled(stack)) stack.addEnchantment(Enchantment.silkTouch, 1);
+        } else {
+            ItemStackNBT.removeTag(stack, "ench");
+        }
+    }
+
+    public static int getCreativeBreakCooldown(ItemStack stack) {
+        if (ItemStackNBT.hasKey(stack, CREATIVE_BREAK_COOLDOWN_KEY)) {
+            return Math.max(0, Math.min(20, ItemStackNBT.getInteger(stack, CREATIVE_BREAK_COOLDOWN_KEY)));
+        }
+        return ItemStackNBT.getBoolean(stack, LEGACY_CREATIVE_BREAK_COOLDOWN_KEY) ? 5 : 0;
+    }
+
+    public static void setCreativeBreakCooldown(ItemStack stack, int cooldown) {
+        ItemStackNBT.setInteger(stack, CREATIVE_BREAK_COOLDOWN_KEY, Math.max(0, Math.min(20, cooldown)));
+        ItemStackNBT.removeTag(stack, LEGACY_CREATIVE_BREAK_COOLDOWN_KEY);
+    }
+
+    public static boolean isRightClickEnabled(ItemStack stack) {
+        return !ItemStackNBT.getBoolean(stack, RIGHT_CLICK_DISABLED_KEY);
+    }
+
+    public static void setRightClickEnabled(ItemStack stack, boolean enabled) {
+        if (enabled) {
+            ItemStackNBT.removeTag(stack, RIGHT_CLICK_DISABLED_KEY);
+        } else {
+            ItemStackNBT.setBoolean(stack, RIGHT_CLICK_DISABLED_KEY, true);
+        }
     }
 
     @Override
@@ -147,15 +213,17 @@ public class ToolVajra extends ItemTool implements IElectricItem {
 
     @Override
     public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
-        // When sneaking, skip block activation so onItemUse is called directly by the pipeline.
-        // This prevents the wrong C08 packet format (air-click) that would occur if we mined
-        // the block inside onItemUseFirst (which sends face=255 to the server when returning true).
+        // GTGenericItem overrode this to true, we return false here so that sneak right click never trigger any block
+        // activations, as shift right click should always break the target block, and not any sneaky right click
+        // interactions.
         return false;
     }
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
+        if (!isRightClickEnabled(stack)) return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+
         Block target = world.getBlock(x, y, z);
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         int metaData = world.getBlockMetadata(x, y, z);
@@ -163,8 +231,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         if (target.blockHardness < 0) return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (!ElectricItem.manager.canUse(stack, baseCost))
             return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-        if (!isHarvestableTileEntity(tileEntity, target, player) && !player.isSneaking()
-            || !isHarvestableOwned(tileEntity, player))
+        if (blockThaumcraftHarvest(tileEntity, player))
             return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 
         if (world.isRemote) {
@@ -175,60 +242,62 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             if (target.removedByPlayer(world, player, x, y, z, true)) {
                 target.onBlockDestroyedByPlayer(world, x, y, z, metaData);
                 target.harvestBlock(world, player, x, y, z, metaData);
-                world.notifyBlocksOfNeighborChange(x, y, z, target);
             }
         }
-        stack.getTagCompound()
-            .setBoolean("harvested", true); // prevent onItemRightClick from going through
+        // FMP & Backhand interaction: don't place if removal doesn't actually succeed
+        if (Mods.Backhand.isModLoaded() && world.isAirBlock(x, y, z)) {
+            BackhandUtils.useOffhandItem(player, () -> {
+                ItemStack offhand = player.getHeldItem();
+                if (offhand != null && offhand.getItem() instanceof ItemBlock itemBlock) {
+                    int damage = offhand.getItemDamage();
+                    int stackSize = offhand.stackSize;
+                    itemBlock.onItemUse(offhand, player, world, x, y, z, side, hitX, hitY, hitZ);
+                    if (player.capabilities.isCreativeMode) {
+                        offhand.setItemDamage(damage);
+                        offhand.stackSize = stackSize;
+                    } else {
+                        if (offhand.stackSize <= 0) {
+                            MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, offhand));
+                            player.inventory.mainInventory[player.inventory.currentItem] = null;
+                        }
+                    }
+                }
+            });
+        }
         ElectricItem.manager.use(stack, baseCost, player);
-        // Return true so Forge sends C08 with real block coordinates (not the air-click face=255
-        // format that would be used if we returned true from onItemUseFirst). This ensures the
-        // server processes the packet via activateBlockOrUseItem → onItemUse, not onItemRightClick.
         return true;
     }
 
-    private boolean isHarvestableOwned(TileEntity tileEntity, EntityPlayer player) {
-        if (!Mods.Thaumcraft.isModLoaded() || !(tileEntity instanceof TileOwned owned)) return true;
-        return owned.owner.equals(player.getDisplayName());
-    }
-
-    private boolean isHarvestableTileEntity(TileEntity tileEntity, Block target, EntityPlayer player) {
-        if (Mods.Railcraft.isModLoaded() && isUnformedRCMulti(tileEntity)) return true;
-        if (tileEntity instanceof IInventory inv && inv.getSizeInventory() > 0) return false;
-        if (isHarvestableGTSpecial(target, tileEntity) && !player.isSneaking()) return true;
-        if (tileEntity instanceof BaseTileEntity bte && bte.useModularUI()) return false;
-        return true;
-    }
-
-    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
-    private boolean isUnformedRCMulti(TileEntity tileEntity) {
-        return tileEntity instanceof TileMultiBlock tmb && !tmb.isStructureValid();
-    }
-
-    private boolean isHarvestableGTSpecial(Block target, TileEntity tileEntity) {
-        if (target instanceof BlockFrameBox) return tileEntity == null;
-
-        // Cables extend BaseMetaPipeEntity (???)
-        if (tileEntity instanceof BaseMetaPipeEntity) return true;
-        return false;
+    private boolean blockThaumcraftHarvest(TileEntity tileEntity, EntityPlayer player) {
+        if (!Mods.Thaumcraft.isModLoaded()) return false;
+        if (!(tileEntity instanceof TileOwned owned)) return false;
+        return !owned.owner.equals(player.getDisplayName());
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player) {
-        if (ItemStackNBT.getBoolean(stack, "harvested")) {
-            ItemStackNBT.removeTag(stack, "harvested");
-            return super.onItemRightClick(stack, worldIn, player);
-        }
-        if (!worldIn.isRemote && player.isSneaking()) {
-            if (ItemStackNBT.hasKey(stack, "ench")) {
-                ItemStackNBT.removeTag(stack, "ench");
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Disabled silk touch"));
-            } else {
-                // Adds the "ench" tag to the tool
-                stack.addEnchantment(Enchantment.silkTouch, 1);
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Enabled silk touch"));
-            }
-        }
+        if (!worldIn.isRemote && player.isSneaking()) openConfigurationGui(stack, player);
         return super.onItemRightClick(stack, worldIn, player);
+    }
+
+    private static void openConfigurationGui(ItemStack stack, EntityPlayer player) {
+        if (stack == Backhand.getOffhandItem(player)) {
+            GuiFactories.playerInventory()
+                .openFromPlayerInventory(player, Backhand.getOffhandSlot(player));
+        } else {
+            GuiFactories.playerInventory()
+                .openFromMainHand(player);
+        }
+    }
+
+    @Override
+    public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
+        return new VajraGui(data, syncManager).build();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PlayerInventoryGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(Mods.GregTech.ID, mainPanel);
     }
 }

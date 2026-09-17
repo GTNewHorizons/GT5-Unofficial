@@ -195,9 +195,21 @@ public class MTEIndustrialElectromagneticSeparator
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Electromagnetic Separator/Polarizer, MFE")
             .addInfo("Use screwdriver to switch mode")
-            .addInfo("Insert an electromagnet into the electromagnet housing to use")
-            .addInfo("Better electromagnets give further bonuses")
-            .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
+            .addInfo(
+                "Insert an " + EnumChatFormatting.AQUA
+                    + "Electromagnet"
+                    + EnumChatFormatting.GRAY
+                    + " into the electromagnet housing to use")
+            .addInfo(
+                "Better " + EnumChatFormatting.AQUA
+                    + "Electromagnets"
+                    + EnumChatFormatting.GRAY
+                    + " give increased bonuses")
+            .addInfo(
+                "With a " + EnumChatFormatting.DARK_GREEN
+                    + "Tengam Electromagnet"
+                    + EnumChatFormatting.GRAY
+                    + ", one multi-amp hatch is allowed")
             .beginStructureBlock(7, 6, 7, true)
             .addController("Front bottom center")
             .addCasing(MIN_CASING + "-73", "MagTech Casing", false)

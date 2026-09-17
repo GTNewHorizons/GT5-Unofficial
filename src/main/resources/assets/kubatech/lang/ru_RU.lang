@@ -236,3 +236,21 @@ kubatech.multiblock.MegaIndustrialApiary.wood_slab=Деревянная плит
 kubatech.multiblock.MegaIndustrialApiary.flower=Цветок (зависит от пчелы)
 kubatech.multiblock.MegaIndustrialApiary.any_casing_luv=Любой блок корпуса (LuV+)
 kubatech.multiblock.MegaIndustrialApiary.footer=Используйте обычную или дистиллированную воду, размещается вручную
+
+# Multiblocks
+gt.blockmachines.htgr.name=Высокотемпературный газоохлаждаемый реактор
+gt.blockmachines.industrialarcfurnace.controller.tier.single.name=Промышленная дуговая печь
+gt.blockmachines.multimachine.defusioncrafter.name=Draconic Evolution термоядерный крафтер
+gt.blockmachines.multimachine.extremegreenhouse.name=Экстремальная промышленная теплица
+
+# HTGR fuel items
+item.HTGR.fuel.Plutonium=Плутоний
+item.HTGR.fuel.Thorium=Торий
+item.HTGR.fuel.Uranium=Уран
+item.HTGRBISOPebbleCompound.name=Топливная смесь пеллеты BISO (%s)
+item.HTGRBurnedOutTRISOBall.name=Отработанный шарик пеллеты TRISO (%s)
+item.HTGRBurnedOutTRISOPebble.name=Отработанная пеллета TRISO (%s)
+item.HTGRHTGRFuelMixture.name=HTGR топливная смесь (%s)
+item.HTGRTRISOBall.name=Шарик TRISO (%s)
+item.HTGRTRISOPebble.name=Пеллета TRISO (%s)
+item.HTGRTRISOPebbleCompound.name=Топливная смесь пеллеты TRISO (%s)
