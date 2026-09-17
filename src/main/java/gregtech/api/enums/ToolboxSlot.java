@@ -13,7 +13,6 @@ import net.minecraft.util.IIcon;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 
 import gregtech.GTMod;
@@ -25,13 +24,6 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.GTHashSet;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemGTToolbox;
-import gregtech.common.tools.pocket.ToolPocketBranchCutter;
-import gregtech.common.tools.pocket.ToolPocketFile;
-import gregtech.common.tools.pocket.ToolPocketKnife;
-import gregtech.common.tools.pocket.ToolPocketMultitool;
-import gregtech.common.tools.pocket.ToolPocketSaw;
-import gregtech.common.tools.pocket.ToolPocketScrewdriver;
-import gregtech.common.tools.pocket.ToolPocketWireCutter;
 
 /**
  * Defines the various slots in the toolbox. Used both to enforce inventory restrictions as well assist with drawing
@@ -73,16 +65,6 @@ public enum ToolboxSlot {
 
     private static final ImmutableMap<Integer, ToolboxSlot> LOOKUP = Maps
         .uniqueIndex(Arrays.asList(VALUES), ToolboxSlot::getSlotID);
-
-    private static final ImmutableSet<Class<? extends IToolStats>> BANNED_TOOLS = ImmutableSet.copyOf(
-        Arrays.asList(
-            ToolPocketBranchCutter.class,
-            ToolPocketFile.class,
-            ToolPocketKnife.class,
-            ToolPocketMultitool.class,
-            ToolPocketSaw.class,
-            ToolPocketScrewdriver.class,
-            ToolPocketWireCutter.class));
 
     private final Predicate<ItemStack> itemStackTest;
     private final int slot;
@@ -175,8 +157,7 @@ public enum ToolboxSlot {
                 return false;
             }
             final IToolStats stats = tool.getToolStats(itemStack);
-            if (stats == null || BANNED_TOOLS.contains(stats.getClass())
-                || GTMod.proxy.toolboxBans.contains(itemStack.getItem())) {
+            if (stats == null || GTMod.proxy.toolboxBans.contains(itemStack.getItem())) {
                 return false;
             }
 

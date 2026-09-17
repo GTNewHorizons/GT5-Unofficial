@@ -10138,16 +10138,6 @@ gt.metatool.01.174.name=Large Turbine
 gt.metatool.01.174.tooltip=Turbine Rotors for your power station
 gt.metatool.01.176.name=Huge Turbine
 gt.metatool.01.176.tooltip=Turbine Rotors for your power station
-gt.metatool.01.180.name=Pocket Multitool
-gt.metatool.01.180.tooltip=6 useful Tools in one!
-gt.metatool.01.182.name=Pocket Multitool (Branch Cutter)
-gt.metatool.01.184.name=Pocket Multitool (File)
-gt.metatool.01.186.name=Pocket Multitool (Knife)
-gt.metatool.01.188.name=Pocket Multitool (Saw)
-gt.metatool.01.188.tooltip=Can also harvest ice
-gt.metatool.01.190.name=Pocket Multitool (Screwdriver)
-gt.metatool.01.190.tooltip=Adjusts covers and machines
-gt.metatool.01.192.name=Pocket Multitool (Wire Cutter)
 gt.metatool.01.194.name=Decorator's Trowel
 gt.metatool.01.wire_cutter.name=Wire Cutter (%s)
 gt.metatool.01.wire_cutter.tooltip=Hand-held electric wire cutter
@@ -10216,4 +10206,3 @@ GT5U.nei.pcb_factory.upgrade_bio=Bio
 GT5U.nei.solar_factory.tier_required=Multi Tier required: %s
 
 # Item tooltips
-GT5U.tooltip.switch_metadata.sneak_right_click=Sneak right-click to switch mode

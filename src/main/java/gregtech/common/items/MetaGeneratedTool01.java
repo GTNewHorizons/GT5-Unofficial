@@ -1,12 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.common.items.IDMetaTool01.POCKET_BRANCHCUTTER;
-import static gregtech.common.items.IDMetaTool01.POCKET_FILE;
-import static gregtech.common.items.IDMetaTool01.POCKET_KNIFE;
-import static gregtech.common.items.IDMetaTool01.POCKET_MULTITOOL;
-import static gregtech.common.items.IDMetaTool01.POCKET_SAW;
-import static gregtech.common.items.IDMetaTool01.POCKET_SCREWDRIVER;
-import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
 import static gregtech.common.items.IDMetaTool01.TURBINE;
 import static gregtech.common.items.IDMetaTool01.TURBINE_HUGE;
 import static gregtech.common.items.IDMetaTool01.TURBINE_LARGE;
@@ -16,7 +9,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -32,13 +24,6 @@ import gregtech.common.tools.ToolTurbineLarge;
 import gregtech.common.tools.ToolTurbineNormal;
 import gregtech.common.tools.ToolTurbineSmall;
 import gregtech.common.tools.ToolVajra;
-import gregtech.common.tools.pocket.ToolPocketBranchCutter;
-import gregtech.common.tools.pocket.ToolPocketFile;
-import gregtech.common.tools.pocket.ToolPocketKnife;
-import gregtech.common.tools.pocket.ToolPocketMultitool;
-import gregtech.common.tools.pocket.ToolPocketSaw;
-import gregtech.common.tools.pocket.ToolPocketScrewdriver;
-import gregtech.common.tools.pocket.ToolPocketWireCutter;
 
 public class MetaGeneratedTool01 extends MetaGeneratedTool {
 
@@ -53,74 +38,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         addTool(TURBINE_LARGE.ID, "Large Turbine", "Turbine Rotors for your power station", new ToolTurbineLarge());
         addTool(TURBINE_HUGE.ID, "Huge Turbine", "Turbine Rotors for your power station", new ToolTurbineHuge());
 
-        addTool(
-            POCKET_MULTITOOL.ID,
-            "Pocket Multitool",
-            "6 useful Tools in one!",
-            new ToolPocketMultitool(POCKET_KNIFE.ID),
-            null,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-            new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
-        addTool(
-            POCKET_KNIFE.ID,
-            "Pocket Multitool (Knife)",
-            "",
-            new ToolPocketKnife(POCKET_SAW.ID),
-            ToolDictNames.craftingToolKnife,
-            ToolDictNames.craftingToolBlade,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-            new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
-        addTool(
-            POCKET_SAW.ID,
-            "Pocket Multitool (Saw)",
-            "Can also harvest Ice",
-            new ToolPocketSaw(POCKET_FILE.ID),
-            ToolDictNames.craftingToolSaw,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-            new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
-        addTool(
-            POCKET_FILE.ID,
-            "Pocket Multitool (File)",
-            "",
-            new ToolPocketFile(POCKET_SCREWDRIVER.ID),
-            ToolDictNames.craftingToolFile,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-            new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
-        GregTechAPI.registerTool(
-            addTool(
-                POCKET_SCREWDRIVER.ID,
-                "Pocket Multitool (Screwdriver)",
-                "Adjusts Covers and Machines",
-                new ToolPocketScrewdriver(POCKET_WIRECUTTER.ID),
-                ToolDictNames.craftingToolScrewdriver,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
-            GregTechAPI.sScrewdriverList);
-        GregTechAPI.registerTool(
-            addTool(
-                POCKET_WIRECUTTER.ID,
-                "Pocket Multitool (Wire Cutter)",
-                "",
-                new ToolPocketWireCutter(POCKET_BRANCHCUTTER.ID),
-                ToolDictNames.craftingToolWireCutter,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
-            GregTechAPI.sWireCutterList);
-        addTool(
-            POCKET_BRANCHCUTTER.ID,
-            "Pocket Multitool (Branch Cutter)",
-            "",
-            new ToolPocketBranchCutter(POCKET_MULTITOOL.ID),
-            ToolDictNames.craftingToolBranchCutter,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-            new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
         ItemList.Tool_Vajra.set(new ToolVajra("Tool_Vajra", "Vajra", "", 0, 20, true));
         ItemList.NetworkAnalyzer.set(new ItemNetworkAnalyzer("Network Analyzer", "", 0, 0, true));
 

@@ -1772,16 +1772,6 @@ gt.metatool.01.174.name=大型涡轮
 gt.metatool.01.174.tooltip=大涡轮机使用的涡轮转子
 gt.metatool.01.176.name=巨型涡轮
 gt.metatool.01.176.tooltip=大涡轮机使用的涡轮转子
-gt.metatool.01.180.name=万能工具
-gt.metatool.01.180.tooltip=六合一工具！
-gt.metatool.01.182.name=万能工具（剪枝器）
-gt.metatool.01.184.name=万能工具（锉）
-gt.metatool.01.186.name=万能工具（小刀）
-gt.metatool.01.188.name=万能工具（锯）
-gt.metatool.01.188.tooltip=同样可以采集冰块
-gt.metatool.01.190.name=万能工具（螺丝刀）
-gt.metatool.01.190.tooltip=调整机器与覆盖板
-gt.metatool.01.192.name=万能工具（剪线钳）
 gt.metatool.01.194.name=装饰铲
 gt.metatool.01.wire_cutter.name=剪线钳（%s）
 gt.metatool.01.wire_cutter.tooltip=手持式电动剪线钳
@@ -1850,4 +1840,3 @@ GT5U.nei.pcb_factory.upgrade_bio=生物仓
 GT5U.nei.solar_factory.tier_required=所需多方块等级：%s
 
 # Item tooltips
-GT5U.tooltip.switch_metadata.sneak_right_click=Shift+右键以切换模式

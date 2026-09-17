@@ -14,11 +14,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static gregtech.common.items.IDMetaTool01.POCKET_BRANCHCUTTER;
-import static gregtech.common.items.IDMetaTool01.POCKET_KNIFE;
-import static gregtech.common.items.IDMetaTool01.POCKET_MULTITOOL;
-import static gregtech.common.items.IDMetaTool01.POCKET_SAW;
-import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,11 +47,11 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -71,8 +66,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
-import gregtech.common.items.IDMetaTool01;
-import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.items.tools.ToolBranchCutterItem;
 import gregtech.common.items.tools.ToolBuzzSawItem;
@@ -333,8 +326,10 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
         /*
          * In previous versions, a saw used to go in the controller slot. We do not want an update to stop processing of
          * a machine set up like this. Instead, a sapling is placed in this slot at the start of the next operation.
+         * Tested against IGTTool rather than MetaGeneratedTool01: a saw left in that slot is a standalone tool item
+         * once the save has been migrated.
          */
-        return aStack.getItem() instanceof MetaGeneratedTool01;
+        return aStack.getItem() instanceof IGTTool;
     }
 
     @Override
@@ -506,16 +501,8 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
      */
     public static int getToolMultiplier(ItemStack toolStack, Mode mode) {
         Item tool = toolStack.getItem();
-        int damage = toolStack.getItemDamage();
         switch (mode) {
             case LOG:
-                if (tool instanceof MetaGeneratedTool01) {
-
-                    if (damage == POCKET_SAW.ID || damage == POCKET_MULTITOOL.ID) {
-                        return 1;
-                    }
-
-                }
                 // Saws, buzzsaws and chainsaws are their own items now, recognised by class rather than metadata.
                 if (tool instanceof ToolChainsawItem) {
                     return 4;
@@ -529,10 +516,6 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                 break;
 
             case SAPLING:
-                if (tool instanceof MetaGeneratedTool01
-                    && (damage == POCKET_BRANCHCUTTER.ID || damage == POCKET_MULTITOOL.ID)) {
-                    return 1;
-                }
                 // Ahead of the grafter check below: the branch cutter is a grafter too, but it has always counted as
                 // the weaker tool here.
                 if (tool instanceof ToolBranchCutterItem) {
@@ -548,11 +531,6 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                 if (tool instanceof ItemShears && tool.isDamageable()) {
                     return 1;
                 }
-                if (tool instanceof MetaGeneratedTool01) {
-                    if (damage == POCKET_MULTITOOL.ID || damage == POCKET_WIRECUTTER.ID) {
-                        return damage == POCKET_MULTITOOL.ID ? 1 : 2;
-                    }
-                }
                 // The wire cutters are their own items now, so they are recognised by class rather than metadata.
                 if (tool instanceof ToolWireCutterElectricItem) {
                     return 4;
@@ -563,10 +541,6 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                 break;
 
             case FRUIT:
-                if (tool instanceof MetaGeneratedTool01
-                    && (damage == POCKET_KNIFE.ID || damage == POCKET_MULTITOOL.ID)) {
-                    return 1;
-                }
                 // The knife is its own item now, so it is recognised by class rather than metadata.
                 if (tool instanceof ToolKnifeItem) {
                     return 1;
@@ -625,7 +599,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
      */
     private boolean legacyToolSwap() {
         ItemStack controllerSlot = getControllerSlot();
-        if (controllerSlot == null || !(controllerSlot.getItem() instanceof MetaGeneratedTool01)) return false;
+        if (controllerSlot == null || !(controllerSlot.getItem() instanceof IGTTool)) return false;
 
         for (MTEHatchInputBus inputBus : validMTEList(mInputBusses)) {
             ItemStack[] inventory = inputBus.getRealInventory();
@@ -824,25 +798,21 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
 
     private static ItemStack[][] altToolsForNEI() {
         if (altToolsForNEI != null) return altToolsForNEI;
-        MetaGeneratedTool toolInstance = MetaGeneratedTool01.INSTANCE;
         ItemStack[][] tools = new ItemStack[][] {
             // Mode.LOG
-            { GTToolItems.SAW.getDisplayStack(), toolInstance.getToolWithStats(POCKET_SAW.ID, 1, null, null, null),
-                GTToolItems.BUZZSAW_LV.getDisplayStack(), GTToolItems.CHAINSAW_LV.getDisplayStack(),
-                GTToolItems.BUZZSAW_MV.getDisplayStack(), GTToolItems.CHAINSAW_MV.getDisplayStack(),
-                GTToolItems.BUZZSAW_HV.getDisplayStack(), GTToolItems.CHAINSAW_HV.getDisplayStack(), },
+            { GTToolItems.SAW.getDisplayStack(), GTToolItems.BUZZSAW_LV.getDisplayStack(),
+                GTToolItems.CHAINSAW_LV.getDisplayStack(), GTToolItems.BUZZSAW_MV.getDisplayStack(),
+                GTToolItems.CHAINSAW_MV.getDisplayStack(), GTToolItems.BUZZSAW_HV.getDisplayStack(),
+                GTToolItems.CHAINSAW_HV.getDisplayStack(), },
             // Mode.SAPLING
             { GTToolItems.BRANCH_CUTTER.getDisplayStack(),
-                toolInstance.getToolWithStats(IDMetaTool01.POCKET_BRANCHCUTTER.ID, 1, null, null, null),
                 GTModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
             // Mode.LEAVES
             { new ItemStack(Items.shears), GTToolItems.WIRE_CUTTER.getDisplayStack(),
                 GTToolItems.WIRE_CUTTER_LV.getDisplayStack(), GTToolItems.WIRE_CUTTER_MV.getDisplayStack(),
-                GTToolItems.WIRE_CUTTER_HV.getDisplayStack(),
-                toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null), },
+                GTToolItems.WIRE_CUTTER_HV.getDisplayStack(), },
             // Mode.FRUIT
-            { GTToolItems.KNIFE.getDisplayStack(),
-                toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, null, null, null), } };
+            { GTToolItems.KNIFE.getDisplayStack(), } };
         // A tool with no registered material, or a mod item that is not installed, comes back null; NEI must not be
         // handed those.
         for (int i = 0; i < tools.length; i++) {

@@ -10,8 +10,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.util.GTModHandler;
-import gregtech.common.items.IDMetaTool01;
-import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.items.tools.ToolSolderingIronItem;
 
@@ -223,15 +221,6 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                     Materials.AnySyntheticRubber,
                     Materials.StainlessSteel,
                     ItemList.Battery_RE_HV_Sodium);
-
-                GTModHandler.addCraftingRecipe(
-                    (MetaGeneratedTool01.INSTANCE
-                        .getToolWithStats(IDMetaTool01.POCKET_MULTITOOL.ID, 1, aMaterial, aMaterial, null)),
-                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "ABC", "DEF", "CFG", 'A', OrePrefixes.stickLong.get(aMaterial), 'B',
-                        OrePrefixes.toolHeadSaw.get(aMaterial), 'C', OrePrefixes.ring.get(aMaterial), 'D',
-                        OrePrefixes.toolHeadFile.get(aMaterial), 'E', OrePrefixes.plate.get(aMaterial), 'F',
-                        OrePrefixes.spring.get(aMaterial), 'G', Dyes.dyeBlue });
 
                 ItemStack tTrowel = GTToolItems.TROWEL.registerMaterial(
                     aMaterial,

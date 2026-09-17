@@ -9568,16 +9568,6 @@ gt.metatool.01.174.name=Большая турбина
 gt.metatool.01.174.tooltip=Роторы турбин для вашей электростанции
 gt.metatool.01.176.name=Огромная турбина
 gt.metatool.01.176.tooltip=Роторы турбин для вашей электростанции
-gt.metatool.01.180.name=Карманный мультитул
-gt.metatool.01.180.tooltip=6 полезных инструментов в одном!
-gt.metatool.01.182.name=Карманный мультитул (Секатор)
-gt.metatool.01.184.name=Карманный мультитул (Напильник)
-gt.metatool.01.186.name=Карманный мультитул (Нож)
-gt.metatool.01.188.name=Карманный мультитул (Пила)
-gt.metatool.01.188.tooltip=Также может добывать лёд
-gt.metatool.01.190.name=Карманный мультитул (Отвёртка)
-gt.metatool.01.190.tooltip=Регулирует модули и механизмы
-gt.metatool.01.192.name=Карманный мультитул (Кусачки)
 gt.metatool.01.194.name=Мастерок декоратора
 gt.metatool.01.wire_cutter.name=Кусачки (%s)
 gt.metatool.01.wire_cutter.tooltip=Ручные электрические кусачки
@@ -9646,4 +9636,3 @@ GT5U.nei.pcb_factory.upgrade_bio=Био
 GT5U.nei.solar_factory.tier_required=Требуется тир мульти: %s
 
 # Item tooltips
-GT5U.tooltip.switch_metadata.sneak_right_click=Shift+ПКМ, чтобы изменить режим

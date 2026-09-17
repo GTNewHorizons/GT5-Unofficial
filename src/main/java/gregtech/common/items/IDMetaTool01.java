@@ -66,13 +66,8 @@ public enum IDMetaTool01 {
     TURBINE(172),
     TURBINE_LARGE(174),
     TURBINE_HUGE(176),
-    POCKET_MULTITOOL(180),
-    POCKET_BRANCHCUTTER(182),
-    POCKET_FILE(184),
-    POCKET_KNIFE(186),
-    POCKET_SAW(188),
-    POCKET_SCREWDRIVER(190),
-    POCKET_WIRECUTTER(192),
+    // 180 to 192 were the Pocket Multitool and its six sub-tools, removed outright. The ids stay reserved: saved
+    // stacks in old worlds still carry them, and reusing one would turn those stacks into a different tool.
     // Reserved, see the note above.
     TROWEL(194),
     // Reserved, see SOFTMALLET above.
