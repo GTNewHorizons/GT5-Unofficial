@@ -18,6 +18,7 @@ public abstract class GenerateNodeMap {
 
     // clearing the node map to make sure it is gone on reset
     public static void clearNodeMap(Node aNode, int aReturnNodeValue) {
+        aNode.mInvalid = true;
         if (aNode.mTileEntity instanceof BaseMetaPipeEntity tPipe) {
             tPipe.setNode(null);
             tPipe.setNodePath(null);

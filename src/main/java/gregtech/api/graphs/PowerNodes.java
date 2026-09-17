@@ -20,7 +20,7 @@ public class PowerNodes {
         long tAmpsUsed = 0;
         ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
         int tLoopProtection = 0;
-        while (tConsumer != null) {
+        while (tConsumer != null && !aCurrentNode.mInvalid) {
             int tTargetNodeValue = tConsumer.mNodeValue;
             // if the target node has a value less then the current node
             if (tTargetNodeValue < aCurrentNode.mNodeValue || tTargetNodeValue > aCurrentNode.mHighestNodeValue) {
@@ -84,7 +84,7 @@ public class PowerNodes {
         long tAmpsUsed = 0;
         int tLoopProtection = 0;
         ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
-        while (tConsumer != null) {
+        while (tConsumer != null && !aCurrentNode.mInvalid) {
             int tTargetNodeValue = tConsumer.mNodeValue;
             if (tTargetNodeValue > aCurrentNode.mHighestNodeValue || tTargetNodeValue < aCurrentNode.mNodeValue) {
                 return tAmpsUsed;
@@ -133,7 +133,9 @@ public class PowerNodes {
             tVoltLoss += tSelfPath.getLoss();
             tSelfPath.applyVoltage(aVoltage, false);
         }
+        if (aCurrentNode.mInvalid) return 0;
         tPath.applyVoltage(aVoltage - tVoltLoss, true);
+        if (aCurrentNode.mInvalid) return 0;
         tVoltLoss += tPath.getLoss();
         long tAmps = powerNode(aNextNode, aCurrentNode, aConsumers, aVoltage - tVoltLoss, aMaxAmps);
         tPath.addAmps(tAmps);
@@ -154,7 +156,9 @@ public class PowerNodes {
             tVoltLoss += tSelfPath.getLoss();
             tSelfPath.applyVoltage(aVoltage, false);
         }
+        if (aCurrentNode.mInvalid) return 0;
         tPath.applyVoltage(aVoltage - tVoltLoss, true);
+        if (aCurrentNode.mInvalid) return 0;
         tVoltLoss += tPath.getLoss();
         long tAmps = powerNodeAbove(aNextNode, aCurrentNode, aConsumers, aVoltage - tVoltLoss, aMaxAmps);
         tPath.addAmps(tAmps);
@@ -172,7 +176,9 @@ public class PowerNodes {
             tVoltLoss += tSelfPath.getLoss();
             tSelfPath.applyVoltage(aVoltage, false);
         }
+        if (aCurrentNode.mInvalid) return 0;
         tPath.applyVoltage(aVoltage - tVoltLoss, true);
+        if (aCurrentNode.mInvalid) return 0;
         tVoltLoss += tPath.getLoss();
         long tAmps = aConsumer.injectEnergy(aVoltage - tVoltLoss, aMaxAmps);
         tPath.addAmps(tAmps);

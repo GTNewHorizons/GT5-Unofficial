@@ -31,6 +31,7 @@ public class Node {
     public int mCreationTime;
     public int mNodeValue;
     public int mHighestNodeValue;
+    public boolean mInvalid;
 
     public static class ReturnPair {
 
