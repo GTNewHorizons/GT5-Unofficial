@@ -2,7 +2,6 @@ package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -22,6 +21,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.util.GTStructureUtility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,7 +37,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -85,6 +84,8 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
     private float lastTCRecipeMinEnergy;
     private float lastTCRecipeMaxEnergy;
     private int lastTCRecipeInputParticle = -1;
+    private int glassTier = -1;
+    private final int MIN_GLASS_TIER = 6;
 
     // spotless:off
     static {
@@ -105,7 +106,7 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
     					buildHatchAdder(MTETargetChamber.class).atLeast(Maintenance, Energy)
     					.casingIndex(GrateMachineCasingTextureID).hint(4).buildAndChain(Casings.GrateMachineCasing.asElement()))
 
-    			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
+    			.addElement('j', GTStructureUtility.chainAllGlasses(-1, (te, tier) -> te.glassTier = tier.byteValue(), te -> te.glassTier))
     			.addElement('b', buildHatchAdder(MTETargetChamber.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID).hint(1).build())
     			.addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
 
@@ -121,10 +122,6 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
     			.build();
     }
     //spotless:on
-
-    private boolean addGlass(Block block, int meta) {
-        return block == ItemRegistry.bw_glasses[0];
-    }
 
     // distinct bus registration to check masks only in one hatch
     private boolean addMaskInputBus(IGregTechTileEntity te, int casingIndex) {
@@ -435,15 +432,19 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
 
     @Override
     public void checkMachine(IGregTechTileEntity arg0, ItemStack arg1, List<StructureError> errors) {
+        glassTier = -1;
         this.lastRecipe = null;
         if (!checkPiece("base", 2, 4, 0, errors)) return;
         checkHasEnergyHatch(errors);
         checkOneMaintenanceHatch(errors);
         checkHatchExact(errors, InputBus, 1);
+        checkHatchExact(errors, OutputBus, 1);
         if (this.mMaskInputBusses.size() != 1) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.need_exactly_one_focus_input"));
         }
-        checkHatchExact(errors, OutputBus, 1);
+        if (glassTier < MIN_GLASS_TIER) {
+            errors.add(StructureErrors.glassTierNotEnough(MIN_GLASS_TIER));
+        }
     }
 
     @Override
