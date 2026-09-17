@@ -19,6 +19,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
+import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.common.covers.Cover;
 import ic2.api.energy.tile.IEnergySink;
 
@@ -62,7 +63,7 @@ class EnergyConsumerLifecycleTest {
     }
 
     @Test
-    void middleChunkUnloadInvalidatesGraphAndAllowsTopologyRebuild() {
+    void middleChunkReloadRebuildsExternalOnlyNetwork() {
         try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
             MinecraftServer server = mock(MinecraftServer.class);
             servers.when(MinecraftServer::getServer)
@@ -75,11 +76,15 @@ class EnergyConsumerLifecycleTest {
             receiver.xCoord = 18;
             receiver.yCoord = 64;
             when(world.blockExists(anyInt(), anyInt(), anyInt())).thenReturn(true);
+            when(world.getTileEntity(15, 64, 0)).thenReturn(root);
             when(world.getTileEntity(16, 64, 0)).thenReturn(middle);
             when(world.getTileEntity(17, 64, 0)).thenReturn(end);
             when(world.getTileEntity(18, 64, 0)).thenReturn(receiver);
             new GenerateNodeMapPower(root);
             assertNotNull(middle.getNodePath());
+            MTECable cable = (MTECable) root.getMetaTileEntity();
+            assertEquals(1, cable.transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
+            clearInvocations(receiver);
 
             when(world.blockExists(16, 64, 0)).thenReturn(false);
             middle.onChunkUnload();
@@ -96,16 +101,11 @@ class EnergyConsumerLifecycleTest {
             BaseMetaPipeEntity reloaded = pipe(world, 16, ForgeDirection.WEST, ForgeDirection.EAST);
             when(world.blockExists(16, 64, 0)).thenReturn(true);
             when(world.getTileEntity(16, 64, 0)).thenReturn(reloaded);
-            root.mConnections = (byte) (ForgeDirection.WEST.flag | ForgeDirection.EAST.flag);
-            BaseMetaTileEntity source = mock(BaseMetaTileEntity.class);
-            when(source.isServerSide()).thenReturn(true);
-            when(source.isEnetOutput()).thenReturn(true);
-            when(source.outputsEnergyTo(ForgeDirection.EAST, false)).thenReturn(true);
-            when(source.getIGregTechTileEntityAtSide(ForgeDirection.EAST)).thenReturn(root);
-            doCallRealMethod().when(source)
-                .generatePowerNodes();
             when(server.getTickCounter()).thenReturn(1);
-            source.generatePowerNodes();
+            reloaded.getMetaTileEntity()
+                .onFirstTick(reloaded);
+            RunnableCableUpdate.endTick();
+            assertNull(root.getNode());
             assertEquals(
                 1,
                 ((MTECable) root.getMetaTileEntity()).transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
@@ -198,6 +198,43 @@ class EnergyConsumerLifecycleTest {
             assertFalse(root.locks[0].isLocked());
             assertEquals(1, cable.transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
             assertSame(root, base.getNode());
+        }
+    }
+
+    @Test
+    void connectionChangesClearRoutesButUnchangedConnectionsKeepThem() {
+        try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
+            servers.when(MinecraftServer::getServer)
+                .thenReturn(mock(MinecraftServer.class));
+            World world = mock(World.class);
+            BaseMetaPipeEntity root = pipe(world, 15, ForgeDirection.WEST, ForgeDirection.EAST);
+            BaseMetaPipeEntity end = pipe(world, 16, ForgeDirection.WEST, ForgeDirection.EAST);
+            TileEntity receiver = receiver();
+            receiver.xCoord = 17;
+            receiver.yCoord = 64;
+            when(world.blockExists(anyInt(), anyInt(), anyInt())).thenReturn(true);
+            when(world.getTileEntity(15, 64, 0)).thenReturn(root);
+            when(world.getTileEntity(16, 64, 0)).thenReturn(end);
+            when(world.getTileEntity(17, 64, 0)).thenReturn(receiver);
+            MTECable cable = (MTECable) root.getMetaTileEntity();
+            MTECable endCable = (MTECable) end.getMetaTileEntity();
+            root.mConnections = cable.mConnections;
+            assertEquals(1, cable.transferElectricity(ForgeDirection.WEST, 32, 4, null));
+            Node original = root.getNode();
+            root.updateConnections();
+            assertSame(original, root.getNode());
+
+            cable.disconnect(ForgeDirection.EAST);
+            root.updateConnections();
+            assertNull(root.getNode());
+            assertNull(end.getNode());
+            assertEquals(0, cable.transferElectricity(ForgeDirection.WEST, 32, 4, null));
+
+            cable.mConnections |= ForgeDirection.EAST.flag;
+            endCable.mConnections |= ForgeDirection.WEST.flag;
+            root.updateConnections();
+            RunnableCableUpdate.endTick();
+            assertEquals(1, cable.transferElectricity(ForgeDirection.WEST, 32, 4, null));
         }
     }
 

@@ -236,6 +236,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             return;
         }
         mConnections = mMetaTileEntity.mConnections;
+        invalidateNodeMap();
         GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
     }
 
@@ -470,6 +471,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
      */
     @Override
     public void onMachineBlockUpdate() {
+        invalidateNodeMap();
         if (canAccessData()) mMetaTileEntity.onMachineBlockUpdate();
     }
 

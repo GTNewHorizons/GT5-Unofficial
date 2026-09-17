@@ -264,6 +264,17 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        // Reloaded cables must also invalidate graphs built while their chunk was absent.
+        GregTechAPI.causeCableUpdate(
+            aBaseMetaTileEntity.getWorld(),
+            aBaseMetaTileEntity.getXCoord(),
+            aBaseMetaTileEntity.getYCoord(),
+            aBaseMetaTileEntity.getZCoord());
+    }
+
+    @Override
     public boolean needsClientTick() {
         return false;
     }
