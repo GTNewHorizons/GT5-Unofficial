@@ -135,6 +135,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.2"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.3"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.4"))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.board_processor.body.output_hatch"))
             .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.5"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.6"))

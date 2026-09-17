@@ -3453,7 +3453,8 @@ GT5U.tooltip.nac.module.board_processor.action=Processes your Board %s by cleani
 GT5U.tooltip.nac.module.board_processor.body.1=Will try to fill its internal tank with provided §b'Immersion Fluids'§7 every second
 GT5U.tooltip.nac.module.board_processor.body.2=The internal tank has a capacity of §31,000,000L§7 and must be at least half full for the machine to work
 GT5U.tooltip.nac.module.board_processor.body.3=Running recipes gradually increases fluid impurity, with bigger amounts of fluid taking longer to become impure
-GT5U.tooltip.nac.module.board_processor.body.4=Set an ejection threshold in the GUI to automatically flush the fluid out to be processed, which is §b100%%§7 by default. Manual and automatic flushing require an Output Hatch
+GT5U.tooltip.nac.module.board_processor.body.4=Set an ejection threshold in the GUI to automatically flush the fluid out to be processed, which is §b100%%§7 by default
+GT5U.tooltip.nac.module.board_processor.body.output_hatch=Manual and automatic flushing require an Output Hatch
 GT5U.tooltip.nac.module.board_processor.body.5=The Impurity percentage §b(y%%)§7 affects the module's efficiency:
 GT5U.tooltip.nac.module.board_processor.body.6=§b0%%-15%%§r - §aEU Discount = 30%% - 2 * y%%
 GT5U.tooltip.nac.module.board_processor.body.7=§b15%%-65%%§r - Default behaviour
