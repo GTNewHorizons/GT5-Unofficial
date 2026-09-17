@@ -47,8 +47,8 @@ public class ToolWrenchItem extends ToolItemBase implements IToolWrench, IAEWren
             toolStats,
             englishNameFormat,
             englishTooltip,
-            ToolDictNames.craftingToolWrench,
-            GregTechAPI.sWrenchList);
+            GregTechAPI.sWrenchList,
+            ToolDictNames.craftingToolWrench);
     }
 
     /* ---------- USE ---------- */

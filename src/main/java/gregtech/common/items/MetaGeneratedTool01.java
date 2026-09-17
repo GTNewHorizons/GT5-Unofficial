@@ -25,7 +25,6 @@ import static gregtech.common.items.IDMetaTool01.POCKET_SAW;
 import static gregtech.common.items.IDMetaTool01.POCKET_SCREWDRIVER;
 import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
 import static gregtech.common.items.IDMetaTool01.ROLLING_PIN;
-import static gregtech.common.items.IDMetaTool01.SAW;
 import static gregtech.common.items.IDMetaTool01.SCOOP;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_HV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_LV;
@@ -75,7 +74,6 @@ import gregtech.common.tools.ToolKnife;
 import gregtech.common.tools.ToolMortar;
 import gregtech.common.tools.ToolPlunger;
 import gregtech.common.tools.ToolRollingPin;
-import gregtech.common.tools.ToolSaw;
 import gregtech.common.tools.ToolScoop;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
@@ -103,15 +101,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     public MetaGeneratedTool01() {
         super("metatool.01");
         INSTANCE = this;
-        addTool(
-            SAW.ID,
-            "Saw",
-            "Can also harvest Ice",
-            new ToolSaw(),
-            ToolDictNames.craftingToolSaw,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
         addTool(
             MORTAR.ID,
             "Mortar",

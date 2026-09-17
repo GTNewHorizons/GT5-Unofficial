@@ -46,8 +46,8 @@ public class ToolSoftMalletItem extends ToolItemBase {
             toolStats,
             englishNameFormat,
             "",
-            ToolDictNames.craftingToolSoftMallet,
-            GregTechAPI.sSoftMalletList);
+            GregTechAPI.sSoftMalletList,
+            ToolDictNames.craftingToolSoftMallet);
     }
 
     /* ---------- USE ---------- */

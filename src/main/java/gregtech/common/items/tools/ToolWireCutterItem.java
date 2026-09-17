@@ -26,8 +26,8 @@ public class ToolWireCutterItem extends ToolItemBase {
             toolStats,
             englishNameFormat,
             englishTooltip,
-            ToolDictNames.craftingToolWireCutter,
-            GregTechAPI.sWireCutterList);
+            GregTechAPI.sWireCutterList,
+            ToolDictNames.craftingToolWireCutter);
     }
 
     @Override

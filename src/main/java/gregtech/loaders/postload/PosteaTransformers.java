@@ -358,7 +358,8 @@ public class PosteaTransformers implements Runnable {
         new MigratedTool(18, "gregtech:gt.tool.file", () -> GTToolItems.FILE),
         new MigratedTool(202, "gregtech:gt.tool.file_lv", () -> GTToolItems.FILE_LV),
         new MigratedTool(204, "gregtech:gt.tool.file_mv", () -> GTToolItems.FILE_MV),
-        new MigratedTool(206, "gregtech:gt.tool.file_hv", () -> GTToolItems.FILE_HV), };
+        new MigratedTool(206, "gregtech:gt.tool.file_hv", () -> GTToolItems.FILE_HV),
+        new MigratedTool(10, "gregtech:gt.tool.saw", () -> GTToolItems.SAW), };
 
     private static final Int2ObjectMap<MigratedTool> MIGRATED_TOOLS_BY_OLD_META = new Int2ObjectOpenHashMap<>();
 

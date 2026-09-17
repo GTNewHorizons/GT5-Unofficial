@@ -31,8 +31,8 @@ public class ToolHardHammerItem extends ToolItemBase {
             toolStats,
             englishNameFormat,
             "Crushes Ores instead of harvesting them",
-            ToolDictNames.craftingToolHardHammer,
-            GregTechAPI.sHardHammerList);
+            GregTechAPI.sHardHammerList,
+            ToolDictNames.craftingToolHardHammer);
     }
 
     @Override

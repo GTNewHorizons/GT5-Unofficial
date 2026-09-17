@@ -31,8 +31,8 @@ public class ToolCrowbarItem extends ToolItemBase implements IToolCrowbar {
             toolStats,
             englishNameFormat,
             "Dismounts Covers and Rotates Rails",
-            ToolDictNames.craftingToolCrowbar,
-            GregTechAPI.sCrowbarList);
+            GregTechAPI.sCrowbarList,
+            ToolDictNames.craftingToolCrowbar);
     }
 
     /* ---------- USE ---------- */

@@ -27,7 +27,6 @@ import static gregtech.common.items.IDMetaTool01.POCKET_KNIFE;
 import static gregtech.common.items.IDMetaTool01.POCKET_MULTITOOL;
 import static gregtech.common.items.IDMetaTool01.POCKET_SAW;
 import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
-import static gregtech.common.items.IDMetaTool01.SAW;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,6 +82,7 @@ import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.tools.GTToolItems;
+import gregtech.common.items.tools.ToolSawItem;
 import gregtech.common.items.tools.ToolWireCutterElectricItem;
 import gregtech.common.items.tools.ToolWireCutterItem;
 import gregtech.common.misc.GTStructureChannels;
@@ -515,7 +515,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             case LOG:
                 if (tool instanceof MetaGeneratedTool01) {
 
-                    if (damage == SAW.ID || damage == POCKET_SAW.ID || damage == POCKET_MULTITOOL.ID) {
+                    if (damage == POCKET_SAW.ID || damage == POCKET_MULTITOOL.ID) {
                         return 1;
                     }
 
@@ -526,6 +526,10 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                     if (damage == CHAINSAW_LV.ID || damage == CHAINSAW_MV.ID || damage == CHAINSAW_HV.ID) {
                         return 4;
                     }
+                }
+                // The saw is its own item now, so it is recognised by class rather than metadata.
+                if (tool instanceof ToolSawItem) {
+                    return 1;
                 }
                 break;
 
@@ -820,8 +824,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
         MetaGeneratedTool toolInstance = MetaGeneratedTool01.INSTANCE;
         ItemStack[][] tools = new ItemStack[][] {
             // Mode.LOG
-            { toolInstance.getToolWithStats(SAW.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(POCKET_SAW.ID, 1, null, null, null),
+            { GTToolItems.SAW.getDisplayStack(), toolInstance.getToolWithStats(POCKET_SAW.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_LV.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(CHAINSAW_LV.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_MV.ID, 1, null, null, null),

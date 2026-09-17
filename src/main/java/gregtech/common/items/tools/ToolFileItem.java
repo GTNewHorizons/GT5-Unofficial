@@ -13,6 +13,6 @@ import gregtech.api.interfaces.IToolStats;
 public class ToolFileItem extends ToolItemBase {
 
     public ToolFileItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat, String englishTooltip) {
-        super(unlocalizedName, toolStats, englishNameFormat, englishTooltip, ToolDictNames.craftingToolFile, null);
+        super(unlocalizedName, toolStats, englishNameFormat, englishTooltip, null, ToolDictNames.craftingToolFile);
     }
 }

@@ -10,8 +10,6 @@ import static gregtech.api.enums.ToolDictNames.craftingToolScrewdriver;
 import static gregtech.api.enums.ToolDictNames.craftingToolSoftMallet;
 import static gregtech.api.enums.ToolDictNames.craftingToolWireCutter;
 import static gregtech.api.enums.ToolDictNames.craftingToolWrench;
-import static gregtech.common.items.IDMetaTool01.SAW;
-import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
@@ -80,7 +78,7 @@ public class GigaGramFab {
                 .addSingleUseToolType(craftingToolSoftMallet, GTToolItems.SOFT_MALLET.getToolStats(), 6 * ingot);
             GigaGramFabAPI
                 .addSingleUseToolType(craftingToolScrewdriver, GTToolItems.SCREWDRIVER.getToolStats(), 2 * rod);
-            GigaGramFabAPI.addSingleUseToolType(craftingToolSaw, INSTANCE.mToolStats.get((short) SAW.ID), 2 * plate);
+            GigaGramFabAPI.addSingleUseToolType(craftingToolSaw, GTToolItems.SAW.getToolStats(), 2 * plate);
 
         });
         GregTechAPI.sBeforeGTPostload.add(new ComponentRecipeLoader());

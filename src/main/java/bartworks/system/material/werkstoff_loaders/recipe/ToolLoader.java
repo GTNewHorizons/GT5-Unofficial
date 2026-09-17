@@ -129,15 +129,18 @@ public class ToolLoader implements IWerkstoffRunnable {
                     new Object[] { "P", "P", "S", 'P', plate.get(werkstoff.getBridgeMaterial()), 'S',
                         stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
             }
-            GTModHandler.addShapelessCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    IDMetaTool01.SAW.ID,
-                    1,
-                    werkstoff.getBridgeMaterial(),
-                    werkstoff.getBridgeMaterial().mHandleMaterial,
-                    null),
-                new Object[] { toolHeadSaw.get(werkstoff.getBridgeMaterial()),
-                    stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
+            ItemStack saw = GTToolItems.SAW.registerMaterial(
+                werkstoff.getBridgeMaterial(),
+                ToolMaterialIndex.WERKSTOFF_META_OFFSET + werkstoff.getmID(),
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
+            if (saw != null) {
+                GTModHandler.addShapelessCraftingRecipe(
+                    saw,
+                    new Object[] { toolHeadSaw.get(werkstoff.getBridgeMaterial()),
+                        stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
+            }
 
             // LV Soldering Iron
             GTModHandler.addCraftingRecipe(

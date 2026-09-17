@@ -80,7 +80,7 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
     protected final IToolStats toolStats;
     private final String nameKey;
     private final String englishNameFormat;
-    private final ToolDictNames oreDictName;
+    private final ToolDictNames[] oreDictNames;
     /** The metadata values this tool has actually been registered for, in registration order. */
     private final IntArrayList validMetas = new IntArrayList();
 
@@ -89,16 +89,17 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
      * @param toolStats         the generic stats for this tool, reused verbatim from the old tool registry.
      * @param englishNameFormat the default display name, where {@code %material} is replaced by the material name.
      * @param englishTooltip    the default tooltip, or an empty string for none.
-     * @param oreDictName       the ore dictionary name every material of this tool is registered under.
      * @param toolList          the {@link GregTechAPI} list machines check to recognise this tool, or null if the tool
      *                          is not one machines respond to.
+     * @param oreDictNames      the ore dictionary names every material of this tool is registered under. A few tools
+     *                          answer to more than one -- a knife is both a blade and a knife.
      */
     protected ToolItemBase(String unlocalizedName, IToolStats toolStats, String englishNameFormat,
-        String englishTooltip, ToolDictNames oreDictName, GTHashSet toolList) {
+        String englishTooltip, GTHashSet toolList, ToolDictNames... oreDictNames) {
         super(unlocalizedName, null, englishTooltip);
         this.toolStats = toolStats;
         this.englishNameFormat = englishNameFormat;
-        this.oreDictName = oreDictName;
+        this.oreDictNames = oreDictNames;
         this.nameKey = getUnlocalizedName() + ".name";
         GTLanguageManager.addStringLocalization(nameKey, englishNameFormat);
         if (englishTooltip != null && !englishTooltip.isEmpty())
@@ -144,8 +145,9 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
         ItemStack stack = new ItemStack(this, 1, meta);
         // Deferred, because materials are declared from inside the ore dictionary handler: see
         // GTToolItems.registerOreDictEntry.
-        if (oreDictName != null)
+        for (ToolDictNames oreDictName : oreDictNames) {
             GTToolItems.registerOreDictEntry(() -> GTOreDictUnificator.registerOre(oreDictName, stack));
+        }
         if (GregTechAPI.sThaumcraftCompat != null && aspects.length > 0) {
             List<TC_AspectStack> aspectList = new ArrayList<>();
             for (TC_AspectStack aspect : aspects) aspect.addToAspectList(aspectList);

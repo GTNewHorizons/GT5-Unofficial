@@ -3,6 +3,7 @@ package gregtech.common.items;
 public enum IDMetaTool01 {
 
     // Please pretty please, add your entries while conserving the order
+    // Reserved, see the note above.
     SAW(10),
     // Reserved, see SOFTMALLET below.
     HARDHAMMER(12),

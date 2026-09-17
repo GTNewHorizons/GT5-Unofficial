@@ -567,11 +567,15 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 }
             }
             case "toolHeadSaw" -> {
+                final ItemStack tSaw = GTToolItems.SAW.registerMaterial(
+                    aMaterial,
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
-                    GTModHandler.addShapelessCraftingRecipe(
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.SAW.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                    if (tSaw != null) GTModHandler.addShapelessCraftingRecipe(
+                        GTUtility.copyAmount(1, tSaw),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if (aSpecialRecipeReq1) GTModHandler.addCraftingRecipe(
@@ -585,15 +589,13 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "GGf", 'G', OrePrefixes.gem.get(aMaterial) });
                 }
-                if (GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L) != null) {
+                if (tSaw != null && GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
                             GTOreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L))
                         .circuit(7)
-                        .itemOutputs(
-                            MetaGeneratedTool01.INSTANCE
-                                .getToolWithStats(IDMetaTool01.SAW.ID, 1, aMaterial, aMaterial.mHandleMaterial, null))
+                        .itemOutputs(GTUtility.copyAmount(1, tSaw))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(assemblerRecipes);
