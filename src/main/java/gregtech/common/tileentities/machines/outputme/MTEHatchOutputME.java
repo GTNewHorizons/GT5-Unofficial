@@ -291,6 +291,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             translateToLocalFormatted(
                 "GT5U.waila.hatch.outputme.fluid_cache_capacity",
                 formatNumber(tag.getLong("cacheCapacity"))));
+        MTEHatchOutputMEBase.WailaHelper.getWailaCacheBody("fluid", ss, accessor);
     }
 
     @Override

@@ -4339,6 +4339,8 @@ GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the
 GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 GT5U.hatch.outputme.toggle_checking=Toggle Checking Mode
 GT5U.hatch.outputme.toggle_caching=Toggle Caching Mode
+GT5U.hatch.outputme.refresh_time=Refresh Time (Seconds)
+GT5U.hatch.outputme.refresh_time.tooltip=How often the cached outputs are pushed to the ME network. Minimum %s seconds.
 GT5U.hatch.chisel.configure.singleton=Configure Template
 GT5U.hatch.chisel.configure.grid=Configure Templates
 
@@ -6624,6 +6626,8 @@ GT5U.waila.hatch.outputme.fluid_cache_capacity=Fluid cache capacity: §e%s L§r
 GT5U.waila.hatch.outputme.item_cache_empty=This bus has no cached stacks
 GT5U.waila.hatch.outputme.item_cache_detail=The bus contains §6%d§r cached stack%s:
 GT5U.waila.hatch.outputme.item_cache_detail.more=§oAnd %d more...
+GT5U.waila.hatch.outputme.flush_interval=§7Flushes to ME every §e%ss§7 (§anext in %ss§7)
+GT5U.waila.hatch.outputme.flush_interval.idle=§7Flushes to ME every §e%ss§7
 GT5U.waila.hatch.outputme.fluid_cache_empty=This hatch has no cached fluids
 GT5U.waila.hatch.outputme.fluid_cache_detail=The hatch contains §6%d§r cached fluid%s:
 GT5U.waila.hatch.outputme.fluid_cache_detail.more=§oAnd %d more...
