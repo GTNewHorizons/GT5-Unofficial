@@ -21,6 +21,7 @@ public enum IDMetaTool01 {
     MORTAR(24),
     // Reserved, see SOFTMALLET above.
     WIRECUTTER(26),
+    // Reserved, see the note above.
     SCOOP(28),
     BRANCHCUTTER(30),
     UNIVERSALSPADE(32),

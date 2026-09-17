@@ -89,11 +89,18 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         new Object[] { "PfP", "hPd", "STS", 'S', OrePrefixes.stick.get(aMaterial), 'P',
                             OrePrefixes.plate.get(aMaterial), 'T', OrePrefixes.screw.get(aMaterial) });
                 }
-                GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.SCOOP.ID, 1, aMaterial, aMaterial, null),
-                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SWS", "SSS", "xSh", 'S', OrePrefixes.stick.get(aMaterial), 'W',
-                        new ItemStack(Blocks.wool, 1, 32767) });
+                ItemStack tScoop = GTToolItems.SCOOP.registerMaterial(
+                    aMaterial,
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.BESTIA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.PANNUS, 2L));
+                if (tScoop != null) {
+                    GTModHandler.addCraftingRecipe(
+                        tScoop,
+                        GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                        new Object[] { "SWS", "SSS", "xSh", 'S', OrePrefixes.stick.get(aMaterial), 'W',
+                            new ItemStack(Blocks.wool, 1, 32767) });
+                }
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE
                         .getToolWithStats(IDMetaTool01.BRANCHCUTTER.ID, 1, aMaterial, aMaterial, null),

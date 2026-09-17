@@ -1,7 +1,5 @@
 package gregtech.common.tools;
 
-import static gregtech.api.enums.Mods.Forestry;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,8 +12,6 @@ import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
-import gregtech.common.items.behaviors.BehaviourNone;
-import gregtech.common.items.behaviors.BehaviourScoop;
 
 public class ToolScoop extends GTTool {
 
@@ -54,15 +50,6 @@ public class ToolScoop extends GTTool {
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
-    }
-
-    @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
-        if (Forestry.isModLoaded()) {
-            aItem.addItemBehavior(aID, new BehaviourScoop(200));
-        } else {
-            aItem.addItemBehavior(aID, new BehaviourNone());
-        }
     }
 
     @Override

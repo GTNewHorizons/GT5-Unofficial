@@ -11,6 +11,7 @@ import gregtech.common.tools.ToolFileMV;
 import gregtech.common.tools.ToolHardHammer;
 import gregtech.common.tools.ToolMortar;
 import gregtech.common.tools.ToolSaw;
+import gregtech.common.tools.ToolScoop;
 import gregtech.common.tools.ToolScrewdriver;
 import gregtech.common.tools.ToolScrewdriverHV;
 import gregtech.common.tools.ToolScrewdriverLV;
@@ -54,6 +55,7 @@ public final class GTToolItems {
     public static ToolFileElectricItem FILE_HV;
     public static ToolSawItem SAW;
     public static ToolMortarItem MORTAR;
+    public static ToolScoopItem SCOOP;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -182,6 +184,7 @@ public final class GTToolItems {
             3);
         SAW = new ToolSawItem("tool.saw", new ToolSaw(), "%material Saw", "Can also harvest Ice");
         MORTAR = new ToolMortarItem("tool.mortar", new ToolMortar(), "%material Mortar", "");
+        SCOOP = new ToolScoopItem("tool.scoop", new ToolScoop(), "%material Scoop", "");
     }
 
     /**

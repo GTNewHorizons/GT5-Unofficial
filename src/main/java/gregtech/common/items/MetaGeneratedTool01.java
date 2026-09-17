@@ -24,7 +24,6 @@ import static gregtech.common.items.IDMetaTool01.POCKET_SAW;
 import static gregtech.common.items.IDMetaTool01.POCKET_SCREWDRIVER;
 import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
 import static gregtech.common.items.IDMetaTool01.ROLLING_PIN;
-import static gregtech.common.items.IDMetaTool01.SCOOP;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_HV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_LV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_MV;
@@ -73,7 +72,6 @@ import gregtech.common.tools.ToolJackHammerMV;
 import gregtech.common.tools.ToolKnife;
 import gregtech.common.tools.ToolPlunger;
 import gregtech.common.tools.ToolRollingPin;
-import gregtech.common.tools.ToolScoop;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
 import gregtech.common.tools.ToolTurbineHuge;
@@ -100,15 +98,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     public MetaGeneratedTool01() {
         super("metatool.01");
         INSTANCE = this;
-        addTool(
-            SCOOP.ID,
-            "Scoop",
-            "",
-            new ToolScoop(),
-            ToolDictNames.craftingToolScoop,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.BESTIA, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.PANNUS, 2L));
         addTool(
             BRANCHCUTTER.ID,
             "Branch Cutter",
