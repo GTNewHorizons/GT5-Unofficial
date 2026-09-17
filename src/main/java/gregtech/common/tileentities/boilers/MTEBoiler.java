@@ -375,6 +375,10 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         return false;
     }
 
+    private boolean isProducingSteam() {
+        return this.mTemperature > 100 && !this.mHadNoWater;
+    }
+
     protected void onDangerousWaterLack(IGregTechTileEntity tile, long ignoredTicks) {
         tile.doExplosion(2048L);
     }
@@ -549,6 +553,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         int fuel = tag.getInteger("fuel") * 20;
         int fuelMax = tag.getInteger("fuelMax") * 20;
         int temperature = tag.getInteger("temperature");
+        boolean isProducingSteam = tag.getBoolean("isProducingSteam");
+        int power = tag.getInteger("power");
 
         if (fuel > 0) {
             currenttip.add(GTWaila.getMachineProgressString(fuelMax, fuelMax - fuel));
@@ -560,6 +566,10 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
 
         currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.temperature", temperature));
 
+        if (isProducingSteam) {
+            currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.steam_producing", power));
+        }
+
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
@@ -570,5 +580,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         tag.setInteger("fuel", mProcessingEnergy);
         tag.setInteger("temperature", mTemperature);
         tag.setInteger("fuelMax", fuelMaxEnergy);
+        tag.setBoolean("isProducingSteam", this.isProducingSteam());
+        tag.setInteger("power", this.getProductionPerSecond());
     }
 }
