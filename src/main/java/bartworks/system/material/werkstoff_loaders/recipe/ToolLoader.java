@@ -289,15 +289,18 @@ public class ToolLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "IhI", "III", " I ", 'I', ingot.get(werkstoff.getBridgeMaterial()) });
         }
-        GTModHandler.addCraftingRecipe(
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                IDMetaTool01.CROWBAR.ID,
-                1,
-                werkstoff.getBridgeMaterial(),
-                werkstoff.getBridgeMaterial(),
-                null),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "hDS", "DSD", "SDf", 'S', stick.get(werkstoff.getBridgeMaterial()), 'D', Dyes.dyeBlue });
+        ItemStack crowbar = GTToolItems.CROWBAR.registerMaterial(
+            werkstoff.getBridgeMaterial(),
+            ToolMaterialIndex.WERKSTOFF_META_OFFSET + werkstoff.getmID(),
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L));
+        if (crowbar != null) {
+            GTModHandler.addCraftingRecipe(
+                crowbar,
+                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "hDS", "DSD", "SDf", 'S', stick.get(werkstoff.getBridgeMaterial()), 'D', Dyes.dyeBlue });
+        }
 
         GTModHandler.addCraftingRecipe(
             MetaGeneratedTool01.INSTANCE.getToolWithStats(

@@ -54,11 +54,17 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "IhI", "III", " I ", 'I', OrePrefixes.ingot.get(aMaterial) });
                 }
-                GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE
-                        .getToolWithStats(IDMetaTool01.CROWBAR.ID, 1, aMaterial, aMaterial, null),
-                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "hDS", "DSD", "SDf", 'S', OrePrefixes.stick.get(aMaterial), 'D', Dyes.dyeBlue });
+                ItemStack tCrowbar = GTToolItems.CROWBAR.registerMaterial(
+                    aMaterial,
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L));
+                if (tCrowbar != null) {
+                    GTModHandler.addCraftingRecipe(
+                        tCrowbar,
+                        GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                        new Object[] { "hDS", "DSD", "SDf", 'S', OrePrefixes.stick.get(aMaterial), 'D', Dyes.dyeBlue });
+                }
                 ItemStack tScrewdriver = GTToolItems.SCREWDRIVER.registerMaterial(
                     aMaterial,
                     new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),

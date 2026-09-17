@@ -22,7 +22,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
@@ -64,7 +63,6 @@ import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.tools.ToolTurbine;
-import mods.railcraft.api.core.items.IToolCrowbar;
 
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
@@ -73,10 +71,8 @@ import mods.railcraft.api.core.items.IToolCrowbar;
  */
 @Optional.InterfaceList(
     value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.ModIDs.FORESTRY),
-        @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.ModIDs.RAILCRAFT),
         @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O), })
-public abstract class MetaGeneratedTool extends MetaBaseItem
-    implements IDamagableItem, IGTTool, IToolGrafter, IToolCrowbar, ITool {
+public abstract class MetaGeneratedTool extends MetaBaseItem implements IDamagableItem, IGTTool, IToolGrafter, ITool {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -890,19 +886,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             : 0.0F;
     }
 
-    @Override
-    public boolean canWhack(EntityPlayer aPlayer, ItemStack aStack, int aX, int aY, int aZ) {
-        if (!isItemStackUsable(aStack)) return false;
-        IToolStats tStats = getToolStats(aStack);
-        return tStats != null && tStats.isCrowbar();
-    }
-
-    @Override
-    public void onWhack(EntityPlayer aPlayer, ItemStack aStack, int aX, int aY, int aZ) {
-        IToolStats tStats = getToolStats(aStack);
-        if (tStats != null) doDamage(aStack, tStats.getToolDamagePerEntityAttack());
-    }
-
     // EnderIO ITool. Only wrenches ever qualified, and the wrench is its own item now.
     @Override
     public boolean canUse(ItemStack stack, EntityPlayer player, int x, int y, int z) {
@@ -916,32 +899,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     @Override
     public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
         return false;
-    }
-
-    @Override
-    public boolean canLink(EntityPlayer aPlayer, ItemStack aStack, EntityMinecart cart) {
-        if (!isItemStackUsable(aStack)) return false;
-        IToolStats tStats = getToolStats(aStack);
-        return tStats != null && tStats.isCrowbar() && aPlayer.isSneaking();
-    }
-
-    @Override
-    public void onLink(EntityPlayer aPlayer, ItemStack aStack, EntityMinecart cart) {
-        IToolStats tStats = getToolStats(aStack);
-        if (tStats != null) doDamage(aStack, tStats.getToolDamagePerEntityAttack());
-    }
-
-    @Override
-    public boolean canBoost(EntityPlayer aPlayer, ItemStack aStack, EntityMinecart cart) {
-        if (!isItemStackUsable(aStack)) return false;
-        IToolStats tStats = getToolStats(aStack);
-        return tStats != null && tStats.isCrowbar() && !aPlayer.isSneaking();
-    }
-
-    @Override
-    public void onBoost(EntityPlayer aPlayer, ItemStack aStack, EntityMinecart cart) {
-        IToolStats tStats = getToolStats(aStack);
-        if (tStats != null) doDamage(aStack, tStats.getToolDamagePerEntityAttack());
     }
 
     @Override

@@ -3,6 +3,7 @@ package gregtech.common.items.tools;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.common.tools.ToolCrowbar;
 import gregtech.common.tools.ToolScrewdriver;
 import gregtech.common.tools.ToolScrewdriverHV;
 import gregtech.common.tools.ToolScrewdriverLV;
@@ -30,6 +31,7 @@ public final class GTToolItems {
     public static ToolScrewdriverElectricItem SCREWDRIVER_LV;
     public static ToolScrewdriverElectricItem SCREWDRIVER_MV;
     public static ToolScrewdriverElectricItem SCREWDRIVER_HV;
+    public static ToolCrowbarItem CROWBAR;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -104,6 +106,7 @@ public final class GTToolItems {
             1_600_000L,
             512L,
             3);
+        CROWBAR = new ToolCrowbarItem("tool.crowbar", new ToolCrowbar(), "%material Crowbar");
     }
 
     /**

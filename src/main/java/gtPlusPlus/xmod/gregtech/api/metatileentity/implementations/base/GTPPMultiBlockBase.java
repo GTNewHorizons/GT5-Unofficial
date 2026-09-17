@@ -1181,9 +1181,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (!mToolStacks.isEmpty()) return;
 
         mToolStacks.put(true + "WRENCH", GTToolItems.WRENCH.getToolWithMaterial(GOOD));
-        mToolStacks.put(
-            true + "CROWBAR",
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.CROWBAR.ID, 1, GOOD, Materials.Tungsten, null));
+        mToolStacks.put(true + "CROWBAR", GTToolItems.CROWBAR.getToolWithMaterial(GOOD));
         mToolStacks.put(
             true + "HARDHAMMER",
             MetaGeneratedTool01.INSTANCE
@@ -1196,9 +1194,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 .getToolWithStats(IDMetaTool01.SOLDERING_IRON_LV.ID, 1, GOOD, Materials.Tungsten, null));
 
         mToolStacks.put(false + "WRENCH", GTToolItems.WRENCH.getToolWithMaterial(BAD));
-        mToolStacks.put(
-            false + "CROWBAR",
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.CROWBAR.ID, 1, BAD, Materials.Tungsten, null));
+        mToolStacks.put(false + "CROWBAR", GTToolItems.CROWBAR.getToolWithMaterial(BAD));
         mToolStacks.put(
             false + "HARDHAMMER",
             MetaGeneratedTool01.INSTANCE

@@ -12,10 +12,7 @@ import com.google.common.base.Strings;
 
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.common.items.MetaGeneratedTool01;
-import gregtech.common.items.behaviors.BehaviourCrowbar;
 
 public class ToolCrowbar extends GTTool {
 
@@ -55,14 +52,10 @@ public class ToolCrowbar extends GTTool {
             return true;
         }
         String tTool = aBlock.getHarvestTool(aMetaData);
-        if (Strings.isNullOrEmpty(tTool)) {
-            for (IToolStats i : MetaGeneratedTool01.INSTANCE.mToolStats.values()) {
-                if (i instanceof ToolCrowbar && i != this && !i.isMinableBlock(aBlock, aMetaData)) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        // A block that names no harvest tool is fair game. This used to scan MetaGeneratedTool01's stats for another
+        // ToolCrowbar that disagreed, but the same instance was registered under both of the crowbar's metadata ids,
+        // so the "i != this" test could never pass -- and the crowbar has its own item now regardless.
+        if (Strings.isNullOrEmpty(tTool)) return true;
         return tTool.equals("crowbar");
     }
 
@@ -77,11 +70,6 @@ public class ToolCrowbar extends GTTool {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : null;
-    }
-
-    @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
-        aItem.addItemBehavior(aID, new BehaviourCrowbar(1, 1000));
     }
 
     @Override

@@ -211,4 +211,17 @@ class PosteaToolMigrationTest {
         assertEquals(200_000L, tag.getLong("GT.MaxCharge"), "the smaller capacity must be recorded on the stack");
         assertEquals(20_000L, tag.getLong("GT.ItemCharge"));
     }
+
+    @Test
+    void handCrowbarKeepsItsDurability() {
+        NBTTagCompound stack = oldTool(20, "Iron", 5_000L, 12_800L, (byte) 0, null, null);
+
+        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false, 0L);
+
+        assertEquals(IRON_META, stack.getShort("Damage"));
+        assertEquals(
+            5_000L,
+            stack.getCompoundTag("tag")
+                .getLong("GT.ToolDamage"));
+    }
 }

@@ -11,6 +11,7 @@ public enum IDMetaTool01 {
     SOFTMALLET(14),
     WRENCH(16),
     FILE(18),
+    // Reserved, see SOFTMALLET above.
     CROWBAR(20),
     // Reserved, see SOFTMALLET above.
     SCREWDRIVER(22),

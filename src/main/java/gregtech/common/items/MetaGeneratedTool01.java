@@ -8,7 +8,6 @@ import static gregtech.common.items.IDMetaTool01.BUZZSAW_MV;
 import static gregtech.common.items.IDMetaTool01.CHAINSAW_HV;
 import static gregtech.common.items.IDMetaTool01.CHAINSAW_LV;
 import static gregtech.common.items.IDMetaTool01.CHAINSAW_MV;
-import static gregtech.common.items.IDMetaTool01.CROWBAR;
 import static gregtech.common.items.IDMetaTool01.DRILL_HV;
 import static gregtech.common.items.IDMetaTool01.DRILL_LV;
 import static gregtech.common.items.IDMetaTool01.DRILL_MV;
@@ -75,7 +74,6 @@ import gregtech.common.tools.ToolBuzzSawMV;
 import gregtech.common.tools.ToolChainsawHV;
 import gregtech.common.tools.ToolChainsawLV;
 import gregtech.common.tools.ToolChainsawMV;
-import gregtech.common.tools.ToolCrowbar;
 import gregtech.common.tools.ToolDrillHV;
 import gregtech.common.tools.ToolDrillLV;
 import gregtech.common.tools.ToolDrillMV;
@@ -152,17 +150,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
             new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
-        GregTechAPI.registerTool(
-            addTool(
-                CROWBAR.ID,
-                "Crowbar",
-                "Dismounts Covers and Rotates Rails",
-                new ToolCrowbar(),
-                ToolDictNames.craftingToolCrowbar,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L)),
-            GregTechAPI.sCrowbarList);
         addTool(
             MORTAR.ID,
             "Mortar",
