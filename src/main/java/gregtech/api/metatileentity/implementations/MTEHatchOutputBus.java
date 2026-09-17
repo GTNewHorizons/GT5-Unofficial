@@ -384,7 +384,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
         }
 
         @Override
-        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack, long totalPerParallel, long perParallel) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             int maxStackSize = getStackSizeLimit(-1, stack);

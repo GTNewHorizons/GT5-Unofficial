@@ -176,6 +176,12 @@ public enum CondensateType {
         return unit;
     }
 
+    /// Returns the source fluid for this condensate type (e.g. molten Neutronium for Neutronium condensate).
+    /// The returned FluidStack has the unit amount; callers should adjust the amount as needed.
+    public FluidStack getSourceFluid() {
+        return source.get();
+    }
+
     public String getAbbrevName() {
         return StatCollector.translateToLocal("abbrev.entangled_" + id);
     }

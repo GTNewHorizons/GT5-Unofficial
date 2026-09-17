@@ -37,6 +37,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -227,8 +229,9 @@ public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustri
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_MACERATOR;
     }
 

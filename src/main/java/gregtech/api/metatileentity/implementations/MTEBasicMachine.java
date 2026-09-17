@@ -1222,6 +1222,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         boolean isActive = tag.getBoolean("isActiveSingleBlock");
         String euText = StatCollector.translateToLocalFormatted(
             "GT5U.waila.machine.eu_bar",
+            formatNumber(eu),
             maxEu > 0 ? Math.clamp((int) ((double) eu / maxEu * 100), 0, 100) : 0);
 
         List<ItemStack> inputItems = new ArrayList<>();

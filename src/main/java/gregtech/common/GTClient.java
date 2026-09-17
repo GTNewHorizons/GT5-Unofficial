@@ -86,6 +86,7 @@ import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
+import gregtech.api.net.GTPacketRequestOregenPattern;
 import gregtech.api.net.cape.GTPacketSetCape;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.ColorsMetadataSection;
@@ -382,6 +383,8 @@ public class GTClient extends GTProxy {
         mFirstTick = false;
         GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
         GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
+        // The server pushes this on login, ask again now that there is a world in case that push was missed
+        GTValues.NW.sendToServer(new GTPacketRequestOregenPattern());
 
         if (!Minecraft.getMinecraft()
             .isSingleplayer()) {

@@ -197,7 +197,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         }
 
         @Override
-        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack, long totalPerParallel, long perParallel) {
             for (ItemStack lockedItem : mInventory) {
                 if (lockedItem != null && lockedItem.isItemEqual(stack)) {
                     stack.stackSize = 0;

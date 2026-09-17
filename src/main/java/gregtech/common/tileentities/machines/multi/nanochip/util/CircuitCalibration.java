@@ -12,29 +12,29 @@ public enum CircuitCalibration {
     NONE(CalibrationThreshold.EMPTY, CalibrationThreshold.EMPTY, CalibrationThreshold.EMPTY),
 
     PRIMITIVE(
-        new CalibrationThreshold("Crude", 0.2, nac -> {}),
-        new CalibrationThreshold("Robust", 0.4, nac -> {}),
-        new CalibrationThreshold("Archaic", 0.6, nac -> {})
+        new CalibrationThreshold("Crude", 0.4, nac -> {}),
+        new CalibrationThreshold("Robust", 0.8, nac -> {}),
+        new CalibrationThreshold("Archaic", 1, nac -> {})
     ),
     CRYSTAL(
-        new CalibrationThreshold("Shiny", 0.2, nac -> {nac.globalEUMultiplier = 0.8f;}),
-        new CalibrationThreshold("Glimmering", 0.4, nac -> {nac.globalDurationMultiplier = 0.8f;}),
-        new CalibrationThreshold("Prismatic", 0.6, nac -> {nac.crystalT3Active = true;})
+        new CalibrationThreshold("Shiny", 0.3, nac -> {nac.globalEUMultiplier = 0.8f;}),
+        new CalibrationThreshold("Glimmering", 0.6, nac -> {nac.globalDurationMultiplier = 0.8f;}),
+        new CalibrationThreshold("Prismatic", 0.9, nac -> {nac.crystalT3Active = true;})
     ),
     WETWARE(
-        new CalibrationThreshold("Wet", 0.2, nac -> {nac.globalEUMultiplier = 0.8f;}),
-        new CalibrationThreshold("Fleshy", 0.4, nac -> {nac.globalDurationMultiplier = 0.8f;}),
-        new CalibrationThreshold("Wriggling", 0.6, nac -> {nac.wetwareT3Active = true;})
+        new CalibrationThreshold("Wet", 0.3, nac -> {nac.globalEUMultiplier = 0.8f;}),
+        new CalibrationThreshold("Fleshy", 0.6, nac -> {nac.globalDurationMultiplier = 0.8f;}),
+        new CalibrationThreshold("Wriggling", 0.9, nac -> {nac.wetwareT3Active = true;})
     ),
     BIO(
-        new CalibrationThreshold("Aware", 0.2, nac -> {nac.globalEUMultiplier = 0.8f;}),
-        new CalibrationThreshold("Sentient", 0.4, nac -> {nac.globalDurationMultiplier = 0.8f;}),
-        new CalibrationThreshold("ALIVE!!!!!!!!!", 0.6, nac -> {nac.wetwareT3Active = true; nac.bioT3Active = true;})
+        new CalibrationThreshold("Aware", 0.25, nac -> {nac.globalEUMultiplier = 0.8f;}),
+        new CalibrationThreshold("Sentient", 0.5, nac -> {nac.globalDurationMultiplier = 0.8f;}),
+        new CalibrationThreshold("ALIVE!!!!!!!!!", 0.75, nac -> {nac.bioT3Active = true;})
     ),
     OPTICAL(
-        new CalibrationThreshold("Tuned", 0.2, nac -> {nac.globalEUMultiplier = 0.8f;}),
-        new CalibrationThreshold("Precise", 0.4, nac -> {nac.globalDurationMultiplier = 0.8f;}),
-        new CalibrationThreshold("Perfected", 0.6, nac -> {nac.opticalT3Active = true;})
+        new CalibrationThreshold("Tuned", 0.25, nac -> {nac.globalEUMultiplier = 0.8f;}),
+        new CalibrationThreshold("Precise", 0.5, nac -> {nac.globalDurationMultiplier = 0.8f;}),
+        new CalibrationThreshold("Perfected", 0.75, nac -> {nac.opticalT3Active = true;})
     ),
     EXOTIC(
         new CalibrationThreshold("TODO", 0.2, nac -> {}),

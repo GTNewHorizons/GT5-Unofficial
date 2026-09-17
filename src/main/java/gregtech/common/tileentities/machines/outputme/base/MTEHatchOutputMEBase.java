@@ -63,6 +63,7 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.me.storage.CellInventory;
 import appeng.me.storage.CellInventoryHandler;
 import appeng.me.storage.MEInventoryHandler;
+import appeng.me.storage.VoidCellInventory;
 import appeng.util.IterationCounter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
@@ -583,9 +584,21 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         return handler.isDistribution();
     }
 
+    public boolean canVoidOverflow() {
+        if (handler == null) return false;
+        return handler.isOverflow() || handler.getCellInv() instanceof VoidCellInventory<?>;
+    }
+
     public boolean canStore(@NotNull T input) {
         if (handler == null || !handler.isPreformatted()) return true;
         return handler.canAccept(input);
+    }
+
+    public long getCellAvailableSpace() {
+        if (handler != null && handler.getCellInv() instanceof CellInventory<?>cellInv) {
+            return cellInv.getRemainingItemCount();
+        }
+        return 0;
     }
 
     public boolean getCacheMode() {
