@@ -81,7 +81,7 @@ import static gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumChlorideCon
 import static gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumExtractingNanoResin;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumOreConcentrate;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.ImpureLanthanumChloride;
-import static gtnhlanth.common.register.WerkstoffMaterialPool.LanthaniumChloride;
+import static gtnhlanth.common.register.WerkstoffMaterialPool.LanthanumChloride;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.LanthanumChlorideConcentrate;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.LanthanumExtractingNanoResin;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.LanthanumOreConcentrate;
@@ -1119,7 +1119,7 @@ public class RecipeLoader {
             .itemInputs(Materials.Lanthanum.getDust(1))
             .circuit(1)
             .fluidInputs(Materials.HydrochloricAcid.getFluid(3_000))
-            .itemOutputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 4))
+            .itemOutputs(WerkstoffMaterialPool.LanthanumChloride.get(OrePrefixes.dust, 4))
             .fluidOutputs(Materials.Hydrogen.getGas(3_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1129,7 +1129,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Water.getFluid(3_000))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(6_000))
-            .itemInputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 8))
+            .itemInputs(WerkstoffMaterialPool.LanthanumChloride.get(OrePrefixes.dust, 8))
             .itemOutputs(WerkstoffMaterialPool.LanthanumOxide.get(OrePrefixes.dust, 1))
             .duration(10 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1690,7 +1690,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 2))
             .itemOutputs(
-                WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 1),
+                WerkstoffMaterialPool.LanthanumChloride.get(OrePrefixes.dust, 1),
                 WerkstoffMaterialPool.NeodymiumOxide.get(OrePrefixes.dust, 1))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
             .duration(45 * SECONDS)
@@ -3200,7 +3200,7 @@ public class RecipeLoader {
         // Centrifuge ImpureLanthanumChlorideDust
         GTValues.RA.stdBuilder()
             .itemInputs(ImpureLanthanumChloride.get(OrePrefixes.dust, 36))
-            .itemOutputs(LanthaniumChloride.get(OrePrefixes.dust, 36), RarestEarthResidue.get(OrePrefixes.dust, 5))
+            .itemOutputs(LanthanumChloride.get(OrePrefixes.dust, 36), RarestEarthResidue.get(OrePrefixes.dust, 5))
             .eut(TierEU.RECIPE_EV)
             .duration(5 * SECONDS)
             .addTo(centrifugeRecipes);
