@@ -650,7 +650,8 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                     updateModifiers();
                     ItemStack maybeQueen = this.mOutputQueue.peek();
                     boolean isQueen = maybeQueen != null && beeRoot.isMember(maybeQueen, EnumBeeType.QUEEN.ordinal());
-                    boolean isPrincess = maybeQueen != null && beeRoot.isMember(maybeQueen, EnumBeeType.PRINCESS.ordinal());
+                    boolean isPrincess = maybeQueen != null
+                        && beeRoot.isMember(maybeQueen, EnumBeeType.PRINCESS.ordinal());
                     if ((mAutoQueen && isQueen) || (isAutomated && (isQueen || isPrincess))) {
                         if (aBaseMetaTileEntity.addStackToSlot(queen, maybeQueen)) {
                             this.mOutputQueue.remove();
@@ -1646,6 +1647,11 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         }
 
         // base class expects mOutputItems.length, not all produce will be displayed for bees like Botanic
-        getWailaNBTTagWithItems(this.mOutputQueue.stream().limit(mOutputItems.length).toArray(ItemStack[]::new), "outputRecipeItems", tag);
+        getWailaNBTTagWithItems(
+            this.mOutputQueue.stream()
+                .limit(mOutputItems.length)
+                .toArray(ItemStack[]::new),
+            "outputRecipeItems",
+            tag);
     }
 }
