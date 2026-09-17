@@ -400,7 +400,7 @@ public class MTETransformer extends MTETieredMachineBlock {
         final long idealAmperesIn = idealAmperesIn();
         return new String[] {
             StatCollector.translateToLocalFormatted(
-                "gt.blockmachines.transformer.desc",
+                "gt.blockmachines.transformer.ratio.desc",
                 TooltipHelper.coloredText(String.valueOf(idealAmperesIn), EnumChatFormatting.AQUA),
                 GTUtility.getColoredTierNameFromVoltage(V[mTier + 1]) + EnumChatFormatting.GRAY,
                 TooltipHelper.coloredText(String.valueOf(idealAmperesIn * 4L), EnumChatFormatting.AQUA),
