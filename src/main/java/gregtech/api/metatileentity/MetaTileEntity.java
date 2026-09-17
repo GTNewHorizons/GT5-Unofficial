@@ -415,8 +415,11 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      * @param tooltip The tooltip lines of the machine item
      */
     protected void addDefaultEnergyTooltipInformation(List<String> tooltip) {
-        final boolean hasInput = maxEUInput() > 0L;
-        final boolean hasOutput = maxEUOutput() > 0L;
+        // Only machines that take part in the energy net show these lines, the same way the old hardcoded tooltip in
+        // ItemMachines asked getInputVoltage()/getOutputVoltage() instead of the raw values.
+        final boolean netConnected = isElectric() && maxEUStore() > 0L;
+        final boolean hasInput = netConnected && maxEUInput() > 0L;
+        final boolean hasOutput = netConnected && isEnetOutput() && maxEUOutput() > 0L;
         final boolean showsAmperage = showsAmperageInTooltip();
         final long amperesIn = showsAmperage && hasInput ? maxAmperesIn() : 0L;
         final long amperesOut = showsAmperage && hasOutput ? maxAmperesOut() : 0L;
