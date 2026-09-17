@@ -263,7 +263,8 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                     + EnumChatFormatting.GRAY
                     + " and drain rate by "
                     + EnumChatFormatting.DARK_RED
-                    + "10x")
+                    + OVERDRIVE_DRAIN_MULT
+                    + "x")
             .addInfo(
                 EnumChatFormatting.RED + "Overdrive"
                     + EnumChatFormatting.GRAY
@@ -357,8 +358,9 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 if (shouldPyrotheumBeSupplied()) {
                     if (!checkFluid(
-                        (int) Math
-                            .floor(PYROTHEUM_DRAIN_BASE * parallelModifier * (machineMode == MODE_OVERDRIVE ? 10 : 1))))
+                        (int) Math.floor(
+                            PYROTHEUM_DRAIN_BASE * parallelModifier
+                                * (machineMode == MODE_OVERDRIVE ? OVERDRIVE_DRAIN_MULT : 1))))
                         return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 }
                 return recipe.mSpecialValue <= MTEExothermicHearth.this.heatingCapacity
@@ -375,6 +377,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     private int runningTickCounter = 0;
     private float parallelModifier = 1;
     private static final int PYROTHEUM_DRAIN_BASE = 250;
+    private static final int OVERDRIVE_DRAIN_MULT = 50;
     // without pyrotheum, it should take 30 minutes to reach max multiplier (2x)
     // with pyrotheum, itll take 5 minutes.
     // with overdrive, itll take 1 minute.
@@ -396,8 +399,9 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             if (shouldPyrotheumBeSupplied()) {
                 final FluidStack pyrotheum = new FluidStack(
                     TFFluids.fluidPyrotheum,
-                    (int) Math
-                        .floor(PYROTHEUM_DRAIN_BASE * parallelModifier * (machineMode == MODE_OVERDRIVE ? 10 : 1)));
+                    (int) Math.floor(
+                        PYROTHEUM_DRAIN_BASE * parallelModifier
+                            * (machineMode == MODE_OVERDRIVE ? OVERDRIVE_DRAIN_MULT : 1)));
                 if (!this.depleteInput(pyrotheum, false)) {
                     stopMachine(ShutDownReasonRegistry.outOfFluid(pyrotheum));
                     return false;
@@ -436,7 +440,8 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         tag.setBoolean("overdrive", machineMode == MODE_OVERDRIVE);
         tag.setInteger(
             "drain",
-            (int) Math.floor(parallelModifier * PYROTHEUM_DRAIN_BASE * (machineMode == MODE_OVERDRIVE ? 10 : 1)));
+            (int) Math.floor(
+                parallelModifier * PYROTHEUM_DRAIN_BASE * (machineMode == MODE_OVERDRIVE ? OVERDRIVE_DRAIN_MULT : 1)));
         tag.setFloat("parallelModifier", parallelModifier);
         tag.setInteger("heatingCapacity", heatingCapacity);
     }
@@ -483,7 +488,8 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                     "GT5U.waila.mebf.pyrotheum",
                     formatFluid(
                         (int) Math.floor(
-                            PYROTHEUM_DRAIN_BASE * this.parallelModifier * (machineMode == MODE_OVERDRIVE ? 10 : 1)))));
+                            PYROTHEUM_DRAIN_BASE * this.parallelModifier
+                                * (machineMode == MODE_OVERDRIVE ? OVERDRIVE_DRAIN_MULT : 1)))));
         }
     }
 
