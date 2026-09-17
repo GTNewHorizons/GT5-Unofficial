@@ -11,6 +11,9 @@ import gregtech.api.graphs.paths.NodePath;
 // base Node class
 public class Node {
 
+    private Node nodeMapRoot = this;
+    private boolean nodeMapValid = true;
+
     public Node(int aNodeValue, TileEntity aTileEntity, ArrayList<ConsumerNode> aConsumers) {
         this.mNodeValue = aNodeValue;
         this.mTileEntity = aTileEntity;
@@ -19,6 +22,18 @@ public class Node {
         // you don't want to generate map multiple times in the same tick
         mCreationTime = MinecraftServer.getServer()
             .getTickCounter();
+    }
+
+    public void joinNodeMap(Node previousNode) {
+        if (previousNode != null) nodeMapRoot = previousNode.nodeMapRoot;
+    }
+
+    public boolean isNodeMapValid() {
+        return nodeMapRoot.nodeMapValid;
+    }
+
+    public void invalidateNodeMap() {
+        nodeMapRoot.nodeMapValid = false;
     }
 
     public final TileEntity mTileEntity;

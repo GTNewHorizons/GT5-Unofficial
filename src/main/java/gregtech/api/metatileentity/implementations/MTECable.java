@@ -31,6 +31,8 @@ import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.graphs.GenerateNodeMap;
+import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;
@@ -235,25 +237,55 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     }
 
     @Override
+    public int connect(ForgeDirection side) {
+        final int result = super.connect(side);
+        if (result > 0 && getBaseMetaTileEntity() instanceof BaseMetaPipeEntity base && base.isServerSide()) {
+            base.updateConnections();
+        }
+        return result;
+    }
+
+    @Override
+    public void disconnect(ForgeDirection side) {
+        super.disconnect(side);
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity base && base.isServerSide()) {
+            base.updateConnections();
+        }
+    }
+
+    @Override
     public long transferElectricity(ForgeDirection side, long voltage, long amperage,
         HashSet<TileEntity> alreadyPassedSet) {
         if (amperage <= 0 || !getBaseMetaTileEntity().isServerSide()
             || (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN)) return 0;
         final BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        if (tBase.getNode() == null) new GenerateNodeMapPower(tBase);
         if (!(tBase.getNode() instanceof PowerNode tNode)) return 0;
+        NodeList consumers = getConsumers(tNode);
+        long usedAmperage = PowerNodes.powerNode(tNode, null, consumers, (int) voltage, (int) amperage);
+        if (!consumers.isStale()) return usedAmperage;
+
+        GenerateNodeMap.clearNodeMap(tNode, -1);
+        new GenerateNodeMapPower(tBase);
+        if (usedAmperage >= amperage || !(tBase.getNode() instanceof PowerNode rebuiltNode)) return usedAmperage;
+        return usedAmperage + PowerNodes
+            .powerNode(rebuiltNode, null, getConsumers(rebuiltNode), (int) voltage, (int) (amperage - usedAmperage));
+    }
+
+    private static NodeList getConsumers(PowerNode node) {
         int tPlace = 0;
-        final Node[] tToPower = new Node[tNode.mConsumers.size()];
-        if (tNode.mHadVoltage) {
-            for (ConsumerNode consumer : tNode.mConsumers) {
+        final Node[] tToPower = new Node[node.mConsumers.size()];
+        if (node.mHadVoltage) {
+            for (ConsumerNode consumer : node.mConsumers) {
                 if (consumer.needsEnergy()) tToPower[tPlace++] = consumer;
             }
         } else {
-            tNode.mHadVoltage = true;
-            for (ConsumerNode consumer : tNode.mConsumers) {
+            node.mHadVoltage = true;
+            for (ConsumerNode consumer : node.mConsumers) {
                 tToPower[tPlace++] = consumer;
             }
         }
-        return PowerNodes.powerNode(tNode, null, new NodeList(tToPower), (int) voltage, (int) amperage);
+        return new NodeList(tToPower);
     }
 
     @Override

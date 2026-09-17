@@ -102,14 +102,17 @@ public abstract class GenerateNodeMap {
             } else {
                 tPipeNode = getPipeNode(aNextNodeValue, oppositeSide, aTileEntity, aConsumers);
             }
+            tPipeNode.joinNodeMap(aPreviousNode);
             tPipe.setNode(tPipeNode);
             aNodeMap.add(tPipeNode);
             tPipeNode.mSelfPath = getNewPath(new MetaPipeEntity[] { tMetaPipe });
+            tPipeNode.mSelfPath.setNodeMap(tPipeNode);
             tThisNode = tPipeNode;
             if (tInvalidSide != ForgeDirection.UNKNOWN) {
                 final int iInvalid = tInvalidSide.ordinal();
                 tPipeNode.mNeighbourNodes[iInvalid] = aPreviousNode;
                 tPipeNode.mNodePaths[iInvalid] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
+                tPipeNode.mNodePaths[iInvalid].setNodeMap(tPipeNode);
                 final Lock lock = new Lock();
                 tPipeNode.mNodePaths[oppositeSide.ordinal()].lock = lock;
                 tPipeNode.locks[iInvalid] = lock;
@@ -121,8 +124,10 @@ public abstract class GenerateNodeMap {
         } else if (addConsumer(aTileEntity, oppositeSide, aNextNodeValue, aConsumers)) {
             final int oppositeSideOrdinal = oppositeSide.ordinal();
             final ConsumerNode tConsumeNode = aConsumers.get(aConsumers.size() - 1);
+            tConsumeNode.joinNodeMap(aPreviousNode);
             tConsumeNode.mNeighbourNodes[oppositeSideOrdinal] = aPreviousNode;
             tConsumeNode.mNodePaths[oppositeSideOrdinal] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
+            tConsumeNode.mNodePaths[oppositeSideOrdinal].setNodeMap(tConsumeNode);
             final Lock lock = new Lock();
             tConsumeNode.mNodePaths[oppositeSideOrdinal].lock = lock;
             aPreviousNode.returnValues.mReturnPath = tConsumeNode.mNodePaths[oppositeSideOrdinal];

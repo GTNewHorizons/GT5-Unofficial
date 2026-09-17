@@ -42,6 +42,7 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
+import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -64,6 +65,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     private byte oldConnections = 0;
     protected Node node;
     protected NodePath nodePath;
+    private int nodePathConnections;
 
     public Node getNode() {
         return node;
@@ -79,6 +81,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     public void setNodePath(NodePath nodePath) {
         this.nodePath = nodePath;
+        nodePathConnections = nodePath == null || mMetaTileEntity == null ? 0 : mMetaTileEntity.mConnections;
+    }
+
+    public Node getNodeMap() {
+        return node != null ? node : nodePath == null ? null : nodePath.getNodeMap();
     }
 
     public void addToLock(TileEntity tileEntity, ForgeDirection side) {
@@ -226,6 +233,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             onCoverUnload();
             mMetaTileEntity.onUnload();
         }
+        markCableTopologyChanged();
+        invalidateNodePaths(-1);
         super.onUnload();
     }
 
@@ -233,7 +242,10 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         if (mConnections == mMetaTileEntity.mConnections) {
             return;
         }
-        mConnections = mMetaTileEntity.mConnections;
+        markCableTopologyChanged();
+        final int newConnections = mMetaTileEntity.mConnections;
+        invalidateNodePaths(mConnections & ~newConnections);
+        mConnections = (byte) newConnections;
         GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
     }
 
@@ -435,10 +447,31 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         tileEntityInvalid = false;
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onRemoval();
+            markCableTopologyChanged();
+            invalidateNodePaths(-1);
             mMetaTileEntity.setBaseMetaTileEntity(null);
         }
         leaveEnet();
         super.invalidate();
+    }
+
+    private void markCableTopologyChanged() {
+        if (mMetaTileEntity instanceof MTECable) {
+            final Node nodeMap = getNodeMap();
+            if (nodeMap != null) nodeMap.invalidateNodeMap();
+        }
+    }
+
+    private void invalidateNodePaths(int removedConnections) {
+        if (node != null) {
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if ((removedConnections & side.flag) != 0 && node.mNodePaths[side.ordinal()] != null) {
+                    node.mNodePaths[side.ordinal()].invalidate();
+                }
+            }
+        } else if (nodePath != null && (removedConnections & nodePathConnections) != 0) {
+            nodePath.invalidate();
+        }
     }
 
     @Override

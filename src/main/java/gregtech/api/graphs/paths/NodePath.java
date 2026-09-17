@@ -1,6 +1,7 @@
 package gregtech.api.graphs.paths;
 
 import gregtech.api.graphs.Lock;
+import gregtech.api.graphs.Node;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 
@@ -9,6 +10,8 @@ public class NodePath {
 
     protected MetaPipeEntity[] mPipes;
     public Lock lock = new Lock();
+    private Node node;
+    private boolean valid = true;
 
     public NodePath(MetaPipeEntity[] aCables) {
         this.mPipes = aCables;
@@ -19,6 +22,22 @@ public class NodePath {
         return mPipes;
     }
 
+    public void setNodeMap(Node node) {
+        this.node = node;
+    }
+
+    public Node getNodeMap() {
+        return node;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void invalidate() {
+        valid = false;
+    }
+
     protected void processPipes() {
         for (MetaPipeEntity tPipe : mPipes) {
             BaseMetaPipeEntity basePipe = (BaseMetaPipeEntity) tPipe.getBaseMetaTileEntity();
@@ -27,6 +46,7 @@ public class NodePath {
     }
 
     public void clearPath() {
+        node = null;
         for (MetaPipeEntity mPipe : mPipes) {
             BaseMetaPipeEntity tBasePipe = (BaseMetaPipeEntity) mPipe.getBaseMetaTileEntity();
             if (tBasePipe != null) {
