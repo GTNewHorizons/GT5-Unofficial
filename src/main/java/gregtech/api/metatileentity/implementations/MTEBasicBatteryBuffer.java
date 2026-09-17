@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,9 +73,12 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        String[] desc = new String[mDescriptionArray.length + 1];
-        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = StatCollector
+        // The buffers are registered without a description, which must not turn into an empty tooltip line.
+        final String[] description = Arrays.stream(mDescriptionArray)
+            .filter(line -> !line.isEmpty())
+            .toArray(String[]::new);
+        final String[] desc = Arrays.copyOf(description, description.length + 1);
+        desc[description.length] = StatCollector
             .translateToLocalFormatted("gt.blockmachines.slot_count.desc", mInventory.length);
         return desc;
     }
