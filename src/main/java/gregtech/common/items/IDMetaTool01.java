@@ -46,6 +46,7 @@ public enum IDMetaTool01 {
     WRENCH_LV(120),
     WRENCH_MV(122),
     WRENCH_HV(124),
+    // Reserved, see the note above.
     JACKHAMMER_LV(130),
     JACKHAMMER_MV(132),
     JACKHAMMER_HV(134),

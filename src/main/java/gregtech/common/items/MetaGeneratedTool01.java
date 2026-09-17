@@ -3,9 +3,6 @@ package gregtech.common.items;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_HV;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_LV;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_MV;
-import static gregtech.common.items.IDMetaTool01.JACKHAMMER_HV;
-import static gregtech.common.items.IDMetaTool01.JACKHAMMER_LV;
-import static gregtech.common.items.IDMetaTool01.JACKHAMMER_MV;
 import static gregtech.common.items.IDMetaTool01.POCKET_BRANCHCUTTER;
 import static gregtech.common.items.IDMetaTool01.POCKET_FILE;
 import static gregtech.common.items.IDMetaTool01.POCKET_KNIFE;
@@ -44,11 +41,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.tools.ItemNetworkAnalyzer;
 import gregtech.common.tools.ToolBuzzSawHV;
-import gregtech.common.tools.ToolBuzzSawLV;
-import gregtech.common.tools.ToolBuzzSawMV;
-import gregtech.common.tools.ToolJackHammerHV;
-import gregtech.common.tools.ToolJackHammerLV;
-import gregtech.common.tools.ToolJackHammerMV;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTurbineHuge;
 import gregtech.common.tools.ToolTurbineLarge;
@@ -75,60 +67,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         super("metatool.01");
         INSTANCE = this;
 
-        GregTechAPI.registerTool(
-            addTool(
-                JACKHAMMER_LV.ID,
-                "",
-                "",
-                new ToolJackHammerLV(),
-                ToolDictNames.craftingToolJackHammer,
-                ToolDictNames.craftingToolHardHammer,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)),
-            GregTechAPI.sJackhammerList);
-        GregTechAPI.registerTool(
-            addTool(
-                JACKHAMMER_MV.ID,
-                "",
-                "",
-                new ToolJackHammerMV(),
-                ToolDictNames.craftingToolJackHammer,
-                ToolDictNames.craftingToolHardHammer,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)),
-            GregTechAPI.sJackhammerList);
-        GregTechAPI.registerTool(
-            addTool(
-                JACKHAMMER_HV.ID,
-                "",
-                "",
-                new ToolJackHammerHV(),
-                ToolDictNames.craftingToolJackHammer,
-                ToolDictNames.craftingToolHardHammer,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)),
-            GregTechAPI.sJackhammerList);
-        addTool(
-            BUZZSAW_LV.ID,
-            "",
-            "",
-            new ToolBuzzSawLV(),
-            ToolDictNames.craftingToolSaw,
-            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
-        addTool(
-            BUZZSAW_MV.ID,
-            "",
-            "",
-            new ToolBuzzSawMV(),
-            ToolDictNames.craftingToolSaw,
-            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
         addTool(
             BUZZSAW_HV.ID,
             "",
@@ -267,12 +205,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     }
 
     static {
-        addTieredFamily(
-            "gt.metatool.01.jackhammer.name",
-            "gt.metatool.01.jackhammer.tooltip",
-            JACKHAMMER_LV.ID,
-            JACKHAMMER_MV.ID,
-            JACKHAMMER_HV.ID);
         addTieredFamily(
             "gt.metatool.01.buzzsaw.name",
             "gt.metatool.01.buzzsaw.tooltip",

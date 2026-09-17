@@ -17,6 +17,9 @@ import gregtech.common.tools.ToolFileHV;
 import gregtech.common.tools.ToolFileLV;
 import gregtech.common.tools.ToolFileMV;
 import gregtech.common.tools.ToolHardHammer;
+import gregtech.common.tools.ToolJackHammerHV;
+import gregtech.common.tools.ToolJackHammerLV;
+import gregtech.common.tools.ToolJackHammerMV;
 import gregtech.common.tools.ToolKnife;
 import gregtech.common.tools.ToolMortar;
 import gregtech.common.tools.ToolPlunger;
@@ -80,6 +83,9 @@ public final class GTToolItems {
     public static ToolChainsawItem CHAINSAW_LV;
     public static ToolChainsawItem CHAINSAW_MV;
     public static ToolChainsawItem CHAINSAW_HV;
+    public static ToolJackHammerItem JACKHAMMER_LV;
+    public static ToolJackHammerItem JACKHAMMER_MV;
+    public static ToolJackHammerItem JACKHAMMER_HV;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -247,6 +253,30 @@ public final class GTToolItems {
             new ToolChainsawHV(),
             "%material Chainsaw (HV)",
             "Can also harvest Ice",
+            1_600_000L,
+            512L,
+            3);
+        JACKHAMMER_LV = new ToolJackHammerItem(
+            "tool.jackhammer_lv",
+            new ToolJackHammerLV(),
+            "%material Jackhammer (LV)",
+            "Breaks Rocks into pieces",
+            100_000L,
+            32L,
+            1);
+        JACKHAMMER_MV = new ToolJackHammerItem(
+            "tool.jackhammer_mv",
+            new ToolJackHammerMV(),
+            "%material Jackhammer (MV)",
+            "Breaks Rocks into pieces",
+            400_000L,
+            128L,
+            2);
+        JACKHAMMER_HV = new ToolJackHammerItem(
+            "tool.jackhammer_hv",
+            new ToolJackHammerHV(),
+            "%material Jackhammer (HV)",
+            "Breaks Rocks into pieces",
             1_600_000L,
             512L,
             3);
