@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.client.GuiScrollingList;
-import detrav.items.DetravMetaGeneratedTool01;
+import detrav.enums.DetravScannerMode;
 import detrav.net.ProspectingPacket;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
@@ -38,7 +38,7 @@ class OresList extends GuiScrollingList {
                     .left())
             .collect(Collectors.toList());
         Collections.sort(allKeys);
-        if (packet.ptype == DetravMetaGeneratedTool01.MODE_POLLUTION) {
+        if (packet.ptype == DetravScannerMode.POLLUTION) {
             allKeys.clear();
             allKeys.add(StatCollector.translateToLocal("gui.detrav.scanner.pollution"));
         } else if (allKeys.size() > 1) {

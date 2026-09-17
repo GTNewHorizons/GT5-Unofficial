@@ -16,6 +16,13 @@ final class MetaToolStackMigration {
     }
 
     /**
+     * As {@link #rewriteToolStack(NBTTagCompound, int, boolean, long, String)}, for a tool with no mode key of its own.
+     */
+    static void rewriteToolStack(NBTTagCompound nbt, int newMeta, boolean electric, long defaultMaxCharge) {
+        rewriteToolStack(nbt, newMeta, electric, defaultMaxCharge, null);
+    }
+
+    /**
      * Rewrites a serialized old-style tool stack in place: the metadata becomes the material, and the
      * {@code GT.ToolStats} compound is replaced by the handful of keys the new item actually reads. Does not touch the
      * stack's item id, which the caller sets.
@@ -23,16 +30,19 @@ final class MetaToolStackMigration {
      * @param newMeta          the material's metadata on the new item.
      * @param electric         whether the target is an electric tool, which stores energy instead of durability.
      * @param defaultMaxCharge the electric target's default capacity; a stack that held less keeps its own value.
+     * @param legacyModeKey    an extra key inside {@code GT.ToolStats} that held this tool's mode, or null. The
+     *                         Prospector's Scanners kept theirs under a name of their own.
      */
-    static void rewriteToolStack(NBTTagCompound nbt, int newMeta, boolean electric, long defaultMaxCharge) {
+    static void rewriteToolStack(NBTTagCompound nbt, int newMeta, boolean electric, long defaultMaxCharge,
+        String legacyModeKey) {
         final NBTTagCompound tag = nbt.getCompoundTag("tag");
         final NBTTagCompound toolStats = tag.getCompoundTag("GT.ToolStats");
 
         final NBTTagCompound newTag = new NBTTagCompound();
         // The material grants the same enchantments either way, so carrying them over saves recomputing them.
         if (tag.hasKey("ench")) newTag.setTag("ench", tag.getTag("ench"));
-        final byte mode = toolStats.getByte("Mode");
-        if (mode != 0) newTag.setInteger("GT.ToolMode", mode);
+        final long mode = legacyModeKey == null ? toolStats.getByte("Mode") : toolStats.getLong(legacyModeKey);
+        if (mode != 0) newTag.setInteger("GT.ToolMode", (int) mode);
 
         if (electric) {
             // Electric tools no longer wear out, so any stored durability damage is simply dropped.

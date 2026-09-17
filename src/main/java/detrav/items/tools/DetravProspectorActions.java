@@ -1,4 +1,4 @@
-package detrav.items.behaviours;
+package detrav.items.tools;
 
 import static gregtech.api.enums.Mods.VisualProspecting;
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SplittableRandom;
 
 import net.minecraft.block.Block;
@@ -24,63 +25,72 @@ import net.minecraftforge.fluids.FluidStack;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
 import detrav.DetravScannerMod;
-import detrav.items.DetravMetaGeneratedTool01;
-import gregtech.api.items.MetaBaseItem;
+import detrav.enums.DetravScannerMode;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.UndergroundOil;
-import gregtech.common.items.behaviors.BehaviourNone;
+import gregtech.common.items.tools.ToolItemBase;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
 
 /**
- * Created by wital_000 on 19.03.2016.
+ * The prospecting half of the hand Prospector's Scanner, moved out of {@code BehaviourDetravToolProspector}.
+ * <p/>
+ * One of these is built per use rather than once per tool type: the old behaviour object was shared by every player
+ * holding a scanner and kept the running scan's findings in its own fields, so two players scanning at the same time
+ * could read each other's results.
  */
-public class BehaviourDetravToolProspector extends BehaviourNone {
+public class DetravProspectorActions {
 
-    static final int[] DISTANCEINTS = new int[] { 0, 4, 25, 64 };
-    int distTextIndex;
-
-    HashMap<String, Integer> ores;
-    int badluck;
-
-    protected final int mCosts;
+    static final int[] DISTANCE_INTS = new int[] { 0, 4, 25, 64 };
 
     static final String CHAT_MSG_SEPARATOR = EnumChatFormatting.STRIKETHROUGH + "--------------------";
 
-    public BehaviourDetravToolProspector(int aCosts) {
-        mCosts = aCosts;
+    /** Durability cost of scanning one chunk, in the unit where 100 is one durability point. */
+    protected final int costs;
+
+    /**
+     * The metadata this tier used to occupy on {@code detrav.metatool.01}. The scan range and the per-chunk success
+     * chance were both computed from it, and metadata is the crafting material now, so the tier carries the old value
+     * along instead and the numbers come out the same.
+     */
+    protected final int legacyMeta;
+
+    private int distTextIndex;
+    private Map<String, Integer> ores;
+    private int badluck;
+
+    public DetravProspectorActions(int costs, int legacyMeta) {
+        this.costs = costs;
+        this.legacyMeta = legacyMeta;
     }
 
-    @Override
-    public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
-        int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(ToolItemBase item, ItemStack stack, EntityPlayer player, World world, int x, int y,
+        int z) {
+        SplittableRandom random = new SplittableRandom();
+        int chance = Math.min(((1 + legacyMeta) * 8), 100);
 
-        SplittableRandom aRandom = new SplittableRandom();
-        int chance = Math.min(((1 + aStack.getItemDamage()) * 8), 100);
+        if (world.isRemote) return false;
 
-        if (aWorld.isRemote) return false;
-
-        Block block = aWorld.getBlock(aX, aY, aZ);
-        int meta = aWorld.getBlockMetadata(aX, aY, aZ);
+        Block block = world.getBlock(x, y, z);
+        int meta = world.getBlockMetadata(x, y, z);
 
         if (block == Blocks.bedrock) {
-            if (!aWorld.isRemote && aRandom.nextInt(100) < chance) {
-                FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
-                addChatMassageByValue(aPlayer, fStack.amount / 2, "a Fluid");
+            if (random.nextInt(100) < chance) {
+                FluidStack fluid = UndergroundOil.undergroundOil(world.getChunkFromBlockCoords(x, z), -1);
+                addChatMessageByValue(player, fluid.amount / 2, "a Fluid");
 
-                if (!aPlayer.capabilities.isCreativeMode)
-                    ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
+                if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs);
 
                 if (VisualProspecting.isModLoaded()) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
-                        (EntityPlayerMP) aPlayer,
+                        (EntityPlayerMP) player,
                         new ArrayList<>(),
                         VisualProspecting_API.LogicalServer
-                            .prospectUndergroundFluidsWithingRadius(aWorld, (int) aPlayer.posX, (int) aPlayer.posZ, 0));
+                            .prospectUndergroundFluidsWithingRadius(world, (int) player.posX, (int) player.posZ, 0));
                 }
             }
             return true;
@@ -88,7 +98,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
 
         if (block.getMaterial() == Material.rock || block.getMaterial() == Material.ground
             || GTUtility.isOre(block, meta)) {
-            prospectChunks(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
+            prospectChunks(item, stack, player, world, x, y, z, random, chance);
 
             return true;
         }
@@ -96,22 +106,22 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         return false;
     }
 
-    protected void prospectChunks(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, SplittableRandom aRandom, int chance) {
+    protected void prospectChunks(ToolItemBase item, ItemStack stack, EntityPlayer player, World world, int aX, int aY,
+        int aZ, SplittableRandom random, int chance) {
         int bX = aX;
         int bZ = aZ;
 
         badluck = 0;
         ores = new HashMap<>();
 
-        int range = aItem.getHarvestLevel(aStack, "") / 2 + (aStack.getItemDamage() / 4);
+        int range = item.getHarvestLevel(stack, "") / 2 + (legacyMeta / 4);
         if (range % 2 == 0) {
             range += 1; // kinda not needed here, divide takes it out, but we put it back in with the range+1 in the
                         // loop
         }
         range = range / 2; // Convert range from diameter to radius
 
-        aPlayer.addChatMessage(
+        player.addChatMessage(
             new ChatComponentText(
                 EnumChatFormatting.GOLD + GTLanguageManager.sEnglishFile
                     .get("LanguageFile", "gt.scanner.prospecting", "Prospecting at ")
@@ -123,14 +133,14 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 aZ = bZ + z * 16;
                 int dist = x * x + z * z;
 
-                for (distTextIndex = 0; distTextIndex < DISTANCEINTS.length; distTextIndex++) {
-                    if (dist <= DISTANCEINTS[distTextIndex]) {
+                for (distTextIndex = 0; distTextIndex < DISTANCE_INTS.length; distTextIndex++) {
+                    if (dist <= DISTANCE_INTS[distTextIndex]) {
                         break;
                     }
                 }
 
                 if (DetravScannerMod.DEBUG_ENABLED) {
-                    aPlayer.addChatMessage(
+                    player.addChatMessage(
                         new ChatComponentText(
                             EnumChatFormatting.YELLOW + "Chunk at "
                                 + aX
@@ -143,16 +153,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                                 + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex)));
                 }
 
-                processOreProspecting(
-                    (DetravMetaGeneratedTool01) aItem,
-                    aStack,
-                    aPlayer,
-                    aWorld,
-                    aX,
-                    aY,
-                    aZ,
-                    aRandom,
-                    chance);
+                processOreProspecting(item, stack, player, world, aX, aY, aZ, random, chance);
             }
         }
 
@@ -161,7 +162,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
 
         for (String key : ores.keySet()) {
             int value = ores.get(key);
-            appendChatMessageByValue(oreMessages, aPlayer, value, key);
+            appendChatMessageByValue(oreMessages, value, key);
         }
 
         // Define sort order by distance
@@ -192,12 +193,14 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             }
         }
 
+        // Appended to the sorted list, which is the one that gets printed. The old behaviour put this on the
+        // unsorted list after it had been read, so the player was never told how the scan went.
         if (badluck == 0) {
-            oreMessages.add(
+            oreMessagesSorted.add(
                 new ChatComponentText(
                     EnumChatFormatting.WHITE + StatCollector.translateToLocal("detrav.scanner.success")));
         } else {
-            oreMessages.add(
+            oreMessagesSorted.add(
                 new ChatComponentText(
                     EnumChatFormatting.WHITE + StatCollector.translateToLocal("detrav.scanner.fail")
                         .replace("%badluck", Integer.toString(badluck))));
@@ -205,59 +208,47 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
 
         // Print the sorted messages
         for (ChatComponentText msg : oreMessagesSorted) {
-            aPlayer.addChatMessage(msg);
+            player.addChatMessage(msg);
         }
 
         if (VisualProspecting.isModLoaded()) {
             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
-                (EntityPlayerMP) aPlayer,
+                (EntityPlayerMP) player,
                 VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
-                    aWorld.provider.dimensionId,
-                    (int) aPlayer.posX,
-                    (int) aPlayer.posZ,
+                    world.provider.dimensionId,
+                    (int) player.posX,
+                    (int) player.posZ,
                     range * 16),
                 new ArrayList<>());
         }
     }
 
-    // Used by Electric scanner when scanning the chunk whacked by the scanner. 100% chance find rate
-    protected void prospectSingleChunk(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ) {
+    // Used by the electric scanner when scanning the chunk whacked by the scanner. 100% chance find rate
+    protected void prospectSingleChunk(ToolItemBase item, ItemStack stack, EntityPlayer player, World world, int x,
+        int y, int z) {
         ores = new HashMap<>();
-        aPlayer.addChatMessage(
+        player.addChatMessage(
             new ChatComponentText(
                 EnumChatFormatting.GOLD + StatCollector.translateToLocal(
-                    "detrav.scanner.prospecting") + EnumChatFormatting.BLUE + "(" + aX + ", " + aZ + ")"));
-        processOreProspecting(
-            (DetravMetaGeneratedTool01) aItem,
-            aStack,
-            aPlayer,
-            aWorld,
-            aX,
-            aY,
-            aZ,
-            new SplittableRandom(),
-            1000);
+                    "detrav.scanner.prospecting") + EnumChatFormatting.BLUE + "(" + x + ", " + z + ")"));
+        processOreProspecting(item, stack, player, world, x, y, z, new SplittableRandom(), 1000);
 
         for (String key : ores.keySet()) {
             int value = ores.get(key);
-            addChatMassageByValue(aPlayer, value, key);
+            addChatMessageByValue(player, value, key);
         }
 
         if (VisualProspecting.isModLoaded()) {
             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
-                (EntityPlayerMP) aPlayer,
-                VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
-                    aWorld.provider.dimensionId,
-                    (int) aPlayer.posX,
-                    (int) aPlayer.posZ,
-                    0),
+                (EntityPlayerMP) player,
+                VisualProspecting_API.LogicalServer
+                    .prospectOreVeinsWithinRadius(world.provider.dimensionId, (int) player.posX, (int) player.posZ, 0),
                 new ArrayList<>());
         }
     }
 
-    protected void processOreProspecting(DetravMetaGeneratedTool01 aItem, ItemStack aStack, EntityPlayer aPlayer,
-        World world, int x, int y, int z, SplittableRandom aRandom, int chance) {
+    protected void processOreProspecting(ToolItemBase item, ItemStack stack, EntityPlayer player, World world, int x,
+        int y, int z, SplittableRandom random, int chance) {
         Chunk chunk = world.getChunkFromBlockCoords(x, z);
 
         Block block = world.getBlock(x, y, z);
@@ -266,8 +257,8 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         ItemStack blockStack = new ItemStack(block, 1, meta);
 
         if (GTUtility.isOre(block, meta)) {
-            addOreToHashMap(blockStack.getDisplayName(), aPlayer);
-            if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
+            addOreToHashMap(blockStack.getDisplayName(), player);
+            if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs);
             return;
         }
 
@@ -276,18 +267,17 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         if (itemData != null) {
             try {
                 String name = itemData.toString();
-                addChatMassageByValue(aPlayer, -1, name);
-                if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
+                addChatMessageByValue(player, -1, name);
+                if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs);
             } catch (Exception e) {
-                addChatMassageByValue(aPlayer, -1, "ERROR, lol ^_^");
+                addChatMessageByValue(player, -1, "ERROR, lol ^_^");
             }
 
             return;
         }
 
-        if (aRandom.nextInt(100) < chance) {
-            final int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack)
-                .intValue();
+        if (random.nextInt(100) < chance) {
+            final int data = item.getMode(stack);
 
             for (int cx = 0; cx < 16; cx++) {
                 for (int cz = 0; cz < 16; cz++) {
@@ -300,43 +290,43 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                         try (OreInfo<?> info = OreManager.getOreInfo(tBlock, tMetaID)) {
                             if (info != null) {
                                 if (!info.isNatural) continue;
-                                if (data != DetravMetaGeneratedTool01.MODE_ALL_ORES && info.isSmall) continue;
+                                if (data != DetravScannerMode.ALL_ORES && info.isSmall) continue;
 
                                 ItemStack oreStack = new ItemStack(tBlock, 1, tMetaID);
-                                addOreToHashMap(oreStack.getDisplayName(), aPlayer);
+                                addOreToHashMap(oreStack.getDisplayName(), player);
                                 continue;
                             }
                         }
 
-                        if (data == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
+                        if (data == DetravScannerMode.ALL_ORES) {
                             ItemStack oreStack = new ItemStack(tBlock, 1, tMetaID);
 
                             itemData = GTOreDictUnificator.getAssociation(oreStack);
                             if (itemData != null && itemData.mPrefix.toString()
                                 .startsWith("ore")) {
-                                addOreToHashMap(oreStack.getDisplayName(), aPlayer);
+                                addOreToHashMap(oreStack.getDisplayName(), player);
                             }
                         }
                     }
                 }
             }
 
-            if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
+            if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs);
 
             return;
         }
 
         if (DetravScannerMod.DEBUG_ENABLED)
-            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + " Failed on this chunk"));
+            player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + " Failed on this chunk"));
         badluck++;
-        if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts / 4);
+        if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs / 4);
     }
 
-    void addOreToHashMap(String orename, EntityPlayer aPlayer) {
+    void addOreToHashMap(String orename, EntityPlayer player) {
         // orename + the textual distance of the ore
         String oreDistance = orename + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex);
         if (!ores.containsKey(oreDistance)) {
-            if (DetravScannerMod.DEBUG_ENABLED) aPlayer
+            if (DetravScannerMod.DEBUG_ENABLED) player
                 .addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + " Adding to oremap " + oreDistance));
             ores.put(oreDistance, 1);
         } else {
@@ -345,46 +335,32 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         }
     }
 
-    void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
-        if (value < 0) {
-            aPlayer.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", name)));
-        } else if (value < 1) {
-            aPlayer
-                .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.0")));
-        } else if (value < 10) aPlayer.addChatMessage(
-            new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.1")));
-        else if (value < 30) aPlayer.addChatMessage(
-            new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.2")));
-        else if (value < 60) aPlayer.addChatMessage(
-            new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.3")));
-        else if (value < 100) aPlayer.addChatMessage(
-            new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.4")));
-        else aPlayer.addChatMessage(
-            new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.5")));
+    void addChatMessageByValue(EntityPlayer player, int value, String name) {
+        player.addChatMessage(describe(value, name));
     }
 
-    // Same as addChatMassageByValue but appends to a list of chat messages and spelled correctly
-    void appendChatMessageByValue(List<ChatComponentText> chatMessageList, EntityPlayer aPlayer, int value,
-        String name) {
-        if (value < 0) {
-            chatMessageList.add(
-                new ChatComponentText(StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", name)));
-        } else if (value < 1) {
-            chatMessageList.add(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.0")));
-        } else if (value < 10) chatMessageList
-            .add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.1")));
-        else if (value < 30) chatMessageList
-            .add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.2")));
-        else if (value < 60) chatMessageList
-            .add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.3")));
-        else if (value < 100) chatMessageList
-            .add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.4")));
-        else chatMessageList
-            .add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.5")));
+    // Same as addChatMessageByValue, but appends to a list of chat messages so they can be sorted before printing
+    void appendChatMessageByValue(List<ChatComponentText> chatMessageList, int value, String name) {
+        chatMessageList.add(describe(value, name));
     }
 
-    public static int getPollution(World aWorld, int aX, int aZ) {
-        return Pollution.getPollution(aWorld.getChunkFromBlockCoords(aX, aZ));
+    private static ChatComponentText describe(int value, String name) {
+        if (value < 0) {
+            return new ChatComponentText(StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", name));
+        }
+        if (value < 1) return new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.0"));
+        if (value < 10)
+            return new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.1"));
+        if (value < 30)
+            return new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.2"));
+        if (value < 60)
+            return new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.3"));
+        if (value < 100)
+            return new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.4"));
+        return new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.5"));
+    }
+
+    public static int getPollution(World world, int x, int z) {
+        return Pollution.getPollution(world.getChunkFromBlockCoords(x, z));
     }
 }

@@ -15,6 +15,7 @@ import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
+import detrav.items.DetravToolItems;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -387,9 +388,46 @@ public class PosteaTransformers implements Runnable {
     private static final Int2ObjectMap<MigratedTool> MIGRATED_TOOLS_BY_OLD_META = new Int2ObjectOpenHashMap<>();
 
     /**
-     * Converts tools saved under the old scheme -- one {@code gt.metatool.01} item whose metadata was the tool type
-     * and whose material was a string in NBT -- into the standalone tool items, whose metadata is the material. Tool
-     * types that have not moved yet are left untouched.
+     * The same again for the Prospector's Scanners, which lived on their own {@code detrav.metatool.01} item. The
+     * scanner's mode was kept under its own NBT key rather than the one every other tool used, so it is named here.
+     */
+    private static final MigratedTool[] MIGRATED_DETRAV_TOOLS = {
+        new MigratedTool(2, "gregtech:gt.detrav.metatool.01.prospector_lv", () -> DetravToolItems.PROSPECTOR_LV),
+        new MigratedTool(4, "gregtech:gt.detrav.metatool.01.prospector_mv", () -> DetravToolItems.PROSPECTOR_MV),
+        new MigratedTool(6, "gregtech:gt.detrav.metatool.01.prospector_hv", () -> DetravToolItems.PROSPECTOR_HV),
+        new MigratedTool(8, "gregtech:gt.detrav.metatool.01.prospector_ev", () -> DetravToolItems.PROSPECTOR_EV),
+        new MigratedTool(10, "gregtech:gt.detrav.metatool.01.prospector_iv", () -> DetravToolItems.PROSPECTOR_IV),
+        new MigratedTool(12, "gregtech:gt.detrav.metatool.01.prospector_luv", () -> DetravToolItems.PROSPECTOR_LUV),
+        new MigratedTool(14, "gregtech:gt.detrav.metatool.01.prospector_zpm", () -> DetravToolItems.PROSPECTOR_ZPM),
+        new MigratedTool(16, "gregtech:gt.detrav.metatool.01.prospector_uv", () -> DetravToolItems.PROSPECTOR_UV),
+        new MigratedTool(18, "gregtech:gt.detrav.metatool.01.prospector_uhv", () -> DetravToolItems.PROSPECTOR_UHV),
+        new MigratedTool(
+            100,
+            "gregtech:gt.detrav.metatool.01.electric_prospector_luv",
+            () -> DetravToolItems.ELECTRIC_PROSPECTOR_LUV),
+        new MigratedTool(
+            102,
+            "gregtech:gt.detrav.metatool.01.electric_prospector_zpm",
+            () -> DetravToolItems.ELECTRIC_PROSPECTOR_ZPM),
+        new MigratedTool(
+            104,
+            "gregtech:gt.detrav.metatool.01.electric_prospector_uv",
+            () -> DetravToolItems.ELECTRIC_PROSPECTOR_UV),
+        new MigratedTool(
+            106,
+            "gregtech:gt.detrav.metatool.01.electric_prospector_uhv",
+            () -> DetravToolItems.ELECTRIC_PROSPECTOR_UHV), };
+
+    /** The key the scanner's mode was stored under inside the old {@code GT.ToolStats} compound. */
+    private static final String DETRAV_MODE_KEY = "DetravData";
+
+    private static final Int2ObjectMap<MigratedTool> MIGRATED_DETRAV_TOOLS_BY_OLD_META = new Int2ObjectOpenHashMap<>();
+
+    /**
+     * Converts tools saved under the old scheme -- one item per family, {@code gt.metatool.01} for the GregTech tools
+     * and {@code gt.detrav.metatool.01} for the Prospector's Scanners, whose metadata was the tool type and whose
+     * material was a string in NBT -- into the standalone tool items, whose metadata is the material. Tool types that
+     * have not moved yet are left untouched.
      */
     private static void registerStandaloneToolTransformers() {
         for (MigratedTool tool : MIGRATED_TOOLS) {
@@ -397,13 +435,29 @@ public class PosteaTransformers implements Runnable {
             ItemStackReplacementManager.registerIDResolver(tool.newRegistryName, i -> tool.runtimeId = i);
         }
 
-        ItemStackReplacementManager
-            .addTransformationHandler("gregtech:gt.metatool.01", (name, nbt) -> convertTool(nbt));
+        ItemStackReplacementManager.addTransformationHandler(
+            "gregtech:gt.metatool.01",
+            (name, nbt) -> convertTool(nbt, MIGRATED_TOOLS_BY_OLD_META, null));
+
+        for (MigratedTool tool : MIGRATED_DETRAV_TOOLS) {
+            MIGRATED_DETRAV_TOOLS_BY_OLD_META.put(tool.oldMeta, tool);
+            ItemStackReplacementManager.registerIDResolver(tool.newRegistryName, i -> tool.runtimeId = i);
+        }
+
+        ItemStackReplacementManager.addTransformationHandler(
+            "gregtech:gt.detrav.metatool.01",
+            (name, nbt) -> convertTool(nbt, MIGRATED_DETRAV_TOOLS_BY_OLD_META, DETRAV_MODE_KEY));
+        // Unlike gt.metatool.01, which still holds the turbine rotors, the scanners' old item is gone from the
+        // registry altogether, and Forge stops world load on a missing registry entry. Postea reads the world's own
+        // name-to-id map, so the handler above still recognises and rewrites saved scanners; this only keeps the
+        // load from stopping over the entry itself.
+        ItemStackReplacementManager.ignoreMissingMapping("gregtech:gt.detrav.metatool.01");
     }
 
-    private static boolean convertTool(NBTTagCompound nbt) {
+    private static boolean convertTool(NBTTagCompound nbt, Int2ObjectMap<MigratedTool> toolsByOldMeta,
+        String legacyModeKey) {
         final int oldMeta = nbt.getShort("Damage");
-        final MigratedTool tool = MIGRATED_TOOLS_BY_OLD_META.get(oldMeta - (oldMeta % 2));
+        final MigratedTool tool = toolsByOldMeta.get(oldMeta - (oldMeta % 2));
         // Some other tool type, or an item that was never a tool. Leave it alone.
         if (tool == null) return false;
 
@@ -421,7 +475,7 @@ public class PosteaTransformers implements Runnable {
         final boolean electric = newItem instanceof IElectricToolItem;
         final long defaultMaxCharge = electric ? ((IElectricToolItem) newItem).getElectricStorage()
             .getDefaultMaxCharge() : 0L;
-        MetaToolStackMigration.rewriteToolStack(nbt, newMeta, electric, defaultMaxCharge);
+        MetaToolStackMigration.rewriteToolStack(nbt, newMeta, electric, defaultMaxCharge, legacyModeKey);
         IDExtenderCompat.setItemStackID(nbt, tool.runtimeId);
         return true;
     }

@@ -1,5 +1,11 @@
 package detrav.enums;
 
+/**
+ * The metadata every Prospector's Scanner tier held on {@code detrav.metatool.01}. The scanners are their own items
+ * now (see {@code detrav.items.DetravToolItems}), but these ids stay reserved: the Postea migration matches old saved
+ * stacks by them, and the tiers still carry theirs for the range and success-chance sums that were written in terms
+ * of the metadata.
+ */
 public enum IDDetraveMetaGeneratedTool01 {
 
     ProspectorScannerLV(2),

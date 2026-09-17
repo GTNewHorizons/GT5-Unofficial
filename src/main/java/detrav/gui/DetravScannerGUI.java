@@ -22,8 +22,8 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import detrav.client.DetravOreMarker;
 import detrav.client.DetravOreMarkerRenderer;
+import detrav.enums.DetravScannerMode;
 import detrav.gui.textures.DetravMapTexture;
-import detrav.items.DetravMetaGeneratedTool01;
 
 /**
  * Created by wital_000 on 21.03.2016.
@@ -194,8 +194,7 @@ public class DetravScannerGUI extends GuiScreen {
      */
     private void tryToggleMarker(int mx, int my) {
         if (map == null || !inViewport(mx, my)) return;
-        if (map.packet.ptype != DetravMetaGeneratedTool01.MODE_BIG_ORES
-            && map.packet.ptype != DetravMetaGeneratedTool01.MODE_ALL_ORES) return;
+        if (map.packet.ptype != DetravScannerMode.BIG_ORES && map.packet.ptype != DetravScannerMode.ALL_ORES) return;
         if (!findNearestOre(mx, my)) return;
 
         int worldX = nearestOreX + (map.packet.chunkX - map.packet.size) * 16;
@@ -368,8 +367,7 @@ public class DetravScannerGUI extends GuiScreen {
     private void drawHoverTooltip(int x, int y) {
         if (!inViewport(x, y)) return;
 
-        if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_BIG_ORES
-            || map.packet.ptype == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
+        if (map.packet.ptype == DetravScannerMode.BIG_ORES || map.packet.ptype == DetravScannerMode.ALL_ORES) {
             if (findNearestOre(x, y)) {
                 int bx = nearestOreX, bz = nearestOreZ;
                 List<String> info = new ArrayList<>();
@@ -386,7 +384,7 @@ public class DetravScannerGUI extends GuiScreen {
                         + StatCollector.translateToLocal("gui.detrav.scanner.tooltip.mark_hint"));
                 func_146283_a(info, x, y);
             }
-        } else if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_FLUIDS) {
+        } else if (map.packet.ptype == DetravScannerMode.FLUIDS) {
             int cX = (x - mvX + panX) / 16;
             int cZ = (y - mvY + panY) / 16;
 
@@ -411,7 +409,7 @@ public class DetravScannerGUI extends GuiScreen {
                 }
                 func_146283_a(info, x, y);
             }
-        } else if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_POLLUTION) {
+        } else if (map.packet.ptype == DetravScannerMode.POLLUTION) {
             int cX = (x - mvX + panX) / 16;
             int cZ = (y - mvY + panY) / 16;
 
@@ -474,8 +472,7 @@ public class DetravScannerGUI extends GuiScreen {
 
     /** Outlines the ores that currently have a temporary marker. */
     private void drawMarkerOverlays() {
-        if (map.packet.ptype != DetravMetaGeneratedTool01.MODE_BIG_ORES
-            && map.packet.ptype != DetravMetaGeneratedTool01.MODE_ALL_ORES) return;
+        if (map.packet.ptype != DetravScannerMode.BIG_ORES && map.packet.ptype != DetravScannerMode.ALL_ORES) return;
 
         int dim = mc.thePlayer.dimension;
         int originX = (map.packet.chunkX - map.packet.size) * 16;

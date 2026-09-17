@@ -263,4 +263,39 @@ class PosteaToolMigrationTest {
         assertFalse(tag.hasKey("GT.MaxCharge"), "this one is at its tier's default capacity");
         assertFalse(tag.hasKey("GT.ToolDamage"), "electric files no longer wear out");
     }
+
+    /**
+     * The Prospector's Scanners kept their mode under a key of their own inside the stats compound, so the migration
+     * is told which key to read. A scanner left set to "underground fluids" should come back set to it.
+     */
+    @Test
+    void handProspectorKeepsItsScannerMode() {
+        NBTTagCompound stack = oldTool(2, "Steel", 1_500L, 51_200L, (byte) 0, null, null);
+        stack.getCompoundTag("tag")
+            .getCompoundTag("GT.ToolStats")
+            .setLong("DetravData", 2L);
+
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false, 0L, "DetravData");
+
+        assertEquals(STEEL_META, stack.getShort("Damage"));
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        assertEquals(1_500L, tag.getLong("GT.ToolDamage"), "durability damage should carry over unscaled");
+        assertEquals(2, tag.getInteger("GT.ToolMode"), "the scanner mode should carry over");
+    }
+
+    @Test
+    void electricProspectorKeepsItsChargeAndScannerMode() {
+        // A LuV electric scanner at its default capacity, part charged, set to pollution.
+        NBTTagCompound stack = oldTool(100, "Iridium", 900L, 51_200L, (byte) 0, 50_000_000L, 102_400_000L);
+        stack.getCompoundTag("tag")
+            .getCompoundTag("GT.ToolStats")
+            .setLong("DetravData", 3L);
+
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 102_400_000L, "DetravData");
+
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        assertEquals(50_000_000L, tag.getLong("GT.ItemCharge"), "stored energy should carry over");
+        assertEquals(3, tag.getInteger("GT.ToolMode"), "the scanner mode should carry over");
+        assertFalse(tag.hasKey("GT.ToolDamage"), "electric scanners no longer wear out");
+    }
 }

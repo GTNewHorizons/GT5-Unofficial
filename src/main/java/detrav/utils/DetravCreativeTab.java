@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTCreativeTab;
 
@@ -40,9 +39,6 @@ public class DetravCreativeTab extends GTCreativeTab {
             for (CreativeTabs tab : item.getCreativeTabs()) {
                 if (tab == this) {
                     item.getSubItems(item, this, items);
-                    if (item instanceof DetravMetaGeneratedTool01) {
-                        ((DetravMetaGeneratedTool01) item).getDetravSubItems(item, this, items);
-                    }
                 }
             }
         }

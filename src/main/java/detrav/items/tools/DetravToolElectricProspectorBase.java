@@ -16,7 +16,6 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
-import detrav.items.behaviours.BehaviourDetravToolElectricProspector;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.MaterialIconRegistry;
@@ -205,7 +204,8 @@ public class DetravToolElectricProspectorBase implements IToolStats {
 
     @Override
     public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
-        aItem.addItemBehavior(aID, new BehaviourDetravToolElectricProspector(getToolDamagePerBlockBreak()));
+        // Nothing to add: the scanners are their own items now, so their behaviour lives on the item rather than in
+        // a behaviour object registered against a metadata.
     }
 
     @Override

@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
-import detrav.items.DetravMetaGeneratedTool01;
+import detrav.enums.DetravScannerMode;
 import detrav.net.ProspectingPacket;
 import gregtech.api.util.GTUtility;
 
@@ -55,7 +55,7 @@ public class DetravMapTexture extends AbstractTexture {
         }
 
         switch (packet.ptype) {
-            case DetravMetaGeneratedTool01.MODE_BIG_ORES, DetravMetaGeneratedTool01.MODE_ALL_ORES -> {
+            case DetravScannerMode.BIG_ORES, DetravScannerMode.ALL_ORES -> {
 
                 short[] depth = new short[blockSize * blockSize];
                 Arrays.fill(depth, (short) 0);
@@ -99,7 +99,7 @@ public class DetravMapTexture extends AbstractTexture {
                     image.setRGB(x, z, object.rightInt());
                 }
             }
-            case DetravMetaGeneratedTool01.MODE_FLUIDS -> {
+            case DetravScannerMode.FLUIDS -> {
                 // Tank-fill: each chunk is filled bottom-up to a level proportional to its amount on one
                 // shared linear scale (richest chunk in the scan = full).
                 int maxAmount = 1;
@@ -132,7 +132,7 @@ public class DetravMapTexture extends AbstractTexture {
                     }
                 }
             }
-            case DetravMetaGeneratedTool01.MODE_POLLUTION -> {
+            case DetravScannerMode.POLLUTION -> {
                 for (int cZ = 0; cZ < chunkSize; cZ++) {
                     for (int cX = 0; cX < chunkSize; cX++) {
                         int amount = packet.getAmount(cX, cZ);

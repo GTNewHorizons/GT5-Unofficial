@@ -34,7 +34,9 @@ public enum ToolDictNames {
     craftingToolAngleGrinder,
     craftingToolElectricSnips,
     craftingToolElectricLighter,
-    craftingToolElectricButcherKnife;
+    craftingToolElectricButcherKnife,
+    craftingToolProspector,
+    craftingToolElectricProspector;
 
     public static boolean contains(String aName) {
         if (!aName.startsWith("craftingTool")) return false;
