@@ -10,6 +10,7 @@ public enum IDMetaTool01 {
     // the Postea migration in PosteaTransformers matches old saved stacks by them, so they must never be reused.
     SOFTMALLET(14),
     WRENCH(16),
+    // Reserved, see the note above.
     FILE(18),
     // Reserved, see SOFTMALLET above.
     CROWBAR(20),
@@ -64,6 +65,7 @@ public enum IDMetaTool01 {
     WIRECUTTER_LV(196),
     WIRECUTTER_MV(198),
     WIRECUTTER_HV(200),
+    // Reserved, see the note above.
     FILE_LV(202),
     FILE_MV(204),
     FILE_HV(206);

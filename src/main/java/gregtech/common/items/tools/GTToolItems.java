@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.common.tools.ToolCrowbar;
+import gregtech.common.tools.ToolFile;
+import gregtech.common.tools.ToolFileHV;
+import gregtech.common.tools.ToolFileLV;
+import gregtech.common.tools.ToolFileMV;
 import gregtech.common.tools.ToolHardHammer;
 import gregtech.common.tools.ToolScrewdriver;
 import gregtech.common.tools.ToolScrewdriverHV;
@@ -42,6 +46,10 @@ public final class GTToolItems {
     public static ToolWireCutterElectricItem WIRE_CUTTER_MV;
     public static ToolWireCutterElectricItem WIRE_CUTTER_HV;
     public static ToolHardHammerItem HARD_HAMMER;
+    public static ToolFileItem FILE;
+    public static ToolFileElectricItem FILE_LV;
+    public static ToolFileElectricItem FILE_MV;
+    public static ToolFileElectricItem FILE_HV;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -143,6 +151,31 @@ public final class GTToolItems {
             512L,
             3);
         HARD_HAMMER = new ToolHardHammerItem("tool.hard_hammer", new ToolHardHammer(), "%material Hammer");
+        FILE = new ToolFileItem("tool.file", new ToolFile(), "%material File", "");
+        FILE_LV = new ToolFileElectricItem(
+            "tool.file_lv",
+            new ToolFileLV(),
+            "%material File (LV)",
+            "Hand-held electric filing device",
+            100_000L,
+            32L,
+            1);
+        FILE_MV = new ToolFileElectricItem(
+            "tool.file_mv",
+            new ToolFileMV(),
+            "%material File (MV)",
+            "Hand-held electric filing device",
+            400_000L,
+            128L,
+            2);
+        FILE_HV = new ToolFileElectricItem(
+            "tool.file_hv",
+            new ToolFileHV(),
+            "%material File (HV)",
+            "Hand-held electric filing device",
+            1_600_000L,
+            512L,
+            3);
     }
 
     /**

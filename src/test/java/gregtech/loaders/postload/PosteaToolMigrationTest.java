@@ -251,4 +251,16 @@ class PosteaToolMigrationTest {
             stack.getCompoundTag("tag")
                 .getLong("GT.ToolDamage"));
     }
+
+    @Test
+    void electricFileKeepsItsCharge() {
+        NBTTagCompound stack = oldTool(204, "Steel", 2_500L, 51_200L, (byte) 0, 123_456L, 400_000L);
+
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 400_000L);
+
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        assertEquals(123_456L, tag.getLong("GT.ItemCharge"));
+        assertFalse(tag.hasKey("GT.MaxCharge"), "this one is at its tier's default capacity");
+        assertFalse(tag.hasKey("GT.ToolDamage"), "electric files no longer wear out");
+    }
 }

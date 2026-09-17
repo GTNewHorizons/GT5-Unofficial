@@ -11,10 +11,6 @@ import static gregtech.common.items.IDMetaTool01.CHAINSAW_MV;
 import static gregtech.common.items.IDMetaTool01.DRILL_HV;
 import static gregtech.common.items.IDMetaTool01.DRILL_LV;
 import static gregtech.common.items.IDMetaTool01.DRILL_MV;
-import static gregtech.common.items.IDMetaTool01.FILE;
-import static gregtech.common.items.IDMetaTool01.FILE_HV;
-import static gregtech.common.items.IDMetaTool01.FILE_LV;
-import static gregtech.common.items.IDMetaTool01.FILE_MV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_HV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_LV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_MV;
@@ -72,10 +68,6 @@ import gregtech.common.tools.ToolChainsawMV;
 import gregtech.common.tools.ToolDrillHV;
 import gregtech.common.tools.ToolDrillLV;
 import gregtech.common.tools.ToolDrillMV;
-import gregtech.common.tools.ToolFile;
-import gregtech.common.tools.ToolFileHV;
-import gregtech.common.tools.ToolFileLV;
-import gregtech.common.tools.ToolFileMV;
 import gregtech.common.tools.ToolJackHammerHV;
 import gregtech.common.tools.ToolJackHammerLV;
 import gregtech.common.tools.ToolJackHammerMV;
@@ -120,15 +112,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
             new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
             new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
-        addTool(
-            FILE.ID,
-            "File",
-            "",
-            new ToolFile(),
-            ToolDictNames.craftingToolFile,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
         addTool(
             MORTAR.ID,
             "Mortar",
@@ -342,35 +325,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
             GregTechAPI.sSolderingToolList);
 
-        // Register Electric Files
-        addTool(
-            FILE_LV.ID,
-            "",
-            "",
-            new ToolFileLV(),
-            ToolDictNames.craftingToolFile,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
-        addTool(
-            FILE_MV.ID,
-            "",
-            "",
-            new ToolFileMV(),
-            ToolDictNames.craftingToolFile,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
-        addTool(
-            FILE_HV.ID,
-            "",
-            "",
-            new ToolFileHV(),
-            ToolDictNames.craftingToolFile,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
-
         addTool(TURBINE_SMALL.ID, "Small Turbine", "Turbine Rotors for your power station", new ToolTurbineSmall());
         addTool(TURBINE.ID, "Turbine", "Turbine Rotors for your power station", new ToolTurbineNormal());
         addTool(TURBINE_LARGE.ID, "Large Turbine", "Turbine Rotors for your power station", new ToolTurbineLarge());
@@ -499,7 +453,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             SOLDERING_IRON_LV.ID,
             SOLDERING_IRON_MV.ID,
             SOLDERING_IRON_HV.ID);
-        addTieredFamily("gt.metatool.01.file.name", "gt.metatool.01.file.tooltip", FILE_LV.ID, FILE_MV.ID, FILE_HV.ID);
     }
 
     @Override
