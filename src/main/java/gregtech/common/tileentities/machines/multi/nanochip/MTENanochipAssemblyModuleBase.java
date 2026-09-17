@@ -529,7 +529,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             recipeDuration *= baseMulti.globalDurationMultiplier;
             if (recipeCalibration == CircuitCalibration.SPECIAL) {
                 // restore the EU/t so people aren't getting -50% eu cost per circuit.
-                recipeEUT *= 1 / Math.max(0.1,(1 - baseMulti.globalDurationMultiplier));
+                recipeEUT *= 1 / Math.max(0.1, (1 - baseMulti.globalDurationMultiplier));
             }
         }
 
