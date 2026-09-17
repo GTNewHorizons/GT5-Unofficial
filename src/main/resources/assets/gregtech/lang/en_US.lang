@@ -3349,7 +3349,7 @@ GT5U.gui.text.nac.info.calibration.header=Calibration
 GT5U.gui.text.nac.info.calibration.body.1=When a circuit is processed in the Assembly Matrix, it gets researched by the NAC and added to its circuit history. Circuit Calibration is stored in 100 batches of 1,000 circuits each.
 GT5U.gui.text.nac.info.calibration.body.2=Mainframes increase the circuit history by 1 per circuit made, every step down from the mainframe halves this amount.
 GT5U.gui.text.nac.info.calibration.body.3="Special" Circuits increase circuit history by 1 per circuit made, ignoring the formula above.
-GT5U.gui.text.nac.info.calibration.body.4="Primitive" Circuits have the Primed Unattuned Circuity increase circuit history by 0.5 per circuit made, and at most 1 per batch of the other Primitive Circuits.
+GT5U.gui.text.nac.info.calibration.body.4="Primitive" Circuits have the Primed Unattuned Circuity increase circuit history by 0.1 per circuit made, and at most 1 per batch of the other Primitive Circuits.
 GT5U.gui.text.nac.info.calibration.body.5=The multi-colored progress bar roughly shows the amount / percentage of each circuit type in the past 100,000 circuits. The progress of the current batch is displayed in the cyclical progress icon. When a batch is ready, it replaces the oldest batches information.
 GT5U.gui.text.nac.info.calibration.body.6=When enough of a circuit type is processed, the NAC will be 'Calibrated' to that circuit type. The specific amount is the calibration tiers threshold * the total circuit history (100,000). Each Calibration has 3 stages with increasing thresholds and increasing buffs. Only one Calibration may be present at once, with higher tier Calibrations taking priority.
 

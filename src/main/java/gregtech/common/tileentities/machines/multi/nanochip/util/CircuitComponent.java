@@ -575,7 +575,7 @@ public enum CircuitComponent {
         2119,
         "gt.circuitcomponent.planckmanifold",
          () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE,0),
-    PrimedUnattunedCircuitry(2120,"gt.circuitcomponent.primedunattunedcircuitry",CircuitCalibration.PRIMITIVE,0.5f),
+    PrimedUnattunedCircuitry(2120,"gt.circuitcomponent.primedunattunedcircuitry",CircuitCalibration.PRIMITIVE,0.1f),
     NandChip(2121,"gt.circuitcomponent.nandchip",()->ItemList.NandChip.get(1),CircuitCalibration.PRIMITIVE,0),
     Microprocessor(2122,"gt.circuitcomponent.microprocessor",()->ItemList.Circuit_Microprocessor.get(1),CircuitCalibration.PRIMITIVE,0),
     IntegratedProcessor(2123,"gt.circuitcomponent.integratedprocessor",()->ItemList.Circuit_Processor.get(1),CircuitCalibration.PRIMITIVE,0),
