@@ -3447,6 +3447,7 @@ GT5U.tooltip.nac.module.biological_coordinator.action=Coordinates your Living %s
 GT5U.tooltip.nac.module.biological_coordinator.body.1=In a fully calibrated Wetware NAC, consumes 50% less Catalyst Medium
 GT5U.tooltip.nac.module.biological_coordinator.body.2=In a fully calibrated Bioware NAC, does not consume any Catalyst Medium
 GT5U.tooltip.nac.module.board_processor.name=Board Processor
+GT5U.tooltip.nac.module.board_processor.structure.output_hatch=Required for manual and automatic flushing
 GT5U.tooltip.nac.module.board_processor.flavor.1=Gotta get'em wet
 GT5U.tooltip.nac.module.board_processor.action=Processes your Board %s by cleaning them in §b'Immersion Fluid'§7
 GT5U.tooltip.nac.module.board_processor.body.1=Will try to fill its internal tank with provided §b'Immersion Fluids'§7 every second
