@@ -179,8 +179,10 @@ public class LoaderGTBlockFluid implements Runnable {
         // between load and post-load.
         MetaGeneratedItem98.preInit();
         new MetaGeneratedItem99();
-        new MetaGeneratedTool01();
+        // Before MetaGeneratedTool01: its constructor registers the fixed-material mortar, rolling pin and flint
+        // knife recipes, and those tools are standalone items now, so they have to exist first.
         GTToolItems.register();
+        new MetaGeneratedTool01();
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
         new ItemMagLevHarness();
