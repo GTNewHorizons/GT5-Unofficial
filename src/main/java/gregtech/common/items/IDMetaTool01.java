@@ -5,13 +5,14 @@ public enum IDMetaTool01 {
     // Please pretty please, add your entries while conserving the order
     SAW(10),
     HARDHAMMER(12),
-    // The soft mallet and the wrench moved to their own items (see gregtech.common.items.tools.GTToolItems), but
-    // their ids stay reserved: the Postea migration in PosteaTransformers matches old saved stacks by them, so they
-    // must never be reused.
+    // The soft mallet, the wrench and the screwdriver moved to their own items (see
+    // gregtech.common.items.tools.GTToolItems), but their ids stay reserved: the Postea migration in
+    // PosteaTransformers matches old saved stacks by them, so they must never be reused.
     SOFTMALLET(14),
     WRENCH(16),
     FILE(18),
     CROWBAR(20),
+    // Reserved, see SOFTMALLET above.
     SCREWDRIVER(22),
     MORTAR(24),
     WIRECUTTER(26),
@@ -38,6 +39,7 @@ public enum IDMetaTool01 {
     BUZZSAW_LV(140),
     BUZZSAW_MV(142),
     BUZZSAW_HV(144),
+    // Reserved, see SOFTMALLET above.
     SCREWDRIVER_LV(150),
     SCREWDRIVER_MV(152),
     SCREWDRIVER_HV(154),

@@ -3,6 +3,10 @@ package gregtech.common.items.tools;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.common.tools.ToolScrewdriver;
+import gregtech.common.tools.ToolScrewdriverHV;
+import gregtech.common.tools.ToolScrewdriverLV;
+import gregtech.common.tools.ToolScrewdriverMV;
 import gregtech.common.tools.ToolSoftMallet;
 import gregtech.common.tools.ToolWrench;
 import gregtech.common.tools.ToolWrenchHV;
@@ -22,6 +26,10 @@ public final class GTToolItems {
     public static ToolWrenchElectricItem WRENCH_MV;
     public static ToolWrenchElectricItem WRENCH_HV;
     public static ToolSoftMalletItem SOFT_MALLET;
+    public static ToolScrewdriverItem SCREWDRIVER;
+    public static ToolScrewdriverElectricItem SCREWDRIVER_LV;
+    public static ToolScrewdriverElectricItem SCREWDRIVER_MV;
+    public static ToolScrewdriverElectricItem SCREWDRIVER_HV;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -74,6 +82,28 @@ public final class GTToolItems {
             512L,
             3);
         SOFT_MALLET = new ToolSoftMalletItem("tool.soft_mallet", new ToolSoftMallet(), "%material Soft Mallet");
+        SCREWDRIVER = new ToolScrewdriverItem("tool.screwdriver", new ToolScrewdriver(), "%material Screwdriver");
+        SCREWDRIVER_LV = new ToolScrewdriverElectricItem(
+            "tool.screwdriver_lv",
+            new ToolScrewdriverLV(),
+            "%material Screwdriver (LV)",
+            100_000L,
+            32L,
+            1);
+        SCREWDRIVER_MV = new ToolScrewdriverElectricItem(
+            "tool.screwdriver_mv",
+            new ToolScrewdriverMV(),
+            "%material Screwdriver (MV)",
+            400_000L,
+            128L,
+            2);
+        SCREWDRIVER_HV = new ToolScrewdriverElectricItem(
+            "tool.screwdriver_hv",
+            new ToolScrewdriverHV(),
+            "%material Screwdriver (HV)",
+            1_600_000L,
+            512L,
+            3);
     }
 
     /**

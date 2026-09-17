@@ -23,8 +23,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.items.tools.GTToolItems;
+import gregtech.common.items.tools.IElectricToolItem;
 import gregtech.common.items.tools.ToolItemBase;
-import gregtech.common.items.tools.ToolWrenchElectricItem;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
@@ -344,7 +344,11 @@ public class PosteaTransformers implements Runnable {
         new MigratedTool(16, "gregtech:gt.tool.wrench", () -> GTToolItems.WRENCH),
         new MigratedTool(120, "gregtech:gt.tool.wrench_lv", () -> GTToolItems.WRENCH_LV),
         new MigratedTool(122, "gregtech:gt.tool.wrench_mv", () -> GTToolItems.WRENCH_MV),
-        new MigratedTool(124, "gregtech:gt.tool.wrench_hv", () -> GTToolItems.WRENCH_HV), };
+        new MigratedTool(124, "gregtech:gt.tool.wrench_hv", () -> GTToolItems.WRENCH_HV),
+        new MigratedTool(22, "gregtech:gt.tool.screwdriver", () -> GTToolItems.SCREWDRIVER),
+        new MigratedTool(150, "gregtech:gt.tool.screwdriver_lv", () -> GTToolItems.SCREWDRIVER_LV),
+        new MigratedTool(152, "gregtech:gt.tool.screwdriver_mv", () -> GTToolItems.SCREWDRIVER_MV),
+        new MigratedTool(154, "gregtech:gt.tool.screwdriver_hv", () -> GTToolItems.SCREWDRIVER_HV), };
 
     private static final Int2ObjectMap<MigratedTool> MIGRATED_TOOLS_BY_OLD_META = new Int2ObjectOpenHashMap<>();
 
@@ -380,8 +384,9 @@ public class PosteaTransformers implements Runnable {
         final int newMeta = ToolItemBase.getMaterialMeta(material);
         if (newMeta < 0) return false;
 
-        final boolean electric = newItem instanceof ToolWrenchElectricItem;
-        final long defaultMaxCharge = electric ? ((ToolWrenchElectricItem) newItem).getDefaultMaxCharge() : 0L;
+        final boolean electric = newItem instanceof IElectricToolItem;
+        final long defaultMaxCharge = electric ? ((IElectricToolItem) newItem).getElectricStorage()
+            .getDefaultMaxCharge() : 0L;
         MetaToolStackMigration.rewriteToolStack(nbt, newMeta, electric, defaultMaxCharge);
         IDExtenderCompat.setItemStackID(nbt, tool.runtimeId);
         return true;

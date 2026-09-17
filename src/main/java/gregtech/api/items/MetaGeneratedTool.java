@@ -65,7 +65,6 @@ import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.tools.ToolTurbine;
 import mods.railcraft.api.core.items.IToolCrowbar;
-import mrtjp.projectred.api.IScrewdriver;
 
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
@@ -75,10 +74,9 @@ import mrtjp.projectred.api.IScrewdriver;
 @Optional.InterfaceList(
     value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.ModIDs.FORESTRY),
         @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.ModIDs.RAILCRAFT),
-        @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O),
-        @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.ModIDs.PROJECT_RED_CORE), })
+        @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O), })
 public abstract class MetaGeneratedTool extends MetaBaseItem
-    implements IDamagableItem, IGTTool, IToolGrafter, IToolCrowbar, ITool, IScrewdriver {
+    implements IDamagableItem, IGTTool, IToolGrafter, IToolCrowbar, ITool {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -909,23 +907,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     @Override
     public boolean canUse(ItemStack stack, EntityPlayer player, int x, int y, int z) {
         return false;
-    }
-
-    // ProjectRed screwdriver
-    @Override
-    public boolean canUse(EntityPlayer player, ItemStack stack) {
-        if (player == null) return false;
-        if (GTUtility.isStackInvalid(stack) || !isItemStackUsable(stack)) return false;
-        IToolStats tStats = getToolStats(stack);
-        return tStats != null && tStats.isScrewdriver();
-    }
-
-    @Override
-    public void damageScrewdriver(EntityPlayer player, ItemStack stack) {
-        if (player == null) return;
-        if (GTUtility.isStackInvalid(stack) || !isItemStackUsable(stack)) return;
-        IToolStats tStats = getToolStats(stack);
-        if (tStats != null) doDamage(stack, tStats.getToolDamagePerEntityAttack());
     }
 
     @Override

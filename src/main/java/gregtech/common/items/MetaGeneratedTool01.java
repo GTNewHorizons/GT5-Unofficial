@@ -33,10 +33,6 @@ import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
 import static gregtech.common.items.IDMetaTool01.ROLLING_PIN;
 import static gregtech.common.items.IDMetaTool01.SAW;
 import static gregtech.common.items.IDMetaTool01.SCOOP;
-import static gregtech.common.items.IDMetaTool01.SCREWDRIVER;
-import static gregtech.common.items.IDMetaTool01.SCREWDRIVER_HV;
-import static gregtech.common.items.IDMetaTool01.SCREWDRIVER_LV;
-import static gregtech.common.items.IDMetaTool01.SCREWDRIVER_MV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_HV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_LV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_MV;
@@ -97,10 +93,6 @@ import gregtech.common.tools.ToolPlunger;
 import gregtech.common.tools.ToolRollingPin;
 import gregtech.common.tools.ToolSaw;
 import gregtech.common.tools.ToolScoop;
-import gregtech.common.tools.ToolScrewdriver;
-import gregtech.common.tools.ToolScrewdriverHV;
-import gregtech.common.tools.ToolScrewdriverLV;
-import gregtech.common.tools.ToolScrewdriverMV;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
 import gregtech.common.tools.ToolTurbineHuge;
@@ -171,17 +163,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L)),
             GregTechAPI.sCrowbarList);
-        GregTechAPI.registerTool(
-            addTool(
-                SCREWDRIVER.ID,
-                "Screwdriver",
-                "Adjusts Covers and Machines",
-                new ToolScrewdriver(),
-                ToolDictNames.craftingToolScrewdriver,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-            GregTechAPI.sScrewdriverList);
         addTool(
             MORTAR.ID,
             "Mortar",
@@ -372,39 +353,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
             new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
-        GregTechAPI.registerTool(
-            addTool(
-                SCREWDRIVER_LV.ID,
-                "",
-                "",
-                new ToolScrewdriverLV(),
-                ToolDictNames.craftingToolScrewdriver,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-            GregTechAPI.sScrewdriverList);
-        GregTechAPI.registerTool(
-            addTool(
-                SCREWDRIVER_MV.ID,
-                "",
-                "",
-                new ToolScrewdriverMV(),
-                ToolDictNames.craftingToolScrewdriver,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-            GregTechAPI.sScrewdriverList);
-        GregTechAPI.registerTool(
-            addTool(
-                SCREWDRIVER_HV.ID,
-                "",
-                "",
-                new ToolScrewdriverHV(),
-                ToolDictNames.craftingToolScrewdriver,
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-            GregTechAPI.sScrewdriverList);
         GregTechAPI.registerTool(
             addTool(
                 SOLDERING_IRON_LV.ID,
@@ -625,12 +573,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             BUZZSAW_LV.ID,
             BUZZSAW_MV.ID,
             BUZZSAW_HV.ID);
-        addTieredFamily(
-            "gt.metatool.01.screwdriver.name",
-            "gt.metatool.01.screwdriver.tooltip",
-            SCREWDRIVER_LV.ID,
-            SCREWDRIVER_MV.ID,
-            SCREWDRIVER_HV.ID);
         addTieredFamily(
             "gt.metatool.01.soldering_iron.name",
             "gt.metatool.01.soldering_iron.tooltip",

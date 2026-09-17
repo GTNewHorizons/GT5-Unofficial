@@ -13,19 +13,20 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IToolStats;
 
 /**
- * An electric wrench: LV, MV or HV.
+ * An electric screwdriver: LV, MV or HV.
  * <p/>
- * These run on EU only. The old metadata-based electric wrenches carried a durability bar as well, but only lost a
+ * These run on EU only. The old metadata-based electric screwdrivers carried a durability bar as well, but only lost a
  * point of it on one action in twenty-five, so it was noise on top of the energy cost; the energy cost per action is
- * unchanged from the old {@code IToolStats} numbers, which is where the balance actually lived.
+ * unchanged, since {@code GTModHandler.damageOrDechargeItem} always reached these through {@code IDamagableItem} and
+ * so spent 100 units per use either way.
  */
-public class ToolWrenchElectricItem extends ToolWrenchItem implements IElectricToolItem {
+public class ToolScrewdriverElectricItem extends ToolScrewdriverItem implements IElectricToolItem {
 
     private final ToolElectricStorage electricStorage;
 
-    public ToolWrenchElectricItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,
-        String englishTooltip, long maxCharge, long voltage, int tier) {
-        super(unlocalizedName, toolStats, englishNameFormat, englishTooltip);
+    public ToolScrewdriverElectricItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,
+        long maxCharge, long voltage, int tier) {
+        super(unlocalizedName, toolStats, englishNameFormat);
         this.electricStorage = new ToolElectricStorage(maxCharge, voltage, tier);
     }
 
@@ -39,7 +40,7 @@ public class ToolWrenchElectricItem extends ToolWrenchItem implements IElectricT
     }
 
     /**
-     * Builds a wrench whose capacity differs from this tier's default, for the cheaper battery variants of the
+     * Builds a screwdriver whose capacity differs from this tier's default, for the cheaper battery variants of the
      * crafting recipe.
      *
      * @return the stack, or null if the material has no metadata slot.
@@ -89,10 +90,6 @@ public class ToolWrenchElectricItem extends ToolWrenchItem implements IElectricT
         return electricStorage.getMaxCharge(stack);
     }
 
-    /**
-     * Pays for one action out of the stored energy instead of out of durability. The amounts are the same ones the
-     * metadata-based wrench passed to {@code doDamage}, which for an electric tool were already EU.
-     */
     @Override
     public boolean doDamage(ItemStack stack, long amount) {
         return use(stack, amount, null);
@@ -107,7 +104,7 @@ public class ToolWrenchElectricItem extends ToolWrenchItem implements IElectricT
     }
 
     /**
-     * Hands out fully charged wrenches, so that one spawned from NEI or the creative tab is usable straight away
+     * Hands out fully charged screwdrivers, so that one spawned from NEI or the creative tab is usable straight away
      * rather than being a flat battery.
      */
     @Override

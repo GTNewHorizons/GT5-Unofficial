@@ -26,6 +26,8 @@ class PosteaToolMigrationTest {
 
     private static final int RUBBER_META = 880;
 
+    private static final int IRON_META = 32;
+
     /**
      * Builds the NBT a tool of the old system serialized to.
      *
@@ -164,5 +166,49 @@ class PosteaToolMigrationTest {
 
         assertEquals(RUBBER_META, stack.getShort("Damage"));
         assertFalse(stack.hasKey("tag"), "a fresh mallet needs no tag at all");
+    }
+
+    @Test
+    void handScrewdriverKeepsItsDurability() {
+        // An Iron screwdriver, nearly worn out. Screwdrivers have no modes, so none is recorded.
+        NBTTagCompound stack = oldTool(22, "Iron", 12_500L, 12_800L, (byte) 0, null, null);
+
+        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false, 0L);
+
+        assertEquals(IRON_META, stack.getShort("Damage"), "metadata should become the material");
+
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        assertEquals(12_500L, tag.getLong("GT.ToolDamage"), "durability damage should carry over unscaled");
+        assertFalse(tag.hasKey("GT.ToolStats"), "the old stats compound should be gone");
+        assertFalse(tag.hasKey("GT.ItemCharge"), "a hand screwdriver holds no charge");
+    }
+
+    @Test
+    void electricScrewdriverKeepsItsChargeAndDropsItsDurability() {
+        // An MV screwdriver built with a Lithium battery: the tier default capacity, part charged, somewhat worn.
+        NBTTagCompound stack = oldTool(152, "Steel", 3_000L, 51_200L, (byte) 0, 250_000L, 400_000L);
+
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 400_000L);
+
+        assertEquals(STEEL_META, stack.getShort("Damage"));
+
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        assertEquals(250_000L, tag.getLong("GT.ItemCharge"), "stored energy should carry over");
+        assertFalse(tag.hasKey("GT.ToolDamage"), "electric screwdrivers no longer wear out");
+        assertFalse(
+            tag.hasKey("GT.MaxCharge"),
+            "a screwdriver at its tier's default capacity should not carry a capacity override");
+    }
+
+    @Test
+    void electricScrewdriverBelowDefaultCapacityRecordsIt() {
+        // The Sodium battery variant of the same MV screwdriver: half the capacity, so the stack has to remember it.
+        NBTTagCompound stack = oldTool(152, "Steel", 0L, 51_200L, (byte) 0, 20_000L, 200_000L);
+
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 400_000L);
+
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        assertEquals(200_000L, tag.getLong("GT.MaxCharge"), "the smaller capacity must be recorded on the stack");
+        assertEquals(20_000L, tag.getLong("GT.ItemCharge"));
     }
 }

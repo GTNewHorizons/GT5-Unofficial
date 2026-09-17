@@ -72,7 +72,7 @@ import gregtech.common.items.toolbox.ToolboxItemStackHandler;
 import gregtech.common.items.toolbox.ToolboxPickBlockDecider;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.items.toolbox.pickblock.PickResults;
-import gregtech.common.items.tools.ToolWrenchItem;
+import gregtech.common.items.tools.ToolItemBase;
 import gregtech.crossmod.backhand.Backhand;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -267,8 +267,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                     potentialTool.map(currentTool -> {
                         if (currentTool.getItem() instanceof final MetaGeneratedTool mgToolItem)
                             return mgToolItem.getToolModeName(currentTool);
-                        if (currentTool.getItem() instanceof final ToolWrenchItem wrenchItem)
-                            return wrenchItem.getToolModeName(currentTool);
+                        if (currentTool.getItem() instanceof final ToolItemBase toolItem)
+                            return toolItem.getToolModeName(currentTool);
                         return "";
                     }).orElse(""))
                     : StatCollector.translateToLocalFormatted("GT5U.item.toolbox.name_template", base, toolName);

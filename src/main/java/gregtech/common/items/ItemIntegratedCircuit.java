@@ -42,9 +42,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolboxSlot;
+import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.objects.XSTR;
@@ -357,9 +357,13 @@ public class ItemIntegratedCircuit extends GTGenericItem
                 }
             } else if (potentialStack.getItem() instanceof ItemGTToolbox) {
                 final Optional<ItemStack> potentialScrewdriver = ToolboxUtil.getItemInside(potentialStack, ToolboxSlot.SCREWDRIVER);
-                if (potentialScrewdriver.isPresent() && potentialScrewdriver.get().getItem() instanceof final MetaGeneratedTool mgTool) {
+                // IDamagableItem rather than MetaGeneratedTool: the screwdriver is a standalone item now, and only
+                // the soldering iron still answers from the old metadata-based one.
+                if (potentialScrewdriver.isPresent()
+                    && potentialScrewdriver.get()
+                        .getItem() instanceof final IDamagableItem damagableTool) {
                     final ItemStack screwdriver = potentialScrewdriver.get();
-                    if (doDamage && mgTool.doDamageToItem(screwdriver, 1)) {
+                    if (doDamage && damagableTool.doDamageToItem(screwdriver, 1)) {
                         ToolboxUtil.saveItemInside(potentialStack, screwdriver, ToolboxSlot.SCREWDRIVER);
                     }
 
