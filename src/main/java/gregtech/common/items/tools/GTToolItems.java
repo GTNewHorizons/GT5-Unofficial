@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.common.tools.ToolCrowbar;
+import gregtech.common.tools.ToolHardHammer;
 import gregtech.common.tools.ToolScrewdriver;
 import gregtech.common.tools.ToolScrewdriverHV;
 import gregtech.common.tools.ToolScrewdriverLV;
@@ -40,6 +41,7 @@ public final class GTToolItems {
     public static ToolWireCutterElectricItem WIRE_CUTTER_LV;
     public static ToolWireCutterElectricItem WIRE_CUTTER_MV;
     public static ToolWireCutterElectricItem WIRE_CUTTER_HV;
+    public static ToolHardHammerItem HARD_HAMMER;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -140,6 +142,7 @@ public final class GTToolItems {
             1_600_000L,
             512L,
             3);
+        HARD_HAMMER = new ToolHardHammerItem("tool.hard_hammer", new ToolHardHammer(), "%material Hammer");
     }
 
     /**

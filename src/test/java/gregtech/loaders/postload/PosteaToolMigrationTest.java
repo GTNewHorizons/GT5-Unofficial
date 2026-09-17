@@ -238,4 +238,17 @@ class PosteaToolMigrationTest {
         assertEquals(1_200_000L, tag.getLong("GT.MaxCharge"));
         assertFalse(tag.hasKey("GT.ToolDamage"), "electric wire cutters no longer wear out");
     }
+
+    @Test
+    void handHardHammerKeepsItsDurability() {
+        NBTTagCompound stack = oldTool(12, "Iron", 9_900L, 12_800L, (byte) 0, null, null);
+
+        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false, 0L);
+
+        assertEquals(IRON_META, stack.getShort("Damage"));
+        assertEquals(
+            9_900L,
+            stack.getCompoundTag("tag")
+                .getLong("GT.ToolDamage"));
+    }
 }

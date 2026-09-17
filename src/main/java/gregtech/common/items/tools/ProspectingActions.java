@@ -1,7 +1,7 @@
-package gregtech.common.items.behaviors;
+package gregtech.common.items.tools;
 
-import java.util.List;
 import java.util.Random;
+import java.util.function.BooleanSupplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -9,7 +9,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -17,24 +16,18 @@ import net.minecraftforge.fluids.IFluidBlock;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IOreMaterial;
-import gregtech.api.items.MetaBaseItem;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreManager;
 
-public class BehaviourProspecting extends BehaviourNone {
+/**
+ * The "right click stone to survey for ore" half of a hard hammer, moved out of {@code BehaviourProspecting}.
+ */
+public final class ProspectingActions {
 
-    private final int mVanillaCosts;
-    private final int mEUCosts;
-
-    public BehaviourProspecting(int aVanillaCosts, int aEUCosts) {
-        this.mVanillaCosts = aVanillaCosts;
-        this.mEUCosts = aEUCosts;
-    }
+    private ProspectingActions() {}
 
     private static Materials getOreMaterial(Block block, int meta) {
         ItemData association = GTOreDictUnificator.getAssociation(new ItemStack(block, 1, meta));
@@ -47,9 +40,15 @@ public class BehaviourProspecting extends BehaviourNone {
         return association.mMaterial.mMaterial;
     }
 
-    @Override
-    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
+    /**
+     * Surveys the block the player clicked and its surroundings for ore.
+     *
+     * @param toolQuality the tool's harvest level; a better tool sees further and scans a wider box.
+     * @param pay         charges the tool for one survey, and reports whether it could be paid for.
+     * @return whether the click was consumed.
+     */
+    public static boolean prospect(int toolQuality, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+        ForgeDirection side, float hitX, float hitY, float hitZ, BooleanSupplier pay) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -78,10 +77,9 @@ public class BehaviourProspecting extends BehaviourNone {
 
         if (aBlock.getMaterial() == Material.rock || aBlock.getMaterial() == Material.ground
             || GTUtility.isOre(aBlock, aMeta)) {
-            if (!GTModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) return false;
+            if (!pay.getAsBoolean()) return false;
 
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
-            int toolQuality = aItem instanceof MetaGeneratedTool ? aItem.getHarvestLevel(aStack, "") : 0;
             int tX = aX, tY = aY, tZ = aZ;
             for (int i = 0, j = 6 + toolQuality; i < j; i++) {
                 tX -= side.offsetX;
@@ -138,11 +136,5 @@ public class BehaviourProspecting extends BehaviourNone {
         }
 
         return false;
-    }
-
-    @Override
-    public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(StatCollector.translateToLocal("gt.behaviour.prospecting"));
-        return aList;
     }
 }

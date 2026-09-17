@@ -74,12 +74,7 @@ public class ToolLoader implements IWerkstoffRunnable {
             if (!werkstoff.getGenerationFeatures()
                 .isExtension())
                 GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.HARDHAMMER.ID,
-                        1,
-                        werkstoff.getBridgeMaterial(),
-                        werkstoff.getBridgeMaterial().mHandleMaterial,
-                        null),
+                    registerWerkstoffHardHammer(werkstoff),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "XX ", "XXS", "XX ", 'X', gem.get(werkstoff.getBridgeMaterial()), 'S',
                         stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
@@ -115,12 +110,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     ring.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'W',
                     screw.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
             GTModHandler.addShapelessCraftingRecipe(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                    IDMetaTool01.HARDHAMMER.ID,
-                    1,
-                    werkstoff.getBridgeMaterial(),
-                    werkstoff.getBridgeMaterial().mHandleMaterial,
-                    null),
+                registerWerkstoffHardHammer(werkstoff),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { toolHeadHammer.get(werkstoff.getBridgeMaterial()),
                     stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
@@ -253,12 +243,7 @@ public class ToolLoader implements IWerkstoffRunnable {
 
             if (!werkstoff.hasItemType(gem)) {
                 GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.HARDHAMMER.ID,
-                        1,
-                        werkstoff.getBridgeMaterial(),
-                        werkstoff.getBridgeMaterial().mHandleMaterial,
-                        null),
+                    registerWerkstoffHardHammer(werkstoff),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "XX ", "XXS", "XX ", 'X', ingot.get(werkstoff.getBridgeMaterial()), 'S',
                         stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
@@ -858,5 +843,19 @@ public class ToolLoader implements IWerkstoffRunnable {
             new Object[] { "SXS", "GMG", "PBP", 'X', handWireCutter, 'M', motor.get(1L), 'S',
                 wireFine.get(Materials.Electrum), 'P', plate.get(werkstoff.getBridgeMaterial()), 'G',
                 gearGt.get(Materials.Steel), 'B', battery.get(1L) });
+    }
+
+    /**
+     * Declares the hard hammer for this Werkstoff and returns a stack of it, or null if it has no metadata slot.
+     * Called once per recipe; registerMaterial is idempotent, and each recipe wants its own stack because
+     * addCraftingRecipe can edit the one it is handed.
+     */
+    private static ItemStack registerWerkstoffHardHammer(Werkstoff werkstoff) {
+        return GTToolItems.HARD_HAMMER.registerMaterial(
+            werkstoff.getBridgeMaterial(),
+            ToolMaterialIndex.WERKSTOFF_META_OFFSET + werkstoff.getmID(),
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
     }
 }

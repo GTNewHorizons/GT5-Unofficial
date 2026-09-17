@@ -15,7 +15,6 @@ import static gregtech.common.items.IDMetaTool01.FILE;
 import static gregtech.common.items.IDMetaTool01.FILE_HV;
 import static gregtech.common.items.IDMetaTool01.FILE_LV;
 import static gregtech.common.items.IDMetaTool01.FILE_MV;
-import static gregtech.common.items.IDMetaTool01.HARDHAMMER;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_HV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_LV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_MV;
@@ -77,7 +76,6 @@ import gregtech.common.tools.ToolFile;
 import gregtech.common.tools.ToolFileHV;
 import gregtech.common.tools.ToolFileLV;
 import gregtech.common.tools.ToolFileMV;
-import gregtech.common.tools.ToolHardHammer;
 import gregtech.common.tools.ToolJackHammerHV;
 import gregtech.common.tools.ToolJackHammerLV;
 import gregtech.common.tools.ToolJackHammerMV;
@@ -122,17 +120,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
             new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
             new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
-        GregTechAPI.registerTool(
-            addTool(
-                HARDHAMMER.ID,
-                "Hammer",
-                "Crushes Ores instead of harvesting them",
-                new ToolHardHammer(),
-                ToolDictNames.craftingToolHardHammer,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-            GregTechAPI.sHardHammerList);
         addTool(
             FILE.ID,
             "File",

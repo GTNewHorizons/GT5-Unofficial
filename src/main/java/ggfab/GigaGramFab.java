@@ -11,7 +11,6 @@ import static gregtech.api.enums.ToolDictNames.craftingToolSoftMallet;
 import static gregtech.api.enums.ToolDictNames.craftingToolWireCutter;
 import static gregtech.api.enums.ToolDictNames.craftingToolWrench;
 import static gregtech.common.items.IDMetaTool01.FILE;
-import static gregtech.common.items.IDMetaTool01.HARDHAMMER;
 import static gregtech.common.items.IDMetaTool01.SAW;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
@@ -76,10 +75,8 @@ public class GigaGramFab {
                 craftingToolWireCutter,
                 GTToolItems.WIRE_CUTTER.getToolStats(),
                 3 * plate + 2 * rod + screw);
-            GigaGramFabAPI.addSingleUseToolType(
-                craftingToolHardHammer,
-                INSTANCE.mToolStats.get((short) HARDHAMMER.ID),
-                6 * ingot);
+            GigaGramFabAPI
+                .addSingleUseToolType(craftingToolHardHammer, GTToolItems.HARD_HAMMER.getToolStats(), 6 * ingot);
             GigaGramFabAPI
                 .addSingleUseToolType(craftingToolSoftMallet, GTToolItems.SOFT_MALLET.getToolStats(), 6 * ingot);
             GigaGramFabAPI

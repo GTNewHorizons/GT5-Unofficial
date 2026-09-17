@@ -24,7 +24,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTToolHarvestHelper;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.behaviors.BehaviourProspecting;
 
 public class ToolHardHammer extends GTTool {
 
@@ -142,11 +141,6 @@ public class ToolHardHammer extends GTTool {
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
-    }
-
-    @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
-        aItem.addItemBehavior(aID, new BehaviourProspecting(1, 1000));
     }
 
     @Override

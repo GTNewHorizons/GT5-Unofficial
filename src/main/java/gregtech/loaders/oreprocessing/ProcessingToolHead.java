@@ -960,17 +960,20 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.screw.get(Materials.Steel) });
             }
             case "toolHeadHammer", "toolHeadMallet" -> {
-                // Soft mallets are their own item now; hard hammers still live on MetaGeneratedTool01. Both are
-                // built by the same four recipes, so resolve the output once. Each recipe gets its own copy, because
-                // addCraftingRecipe can edit the stack it is handed. A null output means the soft mallet has no
-                // metadata slot for this material, in which case there is no recipe to add.
+                // Whether this material makes a soft mallet or a hard hammer, both are now standalone items built by
+                // the same four recipes, so resolve the output once. Each recipe gets its own copy, because
+                // addCraftingRecipe can edit the stack it is handed. A null output means the tool has no metadata
+                // slot for this material, in which case there is no recipe to add.
                 final ItemStack tMalletOrHammer = aProducesSoftMallet
                     ? GTToolItems.SOFT_MALLET.registerMaterial(
                         aMaterial,
                         new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L))
-                    : MetaGeneratedTool01.INSTANCE
-                        .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, aMaterial, aMaterial.mHandleMaterial, null);
+                    : GTToolItems.HARD_HAMMER.registerMaterial(
+                        aMaterial,
+                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                        new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+                        new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
                 if (tMalletOrHammer != null
                     && GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L) != null) {
                     GTValues.RA.stdBuilder()

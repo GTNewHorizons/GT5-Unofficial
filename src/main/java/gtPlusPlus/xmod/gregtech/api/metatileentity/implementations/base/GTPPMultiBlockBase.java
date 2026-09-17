@@ -1182,10 +1182,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
         mToolStacks.put(true + "WRENCH", GTToolItems.WRENCH.getToolWithMaterial(GOOD));
         mToolStacks.put(true + "CROWBAR", GTToolItems.CROWBAR.getToolWithMaterial(GOOD));
-        mToolStacks.put(
-            true + "HARDHAMMER",
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, GOOD, Materials.Tungsten, null));
+        mToolStacks.put(true + "HARDHAMMER", GTToolItems.HARD_HAMMER.getToolWithMaterial(GOOD));
         mToolStacks.put(true + "SOFTMALLET", GTToolItems.SOFT_MALLET.getToolWithMaterial(GOOD));
         mToolStacks.put(true + "SCREWDRIVER", GTToolItems.SCREWDRIVER.getToolWithMaterial(GOOD));
         mToolStacks.put(
@@ -1195,10 +1192,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
         mToolStacks.put(false + "WRENCH", GTToolItems.WRENCH.getToolWithMaterial(BAD));
         mToolStacks.put(false + "CROWBAR", GTToolItems.CROWBAR.getToolWithMaterial(BAD));
-        mToolStacks.put(
-            false + "HARDHAMMER",
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, BAD, Materials.Tungsten, null));
+        mToolStacks.put(false + "HARDHAMMER", GTToolItems.HARD_HAMMER.getToolWithMaterial(BAD));
         mToolStacks.put(false + "SOFTMALLET", GTToolItems.SOFT_MALLET.getToolWithMaterial(BAD));
         mToolStacks.put(false + "SCREWDRIVER", GTToolItems.SCREWDRIVER.getToolWithMaterial(BAD));
         mToolStacks.put(
