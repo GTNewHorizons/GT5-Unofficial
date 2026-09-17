@@ -271,7 +271,7 @@ public class GTMod {
         }
 
         for (int i = 4; i < 12; i++) {
-            GregTechAPI.registerTileEntityConstructor(i, i2 -> new BaseMetaPipeEntity());
+            GregTechAPI.registerTileEntityConstructor(i, BaseMetaPipeEntity::new);
         }
 
         UnificationOreAdapter.load();

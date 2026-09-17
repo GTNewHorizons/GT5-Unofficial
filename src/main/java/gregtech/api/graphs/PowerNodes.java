@@ -19,8 +19,8 @@ public class PowerNodes {
         long aMaxAmps) {
         long tAmpsUsed = 0;
         ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
-        int tLoopProtection = 0;
         while (tConsumer != null) {
+            final int tConsumerPosition = aConsumers.getPosition();
             int tTargetNodeValue = tConsumer.mNodeValue;
             // if the target node has a value less then the current node
             if (tTargetNodeValue < aCurrentNode.mNodeValue || tTargetNodeValue > aCurrentNode.mHighestNodeValue) {
@@ -82,9 +82,9 @@ public class PowerNodes {
             if (aMaxAmps - tAmpsUsed <= 0) {
                 return tAmpsUsed;
             }
-            if (tLoopProtection++ > 20) {
-                throw new NullPointerException("infinite loop in powering nodes ");
-            }
+            if (aConsumers.isStale()) return tAmpsUsed;
+            if (tConsumerPosition == aConsumers.getPosition())
+                throw new IllegalStateException("Power-node traversal made no progress");
         }
         return tAmpsUsed;
     }
@@ -94,9 +94,9 @@ public class PowerNodes {
     protected static long powerNodeAbove(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, long aVoltage,
         long aMaxAmps) {
         long tAmpsUsed = 0;
-        int tLoopProtection = 0;
         ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
         while (tConsumer != null) {
+            final int tConsumerPosition = aConsumers.getPosition();
             int tTargetNodeValue = tConsumer.mNodeValue;
             if (tTargetNodeValue > aCurrentNode.mHighestNodeValue || tTargetNodeValue < aCurrentNode.mNodeValue) {
                 return tAmpsUsed;
@@ -131,9 +131,9 @@ public class PowerNodes {
             if (aMaxAmps - tAmpsUsed <= 0) {
                 return tAmpsUsed;
             }
-            if (tLoopProtection++ > 20) {
-                throw new NullPointerException("infinite loop in powering nodes ");
-            }
+            if (aConsumers.isStale()) return tAmpsUsed;
+            if (tConsumerPosition == aConsumers.getPosition())
+                throw new IllegalStateException("Power-node traversal made no progress");
         }
         return tAmpsUsed;
     }
@@ -143,7 +143,6 @@ public class PowerNodes {
         final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[ordinalSide];
         if (!tPath.isValid()) {
             aConsumers.markStale();
-            aConsumers.getNextNode();
             return 0;
         }
         if (aCurrentNode.locks[ordinalSide].isLocked()) {
@@ -169,7 +168,6 @@ public class PowerNodes {
         final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[ordinalSide];
         if (!tPath.isValid()) {
             aConsumers.markStale();
-            aConsumers.getNextNode();
             return 0;
         }
         if (aCurrentNode.locks[ordinalSide].isLocked()) {

@@ -914,6 +914,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public void invalidate() {
         tileEntityInvalid = false;
         leaveEnet();
+        invalidatePowerNodeMaps(true);
         if (canAccessData()) {
             invalidateAE();
             mMetaTileEntity.onRemoval();
@@ -924,6 +925,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public void onUnload() {
+        invalidatePowerNodeMaps(true);
         if (canAccessData()) {
             onCoverUnload();
             mMetaTileEntity.onUnload();
@@ -1156,12 +1158,21 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     private void invalidatePowerNodeMaps() {
+        invalidatePowerNodeMaps(false);
+    }
+
+    private void invalidatePowerNodeMaps(boolean scheduleRebuild) {
+        if (worldObj == null || worldObj.isRemote) return;
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (!worldObj.blockExists(getOffsetX(side, 1), getOffsetY(side, 1), getOffsetZ(side, 1))) continue;
             final IGregTechTileEntity tileEntity = getIGregTechTileEntityAtSide(side);
             if (tileEntity instanceof BaseMetaPipeEntity pipe && pipe.getMetaTileEntity() instanceof MTECable
                 && (pipe.getConnections() & side.getOpposite().flag) != 0) {
                 final Node node = pipe.getNodeMap();
                 if (node != null) node.invalidateNodeMap();
+                if (scheduleRebuild) {
+                    GregTechAPI.causeCableUpdate(worldObj, pipe.xCoord, pipe.yCoord, pipe.zCoord);
+                }
             }
         }
     }

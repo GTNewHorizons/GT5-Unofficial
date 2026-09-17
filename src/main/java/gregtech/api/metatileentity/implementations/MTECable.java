@@ -294,14 +294,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aTick % 20 == 0 && aBaseMetaTileEntity.isServerSide() && (!GTMod.proxy.gt6Cable || mCheckConnections)) {
-            checkConnections();
-        }
-    }
-
-    @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         // Only perform the logic if the player is sneaking.
         if (!aPlayer.isSneaking()) {

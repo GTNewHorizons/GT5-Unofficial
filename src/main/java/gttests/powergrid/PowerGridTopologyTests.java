@@ -4,6 +4,8 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -15,6 +17,8 @@ import com.gtnewhorizons.horizonqa.api.annotation.GameTest;
 import com.gtnewhorizons.horizonqa.api.annotation.GameTestHolder;
 import com.gtnewhorizons.horizonqa.api.gt.Multiblock;
 
+import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverContext;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -26,6 +30,7 @@ import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.covers.Cover;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import tectech.thing.metaTileEntity.single.MTEDebugPowerGenerator;
@@ -38,6 +43,48 @@ public final class PowerGridTopologyTests {
     private static final int P2P_DELIVERY_TICKS = 25;
 
     private PowerGridTopologyTests() {}
+
+    @GameTest(template = "line", timeoutTicks = 30, batch = "gt5.power_grid")
+    public static void cablesDoNotJoinTheTileTickList(GameTestHelper helper) {
+        helper.startSequence()
+            .thenIdle(2)
+            .thenExecute("cables remain non-tickable", () -> {
+                assertCableNotTicking(helper, "cable_start");
+                assertCableNotTicking(helper, "edit_path");
+                assertCableNotTicking(helper, "cable_end");
+            })
+            .thenSucceed();
+    }
+
+    @GameTest(template = "line", timeoutTicks = 30, batch = "gt5.power_grid")
+    public static void cableCoversAreManagedWithoutTileTicks(GameTestHelper helper) {
+        BaseMetaPipeEntity cable = cableBase(helper, "edit_path");
+        int[] coverTicks = { 0 };
+        cable.attachCover(new Cover(new CoverContext(new ItemStack(Blocks.stone), ForgeDirection.UP, cable), null) {
+
+            @Override
+            public int getMinimumTickRate() {
+                return 1;
+            }
+
+            @Override
+            public void doCoverThings(byte redstone, long tickTimer) {
+                coverTicks[0]++;
+            }
+        });
+
+        helper.startSequence()
+            .thenIdle(3)
+            .thenExecute("cover is centrally ticked", () -> {
+                assertCableNotTicking(helper, "edit_path");
+                if (coverTicks[0] == 0) {
+                    throw new GameTestAssertException(
+                        "The cover on edit_path was not updated by the cable manager",
+                        helper.absolute("edit_path"));
+                }
+            })
+            .thenSucceed();
+    }
 
     @GameTest(template = "line", timeoutTicks = 100, batch = "gt5.power_grid")
     public static void airFacingEndpointEditsKeepPowerFlowing(GameTestHelper helper) {
@@ -257,6 +304,8 @@ public final class PowerGridTopologyTests {
         configureGenerators(helper, "generator_a");
         initializeNetworks(helper, "generator_a");
         isolateProbe(helper, "probe_a");
+        TickCallbackHandle splitStaysUnpowered = helper
+            .onEachTickDisabled("split line delivers no EU", () -> assertUnpowered(helper, "probe_a"));
 
         helper.startSequence()
             .thenWaitUntil(
@@ -266,17 +315,50 @@ public final class PowerGridTopologyTests {
             .thenExecute("split line", () -> {
                 clearProbe(helper, "probe_a");
                 disconnect(helper, "edit_path", "cable_end");
+                splitStaysUnpowered.enable();
             })
-            .thenWaitUntil(
-                "split consumer becomes unpowered",
-                DIRECT_WARMUP_TICKS,
-                () -> assertNoNewPowerAndClear(helper, "probe_a"))
+            .thenIdle(CABLE_UPDATE_TICKS)
+            .thenExecute("finish observing split line", splitStaysUnpowered::remove)
             .thenExecute("reconnect line", () -> {
                 clearProbe(helper, "probe_a");
                 connect(helper, "edit_path", "cable_end");
             })
             .thenWaitUntil(
                 "reconnected consumer is powered",
+                DIRECT_WARMUP_TICKS,
+                () -> assertPoweredAndClear(helper, "probe_a"))
+            .thenSucceed();
+    }
+
+    @GameTest(template = "line", timeoutTicks = 130, batch = "gt5.power_grid")
+    public static void restoredCableRejoinsLoadedNetwork(GameTestHelper helper) {
+        configureGenerators(helper, "generator_a");
+        initializeNetworks(helper, "generator_a");
+        isolateProbe(helper, "probe_a");
+        NBTTagCompound savedCable = new NBTTagCompound();
+        int[] blockMeta = { 0 };
+
+        helper.startSequence()
+            .thenWaitUntil(
+                "line establishes power",
+                DIRECT_WARMUP_TICKS,
+                () -> assertPoweredAndClear(helper, "probe_a"))
+            .thenExecute("remove and save bridge cable", () -> {
+                BaseMetaPipeEntity cable = cableBase(helper, "edit_path");
+                cable.writeToNBT(savedCable);
+                TestPos pos = helper.absolute("edit_path");
+                blockMeta[0] = helper.getWorld()
+                    .getBlockMetadata(pos.x(), pos.y(), pos.z());
+                clearProbe(helper, "probe_a");
+                helper.destroyBlock("edit_path");
+            })
+            .thenIdle(1)
+            .thenExecute("removed cable stops delivery", () -> assertUnpowered(helper, "probe_a"))
+            .thenIdle(CABLE_UPDATE_TICKS)
+            .thenExecute("split graph remains unpowered", () -> assertUnpowered(helper, "probe_a"))
+            .thenExecute("restore cable from NBT", () -> restoreCable(helper, "edit_path", savedCable, blockMeta[0]))
+            .thenWaitUntil(
+                "restored cable delivers power",
                 DIRECT_WARMUP_TICKS,
                 () -> assertPoweredAndClear(helper, "probe_a"))
             .thenSucceed();
@@ -631,6 +713,28 @@ public final class PowerGridTopologyTests {
         }
     }
 
+    private static void assertCableNotTicking(GameTestHelper helper, String label) {
+        BaseMetaPipeEntity cable = cableBase(helper, label);
+        if (cable.canUpdate() || helper.getWorld().loadedTileEntityList.contains(cable)) {
+            throw new GameTestAssertException(
+                "Expected cable " + label + " to stay out of the tile tick list",
+                helper.absolute(label));
+        }
+    }
+
+    private static void restoreCable(GameTestHelper helper, String label, NBTTagCompound savedCable, int blockMeta) {
+        TestPos pos = helper.absolute(label);
+        helper.setBlock(label, GregTechAPI.sBlockMachines, blockMeta);
+        helper.getWorld()
+            .removeTileEntity(pos.x(), pos.y(), pos.z());
+        TileEntity restored = TileEntity.createAndLoadEntity((NBTTagCompound) savedCable.copy());
+        helper.assertTrue(restored instanceof BaseMetaPipeEntity, "Saved cable NBT did not restore a pipe tile");
+        helper.getWorld()
+            .setTileEntity(pos.x(), pos.y(), pos.z(), restored);
+        helper.getWorld()
+            .markBlockForUpdate(pos.x(), pos.y(), pos.z());
+    }
+
     private static BaseMetaTileEntity probe(GameTestHelper helper, String label) {
         BaseMetaTileEntity probe = helper.assertTileEntityPresent(BaseMetaTileEntity.class, label);
         helper.assertTrue(
@@ -666,8 +770,12 @@ public final class PowerGridTopologyTests {
         return (MTECable) metaTileEntity;
     }
 
+    private static BaseMetaPipeEntity cableBase(GameTestHelper helper, String label) {
+        return (BaseMetaPipeEntity) cable(helper, label).getBaseMetaTileEntity();
+    }
+
     private static Node nodeMap(GameTestHelper helper, String label) {
-        return ((BaseMetaPipeEntity) cable(helper, label).getBaseMetaTileEntity()).getNodeMap();
+        return cableBase(helper, label).getNodeMap();
     }
 
     private static ForgeDirection direction(TestPos from, TestPos to) {

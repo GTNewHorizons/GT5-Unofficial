@@ -5,8 +5,10 @@ import static gregtech.GTLoggers.GT_FML_LOGGER;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
@@ -32,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.graphs.Lock;
@@ -59,6 +62,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     implements IPipeRenderedTileEntity, IDebugableTileEntity {
 
+    private static final Set<BaseMetaPipeEntity> MANAGED_CABLES = Collections.newSetFromMap(new IdentityHashMap<>());
+
     public byte mConnections = IConnectable.NO_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;
     private boolean mWorkUpdate = false, mWorks = true;
@@ -66,6 +71,9 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     protected Node node;
     protected NodePath nodePath;
     private int nodePathConnections;
+    private final boolean cableBaseType;
+    private boolean managedCableInitialized;
+    private boolean connectionCheckPending;
 
     public Node getNode() {
         return node;
@@ -117,7 +125,106 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         }
     }
 
-    public BaseMetaPipeEntity() {}
+    public BaseMetaPipeEntity() {
+        this(false);
+    }
+
+    public BaseMetaPipeEntity(int baseType) {
+        this(
+            baseType == HarvestTool.CutterLevel0.toTileEntityBaseType()
+                || baseType == HarvestTool.CutterLevel1.toTileEntityBaseType());
+    }
+
+    private BaseMetaPipeEntity(boolean cableBaseType) {
+        this.cableBaseType = cableBaseType;
+        mTickDisabled = cableBaseType;
+    }
+
+    @Override
+    public boolean canUpdate() {
+        return !isNonTickingCable();
+    }
+
+    boolean isNonTickingCable() {
+        return cableBaseType || mMetaTileEntity instanceof MTECable;
+    }
+
+    @Override
+    public void enableTicking() {
+        if (isNonTickingCable()) {
+            scheduleManagedCableTick();
+        } else {
+            super.enableTicking();
+        }
+    }
+
+    void scheduleConnectionCheck() {
+        connectionCheckPending = true;
+        scheduleManagedCableTick();
+    }
+
+    private void scheduleManagedCableTick() {
+        mTickDisabled = true;
+        if (worldObj == null) return;
+        if (worldObj.isRemote) {
+            initializeManagedCable(false);
+        } else {
+            MANAGED_CABLES.add(this);
+        }
+    }
+
+    public static void tickManagedCables() {
+        if (MANAGED_CABLES.isEmpty()) return;
+        for (BaseMetaPipeEntity cable : new ArrayList<>(MANAGED_CABLES)) {
+            try {
+                if (!cable.tickManagedCable()) MANAGED_CABLES.remove(cable);
+            } catch (Exception e) {
+                GT_FML_LOGGER.error(
+                    "Error updating non-ticking cable {} at ({}, {}, {})",
+                    cable.getMetaTileID(),
+                    cable.xCoord,
+                    cable.yCoord,
+                    cable.zCoord,
+                    e);
+            }
+        }
+    }
+
+    private boolean tickManagedCable() {
+        if (worldObj == null || worldObj.isRemote
+            || isInvalid()
+            || worldObj.getTileEntity(xCoord, yCoord, zCoord) != this
+            || !isNonTickingCable()) return false;
+        if (!hasValidMetaTileEntity()) return false;
+
+        initializeManagedCable(true);
+        if (connectionCheckPending && mMetaTileEntity instanceof MetaPipeEntity pipe) {
+            connectionCheckPending = false;
+            pipe.checkConnections();
+            updateConnections();
+            joinEnet();
+        }
+        if (getValidCoversMask() != 0 && !doCoverThings()) return false;
+
+        syncConnectionToClient();
+        handleUpdateDataChangeServer();
+        handleSidedRedstoneChangeServer();
+        mWorkUpdate = mInventoryChanged = false;
+        return connectionCheckPending || getValidCoversMask() != 0;
+    }
+
+    private void initializeManagedCable(boolean serverSide) {
+        if (managedCableInitialized || !hasValidMetaTileEntity()) return;
+        handleFirstTick(serverSide);
+        mTickTimer = 20;
+        managedCableInitialized = true;
+        if (serverSide) {
+            markCableTopologyChanged();
+            GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
+            connectionCheckPending = true;
+            issueBlockUpdate();
+        }
+    }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
@@ -229,6 +336,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public void onUnload() {
+        MANAGED_CABLES.remove(this);
         if (canAccessData()) {
             onCoverUnload();
             mMetaTileEntity.onUnload();
@@ -247,6 +355,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         invalidateNodePaths(mConnections & ~newConnections);
         mConnections = (byte) newConnections;
         GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
+        syncConnectionToClient();
     }
 
     public final void syncConnectionToClient() {
@@ -440,10 +549,14 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public void validate() {
         super.validate();
         mTickTimer = 0;
+        managedCableInitialized = false;
+        connectionCheckPending = false;
+        if (isNonTickingCable()) scheduleManagedCableTick();
     }
 
     @Override
     public void invalidate() {
+        MANAGED_CABLES.remove(this);
         tileEntityInvalid = false;
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onRemoval();
@@ -459,6 +572,18 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         if (mMetaTileEntity instanceof MTECable) {
             final Node nodeMap = getNodeMap();
             if (nodeMap != null) nodeMap.invalidateNodeMap();
+            if (worldObj == null) return;
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                final int x = xCoord + side.offsetX;
+                final int y = yCoord + side.offsetY;
+                final int z = zCoord + side.offsetZ;
+                if (!worldObj.blockExists(x, y, z)) continue;
+                final TileEntity tile = worldObj.getTileEntity(x, y, z);
+                if (tile instanceof BaseMetaPipeEntity pipe && pipe.mMetaTileEntity instanceof MTECable) {
+                    final Node neighbourMap = pipe.getNodeMap();
+                    if (neighbourMap != null) neighbourMap.invalidateNodeMap();
+                }
+            }
         }
     }
 
@@ -704,6 +829,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     void refreshMetaTileEntityValidity() {
         mMetaTileEntityValid = mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
         mNeedsClientTick = mMetaTileEntity == null || mMetaTileEntity.needsClientTick();
+        if (isNonTickingCable()) scheduleManagedCableTick();
     }
 
     @Override

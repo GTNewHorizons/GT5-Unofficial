@@ -21,6 +21,10 @@ public class NodeList {
         else return null;
     }
 
+    int getPosition() {
+        return mCounter;
+    }
+
     void markStale() {
         stale = true;
     }
