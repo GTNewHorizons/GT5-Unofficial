@@ -12,8 +12,8 @@ import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave.RecipeOrder;
 
@@ -35,9 +35,7 @@ public final class MTEHatchCraftingInputSlaveGui {
         EnumSyncValue<RecipeOrder, ?> orderSyncer = new EnumSyncValue<>(
             RecipeOrder.class,
             () -> proxy == null ? RecipeOrder.NORMAL : proxy.getRecipeOrder(),
-            order -> {
-                if (proxy != null) proxy.setRecipeOrder(order);
-            }).allowC2S();
+            order -> { if (proxy != null) proxy.setRecipeOrder(order); }).allowC2S();
 
         CycleButtonWidget button = new CycleButtonWidget().value(orderSyncer);
         for (RecipeOrder order : RecipeOrder.values()) {
@@ -47,13 +45,11 @@ public final class MTEHatchCraftingInputSlaveGui {
                     StatCollector.translateToLocalFormatted(
                         "GT5U.gui.tooltip.hatch.crafting_input_slave.recipe_order.current",
                         StatCollector.translateToLocal(MTEHatchCraftingInputSlave.getRecipeOrderLangKey(order))));
-                tooltip.addLine(
-                    StatCollector
-                        .translateToLocal(getOrderDescriptionKey(order)));
+                tooltip.addLine(StatCollector.translateToLocal(getOrderDescriptionKey(order)));
                 if (order == RecipeOrder.RANDOM) {
                     tooltip.addLine(
-                        StatCollector.translateToLocal(
-                            "GT5U.gui.tooltip.hatch.crafting_input_slave.recipe_order.scanner"));
+                        StatCollector
+                            .translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_slave.recipe_order.scanner"));
                 }
             });
         }
@@ -74,7 +70,7 @@ public final class MTEHatchCraftingInputSlaveGui {
     }
 
     private static String getOrderDescriptionKey(RecipeOrder order) {
-        return "GT5U.gui.tooltip.hatch.crafting_input_slave.recipe_order."
-            + order.name().toLowerCase(Locale.ROOT);
+        return "GT5U.gui.tooltip.hatch.crafting_input_slave.recipe_order." + order.name()
+            .toLowerCase(Locale.ROOT);
     }
 }
