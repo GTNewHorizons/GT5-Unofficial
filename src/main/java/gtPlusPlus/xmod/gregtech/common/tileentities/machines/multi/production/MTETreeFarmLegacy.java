@@ -19,7 +19,6 @@ import static gregtech.common.items.IDMetaTool01.BUZZSAW_MV;
 import static gregtech.common.items.IDMetaTool01.CHAINSAW_HV;
 import static gregtech.common.items.IDMetaTool01.CHAINSAW_LV;
 import static gregtech.common.items.IDMetaTool01.CHAINSAW_MV;
-import static gregtech.common.items.IDMetaTool01.KNIFE;
 import static gregtech.common.items.IDMetaTool01.POCKET_BRANCHCUTTER;
 import static gregtech.common.items.IDMetaTool01.POCKET_KNIFE;
 import static gregtech.common.items.IDMetaTool01.POCKET_MULTITOOL;
@@ -74,6 +73,7 @@ import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.items.tools.ToolBranchCutterItem;
+import gregtech.common.items.tools.ToolKnifeItem;
 import gregtech.common.items.tools.ToolSawItem;
 import gregtech.common.items.tools.ToolWireCutterElectricItem;
 import gregtech.common.items.tools.ToolWireCutterItem;
@@ -485,7 +485,11 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
 
             case FRUIT:
                 if (tool instanceof MetaGeneratedTool01
-                    && (damage == KNIFE.ID || damage == POCKET_KNIFE.ID || damage == POCKET_MULTITOOL.ID)) {
+                    && (damage == POCKET_KNIFE.ID || damage == POCKET_MULTITOOL.ID)) {
+                    return 1;
+                }
+                // The knife is its own item now, so it is recognised by class rather than metadata.
+                if (tool instanceof ToolKnifeItem) {
                     return 1;
                 }
                 break;
@@ -747,7 +751,7 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
                 GTToolItems.WIRE_CUTTER_HV.getDisplayStack(),
                 toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null), },
             // Mode.FRUIT
-            { toolInstance.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, null, null, null),
+            { GTToolItems.KNIFE.getDisplayStack(),
                 toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, null, null, null), } };
         // A tool with no registered material, or a mod item that is not installed, comes back null; NEI must not be
         // handed those.

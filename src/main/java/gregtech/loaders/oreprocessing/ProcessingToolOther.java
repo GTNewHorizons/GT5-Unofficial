@@ -113,11 +113,18 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         new Object[] { "PfP", "PdP", "STS", 'S', OrePrefixes.stick.get(aMaterial), 'P',
                             OrePrefixes.plate.get(aMaterial), 'T', OrePrefixes.screw.get(aMaterial) });
                 }
-                GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, aMaterial, aMaterial, null),
-                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "fPh", " S ", 'S', OrePrefixes.stick.get(aMaterial), 'P',
-                        OrePrefixes.plate.get(aMaterial) });
+                ItemStack tKnife = GTToolItems.KNIFE.registerMaterial(
+                    aMaterial,
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L));
+                if (tKnife != null) {
+                    GTModHandler.addCraftingRecipe(
+                        tKnife,
+                        GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                        new Object[] { "fPh", " S ", 'S', OrePrefixes.stick.get(aMaterial), 'P',
+                            OrePrefixes.plate.get(aMaterial) });
+                }
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE
                         .getToolWithStats(IDMetaTool01.BUTCHERYKNIFE.ID, 1, aMaterial, aMaterial, null),

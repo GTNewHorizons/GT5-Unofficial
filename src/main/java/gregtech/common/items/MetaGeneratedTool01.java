@@ -13,7 +13,6 @@ import static gregtech.common.items.IDMetaTool01.DRILL_MV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_HV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_LV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_MV;
-import static gregtech.common.items.IDMetaTool01.KNIFE;
 import static gregtech.common.items.IDMetaTool01.PLUNGER;
 import static gregtech.common.items.IDMetaTool01.POCKET_BRANCHCUTTER;
 import static gregtech.common.items.IDMetaTool01.POCKET_FILE;
@@ -67,7 +66,6 @@ import gregtech.common.tools.ToolDrillMV;
 import gregtech.common.tools.ToolJackHammerHV;
 import gregtech.common.tools.ToolJackHammerLV;
 import gregtech.common.tools.ToolJackHammerMV;
-import gregtech.common.tools.ToolKnife;
 import gregtech.common.tools.ToolPlunger;
 import gregtech.common.tools.ToolRollingPin;
 import gregtech.common.tools.ToolSolderingIron;
@@ -96,16 +94,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     public MetaGeneratedTool01() {
         super("metatool.01");
         INSTANCE = this;
-        addTool(
-            KNIFE.ID,
-            "Knife",
-            "",
-            new ToolKnife(),
-            ToolDictNames.craftingToolBlade,
-            ToolDictNames.craftingToolKnife,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L));
         addTool(
             BUTCHERYKNIFE.ID,
             "Butchery Knife",
@@ -523,7 +511,11 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 OrePrefixes.stick.get(Materials.IronWood) });
 
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(KNIFE.ID, 1, Materials.Flint, Materials.Wood, null),
+            GTToolItems.KNIFE.registerMaterial(
+                Materials.Flint,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L)),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "F", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1) });
     }

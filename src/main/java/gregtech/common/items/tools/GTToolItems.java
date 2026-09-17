@@ -10,6 +10,7 @@ import gregtech.common.tools.ToolFileHV;
 import gregtech.common.tools.ToolFileLV;
 import gregtech.common.tools.ToolFileMV;
 import gregtech.common.tools.ToolHardHammer;
+import gregtech.common.tools.ToolKnife;
 import gregtech.common.tools.ToolMortar;
 import gregtech.common.tools.ToolSaw;
 import gregtech.common.tools.ToolScoop;
@@ -58,6 +59,7 @@ public final class GTToolItems {
     public static ToolMortarItem MORTAR;
     public static ToolScoopItem SCOOP;
     public static ToolBranchCutterItem BRANCH_CUTTER;
+    public static ToolKnifeItem KNIFE;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -192,6 +194,7 @@ public final class GTToolItems {
             new ToolBranchCutter(),
             "%material Branch Cutter",
             "");
+        KNIFE = new ToolKnifeItem("tool.knife", new ToolKnife(), "%material Knife", "");
     }
 
     /**
