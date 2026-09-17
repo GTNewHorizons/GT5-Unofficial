@@ -12,7 +12,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
-import gregtech.common.items.behaviors.BehaviourWireCutter;
 
 public class ToolWireCutter extends GTTool {
 
@@ -64,10 +63,5 @@ public class ToolWireCutter extends GTTool {
                 + EnumChatFormatting.RED
                 + aEntity.getCommandSenderName()
                 + EnumChatFormatting.WHITE);
-    }
-
-    @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
-        aItem.addItemBehavior(aID, new BehaviourWireCutter());
     }
 }

@@ -13,7 +13,6 @@ import static gregtech.api.enums.ToolDictNames.craftingToolWrench;
 import static gregtech.common.items.IDMetaTool01.FILE;
 import static gregtech.common.items.IDMetaTool01.HARDHAMMER;
 import static gregtech.common.items.IDMetaTool01.SAW;
-import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
@@ -75,7 +74,7 @@ public class GigaGramFab {
             GigaGramFabAPI.addSingleUseToolType(craftingToolCrowbar, GTToolItems.CROWBAR.getToolStats(), 3 * rod);
             GigaGramFabAPI.addSingleUseToolType(
                 craftingToolWireCutter,
-                INSTANCE.mToolStats.get((short) WIRECUTTER.ID),
+                GTToolItems.WIRE_CUTTER.getToolStats(),
                 3 * plate + 2 * rod + screw);
             GigaGramFabAPI.addSingleUseToolType(
                 craftingToolHardHammer,

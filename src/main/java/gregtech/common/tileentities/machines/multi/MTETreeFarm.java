@@ -28,15 +28,13 @@ import static gregtech.common.items.IDMetaTool01.POCKET_MULTITOOL;
 import static gregtech.common.items.IDMetaTool01.POCKET_SAW;
 import static gregtech.common.items.IDMetaTool01.POCKET_WIRECUTTER;
 import static gregtech.common.items.IDMetaTool01.SAW;
-import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
-import static gregtech.common.items.IDMetaTool01.WIRECUTTER_HV;
-import static gregtech.common.items.IDMetaTool01.WIRECUTTER_LV;
-import static gregtech.common.items.IDMetaTool01.WIRECUTTER_MV;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -84,6 +82,9 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.tools.GTToolItems;
+import gregtech.common.items.tools.ToolWireCutterElectricItem;
+import gregtech.common.items.tools.ToolWireCutterItem;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
@@ -545,15 +546,16 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                     return 1;
                 }
                 if (tool instanceof MetaGeneratedTool01) {
-                    if (damage == POCKET_MULTITOOL.ID) {
-                        return 1;
+                    if (damage == POCKET_MULTITOOL.ID || damage == POCKET_WIRECUTTER.ID) {
+                        return damage == POCKET_MULTITOOL.ID ? 1 : 2;
                     }
-                    if (damage == WIRECUTTER.ID || damage == POCKET_WIRECUTTER.ID) {
-                        return 2;
-                    }
-                    if (damage == WIRECUTTER_LV.ID || damage == WIRECUTTER_MV.ID || damage == WIRECUTTER_HV.ID) {
-                        return 4;
-                    }
+                }
+                // The wire cutters are their own items now, so they are recognised by class rather than metadata.
+                if (tool instanceof ToolWireCutterElectricItem) {
+                    return 4;
+                }
+                if (tool instanceof ToolWireCutterItem) {
+                    return 2;
                 }
                 break;
 
@@ -806,12 +808,17 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
     }
 
     /**
-     * This array is used to get the rotating display of items in NEI showing all possible tools for a given mode.
+     * The rotating display of items in NEI showing all possible tools for a given mode.
+     * <p/>
+     * Built on first use rather than in a static initializer: the standalone tool items only know their materials
+     * once the ore dictionary pass has run, which is long after this class is first loaded.
      */
-    private static final ItemStack[][] altToolsForNEI;
-    static {
+    private static ItemStack[][] altToolsForNEI;
+
+    private static ItemStack[][] altToolsForNEI() {
+        if (altToolsForNEI != null) return altToolsForNEI;
         MetaGeneratedTool toolInstance = MetaGeneratedTool01.INSTANCE;
-        altToolsForNEI = new ItemStack[][] {
+        ItemStack[][] tools = new ItemStack[][] {
             // Mode.LOG
             { toolInstance.getToolWithStats(SAW.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(POCKET_SAW.ID, 1, null, null, null),
@@ -826,15 +833,22 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                 toolInstance.getToolWithStats(IDMetaTool01.POCKET_BRANCHCUTTER.ID, 1, null, null, null),
                 GTModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
             // Mode.LEAVES
-            { new ItemStack(Items.shears),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_LV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_MV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_HV.ID, 1, null, null, null),
+            { new ItemStack(Items.shears), GTToolItems.WIRE_CUTTER.getDisplayStack(),
+                GTToolItems.WIRE_CUTTER_LV.getDisplayStack(), GTToolItems.WIRE_CUTTER_MV.getDisplayStack(),
+                GTToolItems.WIRE_CUTTER_HV.getDisplayStack(),
                 toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null), },
             // Mode.FRUIT
             { toolInstance.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, null, null, null), } };
+        // A tool with no registered material, or a mod item that is not installed, comes back null; NEI must not be
+        // handed those.
+        for (int i = 0; i < tools.length; i++) {
+            tools[i] = Arrays.stream(tools[i])
+                .filter(Objects::nonNull)
+                .toArray(ItemStack[]::new);
+        }
+        altToolsForNEI = tools;
+        return altToolsForNEI;
     }
 
     /**
@@ -869,7 +883,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             };
             if (output != null) {
                 int ordinal = mode.ordinal();
-                inputStacks[ordinal] = altToolsForNEI[ordinal];
+                inputStacks[ordinal] = altToolsForNEI()[ordinal];
                 outputStacks[ordinal] = output.copy();
                 outputStacks[ordinal].stackSize *= modeMultiplier.get(mode);
             }

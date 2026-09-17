@@ -9,6 +9,10 @@ import gregtech.common.tools.ToolScrewdriverHV;
 import gregtech.common.tools.ToolScrewdriverLV;
 import gregtech.common.tools.ToolScrewdriverMV;
 import gregtech.common.tools.ToolSoftMallet;
+import gregtech.common.tools.ToolWireCutter;
+import gregtech.common.tools.ToolWireCutterHV;
+import gregtech.common.tools.ToolWireCutterLV;
+import gregtech.common.tools.ToolWireCutterMV;
 import gregtech.common.tools.ToolWrench;
 import gregtech.common.tools.ToolWrenchHV;
 import gregtech.common.tools.ToolWrenchLV;
@@ -32,6 +36,10 @@ public final class GTToolItems {
     public static ToolScrewdriverElectricItem SCREWDRIVER_MV;
     public static ToolScrewdriverElectricItem SCREWDRIVER_HV;
     public static ToolCrowbarItem CROWBAR;
+    public static ToolWireCutterItem WIRE_CUTTER;
+    public static ToolWireCutterElectricItem WIRE_CUTTER_LV;
+    public static ToolWireCutterElectricItem WIRE_CUTTER_MV;
+    public static ToolWireCutterElectricItem WIRE_CUTTER_HV;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -107,6 +115,31 @@ public final class GTToolItems {
             512L,
             3);
         CROWBAR = new ToolCrowbarItem("tool.crowbar", new ToolCrowbar(), "%material Crowbar");
+        WIRE_CUTTER = new ToolWireCutterItem("tool.wire_cutter", new ToolWireCutter(), "%material Wire Cutter", "");
+        WIRE_CUTTER_LV = new ToolWireCutterElectricItem(
+            "tool.wire_cutter_lv",
+            new ToolWireCutterLV(),
+            "%material Wire Cutter (LV)",
+            "Hand-held electric wire cutter",
+            100_000L,
+            32L,
+            1);
+        WIRE_CUTTER_MV = new ToolWireCutterElectricItem(
+            "tool.wire_cutter_mv",
+            new ToolWireCutterMV(),
+            "%material Wire Cutter (MV)",
+            "Hand-held electric wire cutter",
+            400_000L,
+            128L,
+            2);
+        WIRE_CUTTER_HV = new ToolWireCutterElectricItem(
+            "tool.wire_cutter_hv",
+            new ToolWireCutterHV(),
+            "%material Wire Cutter (HV)",
+            "Hand-held electric wire cutter",
+            1_600_000L,
+            512L,
+            3);
     }
 
     /**

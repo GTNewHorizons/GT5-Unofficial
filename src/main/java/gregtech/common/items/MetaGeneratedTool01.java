@@ -40,10 +40,6 @@ import static gregtech.common.items.IDMetaTool01.TURBINE;
 import static gregtech.common.items.IDMetaTool01.TURBINE_HUGE;
 import static gregtech.common.items.IDMetaTool01.TURBINE_LARGE;
 import static gregtech.common.items.IDMetaTool01.TURBINE_SMALL;
-import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
-import static gregtech.common.items.IDMetaTool01.WIRECUTTER_HV;
-import static gregtech.common.items.IDMetaTool01.WIRECUTTER_LV;
-import static gregtech.common.items.IDMetaTool01.WIRECUTTER_MV;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -98,10 +94,6 @@ import gregtech.common.tools.ToolTurbineLarge;
 import gregtech.common.tools.ToolTurbineNormal;
 import gregtech.common.tools.ToolTurbineSmall;
 import gregtech.common.tools.ToolVajra;
-import gregtech.common.tools.ToolWireCutter;
-import gregtech.common.tools.ToolWireCutterHV;
-import gregtech.common.tools.ToolWireCutterLV;
-import gregtech.common.tools.ToolWireCutterMV;
 import gregtech.common.tools.pocket.ToolPocketBranchCutter;
 import gregtech.common.tools.pocket.ToolPocketFile;
 import gregtech.common.tools.pocket.ToolPocketKnife;
@@ -159,17 +151,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
             new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L));
-        GregTechAPI.registerTool(
-            addTool(
-                WIRECUTTER.ID,
-                "Wire Cutter",
-                "",
-                new ToolWireCutter(),
-                ToolDictNames.craftingToolWireCutter,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
-            GregTechAPI.sWireCutterList);
         addTool(
             SCOOP.ID,
             "Scoop",
@@ -374,41 +355,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
             GregTechAPI.sSolderingToolList);
 
-        // Register Electric Wirecutters
-        GregTechAPI.registerTool(
-            addTool(
-                WIRECUTTER_LV.ID,
-                "",
-                "",
-                new ToolWireCutterLV(),
-                ToolDictNames.craftingToolWireCutter,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
-            GregTechAPI.sWireCutterList);
-        GregTechAPI.registerTool(
-            addTool(
-                WIRECUTTER_MV.ID,
-                "",
-                "",
-                new ToolWireCutterMV(),
-                ToolDictNames.craftingToolWireCutter,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
-            GregTechAPI.sWireCutterList);
-        GregTechAPI.registerTool(
-            addTool(
-                WIRECUTTER_HV.ID,
-                "",
-                "",
-                new ToolWireCutterHV(),
-                ToolDictNames.craftingToolWireCutter,
-                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
-                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
-            GregTechAPI.sWireCutterList);
-
         // Register Electric Files
         addTool(
             FILE_LV.ID,
@@ -566,12 +512,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             SOLDERING_IRON_LV.ID,
             SOLDERING_IRON_MV.ID,
             SOLDERING_IRON_HV.ID);
-        addTieredFamily(
-            "gt.metatool.01.wire_cutter.name",
-            "gt.metatool.01.wire_cutter.tooltip",
-            WIRECUTTER_LV.ID,
-            WIRECUTTER_MV.ID,
-            WIRECUTTER_HV.ID);
         addTieredFamily("gt.metatool.01.file.name", "gt.metatool.01.file.tooltip", FILE_LV.ID, FILE_MV.ID, FILE_HV.ID);
     }
 

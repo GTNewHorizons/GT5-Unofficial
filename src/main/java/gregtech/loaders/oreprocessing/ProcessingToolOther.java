@@ -77,12 +77,18 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         new Object[] { " fS", " Sh", "W  ", 'S', OrePrefixes.stick.get(aMaterial), 'W',
                             OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                 }
-                GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE
-                        .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, aMaterial, aMaterial, null),
-                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PfP", "hPd", "STS", 'S', OrePrefixes.stick.get(aMaterial), 'P',
-                        OrePrefixes.plate.get(aMaterial), 'T', OrePrefixes.screw.get(aMaterial) });
+                ItemStack tWireCutter = GTToolItems.WIRE_CUTTER.registerMaterial(
+                    aMaterial,
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
+                if (tWireCutter != null) {
+                    GTModHandler.addCraftingRecipe(
+                        tWireCutter,
+                        GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                        new Object[] { "PfP", "hPd", "STS", 'S', OrePrefixes.stick.get(aMaterial), 'P',
+                            OrePrefixes.plate.get(aMaterial), 'T', OrePrefixes.screw.get(aMaterial) });
+                }
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.SCOOP.ID, 1, aMaterial, aMaterial, null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,

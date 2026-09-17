@@ -1,7 +1,6 @@
-package gregtech.common.items.behaviors;
+package gregtech.common.items.tools;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -14,25 +13,33 @@ import appeng.tile.AEBaseTile;
 import appeng.tile.storage.TileChest;
 import appeng.tile.storage.TileDrive;
 import appeng.util.Platform;
-import gregtech.api.items.MetaBaseItem;
 
-public class BehaviourWireCutter extends BehaviourNone {
+/**
+ * The "right click an AE2 machine to rename it" half of a wire cutter, moved out of {@code BehaviourWireCutter}.
+ * <p/>
+ * Costs the tool nothing, which is how it always worked: opening a rename dialog is not wear and tear.
+ */
+public final class WireCutterActions {
 
-    @Override
-    public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
-        if (aWorld.isRemote) return false;
+    private WireCutterActions() {}
 
-        TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
+    /**
+     * Opens AE2's renamer for the machine or cable part the player clicked.
+     *
+     * @return whether the click was consumed.
+     */
+    public static boolean use(EntityPlayer player, World world, int x, int y, int z, ForgeDirection side, float hitX,
+        float hitY, float hitZ) {
+        if (world.isRemote) return false;
+
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity == null) return false;
 
+        // Drives and chests have their own right-click GUI, so renaming them needs the sneak modifier.
         boolean requiresSneakForRename = tileEntity instanceof TileDrive || tileEntity instanceof TileChest;
-        if (requiresSneakForRename && !aPlayer.isSneaking()) {
-            return false;
-        }
+        if (requiresSneakForRename && !player.isSneaking()) return false;
 
         ForgeDirection renameSide = side;
-
         if (tileEntity instanceof IPartHost partHost) {
             SelectedPart part = partHost.selectPart(Vec3.createVectorHelper(hitX, hitY, hitZ));
             if (part == null) return false;
@@ -41,8 +48,7 @@ public class BehaviourWireCutter extends BehaviourNone {
             return false;
         }
 
-        Platform.openGUI(aPlayer, tileEntity, renameSide, GuiBridge.GUI_RENAMER);
+        Platform.openGUI(player, tileEntity, renameSide, GuiBridge.GUI_RENAMER);
         return true;
     }
-
 }

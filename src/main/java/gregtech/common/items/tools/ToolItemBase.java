@@ -174,6 +174,19 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
         return stack;
     }
 
+    /**
+     * A stack of whichever material was registered first, for UI lists that mean "any tool of this kind" -- the tree
+     * farm's list of tools it accepts, for instance. The metadata-based tools could show a material-less stack for
+     * this; a standalone tool cannot, because a metadata with no material behind it has no stats and renders as
+     * nothing at all.
+     *
+     * @return the stack, or null if no material has been registered for this tool.
+     */
+    public ItemStack getDisplayStack() {
+        if (validMetas.isEmpty()) return null;
+        return new ItemStack(this, 1, validMetas.getInt(0));
+    }
+
     /* ---------- IGTTool ---------- */
 
     /**

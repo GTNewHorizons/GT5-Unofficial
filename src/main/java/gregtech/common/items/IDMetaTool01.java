@@ -16,6 +16,7 @@ public enum IDMetaTool01 {
     // Reserved, see SOFTMALLET above.
     SCREWDRIVER(22),
     MORTAR(24),
+    // Reserved, see SOFTMALLET above.
     WIRECUTTER(26),
     SCOOP(28),
     BRANCHCUTTER(30),
@@ -59,6 +60,7 @@ public enum IDMetaTool01 {
     POCKET_SCREWDRIVER(190),
     POCKET_WIRECUTTER(192),
     TROWEL(194),
+    // Reserved, see SOFTMALLET above.
     WIRECUTTER_LV(196),
     WIRECUTTER_MV(198),
     WIRECUTTER_HV(200),

@@ -224,4 +224,18 @@ class PosteaToolMigrationTest {
             stack.getCompoundTag("tag")
                 .getLong("GT.ToolDamage"));
     }
+
+    @Test
+    void electricWireCutterKeepsItsCharge() {
+        // An HV wire cutter with the Cadmium battery: below its tier's default capacity, so that has to be recorded.
+        NBTTagCompound stack = oldTool(200, "Steel", 800L, 51_200L, (byte) 0, 900_000L, 1_200_000L);
+
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 1_600_000L);
+
+        assertEquals(STEEL_META, stack.getShort("Damage"));
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        assertEquals(900_000L, tag.getLong("GT.ItemCharge"));
+        assertEquals(1_200_000L, tag.getLong("GT.MaxCharge"));
+        assertFalse(tag.hasKey("GT.ToolDamage"), "electric wire cutters no longer wear out");
+    }
 }
