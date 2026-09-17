@@ -59,7 +59,8 @@ public class DetravElectricProspectorActions extends DetravProspectorActions {
      *
      * @return whether the click was consumed.
      */
-    public boolean onItemRightClick(ToolItemBase item, ItemStack stack, World world, EntityPlayer player) {
+    public boolean onItemRightClick(DetravElectricProspectorItem item, ItemStack stack, World world,
+        EntityPlayer player) {
         if (world.isRemote) return true;
 
         Future<?> pending = PENDING_SCANS.remove(player);
@@ -85,7 +86,7 @@ public class DetravElectricProspectorActions extends DetravProspectorActions {
         final List<Chunk> chunks = new ArrayList<>();
         player.addChatMessage(new ChatComponentText("Scanning..."));
 
-        final int radius = item.getHarvestLevel(stack, "");
+        final int radius = item.getScanRadius(stack);
 
         int scanRadius = radius + 1;
         for (int i = -scanRadius; i <= scanRadius; i++) {

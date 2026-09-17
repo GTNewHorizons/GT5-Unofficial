@@ -125,6 +125,26 @@ public class DetravElectricProspectorItem extends DetravProspectorItem implement
         return new DetravElectricProspectorActions(ELECTRIC_SCAN_COST, legacyMeta);
     }
 
+    /* ---------- SCAN AREA ---------- */
+
+    /**
+     * How far the area scan reaches: the chunk the player stands in plus this many chunks in every direction. This is
+     * the one place it is defined -- the tooltip below reports what this returns, so the two cannot drift apart.
+     */
+    public int getScanRadius(ItemStack stack) {
+        return getHarvestLevel(stack, "");
+    }
+
+    /**
+     * The scanned grid, in chunks across. The hand scanner's sum does not apply here: it adds a quarter of the old
+     * tool-type metadata, which was 100 or more for every electric tier, so it read about 25 chunks too wide. The
+     * scan itself has always been the harvest level in each direction, and that is what this now reports.
+     */
+    @Override
+    protected int getScanRange(ItemStack stack) {
+        return 2 * getScanRadius(stack) + 1;
+    }
+
     /* ---------- DISPLAY ---------- */
 
     @Override
