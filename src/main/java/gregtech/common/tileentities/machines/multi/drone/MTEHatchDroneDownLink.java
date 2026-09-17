@@ -181,13 +181,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
         ItemStack heldItem = aPlayer.inventory.getCurrentItem();
         ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
-        if (GTUtility.isStackInList(heldItem, GregTechAPI.sWrenchList) && !aPlayer.isSneaking()
-            && side == frontFacing
-            && isRotationChangeAllowed()) {
-            toolSetRotation(null);
-            return true;
-        }
-
         if (ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) {
             if (!pasteCopiedData(aPlayer, heldItem.stackTagCompound)) return false;
             aPlayer.addChatMessage(
@@ -195,8 +188,11 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
             return true;
         }
 
-        if (side != frontFacing) return false;
-        if (aPlayer instanceof FakePlayer) return false;
+        if (side != frontFacing || aPlayer instanceof FakePlayer
+            || GTUtility.isStackInList(heldItem, GregTechAPI.sWrenchList)) {
+            return false;
+        }
+
         openGui(aPlayer);
         return true;
     }
