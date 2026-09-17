@@ -201,13 +201,15 @@ public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyI
 
     @Override
     public String[] getDescription() {
+        // The hatch accepts a quarter more amperage than it hands to the multiblock.
+        final int amperesIn = maxAmperes + (maxAmperes >> 2);
         return MTEHatch.formatEnergyInfoDesc(
             false,
             mTier,
             maxAmperes,
-            maxAmperesIn(),
+            amperesIn,
             "gt.blockmachines.hatch.energymulti.desc",
-            maxAmperes + (maxAmperes >> 2),
+            amperesIn,
             maxAmperes);
     }
 }
