@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Arrays;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -145,7 +147,7 @@ public final class MTEBasicMachineWithRecipeBuilder {
         }
 
         private static String formatRatedValue(double value) {
-            return value == Math.floor(value) ? Long.toString((long) value) : Double.toString(value);
+            return value == Math.floor(value) ? formatNumber((long) value) : formatNumber(value);
         }
 
         @Override
