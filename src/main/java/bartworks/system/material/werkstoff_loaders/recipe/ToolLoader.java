@@ -257,16 +257,19 @@ public class ToolLoader implements IWerkstoffRunnable {
             }
         }
 
-        GTModHandler.addCraftingRecipe(
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                IDMetaTool01.PLUNGER.ID,
-                1,
-                werkstoff.getBridgeMaterial(),
-                werkstoff.getBridgeMaterial(),
-                null),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "xRR", " SR", "S f", 'S', stick.get(werkstoff.getBridgeMaterial()), 'R',
-                plate.get(Materials.AnyRubber) });
+        ItemStack plunger = GTToolItems.PLUNGER.registerMaterial(
+            werkstoff.getBridgeMaterial(),
+            ToolMaterialIndex.WERKSTOFF_META_OFFSET + werkstoff.getmID(),
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ITER, 2L));
+        if (plunger != null) {
+            GTModHandler.addCraftingRecipe(
+                plunger,
+                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "xRR", " SR", "S f", 'S', stick.get(werkstoff.getBridgeMaterial()), 'R',
+                    plate.get(Materials.AnyRubber) });
+        }
         // Werkstoff bridge materials are built at runtime and have no mMetaItemSubID, so their wrenches live in the
         // Werkstoff metadata band -- see ToolMaterialIndex.
         final int wrenchMeta = ToolMaterialIndex.WERKSTOFF_META_OFFSET + werkstoff.getmID();

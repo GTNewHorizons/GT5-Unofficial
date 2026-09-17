@@ -30,12 +30,18 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
         if (aMaterial != Materials.Rubber) {
             // Crafting recipes
             {
-                GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE
-                        .getToolWithStats(IDMetaTool01.PLUNGER.ID, 1, aMaterial, aMaterial, null),
-                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "xRR", " SR", "S f", 'S', OrePrefixes.stick.get(aMaterial), 'R',
-                        OrePrefixes.plate.get(Materials.AnyRubber) });
+                ItemStack tPlunger = GTToolItems.PLUNGER.registerMaterial(
+                    aMaterial,
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 2L));
+                if (tPlunger != null) {
+                    GTModHandler.addCraftingRecipe(
+                        tPlunger,
+                        GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                        new Object[] { "xRR", " SR", "S f", 'S', OrePrefixes.stick.get(aMaterial), 'R',
+                            OrePrefixes.plate.get(Materials.AnyRubber) });
+                }
             }
         }
 

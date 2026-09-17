@@ -12,7 +12,6 @@ import static gregtech.common.items.IDMetaTool01.DRILL_MV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_HV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_LV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_MV;
-import static gregtech.common.items.IDMetaTool01.PLUNGER;
 import static gregtech.common.items.IDMetaTool01.POCKET_BRANCHCUTTER;
 import static gregtech.common.items.IDMetaTool01.POCKET_FILE;
 import static gregtech.common.items.IDMetaTool01.POCKET_KNIFE;
@@ -64,7 +63,6 @@ import gregtech.common.tools.ToolDrillMV;
 import gregtech.common.tools.ToolJackHammerHV;
 import gregtech.common.tools.ToolJackHammerLV;
 import gregtech.common.tools.ToolJackHammerMV;
-import gregtech.common.tools.ToolPlunger;
 import gregtech.common.tools.ToolRollingPin;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
@@ -93,15 +91,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         super("metatool.01");
         INSTANCE = this;
 
-        addTool(
-            PLUNGER.ID,
-            "Plunger",
-            "",
-            new ToolPlunger(),
-            ToolDictNames.craftingToolPlunger,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ITER, 2L));
         addTool(
             ROLLING_PIN.ID,
             "Rolling Pin",

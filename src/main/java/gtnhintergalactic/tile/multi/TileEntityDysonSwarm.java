@@ -52,8 +52,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.items.IDMetaTool01;
-import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.tools.ToolPlungerItem;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
@@ -368,16 +367,14 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         ItemStack heldItem = aPlayer.getHeldItem();
 
         // Check if the player is holding a plunger
-        if (heldItem == null || heldItem.getItem() != MetaGeneratedTool01.INSTANCE
-            || heldItem.getItemDamage() != IDMetaTool01.PLUNGER.ID) {
+        if (heldItem == null || !(heldItem.getItem() instanceof ToolPlungerItem plunger)) {
             return super.onRightclick(aBaseMetaTileEntity, aPlayer);
         }
 
         // Setup
         int prevCount = this.moduleCount;
-        int maxReduction = (int) Math.min(
-            this.moduleCount,
-            MetaGeneratedTool01.getToolMaxDamage(heldItem) - MetaGeneratedTool01.getToolDamage(heldItem));
+        int maxReduction = (int) Math
+            .min(this.moduleCount, plunger.getMaxStoredDamage(heldItem) - plunger.getStoredDamage(heldItem));
         ItemStack modules = ItemList.DysonSwarmModule.get(maxReduction);
 
         // Fill player inventory
@@ -391,10 +388,10 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
 
             // Set moduleCount based on the number of ejected modules and damage the plunger
             this.moduleCount = 0;
-            MetaGeneratedTool01.INSTANCE.doDamage(heldItem, maxReduction);
+            plunger.doDamage(heldItem, maxReduction);
         } else {
             this.moduleCount = prevCount - maxReduction + modules.stackSize;
-            MetaGeneratedTool01.INSTANCE.doDamage(heldItem, maxReduction - modules.stackSize);
+            plunger.doDamage(heldItem, maxReduction - modules.stackSize);
         }
 
         return true;

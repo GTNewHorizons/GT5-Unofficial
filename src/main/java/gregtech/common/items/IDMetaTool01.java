@@ -30,6 +30,7 @@ public enum IDMetaTool01 {
     KNIFE(34),
     // Reserved, see the note above.
     BUTCHERYKNIFE(36),
+    // Reserved, see the note above.
     PLUNGER(44),
     ROLLING_PIN(46),
     DRILL_LV(100),
