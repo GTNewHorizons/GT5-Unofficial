@@ -176,7 +176,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-                                float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         ItemStack heldItem = aPlayer.inventory.getCurrentItem();
         ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
