@@ -263,6 +263,7 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(GTToolItems.FILE_MV, metaToolRenderer);
         MinecraftForgeClient.registerItemRenderer(GTToolItems.FILE_HV, metaToolRenderer);
         MinecraftForgeClient.registerItemRenderer(GTToolItems.SAW, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.MORTAR, metaToolRenderer);
 
         MinecraftForgeClient.registerItemRenderer(CircuitComponentFakeItem.INSTANCE, new CircuitComponentItemRenderer());
 

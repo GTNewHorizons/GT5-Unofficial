@@ -15,7 +15,6 @@ import static gregtech.common.items.IDMetaTool01.JACKHAMMER_HV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_LV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_MV;
 import static gregtech.common.items.IDMetaTool01.KNIFE;
-import static gregtech.common.items.IDMetaTool01.MORTAR;
 import static gregtech.common.items.IDMetaTool01.PLUNGER;
 import static gregtech.common.items.IDMetaTool01.POCKET_BRANCHCUTTER;
 import static gregtech.common.items.IDMetaTool01.POCKET_FILE;
@@ -55,6 +54,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.tools.ItemNetworkAnalyzer;
 import gregtech.common.tools.ToolBranchCutter;
 import gregtech.common.tools.ToolButcheryKnife;
@@ -71,7 +71,6 @@ import gregtech.common.tools.ToolJackHammerHV;
 import gregtech.common.tools.ToolJackHammerLV;
 import gregtech.common.tools.ToolJackHammerMV;
 import gregtech.common.tools.ToolKnife;
-import gregtech.common.tools.ToolMortar;
 import gregtech.common.tools.ToolPlunger;
 import gregtech.common.tools.ToolRollingPin;
 import gregtech.common.tools.ToolScoop;
@@ -101,15 +100,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     public MetaGeneratedTool01() {
         super("metatool.01");
         INSTANCE = this;
-        addTool(
-            MORTAR.ID,
-            "Mortar",
-            "",
-            new ToolMortar(),
-            ToolDictNames.craftingToolMortar,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L));
         addTool(
             SCOOP.ID,
             "Scoop",
@@ -482,48 +472,48 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
 
     private void initCraftingShapedRecipes() {
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Flint, Materials.Stone, null),
+            mortar(Materials.Flint),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " I ", "SIS", "SSS", 'I', new ItemStack(Items.flint, 1), 'S', OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Bronze, Materials.Stone, null),
+            mortar(Materials.Bronze),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Bronze), 'S', OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Iron, Materials.Stone, null),
+            mortar(Materials.Iron),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Iron), 'S', OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Steel, Materials.Stone, null),
+            mortar(Materials.Steel),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Steel), 'S', OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.CastIron, Materials.Stone, null),
+            mortar(Materials.CastIron),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.CastIron), 'S',
                 OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.RedSteel, Materials.Stone, null),
+            mortar(Materials.RedSteel),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.RedSteel), 'S',
                 OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.BlueSteel, Materials.Stone, null),
+            mortar(Materials.BlueSteel),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.BlueSteel), 'S',
                 OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.BlackSteel, Materials.Stone, null),
+            mortar(Materials.BlackSteel),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.BlackSteel), 'S',
                 OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.DamascusSteel, Materials.Stone, null),
+            mortar(Materials.DamascusSteel),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.DamascusSteel), 'S',
                 OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Thaumium, Materials.Stone, null),
+            mortar(Materials.Thaumium),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Thaumium), 'S',
                 OrePrefixes.stone });
@@ -558,5 +548,17 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             INSTANCE.getToolWithStats(KNIFE.ID, 1, Materials.Flint, Materials.Wood, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "F", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1) });
+    }
+
+    /**
+     * Declares the mortar for this material and returns a stack of it, for the fixed-material recipes below. The
+     * mortar is its own item now, so the material is its metadata rather than NBT.
+     */
+    private static ItemStack mortar(Materials material) {
+        return GTToolItems.MORTAR.registerMaterial(
+            material,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L));
     }
 }
