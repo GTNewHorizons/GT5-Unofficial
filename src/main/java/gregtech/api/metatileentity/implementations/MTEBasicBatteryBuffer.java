@@ -164,11 +164,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean showsAmperageInTooltip() {
-        return true;
-    }
-
-    @Override
     public void addEnergyTooltipInformation(List<String> tooltip) {
         // The amperage of a battery buffer depends on the batteries inside it, so the rating per battery is shown.
         addBatteryBufferVoltageLines(tooltip);
