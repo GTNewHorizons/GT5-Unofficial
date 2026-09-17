@@ -224,6 +224,8 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
     public static final UITexture OVERLAY_ROTOR = UITexture.fullImage(GregTech.ID, "gui/picture/noRotor");
     public static final UITexture OVERLAY_WIND = UITexture.fullImage(GregTech.ID, "gui/picture/wind");
+    public static final UITexture OVERLAY_WIND_PROBLEM = UITexture.fullImage(GregTech.ID, "gui/picture/wind_problem");
+    public static final UITexture OVERLAY_SLOT_ROTOR = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/rotor");
 
     public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture
         .fullImage(GregTech.ID, "gui/icons/maintenance_none");
@@ -1287,6 +1289,11 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/progressbar/wiremill")
+        .build();
+    public static final UITexture PROGRESSBAR_KU_METER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/progressbar/ku_meter")
         .build();
     public static final UITexture PROGRESSBAR_FLOCCULATION = UITexture.builder()
         .canApplyTheme()
