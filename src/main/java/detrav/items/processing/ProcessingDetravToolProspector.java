@@ -95,48 +95,35 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
             Materials.UHV,
             ItemList.Sensor_UHV);
 
-        // The electric scanners are built from a fixed material per tier: the one the game used to hand out for that
-        // tier. Registering them from inside this handler keeps them to materials that really do have a drill head
-        // and a plate. There is no UHV battery in this repo, so the UHV scanner takes the UV one and the circuit and
-        // sensor are what mark its tier.
-        if (material == Materials.Iridium) {
-            addElectricScannerRecipe(
-                DetravToolItems.ELECTRIC_PROSPECTOR_LUV,
-                material,
-                Materials.LuV,
-                ItemList.Sensor_LuV,
-                OrePrefixes.battery.get(Materials.LuV));
-        }
-        if (material == Materials.Neutronium) {
-            addElectricScannerRecipe(
-                DetravToolItems.ELECTRIC_PROSPECTOR_ZPM,
-                material,
-                Materials.ZPM,
-                ItemList.Sensor_ZPM,
-                OrePrefixes.battery.get(Materials.ZPM));
-            addElectricScannerRecipe(
-                DetravToolItems.ELECTRIC_PROSPECTOR_UHV,
-                material,
-                Materials.UHV,
-                ItemList.Sensor_UHV,
-                OrePrefixes.battery.get(Materials.UV));
-        }
-        if (material == Materials.InfinityCatalyst) {
-            addElectricScannerRecipe(
-                DetravToolItems.ELECTRIC_PROSPECTOR_UV,
-                material,
-                Materials.UV,
-                ItemList.Sensor_UV,
-                OrePrefixes.battery.get(Materials.UV));
-        }
-        if (material == Materials.Infinity) {
-            addElectricScannerRecipe(
-                DetravToolItems.ELECTRIC_PROSPECTOR_UHV,
-                material,
-                Materials.UHV,
-                ItemList.Sensor_UHV,
-                OrePrefixes.battery.get(Materials.UV));
-        }
+        // The electric scanners follow the drill head exactly as the hand ones do: a Kanthal drill tip makes a
+        // Kanthal scanner, and the material decides the scan range through its tool quality. Only the circuit, the
+        // sensor and the battery are fixed per tier.
+        addElectricScannerRecipe(
+            DetravToolItems.ELECTRIC_PROSPECTOR_LUV,
+            material,
+            Materials.LuV,
+            ItemList.Sensor_LuV,
+            OrePrefixes.battery.get(Materials.LuV));
+        addElectricScannerRecipe(
+            DetravToolItems.ELECTRIC_PROSPECTOR_ZPM,
+            material,
+            Materials.ZPM,
+            ItemList.Sensor_ZPM,
+            OrePrefixes.battery.get(Materials.ZPM));
+        addElectricScannerRecipe(
+            DetravToolItems.ELECTRIC_PROSPECTOR_UV,
+            material,
+            Materials.UV,
+            ItemList.Sensor_UV,
+            OrePrefixes.battery.get(Materials.UV));
+        addElectricScannerRecipe(
+            DetravToolItems.ELECTRIC_PROSPECTOR_UHV,
+            material,
+            Materials.UHV,
+            ItemList.Sensor_UHV,
+            // There is no UHV battery in this repo, so the UHV scanner takes the UV one; the circuit and the sensor
+            // are what mark its tier.
+            OrePrefixes.battery.get(Materials.UV));
     }
 
     /**
@@ -163,9 +150,10 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
     }
 
     /**
-     * The electric scanner recipe. The old ones were never registered in this repo -- they came from the modpack's
-     * own recipe mod, which cannot craft these items any more -- so this is the hand scanner's layout with the two
-     * chemical cells dropped and the tier's battery worked in.
+     * The electric scanner recipe, registered for every material that has a drill head, just like the hand one. The
+     * old recipes were never in this repo -- they came from the modpack's own recipe mod, which cannot craft these
+     * items any more -- so the layout is the hand scanner's with the two chemical cells dropped and the tier's
+     * battery worked in.
      */
     private static void addElectricScannerRecipe(DetravElectricProspectorItem scanner, Materials material,
         Materials circuitTier, ItemList sensor, Object battery) {
