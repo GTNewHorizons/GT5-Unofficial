@@ -190,16 +190,16 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
 
         if (cc == CircuitComponent.PrimedUnattunedCircuitry) return transformedRecipe;
 
-        // 15% chance to not consume fluid inputs for primitive circuits that arent the primed unattuned circuit itself
-        // in t1
-        if (baseMulti.primitiveT2Active && random.nextFloat() <= 0.15) {
-            transformedRecipe.setFluidInputs();
-        }
-
-        // 5% chance to multiply for primitive circuits that aren't the primed unattuned circuit itself in t3.
-        if (baseMulti.primitiveT3Active && random.nextFloat() <= 0.05) {
-            transformedRecipe.setOutputs(output, output.copy());
-            return transformedRecipe;
+        // 5% chance to double circuit output T2 calibration
+        // 10% chance instead at T3
+        if (baseMulti.primitiveT2Active) {
+            double chance = 0.05;
+            if (baseMulti.primitiveT3Active) {
+                chance += 0.05;
+            }
+            if (random.nextFloat() <= chance) {
+                transformedRecipe.setOutputs(output, output.copy());
+            }
         }
 
         return transformedRecipe;
