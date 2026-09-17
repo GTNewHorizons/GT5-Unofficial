@@ -19,6 +19,7 @@ import com.gtnewhorizons.horizonqa.api.gt.Multiblock;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -60,7 +61,9 @@ public final class PowerGridTopologyTests {
     public static void cableCoversAreManagedWithoutTileTicks(GameTestHelper helper) {
         BaseMetaPipeEntity cable = cableBase(helper, "edit_path");
         int[] coverTicks = { 0 };
-        cable.attachCover(new Cover(new CoverContext(new ItemStack(Blocks.stone), ForgeDirection.UP, cable), null) {
+        ItemStack coverItem = new ItemStack(Blocks.carpet);
+        helper.assertTrue(CoverRegistry.isCover(coverItem), "Cover ticking test requires a registered cover item");
+        cable.attachCover(new Cover(new CoverContext(coverItem, ForgeDirection.UP, cable), null) {
 
             @Override
             public int getMinimumTickRate() {
