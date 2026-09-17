@@ -3,6 +3,7 @@ package gregtech.common.items.tools;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.common.tools.ToolBranchCutter;
 import gregtech.common.tools.ToolCrowbar;
 import gregtech.common.tools.ToolFile;
 import gregtech.common.tools.ToolFileHV;
@@ -56,6 +57,7 @@ public final class GTToolItems {
     public static ToolSawItem SAW;
     public static ToolMortarItem MORTAR;
     public static ToolScoopItem SCOOP;
+    public static ToolBranchCutterItem BRANCH_CUTTER;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -185,6 +187,11 @@ public final class GTToolItems {
         SAW = new ToolSawItem("tool.saw", new ToolSaw(), "%material Saw", "Can also harvest Ice");
         MORTAR = new ToolMortarItem("tool.mortar", new ToolMortar(), "%material Mortar", "");
         SCOOP = new ToolScoopItem("tool.scoop", new ToolScoop(), "%material Scoop", "");
+        BRANCH_CUTTER = new ToolBranchCutterItem(
+            "tool.branch_cutter",
+            new ToolBranchCutter(),
+            "%material Branch Cutter",
+            "");
     }
 
     /**

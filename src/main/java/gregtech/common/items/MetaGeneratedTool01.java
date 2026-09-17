@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.common.items.IDMetaTool01.BRANCHCUTTER;
 import static gregtech.common.items.IDMetaTool01.BUTCHERYKNIFE;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_HV;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_LV;
@@ -55,7 +54,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.tools.ItemNetworkAnalyzer;
-import gregtech.common.tools.ToolBranchCutter;
 import gregtech.common.tools.ToolButcheryKnife;
 import gregtech.common.tools.ToolBuzzSawHV;
 import gregtech.common.tools.ToolBuzzSawLV;
@@ -98,15 +96,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     public MetaGeneratedTool01() {
         super("metatool.01");
         INSTANCE = this;
-        addTool(
-            BRANCHCUTTER.ID,
-            "Branch Cutter",
-            "",
-            new ToolBranchCutter(),
-            ToolDictNames.craftingToolBranchCutter,
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.HERBA, 2L));
         addTool(
             KNIFE.ID,
             "Knife",

@@ -23,6 +23,7 @@ public enum IDMetaTool01 {
     WIRECUTTER(26),
     // Reserved, see the note above.
     SCOOP(28),
+    // Reserved, see the note above.
     BRANCHCUTTER(30),
     UNIVERSALSPADE(32),
     KNIFE(34),

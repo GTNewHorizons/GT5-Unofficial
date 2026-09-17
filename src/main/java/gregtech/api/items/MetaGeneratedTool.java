@@ -46,7 +46,6 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
-import forestry.api.arboriculture.IToolGrafter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Materials;
@@ -70,9 +69,8 @@ import gregtech.common.tools.ToolTurbine;
  * Materials.Bismuth, Materials.Bismuth, null);
  */
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.ModIDs.FORESTRY),
-        @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O), })
-public abstract class MetaGeneratedTool extends MetaBaseItem implements IDamagableItem, IGTTool, IToolGrafter, ITool {
+    value = { @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O), })
+public abstract class MetaGeneratedTool extends MetaBaseItem implements IDamagableItem, IGTTool, ITool {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -877,13 +875,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem implements IDamagab
                 .orElse(null);
         }
         return aStack == null ? null : mToolStats.get((short) aStack.getItemDamage());
-    }
-
-    @Override
-    public float getSaplingModifier(ItemStack aStack, World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ) {
-        IToolStats tStats = getToolStats(aStack);
-        return tStats != null && tStats.isGrafter() ? Math.min(100.0F, (1 + getHarvestLevel(aStack, "")) * 20.0F)
-            : 0.0F;
     }
 
     // EnderIO ITool. Only wrenches ever qualified, and the wrench is its own item now.

@@ -13,7 +13,6 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static gregtech.common.items.IDMetaTool01.BRANCHCUTTER;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_HV;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_LV;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_MV;
@@ -74,6 +73,7 @@ import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.tools.GTToolItems;
+import gregtech.common.items.tools.ToolBranchCutterItem;
 import gregtech.common.items.tools.ToolSawItem;
 import gregtech.common.items.tools.ToolWireCutterElectricItem;
 import gregtech.common.items.tools.ToolWireCutterItem;
@@ -451,8 +451,12 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
 
             case SAPLING:
                 if (tool instanceof MetaGeneratedTool01
-                    && (damage == BRANCHCUTTER.ID || damage == POCKET_BRANCHCUTTER.ID
-                        || damage == POCKET_MULTITOOL.ID)) {
+                    && (damage == POCKET_BRANCHCUTTER.ID || damage == POCKET_MULTITOOL.ID)) {
+                    return 1;
+                }
+                // Ahead of the grafter check below: the branch cutter is a grafter too, but it has always counted as
+                // the weaker tool here.
+                if (tool instanceof ToolBranchCutterItem) {
                     return 1;
                 }
                 if (Forestry.isModLoaded() && tool instanceof IToolGrafter && tool.isDamageable()) {
@@ -734,7 +738,7 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
                 toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_HV.ID, 1, null, null, null),
                 toolInstance.getToolWithStats(CHAINSAW_HV.ID, 1, null, null, null), },
             // Mode.SAPLING
-            { toolInstance.getToolWithStats(IDMetaTool01.BRANCHCUTTER.ID, 1, null, null, null),
+            { GTToolItems.BRANCH_CUTTER.getDisplayStack(),
                 toolInstance.getToolWithStats(IDMetaTool01.POCKET_BRANCHCUTTER.ID, 1, null, null, null),
                 GTModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
             // Mode.LEAVES
