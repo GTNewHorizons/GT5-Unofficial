@@ -176,9 +176,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
+                                float aX, float aY, float aZ) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-
         ItemStack heldItem = aPlayer.inventory.getCurrentItem();
         ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
@@ -191,7 +190,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
 
         if (ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) {
             if (!pasteCopiedData(aPlayer, heldItem.stackTagCompound)) return false;
-
             aPlayer.addChatMessage(
                 new ChatComponentText(StatCollector.translateToLocal("GT5U.gui.text.drone_key") + ": " + this.key));
             return true;
@@ -199,7 +197,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
 
         if (side != frontFacing) return false;
         if (aPlayer instanceof FakePlayer) return false;
-
         openGui(aPlayer);
         return true;
     }
