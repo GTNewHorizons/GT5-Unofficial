@@ -13,10 +13,8 @@ public enum IDDetraveMetaGeneratedTool01 {
     ProspectorScannerHV(6),
     ProspectorScannerEV(8),
     ProspectorScannerIV(10),
-    ProspectorScannerLuV(12),
-    ProspectorScannerZPM(14),
-    ProspectorScannerUV(16),
-    ProspectorScannerUHV(18),
+    // 12 to 18 were the hand scanners above IV, removed outright. The ids stay reserved: saved stacks in old worlds
+    // still carry them, and reusing one would turn those stacks into a different tool.
     ElectricProspectorScannerLuV(100),
     ElectricProspectorScannerZPM(102),
     ElectricProspectorScannerUV(104),

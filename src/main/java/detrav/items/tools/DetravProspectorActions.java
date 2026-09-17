@@ -47,6 +47,12 @@ public class DetravProspectorActions {
 
     static final int[] DISTANCE_INTS = new int[] { 0, 4, 25, 64 };
 
+    /**
+     * A chance that never fails: the roll is {@code nextInt(100)}, so anything at 100 or above reads every chunk. The
+     * electric scanner uses this -- it has no failure chance at all -- and so does the single-chunk reading.
+     */
+    static final int CERTAIN = 100;
+
     static final String CHAT_MSG_SEPARATOR = EnumChatFormatting.STRIKETHROUGH + "--------------------";
 
     /** Durability cost of scanning one chunk, in the unit where 100 is one durability point. */
@@ -231,7 +237,7 @@ public class DetravProspectorActions {
             new ChatComponentText(
                 EnumChatFormatting.GOLD + StatCollector.translateToLocal(
                     "detrav.scanner.prospecting") + EnumChatFormatting.BLUE + "(" + x + ", " + z + ")"));
-        processOreProspecting(item, stack, player, world, x, y, z, new SplittableRandom(), 1000);
+        processOreProspecting(item, stack, player, world, x, y, z, new SplittableRandom(), CERTAIN);
 
         for (String key : ores.keySet()) {
             int value = ores.get(key);

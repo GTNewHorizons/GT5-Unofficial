@@ -397,10 +397,8 @@ public class PosteaTransformers implements Runnable {
         new MigratedTool(6, "gregtech:gt.detrav.metatool.01.prospector_hv", () -> DetravToolItems.PROSPECTOR_HV),
         new MigratedTool(8, "gregtech:gt.detrav.metatool.01.prospector_ev", () -> DetravToolItems.PROSPECTOR_EV),
         new MigratedTool(10, "gregtech:gt.detrav.metatool.01.prospector_iv", () -> DetravToolItems.PROSPECTOR_IV),
-        new MigratedTool(12, "gregtech:gt.detrav.metatool.01.prospector_luv", () -> DetravToolItems.PROSPECTOR_LUV),
-        new MigratedTool(14, "gregtech:gt.detrav.metatool.01.prospector_zpm", () -> DetravToolItems.PROSPECTOR_ZPM),
-        new MigratedTool(16, "gregtech:gt.detrav.metatool.01.prospector_uv", () -> DetravToolItems.PROSPECTOR_UV),
-        new MigratedTool(18, "gregtech:gt.detrav.metatool.01.prospector_uhv", () -> DetravToolItems.PROSPECTOR_UHV),
+        // 12 to 18 were the hand scanners above IV, removed outright. Nothing replaces them, so a saved one is
+        // dropped along with the old item itself; see the ignored missing mapping below.
         new MigratedTool(
             100,
             "gregtech:gt.detrav.metatool.01.electric_prospector_luv",

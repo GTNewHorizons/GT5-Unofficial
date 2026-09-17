@@ -70,7 +70,10 @@ public class DetravProspectorItem extends ToolItemBase {
         return range;
     }
 
-    /** The chance of any one chunk being read successfully, in percent. */
+    /**
+     * The chance of any one chunk being read successfully, in percent. Only the hand scanner rolls for this; the
+     * electric one reads every chunk it reaches.
+     */
     protected int getSuccessChance() {
         return Math.min(((1 + legacyMeta) * 8), 100);
     }
@@ -92,6 +95,15 @@ public class DetravProspectorItem extends ToolItemBase {
                     formatNumber(maxDamage)));
         }
         addScannerToolTips(list, stack);
+        // Only the hand scanner can come up empty on a chunk, and only its findings are reported by distance.
+        list.add(
+            EnumChatFormatting.GRAY + ""
+                + EnumChatFormatting.ITALIC
+                + StatCollector.translateToLocalFormatted(
+                    "tooltip.detrav.scanner.success.chance",
+                    EnumChatFormatting.RESET + formatNumber(getSuccessChance())));
+        list.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.0"));
+        list.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.1"));
     }
 
     /** The lines shared by both scanner families, after whatever each shows for its durability or charge. */
@@ -106,13 +118,5 @@ public class DetravProspectorItem extends ToolItemBase {
         list.add(
             EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.1")
                 + EnumChatFormatting.GRAY);
-        list.add(
-            EnumChatFormatting.GRAY + ""
-                + EnumChatFormatting.ITALIC
-                + StatCollector.translateToLocalFormatted(
-                    "tooltip.detrav.scanner.success.chance",
-                    EnumChatFormatting.RESET + formatNumber(getSuccessChance())));
-        list.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.0"));
-        list.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.1"));
     }
 }

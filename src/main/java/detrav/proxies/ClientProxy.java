@@ -43,10 +43,8 @@ public class ClientProxy extends CommonProxy {
         final MetaGeneratedToolRenderer renderer = new MetaGeneratedToolRenderer();
         for (Item scanner : new Item[] { DetravToolItems.PROSPECTOR_LV, DetravToolItems.PROSPECTOR_MV,
             DetravToolItems.PROSPECTOR_HV, DetravToolItems.PROSPECTOR_EV, DetravToolItems.PROSPECTOR_IV,
-            DetravToolItems.PROSPECTOR_LUV, DetravToolItems.PROSPECTOR_ZPM, DetravToolItems.PROSPECTOR_UV,
-            DetravToolItems.PROSPECTOR_UHV, DetravToolItems.ELECTRIC_PROSPECTOR_LUV,
-            DetravToolItems.ELECTRIC_PROSPECTOR_ZPM, DetravToolItems.ELECTRIC_PROSPECTOR_UV,
-            DetravToolItems.ELECTRIC_PROSPECTOR_UHV }) {
+            DetravToolItems.ELECTRIC_PROSPECTOR_LUV, DetravToolItems.ELECTRIC_PROSPECTOR_ZPM,
+            DetravToolItems.ELECTRIC_PROSPECTOR_UV, DetravToolItems.ELECTRIC_PROSPECTOR_UHV }) {
             MinecraftForgeClient.registerItemRenderer(scanner, renderer);
         }
     }

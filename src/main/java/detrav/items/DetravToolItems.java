@@ -22,10 +22,6 @@ public final class DetravToolItems {
     public static DetravProspectorItem PROSPECTOR_HV;
     public static DetravProspectorItem PROSPECTOR_EV;
     public static DetravProspectorItem PROSPECTOR_IV;
-    public static DetravProspectorItem PROSPECTOR_LUV;
-    public static DetravProspectorItem PROSPECTOR_ZPM;
-    public static DetravProspectorItem PROSPECTOR_UV;
-    public static DetravProspectorItem PROSPECTOR_UHV;
     public static DetravElectricProspectorItem ELECTRIC_PROSPECTOR_LUV;
     public static DetravElectricProspectorItem ELECTRIC_PROSPECTOR_ZPM;
     public static DetravElectricProspectorItem ELECTRIC_PROSPECTOR_UV;
@@ -43,10 +39,8 @@ public final class DetravToolItems {
         PROSPECTOR_HV = prospector("hv", 3, IDDetraveMetaGeneratedTool01.ProspectorScannerHV.ID);
         PROSPECTOR_EV = prospector("ev", 4, IDDetraveMetaGeneratedTool01.ProspectorScannerEV.ID);
         PROSPECTOR_IV = prospector("iv", 5, IDDetraveMetaGeneratedTool01.ProspectorScannerIV.ID);
-        PROSPECTOR_LUV = prospector("luv", 6, IDDetraveMetaGeneratedTool01.ProspectorScannerLuV.ID);
-        PROSPECTOR_ZPM = prospector("zpm", 7, IDDetraveMetaGeneratedTool01.ProspectorScannerZPM.ID);
-        PROSPECTOR_UV = prospector("uv", 8, IDDetraveMetaGeneratedTool01.ProspectorScannerUV.ID);
-        PROSPECTOR_UHV = prospector("uhv", 9, IDDetraveMetaGeneratedTool01.ProspectorScannerUHV.ID);
+        // The hand scanner stops at IV. Past that the electric ones take over, and a hand scanner at those tiers was
+        // strictly worse than the electric one of the same tier.
 
         ELECTRIC_PROSPECTOR_LUV = electricProspector(
             "luv",

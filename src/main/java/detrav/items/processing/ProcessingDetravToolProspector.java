@@ -66,34 +66,6 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
             "cellNitricAcid",
             Materials.IV,
             ItemList.Sensor_IV);
-        addScannerRecipe(
-            DetravToolItems.PROSPECTOR_LUV,
-            material,
-            "cellLithiumPeroxide",
-            "cellHydrofluoricAcid",
-            Materials.LuV,
-            ItemList.Sensor_LuV);
-        addScannerRecipe(
-            DetravToolItems.PROSPECTOR_ZPM,
-            material,
-            "cellLithiumPeroxide",
-            "cellHydrofluoricAcid",
-            Materials.ZPM,
-            ItemList.Sensor_ZPM);
-        addScannerRecipe(
-            DetravToolItems.PROSPECTOR_UV,
-            material,
-            "cellLithiumPeroxide",
-            "cellHydrofluoricAcid",
-            Materials.UV,
-            ItemList.Sensor_UV);
-        addScannerRecipe(
-            DetravToolItems.PROSPECTOR_UHV,
-            material,
-            "cellHydrogenPeroxide",
-            "cellHydrofluoricAcid",
-            Materials.UHV,
-            ItemList.Sensor_UHV);
 
         // The electric scanners follow the drill head exactly as the hand ones do: a Kanthal drill tip makes a
         // Kanthal scanner, and the material decides the scan range through its tool quality. Only the circuit, the
