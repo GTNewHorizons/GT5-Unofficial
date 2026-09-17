@@ -22,6 +22,7 @@ import gregtech.common.tools.ToolScrewdriverHV;
 import gregtech.common.tools.ToolScrewdriverLV;
 import gregtech.common.tools.ToolScrewdriverMV;
 import gregtech.common.tools.ToolSoftMallet;
+import gregtech.common.tools.ToolTrowel;
 import gregtech.common.tools.ToolWireCutter;
 import gregtech.common.tools.ToolWireCutterHV;
 import gregtech.common.tools.ToolWireCutterLV;
@@ -66,6 +67,7 @@ public final class GTToolItems {
     public static ToolButcheryKnifeItem BUTCHERY_KNIFE;
     public static ToolPlungerItem PLUNGER;
     public static ToolRollingPinItem ROLLING_PIN;
+    public static ToolTrowelItem TROWEL;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -208,6 +210,7 @@ public final class GTToolItems {
             "Has a slow Attack Rate");
         PLUNGER = new ToolPlungerItem("tool.plunger", new ToolPlunger(), "%material Plunger", "");
         ROLLING_PIN = new ToolRollingPinItem("tool.rolling_pin", new ToolRollingPin(), "%material Rolling Pin", "");
+        TROWEL = new ToolTrowelItem("tool.trowel", new ToolTrowel(), "%material Decorator's Trowel", "");
     }
 
     /**

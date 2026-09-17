@@ -366,7 +366,8 @@ public class PosteaTransformers implements Runnable {
         new MigratedTool(34, "gregtech:gt.tool.knife", () -> GTToolItems.KNIFE),
         new MigratedTool(36, "gregtech:gt.tool.butchery_knife", () -> GTToolItems.BUTCHERY_KNIFE),
         new MigratedTool(44, "gregtech:gt.tool.plunger", () -> GTToolItems.PLUNGER),
-        new MigratedTool(46, "gregtech:gt.tool.rolling_pin", () -> GTToolItems.ROLLING_PIN), };
+        new MigratedTool(46, "gregtech:gt.tool.rolling_pin", () -> GTToolItems.ROLLING_PIN),
+        new MigratedTool(194, "gregtech:gt.tool.trowel", () -> GTToolItems.TROWEL), };
 
     private static final Int2ObjectMap<MigratedTool> MIGRATED_TOOLS_BY_OLD_META = new Int2ObjectOpenHashMap<>();
 

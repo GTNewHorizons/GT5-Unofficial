@@ -68,6 +68,7 @@ public enum IDMetaTool01 {
     POCKET_SAW(188),
     POCKET_SCREWDRIVER(190),
     POCKET_WIRECUTTER(192),
+    // Reserved, see the note above.
     TROWEL(194),
     // Reserved, see SOFTMALLET above.
     WIRECUTTER_LV(196),

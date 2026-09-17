@@ -10,7 +10,6 @@ import net.minecraft.util.IChatComponent;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.common.items.behaviors.BehaviourTrowel;
 
 public class ToolTrowel extends GTTool {
 
@@ -44,11 +43,6 @@ public class ToolTrowel extends GTTool {
     @Override
     public String getToolTypeName() {
         return TYPE_NAME;
-    }
-
-    @Override
-    public void onStatsAddedToTool(final MetaGeneratedTool aItem, final int aID) {
-        aItem.addItemBehavior(aID, new BehaviourTrowel());
     }
 
     @Override

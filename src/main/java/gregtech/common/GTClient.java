@@ -270,6 +270,7 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(GTToolItems.BUTCHERY_KNIFE, metaToolRenderer);
         MinecraftForgeClient.registerItemRenderer(GTToolItems.PLUNGER, metaToolRenderer);
         MinecraftForgeClient.registerItemRenderer(GTToolItems.ROLLING_PIN, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.TROWEL, metaToolRenderer);
 
         MinecraftForgeClient.registerItemRenderer(CircuitComponentFakeItem.INSTANCE, new CircuitComponentItemRenderer());
 

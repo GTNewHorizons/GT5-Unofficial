@@ -1,38 +1,36 @@
-package gregtech.common.items.behaviors;
+package gregtech.common.items.tools;
 
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.BooleanSupplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
 
-import gregtech.api.items.MetaBaseItem;
-import gregtech.api.items.MetaGeneratedTool;
+/**
+ * The "right click to place a random hotbar block" half of a decorator's trowel, moved out of
+ * {@code BehaviourTrowel}.
+ */
+public final class TrowelActions {
 
-public class BehaviourTrowel extends BehaviourNone {
+    private TrowelActions() {}
 
-    @Override
-    public List<String> getAdditionalToolTips(final MetaBaseItem aItem, final List<String> aList,
-        final ItemStack aStack) {
-        aList.add(StatCollector.translateToLocal("gt.behaviour.trowel.tooltip1"));
-        aList.add(StatCollector.translateToLocal("gt.behaviour.trowel.tooltip2"));
-        return aList;
-    }
-
-    @Override
-    public boolean onItemUse(final MetaBaseItem aItem, final ItemStack aStack, final EntityPlayer aPlayer, final World aWorld, final int aX, final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
+    /**
+     * Places a random block from elsewhere on the player's hotbar, so a wall comes out speckled rather than uniform.
+     *
+     * @param pay charges the trowel for one placement, and reports whether it could be paid for.
+     * @return whether the click was consumed.
+     */
+    public static boolean place(final ItemStack aStack, final EntityPlayer aPlayer, final World aWorld, final int aX,
+        final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ,
+        final BooleanSupplier pay) {
         if (null == aPlayer) {
-            return false;
-        }
-        if (!(aItem instanceof MetaGeneratedTool)) {
             return false;
         }
 
@@ -84,7 +82,7 @@ public class BehaviourTrowel extends BehaviourNone {
             return true;
         }
 
-        if (aPlayer.capabilities.isCreativeMode || ((MetaGeneratedTool) aItem).doDamage(aStack, 100)) {
+        if (pay.getAsBoolean()) {
             // We can guarantee getItem() is non-null here because of the isValidBlock check done previously.
             //noinspection DataFlowIssue
             final boolean success = itemToPlace.getItem().onItemUse(itemToPlace, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ);
@@ -104,7 +102,7 @@ public class BehaviourTrowel extends BehaviourNone {
         return false;
     }
 
-    protected boolean isValidBlock(ItemStack aStack) {
+    private static boolean isValidBlock(ItemStack aStack) {
         return aStack != null && aStack.getItem() instanceof ItemBlock && aStack.stackSize > 0;
     }
 }
