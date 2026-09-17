@@ -38,6 +38,7 @@ public enum IDMetaTool01 {
     DRILL_LV(100),
     DRILL_MV(102),
     DRILL_HV(104),
+    // Reserved, see the note above.
     CHAINSAW_LV(110),
     CHAINSAW_MV(112),
     CHAINSAW_HV(114),

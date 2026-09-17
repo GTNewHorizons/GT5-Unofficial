@@ -82,8 +82,7 @@ public class GTAchievements {
             "brrrr",
             2,
             6,
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.CHAINSAW_LV.ID, 1, Materials.BlueSteel, Materials.StainlessSteel, null),
+            GTToolItems.CHAINSAW_LV.getToolWithMaterial(Materials.BlueSteel),
             "driltime",
             false);
         registerAchievement(

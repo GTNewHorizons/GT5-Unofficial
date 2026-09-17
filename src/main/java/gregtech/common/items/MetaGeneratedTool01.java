@@ -3,9 +3,6 @@ package gregtech.common.items;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_HV;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_LV;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_MV;
-import static gregtech.common.items.IDMetaTool01.CHAINSAW_HV;
-import static gregtech.common.items.IDMetaTool01.CHAINSAW_LV;
-import static gregtech.common.items.IDMetaTool01.CHAINSAW_MV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_HV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_LV;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER_MV;
@@ -49,9 +46,6 @@ import gregtech.common.tools.ItemNetworkAnalyzer;
 import gregtech.common.tools.ToolBuzzSawHV;
 import gregtech.common.tools.ToolBuzzSawLV;
 import gregtech.common.tools.ToolBuzzSawMV;
-import gregtech.common.tools.ToolChainsawHV;
-import gregtech.common.tools.ToolChainsawLV;
-import gregtech.common.tools.ToolChainsawMV;
 import gregtech.common.tools.ToolJackHammerHV;
 import gregtech.common.tools.ToolJackHammerLV;
 import gregtech.common.tools.ToolJackHammerMV;
@@ -81,33 +75,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         super("metatool.01");
         INSTANCE = this;
 
-        addTool(
-            CHAINSAW_LV.ID,
-            "",
-            "",
-            new ToolChainsawLV(),
-            ToolDictNames.craftingToolSaw,
-            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
-        addTool(
-            CHAINSAW_MV.ID,
-            "",
-            "",
-            new ToolChainsawMV(),
-            ToolDictNames.craftingToolSaw,
-            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
-        addTool(
-            CHAINSAW_HV.ID,
-            "",
-            "",
-            new ToolChainsawHV(),
-            ToolDictNames.craftingToolSaw,
-            new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.METO, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.ARBOR, 2L));
         GregTechAPI.registerTool(
             addTool(
                 JACKHAMMER_LV.ID,
@@ -300,12 +267,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     }
 
     static {
-        addTieredFamily(
-            "gt.metatool.01.chainsaw.name",
-            "gt.metatool.01.chainsaw.tooltip",
-            CHAINSAW_LV.ID,
-            CHAINSAW_MV.ID,
-            CHAINSAW_HV.ID);
         addTieredFamily(
             "gt.metatool.01.jackhammer.name",
             "gt.metatool.01.jackhammer.tooltip",

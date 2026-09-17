@@ -274,6 +274,9 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(GTToolItems.DRILL_LV, metaToolRenderer);
         MinecraftForgeClient.registerItemRenderer(GTToolItems.DRILL_MV, metaToolRenderer);
         MinecraftForgeClient.registerItemRenderer(GTToolItems.DRILL_HV, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.CHAINSAW_LV, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.CHAINSAW_MV, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.CHAINSAW_HV, metaToolRenderer);
 
         MinecraftForgeClient.registerItemRenderer(CircuitComponentFakeItem.INSTANCE, new CircuitComponentItemRenderer());
 

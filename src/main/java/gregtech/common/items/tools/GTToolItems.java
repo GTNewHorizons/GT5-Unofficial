@@ -5,6 +5,9 @@ import java.util.List;
 
 import gregtech.common.tools.ToolBranchCutter;
 import gregtech.common.tools.ToolButcheryKnife;
+import gregtech.common.tools.ToolChainsawHV;
+import gregtech.common.tools.ToolChainsawLV;
+import gregtech.common.tools.ToolChainsawMV;
 import gregtech.common.tools.ToolCrowbar;
 import gregtech.common.tools.ToolDrillHV;
 import gregtech.common.tools.ToolDrillLV;
@@ -74,6 +77,9 @@ public final class GTToolItems {
     public static ToolDrillItem DRILL_LV;
     public static ToolDrillItem DRILL_MV;
     public static ToolDrillItem DRILL_HV;
+    public static ToolChainsawItem CHAINSAW_LV;
+    public static ToolChainsawItem CHAINSAW_MV;
+    public static ToolChainsawItem CHAINSAW_HV;
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -220,6 +226,30 @@ public final class GTToolItems {
         DRILL_LV = new ToolDrillItem("tool.drill_lv", new ToolDrillLV(), "%material Drill (LV)", 100_000L, 32L, 1);
         DRILL_MV = new ToolDrillItem("tool.drill_mv", new ToolDrillMV(), "%material Drill (MV)", 400_000L, 128L, 2);
         DRILL_HV = new ToolDrillItem("tool.drill_hv", new ToolDrillHV(), "%material Drill (HV)", 1_600_000L, 512L, 3);
+        CHAINSAW_LV = new ToolChainsawItem(
+            "tool.chainsaw_lv",
+            new ToolChainsawLV(),
+            "%material Chainsaw (LV)",
+            "Can also harvest Ice",
+            100_000L,
+            32L,
+            1);
+        CHAINSAW_MV = new ToolChainsawItem(
+            "tool.chainsaw_mv",
+            new ToolChainsawMV(),
+            "%material Chainsaw (MV)",
+            "Can also harvest Ice",
+            400_000L,
+            128L,
+            2);
+        CHAINSAW_HV = new ToolChainsawItem(
+            "tool.chainsaw_hv",
+            new ToolChainsawHV(),
+            "%material Chainsaw (HV)",
+            "Can also harvest Ice",
+            1_600_000L,
+            512L,
+            3);
     }
 
     /**
