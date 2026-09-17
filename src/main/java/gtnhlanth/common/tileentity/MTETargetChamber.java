@@ -76,6 +76,7 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
 
     private static final int GrateMachineCasingTextureID = Casings.GrateMachineCasing.getTextureId();
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
+    private static final int MIN_GLASS_TIER = 6;
     private final ArrayList<MTEHatchInputBus> mMaskInputBusses = new ArrayList<>();
     private GTRecipe lastRecipe;
     private int lastTCRecipeRate;
@@ -84,7 +85,6 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
     private float lastTCRecipeMaxEnergy;
     private int lastTCRecipeInputParticle = -1;
     private int glassTier = -1;
-    private final int MIN_GLASS_TIER = 6;
 
     // spotless:off
     static {
