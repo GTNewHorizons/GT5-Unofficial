@@ -15,11 +15,9 @@ final class MetaToolStackMigration {
             .getCompoundTag("GT.ToolStats");
     }
 
-    /**
-     * As {@link #rewriteToolStack(NBTTagCompound, int, boolean, long, String)}, for a tool with no mode key of its own.
-     */
-    static void rewriteToolStack(NBTTagCompound nbt, int newMeta, boolean electric, long defaultMaxCharge) {
-        rewriteToolStack(nbt, newMeta, electric, defaultMaxCharge, null);
+    /** As {@link #rewriteToolStack(NBTTagCompound, int, boolean, String)}, for a tool with no mode key of its own. */
+    static void rewriteToolStack(NBTTagCompound nbt, int newMeta, boolean electric) {
+        rewriteToolStack(nbt, newMeta, electric, null);
     }
 
     /**
@@ -27,14 +25,12 @@ final class MetaToolStackMigration {
      * {@code GT.ToolStats} compound is replaced by the handful of keys the new item actually reads. Does not touch the
      * stack's item id, which the caller sets.
      *
-     * @param newMeta          the material's metadata on the new item.
-     * @param electric         whether the target is an electric tool, which stores energy instead of durability.
-     * @param defaultMaxCharge the electric target's default capacity; a stack that held less keeps its own value.
-     * @param legacyModeKey    an extra key inside {@code GT.ToolStats} that held this tool's mode, or null. The
-     *                         Prospector's Scanners kept theirs under a name of their own.
+     * @param newMeta       the material's metadata on the new item.
+     * @param electric      whether the target is an electric tool, which stores energy instead of durability.
+     * @param legacyModeKey an extra key inside {@code GT.ToolStats} that held this tool's mode, or null. The
+     *                      Prospector's Scanners kept theirs under a name of their own.
      */
-    static void rewriteToolStack(NBTTagCompound nbt, int newMeta, boolean electric, long defaultMaxCharge,
-        String legacyModeKey) {
+    static void rewriteToolStack(NBTTagCompound nbt, int newMeta, boolean electric, String legacyModeKey) {
         final NBTTagCompound tag = nbt.getCompoundTag("tag");
         final NBTTagCompound toolStats = tag.getCompoundTag("GT.ToolStats");
 
@@ -46,10 +42,10 @@ final class MetaToolStackMigration {
 
         if (electric) {
             // Electric tools no longer wear out, so any stored durability damage is simply dropped.
+            // Capacity is the tier's now, whatever battery built the tool, so the old MaxCharge is dropped and a
+            // tool crafted with a cheaper battery comes across holding its tier's full capacity.
             final long charge = tag.getLong("GT.ItemCharge");
             if (charge > 0) newTag.setLong("GT.ItemCharge", charge);
-            final long maxCharge = toolStats.getLong("MaxCharge");
-            if (maxCharge > 0 && maxCharge != defaultMaxCharge) newTag.setLong("GT.MaxCharge", maxCharge);
         } else {
             // The old item counted durability in hundredths of a point, the new one in whole points, and the maximum
             // is the same number of points either way, so a hundredth of the old figure is the same share of the bar.

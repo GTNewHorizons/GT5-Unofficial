@@ -149,55 +149,46 @@ public class ToolLoader implements IWerkstoffRunnable {
             addSolderingIronRecipe(
                 GTToolItems.SOLDERING_IRON_LV,
                 werkstoff,
-                100000L,
                 Materials.AnyRubber,
                 ItemList.Battery_RE_LV_Lithium);
             addSolderingIronRecipe(
                 GTToolItems.SOLDERING_IRON_LV,
                 werkstoff,
-                75000L,
                 Materials.AnyRubber,
                 ItemList.Battery_RE_LV_Cadmium);
             addSolderingIronRecipe(
                 GTToolItems.SOLDERING_IRON_LV,
                 werkstoff,
-                50000L,
                 Materials.AnyRubber,
                 ItemList.Battery_RE_LV_Sodium);
             addSolderingIronRecipe(
                 GTToolItems.SOLDERING_IRON_MV,
                 werkstoff,
-                400000L,
                 Materials.AnyRubber,
                 ItemList.Battery_RE_MV_Lithium);
             addSolderingIronRecipe(
                 GTToolItems.SOLDERING_IRON_MV,
                 werkstoff,
-                300000L,
                 Materials.AnyRubber,
                 ItemList.Battery_RE_MV_Cadmium);
             addSolderingIronRecipe(
                 GTToolItems.SOLDERING_IRON_MV,
                 werkstoff,
-                200000L,
                 Materials.AnyRubber,
                 ItemList.Battery_RE_MV_Sodium);
             addSolderingIronRecipe(
                 GTToolItems.SOLDERING_IRON_HV,
                 werkstoff,
-                1600000L,
                 Materials.StyreneButadieneRubber,
                 ItemList.Battery_RE_HV_Lithium);
             addSolderingIronRecipe(
                 GTToolItems.SOLDERING_IRON_HV,
                 werkstoff,
-                1200000L,
                 Materials.StyreneButadieneRubber,
                 ItemList.Battery_RE_HV_Cadmium);
             addSolderingIronRecipe(
                 GTToolItems.SOLDERING_IRON_HV,
                 werkstoff,
-                800000L,
                 Materials.StyreneButadieneRubber,
                 ItemList.Battery_RE_HV_Sodium);
 
@@ -323,63 +314,54 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricWrenchRecipe(
             GTToolItems.WRENCH_LV,
             werkstoff,
-            100000L,
             Materials.Steel,
             ItemList.Electric_Motor_LV,
             ItemList.Battery_RE_LV_Lithium);
         addElectricWrenchRecipe(
             GTToolItems.WRENCH_LV,
             werkstoff,
-            75000L,
             Materials.Steel,
             ItemList.Electric_Motor_LV,
             ItemList.Battery_RE_LV_Cadmium);
         addElectricWrenchRecipe(
             GTToolItems.WRENCH_LV,
             werkstoff,
-            50000L,
             Materials.Steel,
             ItemList.Electric_Motor_LV,
             ItemList.Battery_RE_LV_Sodium);
         addElectricWrenchRecipe(
             GTToolItems.WRENCH_MV,
             werkstoff,
-            400000L,
             Materials.Aluminium,
             ItemList.Electric_Motor_MV,
             ItemList.Battery_RE_MV_Lithium);
         addElectricWrenchRecipe(
             GTToolItems.WRENCH_MV,
             werkstoff,
-            300000L,
             Materials.Aluminium,
             ItemList.Electric_Motor_MV,
             ItemList.Battery_RE_MV_Cadmium);
         addElectricWrenchRecipe(
             GTToolItems.WRENCH_MV,
             werkstoff,
-            200000L,
             Materials.Aluminium,
             ItemList.Electric_Motor_MV,
             ItemList.Battery_RE_MV_Sodium);
         addElectricWrenchRecipe(
             GTToolItems.WRENCH_HV,
             werkstoff,
-            1600000L,
             Materials.StainlessSteel,
             ItemList.Electric_Motor_HV,
             ItemList.Battery_RE_HV_Lithium);
         addElectricWrenchRecipe(
             GTToolItems.WRENCH_HV,
             werkstoff,
-            1200000L,
             Materials.StainlessSteel,
             ItemList.Electric_Motor_HV,
             ItemList.Battery_RE_HV_Cadmium);
         addElectricWrenchRecipe(
             GTToolItems.WRENCH_HV,
             werkstoff,
-            800000L,
             Materials.StainlessSteel,
             ItemList.Electric_Motor_HV,
             ItemList.Battery_RE_HV_Sodium);
@@ -392,55 +374,46 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricWireCutterRecipe(
             GTToolItems.WIRE_CUTTER_LV,
             werkstoff,
-            100000L,
             ItemList.Electric_Motor_LV,
             ItemList.Battery_RE_LV_Lithium);
         addElectricWireCutterRecipe(
             GTToolItems.WIRE_CUTTER_LV,
             werkstoff,
-            75000L,
             ItemList.Electric_Motor_LV,
             ItemList.Battery_RE_LV_Cadmium);
         addElectricWireCutterRecipe(
             GTToolItems.WIRE_CUTTER_LV,
             werkstoff,
-            50000L,
             ItemList.Electric_Motor_LV,
             ItemList.Battery_RE_LV_Sodium);
         addElectricWireCutterRecipe(
             GTToolItems.WIRE_CUTTER_MV,
             werkstoff,
-            400000L,
             ItemList.Electric_Motor_MV,
             ItemList.Battery_RE_MV_Lithium);
         addElectricWireCutterRecipe(
             GTToolItems.WIRE_CUTTER_MV,
             werkstoff,
-            300000L,
             ItemList.Electric_Motor_MV,
             ItemList.Battery_RE_MV_Cadmium);
         addElectricWireCutterRecipe(
             GTToolItems.WIRE_CUTTER_MV,
             werkstoff,
-            200000L,
             ItemList.Electric_Motor_MV,
             ItemList.Battery_RE_MV_Sodium);
         addElectricWireCutterRecipe(
             GTToolItems.WIRE_CUTTER_HV,
             werkstoff,
-            1600000L,
             ItemList.Electric_Motor_HV,
             ItemList.Battery_RE_HV_Lithium);
         addElectricWireCutterRecipe(
             GTToolItems.WIRE_CUTTER_HV,
             werkstoff,
-            1200000L,
             ItemList.Electric_Motor_HV,
             ItemList.Battery_RE_HV_Cadmium);
         addElectricWireCutterRecipe(
             GTToolItems.WIRE_CUTTER_HV,
             werkstoff,
-            800000L,
             ItemList.Electric_Motor_HV,
             ItemList.Battery_RE_HV_Sodium);
 
@@ -452,7 +425,6 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricFileRecipe(
             GTToolItems.FILE_LV,
             werkstoff,
-            100000L,
             Materials.Steel,
             ItemList.Component_Grinder_Diamond,
             ItemList.Electric_Motor_LV,
@@ -460,7 +432,6 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricFileRecipe(
             GTToolItems.FILE_LV,
             werkstoff,
-            75000L,
             Materials.Steel,
             ItemList.Component_Grinder_Diamond,
             ItemList.Electric_Motor_LV,
@@ -468,7 +439,6 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricFileRecipe(
             GTToolItems.FILE_LV,
             werkstoff,
-            50000L,
             Materials.Steel,
             ItemList.Component_Grinder_Diamond,
             ItemList.Electric_Motor_LV,
@@ -476,7 +446,6 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricFileRecipe(
             GTToolItems.FILE_MV,
             werkstoff,
-            400000L,
             Materials.Aluminium,
             ItemList.Component_Grinder_Diamond,
             ItemList.Electric_Motor_MV,
@@ -484,7 +453,6 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricFileRecipe(
             GTToolItems.FILE_MV,
             werkstoff,
-            300000L,
             Materials.Aluminium,
             ItemList.Component_Grinder_Diamond,
             ItemList.Electric_Motor_MV,
@@ -492,7 +460,6 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricFileRecipe(
             GTToolItems.FILE_MV,
             werkstoff,
-            200000L,
             Materials.Aluminium,
             ItemList.Component_Grinder_Diamond,
             ItemList.Electric_Motor_MV,
@@ -500,7 +467,6 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricFileRecipe(
             GTToolItems.FILE_HV,
             werkstoff,
-            1600000L,
             Materials.StainlessSteel,
             ItemList.Component_Grinder_Tungsten,
             ItemList.Electric_Motor_HV,
@@ -508,7 +474,6 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricFileRecipe(
             GTToolItems.FILE_HV,
             werkstoff,
-            1200000L,
             Materials.StainlessSteel,
             ItemList.Component_Grinder_Tungsten,
             ItemList.Electric_Motor_HV,
@@ -516,7 +481,6 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricFileRecipe(
             GTToolItems.FILE_HV,
             werkstoff,
-            800000L,
             Materials.StainlessSteel,
             ItemList.Component_Grinder_Tungsten,
             ItemList.Electric_Motor_HV,
@@ -529,63 +493,54 @@ public class ToolLoader implements IWerkstoffRunnable {
         addElectricScrewdriverRecipe(
             GTToolItems.SCREWDRIVER_LV,
             werkstoff,
-            100000L,
             Materials.Steel,
             ItemList.Electric_Motor_LV,
             ItemList.Battery_RE_LV_Lithium);
         addElectricScrewdriverRecipe(
             GTToolItems.SCREWDRIVER_LV,
             werkstoff,
-            75000L,
             Materials.Steel,
             ItemList.Electric_Motor_LV,
             ItemList.Battery_RE_LV_Cadmium);
         addElectricScrewdriverRecipe(
             GTToolItems.SCREWDRIVER_LV,
             werkstoff,
-            50000L,
             Materials.Steel,
             ItemList.Electric_Motor_LV,
             ItemList.Battery_RE_LV_Sodium);
         addElectricScrewdriverRecipe(
             GTToolItems.SCREWDRIVER_MV,
             werkstoff,
-            400000L,
             Materials.Aluminium,
             ItemList.Electric_Motor_MV,
             ItemList.Battery_RE_MV_Lithium);
         addElectricScrewdriverRecipe(
             GTToolItems.SCREWDRIVER_MV,
             werkstoff,
-            300000L,
             Materials.Aluminium,
             ItemList.Electric_Motor_MV,
             ItemList.Battery_RE_MV_Cadmium);
         addElectricScrewdriverRecipe(
             GTToolItems.SCREWDRIVER_MV,
             werkstoff,
-            200000L,
             Materials.Aluminium,
             ItemList.Electric_Motor_MV,
             ItemList.Battery_RE_MV_Sodium);
         addElectricScrewdriverRecipe(
             GTToolItems.SCREWDRIVER_HV,
             werkstoff,
-            1600000L,
             Materials.StainlessSteel,
             ItemList.Electric_Motor_HV,
             ItemList.Battery_RE_HV_Lithium);
         addElectricScrewdriverRecipe(
             GTToolItems.SCREWDRIVER_HV,
             werkstoff,
-            1200000L,
             Materials.StainlessSteel,
             ItemList.Electric_Motor_HV,
             ItemList.Battery_RE_HV_Cadmium);
         addElectricScrewdriverRecipe(
             GTToolItems.SCREWDRIVER_HV,
             werkstoff,
-            800000L,
             Materials.StainlessSteel,
             ItemList.Electric_Motor_HV,
             ItemList.Battery_RE_HV_Sodium);
@@ -712,9 +667,9 @@ public class ToolLoader implements IWerkstoffRunnable {
      * Adds one electric wrench crafting recipe for a Werkstoff head material. Mirrors the GregTech-material version in
      * {@code ProcessingToolHead}; the only difference is where the head comes from.
      */
-    private static void addElectricWrenchRecipe(ToolWrenchElectricItem wrenchItem, Werkstoff werkstoff, long maxCharge,
+    private static void addElectricWrenchRecipe(ToolWrenchElectricItem wrenchItem, Werkstoff werkstoff,
         Materials casingMaterial, ItemList motor, ItemList battery) {
-        ItemStack wrench = wrenchItem.getToolWithMaterial(werkstoff.getBridgeMaterial(), maxCharge);
+        ItemStack wrench = wrenchItem.getToolWithMaterial(werkstoff.getBridgeMaterial());
         if (wrench == null) return;
         GTModHandler.addCraftingRecipe(
             wrench,
@@ -739,8 +694,8 @@ public class ToolLoader implements IWerkstoffRunnable {
      * version in {@code ProcessingToolHead}; the only difference is where the head comes from.
      */
     private static void addElectricScrewdriverRecipe(ToolScrewdriverElectricItem screwdriverItem, Werkstoff werkstoff,
-        long maxCharge, Materials casingMaterial, ItemList motor, ItemList battery) {
-        ItemStack screwdriver = screwdriverItem.getToolWithMaterial(werkstoff.getBridgeMaterial(), maxCharge);
+        Materials casingMaterial, ItemList motor, ItemList battery) {
+        ItemStack screwdriver = screwdriverItem.getToolWithMaterial(werkstoff.getBridgeMaterial());
         if (screwdriver == null) return;
         GTModHandler.addCraftingRecipe(
             screwdriver,
@@ -765,8 +720,8 @@ public class ToolLoader implements IWerkstoffRunnable {
      * version in {@code ProcessingToolHead}; the only difference is where the head comes from.
      */
     private static void addElectricWireCutterRecipe(ToolWireCutterElectricItem wireCutterItem, Werkstoff werkstoff,
-        long maxCharge, ItemList motor, ItemList battery) {
-        ItemStack wireCutter = wireCutterItem.getToolWithMaterial(werkstoff.getBridgeMaterial(), maxCharge);
+        ItemList motor, ItemList battery) {
+        ItemStack wireCutter = wireCutterItem.getToolWithMaterial(werkstoff.getBridgeMaterial());
         ItemStack handWireCutter = GTToolItems.WIRE_CUTTER.getToolWithMaterial(werkstoff.getBridgeMaterial());
         if (wireCutter == null || handWireCutter == null) return;
         GTModHandler.addCraftingRecipe(
@@ -804,9 +759,9 @@ public class ToolLoader implements IWerkstoffRunnable {
      * Adds one electric file crafting recipe for a Werkstoff head material. Mirrors the GregTech-material version in
      * {@code ProcessingToolHead}; the only difference is where the head comes from.
      */
-    private static void addElectricFileRecipe(ToolFileElectricItem fileItem, Werkstoff werkstoff, long maxCharge,
+    private static void addElectricFileRecipe(ToolFileElectricItem fileItem, Werkstoff werkstoff,
         Materials casingMaterial, ItemList grinder, ItemList motor, ItemList battery) {
-        ItemStack file = fileItem.getToolWithMaterial(werkstoff.getBridgeMaterial(), maxCharge);
+        ItemStack file = fileItem.getToolWithMaterial(werkstoff.getBridgeMaterial());
         if (file == null) return;
         GTModHandler.addCraftingRecipe(
             file,
@@ -833,8 +788,8 @@ public class ToolLoader implements IWerkstoffRunnable {
      * own handle material rather than being fixed per tier -- which is how this loader always built it.
      */
     private static void addSolderingIronRecipe(ToolSolderingIronItem solderingIronItem, Werkstoff werkstoff,
-        long maxCharge, Materials rubber, ItemList battery) {
-        ItemStack solderingIron = solderingIronItem.getToolWithMaterial(werkstoff.getBridgeMaterial(), maxCharge);
+        Materials rubber, ItemList battery) {
+        ItemStack solderingIron = solderingIronItem.getToolWithMaterial(werkstoff.getBridgeMaterial());
         if (solderingIron == null) return;
         GTModHandler.addCraftingRecipe(
             solderingIron,

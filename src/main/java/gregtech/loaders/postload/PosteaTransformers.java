@@ -471,9 +471,7 @@ public class PosteaTransformers implements Runnable {
         if (newMeta < 0) return false;
 
         final boolean electric = newItem instanceof IElectricToolItem;
-        final long defaultMaxCharge = electric ? ((IElectricToolItem) newItem).getElectricStorage()
-            .getDefaultMaxCharge() : 0L;
-        MetaToolStackMigration.rewriteToolStack(nbt, newMeta, electric, defaultMaxCharge, legacyModeKey);
+        MetaToolStackMigration.rewriteToolStack(nbt, newMeta, electric, legacyModeKey);
         IDExtenderCompat.setItemStackID(nbt, tool.runtimeId);
         return true;
     }

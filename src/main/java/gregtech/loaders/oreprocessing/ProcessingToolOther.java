@@ -161,63 +161,54 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                 addSolderingIronRecipe(
                     GTToolItems.SOLDERING_IRON_LV,
                     aMaterial,
-                    100000L,
                     Materials.AnyRubber,
                     Materials.Iron,
                     ItemList.Battery_RE_LV_Lithium);
                 addSolderingIronRecipe(
                     GTToolItems.SOLDERING_IRON_LV,
                     aMaterial,
-                    75000L,
                     Materials.AnyRubber,
                     Materials.Iron,
                     ItemList.Battery_RE_LV_Cadmium);
                 addSolderingIronRecipe(
                     GTToolItems.SOLDERING_IRON_LV,
                     aMaterial,
-                    50000L,
                     Materials.AnyRubber,
                     Materials.Iron,
                     ItemList.Battery_RE_LV_Sodium);
                 addSolderingIronRecipe(
                     GTToolItems.SOLDERING_IRON_MV,
                     aMaterial,
-                    400000L,
                     Materials.AnyRubber,
                     Materials.Steel,
                     ItemList.Battery_RE_MV_Lithium);
                 addSolderingIronRecipe(
                     GTToolItems.SOLDERING_IRON_MV,
                     aMaterial,
-                    300000L,
                     Materials.AnyRubber,
                     Materials.Steel,
                     ItemList.Battery_RE_MV_Cadmium);
                 addSolderingIronRecipe(
                     GTToolItems.SOLDERING_IRON_MV,
                     aMaterial,
-                    200000L,
                     Materials.AnyRubber,
                     Materials.Steel,
                     ItemList.Battery_RE_MV_Sodium);
                 addSolderingIronRecipe(
                     GTToolItems.SOLDERING_IRON_HV,
                     aMaterial,
-                    1600000L,
                     Materials.AnySyntheticRubber,
                     Materials.StainlessSteel,
                     ItemList.Battery_RE_HV_Lithium);
                 addSolderingIronRecipe(
                     GTToolItems.SOLDERING_IRON_HV,
                     aMaterial,
-                    1200000L,
                     Materials.AnySyntheticRubber,
                     Materials.StainlessSteel,
                     ItemList.Battery_RE_HV_Cadmium);
                 addSolderingIronRecipe(
                     GTToolItems.SOLDERING_IRON_HV,
                     aMaterial,
-                    800000L,
                     Materials.AnySyntheticRubber,
                     Materials.StainlessSteel,
                     ItemList.Battery_RE_HV_Sodium);
@@ -244,8 +235,8 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
      * and the handle metal are fixed per tier.
      */
     private static void addSolderingIronRecipe(ToolSolderingIronItem solderingIronItem, Materials headMaterial,
-        long maxCharge, Materials rubber, Materials handleMaterial, ItemList battery) {
-        ItemStack solderingIron = solderingIronItem.getToolWithMaterial(headMaterial, maxCharge);
+        Materials rubber, Materials handleMaterial, ItemList battery) {
+        ItemStack solderingIron = solderingIronItem.getToolWithMaterial(headMaterial);
         if (solderingIron == null) return;
         GTModHandler.addCraftingRecipe(
             solderingIron,

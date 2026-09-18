@@ -70,7 +70,7 @@ class PosteaToolMigrationTest {
         // A Steel hand wrench, half worn (max durability 100 * 512 = 51200 in the internal unit), in precise mode.
         NBTTagCompound stack = oldTool(16, "Steel", 25_600L, 51_200L, (byte) 2, null, null);
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false, 0L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false);
 
         assertEquals(STEEL_META, stack.getShort("Damage"), "metadata should become the material");
         assertEquals((byte) 1, stack.getByte("Count"), "stack size must be untouched");
@@ -89,7 +89,7 @@ class PosteaToolMigrationTest {
         stack.getCompoundTag("tag")
             .removeTag("ench");
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false, 0L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false);
 
         assertEquals(STEEL_META, stack.getShort("Damage"));
         assertFalse(
@@ -102,28 +102,27 @@ class PosteaToolMigrationTest {
         // An LV wrench built with a Lithium battery: the tier default capacity, half charged, and somewhat worn.
         NBTTagCompound stack = oldTool(120, "Steel", 4_000L, 51_200L, (byte) 0, 50_000L, 100_000L);
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 100_000L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true);
 
         assertEquals(STEEL_META, stack.getShort("Damage"));
 
         NBTTagCompound tag = stack.getCompoundTag("tag");
         assertEquals(50_000L, tag.getLong("GT.ItemCharge"), "stored energy should carry over");
         assertFalse(tag.hasKey("GT.ToolDamage"), "electric wrenches no longer wear out");
-        assertFalse(
-            tag.hasKey("GT.MaxCharge"),
-            "a wrench at its tier's default capacity should not carry a capacity override");
+        assertFalse(tag.hasKey("GT.MaxCharge"), "capacity is the tier's, so nothing is recorded on the stack");
     }
 
     @Test
-    void electricWrenchBelowDefaultCapacityRecordsIt() {
-        // The Sodium battery variant of the same LV wrench: half the capacity, so the stack has to remember it.
+    void electricWrenchBuiltWithACheaperBatteryComesAcrossAtItsTiersCapacity() {
+        // The Sodium battery variant of the same LV wrench: half the capacity on the old item, its tier's full
+        // capacity on the new one, since the battery no longer decides how much a tool holds.
         NBTTagCompound stack = oldTool(120, "Steel", 0L, 51_200L, (byte) 0, 10_000L, 50_000L);
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 100_000L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true);
 
         NBTTagCompound tag = stack.getCompoundTag("tag");
-        assertEquals(50_000L, tag.getLong("GT.MaxCharge"), "the smaller capacity must be recorded on the stack");
-        assertEquals(10_000L, tag.getLong("GT.ItemCharge"));
+        assertFalse(tag.hasKey("GT.MaxCharge"), "capacity is the tier's, so nothing is recorded on the stack");
+        assertEquals(10_000L, tag.getLong("GT.ItemCharge"), "stored energy still carries over");
     }
 
     @Test
@@ -131,7 +130,7 @@ class PosteaToolMigrationTest {
         // Metadata 121: the odd, "empty" twin of the LV wrench that setCharge() switched the stack to.
         NBTTagCompound stack = oldTool(121, "Steel", 0L, 51_200L, (byte) 1, null, 100_000L);
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 100_000L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true);
 
         assertEquals(STEEL_META, stack.getShort("Damage"));
         NBTTagCompound tag = stack.getCompoundTag("tag");
@@ -144,7 +143,7 @@ class PosteaToolMigrationTest {
         // A Wood soft mallet in deactivate mode, a quarter worn. Max durability is 100 * mDurability * 8.
         NBTTagCompound stack = oldTool(14, "Wood", 4_000L, 16_000L, (byte) 2, null, null);
 
-        MetaToolStackMigration.rewriteToolStack(stack, WOOD_META, false, 0L);
+        MetaToolStackMigration.rewriteToolStack(stack, WOOD_META, false);
 
         assertEquals(WOOD_META, stack.getShort("Damage"), "metadata should become the material");
 
@@ -165,7 +164,7 @@ class PosteaToolMigrationTest {
         stack.getCompoundTag("tag")
             .removeTag("ench");
 
-        MetaToolStackMigration.rewriteToolStack(stack, RUBBER_META, false, 0L);
+        MetaToolStackMigration.rewriteToolStack(stack, RUBBER_META, false);
 
         assertEquals(RUBBER_META, stack.getShort("Damage"));
         assertFalse(stack.hasKey("tag"), "a fresh mallet needs no tag at all");
@@ -176,7 +175,7 @@ class PosteaToolMigrationTest {
         // An Iron screwdriver, nearly worn out. Screwdrivers have no modes, so none is recorded.
         NBTTagCompound stack = oldTool(22, "Iron", 12_500L, 12_800L, (byte) 0, null, null);
 
-        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false, 0L);
+        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false);
 
         assertEquals(IRON_META, stack.getShort("Damage"), "metadata should become the material");
 
@@ -191,27 +190,26 @@ class PosteaToolMigrationTest {
         // An MV screwdriver built with a Lithium battery: the tier default capacity, part charged, somewhat worn.
         NBTTagCompound stack = oldTool(152, "Steel", 3_000L, 51_200L, (byte) 0, 250_000L, 400_000L);
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 400_000L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true);
 
         assertEquals(STEEL_META, stack.getShort("Damage"));
 
         NBTTagCompound tag = stack.getCompoundTag("tag");
         assertEquals(250_000L, tag.getLong("GT.ItemCharge"), "stored energy should carry over");
         assertFalse(tag.hasKey("GT.ToolDamage"), "electric screwdrivers no longer wear out");
-        assertFalse(
-            tag.hasKey("GT.MaxCharge"),
-            "a screwdriver at its tier's default capacity should not carry a capacity override");
+        assertFalse(tag.hasKey("GT.MaxCharge"), "capacity is the tier's, so nothing is recorded on the stack");
     }
 
     @Test
-    void electricScrewdriverBelowDefaultCapacityRecordsIt() {
-        // The Sodium battery variant of the same MV screwdriver: half the capacity, so the stack has to remember it.
+    void electricScrewdriverBuiltWithACheaperBatteryComesAcrossAtItsTiersCapacity() {
+        // The Sodium battery variant of the same MV screwdriver: half the capacity on the old item, its tier's full
+        // capacity on the new one.
         NBTTagCompound stack = oldTool(152, "Steel", 0L, 51_200L, (byte) 0, 20_000L, 200_000L);
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 400_000L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true);
 
         NBTTagCompound tag = stack.getCompoundTag("tag");
-        assertEquals(200_000L, tag.getLong("GT.MaxCharge"), "the smaller capacity must be recorded on the stack");
+        assertFalse(tag.hasKey("GT.MaxCharge"), "capacity is the tier's, so nothing is recorded on the stack");
         assertEquals(20_000L, tag.getLong("GT.ItemCharge"));
     }
 
@@ -219,7 +217,7 @@ class PosteaToolMigrationTest {
     void handCrowbarKeepsItsDurability() {
         NBTTagCompound stack = oldTool(20, "Iron", 5_000L, 12_800L, (byte) 0, null, null);
 
-        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false, 0L);
+        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false);
 
         assertEquals(IRON_META, stack.getShort("Damage"));
         assertEquals(
@@ -230,15 +228,15 @@ class PosteaToolMigrationTest {
 
     @Test
     void electricWireCutterKeepsItsCharge() {
-        // An HV wire cutter with the Cadmium battery: below its tier's default capacity, so that has to be recorded.
+        // An HV wire cutter with the Cadmium battery, which used to mean a smaller capacity than the tier's.
         NBTTagCompound stack = oldTool(200, "Steel", 800L, 51_200L, (byte) 0, 900_000L, 1_200_000L);
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 1_600_000L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true);
 
         assertEquals(STEEL_META, stack.getShort("Damage"));
         NBTTagCompound tag = stack.getCompoundTag("tag");
         assertEquals(900_000L, tag.getLong("GT.ItemCharge"));
-        assertEquals(1_200_000L, tag.getLong("GT.MaxCharge"));
+        assertFalse(tag.hasKey("GT.MaxCharge"), "capacity is the tier's, so nothing is recorded on the stack");
         assertFalse(tag.hasKey("GT.ToolDamage"), "electric wire cutters no longer wear out");
     }
 
@@ -246,7 +244,7 @@ class PosteaToolMigrationTest {
     void handHardHammerKeepsItsDurability() {
         NBTTagCompound stack = oldTool(12, "Iron", 9_900L, 12_800L, (byte) 0, null, null);
 
-        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false, 0L);
+        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false);
 
         assertEquals(IRON_META, stack.getShort("Damage"));
         assertEquals(
@@ -259,11 +257,11 @@ class PosteaToolMigrationTest {
     void electricFileKeepsItsCharge() {
         NBTTagCompound stack = oldTool(204, "Steel", 2_500L, 51_200L, (byte) 0, 123_456L, 400_000L);
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 400_000L);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true);
 
         NBTTagCompound tag = stack.getCompoundTag("tag");
         assertEquals(123_456L, tag.getLong("GT.ItemCharge"));
-        assertFalse(tag.hasKey("GT.MaxCharge"), "this one is at its tier's default capacity");
+        assertFalse(tag.hasKey("GT.MaxCharge"), "capacity is the tier's, so nothing is recorded on the stack");
         assertFalse(tag.hasKey("GT.ToolDamage"), "electric files no longer wear out");
     }
 
@@ -278,7 +276,7 @@ class PosteaToolMigrationTest {
             .getCompoundTag("GT.ToolStats")
             .setLong("DetravData", 2L);
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false, 0L, "DetravData");
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false, "DetravData");
 
         assertEquals(STEEL_META, stack.getShort("Damage"));
         NBTTagCompound tag = stack.getCompoundTag("tag");
@@ -294,7 +292,7 @@ class PosteaToolMigrationTest {
             .getCompoundTag("GT.ToolStats")
             .setLong("DetravData", 3L);
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, 102_400_000L, "DetravData");
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, true, "DetravData");
 
         NBTTagCompound tag = stack.getCompoundTag("tag");
         assertEquals(50_000_000L, tag.getLong("GT.ItemCharge"), "stored energy should carry over");

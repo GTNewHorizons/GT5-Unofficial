@@ -76,7 +76,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricBuzzSawRecipe(
                     GTToolItems.BUZZSAW_LV,
                     aMaterial,
-                    100_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -84,7 +83,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricBuzzSawRecipe(
                     GTToolItems.BUZZSAW_LV,
                     aMaterial,
-                    75_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -92,7 +90,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricBuzzSawRecipe(
                     GTToolItems.BUZZSAW_LV,
                     aMaterial,
-                    50_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -100,7 +97,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricBuzzSawRecipe(
                     GTToolItems.BUZZSAW_MV,
                     aMaterial,
-                    400_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -108,7 +104,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricBuzzSawRecipe(
                     GTToolItems.BUZZSAW_MV,
                     aMaterial,
-                    300_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -116,7 +111,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricBuzzSawRecipe(
                     GTToolItems.BUZZSAW_MV,
                     aMaterial,
-                    200_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -124,7 +118,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricBuzzSawRecipe(
                     GTToolItems.BUZZSAW_HV,
                     aMaterial,
-                    1_600_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -132,7 +125,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricBuzzSawRecipe(
                     GTToolItems.BUZZSAW_HV,
                     aMaterial,
-                    1_200_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -140,7 +132,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricBuzzSawRecipe(
                     GTToolItems.BUZZSAW_HV,
                     aMaterial,
-                    800_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -169,7 +160,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricChainsawRecipe(
                     GTToolItems.CHAINSAW_LV,
                     aMaterial,
-                    100_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -177,7 +167,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricChainsawRecipe(
                     GTToolItems.CHAINSAW_LV,
                     aMaterial,
-                    75_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -185,7 +174,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricChainsawRecipe(
                     GTToolItems.CHAINSAW_LV,
                     aMaterial,
-                    50_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -193,7 +181,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricChainsawRecipe(
                     GTToolItems.CHAINSAW_MV,
                     aMaterial,
-                    400_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -201,7 +188,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricChainsawRecipe(
                     GTToolItems.CHAINSAW_MV,
                     aMaterial,
-                    300_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -209,7 +195,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricChainsawRecipe(
                     GTToolItems.CHAINSAW_MV,
                     aMaterial,
-                    200_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -217,7 +202,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricChainsawRecipe(
                     GTToolItems.CHAINSAW_HV,
                     aMaterial,
-                    1_600_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -225,7 +209,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricChainsawRecipe(
                     GTToolItems.CHAINSAW_HV,
                     aMaterial,
-                    1_200_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -233,7 +216,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricChainsawRecipe(
                     GTToolItems.CHAINSAW_HV,
                     aMaterial,
-                    800_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -260,7 +242,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricDrillRecipe(
                     GTToolItems.DRILL_LV,
                     aMaterial,
-                    100_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -268,7 +249,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricDrillRecipe(
                     GTToolItems.DRILL_LV,
                     aMaterial,
-                    75_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -276,7 +256,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricDrillRecipe(
                     GTToolItems.DRILL_LV,
                     aMaterial,
-                    50_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -284,7 +263,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricDrillRecipe(
                     GTToolItems.DRILL_MV,
                     aMaterial,
-                    400_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -292,7 +270,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricDrillRecipe(
                     GTToolItems.DRILL_MV,
                     aMaterial,
-                    300_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -300,7 +277,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricDrillRecipe(
                     GTToolItems.DRILL_MV,
                     aMaterial,
-                    200_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -308,7 +284,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricDrillRecipe(
                     GTToolItems.DRILL_HV,
                     aMaterial,
-                    1600_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -316,7 +291,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricDrillRecipe(
                     GTToolItems.DRILL_HV,
                     aMaterial,
-                    1200_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -324,7 +298,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricDrillRecipe(
                     GTToolItems.DRILL_HV,
                     aMaterial,
-                    800_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -348,7 +321,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricJackHammerRecipe(
                     GTToolItems.JACKHAMMER_LV,
                     aMaterial,
-                    100_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Piston_LV,
@@ -356,7 +328,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricJackHammerRecipe(
                     GTToolItems.JACKHAMMER_LV,
                     aMaterial,
-                    75_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Piston_LV,
@@ -364,7 +335,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricJackHammerRecipe(
                     GTToolItems.JACKHAMMER_LV,
                     aMaterial,
-                    50_000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Piston_LV,
@@ -372,7 +342,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricJackHammerRecipe(
                     GTToolItems.JACKHAMMER_MV,
                     aMaterial,
-                    400_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Piston_MV,
@@ -380,7 +349,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricJackHammerRecipe(
                     GTToolItems.JACKHAMMER_MV,
                     aMaterial,
-                    300_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Piston_MV,
@@ -388,7 +356,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricJackHammerRecipe(
                     GTToolItems.JACKHAMMER_MV,
                     aMaterial,
-                    200_000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Piston_MV,
@@ -396,7 +363,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricJackHammerRecipe(
                     GTToolItems.JACKHAMMER_HV,
                     aMaterial,
-                    1_600_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Piston_HV,
@@ -404,7 +370,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricJackHammerRecipe(
                     GTToolItems.JACKHAMMER_HV,
                     aMaterial,
-                    1_200_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Piston_HV,
@@ -412,7 +377,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricJackHammerRecipe(
                     GTToolItems.JACKHAMMER_HV,
                     aMaterial,
-                    800_000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Piston_HV,
@@ -514,8 +478,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 }
             }
             case "toolHeadWrench" -> {
-                // The three battery variants of each tier differ only in capacity, which rides along on the stack;
-                // the item and its metadata (the head material) are the same, so NEI sees one wrench per material.
+                // The three battery variants of each tier now build the same wrench -- capacity is the tier's --
+                // so they are three recipes for one item and metadata, and NEI sees one wrench per material.
                 GTToolItems.WRENCH_LV.registerMaterial(
                     aMaterial,
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
@@ -531,7 +495,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricWrenchRecipe(
                     GTToolItems.WRENCH_LV,
                     aMaterial,
-                    100000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -539,7 +502,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricWrenchRecipe(
                     GTToolItems.WRENCH_LV,
                     aMaterial,
-                    75000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -547,7 +509,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricWrenchRecipe(
                     GTToolItems.WRENCH_LV,
                     aMaterial,
-                    50000L,
                     aOreDictName,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
@@ -555,7 +516,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricWrenchRecipe(
                     GTToolItems.WRENCH_MV,
                     aMaterial,
-                    400000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -563,7 +523,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricWrenchRecipe(
                     GTToolItems.WRENCH_MV,
                     aMaterial,
-                    300000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -571,7 +530,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricWrenchRecipe(
                     GTToolItems.WRENCH_MV,
                     aMaterial,
-                    200000L,
                     aOreDictName,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
@@ -579,7 +537,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricWrenchRecipe(
                     GTToolItems.WRENCH_HV,
                     aMaterial,
-                    1600000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -587,7 +544,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricWrenchRecipe(
                     GTToolItems.WRENCH_HV,
                     aMaterial,
-                    1200000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -595,7 +551,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricWrenchRecipe(
                     GTToolItems.WRENCH_HV,
                     aMaterial,
-                    800000L,
                     aOreDictName,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
@@ -618,63 +573,54 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricScrewdriverRecipe(
                     GTToolItems.SCREWDRIVER_LV,
                     aMaterial,
-                    100000L,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
                     ItemList.Battery_RE_LV_Lithium);
                 addElectricScrewdriverRecipe(
                     GTToolItems.SCREWDRIVER_LV,
                     aMaterial,
-                    75000L,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
                     ItemList.Battery_RE_LV_Cadmium);
                 addElectricScrewdriverRecipe(
                     GTToolItems.SCREWDRIVER_LV,
                     aMaterial,
-                    50000L,
                     Materials.Steel,
                     ItemList.Electric_Motor_LV,
                     ItemList.Battery_RE_LV_Sodium);
                 addElectricScrewdriverRecipe(
                     GTToolItems.SCREWDRIVER_MV,
                     aMaterial,
-                    400000L,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
                     ItemList.Battery_RE_MV_Lithium);
                 addElectricScrewdriverRecipe(
                     GTToolItems.SCREWDRIVER_MV,
                     aMaterial,
-                    300000L,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
                     ItemList.Battery_RE_MV_Cadmium);
                 addElectricScrewdriverRecipe(
                     GTToolItems.SCREWDRIVER_MV,
                     aMaterial,
-                    200000L,
                     Materials.Aluminium,
                     ItemList.Electric_Motor_MV,
                     ItemList.Battery_RE_MV_Sodium);
                 addElectricScrewdriverRecipe(
                     GTToolItems.SCREWDRIVER_HV,
                     aMaterial,
-                    1600000L,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
                     ItemList.Battery_RE_HV_Lithium);
                 addElectricScrewdriverRecipe(
                     GTToolItems.SCREWDRIVER_HV,
                     aMaterial,
-                    1200000L,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
                     ItemList.Battery_RE_HV_Cadmium);
                 addElectricScrewdriverRecipe(
                     GTToolItems.SCREWDRIVER_HV,
                     aMaterial,
-                    800000L,
                     Materials.StainlessSteel,
                     ItemList.Electric_Motor_HV,
                     ItemList.Battery_RE_HV_Sodium);
@@ -697,55 +643,46 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricWireCutterRecipe(
                     GTToolItems.WIRE_CUTTER_LV,
                     aMaterial,
-                    100000L,
                     ItemList.Electric_Motor_LV,
                     ItemList.Battery_RE_LV_Lithium);
                 addElectricWireCutterRecipe(
                     GTToolItems.WIRE_CUTTER_LV,
                     aMaterial,
-                    75000L,
                     ItemList.Electric_Motor_LV,
                     ItemList.Battery_RE_LV_Cadmium);
                 addElectricWireCutterRecipe(
                     GTToolItems.WIRE_CUTTER_LV,
                     aMaterial,
-                    50000L,
                     ItemList.Electric_Motor_LV,
                     ItemList.Battery_RE_LV_Sodium);
                 addElectricWireCutterRecipe(
                     GTToolItems.WIRE_CUTTER_MV,
                     aMaterial,
-                    400000L,
                     ItemList.Electric_Motor_MV,
                     ItemList.Battery_RE_MV_Lithium);
                 addElectricWireCutterRecipe(
                     GTToolItems.WIRE_CUTTER_MV,
                     aMaterial,
-                    300000L,
                     ItemList.Electric_Motor_MV,
                     ItemList.Battery_RE_MV_Cadmium);
                 addElectricWireCutterRecipe(
                     GTToolItems.WIRE_CUTTER_MV,
                     aMaterial,
-                    200000L,
                     ItemList.Electric_Motor_MV,
                     ItemList.Battery_RE_MV_Sodium);
                 addElectricWireCutterRecipe(
                     GTToolItems.WIRE_CUTTER_HV,
                     aMaterial,
-                    1600000L,
                     ItemList.Electric_Motor_HV,
                     ItemList.Battery_RE_HV_Lithium);
                 addElectricWireCutterRecipe(
                     GTToolItems.WIRE_CUTTER_HV,
                     aMaterial,
-                    1200000L,
                     ItemList.Electric_Motor_HV,
                     ItemList.Battery_RE_HV_Cadmium);
                 addElectricWireCutterRecipe(
                     GTToolItems.WIRE_CUTTER_HV,
                     aMaterial,
-                    800000L,
                     ItemList.Electric_Motor_HV,
                     ItemList.Battery_RE_HV_Sodium);
 
@@ -768,7 +705,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricFileRecipe(
                     GTToolItems.FILE_LV,
                     aMaterial,
-                    100000L,
                     Materials.Steel,
                     ItemList.Component_Grinder_Diamond,
                     ItemList.Electric_Motor_LV,
@@ -776,7 +712,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricFileRecipe(
                     GTToolItems.FILE_LV,
                     aMaterial,
-                    75000L,
                     Materials.Steel,
                     ItemList.Component_Grinder_Diamond,
                     ItemList.Electric_Motor_LV,
@@ -784,7 +719,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricFileRecipe(
                     GTToolItems.FILE_LV,
                     aMaterial,
-                    50000L,
                     Materials.Steel,
                     ItemList.Component_Grinder_Diamond,
                     ItemList.Electric_Motor_LV,
@@ -792,7 +726,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricFileRecipe(
                     GTToolItems.FILE_MV,
                     aMaterial,
-                    400000L,
                     Materials.Aluminium,
                     ItemList.Component_Grinder_Diamond,
                     ItemList.Electric_Motor_MV,
@@ -800,7 +733,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricFileRecipe(
                     GTToolItems.FILE_MV,
                     aMaterial,
-                    300000L,
                     Materials.Aluminium,
                     ItemList.Component_Grinder_Diamond,
                     ItemList.Electric_Motor_MV,
@@ -808,7 +740,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricFileRecipe(
                     GTToolItems.FILE_MV,
                     aMaterial,
-                    200000L,
                     Materials.Aluminium,
                     ItemList.Component_Grinder_Diamond,
                     ItemList.Electric_Motor_MV,
@@ -816,7 +747,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricFileRecipe(
                     GTToolItems.FILE_HV,
                     aMaterial,
-                    1600000L,
                     Materials.StainlessSteel,
                     ItemList.Component_Grinder_Tungsten,
                     ItemList.Electric_Motor_HV,
@@ -824,7 +754,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricFileRecipe(
                     GTToolItems.FILE_HV,
                     aMaterial,
-                    1200000L,
                     Materials.StainlessSteel,
                     ItemList.Component_Grinder_Tungsten,
                     ItemList.Electric_Motor_HV,
@@ -832,7 +761,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 addElectricFileRecipe(
                     GTToolItems.FILE_HV,
                     aMaterial,
-                    800000L,
                     Materials.StainlessSteel,
                     ItemList.Component_Grinder_Tungsten,
                     ItemList.Electric_Motor_HV,
@@ -966,12 +894,10 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
      * they share this shape rather than being spelled out one by one as they were when each was a separate
      * {@code getToolWithStats} call.
      *
-     * @param maxCharge the capacity the battery gives this wrench; recorded on the stack, since all three batteries
-     *                  of a tier produce the same item and metadata.
      */
     private static void addElectricWrenchRecipe(ToolWrenchElectricItem wrenchItem, Materials headMaterial,
-        long maxCharge, String headOreDictName, Materials casingMaterial, ItemList motor, ItemList battery) {
-        ItemStack wrench = wrenchItem.getToolWithMaterial(headMaterial, maxCharge);
+        String headOreDictName, Materials casingMaterial, ItemList motor, ItemList battery) {
+        ItemStack wrench = wrenchItem.getToolWithMaterial(headMaterial);
         if (wrench == null) return;
         GTModHandler.addCraftingRecipe(
             wrench,
@@ -987,8 +913,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
      * {@link #addElectricWrenchRecipe}.
      */
     private static void addElectricScrewdriverRecipe(ToolScrewdriverElectricItem screwdriverItem,
-        Materials headMaterial, long maxCharge, Materials casingMaterial, ItemList motor, ItemList battery) {
-        ItemStack screwdriver = screwdriverItem.getToolWithMaterial(headMaterial, maxCharge);
+        Materials headMaterial, Materials casingMaterial, ItemList motor, ItemList battery) {
+        ItemStack screwdriver = screwdriverItem.getToolWithMaterial(headMaterial);
         if (screwdriver == null) return;
         GTModHandler.addCraftingRecipe(
             screwdriver,
@@ -1004,8 +930,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
      * mapping as the output.
      */
     private static void addElectricWireCutterRecipe(ToolWireCutterElectricItem wireCutterItem, Materials headMaterial,
-        long maxCharge, ItemList motor, ItemList battery) {
-        ItemStack wireCutter = wireCutterItem.getToolWithMaterial(headMaterial, maxCharge);
+        ItemList motor, ItemList battery) {
+        ItemStack wireCutter = wireCutterItem.getToolWithMaterial(headMaterial);
         ItemStack handWireCutter = GTToolItems.WIRE_CUTTER.getToolWithMaterial(headMaterial);
         if (wireCutter == null || handWireCutter == null) return;
         GTModHandler.addCraftingRecipe(
@@ -1020,9 +946,9 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
      * Adds one electric file crafting recipe. Same layout as the electric wrench's, but the head is a grinder
      * component rather than a tool head.
      */
-    private static void addElectricFileRecipe(ToolFileElectricItem fileItem, Materials headMaterial, long maxCharge,
+    private static void addElectricFileRecipe(ToolFileElectricItem fileItem, Materials headMaterial,
         Materials casingMaterial, ItemList grinder, ItemList motor, ItemList battery) {
-        ItemStack file = fileItem.getToolWithMaterial(headMaterial, maxCharge);
+        ItemStack file = fileItem.getToolWithMaterial(headMaterial);
         if (file == null) return;
         GTModHandler.addCraftingRecipe(
             file,
@@ -1036,9 +962,9 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
     /**
      * Adds one electric drill crafting recipe. Same layout as the electric wrench's, with a drill head.
      */
-    private static void addElectricDrillRecipe(ToolDrillItem drillItem, Materials headMaterial, long maxCharge,
-        String headOreDictName, Materials casingMaterial, ItemList motor, ItemList battery) {
-        ItemStack drill = drillItem.getToolWithMaterial(headMaterial, maxCharge);
+    private static void addElectricDrillRecipe(ToolDrillItem drillItem, Materials headMaterial, String headOreDictName,
+        Materials casingMaterial, ItemList motor, ItemList battery) {
+        ItemStack drill = drillItem.getToolWithMaterial(headMaterial);
         if (drill == null) return;
         GTModHandler.addCraftingRecipe(
             drill,
@@ -1051,9 +977,9 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
     /**
      * Adds one electric chainsaw crafting recipe.
      */
-    private static void addElectricChainsawRecipe(ToolChainsawItem toolItem, Materials headMaterial, long maxCharge,
+    private static void addElectricChainsawRecipe(ToolChainsawItem toolItem, Materials headMaterial,
         String headOreDictName, Materials casingMaterial, ItemList motor, ItemList battery) {
-        ItemStack tool = toolItem.getToolWithMaterial(headMaterial, maxCharge);
+        ItemStack tool = toolItem.getToolWithMaterial(headMaterial);
         if (tool == null) return;
         GTModHandler.addCraftingRecipe(
             tool,
@@ -1066,9 +992,9 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
     /**
      * Adds one jackhammer crafting recipe.
      */
-    private static void addElectricJackHammerRecipe(ToolJackHammerItem toolItem, Materials headMaterial, long maxCharge,
+    private static void addElectricJackHammerRecipe(ToolJackHammerItem toolItem, Materials headMaterial,
         String headOreDictName, Materials casingMaterial, ItemList piston, ItemList battery) {
-        ItemStack tool = toolItem.getToolWithMaterial(headMaterial, maxCharge);
+        ItemStack tool = toolItem.getToolWithMaterial(headMaterial);
         if (tool == null) return;
         GTModHandler.addCraftingRecipe(
             tool,
@@ -1081,9 +1007,9 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
     /**
      * Adds one electric buzzsaw crafting recipe.
      */
-    private static void addElectricBuzzSawRecipe(ToolBuzzSawItem toolItem, Materials headMaterial, long maxCharge,
+    private static void addElectricBuzzSawRecipe(ToolBuzzSawItem toolItem, Materials headMaterial,
         String headOreDictName, Materials casingMaterial, ItemList motor, ItemList battery) {
-        ItemStack tool = toolItem.getToolWithMaterial(headMaterial, maxCharge);
+        ItemStack tool = toolItem.getToolWithMaterial(headMaterial);
         if (tool == null) return;
         GTModHandler.addCraftingRecipe(
             tool,

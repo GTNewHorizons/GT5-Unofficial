@@ -46,23 +46,6 @@ public class ToolWireCutterElectricItem extends ToolWireCutterItem implements IE
         return electricStorage;
     }
 
-    public long getDefaultMaxCharge() {
-        return electricStorage.getDefaultMaxCharge();
-    }
-
-    /**
-     * Builds a wire cutter whose capacity differs from this tier's default, for the cheaper battery variants of the
-     * crafting recipe.
-     *
-     * @return the stack, or null if the material has no metadata slot.
-     */
-    public ItemStack getToolWithMaterial(Materials material, long maxCharge) {
-        ItemStack stack = getToolWithMaterial(material);
-        if (stack == null) return null;
-        electricStorage.setMaxChargeOverride(stack, maxCharge);
-        return stack;
-    }
-
     @Override
     public Item getChargedItem(ItemStack stack) {
         return this;

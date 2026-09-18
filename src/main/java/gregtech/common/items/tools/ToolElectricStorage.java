@@ -28,24 +28,15 @@ import ic2.api.item.IElectricItem;
 public final class ToolElectricStorage {
 
     private static final String CHARGE_KEY = "GT.ItemCharge";
-    /**
-     * Only present when a particular tool holds less than its tier's default, which is how the three battery variants
-     * of each electric tool recipe stay distinct while sharing one item and metadata.
-     */
-    private static final String MAX_CHARGE_KEY = "GT.MaxCharge";
 
-    private final long defaultMaxCharge;
+    private final long maxCharge;
     private final long voltage;
     private final int tier;
 
-    public ToolElectricStorage(long defaultMaxCharge, long voltage, int tier) {
-        this.defaultMaxCharge = defaultMaxCharge;
+    public ToolElectricStorage(long maxCharge, long voltage, int tier) {
+        this.maxCharge = maxCharge;
         this.voltage = voltage;
         this.tier = tier;
-    }
-
-    public long getDefaultMaxCharge() {
-        return defaultMaxCharge;
     }
 
     public long getVoltage() {
@@ -57,18 +48,10 @@ public final class ToolElectricStorage {
     }
 
     /**
-     * @return this tool's energy capacity: the value baked into the stack by its recipe, or this tier's default.
+     * @return this tool's energy capacity, which is its tier's, whatever battery the recipe used to build it.
      */
     public long getMaxCharge(ItemStack stack) {
-        long stored = ItemStackNBT.getLong(stack, MAX_CHARGE_KEY);
-        return stored > 0 ? stored : defaultMaxCharge;
-    }
-
-    /**
-     * Records a capacity that differs from this tier's default, for the cheaper battery variants of the recipe.
-     */
-    public void setMaxChargeOverride(ItemStack stack, long maxCharge) {
-        if (maxCharge > 0 && maxCharge != defaultMaxCharge) ItemStackNBT.setLong(stack, MAX_CHARGE_KEY, maxCharge);
+        return maxCharge;
     }
 
     public long getCharge(ItemStack stack) {
