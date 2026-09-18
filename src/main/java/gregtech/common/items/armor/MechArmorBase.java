@@ -621,8 +621,10 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         ArmorContext context = load((EntityLivingBase) null, stack);
         boolean isAdvanced = context.hasBehavior(BehaviorName.TeleportationStaff);
 
-        if (!isAdvanced && context.drainEnergy(powerUse)) {
-            context.save();
+        if (!isAdvanced || (context.getArmorState().core == null || context.getArmorState().core.getTier() != 4)) {
+            if (context.drainEnergy(powerUse)) {
+                context.save();
+            }
         }
     }
 
