@@ -36,7 +36,7 @@ public class ToolScrewdriverItem extends ToolItemBase implements IScrewdriver {
             unlocalizedName,
             toolStats,
             englishNameFormat,
-            "Adjusts Covers and Machines",
+            "Adjusts covers and machines",
             GregTechAPI.sScrewdriverList,
             ToolDictNames.craftingToolScrewdriver);
     }

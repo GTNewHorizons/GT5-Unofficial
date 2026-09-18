@@ -30,7 +30,7 @@ public class ToolCrowbarItem extends ToolItemBase implements IToolCrowbar {
             unlocalizedName,
             toolStats,
             englishNameFormat,
-            "Dismounts Covers and Rotates Rails",
+            "Dismounts covers and rotates rails",
             GregTechAPI.sCrowbarList,
             ToolDictNames.craftingToolCrowbar);
     }

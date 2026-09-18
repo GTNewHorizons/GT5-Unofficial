@@ -30,7 +30,7 @@ public class ToolHardHammerItem extends ToolItemBase {
             unlocalizedName,
             toolStats,
             englishNameFormat,
-            "Crushes Ores instead of harvesting them",
+            "Crushes ores instead of harvesting them",
             GregTechAPI.sHardHammerList,
             ToolDictNames.craftingToolHardHammer);
     }

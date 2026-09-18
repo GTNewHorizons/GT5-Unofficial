@@ -51,7 +51,6 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -101,9 +100,9 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
         this.englishNameFormat = englishNameFormat;
         this.oreDictNames = oreDictNames;
         this.nameKey = getUnlocalizedName() + ".name";
-        GTLanguageManager.addStringLocalization(nameKey, englishNameFormat);
-        if (englishTooltip != null && !englishTooltip.isEmpty())
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip", englishTooltip);
+        // The name and the tooltip live in the asset lang file, where translators can reach them; the English text
+        // passed in is only what the game falls back to when a key is missing, so nothing is written into
+        // GregTech.lang here.
         setHasSubtypes(true);
         setMaxDamage(0);
         setMaxStackSize(1);

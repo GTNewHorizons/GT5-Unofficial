@@ -122,12 +122,12 @@ public final class GTToolItems {
             "tool.wrench",
             new ToolWrench(),
             "%material Wrench",
-            "Hold Leftclick to dismantle Machines");
+            "Hold left-click to dismantle machines");
         WRENCH_LV = new ToolWrenchElectricItem(
             "tool.wrench_lv",
             new ToolWrenchLV(),
             "%material Wrench (LV)",
-            "Hold Left Button to dismantle Machines",
+            "Hold left-click to dismantle machines",
             100_000L,
             32L,
             1);
@@ -135,7 +135,7 @@ public final class GTToolItems {
             "tool.wrench_mv",
             new ToolWrenchMV(),
             "%material Wrench (MV)",
-            "Hold Left Button to dismantle Machines",
+            "Hold left-click to dismantle machines",
             400_000L,
             128L,
             2);
@@ -143,7 +143,7 @@ public final class GTToolItems {
             "tool.wrench_hv",
             new ToolWrenchHV(),
             "%material Wrench (HV)",
-            "Hold Left Button to dismantle Machines",
+            "Hold left-click to dismantle machines",
             1_600_000L,
             512L,
             3);
@@ -222,7 +222,7 @@ public final class GTToolItems {
             1_600_000L,
             512L,
             3);
-        SAW = new ToolSawItem("tool.saw", new ToolSaw(), "%material Saw", "Can also harvest Ice");
+        SAW = new ToolSawItem("tool.saw", new ToolSaw(), "%material Saw", "Can also harvest ice");
         MORTAR = new ToolMortarItem("tool.mortar", new ToolMortar(), "%material Mortar", "");
         SCOOP = new ToolScoopItem("tool.scoop", new ToolScoop(), "%material Scoop", "");
         BRANCH_CUTTER = new ToolBranchCutterItem(
@@ -235,7 +235,7 @@ public final class GTToolItems {
             "tool.butchery_knife",
             new ToolButcheryKnife(),
             "%material Butchery Knife",
-            "Has a slow Attack Rate");
+            "Has a slow attack rate");
         PLUNGER = new ToolPlungerItem("tool.plunger", new ToolPlunger(), "%material Plunger", "");
         ROLLING_PIN = new ToolRollingPinItem("tool.rolling_pin", new ToolRollingPin(), "%material Rolling Pin", "");
         TROWEL = new ToolTrowelItem("tool.trowel", new ToolTrowel(), "%material Decorator's Trowel", "");
@@ -246,7 +246,7 @@ public final class GTToolItems {
             "tool.chainsaw_lv",
             new ToolChainsawLV(),
             "%material Chainsaw (LV)",
-            "Can also harvest Ice",
+            "Can also harvest ice",
             100_000L,
             32L,
             1);
@@ -254,7 +254,7 @@ public final class GTToolItems {
             "tool.chainsaw_mv",
             new ToolChainsawMV(),
             "%material Chainsaw (MV)",
-            "Can also harvest Ice",
+            "Can also harvest ice",
             400_000L,
             128L,
             2);
@@ -262,7 +262,7 @@ public final class GTToolItems {
             "tool.chainsaw_hv",
             new ToolChainsawHV(),
             "%material Chainsaw (HV)",
-            "Can also harvest Ice",
+            "Can also harvest ice",
             1_600_000L,
             512L,
             3);
@@ -270,7 +270,7 @@ public final class GTToolItems {
             "tool.jackhammer_lv",
             new ToolJackHammerLV(),
             "%material Jackhammer (LV)",
-            "Breaks Rocks into pieces",
+            "Breaks rocks into pieces",
             100_000L,
             32L,
             1);
@@ -278,7 +278,7 @@ public final class GTToolItems {
             "tool.jackhammer_mv",
             new ToolJackHammerMV(),
             "%material Jackhammer (MV)",
-            "Breaks Rocks into pieces",
+            "Breaks rocks into pieces",
             400_000L,
             128L,
             2);
@@ -286,7 +286,7 @@ public final class GTToolItems {
             "tool.jackhammer_hv",
             new ToolJackHammerHV(),
             "%material Jackhammer (HV)",
-            "Breaks Rocks into pieces",
+            "Breaks rocks into pieces",
             1_600_000L,
             512L,
             3);
@@ -294,7 +294,7 @@ public final class GTToolItems {
             "tool.buzzsaw_lv",
             new ToolBuzzSawLV(),
             "%material Buzzsaw (LV)",
-            "Not suitable for harvesting Blocks",
+            "Not suitable for harvesting blocks",
             100_000L,
             32L,
             1);
@@ -302,7 +302,7 @@ public final class GTToolItems {
             "tool.buzzsaw_mv",
             new ToolBuzzSawMV(),
             "%material Buzzsaw (MV)",
-            "Not suitable for harvesting Blocks",
+            "Not suitable for harvesting blocks",
             400_000L,
             128L,
             2);
@@ -310,7 +310,7 @@ public final class GTToolItems {
             "tool.buzzsaw_hv",
             new ToolBuzzSawHV(),
             "%material Buzzsaw (HV)",
-            "Not suitable for harvesting Blocks",
+            "Not suitable for harvesting blocks",
             1_600_000L,
             512L,
             3);
@@ -318,7 +318,7 @@ public final class GTToolItems {
             "tool.soldering_iron_lv",
             new ToolSolderingIron(),
             "%material Soldering Iron (LV)",
-            "Fixes burned out Circuits. Needs soldering materials in inventory.",
+            "Fixes burned out circuits. Needs soldering material in inventory.",
             100_000L,
             32L,
             1);
@@ -326,7 +326,7 @@ public final class GTToolItems {
             "tool.soldering_iron_mv",
             new ToolSolderingIron(),
             "%material Soldering Iron (MV)",
-            "Fixes burned out Circuits. Needs soldering materials in inventory.",
+            "Fixes burned out circuits. Needs soldering material in inventory.",
             400_000L,
             128L,
             2);
@@ -334,7 +334,7 @@ public final class GTToolItems {
             "tool.soldering_iron_hv",
             new ToolSolderingIron(),
             "%material Soldering Iron (HV)",
-            "Fixes burned out Circuits. Needs soldering materials in inventory.",
+            "Fixes burned out circuits. Needs soldering material in inventory.",
             1_600_000L,
             512L,
             3);
