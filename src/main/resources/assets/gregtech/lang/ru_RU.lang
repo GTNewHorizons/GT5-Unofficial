@@ -4212,7 +4212,7 @@ GT5U.nei.heat_capacity.material=Катушка: %s
 GT5U.nei.tier=Тир: %s
 GT5U.nei.start_eu=Запуск: %s EU (Mk-%s)
 GT5U.nei.stages=Этапы: %s
-GT5U.nei.fuel=Энергоёмкость: %s EU
+GT5U.nei.fuel=Энергоёмкость: %s EU/%s
 GT5U.nei.qc.heating=Константа нагрева: %s
 GT5U.nei.qc.cooling=Константа охлаждения: %s
 GT5U.nei.qc.computation=Вычисление: %s
@@ -9547,29 +9547,17 @@ gt.metatool.01.44.name=Вантуз
 gt.metatool.01.46.name=Скалка
 gt.metatool.01.drill.name=Бур (%s)
 gt.metatool.01.chainsaw.name=Электропила (%s)
-gt.metatool.01.110.tooltip=Также может добывать лёд
-gt.metatool.01.112.tooltip=Также может добывать лёд
-gt.metatool.01.114.tooltip=Также может добывать лёд
+gt.metatool.01.chainsaw.tooltip=Также может добывать лёд
 gt.metatool.01.wrench.name=Ключ (%s)
-gt.metatool.01.120.tooltip=Удерживайте ЛКМ чтобы разобрать механизм
-gt.metatool.01.122.tooltip=Удерживайте ЛКМ чтобы разобрать механизм
-gt.metatool.01.124.tooltip=Удерживайте ЛКМ чтобы разобрать механизм
+gt.metatool.01.wrench.tooltip=Удерживайте ЛКМ чтобы разобрать механизм
 gt.metatool.01.jackhammer.name=Отбойный молоток (%s)
-gt.metatool.01.130.tooltip=Разбивает камни на куски
-gt.metatool.01.132.tooltip=Разбивает камни на куски
-gt.metatool.01.134.tooltip=Разбивает камни на куски
+gt.metatool.01.jackhammer.tooltip=Разбивает камни на куски
 gt.metatool.01.buzzsaw.name=Циркулярная пила (%s)
-gt.metatool.01.140.tooltip=Не подходит для сбора блоков
-gt.metatool.01.142.tooltip=Не подходит для сбора блоков
-gt.metatool.01.144.tooltip=Не подходит для сбора блоков
+gt.metatool.01.buzzsaw.tooltip=Не подходит для сбора блоков
 gt.metatool.01.screwdriver.name=Отвёртка (%s)
-gt.metatool.01.150.tooltip=Регулирует модули и механизмы
-gt.metatool.01.152.tooltip=Регулирует модули и механизмы
-gt.metatool.01.154.tooltip=Регулирует модули и механизмы
+gt.metatool.01.screwdriver.tooltip=Регулирует модули и механизмы
 gt.metatool.01.soldering_iron.name=Паяльник (%s)
-gt.metatool.01.160.tooltip=Чинит перегоревшие микросхемы. Необходимы паяльные материалы в инвентаре.
-gt.metatool.01.162.tooltip=Чинит перегоревшие микросхемы. Необходимы паяльные материалы в инвентаре.
-gt.metatool.01.164.tooltip=Чинит перегоревшие микросхемы. Необходимы паяльные материалы в инвентаре.
+gt.metatool.01.soldering_iron.tooltip=Чинит перегоревшие микросхемы. Необходимы паяльные материалы в инвентаре.
 gt.metatool.01.170.name=Малая турбина
 gt.metatool.01.170.tooltip=Роторы турбин для вашей электростанции
 gt.metatool.01.172.name=Турбина
@@ -9590,13 +9578,9 @@ gt.metatool.01.190.tooltip=Регулирует модули и механизм
 gt.metatool.01.192.name=Карманный мультитул (Кусачки)
 gt.metatool.01.194.name=Мастерок декоратора
 gt.metatool.01.wire_cutter.name=Кусачки (%s)
-gt.metatool.01.196.tooltip=Ручные электрические кусачки
-gt.metatool.01.198.tooltip=Ручные электрические кусачки
-gt.metatool.01.200.tooltip=Ручные электрические кусачки
+gt.metatool.01.wire_cutter.tooltip=Ручные электрические кусачки
 gt.metatool.01.file.name=Напильник (%s)
-gt.metatool.01.202.tooltip=Ручной электрический напильник
-gt.metatool.01.204.tooltip=Ручной электрический напильник
-gt.metatool.01.206.tooltip=Ручной электрический напильник
+gt.metatool.01.file.tooltip=Ручной электрический напильник
 
 # Side names
 gt.lang.face.any=Любая сторона
@@ -9628,3 +9612,36 @@ gt.metaitem.01.32708.with.WithScannedMapData.name=С отсканированн�
 gt.metaitem.01.32708.with.WritesResearchResult.name=Записывает результат исследования
 gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=ЭТО БЕСПЛАТНО! Поместите лаву сбоку
 gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=ЭТО БЕСПЛАТНО! Поместите лаву сверху
+
+# Chat messages
+GT5U.chat.cover.connectable=Соединяемый: %s
+
+# Multiblock maintenance issues
+GT5U.gui.multimachine.maintenance.wrench=Труба расшаталась. (Ключ)
+GT5U.gui.multimachine.maintenance.screwdriver=Винты ослабли. (Отвёртка)
+GT5U.gui.multimachine.maintenance.soft_mallet=Что-то застряло. (Киянка)
+GT5U.gui.multimachine.maintenance.hammer=Обшивка помята. (Молоток)
+GT5U.gui.multimachine.maintenance.soldering=Схема перегорела. (Паяльник)
+GT5U.gui.multimachine.maintenance.crowbar=Этому там не место. (Монтировка)
+GT5U.gui.multimachine.missing_turbine_rotor=Отсутствует ротор для турбины
+GT5U.gui.multimachine.incomplete_structure=Незавершённая структура.
+
+# Transformer
+GT5U.gui.transformer.step_down=Понижение, вход: %1$s В %2$s А, выход: %3$s В %4$s А
+GT5U.gui.transformer.step_up=Повышение, вход: %1$s В %2$s А, выход: %3$s В %4$s А
+
+# Recipe requirements in NEI
+GT5U.nei.needs_low_gravity=Нужна низкая гравитация
+GT5U.nei.needs_cleanroom=Нужна чистая комната
+GT5U.nei.needs_cleanroom_low_gravity=Нужна низкая гравитация и чистая комната
+GT5U.nei.scan_for_assembly_line=Сканирование для Сборочной линии
+GT5U.nei.deprecated_recipe=Устаревший рецепт
+GT5U.nei.compression.hip_unit=Требуется HIP устройство
+GT5U.nei.compression.stabilized_black_hole=Требуется стабилизированная чёрная дыра
+GT5U.nei.pcb_factory.tier=Завод печатных плат тир: %s
+GT5U.nei.pcb_factory.upgrade_required=Требуется улучшение: %s
+GT5U.nei.pcb_factory.upgrade_bio=Био
+GT5U.nei.solar_factory.tier_required=Требуется тир мульти: %s
+
+# Item tooltips
+GT5U.tooltip.switch_metadata.sneak_right_click=Shift+ПКМ, чтобы изменить режим

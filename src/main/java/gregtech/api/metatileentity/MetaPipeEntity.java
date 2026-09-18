@@ -910,6 +910,11 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return false;
     }
 
+    // in case any factory network wants to update in the case this happened.
+    protected void onCoverChangedServer() {
+
+    }
+
     @Override
     public boolean shouldJoinIc2Enet() {
         return false;
