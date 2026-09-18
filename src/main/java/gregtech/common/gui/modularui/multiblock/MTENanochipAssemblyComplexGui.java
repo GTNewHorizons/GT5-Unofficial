@@ -231,6 +231,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         TextWidget<?> calibrationBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.3");
         TextWidget<?> calibrationBody4 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.4");
         TextWidget<?> calibrationBody5 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.5");
+        TextWidget<?> calibrationBody6 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.6");
 
         TextWidget<?> lineSpecificsHeader = createHeader("GT5U.gui.text.nac.info.line_specifics.header");
         ButtonWidget<?> linesSpecificsToC = createToCEntry(
@@ -239,6 +240,19 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             lineSpecificsHeader);
         TextWidget<?> lineSpecificsBody1 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.body.1");
         TextWidget<?> lineSpecificsBody2 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.body.2");
+
+        TextWidget<?> primitiveHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.header");
+        TextWidget<?> primitivePowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.power_distribution");
+        TextWidget<?> primitiveModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.module_count");
+        TextWidget<?> primitiveBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect1");
+        TextWidget<?> primitiveBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect2");
+        TextWidget<?> primitiveBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect3");
         TextWidget<?> crystalHeader = createCalibrationSubHeader(
             "GT5U.gui.text.nac.info.line_specifics.crystal.header");
         TextWidget<?> crystalPowerDistribution = createTextEntry(
@@ -324,10 +338,18 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         textList.child(calibrationBody3);
         textList.child(calibrationBody4);
         textList.child(calibrationBody5);
+        textList.child(calibrationBody6);
 
         textList.child(lineSpecificsHeader);
         textList.child(lineSpecificsBody1);
         textList.child(lineSpecificsBody2);
+
+        textList.child(primitiveHeader);
+        textList.child(primitivePowerDistribution);
+        textList.child(primitiveModuleCount);
+        textList.child(primitiveBody1);
+        textList.child(primitiveBody2);
+        textList.child(primitiveBody3);
 
         textList.child(crystalHeader);
         textList.child(crystalPowerDistribution);
