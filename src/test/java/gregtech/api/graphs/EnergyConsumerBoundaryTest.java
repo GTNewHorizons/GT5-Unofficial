@@ -15,6 +15,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 
 import cofh.api.energy.IEnergyReceiver;
@@ -211,6 +214,48 @@ class EnergyConsumerBoundaryTest {
         verify(gc, never()).receiveEnergyGC(any(), anyFloat(), anyBoolean());
         when(gc.getMaxEnergyStoredGC(any())).thenReturn(packet);
         when(gc.receiveEnergyGC(any(), eq(packet), eq(false))).thenReturn(packet);
+        assertEquals(1, node.injectEnergy(32, 4));
+        verify(gc).receiveEnergyGC(any(), eq(packet), eq(false));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "1, 1", "0.25, 0.5", "0.25, 0", "0, 0" })
+    void gcPaidRemainderSurvivesLimitedCapacityAndRejection(float capacityFraction, float acceptedFraction) {
+        TileEntity tile = endpoint(IEnergyHandlerGC.class);
+        IEnergyHandlerGC gc = (IEnergyHandlerGC) tile;
+        float packet = 32 * EnergyConfigHandler.IC2_RATIO;
+        ConsumerNode node = new NodeGCEnergyHandler(2, gc, ForgeDirection.WEST, new ArrayList<>());
+        when(gc.getMaxEnergyStoredGC(any())).thenReturn(packet);
+        when(gc.receiveEnergyGC(any(), eq(packet), eq(false))).thenReturn(packet / 2);
+        assertEquals(1, node.injectEnergy(32, 4));
+        float delivered = packet / 2;
+
+        clearInvocations(gc);
+        float capacity = packet * capacityFraction;
+        float offered = Math.min(packet / 2, capacity);
+        float received = offered * acceptedFraction;
+        when(gc.getMaxEnergyStoredGC(any())).thenReturn(capacity);
+        when(gc.receiveEnergyGC(any(), eq(offered), eq(false))).thenReturn(received);
+        assertEquals(0, node.injectEnergy(32, 4));
+        if (capacity > 0) verify(gc).receiveEnergyGC(any(), eq(offered), eq(false));
+        else verify(gc, never()).receiveEnergyGC(any(), anyFloat(), anyBoolean());
+        delivered += received;
+
+        // Reopen capacity and accept the remaining paid energy without charging another amp.
+        when(gc.getMaxEnergyStoredGC(any())).thenReturn(packet);
+        when(gc.receiveEnergyGC(any(), anyFloat(), eq(false))).thenAnswer(call -> call.getArgument(1));
+        float remaining = packet - delivered;
+        if (remaining > 0) {
+            clearInvocations(gc);
+            assertEquals(0, node.injectEnergy(32, 4));
+            ArgumentCaptor<Float> remainder = ArgumentCaptor.forClass(Float.class);
+            verify(gc).receiveEnergyGC(any(), remainder.capture(), eq(false));
+            assertEquals(remaining, remainder.getValue(), Math.ulp(packet));
+            delivered += remainder.getValue();
+        }
+        assertEquals(packet, delivered, Math.ulp(packet));
+        // Once the remainder is drained, the next complete packet is charged normally.
+        clearInvocations(gc);
         assertEquals(1, node.injectEnergy(32, 4));
         verify(gc).receiveEnergyGC(any(), eq(packet), eq(false));
     }

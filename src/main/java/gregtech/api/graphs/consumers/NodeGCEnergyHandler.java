@@ -37,6 +37,10 @@ public class NodeGCEnergyHandler extends ConsumerNode {
             return ampsUsed;
         }
         restGJ -= ampsUsed * gjOut;
+        // A rejected new packet must not prevent delivery of energy already paid for.
+        if (restGJ > 0 && capacity > 0) {
+            restGJ -= handler.receiveEnergyGC(eSource, Math.min(restGJ, capacity), false);
+        }
         return 0;
     }
 }
