@@ -96,7 +96,7 @@ public class VolumetricFlaskHelper {
         ItemStackNBT.setInteger(aStack, "Capacity", aCapacity);
     }
 
-    public static Item generateNewFlask(String unlocalized, String english, int maxCapacity) {
-        return new ItemVolumetricFlask(unlocalized, english, maxCapacity);
+    public static Item generateNewFlask(String unlocalized, int maxCapacity) {
+        return new ItemVolumetricFlask(unlocalized, maxCapacity);
     }
 }

@@ -38,6 +38,7 @@ tooltip.detrav.scanner.distance.0=在你旁边(距离0区块), 离你很近(1-2)
 tooltip.detrav.scanner.distance.1=中等距离(3-5), 长距离(6-8), 很远(9+)
 
 gui.detrav.scanner.pollution=污染
+gui.detrav.scanner.gibbl=单位
 gui.detrav.scanner.unknown_fluid=未知流体!
 
 gui.detrav.scanner.tooltip.fluid_name=流体名：%s
@@ -48,3 +49,7 @@ gui.detrav.scanner.tooltip.ore_depth=Y: %d
 gui.detrav.scanner.tooltip.mark_hint=右键标记
 gui.detrav.scanner.search.hint=搜索...
 gui.detrav.scanner.hint.invert=双击反转背景
+
+# Prospector scanners
+gt.detrav.metatool.01.name=探矿仪（%s）
+gt.detrav.metatool.01.electric.name=电子探矿仪（%s）
