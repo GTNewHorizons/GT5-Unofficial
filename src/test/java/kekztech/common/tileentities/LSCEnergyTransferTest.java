@@ -5,10 +5,13 @@ import static org.mockito.Mockito.*;
 
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -107,7 +110,7 @@ class LSCEnergyTransferTest {
     }
 
     @Test
-    void wirelessRebalanceAndMaintenanceStillPrecedeFinalNetDelta() throws Exception {
+    void wirelessRebalanceIncludesHatchInputBeforeMaintenanceLoss() throws Exception {
         MTELapotronicSuperCapacitor lsc = spy(new MTELapotronicSuperCapacitor("energy-test"));
         IGregTechTileEntity base = mock(IGregTechTileEntity.class);
         doReturn(base).when(lsc)
@@ -133,20 +136,72 @@ class LSCEnergyTransferTest {
                 .thenReturn(true);
             lsc.onRunningTick(null);
             wireless.verify(
-                () -> gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap(null, BigInteger.valueOf(50)));
+                () -> gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap(null, BigInteger.valueOf(60)));
         }
         assertTrue(lsc.getPassiveDischargeAmount() > 0);
-        assertEquals(target.add(BigInteger.valueOf(10 - lsc.getPassiveDischargeAmount())), lsc.getStored());
+        assertEquals(target.subtract(BigInteger.valueOf(lsc.getPassiveDischargeAmount())), lsc.getStored());
         verify(base).injectEnergyUnits(ForgeDirection.UNKNOWN, 10, 1);
-        verify(base).drainEnergyUnits(ForgeDirection.UNKNOWN, 50, 1);
+        verify(base).drainEnergyUnits(ForgeDirection.UNKNOWN, 60, 1);
         assertEquals(
             10,
             lsc.getEnergyInputValues()
                 .avgLong());
         assertEquals(
-            50,
+            60,
             lsc.getEnergyOutputValues()
                 .avgLong());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void wirelessRebalanceConservesEnergyAfterHatchesEmptyStorage(boolean accepted) throws Exception {
+        MTELapotronicSuperCapacitor lsc = spy(new MTELapotronicSuperCapacitor("energy-test"));
+        doReturn(mock(IGregTechTileEntity.class)).when(lsc)
+            .getBaseMetaTileEntity();
+        var capacitors = MTELapotronicSuperCapacitor.class.getDeclaredField("capacitors");
+        capacitors.setAccessible(true);
+        ((int[]) capacitors.get(lsc))[4] = 1;
+        BigInteger target = kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap;
+        BigInteger starting = target.add(BigInteger.valueOf(1_000_000_000_000L));
+        lsc.setCapacity(starting);
+        lsc.setStored(starting);
+        lsc.setWireless_mode(true);
+        lsc.setCounter(Integer.MAX_VALUE - 1);
+        MTEHatchDynamo output = mock(MTEHatchDynamo.class);
+        when(output.isValid()).thenReturn(true);
+        when(output.maxEUOutput()).thenReturn(starting.longValueExact());
+        when(output.maxAmperesOut()).thenReturn(1L);
+        when(output.maxEUStore()).thenReturn(Long.MAX_VALUE);
+        AtomicLong hatch = new AtomicLong();
+        when(output.getEUVar()).thenAnswer(call -> hatch.get());
+        doAnswer(call -> {
+            hatch.set(call.getArgument(0));
+            return null;
+        }).when(output)
+            .setEUVar(anyLong());
+        lsc.mDynamoHatches.add(output);
+        BigInteger initialWireless = target.multiply(BigInteger.TWO);
+        AtomicReference<BigInteger> wirelessBalance = new AtomicReference<>(initialWireless);
+        try (var wireless = mockStatic(gregtech.common.misc.WirelessNetworkManager.class)) {
+            wireless.when(
+                () -> gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap(any(), any(BigInteger.class)))
+                .thenAnswer(call -> {
+                    if (accepted) wirelessBalance.updateAndGet(balance -> balance.add(call.getArgument(1)));
+                    return accepted;
+                });
+            lsc.onRunningTick(null);
+            wireless.verify(
+                () -> gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap(null, target.negate()));
+        }
+        long lost = accepted ? lsc.getPassiveDischargeAmount() : 0;
+        assertEquals(accepted ? target.subtract(BigInteger.valueOf(lost)) : BigInteger.ZERO, lsc.getStored());
+        assertEquals(starting.longValueExact(), hatch.get());
+        assertEquals(
+            starting.add(initialWireless),
+            lsc.getStored()
+                .add(wirelessBalance.get())
+                .add(BigInteger.valueOf(hatch.get()))
+                .add(BigInteger.valueOf(lost)));
     }
 
     @org.junit.jupiter.api.BeforeAll

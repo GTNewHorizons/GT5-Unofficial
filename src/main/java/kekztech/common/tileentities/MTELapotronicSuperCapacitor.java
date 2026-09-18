@@ -696,6 +696,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             wireless_mode = false;
         }
 
+        // Wireless balancing must include energy already transferred through the hatches.
+        stored = stored.add(BigInteger.valueOf(temp_stored));
+
         // Every LSC_time_between_wireless_rebalance_in_ticks check against wireless network for re-balancing.
         counter++;
         if (wireless_mode && (counter >= ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)) {
@@ -710,9 +713,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
         }
 
-        // This will break if you transfer more than 2^63 EU/t, so don't do that. Thanks <3
-        temp_stored -= passiveDischargeAmount;
-        stored = stored.add(BigInteger.valueOf(temp_stored));
+        stored = stored.subtract(BigInteger.valueOf(passiveDischargeAmount));
 
         // Check that the machine has positive EU stored.
         stored = (stored.compareTo(BigInteger.ZERO) <= 0) ? BigInteger.ZERO : stored;
