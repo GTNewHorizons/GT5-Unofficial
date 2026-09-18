@@ -190,6 +190,29 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         }
     }
 
+    public static void unloadManagedCables(World world) {
+        for (BaseMetaPipeEntity cable : new ArrayList<>(MANAGED_CABLES)) {
+            if (cable.worldObj != world) continue;
+            try {
+                cable.onChunkUnload();
+            } catch (Exception e) {
+                GT_FML_LOGGER.error(
+                    "Error unloading non-ticking cable {} at ({}, {}, {})",
+                    cable.getMetaTileID(),
+                    cable.xCoord,
+                    cable.yCoord,
+                    cable.zCoord,
+                    e);
+            } finally {
+                MANAGED_CABLES.remove(cable);
+            }
+        }
+    }
+
+    public static void clearManagedCables() {
+        MANAGED_CABLES.clear();
+    }
+
     private boolean tickManagedCable() {
         if (worldObj == null || worldObj.isRemote
             || isInvalid()
@@ -344,6 +367,15 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         markCableTopologyChanged();
         invalidateNodePaths(-1);
         super.onUnload();
+    }
+
+    public void onChunkLoad() {
+        if (!isDead || !isNonTickingCable()) return;
+        isDead = false;
+        mTickTimer = 0;
+        managedCableInitialized = false;
+        connectionCheckPending = false;
+        scheduleManagedCableTick();
     }
 
     public void updateConnections() {

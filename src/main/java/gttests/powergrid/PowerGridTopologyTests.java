@@ -89,6 +89,48 @@ public final class PowerGridTopologyTests {
             .thenSucceed();
     }
 
+    @GameTest(template = "line", timeoutTicks = 40, batch = "gt5.power_grid")
+    public static void reusedCableResumesManagedLifecycle(GameTestHelper helper) {
+        BaseMetaPipeEntity cable = cableBase(helper, "edit_path");
+        int[] coverTicks = { 0 };
+        int[] ticksBeforeUnload = { 0 };
+        ItemStack coverItem = new ItemStack(Blocks.carpet);
+        helper.assertTrue(CoverRegistry.isCover(coverItem), "Cover ticking test requires a registered cover item");
+        cable.attachCover(new Cover(new CoverContext(coverItem, ForgeDirection.UP, cable), null) {
+
+            @Override
+            public int getMinimumTickRate() {
+                return 1;
+            }
+
+            @Override
+            public void doCoverThings(byte redstone, long tickTimer) {
+                coverTicks[0]++;
+            }
+        });
+
+        helper.startSequence()
+            .thenIdle(3)
+            .thenExecute("unload reused cable", () -> {
+                ticksBeforeUnload[0] = coverTicks[0];
+                cable.onChunkUnload();
+            })
+            .thenIdle(2)
+            .thenExecute(
+                "unloaded cable stays idle",
+                () -> helper
+                    .assertEquals(ticksBeforeUnload[0], coverTicks[0], "Unloaded cable continued running its cover"))
+            .thenExecute("reactivate reused cable", cable::onChunkLoad)
+            .thenIdle(3)
+            .thenExecute("reused cable resumes cover ticking", () -> {
+                helper.assertTrue(cable.canAccessData(), "Reused cable remained marked dead");
+                helper.assertTrue(
+                    coverTicks[0] > ticksBeforeUnload[0],
+                    "Reused cable did not resume managed cover ticking");
+            })
+            .thenSucceed();
+    }
+
     @GameTest(template = "line", timeoutTicks = 100, batch = "gt5.power_grid")
     public static void airFacingEndpointEditsKeepPowerFlowing(GameTestHelper helper) {
         configureGenerators(helper, "generator_a");

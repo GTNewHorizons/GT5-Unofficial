@@ -27,16 +27,31 @@ class PowerNodesTest {
             ArrayList<ConsumerNode> consumers = new ArrayList<>();
             Node source = new Node(0, null, consumers);
             ConsumerNode powered = acceptingConsumer(1, consumers);
-            ConsumerNode stale = acceptingConsumer(2, consumers);
+            Node branch = new Node(2, null, consumers);
+            ConsumerNode stale = acceptingConsumer(3, consumers);
+            int[] remainingVisits = { 0 };
+            ConsumerNode remaining = new ConsumerNode(4, null, ForgeDirection.UNKNOWN, consumers) {
+
+                @Override
+                public int injectEnergy(long voltage, long maxAmps) {
+                    remainingVisits[0]++;
+                    return maxAmps > 0 ? 1 : 0;
+                }
+            };
             consumers.add(powered);
             consumers.add(stale);
-            source.mHighestNodeValue = 2;
+            consumers.add(remaining);
+            source.mHighestNodeValue = 4;
+            branch.mHighestNodeValue = 3;
             connect(source, powered, 0, false);
-            connect(source, stale, 1, true);
+            connect(source, branch, 1, false);
+            connect(branch, stale, 0, true);
+            connect(source, remaining, 2, false);
 
-            NodeList pending = new NodeList(new Node[] { powered, stale });
+            NodeList pending = new NodeList(new Node[] { powered, stale, remaining });
             assertEquals(1, PowerNodes.powerNode(source, null, pending, 32, 2));
             assertTrue(pending.isStale());
+            assertEquals(0, remainingVisits[0]);
         });
     }
 
