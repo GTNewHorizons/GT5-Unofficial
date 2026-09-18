@@ -278,7 +278,7 @@ public abstract class MTEKineticRotorBase extends MTETieredMachineBlock implemen
             case "ic2.itemsteelrotor" -> 2;
             case "ic2.itemwcarbonrotor" -> 3;
             case "ic2.itemEnergeticRotor" -> 4;
-            case "ic2.itemTungstenSteel" -> 5;
+            case "ic2.itemTungstenSteelRotor" -> 5;
             case "ic2.itemVibrantRotor" -> 6;
             case "ic2.itemIridiumRotor" -> 7;
             case "item.BW_LeatherRotor" -> 8;
