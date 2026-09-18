@@ -751,10 +751,17 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         // If that difference can be added then do so.
         if (WirelessNetworkManager.addEUToGlobalEnergyMap(global_energy_user_uuid, transferred_eu)) {
+            // Only telemetry saturates; the wireless transaction and stored energy remain exact.
             if (transferred_eu.signum() == -1) {
-                inputLastTick += Math.abs(transferred_eu.longValue());
+                inputLastTick = BigInteger.valueOf(inputLastTick)
+                    .subtract(transferred_eu)
+                    .min(LONG_MAX)
+                    .longValue();
             } else {
-                outputLastTick += transferred_eu.longValue();
+                outputLastTick = BigInteger.valueOf(outputLastTick)
+                    .add(transferred_eu)
+                    .min(LONG_MAX)
+                    .longValue();
             }
             // If it succeeds there was sufficient energy so set the internal capacity as such.
             stored = ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap

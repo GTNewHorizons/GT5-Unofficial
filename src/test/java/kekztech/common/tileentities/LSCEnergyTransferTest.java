@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -210,6 +211,62 @@ class LSCEnergyTransferTest {
                 .add(wirelessBalance.get())
                 .add(BigInteger.valueOf(hatch.get()))
                 .add(BigInteger.valueOf(lost)));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "10000000000000000000, 9223372036854775807", "-10000000000000000000, 9223372036854775807",
+        "9223372036854775802, 9223372036854775807", "-9223372036854775802, 9223372036854775807", "100, 110",
+        "-100, 110" })
+    void wirelessStatisticsSaturateWithoutChangingTransferredEnergy(String amount, long expectedStat) throws Exception {
+        MTELapotronicSuperCapacitor lsc = spy(new MTELapotronicSuperCapacitor("energy-test"));
+        IGregTechTileEntity base = mock(IGregTechTileEntity.class);
+        doReturn(base).when(lsc)
+            .getBaseMetaTileEntity();
+        var capacitors = MTELapotronicSuperCapacitor.class.getDeclaredField("capacitors");
+        capacitors.setAccessible(true);
+        ((int[]) capacitors.get(lsc))[9] = 1;
+        BigInteger target = kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit.UMV_wireless_eu_cap;
+        BigInteger transferred = new BigInteger(amount);
+        lsc.setCapacity(kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit.UMV_cap_storage);
+        lsc.setStored(target.add(transferred));
+        lsc.setWireless_mode(true);
+        lsc.setCounter(Integer.MAX_VALUE - 1);
+
+        // Equal hatch transfers keep storage unchanged while both statistics already contain energy.
+        MTEHatchEnergy input = mock(MTEHatchEnergy.class);
+        when(input.isValid()).thenReturn(true);
+        when(input.maxEUInput()).thenReturn(10L);
+        when(input.maxAmperesIn()).thenReturn(1L);
+        when(input.getEUVar()).thenReturn(100L);
+        lsc.mEnergyHatches.add(input);
+        MTEHatchDynamo output = mock(MTEHatchDynamo.class);
+        when(output.isValid()).thenReturn(true);
+        when(output.maxEUOutput()).thenReturn(10L);
+        when(output.maxAmperesOut()).thenReturn(1L);
+        when(output.maxEUStore()).thenReturn(100L);
+        lsc.mDynamoHatches.add(output);
+        try (var wireless = mockStatic(gregtech.common.misc.WirelessNetworkManager.class)) {
+            wireless.when(() -> gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap(null, transferred))
+                .thenReturn(true);
+            assertTrue(lsc.onRunningTick(null));
+            wireless
+                .verify(() -> gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap(null, transferred));
+        }
+        verify(input).setEUVar(90);
+        verify(output).setEUVar(10);
+        assertEquals(target.subtract(BigInteger.valueOf(lsc.getPassiveDischargeAmount())), lsc.getStored());
+        long expectedInput = transferred.signum() < 0 ? expectedStat : 10;
+        long expectedOutput = transferred.signum() > 0 ? expectedStat : 10;
+        assertEquals(
+            expectedInput,
+            lsc.getEnergyInputValues()
+                .avgLong());
+        assertEquals(
+            expectedOutput,
+            lsc.getEnergyOutputValues()
+                .avgLong());
+        verify(base).injectEnergyUnits(ForgeDirection.UNKNOWN, expectedInput, 1);
+        verify(base).drainEnergyUnits(ForgeDirection.UNKNOWN, expectedOutput, 1);
     }
 
     @org.junit.jupiter.api.BeforeAll
