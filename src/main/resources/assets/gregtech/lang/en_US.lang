@@ -9628,6 +9628,9 @@ gt.tierdDrone3.tooltip_main=Warp engine FTL Shuttle
 
 # Volumetric Flask
 gt.Volumetric_Flask.name=Volumetric Flask
+gt.Volumetric_Flask_8k.name=Large Volumetric Flask
+gt.Volumetric_Flask_32k.name=Gigantic Volumetric Flask
+gt.Volumetric_Flask_Infinite.name=Klein Bottle
 
 # CircuitComponentFakeItem
 gt.fakecircuitcomponent.name=Fake Circuit Component Item
