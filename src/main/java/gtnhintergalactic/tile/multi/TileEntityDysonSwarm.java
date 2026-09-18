@@ -301,18 +301,24 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
      * player must constantly replace "broken" Modules.
      */
     private void destroyModules() {
+        moduleCount -= getModulesLostThisCycle();
+    }
+
+    /**
+     * @return The number of modules that will be consumed when this cycle ends.
+     */
+    private int getModulesLostThisCycle() {
         if (IGConfig.dysonSwarm.destroyModuleA <= 0.0f) {
-            return;
+            return 0;
         }
 
-        moduleCount -= moduleCount * (2 * IGConfig.dysonSwarm.destroyModuleChance)
+        final double destroyed = moduleCount * (2 * IGConfig.dysonSwarm.destroyModuleChance)
             / (Math.exp(-IGConfig.dysonSwarm.destroyModuleA * (moduleCount - 1)) + Math.exp(
                 IGConfig.dysonSwarm.destroyModuleB
                     * Math.min(eAvailableData, (long) IGConfig.dysonSwarm.destroyModuleMaxCPS)));
 
-        if (moduleCount < 0) {
-            moduleCount = 0;
-        }
+        final int lost = moduleCount - (int) (moduleCount - destroyed);
+        return Math.max(0, Math.min(lost, moduleCount));
     }
 
     @Override
@@ -511,6 +517,8 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 "ig.infodata.dyson_swarm.theoretical_output.fmt",
                 formatNumber((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)),
             IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.current_output.fmt", formatNumber(euPerTick)),
+            IGregTechDeviceInformation
+                .encode("ig.infodata.dyson_swarm.modules_lost.fmt", formatNumber(getModulesLostThisCycle())),
             IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.computation.fmt", formatNumber(eRequiredData)),
             IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
             "---------------------------------------------" };
@@ -521,6 +529,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("euPerTick", euPerTick);
+        tag.setInteger("modulesLost", getModulesLostThisCycle());
     }
 
     @Override
@@ -533,6 +542,12 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 formatNumber(
                     accessor.getNBTData()
                         .getLong("euPerTick"))));
+        currenttip.add(
+            StatCollector.translateToLocalFormatted(
+                "ig.infodata.dyson_swarm.modules_lost.fmt",
+                formatNumber(
+                    accessor.getNBTData()
+                        .getInteger("modulesLost"))));
     }
 
     /******************
