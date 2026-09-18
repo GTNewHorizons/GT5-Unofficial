@@ -29,6 +29,12 @@ import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 public class GenerateNodeMapPower extends GenerateNodeMap {
 
     public GenerateNodeMapPower(BaseMetaPipeEntity aTileEntity) {
+        if (aTileEntity.getNode() != null) {
+            clearNodeMap(aTileEntity.getNode(), -1);
+        } else if (aTileEntity.getNodePath() != null) {
+            aTileEntity.getNodePath()
+                .invalidateNodeMap();
+        }
         generateNode(aTileEntity, null, 1, null, ForgeDirection.UNKNOWN, new ArrayList<>(), new HashSet<>());
     }
 

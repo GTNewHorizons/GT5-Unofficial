@@ -164,7 +164,7 @@ public abstract class GenerateNodeMap {
                     side = s;
                     continue walk;
                 } else {
-                    return new Pair(aTileEntity, s);
+                    return new Pair(aTileEntity, side);
                 }
             }
             return null;

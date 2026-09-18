@@ -21,6 +21,40 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 class LSCEnergyTransferTest {
 
     @Test
+    void rejectedHatchesLeaveBudgetsForLaterHatches() {
+        MTELapotronicSuperCapacitor lsc = spy(new MTELapotronicSuperCapacitor("energy-test"));
+        doReturn(mock(IGregTechTileEntity.class)).when(lsc)
+            .getBaseMetaTileEntity();
+        lsc.setStored(BigInteger.valueOf(50));
+        lsc.setCapacity(BigInteger.valueOf(60));
+        MTEHatchEnergy empty = mock(MTEHatchEnergy.class);
+        MTEHatchEnergy ready = mock(MTEHatchEnergy.class);
+        for (MTEHatchEnergy input : java.util.List.of(empty, ready)) {
+            when(input.isValid()).thenReturn(true);
+            when(input.maxEUInput()).thenReturn(40L);
+            when(input.maxAmperesIn()).thenReturn(1L);
+            lsc.mEnergyHatches.add(input);
+        }
+        when(ready.getEUVar()).thenReturn(100L);
+        MTEHatchDynamo full = mock(MTEHatchDynamo.class);
+        MTEHatchDynamo available = mock(MTEHatchDynamo.class);
+        for (MTEHatchDynamo output : java.util.List.of(full, available)) {
+            when(output.isValid()).thenReturn(true);
+            when(output.maxEUOutput()).thenReturn(40L);
+            when(output.maxAmperesOut()).thenReturn(1L);
+            when(output.maxEUStore()).thenReturn(100L);
+            lsc.mDynamoHatches.add(output);
+        }
+        when(full.getEUVar()).thenReturn(100L);
+        lsc.onRunningTick(null);
+        verify(empty, never()).setEUVar(anyLong());
+        verify(full, never()).setEUVar(anyLong());
+        verify(ready).setEUVar(90);
+        verify(available).setEUVar(40);
+        assertEquals(BigInteger.valueOf(20), lsc.getStored());
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     void allSixHatchLoopsShareRemainingBudgets() throws Exception {
         MTELapotronicSuperCapacitor lsc = spy(new MTELapotronicSuperCapacitor("energy-test"));

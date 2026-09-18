@@ -148,9 +148,13 @@ class EnergyTransferTest {
                 trace.add("inject1");
                 doReturn(false).when(first)
                     .needsEnergy();
+                assertEquals(1, cable.transferElectricity(ForgeDirection.UNKNOWN, 32, 1, null));
+                return 1;
+            });
+            when(second.injectEnergy(32, 1)).thenAnswer(call -> {
+                trace.add("innerInject2");
                 doReturn(false).when(second)
                     .needsEnergy();
-                assertEquals(0, cable.transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
                 return 1;
             });
             when(second.injectEnergy(32, 3)).thenAnswer(call -> {
@@ -158,7 +162,7 @@ class EnergyTransferTest {
                 return 2;
             });
             assertEquals(3, cable.transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
-            assertEquals(List.of("select1", "select2", "inject1", "inject2"), trace);
+            assertEquals(List.of("select1", "select2", "inject1", "select2", "innerInject2", "inject2"), trace);
             // No tick-level empty cache: a receiver can become eligible between offers.
             when(second.needsEnergy()).thenReturn(true);
             when(second.injectEnergy(32, 4)).thenReturn(1);

@@ -106,7 +106,7 @@ class EnergyGraphConstructionTest {
                 tileField.setAccessible(true);
                 sideField.setAccessible(true);
                 assertSame(end, tileField.get(result));
-                assertEquals(stop == 0 ? ForgeDirection.EAST : ForgeDirection.NORTH, sideField.get(result));
+                assertEquals(ForgeDirection.NORTH, sideField.get(result));
             }
         }
     }

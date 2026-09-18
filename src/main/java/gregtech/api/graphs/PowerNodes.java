@@ -19,8 +19,8 @@ public class PowerNodes {
         long aMaxAmps) {
         long tAmpsUsed = 0;
         ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
-        int tLoopProtection = 0;
         while (tConsumer != null && !aCurrentNode.mInvalid) {
+            final ConsumerNode tPreviousConsumer = tConsumer;
             int tTargetNodeValue = tConsumer.mNodeValue;
             // if the target node has a value less then the current node
             if (tTargetNodeValue < aCurrentNode.mNodeValue || tTargetNodeValue > aCurrentNode.mHighestNodeValue) {
@@ -70,7 +70,7 @@ public class PowerNodes {
             if (aMaxAmps - tAmpsUsed <= 0) {
                 return tAmpsUsed;
             }
-            if (tLoopProtection++ > 20) {
+            if (tConsumer == tPreviousConsumer && !aCurrentNode.mInvalid) {
                 throw new NullPointerException("infinite loop in powering nodes ");
             }
         }
@@ -82,9 +82,9 @@ public class PowerNodes {
     protected static long powerNodeAbove(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, long aVoltage,
         long aMaxAmps) {
         long tAmpsUsed = 0;
-        int tLoopProtection = 0;
         ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
         while (tConsumer != null && !aCurrentNode.mInvalid) {
+            final ConsumerNode tPreviousConsumer = tConsumer;
             int tTargetNodeValue = tConsumer.mNodeValue;
             if (tTargetNodeValue > aCurrentNode.mHighestNodeValue || tTargetNodeValue < aCurrentNode.mNodeValue) {
                 return tAmpsUsed;
@@ -113,7 +113,7 @@ public class PowerNodes {
             if (aMaxAmps - tAmpsUsed <= 0) {
                 return tAmpsUsed;
             }
-            if (tLoopProtection++ > 20) {
+            if (tConsumer == tPreviousConsumer && !aCurrentNode.mInvalid) {
                 throw new NullPointerException("infinite loop in powering nodes ");
             }
         }
