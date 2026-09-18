@@ -745,8 +745,8 @@ public final class ModItems {
                 "dustNeptunium238",
                 0xAFF04B,
                 50000,
-                new String[] { StringUtils.superscript("238Np"),
-                    "Result: Plutonium 238 (" + StringUtils.superscript("238Pu") + ")" },
+                StringUtils.superscript("238Np"),
+                StringUtils.superscript("238Pu"),
                 MaterialsElements.getInstance().PLUTONIUM238.getDust(1),
                 5,
                 GTRecipeConstants.DecayType.BetaMinus));
@@ -756,8 +756,8 @@ public final class ModItems {
                 "dustNeptunium239",
                 0x71F045,
                 25000,
-                new String[] { StringUtils.superscript("238Np"),
-                    "Result: Plutonium 239 (" + StringUtils.superscript("239Pu") + ")" },
+                StringUtils.superscript("239Np"),
+                StringUtils.superscript("239Pu"),
                 Materials.Plutonium.getDust(1),
                 5,
                 GTRecipeConstants.DecayType.BetaMinus));
@@ -774,8 +774,8 @@ public final class ModItems {
                 "dustRadium226",
                 MaterialsElements.getInstance().RADIUM.getRgbAsHex(),
                 90000,
-                new String[] { StringUtils.superscript("226Ra"),
-                    "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
+                StringUtils.superscript("226Ra"),
+                StringUtils.superscript("222Rn"),
                 GregtechItemList.DecayedRadium226Dust.get(1),
                 5,
                 GTRecipeConstants.DecayType.Alpha));
@@ -785,8 +785,8 @@ public final class ModItems {
                 "dustProtactinium233",
                 MaterialsElements.getInstance().PROTACTINIUM.getRgbAsHex(),
                 32000,
-                new String[] { StringUtils.superscript("233Pa"),
-                    "Result: Uranium 233 (" + StringUtils.superscript("233U") + ")" },
+                StringUtils.superscript("233Pa"),
+                StringUtils.superscript("233U"),
                 MaterialsElements.getInstance().URANIUM233.getDust(1),
                 6,
                 GTRecipeConstants.DecayType.BetaMinus));

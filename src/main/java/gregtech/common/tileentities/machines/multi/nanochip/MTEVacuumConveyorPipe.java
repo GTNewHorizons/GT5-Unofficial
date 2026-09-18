@@ -130,7 +130,8 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
 
     @Override
     public boolean canConnectOnSide(ForgeDirection side) {
-        return true;
+        return !this.getBaseMetaTileEntity()
+            .hasCoverAtSide(side);
     }
 
     @Override
@@ -145,15 +146,11 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         if (base == null || base.isDead() || base.getColorization() == -1) return;
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte) {
-                if (igte.getColorization() == base.getColorization()) {
-                    if (igte.getMetaTileEntity() instanceof VacuumFactoryElement element) {
-                        if (element.canConnectOnSide(dir.getOpposite())) {
-                            neighbours.add(element);
-                        }
-                    }
-                }
-            }
+            if (!(base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte)) continue;
+            if (igte.getColorization() != base.getColorization()) continue;
+            if (!(igte.getMetaTileEntity() instanceof VacuumFactoryElement element)) continue;
+            if (!element.canConnectOnSide(dir.getOpposite()) || !this.canConnectOnSide(dir)) continue;
+            neighbours.add(element);
         }
     }
 
@@ -185,16 +182,13 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         if (base == null || base.isDead() || base.getColorization() == -1) return;
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte) {
-                if (igte.getColorization() == base.getColorization()) {
-                    if (igte.getMetaTileEntity() instanceof VacuumFactoryElement element) {
-                        if (element.canConnectOnSide(dir.getOpposite())) {
-                            mConnections |= dir.flag;
-                        }
-                    }
-                }
-            }
+            if (!(base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte)) continue;
+            if (igte.getColorization() != base.getColorization()) continue;
+            if (!(igte.getMetaTileEntity() instanceof VacuumFactoryElement element)) continue;
+            if (!element.canConnectOnSide(dir.getOpposite()) || !this.canConnectOnSide(dir)) continue;
+            mConnections |= dir.flag;
         }
+
     }
 
     public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
@@ -264,13 +258,13 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     @Override
     public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
+        if (baseMetaTile.hasCoverAtSide(side)) return false;
         TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(side);
-        if (tTileEntity != null) {
-            IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-            if (meta == null) return false;
-            return meta instanceof VacuumFactoryElement;
-        }
-        return false;
+        if (tTileEntity == null) return false;
+        IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+        if (meta == null) return false;
+        if (((IGregTechTileEntity) tTileEntity).hasCoverAtSide(side.getOpposite())) return false;
+        return meta instanceof VacuumFactoryElement;
     }
 
     @Override
@@ -296,5 +290,12 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     public void onColorChangeServer(byte color) {
         super.onColorChangeServer(color);
         VacuumFactoryGrid.INSTANCE.updateElement(this);
+    }
+
+    @Override
+    protected void onCoverChangedServer() {
+        super.onCoverChangedServer();
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
+        setCheckConnections();
     }
 }

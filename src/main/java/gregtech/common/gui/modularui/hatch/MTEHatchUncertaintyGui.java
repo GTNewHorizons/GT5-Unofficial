@@ -127,27 +127,27 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
                 case 1: // ooo oxo ooo
                     if (index == 4) return status == 0 ? valid : invalid;
                     break;
-                case 2: // ooo xox ooo
-                    if (index == 3) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 5) return (status & 2) == 0 ? valid : invalid;
+                case 2: // oxo ooo oxo
+                    if (index == 1) return (status & 1) == 0 ? valid : invalid;
+                    if (index == 7) return (status & 2) == 0 ? valid : invalid;
                     break;
                 case 3: // oxo xox oxo
-                    if (index == 1) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 3) return (status & 2) == 0 ? valid : invalid;
-                    if (index == 5) return (status & 4) == 0 ? valid : invalid;
-                    if (index == 7) return (status & 8) == 0 ? valid : invalid;
+                    if (index == 3) return (status & 1) == 0 ? valid : invalid;
+                    if (index == 1) return (status & 2) == 0 ? valid : invalid;
+                    if (index == 7) return (status & 4) == 0 ? valid : invalid;
+                    if (index == 5) return (status & 8) == 0 ? valid : invalid;
                     break;
                 case 4: // xox ooo xox
                     if (index == 0) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 2) return (status & 2) == 0 ? valid : invalid;
-                    if (index == 6) return (status & 4) == 0 ? valid : invalid;
+                    if (index == 6) return (status & 2) == 0 ? valid : invalid;
+                    if (index == 2) return (status & 4) == 0 ? valid : invalid;
                     if (index == 8) return (status & 8) == 0 ? valid : invalid;
                     break;
                 case 5: // xox oxo xox
                     if (index == 0) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 2) return (status & 2) == 0 ? valid : invalid;
+                    if (index == 6) return (status & 2) == 0 ? valid : invalid;
                     if (index == 4) return (status & 4) == 0 ? valid : invalid;
-                    if (index == 6) return (status & 8) == 0 ? valid : invalid;
+                    if (index == 2) return (status & 8) == 0 ? valid : invalid;
                     if (index == 8) return (status & 16) == 0 ? valid : invalid;
                     break;
             }
@@ -189,12 +189,10 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
 
         return new ToggleButton().value(valueAssistSyncer)
             .size(12)
-            .overlay(
-                IKey.str("123")
-                    .alignment(Alignment.Center)
-                    .scale(0.5f)
-                    .color(Color.WHITE.main)
-                    .shadow(true))
+            .background(GTGuiTextures.BUTTON_STANDARD)
+            .overlay(false, GTGuiTextures.TT_PICTURE_UNCERTAINTY_ASSIST_OFF)
+            .overlay(true, GTGuiTextures.TT_PICTURE_UNCERTAINTY_ASSIST_ON)
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
             .tooltip(tooltip -> tooltip.add(IKey.lang("tt.gui.tooltip.uncertainty.value_assist")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }

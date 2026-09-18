@@ -87,6 +87,23 @@ public enum CircuitComponent {
         14,
         "gt.circuitcomponent.wireuniversium",
         () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Universium, 1)),
+    WireCopper(
+        9,
+        "gt.circuitcomponent.wirecopper",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 1)),
+    WireRedAlloy(
+        10,
+        "gt.circuitcomponent.wireredalloy",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.RedAlloy, 1)),
+    WireElectrum(
+        11,
+        "gt.circuitcomponent.wireelectrum",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 1)),
+    WirePlatinum(
+        12,
+        "gt.circuitcomponent.wireplatinum",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 1)),
+
 
     ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", () -> WireNiobiumTitanium, true),
     ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", () -> WireYttriumBariumCuprate, true),
@@ -97,6 +114,10 @@ public enum CircuitComponent {
     ProcessedWireInfinity(106, "gt.circuitcomponent.processed.wireinfinity", () -> WireInfinity, true),
     ProcessedWireHypogen(107, "gt.circuitcomponent.processed.wirehypogen", () -> WireHypogen, true),
     ProcessedWireMagMatter(108, "gt.circuitcomponent.processed.wiremagmatter", () -> WireMagMatter, true),
+    ProcessedWireCopper(109,"gt.circuitcomponent.processed.wirecopper", () -> WireCopper, true),
+    ProcessedWireRedAlloy(110,"gt.circuitcomponent.processed.wireredalloy", () -> WireRedAlloy, true),
+    ProcessedWireElectrum(111,"gt.circuitcomponent.processed.wireelectrum", () -> WireElectrum, true),
+    ProcessedWirePlatinum(112,"gt.circuitcomponent.processed.wireplatinum", () -> WirePlatinum, true),
 
     ProcessedWireShijima(109, "gt.circuitcomponent.processed.wireshijima", () -> WireShijima, true),
     ProcessedWireTairitsu(110, "gt.circuitcomponent.processed.wiretairitsu", () -> WireTairitsu, true),
@@ -203,6 +224,7 @@ public enum CircuitComponent {
     CleansedBoardPico(507, "gt.circuitcomponent.processed.board.cleansedpico",()-> BoardPico,true),
     CleansedBoardQuantum(508, "gt.circuitcomponent.processed.board.cleansedquantum",()-> BoardQuantum,true),
     CleansedBoardPlanck(509, "gt.circuitcomponent.processed.board.cleansedplanck",()-> BoardPlanck,true),
+    UnattunedCircuitry(507,"gt.circuitcomponent.unattunedcircuitry",()->null,true),
 
     // Wafers and chips
     // IDs: 600-699 CC, 700-799 PC
@@ -528,6 +550,11 @@ public enum CircuitComponent {
     BoltRhugnor(1921, "gt.circuitcomponent.bolt.rhugnor", ()-> MaterialsElements.STANDALONE.RHUGNOR.getBolt(1)),
     BoltMetastableOganesson(1922, "gt.circuitcomponent.bolt.metastableoganesson", ()-> GGMaterial.metastableOganesson.get(OrePrefixes.bolt,1)),
     BoltHexanite(1923, "gt.circuitcomponent.bolt.hexanite", ()-> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Hexanite, 1)),
+    BoltCopper(1918,"gt.circuitcomponent.bolt.copper",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Copper, 1)),
+    BoltRedAlloy(1919,"gt.circuitcomponent.bolt.redalloy",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.RedAlloy, 1)),
+    BoltPlatinum(1920,"gt.circuitcomponent.bolt.platinum",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Platinum, 1)),
+    BoltNiobiumTitanium(1921,"gt.circuitcomponent.bolt.niobiumtitanium",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.NiobiumTitanium, 1)),
+    CasingKevlar(1922,"gt.circuitcomponent.casing.kevlar", ()->GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Kevlar,1)),
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
@@ -539,7 +566,10 @@ public enum CircuitComponent {
     ProcessedPlateRhugnor(2007, "gt.circuitcomponent.plate.processed.rhugnor", () -> PlateRhugnor, true),
     ProcessedBoltWhiteDwarfMatter(2008, "gt.circuitcomponent.bolt.processed.whitedwarfmatter", () -> BoltWhiteDwarfMatter, true),
     ProcessedPlateHexanite(2009, "gt.circuitcomponent.plate.processed.hexanite", () -> PlateHexanite, true),
-
+    ProcessedBoltCopper(2010,"gt.circuitcomponent.bolt.processed.copper",()->BoltCopper,true),
+    ProcessedBoltRedAlloy(2011,"gt.circuitcomponent.bolt.processed.redalloy",()->BoltRedAlloy,true),
+    ProcessedBoltPlatinum(2012,"gt.circuitcomponent.bolt.processed.platinum",()->BoltPlatinum,true),
+    ProcessedBoltNiobiumTitanium(2013,"gt.circuitcomponent.bolt.processed.niobiumtitanium",()->BoltNiobiumTitanium,true),
     // Circuits
     // IDs: 2100-2199
     // The first three circuits in a line can be recursively used in the assembly matrix, and all of them can be turned
@@ -625,6 +655,13 @@ public enum CircuitComponent {
         2119,
         "gt.circuitcomponent.rawmanifoldbud",
         () -> ItemList.RawManifoldBud.get(1), CircuitCalibration.NONE,0),
+    PrimedUnattunedCircuitry(2120,"gt.circuitcomponent.primedunattunedcircuitry",CircuitCalibration.PRIMITIVE,0.1f),
+    NandChip(2121,"gt.circuitcomponent.nandchip",()->ItemList.NandChip.get(1),CircuitCalibration.PRIMITIVE,0),
+    Microprocessor(2122,"gt.circuitcomponent.microprocessor",()->ItemList.Circuit_Microprocessor.get(1),CircuitCalibration.PRIMITIVE,0),
+    IntegratedProcessor(2123,"gt.circuitcomponent.integratedprocessor",()->ItemList.Circuit_Processor.get(1),CircuitCalibration.PRIMITIVE,0),
+    NanoProcessor(2124,"gt.circuitcomponent.nanoprocessor",()->ItemList.Circuit_Nanoprocessor.get(1),CircuitCalibration.PRIMITIVE,0),
+    QuantumProcessor(2125,"gt.circuitcomponent.quantumprocessor", ()->ItemList.Circuit_Quantumprocessor.get(1), CircuitCalibration.PRIMITIVE,0)
+
     ;
 
     static {
@@ -691,6 +728,13 @@ public enum CircuitComponent {
         this.weight = weight;
     }
 
+    // CC constructor for circuits not meant to be taken out of the NAC
+    // and instead further used, while counting for calibration
+    CircuitComponent(int id, String nameKey, CircuitCalibration circuitType, float weight) {
+        this(id, nameKey, null, null, true, circuitType);
+        this.weight = weight;
+    }
+
     // PC constructor
     CircuitComponent(int id, String nameKey, Supplier<CircuitComponent> ccSupplier, boolean isProcessed) {
         this(id, nameKey, null, ccSupplier, isProcessed, CircuitCalibration.NONE);
@@ -713,7 +757,7 @@ public enum CircuitComponent {
         this.circuitType = circuitType;
 
         this.iconString = isProcessed ? PROCESSED_DIRECTORY + name().toLowerCase() : name().toLowerCase();
-        if (!isProcessed) codechicken.nei.api.API.hideItem(getFakeStack(1)); // shows all PC items in NEI
+        if (!isProcessed) codechicken.nei.api.API.hideItem(getFakeStack(1));
     }
 
     public String getLocalizedName() {
