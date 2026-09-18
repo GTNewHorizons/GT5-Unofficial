@@ -820,7 +820,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     public void setModule(int index, int ordinal) {
-        foundryData.setModule(index, ordinal);
+        foundryData.setModule(index, ordinal, false);
         // structure check on module set, to prevent cheesing
         getBaseMetaTileEntity().issueTileUpdate(); // tile update to sync to client
         this.setStructureUpdateTime(1);
