@@ -22,9 +22,6 @@ import mods.railcraft.api.core.items.IToolCrowbar;
 @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.ModIDs.RAILCRAFT)
 public class ToolCrowbarItem extends ToolItemBase implements IToolCrowbar {
 
-    /** Durability cost of one use, in the unit where 100 is one durability point. */
-    public static final int USE_COST = 100;
-
     public ToolCrowbarItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat) {
         super(
             unlocalizedName,
@@ -41,15 +38,8 @@ public class ToolCrowbarItem extends ToolItemBase implements IToolCrowbar {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
         int ordinalSide, float hitX, float hitY, float hitZ) {
         if (getToolMaterial(stack) == Materials._NULL) return false;
-        return CrowbarActions.use(
-            world,
-            x,
-            y,
-            z,
-            hitX,
-            hitY,
-            hitZ,
-            () -> player.capabilities.isCreativeMode || doDamage(stack, USE_COST));
+        return CrowbarActions
+            .use(world, x, y, z, hitX, hitY, hitZ, () -> player.capabilities.isCreativeMode || spendOneUse(stack));
     }
 
     /* ---------- RAILCRAFT CROWBAR ---------- */
@@ -59,7 +49,7 @@ public class ToolCrowbarItem extends ToolItemBase implements IToolCrowbar {
     }
 
     private void wear(ItemStack stack) {
-        doDamage(stack, getToolStats().getToolDamagePerEntityAttack());
+        spendOneUse(stack);
     }
 
     @Override

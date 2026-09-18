@@ -31,9 +31,6 @@ import gregtech.api.interfaces.IToolStats;
         @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O), })
 public class ToolWrenchItem extends ToolItemBase implements IToolWrench, IAEWrench, ITool {
 
-    /** Durability cost of rotating one block, in the unit where 100 is one durability point. */
-    public static final int ROTATION_COST = 100;
-
     /**
      * @param unlocalizedName   appended to {@code gt.}; becomes both the registry name and the localization key root.
      * @param toolStats         the generic stats for this wrench tier, reused verbatim from the old tool registry.
@@ -57,19 +54,8 @@ public class ToolWrenchItem extends ToolItemBase implements IToolWrench, IAEWren
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
         int ordinalSide, float hitX, float hitY, float hitZ) {
         if (getToolMaterial(stack) == Materials._NULL) return false;
-        return WrenchRotation.rotate(
-            this,
-            stack,
-            player,
-            world,
-            x,
-            y,
-            z,
-            ForgeDirection.getOrientation(ordinalSide),
-            hitX,
-            hitY,
-            hitZ,
-            ROTATION_COST);
+        return WrenchRotation
+            .rotate(this, stack, player, world, x, y, z, ForgeDirection.getOrientation(ordinalSide), hitX, hitY, hitZ);
     }
 
     /* ---------- CROSS-MOD WRENCH INTERFACES ---------- */

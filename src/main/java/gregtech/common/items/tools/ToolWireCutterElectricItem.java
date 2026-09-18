@@ -22,6 +22,17 @@ import gregtech.api.interfaces.IToolStats;
  */
 public class ToolWireCutterElectricItem extends ToolWireCutterItem implements IElectricToolItem {
 
+    /**
+     * Energy one action costs. The tree farm drives this tool through the machine path, which cost 100 an operation,
+     * so that is what it keeps; being consumed by a recipe used to cost 400 and now costs the same 100.
+     */
+    public static final long EU_PER_USE = 100;
+
+    @Override
+    public long getEnergyCostPerUse() {
+        return EU_PER_USE;
+    }
+
     private final ToolElectricStorage electricStorage;
 
     public ToolWireCutterElectricItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,

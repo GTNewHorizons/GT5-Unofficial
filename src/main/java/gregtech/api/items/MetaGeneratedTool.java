@@ -767,6 +767,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem implements IDamagab
         return doDamage(aStack, aVanillaDamage * 100L);
     }
 
+    /**
+     * The tools still on this item -- the turbine rotors -- keep counting durability in hundredths of a point, so one
+     * action is a hundred of them.
+     */
+    @Override
+    public boolean spendOneUse(ItemStack aStack) {
+        return doDamage(aStack, 100);
+    }
+
     public final boolean doDamage(ItemStack aStack, long aAmount) {
         if (!isItemStackUsable(aStack)) return false;
         if (aStack.stackSize <= 0) return false;

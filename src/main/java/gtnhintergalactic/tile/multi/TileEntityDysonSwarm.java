@@ -388,10 +388,11 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
 
             // Set moduleCount based on the number of ejected modules and damage the plunger
             this.moduleCount = 0;
-            plunger.doDamage(heldItem, maxReduction);
+            plunger.spendOneUse(heldItem);
         } else {
             this.moduleCount = prevCount - maxReduction + modules.stackSize;
-            plunger.doDamage(heldItem, maxReduction - modules.stackSize);
+            // One click, one action: this used to be a hundredth of a point per module pulled.
+            if (maxReduction > modules.stackSize) plunger.spendOneUse(heldItem);
         }
 
         return true;

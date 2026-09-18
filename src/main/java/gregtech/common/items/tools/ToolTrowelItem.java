@@ -18,9 +18,6 @@ import gregtech.api.interfaces.IToolStats;
  */
 public class ToolTrowelItem extends ToolItemBase {
 
-    /** Durability cost of placing one block, in the unit where 100 is one durability point. */
-    public static final int PLACE_COST = 100;
-
     public ToolTrowelItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,
         String englishTooltip) {
         // The trowel has never had an ore dictionary name; nothing crafts with one.
@@ -42,7 +39,7 @@ public class ToolTrowelItem extends ToolItemBase {
             hitX,
             hitY,
             hitZ,
-            () -> player.capabilities.isCreativeMode || doDamage(stack, PLACE_COST));
+            () -> player.capabilities.isCreativeMode || spendOneUse(stack));
     }
 
     @Override

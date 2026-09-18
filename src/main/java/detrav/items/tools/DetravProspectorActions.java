@@ -55,9 +55,6 @@ public class DetravProspectorActions {
 
     static final String CHAT_MSG_SEPARATOR = EnumChatFormatting.STRIKETHROUGH + "--------------------";
 
-    /** Durability cost of scanning one chunk, in the unit where 100 is one durability point. */
-    protected final int costs;
-
     /**
      * The metadata this tier used to occupy on {@code detrav.metatool.01}. The scan range and the per-chunk success
      * chance were both computed from it, and metadata is the crafting material now, so the tier carries the old value
@@ -69,8 +66,7 @@ public class DetravProspectorActions {
     private Map<String, Integer> ores;
     private int badluck;
 
-    public DetravProspectorActions(int costs, int legacyMeta) {
-        this.costs = costs;
+    public DetravProspectorActions(int legacyMeta) {
         this.legacyMeta = legacyMeta;
     }
 
@@ -89,7 +85,7 @@ public class DetravProspectorActions {
                 FluidStack fluid = UndergroundOil.undergroundOil(world.getChunkFromBlockCoords(x, z), -1);
                 addChatMessageByValue(player, fluid.amount / 2, "a Fluid");
 
-                if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs);
+                if (!player.capabilities.isCreativeMode) item.spendOneUse(stack);
 
                 if (VisualProspecting.isModLoaded()) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
@@ -264,7 +260,7 @@ public class DetravProspectorActions {
 
         if (GTUtility.isOre(block, meta)) {
             addOreToHashMap(blockStack.getDisplayName(), player);
-            if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs);
+            if (!player.capabilities.isCreativeMode) item.spendOneUse(stack);
             return;
         }
 
@@ -274,7 +270,7 @@ public class DetravProspectorActions {
             try {
                 String name = itemData.toString();
                 addChatMessageByValue(player, -1, name);
-                if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs);
+                if (!player.capabilities.isCreativeMode) item.spendOneUse(stack);
             } catch (Exception e) {
                 addChatMessageByValue(player, -1, "ERROR, lol ^_^");
             }
@@ -317,7 +313,7 @@ public class DetravProspectorActions {
                 }
             }
 
-            if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs);
+            if (!player.capabilities.isCreativeMode) item.spendOneUse(stack);
 
             return;
         }
@@ -325,7 +321,8 @@ public class DetravProspectorActions {
         if (DetravScannerMod.DEBUG_ENABLED)
             player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + " Failed on this chunk"));
         badluck++;
-        if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs / 4);
+        // A chunk that came back empty still cost the scan.
+        if (!player.capabilities.isCreativeMode) item.spendOneUse(stack);
     }
 
     void addOreToHashMap(String orename, EntityPlayer player) {

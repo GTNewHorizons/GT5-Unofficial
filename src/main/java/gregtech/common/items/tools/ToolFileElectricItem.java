@@ -22,6 +22,14 @@ import gregtech.api.interfaces.IToolStats;
  */
 public class ToolFileElectricItem extends ToolFileItem implements IElectricToolItem {
 
+    /** Energy one action costs: being consumed by a recipe, which used to cost 400. */
+    public static final long EU_PER_USE = 400;
+
+    @Override
+    public long getEnergyCostPerUse() {
+        return EU_PER_USE;
+    }
+
     private final ToolElectricStorage electricStorage;
 
     public ToolFileElectricItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,

@@ -26,9 +26,6 @@ import gregtech.common.items.tools.ToolItemBase;
  */
 public class DetravProspectorItem extends ToolItemBase {
 
-    /** Durability cost of scanning one chunk, in the unit where 100 is one durability point. */
-    public static final int SCAN_COST = 15;
-
     /**
      * The metadata this tier held on {@code detrav.metatool.01}. Range and success chance were read off it, and
      * metadata is the crafting material now, so the tier keeps the old number for those two sums to use.
@@ -53,7 +50,7 @@ public class DetravProspectorItem extends ToolItemBase {
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int ordinalSide,
         float hitX, float hitY, float hitZ) {
         if (getToolMaterial(stack) == Materials._NULL) return false;
-        return new DetravProspectorActions(SCAN_COST, legacyMeta).onItemUse(this, stack, player, world, x, y, z);
+        return new DetravProspectorActions(legacyMeta).onItemUse(this, stack, player, world, x, y, z);
     }
 
     /* ---------- DISPLAY ---------- */

@@ -51,8 +51,9 @@ final class MetaToolStackMigration {
             final long maxCharge = toolStats.getLong("MaxCharge");
             if (maxCharge > 0 && maxCharge != defaultMaxCharge) newTag.setLong("GT.MaxCharge", maxCharge);
         } else {
-            // Max durability is computed from the material and the formula is unchanged, so damage carries over as is.
-            final long damage = toolStats.getLong("Damage");
+            // The old item counted durability in hundredths of a point, the new one in whole points, and the maximum
+            // is the same number of points either way, so a hundredth of the old figure is the same share of the bar.
+            final long damage = toolStats.getLong("Damage") / 100L;
             if (damage > 0) newTag.setLong("GT.ToolDamage", damage);
         }
 

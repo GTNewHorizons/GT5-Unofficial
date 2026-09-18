@@ -31,8 +31,8 @@ import gregtech.common.items.tools.ToolElectricStorage;
  */
 public class DetravElectricProspectorItem extends DetravProspectorItem implements IElectricToolItem {
 
-    /** Energy cost of scanning one chunk, in the unit where 100 units is one EU-equivalent of wear. */
-    public static final int ELECTRIC_SCAN_COST = 100;
+    /** Energy one scanned chunk costs, which is what it cost before the durability rework too. */
+    public static final long EU_PER_USE = 100;
 
     private final ToolElectricStorage electricStorage;
 
@@ -121,8 +121,13 @@ public class DetravElectricProspectorItem extends DetravProspectorItem implement
         return stack;
     }
 
+    @Override
+    public long getEnergyCostPerUse() {
+        return EU_PER_USE;
+    }
+
     private DetravElectricProspectorActions actions() {
-        return new DetravElectricProspectorActions(ELECTRIC_SCAN_COST, legacyMeta);
+        return new DetravElectricProspectorActions(legacyMeta);
     }
 
     /* ---------- SCAN AREA ---------- */

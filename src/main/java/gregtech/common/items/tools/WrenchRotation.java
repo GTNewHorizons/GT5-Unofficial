@@ -36,11 +36,10 @@ public final class WrenchRotation {
     /**
      * Tries to rotate the block the player clicked.
      *
-     * @param costs the durability (or energy) the rotation costs, in the unit where 100 is one durability point.
      * @return whether the click was consumed.
      */
     public static boolean rotate(ToolWrenchItem item, ItemStack stack, EntityPlayer player, World world, int x, int y,
-        int z, ForgeDirection side, float hitX, float hitY, float hitZ, int costs) {
+        int z, ForgeDirection side, float hitX, float hitY, float hitZ) {
         final Block block = world.getBlock(x, y, z);
         if (block == null) return false;
 
@@ -60,8 +59,7 @@ public final class WrenchRotation {
             y,
             z,
             stack,
-            item,
-            costs);
+            item);
 
         try {
             return handler.handle() && !world.isRemote;
@@ -97,7 +95,7 @@ public final class WrenchRotation {
                 if (tileEntity instanceof TileInterface) {
                     if (player.isSneaking()) return false;
                     if (direction == down) {
-                        return doWrenchOperation(costs, () -> {
+                        return doWrenchOperation(() -> {
                             orientable.setOrientation(ForgeDirection.UNKNOWN, ForgeDirection.UNKNOWN);
                             return true;
                         });
@@ -110,11 +108,11 @@ public final class WrenchRotation {
                     // rotate around the direction axis
                     final var tempFront = front;
                     final var tempUp = up;
-                    if (!player.isSneaking() && direction == up) return doWrenchOperation(costs, () -> {
+                    if (!player.isSneaking() && direction == up) return doWrenchOperation(() -> {
                         orientable.setOrientation(tempFront.getRotation(tempUp), tempUp);
                         return true;
                     });
-                    if (player.isSneaking() && direction == front) return doWrenchOperation(costs, () -> {
+                    if (player.isSneaking() && direction == front) return doWrenchOperation(() -> {
                         orientable.setOrientation(
                             tempFront,
                             tempUp.getRotation(tempFront)
@@ -133,13 +131,13 @@ public final class WrenchRotation {
                     } else orientable.setOrientation(front, direction);
                 }
 
-                return damageWrench(costs);
+                return damageWrench();
             }
             if (world.isRemote) return false;
             // IC2 Wrenchable
             if (tileEntity instanceof IWrenchable wrenchable) {
                 if (wrenchable.wrenchCanSetFacing(player, targetSideOrdinal)) {
-                    return doWrenchOperation(costs, () -> {
+                    return doWrenchOperation(() -> {
                         wrenchable.setFacing(targetSideOrdinal);
                         return true;
                     });
@@ -149,12 +147,12 @@ public final class WrenchRotation {
 
             if (block == Blocks.powered_repeater || block == Blocks.unpowered_repeater
                 || block == Blocks.powered_comparator
-                || block == Blocks.unpowered_comparator) return setBlockMeta(costs, meta / 4 * 4 + (meta % 4 + 1) % 4);
+                || block == Blocks.unpowered_comparator) return setBlockMeta(meta / 4 * 4 + (meta % 4 + 1) % 4);
 
             // hopper cannot face sky
-            if (block == Blocks.hopper && targetSideOrdinal != 1) return setBlockMeta(costs, targetSideOrdinal);
+            if (block == Blocks.hopper && targetSideOrdinal != 1) return setBlockMeta(targetSideOrdinal);
 
-            if (isVanillaAllSideRotatable(block)) if (meta < 6) return setBlockMeta(costs, targetSideOrdinal);
+            if (isVanillaAllSideRotatable(block)) if (meta < 6) return setBlockMeta(targetSideOrdinal);
 
             // blocks like chests and furnaces have only four directions
             if (isVanillaCantFaceAxisY(block)) {
@@ -162,10 +160,9 @@ public final class WrenchRotation {
                 if (isVanillaChest(block)) {
                     // large chests needs special handling
                     return doWrenchOperation(
-                        costs,
                         () -> GTUtil.setVanillaChestDirection(world, x, y, z, targetSideOrdinal, block, false));
                 }
-                return setBlockMeta(costs, targetSideOrdinal);
+                return setBlockMeta(targetSideOrdinal);
             }
             if (tileEntity instanceof IPartHost) return false;
 
@@ -175,13 +172,13 @@ public final class WrenchRotation {
                 // IC2 rubber logs carry more info than just side in the meta
                 if (!(block instanceof BlockRubWood)) {
                     // The meta just work
-                    return setBlockMeta(costs, (meta + 4) % 12);
+                    return setBlockMeta((meta + 4) % 12);
                 }
             }
 
             // vanilla block rotate logic
             if ((Arrays.asList(block.getValidRotations(world, x, y, z))
-                .contains(direction))) return rotateBlock(costs, direction);
+                .contains(direction))) return rotateBlock(direction);
             return false;
 
             // GT blocks' rotations are done by blocks themselves after this returning false
@@ -196,10 +193,9 @@ public final class WrenchRotation {
         private final ItemStack stack;
 
         private final ToolWrenchItem item;
-        private final int costs;
 
         Handler(Block block, int meta, short targetSideOrdinal, TileEntity tileEntity, EntityPlayer player, World world,
-            int x, int y, int z, ItemStack stack, ToolWrenchItem item, int costs) {
+            int x, int y, int z, ItemStack stack, ToolWrenchItem item) {
             this.block = block;
             this.meta = meta;
             this.targetSideOrdinal = targetSideOrdinal;
@@ -211,20 +207,18 @@ public final class WrenchRotation {
             this.z = z;
             this.stack = stack;
             this.item = item;
-            this.costs = costs;
         }
 
         /**
          * Runs the operation, charges the tool and plays the sound, if the player may use the wrench at all.
          *
-         * @param damage    cost to be applied to the wrench
          * @param operation the real operation of the click
          * @return true if the operation was successful
          */
-        boolean doWrenchOperation(int damage, BooleanSupplier operation) {
+        boolean doWrenchOperation(BooleanSupplier operation) {
             if (player.capabilities.isCreativeMode || item.canWrench(player, x, y, z)) {
                 if (operation.getAsBoolean()) {
-                    item.doDamage(stack, damage);
+                    item.spendOneUse(stack);
                     GTUtility
                         .sendSoundToPlayers(world, SoundResource.GTCEU_OP_WRENCH, 1.0F, 1.0F, x + .5, y + .5, z + .5);
                     return true;
@@ -233,16 +227,16 @@ public final class WrenchRotation {
             return false;
         }
 
-        boolean setBlockMeta(int damage, int newMeta) {
-            return doWrenchOperation(damage, () -> setBlockMetadataWithNotify(newMeta));
+        boolean setBlockMeta(int newMeta) {
+            return doWrenchOperation(() -> setBlockMetadataWithNotify(newMeta));
         }
 
-        boolean rotateBlock(int damage, ForgeDirection direction) {
-            return doWrenchOperation(damage, () -> block.rotateBlock(world, x, y, z, direction));
+        boolean rotateBlock(ForgeDirection direction) {
+            return doWrenchOperation(() -> block.rotateBlock(world, x, y, z, direction));
         }
 
-        boolean damageWrench(int damage) {
-            return doWrenchOperation(damage, () -> true);
+        boolean damageWrench() {
+            return doWrenchOperation(() -> true);
         }
 
         private boolean setBlockMetadataWithNotify(int newMeta) {

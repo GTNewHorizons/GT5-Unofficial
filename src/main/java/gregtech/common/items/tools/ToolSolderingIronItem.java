@@ -21,8 +21,16 @@ import gregtech.api.interfaces.IToolStats;
  */
 public class ToolSolderingIronItem extends ToolElectricItemBase {
 
-    /** Energy cost of one repeater or comparator adjustment, in the unit where 100 is one durability point. */
-    public static final int ADJUST_COST = 100;
+    /**
+     * Energy one action costs: an adjustment, which used to cost 100; repairing a circuit keeps its own 10,000 EU
+     * charge in GTModHandler.
+     */
+    public static final long EU_PER_USE = 100;
+
+    @Override
+    public long getEnergyCostPerUse() {
+        return EU_PER_USE;
+    }
 
     public ToolSolderingIronItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,
         String englishTooltip, long maxCharge, long voltage, int tier) {
@@ -42,14 +50,7 @@ public class ToolSolderingIronItem extends ToolElectricItemBase {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
         int ordinalSide, float hitX, float hitY, float hitZ) {
         if (getToolMaterial(stack) == Materials._NULL) return false;
-        return ScrewdriverActions.use(
-            world,
-            x,
-            y,
-            z,
-            hitX,
-            hitY,
-            hitZ,
-            () -> player.capabilities.isCreativeMode || doDamage(stack, ADJUST_COST));
+        return ScrewdriverActions
+            .use(world, x, y, z, hitX, hitY, hitZ, () -> player.capabilities.isCreativeMode || spendOneUse(stack));
     }
 }

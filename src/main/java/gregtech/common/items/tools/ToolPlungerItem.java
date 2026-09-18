@@ -31,8 +31,7 @@ public class ToolPlungerItem extends ToolItemBase {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
         int ordinalSide, float hitX, float hitY, float hitZ) {
         if (getToolMaterial(stack) == Materials._NULL) return false;
-        final int cost = getToolStats().getToolDamagePerDropConversion();
-        final BooleanSupplier pay = () -> player.capabilities.isCreativeMode || doDamage(stack, cost);
+        final BooleanSupplier pay = () -> player.capabilities.isCreativeMode || spendOneUse(stack);
 
         // Same order the three behaviours were registered in; the first one to take the click wins.
         if (PlungerActions

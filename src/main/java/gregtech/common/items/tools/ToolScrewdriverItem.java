@@ -23,9 +23,6 @@ import mrtjp.projectred.api.IScrewdriver;
 @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.ModIDs.PROJECT_RED_CORE)
 public class ToolScrewdriverItem extends ToolItemBase implements IScrewdriver {
 
-    /** Durability cost of one use, in the unit where 100 is one durability point. */
-    public static final int USE_COST = 100;
-
     /**
      * @param unlocalizedName   appended to {@code gt.}; becomes both the registry name and the localization key root.
      * @param toolStats         the generic stats for this tier, reused verbatim from the old tool registry.
@@ -47,15 +44,8 @@ public class ToolScrewdriverItem extends ToolItemBase implements IScrewdriver {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
         int ordinalSide, float hitX, float hitY, float hitZ) {
         if (getToolMaterial(stack) == Materials._NULL) return false;
-        return ScrewdriverActions.use(
-            world,
-            x,
-            y,
-            z,
-            hitX,
-            hitY,
-            hitZ,
-            () -> player.capabilities.isCreativeMode || doDamage(stack, USE_COST));
+        return ScrewdriverActions
+            .use(world, x, y, z, hitX, hitY, hitZ, () -> player.capabilities.isCreativeMode || spendOneUse(stack));
     }
 
     /* ---------- PROJECTRED SCREWDRIVER ---------- */
@@ -70,6 +60,6 @@ public class ToolScrewdriverItem extends ToolItemBase implements IScrewdriver {
     public void damageScrewdriver(EntityPlayer player, ItemStack stack) {
         if (player == null || GTUtility.isStackInvalid(stack)) return;
         if (getToolMaterial(stack) == Materials._NULL) return;
-        doDamage(stack, getToolStats().getToolDamagePerEntityAttack());
+        spendOneUse(stack);
     }
 }

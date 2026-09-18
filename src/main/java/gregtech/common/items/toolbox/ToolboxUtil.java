@@ -181,7 +181,7 @@ public class ToolboxUtil {
             handler.mutateCurrentTool(toolStack -> {
                 if (toolStack.getItem() instanceof final IGTTool toolItem) {
                     IToolStats stats = toolItem.getToolStats(toolStack);
-                    if (stats != null) toolItem.doDamage(toolStack, stats.getToolDamagePerEntityAttack());
+                    if (stats != null) toolItem.spendOneUse(toolStack);
                 }
             });
         }

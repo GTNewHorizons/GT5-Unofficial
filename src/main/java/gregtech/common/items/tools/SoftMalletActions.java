@@ -26,11 +26,10 @@ public final class SoftMalletActions {
     /**
      * Tries to nudge the block the player clicked.
      *
-     * @param costs the durability the action costs, in the unit where 100 is one durability point.
      * @return whether the click was consumed.
      */
     public static boolean use(ToolSoftMalletItem item, ItemStack stack, EntityPlayer player, World world, int x, int y,
-        int z, float hitX, float hitY, float hitZ, int costs) {
+        int z, float hitX, float hitY, float hitZ) {
         // Every branch below edits the world, so the client has nothing useful to do here.
         if (world.isRemote) return false;
         final Block block = world.getBlock(x, y, z);
@@ -38,21 +37,21 @@ public final class SoftMalletActions {
         final int meta = world.getBlockMetadata(x, y, z);
 
         if (block == Blocks.lit_redstone_lamp) {
-            if (pay(item, stack, player, costs)) {
+            if (pay(item, stack, player)) {
                 setBlockWithoutRelight(world, x, y, z, Blocks.redstone_lamp);
                 playSound(world, hitX, hitY, hitZ);
             }
             return true;
         }
         if (block == Blocks.redstone_lamp) {
-            if (pay(item, stack, player, costs)) {
+            if (pay(item, stack, player)) {
                 setBlockWithoutRelight(world, x, y, z, Blocks.lit_redstone_lamp);
                 playSound(world, hitX, hitY, hitZ);
             }
             return true;
         }
         if (block == Blocks.golden_rail || block == Blocks.activator_rail) {
-            if (pay(item, stack, player, costs)) {
+            if (pay(item, stack, player)) {
                 // Bit 8 of a powered rail's metadata is its powered flag.
                 world.isRemote = true;
                 world.setBlock(x, y, z, block, (meta + 8) % 16, 0);
@@ -62,7 +61,7 @@ public final class SoftMalletActions {
             return true;
         }
         if (block == Blocks.log || block == Blocks.log2 || block == Blocks.hay_block) {
-            if (pay(item, stack, player, costs)) {
+            if (pay(item, stack, player)) {
                 world.setBlockMetadataWithNotify(x, y, z, (meta + 4) % 12, 3);
             }
             return true;
@@ -70,7 +69,7 @@ public final class SoftMalletActions {
         if (block == Blocks.piston || block == Blocks.sticky_piston
             || block == Blocks.dispenser
             || block == Blocks.dropper) {
-            if (pay(item, stack, player, costs)) {
+            if (pay(item, stack, player)) {
                 world.setBlockMetadataWithNotify(x, y, z, (meta + 1) % 6, 3);
                 playSound(world, hitX, hitY, hitZ);
             }
@@ -79,7 +78,7 @@ public final class SoftMalletActions {
         if (block == Blocks.pumpkin || block == Blocks.lit_pumpkin
             || block == Blocks.furnace
             || block == Blocks.lit_furnace) {
-            if (pay(item, stack, player, costs)) {
+            if (pay(item, stack, player)) {
                 world.setBlockMetadataWithNotify(x, y, z, rotateUpright(meta), 3);
                 playSound(world, hitX, hitY, hitZ);
             }
@@ -91,14 +90,14 @@ public final class SoftMalletActions {
             while (newMeta != meta && !GTUtil.setVanillaChestDirection(world, x, y, z, newMeta, block, true)) {
                 newMeta = rotateUpright(newMeta);
             }
-            if (pay(item, stack, player, costs)) {
+            if (pay(item, stack, player)) {
                 GTUtil.setVanillaChestDirection(world, x, y, z, newMeta, block, false);
                 playSound(world, hitX, hitY, hitZ);
             }
             return true;
         }
         if (block == Blocks.hopper) {
-            if (pay(item, stack, player, costs)) {
+            if (pay(item, stack, player)) {
                 // Metadata 1 is not a valid hopper facing, so skip over it.
                 world.setBlockMetadataWithNotify(x, y, z, (meta + 1) % 6 != 1 ? (meta + 1) % 6 : 2, 3);
                 playSound(world, hitX, hitY, hitZ);
@@ -108,8 +107,8 @@ public final class SoftMalletActions {
         return false;
     }
 
-    private static boolean pay(ToolSoftMalletItem item, ItemStack stack, EntityPlayer player, int costs) {
-        return player.capabilities.isCreativeMode || item.doDamage(stack, costs);
+    private static boolean pay(ToolSoftMalletItem item, ItemStack stack, EntityPlayer player) {
+        return player.capabilities.isCreativeMode || item.spendOneUse(stack);
     }
 
     /**

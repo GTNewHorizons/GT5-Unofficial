@@ -49,8 +49,8 @@ public class DetravElectricProspectorActions extends DetravProspectorActions {
     private static final Map<EntityPlayer, Future<?>> PENDING_SCANS = new MapMaker().weakValues()
         .makeMap();
 
-    public DetravElectricProspectorActions(int costs, int legacyMeta) {
-        super(costs, legacyMeta);
+    public DetravElectricProspectorActions(int legacyMeta) {
+        super(legacyMeta);
     }
 
     /**
@@ -97,7 +97,8 @@ public class DetravElectricProspectorActions extends DetravProspectorActions {
             }
         }
 
-        if (!player.capabilities.isCreativeMode) item.doDamage(stack, (long) this.costs * chunks.size());
+        // One scanned chunk, one action's worth of energy.
+        if (!player.capabilities.isCreativeMode) item.doDamage(stack, item.getEnergyCostPerUse() * chunks.size());
 
         final ProspectingPacket packet = new ProspectingPacket(
             cX,
@@ -207,7 +208,7 @@ public class DetravElectricProspectorActions extends DetravProspectorActions {
                 if (!world.isRemote) {
                     FluidStack fluid = UndergroundOil.undergroundOil(world.getChunkFromBlockCoords(x, z), -1);
                     addChatMessageByValue(player, fluid.amount, fluid.getLocalizedName());
-                    if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs);
+                    if (!player.capabilities.isCreativeMode) item.spendOneUse(stack);
                 }
             } else {
                 if (!world.isRemote) {
@@ -220,7 +221,7 @@ public class DetravElectricProspectorActions extends DetravProspectorActions {
             if (!world.isRemote) {
                 FluidStack fluid = UndergroundOil.undergroundOil(world.getChunkFromBlockCoords(x, z), -1);
                 addChatMessageByValue(player, fluid.amount, fluid.getLocalizedName());
-                if (!player.capabilities.isCreativeMode) item.doDamage(stack, this.costs);
+                if (!player.capabilities.isCreativeMode) item.spendOneUse(stack);
             }
             return true;
         }

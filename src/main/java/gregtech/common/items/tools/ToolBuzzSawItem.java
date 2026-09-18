@@ -10,6 +10,14 @@ import gregtech.api.interfaces.IToolStats;
  */
 public class ToolBuzzSawItem extends ToolElectricItemBase {
 
+    /** Energy one action costs: being consumed by a recipe, which used to cost 100. */
+    public static final long EU_PER_USE = 100;
+
+    @Override
+    public long getEnergyCostPerUse() {
+        return EU_PER_USE;
+    }
+
     public ToolBuzzSawItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,
         String englishTooltip, long maxCharge, long voltage, int tier) {
         super(

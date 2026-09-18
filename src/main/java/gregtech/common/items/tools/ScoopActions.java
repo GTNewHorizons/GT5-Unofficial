@@ -26,7 +26,7 @@ public final class ScoopActions {
     public static boolean catchButterfly(ToolScoopItem item, ItemStack stack, EntityPlayer player, Entity entity) {
         if (!(entity instanceof IEntityButterfly)) return false;
         if (player.worldObj.isRemote) return true;
-        if (player.capabilities.isCreativeMode || item.doDamage(stack, ToolScoopItem.CATCH_COST)) {
+        if (player.capabilities.isCreativeMode || item.spendOneUse(stack)) {
             IButterfly butterfly = ((IEntityButterfly) entity).getButterfly();
             butterfly.getGenome()
                 .getPrimary()

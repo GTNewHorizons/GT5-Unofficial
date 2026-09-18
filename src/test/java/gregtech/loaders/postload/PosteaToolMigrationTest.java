@@ -13,6 +13,9 @@ import org.junit.jupiter.api.Test;
  * Drives {@link MetaToolStackMigration#rewriteToolStack} over serialized stacks shaped exactly the way
  * {@code MetaGeneratedTool.getToolWithStats()} wrote them, and checks what comes out the other side.
  * <p/>
+ * The old item counted durability in hundredths of a point and the new one counts whole points, so a worn tool's
+ * damage comes across divided by a hundred, which leaves it the same share of the bar.
+ * <p/>
  * Covers the shapes that differ: a worn hand tool, whose durability has to survive; a part-charged electric tool,
  * whose energy has to survive while its durability is deliberately dropped; and a soft mallet, whose mode is the
  * thing a player would most notice losing.
@@ -73,7 +76,7 @@ class PosteaToolMigrationTest {
         assertEquals((byte) 1, stack.getByte("Count"), "stack size must be untouched");
 
         NBTTagCompound tag = stack.getCompoundTag("tag");
-        assertEquals(25_600L, tag.getLong("GT.ToolDamage"), "durability damage should carry over unscaled");
+        assertEquals(256L, tag.getLong("GT.ToolDamage"), "durability damage should come across as whole points");
         assertEquals(2, tag.getInteger("GT.ToolMode"), "the selected mode should carry over");
         assertTrue(tag.hasKey("ench"), "material enchantments should be kept");
         assertFalse(tag.hasKey("GT.ToolStats"), "the old stats compound should be gone");
@@ -146,7 +149,7 @@ class PosteaToolMigrationTest {
         assertEquals(WOOD_META, stack.getShort("Damage"), "metadata should become the material");
 
         NBTTagCompound tag = stack.getCompoundTag("tag");
-        assertEquals(4_000L, tag.getLong("GT.ToolDamage"), "durability damage should carry over unscaled");
+        assertEquals(40L, tag.getLong("GT.ToolDamage"), "durability damage should come across as whole points");
         assertEquals(
             2,
             tag.getInteger("GT.ToolMode"),
@@ -178,7 +181,7 @@ class PosteaToolMigrationTest {
         assertEquals(IRON_META, stack.getShort("Damage"), "metadata should become the material");
 
         NBTTagCompound tag = stack.getCompoundTag("tag");
-        assertEquals(12_500L, tag.getLong("GT.ToolDamage"), "durability damage should carry over unscaled");
+        assertEquals(125L, tag.getLong("GT.ToolDamage"), "durability damage should come across as whole points");
         assertFalse(tag.hasKey("GT.ToolStats"), "the old stats compound should be gone");
         assertFalse(tag.hasKey("GT.ItemCharge"), "a hand screwdriver holds no charge");
     }
@@ -220,7 +223,7 @@ class PosteaToolMigrationTest {
 
         assertEquals(IRON_META, stack.getShort("Damage"));
         assertEquals(
-            5_000L,
+            50L,
             stack.getCompoundTag("tag")
                 .getLong("GT.ToolDamage"));
     }
@@ -247,7 +250,7 @@ class PosteaToolMigrationTest {
 
         assertEquals(IRON_META, stack.getShort("Damage"));
         assertEquals(
-            9_900L,
+            99L,
             stack.getCompoundTag("tag")
                 .getLong("GT.ToolDamage"));
     }
@@ -279,7 +282,7 @@ class PosteaToolMigrationTest {
 
         assertEquals(STEEL_META, stack.getShort("Damage"));
         NBTTagCompound tag = stack.getCompoundTag("tag");
-        assertEquals(1_500L, tag.getLong("GT.ToolDamage"), "durability damage should carry over unscaled");
+        assertEquals(15L, tag.getLong("GT.ToolDamage"), "durability damage should come across as whole points");
         assertEquals(2, tag.getInteger("GT.ToolMode"), "the scanner mode should carry over");
     }
 

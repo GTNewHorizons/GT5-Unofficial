@@ -21,6 +21,14 @@ import gregtech.api.interfaces.IToolStats;
  */
 public class ToolWrenchElectricItem extends ToolWrenchItem implements IElectricToolItem {
 
+    /** Energy one action costs: a rotation, which used to cost 100. */
+    public static final long EU_PER_USE = 100;
+
+    @Override
+    public long getEnergyCostPerUse() {
+        return EU_PER_USE;
+    }
+
     private final ToolElectricStorage electricStorage;
 
     public ToolWrenchElectricItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,

@@ -20,9 +20,6 @@ import gregtech.api.interfaces.IToolStats;
  */
 public class ToolScoopItem extends ToolItemBase {
 
-    /** Durability cost of catching one butterfly, in the unit where 100 is one durability point. */
-    public static final int CATCH_COST = 200;
-
     public ToolScoopItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,
         String englishTooltip) {
         super(unlocalizedName, toolStats, englishNameFormat, englishTooltip, null, ToolDictNames.craftingToolScoop);

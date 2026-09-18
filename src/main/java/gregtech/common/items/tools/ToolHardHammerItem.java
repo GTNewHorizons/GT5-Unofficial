@@ -22,9 +22,6 @@ import gregtech.api.interfaces.IToolStats;
  */
 public class ToolHardHammerItem extends ToolItemBase {
 
-    /** Durability cost of one survey, in the unit where 100 is one durability point. */
-    public static final int PROSPECT_COST = 100;
-
     public ToolHardHammerItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat) {
         super(
             unlocalizedName,
@@ -50,7 +47,7 @@ public class ToolHardHammerItem extends ToolItemBase {
             hitX,
             hitY,
             hitZ,
-            () -> player.capabilities.isCreativeMode || doDamage(stack, PROSPECT_COST));
+            () -> player.capabilities.isCreativeMode || spendOneUse(stack));
     }
 
     @Override

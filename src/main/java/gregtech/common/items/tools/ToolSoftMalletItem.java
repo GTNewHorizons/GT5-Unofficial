@@ -32,9 +32,6 @@ public class ToolSoftMalletItem extends ToolItemBase {
 
     public static final int MODE_DEACTIVATE = 2;
 
-    /** Durability cost of one use, in the unit where 100 is one durability point. */
-    public static final int USE_COST = 100;
-
     /**
      * @param unlocalizedName   appended to {@code gt.}; becomes both the registry name and the localization key root.
      * @param toolStats         the generic stats, reused verbatim from the old tool registry.
@@ -56,7 +53,7 @@ public class ToolSoftMalletItem extends ToolItemBase {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
         int ordinalSide, float hitX, float hitY, float hitZ) {
         if (getToolMaterial(stack) == Materials._NULL) return false;
-        return SoftMalletActions.use(this, stack, player, world, x, y, z, hitX, hitY, hitZ, USE_COST);
+        return SoftMalletActions.use(this, stack, player, world, x, y, z, hitX, hitY, hitZ);
     }
 
     /* ---------- DISPLAY ---------- */

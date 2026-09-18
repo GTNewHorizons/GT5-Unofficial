@@ -63,6 +63,12 @@ public interface IGTTool {
     boolean doDamage(ItemStack stack, long amount);
 
     /**
+     * Spends one action's worth of this tool and reports whether it could be paid for: a durability point for a tool
+     * that wears out, or its energy cost per action for one that runs on EU.
+     */
+    boolean spendOneUse(ItemStack stack);
+
+    /**
      * @return the energy stored on this tool, or 0 if it is not electric.
      */
     long getStoredCharge(ItemStack stack);

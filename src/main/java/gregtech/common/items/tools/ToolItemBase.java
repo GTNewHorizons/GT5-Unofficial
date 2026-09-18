@@ -71,7 +71,7 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
  */
 public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDamagableItem {
 
-    /** Where the accumulated durability damage is kept, in the unit where 100 is one durability point. */
+    /** Where the accumulated durability damage is kept, counted in whole durability points. */
     protected static final String DAMAGE_KEY = "GT.ToolDamage";
     /** Where the selected tool mode is kept. */
     protected static final String MODE_KEY = "GT.ToolMode";
@@ -227,9 +227,29 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
     public long getMaxStoredDamage(ItemStack stack) {
         Materials material = getToolMaterial(stack);
         if (material == Materials._NULL) return 0;
-        // Same formula MetaGeneratedTool.getToolWithStats() bakes into NBT, so the balance is unchanged; the only
-        // difference is that it is computed from the metadata instead of stored.
-        return 100L * (long) (material.mDurability * toolStats.getMaxDurabilityMultiplier());
+        // The material's durability times the tool type's multiplier, counted in whole points: one action, one point,
+        // so this number is also how many times the tool can be used.
+        return (long) (material.mDurability * toolStats.getMaxDurabilityMultiplier());
+    }
+
+    /**
+     * Spends one action's worth of this tool and reports whether it could be paid for. Every action costs the same --
+     * breaking a block, hitting something, being consumed by a recipe, or whatever the tool type does on a click --
+     * which is one durability point, or, for a tool that runs on energy instead, {@link #getEnergyCostPerUse()}.
+     */
+    @Override
+    public boolean spendOneUse(ItemStack stack) {
+        final long energy = getEnergyCostPerUse();
+        return doDamage(stack, energy > 0 ? energy : 1);
+    }
+
+    /**
+     * @return what one action costs a tool that stores energy rather than durability, in EU, or 0 for a tool that
+     *         wears out. Electric tools set this per type, since a drill's block and a file's recipe were never worth
+     *         the same.
+     */
+    public long getEnergyCostPerUse() {
+        return 0;
     }
 
     @Override
@@ -278,9 +298,12 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
         return toolStats.getMaxMode();
     }
 
+    /**
+     * One call, one action: the vanilla damage figure is ignored, since every action costs the same now.
+     */
     @Override
     public boolean doDamageToItem(ItemStack stack, int vanillaDamage) {
-        return doDamage(stack, vanillaDamage * 100L);
+        return spendOneUse(stack);
     }
 
     /* ---------- MINING ---------- */
@@ -312,9 +335,8 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
         EntityLivingBase player) {
         if (getToolMaterial(stack) == Materials._NULL) return false;
         GTUtility.doSoundAtClient(toolStats.getMiningSound(), 1, 1.0F);
-        doDamage(
-            stack,
-            (int) Math.max(1, block.getBlockHardness(world, x, y, z) * toolStats.getToolDamagePerBlockBreak()));
+        // A block is a block: no scaling by hardness any more.
+        spendOneUse(stack);
         return getDigSpeed(stack, block, world.getBlockMetadata(x, y, z)) > 0.0F;
     }
 
@@ -327,11 +349,10 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
     @Override
     public void onHarvestBlockEvent(ArrayList<ItemStack> drops, ItemStack stack, EntityPlayer player, Block block,
         int x, int y, int z, int metaData, int fortune, boolean silkTouch, BlockEvent.HarvestDropsEvent event) {
-        if (getToolMaterial(stack) != Materials._NULL && getDigSpeed(stack, block, metaData) > 0.0F) doDamage(
-            stack,
-            (long) toolStats
-                .convertBlockDrops(drops, stack, player, block, x, y, z, metaData, fortune, silkTouch, event)
-                * toolStats.getToolDamagePerDropConversion());
+        if (getToolMaterial(stack) == Materials._NULL || getDigSpeed(stack, block, metaData) <= 0.0F) return;
+        // One point for the conversion, however many drops it turned over.
+        if (toolStats.convertBlockDrops(drops, stack, player, block, x, y, z, metaData, fortune, silkTouch, event) > 0)
+            spendOneUse(stack);
     }
 
     @Override
@@ -398,7 +419,7 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
                     entity.hurtResistantTime = Math
                         .max(1, toolStats.getHurtResistanceTime(entity.hurtResistantTime, entity));
                     player.addExhaustion(0.3F);
-                    doDamage(stack, toolStats.getToolDamagePerEntityAttack());
+                    spendOneUse(stack);
                 }
             }
         }
@@ -416,7 +437,7 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
     public ItemStack getContainerItem(ItemStack stack) {
         if (getToolMaterial(stack) == Materials._NULL) return null;
         ItemStack result = GTUtility.copyAmount(1, stack);
-        doDamage(result, toolStats.getToolDamagePerContainerCraft());
+        spendOneUse(result);
         return result != null && result.stackSize > 0 ? result : null;
     }
 

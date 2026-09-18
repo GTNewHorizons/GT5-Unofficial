@@ -11,6 +11,14 @@ import gregtech.api.interfaces.IToolStats;
  */
 public class ToolJackHammerItem extends ToolElectricItemBase {
 
+    /** Energy one action costs: a block break, which used to be 50 per point of hardness. */
+    public static final long EU_PER_USE = 100;
+
+    @Override
+    public long getEnergyCostPerUse() {
+        return EU_PER_USE;
+    }
+
     public ToolJackHammerItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,
         String englishTooltip, long maxCharge, long voltage, int tier) {
         super(

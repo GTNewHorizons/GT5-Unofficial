@@ -22,6 +22,14 @@ import gregtech.api.interfaces.IToolStats;
  */
 public class ToolScrewdriverElectricItem extends ToolScrewdriverItem implements IElectricToolItem {
 
+    /** Energy one action costs: an adjustment, which used to cost 100. */
+    public static final long EU_PER_USE = 100;
+
+    @Override
+    public long getEnergyCostPerUse() {
+        return EU_PER_USE;
+    }
+
     private final ToolElectricStorage electricStorage;
 
     public ToolScrewdriverElectricItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,
