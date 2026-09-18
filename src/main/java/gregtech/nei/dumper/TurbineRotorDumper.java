@@ -1,10 +1,5 @@
 package gregtech.nei.dumper;
 
-import static gregtech.common.items.IDMetaTool01.TURBINE;
-import static gregtech.common.items.IDMetaTool01.TURBINE_HUGE;
-import static gregtech.common.items.IDMetaTool01.TURBINE_LARGE;
-import static gregtech.common.items.IDMetaTool01.TURBINE_SMALL;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,11 +19,16 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.TurbineStatCalculator;
-import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.tools.GTToolItems;
+import gregtech.common.items.tools.ToolTurbineItem;
 
 public class TurbineRotorDumper extends DataDumper {
 
-    private static final int[] TOOL_IDS = { TURBINE_SMALL.ID, TURBINE.ID, TURBINE_LARGE.ID, TURBINE_HUGE.ID };
+    private static ToolTurbineItem[] rotorItems() {
+        return new ToolTurbineItem[] { GTToolItems.TURBINE_SMALL, GTToolItems.TURBINE_NORMAL, GTToolItems.TURBINE_LARGE,
+            GTToolItems.TURBINE_HUGE };
+    }
+
     private static final String[] SIZE_NAMES = { "Small", "Normal", "Large", "Huge" };
 
     public TurbineRotorDumper() {
@@ -49,12 +49,14 @@ public class TurbineRotorDumper extends DataDumper {
         List<String[]> rows = new ArrayList<>();
         for (Materials mat : collectMaterials()) {
             int overflowTier = (int) (1 + Math.min(2.0, mat.mToolQuality / 3.0));
-            for (int si = 0; si < TOOL_IDS.length; si++) {
-                ItemStack stack = MetaGeneratedTool01.INSTANCE.getToolWithStats(TOOL_IDS[si], 1, mat, mat, null);
-                TurbineStatCalculator c = new TurbineStatCalculator(MetaGeneratedTool01.INSTANCE, stack);
+            ToolTurbineItem[] rotors = rotorItems();
+            for (int si = 0; si < rotors.length; si++) {
+                ItemStack stack = rotors[si].getToolWithMaterial(mat);
+                if (stack == null) continue;
+                TurbineStatCalculator c = new TurbineStatCalculator(rotors[si], stack);
                 rows.add(
                     new String[] { mat.mDefaultLocalName, String.valueOf(mat.mToolQuality),
-                        DumperUtils.formatDouble(mat.mToolSpeed), DumperUtils.formatDouble(mat.mDurability * 100.0),
+                        DumperUtils.formatDouble(mat.mToolSpeed), DumperUtils.formatDouble(mat.mDurability),
                         String.valueOf(overflowTier), SIZE_NAMES[si], String.valueOf(si + 1),
                         DumperUtils.formatDouble(c.getSteamEfficiency()),
                         DumperUtils.formatDouble(c.getLooseSteamEfficiency()),
@@ -160,14 +162,14 @@ public class TurbineRotorDumper extends DataDumper {
             matObj.addProperty("name", mat.mDefaultLocalName + " (" + mat.mToolQuality + ")");
             matObj.addProperty("tier", mat.mToolQuality);
             matObj.addProperty("mining_speed", mat.mToolSpeed);
-            matObj.addProperty("base_durability", mat.mDurability * 100.0);
+            matObj.addProperty("base_durability", (double) mat.mDurability);
             matObj.addProperty("overflow_tier", overflowTier);
             JsonObject sizes = new JsonObject();
-            for (int si = 0; si < TOOL_IDS.length; si++) {
-                ItemStack stack = MetaGeneratedTool01.INSTANCE.getToolWithStats(TOOL_IDS[si], 1, mat, mat, null);
-                sizes.add(
-                    SIZE_NAMES[si],
-                    buildSizeJson(new TurbineStatCalculator(MetaGeneratedTool01.INSTANCE, stack), si));
+            ToolTurbineItem[] rotors = rotorItems();
+            for (int si = 0; si < rotors.length; si++) {
+                ItemStack stack = rotors[si].getToolWithMaterial(mat);
+                if (stack == null) continue;
+                sizes.add(SIZE_NAMES[si], buildSizeJson(new TurbineStatCalculator(rotors[si], stack), si));
             }
             matObj.add("sizes", sizes);
             root.add(matObj);

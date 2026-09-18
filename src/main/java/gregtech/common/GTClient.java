@@ -286,6 +286,10 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(GTToolItems.SOLDERING_IRON_LV, metaToolRenderer);
         MinecraftForgeClient.registerItemRenderer(GTToolItems.SOLDERING_IRON_MV, metaToolRenderer);
         MinecraftForgeClient.registerItemRenderer(GTToolItems.SOLDERING_IRON_HV, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.TURBINE_SMALL, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.TURBINE_NORMAL, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.TURBINE_LARGE, metaToolRenderer);
+        MinecraftForgeClient.registerItemRenderer(GTToolItems.TURBINE_HUGE, metaToolRenderer);
 
         MinecraftForgeClient.registerItemRenderer(CircuitComponentFakeItem.INSTANCE, new CircuitComponentItemRenderer());
 

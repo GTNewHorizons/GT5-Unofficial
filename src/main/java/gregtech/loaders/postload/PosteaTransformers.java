@@ -383,7 +383,11 @@ public class PosteaTransformers implements Runnable {
         new MigratedTool(144, "gregtech:gt.tool.buzzsaw_hv", () -> GTToolItems.BUZZSAW_HV),
         new MigratedTool(160, "gregtech:gt.tool.soldering_iron_lv", () -> GTToolItems.SOLDERING_IRON_LV),
         new MigratedTool(162, "gregtech:gt.tool.soldering_iron_mv", () -> GTToolItems.SOLDERING_IRON_MV),
-        new MigratedTool(164, "gregtech:gt.tool.soldering_iron_hv", () -> GTToolItems.SOLDERING_IRON_HV), };
+        new MigratedTool(164, "gregtech:gt.tool.soldering_iron_hv", () -> GTToolItems.SOLDERING_IRON_HV),
+        new MigratedTool(170, "gregtech:gt.tool.turbine_small", () -> GTToolItems.TURBINE_SMALL),
+        new MigratedTool(172, "gregtech:gt.tool.turbine_normal", () -> GTToolItems.TURBINE_NORMAL),
+        new MigratedTool(174, "gregtech:gt.tool.turbine_large", () -> GTToolItems.TURBINE_LARGE),
+        new MigratedTool(176, "gregtech:gt.tool.turbine_huge", () -> GTToolItems.TURBINE_HUGE), };
 
     private static final Int2ObjectMap<MigratedTool> MIGRATED_TOOLS_BY_OLD_META = new Int2ObjectOpenHashMap<>();
 
@@ -445,10 +449,10 @@ public class PosteaTransformers implements Runnable {
         ItemStackReplacementManager.addTransformationHandler(
             "gregtech:gt.detrav.metatool.01",
             (name, nbt) -> convertTool(nbt, MIGRATED_DETRAV_TOOLS_BY_OLD_META, DETRAV_MODE_KEY));
-        // Unlike gt.metatool.01, which still holds the turbine rotors, the scanners' old item is gone from the
-        // registry altogether, and Forge stops world load on a missing registry entry. Postea reads the world's own
-        // name-to-id map, so the handler above still recognises and rewrites saved scanners; this only keeps the
-        // load from stopping over the entry itself.
+        // Unlike gt.metatool.01, which is still registered even though no tool lives on it any more, the scanners'
+        // old item is gone from the registry altogether, and Forge stops world load on a missing registry entry.
+        // Postea reads the world's own name-to-id map, so the handler above still recognises and rewrites saved
+        // scanners; this only keeps the load from stopping over the entry itself.
         ItemStackReplacementManager.ignoreMissingMapping("gregtech:gt.detrav.metatool.01");
     }
 

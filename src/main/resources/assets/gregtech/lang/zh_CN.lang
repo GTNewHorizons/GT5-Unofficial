@@ -1730,15 +1730,6 @@ gt.blockmachines.hatch.dataaccess.desc=多方块机器的数据访问接口\n增
 gt.metatool.empty.name=%s（空）
 gt.metatool.empty.tooltip=你需要为其充电
 
-gt.metatool.01.170.name=小型涡轮
-gt.metatool.01.170.tooltip=大涡轮机使用的涡轮转子
-gt.metatool.01.172.name=涡轮
-gt.metatool.01.172.tooltip=大涡轮机使用的涡轮转子
-gt.metatool.01.174.name=大型涡轮
-gt.metatool.01.174.tooltip=大涡轮机使用的涡轮转子
-gt.metatool.01.176.name=巨型涡轮
-gt.metatool.01.176.tooltip=大涡轮机使用的涡轮转子
-
 # Side names
 gt.lang.face.any=任意面
 gt.lang.face.back=背面

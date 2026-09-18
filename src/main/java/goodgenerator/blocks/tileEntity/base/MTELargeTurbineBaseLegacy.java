@@ -27,12 +27,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -44,7 +44,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.tools.ToolTurbineItem;
 
 public abstract class MTELargeTurbineBaseLegacy extends MTEEnhancedMultiBlockBase<MTELargeTurbineBaseLegacy>
     implements ISurvivalConstructable, INEIPreviewModifier {
@@ -213,16 +213,12 @@ public abstract class MTELargeTurbineBaseLegacy extends MTEEnhancedMultiBlockBas
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         ItemStack controllerSlot = getControllerSlot();
-        if ((counter & 7) == 0 && (controllerSlot == null || !(controllerSlot.getItem() instanceof MetaGeneratedTool)
-            || controllerSlot.getItemDamage() < 170
-            || controllerSlot.getItemDamage() > 179)) {
+        if ((counter & 7) == 0 && !ToolTurbineItem.isTurbineRotor(controllerSlot)) {
             stopMachine(ShutDownReasonRegistry.NO_TURBINE);
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
 
-        TurbineStatCalculator turbine = new TurbineStatCalculator(
-            (MetaGeneratedTool) controllerSlot.getItem(),
-            controllerSlot);
+        TurbineStatCalculator turbine = new TurbineStatCalculator((IGTTool) controllerSlot.getItem(), controllerSlot);
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
         if (!tFluids.isEmpty()) {
@@ -287,7 +283,7 @@ public abstract class MTELargeTurbineBaseLegacy extends MTEEnhancedMultiBlockBas
         if (GTUtility.isStackInvalid(aStack)) {
             return 0;
         }
-        if (aStack.getItem() instanceof MetaGeneratedTool01) {
+        if (ToolTurbineItem.isTurbineRotor(aStack)) {
             return 10000;
         }
         return 0;
@@ -312,10 +308,10 @@ public abstract class MTELargeTurbineBaseLegacy extends MTEEnhancedMultiBlockBas
     public String[] getInfoData() {
         int tDura = 0;
 
-        if (mInventory[1] != null && mInventory[1].getItem() instanceof MetaGeneratedTool01) {
+        if (ToolTurbineItem.isTurbineRotor(mInventory[1])) {
+            IGTTool rotor = (IGTTool) mInventory[1].getItem();
             tDura = GTUtility.safeInt(
-                (long) (100.0f / MetaGeneratedTool.getToolMaxDamage(mInventory[1])
-                    * (MetaGeneratedTool.getToolDamage(mInventory[1])) + 1));
+                (long) (100.0f / rotor.getMaxStoredDamage(mInventory[1]) * rotor.getStoredDamage(mInventory[1]) + 1));
         }
 
         long storedEnergy = 0;

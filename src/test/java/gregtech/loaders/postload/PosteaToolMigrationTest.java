@@ -284,6 +284,51 @@ class PosteaToolMigrationTest {
         assertEquals(2, tag.getInteger("GT.ToolMode"), "the scanner mode should carry over");
     }
 
+    /**
+     * A rotor's wear arrives in fractions of a durability point, so a saved one is very unlikely to sit on a round
+     * hundred. The leftover hundredths go into the bank the new item spends from, rather than being rounded away.
+     */
+    @Test
+    void turbineRotorKeepsItsWearDownToTheHundredth() {
+        // A Steel small rotor: max durability 100 * 512 * 1 on the old item, worn 12345 hundredths, i.e. 123 whole
+        // points and 45 hundredths of the next one.
+        NBTTagCompound stack = oldTool(170, "Steel", 12_345L, 51_200L, (byte) 0, null, null);
+
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false);
+
+        assertEquals(STEEL_META, stack.getShort("Damage"), "metadata should become the material");
+
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        assertEquals(123L, tag.getLong("GT.ToolDamage"), "whole points of wear should come across");
+        assertEquals(45L, tag.getLong("GT.WearBank"), "the unfinished hundredths should be banked, not dropped");
+        assertFalse(tag.hasKey("GT.ToolStats"), "the old stats compound should be gone");
+    }
+
+    @Test
+    void hugeTurbineRotorOnARoundPointBanksNothing() {
+        // The same rotor one size up, worn an exact number of points: there is nothing left to bank.
+        NBTTagCompound stack = oldTool(176, "Iron", 20_000L, 51_200L, (byte) 0, null, null);
+
+        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false);
+
+        assertEquals(IRON_META, stack.getShort("Damage"));
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        assertEquals(200L, tag.getLong("GT.ToolDamage"));
+        assertFalse(tag.hasKey("GT.WearBank"), "a round number of points leaves no fraction to carry");
+    }
+
+    @Test
+    void freshTurbineRotorLosesItsTagEntirely() {
+        NBTTagCompound stack = oldTool(174, "Steel", 0L, 51_200L, (byte) 0, null, null);
+        stack.getCompoundTag("tag")
+            .removeTag("ench");
+
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false);
+
+        assertEquals(STEEL_META, stack.getShort("Damage"));
+        assertFalse(stack.hasKey("tag"), "an unused rotor needs no tag at all");
+    }
+
     @Test
     void electricProspectorKeepsItsChargeAndScannerMode() {
         // A LuV electric scanner at its default capacity, part charged, set to pollution.

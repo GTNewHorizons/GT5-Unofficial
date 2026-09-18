@@ -52,13 +52,12 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.common.items.IDMetaTool01;
-import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.items.tools.ToolFileElectricItem;
 import gregtech.common.items.tools.ToolMaterialIndex;
 import gregtech.common.items.tools.ToolScrewdriverElectricItem;
 import gregtech.common.items.tools.ToolSolderingIronItem;
+import gregtech.common.items.tools.ToolTurbineItem;
 import gregtech.common.items.tools.ToolWireCutterElectricItem;
 import gregtech.common.items.tools.ToolWrenchElectricItem;
 
@@ -587,59 +586,16 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 32))
                 .addTo(formingPressRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(turbineBlade, 4), GTOreDictUnificator.get(stickLong, Materials.Magnalium, 1))
-                .itemOutputs(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.TURBINE_SMALL.ID,
-                        1,
-                        werkstoff.getBridgeMaterial(),
-                        Materials.Magnalium,
-                        null))
-                .duration(8 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 100))
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(turbineBlade, 8), GTOreDictUnificator.get(stickLong, Materials.Titanium, 1))
-                .itemOutputs(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.TURBINE.ID,
-                        1,
-                        werkstoff.getBridgeMaterial(),
-                        Materials.Titanium,
-                        null))
-                .duration(16 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 400))
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    werkstoff.get(turbineBlade, 12),
-                    GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 1))
-                .itemOutputs(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.TURBINE_LARGE.ID,
-                        1,
-                        werkstoff.getBridgeMaterial(),
-                        Materials.TungstenSteel,
-                        null))
-                .duration(32 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 1600))
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(turbineBlade, 16), GTOreDictUnificator.get(stickLong, Materials.Americium, 1))
-                .itemOutputs(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                        IDMetaTool01.TURBINE_HUGE.ID,
-                        1,
-                        werkstoff.getBridgeMaterial(),
-                        Materials.Americium,
-                        null))
-                .duration(1 * MINUTES + 4 * SECONDS)
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 6400))
-                .addTo(assemblerRecipes);
+            addRotorRecipe(GTToolItems.TURBINE_SMALL, werkstoff, 4, Materials.Magnalium, 8 * SECONDS, 100);
+            addRotorRecipe(GTToolItems.TURBINE_NORMAL, werkstoff, 8, Materials.Titanium, 16 * SECONDS, 400);
+            addRotorRecipe(GTToolItems.TURBINE_LARGE, werkstoff, 12, Materials.TungstenSteel, 32 * SECONDS, 1600);
+            addRotorRecipe(
+                GTToolItems.TURBINE_HUGE,
+                werkstoff,
+                16,
+                Materials.Americium,
+                1 * MINUTES + 4 * SECONDS,
+                6400);
         }
 
         if (!werkstoff.hasItemType(gem)) {
@@ -796,5 +752,23 @@ public class ToolLoader implements IWerkstoffRunnable {
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P', plate.get(rubber),
                 'S', stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L', battery.get(1L) });
+    }
+
+    /**
+     * Adds the assembler recipe for one size of turbine rotor made from a Werkstoff, mirroring the GregTech-material
+     * version in {@code ProcessingToolHead}.
+     */
+    private static void addRotorRecipe(ToolTurbineItem rotorItem, Werkstoff werkstoff, int blades,
+        Materials shaftMaterial, int duration, int voltage) {
+        ItemStack rotor = rotorItem.registerMaterial(
+            werkstoff.getBridgeMaterial(),
+            ToolMaterialIndex.WERKSTOFF_META_OFFSET + werkstoff.getmID());
+        if (rotor == null) return;
+        GTValues.RA.stdBuilder()
+            .itemInputs(werkstoff.get(turbineBlade, blades), GTOreDictUnificator.get(stickLong, shaftMaterial, 1))
+            .itemOutputs(rotor)
+            .duration(duration)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, voltage))
+            .addTo(assemblerRecipes);
     }
 }

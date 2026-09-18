@@ -14,17 +14,18 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.common.covers.conditions.MaintenanceAlertCondition;
 import gregtech.common.covers.modes.RedstoneMode;
 import gregtech.common.gui.modularui.cover.CoverNeedMaintenanceGui;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory;
+import gregtech.common.items.tools.ToolTurbineItem;
 
 public class CoverNeedMaintainance extends CoverLegacyData {
 
@@ -33,9 +34,7 @@ public class CoverNeedMaintainance extends CoverLegacyData {
     }
 
     public static boolean isRotor(ItemStack rotor) {
-        return (rotor != null && rotor.getItem() instanceof MetaGeneratedTool
-            && rotor.getItemDamage() >= 170
-            && rotor.getItemDamage() <= 176);
+        return ToolTurbineItem.isTurbineRotor(rotor);
     }
 
     public MaintenanceAlertCondition getMaintenanceAlertCondition() {
@@ -82,8 +81,9 @@ public class CoverNeedMaintainance extends CoverLegacyData {
                     if (ideal - real > coverVar) needsRepair = true;
                 } else if (coverVar == 5 || coverVar == 6) {
                     if (isRotor(tRotor)) {
-                        long tMax = MetaGeneratedTool.getToolMaxDamage(tRotor);
-                        long tCur = MetaGeneratedTool.getToolDamage(tRotor);
+                        final IGTTool rotorItem = (IGTTool) tRotor.getItem();
+                        long tMax = rotorItem.getMaxStoredDamage(tRotor);
+                        long tCur = rotorItem.getStoredDamage(tRotor);
                         if (coverVar == 5) {
                             needsRepair = (tCur >= tMax * 8 / 10);
                         } else {
@@ -91,7 +91,9 @@ public class CoverNeedMaintainance extends CoverLegacyData {
                                 Math.min(
                                     multi.mEUt / multi.damageFactorLow,
                                     Math.pow(multi.mEUt, multi.damageFactorHigh)));
-                            needsRepair = tCur + mExpectedDamage * 2 >= tMax;
+                            // The wear formula counts in hundredths of a durability point and the rotor in whole
+                            // ones, so the comparison is made in hundredths.
+                            needsRepair = tCur * 100 + mExpectedDamage * 2 >= tMax * 100;
                         }
                     } else {
                         needsRepair = true;

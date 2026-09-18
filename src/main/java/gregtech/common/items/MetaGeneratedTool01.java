@@ -1,10 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.common.items.IDMetaTool01.TURBINE;
-import static gregtech.common.items.IDMetaTool01.TURBINE_HUGE;
-import static gregtech.common.items.IDMetaTool01.TURBINE_LARGE;
-import static gregtech.common.items.IDMetaTool01.TURBINE_SMALL;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -19,10 +14,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.tools.ItemNetworkAnalyzer;
-import gregtech.common.tools.ToolTurbineHuge;
-import gregtech.common.tools.ToolTurbineLarge;
-import gregtech.common.tools.ToolTurbineNormal;
-import gregtech.common.tools.ToolTurbineSmall;
 import gregtech.common.tools.ToolVajra;
 
 public class MetaGeneratedTool01 extends MetaGeneratedTool {
@@ -32,11 +23,6 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
     public MetaGeneratedTool01() {
         super("metatool.01");
         INSTANCE = this;
-
-        addTool(TURBINE_SMALL.ID, "Small Turbine", "Turbine Rotors for your power station", new ToolTurbineSmall());
-        addTool(TURBINE.ID, "Turbine", "Turbine Rotors for your power station", new ToolTurbineNormal());
-        addTool(TURBINE_LARGE.ID, "Large Turbine", "Turbine Rotors for your power station", new ToolTurbineLarge());
-        addTool(TURBINE_HUGE.ID, "Huge Turbine", "Turbine Rotors for your power station", new ToolTurbineHuge());
 
         ItemList.Tool_Vajra.set(new ToolVajra("Tool_Vajra", "Vajra", "", 0, 20, true));
         ItemList.NetworkAnalyzer.set(new ItemNetworkAnalyzer("Network Analyzer", "", 0, 0, true));

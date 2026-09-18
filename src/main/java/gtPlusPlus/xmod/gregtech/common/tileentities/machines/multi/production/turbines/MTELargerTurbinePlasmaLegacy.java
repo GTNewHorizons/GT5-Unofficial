@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -110,9 +111,7 @@ public class MTELargerTurbinePlasmaLegacy extends MTELargerTurbineBaseLegacy {
             // calculations
             ItemStack turbineItem = mTurbineRotorHatches.get(0)
                 .getTurbine();
-            TurbineStatCalculator turbine = new TurbineStatCalculator(
-                (MetaGeneratedTool) turbineItem.getItem(),
-                turbineItem);
+            TurbineStatCalculator turbine = new TurbineStatCalculator((IGTTool) turbineItem.getItem(), turbineItem);
 
             ArrayList<FluidStack> tFluids = getStoredFluids();
 

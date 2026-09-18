@@ -21,6 +21,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -246,9 +247,7 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
                 stopMachine(ShutDownReasonRegistry.NO_TURBINE);
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
-            TurbineStatCalculator turbine = new TurbineStatCalculator(
-                (MetaGeneratedTool) turbineItem.getItem(),
-                turbineItem);
+            TurbineStatCalculator turbine = new TurbineStatCalculator((IGTTool) turbineItem.getItem(), turbineItem);
 
             ArrayList<FluidStack> tFluids = getStoredFluids();
 

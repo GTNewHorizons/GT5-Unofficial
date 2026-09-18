@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,6 +52,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.items.tools.ToolTurbineItem;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
@@ -283,9 +285,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
     public abstract int getCasingTextureIndex();
 
     public static boolean isValidTurbine(ItemStack aTurbine) {
-        return (aTurbine != null && aTurbine.getItem() instanceof MetaGeneratedTool
-            && aTurbine.getItemDamage() >= 170
-            && aTurbine.getItemDamage() <= 176);
+        return ToolTurbineItem.isTurbineRotor(aTurbine);
     }
 
     protected ArrayList<ItemStack> getAllBufferedTurbines() {
@@ -334,18 +334,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
     }
 
     public static int getTurbineSize(ItemStack aTurbine) {
-        if (isValidTurbine(aTurbine)) {
-            if (aTurbine.getItemDamage() >= 170 && aTurbine.getItemDamage() < 172) {
-                return 1;
-            } else if (aTurbine.getItemDamage() >= 172 && aTurbine.getItemDamage() < 174) {
-                return 2;
-            } else if (aTurbine.getItemDamage() >= 174 && aTurbine.getItemDamage() < 176) {
-                return 3;
-            } else if (aTurbine.getItemDamage() >= 176 && aTurbine.getItemDamage() < 178) {
-                return 4;
-            }
-        }
-        return 0;
+        return ToolTurbineItem.getTurbineSize(aTurbine);
     }
 
     public static String getTurbineSizeString(int aSize) {
@@ -429,7 +418,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
             ItemStack aStack = getFullTurbineAssemblies().get(0)
                 .getTurbine();
 
-            TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
+            TurbineStatCalculator turbine = new TurbineStatCalculator((IGTTool) aStack.getItem(), aStack);
 
             if (!tFluids.isEmpty()) {
                 if (baseEff == 0 || optFlow == 0

@@ -9526,15 +9526,6 @@ gt.blockmachines.hatch.dataaccess.desc=Доступ к данным для му�
 gt.metatool.empty.name=%s (Без заряда)
 gt.metatool.empty.tooltip=Устройству нужна зарядка
 
-gt.metatool.01.170.name=Малая турбина
-gt.metatool.01.170.tooltip=Роторы турбин для вашей электростанции
-gt.metatool.01.172.name=Турбина
-gt.metatool.01.172.tooltip=Роторы турбин для вашей электростанции
-gt.metatool.01.174.name=Большая турбина
-gt.metatool.01.174.tooltip=Роторы турбин для вашей электростанции
-gt.metatool.01.176.name=Огромная турбина
-gt.metatool.01.176.tooltip=Роторы турбин для вашей электростанции
-
 # Side names
 gt.lang.face.any=Любая сторона
 gt.lang.face.back=Задняя сторона

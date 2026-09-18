@@ -10096,15 +10096,6 @@ gt.blockmachines.hatch.dataaccess.desc=Data Access for Multiblocks\nAdds %s extr
 gt.metatool.empty.name=%s (Empty)
 gt.metatool.empty.tooltip=You need to recharge it
 
-gt.metatool.01.170.name=Small Turbine
-gt.metatool.01.170.tooltip=Turbine Rotors for your power station
-gt.metatool.01.172.name=Turbine
-gt.metatool.01.172.tooltip=Turbine Rotors for your power station
-gt.metatool.01.174.name=Large Turbine
-gt.metatool.01.174.tooltip=Turbine Rotors for your power station
-gt.metatool.01.176.name=Huge Turbine
-gt.metatool.01.176.tooltip=Turbine Rotors for your power station
-
 # Standalone tools: one item per type and tier, with the material in the metadata.
 gt.tool.wrench.name=%material Wrench
 gt.tool.wrench.tooltip=Hold left-click to dismantle machines
@@ -10179,6 +10170,14 @@ gt.tool.soldering_iron_mv.name=%material Soldering Iron (MV)
 gt.tool.soldering_iron_mv.tooltip=Fixes burned out circuits. Needs soldering material in inventory.
 gt.tool.soldering_iron_hv.name=%material Soldering Iron (HV)
 gt.tool.soldering_iron_hv.tooltip=Fixes burned out circuits. Needs soldering material in inventory.
+gt.tool.turbine_small.name=%material Small Turbine
+gt.tool.turbine_small.tooltip=Turbine rotor for your power station
+gt.tool.turbine_normal.name=%material Turbine
+gt.tool.turbine_normal.tooltip=Turbine rotor for your power station
+gt.tool.turbine_large.name=%material Large Turbine
+gt.tool.turbine_large.tooltip=Turbine rotor for your power station
+gt.tool.turbine_huge.name=%material Huge Turbine
+gt.tool.turbine_huge.tooltip=Turbine rotor for your power station
 
 # Side names
 gt.lang.face.any=Any Side

@@ -11,11 +11,11 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.common.covers.CoverNeedMaintainance;
 import gregtech.common.covers.CoverPosition;
@@ -106,8 +106,9 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
                     case ROTOR_80, ROTOR_100 -> {
                         ItemStack rotor = multiTE.getRealInventory()[1];
                         if (CoverNeedMaintainance.isRotor(rotor)) {
-                            long max = MetaGeneratedTool.getToolMaxDamage(rotor);
-                            long current = MetaGeneratedTool.getToolDamage(rotor);
+                            final IGTTool rotorItem = (IGTTool) rotor.getItem();
+                            long max = rotorItem.getMaxStoredDamage(rotor);
+                            long current = rotorItem.getStoredDamage(rotor);
 
                             if (mode == MaintenanceMode.ROTOR_80) {
                                 signal = current >= max * 8 / 10;
@@ -116,7 +117,9 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
                                     Math.min(
                                         (double) multiTE.mEUt / multiTE.damageFactorLow,
                                         Math.pow(multiTE.mEUt, multiTE.damageFactorHigh)));
-                                signal = current + expectedDamage * 2 >= max;
+                                // The wear formula counts in hundredths of a durability point and the rotor in
+                                // whole ones, so the comparison is made in hundredths.
+                                signal = current * 100 + expectedDamage * 2 >= max * 100;
                             }
                         } else {
                             signal = true;

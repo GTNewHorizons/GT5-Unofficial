@@ -62,6 +62,7 @@ public enum IDMetaTool01 {
     SOLDERING_IRON_LV(160),
     SOLDERING_IRON_MV(162),
     SOLDERING_IRON_HV(164),
+    // Reserved, see the note above.
     TURBINE_SMALL(170),
     TURBINE(172),
     TURBINE_LARGE(174),

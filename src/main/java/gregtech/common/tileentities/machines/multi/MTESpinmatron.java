@@ -51,6 +51,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -79,12 +80,8 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.gui.modularui.multiblock.MTESpinmatronGui;
-import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.tools.ToolTurbineItem;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tools.ToolTurbineHuge;
-import gregtech.common.tools.ToolTurbineLarge;
-import gregtech.common.tools.ToolTurbineNormal;
-import gregtech.common.tools.ToolTurbineSmall;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
@@ -651,11 +648,9 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 
     public boolean isTurbine(ItemStack aStack) { // thank you airfilter!
-        if (aStack == null) return false;
-        if (!(aStack.getItem() instanceof MetaGeneratedTool01 tool)) return false;
-        if (aStack.getItemDamage() < 170 || aStack.getItemDamage() > 179) return false;
+        if (!ToolTurbineItem.isTurbineRotor(aStack)) return false;
 
-        IToolStats stats = tool.getToolStats(aStack);
+        IToolStats stats = ((IGTTool) aStack.getItem()).getToolStats(aStack);
         if (stats == null || stats.getSpeedMultiplier() <= 0) return false;
 
         Materials material = MetaGeneratedTool.getPrimaryMaterial(aStack);
@@ -669,25 +664,13 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             if (turbineHolder.getStackInSlot(i) != null) { // operate under the assumption the tool in the slot IS a
                 // rotor.
                 ItemStack currentItem = turbineHolder.getStackInSlot(i);
-                IToolStats toolStats = ((MetaGeneratedTool) currentItem.getItem()).getToolStats(currentItem);
-                int harvestLevel = ((MetaGeneratedTool) currentItem.getItem()).getHarvestLevel(currentItem, "test");
-
-                if (toolStats instanceof ToolTurbineHuge) {
-                    sumRotorLevels += harvestLevel;
-                    continue;
-                }
-                if (toolStats instanceof ToolTurbineLarge) {
-                    sumRotorLevels += (int) (0.75F * harvestLevel);
-                    continue;
-                }
-                if (toolStats instanceof ToolTurbineNormal) {
-                    sumRotorLevels += (int) (0.5F * harvestLevel);
-                    continue;
-                }
-                if (toolStats instanceof ToolTurbineSmall) {
-                    sumRotorLevels += (int) (0.25F * harvestLevel);
-                }
-
+                // A quarter of the rotor's level per size step, so a huge rotor counts for all of it and a small one
+                // for a quarter.
+                int size = ToolTurbineItem.getTurbineSize(currentItem);
+                if (size <= 0) continue;
+                int harvestLevel = currentItem.getItem()
+                    .getHarvestLevel(currentItem, "test");
+                sumRotorLevels += (int) (size * 0.25F * harvestLevel);
             }
         }
 

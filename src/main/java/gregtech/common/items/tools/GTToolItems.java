@@ -36,6 +36,10 @@ import gregtech.common.tools.ToolScrewdriverMV;
 import gregtech.common.tools.ToolSoftMallet;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
+import gregtech.common.tools.ToolTurbineHuge;
+import gregtech.common.tools.ToolTurbineLarge;
+import gregtech.common.tools.ToolTurbineNormal;
+import gregtech.common.tools.ToolTurbineSmall;
 import gregtech.common.tools.ToolWireCutter;
 import gregtech.common.tools.ToolWireCutterHV;
 import gregtech.common.tools.ToolWireCutterLV;
@@ -96,6 +100,13 @@ public final class GTToolItems {
     public static ToolSolderingIronItem SOLDERING_IRON_LV;
     public static ToolSolderingIronItem SOLDERING_IRON_MV;
     public static ToolSolderingIronItem SOLDERING_IRON_HV;
+    public static ToolTurbineItem TURBINE_SMALL;
+    public static ToolTurbineItem TURBINE_NORMAL;
+    public static ToolTurbineItem TURBINE_LARGE;
+    public static ToolTurbineItem TURBINE_HUGE;
+
+    /** Every rotor size says the same thing, so it is written once. */
+    private static final String TURBINE_TOOLTIP = "Turbine rotor for your power station";
 
     /**
      * Ore dictionary registrations that are waiting for {@link #flushOreDictRegistrations()}.
@@ -338,6 +349,30 @@ public final class GTToolItems {
             1_600_000L,
             512L,
             3);
+        TURBINE_SMALL = new ToolTurbineItem(
+            "tool.turbine_small",
+            new ToolTurbineSmall(),
+            "%material Small Turbine",
+            TURBINE_TOOLTIP,
+            1);
+        TURBINE_NORMAL = new ToolTurbineItem(
+            "tool.turbine_normal",
+            new ToolTurbineNormal(),
+            "%material Turbine",
+            TURBINE_TOOLTIP,
+            2);
+        TURBINE_LARGE = new ToolTurbineItem(
+            "tool.turbine_large",
+            new ToolTurbineLarge(),
+            "%material Large Turbine",
+            TURBINE_TOOLTIP,
+            3);
+        TURBINE_HUGE = new ToolTurbineItem(
+            "tool.turbine_huge",
+            new ToolTurbineHuge(),
+            "%material Huge Turbine",
+            TURBINE_TOOLTIP,
+            4);
     }
 
     /**

@@ -22,6 +22,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -155,7 +156,7 @@ public class MTEHatchTurbine extends MTEHatch {
     public void damageTurbine(long aEUt, int damageFactorLow, float damageFactorHigh) {
         if (hasTurbine() && MathUtils.randInt(0, 1) == 0) {
             ItemStack aTurbine = getTurbine();
-            ((MetaGeneratedTool) aTurbine.getItem()).doDamage(
+            ((IGTTool) aTurbine.getItem()).doMachineWear(
                 aTurbine,
                 (long) getDamageToComponent(aTurbine)
                     * (long) Math.min((float) aEUt / (float) damageFactorLow, Math.pow(aEUt, damageFactorHigh)));
@@ -356,7 +357,7 @@ public class MTEHatchTurbine extends MTEHatch {
         if (this.getBaseMetaTileEntity()
             .isServerSide() && !aPlayer.isSneaking()) {
             if (aTool != null) {
-                if (aTool.getItem() instanceof MetaGeneratedTool) {
+                if (aTool.getItem() instanceof IGTTool) {
                     return onToolClick(aTool, aPlayer, wrenchingSide);
                 }
             }
@@ -370,7 +371,7 @@ public class MTEHatchTurbine extends MTEHatch {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
             if (aTool != null) {
-                if (aTool.getItem() instanceof MetaGeneratedTool) {
+                if (aTool.getItem() instanceof IGTTool) {
                     return onToolClick(aTool, aPlayer, wrenchingSide);
                 }
             }

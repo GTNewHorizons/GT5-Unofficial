@@ -95,6 +95,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.CheckboxWidget;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
@@ -136,7 +137,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.gui.mui1.StructureErrorMui1Compat;
-import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.tools.ToolTurbineItem;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
@@ -1386,7 +1387,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     /**
      * Gets the factor value to damage the ItemStack in the controller slot.
      * <p>
-     * This function will be called only if the ItemStack is {@link MetaGeneratedTool01}, and the actual applied damage
+     * This function will be called only if the ItemStack is a GregTech tool, and the actual applied damage
      * value is multiplied by
      * <a href="https://www.wolframalpha.com/input?i=plot+min%28x%2F5%2C+x%5E%280.6%29%29+range+0+to+512">a formula</a>
      * calculated with {@link #damageFactorLow} and {@link #damageFactorHigh}. See {@link #doRandomMaintenanceDamage()}
@@ -1489,8 +1490,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0
                 && !mInventory[1].getUnlocalizedName()
                     .startsWith("gt.blockmachines.basicmachine.")) {
-                if (mInventory[1].getItem() instanceof MetaGeneratedTool01 metaGeneratedTool) {
-                    metaGeneratedTool.doDamage(
+                // Any GregTech tool, so that the turbine rotors keep wearing out now that they are their own items
+                // rather than metadata on the old tool meta-item.
+                if (mInventory[1].getItem() instanceof IGTTool tool) {
+                    tool.doMachineWear(
                         mInventory[1],
                         (long) getDamageToComponent(getControllerSlot()) * (long) Math.min(
                             Math.abs(getEUtForDamageCalc()) / this.damageFactorLow,
@@ -3974,9 +3977,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         && (this instanceof MTELargeTurbineLegacy || this instanceof MTELargeTurbineBase)) {
                         final ItemStack tItem = inventorySlot.getMcSlot()
                             .getStack();
-                        return tItem == null
-                            || !(tItem.getItem() == MetaGeneratedTool01.INSTANCE && tItem.getItemDamage() >= 170
-                                && tItem.getItemDamage() <= 177);
+                        return !ToolTurbineItem.isTurbineRotor(tItem);
                     }
                     return false;
                 }));

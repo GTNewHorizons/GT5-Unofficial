@@ -13,15 +13,16 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.GTMod;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTETurbineHousingGui;
+import gregtech.common.items.tools.ToolTurbineItem;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gtPlusPlus.core.util.Utils;
@@ -113,17 +114,13 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     public boolean isItemStackTurbine(ItemStack aStack) {
-        if (aStack != null && aStack.getItem() instanceof MetaGeneratedTool) {
-            return aStack.getItemDamage() >= 170 && aStack.getItemDamage() <= 176;
-        }
-        return false;
+        return ToolTurbineItem.isTurbineRotor(aStack);
     }
 
     public boolean isItemStackScrewdriver(ItemStack aStack) {
-        if (aStack.getItem() instanceof MetaGeneratedTool) {
-            return aStack.getItemDamage() == 22 || aStack.getItemDamage() == 150;
-        }
-        return false;
+        // The screwdrivers are standalone items with the material in the metadata now, so the list every other
+        // machine checks is the only thing that still recognises all of them.
+        return GTUtility.isStackInList(aStack, GregTechAPI.sScrewdriverList);
     }
 
     @Override

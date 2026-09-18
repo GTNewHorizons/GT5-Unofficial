@@ -49,8 +49,13 @@ final class MetaToolStackMigration {
         } else {
             // The old item counted durability in hundredths of a point, the new one in whole points, and the maximum
             // is the same number of points either way, so a hundredth of the old figure is the same share of the bar.
-            final long damage = toolStats.getLong("Damage") / 100L;
+            // What is left over is banked the same way an unfinished wear event is, rather than being rounded away,
+            // which matters to a turbine rotor: its wear arrives in fractions of a point.
+            final long hundredths = toolStats.getLong("Damage");
+            final long damage = hundredths / 100L;
+            final long remainder = hundredths % 100L;
             if (damage > 0) newTag.setLong("GT.ToolDamage", damage);
+            if (remainder > 0) newTag.setLong("GT.WearBank", remainder);
         }
 
         nbt.setShort("Damage", (short) newMeta);

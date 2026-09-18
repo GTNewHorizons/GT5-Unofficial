@@ -21,7 +21,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.items.tools.ToolBuzzSawItem;
 import gregtech.common.items.tools.ToolChainsawItem;
@@ -29,6 +28,7 @@ import gregtech.common.items.tools.ToolDrillItem;
 import gregtech.common.items.tools.ToolFileElectricItem;
 import gregtech.common.items.tools.ToolJackHammerItem;
 import gregtech.common.items.tools.ToolScrewdriverElectricItem;
+import gregtech.common.items.tools.ToolTurbineItem;
 import gregtech.common.items.tools.ToolWireCutterElectricItem;
 import gregtech.common.items.tools.ToolWrenchElectricItem;
 
@@ -828,38 +828,16 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.ingot.get(aMaterial) });
             }
             case "turbineBlade" -> {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        GTOreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 4L),
-                        GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Magnalium, 1L))
-                    .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(170, 1, aMaterial, aMaterial, null))
-                    .duration(8 * SECONDS)
-                    .eut(calculateRecipeEU(aMaterial, 100))
-                    .addTo(assemblerRecipes);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        GTOreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 8L),
-                        GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Titanium, 1L))
-                    .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(172, 1, aMaterial, aMaterial, null))
-                    .duration(16 * SECONDS)
-                    .eut(calculateRecipeEU(aMaterial, 400))
-                    .addTo(assemblerRecipes);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        GTOreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 12L),
-                        GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 1L))
-                    .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(174, 1, aMaterial, aMaterial, null))
-                    .duration(32 * SECONDS)
-                    .eut(calculateRecipeEU(aMaterial, 1600))
-                    .addTo(assemblerRecipes);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        GTOreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 16L),
-                        GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Americium, 1L))
-                    .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(176, 1, aMaterial, aMaterial, null))
-                    .duration(1 * MINUTES + 4 * SECONDS)
-                    .eut(calculateRecipeEU(aMaterial, 6400))
-                    .addTo(assemblerRecipes);
+                addRotorRecipe(GTToolItems.TURBINE_SMALL, aMaterial, 4, Materials.Magnalium, 8 * SECONDS, 100);
+                addRotorRecipe(GTToolItems.TURBINE_NORMAL, aMaterial, 8, Materials.Titanium, 16 * SECONDS, 400);
+                addRotorRecipe(GTToolItems.TURBINE_LARGE, aMaterial, 12, Materials.TungstenSteel, 32 * SECONDS, 1600);
+                addRotorRecipe(
+                    GTToolItems.TURBINE_HUGE,
+                    aMaterial,
+                    16,
+                    Materials.Americium,
+                    1 * MINUTES + 4 * SECONDS,
+                    6400);
                 if (aSpecialRecipeReq2) {
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         GTModHandler.addCraftingRecipe(
@@ -1017,5 +995,23 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             new Object[] { "PBM", "dXG", "SGP", 'X', headOreDictName, 'M', motor.get(1L), 'S',
                 OrePrefixes.screw.get(casingMaterial), 'P', OrePrefixes.plate.get(casingMaterial), 'G',
                 OrePrefixes.gearGtSmall.get(casingMaterial), 'B', battery.get(1L) });
+    }
+
+    /**
+     * Adds the assembler recipe for one size of turbine rotor: so many of the material's turbine blades around a long
+     * rod of the size's own shaft material.
+     */
+    private static void addRotorRecipe(ToolTurbineItem rotorItem, Materials bladeMaterial, int blades,
+        Materials shaftMaterial, int duration, int voltage) {
+        ItemStack rotor = rotorItem.registerMaterial(bladeMaterial);
+        if (rotor == null) return;
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.turbineBlade, bladeMaterial, blades),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, shaftMaterial, 1L))
+            .itemOutputs(rotor)
+            .duration(duration)
+            .eut(calculateRecipeEU(bladeMaterial, voltage))
+            .addTo(assemblerRecipes);
     }
 }

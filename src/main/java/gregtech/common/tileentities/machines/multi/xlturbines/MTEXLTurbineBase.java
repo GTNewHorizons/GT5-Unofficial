@@ -38,9 +38,9 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -55,11 +55,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEXLTurbineGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.tools.ToolTurbine;
-import gregtech.common.tools.ToolTurbineHuge;
-import gregtech.common.tools.ToolTurbineLarge;
-import gregtech.common.tools.ToolTurbineNormal;
-import gregtech.common.tools.ToolTurbineSmall;
+import gregtech.common.items.tools.ToolTurbineItem;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -295,18 +291,9 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     public static boolean isValidTurbine(ItemStack aTurbine) {
-        if (aTurbine == null || aTurbine.stackSize <= 0) {
+        if (!ToolTurbineItem.isTurbineRotor(aTurbine)) {
             return false;
         }
-        if (!(aTurbine.getItem() instanceof MetaGeneratedTool tool)) {
-            return false;
-        }
-
-        IToolStats stats = tool.getToolStats(aTurbine);
-        if (!(stats instanceof ToolTurbine)) {
-            return false;
-        }
-
         Materials material = MetaGeneratedTool.getPrimaryMaterial(aTurbine);
         return material != null && material.mToolSpeed > 0;
     }
@@ -421,19 +408,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     public static int getTurbineSize(ItemStack aTurbine) {
-        if (isValidTurbine(aTurbine)) {
-            IToolStats stats = ((MetaGeneratedTool) aTurbine.getItem()).getToolStats(aTurbine);
-            if (stats instanceof ToolTurbineSmall) {
-                return 1;
-            } else if (stats instanceof ToolTurbineNormal) {
-                return 2;
-            } else if (stats instanceof ToolTurbineLarge) {
-                return 3;
-            } else if (stats instanceof ToolTurbineHuge) {
-                return 4;
-            }
-        }
-        return 0;
+        return isValidTurbine(aTurbine) ? ToolTurbineItem.getTurbineSize(aTurbine) : 0;
     }
 
     @Override
@@ -451,7 +426,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
 
-            TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
+            TurbineStatCalculator turbine = new TurbineStatCalculator((IGTTool) aStack.getItem(), aStack);
 
             if (!tFluids.isEmpty()) {
                 if (baseEff == 0 || optFlow == 0
@@ -555,7 +530,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
 
     private void damageTurbine(ItemStack aTurbine, int slot, long aEUt) {
         if (isValidTurbine(aTurbine) && MathUtils.randInt(0, 1) == 0) {
-            ((MetaGeneratedTool) aTurbine.getItem()).doDamage(
+            ((IGTTool) aTurbine.getItem()).doMachineWear(
                 aTurbine,
                 (long) getDamageToComponent(aTurbine)
                     * (long) Math.min((float) aEUt / (float) damageFactorLow, Math.pow(aEUt, damageFactorHigh)));

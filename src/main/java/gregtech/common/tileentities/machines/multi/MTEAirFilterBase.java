@@ -49,6 +49,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
@@ -68,7 +69,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
-import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.tools.ToolTurbineItem;
 import gregtech.common.pollution.Pollution;
 
 public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirFilterBase>
@@ -248,11 +249,9 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        if (aStack == null) return false;
-        if (!(aStack.getItem() instanceof MetaGeneratedTool01 tool)) return false;
-        if (aStack.getItemDamage() < 170 || aStack.getItemDamage() > 179) return false;
+        if (!ToolTurbineItem.isTurbineRotor(aStack)) return false;
 
-        IToolStats stats = tool.getToolStats(aStack);
+        IToolStats stats = ((IGTTool) aStack.getItem()).getToolStats(aStack);
         if (stats == null || stats.getSpeedMultiplier() <= 0) return false;
 
         Materials material = MetaGeneratedTool.getPrimaryMaterial(aStack);
@@ -260,7 +259,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     private float getTurbineDamage(ItemStack aStack) {
-        if (aStack == null || !(aStack.getItem() instanceof MetaGeneratedTool tool)) {
+        if (aStack == null || !(aStack.getItem() instanceof IGTTool tool)) {
             return -1;
         }
         return tool.getToolCombatDamage(aStack);
@@ -316,7 +315,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
 
-        TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
+        TurbineStatCalculator turbine = new TurbineStatCalculator((IGTTool) aStack.getItem(), aStack);
         baseEff = turbine.getBaseEfficiency();
         tickCounter = 0; // resetting the counter in case of a power failure, etc
 

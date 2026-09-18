@@ -3,22 +3,22 @@ package gregtech.api.util;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.MetaGeneratedTool;
 
 public class TurbineStatCalculator {
 
-    public MetaGeneratedTool turbine;
+    public IGTTool turbine;
     public ItemStack item;
     public long tMaxDamage;
     public Materials tMaterial;
     public IToolStats tStats;
 
-    public TurbineStatCalculator(MetaGeneratedTool turbineItem, ItemStack aStack) {
+    public TurbineStatCalculator(IGTTool turbineItem, ItemStack aStack) {
         turbine = turbineItem;
         item = aStack;
-        tMaxDamage = MetaGeneratedTool.getToolMaxDamage(aStack);
-        tMaterial = MetaGeneratedTool.getPrimaryMaterial(aStack);
+        tMaxDamage = turbineItem.getMaxStoredDamage(aStack);
+        tMaterial = turbineItem.getToolMaterial(aStack);
         tStats = turbine.getToolStats(aStack);
     }
 
@@ -29,7 +29,7 @@ public class TurbineStatCalculator {
     }
 
     public long getCurrentDurability() {
-        return getMaxDurability() - MetaGeneratedTool.getToolDamage(item);
+        return getMaxDurability() - turbine.getStoredDamage(item);
     }
 
     // Efficiency in percentages
