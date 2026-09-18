@@ -204,6 +204,54 @@ class EnergyConsumerBoundaryTest {
     }
 
     @Test
+    void rfLargeRemainderKeepsMakingProgressAndBalancesRejectedOffers() {
+        GregTechAPI.mEUtoRF = 360;
+        long voltage = 536870912L;
+        long packet = voltage * GregTechAPI.mEUtoRF / 100;
+        IEnergyReceiver rf = (IEnergyReceiver) endpoint(IEnergyReceiver.class);
+        AtomicLong allowance = new AtomicLong(1000);
+        AtomicLong delivered = new AtomicLong();
+        when(rf.receiveEnergy(any(), anyInt(), anyBoolean())).thenAnswer(call -> {
+            int offered = call.getArgument(1);
+            assertTrue(offered > 0);
+            int accepted = (int) Math.min(offered, allowance.get());
+            if (!(boolean) call.getArgument(2)) delivered.addAndGet(accepted);
+            return accepted;
+        });
+        ConsumerNode node = new NodeEnergyReceiver(2, rf, ForgeDirection.WEST, new ArrayList<>());
+        assertEquals(1, node.injectEnergy(voltage, 1));
+        allowance.set(0);
+        assertEquals(0, node.injectEnergy(voltage, 1));
+        allowance.set(1000);
+        assertEquals(1, node.injectEnergy(voltage, 1));
+        assertEquals(0, node.injectEnergy(voltage, 1));
+        assertEquals(3000, delivered.get());
+        // Drain the paid balance at a lower voltage without buying another packet.
+        allowance.set(Integer.MAX_VALUE);
+        assertEquals(0, node.injectEnergy(1, 1));
+        assertEquals(0, node.injectEnergy(1, 1));
+        assertEquals(2 * packet, delivered.get());
+        assertEquals(1, node.injectEnergy(1, 1));
+        assertEquals(2 * packet + 3, delivered.get());
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "32, 0", "40, 0", "0, 32", "20, 20" })
+    void exhaustedVoltageDoesNotReachExternalReceiver(long entryLoss, long runLoss) {
+        IEnergyConnected receiver = (IEnergyConnected) endpoint(IEnergyConnected.class);
+        MTECable cable = cable(new NodeEnergyConnected(2, receiver, ForgeDirection.WEST, new ArrayList<>()));
+        Node root = ((BaseMetaPipeEntity) cable.getBaseMetaTileEntity()).getNode();
+        MTECable entry = new MTECable("entry-loss", 0.5f, null, entryLoss, 4, 128, false, false);
+        entry.setBaseMetaTileEntity(new BaseMetaPipeEntity());
+        MTECable run = new MTECable("run-loss", 0.5f, null, runLoss, 4, 128, false, false);
+        run.setBaseMetaTileEntity(new BaseMetaPipeEntity());
+        root.mSelfPath = new PowerNodePath(new MetaPipeEntity[] { entry });
+        root.mNodePaths[0] = new PowerNodePath(new MetaPipeEntity[] { run });
+        assertEquals(0, offer(cable, 32, 4));
+        verify(receiver, never()).injectEnergyUnits(any(), anyLong(), anyLong());
+    }
+
+    @Test
     void gcCapacityGateDoesNotBankUnpaidRemainder() {
         TileEntity tile = endpoint(IEnergyHandlerGC.class);
         IEnergyHandlerGC gc = (IEnergyHandlerGC) tile;

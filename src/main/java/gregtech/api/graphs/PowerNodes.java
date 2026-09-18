@@ -180,7 +180,7 @@ public class PowerNodes {
         tPath.applyVoltage(aVoltage - tVoltLoss, true);
         if (aCurrentNode.mInvalid) return 0;
         tVoltLoss += tPath.getLoss();
-        long tAmps = aConsumer.injectEnergy(aVoltage - tVoltLoss, aMaxAmps);
+        long tAmps = aVoltage > tVoltLoss ? aConsumer.injectEnergy(aVoltage - tVoltLoss, aMaxAmps) : 0;
         tPath.addAmps(tAmps, aVoltage - tVoltLoss);
         if (tSelfPath != null) tSelfPath.addAmps(tAmps, aVoltage - tSelfPath.getLoss());
         return tAmps;

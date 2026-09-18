@@ -194,6 +194,14 @@ class LSCEnergyTransferTest {
                 () -> gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap(null, target.negate()));
         }
         long lost = accepted ? lsc.getPassiveDischargeAmount() : 0;
+        assertEquals(
+            accepted ? target.longValueExact() : 0,
+            lsc.getEnergyInputValues()
+                .avgLong());
+        assertEquals(
+            starting.longValueExact(),
+            lsc.getEnergyOutputValues()
+                .avgLong());
         assertEquals(accepted ? target.subtract(BigInteger.valueOf(lost)) : BigInteger.ZERO, lsc.getStored());
         assertEquals(starting.longValueExact(), hatch.get());
         assertEquals(

@@ -19,7 +19,7 @@ import gregtech.common.pollution.Pollution;
 // consumer for RF machines
 public class NodeEnergyReceiver extends ConsumerNode {
 
-    int mRestRF = 0;
+    long mRestRF = 0;
 
     public NodeEnergyReceiver(int aNodeValue, IEnergyReceiver aTileEntity, ForgeDirection side,
         ArrayList<ConsumerNode> aConsumers) {
@@ -35,8 +35,9 @@ public class NodeEnergyReceiver extends ConsumerNode {
             mRestRF += rfOut;
             ampsUsed = 1;
         }
-        if (((IEnergyReceiver) mTileEntity).receiveEnergy(tDirection, mRestRF, true) > 0) {
-            int consumed = ((IEnergyReceiver) mTileEntity).receiveEnergy(tDirection, mRestRF, false);
+        int offeredRF = (int) Math.min(mRestRF, Integer.MAX_VALUE);
+        if (((IEnergyReceiver) mTileEntity).receiveEnergy(tDirection, offeredRF, true) > 0) {
+            int consumed = ((IEnergyReceiver) mTileEntity).receiveEnergy(tDirection, offeredRF, false);
             mRestRF -= consumed;
             return ampsUsed;
         }

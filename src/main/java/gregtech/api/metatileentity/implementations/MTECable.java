@@ -78,6 +78,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public final long mCableLossPerMeter, mAmperage, mVoltage;
     public final boolean mInsulated, mCanShock;
     private String prefixKey;
+    private boolean needsReloadUpdate;
 
     public int mTransferredAmperage = 0;
 
@@ -275,6 +276,12 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     }
 
     @Override
+    public void onUnload() {
+        super.onUnload();
+        needsReloadUpdate = true;
+    }
+
+    @Override
     public boolean needsClientTick() {
         return false;
     }
@@ -282,6 +289,14 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (needsReloadUpdate && aBaseMetaTileEntity.isServerSide()) {
+            needsReloadUpdate = false;
+            GregTechAPI.causeCableUpdate(
+                aBaseMetaTileEntity.getWorld(),
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord());
+        }
         if (aTick % 20 == 0 && aBaseMetaTileEntity.isServerSide() && (!GTMod.proxy.gt6Cable || mCheckConnections)) {
             checkConnections();
         }

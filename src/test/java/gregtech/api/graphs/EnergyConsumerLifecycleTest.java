@@ -11,6 +11,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 
 import gregtech.api.graphs.consumers.ConsumerNode;
@@ -62,8 +64,9 @@ class EnergyConsumerLifecycleTest {
         }
     }
 
-    @Test
-    void middleChunkReloadRebuildsExternalOnlyNetwork() {
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void middleChunkReloadRebuildsExternalOnlyNetwork(boolean reuseTiles) {
         try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
             MinecraftServer server = mock(MinecraftServer.class);
             servers.when(MinecraftServer::getServer)
@@ -72,6 +75,8 @@ class EnergyConsumerLifecycleTest {
             BaseMetaPipeEntity root = pipe(world, 15, ForgeDirection.WEST, ForgeDirection.EAST);
             BaseMetaPipeEntity middle = pipe(world, 16, ForgeDirection.WEST, ForgeDirection.EAST);
             BaseMetaPipeEntity end = pipe(world, 17, ForgeDirection.WEST, ForgeDirection.EAST);
+            middle.mTickTimer = 21;
+            middle.mConnections = ((MTECable) middle.getMetaTileEntity()).mConnections;
             TileEntity receiver = receiver();
             receiver.xCoord = 18;
             receiver.yCoord = 64;
@@ -98,11 +103,13 @@ class EnergyConsumerLifecycleTest {
                 ((MTECable) root.getMetaTileEntity()).transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
             verify((IEnergyConnected) receiver, never()).injectEnergyUnits(any(), anyLong(), anyLong());
 
-            BaseMetaPipeEntity reloaded = pipe(world, 16, ForgeDirection.WEST, ForgeDirection.EAST);
+            BaseMetaPipeEntity reloaded = reuseTiles ? middle
+                : pipe(world, 16, ForgeDirection.WEST, ForgeDirection.EAST);
             when(world.blockExists(16, 64, 0)).thenReturn(true);
             when(world.getTileEntity(16, 64, 0)).thenReturn(reloaded);
             when(server.getTickCounter()).thenReturn(1);
-            reloaded.getMetaTileEntity()
+            if (reuseTiles) reloaded.updateEntityProfiled();
+            else reloaded.getMetaTileEntity()
                 .onFirstTick(reloaded);
             RunnableCableUpdate.endTick();
             assertNull(root.getNode());
@@ -110,6 +117,12 @@ class EnergyConsumerLifecycleTest {
                 1,
                 ((MTECable) root.getMetaTileEntity()).transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
             assertNotNull(reloaded.getNodePath());
+            if (reuseTiles) {
+                Node restored = root.getNode();
+                reloaded.updateEntityProfiled();
+                RunnableCableUpdate.endTick();
+                assertSame(restored, root.getNode());
+            }
         }
     }
 
