@@ -309,6 +309,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             "GT5U.gui.text.nac.info.line_specifics.special.power_distribution");
         TextWidget<?> specialModuleCount = createTextEntry(
             "GT5U.gui.text.nac.info.line_specifics.special.module_count");
+        TextWidget<?> specialInfo = createTextEntry("GT5U.gui.text.nac.info.line_specifics.special.body");
         TextWidget<?> specialBody1 = createTextEntry(
             "GT5U.gui.text.nac.info.line_specifics.special.calibration.effect1");
         TextWidget<?> specialBody2 = createTextEntry(
@@ -382,6 +383,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         textList.child(specialHeader);
         textList.child(specialPowerDistribution);
         textList.child(specialModuleCount);
+        textList.child(specialInfo);
         textList.child(specialBody1);
         textList.child(specialBody2);
         textList.child(specialBody3);
