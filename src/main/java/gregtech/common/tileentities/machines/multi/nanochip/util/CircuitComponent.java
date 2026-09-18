@@ -63,30 +63,6 @@ public enum CircuitComponent {
         8,
         "gt.circuitcomponent.wiremagmatter",
         () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MagMatter, 1)),
-    WireShijima(
-        9,
-        "gt.circuitcomponent.wireshijima",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Shijima, 1)),
-    WireTairitsu(
-        10,
-        "gt.circuitcomponent.wiretairitsu",
-        () -> GGMaterial.tairitsu.get(OrePrefixes.wireFine,1)),
-    WireChuritsu(
-        11,
-        "gt.circuitcomponent.wirechuritsu",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Churitsu, 1)),
-    WireWhiteDwarfMatter(
-        12,
-        "gt.circuitcomponent.wirewhitedwarfmatter",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.WhiteDwarfMatter, 1)),
-    WireBlackDwarfMatter(
-        13,
-        "gt.circuitcomponent.wireblackdwarfmatter",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.BlackDwarfMatter, 1)),
-    WireUniversium(
-        14,
-        "gt.circuitcomponent.wireuniversium",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Universium, 1)),
     WireCopper(
         9,
         "gt.circuitcomponent.wirecopper",
@@ -103,6 +79,30 @@ public enum CircuitComponent {
         12,
         "gt.circuitcomponent.wireplatinum",
         () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 1)),
+    WireShijima(
+        13,
+        "gt.circuitcomponent.wireshijima",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Shijima, 1)),
+    WireTairitsu(
+        14,
+        "gt.circuitcomponent.wiretairitsu",
+        () -> GGMaterial.tairitsu.get(OrePrefixes.wireFine,1)),
+    WireChuritsu(
+        15,
+        "gt.circuitcomponent.wirechuritsu",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Churitsu, 1)),
+    WireWhiteDwarfMatter(
+        16,
+        "gt.circuitcomponent.wirewhitedwarfmatter",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.WhiteDwarfMatter, 1)),
+    WireBlackDwarfMatter(
+        17,
+        "gt.circuitcomponent.wireblackdwarfmatter",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.BlackDwarfMatter, 1)),
+    WireUniversium(
+        18,
+        "gt.circuitcomponent.wireuniversium",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Universium, 1)),
 
 
     ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", () -> WireNiobiumTitanium, true),
@@ -119,13 +119,13 @@ public enum CircuitComponent {
     ProcessedWireElectrum(111,"gt.circuitcomponent.processed.wireelectrum", () -> WireElectrum, true),
     ProcessedWirePlatinum(112,"gt.circuitcomponent.processed.wireplatinum", () -> WirePlatinum, true),
 
-    ProcessedWireShijima(109, "gt.circuitcomponent.processed.wireshijima", () -> WireShijima, true),
-    ProcessedWireTairitsu(110, "gt.circuitcomponent.processed.wiretairitsu", () -> WireTairitsu, true),
-    ProcessedWireChuritsu(111, "gt.circuitcomponent.processed.wirechuritsu", () -> WireChuritsu, true),
+    ProcessedWireShijima(113, "gt.circuitcomponent.processed.wireshijima", () -> WireShijima, true),
+    ProcessedWireTairitsu(114, "gt.circuitcomponent.processed.wiretairitsu", () -> WireTairitsu, true),
+    ProcessedWireChuritsu(115, "gt.circuitcomponent.processed.wirechuritsu", () -> WireChuritsu, true),
 
-    ProcessedWireWhiteDwarfMatter(117, "gt.circuitcomponent.processed.wirewhitedwarfmatter", () -> WireWhiteDwarfMatter, true),
-    ProcessedWireBlackDwarfMatter(118, "gt.circuitcomponent.processed.wireblackdwarfmatter", () -> WireBlackDwarfMatter, true),
-    ProcessedWireUniversium(119, "gt.circuitcomponent.processed.wireuniversium", () -> WireUniversium, true),
+    ProcessedWireWhiteDwarfMatter(116, "gt.circuitcomponent.processed.wirewhitedwarfmatter", () -> WireWhiteDwarfMatter, true),
+    ProcessedWireBlackDwarfMatter(117, "gt.circuitcomponent.processed.wireblackdwarfmatter", () -> WireBlackDwarfMatter, true),
+    ProcessedWireUniversium(118, "gt.circuitcomponent.processed.wireuniversium", () -> WireUniversium, true),
 
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
@@ -221,10 +221,10 @@ public enum CircuitComponent {
     // id 504 unused
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
     ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
-    CleansedBoardPico(507, "gt.circuitcomponent.processed.board.cleansedpico",()-> BoardPico,true),
-    CleansedBoardQuantum(508, "gt.circuitcomponent.processed.board.cleansedquantum",()-> BoardQuantum,true),
-    CleansedBoardPlanck(509, "gt.circuitcomponent.processed.board.cleansedplanck",()-> BoardPlanck,true),
     UnattunedCircuitry(507,"gt.circuitcomponent.unattunedcircuitry",()->null,true),
+    CleansedBoardPico(508, "gt.circuitcomponent.processed.board.cleansedpico",()-> BoardPico,true),
+    CleansedBoardQuantum(509, "gt.circuitcomponent.processed.board.cleansedquantum",()-> BoardQuantum,true),
+    CleansedBoardPlanck(510, "gt.circuitcomponent.processed.board.cleansedplanck",()-> BoardPlanck,true),
 
     // Wafers and chips
     // IDs: 600-699 CC, 700-799 PC
@@ -544,17 +544,18 @@ public enum CircuitComponent {
         1917,
         "gt.circuitcomponent.thermalsuperconductor",
         () -> ItemList.Thermal_Superconductor.get(1)),
-    ScrewEnrichedNaquadahAlloy(1918, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.screw,1)),
-    ScrewQuantum(1919, "gt.circuitcomponent.screw.quantum", ()-> MaterialsAlloy.QUANTUM.getScrew(1)),
-    ScrewEternity(1920, "gt.circuitcomponent.screw.eternity", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
-    BoltRhugnor(1921, "gt.circuitcomponent.bolt.rhugnor", ()-> MaterialsElements.STANDALONE.RHUGNOR.getBolt(1)),
-    BoltMetastableOganesson(1922, "gt.circuitcomponent.bolt.metastableoganesson", ()-> GGMaterial.metastableOganesson.get(OrePrefixes.bolt,1)),
-    BoltHexanite(1923, "gt.circuitcomponent.bolt.hexanite", ()-> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Hexanite, 1)),
     BoltCopper(1918,"gt.circuitcomponent.bolt.copper",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Copper, 1)),
     BoltRedAlloy(1919,"gt.circuitcomponent.bolt.redalloy",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.RedAlloy, 1)),
     BoltPlatinum(1920,"gt.circuitcomponent.bolt.platinum",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Platinum, 1)),
     BoltNiobiumTitanium(1921,"gt.circuitcomponent.bolt.niobiumtitanium",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.NiobiumTitanium, 1)),
     CasingKevlar(1922,"gt.circuitcomponent.casing.kevlar", ()->GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Kevlar,1)),
+    ScrewEnrichedNaquadahAlloy(1923, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.screw,1)),
+    ScrewQuantum(1924, "gt.circuitcomponent.screw.quantum", ()-> MaterialsAlloy.QUANTUM.getScrew(1)),
+    ScrewEternity(1925, "gt.circuitcomponent.screw.eternity", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
+    BoltRhugnor(1926, "gt.circuitcomponent.bolt.rhugnor", ()-> MaterialsElements.STANDALONE.RHUGNOR.getBolt(1)),
+    BoltMetastableOganesson(1927, "gt.circuitcomponent.bolt.metastableoganesson", ()-> GGMaterial.metastableOganesson.get(OrePrefixes.bolt,1)),
+    BoltHexanite(1928, "gt.circuitcomponent.bolt.hexanite", ()-> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Hexanite, 1)),
+
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
