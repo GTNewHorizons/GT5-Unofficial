@@ -538,6 +538,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mOutputHatches.clear();
         mOutputBusses.clear();
         mDynamoHatches.clear();
+        mExoticDynamoHatches.clear();
         mEnergyHatches.clear();
         setMufflers(false);
         mMufflerHatches.clear();
