@@ -138,8 +138,8 @@ public class PowerNodes {
         if (aCurrentNode.mInvalid) return 0;
         tVoltLoss += tPath.getLoss();
         long tAmps = powerNode(aNextNode, aCurrentNode, aConsumers, aVoltage - tVoltLoss, aMaxAmps);
-        tPath.addAmps(tAmps);
-        if (tSelfPath != null) tSelfPath.addAmps(tAmps);
+        tPath.addAmps(tAmps, aVoltage - tVoltLoss);
+        if (tSelfPath != null) tSelfPath.addAmps(tAmps, aVoltage - tSelfPath.getLoss());
         return tAmps;
     }
 
@@ -161,8 +161,8 @@ public class PowerNodes {
         if (aCurrentNode.mInvalid) return 0;
         tVoltLoss += tPath.getLoss();
         long tAmps = powerNodeAbove(aNextNode, aCurrentNode, aConsumers, aVoltage - tVoltLoss, aMaxAmps);
-        tPath.addAmps(tAmps);
-        if (tSelfPath != null) tSelfPath.addAmps(tAmps);
+        tPath.addAmps(tAmps, aVoltage - tVoltLoss);
+        if (tSelfPath != null) tSelfPath.addAmps(tAmps, aVoltage - tSelfPath.getLoss());
         return tAmps;
     }
 
@@ -181,8 +181,8 @@ public class PowerNodes {
         if (aCurrentNode.mInvalid) return 0;
         tVoltLoss += tPath.getLoss();
         long tAmps = aConsumer.injectEnergy(aVoltage - tVoltLoss, aMaxAmps);
-        tPath.addAmps(tAmps);
-        if (tSelfPath != null) tSelfPath.addAmps(tAmps);
+        tPath.addAmps(tAmps, aVoltage - tVoltLoss);
+        if (tSelfPath != null) tSelfPath.addAmps(tAmps, aVoltage - tSelfPath.getLoss());
         return tAmps;
     }
 }

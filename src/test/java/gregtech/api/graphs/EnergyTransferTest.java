@@ -12,6 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 
@@ -170,8 +172,9 @@ class EnergyTransferTest {
         }
     }
 
-    @Test
-    void synchronousReentryChargesBothOffersToTheSamePath() {
+    @ParameterizedTest
+    @ValueSource(longs = { 32, 128 })
+    void synchronousReentryChargesBothOffersToTheSamePath(long outerVoltage) {
         try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
             MinecraftServer server = mock(MinecraftServer.class);
             servers.when(MinecraftServer::getServer)
@@ -186,7 +189,7 @@ class EnergyTransferTest {
             when(consumer.needsEnergy()).thenReturn(true);
             boolean[] nested = { false };
             List<String> trace = new ArrayList<>();
-            when(consumer.injectEnergy(32, 1)).thenAnswer(call -> {
+            when(consumer.injectEnergy(anyLong(), eq(1L))).thenAnswer(call -> {
                 trace.add(nested[0] ? "inner" : "outer");
                 if (!nested[0]) {
                     nested[0] = true;
@@ -194,11 +197,12 @@ class EnergyTransferTest {
                 }
                 return 1;
             });
-            assertEquals(1, cable.transferElectricity(ForgeDirection.UNKNOWN, 32, 1, null));
+            assertEquals(1, cable.transferElectricity(ForgeDirection.UNKNOWN, outerVoltage, 1, null));
             assertEquals(List.of("outer", "inner"), trace);
             when(server.getTickCounter()).thenReturn(2);
             assertEquals(2, path.getAmperage());
-            assertEquals(64, path.getEnergy());
+            assertEquals(outerVoltage + 32, path.getEnergy());
+            assertEquals(outerVoltage + 32, ((PowerNodePath) root.mNodePaths[0]).getEnergy());
         }
     }
 
