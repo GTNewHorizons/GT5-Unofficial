@@ -3384,6 +3384,7 @@ GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect3=§3Tier 3§r -
 GT5U.gui.text.nac.info.line_specifics.special.header=Special Circuits (Pico and Quantum)
 GT5U.gui.text.nac.info.line_specifics.special.power_distribution=Suggested Power Distribution: §d80%% Matrix§r / §320%% Non-Matrix
 GT5U.gui.text.nac.info.line_specifics.special.module_count=Suggested Additional Modules:§a None
+GT5U.gui.text.nac.info.line_specifics.special.body=§l§5Recipe time discounts provided by this Calibration increase recipe EU proportionally so the EU per circuit stays the same
 GT5U.gui.text.nac.info.line_specifics.special.calibration.effect1=§3Tier 1§r - §21%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix
 GT5U.gui.text.nac.info.line_specifics.special.calibration.effect2=§3Tier 2§r - §25%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix (total 40%%)
 GT5U.gui.text.nac.info.line_specifics.special.calibration.effect3=§3Tier 3§r - §220%% threshold§r - -10%% Recipe Time on Special Circuits in the Assembly Matrix (total 50%%)

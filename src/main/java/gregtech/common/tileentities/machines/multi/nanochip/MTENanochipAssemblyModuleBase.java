@@ -527,6 +527,10 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (recipeCalibration != null && baseMulti.currentThreshold != null
             && baseMulti.currentThreshold.calibrationType == recipeCalibration) {
             recipeDuration *= baseMulti.globalDurationMultiplier;
+            if (recipeCalibration == CircuitCalibration.SPECIAL) {
+                // restore the EU/t so people aren't getting -50% eu cost per circuit.
+                recipeEUT *= 1 / Math.max(0.1, (1 - baseMulti.globalDurationMultiplier));
+            }
         }
 
         int remainingOverclocks = (int) Math.max(0, this.baseMulti.getEnergyHatchTier() - this.getRecipeTier(recipe));
