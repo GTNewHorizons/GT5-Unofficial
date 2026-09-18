@@ -145,21 +145,15 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
 
     public static String getNameWithColor(ItemStack stack) {
-        final boolean isLocked = isLocked(stack);
-        final char lBracket = isLocked ? '[' : '(';
-        final char rBracket = isLocked ? ']' : ')';
         final Dyes color = getSpraycanDye(stack);
+        final String state = isLocked(stack) ? ".locked" : ".unlocked";
 
         if (color == Dyes.MACHINE_METAL) {
-            return StatCollector
-                .translateToLocalFormatted("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket);
-        } else {
-            return StatCollector.translateToLocalFormatted(
-                "item.GT5U.infinite_spray_can.name.colored",
-                lBracket,
-                color.getLocalizedDyeName(),
-                rBracket);
+            return StatCollector.translateToLocal("item.GT5U.infinite_spray_can.name.solvent" + state);
         }
+        return StatCollector.translateToLocalFormatted(
+            "item.GT5U.infinite_spray_can.name.colored" + state,
+            color.getLocalizedDyeName());
     }
 
     @Override
