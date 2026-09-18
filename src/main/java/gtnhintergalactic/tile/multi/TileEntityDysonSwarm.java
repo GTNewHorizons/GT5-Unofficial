@@ -22,10 +22,13 @@ import java.util.Map;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -57,6 +60,8 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -276,9 +281,6 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         euPerTick = (long) ((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor);
 
         if (moduleCount > 0 && depleteInput(IGConfig.dysonSwarm.getCoolantStack())) {
-            // With a certain chance (configurable), the size of the ItemStack(s) is reduced.
-            // This has the effect that the player must constantly replace "broken" Modules.
-            destroyModules();
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 72000;
             return true;
@@ -287,6 +289,17 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         return false;
     }
 
+    @Override
+    public void outputAfterRecipe_EM() {
+        // The modules are only destroyed once the hour they produced in is over, so the module count stays consistent
+        // with the output of that hour instead of dropping below it.
+        destroyModules();
+    }
+
+    /**
+     * With a certain chance (configurable), the size of the ItemStack(s) is reduced. This has the effect that the
+     * player must constantly replace "broken" Modules.
+     */
     private void destroyModules() {
         if (IGConfig.dysonSwarm.destroyModuleA <= 0.0f) {
             return;
@@ -501,6 +514,25 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.computation.fmt", formatNumber(eRequiredData)),
             IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
             "---------------------------------------------" };
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("euPerTick", euPerTick);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        currenttip.add(
+            StatCollector.translateToLocalFormatted(
+                "ig.infodata.dyson_swarm.current_output.fmt",
+                formatNumber(
+                    accessor.getNBTData()
+                        .getLong("euPerTick"))));
     }
 
     /******************
