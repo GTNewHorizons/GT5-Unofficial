@@ -230,8 +230,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         TextWidget<?> calibrationBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.2");
         TextWidget<?> calibrationBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.3");
         TextWidget<?> calibrationBody4 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.4");
-        TextWidget<?> calibrationBody5 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.5");
-        TextWidget<?> calibrationBody6 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.6");
 
         TextWidget<?> lineSpecificsHeader = createHeader("GT5U.gui.text.nac.info.line_specifics.header");
         ButtonWidget<?> linesSpecificsToC = createToCEntry(
@@ -247,6 +245,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             "GT5U.gui.text.nac.info.line_specifics.primitive.power_distribution");
         TextWidget<?> primitiveModuleCount = createTextEntry(
             "GT5U.gui.text.nac.info.line_specifics.primitive.module_count");
+        TextWidget<?> primitiveInfo1 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.primitive.body1");
+        TextWidget<?> primitiveInfo2 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.primitive.body2");
         TextWidget<?> primitiveBody1 = createTextEntry(
             "GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect1");
         TextWidget<?> primitiveBody2 = createTextEntry(
@@ -309,7 +309,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             "GT5U.gui.text.nac.info.line_specifics.special.power_distribution");
         TextWidget<?> specialModuleCount = createTextEntry(
             "GT5U.gui.text.nac.info.line_specifics.special.module_count");
-        TextWidget<?> specialInfo = createTextEntry("GT5U.gui.text.nac.info.line_specifics.special.body");
+        TextWidget<?> specialInfo1 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.special.body1");
+        TextWidget<?> specialInfo2 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.special.body2");
         TextWidget<?> specialBody1 = createTextEntry(
             "GT5U.gui.text.nac.info.line_specifics.special.calibration.effect1");
         TextWidget<?> specialBody2 = createTextEntry(
@@ -337,9 +338,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         textList.child(calibrationBody2);
         textList.child(calibrationBody3);
         textList.child(calibrationBody4);
-        textList.child(calibrationBody5);
-        textList.child(calibrationBody6);
-
         textList.child(lineSpecificsHeader);
         textList.child(lineSpecificsBody1);
         textList.child(lineSpecificsBody2);
@@ -347,6 +345,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         textList.child(primitiveHeader);
         textList.child(primitivePowerDistribution);
         textList.child(primitiveModuleCount);
+        textList.child(primitiveInfo1);
+        textList.child(primitiveInfo2);
         textList.child(primitiveBody1);
         textList.child(primitiveBody2);
         textList.child(primitiveBody3);
@@ -383,7 +383,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         textList.child(specialHeader);
         textList.child(specialPowerDistribution);
         textList.child(specialModuleCount);
-        textList.child(specialInfo);
+        textList.child(specialInfo1);
+        textList.child(specialInfo2);
         textList.child(specialBody1);
         textList.child(specialBody2);
         textList.child(specialBody3);
