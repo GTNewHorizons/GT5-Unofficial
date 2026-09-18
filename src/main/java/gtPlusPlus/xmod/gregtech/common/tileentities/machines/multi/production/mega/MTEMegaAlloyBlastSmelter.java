@@ -16,6 +16,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import gregtech.api.structure.error.StructureErrors;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -226,7 +227,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         if (glassTier < VoltageIndex.UV) {
             for (MTEHatch hatchEnergy : getExoticEnergyHatches()) {
                 if (hatchEnergy.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
                     break;
                 }
             }
