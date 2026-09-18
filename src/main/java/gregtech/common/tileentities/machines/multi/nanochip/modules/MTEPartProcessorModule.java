@@ -115,7 +115,7 @@ public class MTEPartProcessorModule extends MTENanochipAssemblyModuleBase<MTEPar
             .addCasing("8", translateToLocal("gt.blockglass1.8.name"), false)
             // UEV Machine Casing
             .addCasing("4", translateToLocal("gt.blockcasingsNH.10.name"), false)
-            .addInputHatch("1", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
             .addMiscHatch(
                 "0+",
                 TOOLTIP_VCI_LONG,
