@@ -31,6 +31,7 @@ import gregtech.client.renderer.RenderRotor;
 import gregtech.common.config.MachineStats;
 import gregtech.common.render.IMTERenderer;
 import ic2.api.item.IKineticRotor;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -261,6 +262,7 @@ public abstract class MTEKineticRotorBase extends MTETieredMachineBlock implemen
 
     /**
      * for rendering, value to be added to current rotation angle each render cycle
+     *
      * @return amount to be added
      */
     protected double getRotationAmount() {
@@ -344,25 +346,21 @@ public abstract class MTEKineticRotorBase extends MTETieredMachineBlock implemen
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        if (data == null) data = new NBTTagCompound();
-
-        data.setInteger("rotorID", rotorID);
-        data.setBoolean("rotorBlocked", rotorBlocked);
-        data.setDouble("obstructedPercent", obstructedPercent);
-        data.setLong("kuOut", kuOut);
-
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(rotorID);
+        buffer.writeBoolean(rotorBlocked);
+        buffer.writeDouble(obstructedPercent);
+        buffer.writeLong(kuOut);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        rotorID = data.getInteger("rotorID");
-        rotorBlocked = data.getBoolean("rotorBlocked");
-        obstructedPercent = data.getDouble("obstructedPercent");
-        kuOut = data.getLong("kuOut");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        rotorID = buffer.readInt();
+        rotorBlocked = buffer.readBoolean();
+        obstructedPercent = buffer.readDouble();
+        kuOut = buffer.readLong();
     }
 
     @Override

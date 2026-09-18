@@ -31,6 +31,7 @@ import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.singleblock.kinetic.MTEKineticGeneratorGui;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -140,21 +141,17 @@ public class MTEKineticGenerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        if (data == null) data = new NBTTagCompound();
-
-        data.setLong("kuIn", kuIn);
-        data.setBoolean("hasProducer", hasProducer);
-
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeLong(kuIn);
+        buffer.writeBoolean(hasProducer);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        kuIn = data.getLong("kuIn");
-        hasProducer = data.getBoolean("hasProducer");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        kuIn = buffer.readLong();
+        hasProducer = buffer.readBoolean();
 
     }
 

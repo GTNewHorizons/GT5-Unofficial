@@ -16,6 +16,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEKineticRotorBase;
 import gregtech.common.gui.modularui.singleblock.kinetic.MTEKineticWindGeneratorGui;
 import ic2.core.WorldData;
+import io.netty.buffer.ByteBuf;
 
 public class MTEKineticWindGenerator extends MTEKineticRotorBase {
 
@@ -106,16 +107,15 @@ public class MTEKineticWindGenerator extends MTEKineticRotorBase {
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        data.setDouble("wind", wind);
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeDouble(wind);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        wind = data.getDouble("wind");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        wind = buffer.readDouble();
     }
 
     @Override

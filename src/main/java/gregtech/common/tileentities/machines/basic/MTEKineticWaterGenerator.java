@@ -19,6 +19,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEKineticRotorBase;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.singleblock.kinetic.MTEKineticWaterGeneratorGui;
+import io.netty.buffer.ByteBuf;
 
 public class MTEKineticWaterGenerator extends MTEKineticRotorBase {
 
@@ -157,18 +158,17 @@ public class MTEKineticWaterGenerator extends MTEKineticRotorBase {
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        data.setFloat("biomeMulti", biomeMulti);
-        data.setDouble("flowMulti", flowMulti);
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeFloat(biomeMulti);
+        buffer.writeDouble(flowMulti);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        biomeMulti = data.getFloat("biomeMulti");
-        flowMulti = data.getDouble("flowMulti");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        biomeMulti = buffer.readFloat();
+        flowMulti = buffer.readDouble();
     }
 
     @Override
