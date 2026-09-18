@@ -1745,8 +1745,10 @@ GTPP.tooltip.catalyst.active_reaction_agent=Active Reaction Agent
 GTPP.tooltip.milling_ball.tumble=Tumble Tumble Tumble
 
 # Infinite Spray Can
-item.GT5U.infinite_spray_can.name.solvent=Infinite Spray Can %cSolvent%c
-item.GT5U.infinite_spray_can.name.colored=Infinite Spray Can %c%s%c
+item.GT5U.infinite_spray_can.name.solvent.unlocked=Infinite Spray Can (Solvent)
+item.GT5U.infinite_spray_can.name.solvent.locked=Infinite Spray Can [Solvent]
+item.GT5U.infinite_spray_can.name.colored.unlocked=Infinite Spray Can (%s)
+item.GT5U.infinite_spray_can.name.colored.locked=Infinite Spray Can [%s]
 
 GT5U.infinite_spray_can.color.Black=Black
 GT5U.infinite_spray_can.color.Red=Red
@@ -9626,6 +9628,9 @@ gt.tierdDrone3.tooltip_main=Warp engine FTL Shuttle
 
 # Volumetric Flask
 gt.Volumetric_Flask.name=Volumetric Flask
+gt.Volumetric_Flask_8k.name=Large Volumetric Flask
+gt.Volumetric_Flask_32k.name=Gigantic Volumetric Flask
+gt.Volumetric_Flask_Infinite.name=Klein Bottle
 
 # CircuitComponentFakeItem
 gt.fakecircuitcomponent.name=Fake Circuit Component Item
