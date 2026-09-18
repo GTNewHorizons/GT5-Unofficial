@@ -1981,6 +1981,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                     new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
             .setRender(new WireFrameTesseractRenderer(0, 0, 0));
+        setNoBaseIcon(Tesseract.ID);
         ItemList.GigaChad.set(
             addItemWithLocalizationKeys(
                 GigaChad.ID,
@@ -1997,6 +1998,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                     new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
             .setRender(new WireFrameTesseractRenderer(23, 129, 166));
+        setNoBaseIcon(EnergisedTesseract.ID);
 
         ItemList.Electric_Piston_LV.set(
             addItemWithLocalizationKeys(

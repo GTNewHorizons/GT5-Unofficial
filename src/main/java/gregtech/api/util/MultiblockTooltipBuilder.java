@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -95,7 +96,6 @@ public class MultiblockTooltipBuilder {
     private static final String TT_outputany = StatCollector.translateToLocal("GT5U.MBTT.OutputAny");
     private static final String TT_causes = StatCollector.translateToLocal("GT5U.MBTT.Causes");
     private static final String TT_produces = StatCollector.translateToLocal("GT5U.MBTT.Produces");
-    private static final String TT_pps = StatCollector.translateToLocal("GT5U.MBTT.PPS");
     private static final String TT_hold = StatCollector.translateToLocal("GT5U.MBTT.Hold");
     private static final String TT_todisplay = StatCollector.translateToLocal("GT5U.MBTT.Display");
     private static final String TT_structurehint = StatCollector.translateToLocal("GT5U.MBTT.StructureHint");
@@ -396,7 +396,10 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addPollutionAmount(int pollution) {
         if (pollution == 0) return this;
-        iLines.add("" + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
+        iLines.add(
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "GT5U.MBTT.PPS",
+                EnumChatFormatting.DARK_PURPLE + formatNumber(pollution) + EnumChatFormatting.GRAY));
         return this;
     }
 
