@@ -237,7 +237,7 @@ public class RecipesGregTech {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2))
-            .circuit(20)
+            .circuit(1)
             .fluidInputs(FluidRegistry.getFluidStack("mobessence", 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.GeneticMutagen, 8_000))
             .duration(30 * SECONDS)

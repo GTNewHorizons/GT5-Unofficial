@@ -301,7 +301,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive()) {
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
             if (torus == null) {
                 torus = new GTSoundLoop(
                     SoundResource.GT_MACHINES_BEC_GENERATOR.resourceLocation,
@@ -347,9 +347,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     .playSound(pillar);
             }
         } else {
-            if (pillar != null) pillar.stop();
-            if (torus != null) torus.stop();
-            if (torusFar != null) torusFar.stop();
+            if (pillar != null) pillar.setFadeMe(true);
+            if (torus != null) torus.setFadeMe(true);
+            if (torusFar != null) torusFar.setFadeMe(true);
 
             pillar = null;
             torus = null;

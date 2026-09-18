@@ -3854,6 +3854,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -3866,6 +3867,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -3878,6 +3880,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -3890,6 +3893,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -3902,6 +3906,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -3914,6 +3919,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -3926,6 +3932,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -3938,6 +3945,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -3950,6 +3958,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -3962,6 +3971,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -3974,6 +3984,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -3986,6 +3997,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
                 .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
 
@@ -9335,13 +9347,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 HATCH_VACUUM_CONVEYOR_INPUT.ID,
                 "vacuum.hatch.input",
                 "Vacuum Conveyor Input",
-                11).getStackForm(1L));
+                9).getStackForm(1L));
         ItemList.Hatch_VacuumConveyor_Output.set(
             new MTEHatchVacuumConveyorOutput(
                 HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
                 "vacuum.hatch.output",
                 "Vacuum Conveyor Output",
-                11).getStackForm(1L));
+                9).getStackForm(1L));
         ItemList.Hatch_Splitter_Level.set(
             new MTEHatchSplitterRedstone(
                 HATCH_SPLITTER_LEVEL.ID,
@@ -9526,14 +9538,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchLensIndicator(HATCH_LENS_INDICATOR.ID, "hatch.lensindicator", "Lens Indicator Hatch", 8)
                 .getStackForm(1L));
         ItemList.Hatch_Nanite.set(
-            new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Bus", 9, 2048).getStackForm(1));
-        ItemList.Hatch_Nanite_Singularity.set(
-            new MTEHatchNanite(
-                HATCH_NANITE_SINGULARITY.ID,
-                "hatch.nanite.singularity",
-                "Singularity Nanite Containment Bus",
-                11,
-                Integer.MAX_VALUE).getStackForm(1));
+            new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Bus", 9, Integer.MAX_VALUE)
+                .getStackForm(1));
         ItemList.Hatch_Catalyst_Bulk.set(
             new MTEHatchBulkCatalystHousing(
                 HATCH_CATALYST_BULK.ID,
