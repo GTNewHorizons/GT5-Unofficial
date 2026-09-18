@@ -4197,7 +4197,7 @@ GT5U.armor.part.name.ApprenticeStriders=Augment: Apprentice Striders
 GT5U.armor.part.name.ArchmageStriders=Augment: Archmage Striders
 GT5U.armor.part.name.EldritchStriders=Augment: Eldritch Striders
 GT5U.armor.part.name.TravelStaff=Augment: Staff of Traveling
-GT5U.armor.part.name.TeleportationStaff=Augment: Teleportation Staff
+GT5U.armor.part.name.TeleportationStaff=Augment: Staff of Teleportation
 
 GT5U.armor.part.tooltip.NightVision=Allows user to see clearly at night and in the dark
 GT5U.armor.part.tooltip.CreativeFlight=Grants the user creative flight
@@ -4254,8 +4254,8 @@ GT5U.armor.behavior.HoloInventory=Holographic Inventory
 GT5U.armor.behavior.Terrasteel=Will of the Ancients
 GT5U.armor.behavior.Soulbound=Soulbound
 GT5U.armor.behavior.Levitation=Levitation Mode
-GT5U.armor.behavior.TravelStaff=Travel Staff
-GT5U.armor.behavior.TeleportationStaff=Teleportation Staff
+GT5U.armor.behavior.TravelStaff=Staff of Traveling
+GT5U.armor.behavior.TeleportationStaff=Staff of Teleportation
 
 GT5U.armor.message.enabled=%s §aEnabled§r
 GT5U.armor.message.disabled=%s §cDisabled§r
