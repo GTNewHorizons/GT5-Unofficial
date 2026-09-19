@@ -4,11 +4,9 @@ public class AORecipeData {
 
     public final int requiredIntelligence;
     public final int requiredCount;
-    public final int dangerLevel;
 
-    public AORecipeData(int requiredIntelligence, int requiredCount, int dangerLevel) {
+    public AORecipeData(int requiredIntelligence, int requiredCount) {
         this.requiredIntelligence = requiredIntelligence;
         this.requiredCount = requiredCount;
-        this.dangerLevel = dangerLevel;
     }
 }

@@ -28,7 +28,6 @@ public class BioSynthesizerFrontEnd extends RecipeMapFrontend {
             if (data != null) {
                 result.add("Required Intelligence: " + data.requiredIntelligence);
                 result.add("Required Count: " + data.requiredCount);
-                result.add("Danger Level: " + data.dangerLevel);
             }
             return result;
         }

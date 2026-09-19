@@ -213,7 +213,7 @@ public class MTEAdvancedBioLab extends MTEAOUnitBase<MTEAdvancedBioLab> implemen
 
                 setSpeedBonus(currentOrganism.calculateSpeedBonus());
 
-                AOsInUse = currentOrganism.consumeAOs(500);
+                currentOrganism.consumeAOs(500);
                 return super.validateRecipe(recipe);
             }
 

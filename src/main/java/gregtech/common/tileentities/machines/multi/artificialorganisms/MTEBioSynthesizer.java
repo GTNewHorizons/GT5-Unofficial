@@ -32,6 +32,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -42,6 +43,12 @@ import gregtech.common.blocks.BlockCasings2;
 public class MTEBioSynthesizer extends MTEAOUnitBase<MTEBioSynthesizer> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    /** Ticks a Crystalline population must run continuously to fully strengthen (1 hour). */
+    private static final long CRYSTAL_FULL_ADAPT_TICKS = 20L * 60L * 60L;
+
+    /** Ticks this machine has run continuously since its Crystalline population began strengthening. */
+    private long crystalAdaptTicks;
     private static final IStructureDefinition<MTEBioSynthesizer> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBioSynthesizer>builder()
         .addShape(
@@ -69,6 +76,27 @@ public class MTEBioSynthesizer extends MTEAOUnitBase<MTEBioSynthesizer> implemen
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         return super.onRunningTick(aStack);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        // A Crystalline population strengthens while its machine runs continuously
+        ArtificialOrganism organism = getAO();
+        if (organism == null || !organism.crystalline || !aBaseMetaTileEntity.isActive()) {
+            crystalAdaptTicks = 0;
+        } else {
+            crystalAdaptTicks = Math.min(crystalAdaptTicks + 1, CRYSTAL_FULL_ADAPT_TICKS);
+        }
+    }
+
+    @Override
+    protected int getAORecipeParallelLevel() {
+        ArtificialOrganism organism = getAO();
+        if (organism == null || !organism.crystalline) return 1;
+        double progress = Math.min(1.0, (double) crystalAdaptTicks / CRYSTAL_FULL_ADAPT_TICKS);
+        // 1 -> 4 as the population strengthens: unadapted, then +1 level every 20 minutes up to a full hour.
+        return Math.min(4, 1 + (int) Math.floor(3.0 * progress));
     }
 
     public MTEBioSynthesizer(final int aID, final String aName, final String aNameRegional) {
@@ -186,8 +214,15 @@ public class MTEBioSynthesizer extends MTEAOUnitBase<MTEBioSynthesizer> implemen
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setLong("crystalAdaptTicks", crystalAdaptTicks);
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        crystalAdaptTicks = aNBT.getLong("crystalAdaptTicks");
     }
 
     @Override
