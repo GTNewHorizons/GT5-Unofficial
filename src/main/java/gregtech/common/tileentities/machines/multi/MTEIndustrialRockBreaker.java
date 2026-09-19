@@ -213,8 +213,8 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1 / 3.0)
-            .setEuModifier(0.75)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 3.0D)
+            .setEuModifier(0.75D)
             .setMaxParallelSupplier(this::getTrueParallel);
 
     }

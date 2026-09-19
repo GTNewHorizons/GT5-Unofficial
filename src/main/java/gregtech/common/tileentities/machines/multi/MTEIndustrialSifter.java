@@ -206,8 +206,8 @@ public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndus
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 5F)
-            .setEuModifier(0.75F)
+            .setSpeedBonus(1.0D / 5.0D)
+            .setEuModifier(0.75D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

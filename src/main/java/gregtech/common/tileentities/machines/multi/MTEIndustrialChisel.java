@@ -219,8 +219,8 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
                 return super.validateRecipe(recipe);
             }
         }.noRecipeCaching()
-            .setSpeedBonus(1F / 3F)
-            .setEuModifier(0.75F)
+            .setSpeedBonus(1.0D / 3.0D)
+            .setEuModifier(0.75D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

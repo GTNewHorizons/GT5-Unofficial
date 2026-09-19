@@ -379,7 +379,7 @@ public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustri
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 1.6F)
+            .setSpeedBonus(1.0D / 1.6D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
