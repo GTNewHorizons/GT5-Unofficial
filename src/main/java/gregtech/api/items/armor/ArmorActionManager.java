@@ -134,6 +134,22 @@ public class ArmorActionManager {
                 SyncedKeybind.createConfigurable("key.gt.toggle_levitation_mode", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.Levitation));
 
+        register(
+            new ArmorAction(
+                "vertical_speed_increase",
+                "Increase vertical speed",
+                false,
+                SyncedKeybind.createConfigurable("key.gt.vertical_speed_increase", "Gregtech Armor", Keyboard.KEY_NONE),
+                BehaviorName.SpeedBoost));
+
+        register(
+            new ArmorAction(
+                "vertical_speed_decrease",
+                "Decrease vertical speed",
+                false,
+                SyncedKeybind.createConfigurable("key.gt.vertical_speed_decrease", "Gregtech Armor", Keyboard.KEY_NONE),
+                BehaviorName.SpeedBoost));
+
         // Keybinds
 
         register(
