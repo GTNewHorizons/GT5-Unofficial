@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.World;
@@ -365,7 +366,7 @@ public class GTUtil {
     }
 
     /**
-     * Set the direction of a vanilla large chest. return false when the new direction is invalid
+     * Set the direction of a vanilla chest. return false when the new direction is invalid
      *
      * @param dryRun pass in true to prevent actually setting block metadata
      */
@@ -374,26 +375,49 @@ public class GTUtil {
         ForgeDirection newDirection = ForgeDirection.getOrientation(newSide);
         if (newDirection.offsetY != 0) return false; // cannot face up/down
         if (currentBlock == null) currentBlock = world.getBlock(x, y, z);
-        if (world.getBlock(x + newDirection.offsetX, y + newDirection.offsetY, z + newDirection.offsetZ) == currentBlock
-            || world.getBlock(x - newDirection.offsetX, y - newDirection.offsetY, z - newDirection.offsetZ)
-                == currentBlock) {
-            // new direction would face towards/away from another chest. not good
-            return false;
-        }
+
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (!(tile instanceof TileEntityChest tileChest)) return false;
+
+        tileChest.checkForAdjacentChests();
+        // new direction would face towards/away from a connected chest. not good
+        if (isChestConnectedInDir(world, x, y, z, currentBlock, tileChest, newDirection)) return false;
+        if (isChestConnectedInDir(world, x, y, z, currentBlock, tileChest, newDirection.getOpposite())) return false;
+
         if (dryRun) return true;
-        ForgeDirection sideway = ForgeDirection
-            .getOrientation(ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][newSide]);
-        boolean result = true;
-        if (world.getBlock(x + sideway.offsetX, y + sideway.offsetY, z + sideway.offsetZ) == currentBlock) {
-            result &= world
-                .setBlockMetadataWithNotify(x + sideway.offsetX, y + sideway.offsetY, z + sideway.offsetZ, newSide, 3);
-        } else if (world.getBlock(x - sideway.offsetX, y - sideway.offsetY, z - sideway.offsetZ) == currentBlock) {
-            result &= world
-                .setBlockMetadataWithNotify(x - sideway.offsetX, y - sideway.offsetY, z - sideway.offsetZ, newSide, 3);
+
+        // if connected, rotate connected chest first
+        ForgeDirection right = newDirection.getRotation(ForgeDirection.UP);
+        ForgeDirection left = right.getOpposite();
+        if (isChestConnectedInDir(world, x, y, z, currentBlock, tileChest, right)) {
+            if (!setChestDirMeta(world, x + right.offsetX, y + right.offsetY, z + right.offsetZ, newDirection))
+                return false;
+        } else if (isChestConnectedInDir(world, x, y, z, currentBlock, tileChest, left)) {
+            if (!setChestDirMeta(world, x + left.offsetX, y + left.offsetY, z + left.offsetZ, newDirection))
+                return false;
         }
-        if (!result) {
-            return false;
-        }
-        return world.setBlockMetadataWithNotify(x, y, z, newSide, 3);
+
+        return setChestDirMeta(world, x, y, z, newDirection);
+    }
+
+    private static boolean isChestConnectedInDir(World world, int x, int y, int z, Block block, TileEntityChest tile,
+        ForgeDirection dir) {
+        boolean tileConnected = switch (dir) {
+            case NORTH -> tile.adjacentChestZNeg != null;
+            case SOUTH -> tile.adjacentChestZPos != null;
+            case WEST -> tile.adjacentChestXNeg != null;
+            case EAST -> tile.adjacentChestXPos != null;
+            default -> false;
+        };
+        if (!tileConnected) return false;
+
+        Block other = world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+        return block == other;
+    }
+
+    private static boolean setChestDirMeta(World world, int x, int y, int z, ForgeDirection dir) {
+        int prevMeta = world.getBlockMetadata(x, y, z);
+        int newMeta = (prevMeta & ~0b111) | (dir.ordinal() & 0b111); // only change rotation bits
+        return world.setBlockMetadataWithNotify(x, y, z, newMeta, 3);
     }
 }
