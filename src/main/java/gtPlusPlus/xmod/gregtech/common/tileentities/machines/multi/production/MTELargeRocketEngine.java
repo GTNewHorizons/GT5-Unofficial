@@ -166,6 +166,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     + formatNumber(WARMUP_MAX_SECONDS)
                     + " seconds to warm up based on the current EU/t")
             .addSupportAny()
+            .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 10, false)
             .addController("Front center, 2nd layer")
             .addCasing("62-76", "Turbodyne Casing", false)
@@ -175,7 +176,6 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addMaintenanceHatch("1", "Any center casing", 1, 2)
             .addMufflerHatch("1", "Back center casing", 3)
             .addInputHatch("1+", "Any side or bottom center casing", 1)
-            .addPollutionAmount(getPollutionPerSecond(null))
             .toolTipFinisher();
         return tt;
     }
