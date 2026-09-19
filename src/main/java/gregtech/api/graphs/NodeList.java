@@ -5,6 +5,7 @@ public class NodeList {
 
     Node[] mNodes;
     int mCounter = 0;
+    private boolean stale;
 
     public NodeList(Node[] mNodes) {
         this.mNodes = mNodes;
@@ -18,5 +19,17 @@ public class NodeList {
     Node getNode() {
         if (mCounter < mNodes.length) return mNodes[mCounter];
         else return null;
+    }
+
+    int getPosition() {
+        return mCounter;
+    }
+
+    void markStale() {
+        stale = true;
+    }
+
+    public boolean isStale() {
+        return stale;
     }
 }

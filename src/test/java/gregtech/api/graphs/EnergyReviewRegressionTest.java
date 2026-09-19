@@ -110,6 +110,7 @@ class EnergyReviewRegressionTest {
             root.mHighestNodeValue = 26;
             branch.mHighestNodeValue = 25;
             root.mNeighbourNodes[0] = branch;
+            root.mNodePaths[0] = new PowerNodePath(new MetaPipeEntity[0]);
             root.locks[0] = new Lock();
             root.locks[0].addTileEntity(null);
             root.mNeighbourNodes[5] = tail;

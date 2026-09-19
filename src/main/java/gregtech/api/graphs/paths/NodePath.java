@@ -12,6 +12,7 @@ public class NodePath {
     protected MetaPipeEntity[] mPipes;
     public Lock lock = new Lock();
     private Node node;
+    private boolean valid = true;
 
     public NodePath(MetaPipeEntity[] aCables) {
         this.mPipes = aCables;
@@ -34,6 +35,18 @@ public class NodePath {
         }
     }
 
+    public Node getNodeMap() {
+        return node;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void invalidate() {
+        valid = false;
+    }
+
     protected void processPipes() {
         for (MetaPipeEntity tPipe : mPipes) {
             BaseMetaPipeEntity basePipe = (BaseMetaPipeEntity) tPipe.getBaseMetaTileEntity();
@@ -42,6 +55,7 @@ public class NodePath {
     }
 
     public void clearPath() {
+        valid = false;
         node = null;
         for (MetaPipeEntity mPipe : mPipes) {
             BaseMetaPipeEntity tBasePipe = (BaseMetaPipeEntity) mPipe.getBaseMetaTileEntity();

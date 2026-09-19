@@ -1,0 +1,31 @@
+{
+  "format_version": 2,
+  "size": [7, 2, 3],
+  "palette": {
+    "A": {"name": "gregtech:gt.blockmachines", "meta": 1, "label": "Bronze Hull"},
+    "B": {"name": "gregtech:gt.blockmachines", "meta": 3, "label": "Steel Hull"},
+    "C": {"name": "gregtech:gt.blockmachines", "meta": 9, "label": ".name"}
+  },
+  "layers": [
+    [
+      ".......",
+      ".BCCCA.",
+      "......."
+    ],
+    [
+      ".......",
+      ".......",
+      "......."
+    ]
+  ],
+  "annotations": {
+    "labels": {
+      "cable_end": [4, 0, 1],
+      "cable_start": [2, 0, 1],
+      "edit_air_above_path": [3, 1, 1],
+      "edit_path": [3, 0, 1],
+      "generator_a": [1, 0, 1],
+      "probe_a": [5, 0, 1]
+    }
+  }
+}

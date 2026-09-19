@@ -104,6 +104,7 @@ public abstract class GenerateNodeMap {
             } else {
                 tPipeNode = getPipeNode(aNextNodeValue, oppositeSide, aTileEntity, aConsumers);
             }
+            tPipeNode.joinNodeMap(aPreviousNode);
             tPipe.setNode(tPipeNode);
             aNodeMap.add(tPipeNode);
             tPipeNode.mSelfPath = getNewPath(new MetaPipeEntity[] { tMetaPipe });
@@ -125,6 +126,7 @@ public abstract class GenerateNodeMap {
         } else if (addConsumer(aTileEntity, oppositeSide, aNextNodeValue, aConsumers)) {
             final int oppositeSideOrdinal = oppositeSide.ordinal();
             final ConsumerNode tConsumeNode = aConsumers.get(aConsumers.size() - 1);
+            tConsumeNode.joinNodeMap(aPreviousNode);
             tConsumeNode.mNeighbourNodes[oppositeSideOrdinal] = aPreviousNode;
             tConsumeNode.mNodePaths[oppositeSideOrdinal] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
             tConsumeNode.mNodePaths[oppositeSideOrdinal].setNodeMap(tConsumeNode);

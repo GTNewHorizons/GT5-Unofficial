@@ -31,6 +31,7 @@ import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
@@ -237,42 +238,80 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     }
 
     @Override
+    public int connect(ForgeDirection side) {
+        final int result = super.connect(side);
+        if (result > 0 && getBaseMetaTileEntity() instanceof BaseMetaPipeEntity base && base.isServerSide()) {
+            base.updateConnections();
+        }
+        return result;
+    }
+
+    @Override
+    public void disconnect(ForgeDirection side) {
+        super.disconnect(side);
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity base && base.isServerSide()) {
+            base.updateConnections();
+        }
+    }
+
+    @Override
     public long transferElectricity(ForgeDirection side, long voltage, long amperage,
         HashSet<TileEntity> alreadyPassedSet) {
         if (amperage <= 0 || !getBaseMetaTileEntity().isServerSide()
             || (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN)) return 0;
         final BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        if (tBase.getNodeMap() != null && tBase.getNodeMap()
+            .isNodeMapRefreshDue()) {
+            GenerateNodeMap.clearNodeMap(tBase.getNodeMap(), -1);
+        }
         if (tBase.getNode() == null) new GenerateNodeMapPower(tBase);
         if (!(tBase.getNode() instanceof PowerNode tNode)) return 0;
+        NodeList consumers = getConsumers(tNode);
+        if (consumers == null) return 0;
+        long usedAmperage = PowerNodes.powerNode(tNode, null, consumers, (int) voltage, (int) amperage);
+        if (!consumers.isStale() || tNode.mInvalid) return usedAmperage;
+
+        GenerateNodeMap.clearNodeMap(tNode, -1);
+        new GenerateNodeMapPower(tBase);
+        if (usedAmperage >= amperage || !(tBase.getNode() instanceof PowerNode rebuiltNode)) return usedAmperage;
+        consumers = getConsumers(rebuiltNode);
+        return consumers == null ? usedAmperage
+            : usedAmperage
+                + PowerNodes.powerNode(rebuiltNode, null, consumers, (int) voltage, (int) (amperage - usedAmperage));
+    }
+
+    private static NodeList getConsumers(PowerNode node) {
         int tPlace = 0;
         Node[] tToPower = null;
-        if (tNode.mHadVoltage) {
-            for (ConsumerNode consumer : tNode.mConsumers) {
+        if (node.mHadVoltage) {
+            for (ConsumerNode consumer : node.mConsumers) {
                 if (consumer.needsEnergy()) {
-                    if (tToPower == null) tToPower = new Node[tNode.mConsumers.size()];
+                    if (tToPower == null) tToPower = new Node[node.mConsumers.size()];
                     tToPower[tPlace++] = consumer;
                 }
             }
-            if (tToPower == null) return 0;
+            if (tToPower == null) return null;
         } else {
-            tToPower = new Node[tNode.mConsumers.size()];
-            tNode.mHadVoltage = true;
-            for (ConsumerNode consumer : tNode.mConsumers) {
+            tToPower = new Node[node.mConsumers.size()];
+            node.mHadVoltage = true;
+            for (ConsumerNode consumer : node.mConsumers) {
                 tToPower[tPlace++] = consumer;
             }
         }
-        return PowerNodes.powerNode(tNode, null, new NodeList(tToPower), (int) voltage, (int) amperage);
+        return new NodeList(tToPower);
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-        // Reloaded cables must also invalidate graphs built while their chunk was absent.
-        GregTechAPI.causeCableUpdate(
-            aBaseMetaTileEntity.getWorld(),
-            aBaseMetaTileEntity.getXCoord(),
-            aBaseMetaTileEntity.getYCoord(),
-            aBaseMetaTileEntity.getZCoord());
+    public boolean needsClientTick() {
+        return false;
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        if (((BaseMetaPipeEntity) base).canUpdate()) {
+            GregTechAPI.causeCableUpdate(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord());
+        }
     }
 
     @Override
@@ -282,24 +321,15 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     }
 
     @Override
-    public boolean needsClientTick() {
-        return false;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (needsReloadUpdate && aBaseMetaTileEntity.isServerSide()) {
+    public void onPostTick(IGregTechTileEntity base, long tick) {
+        super.onPostTick(base, tick);
+        // Only addon subclasses use normal tile ticks; built-in cables use the manager.
+        if (!base.isServerSide()) return;
+        if (needsReloadUpdate) {
             needsReloadUpdate = false;
-            GregTechAPI.causeCableUpdate(
-                aBaseMetaTileEntity.getWorld(),
-                aBaseMetaTileEntity.getXCoord(),
-                aBaseMetaTileEntity.getYCoord(),
-                aBaseMetaTileEntity.getZCoord());
+            GregTechAPI.causeCableUpdate(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord());
         }
-        if (aTick % 20 == 0 && aBaseMetaTileEntity.isServerSide() && (!GTMod.proxy.gt6Cable || mCheckConnections)) {
-            checkConnections();
-        }
+        if (tick % 20 == 0 && (mCheckConnections || !getGT6StyleConnection())) checkConnections();
     }
 
     @Override

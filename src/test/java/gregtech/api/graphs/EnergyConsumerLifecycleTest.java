@@ -10,6 +10,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -26,6 +28,12 @@ import gregtech.common.covers.Cover;
 import ic2.api.energy.tile.IEnergySink;
 
 class EnergyConsumerLifecycleTest {
+
+    @BeforeEach
+    @AfterEach
+    void clearManagedCables() {
+        BaseMetaPipeEntity.clearManagedCables();
+    }
 
     @Test
     void sideChangesAndReplacementAreRecheckedAfterGraphRebuild() {
@@ -103,14 +111,23 @@ class EnergyConsumerLifecycleTest {
                 ((MTECable) root.getMetaTileEntity()).transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
             verify((IEnergyConnected) receiver, never()).injectEnergyUnits(any(), anyLong(), anyLong());
 
+            BaseMetaPipeEntity.clearManagedCables();
             BaseMetaPipeEntity reloaded = reuseTiles ? middle
                 : pipe(world, 16, ForgeDirection.WEST, ForgeDirection.EAST);
+            MTECable reloadedCable = spy((MTECable) reloaded.getMetaTileEntity());
+            reloadedCable.setBaseMetaTileEntity(reloaded);
+            doReturn(true).when(reloadedCable)
+                .getGT6StyleConnection();
+            doReturn(false).when(reloadedCable)
+                .shouldJoinIc2Enet();
+            doReturn(1).when(reloadedCable)
+                .connect(any());
             when(world.blockExists(16, 64, 0)).thenReturn(true);
             when(world.getTileEntity(16, 64, 0)).thenReturn(reloaded);
             when(server.getTickCounter()).thenReturn(1);
-            if (reuseTiles) reloaded.updateEntityProfiled();
-            else reloaded.getMetaTileEntity()
-                .onFirstTick(reloaded);
+            if (reuseTiles) reloaded.onChunkLoad();
+            else reloaded.validate();
+            BaseMetaPipeEntity.tickManagedCables();
             RunnableCableUpdate.endTick();
             assertNull(root.getNode());
             assertEquals(
@@ -119,7 +136,7 @@ class EnergyConsumerLifecycleTest {
             assertNotNull(reloaded.getNodePath());
             if (reuseTiles) {
                 Node restored = root.getNode();
-                reloaded.updateEntityProfiled();
+                BaseMetaPipeEntity.tickManagedCables();
                 RunnableCableUpdate.endTick();
                 assertSame(restored, root.getNode());
             }
@@ -149,6 +166,47 @@ class EnergyConsumerLifecycleTest {
             assertTrue(map.addConsumer(tile, ForgeDirection.WEST, 2, new ArrayList<>()));
             verify(sink).acceptsEnergyFrom(null, ForgeDirection.WEST);
             verify(world, never()).getTileEntity(anyInt(), anyInt(), anyInt());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void topologyChangeDuringIc2CallbackRetriesOnlyUnspentAmps(boolean duringDemand) {
+        try (var servers = mockStatic(MinecraftServer.class)) {
+            servers.when(MinecraftServer::getServer)
+                .thenReturn(mock(MinecraftServer.class));
+            World world = mock(World.class);
+            BaseMetaPipeEntity base = pipe(world, 0, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.EAST);
+            MTECable cable = (MTECable) base.getMetaTileEntity();
+            base.mConnections = cable.mConnections;
+            TileEntity first = mock(TileEntity.class, withSettings().extraInterfaces(IEnergySink.class));
+            first.yCoord = 64;
+            first.zCoord = -1;
+            when(first.getWorldObj()).thenReturn(world);
+            when(world.getTileEntity(0, 64, -1)).thenReturn(first);
+            when(world.getTileEntity(0, 64, 0)).thenReturn(base);
+            when(world.blockExists(anyInt(), anyInt(), anyInt())).thenReturn(true);
+            IEnergySink sink = (IEnergySink) first;
+            when(sink.acceptsEnergyFrom(any(), any())).thenReturn(true);
+            when(sink.getDemandedEnergy()).thenAnswer(call -> {
+                if (duringDemand) cable.disconnect(ForgeDirection.NORTH);
+                return 128.0;
+            });
+            when(sink.injectEnergy(any(), eq(32.0), eq(32.0))).thenAnswer(call -> {
+                cable.disconnect(ForgeDirection.NORTH);
+                return 0.0;
+            });
+            TileEntity second = receiver();
+            second.xCoord = 1;
+            second.yCoord = 64;
+            IEnergyConnected receiver = (IEnergyConnected) second;
+            when(receiver.injectEnergyUnits(any(), eq(32L), anyLong())).thenAnswer(call -> call.getArgument(2));
+            when(world.getTileEntity(1, 64, 0)).thenReturn(second);
+
+            assertEquals(4, cable.transferElectricity(ForgeDirection.UNKNOWN, 32, 4, null));
+            verify(sink, times(duringDemand ? 0 : 1)).injectEnergy(any(), eq(32.0), eq(32.0));
+            verify(sink, times(1)).getDemandedEnergy();
+            verify(receiver).injectEnergyUnits(ForgeDirection.WEST, 32, duringDemand ? 4 : 3);
         }
     }
 
@@ -215,10 +273,11 @@ class EnergyConsumerLifecycleTest {
     }
 
     @Test
-    void connectionChangesClearRoutesButUnchangedConnectionsKeepThem() {
+    void connectionChangesInvalidateRoutesButUnchangedConnectionsKeepThem() {
         try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
+            MinecraftServer server = mock(MinecraftServer.class);
             servers.when(MinecraftServer::getServer)
-                .thenReturn(mock(MinecraftServer.class));
+                .thenReturn(server);
             World world = mock(World.class);
             BaseMetaPipeEntity root = pipe(world, 15, ForgeDirection.WEST, ForgeDirection.EAST);
             BaseMetaPipeEntity end = pipe(world, 16, ForgeDirection.WEST, ForgeDirection.EAST);
@@ -239,14 +298,16 @@ class EnergyConsumerLifecycleTest {
 
             cable.disconnect(ForgeDirection.EAST);
             root.updateConnections();
-            assertNull(root.getNode());
-            assertNull(end.getNode());
+            assertSame(original, root.getNode());
+            assertFalse(original.isNodeMapValid());
             assertEquals(0, cable.transferElectricity(ForgeDirection.WEST, 32, 4, null));
 
             cable.mConnections |= ForgeDirection.EAST.flag;
             endCable.mConnections |= ForgeDirection.WEST.flag;
             root.updateConnections();
             RunnableCableUpdate.endTick();
+            assertEquals(0, cable.transferElectricity(ForgeDirection.WEST, 32, 4, null));
+            when(server.getTickCounter()).thenReturn(10);
             assertEquals(1, cable.transferElectricity(ForgeDirection.WEST, 32, 4, null));
         }
     }
