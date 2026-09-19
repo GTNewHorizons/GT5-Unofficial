@@ -671,8 +671,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         foundryData.checkSolidifierModules();
         logic.setSpeedBonus(1F / foundryData.speedModifierAdj);
-        logic.setMaxParallel(
-            (int) (Math.floor(foundryData.parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage())));
+        logic.setMaxParallelSupplier(this::getTrueParallel);
         logic.setEuModifier(foundryData.euEffAdj);
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
