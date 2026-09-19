@@ -235,7 +235,7 @@ public class MTELINAC extends MTEBeamMultiBase<MTELINAC> implements ISurvivalCon
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.mMaxProgresstime = TickTime.SECOND;
-        this.mEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()]
+        this.lEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()]
             : (int) (-this.getMaxInputAmps() * GTValues.VP[(int) this.getInputVoltageTier()]));
 
         // 1A of full power if one energy hatch, 4A if two
