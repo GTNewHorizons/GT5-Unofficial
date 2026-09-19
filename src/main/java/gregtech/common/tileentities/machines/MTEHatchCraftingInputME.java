@@ -458,7 +458,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     }
 
     // mInventory is used for storing patterns, circuit and manual slot (typically NC items)
-    private static final int MAX_PATTERN_COUNT = 4 * 9;
+    public static final int MAX_PATTERN_COUNT = 4 * 9;
     private static final int SLOT_MANUAL_SIZE = 9;
     private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + SLOT_MANUAL_SIZE + 1;
     private static final int SLOT_CIRCUIT = MAX_PATTERN_COUNT;
@@ -1284,6 +1284,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventoriesReversed() {
         return IntStream.range(0, internalInventory.length)
             .map(i -> internalInventory.length - 1 - i)
+            .mapToObj(i -> internalInventory[i])
+            .filter(Objects::nonNull)
+            .iterator();
+    }
+
+    public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventoriesInOrder(int[] indices) {
+        return Arrays.stream(indices)
             .mapToObj(i -> internalInventory[i])
             .filter(Objects::nonNull)
             .iterator();
