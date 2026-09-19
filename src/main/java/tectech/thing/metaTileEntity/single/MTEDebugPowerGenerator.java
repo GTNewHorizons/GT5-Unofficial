@@ -2,12 +2,15 @@ package tectech.thing.metaTileEntity.single;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -205,6 +208,16 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     @Override
     public long maxAmperesOut() {
         return isProducing ? amperage : 0;
+    }
+
+    @Override
+    public void addEnergyTooltipInformation(List<String> tooltip) {
+        // The voltage, amperage and direction of this debug machine are configured in its GUI.
+        final String customizable = StatCollector.translateToLocal("gt.tileentity.customizable");
+        tooltip.add(energyLine("gt.tileentity.eup_in", customizable));
+        tooltip.add(energyLine("gt.tileentity.eup_out", customizable));
+        tooltip.add(energyLine("gt.tileentity.amperage_in", customizable));
+        tooltip.add(energyLine("gt.tileentity.amperage_out", customizable));
     }
 
     @Override

@@ -32,6 +32,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -164,16 +165,81 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public long maxAmperesOut() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? 4 : 1;
+        return maxAmperesOut(getBaseMetaTileEntity().isAllowedToWork(), isHalfMode());
     }
 
     @Override
     public long maxAmperesIn() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? 2 : 5;
+        return maxAmperesIn(getBaseMetaTileEntity().isAllowedToWork(), isHalfMode());
     }
 
-    public long displayedAmperesIn() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? 1 : 4;
+    /**
+     * @param stepDown Whether the transformer steps down, which is the state of the soft mallet
+     * @param halfMode Whether the screwdriver half mode of the high amperage variants is active
+     * @return The amperage this transformer provides in the given mode
+     */
+    protected long maxAmperesOut(boolean stepDown, boolean halfMode) {
+        return stepDown ? 4 : 1;
+    }
+
+    /**
+     * @param stepDown Whether the transformer steps down, which is the state of the soft mallet
+     * @param halfMode Whether the screwdriver half mode of the high amperage variants is active
+     * @return The amperage this transformer accepts in the given mode
+     */
+    protected long maxAmperesIn(boolean stepDown, boolean halfMode) {
+        return stepDown ? 2 : 5;
+    }
+
+    /** @return true while the screwdriver half mode is active, only the high amperage variants have one */
+    protected boolean isHalfMode() {
+        return false;
+    }
+
+    /** @return true if this transformer can be switched into a half mode with a screwdriver */
+    protected boolean hasHalfMode() {
+        return false;
+    }
+
+    /**
+     * @return The amperage a transformer converts without counting its internal losses, which is what the description
+     *         line shows. The amperage lines list the real limits instead.
+     */
+    protected long idealAmperesIn() {
+        return 1;
+    }
+
+    @Override
+    public void addEnergyTooltipInformation(List<String> tooltip) {
+        // Both modes are listed, because the item can be switched into either of them after it is placed.
+        tooltip.add(energyLine("gt.tileentity.eup_in", modes(V[mTier + 1], V[mTier], false)));
+        tooltip.add(energyLine("gt.tileentity.eup_out", modes(V[mTier], V[mTier + 1], false)));
+        tooltip.add(
+            energyLine(
+                "gt.tileentity.amperage_in",
+                modes(maxAmperesIn(true, false), maxAmperesIn(false, false), true)));
+        tooltip.add(
+            energyLine(
+                "gt.tileentity.amperage_out",
+                modes(maxAmperesOut(true, false), maxAmperesOut(false, false), true)));
+        if (hasHalfMode()) {
+            tooltip.add(
+                energyLine(
+                    "gt.tileentity.amperage_in.half",
+                    modes(maxAmperesIn(true, true), maxAmperesIn(false, true), true)));
+            tooltip.add(
+                energyLine(
+                    "gt.tileentity.amperage_out.half",
+                    modes(maxAmperesOut(true, true), maxAmperesOut(false, true), true)));
+        }
+    }
+
+    /**
+     * @return The values of both modes, step down first, formatted for the tooltip
+     */
+    private static String modes(long stepDown, long stepUp, boolean amperage) {
+        return amperage ? TooltipHelper.ampText(stepDown) + " / " + TooltipHelper.ampText(stepUp)
+            : TooltipHelper.voltageText(stepDown) + " / " + TooltipHelper.voltageText(stepUp);
     }
 
     @Override
@@ -291,7 +357,7 @@ public class MTETransformer extends MTETieredMachineBlock {
                         : (RED + StatCollector.translateToLocal("GT5U.waila.transformer.step_up"))) + RESET,
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                         : tag.getLong("maxEUInput"),
-                    tag.getLong("displayedAmperesIn"),
+                    tag.getLong("maxAmperesIn"),
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                         : tag.getLong("maxEUOutput"),
                     tag.getLong("maxAmperesOut")));
@@ -323,16 +389,22 @@ public class MTETransformer extends MTETieredMachineBlock {
         tag.setBoolean("isAllowedToWork", getBaseMetaTileEntity().isAllowedToWork());
         tag.setLong("maxEUInput", maxEUInput());
         tag.setLong("maxAmperesIn", maxAmperesIn());
-        tag.setLong("displayedAmperesIn", displayedAmperesIn());
         tag.setLong("maxEUOutput", maxEUOutput());
         tag.setLong("maxAmperesOut", maxAmperesOut());
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocalFormatted(
-            "gt.blockmachines.transformer.desc",
-            GTUtility.getColoredTierNameFromVoltage(maxEUInput()) + EnumChatFormatting.GRAY,
-            GTUtility.getColoredTierNameFromVoltage(maxEUOutput()) + EnumChatFormatting.GRAY) };
+        // The line always describes the step down direction, the item itself can be switched after placement. The
+        // voltage ratio of a transformer is always four, which is why the output amperage is four times the input.
+        final long idealAmperesIn = idealAmperesIn();
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.transformer.ratio.desc",
+                TooltipHelper.coloredText(String.valueOf(idealAmperesIn), EnumChatFormatting.AQUA),
+                GTUtility.getColoredTierNameFromVoltage(V[mTier + 1]) + EnumChatFormatting.GRAY,
+                TooltipHelper.coloredText(String.valueOf(idealAmperesIn * 4L), EnumChatFormatting.AQUA),
+                GTUtility.getColoredTierNameFromVoltage(V[mTier]) + EnumChatFormatting.GRAY),
+            StatCollector.translateToLocal("gt.blockmachines.transformer.mode_hint") };
     }
 }

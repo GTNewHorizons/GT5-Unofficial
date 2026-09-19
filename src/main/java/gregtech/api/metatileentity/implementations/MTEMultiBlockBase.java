@@ -174,6 +174,12 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 public abstract class MTEMultiBlockBase extends MetaTileEntity
     implements IControllerWithOptionalFeatures, IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI, IHatchWatcher {
 
+    @Override
+    public boolean showsAmperageInTooltip() {
+        // The amperage of a multiblock is decided by the hatches it is built with.
+        return false;
+    }
+
     public static boolean disableMaintenance;
     public boolean hasMaintenanceChecks = getDefaultHasMaintenanceChecks();
     public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftMallet = false, mHardHammer = false,

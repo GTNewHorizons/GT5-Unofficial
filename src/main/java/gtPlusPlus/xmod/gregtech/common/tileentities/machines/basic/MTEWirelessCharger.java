@@ -280,6 +280,12 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
+    public boolean showsAmperageInTooltip() {
+        // The amperage depends on how many machines are currently linked to the charger.
+        return false;
+    }
+
+    @Override
     public int getProgresstime() {
         return (int) this.getBaseMetaTileEntity()
             .getUniversalEnergyStored();

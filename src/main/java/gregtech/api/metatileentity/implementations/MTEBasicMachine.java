@@ -388,6 +388,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
+    public boolean showsAmperageInTooltip() {
+        // The amperage is derived from the EU/t of the running recipe, which is not known for an item.
+        return false;
+    }
+
+    @Override
     public List<ItemStack> getNonConsumedInputDisplayItems() {
         List<ItemStack> result = new ArrayList<>();
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {

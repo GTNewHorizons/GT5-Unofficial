@@ -2,6 +2,8 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GTValues.V;
 
+import java.util.List;
+
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
@@ -16,6 +18,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 @IMetaTileEntity.SkipGenerateDescription
 @IMetaTileEntity.SkipGenerateName
 public class MTETurboCharger extends MTECharger {
+
+    /** The amperage a single slot lets this turbo charger pull from the network. */
+    public static final long AMPERES_IN_PER_SLOT = 16L;
+
+    /** The amperage a single slot lets this turbo charger push into the network. */
+    public static final long AMPERES_OUT_PER_SLOT = 4L;
 
     public MTETurboCharger(int aID, String aName, String aNameRegional, int aTier, String aDescription,
         int aSlotCount) {
@@ -69,12 +77,18 @@ public class MTETurboCharger extends MTECharger {
 
     @Override
     public long maxAmperesIn() {
-        return 16L * mInventory.length;
+        return AMPERES_IN_PER_SLOT * mInventory.length;
     }
 
     @Override
     public long maxAmperesOut() {
-        return 4L * mInventory.length;
+        return AMPERES_OUT_PER_SLOT * mInventory.length;
+    }
+
+    @Override
+    public void addEnergyTooltipInformation(List<String> tooltip) {
+        // The turbo charger has a fixed amount of slots, so the total amperage is a fixed value as well.
+        addDefaultEnergyTooltipInformation(tooltip);
     }
 
     @Override
