@@ -547,6 +547,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // watcher from every mSmartInputHatches entry covers all of them.
         for (var hatch : mSmartInputHatches) {
             hatch.removeWatcher(this);
+            // Drop our crafting icon as well, otherwise an interface facing a hatch that left the structure keeps
+            // showing this multiblock's name. A hatch still part of the structure gets it back from addToMachineList.
+            if (hatch instanceof MTEHatch mteHatch) mteHatch.updateCraftingIcon(null);
         }
         mSmartInputHatches.clear();
         mCryotheumHatches.clear();
