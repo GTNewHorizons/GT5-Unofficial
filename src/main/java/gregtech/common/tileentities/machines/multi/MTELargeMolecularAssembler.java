@@ -22,6 +22,7 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -157,6 +158,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     private List<List<ItemStack>> cachedAeJobs = new ArrayList<>();
     private boolean aeJobsDirty;
 
+    private boolean patternChanged = true;
     private Map<ItemStack, ICraftingPatternDetails> cachedPatternDetail = new ItemStackMap<>(true);
     private int cachedInputBusCount = 0;
 
@@ -553,10 +555,18 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         });
     }
 
+    @Override
+    public void scheduleRecipeCheck(RecipeCheckReason reason) {
+        super.scheduleRecipeCheck(reason);
+        patternChanged = true;
+    }
+
     private void issuePatternChangeIfNeeded(long tick) {
         if (tick % 20 != 0) {
             return;
         }
+        if (!patternChanged) return;
+        patternChanged = false;
 
         List<MTEHatchInputBus> inputs = GTUtility.filterValidMTEs(mInputBusses)
             .stream()
