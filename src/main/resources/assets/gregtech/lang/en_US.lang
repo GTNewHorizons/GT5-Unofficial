@@ -3458,12 +3458,14 @@ GT5U.tooltip.nac.module.biological_coordinator.action=Coordinates your Living %s
 GT5U.tooltip.nac.module.biological_coordinator.body.1=In a fully calibrated Wetware NAC, consumes 50% less Catalyst Medium
 GT5U.tooltip.nac.module.biological_coordinator.body.2=In a fully calibrated Bioware NAC, does not consume any Catalyst Medium
 GT5U.tooltip.nac.module.board_processor.name=Board Processor
+GT5U.tooltip.nac.module.board_processor.structure.output_hatch=Required for manual and automatic flushing
 GT5U.tooltip.nac.module.board_processor.flavor.1=Gotta get'em wet
 GT5U.tooltip.nac.module.board_processor.action=Processes your Board %s by cleaning them in §b'Immersion Fluid'§7
 GT5U.tooltip.nac.module.board_processor.body.1=Will try to fill its internal tank with provided §b'Immersion Fluids'§7 every second
 GT5U.tooltip.nac.module.board_processor.body.2=The internal tank has a capacity of §31,000,000L§7 and must be at least half full for the machine to work
 GT5U.tooltip.nac.module.board_processor.body.3=Running recipes gradually increases fluid impurity, with bigger amounts of fluid taking longer to become impure
 GT5U.tooltip.nac.module.board_processor.body.4=Set an ejection threshold in the GUI to automatically flush the fluid out to be processed, which is §b100%%§7 by default
+GT5U.tooltip.nac.module.board_processor.body.output_hatch=Manual and automatic flushing require an Output Hatch
 GT5U.tooltip.nac.module.board_processor.body.5=The Impurity percentage §b(y%%)§7 affects the module's efficiency:
 GT5U.tooltip.nac.module.board_processor.body.6=§b0%%-15%%§r - §aEU Discount = 30%% - 2 * y%%
 GT5U.tooltip.nac.module.board_processor.body.7=§b15%%-65%%§r - Default behaviour
@@ -3516,7 +3518,7 @@ GT5U.tooltip.nac.module.wire_tracer.action=Traces your Wire %s
 GT5U.tooltip.nac.module.boardprocessor.immersion_fluid=Immersion Fluid
 GT5U.tooltip.nac.module.boardprocessor.empty=Empty
 GT5U.tooltip.nac.module.boardprocessor.impurity=Impurity
-GT5U.tooltip.nac.module.boardprocessor.flush_tank=Flush Tank
+GT5U.tooltip.nac.module.boardprocessor.flush_tank=Flush Tank (requires an Output Hatch)
 GT5U.tooltip.nac.module.boardprocessor.edit_flush_tank=Edit auto-flush settings
 
 GT5U.tooltip.nac.hatch.splitter.body.1=Can be installed in a §eSplitter§7 module for the §aNanochip Assembly Complex
