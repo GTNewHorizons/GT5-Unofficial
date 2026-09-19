@@ -49,7 +49,9 @@ import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
 import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
 import gregtech.api.items.armor.behaviors.StepAssistBehavior;
 import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
+import gregtech.api.items.armor.behaviors.TeleportationStaffBehavior;
 import gregtech.api.items.armor.behaviors.TerrasteelBehavior;
+import gregtech.api.items.armor.behaviors.TravelStaffBehavior;
 import gregtech.api.items.armor.behaviors.VisDiscountBehavior;
 import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
 
@@ -485,6 +487,15 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Movement)
         ),
+        TravelStaff(ItemList.Augment_TravelStaff, new AugmentBuilder()
+            .setId("TravelStaff")
+            .setItemId("augmenttravelstaff")
+            .providesBehaviors(TravelStaffBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .fitsInto(ArmorType.Helmet)
+            .incompatibleAugments(ItemList.Augment_TeleportationStaff)
+            .setCategory(AugmentCategory.Movement)
+        ),
 
         // Tier 1 - Utility
         Soulbound(ItemList.Augment_Soulbound, new AugmentBuilder()
@@ -688,6 +699,16 @@ public class MechArmorAugmentRegistries {
                 ItemList.Augment_JumpBoost,
                 ItemList.Augment_StepAssist
             )
+            .setMinimumCoreTier(3)
+            .setCategory(AugmentCategory.Movement)
+        ),
+
+        TeleportStaff(ItemList.Augment_TeleportationStaff, new AugmentBuilder()
+            .setId("TeleportationStaff")
+            .setItemId("augmentteleportationstaff")
+            .providesBehaviors(TeleportationStaffBehavior.INSTANCE)
+            .fitsInto(ArmorType.Helmet)
+            .incompatibleAugments(ItemList.Augment_TravelStaff)
             .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)
         );

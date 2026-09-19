@@ -4217,6 +4217,8 @@ GT5U.armor.part.name.Soulbound=Augment: Soul Tether
 GT5U.armor.part.name.ApprenticeStriders=Augment: Apprentice Striders
 GT5U.armor.part.name.ArchmageStriders=Augment: Archmage Striders
 GT5U.armor.part.name.EldritchStriders=Augment: Eldritch Striders
+GT5U.armor.part.name.TravelStaff=Augment: Staff of Traveling
+GT5U.armor.part.name.TeleportationStaff=Augment: Staff of Teleportation
 
 GT5U.armor.part.tooltip.NightVision=Allows user to see clearly at night and in the dark
 GT5U.armor.part.tooltip.CreativeFlight=Grants the user creative flight
@@ -4244,6 +4246,8 @@ GT5U.armor.part.tooltip.Soulbound=Prevents this armor piece from being dropped o
 GT5U.armor.part.tooltip.ApprenticeStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
 GT5U.armor.part.tooltip.ArchmageStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
 GT5U.armor.part.tooltip.EldritchStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
+GT5U.armor.part.tooltip.TravelStaff=Enables the usage of the Staff of Traveling
+GT5U.armor.part.tooltip.TeleportationStaff=Enables the usage of the Staff of Teleportation
 
 GT5U.armor.behavior.NightVision=Night Vision
 GT5U.armor.behavior.GogglesOfRevealing=Thaumic Sight
@@ -4271,6 +4275,8 @@ GT5U.armor.behavior.HoloInventory=Holographic Inventory
 GT5U.armor.behavior.Terrasteel=Will of the Ancients
 GT5U.armor.behavior.Soulbound=Soulbound
 GT5U.armor.behavior.Levitation=Levitation Mode
+GT5U.armor.behavior.TravelStaff=Staff of Traveling
+GT5U.armor.behavior.TeleportationStaff=Staff of Teleportation
 
 GT5U.armor.message.enabled=%s §aEnabled§r
 GT5U.armor.message.disabled=%s §cDisabled§r
@@ -7821,6 +7827,7 @@ key.gt.jump_decrease=Decrease Jump Boost
 key.gt.force_field=Toggle Force Field
 key.gt.toggle_levitation_mode=Toggle Levitation Mode
 key.gt.open_radial_menu=Open Radial Menu
+key.gt.activate_movement_staff=Activate Staff of Traveling/Teleportation
 
 # Tooltips for GT Tools
 gt.softmallet.tooltip=Activates and Deactivates Machines
