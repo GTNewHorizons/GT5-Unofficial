@@ -149,12 +149,11 @@ public final class ModItems {
         GregtechItemList.ExpandableHandPump.set(new ItemStack(toolHandPump, 1, 1004));
 
         // Volumetric Flasks
-        GregtechItemList.VOLUMETRIC_FLASK_8k
-            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 16000));
+        GregtechItemList.VOLUMETRIC_FLASK_8k.set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", 16000));
         GregtechItemList.VOLUMETRIC_FLASK_32k
-            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 256000));
-        GregtechItemList.KLEIN_BOTTLE.set(
-            VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_Infinite", "Klein Bottle", Integer.MAX_VALUE));
+            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_32k", 256000));
+        GregtechItemList.KLEIN_BOTTLE
+            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_Infinite", Integer.MAX_VALUE));
 
         Item boilerChassis = new ItemBoilerChassis();
         GregtechItemList.BoilerChassis_Tier0.set(new ItemStack(boilerChassis, 1, 0));

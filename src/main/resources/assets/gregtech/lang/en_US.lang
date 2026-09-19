@@ -1745,8 +1745,10 @@ GTPP.tooltip.catalyst.active_reaction_agent=Active Reaction Agent
 GTPP.tooltip.milling_ball.tumble=Tumble Tumble Tumble
 
 # Infinite Spray Can
-item.GT5U.infinite_spray_can.name.solvent=Infinite Spray Can %cSolvent%c
-item.GT5U.infinite_spray_can.name.colored=Infinite Spray Can %c%s%c
+item.GT5U.infinite_spray_can.name.solvent.unlocked=Infinite Spray Can (Solvent)
+item.GT5U.infinite_spray_can.name.solvent.locked=Infinite Spray Can [Solvent]
+item.GT5U.infinite_spray_can.name.colored.unlocked=Infinite Spray Can (%s)
+item.GT5U.infinite_spray_can.name.colored.locked=Infinite Spray Can [%s]
 
 GT5U.infinite_spray_can.color.Black=Black
 GT5U.infinite_spray_can.color.Red=Red
@@ -3348,14 +3350,21 @@ GT5U.gui.text.nac.info.module_basics.body.4=Modules innately have infinite paral
 GT5U.gui.text.nac.info.module_basics.body.5=Modules have capped 2/2 overclocks (that take precedence before parallels) to the NAC's energy hatch tier. This means that if a recipe is UEV voltage tiered and you have a UMV energy hatch, it will overclock at most 2 times. Assembly Matrix recipes use the casing tier instead of the voltage tier to determine overclocks. The recipe time can not be overclocked below 5 seconds.
 GT5U.gui.text.nac.info.calibration.header=Calibration
 GT5U.gui.text.nac.info.calibration.body.1=When a circuit is processed in the Assembly Matrix, it gets researched by the NAC and added to its circuit history. Circuit Calibration is stored in 100 batches of 1,000 circuits each.
-GT5U.gui.text.nac.info.calibration.body.2=Mainframes increase the circuit history by 1 per circuit made, every step down from the mainframe halves this amount.
-GT5U.gui.text.nac.info.calibration.body.3="Special" Circuits increase circuit history by 1 per circuit made, ignoring the formula above.
-GT5U.gui.text.nac.info.calibration.body.4=The multi-colored progress bar roughly shows the amount / percentage of each circuit type in the past 100,000 circuits. The progress of the current batch is displayed in the cyclical progress icon. When a batch is ready, it replaces the oldest batches information.
-GT5U.gui.text.nac.info.calibration.body.5=When enough of a circuit type is processed, the NAC will be 'Calibrated' to that circuit type. The specific amount is the calibration tiers threshold * the total circuit history (100,000). Each Calibration has 3 stages with increasing thresholds and increasing buffs. Only one Calibration may be present at once, with higher tier Calibrations taking priority.
+GT5U.gui.text.nac.info.calibration.body.2=Mainframes increase the Calibration progress by 1 per circuit made, every step down from the mainframe halves this amount.
+GT5U.gui.text.nac.info.calibration.body.3=The multi-colored progress bar roughly shows the amount / percentage of each circuit type in the past 100,000 circuits. The progress of the current batch is displayed in the cyclical progress icon. When a batch is ready, it replaces the oldest batches information.
+GT5U.gui.text.nac.info.calibration.body.4=When enough of a circuit type is processed, the NAC will be 'Calibrated' to that circuit type. The specific amount is the calibration tiers threshold * the total circuit history (100,000). Each Calibration has 3 stages with increasing thresholds and increasing buffs. Only one Calibration may be present at once, with higher tier Calibrations taking priority.
 
 GT5U.gui.text.nac.info.line_specifics.header=Circuit Line Specifics
 GT5U.gui.text.nac.info.line_specifics.body.1=Below is a collection of the comprehensive information that varies between circuit lines.
-GT5U.gui.text.nac.info.line_specifics.body.2=The information is organized as follows: Suggested Power Distribution, Suggested Additional Module Amounts, Calibration Values
+GT5U.gui.text.nac.info.line_specifics.body.2=The information is organized as follows: §dSuggested Power Distribution§r, §aSuggested Additional Module Amounts§r, §3Calibration Weights§r (if they differ), and §2Calibration Values
+GT5U.gui.text.nac.info.line_specifics.primitive.header=Primitive Circuits
+GT5U.gui.text.nac.info.line_specifics.primitive.power_distribution=Suggested Power Distribution: §d90%% Matrix§r / §310%% Non-Matrix
+GT5U.gui.text.nac.info.line_specifics.primitive.module_count=Suggested Additional Modules:§a None
+GT5U.gui.text.nac.info.line_specifics.primitive.body1=The Prime Unattuned Circuitry component increases Primitive calibration progress by 0.1 each, ignoring the standard formula above.
+GT5U.gui.text.nac.info.line_specifics.primitive.body2=Other Primitive Circuits only increase Primitive calibration progress by 1 per batch.
+GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect1=§3Tier 1§r - §240%% Threshold§r  - 10%% chance to set Primitive Circuit recipe times to 10 ticks 
+GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect2=§3Tier 2§r - §280%% Threshold§r  - +5%% chance to multiply output for non-Primed Unattuned Circuitry Primitive Circuits
+GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect3=§3Tier 3§r - §2100%% Threshold§r - +5%% (10%% total) chance to multiply output for non-Primed Unattuned Circuitry Primitive Circuits
 GT5U.gui.text.nac.info.line_specifics.crystal.header=Crystal Circuits
 GT5U.gui.text.nac.info.line_specifics.crystal.power_distribution=Suggested Power Distribution: §d20%% Matrix§r / §380%% Non-Matrix
 GT5U.gui.text.nac.info.line_specifics.crystal.module_count=Suggested Additional Modules:§a 1 Etching Array
@@ -3384,6 +3393,8 @@ GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect3=§3Tier 3§r -
 GT5U.gui.text.nac.info.line_specifics.special.header=Special Circuits (Pico and Quantum)
 GT5U.gui.text.nac.info.line_specifics.special.power_distribution=Suggested Power Distribution: §d80%% Matrix§r / §320%% Non-Matrix
 GT5U.gui.text.nac.info.line_specifics.special.module_count=Suggested Additional Modules:§a None
+GT5U.gui.text.nac.info.line_specifics.special.body1="Special" Circuits increase Special calibration progress by 1 per circuit made, ignoring the standard formula above.
+GT5U.gui.text.nac.info.line_specifics.special.body2=§l§5Recipe time discounts provided by this Calibration increase recipe EU proportionally so the EU per circuit stays the same
 GT5U.gui.text.nac.info.line_specifics.special.calibration.effect1=§3Tier 1§r - §21%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix
 GT5U.gui.text.nac.info.line_specifics.special.calibration.effect2=§3Tier 2§r - §25%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix (total 40%%)
 GT5U.gui.text.nac.info.line_specifics.special.calibration.effect3=§3Tier 3§r - §220%% threshold§r - -10%% Recipe Time on Special Circuits in the Assembly Matrix (total 50%%)
@@ -3547,6 +3558,10 @@ gt.circuitcomponent.cable.processed.opticalfiber=Split Optical Fiber Cable
 gt.circuitcomponent.processed.wireinfinity=Spooled Infinity Wire
 gt.circuitcomponent.processed.wirehypogen=Spooled Hypogen Wire
 gt.circuitcomponent.processed.wiremagmatter=Spooled Magmatter Wire
+gt.circuitcomponent.processed.wirecopper=Spooled Copper Wire
+gt.circuitcomponent.processed.wireredalloy=Spooled Red Alloy Wire
+gt.circuitcomponent.processed.wireelectrum=Spooled Electrum Wire
+gt.circuitcomponent.processed.wireplatinum=Spooled Platinum Wire
 
 gt.circuitcomponent.processed.asmd.resistor=Prepared Advanced SMD Resistor
 gt.circuitcomponent.processed.asmd.transistor=Prepared Advanced SMD Transistor
@@ -3623,9 +3638,15 @@ gt.circuitcomponent.bolt.processed.cosmicneutronium=Filed Cosmic Neutronium Bolt
 gt.circuitcomponent.bolt.processed.chromaticglass=Filed Chromatic Glass Bolt
 gt.circuitcomponent.bolt.processed.umvsuperconductor=Filed UMV Superconductor Base Bolt
 gt.circuitcomponent.bolt.processed.whitedwarfmatter=Filed White Dwarf Matter Bolt
+gt.circuitcomponent.bolt.processed.copper=Filed Copper Bolt
+gt.circuitcomponent.bolt.processed.redalloy=Filed Red Alloy Bolt
+gt.circuitcomponent.bolt.processed.platinum=Filed Platinum Bolt
+gt.circuitcomponent.bolt.processed.niobiumtitanium=Filed Niobium Titanium Bolt
 gt.circuitcomponent.plate.processed.rhugnor=Stripped Rhugnor Plate
 gt.circuitcomponent.plate.processed.metastableoganesson=Stripped Metastable Oganesson Plate
 gt.circuitcomponent.plate.processed.hexanite=Stripped Hexanite Plate
+gt.circuitcomponent.unattunedcircuitry=Unattuned Circuitry
+gt.circuitcomponent.primedunattunedcircuitry=Primed Unattuned Circuitry
 
 # NAC Machines
 gt.blockmachines.vacuum.pipe.name=Vacuum Conveyor Pipe
@@ -6657,6 +6678,7 @@ GT5U.waila.mebf.parallel=Current Parallel Modifier: §6%s
 GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
 GT5U.waila.boiler.temperature=§aTemperature: §6%s
 GT5U.waila.boiler.fuel_empty=§cFuel empty
+GT5U.waila.boiler.steam_producing=§aSteam Production: §6%s§rL/s
 GT5U.waila.monster_repellent.working_range=Range: §a%s§r blocks
 GT5U.waila.monster_repellent.unpowered=Unpowered
 
@@ -7745,7 +7767,6 @@ gt.item.adv_sensor_card.tooltip.recipe_hint=Created by attaching a Metrics Trans
 gt.item.adv_sensor_card.tooltip.fried.1=§o§dThis thing looks completely fried...
 gt.item.adv_sensor_card.tooltip.fried.2=§cDestroyed due to metrics transmitter being removed
 gt.item.adv_sensor_card.tooltip.fried.3=§cor the machine being destroyed
-gt.item.adv_sensor_card.tooltip.machine=Machine: §b%s
 gt.item.adv_sensor_card.tooltip.frequency=Frequency: §b%s
 gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
 gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
@@ -9522,9 +9543,6 @@ gt.540k_Space_Coolantcell.name=540k Sp Coolant Cell
 gt.1080k_Space_Coolantcell.name=1080k Sp Coolant Cell
 gt.neutroniumHeatCapacitor.name=1G Neutronium Heat Capacitor
 
-# Coolant Cell shared tooltip key
-gt.item.desc.stored_heat=Stored Heat: %s
-
 # Breeder Cells
 gt.rodLithium.name=Fuel Rod (Lithium)
 gt.rodLithium.tooltip_main=Source of tritium
@@ -9611,6 +9629,9 @@ gt.tierdDrone3.tooltip_main=Warp engine FTL Shuttle
 
 # Volumetric Flask
 gt.Volumetric_Flask.name=Volumetric Flask
+gt.Volumetric_Flask_8k.name=Large Volumetric Flask
+gt.Volumetric_Flask_32k.name=Gigantic Volumetric Flask
+gt.Volumetric_Flask_Infinite.name=Klein Bottle
 
 # CircuitComponentFakeItem
 gt.fakecircuitcomponent.name=Fake Circuit Component Item
