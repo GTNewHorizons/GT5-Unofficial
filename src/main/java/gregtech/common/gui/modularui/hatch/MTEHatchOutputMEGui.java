@@ -32,6 +32,10 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
         IntSyncValue prioritySyncer = new IntSyncValue(provider::getPriority, provider::setPriority).allowC2S();
         BooleanSyncValue isCaching = new BooleanSyncValue(provider::getCacheMode, provider::setCacheMode).allowC2S();
         BooleanSyncValue isChecking = new BooleanSyncValue(provider::getCheckMode, provider::setCheckMode).allowC2S();
+        // The provider stores ticks, the player sets seconds.
+        IntSyncValue refreshSyncer = new IntSyncValue(
+            () -> provider.getRefreshTime() / MTEHatchOutputMEBase.TICKS_PER_SECOND,
+            seconds -> provider.setRefreshTime(seconds * MTEHatchOutputMEBase.TICKS_PER_SECOND)).allowC2S();
 
         Flow mainRow = Flow.row()
             .coverChildren()
@@ -49,20 +53,38 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
 
         // priority input text field
         mainRow.child(
-            new TextFieldWidget().size(75, 14)
+            new TextFieldWidget().size(60, 14)
                 .formatAsInteger(true)
                 .value(prioritySyncer)
                 .numbersInt(Integer.MIN_VALUE, Integer.MAX_VALUE)
                 .setMaxLength(10)
                 .tooltip(t -> t.addLine(GuiText.Priority.getLocal()))
                 .setEnabledIf(t -> isCaching.getBoolValue())
-                .marginLeft(5));
+                .marginLeft(4));
 
         // check mode toggle
         mainRow.child(
             new ToggleButton().value(isChecking)
                 .overlay(GuiTextures.SEARCH)
                 .addTooltipLine(StatCollector.translateToLocal("GT5U.hatch.outputme.toggle_checking")));
+
+        // refresh time input text field
+        mainRow.child(
+            new TextFieldWidget().size(40, 14)
+                .formatAsInteger(true)
+                .value(refreshSyncer)
+                .numbersInt(
+                    MTEHatchOutputMEBase.MIN_REFRESH_TIME / MTEHatchOutputMEBase.TICKS_PER_SECOND,
+                    Integer.MAX_VALUE / MTEHatchOutputMEBase.TICKS_PER_SECOND)
+                .setMaxLength(10)
+                .tooltip(t -> {
+                    t.addLine(StatCollector.translateToLocal("GT5U.hatch.outputme.refresh_time"));
+                    t.addLine(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.hatch.outputme.refresh_time.tooltip",
+                            MTEHatchOutputMEBase.MIN_REFRESH_TIME / MTEHatchOutputMEBase.TICKS_PER_SECOND));
+                })
+                .marginLeft(3));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
