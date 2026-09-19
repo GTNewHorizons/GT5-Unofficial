@@ -49,7 +49,6 @@ public class NightVisionBehavior implements IArmorBehavior {
                     MathHelper.floor_double(player.posY),
                     MathHelper.floor_double(player.posZ));
 
-
             if (combinedLight < 7) {
                 context.drainEnergy(2);
             }
