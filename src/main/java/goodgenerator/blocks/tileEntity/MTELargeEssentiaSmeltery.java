@@ -254,6 +254,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .addMiscHatch("1+", StatCollector.translateToLocal("essentiaOutputHatch.0.name"), StatCollector.translateToLocal("gt.mbtt.structure.any_magic_casing"), 1)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.LES_ESSENTIA_CELL)
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
         // spotless:on
