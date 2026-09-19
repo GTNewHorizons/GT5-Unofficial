@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -50,7 +51,7 @@ class EnergyReviewRegressionTest {
 
             assertEquals(2, b.transferElectricity(ForgeDirection.UNKNOWN, 32, 2, null));
             assertTrue(original.mInvalid);
-            assertNull(pipes[1].getNode());
+            assertNotNull(pipes[1].getNode());
             clearInvocations(left, right);
             pipes[2].invalidate();
             when(world.getTileEntity(2, 64, 0)).thenReturn(null);
@@ -58,6 +59,52 @@ class EnergyReviewRegressionTest {
             assertEquals(1, a.transferElectricity(ForgeDirection.UNKNOWN, 32, 2, null));
             verify((IEnergyConnected) right, never()).injectEnergyUnits(any(), anyLong(), anyLong());
             verify((IEnergyConnected) left).injectEnergyUnits(any(), eq(32L), anyLong());
+        }
+    }
+
+    @Test
+    void alternatingInternalSourcesReuseGraphAndRetainOverloadHistory() {
+        try (var servers = mockStatic(MinecraftServer.class)) {
+            MinecraftServer server = mock(MinecraftServer.class);
+            servers.when(MinecraftServer::getServer)
+                .thenReturn(server);
+            World world = mock(World.class);
+            when(world.blockExists(anyInt(), anyInt(), anyInt())).thenReturn(true);
+            BaseMetaPipeEntity[] pipes = new BaseMetaPipeEntity[5];
+            for (int x = 0; x < pipes.length; x++) {
+                pipes[x] = pipe(world, x, ForgeDirection.WEST, ForgeDirection.EAST);
+                MTECable cable = new MTECable("overload", 0.5f, null, 0, 1, 128, false, false);
+                cable.mConnections = (byte) (ForgeDirection.WEST.flag | ForgeDirection.EAST.flag);
+                cable.setBaseMetaTileEntity(pipes[x]);
+                when(world.getTileEntity(x, 64, 0)).thenReturn(pipes[x]);
+            }
+            TileEntity receiver = receiver(5, 0);
+            when(world.getTileEntity(5, 64, 0)).thenReturn(receiver);
+            AtomicBoolean burned = new AtomicBoolean();
+            when(world.setBlock(anyInt(), anyInt(), anyInt(), any())).thenAnswer(call -> {
+                burned.set(true);
+                return true;
+            });
+            MTECable a = (MTECable) pipes[1].getMetaTileEntity();
+            MTECable b = (MTECable) pipes[2].getMetaTileEntity();
+            assertEquals(1, a.transferElectricity(ForgeDirection.UNKNOWN, 32, 1, null));
+            assertEquals(1, b.transferElectricity(ForgeDirection.UNKNOWN, 32, 1, null));
+            Node sourceA = pipes[1].getNode();
+            Node sourceB = pipes[2].getNode();
+            PowerNodePath sharedPath = (PowerNodePath) pipes[3].getNodePath();
+            var consumer = sourceB.mConsumers.get(sourceB.mConsumers.size() - 1);
+
+            for (int tick = 1; tick <= 100 && !burned.get(); tick++) {
+                when(server.getTickCounter()).thenReturn(tick);
+                assertEquals(1, a.transferElectricity(ForgeDirection.UNKNOWN, 32, 1, null));
+                assertEquals(1, b.transferElectricity(ForgeDirection.UNKNOWN, 32, 1, null));
+                assertSame(sourceA, pipes[1].getNode());
+                assertSame(sourceB, pipes[2].getNode());
+                assertSame(sharedPath, pipes[3].getNodePath());
+                assertTrue(sourceB.mConsumers.contains(consumer));
+                if (tick > 1) assertEquals(2, sharedPath.getAmperage());
+            }
+            assertTrue(burned.get(), "Two sustained 1A sources must overload their shared 1A cable");
         }
     }
 

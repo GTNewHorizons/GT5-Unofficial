@@ -80,6 +80,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public final boolean mInsulated, mCanShock;
     private String prefixKey;
     private boolean needsReloadUpdate;
+    private boolean energySource;
 
     public int mTransferredAmperage = 0;
 
@@ -259,6 +260,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
         HashSet<TileEntity> alreadyPassedSet) {
         if (amperage <= 0 || !getBaseMetaTileEntity().isServerSide()
             || (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN)) return 0;
+        energySource = true;
         final BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         if (tBase.getNodeMap() != null && tBase.getNodeMap()
             .isNodeMapRefreshDue()) {
@@ -278,6 +280,10 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
         return consumers == null ? usedAmperage
             : usedAmperage
                 + PowerNodes.powerNode(rebuiltNode, null, consumers, (int) voltage, (int) (amperage - usedAmperage));
+    }
+
+    public boolean isEnergySource() {
+        return energySource;
     }
 
     private static NodeList getConsumers(PowerNode node) {

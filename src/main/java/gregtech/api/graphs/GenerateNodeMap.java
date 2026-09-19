@@ -12,6 +12,7 @@ import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.paths.NodePath;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.metatileentity.implementations.MTECable;
 
 // generates the node map
 public abstract class GenerateNodeMap {
@@ -154,7 +155,9 @@ public abstract class GenerateNodeMap {
             if (!tMetaPipe.isConnectedAtSide(tSideOpposite)) return null;
 
             final int tConnections = getNumberOfConnections(tMetaPipe);
-            if (tConnections != 2) return new Pair(aTileEntity, side);
+            // Keep known sources as nodes so alternating injections reuse the same paths and overload history.
+            if (tConnections != 2 || tMetaPipe instanceof MTECable cable && cable.isEnergySource())
+                return new Pair(aTileEntity, side);
 
             for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
                 if (s == tSideOpposite || !(tMetaPipe.isConnectedAtSide(s))) continue;

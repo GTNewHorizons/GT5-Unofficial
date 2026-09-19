@@ -169,12 +169,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     private void scheduleManagedCableTick() {
         mTickDisabled = true;
-        if (worldObj == null) return;
-        if (worldObj.isRemote) {
-            initializeManagedCable(false);
-        } else {
-            MANAGED_CABLES.add(this);
-        }
+        if (worldObj != null && !worldObj.isRemote) MANAGED_CABLES.add(this);
     }
 
     public static void tickManagedCables() {
@@ -225,9 +220,10 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         if (!hasValidMetaTileEntity()) return false;
 
         initializeManagedCable(true);
-        if (connectionCheckPending && mMetaTileEntity instanceof MetaPipeEntity pipe) {
+        final boolean autoConnect = !mMetaTileEntity.getGT6StyleConnection();
+        if (connectionCheckPending || autoConnect && worldObj.getTotalWorldTime() % 20 == 0) {
             connectionCheckPending = false;
-            pipe.checkConnections();
+            mMetaTileEntity.checkConnections();
             updateConnections();
             joinEnet();
         }
@@ -237,11 +233,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         handleUpdateDataChangeServer();
         handleSidedRedstoneChangeServer();
         mWorkUpdate = mInventoryChanged = false;
-        return connectionCheckPending || getValidCoversMask() != 0;
+        return autoConnect || connectionCheckPending || getValidCoversMask() != 0;
     }
 
     private void initializeManagedCable(boolean serverSide) {
-        if (managedCableInitialized || !hasValidMetaTileEntity()) return;
+        if ((managedCableInitialized && mTickTimer != 0) || !hasValidMetaTileEntity()) return;
         handleFirstTick(serverSide);
         mTickTimer = 20;
         managedCableInitialized = true;
@@ -250,6 +246,15 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
             connectionCheckPending = true;
             issueBlockUpdate();
+        }
+    }
+
+    private void initializeManagedCableOnClient() {
+        if (worldObj == null || !worldObj.isRemote || !isNonTickingCable()) return;
+        if (managedCableInitialized && mTickTimer != 0) {
+            requestCoverDataIfNeeded();
+        } else {
+            initializeManagedCable(false);
         }
     }
 
@@ -294,6 +299,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             readCoverNBT(aNBT);
             loadMetaTileNBT(aNBT);
         }
+        initializeManagedCableOnClient();
     }
 
     @Override
@@ -379,6 +385,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         managedCableInitialized = false;
         connectionCheckPending = false;
         scheduleManagedCableTick();
+        initializeManagedCableOnClient();
     }
 
     public void updateConnections() {
@@ -427,6 +434,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, buffer.readByte());
         receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, buffer.readByte());
         receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, buffer.readByte());
+        initializeManagedCableOnClient();
     }
 
     @Override
@@ -587,6 +595,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         managedCableInitialized = false;
         connectionCheckPending = false;
         if (isNonTickingCable()) scheduleManagedCableTick();
+        initializeManagedCableOnClient();
     }
 
     @Override
