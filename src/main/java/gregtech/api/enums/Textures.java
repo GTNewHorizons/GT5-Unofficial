@@ -710,6 +710,9 @@ public class Textures {
             BLOCK_STICKY_PAD_BOTTOM = create("BLOCK_STICKY_PAD_BOTTOM"),
             BLOCK_IRON_FENCE = create("BLOCK_IRON_FENCE"),
 
+            OVERLAY_ROTOR_BEARING = createOptional("OVERLAY_ROTOR_BEARING"),
+            OVERLAY_KINETIC_TRANSFER = createOptional("OVERLAY_KINETIC_TRANSFER"),
+
             OVERLAY_LOCKER = createOptional("OVERLAY_LOCKER"),
             OVERLAY_LOCKER_000 = createOptional("OVERLAY_LOCKER_000"),
             OVERLAY_LOCKER_001 = createOptional("OVERLAY_LOCKER_001"),

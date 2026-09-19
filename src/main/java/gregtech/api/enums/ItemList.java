@@ -3329,7 +3329,24 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_Warped,
     Ice_Cream_WitchyWildberry,
     // Reserved for Ice creams, don't you dare (to 700)
-    Ice_Cream_Trophy
+    Ice_Cream_Trophy,
+
+    KineticGeneratorHV,
+    KineticGeneratorEV,
+    KineticGeneratorIV,
+    KineticGeneratorLuV,
+    KineticGeneratorZPM,
+    KineticWindGeneratorHV,
+    KineticWindGeneratorEV,
+    KineticWindGeneratorIV,
+    KineticWindGeneratorLuV,
+    KineticWindGeneratorZPM,
+    KineticWaterGeneratorHV,
+    KineticWaterGeneratorEV,
+    KineticWaterGeneratorIV,
+    KineticWaterGeneratorLuV,
+    KineticWaterGeneratorZPM
+
     // semicolon after the comment to reduce merge conflicts
     ;
 

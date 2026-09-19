@@ -3274,6 +3274,23 @@ GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
 GT5U.gui.text.button.pyrotheum.enabled=Pyrotheum Heating: §2Enabled
 GT5U.gui.text.button.pyrotheum.disabled=Pyrotheum Heating: §4Disabled
 
+# Kinetic
+GT5U.gui.text.current_ku=Current KU Produced: §l%,d
+GT5U.gui.text.obstruction_multi=Multiplied by %.2f due to blocks in the way!
+GT5U.gui.text.rotor_blocked=§4The rotor is blocked by something!
+GT5U.gui.text.kinetic_panel=Kinetic Information
+GT5U.gui.text.wind_speed=Current wind speed: %.2f
+GT5U.gui.text.space_require=Space required
+GT5U.gui.text.space_norotor=Insert rotor to see space requirements
+GT5U.gui.text.front=Front: %d
+GT5U.gui.text.sides=Sides: %d
+GT5U.gui.text.biome_multi=Biome Multiplier:
+GT5U.gui.text.no_biome_multi=No multiplier here
+GT5U.gui.text.biome_valid=Output multiplied %sx (%s)
+GT5U.gui.text.biome_river=River
+GT5U.gui.text.flow_multi_header=Flow Multiplier:
+GT5U.gui.text.flow_multi=Output multiplied by %sx
+
 GT5U.gui.text.nil=None
 GT5U.gui.text.turbine_title=Turbines
 
@@ -3690,6 +3707,7 @@ GT5U.gui.config.machine_stats.microwave_energy_transmitter=Microwave Energy Tran
 GT5U.gui.config.machine_stats.mass_fabricator=Mass Fabricator
 GT5U.gui.config.machine_stats.teleporter=Teleporter
 GT5U.gui.config.machine_stats.cleanroom=Cleanroom
+GT5U.gui.config.machine_stats.kinetics=Kinetic Machines
 GT5U.gui.config.worldgen=Worldgen
 GT5U.gui.config.worldgen.general=General
 GT5U.gui.config.worldgen.end_asteroids=End Asteroids
@@ -6681,6 +6699,11 @@ GT5U.waila.boiler.fuel_empty=§cFuel empty
 GT5U.waila.boiler.steam_producing=§aSteam Production: §6%s§rL/s
 GT5U.waila.monster_repellent.working_range=Range: §a%s§r blocks
 GT5U.waila.monster_repellent.unpowered=Unpowered
+GT5U.waila.kinetic.no_rotor=No rotor present.
+GT5U.waila.kinetic.rotor_blocked=Rotor is blocked by something.
+GT5U.waila.kinetic.ku_produced=Current KU:
+GT5U.waila.kinetic.no_producer=No connected producer.
+
 
 GT5U.waila.mvf.speedboost=Current Speed Modifier: §a%s
 GT5U.waila.mvf.cryotheum=Current Cryotheum Drain: §3%s§r/s
@@ -9934,6 +9957,28 @@ gt.blockmachines.basicgenerator.lightningrod.03.name=Lightning Rod
 gt.blockmachines.basicgenerator.lightningrod.04.name=Lightning Rod II
 gt.blockmachines.basicgenerator.lightningrod.05.name=Lightning Rod III
 gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning Bolts
+
+# Kinetic Generators
+gt.blockmachines.kinetic.generator.03.name=Basic Kinetic Generator
+gt.blockmachines.kinetic.generator.04.name=Advanced Kinetic Generator
+gt.blockmachines.kinetic.generator.05.name=Elite Kinetic Generator
+gt.blockmachines.kinetic.generator.06.name=Extreme Kinetic Generator
+gt.blockmachines.kinetic.generator.07.name=Ultimate Kinetic Generator
+gt.blockmachines.kinetic.wind.03.name=Basic Kinetic Wind Dynamo
+gt.blockmachines.kinetic.wind.04.name=Advanced Kinetic Wind Dynamo
+gt.blockmachines.kinetic.wind.05.name=Elite Kinetic Wind Dynamo
+gt.blockmachines.kinetic.wind.06.name=Extreme Kinetic Wind Dynamo
+gt.blockmachines.kinetic.wind.07.name=Ultimate Kinetic Wind Dynamo
+gt.blockmachines.kinetic.water.03.name=Basic Kinetic Water Dynamo
+gt.blockmachines.kinetic.water.04.name=Advanced Kinetic Water Dynamo
+gt.blockmachines.kinetic.water.05.name=Elite Kinetic Water Dynamo
+gt.blockmachines.kinetic.water.06.name=Extreme Kinetic Water Dynamo
+gt.blockmachines.kinetic.water.07.name=Ultimate Kinetic Water Dynamo
+gt.blockmachines.kinetic.generator.tooltip=Converts 4 KU/t into 1 EU/t\nKU can be produced by kinetic machines\nWill explode if provided with more KU than it can handle
+gt.blockmachines.kinetic.base_producer.tooltip=Generates KU using kinetic energy\nDoes not explode in rain!\nRequires a rotor and ample space to function
+gt.blockmachines.kinetic.wind.tooltip=Produces KU with the power of the wind
+gt.blockmachines.kinetic.water.tooltip=Produces KU with the power of the water
+gt.blockmachines.kinetic.generator.ku_info=Max KU: §b%s§7 KU/t
 
 # NEI Aliases
 gt.alias.debug=Debug
