@@ -171,7 +171,8 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
             .addInfo("The more combustion promoter, the higher the efficiency")
             .addInfo(
                 "Follows an exponential curve " + EnumChatFormatting.AQUA
-                    + "exp(-C/R) * 1.5"
+                    + "exp(-C/R) * "
+                    + formatNumber(EFFICIENCY_CEILING, new FormatOptions().setDecimalPlaces(1))
                     + EnumChatFormatting.GRAY
                     + ", where C is a constant based on the fuel type")
             .addInfo(
