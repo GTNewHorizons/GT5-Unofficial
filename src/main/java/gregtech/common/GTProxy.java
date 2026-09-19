@@ -65,6 +65,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -120,6 +121,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -924,6 +926,7 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void onServerStopped(FMLServerStoppedEvent event) {
+        BaseMetaPipeEntity.clearManagedCables();
         // spotless:off
         if (wirelessChargerManager != null) {
             FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
@@ -1198,6 +1201,7 @@ public class GTProxy implements IFuelHandler {
             } else {
                 TICK_LOCK.unlock();
                 RunnableMachineUpdate.endTick();
+                BaseMetaPipeEntity.tickManagedCables();
                 RunnableCableUpdate.endTick();
                 GTMusicSystem.ServerSystem.tick();
             }
@@ -1281,6 +1285,14 @@ public class GTProxy implements IFuelHandler {
             if (tileEntity instanceof IGregTechTileEntity) {
                 tileEntity.onChunkUnload();
             }
+        }
+        BaseMetaPipeEntity.unloadManagedCables(event.world);
+    }
+
+    @SubscribeEvent
+    public void onChunkLoad(ChunkEvent.Load event) {
+        for (Object tileEntity : event.getChunk().chunkTileEntityMap.values()) {
+            if (tileEntity instanceof BaseMetaPipeEntity pipe) pipe.onChunkLoad();
         }
     }
 

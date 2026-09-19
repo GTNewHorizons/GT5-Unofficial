@@ -31,6 +31,8 @@ import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.graphs.GenerateNodeMap;
+import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;
@@ -77,6 +79,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public final long mCableLossPerMeter, mAmperage, mVoltage;
     public final boolean mInsulated, mCanShock;
     private String prefixKey;
+    private boolean needsReloadUpdate;
+    private boolean energySource;
 
     public int mTransferredAmperage = 0;
 
@@ -235,25 +239,72 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     }
 
     @Override
+    public int connect(ForgeDirection side) {
+        final int result = super.connect(side);
+        if (result > 0 && getBaseMetaTileEntity() instanceof BaseMetaPipeEntity base && base.isServerSide()) {
+            base.updateConnections();
+        }
+        return result;
+    }
+
+    @Override
+    public void disconnect(ForgeDirection side) {
+        super.disconnect(side);
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity base && base.isServerSide()) {
+            base.updateConnections();
+        }
+    }
+
+    @Override
     public long transferElectricity(ForgeDirection side, long voltage, long amperage,
         HashSet<TileEntity> alreadyPassedSet) {
         if (amperage <= 0 || !getBaseMetaTileEntity().isServerSide()
             || (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN)) return 0;
+        energySource = true;
         final BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        if (tBase.getNodeMap() != null && tBase.getNodeMap()
+            .isNodeMapRefreshDue()) {
+            GenerateNodeMap.clearNodeMap(tBase.getNodeMap(), -1);
+        }
+        if (tBase.getNode() == null) new GenerateNodeMapPower(tBase);
         if (!(tBase.getNode() instanceof PowerNode tNode)) return 0;
+        NodeList consumers = getConsumers(tNode);
+        if (consumers == null) return 0;
+        long usedAmperage = PowerNodes.powerNode(tNode, null, consumers, (int) voltage, (int) amperage);
+        if (!consumers.isStale() || tNode.mInvalid) return usedAmperage;
+
+        GenerateNodeMap.clearNodeMap(tNode, -1);
+        new GenerateNodeMapPower(tBase);
+        if (usedAmperage >= amperage || !(tBase.getNode() instanceof PowerNode rebuiltNode)) return usedAmperage;
+        consumers = getConsumers(rebuiltNode);
+        return consumers == null ? usedAmperage
+            : usedAmperage
+                + PowerNodes.powerNode(rebuiltNode, null, consumers, (int) voltage, (int) (amperage - usedAmperage));
+    }
+
+    public boolean isEnergySource() {
+        return energySource;
+    }
+
+    private static NodeList getConsumers(PowerNode node) {
         int tPlace = 0;
-        final Node[] tToPower = new Node[tNode.mConsumers.size()];
-        if (tNode.mHadVoltage) {
-            for (ConsumerNode consumer : tNode.mConsumers) {
-                if (consumer.needsEnergy()) tToPower[tPlace++] = consumer;
+        Node[] tToPower = null;
+        if (node.mHadVoltage) {
+            for (ConsumerNode consumer : node.mConsumers) {
+                if (consumer.needsEnergy()) {
+                    if (tToPower == null) tToPower = new Node[node.mConsumers.size()];
+                    tToPower[tPlace++] = consumer;
+                }
             }
+            if (tToPower == null) return null;
         } else {
-            tNode.mHadVoltage = true;
-            for (ConsumerNode consumer : tNode.mConsumers) {
+            tToPower = new Node[node.mConsumers.size()];
+            node.mHadVoltage = true;
+            for (ConsumerNode consumer : node.mConsumers) {
                 tToPower[tPlace++] = consumer;
             }
         }
-        return PowerNodes.powerNode(tNode, null, new NodeList(tToPower), (int) voltage, (int) amperage);
+        return new NodeList(tToPower);
     }
 
     @Override
@@ -262,11 +313,29 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aTick % 20 == 0 && aBaseMetaTileEntity.isServerSide() && (!GTMod.proxy.gt6Cable || mCheckConnections)) {
-            checkConnections();
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        if (((BaseMetaPipeEntity) base).canUpdate()) {
+            GregTechAPI.causeCableUpdate(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord());
         }
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
+        needsReloadUpdate = true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity base, long tick) {
+        super.onPostTick(base, tick);
+        // Only addon subclasses use normal tile ticks; built-in cables use the manager.
+        if (!base.isServerSide()) return;
+        if (needsReloadUpdate) {
+            needsReloadUpdate = false;
+            GregTechAPI.causeCableUpdate(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord());
+        }
+        if (tick % 20 == 0 && (mCheckConnections || !getGT6StyleConnection())) checkConnections();
     }
 
     @Override
@@ -804,14 +873,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
         final BaseMetaPipeEntity pipe = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         if (pipe.getNode() != null) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                if (isConnectedAtSide(side)) {
-                    final Cover cover = pipe.getCoverAtSide(side);
-                    if (!cover.isValid()) continue;
-                    if (!letsIn(cover) || !letsOut(cover)) {
-                        pipe.addToLock(pipe, side);
-                    } else {
-                        pipe.removeFromLock(pipe, side);
-                    }
+                final Cover cover = pipe.getCoverAtSide(side);
+                if (isConnectedAtSide(side) && cover.isValid() && (!letsIn(cover) || !letsOut(cover))) {
+                    pipe.addToLock(pipe, side);
+                } else {
+                    pipe.removeFromLock(pipe, side);
                 }
             }
         } else {

@@ -285,6 +285,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 enableTicking();
                 validCoversMask |= side.flag;
             }
+            if (this instanceof BaseMetaPipeEntity pipe && isServerSide()) pipe.reloadLocks();
         }
     }
 

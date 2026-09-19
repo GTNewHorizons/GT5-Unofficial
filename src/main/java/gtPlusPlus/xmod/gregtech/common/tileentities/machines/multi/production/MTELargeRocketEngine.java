@@ -392,7 +392,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
-        int injected = 0;
+        long injected = 0;
         long totalOutput = 0;
         long aFirstVoltageFound = -1;
         boolean aFoundMixedDynamos = false;
@@ -417,16 +417,23 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
         long leftToInject;
         long aVoltage;
-        int aAmpsToInject;
-        int aRemainder;
+        long aAmpsToInject;
+        long aRemainder;
 
         for (MTEHatch aDynamo : validMTEList(this.mAllDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
-            aAmpsToInject = (int) (leftToInject / aVoltage);
-            aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
+            aAmpsToInject = leftToInject / aVoltage;
+            aRemainder = leftToInject - (aAmpsToInject * aVoltage);
+            // Keep the legacy loop for callbacks and the remainder packet.
+            if (aVoltage > 0 && aAmpsToInject > 1 && isFullNativeDynamo(aDynamo)) {
+                long amps = Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+                injected += aVoltage * amps;
+                if (amps < aDynamo.maxAmperesOut()) injected += aRemainder;
+                continue;
+            }
             long powerGain;
-            for (int i = 0; i < Math.min(aDynamo.maxAmperesOut(), aAmpsToInject + 1); i++) {
+            for (long i = 0; i < Math.min(aDynamo.maxAmperesOut(), aAmpsToInject + 1); i++) {
                 if (i == Math.min(aDynamo.maxAmperesOut(), aAmpsToInject)) {
                     powerGain = aRemainder;
                 } else {
