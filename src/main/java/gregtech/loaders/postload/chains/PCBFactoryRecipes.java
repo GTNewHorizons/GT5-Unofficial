@@ -524,7 +524,7 @@ public class PCBFactoryRecipes {
                 .eut((int) GTValues.VP[tier] * 3 / 4)
                 .metadata(TIER, 1)
                 .metadata(UPGRADE, BIO)
-                .metadata(AO_DATA, new AORecipeData(8, 500, 50))
+                .metadata(AO_DATA, new AORecipeData(8, 250))
                 .addTo(RecipeMaps.pcbFactoryRecipes);
         }
         for (int tier = 6; tier <= PCBFactoryManager.mTiersOfPlastics; tier++) {

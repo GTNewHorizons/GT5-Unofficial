@@ -31,12 +31,11 @@ public class BioSynthesizerRecipes implements Runnable {
     // All AO-related recipes will temporarily live here before I finalize the branch and move things over to coremod.
 
     /**
-     * This is an AO Unit - all recipes should use .metadata(AO_DATA, new AORecipeData(x, y, z)) or the multiblock
+     * This is an AO Unit - all recipes should use .metadata(AO_DATA, new AORecipeData(x, y)) or the multiblock
      * will not use AOs in its logic.
      * AORecipeData constructors, in order:
      * - requiredIntelligence: AO population intelligence required to run this recipe.
-     * - requiredCount: Number of AOs that will be drained at the recipe start.
-     * - dangerLevel: This is the percentage of AOs that will die while running the recipe. Use values from 0-100 only.
+     * - requiredCount: Number of AOs permanently consumed by this recipe.
      */
 
     @Override
@@ -78,7 +77,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumBromide, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumIodide, 4),
-                getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 4))
+                getModItem(NewHorizonsCoreMod.ID, "TCetiESeaweedExtract", 4))
             .fluidInputs(Materials.GrowthMediumSterilized.getFluid(4000), Materials.NeuralFluid.getFluid(4000))
             .fluidOutputs(Materials.PsycofluxSubstrate.getFluid(8000))
             .duration(60 * SECONDS)
@@ -96,7 +95,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Chip_Stemcell.get(64))
             .duration(10 * SECONDS)
             .eut(RECIPE_LuV)
-            .metadata(AO_DATA, new AORecipeData(8, 50, 10))
+            .metadata(AO_DATA, new AORecipeData(8, 5))
             .addTo(bioSynthesizerRecipes);
 
         // Neuron Cell Cluster
@@ -108,7 +107,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Neuron_Cell_Cluster.get(64))
             .duration(10 * SECONDS)
             .eut(RECIPE_ZPM)
-            .metadata(AO_DATA, new AORecipeData(4, 50, 10))
+            .metadata(AO_DATA, new AORecipeData(4, 5))
             .addTo(bioSynthesizerRecipes);
 
         // Skin Cell Cluster
@@ -120,7 +119,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Skin_Cell_Cluster.get(64))
             .duration(10 * SECONDS)
             .eut(RECIPE_UV)
-            .metadata(AO_DATA, new AORecipeData(10, 50, 10))
+            .metadata(AO_DATA, new AORecipeData(10, 5))
             .addTo(bioSynthesizerRecipes);
 
         // Muscle Cell Cluster
@@ -132,20 +131,20 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Muscle_Cell_Cluster.get(64))
             .duration(10 * SECONDS)
             .eut(RECIPE_UV)
-            .metadata(AO_DATA, new AORecipeData(10, 50, 10))
+            .metadata(AO_DATA, new AORecipeData(10, 5))
             .addTo(bioSynthesizerRecipes);
 
         // Self Healing Conductor
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Items.slime_ball, 16),
-                getModItem(NewHorizonsCoreMod.ID, "item.Agar", 16), // placeholder! todo: find the correct entry to Agar
-                getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 1))
+                getModItem(NewHorizonsCoreMod.ID, "GTNHBioItems", 32, 2),
+                getModItem(NewHorizonsCoreMod.ID, "TCetiESeaweedExtract", 1))
             .fluidInputs(Materials.NeuralFluid.getFluid(8000))
             .itemOutputs(ItemList.Self_Healing_Conductor.get(4))
             .duration(60 * SECONDS)
             .eut(RECIPE_UV)
-            .metadata(AO_DATA, new AORecipeData(4, 500, 10))
+            .metadata(AO_DATA, new AORecipeData(4, 50))
             .addTo(bioSynthesizerRecipes);
 
         // Circuit Tissue
@@ -157,7 +156,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Tissue.get(1))
             .duration(10 * SECONDS)
             .eut(RECIPE_UV)
-            .metadata(AO_DATA, new AORecipeData(2, 1000, 30))
+            .metadata(AO_DATA, new AORecipeData(2, 300))
             .addTo(bioSynthesizerRecipes);
 
         // Immortal Cell
@@ -170,7 +169,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Immortal_Cell.get(1))
             .duration(30 * SECONDS)
             .eut(RECIPE_UEV)
-            .metadata(AO_DATA, new AORecipeData(4, 500, 10))
+            .metadata(AO_DATA, new AORecipeData(4, 50))
             .addTo(bioSynthesizerRecipes);
 
         // PROGRAMMER
@@ -180,7 +179,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Circuit_Board_Wetware_Extreme.get(4),
                 ItemList.Neuron_Cell_Cluster.get(64),
-                getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassPlate", 8L, 0),
+                getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassPlate", 8L, 0),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polybenzimidazole, 32),
                 new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64 },
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.VanadiumGallium, 8))
@@ -191,7 +190,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Chip_NeuroCPU.get(4))
             .eut(RECIPE_UV)
             .duration(5 * SECONDS)
-            .metadata(AO_DATA, new AORecipeData(8, 100, 5))
+            .metadata(AO_DATA, new AORecipeData(8, 5))
             .addTo(bioProgrammerRecipes);
 
         // Living Crystal chip
@@ -204,7 +203,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(4))
             .eut(RECIPE_UHV)
             .duration(30 * SECONDS)
-            .metadata(AO_DATA, new AORecipeData(11, 500, 5))
+            .metadata(AO_DATA, new AORecipeData(11, 25))
             .addTo(bioProgrammerRecipes);
 
         // Bio-Computing core
@@ -220,7 +219,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Bio_Computing_Core.get(1))
             .duration(10 * SECONDS)
             .eut(RECIPE_UHV)
-            .metadata(AO_DATA, new AORecipeData(15, 2000, 10))
+            .metadata(AO_DATA, new AORecipeData(15, 200))
             .addTo(bioProgrammerRecipes);
 
         // Neural Electronic Interface
@@ -235,7 +234,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Neural_Electronic_Interface.get(1))
             .duration(5 * SECONDS)
             .eut(RECIPE_UHV)
-            .metadata(AO_DATA, new AORecipeData(9, 2000, 10))
+            .metadata(AO_DATA, new AORecipeData(9, 200))
             .addTo(bioProgrammerRecipes);
 
         // Axon Bus
@@ -250,7 +249,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Axon_Bus.get(1))
             .duration(5 * SECONDS)
             .eut(RECIPE_UHV)
-            .metadata(AO_DATA, new AORecipeData(9, 2000, 10))
+            .metadata(AO_DATA, new AORecipeData(9, 200))
             .addTo(bioProgrammerRecipes);
 
         // Living Bio Chip (temporary)
@@ -260,7 +259,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Parts_Chip_Bioware.get(64), ItemList.Circuit_Parts_Chip_Bioware.get(64))
             .duration(30 * SECONDS)
             .eut(RECIPE_UEV)
-            .metadata(AO_DATA, new AORecipeData(20, 2000, 10))
+            .metadata(AO_DATA, new AORecipeData(20, 200))
             .addTo(bioProgrammerRecipes);
 
         // Asssembler Recipes

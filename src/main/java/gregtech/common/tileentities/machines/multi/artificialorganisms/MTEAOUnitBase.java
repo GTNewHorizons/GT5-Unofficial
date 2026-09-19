@@ -13,14 +13,13 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.AORecipeData;
 
 public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
 
     protected MTEHatchAOInput bioHatch;
-
-    protected int AOsInUse = 0;
 
     protected MTEAOUnitBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -47,18 +46,34 @@ public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
 
                 ArtificialOrganism currentOrganism = getAO();
                 if (currentOrganism == null) return SimpleCheckRecipeResult.ofFailure("missing_ao");
-                if (currentOrganism.getCount() <= data.requiredCount)
+
+                int aoCost = (int) Math.round(data.requiredCount * currentOrganism.getAOConsumptionMultiplier());
+                if (!currentOrganism.immortal && currentOrganism.getCount() <= aoCost)
                     return SimpleCheckRecipeResult.ofFailure("insufficient_ao");
-                if (currentOrganism.getIntelligence() <= data.requiredIntelligence)
+                if (currentOrganism.getIntelligence() < data.requiredIntelligence)
                     return SimpleCheckRecipeResult.ofFailure("ao_too_stupid");
 
                 setSpeedBonus(currentOrganism.calculateSpeedBonus());
 
                 doAORecipeModifiers(recipe);
 
-                AOsInUse = Math
-                    .round((float) currentOrganism.consumeAOs(data.requiredCount) * (100 - data.dangerLevel) / 100F);
+                currentOrganism.consumeAOs(aoCost);
                 return super.validateRecipe(recipe);
+            }
+
+            @NotNull
+            @Override
+            protected ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
+                ParallelHelper helper = super.createParallelHelper(recipe);
+                ArtificialOrganism organism = getAO();
+                if (organism != null && organism.genius) {
+                    helper.setChanceMultiplier(1.1);
+                }
+                int parallelLevel = getAORecipeParallelLevel();
+                if (parallelLevel > 1) {
+                    helper.setMaxParallel(parallelLevel);
+                }
+                return helper;
             }
         };
     }
@@ -70,13 +85,18 @@ public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
 
     }
 
+    /**
+     * Parallel level for AO machine.
+     */
+    protected int getAORecipeParallelLevel() {
+        return 1;
+    }
+
     @Override
     public void onRecipeEnd() {
         ArtificialOrganism currentOrganism = getAO();
         if (currentOrganism != null) {
             currentOrganism.increaseSentience(10);
-            currentOrganism.replenishAOs(AOsInUse);
-            AOsInUse = 0;
         }
         super.onRecipeEnd();
     }

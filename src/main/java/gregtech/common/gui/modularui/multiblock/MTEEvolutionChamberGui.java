@@ -212,8 +212,13 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
         syncManager.syncValue("ao", organismSyncer);
 
         // AO Count syncers
-        IntSyncValue aoCapacitySyncer = new IntSyncValue(() -> multiblock.maxAOs);
+        IntSyncValue aoCapacitySyncer = new IntSyncValue(() -> multiblock.currentSpecies.getMaxAOs());
         syncManager.syncValue("aoCapacity", aoCapacitySyncer);
+
+        IntSyncValue aoRecoveryRateSyncer = new IntSyncValue(multiblock::getAORecoveryRate);
+        syncManager.syncValue("aoRecoveryRate", aoRecoveryRateSyncer);
+        IntSyncValue nutrientUsageRateSyncer = new IntSyncValue(multiblock::getNutrientUsageRate);
+        syncManager.syncValue("nutrientUsageRate", nutrientUsageRateSyncer);
 
         // Nutrient syncers
         IntSyncValue fillLevelSyncer = new IntSyncValue(multiblock::getFillLevel);
@@ -248,6 +253,8 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
         GenericSyncValue<ArtificialOrganism, ?> organismSyncer = syncManager
             .findSyncHandler("ao", GenericSyncValue.class);
         IntSyncValue aoCapacitySyncer = syncManager.findSyncHandler("aoCapacity", IntSyncValue.class);
+        IntSyncValue aoRecoveryRateSyncer = syncManager.findSyncHandler("aoRecoveryRate", IntSyncValue.class);
+        IntSyncValue nutrientUsageRateSyncer = syncManager.findSyncHandler("nutrientUsageRate", IntSyncValue.class);
         for (ArtificialOrganism.Trait t : multiblock.currentSpecies.traits) {
             traitRow.child(
                 new DynamicDrawable(() -> t.texture)
@@ -276,13 +283,18 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
                     .direction(ProgressWidget.Direction.UP)
                     .size(16, 64)
                     .pos(100, 14)
-                    .tooltipDynamic(
-                        tt -> tt.add(
+                    .tooltipDynamic(tt -> {
+                        tt.addLine(
                             StatCollector.translateToLocalFormatted(
                                 "GT5U.artificialorganisms.progress.count",
                                 organismSyncer.getValue()
                                     .getCount(),
-                                aoCapacitySyncer.getIntValue()))))
+                                aoCapacitySyncer.getIntValue()));
+                        tt.addLine(
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.artificialorganisms.progress.recovery_rate",
+                                aoRecoveryRateSyncer.getIntValue()));
+                    }))
 
             // Nutrient progressbar
             .child(
@@ -294,14 +306,19 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
                     .direction(ProgressWidget.Direction.UP)
                     .size(16, 64)
                     .pos(117, 14)
-                    .tooltipDynamic(
-                        tt -> tt.add(
+                    .tooltipDynamic(tt -> {
+                        tt.addLine(
                             StatCollector.translateToLocalFormatted(
                                 organismSyncer.getValue()
                                     .getFinalized() ? "GT5U.artificialorganisms.progress.nutrients"
                                         : "GT5U.artificialorganisms.progress.soup",
                                 fillLevelSyncer.getIntValue(),
-                                internalTankCapacitySyncer.getIntValue()))))
+                                internalTankCapacitySyncer.getIntValue()));
+                        tt.addLine(
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.artificialorganisms.progress.nutrient_rate",
+                                nutrientUsageRateSyncer.getIntValue()));
+                    }))
 
             // Sentience progressbar
             .child(
@@ -373,7 +390,7 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
                     .overlay(OVERLAY_BUTTON_CHECKMARK)
                     .addTooltipLine(StatCollector.translateToLocal("GT5U.artificialorganisms.button.finalize"))
                     .size(16, 16)
-                    .setEnabledIf(ignored -> multiblock.mMachine && !multiblock.currentSpecies.getFinalized()))
+                    .setEnabledIf(ignored -> multiblock.mMachine && multiblock.canFinalize()))
 
             // Opens the trait list popup
             .child(

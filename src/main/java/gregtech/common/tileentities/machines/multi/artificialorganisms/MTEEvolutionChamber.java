@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi.artificialorganisms;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT;
@@ -31,7 +30,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -52,6 +50,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TierEU;
 import gregtech.api.factory.artificialorganisms.MTEHatchAOOutput;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IHatchElement;
@@ -66,6 +65,8 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -113,7 +114,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             'B',
             ofChain(
                 buildHatchAdder(MTEEvolutionChamber.class)
-                    .atLeast(InputBus, Maintenance, Energy, InputHatch, SpecialHatchElement.BioOutput)
+                    .atLeast(Maintenance, Energy, InputHatch, SpecialHatchElement.BioOutput)
                     .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(61))
                     .hint(1)
                     .build(),
@@ -162,10 +163,22 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private final ArrayList<MTEHatchAOOutput> bioHatches = new ArrayList<>();
 
-    public ArtificialOrganism currentSpecies = new ArtificialOrganism();
+    /** Base tank capacity for a T1 HMC. Each casing tier multiplies this by 4. */
+    public static final int BASE_MAX_AOS = 50_000;
+    /** AOs recovered per maintenance cycle: 25 every 5 ticks, or 100 per second. */
+    public static final int BASE_REGEN = 25;
+    /** AOs lost per maintenance cycle when nutrient fluid is unavailable. */
+    public static final int BASE_DECAY = 1_000;
+    /** Sterilization fluid that must be present in an input hatch to wipe the current species for re-selection. */
+    public static final int STERILIZE_AMOUNT = 1_000;
+    /** Base maintenance power fixed at UV. */
+    public static final long BASE_POWER = TierEU.UV;
+    /** Bse nutrient fluid consumed per maintenance cycle at Tier 1. */
+    public static final int BASE_NUTRIENT_USAGE = 25;
+    /** Ticks between maintenance cycles. */
+    public static final int CYCLE_TICKS = 5;
 
-    private long powerUsage = 0;
-    private FluidStack nutrientUsage;
+    public ArtificialOrganism currentSpecies = new ArtificialOrganism();
 
     private int casingTier;
     public int maxAOs;
@@ -173,6 +186,21 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public final int INTERNAL_FLUID_TANK_SIZE = 64000;
 
     boolean isFinalized = false;
+
+    /** Tank capacity for the current casing tier, BASE_MAX_AOS * 4^(tier-1). */
+    public static int getMaxAOsForTier(int tier) {
+        if (tier < 1) return 0;
+        return BASE_MAX_AOS << (2 * (tier - 1));
+    }
+
+    /**
+     * Base maintenance power draw, fixed at UV regardless of casing tier. The casing tier scales tank capacity, not
+     * running cost. The trait power modifier is applied after overclocking in {@link #onPostTick} and does not affect
+     * the overclock.
+     */
+    public long getMaintenancePower() {
+        return BASE_POWER;
+    }
 
     public MTEEvolutionChamber(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -280,18 +308,24 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         tt.addMachineType("Artificial Organism Source")
             .addInfo("Used to create and maintain Artificial Organisms")
             .addInfo("Use higher tier vat casings to get more AO culture slots")
-            .addInfo("Maximum tank capacity is 500000 * casing tier")
+            .addInfo("Maximum tank capacity is " + BASE_MAX_AOS + " * 4^(tier-1)")
+            .addInfo("Base recovery is " + (BASE_REGEN * 20 / CYCLE_TICKS) + " AOs/s)")
+            .addInfo("Recovery is increased by 20% per level of Reproduction")
+            .addInfo("4x the maintenance power doubles the recovery rate")
+            .addInfo(
+                "Consumes " + (BASE_NUTRIENT_USAGE * 20 / CYCLE_TICKS)
+                    + " L of nutrient fluid/s, scaled by traits and overclock")
+            .addInfo("Without nutrients, loses " + (BASE_DECAY * 20 / CYCLE_TICKS) + " AOs/s, scaled by traits")
             .addSeparator()
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
             .addCasingInfoExactly("Steel Pipe Casing", 24, false)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addInputHatch("Any Solid Steel Casing", 1)
-            .addOutputHatch("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
+            .addInputHatch("Any Vat Casing", 1)
+            .addEnergyHatch("Any Vat Casing", 1, 2)
+            .addMaintenanceHatch("Any Vat Casing", 1)
+            .addOtherStructurePart("Bio Output Hatch", "Any Vat Casing", 2)
+            .addStructureInfo("Only normal Energy Hatches are accepted; Multi-Amp and Laser Energy Hatches are not")
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -326,17 +360,26 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         casingTier = -1;
         bioHatches.clear();
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 9, 1)) return false;
-        if (casingTier < 1) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 9, 1, errors)) return;
+        if (casingTier < 1) return;
+
+        checkHatchMin(errors, InputHatch, 1);
+        checkHatchMin(errors, Energy, 1);
+        checkHatchMax(errors, Energy, 2);
+        checkOneMaintenanceHatch(errors);
+        if (!mInputBusses.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.input_bus_not_allowed"));
+        }
+
         updateTextures();
-        maxAOs = 500000 * casingTier;
-        return mCasingAmount >= 0;
+        maxAOs = getMaxAOsForTier(casingTier);
+        if (currentSpecies != null) currentSpecies.setMaxAOs(maxAOs);
     }
 
     private boolean useNutrients(FluidStack fluid) {
@@ -344,20 +387,92 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             return false;
         }
 
+        // Nutrients are collected into the internal tank
+        FluidStack drained = tank.drain(fluid.amount, true);
+        return drained != null && drained.amount >= fluid.amount;
+    }
+
+    private void triggerNutrientLoss() {
+        currentSpecies.doDeath(BASE_DECAY);
+    }
+
+    private void triggerElectricityLoss() {
+        currentSpecies.doDeath(BASE_DECAY);
+    }
+
+    /**
+     * Try to sterilize if 1000L of sterilization fluid is present
+     */
+    private boolean trySterilize() {
         for (MTEHatchInput hatch : mInputHatches) {
-            if (drain(hatch, fluid, true)) {
-                return true;
-            }
+            FluidStack stored = hatch.getFluid();
+            if (stored == null || stored.amount < STERILIZE_AMOUNT) continue;
+            if (stored.getFluid() != Materials.SterilizationFluid.mFluid) continue;
+            hatch.drain(STERILIZE_AMOUNT, true);
+            currentSpecies.sterilize();
+            tank.drain(Integer.MAX_VALUE, true);
+            return true;
         }
         return false;
     }
 
-    private void triggerNutrientLoss() {
-        currentSpecies.consumeAOs(currentSpecies.getCount() / 4);
+    /**
+     * perform 4/2 overclock for recovery rate/nutrient cost
+     */
+    public double getOverclockMultiplier() {
+        long maintenance = getMaintenancePower();
+        if (maintenance <= 0) return 0;
+        long supplied = getMaxInputEu();
+        if (supplied <= 0) return 0;
+        return Math.sqrt((double) supplied / (double) maintenance);
     }
 
-    private void triggerElectricityLoss() {
-        currentSpecies.increaseSentience(1);
+    /** Theoretical AO recovery rate per second with current overclock and trait modifiers. */
+    public int getAORecoveryRate() {
+        if (currentSpecies == null || !currentSpecies.getFinalized()) return 0;
+        int recoveryPerCycle = currentSpecies
+            .calculateReproduction((int) Math.round(BASE_REGEN * getOverclockMultiplier()));
+        return recoveryPerCycle * 20 / CYCLE_TICKS;
+    }
+
+    /** Theoretical nutrient consumption rate with current overclock and trait modifiers. */
+    public int getNutrientUsageRate() {
+        if (currentSpecies == null || !currentSpecies.getFinalized()) return 0;
+        int usagePerCycle = (int) Math
+            .round(BASE_NUTRIENT_USAGE * currentSpecies.getNutritionModifier() * getOverclockMultiplier());
+        return usagePerCycle * 20 / CYCLE_TICKS;
+    }
+
+    /**
+     * Runs one maintenance cycle: collect and consume nutrients, then recover AOs.
+     */
+    private void runMaintenanceCycle(IGregTechTileEntity aBaseMetaTileEntity, double overclock) {
+        if (trySterilize()) {
+            aBaseMetaTileEntity.issueTileUpdate();
+            return;
+        }
+
+        boolean fluidChanged = false;
+        if (tank.getFluidAmount() < tank.getCapacity()) {
+            for (MTEHatchInput hatch : mInputHatches) {
+                int remaining = tank.getCapacity() - tank.getFluidAmount();
+                FluidStack drain = hatch.drain(remaining, true);
+                if (drain == null || drain.amount <= 0) continue;
+                fluidChanged = true;
+                tank.fill(drain, true);
+            }
+        }
+        if (fluidChanged) aBaseMetaTileEntity.issueTileUpdate();
+
+        // Consume the nutrient fluid: 25 L base per cycle.
+        int nutrientAmount = (int) Math.round(BASE_NUTRIENT_USAGE * currentSpecies.getNutritionModifier() * overclock);
+        FluidStack nutrient = new FluidStack(currentSpecies.getNutritionFluid(), nutrientAmount);
+        if (!useNutrients(nutrient)) {
+            triggerNutrientLoss();
+            return;
+        }
+
+        currentSpecies.doReproduction((int) Math.round(BASE_REGEN * overclock));
     }
 
     @Override
@@ -365,40 +480,25 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (!mMachine || !aBaseMetaTileEntity.isServerSide()
-            || aTick % 5 != 0
             || currentSpecies == null
             || !currentSpecies.getFinalized()) return;
 
-        boolean fluidChanged = false;
-        if (tank.getFluidAmount() < tank.getCapacity()) {
-            for (MTEHatchInput hatch : mInputHatches) {
-                int remaining = tank.getCapacity() - tank.getFluidAmount();
-                FluidStack drain = hatch.drain(remaining, true);
-                if (drain.amount > 0) fluidChanged = true;
-                tank.fill(drain, true);
-            }
+        currentSpecies.setMaxAOs(maxAOs);
+
+        double overclock = getOverclockMultiplier();
+        if (overclock <= 0) {
+            if (aTick % CYCLE_TICKS == 0) triggerElectricityLoss();
+            return;
         }
 
-        if (fluidChanged) aBaseMetaTileEntity.issueTileUpdate();
+        long energyUsage = Math
+            .round(getMaintenancePower() * overclock * overclock * currentSpecies.getPowerModifier());
+        if (!drainEnergyInput(energyUsage)) {
+            if (aTick % CYCLE_TICKS == 0) triggerElectricityLoss();
+            return;
+        }
 
-        currentSpecies.setMaxAOs(maxAOs);
-        // TODO: REMOVE THIS
-        currentSpecies.doReproduction();
-        currentSpecies.increaseSentience(1);
-        return;
-        /*
-         * if (currentSpecies.photosynthetic) {
-         * if (!aBaseMetaTileEntity.getSkyAtSideAndDistance(ForgeDirection.UP, 5)) {
-         * triggerElectricityLoss();
-         * triggerNutrientLoss();
-         * }
-         * }
-         * if (currentSpecies.cooperative) currentSpecies.increaseSentience(1);
-         * if (!drainEnergyInput(powerUsage)) triggerElectricityLoss();
-         * if (!useNutrients(nutrientUsage)) {
-         * triggerNutrientLoss();
-         * } else if (currentSpecies.getCount() < maxAOs) currentSpecies.doReproduction();
-         */
+        if (aTick % CYCLE_TICKS == 0) runMaintenanceCycle(aBaseMetaTileEntity, overclock);
     }
 
     FluidTank tank = new FluidTank(INTERNAL_FLUID_TANK_SIZE);
@@ -500,24 +600,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     public void createNewAOs() {
-
-        // Generate the nutrient cost for this species
-
-        int amount = 16;
-        Fluid type = Materials.NutrientBroth.mFluid;
-
-        if (currentSpecies.immortal) amount = 0;
-        else {
-            if (currentSpecies.hiveMind) {
-                type = Materials.NeuralFluid.mFluid;
-                amount /= 4;
-            }
-            if (currentSpecies.photosynthetic) amount /= 4;
-            if (currentSpecies.cancerous) amount *= 64;
-        }
-
-        nutrientUsage = new FluidStack(type, amount);
-
+        if (!canFinalize()) return;
         currentSpecies.finalize(maxAOs);
         for (MTEHatchAOOutput hatch : bioHatches) hatch.setSpecies(currentSpecies);
     }
@@ -553,6 +636,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     public boolean canAddTrait() {
         return !currentSpecies.getFinalized() && currentSpecies.traits.size() < casingTier;
+    }
+
+    public boolean canFinalize() {
+        return !currentSpecies.getFinalized() && !currentSpecies.traits.isEmpty();
     }
 
     @Override
