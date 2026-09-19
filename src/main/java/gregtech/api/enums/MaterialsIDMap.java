@@ -750,6 +750,8 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(949, Materials.GlauconiteSand);
         r(951, Materials.Vyroxeres);
         r(952, Materials.Ceruclase);
+        r(953, Materials.Glucose);
+        r(953, Materials.BioGrowthMediumBase);
         r(956, Materials.Tartarite);
         r(966, Materials.Orichalcum);
         r(967, Materials.SiliconTetrafluoride);

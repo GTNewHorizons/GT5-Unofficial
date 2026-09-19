@@ -357,6 +357,10 @@ bw.bioname.binni_bacteria.latin=Binni bacteria
 bw.bioname.binni_bacteria=Binni bacteria
 bw.bioname.mutagen_bacteria_a_spatio.latin=Mutagen bacteria a spatio
 bw.bioname.mutagen_bacteria_a_spatio=Mutagen bacteria from space
+bw.bioname.penicillium_chrysogenum.latin=Penicillium chrysogenum
+bw.bioname.penicillium_chrysogenum=penicillium fungi
+bw.bioname.saccharomyces_cerevisiae_var_penicillium.latin=Saccharomyces cerevisiae var penicillium
+bw.bioname.saccharomyces_cerevisiae_var_penicillium=yeast with penicillium plasmid
 bw.bioname.null.latin=Cimex remotum
 bw.bioname.null=Debug
 

@@ -266,6 +266,7 @@ import static gregtech.common.items.IDMetaItem03.NuclearStar;
 import static gregtech.common.items.IDMetaItem03.Optical_Cpu_Containment_Housing;
 import static gregtech.common.items.IDMetaItem03.Optically_Compatible_Memory;
 import static gregtech.common.items.IDMetaItem03.Optically_Perfected_CPU;
+import static gregtech.common.items.IDMetaItem03.Pancrea;
 import static gregtech.common.items.IDMetaItem03.Phononic_Seed_Crystal;
 import static gregtech.common.items.IDMetaItem03.Planck_Manifold;
 import static gregtech.common.items.IDMetaItem03.Prismarine_Precipitate;
@@ -1713,6 +1714,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.optically_compatible_memory.name",
                 "gt.item.optically_compatible_memory.tooltip",
                 o));
+
+        ItemList.Pancrea
+            .set(addItemWithLocalizationKeys(Pancrea.ID, "gt.item.pancrea.name", "gt.item.pancrea.tooltip", o));
 
         ItemList.Timepiece
             .set(addItemWithLocalizationKeys(Timepiece.ID, "gt.item.timepiece.name", "gt.item.timepiece.tooltip", o))
