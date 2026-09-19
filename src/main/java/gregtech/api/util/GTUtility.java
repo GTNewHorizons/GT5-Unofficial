@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
@@ -4174,22 +4175,64 @@ public class GTUtility {
     }
 
     // helper function (from MultiblockBase that creates a string of timed dates
-    public static String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened, int maxProgressTicks) {
-        final StringBuffer ret = new StringBuffer();
-        final DecimalFormat df = new DecimalFormat("0.00");
-        final double progressTime = (double) maxProgressTicks / 20;
-        double perTick = amount / (double) maxProgressTicks;
-        double perSecond = amount / progressTime;
-        double perMinute = perSecond * 60;
-        double perHour = perSecond * 3_600;
-        double perDay = perSecond * 86_400;
+    public static String appendRate(boolean isLiquid, double amount, boolean isFormatShortened, int maxProgressTicks) {
+        if (isFormatShortened) {
+            if (amount <= 0) return "";
+            final double progressTime = (double) maxProgressTicks / 20;
+            final double perSecond = amount / progressTime;
+            if (perSecond <= 1) {
+                return " "
+                    + translateToLocalFormatted("GT5U.gui.text.rate_short_slow", formatNumber(progressTime / amount));
+            }
+            return " " + translateToLocalFormatted("GT5U.gui.text.rate_short", formatShortenedLong((long) perSecond));
+        }
 
-        final String amountText = translateToLocal("GT5U.gui.text.amount") + " ";
-        final String perTickText = translateToLocal("GT5U.gui.text.per_tick") + " ";
-        final String perSecondText = translateToLocal("GT5U.gui.text.per_second") + " ";
-        final String perMinuteText = translateToLocal("GT5U.gui.text.per_minute") + " ";
-        final String perHourText = translateToLocal("GT5U.gui.text.per_hour") + " ";
-        final String perDayText = translateToLocal("GT5U.gui.text.per_day") + " ";
+        return EnumChatFormatting.RESET + translateToLocal("GT5U.gui.text.amount")
+            + " "
+            + EnumChatFormatting.GOLD
+            + (isLiquid ? formatFluid(amount) : formatNumber(amount))
+            + EnumChatFormatting.RESET
+            + "\n"
+            + rateLines(isLiquid, amount, maxProgressTicks);
+    }
+
+    /// Rate of an output whose chance is not 100%. The short form and every per-X line are computed from the expected
+    /// value `amount * chance / 10000`, while the long form also states the nominal amount and the chance.
+    public static String appendExpectedRate(boolean isLiquid, long amount, int chance, boolean isFormatShortened,
+        int maxProgressTicks) {
+        if (chance == 10000) return appendRate(isLiquid, amount, isFormatShortened, maxProgressTicks);
+
+        final double expected = (double) amount * chance / 10000.0;
+        if (isFormatShortened) return appendRate(isLiquid, expected, true, maxProgressTicks);
+
+        return EnumChatFormatting.RESET
+            + translateToLocalFormatted(
+                "GT5U.gui.text.amount_chance",
+                (isLiquid ? formatFluid(amount) : formatNumber(amount)),
+                formatOutputChance(chance))
+            + "\n"
+            + translateToLocal("GT5U.gui.text.expected_amount")
+            + " "
+            + EnumChatFormatting.GOLD
+            + (isLiquid ? formatFluid(expected) : formatNumber(expected))
+            + EnumChatFormatting.RESET
+            + "\n"
+            + rateLines(isLiquid, expected, maxProgressTicks);
+    }
+
+    /// Formats a chance on the 10000 scale as a percentage, for example 6667 as "66.67%".
+    public static String formatOutputChance(int chance) {
+        return formatNumber(chance / 100.0) + "%";
+    }
+
+    private static String rateLines(boolean isLiquid, double amount, int maxProgressTicks) {
+        final StringBuilder ret = new StringBuilder();
+        final double progressTime = (double) maxProgressTicks / 20;
+        final double perTick = amount / maxProgressTicks;
+        final double perSecond = amount / progressTime;
+        final double perMinute = perSecond * 60;
+        final double perHour = perSecond * 3_600;
+        final double perDay = perSecond * 86_400;
 
         final Function<Double, Double> roundNumber = (number) -> {
             if (Math.abs(number) < 10) {
@@ -4199,68 +4242,50 @@ public class GTUtility {
             }
         };
 
-        if (isFormatShortened) {
-            ret.append(" ");
-            if (perSecond <= 1) {
-                ret.append(
-                    translateToLocalFormatted("GT5U.gui.text.rate_short_slow", df.format(progressTime / amount)));
-            } else {
-                ret.append(
-                    translateToLocalFormatted("GT5U.gui.text.rate_short", formatShortenedLong((long) perSecond)));
-            }
-        } else {
-            ret.append(EnumChatFormatting.RESET);
-            ret.append(
-                amountText + EnumChatFormatting.GOLD
-                    + formatNumber(amount)
-                    + (isLiquid ? "L" : "")
-                    + EnumChatFormatting.RESET);
-            ret.append("\n");
-            ret.append(
-                perTickText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perTick))
-                    + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000 ? " " + translateToLocalFormatted(
-                        "GT5U.gui.text.rate_large_suffix",
-                        formatShortenedLong((long) perTick)) : "")
-                    + EnumChatFormatting.RESET);
-            ret.append("\n");
-            ret.append(
-                perSecondText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perSecond))
-                    + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000 ? " " + translateToLocalFormatted(
-                        "GT5U.gui.text.rate_large_suffix",
-                        formatShortenedLong((long) perSecond)) : "")
-                    + EnumChatFormatting.RESET);
-            ret.append("\n");
-            ret.append(
-                perMinuteText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perMinute))
-                    + (isLiquid ? "L" : "")
-                    + (perMinute > 1_000_000 ? " " + translateToLocalFormatted(
-                        "GT5U.gui.text.rate_large_suffix",
-                        formatShortenedLong((long) perMinute)) : "")
-                    + EnumChatFormatting.RESET);
-            ret.append("\n");
-            ret.append(
-                perHourText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perHour))
-                    + (isLiquid ? "L" : "")
-                    + (perHour > 1_000_000 ? " " + translateToLocalFormatted(
-                        "GT5U.gui.text.rate_large_suffix",
-                        formatShortenedLong((long) perHour)) : "")
-                    + EnumChatFormatting.RESET);
-            ret.append("\n");
-            ret.append(
-                perDayText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perDay))
-                    + (isLiquid ? "L" : "")
-                    + (perDay > 1_000_000 ? " " + translateToLocalFormatted(
-                        "GT5U.gui.text.rate_large_suffix",
-                        formatShortenedLong((long) perDay)) : "")
-                    + EnumChatFormatting.RESET);
-        }
+        ret.append(
+            translateToLocal("GT5U.gui.text.per_tick") + " "
+                + EnumChatFormatting.GOLD
+                + (isLiquid ? formatFluid(roundNumber.apply(perTick)) : formatNumber(roundNumber.apply(perTick)))
+                + (perSecond > 1_000_000 ? " "
+                    + translateToLocalFormatted("GT5U.gui.text.rate_large_suffix", formatShortenedLong((long) perTick))
+                    : "")
+                + EnumChatFormatting.RESET);
+        ret.append("\n");
+        ret.append(
+            translateToLocal("GT5U.gui.text.per_second") + " "
+                + EnumChatFormatting.GOLD
+                + (isLiquid ? formatFluid(roundNumber.apply(perSecond)) : formatNumber(roundNumber.apply(perSecond)))
+                + (perSecond > 1_000_000 ? " " + translateToLocalFormatted(
+                    "GT5U.gui.text.rate_large_suffix",
+                    formatShortenedLong((long) perSecond)) : "")
+                + EnumChatFormatting.RESET);
+        ret.append("\n");
+        ret.append(
+            translateToLocal("GT5U.gui.text.per_minute") + " "
+                + EnumChatFormatting.GOLD
+                + (isLiquid ? formatFluid(roundNumber.apply(perMinute)) : formatNumber(roundNumber.apply(perMinute)))
+                + (perMinute > 1_000_000 ? " " + translateToLocalFormatted(
+                    "GT5U.gui.text.rate_large_suffix",
+                    formatShortenedLong((long) perMinute)) : "")
+                + EnumChatFormatting.RESET);
+        ret.append("\n");
+        ret.append(
+            translateToLocal("GT5U.gui.text.per_hour") + " "
+                + EnumChatFormatting.GOLD
+                + (isLiquid ? formatFluid(roundNumber.apply(perHour)) : formatNumber(roundNumber.apply(perHour)))
+                + (perHour > 1_000_000 ? " "
+                    + translateToLocalFormatted("GT5U.gui.text.rate_large_suffix", formatShortenedLong((long) perHour))
+                    : "")
+                + EnumChatFormatting.RESET);
+        ret.append("\n");
+        ret.append(
+            translateToLocal("GT5U.gui.text.per_day") + " "
+                + EnumChatFormatting.GOLD
+                + (isLiquid ? formatFluid(roundNumber.apply(perDay)) : formatNumber(roundNumber.apply(perDay)))
+                + (perDay > 1_000_000 ? " "
+                    + translateToLocalFormatted("GT5U.gui.text.rate_large_suffix", formatShortenedLong((long) perDay))
+                    : "")
+                + EnumChatFormatting.RESET);
         return ret.toString();
     }
 
