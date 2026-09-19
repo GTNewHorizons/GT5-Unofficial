@@ -40,6 +40,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
+import goodgenerator.blocks.tileEntity.AntimatterForge;
+import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
@@ -1614,6 +1616,24 @@ public class RecipeLoader {
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                Materials.Protomatter.getFluid(0),
+                new SubstituteFluidStack(AntimatterForge.getMagneticUpgrades()),
+                new SubstituteFluidStack(AntimatterForge.getGravityUpgrades()),
+                new SubstituteFluidStack(AntimatterForge.getContainmentUpgrades()),
+                new SubstituteFluidStack(AntimatterForge.getActivationUpgrades()))
+            .fluidOutputs(Materials.Antimatter.getFluid(0))
+            .duration(20)
+            .eut(10_000_000)
+            .addTo(GoodGeneratorRecipeMaps.antimatterForgeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Antimatter.getFluid(0), new SubstituteFluidStack(AntimatterGenerator.catalystFluids))
+            .duration(5 * SECONDS)
+            .eut(0)
+            .addTo(GoodGeneratorRecipeMaps.antimatterGeneratorRecipes);
     }
 
     public static void Fixer() {

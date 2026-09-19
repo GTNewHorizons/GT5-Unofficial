@@ -8,6 +8,12 @@ import java.util.Comparator;
 
 import net.minecraft.util.StatCollector;
 
+import org.spongepowered.libraries.com.google.common.collect.ImmutableList;
+
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
+
+import goodgenerator.blocks.tileEntity.AntimatterForge;
+import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import goodgenerator.client.GUI.GGUITextures;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -76,5 +82,41 @@ public class GoodGeneratorRecipeMaps {
         .dontUseProgressBar()
         .addSpecialTexture(70, 11, 72, 40, GGUITextures.PICTURE_COMPONENT_ASSLINE)
         .frontend(ComponentAssemblyLineFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> antimatterForgeRecipes = RecipeMapBuilder
+        .of("gg.recipe.antimatter_forge")
+        .maxIO(0, 0, 5, 1)
+        .minInputs(0, 1)
+        .dontUseProgressBar()
+        .logoPos(152, 101)
+        .neiTransferRect(170, 120, 1, 1) // disable "show recipes" hitbox
+        .neiRecipeBackgroundSize(170, 120)
+        .addSpecialTexture(33, 21, 106, 94, GGUITextures.PICTURE_ANTIMATTER_FORGE)
+        .neiSpecialInfoFormatter(
+            recipeInfo -> Collections.singletonList(
+                StatCollector.translateToLocalFormatted(
+                    "gg.recipe.antimatter_forge.info.0",
+                    formatNumber(AntimatterForge.getBaseConsumption()),
+                    NumberFormatUtil.getEnergyUnit())))
+        .frontend(AntimatterForgeFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> antimatterGeneratorRecipes = RecipeMapBuilder
+        .of("gg.recipe.antimatter_generator")
+        .maxIO(0, 0, 2, 0)
+        .minInputs(0, 2)
+        .dontUseProgressBar()
+        .logoPos(152, 77)
+        .neiTransferRect(170, 120, 1, 1) // disable "show recipes" hitbox
+        .neiRecipeBackgroundSize(170, 96)
+        .addSpecialTexture(51, 21, 70, 70, GGUITextures.PICTURE_ANTIMATTER_GENERATOR)
+        .neiSpecialInfoFormatter(
+            recipeInfo -> ImmutableList.of(
+                StatCollector.translateToLocalFormatted(
+                    "gg.recipe.antimatter_generator.info.0",
+                    formatNumber(AntimatterGenerator.ANTIMATTER_FUEL_VALUE),
+                    NumberFormatUtil.getEnergyUnit(),
+                    NumberFormatUtil.getFluidUnit()),
+                StatCollector.translateToLocal("gg.recipe.antimatter_generator.info.1")))
+        .frontend(AntimatterGeneratorFrontend::new)
         .build();
 }
