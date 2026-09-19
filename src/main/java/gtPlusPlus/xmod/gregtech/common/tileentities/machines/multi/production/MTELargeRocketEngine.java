@@ -77,6 +77,8 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     private static final int BOOST_MULTIPLIER = 3;
     private static final int WARMUP_MIN_SECONDS = 60;
     private static final int WARMUP_MAX_SECONDS = 180;
+    private static final int POLLUTION_PER_EUT = 1500;
+    private static final int POLLUTION_EUT_UNIT = 16384;
 
     private static Fluid sAirFluid = null;
     private static FluidStack sAirFluidStack = null;
@@ -166,7 +168,15 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     + formatNumber(WARMUP_MAX_SECONDS)
                     + " seconds to warm up based on the current EU/t")
             .addSupportAny()
-            .addPollutionAmount(getPollutionPerSecond(null))
+            .addInfo(
+                "Produces " + EnumChatFormatting.DARK_PURPLE
+                    + formatNumber(POLLUTION_PER_EUT)
+                    + EnumChatFormatting.GRAY
+                    + " pollution per "
+                    + EnumChatFormatting.RED
+                    + formatNumber(POLLUTION_EUT_UNIT)
+                    + " EU/t"
+                    + EnumChatFormatting.GRAY)
             .beginStructureBlock(3, 3, 10, false)
             .addController("Front center, 2nd layer")
             .addCasing("62-76", "Turbodyne Casing", false)
