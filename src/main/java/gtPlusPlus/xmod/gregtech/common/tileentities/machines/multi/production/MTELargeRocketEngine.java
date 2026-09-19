@@ -71,11 +71,12 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     private static final int LUBRICANT_CONSUMPTION_PER_HOUR = 1000;
     private static final int MIN_FUEL_INPUT_PER_SECOND = 5;
     private static final int COOLANT_BOOST_PERCENT = 3;
-    private static final int WARMUP_TICKS = 2000;
     private static final int AIR_PERCENT = 1;
     private static final int SOFT_CAP_1 = 49_000;
     private static final int SOFT_CAP_2 = 94_000;
-    private static final int BOOST_OUTPUT_UNIT_EUT = 1_000;
+    private static final int BOOST_MULTIPLIER = 3;
+    private static final int WARMUP_MIN_SECONDS = 60;
+    private static final int WARMUP_MAX_SECONDS = 180;
 
     private static Fluid sAirFluid = null;
     private static FluidStack sAirFluidStack = null;
@@ -111,52 +112,59 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Generates power from rocket fuels")
-            .addInfo("No hard limit on EU/t output - scales with fuel input")
+            .addInfo("Burns rocket fuel to generate power")
+            .addInfo("There is no upper limit on power output, other than the size of the dynamo hatch")
             .addInfo(
-                EnumChatFormatting.YELLOW
-                    + "Do not insert rocket fuel while disabled - it will be buffered and consumed all at once when enabled!"
+                "But there are soft caps at " + EnumChatFormatting.RED
+                    + formatNumber(SOFT_CAP_1)
+                    + EnumChatFormatting.GRAY
+                    + " EU/t and "
+                    + EnumChatFormatting.RED
+                    + formatNumber(SOFT_CAP_2)
+                    + EnumChatFormatting.GRAY
+                    + " EU/t (unboosted) that reduce fuel efficiency")
+            .addInfo(
+                EnumChatFormatting.YELLOW + "Do not insert rocket fuel while disabled - it will be voided on start!"
                     + EnumChatFormatting.GRAY)
-            .addInfo("Consumes " + AIR_PERCENT + "% of current EU/t in Air per tick")
-            .addInfo("Air is supplied only through Air Intake Hatches")
-            .addInfo("If air runs out, it shuts down and requires manual restart")
-            .addInfo("Minimum fuel input: " + formatFluid(MIN_FUEL_INPUT_PER_SECOND) + "/s")
+            .addInfo("Minimum fuel input is " + formatFluid(MIN_FUEL_INPUT_PER_SECOND) + "/s")
             .addSeparator()
+            .addInfo("The combustion process requires some additional inputs:")
             .addInfo(
-                "Consumes " + formatFluid(LUBRICANT_CONSUMPTION_PER_HOUR)
-                    + " of "
+                formatFluid(LUBRICANT_CONSUMPTION_PER_HOUR) + " of "
                     + EnumChatFormatting.GOLD
                     + mLubricantName
                     + EnumChatFormatting.GRAY
-                    + " per hour")
-            .addInfo("Takes " + formatNumber(WARMUP_TICKS / 20) + " seconds to warm up to full efficiency")
-            .addSeparator()
+                    + " per hour (x"
+                    + formatNumber(BOOST_MULTIPLIER)
+                    + " if boosted)")
             .addInfo(
-                "Optional boost: supply " + formatFluid(COOLANT_BOOST_PERCENT)
-                    + " of "
+                formatNumber(AIR_PERCENT) + "% of current EU/t in "
+                    + EnumChatFormatting.GOLD
+                    + "Air"
+                    + EnumChatFormatting.GRAY
+                    + " per second (only through air intake hatches)")
+            .addInfo(
+                formatNumber(COOLANT_BOOST_PERCENT) + "% of current EU/t in "
                     + EnumChatFormatting.GOLD
                     + mCoolantName
                     + EnumChatFormatting.GRAY
-                    + " per "
-                    + formatNumber(BOOST_OUTPUT_UNIT_EUT)
-                    + " EU/t output")
+                    + " per second to boost (optional)")
+            .addSeparator()
+            .addInfo("If air ever runs out, the machine shuts down and must be manually restarted")
             .addInfo(
-                "Boosting triples the soft caps and " + EnumChatFormatting.GOLD
-                    + mLubricantName
+                "Boosting multiplies the soft caps to " + EnumChatFormatting.RED
+                    + formatNumber(SOFT_CAP_1 * BOOST_MULTIPLIER)
                     + EnumChatFormatting.GRAY
-                    + " consumption")
-            .addInfo("Fuel efficiency decreases after the soft caps below")
-            .addInfo(
-                "Soft caps: " + EnumChatFormatting.RED
-                    + formatNumber(SOFT_CAP_1)
-                    + " EU/t"
-                    + EnumChatFormatting.GRAY
-                    + " and "
+                    + " EU/t and "
                     + EnumChatFormatting.RED
-                    + formatNumber(SOFT_CAP_2)
-                    + " EU/t"
+                    + formatNumber(SOFT_CAP_2 * BOOST_MULTIPLIER)
                     + EnumChatFormatting.GRAY
-                    + " (unboosted)")
+                    + " EU/t")
+            .addInfo(
+                "Takes " + formatNumber(WARMUP_MIN_SECONDS)
+                    + "-"
+                    + formatNumber(WARMUP_MAX_SECONDS)
+                    + " seconds to warm up based on the current EU/t")
             .addSupportAny()
             .beginStructureBlock(3, 3, 10, false)
             .addController("Front center, 2nd layer")
