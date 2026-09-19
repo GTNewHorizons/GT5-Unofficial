@@ -873,14 +873,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
         final BaseMetaPipeEntity pipe = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         if (pipe.getNode() != null) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                if (isConnectedAtSide(side)) {
-                    final Cover cover = pipe.getCoverAtSide(side);
-                    if (!cover.isValid()) continue;
-                    if (!letsIn(cover) || !letsOut(cover)) {
-                        pipe.addToLock(pipe, side);
-                    } else {
-                        pipe.removeFromLock(pipe, side);
-                    }
+                final Cover cover = pipe.getCoverAtSide(side);
+                if (isConnectedAtSide(side) && cover.isValid() && (!letsIn(cover) || !letsOut(cover))) {
+                    pipe.addToLock(pipe, side);
+                } else {
+                    pipe.removeFromLock(pipe, side);
                 }
             }
         } else {

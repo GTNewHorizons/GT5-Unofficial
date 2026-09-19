@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import gregtech.api.graphs.consumers.ConsumerNode;
@@ -25,6 +26,61 @@ import gregtech.common.covers.Cover;
 import ic2.api.energy.tile.IEnergySink;
 
 class EnergyReviewRegressionTest {
+
+    @ParameterizedTest
+    @CsvSource({ "false, false", "false, true", "true, false", "true, true" })
+    void removingOrReplacingBlockingCoverUnlocksExistingGraph(boolean compressed, boolean replace) {
+        BaseMetaPipeEntity.clearManagedCables();
+        try (var servers = mockStatic(MinecraftServer.class)) {
+            servers.when(MinecraftServer::getServer)
+                .thenReturn(mock(MinecraftServer.class));
+            World world = mock(World.class);
+            BaseMetaPipeEntity[] pipes = new BaseMetaPipeEntity[4];
+            for (int x = 0; x < pipes.length; x++) {
+                pipes[x] = pipe(world, x, ForgeDirection.WEST, ForgeDirection.EAST);
+                when(world.getTileEntity(x, 64, 0)).thenReturn(pipes[x]);
+            }
+            TileEntity receiver = receiver(4, 0);
+            when(world.getTileEntity(4, 64, 0)).thenReturn(receiver);
+            BaseMetaPipeEntity covered = pipes[compressed ? 1 : 3];
+            Cover blocker = mock(Cover.class);
+            when(blocker.getSide()).thenReturn(ForgeDirection.WEST);
+            when(blocker.getCoverID()).thenReturn(123);
+            when(blocker.isValid()).thenReturn(true);
+            covered.attachCover(blocker);
+            MTECable source = (MTECable) pipes[0].getMetaTileEntity();
+            assertEquals(0, source.transferElectricity(ForgeDirection.UNKNOWN, 32, 1, null));
+            Node original = pipes[0].getNode();
+            assertEquals(compressed, covered.getNode() == null);
+            Lock lock = compressed ? covered.getNodePath().lock
+                : covered.getNode().locks[ForgeDirection.WEST.ordinal()];
+            TileEntity otherBlocker = mock(TileEntity.class);
+            lock.addTileEntity(otherBlocker);
+
+            if (replace) {
+                Cover open = mock(Cover.class);
+                when(open.getSide()).thenReturn(ForgeDirection.WEST);
+                when(open.getCoverID()).thenReturn(124);
+                when(open.isValid()).thenReturn(true);
+                when(open.letsEnergyIn()).thenReturn(true);
+                when(open.letsEnergyOut()).thenReturn(true);
+                covered.attachCover(open);
+            } else {
+                covered.detachCover(ForgeDirection.WEST);
+                verify(blocker).onCoverRemoval();
+            }
+            assertTrue(lock.isLocked(), "Another blocker's contribution must survive cover removal");
+            lock.removeTileEntity(otherBlocker);
+            assertFalse(lock.isLocked(), "The removed cover must no longer contribute to the shared lock");
+            assertEquals(1, source.transferElectricity(ForgeDirection.UNKNOWN, 32, 1, null));
+            assertSame(original, pipes[0].getNode(), "Cover removal must restore power without rebuilding the graph");
+
+            covered.attachCover(blocker);
+            assertEquals(0, source.transferElectricity(ForgeDirection.UNKNOWN, 32, 1, null));
+        } finally {
+            BaseMetaPipeEntity.clearManagedCables();
+        }
+    }
 
     @Test
     void rerootingCompressedCableRetiresOldGraphBeforeRemoval() {
