@@ -17,7 +17,7 @@ final class MetaToolStackMigration {
 
     /** As {@link #rewriteToolStack(NBTTagCompound, int, boolean, String)}, for a tool with no mode key of its own. */
     static void rewriteToolStack(NBTTagCompound nbt, int newMeta, boolean electric) {
-        rewriteToolStack(nbt, newMeta, electric, null);
+        rewriteToolStack(nbt, newMeta, electric, null, false);
     }
 
     /**
@@ -31,6 +31,19 @@ final class MetaToolStackMigration {
      *                      Prospector's Scanners kept theirs under a name of their own.
      */
     static void rewriteToolStack(NBTTagCompound nbt, int newMeta, boolean electric, String legacyModeKey) {
+        rewriteToolStack(nbt, newMeta, electric, legacyModeKey, false);
+    }
+
+    /**
+     * As {@link #rewriteToolStack(NBTTagCompound, int, boolean, String)}, for a tool that does not count durability
+     * the way the rest of them do.
+     *
+     * @param countsHundredths whether the new item counts durability in the same hundredths of a point the old
+     *                         meta-item did, in which case the stored wear carries across untouched. Only the
+     *                         turbine rotors do; every other tool counts whole points and needs the figure scaled.
+     */
+    static void rewriteToolStack(NBTTagCompound nbt, int newMeta, boolean electric, String legacyModeKey,
+        boolean countsHundredths) {
         final NBTTagCompound tag = nbt.getCompoundTag("tag");
         final NBTTagCompound toolStats = tag.getCompoundTag("GT.ToolStats");
 
@@ -46,16 +59,17 @@ final class MetaToolStackMigration {
             // tool crafted with a cheaper battery comes across holding its tier's full capacity.
             final long charge = tag.getLong("GT.ItemCharge");
             if (charge > 0) newTag.setLong("GT.ItemCharge", charge);
+        } else if (countsHundredths) {
+            // The same unit on both sides of the move, so the wear comes across exactly as it stood: a rotor four
+            // fifths of the way through its life stays four fifths of the way through it, down to the hundredth.
+            final long damage = toolStats.getLong("Damage");
+            if (damage > 0) newTag.setLong("GT.ToolDamage", damage);
         } else {
             // The old item counted durability in hundredths of a point, the new one in whole points, and the maximum
             // is the same number of points either way, so a hundredth of the old figure is the same share of the bar.
-            // What is left over is banked the same way an unfinished wear event is, rather than being rounded away,
-            // which matters to a turbine rotor: its wear arrives in fractions of a point.
-            final long hundredths = toolStats.getLong("Damage");
-            final long damage = hundredths / 100L;
-            final long remainder = hundredths % 100L;
+            // The remainder is forgiven; on a tool a player swings it is worth under one action.
+            final long damage = toolStats.getLong("Damage") / 100L;
             if (damage > 0) newTag.setLong("GT.ToolDamage", damage);
-            if (remainder > 0) newTag.setLong("GT.WearBank", remainder);
         }
 
         nbt.setShort("Damage", (short) newMeta);

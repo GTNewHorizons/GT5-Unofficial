@@ -69,20 +69,6 @@ public interface IGTTool {
     boolean spendOneUse(ItemStack stack);
 
     /**
-     * Applies the wear a machine has worked out for a tool sitting in it -- a turbine rotor, in practice -- which is
-     * proportional to the power the machine is producing rather than being one flat action.
-     * <p/>
-     * The amount is in hundredths of a durability point, the unit the multiblock wear formula has always been written
-     * in, and a single wear event is very often worth less than one whole point. An implementation that counts
-     * durability in whole points must therefore carry the fraction over to the next event rather than rounding it
-     * away, or a rotor on gentle steam would never wear out at all.
-     *
-     * @param hundredths the wear, in hundredths of a durability point.
-     * @return whether the wear could be applied.
-     */
-    boolean doMachineWear(ItemStack stack, long hundredths);
-
-    /**
      * @return the energy stored on this tool, or 0 if it is not electric.
      */
     long getStoredCharge(ItemStack stack);

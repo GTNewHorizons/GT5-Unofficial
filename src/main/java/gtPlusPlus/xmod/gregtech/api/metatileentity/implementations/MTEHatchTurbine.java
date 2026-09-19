@@ -156,7 +156,7 @@ public class MTEHatchTurbine extends MTEHatch {
     public void damageTurbine(long aEUt, int damageFactorLow, float damageFactorHigh) {
         if (hasTurbine() && MathUtils.randInt(0, 1) == 0) {
             ItemStack aTurbine = getTurbine();
-            ((IGTTool) aTurbine.getItem()).doMachineWear(
+            ((IGTTool) aTurbine.getItem()).doDamage(
                 aTurbine,
                 (long) getDamageToComponent(aTurbine)
                     * (long) Math.min((float) aEUt / (float) damageFactorLow, Math.pow(aEUt, damageFactorHigh)));

@@ -95,7 +95,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.CheckboxWidget;
-import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
@@ -538,7 +537,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mOutputHatches.clear();
         mOutputBusses.clear();
         mDynamoHatches.clear();
-        mExoticDynamoHatches.clear();
         mEnergyHatches.clear();
         setMufflers(false);
         mMufflerHatches.clear();
@@ -1490,10 +1488,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0
                 && !mInventory[1].getUnlocalizedName()
                     .startsWith("gt.blockmachines.basicmachine.")) {
-                // Any GregTech tool, so that the turbine rotors keep wearing out now that they are their own items
-                // rather than metadata on the old tool meta-item.
-                if (mInventory[1].getItem() instanceof IGTTool tool) {
-                    tool.doMachineWear(
+                // The wear below is counted in hundredths of a durability point, which is the unit a turbine rotor
+                // stores its own durability in -- and a rotor is the only machine part any multiblock actually wears,
+                // every other getDamageToComponent being zero. So this is kept to rotors rather than applied to any
+                // tool that happens to be in the slot, which would spend a whole point where a hundredth was meant.
+                if (mInventory[1].getItem() instanceof ToolTurbineItem rotor) {
+                    rotor.doDamage(
                         mInventory[1],
                         (long) getDamageToComponent(getControllerSlot()) * (long) Math.min(
                             Math.abs(getEUtForDamageCalc()) / this.damageFactorLow,

@@ -117,9 +117,7 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
                                     Math.min(
                                         (double) multiTE.mEUt / multiTE.damageFactorLow,
                                         Math.pow(multiTE.mEUt, multiTE.damageFactorHigh)));
-                                // The wear formula counts in hundredths of a durability point and the rotor in
-                                // whole ones, so the comparison is made in hundredths.
-                                signal = current * 100 + expectedDamage * 2 >= max * 100;
+                                signal = current + expectedDamage * 2 >= max;
                             }
                         } else {
                             signal = true;

@@ -530,7 +530,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
 
     private void damageTurbine(ItemStack aTurbine, int slot, long aEUt) {
         if (isValidTurbine(aTurbine) && MathUtils.randInt(0, 1) == 0) {
-            ((IGTTool) aTurbine.getItem()).doMachineWear(
+            ((IGTTool) aTurbine.getItem()).doDamage(
                 aTurbine,
                 (long) getDamageToComponent(aTurbine)
                     * (long) Math.min((float) aEUt / (float) damageFactorLow, Math.pow(aEUt, damageFactorHigh)));

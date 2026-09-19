@@ -26,6 +26,7 @@ import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.items.tools.IElectricToolItem;
 import gregtech.common.items.tools.ToolItemBase;
+import gregtech.common.items.tools.ToolTurbineItem;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
@@ -475,7 +476,10 @@ public class PosteaTransformers implements Runnable {
         if (newMeta < 0) return false;
 
         final boolean electric = newItem instanceof IElectricToolItem;
-        MetaToolStackMigration.rewriteToolStack(nbt, newMeta, electric, legacyModeKey);
+        // Rotors kept the old item's hundredths-of-a-point durability scale, so their wear is copied across rather
+        // than rescaled.
+        final boolean countsHundredths = newItem instanceof ToolTurbineItem;
+        MetaToolStackMigration.rewriteToolStack(nbt, newMeta, electric, legacyModeKey, countsHundredths);
         IDExtenderCompat.setItemStackID(nbt, tool.runtimeId);
         return true;
     }

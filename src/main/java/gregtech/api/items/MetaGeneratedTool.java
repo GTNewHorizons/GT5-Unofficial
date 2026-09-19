@@ -619,14 +619,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem implements IDamagab
         return doDamage(aStack, 100);
     }
 
-    /**
-     * This item already counts in the same hundredths the machines do, so machine wear is simply damage.
-     */
     @Override
-    public boolean doMachineWear(ItemStack aStack, long aHundredths) {
-        return doDamage(aStack, aHundredths);
-    }
-
     public final boolean doDamage(ItemStack aStack, long aAmount) {
         if (!isItemStackUsable(aStack)) return false;
         if (aStack.stackSize <= 0) return false;

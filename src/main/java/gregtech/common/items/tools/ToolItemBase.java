@@ -75,11 +75,6 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
     protected static final String DAMAGE_KEY = "GT.ToolDamage";
     /** Where the selected tool mode is kept. */
     protected static final String MODE_KEY = "GT.ToolMode";
-    /**
-     * Where the fraction of a durability point that a machine has worn off but not yet been charged for is kept,
-     * counted in hundredths. See {@link #doMachineWear}.
-     */
-    protected static final String WEAR_BANK_KEY = "GT.WearBank";
 
     protected final IToolStats toolStats;
     private final String nameKey;
@@ -232,9 +227,12 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
     public long getMaxStoredDamage(ItemStack stack) {
         Materials material = getToolMaterial(stack);
         if (material == Materials._NULL) return 0;
-        // The material's durability times the tool type's multiplier, counted in whole points: one action, one point,
-        // so this number is also how many times the tool can be used.
-        return (long) (material.mDurability * toolStats.getMaxDurabilityMultiplier());
+        // The material's durability times the tool type's multiplier. For every tool a player swings that is a count
+        // of whole durability points, so it is also how many times the tool can be used; a turbine rotor is worn by
+        // a machine rather than used, and counts hundredths instead -- see ToolTurbineItem.
+        // The multiplier is a float and the rotor multipliers push the product past the 2^24 that a float can hold
+        // exactly, so the multiply is done in double.
+        return (long) (material.mDurability * (double) toolStats.getMaxDurabilityMultiplier());
     }
 
     /**
@@ -255,29 +253,6 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
      */
     public long getEnergyCostPerUse() {
         return 0;
-    }
-
-    /**
-     * Wears the tool by the fraction of a durability point a machine has asked for.
-     * <p/>
-     * The machines count in hundredths of a point and these items count in whole points, and one wear event is
-     * usually worth well under a point -- a small rotor on early steam earns a few hundredths at a time. So the
-     * hundredths are banked on the stack and a point is spent each time the bank fills, which spends points at
-     * exactly the rate the old hundredths-counting tools did, with nothing lost to rounding.
-     */
-    @Override
-    public boolean doMachineWear(ItemStack stack, long hundredths) {
-        if (stack == null || stack.stackSize <= 0 || hundredths <= 0) return false;
-        if (getMaxStoredDamage(stack) <= 0) return false;
-        final long banked = ItemStackNBT.getLong(stack, WEAR_BANK_KEY) + hundredths;
-        final long points = banked / 100L;
-        final long remainder = banked % 100L;
-        if (remainder > 0) {
-            ItemStackNBT.setLong(stack, WEAR_BANK_KEY, remainder);
-        } else {
-            ItemStackNBT.removeTag(stack, WEAR_BANK_KEY);
-        }
-        return points <= 0 || doDamage(stack, points);
     }
 
     @Override

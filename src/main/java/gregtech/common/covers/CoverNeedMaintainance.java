@@ -91,9 +91,7 @@ public class CoverNeedMaintainance extends CoverLegacyData {
                                 Math.min(
                                     multi.mEUt / multi.damageFactorLow,
                                     Math.pow(multi.mEUt, multi.damageFactorHigh)));
-                            // The wear formula counts in hundredths of a durability point and the rotor in whole
-                            // ones, so the comparison is made in hundredths.
-                            needsRepair = tCur * 100 + mExpectedDamage * 2 >= tMax * 100;
+                            needsRepair = tCur + mExpectedDamage * 2 >= tMax;
                         }
                     } else {
                         needsRepair = true;

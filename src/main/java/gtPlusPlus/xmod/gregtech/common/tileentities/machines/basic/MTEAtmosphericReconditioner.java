@@ -417,10 +417,9 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                             rotorDurability = 0;
                         }
                     } else {
-                        // Stop short of wearing the rotor out, so that "save rotor" hands back something reusable.
-                        // The threshold was written when rotors counted durability in hundredths of a point; ten
-                        // whole points is the same margin.
-                        if (rotorDurability > 10) {
+                        // Stop short of wearing the rotor out, so that "save rotor" hands back something
+                        // reusable: a thousand hundredths of a point, which is ten whole ones.
+                        if (rotorDurability > 1000) {
                             GTModHandler
                                 .damageOrDechargeItem(this.mInventory[SLOT_ROTOR], (int) damageValue / 2, 0, null);
                             long tempDur = rotorItem.getStoredDamage(this.mInventory[SLOT_ROTOR]);

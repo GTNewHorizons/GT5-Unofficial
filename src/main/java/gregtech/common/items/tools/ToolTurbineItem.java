@@ -24,11 +24,20 @@ import gregtech.api.util.TurbineStatCalculator;
  * metadata arithmetic the old meta-item forced on every one of them.
  * <p/>
  * Rotors wear differently from every other tool. A player never uses one: a turbine wears it by an amount
- * proportional to the power it is producing, which for a small turbine on weak steam is a small fraction of a
- * durability point per wear event. {@link ToolItemBase#doMachineWear} is what keeps that faithful, by banking the
- * fraction on the stack rather than rounding it away.
+ * proportional to the power it is producing, which for a small rotor on weak steam is a small fraction of a
+ * durability point per wear event. So a rotor counts its durability in {@link #HUNDREDTHS_PER_POINT hundredths} of
+ * a point -- the unit every multiblock wear formula already produces -- by way of a rotor {@link IToolStats}'s
+ * durability multiplier being a hundred times its size. Nothing has to convert, nothing is banked, and the
+ * thresholds machines compare a rotor against still mean what they meant when rotors were metadata on the old
+ * meta-item.
  */
 public class ToolTurbineItem extends ToolItemBase {
+
+    /**
+     * How many units of a rotor's durability make up one durability point, which is the scale everything outside
+     * the turbines counts in. See the class comment.
+     */
+    public static final long HUNDREDTHS_PER_POINT = 100L;
 
     private final int size;
 
@@ -70,13 +79,22 @@ public class ToolTurbineItem extends ToolItemBase {
     }
 
     /**
-     * A rotor is worn by the machine holding it, not by anybody using it, and the two places that ask for whole
-     * points at a time -- GT++'s Atmospheric Reconditioner among them -- mean exactly as many points as they ask
-     * for. So unlike an ordinary tool, where every action costs the same single point, this spends what it is told.
+     * Callers of this one -- {@code GTModHandler.damageOrDechargeItem}, and so GT++'s Atmospheric Reconditioner --
+     * count in whole durability points, which is what the old meta-item's own implementation converted for. A rotor
+     * converts the same way.
      */
     @Override
     public boolean doDamageToItem(ItemStack stack, int vanillaDamage) {
-        return vanillaDamage <= 0 || doDamage(stack, vanillaDamage);
+        return vanillaDamage <= 0 || doDamage(stack, vanillaDamage * HUNDREDTHS_PER_POINT);
+    }
+
+    /**
+     * A rotor has no action a player performs with it, but it can still end up somewhere that spends one -- a GT
+     * toolbox's generic slot, say. One use is one durability point, as it is for every other tool.
+     */
+    @Override
+    public boolean spendOneUse(ItemStack stack) {
+        return doDamage(stack, HUNDREDTHS_PER_POINT);
     }
 
     /* ---------- DISPLAY ---------- */

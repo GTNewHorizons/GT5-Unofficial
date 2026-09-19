@@ -285,45 +285,57 @@ class PosteaToolMigrationTest {
     }
 
     /**
-     * A rotor's wear arrives in fractions of a durability point, so a saved one is very unlikely to sit on a round
-     * hundred. The leftover hundredths go into the bank the new item spends from, rather than being rounded away.
+     * A rotor counts durability in the same hundredths of a point the old meta-item did, so unlike every other tool
+     * its stored wear is copied across rather than divided down -- exactly, with no rounding either way.
      */
     @Test
-    void turbineRotorKeepsItsWearDownToTheHundredth() {
-        // A Steel small rotor: max durability 100 * 512 * 1 on the old item, worn 12345 hundredths, i.e. 123 whole
-        // points and 45 hundredths of the next one.
+    void turbineRotorCarriesItsWearAcrossExactly() {
+        // A Steel small rotor: max durability 100 * 512 * 1, worn 12345 hundredths, which is not a round number of
+        // whole points and does not need to be.
         NBTTagCompound stack = oldTool(170, "Steel", 12_345L, 51_200L, (byte) 0, null, null);
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false, null, true);
 
         assertEquals(STEEL_META, stack.getShort("Damage"), "metadata should become the material");
 
         NBTTagCompound tag = stack.getCompoundTag("tag");
-        assertEquals(123L, tag.getLong("GT.ToolDamage"), "whole points of wear should come across");
-        assertEquals(45L, tag.getLong("GT.WearBank"), "the unfinished hundredths should be banked, not dropped");
+        assertEquals(12_345L, tag.getLong("GT.ToolDamage"), "a rotor's wear should come across untouched");
         assertFalse(tag.hasKey("GT.ToolStats"), "the old stats compound should be gone");
     }
 
     @Test
-    void hugeTurbineRotorOnARoundPointBanksNothing() {
-        // The same rotor one size up, worn an exact number of points: there is nothing left to bank.
-        NBTTagCompound stack = oldTool(176, "Iron", 20_000L, 51_200L, (byte) 0, null, null);
+    void hugeTurbineRotorCarriesItsWearAcrossExactly() {
+        // The same rotor three sizes up, worn 20000 hundredths of its 100 * 256 * 4.
+        NBTTagCompound stack = oldTool(176, "Iron", 20_000L, 102_400L, (byte) 0, null, null);
 
-        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false);
+        MetaToolStackMigration.rewriteToolStack(stack, IRON_META, false, null, true);
 
         assertEquals(IRON_META, stack.getShort("Damage"));
         NBTTagCompound tag = stack.getCompoundTag("tag");
-        assertEquals(200L, tag.getLong("GT.ToolDamage"));
-        assertFalse(tag.hasKey("GT.WearBank"), "a round number of points leaves no fraction to carry");
+        assertEquals(20_000L, tag.getLong("GT.ToolDamage"));
+    }
+
+    /**
+     * The counterpart to the above: a tool that does count whole points still has its wear scaled down, and the
+     * hundredths that do not make up a point are forgiven.
+     */
+    @Test
+    void anOrdinaryToolStillHasItsWearScaledDown() {
+        NBTTagCompound stack = oldTool(16, "Steel", 12_345L, 51_200L, (byte) 0, null, null);
+
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false);
+
+        NBTTagCompound tag = stack.getCompoundTag("tag");
+        assertEquals(123L, tag.getLong("GT.ToolDamage"), "a hundredth of the old figure is the same share of the bar");
     }
 
     @Test
     void freshTurbineRotorLosesItsTagEntirely() {
-        NBTTagCompound stack = oldTool(174, "Steel", 0L, 51_200L, (byte) 0, null, null);
+        NBTTagCompound stack = oldTool(174, "Steel", 0L, 153_600L, (byte) 0, null, null);
         stack.getCompoundTag("tag")
             .removeTag("ench");
 
-        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false);
+        MetaToolStackMigration.rewriteToolStack(stack, STEEL_META, false, null, true);
 
         assertEquals(STEEL_META, stack.getShort("Damage"));
         assertFalse(stack.hasKey("tag"), "an unused rotor needs no tag at all");
