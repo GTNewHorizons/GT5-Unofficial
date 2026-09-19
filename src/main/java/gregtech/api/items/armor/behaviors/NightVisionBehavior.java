@@ -2,8 +2,10 @@ package gregtech.api.items.armor.behaviors;
 
 import java.util.Set;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.MathHelper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,12 +40,21 @@ public class NightVisionBehavior implements IArmorBehavior {
     @Override
     public void onArmorTick(@NotNull ArmorContext context) {
         if (context.isRemote()) return;
+        EntityPlayer player = context.getPlayer();
 
-        if (context.isBehaviorActive(BehaviorName.NightVision) && context.drainEnergy(2)) {
-            context.getPlayer()
-                .removePotionEffect(Potion.blindness.id);
-            context.getPlayer()
-                .addPotionEffect(new PotionEffect(Potion.nightVision.id, 999999, 0, true));
+        int combinedLight = context.getWorld()
+            .getBlockLightValue(
+                MathHelper.floor_double(player.posX),
+                MathHelper.floor_double(player.posY),
+                MathHelper.floor_double(player.posZ));
+
+        if (context.isBehaviorActive(BehaviorName.NightVision) && context.getArmorState().charge > 1) {
+            if (combinedLight < 7) {
+                context.drainEnergy(2);
+            }
+
+            player.removePotionEffect(Potion.blindness.id);
+            player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 999999, 0, true));
         } else {
             removeArmorNightVision(context);
         }
