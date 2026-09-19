@@ -42,13 +42,14 @@ public class NightVisionBehavior implements IArmorBehavior {
         if (context.isRemote()) return;
         EntityPlayer player = context.getPlayer();
 
-        int combinedLight = context.getWorld()
-            .getBlockLightValue(
-                MathHelper.floor_double(player.posX),
-                MathHelper.floor_double(player.posY),
-                MathHelper.floor_double(player.posZ));
-
         if (context.isBehaviorActive(BehaviorName.NightVision) && context.getArmorState().charge > 1) {
+            int combinedLight = context.getWorld()
+                .getBlockLightValue(
+                    MathHelper.floor_double(player.posX),
+                    MathHelper.floor_double(player.posY),
+                    MathHelper.floor_double(player.posZ));
+
+
             if (combinedLight < 7) {
                 context.drainEnergy(2);
             }
