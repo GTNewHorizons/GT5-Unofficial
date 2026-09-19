@@ -25,16 +25,15 @@ public class TetherManager {
     private final Map<EntityPlayerMP, MTEMagLevPylon> PLAYER_TETHERS = new HashMap<>();
 
     public void registerPylon(IGregTechTileEntity mte, MTEMagLevPylon tether, int range) {
-        ACTIVE_PYLONS
-            .put(tether, mte.getWorld().provider.dimensionId, mte.getXCoord(), mte.getYCoord(), mte.getZCoord(), range);
+        ACTIVE_PYLONS.put(tether, mte.getWorld().provider.dimensionId, mte.getXCoord(), 0, mte.getZCoord(), range);
     }
 
     public void unregisterPylon(IGregTechTileEntity mte) {
-        ACTIVE_PYLONS.remove(mte.getWorld().provider.dimensionId, mte.getXCoord(), mte.getYCoord(), mte.getZCoord());
+        ACTIVE_PYLONS.remove(mte.getWorld().provider.dimensionId, mte.getXCoord(), 0, mte.getZCoord());
     }
 
     public MTEMagLevPylon getClosestActivePylon(EntityPlayer player) {
-        return ACTIVE_PYLONS.getClosest(player.dimension, player.posX, player.posY, player.posZ);
+        return ACTIVE_PYLONS.getClosest(player.dimension, player.posX, 0, player.posZ);
     }
 
     public void connectPlayer(EntityPlayer player, MTEMagLevPylon tether) {
