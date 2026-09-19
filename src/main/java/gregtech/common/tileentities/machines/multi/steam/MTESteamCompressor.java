@@ -6,6 +6,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
 import static gregtech.api.GregTechAPI.sBlockMetal6;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
@@ -145,6 +146,7 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
         for (MTEHatch h : mSteamInputs) h.updateTexture(getCasingTextureId());
         for (MTEHatch h : mSteamOutputs) h.updateTexture(getCasingTextureId());
         for (MTEHatch h : mSteamInputFluids) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureId());
     }
 
     @Override
@@ -207,7 +209,7 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
                             .hint(1)
                             .build(),
                         buildHatchAdder(MTESteamCompressor.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, InputHatch)
                             .casingIndex(10)
                             .hint(1)
                             .buildAndChain(),
@@ -361,6 +363,7 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
             .addSteamHatch("1", "Any normal casing", 1)
             .addSteamInputBus("1+", "Any normal casing", 1)
             .addSteamOutputBus("1+", "Any normal casing", 1)
+            .addInputHatch("0+", "Any normal casing", 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
             .addCasing("14-27", "Bronze Plated Bricks", false)
