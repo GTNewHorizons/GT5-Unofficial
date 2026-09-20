@@ -16,7 +16,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import gregtech.common.items.tools.ToolPlungerItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -28,7 +27,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -74,6 +72,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.items.tools.GTToolItems;
+import gregtech.common.items.tools.ToolPlungerItem;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gtPlusPlus.GTplusplus;
@@ -613,7 +612,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
                 if (tCurrentItem.getItem() instanceof ToolPlungerItem) {
-                        return onPlungerRightClick(aPlayer, side, aX, aY, aZ);
+                    return onPlungerRightClick(aPlayer, side, aX, aY, aZ);
                 }
             }
         }

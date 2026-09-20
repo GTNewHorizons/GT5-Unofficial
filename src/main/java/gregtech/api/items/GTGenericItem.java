@@ -1,6 +1,5 @@
 package gregtech.api.items;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.List;
@@ -29,7 +28,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 

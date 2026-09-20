@@ -501,33 +501,26 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
         long maxDamage = getMaxStoredDamage(stack);
         if (maxDamage > 0) {
             list.add(
-                EnumChatFormatting.WHITE
+                EnumChatFormatting.GRAY
                     + translateToLocalFormatted(
                         "gt.item.desc.durability",
                         EnumChatFormatting.GREEN + formatNumber(maxDamage - getStoredDamage(stack)) + " ",
-                        " " + formatNumber(maxDamage))
-                    + EnumChatFormatting.GRAY);
+                        " " + formatNumber(maxDamage)));
         }
         list.add(
-            EnumChatFormatting.WHITE
-                + translateToLocalFormatted(
-                    "gt.item.desc.level",
-                    material.getLocalizedName() + EnumChatFormatting.YELLOW,
-                    formatNumber(getHarvestLevel(stack, "")))
-                + EnumChatFormatting.GRAY);
+            EnumChatFormatting.GRAY
+                + translateToLocalFormatted("gt.item.desc.mining_level", EnumChatFormatting.BLUE + formatNumber(getHarvestLevel(stack, ""))));
         list.add(
-            EnumChatFormatting.WHITE
+            EnumChatFormatting.GRAY
                 + translateToLocalFormatted(
                     "gt.item.desc.damage",
-                    EnumChatFormatting.BLUE + formatNumber(getToolCombatDamage(stack)))
-                + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.BLUE + formatNumber(getToolCombatDamage(stack))));
         list.add(
-            EnumChatFormatting.WHITE
+            EnumChatFormatting.GRAY
                 + translateToLocalFormatted(
                     "gt.item.desc.mine_speed",
-                    EnumChatFormatting.GOLD + formatNumber(
-                        Math.max(Float.MIN_NORMAL, toolStats.getSpeedMultiplier() * material.mToolSpeed)))
-                + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.BLUE + formatNumber(
+                        Math.max(Float.MIN_NORMAL, toolStats.getSpeedMultiplier() * material.mToolSpeed))));
         addBehaviourToolTips(list, stack);
         if (getMaxMode(stack) > 1) {
             list.add(
