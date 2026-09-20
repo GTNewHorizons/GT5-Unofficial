@@ -619,6 +619,15 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     }
 
     @Override
+    public List<ItemStack> getItemsForHoloGlasses() {
+        List<ItemStack> result = new ArrayList<>();
+        for (Slot slot : slots) {
+            if (slot != null && slot.extracted != null) result.add(slot.extracted);
+        }
+        return result;
+    }
+
+    @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
         if (processingRecipe) {
             return true;
