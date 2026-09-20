@@ -122,26 +122,46 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
         TextWidget<?> calibrationBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.1");
         TextWidget<?> calibrationBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.2");
 
-        TextWidget<?> crystalHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.crystal.header");
-        TextWidget<?> crystalBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.crystal.effect1");
-        TextWidget<?> crystalBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.crystal.effect2");
-        TextWidget<?> crystalBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.crystal.effect3");
-        TextWidget<?> wetwareHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.wetware.header");
-        TextWidget<?> wetwareBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.wetware.effect1");
-        TextWidget<?> wetwareBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.wetware.effect2");
-        TextWidget<?> wetwareBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.wetware.effect3");
-        TextWidget<?> biowareHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.optical.header");
-        TextWidget<?> biowareBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.bioware.effect1");
-        TextWidget<?> biowareBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.bioware.effect2");
-        TextWidget<?> biowareBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.bioware.effect3");
-        TextWidget<?> opticalHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.optical.header");
-        TextWidget<?> opticalBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.optical.effect1");
-        TextWidget<?> opticalBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.optical.effect2");
-        TextWidget<?> opticalBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.optical.effect3");
-        TextWidget<?> specialHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.special.header");
-        TextWidget<?> specialBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.special.effect1");
-        TextWidget<?> specialBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.special.effect2");
-        TextWidget<?> specialBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.special.effect3");
+        TextWidget<?> crystalHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.header");
+        TextWidget<?> crystalBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.calibration.effect1");
+        TextWidget<?> crystalBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.calibration.effect2");
+        TextWidget<?> crystalBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.calibration.effect3");
+        TextWidget<?> wetwareHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.header");
+        TextWidget<?> wetwareBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect1");
+        TextWidget<?> wetwareBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect2");
+        TextWidget<?> wetwareBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect3");
+        TextWidget<?> biowareHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.header");
+        TextWidget<?> biowareBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.calibration.effect1");
+        TextWidget<?> biowareBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.calibration.effect2");
+        TextWidget<?> biowareBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.calibration.effect3");
+        TextWidget<?> opticalHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.optical.header");
+        TextWidget<?> opticalBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect1");
+        TextWidget<?> opticalBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect2");
+        TextWidget<?> opticalBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect3");
+        TextWidget<?> specialHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.special.header");
+        TextWidget<?> specialBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.calibration.effect1");
+        TextWidget<?> specialBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.calibration.effect2");
+        TextWidget<?> specialBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.calibration.effect3");
 
         textList.child(createTableOfContentsHeader());
         textList.child(vacuumBasicsToC);
