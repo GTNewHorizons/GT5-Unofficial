@@ -195,7 +195,7 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Rotor_EV.set(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.rotor, 1));
         ItemList.Rotor_IV.set(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.rotor, 1));
 
-        ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", "Volumetric flask", 1_000));
+        ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", 1_000));
 
         if (Mods.IC2NuclearControl.isModLoaded()) {
             ItemList.NC_SensorCard.set(new ItemSensorCard("sensorcard", "GregTech Sensor Card"));

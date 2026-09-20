@@ -54,7 +54,7 @@ public class BlockMetal extends BlockStorage {
                 ItemStack canonicalStack = cutover != null ? cutover : new ItemStack(this, 1, i);
                 DynamicLangManager.addStack(new ItemStack(this, 1, i));
                 if (aPrefix.isUnifiable()) {
-                    GTOreDictUnificator.set(aPrefix, material, canonicalStack);
+                    GTOreDictUnificator.add(aPrefix, material, canonicalStack);
                 } else {
                     GTOreDictUnificator.registerOre(aPrefix, material, canonicalStack);
                 }

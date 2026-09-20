@@ -359,10 +359,6 @@ public class BWUtil {
                         tRecipeList.add(c);
                         tRecipeList.add(ToolDictNames.craftingToolSolderingIron.name());
                         break;
-                    case 'j':
-                        tRecipeList.add(c);
-                        tRecipeList.add(ToolDictNames.craftingToolSolderingMetal.name());
-                        break;
                     case 'k':
                         tRecipeList.add(c);
                         tRecipeList.add(ToolDictNames.craftingToolKnife.name());

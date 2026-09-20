@@ -2151,28 +2151,29 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         GTOreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
             CircuitComponents.RESISTOR.materialName(),
-            ItemList.Circuit_Parts_ResistorSMD.get(1L),
-            true);
+            ItemList.Circuit_Parts_ResistorSMD.get(1L));
         GTOreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
             CircuitComponents.DIODE.materialName(),
-            ItemList.Circuit_Parts_DiodeSMD.get(1L),
-            true);
+            ItemList.Circuit_Parts_DiodeSMD.get(1L));
         GTOreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
             CircuitComponents.TRANSISTOR.materialName(),
-            ItemList.Circuit_Parts_TransistorSMD.get(1L),
-            true);
+            ItemList.Circuit_Parts_TransistorSMD.get(1L));
         GTOreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
             CircuitComponents.CAPACITOR.materialName(),
-            ItemList.Circuit_Parts_CapacitorSMD.get(1L),
-            true);
+            ItemList.Circuit_Parts_CapacitorSMD.get(1L));
         GTOreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
             CircuitComponents.INDUCTOR.materialName(),
-            ItemList.Circuit_Parts_InductorSMD.get(1L),
-            true);
+            ItemList.Circuit_Parts_InductorSMD.get(1L));
+
+        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_ResistorSMD.get(1L));
+        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_DiodeSMD.get(1L));
+        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_TransistorSMD.get(1L));
+        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_CapacitorSMD.get(1L));
+        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_InductorSMD.get(1L));
     }
 
     private void initOrePrefixes() {

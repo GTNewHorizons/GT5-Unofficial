@@ -188,12 +188,12 @@ public class MTESourceChamber extends MTEBeamMultiBase<MTESourceChamber>
         this.mEfficiencyIncrease = 10000;
 
         this.mMaxProgresstime = tRecipe.mDuration;
-        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) {
+        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && this.lEUt == Integer.MAX_VALUE - 1) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        this.mEUt = (int) -tVoltageActual;
-        if (this.mEUt > 0) this.mEUt = (-this.mEUt);
+        this.lEUt = (int) -tVoltageActual;
+        if (this.lEUt > 0) this.lEUt = (-this.lEUt);
 
         outputParticle = metadata.particleID;
         float maxParticleEnergy = Particle.getParticleFromId(outputParticle)

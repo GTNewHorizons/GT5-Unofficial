@@ -2219,29 +2219,31 @@ public class OrePrefixes {
         if (!this.mDisabledItems.contains(material)) this.mDisabledItems.add(material);
     }
 
-    public static OrePrefixes getOrePrefix(String oreName) {
-        for (OrePrefixes tPrefix : VALUES) if (oreName.startsWith(tPrefix.toString())) {
-            if (tPrefix == orePluto && oreName.equals("orePlutonium")) return ore;
-            if (tPrefix == orePluto && oreName.equals("orePlutonium241")) return ore;
-            if (tPrefix == oreTitan && oreName.equals("oreTitanium")) return ore;
-            if (tPrefix == oreCallisto && oreName.equals("oreCallistoIce")) return ore;
-            if (tPrefix == oreNether && oreName.equals("oreNetherQuartz")) return ore;
-            if (tPrefix == oreNether && oreName.equals("oreNetherStar")) return ore;
-            if (tPrefix == oreBasalt && oreName.equals("oreBasalticMineralSand")) return ore;
-            if (tPrefix == stickLong && oreName.equals("stickLongasssuperconductornameforuvwire")) return stick;
-            if (tPrefix == stickLong && oreName.equals("stickLongasssuperconductornameforuhvwire")) return stick;
-            return tPrefix;
+    public static OrePrefixes getOrePrefix(String oreDictName) {
+        for (OrePrefixes prefix : VALUES) {
+            if (!oreDictName.startsWith(prefix.name)) {
+                continue;
+            }
+
+            if (prefix == orePluto && oreDictName.equals("orePlutonium")) return ore;
+            if (prefix == orePluto && oreDictName.equals("orePlutonium241")) return ore;
+            if (prefix == oreTitan && oreDictName.equals("oreTitanium")) return ore;
+            if (prefix == oreCallisto && oreDictName.equals("oreCallistoIce")) return ore;
+            if (prefix == oreNether && oreDictName.equals("oreNetherQuartz")) return ore;
+            if (prefix == oreNether && oreDictName.equals("oreNetherStar")) return ore;
+            if (prefix == oreBasalt && oreDictName.equals("oreBasalticMineralSand")) return ore;
+            if (prefix == stickLong && oreDictName.equals("stickLongasssuperconductornameforuvwire")) return stick;
+            if (prefix == stickLong && oreDictName.equals("stickLongasssuperconductornameforuhvwire")) return stick;
+            return prefix;
         }
+
         return null;
     }
 
-    public static String stripPrefix(String oreName) {
-        for (OrePrefixes tPrefix : VALUES) {
-            if (oreName.startsWith(tPrefix.toString())) {
-                return oreName.replaceFirst(tPrefix.toString(), "");
-            }
-        }
-        return oreName;
+    public static String stripPrefix(String oreDictName) {
+        OrePrefixes prefix = getOrePrefix(oreDictName);
+        if (prefix == null) return oreDictName;
+        return oreDictName.substring(prefix.name.length());
     }
 
     public static class ParsedOreDictName {
@@ -2279,14 +2281,10 @@ public class OrePrefixes {
         }
     }
 
-    public static ParsedOreDictName detectPrefix(String oredictName) {
-        for (OrePrefixes prefix : VALUES) {
-            if (oredictName.startsWith(prefix.name)) {
-                return new ParsedOreDictName(prefix, oredictName.substring(prefix.name.length()));
-            }
-        }
-
-        return null;
+    public static ParsedOreDictName detectPrefix(String oreDictName) {
+        OrePrefixes prefix = getOrePrefix(oreDictName);
+        if (prefix == null) return null;
+        return new ParsedOreDictName(prefix, oreDictName.substring(prefix.name.length()));
     }
 
     private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<ParsedOreDictName>>> PREFIX_CACHE = ThreadLocal
@@ -2322,13 +2320,10 @@ public class OrePrefixes {
         return prefixes;
     }
 
-    public static String replacePrefix(String oreName, OrePrefixes prefix) {
-        for (OrePrefixes tPrefix : VALUES) {
-            if (oreName.startsWith(tPrefix.toString())) {
-                return oreName.replaceFirst(tPrefix.toString(), prefix.toString());
-            }
-        }
-        return "";
+    public static String replacePrefix(String oreDictName, OrePrefixes replacement) {
+        OrePrefixes prefix = getOrePrefix(oreDictName);
+        if (prefix == null) return "";
+        return replacement.name + oreDictName.substring(prefix.name.length());
     }
 
     private static final Map<String, OrePrefixes> NAME_TO_OREPREFIX = new ConcurrentHashMap<>();

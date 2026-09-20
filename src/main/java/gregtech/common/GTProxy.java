@@ -9,26 +9,20 @@ import static gregtech.api.enums.GTValues.debugEntityCramming;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
-import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtnhlanth.util.LanthanidesRecipeOutputs.convertCrafting;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -52,7 +46,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -92,9 +85,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -114,28 +104,19 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.ManualOreDictTweaks;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TCAspects;
-import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
@@ -144,9 +125,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
-import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -164,8 +143,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTShapelessRecipe;
 import gregtech.api.util.GTSpawnEventHandler;
@@ -186,6 +163,7 @@ import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.WirelessChargerManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.networkanalyzer.events.NetworkAnalyzerPlayerTracker;
+import gregtech.common.oredict.OreDictRegistrationHandler;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.powergoggles.PowerGogglesWorldSavedData;
 import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
@@ -194,7 +172,6 @@ import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.worldgen.HEEIslandScanner;
-import gregtech.loaders.materials.DeclaredMaterialNameTable;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -210,356 +187,6 @@ public class GTProxy implements IFuelHandler {
         OreGenEvent.GenerateMinable.EventType.REDSTONE,
         OreGenEvent.GenerateMinable.EventType.LAPIS,
         OreGenEvent.GenerateMinable.EventType.QUARTZ);
-    public final HashSet<ItemStack> mRegisteredOres = new HashSet<>(10000);
-    private final Collection<OreDictEventContainer> oreDictEvents = new HashSet<>();
-    private final Collection<String> mIgnoredItems = new HashSet<>(
-        Arrays.asList(
-            "itemGhastTear",
-            "itemFlint",
-            "itemClay",
-            "itemBucketSaltWater",
-            "itemBucketFreshWater",
-            "itemBucketWater",
-            "itemRock",
-            "itemReed",
-            "itemArrow",
-            "itemSaw",
-            "itemKnife",
-            "itemHammer",
-            "itemChisel",
-            "itemRubber",
-            "itemEssence",
-            "itemIlluminatedPanel",
-            "itemSkull",
-            "itemRawRubber",
-            "itemBacon",
-            "itemJetpackAccelerator",
-            "itemLazurite",
-            "itemIridium",
-            "itemTear",
-            "itemClaw",
-            "itemFertilizer",
-            "itemTar",
-            "itemSlimeball",
-            "itemCoke",
-            "itemBeeswax",
-            "itemBeeQueen",
-            "itemForcicium",
-            "itemForcillium",
-            "itemRoyalJelly",
-            "itemHoneydew",
-            "itemHoney",
-            "itemPollen",
-            "itemReedTypha",
-            "itemSulfuricAcid",
-            "itemPotash",
-            "itemCompressedCarbon",
-            "itemBitumen",
-            "itemCokeSugar",
-            "itemCokeCactus",
-            "itemCharcoalSugar",
-            "itemCharcoalCactus",
-            "itemSludge",
-            "itemEnrichedAlloy",
-            "itemQuicksilver",
-            "itemMercury",
-            "itemOsmium",
-            "itemUltimateCircuit",
-            "itemEnergizedStar",
-            "itemAntimatterMolecule",
-            "itemAntimatterGlob",
-            "itemCoal",
-            "itemBoat",
-            "itemHerbalMedicineCake",
-            "itemCakeSponge",
-            "itemFishandPumpkinCakeSponge",
-            "itemSoulCleaver",
-            "itemInstantCake",
-            "itemWhippingCream",
-            "itemGlisteningWhippingCream",
-            "itemCleaver",
-            "itemHerbalMedicineWhippingCream",
-            "itemStrangeWhippingCream",
-            "itemBlazeCleaver",
-            "itemBakedCakeSponge",
-            "itemMagmaCake",
-            "itemGlisteningCake",
-            "itemOgreCleaver",
-            "itemFishandPumpkinCake",
-            "itemMagmaWhippingCream",
-            "itemMultimeter",
-            "itemSuperconductor"));
-    private final Collection<String> mIgnoredNames = new HashSet<>(
-        Arrays.asList(
-            "grubBee",
-            "chainLink",
-            "candyCane",
-            "bRedString",
-            "bVial",
-            "bFlask",
-            "anorthositeSmooth",
-            "migmatiteSmooth",
-            "slateSmooth",
-            "travertineSmooth",
-            "limestoneSmooth",
-            "orthogneissSmooth",
-            "marbleSmooth",
-            "honeyDrop",
-            "lumpClay",
-            "honeyEqualssugar",
-            "flourEqualswheat",
-            "bluestoneInsulated",
-            "blockWaterstone",
-            "blockSand",
-            "blockTorch",
-            "blockPumpkin",
-            "blockClothRock",
-            "blockStainedHardenedClay",
-            "blockQuartzPillar",
-            "blockQuartzChiselled",
-            "blockSpawner",
-            "blockCloth",
-            "mobHead",
-            "mobEgg",
-            "enderFlower",
-            "enderChest",
-            "clayHardened",
-            "dayGemMaterial",
-            "nightGemMaterial",
-            "snowLayer",
-            "bPlaceholder",
-            "hardenedClay",
-            "eternalLifeEssence",
-            "sandstone",
-            "wheatRice",
-            "transdimBlock",
-            "bambooBasket",
-            "lexicaBotania",
-            "livingwoodTwig",
-            "redstoneCrystal",
-            "pestleAndMortar",
-            "glowstone",
-            "whiteStone",
-            "stoneSlab",
-            "transdimBlock",
-            "clayBowl",
-            "clayPlate",
-            "ceramicBowl",
-            "ceramicPlate",
-            "ovenRack",
-            "clayCup",
-            "ceramicCup",
-            "batteryBox",
-            "transmutationStone",
-            "torchRedstoneActive",
-            "coal",
-            "charcoal",
-            "cloth",
-            "cobblestoneSlab",
-            "stoneBrickSlab",
-            "cobblestoneWall",
-            "stoneBrickWall",
-            "cobblestoneStair",
-            "stoneBrickStair",
-            "blockCloud",
-            "blockDirt",
-            "blockTyrian",
-            "blockCarpet",
-            "blockFft",
-            "blockLavastone",
-            "blockHolystone",
-            "blockConcrete",
-            "sunnariumPart",
-            "brSmallMachineCyaniteProcessor",
-            "meteoriteCoal",
-            "blockCobble",
-            "pressOreProcessor",
-            "crusherOreProcessor",
-            "grinderOreProcessor",
-            "blockRubber",
-            "blockHoney",
-            "blockHoneydew",
-            "blockPeat",
-            "blockRadioactive",
-            "blockSlime",
-            "blockCocoa",
-            "blockSugarCane",
-            "blockLeather",
-            "blockClayBrick",
-            "solarPanelHV",
-            "cableRedNet",
-            "stoneBowl",
-            "crafterWood",
-            "taintedSoil",
-            "brickXyEngineering",
-            "breederUranium",
-            "wireMill",
-            "chunkLazurite",
-            "aluminumNatural",
-            "aluminiumNatural",
-            "naturalAluminum",
-            "naturalAluminium",
-            "antimatterMilligram",
-            "antimatterGram",
-            "strangeMatter",
-            "coalGenerator",
-            "electricFurnace",
-            "unfinishedTank",
-            "valvePart",
-            "aquaRegia",
-            "leatherSeal",
-            "leatherSlimeSeal",
-            "hambone",
-            "slimeball",
-            "clay",
-            "enrichedUranium",
-            "camoPaste",
-            "antiBlock",
-            "burntQuartz",
-            "salmonRaw",
-            "blockHopper",
-            "blockEnderObsidian",
-            "blockIcestone",
-            "blockMagicWood",
-            "blockEnderCore",
-            "blockHeeEndium",
-            "oreHeeEndPowder",
-            "oreHeeStardust",
-            "oreHeeIgneousRock",
-            "oreHeeInstabilityOrb",
-            "crystalPureFluix",
-            "shardNether",
-            "gemFluorite",
-            "stickObsidian",
-            "caveCrystal",
-            "shardCrystal",
-            "dyeCrystal",
-            "shardFire",
-            "shardWater",
-            "shardAir",
-            "shardEarth",
-            "ingotRefinedIron",
-            "blockMarble",
-            "ingotUnstable",
-            "obsidian",
-            "dirt",
-            "gravel",
-            "grass",
-            "soulsand",
-            "paper",
-            "brick",
-            "chest"));
-    private final Collection<String> mInvalidNames = new HashSet<>(
-        Arrays.asList(
-            "diamondShard",
-            "redstoneRoot",
-            "obsidianStick",
-            "bloodstoneOre",
-            "universalCable",
-            "bronzeTube",
-            "ironTube",
-            "netherTube",
-            "obbyTube",
-            "infiniteBattery",
-            "eliteBattery",
-            "advancedBattery",
-            "10kEUStore",
-            "blueDye",
-            "MonazitOre",
-            "quartzCrystal",
-            "whiteLuminiteCrystal",
-            "darkStoneIngot",
-            "invisiumIngot",
-            "demoniteOrb",
-            "enderGem",
-            "starconiumGem",
-            "osmoniumIngot",
-            "tapaziteGem",
-            "zectiumIngot",
-            "foolsRubyGem",
-            "rubyGem",
-            "meteoriteGem",
-            "adamiteShard",
-            "sapphireGem",
-            "copperIngot",
-            "ironStick",
-            "goldStick",
-            "diamondStick",
-            "reinforcedStick",
-            "draconicStick",
-            "emeraldStick",
-            "copperStick",
-            "tinStick",
-            "silverStick",
-            "bronzeStick",
-            "steelStick",
-            "leadStick",
-            "manyullynStick",
-            "arditeStick",
-            "cobaltStick",
-            "aluminiumStick",
-            "alumiteStick",
-            "oilsandsOre",
-            "copperWire",
-            "superconductorWire",
-            "sulfuricAcid",
-            "conveyorBelt",
-            "ironWire",
-            "aluminumWire",
-            "aluminiumWire",
-            "silverWire",
-            "tinWire",
-            "dustSiliconSmall",
-            "AluminumOre",
-            "plateHeavyT2",
-            "blockWool",
-            "alloyPlateEnergizedHardened",
-            "gasWood",
-            "alloyPlateEnergized",
-            "SilverOre",
-            "LeadOre",
-            "TinOre",
-            "CopperOre",
-            "silverOre",
-            "leadOre",
-            "tinOre",
-            "copperOre",
-            "bauxiteOre",
-            "HSLivingmetalIngot",
-            "oilMoving",
-            "oilStill",
-            "oilBucket",
-            "petroleumOre",
-            "dieselFuel",
-            "diamondNugget",
-            "planks",
-            "wood",
-            "stick",
-            "sticks",
-            "naquadah",
-            "obsidianRod",
-            "stoneRod",
-            "thaumiumRod",
-            "steelRod",
-            "netherrackRod",
-            "woodRod",
-            "ironRod",
-            "cactusRod",
-            "flintRod",
-            "copperRod",
-            "cobaltRod",
-            "alumiteRod",
-            "blueslimeRod",
-            "arditeRod",
-            "manyullynRod",
-            "bronzeRod",
-            "boneRod",
-            "slimeRod",
-            "redalloyBundled",
-            "bluestoneBundled",
-            "infusedteslatiteInsulated",
-            "redalloyInsulated",
-            "infusedteslatiteBundled"));
     public final GTBlockMap<Boolean> mCTMBlockCache = new GTBlockMap<>();
     public boolean mDisableVanillaOres = true;
     public boolean mAllowSmallBoilerAutomation = false;
@@ -570,9 +197,7 @@ public class GTProxy implements IFuelHandler {
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
     public boolean mChangeWoodenVanillaTools = true;
-    public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
-    private boolean mOreDictActivated = false;
     public boolean mChangeHarvestLevels = false;
     public boolean mGTBees = true;
     public boolean mPollution = true;
@@ -733,8 +358,6 @@ public class GTProxy implements IFuelHandler {
 
     public Set<Item> toolboxBans = ImmutableSet.of();
 
-    public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
-
     private static final Map<String, Integer> oreDictBurnTimes = new Object2IntOpenHashMap<>();
 
     // Locking
@@ -854,7 +477,6 @@ public class GTProxy implements IFuelHandler {
             GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
         }
         GregTechAPI.sPreloadStarted = true;
-        this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
         this.replicatorExponent = OPStuff.replicatorExponent;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
@@ -1566,528 +1188,8 @@ public class GTProxy implements IFuelHandler {
     }
 
     @SubscribeEvent
-    public void registerOre(OreDictionary.OreRegisterEvent aEvent) {
-        if (!GTMod.sMaterialsReady) return;
-        ModContainer tContainer = Loader.instance()
-            .activeModContainer();
-        String aMod = tContainer == null ? "UNKNOWN" : tContainer.getModId();
-        String aOriginalMod = aMod;
-        if (GTOreDictUnificator.isRegisteringOres()) {
-            aMod = GregTech.ID;
-        } else if (aMod.equals(GregTech.ID)) {
-            aMod = "UNKNOWN";
-        }
-        if ((aEvent == null) || (aEvent.Ore == null)
-            || (aEvent.Ore.getItem() == null)
-            || (aEvent.Name == null)
-            || (aEvent.Name.isEmpty())
-            || (aEvent.Name.replace("_", "")
-                .length() - aEvent.Name.length() == 9)) {
-            if (aOriginalMod.equals(GregTech.ID)) {
-                aOriginalMod = "UNKNOWN";
-            }
-            GTLoggers.GT_ORE_DICT_LOGGER.info(
-                "{} did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.",
-                aOriginalMod);
-            throw new IllegalArgumentException(
-                aOriginalMod
-                    + " did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.");
-        }
-        try {
-            aEvent.Ore.stackSize = 1;
-
-            // skipping TinkerConstruct ore registration except for blocks
-            if (this.mIgnoreTcon && aOriginalMod.equals(TinkerConstruct.ID)
-                && !(aEvent.Ore.getItem() instanceof ItemBlock)) {
-                return;
-            }
-            String tModToName = aMod + " -> " + aEvent.Name;
-            if (this.mOreDictActivated || GregTechAPI.sPostloadStarted || GregTechAPI.sLoadFinished) {
-                tModToName = aOriginalMod + " --Late--> " + aEvent.Name;
-            }
-            if (((aEvent.Ore.getItem() instanceof ItemBlock))
-                || (GTUtility.getBlockFromStack(aEvent.Ore) != Blocks.air)) {
-                GTOreDictUnificator.addToBlacklist(aEvent.Ore);
-            }
-            this.mRegisteredOres.add(aEvent.Ore);
-            if (this.mIgnoredItems.contains(aEvent.Name)) {
-                if ((aEvent.Name.startsWith("item"))) {
-                    GTLoggers.GT_ORE_DICT_LOGGER.info(tModToName);
-                    if (aEvent.Name.equals("itemCopperWire")) {
-                        GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
-                    }
-                    if (aEvent.Name.equals("itemRubber")) {
-                        GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Rubber, aEvent.Ore);
-                    }
-                    return;
-                }
-            } else if (this.mIgnoredNames.contains(aEvent.Name)) {
-                GTLoggers.GT_ORE_DICT_LOGGER.info("{} is getting ignored via hardcode.", tModToName);
-                return;
-            } else if (aEvent.Name.equals("stone")) {
-                GTOreDictUnificator.registerOre("stoneSmooth", aEvent.Ore);
-                return;
-            } else if (aEvent.Name.equals("cobblestone")) {
-                GTOreDictUnificator.registerOre("stoneCobble", aEvent.Ore);
-                return;
-            } else if ((aEvent.Name.contains("|")) || (aEvent.Name.contains("*"))
-                || (aEvent.Name.contains(":"))
-                || (aEvent.Name.contains("."))
-                || (aEvent.Name.contains("$"))) {
-                    GTLoggers.GT_ORE_DICT_LOGGER
-                        .info("{} is using a private Prefix and is therefor getting ignored properly.", tModToName);
-                    return;
-                } else if (aEvent.Name.equals("copperWire")) {
-                    GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
-                } else if (aEvent.Name.equals("oreHeeEndrium")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.HeeEndium, aEvent.Ore);
-                } else if (aEvent.Name.equals("sheetPlastic")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Plastic, aEvent.Ore);
-                } else if (aEvent.Name.startsWith("shard")) {
-                    switch (aEvent.Name) {
-                        case "shardAir" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedAir, aEvent.Ore);
-                            return;
-                        }
-                        case "shardWater" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedWater, aEvent.Ore);
-                            return;
-                        }
-                        case "shardFire" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedFire, aEvent.Ore);
-                            return;
-                        }
-                        case "shardEarth" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEarth, aEvent.Ore);
-                            return;
-                        }
-                        case "shardOrder" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedOrder, aEvent.Ore);
-                            return;
-                        }
-                        case "shardEntropy" -> {
-                            GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, aEvent.Ore);
-                            return;
-                        }
-                    }
-                } else if (aEvent.Name.equals("fieryIngot")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.FierySteel, aEvent.Ore);
-                    return;
-                } else if (aEvent.Name.equals("ironwood")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.IronWood, aEvent.Ore);
-                    return;
-                } else if (aEvent.Name.equals("steeleaf")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Steeleaf, aEvent.Ore);
-                    return;
-                } else if (aEvent.Name.equals("knightmetal")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Knightmetal, aEvent.Ore);
-                    return;
-                } else if (aEvent.Name.equals("compressedAluminum")) {
-                    GTOreDictUnificator.registerOre(OrePrefixes.compressed, Materials.Aluminium, aEvent.Ore);
-                    return;
-                } else if (aEvent.Name.contains(" ")) {
-                    GTLoggers.GT_ORE_DICT_LOGGER.info(
-                        "{} is getting re-registered because the OreDict Name containing invalid spaces.",
-                        tModToName);
-                    GTOreDictUnificator.registerOre(aEvent.Name.replace(" ", ""), GTUtility.copyAmount(1, aEvent.Ore));
-                    aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
-                    return;
-                } else if (this.mInvalidNames.contains(aEvent.Name)) {
-                    GTLoggers.GT_ORE_DICT_LOGGER
-                        .info("{} is wrongly registered and therefor getting ignored.", tModToName);
-
-                    return;
-                }
-            OrePrefixes aPrefix = OrePrefixes.getOrePrefix(aEvent.Name);
-            Material aMaterial = null;
-            Material recognitionMarker = null;
-            String tName = null;
-            if ((aPrefix == OrePrefixes.nugget) && (aMod.equals(Thaumcraft.ID))
-                && (aEvent.Ore.getItem()
-                    .getUnlocalizedName()
-                    .contains("ItemResource"))) {
-                return;
-            }
-            if (aPrefix == null) {
-                if (aEvent.Name.toLowerCase()
-                    .equals(aEvent.Name)) {
-                    GTLoggers.GT_ORE_DICT_LOGGER.info("{} is invalid due to being solely lowercased.", tModToName);
-                    return;
-                } else if (aEvent.Name.toUpperCase()
-                    .equals(aEvent.Name)) {
-                        GTLoggers.GT_ORE_DICT_LOGGER.info("{} is invalid due to being solely uppercased.", tModToName);
-                        return;
-                    } else if (Character.isUpperCase(aEvent.Name.charAt(0))) {
-                        GTLoggers.GT_ORE_DICT_LOGGER
-                            .info("{} is invalid due to the first character being uppercased.", tModToName);
-                    }
-            } else {
-                if (aPrefix.skipActiveUnification()) {
-                    GTOreDictUnificator.addToBlacklist(aEvent.Ore);
-                }
-                tName = aEvent.Name.replaceFirst(aPrefix.toString(), "");
-                if (!tName.isEmpty()) {
-                    char firstChar = tName.charAt(0);
-                    if (Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar)
-                        || firstChar == '_'
-                        || Character.isDigit(firstChar)) {
-                        if (aPrefix.isMaterialBased()) {
-                            aMaterial = LegacyNameDomain.lookup(tName);
-                            if (aMaterial == null) {
-                                recognitionMarker = RecognitionMaterials.getRecognitionMarker(tName);
-                            }
-                            if (recognitionMarker != null) {
-                                registerRecognitionOre(aPrefix, recognitionMarker, aEvent);
-                            } else {
-                                if (!aPrefix.isIgnored(aMaterial)) {
-                                    aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
-                                }
-                                if (aMaterial != null) {
-                                    for (Material tReRegisteredMaterial : MaterialFacades
-                                        .oreReRegistrationsOf(aMaterial)) {
-                                        GTOreDictUnificator.registerOre(aPrefix, tReRegisteredMaterial, aEvent.Ore);
-                                    }
-                                    if (GregTechAPI.sThaumcraftCompat != null && aPrefix.doGenerateItem(aMaterial)
-                                        && !aPrefix.isIgnored(aMaterial)) {
-                                        List<TC_AspectStack> tAspects = new ArrayList<>();
-                                        for (TC_AspectStack tAspect : aPrefix.mAspects)
-                                            tAspect.addToAspectList(tAspects);
-                                        if (aPrefix.getMaterialAmount() >= 3628800 || aPrefix.getMaterialAmount() < 0)
-                                            for (AspectRefStack tAspect : MaterialUtils.aspects(aMaterial))
-                                                new TC_AspectStack(TCAspects.valueOf(tAspect.name()), tAspect.amount())
-                                                    .addToAspectList(tAspects);
-                                        GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(
-                                            GTUtility.copyAmount(1, aEvent.Ore),
-                                            tAspects,
-                                            aEvent.Name);
-                                    }
-
-                                    switch (aPrefix.getName()) {
-                                        case "crystal" -> {
-                                            if ((aMaterial == Materials.CertusQuartz)
-                                                || (aMaterial == Materials.NetherQuartz)) {
-                                                GTOreDictUnificator.registerOre(OrePrefixes.gem, aMaterial, aEvent.Ore);
-                                            }
-                                        }
-                                        case "gem" -> {
-                                            if (aMaterial == Materials.Lapis || aMaterial == Materials.Sodalite) {
-                                                GTOreDictUnificator.registerOre(Dyes.dyeBlue, aEvent.Ore);
-                                            } else if (aMaterial == Materials.Lazurite) {
-                                                GTOreDictUnificator.registerOre(Dyes.dyeCyan, aEvent.Ore);
-                                            } else if (aMaterial == Materials.InfusedAir
-                                                || aMaterial == Materials.InfusedWater
-                                                || aMaterial == Materials.InfusedFire
-                                                || aMaterial == Materials.InfusedEarth
-                                                || aMaterial == Materials.InfusedOrder
-                                                || aMaterial == Materials.InfusedEntropy) {
-                                                    GTOreDictUnificator.registerOre(
-                                                        MaterialUtils.internalName(aMaterial)
-                                                            .replaceFirst("Infused", "shard"),
-                                                        aEvent.Ore);
-                                                } else if (aMaterial == Materials.Chocolate) {
-                                                    GTOreDictUnificator.registerOre(Dyes.dyeBrown, aEvent.Ore);
-                                                } else if (aMaterial == Materials.CertusQuartz
-                                                    || aMaterial == Materials.NetherQuartz) {
-                                                        GTOreDictUnificator.registerOre(
-                                                            OrePrefixes.item.oreDictName(aMaterial),
-                                                            aEvent.Ore);
-                                                        GTOreDictUnificator
-                                                            .registerOre(OrePrefixes.crystal, aMaterial, aEvent.Ore);
-                                                        GTOreDictUnificator
-                                                            .registerOre(OreDictNames.craftingQuartz, aEvent.Ore);
-                                                    } else if (aMaterial == Materials.Quartzite) {
-                                                        GTOreDictUnificator
-                                                            .registerOre(OrePrefixes.crystal, aMaterial, aEvent.Ore);
-                                                        GTOreDictUnificator
-                                                            .registerOre(OreDictNames.craftingQuartz, aEvent.Ore);
-                                                    }
-                                        }
-                                        case "cableGt01" -> {
-                                            if (aMaterial == Materials.Tin) {
-                                                GTOreDictUnificator
-                                                    .registerOre(OreDictNames.craftingWireTin, aEvent.Ore);
-                                            } else if (aMaterial == MaterialFacades.AnyCopper) {
-                                                GTOreDictUnificator
-                                                    .registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
-                                            } else if (aMaterial == Materials.Gold) {
-                                                GTOreDictUnificator
-                                                    .registerOre(OreDictNames.craftingWireGold, aEvent.Ore);
-                                            } else if (aMaterial == MaterialFacades.AnyIron) {
-                                                GTOreDictUnificator
-                                                    .registerOre(OreDictNames.craftingWireIron, aEvent.Ore);
-                                            }
-                                        }
-                                        case "lens" -> {
-                                            if ((MaterialUtils.hasFlag(aMaterial, GTMaterialFlag.TRANSPARENT))
-                                                && (MaterialUtils.dye(aMaterial) != Dyes._NULL)) {
-                                                GTOreDictUnificator.registerOre(
-                                                    "craftingLens" + MaterialUtils.dye(aMaterial)
-                                                        .toString()
-                                                        .replaceFirst("dye", ""),
-                                                    aEvent.Ore);
-                                            }
-                                        }
-                                        case "plate" -> {
-                                            if ((aMaterial == Materials.Plastic) || (aMaterial == Materials.Rubber)) {
-                                                GTOreDictUnificator
-                                                    .registerOre(OrePrefixes.sheet, aMaterial, aEvent.Ore);
-                                            } else if (aMaterial == Materials.Silicon) {
-                                                GTOreDictUnificator
-                                                    .registerOre(OrePrefixes.item, aMaterial, aEvent.Ore);
-                                            } else if (aMaterial == Materials.Wood) {
-                                                GTOreDictUnificator.addToBlacklist(aEvent.Ore);
-                                                GTOreDictUnificator
-                                                    .registerOre(OrePrefixes.plank, aMaterial, aEvent.Ore);
-                                            }
-                                        }
-                                        case "cell" -> {
-                                            if (aMaterial == Materials.Empty) {
-                                                GTOreDictUnificator.addToBlacklist(aEvent.Ore);
-                                            }
-                                        }
-                                        case "gearGt" -> GTOreDictUnificator
-                                            .registerOre(OrePrefixes.gear, aMaterial, aEvent.Ore);
-                                        case "stick" -> {
-                                            if (!GTRecipeRegistrator.sRodMaterialList.contains(aMaterial)) {
-                                                GTRecipeRegistrator.sRodMaterialList.add(aMaterial);
-                                            } else if (aMaterial == Materials.Wood) {
-                                                GTOreDictUnificator.addToBlacklist(aEvent.Ore);
-                                            } else if ((aMaterial == Materials.Tin) || (aMaterial == Materials.Lead)
-                                                || (aMaterial == Materials.SolderingAlloy)) {
-                                                    GTOreDictUnificator.registerOre(
-                                                        ToolDictNames.craftingToolSolderingMetal,
-                                                        aEvent.Ore);
-                                                }
-                                        }
-                                        case "dust" -> {
-                                            if (aMaterial == Materials.Salt) {
-                                                GTOreDictUnificator.registerOre("itemSalt", aEvent.Ore);
-                                            } else if (aMaterial == Materials.Wood) {
-                                                GTOreDictUnificator.registerOre("pulpWood", aEvent.Ore);
-                                            } else if (aMaterial == Materials.Wheat) {
-                                                GTOreDictUnificator.registerOre("foodFlour", aEvent.Ore);
-                                            } else if (aMaterial == Materials.Lapis) {
-                                                GTOreDictUnificator.registerOre(Dyes.dyeBlue, aEvent.Ore);
-                                            } else if (aMaterial == Materials.Lazurite) {
-                                                GTOreDictUnificator.registerOre(Dyes.dyeCyan, aEvent.Ore);
-                                            } else if (aMaterial == Materials.Sodalite) {
-                                                GTOreDictUnificator.registerOre(Dyes.dyeBlue, aEvent.Ore);
-                                            } else if (aMaterial == Materials.Cocoa) {
-                                                GTOreDictUnificator.registerOre(Dyes.dyeBrown, aEvent.Ore);
-                                                GTOreDictUnificator.registerOre("foodCocoapowder", aEvent.Ore);
-                                            } else if (aMaterial == Materials.Coffee) {
-                                                GTOreDictUnificator.registerOre(Dyes.dyeBrown, aEvent.Ore);
-                                            } else if (aMaterial == Materials.BrownLimonite) {
-                                                GTOreDictUnificator.registerOre(Dyes.dyeBrown, aEvent.Ore);
-                                            } else if (aMaterial == Materials.YellowLimonite) {
-                                                GTOreDictUnificator.registerOre(Dyes.dyeYellow, aEvent.Ore);
-                                            }
-                                        }
-                                        case "ingot" -> {
-                                            if (aMaterial == Materials.Rubber) {
-                                                GTOreDictUnificator.registerOre("itemRubber", aEvent.Ore);
-                                            } else if (aMaterial == Materials.FierySteel) {
-                                                GTOreDictUnificator.registerOre("fieryIngot", aEvent.Ore);
-                                            } else if (aMaterial == Materials.IronWood) {
-                                                GTOreDictUnificator.registerOre("ironwood", aEvent.Ore);
-                                            } else if (aMaterial == Materials.Steeleaf) {
-                                                GTOreDictUnificator.registerOre("steeleaf", aEvent.Ore);
-                                            } else if (aMaterial == Materials.Knightmetal) {
-                                                GTOreDictUnificator.registerOre("knightmetal", aEvent.Ore);
-                                            } else
-                                                if ((aMaterial == Materials.Brass) && (aEvent.Ore.getItemDamage() == 2)
-                                                    && (aEvent.Ore.getUnlocalizedName()
-                                                        .equals("item.ingotBrass"))
-                                                    && (new ItemStack(aEvent.Ore.getItem(), 1, 0).getUnlocalizedName()
-                                                        .contains("red"))) {
-                                                            GTOreDictUnificator.set(
-                                                                OrePrefixes.ingot,
-                                                                Materials.RedAlloy,
-                                                                new ItemStack(aEvent.Ore.getItem(), 1, 0));
-                                                            GTOreDictUnificator.set(
-                                                                OrePrefixes.ingot,
-                                                                Materials.BlueAlloy,
-                                                                new ItemStack(aEvent.Ore.getItem(), 1, 1));
-                                                            GTOreDictUnificator.set(
-                                                                OrePrefixes.ingot,
-                                                                Materials.Brass,
-                                                                new ItemStack(aEvent.Ore.getItem(), 1, 2));
-
-                                                            GTValues.RA.stdBuilder()
-                                                                .itemInputs(new ItemStack(aEvent.Ore.getItem(), 1, 3))
-                                                                .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 16, 4))
-                                                                .duration(20 * SECONDS)
-                                                                .eut(TierEU.RECIPE_ULV)
-                                                                .addTo(cutterRecipes);
-                                                        }
-                                        }
-                                        default -> {}
-                                    }
-                                    if (aPrefix.isUnifiable() && !MaterialUtils.unifiable(aMaterial)) {
-                                        return;
-                                    }
-                                } else if (reconstructedMaterial(tName) != null) {
-                                    // Deliberately empty: this only keeps tName out of the unknown-material
-                                    // drop below. The common tail re-resolves tName ML-registry-first.
-                                } else {
-                                    for (Dyes tDye : Dyes.VALUES) {
-                                        if (aEvent.Name.endsWith(
-                                            tDye.name()
-                                                .replaceFirst("dye", ""))) {
-                                            GTOreDictUnificator.addToBlacklist(aEvent.Ore);
-                                            GTLoggers.GT_ORE_DICT_LOGGER.info(
-                                                "{} Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.",
-                                                tModToName);
-                                            return;
-                                        }
-                                    }
-                                    return;
-                                }
-                            }
-                        } else {
-                            aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
-                        }
-                    }
-                } else if (aPrefix.isSelfReferencing()) {
-                    aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
-                } else {
-                    GTLoggers.GT_ORE_DICT_LOGGER
-                        .info("{} uses a Prefix as full OreDict Name, and is therefor invalid.", tModToName);
-                    aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
-                    return;
-                }
-                switch (aPrefix.getName()) {
-                    case "dye" -> {
-                        if (GTUtility.isStringValid(tName)) {
-                            GTOreDictUnificator.registerOre(OrePrefixes.dye, aEvent.Ore);
-                        }
-                    }
-                    case "stoneSmooth" -> GTOreDictUnificator.registerOre("stone", aEvent.Ore);
-                    case "stoneCobble" -> GTOreDictUnificator.registerOre("cobblestone", aEvent.Ore);
-                    case "plank" -> {
-                        if (tName.equals("Wood")) {
-                            GTOreDictUnificator.addItemData(aEvent.Ore, new ItemData(Materials.Wood, 3628800L));
-                        }
-                    }
-                    case "slab" -> {
-                        if (tName.equals("Wood")) {
-                            GTOreDictUnificator.addItemData(aEvent.Ore, new ItemData(Materials.Wood, 1814400L));
-                        }
-                    }
-                    case "sheet" -> {
-                        if (tName.equals("Plastic")) {
-                            GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Plastic, aEvent.Ore);
-                        } else if (tName.equals("Rubber")) {
-                            GTOreDictUnificator.registerOre(OrePrefixes.plate, Materials.Rubber, aEvent.Ore);
-                        }
-                    }
-                    case "crafting" -> {
-                        switch (tName) {
-                            case "ToolSolderingMetal" -> GregTechAPI.registerSolderingMetal(aEvent.Ore);
-                            case "IndustrialDiamond" -> GTOreDictUnificator.addToBlacklist(aEvent.Ore);
-                            case "WireCopper" -> GTOreDictUnificator
-                                .registerOre(OrePrefixes.wire, Materials.Copper, aEvent.Ore);
-                        }
-                    }
-                    case "wood" -> {
-                        if (tName.equals("Rubber")) {
-                            GTOreDictUnificator.registerOre("logRubber", aEvent.Ore);
-                        }
-                    }
-                    case "food" -> {
-                        if (tName.equals("Cocoapowder")) {
-                            GTOreDictUnificator.registerOre(OrePrefixes.dust, Materials.Cocoa, aEvent.Ore);
-                        }
-                    }
-                    default -> {}
-                }
-            }
-            GTLoggers.GT_ORE_DICT_LOGGER.info(tModToName);
-
-            Material tCensusMaterial = resolveCensusMaterial(tName, aMaterial, recognitionMarker);
-            Material tCensusRecognitionMarker = isCensusMarker(recognitionMarker) ? recognitionMarker : null;
-            OreDictEventContainer tOre = new OreDictEventContainer(
-                aEvent,
-                aPrefix,
-                tCensusMaterial,
-                tCensusRecognitionMarker,
-                aMod);
-            if ((!this.mOreDictActivated) || (!GregTechAPI.sUnificationEntriesRegistered)) {
-                this.oreDictEvents.add(tOre);
-            } else {
-                this.oreDictEvents.clear();
-            }
-            if (this.mOreDictActivated) {
-                OreDictEventContainer.registerRecipes(tOre);
-            }
-        } catch (Exception e) {
-            GT_FML_LOGGER.error("Could not register ore (oredict name={}, item stack={})", aEvent.Name, aEvent.Ore, e);
-        }
-    }
-
-    private static boolean isCensusMarker(Material recognitionMarker) {
-        return recognitionMarker != null && MaterialUtils.unifiable(recognitionMarker)
-            && MaterialUtils.hasFlag(recognitionMarker, GTMaterialFlag.CRYSTALLISABLE);
-    }
-
-    /// The MaterialLib material an ore-dictionary registration carries downstream. A recognition marker that
-    /// [#isCensusMarker] resolves to itself. Otherwise `tName` resolves ML-registry-first, falling back to
-    /// `aMaterial` (or the `NULL` placeholder) when the registry holds no shaped material under that name, or
-    /// when `tName` is one [DeclaredMaterialNameTable] freezes.
-    private static Material resolveCensusMaterial(@Nullable String tName, @Nullable Material aMaterial,
-        Material recognitionMarker) {
-        if (isCensusMarker(recognitionMarker)) {
-            return recognitionMarker;
-        }
-        if (tName != null && !hasDeclaredMaterialsField(tName)) {
-            Material ml = MaterialLibAPI.getMaterial("gregtech", tName);
-            // A shapeless registry hit is a recognition/wildcard backing; those names resolve through the
-            // legacy path instead.
-            if (ml != null && !ml.getShapes()
-                .isEmpty()) return ml;
-        }
-        return aMaterial != null ? aMaterial : Materials.NULL;
-    }
-
-    /// The reconstructed (werkstoff- or gtpp-owned) MaterialLib material registered under `tName`, or null when
-    /// the name is dropped as unknown. A werkstoff-origin material qualifies once
-    /// [MaterialUtils#hasBridgeRegistration] records it. An event processed before that record exists resolves
-    /// to null. A gtPlusPlus-originated material
-    /// never gets that record and qualifies instead on [GTMaterialProperties#GTPP_STATE] plus a shaped
-    /// registry hit.
-    private static @Nullable Material reconstructedMaterial(@Nullable String tName) {
-        if (tName == null || hasDeclaredMaterialsField(tName)) return null;
-        Material ml = MaterialLibAPI.getMaterial("gregtech", tName);
-        if (ml == null) return null;
-        if (MaterialUtils.hasBridgeRegistration(ml)) return ml;
-        if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) return null;
-        return ml.getShapes()
-            .isEmpty() ? null : ml;
-    }
-
-    /// Whether `name` is in the frozen domain [DeclaredMaterialNameTable] backs.
-    private static boolean hasDeclaredMaterialsField(String name) {
-        return DeclaredMaterialNameTable.NAMES.contains(name);
-    }
-
-    /// Unifies a foreign ore-dictionary entry whose name resolves to a recognition marker rather than to a
-    /// material in the legacy name domain (see [RecognitionMaterials#getRecognitionMarker]).
-    private void registerRecognitionOre(OrePrefixes aPrefix, Material aMarker, OreDictionary.OreRegisterEvent aEvent) {
-        if (MaterialUtils.unifiable(aMarker)) {
-            aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
-        }
-        if (aPrefix.getName()
-            .equals("gearGt")) {
-            GTOreDictUnificator.registerOre(OrePrefixes.gear, aMarker, aEvent.Ore);
-        }
-        String tName = MaterialUtils.internalName(aMarker);
-        if (tName.equals("Fluix") && aPrefix == OrePrefixes.crystal) {
-            GTOreDictUnificator.registerOre(OrePrefixes.gem, aMarker, aEvent.Ore);
-        }
-        if ((tName.equals("Fluix") || tName.equals("Quartz")) && aPrefix == OrePrefixes.gem) {
-            GTOreDictUnificator.registerOre(OrePrefixes.crystal, aMarker, aEvent.Ore);
-            GTOreDictUnificator.registerOre(OreDictNames.craftingQuartz, aEvent.Ore);
-        }
+    public void registerOre(OreDictionary.OreRegisterEvent event) {
+        OreDictRegistrationHandler.registerOre(event);
     }
 
     @SubscribeEvent
@@ -2611,59 +1713,6 @@ public class GTProxy implements IFuelHandler {
                 .duration((4 + 2 * i) * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
-        }
-    }
-
-    public void registerUnificationEntries() {
-        GTOreDictUnificator.resetUnificationEntries();
-        for (OreDictEventContainer tOre : this.oreDictEvents) {
-            if ((tOre.mPrefix != null) && (tOre.mPrefix.isUnifiable()) && (tOre.mMaterial != null)) {
-                if (GTOreDictUnificator.isBlacklisted(tOre.mEvent.Ore)) {
-                    GTOreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, true);
-                } else {
-                    GTOreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
-                    GTOreDictUnificator.set(
-                        tOre.mPrefix,
-                        tOre.mMaterial,
-                        tOre.mEvent.Ore,
-                        (tOre.mModID != null)
-                            && ManualOreDictTweaks.shouldOredictBeOverwritten(tOre.mModID, tOre.mEvent.Name),
-                        true);
-                }
-            }
-        }
-        GregTechAPI.sUnificationEntriesRegistered = true;
-        GTRecipe.reInit();
-    }
-
-    @SuppressWarnings("deprecation")
-    public void activateOreDictHandler() {
-        this.mOreDictActivated = true;
-
-        ProgressManager.ProgressBar progressBar = isClientSide()
-            ? ProgressManager.push("Register materials", oreDictEvents.size())
-            : null;
-
-        int size = 5;
-        int sizeStep = oreDictEvents.size() / 20 - 1;
-
-        for (OreDictEventContainer event : oreDictEvents) {
-            sizeStep--;
-            if (sizeStep == 0) {
-                GT_FML_LOGGER.info("Baking : {}%", size);
-                sizeStep = oreDictEvents.size() / 20 - 1;
-                size += 5;
-            }
-
-            if (progressBar != null) {
-                progressBar.step(event.mMaterial == null ? "" : MaterialUtils.localizedName(event.mMaterial));
-            }
-
-            OreDictEventContainer.registerRecipes(event);
-        }
-
-        if (progressBar != null) {
-            ProgressManager.pop(progressBar);
         }
     }
 

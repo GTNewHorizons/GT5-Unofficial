@@ -23,7 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.junit.jupiter.api.Test;
 
 import cpw.mods.fml.common.registry.RegistryDelegate;
-import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import sun.misc.Unsafe;
@@ -140,8 +139,8 @@ class GTRecipeLookupBuilderTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, "Tin"));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, "Tin"));
+            GTOreDictUnificator.addAssociation(circuit, "Tin", representative);
+            GTOreDictUnificator.addAssociation(circuit, "Tin", equivalent);
             GTOreDictUnificator.resetUnificationEntries();
             GTRecipe recipe = recipe(new ItemStack[] { equivalent }, null);
 

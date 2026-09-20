@@ -95,6 +95,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gregtech.crossmod.ae2.InputBusInventoryProxy;
 
 public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler> implements
@@ -157,6 +158,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     private List<List<ItemStack>> cachedAeJobs = new ArrayList<>();
     private boolean aeJobsDirty;
 
+    private boolean patternChanged = true;
     private Map<ItemStack, ICraftingPatternDetails> cachedPatternDetail = new ItemStackMap<>(true);
     private int cachedInputBusCount = 0;
 
@@ -553,10 +555,18 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         });
     }
 
+    @Override
+    public void scheduleRecipeCheck(RecipeCheckReason reason) {
+        super.scheduleRecipeCheck(reason);
+        patternChanged = true;
+    }
+
     private void issuePatternChangeIfNeeded(long tick) {
         if (tick % 20 != 0) {
             return;
         }
+        if (!patternChanged) return;
+        patternChanged = false;
 
         List<MTEHatchInputBus> inputs = GTUtility.filterValidMTEs(mInputBusses)
             .stream()

@@ -89,14 +89,9 @@ public class MTEHatchDegasifierControl extends MTEHatch {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (outputStrength > 0) {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, outputStrength);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 0);
-            }
+        final ForgeDirection facing = aBaseMetaTileEntity.getFrontFacing();
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            aBaseMetaTileEntity.setOutputRedstoneSignal(side, side == facing ? outputStrength : (byte) 0);
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }

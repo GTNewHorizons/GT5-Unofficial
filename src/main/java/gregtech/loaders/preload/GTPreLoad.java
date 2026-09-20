@@ -260,7 +260,10 @@ public class GTPreLoad {
             if (tPrefix != null) {
                 // mGeneratedItems and mDisabledItems are both ML-keyed. An unresolved tag falls back to the
                 // _NULL placeholder -- harmless membership, doGenerateItem gates on _NULL first.
-                Material ml = LegacyNameDomain.lookup(reEnable.replaceFirst(tPrefix.toString(), ""));
+                Material ml = LegacyNameDomain.lookup(
+                    reEnable.substring(
+                        tPrefix.getName()
+                            .length()));
                 Material mlName = ml == null ? Materials.NULL : ml;
                 tPrefix.mDisabledItems.remove(mlName);
                 tPrefix.mGeneratedItems.add(mlName);

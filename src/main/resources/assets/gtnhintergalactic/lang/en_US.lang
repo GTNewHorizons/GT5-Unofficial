@@ -307,6 +307,7 @@ ig.nei.elevatorpump.eut=EU/t
 ig.nei.elevatorpump.see_all=See All
 ig.nei.spaceproject.name=Space Projects
 ig.nei.spaceproject.stages=Stages:
+ig.nei.siphon.baserate=Rate
 ig.nei.siphon.name=Planetary Gas Siphon
 ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth

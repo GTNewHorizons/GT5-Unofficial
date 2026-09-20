@@ -2,9 +2,10 @@ package gregtech.api.objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.ruling_0.materiallib.api.Material;
 
@@ -19,52 +20,48 @@ import gregtech.api.material.MaterialUtils;
 /// Keyed by [OrePrefixes]: an association is created from an ore-dictionary name, and a tenth of the prefixes
 /// named here have no shape at all. [#mMaterial]'s amount comes from [OrePrefixes#getMaterialAmount]; see
 /// [OrePrefixes]'s class javadoc for how the two spaces divide.
+///
+/// An association names an ore-dictionary entry (prefix plus material, or prefix plus a bare name for the
+/// entries whose material side is not a material at all) and is what unification keys on. A composition
+/// ([#hasExplicitComposition]) lists what a stack is made of, for recycling; it never carries a unification name
+/// unless it was merged onto an existing association.
 public class ItemData {
 
     private static final MaterialStack[] EMPTY_MATERIALSTACK_ARRAY = new MaterialStack[0];
 
-    public final List<Object> mExtraData = new GTArrayList<>(false, 1);
     public final OrePrefixes mPrefix;
     public final MaterialStack mMaterial;
+    @NotNull
     public final MaterialStack[] mByProducts;
-    public boolean mBlackListed = false;
+    public final boolean hasExplicitComposition;
     public ItemStack mUnificationTarget = null;
     private final String oreDictName;
 
-    public ItemData(OrePrefixes prefix, Material material, boolean blackListed) {
+    public ItemData(OrePrefixes prefix, Material material) {
         mPrefix = prefix;
         mMaterial = material == null ? null : new MaterialStack(material, prefix.getMaterialAmount());
-        mBlackListed = blackListed;
         mByProducts = prefix.mSecondaryMaterial == null || prefix.mSecondaryMaterial.mMaterial == null
             ? EMPTY_MATERIALSTACK_ARRAY
             : new MaterialStack[] { prefix.mSecondaryMaterial.clone() };
+        hasExplicitComposition = false;
         oreDictName = null;
-    }
-
-    public ItemData(OrePrefixes prefix, Material material) {
-        this(prefix, material, false);
     }
 
     /// An ingredient that names an ore-dictionary entry and carries no composition, for the entries whose
     /// material side is not a material at all.
     public ItemData(OrePrefixes prefix, String materialName) {
-        this(prefix, materialName, false);
-    }
-
-    /// An ingredient that names an ore-dictionary entry and carries no composition, blacklisted from unification
-    /// the way [#ItemData(OrePrefixes,Material,boolean)] blacklists a material-backed one.
-    public ItemData(OrePrefixes prefix, String materialName, boolean blackListed) {
         mPrefix = prefix;
         mMaterial = null;
-        mBlackListed = blackListed;
         mByProducts = EMPTY_MATERIALSTACK_ARRAY;
+        hasExplicitComposition = false;
         oreDictName = prefix.oreDictName(materialName);
     }
 
     public ItemData(MaterialStack material, MaterialStack... byProducts) {
         mPrefix = null;
         mMaterial = material.mMaterial == null ? null : material.clone();
-        mBlackListed = true;
+        hasExplicitComposition = true;
+
         if (byProducts == null) {
             mByProducts = EMPTY_MATERIALSTACK_ARRAY;
         } else {
@@ -87,38 +84,70 @@ public class ItemData {
         this(new MaterialStack(material, amount), new MaterialStack(byProduct, byProductAmount));
     }
 
-    public ItemData(ItemData... data) {
+    /// Builds a material composition from multiple ingredients: their materials are merged and sorted by amount,
+    /// the largest becomes [#mMaterial] and the rest [#mByProducts].
+    public ItemData(ItemData... ingredients) {
+        ArrayList<MaterialStack> materials = mergeMaterials(ingredients);
+
         mPrefix = null;
-        mBlackListed = true;
-
-        ArrayList<MaterialStack> list = new ArrayList<>(), rList = new ArrayList<>();
-
-        for (ItemData tData : data) if (tData != null) {
-            if (tData.hasValidMaterialData() && tData.mMaterial.mAmount > 0) list.add(tData.mMaterial.clone());
-            for (MaterialStack tMaterial : tData.mByProducts) if (tMaterial.mAmount > 0) list.add(tMaterial.clone());
-        }
-
-        for (MaterialStack material : list) {
-            boolean temp = true;
-            for (MaterialStack tMaterial : rList) if (material.mMaterial == tMaterial.mMaterial) {
-                tMaterial.mAmount += material.mAmount;
-                temp = false;
-                break;
-            }
-            if (temp) rList.add(material.clone());
-        }
-
-        rList.sort((a, b) -> Long.compare(b.mAmount, a.mAmount));
-
-        if (rList.isEmpty()) {
-            mMaterial = null;
-        } else {
-            mMaterial = rList.get(0);
-            rList.remove(0);
-        }
-
-        mByProducts = rList.toArray(new MaterialStack[0]);
+        mMaterial = !materials.isEmpty() ? materials.removeFirst() : null;
+        mByProducts = !materials.isEmpty() ? materials.toArray(new MaterialStack[0]) : EMPTY_MATERIALSTACK_ARRAY;
+        hasExplicitComposition = true;
         oreDictName = null;
+    }
+
+    /// Applies an explicit composition to an existing ore-dictionary association. The associated material stays
+    /// [#mMaterial] with its amount taken from the composition; every other material becomes a by-product. A
+    /// name-only association keeps its name.
+    public ItemData(@NotNull ItemData association, @NotNull ItemData composition) {
+        ArrayList<MaterialStack> materials = mergeMaterials(composition);
+        MaterialStack associatedMaterial = null;
+
+        if (association.mMaterial != null) {
+            for (int i = 0; i < materials.size(); i++) {
+                if (materials.get(i).mMaterial == association.mMaterial.mMaterial) {
+                    associatedMaterial = materials.remove(i);
+                    break;
+                }
+            }
+        }
+
+        mPrefix = association.mPrefix;
+        mMaterial = associatedMaterial != null ? associatedMaterial : association.mMaterial;
+        mByProducts = !materials.isEmpty() ? materials.toArray(new MaterialStack[0]) : EMPTY_MATERIALSTACK_ARRAY;
+        hasExplicitComposition = true;
+        oreDictName = association.oreDictName;
+    }
+
+    private static ArrayList<@NotNull MaterialStack> mergeMaterials(ItemData... dataArray) {
+        ArrayList<MaterialStack> materials = new ArrayList<>();
+
+        for (ItemData itemData : dataArray) {
+            if (itemData == null) continue;
+
+            if (itemData.mMaterial != null && itemData.mMaterial.mAmount > 0) {
+                mergeMaterial(materials, itemData.mMaterial);
+            }
+
+            for (MaterialStack material : itemData.mByProducts) {
+                if (material.mAmount > 0) {
+                    mergeMaterial(materials, material);
+                }
+            }
+        }
+
+        materials.sort((a, b) -> Long.compare(b.mAmount, a.mAmount));
+        return materials;
+    }
+
+    private static void mergeMaterial(ArrayList<MaterialStack> materials, MaterialStack material) {
+        for (MaterialStack existing : materials) {
+            if (existing.mMaterial == material.mMaterial) {
+                existing.mAmount += material.mAmount;
+                return;
+            }
+        }
+        materials.add(material.clone());
     }
 
     public final boolean hasValidPrefixMaterialData() {

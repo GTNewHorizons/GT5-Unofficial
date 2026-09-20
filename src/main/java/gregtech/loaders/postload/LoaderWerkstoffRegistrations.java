@@ -104,7 +104,7 @@ public class LoaderWerkstoffRegistrations {
             if (!prefixes.contains(prefix.name())) continue;
             ItemStack stack = resolve(prefix, material);
             if (stack == null || stack.getItem() == null) continue;
-            GTOreDictUnificator.addAssociation(prefix, material, stack, false);
+            GTOreDictUnificator.addAssociation(prefix, material, stack);
             GTOreDictUnificator.set(prefix, material, stack, true, true);
         }
     }
@@ -133,15 +133,13 @@ public class LoaderWerkstoffRegistrations {
             GTOreDictUnificator.addAssociation(
                 OrePrefixes.blockCasing,
                 material,
-                new ItemStack(LoaderLegacyBartworksBlocks.casings, 1, id),
-                false);
+                new ItemStack(LoaderLegacyBartworksBlocks.casings, 1, id));
         }
         if (LoaderLegacyBartworksBlocks.casingsAdvanced != null) {
             GTOreDictUnificator.addAssociation(
                 OrePrefixes.blockCasingAdvanced,
                 material,
-                new ItemStack(LoaderLegacyBartworksBlocks.casingsAdvanced, 1, id),
-                false);
+                new ItemStack(LoaderLegacyBartworksBlocks.casingsAdvanced, 1, id));
         }
     }
 }

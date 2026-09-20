@@ -44,7 +44,7 @@ public class StaticRecipeChangeLoaders {
         for (OrePrefixes prefixes : OrePrefixes.VALUES) if (LegacyWerkstoffIndex.generatesPrefix(material, prefixes)) {
             GTOreDictUnificator.set(prefixes, material, MaterialParts.stack(prefixes, material, 1), true, true);
             for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
-                GTOreDictUnificator.addAssociation(prefixes, material, stack, false);
+                GTOreDictUnificator.addAssociation(prefixes, material, stack);
                 GTOreDictUnificator.getAssociation(stack).mUnificationTarget = MaterialParts
                     .stack(prefixes, material, 1);
             }
@@ -56,7 +56,7 @@ public class StaticRecipeChangeLoaders {
         for (OrePrefixes prefixes : OrePrefixes.VALUES) if (LegacyWerkstoffIndex.generatesPrefix(material, prefixes)) {
             GTOreDictUnificator.set(prefixes, material, MaterialParts.stack(prefixes, material, 1), true, true);
             for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
-                GTOreDictUnificator.addAssociation(prefixes, material, stack, false);
+                GTOreDictUnificator.addAssociation(prefixes, material, stack);
             }
         }
     }

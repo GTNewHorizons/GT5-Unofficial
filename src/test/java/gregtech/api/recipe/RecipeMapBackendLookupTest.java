@@ -37,7 +37,6 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import cpw.mods.fml.common.registry.RegistryDelegate;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemDataLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
@@ -581,8 +580,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, "Iron"));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, "Iron"));
+            GTOreDictUnificator.addAssociation(circuit, "Iron", representative);
+            GTOreDictUnificator.addAssociation(circuit, "Iron", equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             backend.compileRecipe(
@@ -634,10 +633,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, "Copper"));
-            ItemData equivalentData = new ItemData(circuit, "Copper");
-            equivalentData.mBlackListed = true;
-            GTOreDictUnificator.setItemData(equivalent, equivalentData);
+            GTOreDictUnificator.addAssociation(circuit, "Copper", representative);
+            GTOreDictUnificator.addAssociation(circuit, "Copper", equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             backend.compileRecipe(
@@ -777,8 +774,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, "Tin"));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, "Tin"));
+            GTOreDictUnificator.addAssociation(circuit, "Tin", representative);
+            GTOreDictUnificator.addAssociation(circuit, "Tin", equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             List<GTRecipeLookupIngredient> group = new ArrayList<>();

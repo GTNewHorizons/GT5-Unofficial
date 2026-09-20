@@ -58,7 +58,8 @@ public class DroneConnection {
             .ordinal();
         this.uuid = UUID.nameUUIDFromBytes((machineCoord.toString() + machineWorld).getBytes());
         this.unlocalizedName = machine.mName;
-        this.customName = centre.getConnectionName(uuid, machine.getLocalName());
+        // Empty means no custom name; the machine name is localized on the client
+        this.customName = centre.getConnectionName(uuid, "");
         this.groupMask = centre.getConnectionGroups(uuid);
         this.machineStatus = machine.isAllowedToWork();
         this.shutdownReason = machine.getBaseMetaTileEntity()
@@ -106,7 +107,15 @@ public class DroneConnection {
     }
 
     public String getCustomName() {
-        return customName;
+        return hasCustomName() ? customName : getLocalizedName();
+    }
+
+    public boolean hasCustomName() {
+        return customName != null && !customName.isEmpty();
+    }
+
+    public String getUnlocalizedName() {
+        return "gt.blockmachines." + unlocalizedName + ".name";
     }
 
     public ChunkCoordinates getCentreCoord() {
@@ -122,7 +131,7 @@ public class DroneConnection {
     }
 
     public String getLocalizedName() {
-        return StatCollector.translateToLocal("gt.blockmachines." + unlocalizedName + ".name");
+        return StatCollector.translateToLocal(getUnlocalizedName());
     }
 
     public float getDistanceSquared() {
@@ -152,7 +161,7 @@ public class DroneConnection {
         aNBT.setInteger("centreWorld", centreWorld);
         aNBT.setInteger("machineWorld", machineWorld);
         aNBT.setInteger("machineFacing", machineFacing);
-        aNBT.setString("name", getCustomName());
+        aNBT.setString("name", customName);
         aNBT.setString("unlocalizedName", unlocalizedName);
         aNBT.setString("uuid", this.uuid.toString());
         aNBT.setBoolean("machineStatus", machineStatus);

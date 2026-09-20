@@ -1743,8 +1743,10 @@ GTPP.tooltip.catalyst.active_reaction_agent=Активный реагент
 GTPP.tooltip.milling_ball.tumble=Вращение, вращение, вращение
 
 # Infinite Spray Can
-item.GT5U.infinite_spray_can.name.solvent=Бесконечный баллончик %cРастворитель%c
-item.GT5U.infinite_spray_can.name.colored=Бесконечный баллончик (%c%s%c)
+item.GT5U.infinite_spray_can.name.solvent.unlocked=Бесконечный баллончик (Растворитель)
+item.GT5U.infinite_spray_can.name.solvent.locked=Бесконечный баллончик [Растворитель]
+item.GT5U.infinite_spray_can.name.colored.unlocked=Бесконечный баллончик (%s)
+item.GT5U.infinite_spray_can.name.colored.locked=Бесконечный баллончик [%s]
 
 GT5U.infinite_spray_can.color.Black=Чёрный
 GT5U.infinite_spray_can.color.Red=Красный

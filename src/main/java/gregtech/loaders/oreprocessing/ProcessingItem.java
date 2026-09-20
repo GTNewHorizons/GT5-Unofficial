@@ -16,32 +16,23 @@ public class ProcessingItem implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
-        if (GTOreDictUnificator.getItemData(stack) == null && !oreDictName.equals("itemCertusQuartz")
-            && !oreDictName.equals("itemNetherQuartz")) {
-            switch (oreDictName) {
-                case "itemSilicon":
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Silicon, 3628800L));
-                case "itemWheat":
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wheat, 3628800L));
-                case "itemManganese":
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Manganese, 3628800L));
-                case "itemSalt":
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Salt, 3628800L));
-                case "itemMagnesium":
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Magnesium, 3628800L));
-                case "itemPhosphorite":
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.TricalciumPhosphate, 3628800L));
-                case "itemSulfur":
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Sulfur, 3628800L));
-                case "itemAluminum":
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Aluminium, 3628800L));
-                case "itemSaltpeter":
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Saltpeter, 3628800L));
-                case "itemUranium":
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Uranium, 3628800L));
-            }
+    public void registerOre(OrePrefixes aPrefix, Material aMaterial, String aOreDictName, String aModName,
+        ItemStack aStack) {
+
+        switch (aOreDictName) {
+            case "itemSilicon" -> GTOreDictUnificator.addItemData(aStack, new ItemData(Materials.Silicon, 3628800L));
+            case "itemWheat" -> GTOreDictUnificator.addItemData(aStack, new ItemData(Materials.Wheat, 3628800L));
+            case "itemManganese" -> GTOreDictUnificator
+                .addItemData(aStack, new ItemData(Materials.Manganese, 3628800L));
+            case "itemMagnesium" -> GTOreDictUnificator
+                .addItemData(aStack, new ItemData(Materials.Magnesium, 3628800L));
+            case "itemPhosphorite" -> GTOreDictUnificator
+                .addItemData(aStack, new ItemData(Materials.TricalciumPhosphate, 3628800L));
+            case "itemSulfur" -> GTOreDictUnificator.addItemData(aStack, new ItemData(Materials.Sulfur, 3628800L));
+            case "itemAluminum" -> GTOreDictUnificator.addItemData(aStack, new ItemData(Materials.Aluminium, 3628800L));
+            case "itemSaltpeter" -> GTOreDictUnificator
+                .addItemData(aStack, new ItemData(Materials.Saltpeter, 3628800L));
+            case "itemUranium" -> GTOreDictUnificator.addItemData(aStack, new ItemData(Materials.Uranium, 3628800L));
         }
     }
 }
