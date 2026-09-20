@@ -5,7 +5,6 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static java.lang.Math.round;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.Arrays;
 import java.util.HashSet;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -82,9 +81,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
                                                                                                    // stoves for the
                                                                                                    // rich
         };
-        String[] sDesc = super.getDescription();
-        sDesc = Arrays.copyOfRange(sDesc, 1, sDesc.length); // Removes first element from array
-        return ArrayUtils.addAll(jargon, sDesc);
+        return ArrayUtils.addAll(jargon, super.getDescription());
     }
 
     @Override

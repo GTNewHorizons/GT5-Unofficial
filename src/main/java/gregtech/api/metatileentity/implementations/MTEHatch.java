@@ -280,16 +280,30 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     public static String[] formatEnergyInfoDesc(boolean isDynamo, int tier, int amp, String key, Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, null, isDynamo, tier, amp, key, formatted);
+        return MTEHatch.formatEnergyInfoDesc(null, null, isDynamo, tier, amp, amp, key, formatted);
+    }
+
+    /**
+     * Variant for hatches whose amperage line differs from the amperage they work with, like the multi amp energy
+     * hatches, which draw a quarter more from the energy network than they hand to the multiblock.
+     */
+    public static String[] formatEnergyInfoDesc(boolean isDynamo, int tier, int amp, long amperage, String key,
+        Object... formatted) {
+        return MTEHatch.formatEnergyInfoDesc(null, null, isDynamo, tier, amp, amperage, key, formatted);
     }
 
     public static String[] formatEnergyInfoDesc(String suffixTooltip, boolean isDynamo, int tier, int amp, String key,
         Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, suffixTooltip, isDynamo, tier, amp, key, formatted);
+        return MTEHatch.formatEnergyInfoDesc(null, suffixTooltip, isDynamo, tier, amp, amp, key, formatted);
     }
 
     public static String[] formatEnergyInfoDesc(String[] author, String suffixTooltip, boolean isDynamo, int tier,
         int amp, String key, Object... formatted) {
+        return MTEHatch.formatEnergyInfoDesc(author, suffixTooltip, isDynamo, tier, amp, amp, key, formatted);
+    }
+
+    public static String[] formatEnergyInfoDesc(String[] author, String suffixTooltip, boolean isDynamo, int tier,
+        int amp, long amperage, String key, Object... formatted) {
         final List<String> additionalTooltips = new LinkedList<>();
         if (suffixTooltip != null) {
             Collections.addAll(additionalTooltips, suffixTooltip);
@@ -302,8 +316,10 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
             StatCollector.translateToLocalFormatted(
                 isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",
                 TooltipHelper.voltageText(GTValues.V[tier])));
-        additionalTooltips
-            .add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
+        additionalTooltips.add(
+            StatCollector.translateToLocalFormatted(
+                isDynamo ? "gt.tileentity.amperage_out" : "gt.tileentity.amperage_in",
+                TooltipHelper.ampText(amperage)));
         if (author != null) {
             additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
         }

@@ -13,6 +13,8 @@
 
 package bartworks.common.tileentities.tiered;
 
+import java.util.List;
+
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
@@ -106,5 +108,11 @@ public class MTEEnergyDistributor extends MTETransformer {
     @Override
     public String[] getDescription() {
         return GTSplit.splitLocalized("tooltip.tile.energydistributor.0.name");
+    }
+
+    @Override
+    public void addEnergyTooltipInformation(List<String> tooltip) {
+        // The distributor does not change the voltage, so it only has a single set of values.
+        addDefaultEnergyTooltipInformation(tooltip);
     }
 }

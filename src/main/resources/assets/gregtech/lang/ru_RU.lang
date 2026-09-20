@@ -200,8 +200,6 @@ gt.voltage.tier=-тир
 gt.blockmachines.slot_count.desc=Слотов: %s
 gt.blockmachines.cable.desc=Макс. вольтаж: %s\nМакс. ампераж: %s\nПотеря на блок/ампер: %s
 gt.blockmachines.gt_frame.desc.format=Просто что-то, на что можно надеть модуль.
-gt.blockmachines.transformer.desc=%s -> %s (Используй Киянку для инвертации)
-gt.blockmachines.transformer_advanced.desc=Преобразует %sА в %sА\nПереключение полу-режима %sA/%sA с помощью отвёртки
 gt.blockmachines.bronze_hull.desc=Для ваших первых паровых машин
 gt.blockmachines.highpressure_hull.desc=Для улучшенных паровых машин
 gt.blockmachines.basic_hull.desc=§rВоспользуйтесь §5В§dо§4о§cб§eр§aа§bж§3е§9н§1и§5е§rм§r для его использования.
@@ -1172,7 +1170,6 @@ gt.laserplatingtooltip=Разработан для работы в экстре�
 # Tooltip info of tile-entities
 gt.tileentity.eup_in=Входной вольтаж: %s
 gt.tileentity.eup_out=Выходной вольтаж: %s
-gt.tileentity.amperage=Ампераж: %s
 gt.tileentity.throughput=Пропускная способность: %s
 gt.tileentity.eup_store=Вместимость: %s
 gt.tileentity.tank_info=Содержит жидкость: §e%s§7
@@ -1865,8 +1862,6 @@ GT5U.providesgashazmatprotection=Обеспечивает газовую защ�
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
 GT5U.MBTT.MachineType=Тип механизма
-GT5U.MBTT.PowerUsage=Энергопотребление
-GT5U.MBTT.BaseAmperage=Базовый ампераж
 GT5U.MBTT.StaticParallels=Обрабатывает до %s рецептов одновременно
 GT5U.MBTT.Dimensions=Размеры
 GT5U.MBTT.Hollow=(Полый)

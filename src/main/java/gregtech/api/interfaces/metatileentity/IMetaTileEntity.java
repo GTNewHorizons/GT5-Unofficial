@@ -643,6 +643,14 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     default void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {}
 
     /**
+     * Adds the voltage and amperage lines to the tooltip of this machine's item. Machines that have more than one
+     * operating mode, like the transformers which can step up or down, override this and list every mode.
+     *
+     * @param tooltip Tooltip to which can be added
+     */
+    default void addEnergyTooltipInformation(List<String> tooltip) {}
+
+    /**
      * Gets items to be displayed for HoloInventory mod.
      *
      * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}. Otherwise, a list

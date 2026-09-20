@@ -7004,6 +7004,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
 
@@ -7016,6 +7018,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
 
@@ -7028,6 +7032,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
 
@@ -7040,6 +7046,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
 
@@ -7052,6 +7060,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
 
@@ -7064,6 +7074,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
 
@@ -7076,6 +7088,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
 
@@ -7088,6 +7102,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
 
@@ -7100,6 +7116,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
 
@@ -7112,6 +7130,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
 
@@ -7124,6 +7144,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
 
@@ -7136,6 +7158,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("THERMAL_CENTRIFUGE")
+                .setRatedAmperage(1.5)
+                .setRatedPowerUsage(150)
                 .build()
                 .getStackForm(1L));
     }
