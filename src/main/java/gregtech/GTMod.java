@@ -432,6 +432,8 @@ public class GTMod {
             return;
         }
 
+        GTOreDictUnificator.useMaterialLibTargets();
+
         for (Runnable tRunnable : GregTechAPI.sBeforeGTLoad) {
             tRunnable.run();
         }

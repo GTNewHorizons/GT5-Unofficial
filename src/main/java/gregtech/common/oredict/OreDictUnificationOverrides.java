@@ -1,17 +1,7 @@
 package gregtech.common.oredict;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
-import static gregtech.api.enums.Mods.Avaritia;
-import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.Botania;
-import static gregtech.api.enums.Mods.DraconicEvolution;
-import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.MagicBees;
-import static gregtech.api.enums.Mods.ProjectRedCore;
-import static gregtech.api.enums.Mods.RandomThings;
-import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.Translocator;
 
 import java.util.HashMap;
@@ -25,43 +15,10 @@ public final class OreDictUnificationOverrides {
     private static final HashMap<String, String> preferredMods = new HashMap<>();
     private static boolean unificationComplete = false;
 
+    // Names of (prefix, material) pairs MaterialLib serves never reach this table: their target is the pair's
+    // stack, see GTOreDictUnificator. What remains are other mods' parts of shapes GregTech does not generate.
     static {
-        add(GregTech.ID, "dustAlumina");
-        add(EnderIO.ID, "ingotDarkSteel");
-        add(DraconicEvolution.ID, "dustDraconium");
-        add(Thaumcraft.ID, "ingotThaumium", "ingotVoid", "nuggetThaumium", "nuggetVoid");
-        add(ProjectRedCore.ID, "dustElectrotine");
         add(Translocator.ID, "nuggetDiamond");
-        add(HardcoreEnderExpansion.ID, "ingotHeeEndium");
-        add(Avaritia.ID, "ingotCosmicNeutronium", "ingotInfinity");
-        add(RandomThings.ID, "stickObsidian");
-        add(
-            Botania.ID,
-            "ingotElvenElementium",
-            "ingotManasteel",
-            "ingotTerrasteel",
-            "nuggetElvenElementium",
-            "nuggetManasteel",
-            "nuggetTerrasteel");
-
-        // After the OreDict improvements, some items naturally changed the unificated item stack.
-        // By default, it's taken by whichever mod who registered an oredict first.
-        // Restore the initial unification state so players don't have to deal with useless items
-        add(
-            GregTech.ID,
-            "blockAmber",
-            "blockLead",
-            "blockMagnesium",
-            "blockMithril",
-            "blockPlatinum",
-            "blockTungsten",
-            "ingotBloodInfusedIron",
-            "ingotIchorium",
-            "nuggetIchorium",
-            "rawOreMeteoricIron",
-            "stickDesh",
-            "cellCreosote");
-        add(BartWorks.ID, "blockSalt");
         add(MagicBees.ID, "nuggetEmerald");
     }
 

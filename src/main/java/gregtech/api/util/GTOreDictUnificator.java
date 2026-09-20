@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -22,12 +23,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
@@ -44,16 +47,23 @@ import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 ///
 /// P.S. It is intended to be named "Unificator" and not "Unifier", because that sounds more awesome.
 ///
-/// Two maps: which stack is canonical for an ore-dictionary name, and what material any stack is made of
-/// ([ItemData]). This
-/// class is the single ore-dictionary unification authority: MaterialLib-backed names unify here like every
-/// other name.
+/// Two questions: which stack is canonical for an ore-dictionary name, and what material any stack is made of
+/// ([ItemData]).
+///
+/// MaterialLib answers the first for every name of a (prefix, material) pair it serves: the pair's stack,
+/// MaterialLib's own item or the foreign item a shape override declares, is the unification target, whatever
+/// else registers under the name and in whatever order. Only names with no such pair (containers, name-only
+/// circuits, ore blocks, other mods' parts of shapes GregTech does not generate) are decided here, by
+/// [#set(OrePrefixes, Material, ItemStack)] or else by the first registered stack that is not blacklisted.
 ///
 /// Keyed by [OrePrefixes] throughout: an association starts from an ore-dictionary name. See [OrePrefixes]'s
 /// class javadoc for why the prefix and shape spaces are not interchangeable.
 public class GTOreDictUnificator {
 
     private static final Map<String, ItemStack> sName2StackMap = new HashMap<>();
+    private static volatile Map<String, MaterialLibPair> materialLibPairs;
+    private static final Map<String, ItemStack> materialLibTargets = new ConcurrentHashMap<>();
+    private static volatile boolean materialLibTargetsLive;
     private static final Map<ItemStack, ItemData> sItemStack2DataMap = new Object2ObjectOpenCustomHashMap<>(
         GTItemStack.ITEMSTACK_HASH_STRATEGY2);
     private static final Map<ItemStack, List<ItemStack>> sUnificationTable = new Object2ObjectOpenCustomHashMap<>(
@@ -128,12 +138,63 @@ public class GTOreDictUnificator {
         isAddingOre--;
     }
 
+    private record MaterialLibPair(OrePrefixes prefix, Material material) {}
+
+    /// Every ore-dictionary name MaterialLib serves a unifiable (prefix, material) pair under. Ore blocks stay
+    /// out: their shapes are stone variants with no single stack, and vanilla's ore blocks keep their names.
+    private static Map<String, MaterialLibPair> materialLibPairs() {
+        Map<String, MaterialLibPair> pairs = materialLibPairs;
+        if (pairs == null) {
+            pairs = new HashMap<>();
+            for (OrePrefixes prefix : OrePrefixes.VALUES) {
+                if (!prefix.isUnifiable() || prefix.getName()
+                    .startsWith("ore") || MaterialParts.shape(prefix) == null) continue;
+                for (Material material : MaterialLibAPI.getMaterials()) {
+                    if (MaterialParts.isCutOver(prefix, material)) {
+                        pairs.put(prefix.oreDictName(material), new MaterialLibPair(prefix, material));
+                    }
+                }
+            }
+            materialLibPairs = pairs;
+        }
+        return pairs;
+    }
+
+    /// Lets MaterialLib's pairs decide their names from here on and drops every target resolved before. Called
+    /// at the start of GregTech's init: during preInit another mod's overriding item may not be registered yet.
+    /// A foreign item standing in for a pair is associated with it here, since the ore-dictionary event that
+    /// would do so may never be processed for it (`stickObsidian` is an ignored name).
+    public static void useMaterialLibTargets() {
+        materialLibTargetsLive = true;
+        resetUnificationEntries();
+        for (MaterialLibPair pair : materialLibPairs().values()) {
+            if (!MaterialParts.isMinted(pair.prefix(), pair.material())) {
+                addAssociation(pair.prefix(), pair.material(), MaterialParts.stack(pair.prefix(), pair.material(), 1));
+            }
+        }
+    }
+
+    /// The stack MaterialLib serves under `oreName`, or null when it serves none or [#useMaterialLibTargets] has
+    /// not run yet.
+    private static ItemStack materialLibTarget(String oreName) {
+        if (!materialLibTargetsLive) return null;
+        ItemStack target = materialLibTargets.get(oreName);
+        if (target != null) return target;
+        MaterialLibPair pair = materialLibPairs().get(oreName);
+        if (pair == null) return null;
+        target = MaterialParts.stack(pair.prefix(), pair.material(), 1);
+        if (target != null) materialLibTargets.put(oreName, target);
+        return target;
+    }
+
     public static ItemStack getFirstOre(Object name, long amount) {
         if (GTUtility.isStringInvalid(name)) return null;
         return GTUtility.copyAmount(amount, getFirstOre_nocopy(name.toString()));
     }
 
     public static ItemStack getFirstOre_nocopy(String name) {
+        ItemStack served = materialLibTarget(name);
+        if (served != null) return served;
         ItemStack stack = sName2StackMap.get(name);
         if (GTUtility.isStackValid(stack)) return stack;
 
@@ -591,6 +652,8 @@ public class GTOreDictUnificator {
     }
 
     private static void updateUnificationTarget(String oreName, ItemStack target) {
+        ItemStack served = materialLibTarget(oreName);
+        if (served != null) target = served;
         for (ItemStack stack : getOresImmutable(oreName)) {
             updateUnificationTarget(stack, target);
         }
