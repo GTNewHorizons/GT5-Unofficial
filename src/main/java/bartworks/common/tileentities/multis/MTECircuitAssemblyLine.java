@@ -608,7 +608,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.cal.imprintedWith",
-                        EnumChatFormatting.YELLOW + imprint.circuit.get(1)
+                        imprint.circuit.get(1)
                             .getDisplayName()));
             }
         }
@@ -687,9 +687,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger("mode")));
         if (tag.hasKey("ImprintedWith") && tag.getInteger("mode") == 0) {
             list.add(
-                StatCollector.translateToLocalFormatted(
-                    "tooltip.cal.imprintedWith",
-                    EnumChatFormatting.YELLOW + tag.getString("ImprintedWith")));
+                StatCollector.translateToLocalFormatted("tooltip.cal.imprintedWith", tag.getString("ImprintedWith")));
         }
     }
 
