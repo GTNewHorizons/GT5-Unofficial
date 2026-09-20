@@ -787,7 +787,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
                     lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
 
-                    if (boostActive != BOOST_NONE && !consumeBoostFluid(cachedOutputParticle.getRate())) {
+                    if (checkIfNotEnoughBoosterFluid()) {
                         stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
                         return CheckRecipeResultRegistry.NO_RECIPE;
                     }
@@ -821,7 +821,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
 
-            if (boostActive != BOOST_NONE && !consumeBoostFluid(cachedOutputParticle.getRate())) {
+            if (checkIfNotEnoughBoosterFluid()) {
                 stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
@@ -944,6 +944,10 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
             o.dataPacket = new BeamLinePacket(new BeamInformation(this.outputEnergy, rate, rolledId, this.outputFocus));
         }
+    }
+
+    private boolean checkIfNotEnoughBoosterFluid() {
+        return (boostActive != BOOST_NONE) && !consumeBoostFluid(cachedOutputParticle.getRate());
     }
 
     @Override
