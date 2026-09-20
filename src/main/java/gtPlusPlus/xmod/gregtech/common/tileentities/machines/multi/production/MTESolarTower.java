@@ -16,7 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,6 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.options.FormatOptions;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -57,6 +58,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.MTESolarHeater;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements ISurvivalConstructable {
 
     // 862
@@ -95,89 +97,32 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     @Override
     protected final MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Contributing Green Energy towards the future")
-            .addInfo(
-                "Surround with rings of " + EnumChatFormatting.GOLD
-                    + "Solar Reflectors"
-                    + EnumChatFormatting.GRAY
-                    + ", which determine heat and tier")
-            .addInfo(
-                EnumChatFormatting.YELLOW + "The first ring is required for the Tower to work"
-                    + EnumChatFormatting.GRAY)
-            .addSeparator()
-            .addInfo(
-                "Converts " + EnumChatFormatting.GOLD
-                    + "Cold Salt"
-                    + EnumChatFormatting.GRAY
-                    + " into "
-                    + EnumChatFormatting.GOLD
-                    + "Hot Salt"
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                "Every " + formatNumber(CYCLE_TICKS / 20)
-                    + "s heat rises, "
-                    + EnumChatFormatting.GOLD
-                    + "Cold Salt"
-                    + EnumChatFormatting.GRAY
-                    + " converts to "
-                    + EnumChatFormatting.GOLD
-                    + "Hot Salt"
-                    + EnumChatFormatting.GRAY
-                    + " at 1:1")
-            .addInfo(
-                EnumChatFormatting.YELLOW + "Heat gain is halved in rain and disabled at night"
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                "Conversion only happens if heat >= " + EnumChatFormatting.RED
-                    + formatNumber(HEAT_CONVERSION_THRESHOLD)
-                    + EnumChatFormatting.GRAY
-                    + " and efficiency is 100%")
-            .addInfo(
-                "Excess " + EnumChatFormatting.GOLD + "Cold Salt" + EnumChatFormatting.GRAY + " drains all heat to 0")
-            .addSeparator()
-            .addInfo(
-                "Heat efficiency: " + EnumChatFormatting.AQUA
-                    + "1 - (heat - "
-                    + formatNumber(HEAT_EFFICIENCY_CENTER)
-                    + ")^"
-                    + formatNumber(HEAT_EFFICIENCY_EXPONENT, new FormatOptions().setDecimalPlaces(1))
-                    + " / "
-                    + formatNumber(HEAT_EFFICIENCY_COEFFICIENT)
-                    + EnumChatFormatting.GRAY
-                    + ", peaks at "
-                    + EnumChatFormatting.AQUA
-                    + formatNumber(HEAT_EFFICIENCY_CENTER)
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                "Heat/cycle: " + EnumChatFormatting.AQUA
-                    + "heaters * efficiency * ("
-                    + formatNumber(HEAT_LOSS_PER_CYCLE)
-                    + " + bonus) - "
-                    + formatNumber(HEAT_LOSS_PER_CYCLE)
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                "Rings 1-5: " + EnumChatFormatting.GOLD
-                    + "+1/+2/+4/+8/+16"
-                    + EnumChatFormatting.GRAY
-                    + " bonus, "
-                    + EnumChatFormatting.GOLD
-                    + "36/88/156/240/340"
-                    + EnumChatFormatting.GRAY
-                    + " reflectors")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.solar_tower"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "solar-tower"),
+                ImmutableMap.<String, Object>builder()
+                    .put("cycle", formatNumber(CYCLE_TICKS / 20))
+                    .put("threshold", formatNumber(HEAT_CONVERSION_THRESHOLD))
+                    .put("center", formatNumber(HEAT_EFFICIENCY_CENTER))
+                    .put("exp", formatNumber(HEAT_EFFICIENCY_EXPONENT, new FormatOptions().setDecimalPlaces(1)))
+                    .put("coefficient", formatNumber(HEAT_EFFICIENCY_COEFFICIENT))
+                    .put("loss", formatNumber(HEAT_LOSS_PER_CYCLE))
+                    .build())
             .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
-            .addController("Top center, 28th layer")
-            .addCasing("36/88/156/240/340", "Solar Reflector", false)
-            .addCasing("229-250", "Structural Solar Casing", false)
-            .addCasing("66", "Salt Containment Casing", false)
-            .addCasing("60", "Thermal Containment Casing", false)
-            .addCasing("60", "Thermally Insulated Casing", false)
-            .addMaintenanceHatch("1", "Any bottom side casing", 2)
-            .addInputHatch("1+", "Any bottom side casing", 2)
-            .addOutputHatch("1+", "Any bottom side casing", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.top_center_28th_layer"))
+            .addCasing("36/88/156/240/340", StatCollector.translateToLocal("gt.blockmachines.solarreflector.simple.single.name"), false)
+            .addCasing("229-250", StatCollector.translateToLocal("gtplusplus.blockspecialcasings.1.6.name"), false)
+            .addCasing("66", StatCollector.translateToLocal("gtplusplus.blockspecialcasings.1.7.name"), false)
+            .addCasing("60", StatCollector.translateToLocal("gtplusplus.blockspecialcasings.1.8.name"), false)
+            .addCasing("60", StatCollector.translateToLocal("gtplusplus.blockcasings.2.11.name"), false)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 2)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 2)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 2)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
