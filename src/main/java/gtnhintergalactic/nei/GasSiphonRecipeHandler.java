@@ -221,7 +221,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
             .drawStringC(I18n.format("ig.nei.siphon.planet") + ":", CATEGORY_TITLE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(I18n.format("ig.nei.siphon.depth") + ":", CATEGORY_TITLE_X, GAS_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(
-            I18n.format("ig.nei.elevatorpump.amount") + ":",
+            I18n.format("ig.nei.siphon.baserate") + ":",
             CATEGORY_TITLE_X,
             OUT_AMOUNT_Y,
             TEXT_COLOR,
