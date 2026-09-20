@@ -1231,7 +1231,7 @@ item.gt.propolis.name=Propolis
 
 # GT Item Descriptions
 gt.item.desc.stored_heat=Stored Heat: %s
-gt.item.desc.durability=Durability: §a%s / %s
+gt.item.desc.durability=Durability: §a%s/%s
 gt.item.desc.tier=%s:§e Tier %s
 gt.item.desc.level=%s§e lvl %s
 gt.item.desc.damage=Attack Damage: §9%s
@@ -7767,7 +7767,6 @@ gt.item.adv_sensor_card.tooltip.recipe_hint=Created by attaching a Metrics Trans
 gt.item.adv_sensor_card.tooltip.fried.1=§o§dThis thing looks completely fried...
 gt.item.adv_sensor_card.tooltip.fried.2=§cDestroyed due to metrics transmitter being removed
 gt.item.adv_sensor_card.tooltip.fried.3=§cor the machine being destroyed
-gt.item.adv_sensor_card.tooltip.frequency=Frequency: §b%s
 gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
 gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
 gt.item.adv_sensor_card.error.no_data=No data found

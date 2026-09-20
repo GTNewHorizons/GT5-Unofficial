@@ -1229,7 +1229,7 @@ item.gt.propolis.name=Прополис
 
 # GT Item Descriptions
 gt.item.desc.stored_heat=Накоплено тепла: %s
-gt.item.desc.durability=Прочность: §a%s / %s
+gt.item.desc.durability=Прочность: §a%s/%s
 gt.item.desc.tier=%s:§e Тир %s
 gt.item.desc.level=%s§e уровень %s
 gt.item.desc.damage=Урон: §9%s
@@ -7310,7 +7310,6 @@ gt.item.adv_sensor_card.tooltip.fried.1=§o§dЭта штука выглядит
 gt.item.adv_sensor_card.tooltip.fried.2=§cУничтожена из-за снятия передатчика показателей
 gt.item.adv_sensor_card.tooltip.fried.3=§cили разрушения машины
 gt.item.adv_sensor_card.tooltip.machine=Машина: §b%s
-gt.item.adv_sensor_card.tooltip.frequency=Частота: §b%s
 gt.item.adv_sensor_card.error.deconstructed.1=-ОШИБКА- Машина разобрана
 gt.item.adv_sensor_card.error.deconstructed.2=Поставьте машину заново, чтобы включить снова
 gt.item.adv_sensor_card.error.no_data=Данные не найдены

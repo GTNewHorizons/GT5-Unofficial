@@ -498,7 +498,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         this.infoDataBuffer = new String[oldInfo.length + 1];
         System.arraycopy(oldInfo, 0, this.infoDataBuffer, 0, oldInfo.length);
         this.infoDataBuffer[oldInfo.length] = IGregTechDeviceInformation
-            .encode("tooltip.cal.imprintedWith", EnumChatFormatting.YELLOW + this.getTypeForDisplay());
+            .encode("tooltip.cal.imprintedWith", this.getTypeForDisplay());
         return this.infoDataBuffer;
     }
 
