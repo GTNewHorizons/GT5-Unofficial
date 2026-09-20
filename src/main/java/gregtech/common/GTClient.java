@@ -237,12 +237,10 @@ public class GTClient extends GTProxy {
         }
 
         final MetaGeneratedToolRenderer metaToolRenderer = new MetaGeneratedToolRenderer();
-        for (MetaGeneratedTool tItem : MetaGeneratedTool.sInstances.values()) {
-            if (tItem != null) {
-                MinecraftForgeClient.registerItemRenderer(tItem, metaToolRenderer);
-            }
-        }
-        // The standalone tool items render the same way: a material-tinted head over a handle.
+        // MetaGeneratedTool01 deliberately gets no renderer here. It holds no tools any more, so this one would draw
+        // nothing at all and leave a leftover stack invisible; without it the item falls back to its own icon, which
+        // is the missing texture. See MetaGeneratedTool01.
+        // The standalone tool items render a material-tinted head over a handle.
         MinecraftForgeClient.registerItemRenderer(GTToolItems.WRENCH, metaToolRenderer);
         MinecraftForgeClient.registerItemRenderer(GTToolItems.WRENCH_LV, metaToolRenderer);
         MinecraftForgeClient.registerItemRenderer(GTToolItems.WRENCH_MV, metaToolRenderer);

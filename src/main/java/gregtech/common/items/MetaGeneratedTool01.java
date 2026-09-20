@@ -1,9 +1,21 @@
 package gregtech.common.items;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -16,9 +28,26 @@ import gregtech.common.items.tools.GTToolItems;
 import gregtech.common.tools.ItemNetworkAnalyzer;
 import gregtech.common.tools.ToolVajra;
 
+/**
+ * The old tool meta-item, which no longer carries a single tool: every type has its own item under
+ * {@link GTToolItems} now, with the material in the metadata. This class survives for three reasons -- it keeps
+ * {@code gregtech:gt.metatool.01} in the registry so that {@code PosteaTransformers} can rewrite saved stacks
+ * against it, it is where the Vajra and the Network Analyzer happen to be constructed, and it holds the
+ * fixed-material mortar, rolling pin and flint knife recipes.
+ * <p/>
+ * Nothing should ever hold a stack of this item. A stack that survives the world converter is one it could not
+ * place -- a tool whose material no longer resolves, or a metadata that never had a tool behind it -- so the
+ * display overrides below make such a stack unmistakable rather than letting it pass as a working tool: it draws
+ * as the missing texture and its tooltip asks for a bug report.
+ */
 public class MetaGeneratedTool01 extends MetaGeneratedTool {
 
     public static MetaGeneratedTool01 INSTANCE;
+
+    private static final String DEPRECATED_NAME_KEY = "gt.metatool.01.deprecated.name";
+    private static final String DEPRECATED_TOOLTIP_KEY = "gt.metatool.01.deprecated.tooltip";
+    private static final String DEPRECATED_MIGRATED_KEY = "gt.metatool.01.deprecated.migrated";
+    private static final String DEPRECATED_REPORT_KEY = "gt.metatool.01.deprecated.report";
 
     public MetaGeneratedTool01() {
         super("metatool.01");
@@ -158,5 +187,39 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             material,
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
             new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L));
+    }
+
+    /**
+     * The missing texture, deliberately. Asking the atlas for a sprite it does not hold gives back its
+     * missing-texture sprite, which gets the magenta-and-black cube without logging a resource error on every
+     * launch for an item that should normally have no stacks at all.
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aIconRegister) {
+        mIcon = aIconRegister instanceof TextureMap atlas ? atlas.getAtlasSprite("missingno") : null;
+    }
+
+    @Override
+    public IIcon getIconFromDamage(int aMetaData) {
+        return mIcon;
+    }
+
+    /**
+     * Named for what it is rather than for the tool it used to be, and carrying the metadata, so that a screenshot
+     * of one is enough to say which stack the converter left behind.
+     */
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        return translateToLocalFormatted(DEPRECATED_NAME_KEY, String.valueOf(aStack.getItemDamage()));
+    }
+
+    @Override
+    public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        aList.add(EnumChatFormatting.RED + translateToLocal(DEPRECATED_TOOLTIP_KEY));
+        aList.add(EnumChatFormatting.GRAY + translateToLocal(DEPRECATED_MIGRATED_KEY));
+        aList.add(
+            EnumChatFormatting.YELLOW
+                + translateToLocalFormatted(DEPRECATED_REPORT_KEY, String.valueOf(aStack.getItemDamage())));
     }
 }

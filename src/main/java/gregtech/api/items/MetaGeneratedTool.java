@@ -507,12 +507,12 @@ public abstract class MetaGeneratedTool extends MetaBaseItem implements IDamagab
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void registerIcons(IIconRegister aIconRegister) {
-        //
+    public void registerIcons(IIconRegister aIconRegister) {
+        // A tool's icon comes from its IToolStats by way of MetaGeneratedToolRenderer, not from the item.
     }
 
     @Override
-    public final IIcon getIconFromDamage(int aMetaData) {
+    public IIcon getIconFromDamage(int aMetaData) {
         return null;
     }
 
