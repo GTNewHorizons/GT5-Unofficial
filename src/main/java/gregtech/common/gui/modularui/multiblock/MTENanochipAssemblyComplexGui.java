@@ -229,32 +229,100 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         TextWidget<?> calibrationBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.1");
         TextWidget<?> calibrationBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.2");
         TextWidget<?> calibrationBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.3");
+        TextWidget<?> calibrationBody4 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.4");
 
-        TextWidget<?> crystalHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.crystal.header");
-        TextWidget<?> crystalBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.crystal.effect1");
-        TextWidget<?> crystalBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.crystal.effect2");
-        TextWidget<?> crystalBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.crystal.effect3");
-        TextWidget<?> wetwareHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.wetware.header");
-        TextWidget<?> wetwareBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.wetware.effect1");
-        TextWidget<?> wetwareBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.wetware.effect2");
-        TextWidget<?> wetwareBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.wetware.effect3");
-        TextWidget<?> biowareHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.bioware.header");
-        TextWidget<?> biowareBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.bioware.effect1");
-        TextWidget<?> biowareBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.bioware.effect2");
-        TextWidget<?> biowareBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.bioware.effect3");
-        TextWidget<?> opticalHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.optical.header");
-        TextWidget<?> opticalBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.optical.effect1");
-        TextWidget<?> opticalBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.optical.effect2");
-        TextWidget<?> opticalBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.optical.effect3");
-        TextWidget<?> specialHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.special.header");
-        TextWidget<?> specialBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.special.effect1");
-        TextWidget<?> specialBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.special.effect2");
-        TextWidget<?> specialBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.special.effect3");
+        TextWidget<?> lineSpecificsHeader = createHeader("GT5U.gui.text.nac.info.line_specifics.header");
+        ButtonWidget<?> linesSpecificsToC = createToCEntry(
+            textList,
+            "GT5U.gui.text.nac.info.line_specifics.header",
+            lineSpecificsHeader);
+        TextWidget<?> lineSpecificsBody1 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.body.1");
+        TextWidget<?> lineSpecificsBody2 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.body.2");
+
+        TextWidget<?> primitiveHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.header");
+        TextWidget<?> primitivePowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.power_distribution");
+        TextWidget<?> primitiveModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.module_count");
+        TextWidget<?> primitiveInfo1 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.primitive.body1");
+        TextWidget<?> primitiveInfo2 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.primitive.body2");
+        TextWidget<?> primitiveBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect1");
+        TextWidget<?> primitiveBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect2");
+        TextWidget<?> primitiveBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect3");
+        TextWidget<?> crystalHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.header");
+        TextWidget<?> crystalPowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.power_distribution");
+        TextWidget<?> crystalModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.module_count");
+        TextWidget<?> crystalBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.calibration.effect1");
+        TextWidget<?> crystalBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.calibration.effect2");
+        TextWidget<?> crystalBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.calibration.effect3");
+        TextWidget<?> wetwareHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.header");
+        TextWidget<?> wetwarePowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.power_distribution");
+        TextWidget<?> wetwareModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.module_count");
+        TextWidget<?> wetwareBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect1");
+        TextWidget<?> wetwareBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect2");
+        TextWidget<?> wetwareBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect3");
+        TextWidget<?> biowareHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.header");
+        TextWidget<?> biowarePowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.power_distribution");
+        TextWidget<?> biowareModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.module_count1");
+        TextWidget<?> biowareModuleCountSOC = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.module_count2");
+        TextWidget<?> biowareBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.calibration.effect1");
+        TextWidget<?> biowareBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.calibration.effect2");
+        TextWidget<?> biowareBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.calibration.effect3");
+        TextWidget<?> opticalHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.optical.header");
+        TextWidget<?> opticalPowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.power_distribution");
+        TextWidget<?> opticalModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.module_count");
+        TextWidget<?> opticalBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect1");
+        TextWidget<?> opticalBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect2");
+        TextWidget<?> opticalBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect3");
+        TextWidget<?> specialHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.special.header");
+        TextWidget<?> specialPowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.power_distribution");
+        TextWidget<?> specialModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.module_count");
+        TextWidget<?> specialInfo1 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.special.body1");
+        TextWidget<?> specialInfo2 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.special.body2");
+        TextWidget<?> specialBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.calibration.effect1");
+        TextWidget<?> specialBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.calibration.effect2");
+        TextWidget<?> specialBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.calibration.effect3");
 
         textList.child(createTableOfContentsHeader());
         textList.child(vacuumBasicsToC);
         textList.child(moduleBasicsToC);
         textList.child(calibrationToC);
+        textList.child(linesSpecificsToC);
         textList.child(vacuumBasicsHeader);
         textList.child(vacuumBasicsBody1);
         textList.child(vacuumBasicsBody2);
@@ -269,28 +337,54 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         textList.child(calibrationBody1);
         textList.child(calibrationBody2);
         textList.child(calibrationBody3);
+        textList.child(calibrationBody4);
+        textList.child(lineSpecificsHeader);
+        textList.child(lineSpecificsBody1);
+        textList.child(lineSpecificsBody2);
+
+        textList.child(primitiveHeader);
+        textList.child(primitivePowerDistribution);
+        textList.child(primitiveModuleCount);
+        textList.child(primitiveInfo1);
+        textList.child(primitiveInfo2);
+        textList.child(primitiveBody1);
+        textList.child(primitiveBody2);
+        textList.child(primitiveBody3);
 
         textList.child(crystalHeader);
+        textList.child(crystalPowerDistribution);
+        textList.child(crystalModuleCount);
         textList.child(crystalBody1);
         textList.child(crystalBody2);
         textList.child(crystalBody3);
 
         textList.child(wetwareHeader);
+        textList.child(wetwarePowerDistribution);
+        textList.child(wetwareModuleCount);
         textList.child(wetwareBody1);
         textList.child(wetwareBody2);
         textList.child(wetwareBody3);
 
         textList.child(biowareHeader);
+        textList.child(biowarePowerDistribution);
+        textList.child(biowareModuleCount);
+        textList.child(biowareModuleCountSOC);
         textList.child(biowareBody1);
         textList.child(biowareBody2);
         textList.child(biowareBody3);
 
         textList.child(opticalHeader);
+        textList.child(opticalPowerDistribution);
+        textList.child(opticalModuleCount);
         textList.child(opticalBody1);
         textList.child(opticalBody2);
         textList.child(opticalBody3);
 
         textList.child(specialHeader);
+        textList.child(specialPowerDistribution);
+        textList.child(specialModuleCount);
+        textList.child(specialInfo1);
+        textList.child(specialInfo2);
         textList.child(specialBody1);
         textList.child(specialBody2);
         textList.child(specialBody3);

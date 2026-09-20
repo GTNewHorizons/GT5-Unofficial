@@ -43,10 +43,10 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
@@ -100,6 +100,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     protected FluidStack[] fluidInputs = null;
     private byte outputColor = -1;
     private int currentParallel;
+    public static final XSTR random = XSTR.XSTR_INSTANCE;
 
     protected MTENanochipAssemblyComplex baseMulti;
 
@@ -126,11 +127,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public void clearBaseMulti() {
         this.baseMulti = null;
         disconnect();
-    }
-
-    public int getMaxRecipeDuration() {
-        return ((NACRecipeMapBackend) (this.getRecipeMap()
-            .getBackend())).getMaxDuration(-1);
     }
 
     protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> vacuumConveyorInputs = new VacuumConveyorHatchMap<>();
@@ -533,6 +529,10 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (recipeCalibration != null && baseMulti.currentThreshold != null
             && baseMulti.currentThreshold.calibrationType == recipeCalibration) {
             recipeDuration *= baseMulti.globalDurationMultiplier;
+            if (recipeCalibration == CircuitCalibration.SPECIAL) {
+                // restore the EU/t so people aren't getting -50% eu cost per circuit.
+                recipeEUT *= 1 / Math.max(0.1, (1 - baseMulti.globalDurationMultiplier));
+            }
         }
 
         int remainingOverclocks = (int) Math.max(0, this.baseMulti.getEnergyHatchTier() - this.getRecipeTier(recipe));
