@@ -15,6 +15,8 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH_ACTIVE_OVERDRIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH_ACTIVE_OVERDRIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH_GLOW;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -505,7 +507,15 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         return new MTEExothermicHearthGui(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_PYROTHEUM_OFF,
             GTGuiTextures.OVERLAY_BUTTON_PYROTHEUM_ON,
-            GTGuiTextures.OVERLAY_BUTTON_ASSEMBLER_MODE);
+            GTGuiTextures.OVERLAY_BUTTON_OVERDRIVE_ON);
+    }
+
+    @Override
+    public void setMachineMode(int index) {
+        super.setMachineMode(index);
+        // change the texture if overdrive is enabled
+        this.getBaseMetaTileEntity()
+            .issueTextureUpdate();
     }
 
     @Override
@@ -534,8 +544,9 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             aActive,
             OVERLAY_FRONT_HEARTH,
             OVERLAY_FRONT_HEARTH_GLOW,
-            OVERLAY_FRONT_HEARTH_ACTIVE,
-            OVERLAY_FRONT_HEARTH_ACTIVE_GLOW);
+            machineMode == MODE_OVERDRIVE ? OVERLAY_FRONT_HEARTH_ACTIVE_OVERDRIVE : OVERLAY_FRONT_HEARTH_ACTIVE,
+            machineMode == MODE_OVERDRIVE ? OVERLAY_FRONT_HEARTH_ACTIVE_OVERDRIVE_GLOW
+                : OVERLAY_FRONT_HEARTH_ACTIVE_GLOW);
     }
 
     @Override

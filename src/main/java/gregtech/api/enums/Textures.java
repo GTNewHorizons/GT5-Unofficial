@@ -2185,6 +2185,8 @@ public class Textures {
             OVERLAY_FRONT_HEARTH_GLOW = createOptional("OVERLAY_FRONT_HEARTH_GLOW"),
             OVERLAY_FRONT_HEARTH_ACTIVE = createOptional("OVERLAY_FRONT_HEARTH_ACTIVE"),
             OVERLAY_FRONT_HEARTH_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_HEARTH_ACTIVE_GLOW"),
+            OVERLAY_FRONT_HEARTH_ACTIVE_OVERDRIVE = createOptional("OVERLAY_FRONT_HEARTH_ACTIVE_OVERDRIVE"),
+            OVERLAY_FRONT_HEARTH_ACTIVE_OVERDRIVE_GLOW = createOptional("OVERLAY_FRONT_HEARTH_ACTIVE_OVERDRIVE_GLOW"),
             NANOCHIP_MESH_INTERFACE_CASING = create("NANOCHIP_MESH_INTERFACE_CASING"),
             NANOCHIP_REINFORCEMENT_CASING = create("NANOCHIP_REINFORCEMENT_CASING"),
             NANOCHIP_FIREWALL_PROJECTION_CASING = create("NANOCHIP_FIREWALL_PROJECTION_CASING"),
@@ -2691,7 +2693,7 @@ public class Textures {
 
         /**
          * Registers a Custom Block {@link IIconContainer}
-         * 
+         *
          * @param domain    The resource domain
          * @param aIconName The colon-free resource path of the icon container
          * @return The {@link IIconContainer} instance
