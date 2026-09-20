@@ -2,9 +2,10 @@ package gregtech.api.objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -13,30 +14,27 @@ public class ItemData {
 
     private static final MaterialStack[] EMPTY_MATERIALSTACK_ARRAY = new MaterialStack[0];
 
-    public final List<Object> mExtraData = new GTArrayList<>(false, 1);
     public final OrePrefixes mPrefix;
     public final MaterialStack mMaterial;
+    @NotNull
     public final MaterialStack[] mByProducts;
-    public boolean mBlackListed = false;
+    public final boolean hasExplicitComposition;
     public ItemStack mUnificationTarget = null;
 
-    public ItemData(OrePrefixes aPrefix, Materials aMaterial, boolean aBlackListed) {
+    public ItemData(OrePrefixes aPrefix, Materials aMaterial) {
         mPrefix = aPrefix;
         mMaterial = aMaterial == null ? null : new MaterialStack(aMaterial, aPrefix.getMaterialAmount());
-        mBlackListed = aBlackListed;
         mByProducts = aPrefix.mSecondaryMaterial == null || aPrefix.mSecondaryMaterial.mMaterial == null
             ? EMPTY_MATERIALSTACK_ARRAY
             : new MaterialStack[] { aPrefix.mSecondaryMaterial.clone() };
-    }
-
-    public ItemData(OrePrefixes aPrefix, Materials aMaterial) {
-        this(aPrefix, aMaterial, false);
+        hasExplicitComposition = false;
     }
 
     public ItemData(MaterialStack aMaterial, MaterialStack... aByProducts) {
         mPrefix = null;
         mMaterial = aMaterial.mMaterial == null ? null : aMaterial.clone();
-        mBlackListed = true;
+        hasExplicitComposition = true;
+
         if (aByProducts == null) {
             mByProducts = EMPTY_MATERIALSTACK_ARRAY;
         } else {
@@ -58,37 +56,75 @@ public class ItemData {
         this(new MaterialStack(aMaterial, aAmount), new MaterialStack(aByProduct, aByProductAmount));
     }
 
-    public ItemData(ItemData... aData) {
+    /**
+     * Builds material composition from multiple ingredients.
+     * <p>
+     * Materials from all ingredients are merged and sorted by amount. The largest material becomes {@link #mMaterial},
+     * with the remaining materials stored as {@link #mByProducts}.
+     */
+    public ItemData(ItemData... ingredients) {
+        ArrayList<MaterialStack> materials = mergeMaterials(ingredients);
+
         mPrefix = null;
-        mBlackListed = true;
+        mMaterial = !materials.isEmpty() ? materials.removeFirst() : null;
+        mByProducts = !materials.isEmpty() ? materials.toArray(new MaterialStack[0]) : EMPTY_MATERIALSTACK_ARRAY;
+        hasExplicitComposition = true;
+    }
 
-        ArrayList<MaterialStack> aList = new ArrayList<>(), rList = new ArrayList<>();
+    /**
+     * Applies explicit material composition to an existing OreDict association.
+     * <p>
+     * The associated material remains {@link #mMaterial}.
+     * Its amount is taken from the explicit composition, all remaining materials become {@link #mByProducts}.
+     */
+    public ItemData(@NotNull ItemData association, @NotNull ItemData composition) {
+        ArrayList<MaterialStack> materials = mergeMaterials(composition);
+        MaterialStack associatedMaterial = null;
 
-        for (ItemData tData : aData) if (tData != null) {
-            if (tData.hasValidMaterialData() && tData.mMaterial.mAmount > 0) aList.add(tData.mMaterial.clone());
-            for (MaterialStack tMaterial : tData.mByProducts) if (tMaterial.mAmount > 0) aList.add(tMaterial.clone());
-        }
-
-        for (MaterialStack aMaterial : aList) {
-            boolean temp = true;
-            for (MaterialStack tMaterial : rList) if (aMaterial.mMaterial == tMaterial.mMaterial) {
-                tMaterial.mAmount += aMaterial.mAmount;
-                temp = false;
-                break;
+        if (association.mMaterial != null) {
+            for (int i = 0; i < materials.size(); i++) {
+                if (materials.get(i).mMaterial == association.mMaterial.mMaterial) {
+                    associatedMaterial = materials.remove(i);
+                    break;
+                }
             }
-            if (temp) rList.add(aMaterial.clone());
         }
 
-        rList.sort((a, b) -> Long.compare(b.mAmount, a.mAmount));
+        mPrefix = association.mPrefix;
+        mMaterial = associatedMaterial != null ? associatedMaterial : association.mMaterial;
+        mByProducts = !materials.isEmpty() ? materials.toArray(new MaterialStack[0]) : EMPTY_MATERIALSTACK_ARRAY;
+        hasExplicitComposition = true;
+    }
 
-        if (rList.isEmpty()) {
-            mMaterial = null;
-        } else {
-            mMaterial = rList.get(0);
-            rList.remove(0);
+    private static ArrayList<@NotNull MaterialStack> mergeMaterials(ItemData... dataArray) {
+        ArrayList<MaterialStack> materials = new ArrayList<>();
+
+        for (ItemData itemData : dataArray) {
+            if (itemData == null) continue;
+
+            if (itemData.mMaterial != null && itemData.mMaterial.mAmount > 0) {
+                mergeMaterial(materials, itemData.mMaterial);
+            }
+
+            for (MaterialStack material : itemData.mByProducts) {
+                if (material.mAmount > 0) {
+                    mergeMaterial(materials, material);
+                }
+            }
         }
 
-        mByProducts = rList.toArray(new MaterialStack[0]);
+        materials.sort((a, b) -> Long.compare(b.mAmount, a.mAmount));
+        return materials;
+    }
+
+    private static void mergeMaterial(ArrayList<MaterialStack> materials, MaterialStack material) {
+        for (MaterialStack existing : materials) {
+            if (existing.mMaterial == material.mMaterial) {
+                existing.mAmount += material.mAmount;
+                return;
+            }
+        }
+        materials.add(material.clone());
     }
 
     public final boolean hasValidPrefixMaterialData() {
