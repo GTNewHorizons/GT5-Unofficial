@@ -82,6 +82,7 @@ import gregtech.common.gui.modularui.multiblock.MTEExothermicHearthGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -493,6 +494,18 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                             PYROTHEUM_DRAIN_BASE * this.parallelModifier
                                 * (machineMode == MODE_OVERDRIVE ? OVERDRIVE_DRAIN_MULT : 1)))));
         }
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        this.machineMode = buffer.readInt();
+    }
+
+    @Override
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(this.machineMode);
     }
 
     private static final int pollutionPerSecond = 400 * 256;
