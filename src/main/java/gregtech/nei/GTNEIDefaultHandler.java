@@ -65,6 +65,7 @@ import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeCategorySetting;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -268,6 +269,13 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             }
         }
 
+        if (aResult != null && ItemList.Tool_DataStick.isStackEqual(aResult, false, true)) {
+            ItemStack output = AssemblyLineUtils.getDataStickOutput(aResult);
+            if (output != null) {
+                tResults.add(output);
+            }
+        }
+
         if (aResult != null) {
             List<ItemStack> ccRepresentations = CCNEIRepresentation.NEI_RECIPE_ASSOCIATIONS.get(aResult);
             if (ccRepresentations != null) {
@@ -339,6 +347,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                 tInputs.add(GTOreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+            }
+        }
+        if (aInput != null && ItemList.Tool_DataStick.isStackEqual(aInput, false, true)) {
+            ItemStack output = AssemblyLineUtils.getDataStickOutput(aInput);
+            if (output != null) {
+                tInputs.add(output);
             }
         }
         if (aInput != null) {
