@@ -45,13 +45,10 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     public FluidStack mFluid;
     // Due to class initializing order, getCapacity might not work properly at this time.
     // So we pass supplier instead of current value here.
-    public final FluidStackTank fluidTank = new FluidStackTank(
-        () -> mFluid,
-        fluidStack -> {
-            mFluid = fluidStack;
-            this.markDirty();
-        },
-        this::getRealCapacity);
+    public final FluidStackTank fluidTank = new FluidStackTank(() -> mFluid, fluidStack -> {
+        mFluid = fluidStack;
+        this.markDirty();
+    }, this::getRealCapacity);
 
     public FluidStackTank getFluidTank() {
         return fluidTank;
