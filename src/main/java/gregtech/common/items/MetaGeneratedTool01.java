@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.ToolDictNames;
@@ -58,6 +59,24 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
 
         initCraftingShapedRecipes();
         initCraftingShapelessRecipes();
+        hideResidualMetasFromNEI();
+    }
+
+    /**
+     * This item registers no tools any more, so {@link #getSubItems} (final in {@link MetaGeneratedTool}) never adds
+     * anything for it: {@code mToolStats} is empty for every metadata value. NEI doesn't take an empty result as
+     * "no subtypes" though -- for an item that reports {@code hasSubtypes() == true} (every {@code MetaBaseItem}
+     * does) but hands back nothing, it falls back to guessing metadata 0 through 15 itself, the same guess it'd make
+     * for a block's four-bit metadata range. That guess is wrong here: this item's real stacks, when the world
+     * converter leaves one behind, carry whatever old tool-type metadata the save had, not necessarily inside
+     * 0-15. Hiding that guessed range is enough to stop the false entries from showing in NEI's item list; it isn't
+     * meant to hide every metadata this item could theoretically hold.
+     */
+    private void hideResidualMetasFromNEI() {
+        if (!Mods.NotEnoughItems.isModLoaded()) return;
+        for (int i = 0; i < 16; i++) {
+            codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i));
+        }
     }
 
     private void initCraftingShapelessRecipes() {
