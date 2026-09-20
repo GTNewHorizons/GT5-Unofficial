@@ -69,8 +69,8 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     public static final String mGearboxName = "Inconel Reinforced Casing";
 
     private static final int LUBRICANT_CONSUMPTION_PER_HOUR = 1000;
-    private static final int MIN_FUEL_INPUT_PER_SECOND = 5;
-    private static final int COOLANT_BOOST_PERCENT = 3;
+    private static final int MIN_FUEL_INPUT_PER_SECOND = 6;
+    private static final int COOLANT_BOOST_PERCENT = 0.3;
     private static final int AIR_PERCENT = 1;
     private static final int SOFT_CAP_1 = 49_000;
     private static final int SOFT_CAP_2 = 94_000;
