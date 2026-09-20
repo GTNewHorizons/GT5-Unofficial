@@ -107,8 +107,6 @@ public class GTGenericItem extends Item implements IProjectileItem {
                 GTSplit.splitLocalizedFormatted(aList, mTooltip);
             }
         }
-        if (GTModHandler.isElectricItem(aStack)) aList.add(
-            StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier.s", formatNumber(getTier(aStack))));
         addAdditionalToolTips(aList, aStack, aPlayer);
     }
 
