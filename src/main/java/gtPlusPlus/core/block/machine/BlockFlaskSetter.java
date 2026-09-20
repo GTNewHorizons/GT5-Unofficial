@@ -6,15 +6,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.block.base.BasicTileBlockWithTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -54,10 +54,9 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
         }
         // Check For Screwdriver
         try {
-            final ItemStack mHandStack = player.getHeldItem();
-            final Item mHandItem = mHandStack.getItem();
-            if (((mHandItem instanceof MetaGeneratedTool01)
-                && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
+            // Screwdrivers are their own items with the material in the metadata now, so the shared list is
+            // what recognises all of them -- and it looks inside a GT toolbox too, which the old check could not.
+            if (GTUtility.isStackInList(player.getHeldItem(), GregTechAPI.sScrewdriverList)) {
                 final TileEntityVolumetricFlaskSetter tile = (TileEntityVolumetricFlaskSetter) world
                     .getTileEntity(x, y, z);
                 if (tile != null) {

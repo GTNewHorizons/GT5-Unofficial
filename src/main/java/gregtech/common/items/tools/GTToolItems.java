@@ -53,7 +53,7 @@ import gregtech.common.tools.ToolWrenchMV;
  * The standalone tool items: one registered Forge item per tool type and tier, with the crafting material encoded in
  * the metadata.
  * <p/>
- * Tool types move here from {@link gregtech.common.items.MetaGeneratedTool01} one at a time; the wrench is the pilot.
+ * Every tool type lives here now; {@link gregtech.common.items.MetaGeneratedTool01} holds none.
  */
 public final class GTToolItems {
 

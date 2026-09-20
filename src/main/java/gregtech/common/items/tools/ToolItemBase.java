@@ -66,8 +66,8 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
  * <p/>
  * Everything here is true of any such tool: how a material is declared, where durability and mode live, and how the
  * stack mines, fights, wears out and describes itself. A subclass adds what makes its tool that tool -- the cross-mod
- * interfaces it honours, what right-clicking a block does, and the lines that say so in the tooltip. Tool types move
- * across from {@link gregtech.common.items.MetaGeneratedTool01} one at a time; see {@link GTToolItems}.
+ * interfaces it honours, what right-clicking a block does, and the lines that say so in the tooltip. Every tool type
+ * has made the move; see {@link GTToolItems}.
  */
 public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDamagableItem {
 

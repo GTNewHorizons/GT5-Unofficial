@@ -265,8 +265,6 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                     base,
                     toolName,
                     potentialTool.map(currentTool -> {
-                        if (currentTool.getItem() instanceof final MetaGeneratedTool mgToolItem)
-                            return mgToolItem.getToolModeName(currentTool);
                         if (currentTool.getItem() instanceof final ToolItemBase toolItem)
                             return toolItem.getToolModeName(currentTool);
                         return "";

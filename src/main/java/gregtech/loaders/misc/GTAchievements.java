@@ -31,8 +31,6 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.common.items.IDMetaTool01;
-import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.tools.GTToolItems;
 import ic2.core.Ic2Items;
 import thaumcraft.api.ThaumcraftApiHelper;
@@ -96,12 +94,7 @@ public class GTAchievements {
             "hammertime",
             3,
             7,
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                IDMetaTool01.JACKHAMMER_HV.ID,
-                1,
-                Materials.TungstenSteel,
-                Materials.TungstenSteel,
-                null),
+            GTToolItems.JACKHAMMER_HV.getToolWithMaterial(Materials.TungstenSteel),
             "highpowerdrill",
             false);
 

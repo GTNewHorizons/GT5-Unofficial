@@ -51,7 +51,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -376,7 +375,9 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     public boolean onRightclick(IGregTechTileEntity base, EntityPlayer player, ForgeDirection side, float aX, float aY,
         float aZ) {
         ItemStack tCurrentItem = player.inventory.getCurrentItem();
-        if (tCurrentItem != null && tCurrentItem.getItem() instanceof MetaGeneratedTool) {
+        // The ore dictionary entry is the test. There used to be an "is it a GregTech tool" gate in front of it,
+        // which stopped matching anything once the plunger became its own item.
+        if (tCurrentItem != null) {
             int[] aOreID = OreDictionary.getOreIDs(tCurrentItem);
             for (int id : aOreID) {
                 if (OreDictionary.getOreName(id)

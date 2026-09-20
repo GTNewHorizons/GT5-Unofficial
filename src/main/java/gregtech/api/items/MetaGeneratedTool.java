@@ -62,9 +62,14 @@ import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
 
 /**
- * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
- * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(MetaGeneratedTool01.WRENCH, 1,
- * Materials.Bismuth, Materials.Bismuth, null);
+ * The old tool item family: the metadata is the tool type and the material lives in NBT. Nothing registers a tool
+ * here any more -- every type is its own item under {@link gregtech.common.items.tools.GTToolItems}, with the
+ * material in the metadata -- so the one surviving subclass, {@code MetaGeneratedTool01}, holds no tools and exists
+ * to keep its registry name available for the world converter.
+ * <p/>
+ * The class stays because a good deal of it is still shared: the static accessors below ({@code getPrimaryMaterial},
+ * {@code getToolMode} and friends) dispatch through {@link IGTTool} and so serve both families, and are what most
+ * call sites should use rather than naming either item class.
  */
 @Optional.InterfaceList(
     value = { @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O), })

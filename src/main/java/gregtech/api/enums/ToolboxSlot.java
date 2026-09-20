@@ -19,7 +19,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IGTTool;
 import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.GTHashSet;
 import gregtech.api.util.GTUtility;
@@ -161,20 +160,11 @@ public enum ToolboxSlot {
                 return false;
             }
 
-            ItemStack copy = itemStack;
-
-            // A discharged metadata-based electric tool sits on an "empty" metadata that is not in the tool lists, so
-            // it would not be recognized. Get around this by adding 1 EU to a copy of the tool. The standalone tool
-            // items keep the same metadata whatever their charge, so they need no such dance.
-            if (itemStack.getItem() instanceof final MetaGeneratedTool mgTool
-                && mgTool.getElectricStats(itemStack) != null
-                && mgTool.getRealCharge(itemStack) == 0) {
-                copy = itemStack.copy();
-                mgTool.charge(copy, 1, Integer.MAX_VALUE, true, false);
-            }
-
+            // A discharged metadata-based electric tool used to sit on an "empty" metadata that was not in the
+            // tool lists, and had to be handed a copy with 1 EU in it to be recognized. The standalone tool items
+            // keep the same metadata whatever their charge, so the stack can simply be tested as it is.
             for (final GTHashSet toolType : toolSet) {
-                if (GTUtility.isStackInList(copy, toolType)) {
+                if (GTUtility.isStackInList(itemStack, toolType)) {
                     return true;
                 }
             }

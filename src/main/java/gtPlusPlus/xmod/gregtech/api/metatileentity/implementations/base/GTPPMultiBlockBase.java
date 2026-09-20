@@ -16,6 +16,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import gregtech.common.items.tools.ToolPlungerItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -53,7 +54,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -612,15 +612,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             .isServerSide()) {
             ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
-                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
-                    int[] aOreID = OreDictionary.getOreIDs(tCurrentItem);
-                    for (int id : aOreID) {
-                        // Plunger
-                        if (OreDictionary.getOreName(id)
-                            .equals("craftingToolPlunger")) {
-                            return onPlungerRightClick(aPlayer, side, aX, aY, aZ);
-                        }
-                    }
+                if (tCurrentItem.getItem() instanceof ToolPlungerItem) {
+                        return onPlungerRightClick(aPlayer, side, aX, aY, aZ);
                 }
             }
         }
