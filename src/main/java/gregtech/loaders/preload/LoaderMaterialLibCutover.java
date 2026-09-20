@@ -50,6 +50,7 @@ public class LoaderMaterialLibCutover implements Runnable {
             for (int id = 0; id < 1000; id++) {
                 Material material = LegacyMaterialIDIndex.get(id);
                 if (material == null || !prefix.doGenerateItem(material)) continue;
+                if (!MaterialParts.isMinted(prefix, material)) continue;
                 ItemStack stack = MaterialParts.stack(prefix, material, 1);
                 if (stack == null) continue;
                 unify(prefix, material, stack);
@@ -91,6 +92,7 @@ public class LoaderMaterialLibCutover implements Runnable {
         for (Material material : MaterialLibAPI.getMaterials()) {
             if (material.getProperty(GTMaterialProperties.LEGACY_NAME) == null) continue;
             for (OrePrefixes prefix : OrePrefixes.VALUES) {
+                if (!MaterialParts.isMinted(prefix, material)) continue;
                 ItemStack stack = MaterialParts.stack(prefix, material, 1);
                 if (stack == null) continue;
                 unify(prefix, material, stack);

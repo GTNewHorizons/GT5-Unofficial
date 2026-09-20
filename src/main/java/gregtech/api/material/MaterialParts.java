@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
@@ -14,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
+import com.ruling_0.materiallib.api.ShapeBlock;
+import com.ruling_0.materiallib.api.ShapeItem;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.CellShapes;
@@ -105,6 +109,26 @@ public class MaterialParts {
     /// leaves it off `cell`'s MaterialLib membership.
     public static boolean isCutOver(OrePrefixes prefix, @Nullable Material material) {
         return servedShape(prefix, material) != null;
+    }
+
+    /// Whether MaterialLib's own item or block of the pair's shape carries `material`. False for a pair with no
+    /// MaterialLib backing and for one a foreign item stands in for (`gem` Diamond is the vanilla diamond), whose
+    /// stack other mods register and, for another mod's item, cannot be fetched before MaterialLib's init.
+    public static boolean isMinted(OrePrefixes prefix, @Nullable Material material) {
+        Shape shape = servedShape(prefix, material);
+        if (shape == null) return false;
+        return MINTED.computeIfAbsent(shape, MaterialParts::mintedMaterials)
+            .contains(material);
+    }
+
+    private static final Map<Shape, Set<Material>> MINTED = new IdentityHashMap<>();
+
+    private static Set<Material> mintedMaterials(Shape shape) {
+        Material[] served = shape instanceof ShapeItem item ? item.getServedMaterials()
+            : shape instanceof ShapeBlock block ? block.getServedMaterials() : new Material[0];
+        Set<Material> minted = Collections.newSetFromMap(new IdentityHashMap<>());
+        Collections.addAll(minted, served);
+        return minted;
     }
 
     /// The first of `prefix`'s candidate shapes that `material` generates, or null when it generates none.

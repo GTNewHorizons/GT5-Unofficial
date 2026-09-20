@@ -5,21 +5,32 @@ import static gregtech.GTLoggers.GT_FML_LOGGER;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizons.horizonqa.api.GameTestHelper;
 import com.gtnewhorizons.horizonqa.api.annotation.GameTest;
 import com.gtnewhorizons.horizonqa.api.annotation.GameTestHolder;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
-/// Pins the unification targets that `OreDictUnificationOverrides` assigns to GregTech. The override
-/// table keys on the registering mod, and most competing registrations reach GregTech through
-/// `GTProxy#catchUpPreExistingOreDictEntries` rather than a live event, so the replay's mod attribution
-/// decides whether a foreign stack is able to claim a GregTech-preferred name.
+/// Pins which item stands for a material part when several mods register one. GregTech-preferred names must
+/// keep a GregTech item although most competing registrations reach GregTech through
+/// `GTProxy#catchUpPreExistingOreDictEntries` rather than a live event; pairs declared with a shape override
+/// must resolve to the overriding item through every lookup.
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class UnificationOverrideTests {
 
@@ -44,6 +55,100 @@ public class UnificationOverrideTests {
             foreignTargets.isEmpty(),
             "GregTech-preferred ore names unify to foreign items: " + foreignTargets);
         helper.succeed();
+    }
+
+    /// A pair served by a shape override has one item everywhere: MaterialLib, the unificator's prefix lookup
+    /// and the association other mods read a vanilla stack's material from.
+    @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
+    public static void overriddenPairsResolveToTheirVanillaItemEverywhere(GameTestHelper helper) {
+        List<String> mismatches = new ArrayList<>();
+        expectOverride(mismatches, OrePrefixes.gem, Shapes.gem, Materials.Diamond, Items.diamond, 0);
+        expectOverride(mismatches, OrePrefixes.gem, Shapes.gem, Materials.Lapis, Items.dye, 4);
+        expectOverride(mismatches, OrePrefixes.gem, Shapes.gem, Materials.Charcoal, Items.coal, 1);
+        expectOverride(mismatches, OrePrefixes.ingot, Shapes.ingot, Materials.Iron, Items.iron_ingot, 0);
+        expectOverride(mismatches, OrePrefixes.nugget, Shapes.nugget, Materials.Gold, Items.gold_nugget, 0);
+        expectOverride(mismatches, OrePrefixes.dust, Shapes.dust, Materials.Redstone, Items.redstone, 0);
+        expectOverride(mismatches, OrePrefixes.dust, Shapes.dust, Materials.Bone, Items.dye, 15);
+        expectOverride(mismatches, OrePrefixes.stick, Shapes.stick, Materials.Wood, Items.stick, 0);
+        expectOverride(mismatches, OrePrefixes.plate, Shapes.plate, Materials.Paper, Items.paper, 0);
+        expectOverride(
+            mismatches,
+            OrePrefixes.block,
+            BlockShapes.block,
+            Materials.Iron,
+            Item.getItemFromBlock(Blocks.iron_block),
+            0);
+        expectOverride(
+            mismatches,
+            OrePrefixes.block,
+            BlockShapes.block,
+            Materials.Gold,
+            Item.getItemFromBlock(Blocks.gold_block),
+            0);
+        helper.assertTrue(mismatches.isEmpty(), "Overridden pairs disagree: " + mismatches);
+        helper.succeed();
+    }
+
+    /// The same agreement for pairs served by another mod's item, skipping mods that are not installed.
+    @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
+    public static void overriddenPairsResolveToTheirForeignItemEverywhere(GameTestHelper helper) {
+        List<String> mismatches = new ArrayList<>();
+        expectForeign(mismatches, OrePrefixes.ingot, Shapes.ingot, Materials.DarkSteel, "EnderIO", "itemAlloy", 6);
+        expectForeign(mismatches, OrePrefixes.ingot, Shapes.ingot, Materials.Thaumium, "Thaumcraft", "ItemResource", 2);
+        expectForeign(mismatches, OrePrefixes.nugget, Shapes.nugget, Materials.Void, "Thaumcraft", "ItemNugget", 7);
+        expectForeign(
+            mismatches,
+            OrePrefixes.dust,
+            Shapes.dust,
+            Materials.Draconium,
+            "DraconicEvolution",
+            "draconiumDust",
+            0);
+        expectForeign(
+            mismatches,
+            OrePrefixes.dust,
+            Shapes.dust,
+            Materials.Electrotine,
+            "ProjRed|Core",
+            "projectred.core.part",
+            56);
+        expectForeign(mismatches, OrePrefixes.ingot, Shapes.ingot, Materials.Infinity, "Avaritia", "Resource", 6);
+        expectForeign(mismatches, OrePrefixes.ingot, Shapes.ingot, Materials.Manasteel, "Botania", "manaResource", 0);
+        expectForeign(
+            mismatches,
+            OrePrefixes.nugget,
+            Shapes.nugget,
+            Materials.Terrasteel,
+            "Botania",
+            "manaResource",
+            18);
+        helper.assertTrue(mismatches.isEmpty(), "Overridden pairs disagree: " + mismatches);
+        helper.succeed();
+    }
+
+    private static void expectForeign(List<String> mismatches, OrePrefixes prefix, Shape shape, Material material,
+        String modid, String itemName, int meta) {
+        Item item = GameRegistry.findItem(modid, itemName);
+        if (item != null) expectOverride(mismatches, prefix, shape, material, item, meta);
+    }
+
+    private static void expectOverride(List<String> mismatches, OrePrefixes prefix, Shape shape, Material material,
+        Item item, int meta) {
+        String pair = prefix + " " + material.getName();
+        ItemStack fromMaterialLib = MaterialLibAPI.getStack(material, shape, 1);
+        if (fromMaterialLib.getItem() != item || fromMaterialLib.getItemDamage() != meta) {
+            mismatches.add(pair + ": MaterialLib serves " + describe(fromMaterialLib));
+        }
+        ItemStack unified = GTOreDictUnificator.get(prefix, material, 1);
+        if (unified == null || unified.getItem() != item || unified.getItemDamage() != meta) {
+            mismatches.add(pair + ": unificator serves " + describe(unified));
+        }
+        ItemData association = GTOreDictUnificator.getAssociation(new ItemStack(item, 1, meta));
+        if (association == null || association.mPrefix != prefix
+            || association.mMaterial == null
+            || association.mMaterial.mMaterial != material) {
+            mismatches.add(pair + ": association is " + association);
+        }
     }
 
     private static String ownerOf(ItemStack stack) {
