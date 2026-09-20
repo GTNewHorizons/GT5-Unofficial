@@ -117,7 +117,7 @@ public class MTEHeatSensor extends MTEHatch {
         if (aBaseMetaTileEntity.isServerSide()) {
             for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
                 aBaseMetaTileEntity
-                    .setStrongOutputRedstoneSignal(direction, isOn && direction == facing ? (byte) 15 : 0);
+                    .setOutputRedstoneSignal(direction, isOn && direction == facing ? (byte) 15 : (byte) 0);
             }
         }
     }

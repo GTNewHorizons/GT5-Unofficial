@@ -32,6 +32,7 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -44,6 +45,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.common.entity.EntityDrone;
 import gregtech.common.gui.modularui.hatch.MTEHatchDroneDownLinkGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -87,12 +89,18 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(moduleActive) };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(moduleActive)
+            .extFacing()
+            .build() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(moduleActive) };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(moduleActive)
+            .extFacing()
+            .build() };
     }
 
     @Override
@@ -171,19 +179,22 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
         float aX, float aY, float aZ) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         ItemStack heldItem = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) {
-            if (side == aBaseMetaTileEntity.getFrontFacing()) {
-                if (aPlayer instanceof FakePlayer) return false;
-                openGui(aPlayer);
-                return true;
-            }
-            return false;
-        } else {
+        ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
+
+        if (ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) {
             if (!pasteCopiedData(aPlayer, heldItem.stackTagCompound)) return false;
             aPlayer.addChatMessage(
                 new ChatComponentText(StatCollector.translateToLocal("GT5U.gui.text.drone_key") + ": " + this.key));
             return true;
         }
+
+        if (side != frontFacing || aPlayer instanceof FakePlayer
+            || GTUtility.isStackInList(heldItem, GregTechAPI.sWrenchList)) {
+            return false;
+        }
+
+        openGui(aPlayer);
+        return true;
     }
 
     @Override
@@ -394,10 +405,14 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
 
             int i = 0;
             for (DroneConnection connection : connections) {
-                if (connection.getCustomName() != null) {
+                // Send the lang key for unnamed machines so the client localizes it
+                if (connection.hasCustomName()) {
                     tag.setString("name" + i, connection.getCustomName());
-                    i++;
+                } else {
+                    tag.setString("name" + i, connection.getUnlocalizedName());
+                    tag.setBoolean("localize" + i, true);
                 }
+                i++;
             }
         }
     }
@@ -417,7 +432,9 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
             if (tag.hasKey("name0")) {
                 int i = 0;
                 while (tag.hasKey("name" + i)) {
-                    currenttip.add(EnumChatFormatting.YELLOW + tag.getString("name" + i));
+                    String name = tag.getString("name" + i);
+                    if (tag.getBoolean("localize" + i)) name = StatCollector.translateToLocal(name);
+                    currenttip.add(EnumChatFormatting.YELLOW + name);
                     i++;
                 }
             }

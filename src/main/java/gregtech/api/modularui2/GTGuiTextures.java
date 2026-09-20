@@ -1819,6 +1819,16 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+    public static final UITexture TT_PICTURE_UNCERTAINTY_ASSIST_OFF = UITexture.builder()
+        .location(MODID, "gui/overlay_button/uncertainty_assist_off")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture TT_PICTURE_UNCERTAINTY_ASSIST_ON = UITexture.builder()
+        .location(MODID, "gui/overlay_button/uncertainty_assist_on")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     // endregion button overlay
 
     // region picture
