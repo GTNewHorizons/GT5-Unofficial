@@ -371,7 +371,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             // Get amount of items for the loot chests, randomize it (1-num) if enabled
             int tNumLootItems;
             if (asteroidConfig.RandomizeNumLootItems) {
-                tNumLootItems = rng.nextInt(asteroidConfig.NumLootItems - 1) + 1;
+                tNumLootItems = rng.nextInt(asteroidConfig.NumLootItems) + 1;
             } else {
                 tNumLootItems = asteroidConfig.NumLootItems;
             }
