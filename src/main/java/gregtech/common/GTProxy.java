@@ -456,7 +456,8 @@ public class GTProxy implements IFuelHandler {
     public void catchUpPreExistingOreDictEntries() {
         for (String tOreName : OreDictionary.getOreNames()) {
             for (ItemStack itemStack : OreDictionary.getOres(tOreName)) {
-                registerOre(new OreDictionary.OreRegisterEvent(tOreName, itemStack));
+                OreDictRegistrationHandler
+                    .registerPreExistingOre(new OreDictionary.OreRegisterEvent(tOreName, itemStack));
             }
         }
     }

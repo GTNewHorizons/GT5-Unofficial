@@ -15,12 +15,14 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.ruling_0.materiallib.MaterialLib;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ProgressManager;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -149,11 +151,23 @@ public final class OreDictRegistrationHandler {
     private static boolean bufferRegistrationProcessing = true;
 
     public static void registerOre(OreDictionary.OreRegisterEvent event) {
-        if (!GTMod.sMaterialsReady) return;
-
         ModContainer container = Loader.instance()
             .activeModContainer();
-        String modId = container == null ? "UNKNOWN" : container.getModId();
+        registerOre(event, container == null ? "UNKNOWN" : container.getModId());
+    }
+
+    /// Replays a registration that happened before this handler was listening, credited to the mod owning
+    /// the stack's item. MaterialLib-owned stacks are GregTech's material items, so they count as GregTech's
+    /// for [OreDictUnificationOverrides].
+    public static void registerPreExistingOre(OreDictionary.OreRegisterEvent event) {
+        GameRegistry.UniqueIdentifier id = event.Ore == null || event.Ore.getItem() == null ? null
+            : GameRegistry.findUniqueIdentifierFor(event.Ore.getItem());
+        String modId = id == null ? "UNKNOWN" : id.modId;
+        registerOre(event, MaterialLib.MODID.equals(modId) ? Mods.GregTech.ID : modId);
+    }
+
+    private static void registerOre(OreDictionary.OreRegisterEvent event, String modId) {
+        if (!GTMod.sMaterialsReady) return;
 
         if (event == null || event.Ore == null
             || event.Ore.getItem() == null
