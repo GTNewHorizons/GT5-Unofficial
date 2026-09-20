@@ -70,7 +70,6 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     private static final int LUBRICANT_CONSUMPTION_PER_HOUR = 1000;
     private static final int MIN_FUEL_INPUT_PER_SECOND = 6;
-    private static final int COOLANT_BOOST_PERCENT = 0.3;
     private static final int AIR_PERCENT = 1;
     private static final int SOFT_CAP_1 = 49_000;
     private static final int SOFT_CAP_2 = 94_000;
@@ -79,6 +78,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     private static final int WARMUP_MAX_SECONDS = 180;
     private static final int POLLUTION_PER_EUT = 1500;
     private static final int POLLUTION_EUT_UNIT = 16384;
+    private static final double COOLANT_BOOST_PERCENT = 0.3;
 
     private static Fluid sAirFluid = null;
     private static FluidStack sAirFluidStack = null;
