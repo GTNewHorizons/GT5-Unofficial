@@ -396,7 +396,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (aMaterial.mStandardMoltenFluid != null) {
+        if (aMaterial.mStandardMoltenFluid != null
+            && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Casing.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L))

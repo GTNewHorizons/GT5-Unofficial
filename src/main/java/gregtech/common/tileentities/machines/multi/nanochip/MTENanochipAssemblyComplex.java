@@ -559,6 +559,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     // duration only gets applied if the CircuitCalibration Metadata key is present on the recipe and is active on the
     // NAC
     public float globalDurationMultiplier = 1;
+    public boolean primitiveT1Active = false;
+    public boolean primitiveT2Active = false;
+    public boolean primitiveT3Active = false;
     public boolean crystalT3Active = false;
     public boolean wetwareT3Active = false;
     public boolean bioT3Active = false;
@@ -574,6 +577,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public void resetCalibrationValues() {
         globalEUMultiplier = 1;
         globalDurationMultiplier = 1;
+        primitiveT1Active = false;
+        primitiveT2Active = false;
+        primitiveT3Active = false;
         crystalT3Active = false;
         wetwareT3Active = false;
         bioT3Active = false;
