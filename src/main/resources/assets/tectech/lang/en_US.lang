@@ -1864,7 +1864,7 @@ tt.gui.text.hatch.status.inactive=Inactive
 
 tt.gui.tooltip.full_led_desc.in.id=ID: %s:%s:§bI %s
 tt.gui.tooltip.full_led_desc.out.id=ID: %s:%s:§bO %s
-tt.gui.tooltip.full_led_desc.value=Value: %s
+tt.gui.tooltip.full_led_desc.value=Value: §b%s
 tt.gui.tooltip.full_led_desc.unused=Unused
 
 EOH_Controller_PlanetBlock=Current Planet Block: %s
