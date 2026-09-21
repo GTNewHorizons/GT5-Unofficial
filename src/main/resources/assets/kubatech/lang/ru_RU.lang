@@ -197,7 +197,7 @@ KT.research.ultimatetea=Вы нашли способ преобразовать 
 kubatech.tooltip.tea=Чай
 kubatech.tooltip.tea_acceptor.0=Принимает предметы "Чай" и добавляет их в вашу сеть
 kubatech.tooltip.tea_acceptor.1=Может принимать до 10 стаков за тик
-kubatech.tooltip.tea_storage.0=Расширяет хранилище чая на %s
+kubatech.tooltip.tea_storage.0=Расширяет хранилище чая на §c%s
 kubatech.tooltip.tea_ingredient.0=Это ингредиент чая
 
 kubatech.tooltip.structure.flowers=Цветы

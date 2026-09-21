@@ -9573,6 +9573,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hatch_DroneDownLink.set(
             new MTEHatchDroneDownLink(DroneDownLink.ID, "hatch.dronedownlink", "Drone DownLink Module", 5)
                 .getStackForm(1));
+        API.setAliases(ItemList.Hatch_DroneDownLink.get(1L), "gt.blockmachines.hatch.maintenance.name");
         ItemList.Hatch_DataAccess_EV.set(
             new MTEHatchDataAccess(DATA_ACCESS_HATCH.ID, "hatch.dataaccess", "Data Access Hatch", 4).getStackForm(1L));
         ItemList.Hatch_DataAccess_LuV.set(
