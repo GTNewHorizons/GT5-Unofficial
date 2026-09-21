@@ -50,11 +50,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.MaterialArcSmeltHelper;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -313,22 +311,6 @@ public class GTRecipeRegistrator {
         boolean isRecycle = true;
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (!LegacyNameDomain.contains(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
-                .isEmpty()) {
-                // A shapeless wildcard backing never defaults to smelting into itself.
-                boolean declaresSmeltTarget = tMaterial.mMaterial.getProperty(GTMaterialProperties.SMELT_INTO) != null
-                    || tMaterial.mMaterial.getProperty(GTMaterialProperties.ARC_SMELT_INTO) != null;
-                Material arcTarget = declaresSmeltTarget
-                    ? MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial))
-                    : null;
-                if (arcTarget == null) {
-                    tMaterial.mAmount = 0;
-                } else {
-                    tMaterial.mMaterial = arcTarget;
-                }
-                continue;
-            }
-
             if (tMaterial.mMaterial == Materials.Iron || tMaterial.mMaterial == Materials.Copper
                 || tMaterial.mMaterial == Materials.CastIron
                 || tMaterial.mMaterial == Materials.AnnealedCopper) {
@@ -363,8 +345,7 @@ public class GTRecipeRegistrator {
                 tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }
-            if (MaterialParts.stack(OrePrefixes.ingot, MaterialFacades.resolveWildcard(tMaterial.mMaterial), 1)
-                != null) {
+            if (MaterialParts.stack(OrePrefixes.ingot, tMaterial.mMaterial, 1) != null) {
                 tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }
@@ -382,9 +363,7 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            boolean shapeless = !LegacyNameDomain.contains(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
-                .isEmpty();
-            tAmount += tMaterial.mAmount * (shapeless ? 0 : MaterialUtils.mass(tMaterial.mMaterial));
+            tAmount += tMaterial.mAmount * MaterialUtils.mass(tMaterial.mMaterial);
         }
 
         ArrayList<ItemStack> outputs = new ArrayList<>();

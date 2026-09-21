@@ -25,7 +25,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -80,8 +79,7 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.set(OrePrefixes.bottle, Materials.Water, new ItemStack(Items.potionitem, 1, 0));
 
         GTOreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Iridium, GTModHandler.getIC2Item("iridiumPlate", 1L));
-        GTOreDictUnificator
-            .set(OrePrefixes.plateAlloy, RecognitionMaterials.Advanced, GTModHandler.getIC2Item("advancedAlloy", 1L));
+        GTOreDictUnificator.set(OrePrefixes.plateAlloy, "Advanced", GTModHandler.getIC2Item("advancedAlloy", 1L));
         GTOreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Carbon, GTModHandler.getIC2Item("carbonPlate", 1L));
 
         GTOreDictUnificator.set(OrePrefixes.ore, Materials.Coal, new ItemStack(Blocks.coal_ore, 1));
@@ -130,8 +128,7 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.registerOre(OrePrefixes.stoneMossy, new ItemStack(Blocks.stonebrick, 1, 1));
         GTOreDictUnificator.registerOre(OrePrefixes.stoneCracked, new ItemStack(Blocks.stonebrick, 1, 2));
         GTOreDictUnificator.registerOre(OrePrefixes.stoneChiseled, new ItemStack(Blocks.stonebrick, 1, 3));
-        GTOreDictUnificator
-            .registerOre(OrePrefixes.stone, RecognitionMaterials.Sand, new ItemStack(Blocks.sandstone, 1, 32767));
+        GTOreDictUnificator.registerOre("stoneSand", new ItemStack(Blocks.sandstone, 1, 32767));
         GTOreDictUnificator
             .registerOre(OrePrefixes.stone, Materials.Netherrack, new ItemStack(Blocks.netherrack, 1, 32767));
         GTOreDictUnificator

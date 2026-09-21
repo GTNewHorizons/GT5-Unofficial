@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.chains;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
+import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
@@ -47,15 +48,12 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -77,7 +75,7 @@ public class NetheriteRecipes {
                     GregtechItemList.RedAlgaeBiomass.get(32),
                     MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, 32))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade1PurifiedWater, FluidShapes.fluidLiquid, 8000))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 8))
+                .itemOutputs(getModItem(Botania.ID, "manaResource", 8, 10, missing))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(autoclaveRecipes);
@@ -89,14 +87,14 @@ public class NetheriteRecipes {
                         GTBees.combs.getStackForType(CombType.PRISMATIC, 8))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(Materials.Grade1PurifiedWater, FluidShapes.fluidLiquid, 8000))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 16))
+                    .itemOutputs(getModItem(Botania.ID, "manaResource", 16, 10, missing))
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(autoclaveRecipes);
             }
 
             GTValues.RA.stdBuilder() // Leaching
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 24))
+                .itemInputs(getModItem(Botania.ID, "manaResource", 24, 10, missing))
                 .fluidInputs(
                     new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 4000),
                     new FluidStack(GTPPFluids.HydrogenPeroxide, 4000))
@@ -108,7 +106,7 @@ public class NetheriteRecipes {
                 .addTo(dissolutionTankRecipes);
 
             GTValues.RA.stdBuilder() // Looped Leaching
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 6))
+                .itemInputs(getModItem(Botania.ID, "manaResource", 6, 10, missing))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.prismarinecontaminatedhydrogenperoxide, FluidShapes.fluidLiquid, 6000),

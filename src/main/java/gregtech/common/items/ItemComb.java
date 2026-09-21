@@ -59,7 +59,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
@@ -499,7 +498,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             30 * 100);
 
         // Metals Line
-        addProcessGT(CombType.SLAG, RecognitionMaterials.Limestone, Voltage.LV);
         addProcessGT(CombType.COPPER, new Material[] { Materials.Copper }, Voltage.LV);
         addProcessGT(CombType.TIN, new Material[] { Materials.Tin }, Voltage.LV);
         addProcessGT(CombType.LEAD, new Material[] { Materials.Lead }, Voltage.LV);

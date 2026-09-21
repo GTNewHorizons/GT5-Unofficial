@@ -29,7 +29,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -765,12 +764,9 @@ public class GTOreDictUnificator {
     }
 
     /// The MaterialLib part backing a legacy (prefix, material) pair at `amount`, stack-clamped like [#get] and
-    /// null for a pair MaterialLib does not serve, such as any prefix of the shapeless `NULL` placeholder. A
-    /// wildcard marker answers with the part of the material [MaterialFacades#resolveWildcard] names, so a
-    /// composition holding one recycles into that material's parts. Honours the component-disabling config the
-    /// pair's prefix takes part in.
+    /// null for a pair MaterialLib does not serve, such as any prefix of the shapeless `NULL` placeholder.
+    /// Honours the component-disabling config the pair's prefix takes part in.
     private static ItemStack part(OrePrefixes prefix, Material material, long amount) {
-        material = MaterialFacades.resolveWildcard(material);
         if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
             return null;
         return GTUtility.copyAmount((int) amount, MaterialParts.stack(prefix, material, 1));

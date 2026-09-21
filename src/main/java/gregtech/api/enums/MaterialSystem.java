@@ -8,7 +8,6 @@ import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.PipeMaterials;
-import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.ShapeData;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
@@ -16,9 +15,8 @@ import gregtech.api.enums.materials.XModMaterials;
 
 public class MaterialSystem {
 
-    // Shapes and families come first: the material tables pass them as objects. RecognitionMaterials must
-    // follow Materials so it binds the real material behind a shared name. PipeMaterials runs last: its rows
-    // reference the material fields the passes above assign, as do XModMaterials' shape edits.
+    // Shapes and families come first: the material tables pass them as objects. PipeMaterials runs last: its
+    // rows reference the material fields the passes above assign, as do XModMaterials' shape edits.
     public static void init() {
         FluidShapes.init();
         CellShapes.init();
@@ -30,7 +28,6 @@ public class MaterialSystem {
         Materials.init();
         XModMaterials.init();
         MaterialFacades.registerBackingMaterials();
-        RecognitionMaterials.registerBackingMaterials();
         PipeMaterials.init();
         ShapeData.init();
     }

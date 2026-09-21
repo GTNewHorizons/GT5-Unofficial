@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static goodgenerator.loader.Loaders.advancedRadiationProtectionPlate;
+import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -32,7 +33,6 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
@@ -316,7 +316,7 @@ public class RecipeLoaderChemicalSkips {
         // Prismarine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 12),
+                getModItem(Botania.ID, "manaResource", 12, 10),
                 MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dust, 32))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000),
@@ -597,7 +597,7 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.dust, 64),
-                GTOreDictUnificator.get(OrePrefixes.shard, RecognitionMaterials.Prismarine, 64),
+                getModItem(Botania.ID, "manaResource", 64, 10),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.CrystalColorizationCatalyst.get(1))

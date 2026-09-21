@@ -13,9 +13,8 @@ import gregtech.api.enums.materials.Materials;
 /// The legacy material name domain: the by-name resolution seam for consumers that resolve a legacy material
 /// name to its MaterialLib counterpart and treat a miss as a plain null.
 ///
-/// Distinct from [MaterialUtils#byLegacyName], which also resolves names outside this domain
-/// (recognition-marker backings, sanitized MaterialLib registration names); a consumer whose miss path carries
-/// its own fallback resolves here.
+/// Distinct from [MaterialUtils#byLegacyName], which also resolves names outside this domain (sanitized
+/// MaterialLib registration names); a consumer whose miss path carries its own fallback resolves here.
 ///
 /// Backed by [LegacyNameDomainTable], a frozen name -> MaterialLib-name table. A name in the domain resolves
 /// to its MaterialLib counterpart; every other name -- including a literal `"NULL"` and any name with no

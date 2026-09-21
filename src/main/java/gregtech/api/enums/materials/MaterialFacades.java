@@ -12,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialBuilder;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
-import com.ruling_0.materiallib.api.MaterialRef;
 import com.ruling_0.materiallib.api.TextureSet;
 
 import gregtech.api.material.GTMaterialFlag;
@@ -20,9 +19,11 @@ import gregtech.api.material.GTMaterialProperties;
 
 /// The five wildcard markers (`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`): materials
 /// that back an ore-dictionary entry without carrying composition of their own, so an Iron ore entry also
-/// answers to `AnyIron`. A crafting recipe naming one accepts any of the members;
-/// [gregtech.api.enums.materials.RecognitionMaterials] holds the separate backings for foreign mods'
-/// ore-dictionary names.
+/// answers to `AnyIron` and a crafting recipe naming `AnyIron` accepts any of the members.
+///
+/// Naming a crafting ingredient is all a wildcard ever does. [gregtech.api.objects.ItemData] resolves one to a
+/// concrete member the moment it merges materials into a composition ([#resolveWildcard]), so no composition,
+/// and hence nothing the recycling registrators read, ever holds one.
 public class MaterialFacades {
 
     public static Material AnyCarbon;
@@ -34,8 +35,7 @@ public class MaterialFacades {
     private static Map<Material, List<Material>> oreReRegistrations;
     private static Map<Material, Material> wildcardResolutions;
 
-    /// The material whose parts stand in for a wildcard marker wherever an item has to be produced, such as the
-    /// recycling outputs of a composition holding the marker. `material` itself when it is not a wildcard.
+    /// The concrete member a wildcard marker stands for, or `material` itself when it is not a wildcard.
     public static @Nullable Material resolveWildcard(@Nullable Material material) {
         if (material == null) return null;
         if (wildcardResolutions == null) {
@@ -83,53 +83,21 @@ public class MaterialFacades {
 
     /// Registers a shapeless MaterialLib [Material] backing each wildcard marker.
     public static void registerBackingMaterials() {
-        AnyCopper = registerWildcard(
-            "AnyCopper",
-            "AnyCopper",
-            "SHINY",
-            GTMaterialFlag.METAL,
-            MaterialRef.of(() -> Materials.Copper),
-            MaterialRef.of(() -> Materials.Copper),
-            MaterialRef.of(() -> Materials.AnnealedCopper));
-        AnyCarbon = registerWildcard("AnyCarbon", "AnyCarbon", "DULL", null, null, null, null);
-        AnyIron = registerWildcard(
-            "AnyIron",
-            "AnyIron",
-            "SHINY",
-            GTMaterialFlag.METAL,
-            MaterialRef.of(() -> Materials.Iron),
-            MaterialRef.of(() -> Materials.Iron),
-            null);
-        AnyRubber = registerWildcard(
-            "AnyRubber",
-            "AnyRubber",
-            "SHINY",
-            null,
-            null,
-            MaterialRef.of(() -> Materials.Rubber),
-            null);
-        AnySyntheticRubber = registerWildcard(
-            "AnySyntheticRubber",
-            "AnySyntheticRubber",
-            "SHINY",
-            null,
-            null,
-            null,
-            null);
+        AnyCopper = registerWildcard("AnyCopper", "SHINY", GTMaterialFlag.METAL);
+        AnyCarbon = registerWildcard("AnyCarbon", "DULL", null);
+        AnyIron = registerWildcard("AnyIron", "SHINY", GTMaterialFlag.METAL);
+        AnyRubber = registerWildcard("AnyRubber", "SHINY", null);
+        AnySyntheticRubber = registerWildcard("AnySyntheticRubber", "SHINY", null);
     }
 
-    /// Registers one wildcard marker with the smelt/macerate/arc targets, the metal flag, and the
-    /// non-unifiable setting it carries. No shape table adds to these materials.
-    private static Material registerWildcard(String name, String localName, String texture, GTMaterialFlag flag,
-        @Nullable MaterialRef smeltInto, @Nullable MaterialRef macerateInto, @Nullable MaterialRef arcSmeltInto) {
+    /// Registers one wildcard marker with the metal flag and the non-unifiable setting it carries. No shape
+    /// table adds to these materials.
+    private static Material registerWildcard(String name, String texture, @Nullable GTMaterialFlag flag) {
         MaterialBuilder builder = MaterialLibAPI.newMaterial("gregtech", name, TextureSet.of("gregtech", texture))
-            .setProperty(GTMaterialProperties.LOCAL_NAME, localName)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, name)
             .setTint(0xFFFFFFFF)
             .setProperty(GTMaterialProperties.UNIFIABLE, false);
         if (flag != null) builder = builder.setProperty(GTMaterialProperties.FLAGS, EnumSet.of(flag));
-        if (smeltInto != null) builder = builder.setProperty(GTMaterialProperties.SMELT_INTO, smeltInto);
-        if (macerateInto != null) builder = builder.setProperty(GTMaterialProperties.MACERATE_INTO, macerateInto);
-        if (arcSmeltInto != null) builder = builder.setProperty(GTMaterialProperties.ARC_SMELT_INTO, arcSmeltInto);
         return builder.build();
     }
 }

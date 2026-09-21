@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.material.MaterialUtils;
 
 /// What material an [ItemStack] is made of and how much of it, for any item in the game.
@@ -25,6 +26,10 @@ import gregtech.api.material.MaterialUtils;
 /// entries whose material side is not a material at all) and is what unification keys on. A composition
 /// ([#hasExplicitComposition]) lists what a stack is made of, for recycling; it never carries a unification name
 /// unless it was merged onto an existing association.
+///
+/// An association may name a wildcard marker, since that is what makes its ore-dictionary name accept every
+/// member. A composition never does: merging resolves each wildcard to the member
+/// [MaterialFacades#resolveWildcard] names, so the recycling registrators only ever see concrete materials.
 public class ItemData {
 
     private static final MaterialStack[] EMPTY_MATERIALSTACK_ARRAY = new MaterialStack[0];
@@ -141,13 +146,16 @@ public class ItemData {
     }
 
     private static void mergeMaterial(ArrayList<MaterialStack> materials, MaterialStack material) {
+        Material resolved = MaterialFacades.resolveWildcard(material.mMaterial);
         for (MaterialStack existing : materials) {
-            if (existing.mMaterial == material.mMaterial) {
+            if (existing.mMaterial == resolved) {
                 existing.mAmount += material.mAmount;
                 return;
             }
         }
-        materials.add(material.clone());
+        MaterialStack merged = material.clone();
+        merged.mMaterial = resolved;
+        materials.add(merged);
     }
 
     public final boolean hasValidPrefixMaterialData() {

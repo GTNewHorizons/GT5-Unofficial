@@ -14,7 +14,6 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -25,8 +24,8 @@ import gregtech.api.util.GTOreDictUnificator;
 /// `aliasToPrefix` registers an ore under another prefix.
 /// `aliasToMaterial` registers an ore under another prefix and material.
 ///
-/// Source and target names are built from the material's internal name, so a recognition marker
-/// ([RecognitionMaterials]) aliases exactly like a declared material.
+/// A row taking a [Material] builds both names from the material's internal name; the string form names an
+/// ore-dictionary entry whose material side is not a material at all, such as vanilla's `gemQuartz`.
 final class OreDictAliases {
 
     private static final HashMap<String, List<Consumer<ItemStack>>> ALIASES = new HashMap<>();
@@ -58,8 +57,8 @@ final class OreDictAliases {
         aliasToPrefix(OrePrefixes.gem, XModMaterials.Fluix, OrePrefixes.crystal);
         aliasToOreDict(OrePrefixes.gem, XModMaterials.Fluix, OreDictNames.craftingQuartz.name());
 
-        aliasToPrefix(OrePrefixes.gem, RecognitionMaterials.Quartz, OrePrefixes.crystal);
-        aliasToOreDict(OrePrefixes.gem, RecognitionMaterials.Quartz, OreDictNames.craftingQuartz.name());
+        aliasToOreDict("gemQuartz", "crystalQuartz");
+        aliasToOreDict("gemQuartz", OreDictNames.craftingQuartz.name());
 
         aliasToPrefix(OrePrefixes.gem, Materials.Quartzite, OrePrefixes.crystal);
         aliasToOreDict(OrePrefixes.gem, Materials.Quartzite, OreDictNames.craftingQuartz.name());

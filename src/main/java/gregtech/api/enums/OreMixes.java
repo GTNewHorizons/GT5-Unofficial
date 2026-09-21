@@ -56,7 +56,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -949,7 +948,7 @@ public enum OreMixes {
         .secondary(Materials.Barite)
         .inBetween(Materials.CertusQuartz)
         .sporadic(Materials.CertusQuartz)
-        .setLocalizedName(RecognitionMaterials.Quartz)),
+        .setLocalizedName(Materials.CertusQuartz)),
 
     Rutile(new OreMixBuilder().name("ore.mix.rutile")
         .heightRange(5, 20)

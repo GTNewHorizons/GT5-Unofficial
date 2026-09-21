@@ -29,7 +29,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -686,10 +685,6 @@ public class GTAchievements {
                             MaterialUtils.internalName(
                                 data.getAllMaterialStacks()
                                     .get(i).mMaterial));
-                        if (data.getAllMaterialStacks()
-                            .get(i).mMaterial == MaterialFacades.AnyIron) {
-                            issueAchievement(player, "iron");
-                        }
                         if (data.getAllMaterialStacks()
                             .get(i).mMaterial == Materials.Copper
                             || data.getAllMaterialStacks()
