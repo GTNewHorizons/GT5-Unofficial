@@ -167,6 +167,16 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.HEAT_DAMAGE, 6.0F)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
+        CellShapes.cellSolid // from prefix cell
+            .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+            .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(CELL, EMPTY))
+            .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Cell")
+            .setProperty(GTShapeProperties.UNIFIABLE, true)
+            .setProperty(GTShapeProperties.MATERIAL_BASED, true)
+            .setProperty(GTShapeProperties.SELF_REFERENCING, true)
+            .setProperty(GTShapeProperties.CONTAINER, true)
+            .setProperty(GTShapeProperties.RECYCLABLE, true)
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         CellShapes.cellSteamCracked1.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Lightly Steam-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)

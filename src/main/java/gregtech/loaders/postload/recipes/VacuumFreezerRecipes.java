@@ -25,7 +25,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class VacuumFreezerRecipes implements Runnable {
@@ -212,7 +211,7 @@ public class VacuumFreezerRecipes implements Runnable {
         {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Ice, CellShapes.cellSolid, 1))
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(vacuumFreezerRecipes);

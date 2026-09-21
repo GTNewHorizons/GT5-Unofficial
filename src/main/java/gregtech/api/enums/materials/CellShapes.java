@@ -7,17 +7,20 @@ import com.ruling_0.materiallib.api.EmptyContainerHandle;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
-/// Fluid-in-container [Shape] declarations for cells. Every cell shape drains to [#emptyCell], a gregtech-owned
-/// standalone empty container item registered through MaterialLib alongside the shapes themselves.
+import gregtech.common.items.GTSolidCellShapeItem;
+
+/// Cell [Shape] declarations. Every cell shape drains to [#emptyCell], a gregtech-owned standalone empty container
+/// item registered through MaterialLib alongside the shapes themselves.
 ///
 /// `cellPlasma` needs two shapes sharing one oredict prefix: legacy plasma cells hold [GTRecipeBuilder#INGOTS] (144 mB)
 /// when the material also has a molten fluid (metal plasmas), or 1000 mB otherwise (gas/element plasmas) -- a
 /// per-material volume MaterialLib's container shape does not support directly. [MaterialParts] resolves the two back
 /// to one prefix.
 ///
-/// `cell` and `cellGas` share the `cell` prefix the same way. A MaterialLib container binds one fluid shape, and
-/// the liquid and gas fluid names are frozen in world NBT. Gas materials therefore fill [#cellGas], which
-/// [MaterialParts] resolves back to the `cell` prefix.
+/// `cell`, `cellGas` and `cellSolid` share the `cell` prefix the same way. A MaterialLib container binds one fluid
+/// shape, and the liquid and gas fluid names are frozen in world NBT. Gas materials therefore fill [#cellGas], and a
+/// material with a cell but no fluid at all fills [#cellSolid]; [MaterialParts] resolves both back to the `cell`
+/// prefix.
 public class CellShapes {
 
     /// The empty cell every cell shape drains to, rebound onto `ItemList.Cell_Empty` during GTProxy's preInit.
@@ -34,6 +37,7 @@ public class CellShapes {
     // spotless:off
     public static Shape cell;
     public static Shape cellGas;
+    public static Shape cellSolid;
     public static Shape cellPlasma;
     public static Shape cellPlasmaLight;
     public static Shape cellMolten;
@@ -65,6 +69,9 @@ public class CellShapes {
                 .oreDict("cell")
                 .emptyIcon(CELL_BASE)
                 .build());
+        cellSolid = reg(
+            MaterialLibAPI
+                .registerItemShape(new GTSolidCellShapeItem("gregtech", "cellSolid", "%s Cell", CELL_BASE, "cell")));
 
         cellPlasma = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasma")

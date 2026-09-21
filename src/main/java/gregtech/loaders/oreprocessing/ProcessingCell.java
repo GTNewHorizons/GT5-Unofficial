@@ -26,7 +26,6 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -443,10 +442,11 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GTRecipeConstants.Fuel);
                     }
-                    if (GTOreDictUnificator.get(OrePrefixes.cell, material, 1L) != null) {
+                    ItemStack cell = MaterialParts.stack(OrePrefixes.cell, material, 1L);
+                    if (cell != null) {
                         RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, material, 1L))
+                            .itemOutputs(cell)
                             .duration(((int) Math.max(MaterialUtils.mass(material) * 2L, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_MV)
                             .addTo(vacuumFreezerRecipes);

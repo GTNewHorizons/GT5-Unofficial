@@ -265,7 +265,7 @@ public class GTPostLoad {
                 scannerResult,
                 material,
                 MaterialParts.stack(OrePrefixes.dust, material, 1L),
-                GTOreDictUnificator.get(OrePrefixes.cell, material, 1L));
+                MaterialParts.stack(OrePrefixes.cell, material, 1L));
         }
 
         for (Material material : MaterialLibAPI.getMaterials()) {
@@ -280,7 +280,7 @@ public class GTPostLoad {
                 scannerResult,
                 material,
                 MaterialParts.stack(OrePrefixes.dust, material, 1L),
-                GTOreDictUnificator.get(OrePrefixes.cell, material, 1L));
+                MaterialParts.stack(OrePrefixes.cell, material, 1L));
         }
 
         if (!MTEMassfabricator.sRequiresUUA) {

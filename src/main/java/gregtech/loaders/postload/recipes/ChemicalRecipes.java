@@ -31,7 +31,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
@@ -42,7 +41,6 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -434,7 +432,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, 3),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Carbon, 2))
+                MaterialLibAPI.getStack(Materials.Carbon, CellShapes.cellSolid, 2))
             .itemOutputs(MaterialParts.requireCell(Materials.CarbonMonoxide, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 4_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Titaniumtetrachloride, FluidShapes.fluidLiquid, 1_000))

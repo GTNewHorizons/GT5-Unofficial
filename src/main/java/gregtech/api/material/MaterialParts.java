@@ -104,9 +104,9 @@ public class MaterialParts {
     }
 
     /// Whether a (prefix, material) pair has a MaterialLib equivalent (see [#stack]). Unlike [#shape], which
-    /// answers whether a prefix has cut over at all, this answers per material: a material can hold a legacy
-    /// `cell` item generated from its `CELL` capability flag while never having a fluid to put in it, which
-    /// leaves it off `cell`'s MaterialLib membership.
+    /// answers whether a prefix has cut over at all, this answers per material: a wildcard marker (see
+    /// [gregtech.api.enums.materials.MaterialFacades]) backs a prefix's ore name without generating any shape,
+    /// so its pairs have no MaterialLib stack even where the prefix itself has cut over.
     public static boolean isCutOver(OrePrefixes prefix, @Nullable Material material) {
         return servedShape(prefix, material) != null;
     }

@@ -125,11 +125,11 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
-                if ((GTUtility.getFluidForFilledItem(GTOreDictUnificator.get(OrePrefixes.cell, material, 1L), true)
-                    == null) && (GTOreDictUnificator.get(OrePrefixes.cell, material, 1L) != null)) {
+                ItemStack cell = MaterialParts.stack(OrePrefixes.cell, material, 1L);
+                if (cell != null && GTUtility.getFluidForFilledItem(cell, true) == null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(stack, ItemList.Cell_Empty.get(1L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, material, 1L))
+                        .itemOutputs(cell)
                         .duration(5 * SECONDS)
                         .eut(1)
                         .addTo(cannerRecipes);
@@ -598,7 +598,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             MaterialParts.stack(OrePrefixes.dust, tByProduct, 1),
                             MaterialParts.stack(OrePrefixes.gem, tByProduct, 1L));
                         if (tImpureStack == null) {
-                            tImpureStack = GTOreDictUnificator.get(OrePrefixes.cell, tByProduct, 1L);
+                            tImpureStack = MaterialParts.stack(OrePrefixes.cell, tByProduct, 1L);
                             if (tImpureStack == null) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(GTUtility.copyAmount(1, stack))

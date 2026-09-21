@@ -1692,6 +1692,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "C")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(Shapes.nanite)
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.Nitrogen = MaterialLibAPI.newMaterial("gregtech", "Nitrogen", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xF00096C8)
@@ -2445,6 +2446,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "As")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.Rubidium = MaterialLibAPI.newMaterial("gregtech", "Rubidium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFF01E1E)
@@ -7814,6 +7816,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.DUST, GTMaterialGenerationFlag.CELL))
             .setProperty(GTMaterialProperties.DYE, "dyeRed")
             .setProperty(GTMaterialProperties.FORMULA, "MgCl₂")
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.PulsatingIron = MaterialLibAPI.newMaterial("gregtech", "PulsatingIron", TextureSet.of("gregtech", "CUSTOM/darksteel"))
             .setTint(0xFF80F69B)
@@ -9506,6 +9509,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.DUST, GTMaterialGenerationFlag.GEM, GTMaterialGenerationFlag.ORE, GTMaterialGenerationFlag.CELL))
             .setProperty(GTMaterialProperties.DYE, "dyeWhite")
             .setProperty(GTMaterialProperties.FORMULA, "∳Li∳Li∳")
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.CertusQuartz = MaterialLibAPI.newMaterial("gregtech", "CertusQuartz", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFFD2D2E6)
@@ -9575,6 +9579,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeGreen")
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("POTENTIA", 2)))
             .setProperty(GTMaterialProperties.FORMULA, "◃◁◀")
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.Forcillium = MaterialLibAPI.newMaterial("gregtech", "Forcillium", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFF323246)
@@ -9592,6 +9597,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeGreen")
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("POTENTIA", 2)))
             .setProperty(GTMaterialProperties.FORMULA, "▶▷▹")
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.Monazite = MaterialLibAPI.newMaterial("gregtech", "Monazite", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFF324632)
@@ -9979,6 +9985,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.REMOVED_PREFIXES, List.of("lens"))
             .setProperty(GTMaterialProperties.DYE, "dyeYellow")
             .setProperty(GTMaterialProperties.FORMULA, "Ca₃(PO₄)₂")
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.Coal = MaterialLibAPI.newMaterial("gregtech", "Coal", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFF464646)
@@ -12132,6 +12139,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .setProperty(GTMaterialProperties.DYE, "dyeYellow")
             .setProperty(GTMaterialProperties.FORMULA, "P₄O₁" + CustomGlyphs.SUBSCRIPT0)
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.Tetrafluoroethylene = MaterialLibAPI.newMaterial("gregtech", "Tetrafluoroethylene", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF7D7D7D)
@@ -12769,6 +12777,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeBlue")
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("GELUM", 2)))
             .setProperty(GTMaterialProperties.FORMULA, "H₂O")
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.UUMatter = MaterialLibAPI.newMaterial("gregtech", "UUMatter", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF8000C4)
@@ -12949,6 +12958,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .setProperty(GTMaterialProperties.DYE, "dyeCyan")
             .setProperty(GTMaterialProperties.FORMULA, "NC")
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.NitrogenDioxide = MaterialLibAPI.newMaterial("gregtech", "NitrogenDioxide", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF64AFFF)
@@ -13029,6 +13039,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
             .setProperty(GTMaterialProperties.DYE, "dyeLime")
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("GRANUM", 2)))
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.SeedOilLin = MaterialLibAPI.newMaterial("gregtech", "SeedOilLin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFC4FF00)
@@ -13040,6 +13051,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
             .setProperty(GTMaterialProperties.DYE, "dyeLime")
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("GRANUM", 2)))
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.Lubricant = MaterialLibAPI.newMaterial("gregtech", "Lubricant", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFC400)
@@ -13105,6 +13117,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeWhite")
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("GELUM", 1)))
             .setProperty(GTMaterialProperties.FORMULA, "H₂O")
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.HolyWater = MaterialLibAPI.newMaterial("gregtech", "HolyWater", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF0000FF)
@@ -14492,6 +14505,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "??")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(Shapes.nanite)
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.Electrotine = MaterialLibAPI.newMaterial("gregtech", "Electrotine", TextureSet.of("gregtech", "CUSTOM/electrotine"))
             .setTint(0xFF3CB4C8)
@@ -14910,6 +14924,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .setProperty(GTMaterialProperties.DYE, "dyeYellow")
             .setProperty(GTMaterialProperties.FORMULA, "PO₄")
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.Pyrite = MaterialLibAPI.newMaterial("gregtech", "Pyrite", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFF967828)
@@ -15262,6 +15277,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.DUST, GTMaterialGenerationFlag.CELL))
             .setProperty(GTMaterialProperties.DYE, "dyeBlue")
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.ConstructionFoam = MaterialLibAPI.newMaterial("gregtech", "ConstructionFoam", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF808080)
@@ -15378,6 +15394,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeGray")
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("VITREUS", 2), new AspectRefStack("IGNIS", 1)))
             .setProperty(GTMaterialProperties.FORMULA, "C")
+            .generateShape(CellShapes.cellSolid)
             .build();
         Materials.Greenstone = MaterialLibAPI.newMaterial("gregtech", "Greenstone", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)

@@ -1802,7 +1802,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.Ice)
             .addLocalizedName(Materials.Ice)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L),
+                MaterialLibAPI.getStack(Materials.Ice, CellShapes.cellSolid, 1),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("molten.glass")
