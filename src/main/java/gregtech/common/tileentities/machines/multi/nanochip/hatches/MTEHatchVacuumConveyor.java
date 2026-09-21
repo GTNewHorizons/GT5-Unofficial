@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -30,6 +29,7 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.common.gui.modularui.hatch.MTEHatchVacuumConveyorGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryElement;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
@@ -68,7 +68,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     public void onColorChangeServer(byte aColor) {
         super.onColorChangeServer(aColor);
         VacuumFactoryGrid.INSTANCE.updateElement(this);
-        if(module != null) module.setStructureUpdateTime(1); // update the structure when color is changed
+        if (module != null) module.setStructureUpdateTime(1); // update the structure when color is changed
     }
 
     @Override
