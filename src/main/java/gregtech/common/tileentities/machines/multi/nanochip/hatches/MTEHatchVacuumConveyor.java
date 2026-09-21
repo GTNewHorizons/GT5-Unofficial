@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -43,6 +44,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     public static final int VACUUM_MOVE_TICK = 17;
     public VacuumFactoryNetwork network;
     protected MTENanochipAssemblyComplex mainController;
+    protected MTENanochipAssemblyModuleBase<?> module;
     public CircuitComponentPacket contents;
 
     // Identifier used to identify this hatch uniquely inside a multiblock.
@@ -66,6 +68,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     public void onColorChangeServer(byte aColor) {
         super.onColorChangeServer(aColor);
         VacuumFactoryGrid.INSTANCE.updateElement(this);
+        if(module != null) module.setStructureUpdateTime(1); // update the structure when color is changed
     }
 
     @Override
@@ -104,6 +107,10 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
 
     public void setMainController(MTENanochipAssemblyComplex main) {
         this.mainController = main;
+    }
+
+    public void setModule(MTENanochipAssemblyModuleBase<?> module) {
+        this.module = module;
     }
 
     public void unifyPacket(CircuitComponentPacket packet) {

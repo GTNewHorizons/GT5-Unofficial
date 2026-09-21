@@ -114,11 +114,13 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         for (var hatchList : this.vacuumConveyorInputs.allHatches()) {
             for (var hatch : hatchList) {
                 hatch.setMainController(baseMulti);
+                hatch.setModule(this);
             }
         }
         for (var hatchList : this.vacuumConveyorOutputs.allHatches()) {
             for (var hatch : hatchList) {
                 hatch.setMainController(baseMulti);
+                hatch.setModule(this);
             }
         }
         return baseMulti;
@@ -280,6 +282,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             case MTEHatchVacuumConveyorInput hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
                 hatch.setMainController(this.getBaseMulti());
+                hatch.setModule(this);
                 // Components arrive as fake items in the hatch's own storage (not mInventory), so register for the
                 // hatch's push instead of relying on the inventory-dirty flag.
                 hatch.addWatcher(this);
@@ -288,6 +291,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             case MTEHatchVacuumConveyorOutput hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
                 hatch.setMainController(this.getBaseMulti());
+                hatch.setModule(this);
                 return vacuumConveyorOutputs.addHatch(hatch);
             }
             default -> {
