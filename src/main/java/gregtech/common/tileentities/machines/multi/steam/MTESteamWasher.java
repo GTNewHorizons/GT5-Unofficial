@@ -374,12 +374,8 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add(
-            translateToLocalFormatted("gtpp.infodata.multi.steam.tier", "" + EnumChatFormatting.YELLOW + tierMachine));
-        info.add(
-            translateToLocalFormatted(
-                "gtpp.infodata.multi.steam.parallel",
-                "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
+        info.add(translateToLocalFormatted("gtpp.infodata.multi.steam.tier", tierMachine));
+        info.add(translateToLocalFormatted("gtpp.infodata.multi.steam.parallel", getMaxParallelRecipes()));
         return info.toArray(new String[0]);
     }
 

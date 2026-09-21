@@ -70,7 +70,8 @@ public class DebugWriterHelper {
                             + symbol
                             + "', Casings."
                             + casing.name()
-                            + ".asElement()";
+                            + ".asElement()"
+                            + ")";
                     }
                 } catch (Exception ignored) {}
             }

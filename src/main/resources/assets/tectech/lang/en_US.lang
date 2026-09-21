@@ -1840,6 +1840,7 @@ tt.gui.tooltip.plasma_module.debug_window=Debug Window
 tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step
 tt.gui.tooltip.plasma_module.debug_window.fusion_tier=fusion tier
 tt.gui.tooltip.plasma_module.debug_window.parallel=parallel
+tt.gui.tooltip.uncertainty.value_assist=Color vision assist: overlay the value of each of the 16 cells
 
 tt.gui.text.debug.set_mode=Click to Set Machine to %s
 tt.gui.text.debug.status.inactive=Inactive
@@ -1863,7 +1864,7 @@ tt.gui.text.hatch.status.inactive=Inactive
 
 tt.gui.tooltip.full_led_desc.in.id=ID: %s:%s:§bI %s
 tt.gui.tooltip.full_led_desc.out.id=ID: %s:%s:§bO %s
-tt.gui.tooltip.full_led_desc.value=Value: %s
+tt.gui.tooltip.full_led_desc.value=Value: §b%s
 tt.gui.tooltip.full_led_desc.unused=Unused
 
 EOH_Controller_PlanetBlock=Current Planet Block: %s

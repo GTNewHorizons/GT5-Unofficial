@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 
 import com.gtnewhorizon.gtnhlib.datastructs.space.ArrayProximityCheck4D;
@@ -21,6 +22,11 @@ public class GTSpawnEventHandler {
 
     public void removeRepellent(IGregTechTileEntity mte) {
         repellents.remove(mte.getWorld().provider.dimensionId, mte.getXCoord(), mte.getYCoord(), mte.getZCoord());
+    }
+
+    public boolean isAreaProtected(World world, double x, double y, double z) {
+        if (world == null || world.provider == null) return false;
+        return repellents.isInRange(world.provider.dimensionId, x, y, z);
     }
 
     @SubscribeEvent

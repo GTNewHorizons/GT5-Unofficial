@@ -232,7 +232,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     }
 
     @Override
-    protected float getEUDiscountModifier() {
+    protected float getEUDiscountModifier(GTRecipe recipe) {
         return euMultiplier;
     }
 
