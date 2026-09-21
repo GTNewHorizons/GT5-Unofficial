@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static goodgenerator.loader.Loaders.NeutronAccelerators;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_UMV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_UXV;
 import static gregtech.api.enums.Mods.AE2FluidCraft;
@@ -343,11 +344,14 @@ public class BECRecipes implements Runnable {
             TierEU.RECIPE_UIV);
 
         // Coherence-preserving Plasma Conduit
+        ItemStack neutronAcceleratorUIV = NeutronAccelerators[11].copy();
+        neutronAcceleratorUIV.stackSize = 6;
+
         addBec(
             ItemList.CoherencePreservingPlasmaConduit.get(8),
             new ItemStack[] { ItemList.PeaceEnforcementCasing.get(8), Casings.ParticleBeamGuidancePipeCasing.toStack(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.TranscendentMetal, 8),
-                ItemList.Electromagnet_Tengam.get(8), ItemList.MetaMaterial_EnergyConduit1.get(8),
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.TranscendentMetal, 8), neutronAcceleratorUIV,
+                ItemList.MetaMaterial_EnergyConduit1.get(8),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.SixPhasedCopper, 1),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Churitsu, 4),
                 MaterialsElements.STANDALONE.HYPOGEN.getRotor(1), ItemList.Electric_Pump_UIV.get(2) },

@@ -2265,6 +2265,9 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UIV);
 
         // Coherence-Preserving Plasma Conduit
+        ItemStack neutronAcceleratorUIV = NeutronAccelerators[11].copy();
+        neutronAcceleratorUIV.stackSize = 4;
+
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.PeaceEnforcementCasing.get(1),
             48_000_000,
@@ -2272,8 +2275,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV,
             64,
             new Object[] { ItemList.PeaceEnforcementCasing.get(6), Casings.ParticleBeamGuidancePipeCasing.toStack(6),
-                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.TranscendentMetal, 6),
-                ItemList.Electromagnet_Tengam.get(6),
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.TranscendentMetal, 6), neutronAcceleratorUIV,
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 6),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.ProtoHalkonite, 6),
                 GGMaterial.tairitsu.get(OrePrefixes.foil, 24),
