@@ -76,6 +76,7 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
 
     @Override
     protected void checkConnections() {
+        mCheckConnections = false;
         mConnections = 0;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -96,8 +97,8 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
     }
 
     @Override
-    protected void checkActive() {
-        mIsActive = getBaseMetaTileEntity().getTimer() % 200 > 100;
+    protected boolean checkActive() {
+        return getBaseMetaTileEntity().getTimer() % 200 > 100;
     }
 
     private TestFactoryNetwork network;

@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -13,6 +15,7 @@ import java.util.List;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -21,6 +24,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.FormatOptions;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -53,6 +58,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.MTESolarHeater;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -226,6 +232,14 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
 
     public ArrayList<MTESolarHeater> solarHeaters = new ArrayList<>();
 
+    private static final int CYCLE_TICKS = 200;
+    private static final int HEAT_CAP = 100_000;
+    private static final int HEAT_EFFICIENCY_CENTER = 50_000;
+    private static final int HEAT_CONVERSION_THRESHOLD = 30_000;
+    private static final double HEAT_EFFICIENCY_COEFFICIENT = 7_000;
+    private static final double HEAT_EFFICIENCY_EXPONENT = 0.8;
+    private static final int HEAT_LOSS_PER_CYCLE = 10;
+
     public MTESolarTower(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -242,37 +256,33 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
     @Override
     protected final MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Solar Tower")
-            .addInfo("Contributing Green Energy towards the future")
-            .addInfo("Surround with rings of Solar Reflectors")
-            .addInfo("The Reflectors increase the internal heat value of the Tower (see below for formula)")
-            .addInfo("Each Reflector ring increases tier, the first ring is required for the Tower to work")
-            .addInfo("Input: " + MaterialMisc.SOLAR_SALT_COLD.getDefaultLocalName())
-            .addInfo("Output: " + MaterialMisc.SOLAR_SALT_HOT.getDefaultLocalName())
-            .addInfo("Every cycle (10 seconds), heat increases and all the Cold Solar Salt is heated")
-            .addInfo("Converting Cold to Hot Solar Salt reduces heat, equal to the amount converted")
-            .addInfo("This conversion only happens if heat >= 30000 and controller efficiency = 100%")
-            .addInfo("If there's more Cold Salt than heat, all the heat is used up and returns to 0")
-            .addInfo("The heat increase is most efficient at exactly half of maximum heat")
-            .addInfo("Minimum efficiency at 0 or 100000 heat, maximum efficiency at 50000")
-            .addInfo("Heat Efficiency formula: ( 7000 - [|currentHeat - 50000| ^ 0.8]) / 7000")
-            .addInfo("Heat gain per cycle: numberHeaters * heatEfficiency * (10 + bonus)")
-            .addInfo("Bonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16")
-            .addInfo("Total number of reflectors based on how many rings are built:")
-            .addInfo("1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.solar_tower"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "solar-tower"),
+                ImmutableMap.<String, Object>builder()
+                    .put("cycle", formatNumber(CYCLE_TICKS / 20))
+                    .put("threshold", formatNumber(HEAT_CONVERSION_THRESHOLD))
+                    .put("center", formatNumber(HEAT_EFFICIENCY_CENTER))
+                    .put("exp", formatNumber(HEAT_EFFICIENCY_EXPONENT, new FormatOptions().setDecimalPlaces(1)))
+                    .put("coefficient", formatNumber(HEAT_EFFICIENCY_COEFFICIENT))
+                    .put("loss", formatNumber(HEAT_LOSS_PER_CYCLE))
+                    .put("unit", getFluidUnit())
+                    .build())
             .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
-            .addController("Top center, 28th layer")
-            .addCasing("36/88/156/240/340", "Solar Reflector", false)
-            .addCasing("229-250", "Structural Solar Casing", false)
-            .addCasing("66", "Salt Containment Casing", false)
-            .addCasing("60", "Thermal Containment Casing", false)
-            .addCasing("60", "Thermally Insulated Casing", false)
-            .addMaintenanceHatch("1", "Any bottom side casing", 2)
-            .addInputHatch("1+", "Any bottom side casing", 2)
-            .addOutputHatch("1+", "Any bottom side casing", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.top_center_28th_layer"))
+            .addCasing("36/88/156/240/340", StatCollector.translateToLocal("gt.blockmachines.solarreflector.simple.single.name"), false)
+            .addCasing("229-250", StatCollector.translateToLocal("gtplusplus.blockspecialcasings.1.6.name"), false)
+            .addCasing("66", StatCollector.translateToLocal("gtplusplus.blockspecialcasings.1.7.name"), false)
+            .addCasing("60", StatCollector.translateToLocal("gtplusplus.blockspecialcasings.1.8.name"), false)
+            .addCasing("60", StatCollector.translateToLocal("gtplusplus.blockcasings.2.11.name"), false)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 2)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 2)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 2)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -552,9 +562,9 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         this.mEfficiencyIncrease = 100;
-        this.mMaxProgresstime = 200;
+        this.mMaxProgresstime = CYCLE_TICKS;
 
-        if (this.solarHeaters.isEmpty() || this.solarHeaters.size() < 340 || this.getTotalRuntimeInTicks() % 200 == 0) {
+        if (this.solarHeaters.isEmpty() || this.solarHeaters.size() < 340 || this.getTotalRuntimeInTicks() % CYCLE_TICKS == 0) {
             connectSolarReflectors();
         }
 
@@ -565,7 +575,7 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
         // However, negative numbers to the power of a non-integer result in NaN, by default
         // Max efficiency is 1, at heatLevel = 50000, and it lowers at the same rate if going above or below this heat
         // Min efficiency is 0.179, at heatLevel = 0 or 100000
-        double aEfficiency = (-Math.pow(Math.abs(this.heatLevel - 50000), 0.8) + 7000) / 7000;
+        double aEfficiency = (-Math.pow(Math.abs(this.heatLevel - HEAT_EFFICIENCY_CENTER), HEAT_EFFICIENCY_EXPONENT) + HEAT_EFFICIENCY_COEFFICIENT) / HEAT_EFFICIENCY_COEFFICIENT;
 
         World w = this.getBaseMetaTileEntity()
             .getWorld();
@@ -576,23 +586,24 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
             if (aHeaters > 0 && w.isDaytime()) {
                 if (w.isRaining() && this.getBaseMetaTileEntity()
                     .getBiome().rainfall > 0.0F) {
-                    this.heatLevel += GTUtility.safeInt((long) ((aHeaters / 2) * aEfficiency * (10 + aTier)));
+                    this.heatLevel += GTUtility..safeInt((long) ((aHeaters / 2) * aEfficiency * (HEAT_LOSS_PER_CYCLE + aTier)));
+
                 } else {
-                    this.heatLevel += GTUtility.safeInt((long) (aHeaters * aEfficiency * (10 + aTier)));
+                    this.heatLevel += GTUtility.safeInt((long) (aHeaters * aEfficiency * (HEAT_LOSS_PER_CYCLE + aTier)));
                 }
             }
 
             // Remove Heat, based on time of day
             if (heatLevel > 0) {
-                if (heatLevel > 100000) {
-                    this.heatLevel = 100000;
+                if (heatLevel > HEAT_CAP) {
+                    this.heatLevel = HEAT_CAP;
                 } else {
-                    this.heatLevel -= 10;
+                    this.heatLevel -= HEAT_LOSS_PER_CYCLE;
                 }
             }
         }
 
-        if (this.mEfficiency == this.getMaxEfficiency(null) && this.heatLevel >= 30000) {
+        if (this.mEfficiency == this.getMaxEfficiency(null) && this.heatLevel >= HEAT_CONVERSION_THRESHOLD) {
             if (mColdSalt == null) {
                 mColdSalt = MaterialMisc.SOLAR_SALT_COLD.getFluid();
             }

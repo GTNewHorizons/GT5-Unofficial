@@ -1,6 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.TickTime.SECOND;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.text.DecimalFormat;
@@ -440,7 +441,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             inputRate,
             targetEnergyeV / 1000.0,
             numCycles,
-            multiblock.mMaxProgresstime);
+            1 * SECOND); // relies on all LHC "recipes" being 20t long
         double finalBeamEnergyKeV = result[0];
         int finalRate = (int) result[1];
         long finalEUt = (long) result[2];

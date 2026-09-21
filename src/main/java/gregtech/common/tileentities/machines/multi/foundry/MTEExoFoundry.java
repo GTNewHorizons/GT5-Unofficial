@@ -9,7 +9,9 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.SolidifierHatch;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE;
@@ -101,6 +103,7 @@ import gregtech.common.render.shader.Uniform;
 import gregtech.common.render.shader.VertexAttribute;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
+import io.netty.buffer.ByteBuf;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
@@ -218,7 +221,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement(
             'H',
-            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch, OutputBus, InputBus, Energy.or(ExoticEnergy))
+            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch.or(SolidifierHatch), OutputBus, InputBus, Energy.or(ExoticEnergy), Maintenance)
                 .hint(1)
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
@@ -668,8 +671,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         foundryData.checkSolidifierModules();
         logic.setSpeedBonus(1F / foundryData.speedModifierAdj);
-        logic.setMaxParallel(
-            (int) (Math.floor(foundryData.parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage())));
+        logic.setMaxParallelSupplier(this::getTrueParallel);
         logic.setEuModifier(foundryData.euEffAdj);
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
@@ -817,7 +819,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     public void setModule(int index, int ordinal) {
-        foundryData.setModule(index, ordinal);
+        foundryData.setModule(index, ordinal, false);
         // structure check on module set, to prevent cheesing
         getBaseMetaTileEntity().issueTileUpdate(); // tile update to sync to client
         this.setStructureUpdateTime(1);
@@ -1017,26 +1019,25 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
      * Sends on world load, on module set, on screwdriver right click, and on structure check
      */
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("multiTier", foundryData.tier);
-        tag.setInteger("module1OR", foundryData.modules[0].ordinal());
-        tag.setInteger("module2OR", foundryData.modules[1].ordinal());
-        tag.setInteger("module3OR", foundryData.modules[2].ordinal());
-        tag.setInteger("module4OR", foundryData.modules[3].ordinal());
-        tag.setBoolean("shouldRender", shouldRender);
-        return tag;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(foundryData.tier);
+        buffer.writeInt(foundryData.modules[0].ordinal());
+        buffer.writeInt(foundryData.modules[1].ordinal());
+        buffer.writeInt(foundryData.modules[2].ordinal());
+        buffer.writeInt(foundryData.modules[3].ordinal());
+        buffer.writeBoolean(shouldRender);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        foundryData.tier = data.getInteger("multiTier");
-        foundryData.modules[0] = FoundryModule.values()[data.getInteger("module1OR")];
-        foundryData.modules[1] = FoundryModule.values()[data.getInteger("module2OR")];
-        foundryData.modules[2] = FoundryModule.values()[data.getInteger("module3OR")];
-        foundryData.modules[3] = FoundryModule.values()[data.getInteger("module4OR")];
-        shouldRender = data.getBoolean("shouldRender");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        foundryData.tier = buffer.readInt();
+        foundryData.modules[0] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[1] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[2] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[3] = FoundryModule.values()[buffer.readInt()];
+        shouldRender = buffer.readBoolean();
     }
 
     // data class

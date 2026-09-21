@@ -1,7 +1,5 @@
 package gregtech.client.iconContainers.blocks;
 
-import static gregtech.api.enums.Mods.GregTech;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,18 +37,21 @@ public class GTCustomAlphaFallbackBlockIconContainer extends AbstractBlockIconCo
     private boolean hasIcon;
     private boolean hasOverlay;
 
-    GTCustomAlphaFallbackBlockIconContainer(@NotNull String iconName, @NotNull IIconContainer fallback) {
-        this.iconName = iconName.contains(":") ? iconName : GregTech.getResourcePath(iconName);
-        this.overlayName = this.iconName + Textures.OverlaySuffix;
-        this.iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(this.iconName);
-        this.overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(this.overlayName);
+    GTCustomAlphaFallbackBlockIconContainer(@NotNull String domain, @NotNull String iconName,
+        @NotNull IIconContainer fallback) {
+        this.iconName = ResourceUtils.getIconRegisterName(domain, iconName);
+        this.overlayName = ResourceUtils.getIconRegisterName(domain, iconName + Textures.OverlaySuffix);
+        this.iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, iconName);
+        this.overlayResource = ResourceUtils
+            .getCompleteBlockTextureResourceLocation(domain, iconName + Textures.OverlaySuffix);
         this.fallback = fallback;
     }
 
-    public static @NotNull IIconContainer create(@NotNull String iconName, @NotNull IIconContainer fallback) {
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String iconName,
+        @NotNull IIconContainer fallback) {
         String key = iconName + '\0' + System.identityHashCode(fallback);
         return INSTANCES
-            .computeIfAbsent(key, ignored -> new GTCustomAlphaFallbackBlockIconContainer(iconName, fallback));
+            .computeIfAbsent(key, ignored -> new GTCustomAlphaFallbackBlockIconContainer(domain, iconName, fallback));
     }
 
     public static void cleanup() {
@@ -64,10 +65,10 @@ public class GTCustomAlphaFallbackBlockIconContainer extends AbstractBlockIconCo
 
         if (hasIcon) {
             icon = GregTechAPI.sBlockIcons.registerIcon(iconName);
-        }
+        } else icon = null;
         if (hasOverlay) {
             overlay = GregTechAPI.sBlockIcons.registerIcon(overlayName);
-        }
+        } else overlay = null;
     }
 
     @Override

@@ -50,6 +50,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -576,8 +577,8 @@ public class MTETeslaTower extends TTMultiblockBase
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER");
-        ScreenON = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_TOWER");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_TOWER_ACTIVE");
     }
 
     @Override
@@ -801,18 +802,20 @@ public class MTETeslaTower extends TTMultiblockBase
         }
         // TODO Encapsulate the spark sender
         sparkCount--;
-        if (sparkCount == 0 && ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
-            IGregTechTileEntity mte = getBaseMetaTileEntity();
+        if (sparkCount <= 0) {
             sparkCount = 20;
             if (!sparkList.isEmpty()) {
-                NetworkDispatcher.INSTANCE.sendToAllAround(
-                    new RendererMessage.RendererData(sparkList),
-                    new NetworkRegistry.TargetPoint(
-                        mte.getWorld().provider.dimensionId,
-                        mte.getXCoord(),
-                        mte.getYCoord(),
-                        mte.getZCoord(),
-                        256));
+                if (ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
+                    IGregTechTileEntity mte = getBaseMetaTileEntity();
+                    NetworkDispatcher.INSTANCE.sendToAllAround(
+                        new RendererMessage.RendererData(sparkList),
+                        new NetworkRegistry.TargetPoint(
+                            mte.getWorld().provider.dimensionId,
+                            mte.getXCoord(),
+                            mte.getYCoord(),
+                            mte.getZCoord(),
+                            256));
+                }
                 sparkList.clear();
             }
         }

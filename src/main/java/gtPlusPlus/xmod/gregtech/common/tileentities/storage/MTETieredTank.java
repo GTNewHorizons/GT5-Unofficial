@@ -9,7 +9,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,6 +23,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -34,6 +34,8 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.singleblock.MTETieredTankGui;
 import gtPlusPlus.core.lib.GTPPCore;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMetaTile {
 
     public MTETieredTank(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -51,6 +53,15 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
     public MTETieredTank(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.fluidtank.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override
@@ -93,14 +104,12 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gtpp.tiered_tank.tooltip.contains",
-                        EnumChatFormatting.YELLOW + tContents.getLocalizedName() + EnumChatFormatting.GRAY));
+                    StatCollector
+                        .translateToLocalFormatted("gtpp.tiered_tank.tooltip.contains", tContents.getLocalizedName()));
 
                 tooltip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gtpp.tiered_tank.tooltip.amount",
-                        EnumChatFormatting.GREEN + formatNumber(tContents.amount) + EnumChatFormatting.GRAY));
+                    StatCollector
+                        .translateToLocalFormatted("gtpp.tiered_tank.tooltip.amount", formatNumber(tContents.amount)));
             }
         }
     }
@@ -140,14 +149,12 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
 
         if (this.mFluid == null) {
             return new String[] {
-                IGregTechDeviceInformation
-                    .encode("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
+                IGregTechDeviceInformation.encode("gtpp.infodata.tiered_tank.name", GTValues.VN[this.mTier]),
                 "GT5U.infodata.digital_tank.stored_fluid", "GT5U.infodata.digital_tank.stored_fluid.empty", 0 + "L",
                 this.getCapacity() + "L" };
         }
         return new String[] {
-            IGregTechDeviceInformation
-                .encode("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
+            IGregTechDeviceInformation.encode("gtpp.infodata.tiered_tank.name", GTValues.VN[this.mTier]),
             "GT5U.infodata.digital_tank.stored_fluid", this.mFluid.getLocalizedName(), this.mFluid.amount + "L",
             this.getCapacity() + "L" };
     }

@@ -62,6 +62,23 @@ public enum CircuitComponent {
         8,
         "gt.circuitcomponent.wiremagmatter",
         () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MagMatter, 1)),
+    WireCopper(
+        9,
+        "gt.circuitcomponent.wirecopper",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 1)),
+    WireRedAlloy(
+        10,
+        "gt.circuitcomponent.wireredalloy",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.RedAlloy, 1)),
+    WireElectrum(
+        11,
+        "gt.circuitcomponent.wireelectrum",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 1)),
+    WirePlatinum(
+        12,
+        "gt.circuitcomponent.wireplatinum",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 1)),
+
 
     ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", () -> WireNiobiumTitanium, true),
     ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", () -> WireYttriumBariumCuprate, true),
@@ -72,6 +89,10 @@ public enum CircuitComponent {
     ProcessedWireInfinity(106, "gt.circuitcomponent.processed.wireinfinity", () -> WireInfinity, true),
     ProcessedWireHypogen(107, "gt.circuitcomponent.processed.wirehypogen", () -> WireHypogen, true),
     ProcessedWireMagMatter(108, "gt.circuitcomponent.processed.wiremagmatter", () -> WireMagMatter, true),
+    ProcessedWireCopper(109,"gt.circuitcomponent.processed.wirecopper", () -> WireCopper, true),
+    ProcessedWireRedAlloy(110,"gt.circuitcomponent.processed.wireredalloy", () -> WireRedAlloy, true),
+    ProcessedWireElectrum(111,"gt.circuitcomponent.processed.wireelectrum", () -> WireElectrum, true),
+    ProcessedWirePlatinum(112,"gt.circuitcomponent.processed.wireplatinum", () -> WirePlatinum, true),
 
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
@@ -167,6 +188,7 @@ public enum CircuitComponent {
     ProcessedNeuroProcessingUnit(504, "gt.circuitcomponent.processed.neuroprocessingunit", () -> NeuroProcessingUnit, true),
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
     ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
+    UnattunedCircuitry(507,"gt.circuitcomponent.unattunedcircuitry",()->null,true),
 
     // Wafers and chips
     // IDs: 600-699 CC, 700-799 PC
@@ -449,6 +471,11 @@ public enum CircuitComponent {
         1917,
         "gt.circuitcomponent.thermalsuperconductor",
         () -> ItemList.Thermal_Superconductor.get(1)),
+    BoltCopper(1918,"gt.circuitcomponent.bolt.copper",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Copper, 1)),
+    BoltRedAlloy(1919,"gt.circuitcomponent.bolt.redalloy",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.RedAlloy, 1)),
+    BoltPlatinum(1920,"gt.circuitcomponent.bolt.platinum",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Platinum, 1)),
+    BoltNiobiumTitanium(1921,"gt.circuitcomponent.bolt.niobiumtitanium",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.NiobiumTitanium, 1)),
+    CasingKevlar(1922,"gt.circuitcomponent.casing.kevlar", ()->GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Kevlar,1)),
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
@@ -460,7 +487,10 @@ public enum CircuitComponent {
     ProcessedPlateRhugnor(2007, "gt.circuitcomponent.plate.processed.rhugnor", () -> PlateRhugnor, true),
     ProcessedBoltWhiteDwarfMatter(2008, "gt.circuitcomponent.bolt.processed.whitedwarfmatter", () -> BoltWhiteDwarfMatter, true),
     ProcessedPlateHexanite(2009, "gt.circuitcomponent.plate.processed.hexanite", () -> PlateHexanite, true),
-
+    ProcessedBoltCopper(2010,"gt.circuitcomponent.bolt.processed.copper",()->BoltCopper,true),
+    ProcessedBoltRedAlloy(2011,"gt.circuitcomponent.bolt.processed.redalloy",()->BoltRedAlloy,true),
+    ProcessedBoltPlatinum(2012,"gt.circuitcomponent.bolt.processed.platinum",()->BoltPlatinum,true),
+    ProcessedBoltNiobiumTitanium(2013,"gt.circuitcomponent.bolt.processed.niobiumtitanium",()->BoltNiobiumTitanium,true),
     // Circuits
     // IDs: 2100-2199
     // The first three circuits in a line can be recursively used in the assembly matrix, and all of them can be turned
@@ -468,83 +498,90 @@ public enum CircuitComponent {
     CrystalProcessor(
         2100,
         "gt.circuitcomponent.crystalprocessor",
-        () -> ItemList.Circuit_Crystalprocessor.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Crystalprocessor.get(1), CircuitCalibration.CRYSTAL, 0.125f),
     CrystalAssembly(
         2101,
         "gt.circuitcomponent.crystalasssembly",
-        () -> ItemList.Circuit_Crystalcomputer.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Crystalcomputer.get(1), CircuitCalibration.CRYSTAL,0.25f),
     CrystalComputer(
         2102,
         "gt.circuitcomponent.crystalcomputer",
-        () -> ItemList.Circuit_Ultimatecrystalcomputer.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Ultimatecrystalcomputer.get(1), CircuitCalibration.CRYSTAL,0.5f),
     CrystalMainframe(
         2103,
         "gt.circuitcomponent.crystalmainframe",
-        () -> ItemList.Circuit_Crystalmainframe.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Crystalmainframe.get(1), CircuitCalibration.CRYSTAL,1),
     WetwareProcessor(
         2104,
         "gt.circuitcomponent.wetwareprocessor",
-        () -> ItemList.Circuit_Neuroprocessor.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Neuroprocessor.get(1), CircuitCalibration.WETWARE, 0.125f),
     WetwareAssembly(
         2105,
         "gt.circuitcomponent.wetwareassembly",
-        () -> ItemList.Circuit_Wetwarecomputer.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Wetwarecomputer.get(1), CircuitCalibration.WETWARE,0.25f),
     WetwareComputer(
         2106,
         "gt.circuitcomponent.wetwarecomputer",
-        () -> ItemList.Circuit_Wetwaresupercomputer.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Wetwaresupercomputer.get(1), CircuitCalibration.WETWARE,0.5f),
     WetwareMainframe(
         2107,
         "gt.circuitcomponent.wetwaremainframe",
-        () -> ItemList.Circuit_Wetwaremainframe.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Wetwaremainframe.get(1), CircuitCalibration.WETWARE,1),
     BiowareProcessor(
         2108,
         "gt.circuitcomponent.biowareprocessor",
-        () -> ItemList.Circuit_Bioprocessor.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Bioprocessor.get(1), CircuitCalibration.BIO,0.125f),
     BiowareAssembly(
         2109,
         "gt.circuitcomponent.biowareassembly",
-        () -> ItemList.Circuit_Biowarecomputer.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Biowarecomputer.get(1), CircuitCalibration.BIO,0.25f),
     BiowareComputer(
         2110,
         "gt.circuitcomponent.biowarecomputer",
-        () -> ItemList.Circuit_Biowaresupercomputer.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Biowaresupercomputer.get(1), CircuitCalibration.BIO,0.5f),
     BiowareMainframe(
         2111,
         "gt.circuitcomponent.biowaremainframe",
-        () -> ItemList.Circuit_Biomainframe.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Biomainframe.get(1), CircuitCalibration.BIO,1),
     OpticalProcessor(
         2112,
         "gt.circuitcomponent.opticalprocessor",
-        () -> ItemList.Circuit_OpticalProcessor.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalProcessor.get(1), CircuitCalibration.OPTICAL,0.125f),
     OpticalAssembly(
         2113,
         "gt.circuitcomponent.opticalassembly",
-        () -> ItemList.Circuit_OpticalAssembly.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalAssembly.get(1), CircuitCalibration.OPTICAL,0.25f),
     OpticalComputer(
         2114,
         "gt.circuitcomponent.opticalcomputer",
-        () -> ItemList.Circuit_OpticalComputer.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalComputer.get(1), CircuitCalibration.OPTICAL,0.5f),
     OpticalMainframe(
         2115,
         "gt.circuitcomponent.opticalmainframe",
-        () -> ItemList.Circuit_OpticalMainframe.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalMainframe.get(1), CircuitCalibration.OPTICAL,1),
     PicoCircuit(
         2116,
         "gt.circuitcomponent.picocircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+        () -> getModItem(NewHorizonsCoreMod.ID, "PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL,1),
     QuantumCircuit(
         2117,
         "gt.circuitcomponent.quantumcircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+        () -> getModItem(NewHorizonsCoreMod.ID, "QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL,1),
     PlanckCircuit(
         2118,
         "gt.circuitcomponent.planckcircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+        () -> getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL,1),
     PlanckManifold(
         2119,
         "gt.circuitcomponent.planckmanifold",
-        () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE),
+         () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE,0),
+    PrimedUnattunedCircuitry(2120,"gt.circuitcomponent.primedunattunedcircuitry",CircuitCalibration.PRIMITIVE,0.1f),
+    NandChip(2121,"gt.circuitcomponent.nandchip",()->ItemList.NandChip.get(1),CircuitCalibration.PRIMITIVE,0),
+    Microprocessor(2122,"gt.circuitcomponent.microprocessor",()->ItemList.Circuit_Microprocessor.get(1),CircuitCalibration.PRIMITIVE,0),
+    IntegratedProcessor(2123,"gt.circuitcomponent.integratedprocessor",()->ItemList.Circuit_Processor.get(1),CircuitCalibration.PRIMITIVE,0),
+    NanoProcessor(2124,"gt.circuitcomponent.nanoprocessor",()->ItemList.Circuit_Nanoprocessor.get(1),CircuitCalibration.PRIMITIVE,0),
+    QuantumProcessor(2125,"gt.circuitcomponent.quantumprocessor", ()->ItemList.Circuit_Quantumprocessor.get(1), CircuitCalibration.PRIMITIVE,0)
+
     ;
 
     // spotless:on
@@ -570,6 +607,7 @@ public enum CircuitComponent {
 
     // Tier used for calibration
     public final CircuitCalibration circuitType;
+    public float weight = 0;
 
     // CC constructor
     CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent) {
@@ -589,8 +627,17 @@ public enum CircuitComponent {
     // 8 - Temporally Transcendent
     // 64 - Special Temporary circuits - Piko/Quantum
 
-    CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent, CircuitCalibration circuitType) {
+    CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent, CircuitCalibration circuitType,
+        float weight) {
         this(id, nameKey, realComponent, null, false, circuitType);
+        this.weight = weight;
+    }
+
+    // CC constructor for circuits not meant to be taken out of the NAC
+    // and instead further used, while counting for calibration
+    CircuitComponent(int id, String nameKey, CircuitCalibration circuitType, float weight) {
+        this(id, nameKey, null, null, true, circuitType);
+        this.weight = weight;
     }
 
     // PC constructor
@@ -615,7 +662,7 @@ public enum CircuitComponent {
         this.circuitType = circuitType;
 
         this.iconString = isProcessed ? PROCESSED_DIRECTORY + name().toLowerCase() : name().toLowerCase();
-        codechicken.nei.api.API.hideItem(getFakeStack(1));
+        if (!isProcessed) codechicken.nei.api.API.hideItem(getFakeStack(1));
     }
 
     public String getLocalizedName() {
@@ -627,14 +674,28 @@ public enum CircuitComponent {
         return new ItemStack(CircuitComponentFakeItem.INSTANCE, amount, this.metaId);
     }
 
+    public static CircuitComponent tryGetFromMetaId(int metaId) {
+        return META_IDS.get(metaId);
+    }
+
     public static CircuitComponent tryGetFromFakeStack(ItemStack stack) {
-        if (!META_IDS.containsKey(stack.getItemDamage())) return null;
-        return getFromFakeStackUnsafe(stack);
+        return tryGetFromMetaId(stack.getItemDamage());
     }
 
     public static CircuitComponent getFromFakeStackUnsafe(ItemStack stack) {
         // If this throws an IndexOutOfBounds exception, there is a bug
-        return META_IDS.get(stack.getItemDamage());
+        return tryGetFromMetaId(stack.getItemDamage());
+    }
+
+    /**
+     * Try to get a real stack representation from a CC fake ItemStack. Will not work for PCs.
+     */
+    public static ItemStack tryGetRealStack(ItemStack stack) {
+        if (stack == null) return null;
+        if (stack.getItem() != CircuitComponentFakeItem.INSTANCE) return null;
+        CircuitComponent cc = tryGetFromFakeStack(stack);
+        if (cc == null || cc.isProcessed || cc.realComponent == null) return null;
+        return cc.realComponent.get();
     }
 
     public static class CircuitComponentStack {

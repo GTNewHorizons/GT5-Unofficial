@@ -34,6 +34,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEPlasmaModuleGui;
 import tectech.loader.ConfigHandler;
@@ -58,20 +59,16 @@ public class MTEPlasmaModule extends MTEBaseModule {
         return new MTEPlasmaModule(mName);
     }
 
-    long wirelessEUt = 0;
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GorgeModuleProcessingLogic() {
 
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                wirelessEUt = (long) recipe.mEUt * getActualParallel();
-                BigInteger powerForRecipe = BigInteger.valueOf(wirelessEUt)
-                    .multiply(BigInteger.valueOf(duration));
+                BigInteger powerForRecipe = predictDrainedEnergy(recipe);
                 if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 if (recipe.getMetadataOrDefault(FOG_PLASMA_TIER, 0) > getPlasmaTier()
                     || (recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false) && !isMultiStepPlasmaCapable)) {
@@ -83,11 +80,11 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                wirelessEUt = (long) recipe.mEUt * maxParallel;
                 BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
                     .multiply(BigInteger.valueOf(duration));
                 if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                    stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 addToPowerTally(powerForRecipe);
                 addToRecipeTally(calculatedParallels);

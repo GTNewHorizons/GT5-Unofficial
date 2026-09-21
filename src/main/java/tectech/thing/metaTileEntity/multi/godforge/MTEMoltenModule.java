@@ -26,6 +26,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEMoltenModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
@@ -50,11 +51,9 @@ public class MTEMoltenModule extends MTEBaseModule {
         return new MTEMoltenModule(mName);
     }
 
-    long wirelessEUt = 0;
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GorgeModuleProcessingLogic() {
 
             @NotNull
             @Override
@@ -67,9 +66,9 @@ public class MTEMoltenModule extends MTEBaseModule {
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }
 
-                wirelessEUt = (long) recipe.mEUt * getActualParallel();
-                if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                BigInteger powerForRecipe = predictDrainedEnergy(recipe);
+                if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -93,6 +92,7 @@ public class MTEMoltenModule extends MTEBaseModule {
                 BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
                     .multiply(BigInteger.valueOf(duration));
                 if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
+                    stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 addToPowerTally(powerForRecipe);

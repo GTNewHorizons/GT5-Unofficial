@@ -33,7 +33,7 @@ public class AssociationLoader implements IWerkstoffRunnable {
             ItemStack stack = WerkstoffLoader.getCorrespondingItemStackUnsafe(prefixes, werkstoff, 1);
 
             if (stack != null && stack.getItem() != null) {
-                GTOreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, stack, false);
+                GTOreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, stack);
                 GTOreDictUnificator.set(prefixes, werkstoffBridgeMaterial, stack, true, true);
             }
         }

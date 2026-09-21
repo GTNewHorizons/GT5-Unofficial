@@ -132,6 +132,12 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus {
     }
 
     @Override
+    public boolean shouldDropItemAt(int index) {
+        // no-op so that the world doesn't get flooded with infinite item stacks
+        return false;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
     }

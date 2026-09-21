@@ -9,7 +9,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -23,6 +22,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.IHatchWatcher;
+import io.netty.buffer.ByteBuf;
 
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
@@ -148,6 +148,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     @Override
+    public ITexture[][] getInventoryTextures() {
+        return getOrCreateInventoryTextures();
+    }
+
+    @Override
     public ITexture getCasingTexture() {
         if (texturePage > 0 || textureIndex > 0) {
             return Textures.BlockIcons.casingTexturePages[texturePage][textureIndex];
@@ -182,6 +187,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
         if (newTexturePage == texturePage && newTextureIndex == textureIndex) return;
         texturePage = newTexturePage;
         textureIndex = newTextureIndex;
+        clearInventoryTextureCache();
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
@@ -193,19 +199,18 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = new NBTTagCompound();
-
-        data.setInteger("texturePage", texturePage);
-        data.setInteger("textureIndex", textureIndex);
-
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(texturePage);
+        buffer.writeInt(textureIndex);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        texturePage = data.getInteger("texturePage");
-        textureIndex = data.getInteger("textureIndex");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        texturePage = buffer.readInt();
+        textureIndex = buffer.readInt();
+        clearInventoryTextureCache();
     }
 
     /**
@@ -289,9 +294,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
             Collections.addAll(additionalTooltips, suffixTooltip);
         }
         additionalTooltips.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.tileentity.throughput",
-                EnumChatFormatting.YELLOW + formatNumber(amp * GTValues.V[tier]) + EnumChatFormatting.RESET + " EU/t"));
+            StatCollector.translateToLocalFormatted("gt.tileentity.throughput", formatNumber(amp * GTValues.V[tier])));
         additionalTooltips.add(
             StatCollector.translateToLocalFormatted(
                 isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",

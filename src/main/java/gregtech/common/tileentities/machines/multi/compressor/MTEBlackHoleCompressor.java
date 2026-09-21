@@ -495,16 +495,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         int z) {
         tag.setByte("blackHoleStatus", blackHoleStatus);
         tag.setFloat("blackHoleStability", blackHoleStability);
-        tag.setInteger("parallels", getMaxParallelRecipes());
     }
 
     @Override
     public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
         IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        list.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("parallels"));
         if (tag.getByte("blackHoleStatus") != 1) {
             if (tag.getFloat("blackHoleStability") > 0) {
                 list.add(
@@ -513,7 +508,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 list.add(
                     EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
                         "GT5U.waila.black_hole_compressor.stability",
-                        "" + EnumChatFormatting.BOLD + Math.round(tag.getFloat("blackHoleStability"))));
+                        Math.round(tag.getFloat("blackHoleStability"))));
             } else {
                 list.add(
                     EnumChatFormatting.RED

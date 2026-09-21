@@ -62,6 +62,8 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import bartworks.API.enums.CircuitImprint;
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.API.recipe.BartWorksRecipeMaps;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -419,8 +421,9 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         if (machineMode == MACHINEMODE_CAL) logic.setSpecialSlotItem(this.circuitImprint.imprint.get(1));
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return GTCEU_LOOP_ASSEMBLER;
     }
 
@@ -495,7 +498,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         this.infoDataBuffer = new String[oldInfo.length + 1];
         System.arraycopy(oldInfo, 0, this.infoDataBuffer, 0, oldInfo.length);
         this.infoDataBuffer[oldInfo.length] = IGregTechDeviceInformation
-            .encode("tooltip.cal.imprintedWith", EnumChatFormatting.YELLOW + this.getTypeForDisplay());
+            .encode("tooltip.cal.imprintedWith", this.getTypeForDisplay());
         return this.infoDataBuffer;
     }
 
@@ -605,7 +608,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.cal.imprintedWith",
-                        EnumChatFormatting.YELLOW + imprint.circuit.get(1)
+                        imprint.circuit.get(1)
                             .getDisplayName()));
             }
         }
@@ -684,9 +687,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger("mode")));
         if (tag.hasKey("ImprintedWith") && tag.getInteger("mode") == 0) {
             list.add(
-                StatCollector.translateToLocalFormatted(
-                    "tooltip.cal.imprintedWith",
-                    EnumChatFormatting.YELLOW + tag.getString("ImprintedWith")));
+                StatCollector.translateToLocalFormatted("tooltip.cal.imprintedWith", tag.getString("ImprintedWith")));
         }
     }
 
