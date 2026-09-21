@@ -20,7 +20,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
@@ -28,7 +27,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -41,7 +39,7 @@ public class NaniteChain {
         ItemStack aUHVTierLens = getModItem(NewHorizonsCoreMod.ID, "ChromaticLens", 0);
         ItemStack aUEVTierLens = getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens", 0);
         ItemStack aUIVTierLens = ItemList.EnergisedTesseract.get(0);
-        ItemStack aUMVTierLens = GTOreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
+        ItemStack aUMVTierLens = MaterialLibAPI.getStack(Materials.Dilithium, Shapes.lens, 0);
 
         // Nano Forge
         GTValues.RA.stdBuilder()
@@ -205,7 +203,7 @@ public class NaniteChain {
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 500_000),
                 MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 50_000),
-                MaterialUtils.molten(Materials.spatialFluid, 5 * INGOTS))
+                MaterialUtils.fluid(Materials.spatialFluid, 5 * INGOTS))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(12 * MINUTES + 30 * SECONDS)
             .eut(2_000_000_000)
@@ -226,7 +224,7 @@ public class NaniteChain {
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 500_000),
                 MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 50_000),
-                MaterialUtils.molten(Materials.temporalFluid, 5 * INGOTS))
+                MaterialUtils.fluid(Materials.temporalFluid, 5 * INGOTS))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(12 * MINUTES + 30 * SECONDS)
             .eut(2_000_000_000)
@@ -256,7 +254,7 @@ public class NaniteChain {
         // Eternity nanites
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
+                MaterialLibAPI.getStack(Materials.Forcicium, Shapes.lens, 0),
                 // Quantum Anomaly
                 GregtechItemList.Laser_Lens_Special.get(0),
                 MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 2),
@@ -265,7 +263,7 @@ public class NaniteChain {
                 ItemList.Timepiece.get(1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Eternity, Shapes.nanite, 1))
             .fluidInputs(
-                MaterialUtils.molten(Materials.spatialFluid, 2 * INGOTS),
+                MaterialUtils.fluid(Materials.spatialFluid, 2 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 12_500),
                 MaterialLibAPI.getFluidStack(Materials.PrimordialMatter, FluidShapes.fluidLiquid, 64_000))
             .metadata(NANO_FORGE_TIER, 3)
@@ -276,8 +274,8 @@ public class NaniteChain {
         // MagMatter nanites
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
-                GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcillium, 0, false),
+                MaterialLibAPI.getStack(Materials.Forcicium, Shapes.lens, 0),
+                MaterialLibAPI.getStack(Materials.Forcillium, Shapes.lens, 0),
                 MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 4),
                 MaterialLibAPI.getStack(Materials.Magmatter, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_YPIC.get(64),

@@ -95,7 +95,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         ItemStack tStack = GTUtility
                             .copyAmount(tMat.mAmount, MaterialParts.stack(OrePrefixes.dust, tMat.mMaterial, 1));
                         if (tStack == null) {
-                            tStack = GTOreDictUnificator.get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
+                            tStack = MaterialParts.stack(OrePrefixes.cell, tMat.mMaterial, Math.min(64L, tMat.mAmount));
                         }
                         if (tItemAmount + tMat.mAmount * 3628800L
                             > stack.getMaxStackSize() * MaterialUtils.density(material)) {

@@ -11,9 +11,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
@@ -22,7 +22,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import kekztech.Items;
 import kekztech.common.Blocks;
 import kekztech.common.TileEntities;
@@ -283,7 +282,7 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stone, Materials.Concrete, 1),
+                new ItemStack(GregTechAPI.sBlockConcretes, 1, 0),
                 MaterialLibAPI.getStack(Materials.Steel, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.DarkSteel, Shapes.foil, 2))
             .circuit(6)

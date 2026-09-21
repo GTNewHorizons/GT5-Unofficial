@@ -514,6 +514,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.GTMaterialGenerationFlag;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
@@ -3981,7 +3982,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
 
                         aItemEntity.setEntityItemStack(
-                            GTOreDictUnificator.get(
+                            MaterialParts.stack(
                                 OrePrefixes.dust,
                                 cauldronRemap.getOrDefault(aMaterial, aMaterial),
                                 aItemEntity.getEntityItem().stackSize));
@@ -3995,8 +3996,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                         aItemEntity.setEntityItemStack(
-                            GTOreDictUnificator
-                                .get(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
+                            MaterialParts
+                                .stack(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
                         aItemEntity.delayBeforeCanPickup = 0;
                         cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);

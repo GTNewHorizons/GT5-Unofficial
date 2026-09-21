@@ -106,7 +106,7 @@ public class ExoticPossibleInputsListPanel {
 
         List<ItemStack> possibleItems = new ArrayList<>(Godforge.exoticModuleMagmatterItemMap.keySet());
         List<FluidStack> possibleFluids = ImmutableList
-            .of(MaterialUtils.molten(Materials.spatialFluid, 1), MaterialUtils.molten(Materials.temporalFluid, 1));
+            .of(MaterialUtils.fluid(Materials.spatialFluid, 1), MaterialUtils.fluid(Materials.temporalFluid, 1));
 
         // Fill handlers
         for (int i = 0; i < itemSize; i++) {

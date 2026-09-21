@@ -32,8 +32,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -175,9 +175,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 new Object[] { Circuits.UHV.getIngredient(), circuitMultiplier },
                 getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
                 getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
-                GTOreDictUnificator.get(part, Materials.Eternity, multiplier))
-            .itemOutputs(
-                GTOreDictUnificator.get(part, Materials.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
+                MaterialParts.stack(part, Materials.Eternity, multiplier))
+            .itemOutputs(MaterialParts.stack(part, Materials.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
             .fluidInputs(
                 MaterialUtils
                     .molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, (long) partFraction * multiplier))

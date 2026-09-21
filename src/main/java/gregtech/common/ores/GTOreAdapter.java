@@ -39,8 +39,8 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
@@ -575,7 +575,7 @@ public final class GTOreAdapter implements IOreAdapter {
 
         switch (oreDropMode) {
             case Item -> drops
-                .add(GTOreDictUnificator.get(OrePrefixes.rawOre, info.material, info.stoneType.isRich() ? 2 : 1));
+                .add(MaterialParts.stack(OrePrefixes.rawOre, info.material, info.stoneType.isRich() ? 2 : 1));
             case FortuneItem -> {
                 if (fortune > 0) {
                     // Max applicable fortune
@@ -587,11 +587,11 @@ public final class GTOreAdapter implements IOreAdapter {
                     int amount = (info.stoneType.isRich() ? 2 : 1) * (addedDrops + 1);
 
                     for (int i = 0; i < amount; i++) {
-                        drops.add(GTOreDictUnificator.get(OrePrefixes.rawOre, info.material, 1));
+                        drops.add(MaterialParts.stack(OrePrefixes.rawOre, info.material, 1));
                     }
                 } else {
                     for (int i = 0; i < (info.stoneType.isRich() ? 2 : 1); i++) {
-                        drops.add(GTOreDictUnificator.get(OrePrefixes.rawOre, info.material, 1));
+                        drops.add(MaterialParts.stack(OrePrefixes.rawOre, info.material, 1));
                     }
                 }
             }

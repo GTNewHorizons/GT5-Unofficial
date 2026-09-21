@@ -926,8 +926,8 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(ItemList.Tesseract.get(1L), GregtechItemList.Laser_Lens_Special.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 20 * INGOTS))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidMolten, 10 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidMolten, 10 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, 10 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, 10 * INGOTS))
             .metadata(CentrifugeRecipeKey.INSTANCE, true)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UXV)

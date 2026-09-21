@@ -34,7 +34,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -317,7 +316,7 @@ public class FluidSolidifierRecipes implements Runnable {
         // Red Granite Block
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(GTOreDictUnificator.get("stoneGraniteRed", 1L))
+            .itemOutputs(new ItemStack(GregTechAPI.sBlockGranites, 1, 8))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.GraniteRed, FluidShapes.fluidMolten, INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -325,7 +324,7 @@ public class FluidSolidifierRecipes implements Runnable {
         // Black Granite Block
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(GTOreDictUnificator.get("stoneGraniteBlack", 1L))
+            .itemOutputs(new ItemStack(GregTechAPI.sBlockGranites, 1, 0))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.GraniteBlack, FluidShapes.fluidMolten, INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)

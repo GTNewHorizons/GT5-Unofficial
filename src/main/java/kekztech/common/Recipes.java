@@ -10,12 +10,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import kekztech.KekzCore;
 import kekztech.common.recipeLoaders.AlloySmelter;
 import kekztech.common.recipeLoaders.Assembler;
@@ -87,7 +85,7 @@ public class Recipes {
                 recipe_jarthaumiumreinforced));
         // Thaumium Reinforced Void Jar
         final ItemStack[] recipe_voidjarupgrade = {
-            GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Obsidian, 1),
+            GTModHandler.getModItem(Mods.IndustrialCraft2.ID, "itemDensePlates", 1, 7),
             MaterialLibAPI.getStack(Materials.Blaze, Shapes.dust, 1),
             MaterialLibAPI.getStack(Materials.EnderEye, Shapes.plate, 1), ItemApi.getItem("itemNugget", 5) };
         final AspectList aspects_voidjarupgrade = new AspectList().add(Aspect.VOID, 14)

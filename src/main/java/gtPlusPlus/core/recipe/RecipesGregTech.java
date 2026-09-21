@@ -1155,7 +1155,7 @@ public class RecipesGregTech {
                 MaterialUtils.anyFluid(Materials.Indalloy140, 1_000_000),
                 MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 100_000),
                 MaterialLibAPI.getFluidStack(Materials.BoundlessCosmicSolder, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ComputationBase, FluidShapes.fluidMolten, 100_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ComputationBase, FluidShapes.fluidLiquid, 100_000))
             .eut(TierEU.RECIPE_UXV)
             .duration(600 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);

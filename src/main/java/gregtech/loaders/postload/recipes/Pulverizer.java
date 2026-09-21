@@ -29,6 +29,7 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class Pulverizer implements Runnable {
@@ -651,7 +652,7 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.rod, Materials.Blizz, 1))
+            .itemInputs(GregtechItemList.BlizzRod.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 1))

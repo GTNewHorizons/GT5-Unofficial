@@ -31,8 +31,8 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class ServerEventHandler {
 
@@ -71,8 +71,7 @@ public class ServerEventHandler {
                                 if (prefixes == null) {
                                     continue;
                                 }
-                                toReplace = GTOreDictUnificator
-                                    .get(prefixes.oreDictName(internalName), null, stack.stackSize, false, true);
+                                toReplace = MaterialParts.stack(prefixes, e, stack.stackSize);
                                 break loop;
                             }
                         }

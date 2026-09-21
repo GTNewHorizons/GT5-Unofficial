@@ -12,6 +12,7 @@ import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Arrays;
 import java.util.List;
@@ -349,7 +350,7 @@ public class GTPostLoad {
                     .bottomBlock(Blocks.soul_sand)
                     .inputItem(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0), false)
                     .circuit(1)
-                    .outputItem(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
+                    .outputItem(GTModHandler.getModItem(Mods.Botania.ID, "stone", 1, 1))
                     .duration(16 * TICKS));
 
             MTERockBreaker.addRockBreakerRecipe(
@@ -468,10 +469,10 @@ public class GTPostLoad {
                 MaterialLibAPI.getStack(Materials.Lignite, Shapes.gem, 1),
                 MaterialLibAPI.getStack(Materials.Lignite, BlockShapes.block, 1),
                 MaterialLibAPI.getStack(Materials.Lignite, Shapes.crushed, 1),
-                GTOreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 1),
+                new ItemStack(Blocks.log, 1, WILDCARD),
+                new ItemStack(Blocks.planks, 1, WILDCARD),
                 MaterialLibAPI.getStack(Materials.Wood, Shapes.stick, 1),
-                GTOreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1),
+                new ItemStack(Blocks.wooden_slab, 1, WILDCARD),
                 MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 1),

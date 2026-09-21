@@ -259,8 +259,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     for (MaterialStack tMat : tMaterialList) if (tMat.mAmount > 0L) {
                         tDustStack = GTUtility
                             .copyAmount(tMat.mAmount, MaterialParts.stack(OrePrefixes.dust, tMat.mMaterial, 1));
-                        if (tDustStack == null)
-                            tDustStack = GTOreDictUnificator.get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
+                        if (tDustStack == null) tDustStack = MaterialParts
+                            .stack(OrePrefixes.cell, tMat.mMaterial, Math.min(64L, tMat.mAmount));
                         if (tItemAmount + tMat.mAmount * 3628800L
                             <= stack.getMaxStackSize() * MaterialUtils.density(material)) {
                             tItemAmount += tMat.mAmount * 3628800L;

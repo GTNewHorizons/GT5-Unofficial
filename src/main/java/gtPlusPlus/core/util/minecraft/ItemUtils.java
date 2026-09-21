@@ -26,7 +26,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.GTplusplus;
@@ -78,7 +77,7 @@ public class ItemUtils {
                     .replace("dust", "");
                 final Material m = gregtech.api.material.MaterialUtils.byLegacyName(MaterialName);
                 if (m != null) {
-                    ItemStack returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1);
+                    ItemStack returnValue = MaterialParts.stack(OrePrefixes.dust, m, 1);
                     if (returnValue != null) {
                         return returnValue;
                     }

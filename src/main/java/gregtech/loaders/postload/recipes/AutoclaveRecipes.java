@@ -1,6 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Chisel;
+import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
@@ -282,14 +284,14 @@ public class AutoclaveRecipes implements Runnable {
         // Marble Block
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 1))
-            .itemOutputs(GTOreDictUnificator.get("blockMarble", 1L))
+            .itemOutputs(GTModHandler.getModItem(Chisel.ID, "marble", 1, 0))
             .fluidInputs(GTUtility.getWater(1_000L))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 1))
-            .itemOutputs(GTOreDictUnificator.get("stoneMarble", 1L))
+            .itemOutputs(GTModHandler.getModItem(Railcraft.ID, "cube", 1, 7))
             .fluidInputs(GTModHandler.getDistilledWater(500L))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)

@@ -19,7 +19,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
@@ -84,7 +83,7 @@ public class RecipeIC2 {
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.EnergeticAlloy, 1),
+                MaterialLibAPI.getStack(Materials.EnergeticAlloy, BlockShapes.block, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.EnergeticAlloyShaft.get(1))
             .duration(2 * MINUTES + 8 * SECONDS)
@@ -118,7 +117,7 @@ public class RecipeIC2 {
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.VibrantAlloy, 1),
+                MaterialLibAPI.getStack(Materials.VibrantAlloy, BlockShapes.block, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.VibrantAlloyShaft.get(1))
             .duration(8 * MINUTES + 32 * SECONDS)

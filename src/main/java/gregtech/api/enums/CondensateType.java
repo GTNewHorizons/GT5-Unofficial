@@ -99,12 +99,12 @@ public enum CondensateType {
         "time",
         () -> Materials.temporalFluid,
         144,
-        () -> MaterialUtils.molten(Materials.temporalFluid, 144), 120 * SECONDS, TierEU.RECIPE_UXV),
+        () -> MaterialUtils.fluid(Materials.temporalFluid, 144), 120 * SECONDS, TierEU.RECIPE_UXV),
     Space(
         "space",
         () -> Materials.spatialFluid,
         144,
-        () -> MaterialUtils.molten(Materials.spatialFluid, 144), 120 * SECONDS, TierEU.RECIPE_UXV),
+        () -> MaterialUtils.fluid(Materials.spatialFluid, 144), 120 * SECONDS, TierEU.RECIPE_UXV),
     BoundlessCosmicSolder(
         "cosmicsolder",
         () -> Materials.BoundlessCosmicSolder,

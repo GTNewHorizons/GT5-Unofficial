@@ -17,9 +17,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class AlloySmelterRecipes implements Runnable {
 
@@ -68,12 +68,12 @@ public class AlloySmelterRecipes implements Runnable {
     @Override
     public void run() {
         for (MaterialStack[] materials : mAlloySmelterList) {
-            ItemStack dust1 = GTOreDictUnificator.get(OrePrefixes.dust, materials[0].mMaterial, materials[0].mAmount);
-            ItemStack dust2 = GTOreDictUnificator.get(OrePrefixes.dust, materials[1].mMaterial, materials[1].mAmount);
-            ItemStack ingot1 = GTOreDictUnificator.get(OrePrefixes.ingot, materials[0].mMaterial, materials[0].mAmount);
-            ItemStack ingot2 = GTOreDictUnificator.get(OrePrefixes.ingot, materials[1].mMaterial, materials[1].mAmount);
-            ItemStack outputIngot = GTOreDictUnificator
-                .get(OrePrefixes.ingot, materials[2].mMaterial, materials[2].mAmount);
+            ItemStack dust1 = MaterialParts.stack(OrePrefixes.dust, materials[0].mMaterial, materials[0].mAmount);
+            ItemStack dust2 = MaterialParts.stack(OrePrefixes.dust, materials[1].mMaterial, materials[1].mAmount);
+            ItemStack ingot1 = MaterialParts.stack(OrePrefixes.ingot, materials[0].mMaterial, materials[0].mAmount);
+            ItemStack ingot2 = MaterialParts.stack(OrePrefixes.ingot, materials[1].mMaterial, materials[1].mAmount);
+            ItemStack outputIngot = MaterialParts
+                .stack(OrePrefixes.ingot, materials[2].mMaterial, materials[2].mAmount);
             if (outputIngot != GTValues.NI) {
                 if (ingot1 != null) {
                     GTValues.RA.stdBuilder()

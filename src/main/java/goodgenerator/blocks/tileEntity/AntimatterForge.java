@@ -72,10 +72,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     private static final FluidStack[] magneticUpgrades = {
         MaterialLibAPI.getFluidStack(Materials.TengamPurified, FluidShapes.fluidMolten, 1),
-        MaterialUtils.molten(Materials.temporalFluid, 1L), MaterialUtils.molten(Materials.Magmatter, 1L) };
+        MaterialUtils.fluid(Materials.temporalFluid, 1L), MaterialUtils.molten(Materials.Magmatter, 1L) };
     private static final FluidStack[] gravityUpgrades = {
         MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 1),
-        MaterialUtils.molten(Materials.spatialFluid, 1L),
+        MaterialUtils.fluid(Materials.spatialFluid, 1L),
         MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 1) };
     private static final FluidStack[] containmentUpgrades = {
         MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 1),

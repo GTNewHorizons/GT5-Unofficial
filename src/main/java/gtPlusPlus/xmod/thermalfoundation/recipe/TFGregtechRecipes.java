@@ -14,15 +14,14 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.GTOreAdapter;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class TFGregtechRecipes {
@@ -54,7 +53,7 @@ public class TFGregtechRecipes {
         // Blizz Rod
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.blaze_rod))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1L))
+            .itemOutputs(GregtechItemList.BlizzRod.get(1))
             .duration(((int) Math.max((MaterialUtils.mass(Materials.Blaze)) * 3L, 1L)) * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(vacuumFreezerRecipes);

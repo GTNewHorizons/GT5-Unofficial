@@ -246,10 +246,6 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 MaterialParts.stack(OrePrefixes.gem, tPrimaryByMaterial, 1),
                 GTUtility.copyAmount(1, tPrimaryByProduct));
 
-            if (MaterialUtils.hasFlag(material, GTMaterialFlag.PULVERIZING_CINNABAR)) {
-                byproduct = GTOreDictUnificator.get(OrePrefixes.crystal, Materials.Cinnabar, byproduct, 1L);
-            }
-
             ItemStack stoneDust = null;
 
             try (OreInfo info = OreManager.getOreInfo(oreStack)) {

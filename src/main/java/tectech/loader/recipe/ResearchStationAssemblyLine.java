@@ -167,8 +167,8 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                 ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM5.get(4),
                 MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt16, 64) },
-            new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidMolten, 144_000),
-                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidMolten, 144_000),
+            new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, 144_000),
+                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, 144_000),
                 MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 16 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 16 * STACKS), },
             CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
@@ -1110,7 +1110,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt08, 8),
                 MaterialLibAPI.getStack(Materials.Shirabon, Shapes.plateDense, 64) },
             new FluidStack[] {
-                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidMolten, 1 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, 1 * STACKS),
                 MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 1 * STACKS),
                 MaterialLibAPI.getFluidStack(
                     Materials.MagnetohydrodynamicallyConstrainedStarMatter,

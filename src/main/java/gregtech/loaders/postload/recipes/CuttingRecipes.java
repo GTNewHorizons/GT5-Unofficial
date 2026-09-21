@@ -24,6 +24,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.OreDictItemStack;
@@ -378,7 +379,7 @@ public class CuttingRecipes implements Runnable {
             .isEmpty()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(new OreDictItemStack("stoneRedrock", 1))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Redrock, 1L))
+                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, Materials.Redrock, 1L))
                 .fluidInputs(GTUtility.getWater(37))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -386,7 +387,7 @@ public class CuttingRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new OreDictItemStack("stoneRedrock", 1))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Redrock, 1L))
+                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, Materials.Redrock, 1L))
                 .fluidInputs(GTModHandler.getDistilledWater(28))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -394,7 +395,7 @@ public class CuttingRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new OreDictItemStack("stoneRedrock", 1))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Redrock, 1L))
+                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, Materials.Redrock, 1L))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 4))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -402,7 +403,7 @@ public class CuttingRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new OreDictItemStack("stoneRedrock", 1))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Redrock, 1L))
+                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, Materials.Redrock, 1L))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1))
                 .duration(4 * SECONDS)

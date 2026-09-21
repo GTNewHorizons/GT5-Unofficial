@@ -2,9 +2,13 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 
@@ -14,7 +18,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 /// The blockCasing/blockCasingAdvanced recipe registrator: crafting-table and assembler recipes for a
@@ -37,7 +40,7 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
             || MaterialParts.stack(OrePrefixes.screw, material, 1L) == null
             || MaterialParts.stack(OrePrefixes.gearGtSmall, material, 1L) == null
             || MaterialParts.stack(OrePrefixes.gearGt, material, 1L) == null
-            || GTOreDictUnificator.get(outer, material, 1L) == null) {
+            || outerPart(material, 1L) == null) {
             return;
         }
 
@@ -70,12 +73,19 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(outer, material, 6L),
+                outerPart(material, 6L),
                 MaterialParts.stack(OrePrefixes.screw, material, 2L),
                 MaterialParts.stack(OrePrefixes.gearGt, material, 1L))
             .itemOutputs(GTUtility.copyAmount(1, advanced))
             .duration(10 * SECONDS)
             .eut(calculateRecipeEU(material, 16))
             .addTo(assemblerRecipes);
+    }
+
+    /// The part the casing's outer shell is pressed from: [Materials#Wood] takes vanilla planks, every other
+    /// material its own double plate.
+    private static @Nullable ItemStack outerPart(Material material, long amount) {
+        if (material == Materials.Wood) return new ItemStack(Blocks.planks, (int) amount, WILDCARD);
+        return MaterialParts.stack(OrePrefixes.plateDouble, material, amount);
     }
 }

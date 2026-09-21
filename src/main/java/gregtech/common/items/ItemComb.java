@@ -62,6 +62,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRenderers;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -996,7 +997,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     public void addProcessGT(CombType comb, Material[] aMaterial, Voltage volt) {
         ItemStack tComb = getStackForType(comb);
         for (Material materials : aMaterial) {
-            if (GTOreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4) != null) {
+            if (MaterialParts.stack(OrePrefixes.crushedPurified, materials, 4) != null) {
                 ItemStack combInput;
                 ItemStack combOutput;
                 FluidStack fluidInput;
@@ -1047,7 +1048,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                     }
                     default -> {
                         combInput = GTUtility.copyAmount(4, tComb);
-                        combOutput = GTOreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4);
+                        combOutput = MaterialParts.stack(OrePrefixes.crushedPurified, materials, 4);
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = null;
                         durationTicks = volt.getComplexTime();
@@ -1107,11 +1108,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         chance[1] = waxChance;
         if (chance[0] != 0) {
             if (Math.max(1, stackSize[0]) % 9 == 0) {
-                aOutPut[0] = GTOreDictUnificator.get(OrePrefixes.dust, material, (Math.max(1, stackSize[0]) / 9));
+                aOutPut[0] = MaterialParts.stack(OrePrefixes.dust, material, Math.max(1, stackSize[0]) / 9);
             } else if (Math.max(1, stackSize[0]) % 4 == 0) {
-                aOutPut[0] = GTOreDictUnificator.get(OrePrefixes.dust, material, (Math.max(1, stackSize[0]) / 4));
+                aOutPut[0] = MaterialParts.stack(OrePrefixes.dust, material, Math.max(1, stackSize[0]) / 4);
             } else {
-                aOutPut[0] = GTOreDictUnificator.get(OrePrefixes.dust, material, Math.max(1, stackSize[0]));
+                aOutPut[0] = MaterialParts.stack(OrePrefixes.dust, material, Math.max(1, stackSize[0]));
             }
         }
         if (beeWax != NI) {
@@ -1133,11 +1134,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 continue;
             }
             if (Math.max(1, stackSize[i]) % 9 == 0) {
-                aOutPut[i] = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial[i], (Math.max(1, stackSize[i]) / 9));
+                aOutPut[i] = MaterialParts.stack(OrePrefixes.dust, aMaterial[i], Math.max(1, stackSize[i]) / 9);
             } else if (Math.max(1, stackSize[i]) % 4 == 0) {
-                aOutPut[i] = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial[i], (Math.max(1, stackSize[i]) / 4));
+                aOutPut[i] = MaterialParts.stack(OrePrefixes.dust, aMaterial[i], Math.max(1, stackSize[i]) / 4);
             } else {
-                aOutPut[i] = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial[i], Math.max(1, stackSize[i]));
+                aOutPut[i] = MaterialParts.stack(OrePrefixes.dust, aMaterial[i], Math.max(1, stackSize[i]));
             }
         }
         if (beeWax != NI) {
@@ -1328,7 +1329,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .itemInputs(
                 GTBees.combs.getStackForType(CombType.ELVEN, 6),
                 MaterialLibAPI.getStack(Materials.ManaDiamond, Shapes.gemFlawless, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.BotaniaDragonstone, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.BotaniaDragonstone, Shapes.gem, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * EIGHTH_INGOTS)))
             .duration(20 * SECONDS)
@@ -1366,8 +1367,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTBees.combs.getStackForType(CombType.TERRASTEEL, 4),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Terrasteel, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Terrasteel, 1))
+                MaterialLibAPI.getStack(Materials.Terrasteel, Shapes.ingot, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Terrasteel, Shapes.nugget, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ElvenElementium, FluidShapes.fluidMolten, 4 * INGOTS))
             .outputChances(50 * 100)
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Terrasteel, FluidShapes.fluidMolten, INGOTS))
@@ -1412,13 +1413,13 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.ManaFly.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Manasteel, 1),
+                MaterialLibAPI.getStack(Materials.Manasteel, Shapes.nugget, 1),
                 new ItemStack(ModItems.manaResource, 1, 16),
                 new ItemStack(ModItems.manaResource, 1, 23),
                 new ItemStack(ModItems.quartz, 1, 1),
                 new ItemStack(ModItems.manaResource, 1, 22),
                 new ItemStack(ModItems.manaResource, 1, 1),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.ManaDiamond, 1),
+                MaterialLibAPI.getStack(Materials.ManaDiamond, Shapes.gem, 1),
                 new ItemStack(ModItems.manaCookie, 1))
             .outputChances(35 * 100, 15 * 100, 15 * 100, 15 * 100, 15 * 100, 5 * 100, 2 * 100, 1 * 10)
             .duration(20 * SECONDS)

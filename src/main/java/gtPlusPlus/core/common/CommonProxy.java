@@ -20,10 +20,8 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galaxyspace.core.entity.mob.EntityEvolvedColdBlaze;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -41,6 +39,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy implements IFuelHandler {
@@ -125,11 +124,7 @@ public class CommonProxy implements IFuelHandler {
         if (Mods.GalaxySpace.isModLoaded()) {
             ItemStack aBlizz = MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 1);
             ItemStack aCryo = MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, 1);
-            EntityUtils.registerDropsForMob(
-                EntityEvolvedColdBlaze.class,
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1),
-                1,
-                2500);
+            EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, GregtechItemList.BlizzRod.get(1), 1, 2500);
             if (aBlizz != null) {
                 EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aBlizz, 1, 5000);
             }

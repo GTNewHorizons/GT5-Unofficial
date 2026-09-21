@@ -25,7 +25,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.loaders.postload.MachineRecipeLoader;
 
@@ -106,11 +105,6 @@ public class ThaumcraftRecipes implements Runnable {
                     tKey,
                     getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0),
                     getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketWater", 1L, 0),
-                    Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L))),
-                GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
-                    tKey,
-                    GTOreDictUnificator.get(OrePrefixes.capsule, Materials.Empty, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.capsule, Materials.Water, 1L),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,

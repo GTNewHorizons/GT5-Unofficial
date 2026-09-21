@@ -75,6 +75,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
@@ -273,7 +274,7 @@ public class GTStructureUtility {
             }
 
             private ItemStack getStack() {
-                return GTOreDictUnificator.get(prefix, material, 1);
+                return MaterialParts.stack(prefix, material, 1);
             }
 
             @Override
@@ -371,7 +372,7 @@ public class GTStructureUtility {
             }
 
             private ItemStack getFrameStack() {
-                return GTOreDictUnificator.get(OrePrefixes.frameGt, materialSupplier.get(), 1);
+                return MaterialParts.stack(OrePrefixes.frameGt, materialSupplier.get(), 1);
             }
 
             @Override

@@ -195,7 +195,7 @@ public class MTEBoilerBronze extends MTEBoiler {
             addProcessingEnergy(burnTime / 10);
             boolean isABlock = !Block.getBlockFromItem(fuel.getItem())
                 .equals(Blocks.air);
-            combustFuel(burnTime, isABlock).map(dustSize -> GTOreDictUnificator.get(dustSize, ashMaterial, 1L))
+            combustFuel(burnTime, isABlock).map(dustSize -> MaterialParts.stack(dustSize, ashMaterial, 1L))
                 .ifPresent(ashes -> aBaseMetaTileEntity.addStackToSlot(3, ashes));
         });
     }

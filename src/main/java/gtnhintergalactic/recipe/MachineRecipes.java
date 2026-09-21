@@ -723,7 +723,7 @@ public class MachineRecipes implements Runnable {
                 GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 64),
                 ItemList.Sensor_UXV.get(8) },
-            new FluidStack[] { MaterialUtils.molten(Materials.spatialFluid, 4 * INGOTS),
+            new FluidStack[] { MaterialUtils.fluid(Materials.spatialFluid, 4 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 4 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512_000) },
             ItemList.MiningDroneUXV.get(1),

@@ -11,12 +11,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class RecipeLoaderIndustrialRockBreaker {
 
@@ -57,7 +55,7 @@ public class RecipeLoaderIndustrialRockBreaker {
                     GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0),
                     new ItemStack(Blocks.soul_sand, 0))
                 .circuit(4)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
+                .itemOutputs(GTModHandler.getModItem(Mods.Botania.ID, "stone", 1, 1))
                 .duration(16 * TICKS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(multiblockRockBreakerRecipes);

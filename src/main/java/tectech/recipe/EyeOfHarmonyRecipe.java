@@ -36,9 +36,9 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
@@ -612,7 +612,7 @@ public class EyeOfHarmonyRecipe {
             final Object mat = pair.getLeft();
             final ItemStack dust;
             if (mat instanceof Material ml) dust = NaquadahRecipeOutputs
-                .convert(getUnificatedOreDictStack(GTOreDictUnificator.get(OrePrefixes.dust, ml, 1L)));
+                .convert(getUnificatedOreDictStack(MaterialParts.stack(OrePrefixes.dust, ml, 1L)));
             else dust = null;
             if (dust != null) {
                 dustList.merge(dust, pair.getRight(), Long::sum);

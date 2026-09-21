@@ -21,16 +21,15 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -40,7 +39,7 @@ public class FluidExtractorRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteBlack, 1))
+            .itemInputs(new ItemStack(GregTechAPI.sBlockGranites, 1, 0))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.GraniteBlack, FluidShapes.fluidMolten, INGOTS))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
@@ -48,7 +47,7 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteRed, 1))
+            .itemInputs(new ItemStack(GregTechAPI.sBlockGranites, 1, 8))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.GraniteRed, FluidShapes.fluidMolten, INGOTS))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
