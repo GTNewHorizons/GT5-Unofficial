@@ -23,7 +23,7 @@ public class AsteroidDumper extends DataDumper {
 
     @Override
     public String[] header() {
-        return new String[] { StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.asteroids"),
+        return new String[] { StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.asteroid"),
             StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.outputs"),
             StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.outputWeights"),
             StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.minSize"),
