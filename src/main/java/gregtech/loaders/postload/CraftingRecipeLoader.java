@@ -1207,7 +1207,7 @@ public class CraftingRecipeLoader implements Runnable {
             new ItemStack(Blocks.piston, 1),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "WWW", "CBC", "CRC", 'W', "plankWood", 'C', OrePrefixes.stoneCobble, 'R', "dustRedstone",
-                'B', "ingotAnyBronze" });
+                'B', "ingotBronze" });
         GTModHandler.addCraftingRecipe(
             new ItemStack(Blocks.piston, 1),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,

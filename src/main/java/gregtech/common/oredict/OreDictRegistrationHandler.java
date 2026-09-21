@@ -53,10 +53,9 @@ import gregtech.loaders.materials.DeclaredMaterialNameTable;
 ///
 /// A name's material side resolves in three tiers. The legacy name domain ([LegacyNameDomain]) is the
 /// declared-materials table; a name outside it may still be a recognition marker ([RecognitionMaterials]),
-/// which unifies and dispatches through `OrePrefixes#processRecognitionOre` rather than through a material;
-/// and a werkstoff- or gtPlusPlus-reconstructed MaterialLib material ([#reconstructedMaterial]) is kept
-/// rather than dropped as unknown. What the buffered registration finally carries is decided by
-/// [#resolveCensusMaterial], MaterialLib-registry-first.
+/// which joins its prefix without a material of its own; and a werkstoff- or gtPlusPlus-reconstructed
+/// MaterialLib material ([#reconstructedMaterial]) is kept rather than dropped as unknown. What the buffered
+/// registration finally carries is decided by [#resolveCensusMaterial], MaterialLib-registry-first.
 public final class OreDictRegistrationHandler {
 
     private OreDictRegistrationHandler() {}
@@ -310,8 +309,7 @@ public final class OreDictRegistrationHandler {
 
         GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
 
-        Material censusMaterial = resolveCensusMaterial(materialName, material, recognitionMarker);
-        Material censusMarker = isCensusMarker(recognitionMarker) ? recognitionMarker : null;
+        Material censusMaterial = resolveCensusMaterial(materialName, material);
 
         // GT++ registers cells for these materials that contain different fluids from their BartWorks counterparts.
         // They share OreDict names but must not unify. Remove this once the duplicate cells are removed.
@@ -324,13 +322,7 @@ public final class OreDictRegistrationHandler {
             GTOreDictUnificator.addAssociation(prefix, censusMaterial, stack);
         }
 
-        OreDictRegistration registration = new OreDictRegistration(
-            oreName,
-            stack,
-            prefix,
-            censusMaterial,
-            censusMarker,
-            modId);
+        OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, censusMaterial, modId);
         OreDictUnificationOverrides.handle(registration);
 
         if (bufferRegistrationProcessing) {
@@ -393,7 +385,7 @@ public final class OreDictRegistrationHandler {
 
     /// Unifies a foreign ore-dictionary entry whose name resolves to a recognition marker rather than to a
     /// material in the legacy name domain (see [RecognitionMaterials#getRecognitionMarker]). The marker's
-    /// crystal/gem aliases come from [OreDictAliases]; this adds the prefix membership and the gear alias.
+    /// aliases come from [OreDictAliases]; this adds the prefix membership and the gear alias.
     private static void registerRecognitionOre(OrePrefixes prefix, Material marker, ItemStack stack) {
         if (MaterialUtils.unifiable(marker)) {
             prefix.add(GTUtility.copyAmount(1, stack));
@@ -448,20 +440,10 @@ public final class OreDictRegistrationHandler {
         return prefix.isUnifiable() && !MaterialUtils.unifiable(material);
     }
 
-    private static boolean isCensusMarker(@Nullable Material recognitionMarker) {
-        return recognitionMarker != null && MaterialUtils.unifiable(recognitionMarker)
-            && MaterialUtils.hasFlag(recognitionMarker, GTMaterialFlag.CRYSTALLISABLE);
-    }
-
-    /// The MaterialLib material an ore-dictionary registration carries downstream. A recognition marker that
-    /// [#isCensusMarker] resolves to itself. Otherwise `materialName` resolves ML-registry-first, falling back
-    /// to `material` (or the `NULL` placeholder) when the registry holds no shaped material under that name, or
-    /// when `materialName` is one [DeclaredMaterialNameTable] freezes.
-    private static Material resolveCensusMaterial(@Nullable String materialName, @Nullable Material material,
-        @Nullable Material recognitionMarker) {
-        if (isCensusMarker(recognitionMarker)) {
-            return recognitionMarker;
-        }
+    /// The MaterialLib material an ore-dictionary registration carries downstream. `materialName` resolves
+    /// ML-registry-first, falling back to `material` (or the `NULL` placeholder) when the registry holds no
+    /// shaped material under that name, or when `materialName` is one [DeclaredMaterialNameTable] freezes.
+    private static Material resolveCensusMaterial(@Nullable String materialName, @Nullable Material material) {
         if (materialName != null && !materialName.isEmpty() && !hasDeclaredMaterialsField(materialName)) {
             Material ml = MaterialLibAPI.getMaterial("gregtech", materialName);
             // A shapeless registry hit is a recognition/wildcard backing; those names resolve through the

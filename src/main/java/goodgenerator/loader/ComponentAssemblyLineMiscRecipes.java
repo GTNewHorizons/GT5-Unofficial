@@ -32,15 +32,12 @@ import goodgenerator.util.StackUtils;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 import tectech.recipe.TTRecipeAdder;
 
@@ -125,7 +122,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 ComponentType.Electric_Motor.getComponent(t)
                     .get(10),
                 MaterialLibAPI.getStack(Materials.Aluminium, Shapes.gearGt, 4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.AnyCopper, 6),
+                MaterialLibAPI.getStack(Materials.Copper, TEBlockShapes.wireGt04, 6),
                 getCircuit(t, 8),
                 getCircuit(t - 1, 16))
             .fluidInputs(

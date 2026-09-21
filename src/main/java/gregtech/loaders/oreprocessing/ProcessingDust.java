@@ -728,43 +728,4 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         }
     }
 
-    /// Runs only the `dust` prefix's CRYSTALLISABLE autoclave recipes (see the `"dust"` case above) for a
-    /// recognition marker.
-    @Override
-    public void registerRecognitionOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
-        if (prefix != OrePrefixes.dust) {
-            return;
-        }
-        if (MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTALLISABLE)
-            && GTOreDictUnificator.get(OrePrefixes.gem, material, 1L) != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack))
-                .circuit(1)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
-                .outputChances(7000)
-                .fluidInputs(GTUtility.getWater(200L))
-                .duration(1 * MINUTES + 40 * SECONDS)
-                .eut(24)
-                .addTo(autoclaveRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack))
-                .circuit(2)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
-                .outputChances(9000)
-                .fluidInputs(GTModHandler.getDistilledWater(100L))
-                .duration(1 * MINUTES + 15 * SECONDS)
-                .eut(24)
-                .addTo(autoclaveRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack))
-                .circuit(3)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
-                .outputChances(10000)
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
-                .duration(1 * MINUTES)
-                .eut(24)
-                .addTo(autoclaveRecipes);
-        }
-    }
 }

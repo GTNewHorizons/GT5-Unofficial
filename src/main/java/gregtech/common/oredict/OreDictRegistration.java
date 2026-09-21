@@ -10,15 +10,12 @@ import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTUtility;
 
-/// One buffered ore-dictionary registration: the stack, the prefix its name resolved to, the material the
-/// census resolved it to (the `NULL` placeholder when the name carries none), and the recognition marker it
-/// resolved through when the name was not a material at all (see
-/// [OreDictRegistrationHandler#resolveCensusMaterial]). When the marker is set, [#registerRecipes] dispatches
-/// ore processing through it rather than through [#material].
+/// One buffered ore-dictionary registration: the stack, the prefix its name resolved to, and the material the
+/// census resolved it to -- the `NULL` placeholder when the name carries none, which for a material-based
+/// prefix means [#registerRecipes] registers nothing (see [OreDictRegistrationHandler#resolveCensusMaterial]).
 final class OreDictRegistration {
 
     @NotNull
@@ -30,25 +27,20 @@ final class OreDictRegistration {
     @NotNull
     final Material material;
     @Nullable
-    final Material recognitionMarker;
-    @Nullable
     final String modId;
 
     OreDictRegistration(@NotNull String oreName, @NotNull ItemStack stack, @NotNull OrePrefixes prefix,
-        @NotNull Material material, @Nullable Material recognitionMarker, @Nullable String modId) {
+        @NotNull Material material, @Nullable String modId) {
 
         this.oreName = oreName;
         this.stack = stack;
         this.prefix = prefix;
         this.material = material;
-        this.recognitionMarker = recognitionMarker;
         this.modId = modId == null || modId.equals("UNKNOWN") ? null : modId;
     }
 
     void registerRecipes() {
-        if (stack.getItem() == null || prefix.isIgnored(recognitionMarker != null ? recognitionMarker : material)
-            || isMaterialLibItem(stack)
-            || isShapeOverride()) {
+        if (stack.getItem() == null || prefix.isIgnored(material) || isMaterialLibItem(stack) || isShapeOverride()) {
             return;
         }
 
@@ -56,20 +48,14 @@ final class OreDictRegistration {
             stack.stackSize = 1;
         }
 
-        ItemStack copy = GTUtility.copyAmount(1, stack);
-        if (recognitionMarker != null) {
-            prefix.processRecognitionOre(recognitionMarker, oreName, modId, copy);
-        } else {
-            prefix.processOre(material == null ? Materials.NULL : material, oreName, modId, copy);
-        }
+        prefix.processOre(material, oreName, modId, GTUtility.copyAmount(1, stack));
     }
 
     /// Whether `stack` is the foreign item MaterialLib serves for this registration's (prefix, material) pair,
     /// such as the vanilla diamond for `gem` Diamond. The shape consumers receive that pair like any other, so
     /// processing it here as well would register its recipes twice.
     private boolean isShapeOverride() {
-        if (recognitionMarker != null || !MaterialParts.isCutOver(prefix, material)
-            || MaterialParts.isMinted(prefix, material)) return false;
+        if (!MaterialParts.isCutOver(prefix, material) || MaterialParts.isMinted(prefix, material)) return false;
         return GTUtility.areStacksEqual(MaterialParts.stack(prefix, material, 1), stack);
     }
 

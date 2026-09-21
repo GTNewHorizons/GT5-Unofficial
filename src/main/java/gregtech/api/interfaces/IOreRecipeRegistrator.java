@@ -18,10 +18,4 @@ public interface IOreRecipeRegistrator {
      * @param stack    always != null
      */
     void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName, ItemStack stack);
-
-    /// The recognition-marker ore-processing path ([OrePrefixes#processRecognitionOre(Material, String, String,
-    /// ItemStack)]). A marker carries no ore-processing recipes, so the default is a no-op; a registrator that
-    /// does process recognition markers overrides this entry.
-    default void registerRecognitionOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {}
 }

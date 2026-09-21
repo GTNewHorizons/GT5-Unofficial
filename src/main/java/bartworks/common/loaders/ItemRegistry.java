@@ -225,8 +225,6 @@ public class ItemRegistry {
     public static ItemStack humongousInputHatch;
 
     public static void run() {
-
-        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BWItemBlocks.class, "BW_Machinery_Casings");
         GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
         GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");
         GameRegistry.registerItem(ItemRegistry.PAPER_ROTOR, "BW_PaperRotor");

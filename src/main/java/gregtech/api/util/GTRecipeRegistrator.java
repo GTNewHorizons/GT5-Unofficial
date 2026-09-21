@@ -50,6 +50,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.MaterialArcSmeltHelper;
+import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
@@ -362,7 +363,8 @@ public class GTRecipeRegistrator {
                 tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }
-            if (GTOreDictUnificator.get(OrePrefixes.ingot, tMaterial.mMaterial, 1L) != null) {
+            if (MaterialParts.stack(OrePrefixes.ingot, MaterialFacades.resolveWildcard(tMaterial.mMaterial), 1)
+                != null) {
                 tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }

@@ -9,7 +9,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.RecognitionMaterials;
+import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.util.GTLanguageManager;
 
 public enum CombType {
@@ -59,7 +59,7 @@ public enum CombType {
     // Gem Line
     STONE(33, "stone", true, Materials.NULL, 70, 0x808080, 0x999999, ItemComb.Voltage.LV),
     CERTUS(34, "certus", true, Materials.CertusQuartz, 100, 0x57CFFB, 0xBBEEFF, ItemComb.Voltage.LV),
-    FLUIX(35, "fluix", true, RecognitionMaterials.Fluix, 100, 0xA375FF, 0xB591FF, ItemComb.Voltage.LV),
+    FLUIX(35, "fluix", true, XModMaterials.Fluix, 100, 0xA375FF, 0xB591FF, ItemComb.Voltage.LV),
     REDSTONE(36, "redstone", true, Materials.Redstone, 100, 0x7D0F0F, 0xD11919, ItemComb.Voltage.LV),
     RAREEARTH(37, "rare_earth", true, Materials.RareEarth, 100, 0x555643, 0x343428, ItemComb.Voltage.LV),
     LAPIS(38, "lapis", true, Materials.Lapis, 100, 0x1947D1, 0x476CDA, ItemComb.Voltage.LV),

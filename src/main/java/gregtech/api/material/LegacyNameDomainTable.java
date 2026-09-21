@@ -59,7 +59,6 @@ public final class LegacyNameDomainTable {
         m.put("Antimatter", "Antimatter");
         m.put("Antimony", "Antimony");
         m.put("AntimonyTrioxide", "AntimonyTrioxide");
-        m.put("AnyBronze", "AnyBronze");
         m.put("AnyCarbon", "AnyCarbon");
         m.put("AnyCopper", "AnyCopper");
         m.put("AnyIron", "AnyIron");
@@ -294,6 +293,7 @@ public final class LegacyNameDomainTable {
         m.put("Flerovium_GT5U", "Flerovium_GT5U");
         m.put("Flint", "Flint");
         m.put("FlocculationWasteLiquid", "FlocculationWasteLiquid");
+        m.put("Fluix", "Fluix");
         m.put("Fluorine", "Fluorine");
         m.put("FoolsRuby", "FoolsRuby");
         m.put("Force", "Force");

@@ -20,19 +20,22 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 
-/// Recognition entries: names that generate no items of their own but exist so `gregtech.common.GTProxy#registerOre`
-/// resolves every ore-dictionary registration another mod fires against them by name, so a foreign entry such as
-/// `gemCitrine`, `oreFluorite`, or `dustAgate` unifies against one of these instead of falling through unrecognized.
+/// Recognition entries: names that generate no items of their own but exist so
+/// [gregtech.common.oredict.OreDictRegistrationHandler] resolves the ore-dictionary registrations another mod
+/// fires against them by name, so a foreign entry such as `itemLeather`, `shardPrismarine`, or `blockWoolBlack`
+/// resolves to one of these instead of falling through unrecognized and being blacklisted as a colour variant.
 ///
 /// Every entry is a shapeless MaterialLib [Material] registered by [#registerBackingMaterials], looked up through
 /// [#getRecognitionMarker]. Most carry only a name and whether an entry named for them unifies; the handful that
 /// other code references directly also have a declared field here. `Ammonium` is the one entry whose name already
 /// belongs to a real MaterialLib material, so it maps to that material instead of a registered backing.
+///
+/// A name whose items form a coherent material with MaterialLib shapes belongs in
+/// [gregtech.api.enums.materials.XModMaterials] as a real material instead.
 public class RecognitionMaterials {
 
     public static Material Quartz;
     public static Material Advanced;
-    public static Material Fluix;
     public static Material Ammonium;
     public static Material Limestone;
     public static Material Sand;
@@ -113,7 +116,6 @@ public class RecognitionMaterials {
     private static final Marker[] MARKERS = {
         new Marker(m -> Advanced = m, new MarkerSpec("Advanced", "Advanced Alloy", "NONE", DEFAULT_TINT, true, Set.of())),
         new Marker(m -> Ammonium = m, new MarkerSpec("Ammonium", "Ammonium", "NONE", DEFAULT_TINT, true, Set.of())),
-        new Marker(m -> Fluix = m, new MarkerSpec("Fluix", "Fluix", "NONE", DEFAULT_TINT, true, Set.of(SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ))),
         new Marker(m -> Leather = m, new MarkerSpec("Leather", "Leather", "ROUGH", 0x7F969650, true, Set.of())),
         new Marker(m -> Limestone = m, new MarkerSpec("Limestone", "Limestone", "NONE", DEFAULT_TINT, true, Set.of())),
         new Marker(m -> Prismarine = m, new MarkerSpec("Prismarine", "Prismarine", "NONE", DEFAULT_TINT, true, Set.of())),
@@ -121,72 +123,15 @@ public class RecognitionMaterials {
         new Marker(m -> Sand = m, new MarkerSpec("Sand", "Sand", "NONE", DEFAULT_TINT, true, Set.of())), };
 
     private static final MarkerSpec[] RECOGNITION_MARKERS = {
-        new MarkerSpec("Adamite", true),
-        new MarkerSpec("Agate", true),
-        new MarkerSpec("Alfium", true),
         new MarkerSpec("Debris", true),
         new MarkerSpec("Andesite", true),
-        new MarkerSpec("Aquamarine", true),
-        new MarkerSpec("Bitumen", true),
         new MarkerSpec("Black", true),
-        new MarkerSpec("Bloodstone", true),
         new MarkerSpec("BrickNether", false),
-        new MarkerSpec("Chimerite", true),
-        new MarkerSpec("Chrysocolla", true),
-        new MarkerSpec("Citrine", true),
-        new MarkerSpec("Cluster", true),
         new MarkerSpec("Cobblestone", false),
-        new MarkerSpec("Coral", true),
         new MarkerSpec("Crystal", false),
-        new MarkerSpec("CrystalFlux", true),
-        new MarkerSpec("Cyanite", true),
-        new MarkerSpec("DarkStone", true),
-        new MarkerSpec("Demonite", true),
-        new MarkerSpec("Draconic", true),
-        new MarkerSpec("Drulloy", true),
         new MarkerSpec("Ender", true),
-        new MarkerSpec("Energized", true),
-        new MarkerSpec("Fluorite", true),
-        new MarkerSpec("Flux", true),
-        new MarkerSpec("Infernal", true),
-        new MarkerSpec("InfusedDull", true),
-        new MarkerSpec("InfusedTeslatite", true),
-        new MarkerSpec("InfusedVis", true),
-        new MarkerSpec("Invisium", true),
-        new MarkerSpec("IridiumSodiumOxide", true),
-        new MarkerSpec("Lodestone", true),
-        new MarkerSpec("Luminite", true),
-        new MarkerSpec("Magma", true),
-        new MarkerSpec("Mawsitsit", true),
-        new MarkerSpec("Metal", false),
-        new MarkerSpec("Meteorite", true),
-        new MarkerSpec("Mimichite", true),
-        new MarkerSpec("Moonstone", true),
-        new MarkerSpec("Mud", true),
-        new MarkerSpec("Mutation", true),
-        new MarkerSpec("Nano", true),
-        new MarkerSpec("Nether", true),
-        new MarkerSpec("Onyx", true),
-        new MarkerSpec("Organic", false),
-        new MarkerSpec("OsmiumTetroxide", true),
-        new MarkerSpec("Painite", true),
-        new MarkerSpec("Peanutwood", true),
         new MarkerSpec("Peat", true),
-        new MarkerSpec("Petroleum", true),
-        new MarkerSpec("Pewter", true),
-        new MarkerSpec("Piko", true),
-        new MarkerSpec("PurpleAlloy", true),
-        new MarkerSpec("Randomite", true),
         new MarkerSpec("Red", true),
-        new MarkerSpec("RubberTreeSap", true),
-        new MarkerSpec("SodiumPeroxide", true),
-        new MarkerSpec("SolutionBlueVitriol", true),
-        new MarkerSpec("SolutionNickelSulfate", true),
-        new MarkerSpec("Sunstone", true),
-        new MarkerSpec("TNT", true),
-        new MarkerSpec("Tar", true),
-        new MarkerSpec("Unknown", false),
-        new MarkerSpec("Unstableingot", true),
-        new MarkerSpec("Voidstone", true), };
+        new MarkerSpec("Unknown", false), };
     // spotless:on
 }

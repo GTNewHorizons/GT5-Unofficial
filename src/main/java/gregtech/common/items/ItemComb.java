@@ -61,6 +61,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.material.MaterialRenderers;
 import gregtech.api.material.MaterialUtils;
@@ -457,7 +458,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // Gem Line
         addProcessGT(CombType.STONE, new Material[] { Materials.Soapstone }, Voltage.LV);
         addProcessGT(CombType.CERTUS, new Material[] { Materials.CertusQuartz }, Voltage.LV);
-        addProcessGT(CombType.FLUIX, RecognitionMaterials.Fluix, Voltage.LV);
+        addProcessGT(CombType.FLUIX, XModMaterials.Fluix, Voltage.LV);
         addProcessGT(CombType.REDSTONE, new Material[] { Materials.Redstone }, Voltage.LV);
         addCentrifugeToMaterial(
             CombType.RAREEARTH,
@@ -490,7 +491,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             50 * 100);
         addCentrifugeToMaterial(
             CombType.FLUIX,
-            RecognitionMaterials.Fluix,
+            XModMaterials.Fluix,
             new int[] { 25 * 100 },
             new int[] { 9 },
             Voltage.ULV,

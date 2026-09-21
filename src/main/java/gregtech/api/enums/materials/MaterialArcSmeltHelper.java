@@ -23,12 +23,11 @@ public class MaterialArcSmeltHelper {
 
     private static Map<Material, Map<Material, Material>> table() {
         if (table == null) {
-            if (Materials.Copper == null || MaterialFacades.AnyCopper == null) {
+            if (Materials.Copper == null) {
                 throw new IllegalStateException("Gas-arc table consulted before MaterialSystem.init");
             }
             Map<Material, Map<Material, Material>> rows = new LinkedHashMap<>();
             rows.put(Materials.Copper, Map.of(Materials.Oxygen, Materials.AnnealedCopper));
-            rows.put(MaterialFacades.AnyCopper, Map.of(Materials.Oxygen, Materials.AnnealedCopper));
             table = rows;
         }
         return table;

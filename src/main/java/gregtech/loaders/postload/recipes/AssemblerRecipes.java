@@ -45,11 +45,9 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
@@ -108,7 +106,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialLibAPI.getStack(Materials.Steel, Shapes.plateDouble, 4),
-                    GTOreDictUnificator.get(OrePrefixes.ring, MaterialFacades.AnyBronze, 4L))
+                    MaterialLibAPI.getStack(Materials.Bronze, Shapes.ring, 4))
                 .circuit(1)
                 .itemOutputs(ItemList.Large_Fluid_Cell_Steel.get(1L))
                 .duration(10 * SECONDS)
@@ -5124,7 +5122,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    GTOreDictUnificator.get(OrePrefixes.springSmall, MaterialFacades.AnyIron, 4))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.springSmall, 4))
                 .circuit(1)
                 .itemOutputs(tRailSS)
                 .duration(5 * SECONDS)
@@ -5201,7 +5199,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialFacades.AnyIron, 4))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.gearGtSmall, 4))
                 .circuit(1)
                 .itemOutputs(tRailSW)
                 .duration(5 * SECONDS)
@@ -5278,7 +5276,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    GTOreDictUnificator.get(OrePrefixes.screw, MaterialFacades.AnyIron, 4))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.screw, 4))
                 .circuit(1)
                 .itemOutputs(tRailSJ)
                 .duration(5 * SECONDS)
@@ -6380,7 +6378,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, MaterialFacades.AnyCopper, 10))
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.plate, 10))
             .circuit(10)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 7))
             .duration(10 * SECONDS)
@@ -6421,7 +6419,7 @@ public class AssemblerRecipes implements Runnable {
 
         // RC Tank Gauges, Valves and Walls
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, MaterialFacades.AnyIron, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 2))
             .circuit(20)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 0))
             .duration(30 * SECONDS)
@@ -6429,9 +6427,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, MaterialFacades.AnyIron, 2),
-                new OreDictItemStack("paneGlass", 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 2), new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 2L, 1))
             .duration(40 * SECONDS)

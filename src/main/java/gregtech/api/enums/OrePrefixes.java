@@ -2426,28 +2426,6 @@ public class OrePrefixes {
         return mOreProcessing.add(registrator);
     }
 
-    /// [#processOre(Material, String, String, ItemStack)] for the recognition-marker path, dispatching each
-    /// registrator's [IOreRecipeRegistrator#registerRecognitionOre(OrePrefixes, Material, String, String,
-    /// ItemStack)] entry instead of its full-material one.
-    public void processRecognitionOre(Material material, String oreDictName, String modName, ItemStack stack) {
-
-        if (material == null) return;
-        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
-        if (!GTUtility.isStackValid(stack)) return;
-
-        for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
-            if (D2) {
-                GTLoggers.GT_ORE_DICT_LOGGER.info(
-                    "Processing '{}' with the Prefix '{}' and the Material '{}' at {}",
-                    oreDictName,
-                    name,
-                    MaterialUtils.internalName(material),
-                    GTUtility.getClassName(tRegistrator));
-            }
-            tRegistrator.registerRecognitionOre(this, material, oreDictName, modName, GTUtility.copyAmount(1, stack));
-        }
-    }
-
     /// Runs every registered ore-processing registrator for a MaterialLib [Material], dispatching each
     /// registrator's [IOreRecipeRegistrator#registerOre(OrePrefixes, Material, String, String, ItemStack)] entry.
     public void processOre(Material material, String oreDictName, String modName, ItemStack stack) {

@@ -12,12 +12,13 @@ import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.ShapeData;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.enums.materials.XModMaterials;
 
 public class MaterialSystem {
 
     // Shapes and families come first: the material tables pass them as objects. RecognitionMaterials must
     // follow Materials so it binds the real material behind a shared name. PipeMaterials runs last: its rows
-    // reference the material fields the passes above assign.
+    // reference the material fields the passes above assign, as do XModMaterials' shape edits.
     public static void init() {
         FluidShapes.init();
         CellShapes.init();
@@ -27,6 +28,7 @@ public class MaterialSystem {
         TEBlockShapes.init();
         Families.init();
         Materials.init();
+        XModMaterials.init();
         MaterialFacades.registerBackingMaterials();
         RecognitionMaterials.registerBackingMaterials();
         PipeMaterials.init();

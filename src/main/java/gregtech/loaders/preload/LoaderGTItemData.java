@@ -21,6 +21,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.RecognitionMaterials;
+import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTModHandler;
@@ -68,7 +69,7 @@ public class LoaderGTItemData implements Runnable {
             new ItemData(Materials.NetherQuartz, 1814400L));
         GTOreDictUnificator.addItemData(
             GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 12),
-            new ItemData(RecognitionMaterials.Fluix, 1814400L));
+            new ItemData(XModMaterials.Fluix, 1814400L));
         GTOreDictUnificator
             .addItemData(new ItemStack(Blocks.quartz_block, 1, 32767), new ItemData(Materials.NetherQuartz, 14515200L));
         GTOreDictUnificator.addItemData(

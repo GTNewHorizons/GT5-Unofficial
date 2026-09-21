@@ -29,6 +29,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -687,11 +688,12 @@ public class GTOreDictUnificator {
 
     public static ItemStack getGem(Material material, long materialAmount) {
         ItemStack rStack = null;
-        if (((materialAmount >= M))) rStack = get(OrePrefixes.gem, material, materialAmount / M);
+        if (((materialAmount >= M))) rStack = part(OrePrefixes.gem, material, materialAmount / M);
         if (rStack == null) {
             if ((((materialAmount * 2) % M == 0) || materialAmount >= M * 16))
-                rStack = get(OrePrefixes.gemFlawed, material, (materialAmount * 2) / M);
-            if ((((materialAmount * 4) >= M))) rStack = get(OrePrefixes.gemChipped, material, (materialAmount * 4) / M);
+                rStack = part(OrePrefixes.gemFlawed, material, (materialAmount * 2) / M);
+            if ((((materialAmount * 4) >= M)))
+                rStack = part(OrePrefixes.gemChipped, material, (materialAmount * 4) / M);
         }
         return rStack;
     }
@@ -708,11 +710,11 @@ public class GTOreDictUnificator {
         if (materialAmount <= 0) return null;
         ItemStack rStack = null;
         if (((materialAmount % M == 0) || materialAmount >= M * 16))
-            rStack = get(OrePrefixes.dust, material, materialAmount / M);
+            rStack = part(OrePrefixes.dust, material, materialAmount / M);
         if (rStack == null && (((materialAmount * 4) % M == 0) || materialAmount >= M * 8))
-            rStack = get(OrePrefixes.dustSmall, material, (materialAmount * 4) / M);
+            rStack = part(OrePrefixes.dustSmall, material, (materialAmount * 4) / M);
         if (rStack == null && (((materialAmount * 9) >= M)))
-            rStack = get(OrePrefixes.dustTiny, material, (materialAmount * 9) / M);
+            rStack = part(OrePrefixes.dustTiny, material, (materialAmount * 9) / M);
         return rStack;
     }
 
@@ -728,11 +730,11 @@ public class GTOreDictUnificator {
         if (materialAmount <= 0) return null;
         ItemStack rStack = null;
         if (((materialAmount % (M * 9) == 0 && materialAmount / (M * 9) > 1) || materialAmount >= M * 72))
-            rStack = get(OrePrefixes.block, material, materialAmount / (M * 9));
+            rStack = part(OrePrefixes.block, material, materialAmount / (M * 9));
         if (rStack == null && ((materialAmount % M == 0) || materialAmount >= M * 8))
-            rStack = get(OrePrefixes.ingot, material, materialAmount / M);
+            rStack = part(OrePrefixes.ingot, material, materialAmount / M);
         if (rStack == null && (((materialAmount * 9) >= M)))
-            rStack = get(OrePrefixes.nugget, material, (materialAmount * 9) / M);
+            rStack = part(OrePrefixes.nugget, material, (materialAmount * 9) / M);
         return rStack;
     }
 
@@ -760,6 +762,18 @@ public class GTOreDictUnificator {
         ItemStack rStack = getDust(material);
         if (rStack == null) rStack = getIngot(material);
         return rStack;
+    }
+
+    /// The MaterialLib part backing a legacy (prefix, material) pair at `amount`, stack-clamped like [#get] and
+    /// null for a pair MaterialLib does not serve, such as any prefix of the shapeless `NULL` placeholder. A
+    /// wildcard marker answers with the part of the material [MaterialFacades#resolveWildcard] names, so a
+    /// composition holding one recycles into that material's parts. Honours the component-disabling config the
+    /// pair's prefix takes part in.
+    private static ItemStack part(OrePrefixes prefix, Material material, long amount) {
+        material = MaterialFacades.resolveWildcard(material);
+        if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
+            return null;
+        return GTUtility.copyAmount((int) amount, MaterialParts.stack(prefix, material, 1));
     }
 
     /**

@@ -146,6 +146,7 @@ public final class MainMod {
 
         GameRegistry.registerBlock(ItemRegistry.bw_deprecatedglass, BWItemBlocks.class, "BW_GlasBlocks");
         GameRegistry.registerBlock(ItemRegistry.bw_deprecatedglass2, BWItemBlocks.class, "BW_GlasBlocks2");
+        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BWItemBlocks.class, "BW_Machinery_Casings");
         codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass));
         codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass2));
 

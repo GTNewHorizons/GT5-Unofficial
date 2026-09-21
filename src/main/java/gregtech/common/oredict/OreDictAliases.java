@@ -15,6 +15,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.RecognitionMaterials;
+import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -33,7 +34,7 @@ final class OreDictAliases {
     static {
         aliasToPrefix(OrePrefixes.crystal, Materials.CertusQuartz, OrePrefixes.gem);
         aliasToPrefix(OrePrefixes.crystal, Materials.NetherQuartz, OrePrefixes.gem);
-        aliasToPrefix(OrePrefixes.crystal, RecognitionMaterials.Fluix, OrePrefixes.gem);
+        aliasToPrefix(OrePrefixes.crystal, XModMaterials.Fluix, OrePrefixes.gem);
 
         aliasToOreDict(OrePrefixes.gem, Materials.Lapis, Dyes.dyeBlue.name());
         aliasToOreDict(OrePrefixes.gem, Materials.Sodalite, Dyes.dyeBlue.name());
@@ -54,8 +55,8 @@ final class OreDictAliases {
         aliasToPrefix(OrePrefixes.gem, Materials.NetherQuartz, OrePrefixes.crystal);
         aliasToOreDict(OrePrefixes.gem, Materials.NetherQuartz, OreDictNames.craftingQuartz.name());
 
-        aliasToPrefix(OrePrefixes.gem, RecognitionMaterials.Fluix, OrePrefixes.crystal);
-        aliasToOreDict(OrePrefixes.gem, RecognitionMaterials.Fluix, OreDictNames.craftingQuartz.name());
+        aliasToPrefix(OrePrefixes.gem, XModMaterials.Fluix, OrePrefixes.crystal);
+        aliasToOreDict(OrePrefixes.gem, XModMaterials.Fluix, OreDictNames.craftingQuartz.name());
 
         aliasToPrefix(OrePrefixes.gem, RecognitionMaterials.Quartz, OrePrefixes.crystal);
         aliasToOreDict(OrePrefixes.gem, RecognitionMaterials.Quartz, OreDictNames.craftingQuartz.name());

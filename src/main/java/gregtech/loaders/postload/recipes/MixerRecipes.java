@@ -37,8 +37,8 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
@@ -567,7 +567,7 @@ public class MixerRecipes implements Runnable {
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
                 MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.gem, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, RecognitionMaterials.Fluix, 2))
+            .itemOutputs(MaterialParts.stack(OrePrefixes.gem, XModMaterials.Fluix, 2))
             .fluidInputs(GTUtility.getWater(500))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -578,7 +578,7 @@ public class MixerRecipes implements Runnable {
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
                 MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.gem, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, RecognitionMaterials.Fluix, 2))
+            .itemOutputs(MaterialParts.stack(OrePrefixes.gem, XModMaterials.Fluix, 2))
             .fluidInputs(GTModHandler.getDistilledWater(500))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)

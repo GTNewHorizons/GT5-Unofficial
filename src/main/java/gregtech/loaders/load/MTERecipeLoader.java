@@ -3826,8 +3826,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Charcoal_Pile.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "EXE", "EME", "hCw", 'M', ItemList.Hull_HP_Bricks, 'E',
-                OrePrefixes.plate.ingredient(MaterialFacades.AnyBronze), 'C', new ItemStack(Items.flint_and_steel, 1),
-                'X', MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel), });
+                OrePrefixes.plate.ingredient(Materials.Bronze), 'C', new ItemStack(Items.flint_and_steel, 1), 'X',
+                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel), });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Seismic_Prospector_Adv_LV.get(1L),

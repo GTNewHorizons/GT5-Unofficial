@@ -18,13 +18,13 @@ import com.ruling_0.materiallib.api.TextureSet;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 
-/// The six wildcard markers (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`):
-/// materials that back an ore-dictionary entry without carrying composition of their own, so an Iron ore entry
-/// also answers to `AnyIron`. [gregtech.api.enums.materials.RecognitionMaterials] holds the separate backings
-/// for foreign mods' ore-dictionary names.
+/// The five wildcard markers (`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`): materials
+/// that back an ore-dictionary entry without carrying composition of their own, so an Iron ore entry also
+/// answers to `AnyIron`. A crafting recipe naming one accepts any of the members;
+/// [gregtech.api.enums.materials.RecognitionMaterials] holds the separate backings for foreign mods'
+/// ore-dictionary names.
 public class MaterialFacades {
 
-    public static Material AnyBronze;
     public static Material AnyCarbon;
     public static Material AnyCopper;
     public static Material AnyIron;
@@ -32,6 +32,26 @@ public class MaterialFacades {
     public static Material AnySyntheticRubber;
 
     private static Map<Material, List<Material>> oreReRegistrations;
+    private static Map<Material, Material> wildcardResolutions;
+
+    /// The material whose parts stand in for a wildcard marker wherever an item has to be produced, such as the
+    /// recycling outputs of a composition holding the marker. `material` itself when it is not a wildcard.
+    public static @Nullable Material resolveWildcard(@Nullable Material material) {
+        if (material == null) return null;
+        if (wildcardResolutions == null) {
+            if (AnyIron == null) {
+                throw new IllegalStateException("Wildcard resolution table consulted before MaterialSystem.init");
+            }
+            Map<Material, Material> m = new HashMap<>();
+            m.put(AnyIron, Materials.Iron);
+            m.put(AnyCopper, Materials.Copper);
+            m.put(AnyCarbon, Materials.Carbon);
+            m.put(AnyRubber, Materials.Rubber);
+            m.put(AnySyntheticRubber, Materials.Silicone);
+            wildcardResolutions = m;
+        }
+        return wildcardResolutions.getOrDefault(material, material);
+    }
 
     /// The wildcard markers an ore entry for `material` is additionally registered under. Empty for a material
     /// with no wildcard alias.
@@ -47,7 +67,6 @@ public class MaterialFacades {
             m.put(Materials.CastIron, Collections.singletonList(AnyIron));
             m.put(Materials.Copper, Collections.singletonList(AnyCopper));
             m.put(Materials.AnnealedCopper, Collections.singletonList(AnyCopper));
-            m.put(Materials.Bronze, Collections.singletonList(AnyBronze));
             m.put(Materials.Rubber, Collections.singletonList(AnyRubber));
             m.put(Materials.StyreneButadieneRubber, Arrays.asList(AnyRubber, AnySyntheticRubber));
             m.put(Materials.Silicone, Arrays.asList(AnyRubber, AnySyntheticRubber));
@@ -64,7 +83,6 @@ public class MaterialFacades {
 
     /// Registers a shapeless MaterialLib [Material] backing each wildcard marker.
     public static void registerBackingMaterials() {
-        AnyBronze = registerWildcard("AnyBronze", "AnyBronze", "SHINY", GTMaterialFlag.METAL, null, null, null);
         AnyCopper = registerWildcard(
             "AnyCopper",
             "AnyCopper",
