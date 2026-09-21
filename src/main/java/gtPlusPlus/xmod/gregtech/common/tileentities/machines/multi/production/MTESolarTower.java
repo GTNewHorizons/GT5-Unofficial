@@ -74,155 +74,155 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
     // spotless:off
     private static final String[][] STRUCTURE_STRING_TOP = {
         { "     ", "     ", "  ~  ", "     ", "     " },
-        { "     ", "  s  ", " sss ", "  s  ", "     " },
-        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
-        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
-        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
-        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
-        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " }, };
+        { "     ", "  S  ", " SSS ", "  S  ", "     " },
+        { "  C  ", " CCC ", "CCSCC", " CCC ", "  C  " },
+        { "  C  ", " CCC ", "CCSCC", " CCC ", "  C  " },
+        { "  C  ", " CCC ", "CCSCC", " CCC ", "  C  " },
+        { "  C  ", " CCC ", "CCSCC", " CCC ", "  C  " },
+        { "  C  ", " CCC ", "CCSCC", " CCC ", "  C  " }, };
     private static final String[][] STRUCTURE_STRING_TOWER = {
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " },
-        { " i ", "isi", " i " }, };
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " },
+        { " I ", "ISI", " I " }, };
     private static final String[][] STRUCTURE_STRING_BASE = {
-        { "           ", "           ", "     t     ", "    ttt    ", "   ttstt   ", "  ttssstt  ", "   ttstt   ", "    ttt    ", "     t     ", "           ", "           " },
-        { "           ", "           ", "     t     ", "    ttt    ", "   tssst   ", "  ttssstt  ", "   tssst   ", "    ttt    ", "     t     ", "           ", "           " },
-        { "           ", "     t     ", "    ttt    ", "   ttttt   ", "  ttssstt  ", " tttsssttt ", "  ttssstt  ", "   ttttt   ", "    ttt    ", "     t     ", "           " },
-        { "           ", "     t     ", "    ttt    ", "   ttttt   ", "  ttssstt  ", " tttsssttt ", "  ttssstt  ", "   ttttt   ", "    ttt    ", "     t     ", "           " },
-        { "    hhh    ", "   ttttt   ", "  ttttttt  ", " ttttttttt ", "htttsssttth", "htttsssttth", "htttsssttth", " ttttttttt ", "  ttttttt  ", "   ttttt   ", "    hhh    " },
-        { "    hhh    ", "   ttttt   ", "  ttttttt  ", " ttttttttt ", "httttttttth", "httttttttth", "httttttttth", " ttttttttt ", "  ttttttt  ", "   ttttt   ", "    hhh    " }, };
+        { "           ", "           ", "     T     ", "    TTT    ", "   TTSTT   ", "  TTSSSTT  ", "   TTSTT   ", "    TTT    ", "     T     ", "           ", "           " },
+        { "           ", "           ", "     T     ", "    TTT    ", "   TSSST   ", "  TTSSSTT  ", "   TSSST   ", "    TTT    ", "     T     ", "           ", "           " },
+        { "           ", "     T     ", "    TTT    ", "   TTTTT   ", "  TTSSSTT  ", " TTTSSSTTT ", "  TTSSSTT  ", "   TTTTT   ", "    TTT    ", "     T     ", "           " },
+        { "           ", "     T     ", "    TTT    ", "   TTTTT   ", "  TTSSSTT  ", " TTTSSSTTT ", "  TTSSSTT  ", "   TTTTT   ", "    TTT    ", "     T     ", "           " },
+        { "    HHH    ", "   TTTTT   ", "  TTTTTTT  ", " TTTTTTTTT ", "HTTTSSSTTTH", "HTTTSSSTTTH", "HTTTSSSTTTH", " TTTTTTTTT ", "  TTTTTTT  ", "   TTTTT   ", "    HHH    " },
+        { "    HHH    ", "   TTTTT   ", "  TTTTTTT  ", " TTTTTTTTT ", "HTTTTTTTTTH", "HTTTTTTTTTH", "HTTTTTTTTTH", " TTTTTTTTT ", "  TTTTTTT  ", "   TTTTT   ", "    HHH    " }, };
     private static final String[][] STRUCTURE_STRING_HEATER_RING_1 = {
-        {   "     ggggg     ",
-            "    g     g    ",
-            "   g       g   ",
-            "  g         g  ",
-            " g           g ",
-            "g             g",
-            "g             g",
-            "g             g",
-            "g             g",
-            "g             g",
-            " g           g ",
-            "  g         g  ",
-            "   g       g   ",
-            "    g     g    ",
-            "     ggggg     ", }};
+        {   "     GGGGG     ",
+            "    G     G    ",
+            "   G       G   ",
+            "  G         G  ",
+            " G           G ",
+            "G             G",
+            "G             G",
+            "G             G",
+            "G             G",
+            "G             G",
+            " G           G ",
+            "  G         G  ",
+            "   G       G   ",
+            "    G     G    ",
+            "     GGGGG     ", }};
     private static final String[][] STRUCTURE_STRING_HEATER_RING_2 = {
-        {   "     ggggggggg     ",
-            "    g         g    ",
-            "   g           g   ",
-            "  g             g  ",
-            " g               g ",
-            "g                 g",
-            "g                 g",
-            "g                 g",
-            "g                 g",
-            "g                 g",
-            "g                 g",
-            "g                 g",
-            "g                 g",
-            "g                 g",
-            " g               g ",
-            "  g             g  ",
-            "   g           g   ",
-            "    g         g    ",
-            "     ggggggggg     ", }};
+        {   "     GGGGGGGGG     ",
+            "    G         G    ",
+            "   G           G   ",
+            "  G             G  ",
+            " G               G ",
+            "G                 G",
+            "G                 G",
+            "G                 G",
+            "G                 G",
+            "G                 G",
+            "G                 G",
+            "G                 G",
+            "G                 G",
+            "G                 G",
+            " G               G ",
+            "  G             G  ",
+            "   G           G   ",
+            "    G         G    ",
+            "     GGGGGGGGG     ", }};
     private static final String[][] STRUCTURE_STRING_HEATER_RING_3 = {
-        {   "     ggggggggggggg     ",
-            "    g             g    ",
-            "   g               g   ",
-            "  g                 g  ",
-            " g                   g ",
-            "g                     g",
-            "g                     g",
-            "g                     g",
-            "g                     g",
-            "g                     g",
-            "g                     g",
-            "g                     g",
-            "g                     g",
-            "g                     g",
-            "g                     g",
-            "g                     g",
-            "g                     g",
-            "g                     g",
-            " g                   g ",
-            "  g                 g  ",
-            "   g               g   ",
-            "    g             g    ",
-            "     ggggggggggggg     ", }};
+        {   "     GGGGGGGGGGGGG     ",
+            "    G             G    ",
+            "   G               G   ",
+            "  G                 G  ",
+            " G                   G ",
+            "G                     G",
+            "G                     G",
+            "G                     G",
+            "G                     G",
+            "G                     G",
+            "G                     G",
+            "G                     G",
+            "G                     G",
+            "G                     G",
+            "G                     G",
+            "G                     G",
+            "G                     G",
+            "G                     G",
+            " G                   G ",
+            "  G                 G  ",
+            "   G               G   ",
+            "    G             G    ",
+            "     GGGGGGGGGGGGG     ", }};
     private static final String[][] STRUCTURE_STRING_HEATER_RING_4 = {
-        {   "     ggggggggggggggggg     ",
-            "    g                 g    ",
-            "   g                   g   ",
-            "  g                     g  ",
-            " g                       g ",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            "g                         g",
-            " g                       g ",
-            "  g                     g  ",
-            "   g                   g   ",
-            "    g                 g    ",
-            "     ggggggggggggggggg     ", }};
+        {   "     GGGGGGGGGGGGGGGGG     ",
+            "    G                 G    ",
+            "   G                   G   ",
+            "  G                     G  ",
+            " G                       G ",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            "G                         G",
+            " G                       G ",
+            "  G                     G  ",
+            "   G                   G   ",
+            "    G                 G    ",
+            "     GGGGGGGGGGGGGGGGG     ", }};
     private static final String[][] STRUCTURE_STRING_HEATER_RING_5 = {
-        {   "     ggggggggggggggggggggg     ",
-            "    g                     g    ",
-            "   g                       g   ",
-            "  g                         g  ",
-            " g                           g ",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            "g                             g",
-            " g                           g ",
-            "  g                         g  ",
-            "   g                       g   ",
-            "    g                     g    ",
-            "     ggggggggggggggggggggg     ", }};
+        {   "     GGGGGGGGGGGGGGGGGGGGG     ",
+            "    G                     G    ",
+            "   G                       G   ",
+            "  G                         G  ",
+            " G                           G ",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            "G                             G",
+            " G                           G ",
+            "  G                         G  ",
+            "   G                       G   ",
+            "    G                     G    ",
+            "     GGGGGGGGGGGGGGGGGGGGG     ", }};
     // spotless:on
 
     private int heatLevel = 0;
@@ -292,12 +292,12 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
         protected IStructureDefinition<MTESolarTower> computeValue(Class<?> type) {
             return StructureDefinition.<MTESolarTower>builder()
 
-                // s = salt
-                // c = thermal containment
-                // i = thermal insulated
-                // t = solar structural
-                // h = hatch
-                // g = solar heater
+                // S = salt
+                // C = thermal containment
+                // I = thermal insulated
+                // T = solar structural
+                // H = hatch
+                // G = solar heater
 
                 .addShape(STRUCTURE_PIECE_TOP, STRUCTURE_STRING_TOP)
                 .addShape(STRUCTURE_PIECE_TOWER, STRUCTURE_STRING_TOWER)
@@ -307,7 +307,7 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
                 .addShape(STRUCTURE_PIECE_HEATER_RING_3, STRUCTURE_STRING_HEATER_RING_3)
                 .addShape(STRUCTURE_PIECE_HEATER_RING_4, STRUCTURE_STRING_HEATER_RING_4)
                 .addShape(STRUCTURE_PIECE_HEATER_RING_5, STRUCTURE_STRING_HEATER_RING_5)
-                .addElement('g', lazy(t -> {
+                .addElement('G', lazy(t -> {
                     IStructureElement<MTESolarTower> delegate = buildHatchAdder(MTESolarTower.class)
                         .hatchId(MetaTileEntityIDs.Solar_Tower_Reflector.ID)
                         .adder(MTESolarTower::addSolarHeater)
@@ -364,14 +364,14 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
                 // casingAmount is shared with the element `h`, this counting can be removed as well
                 // but I would need to count how many `t` occurs in the structure.
                 .addElement(
-                    't',
+                    'T',
                     lazy(t -> onElementPass(x -> ++x.casingAmount, Casings.StructuralSolarCasing.asElement())))
                 // Elements that don't have a hatch adder must be casing, no need to count the casing.
-                .addElement('i', lazy(t -> Casings.ThermallyInsulatedCasing.asElement()))
-                .addElement('s', lazy(t -> Casings.SaltContainmentCasing.asElement()))
-                .addElement('c', lazy(t -> Casings.ThermalContainmentCasing.asElement()))
+                .addElement('I', lazy(t -> Casings.ThermallyInsulatedCasing.asElement()))
+                .addElement('S', lazy(t -> Casings.SaltContainmentCasing.asElement()))
+                .addElement('C', lazy(t -> Casings.ThermalContainmentCasing.asElement()))
                 .addElement(
-                    'h',
+                    'H',
                     lazy(
                         t -> buildHatchAdder(MTESolarTower.class).atLeast(InputHatch, OutputHatch, Maintenance)
                             .casingIndex(Casings.StructuralSolarCasing.textureId)
@@ -564,7 +564,8 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
         this.mEfficiencyIncrease = 100;
         this.mMaxProgresstime = CYCLE_TICKS;
 
-        if (this.solarHeaters.isEmpty() || this.solarHeaters.size() < 340 || this.getTotalRuntimeInTicks() % CYCLE_TICKS == 0) {
+        if (this.solarHeaters.isEmpty() || this.solarHeaters.size() < 340
+            || this.getTotalRuntimeInTicks() % CYCLE_TICKS == 0) {
             connectSolarReflectors();
         }
 
@@ -575,7 +576,8 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
         // However, negative numbers to the power of a non-integer result in NaN, by default
         // Max efficiency is 1, at heatLevel = 50000, and it lowers at the same rate if going above or below this heat
         // Min efficiency is 0.179, at heatLevel = 0 or 100000
-        double aEfficiency = (-Math.pow(Math.abs(this.heatLevel - HEAT_EFFICIENCY_CENTER), HEAT_EFFICIENCY_EXPONENT) + HEAT_EFFICIENCY_COEFFICIENT) / HEAT_EFFICIENCY_COEFFICIENT;
+        double aEfficiency = (-Math.pow(Math.abs(this.heatLevel - HEAT_EFFICIENCY_CENTER), HEAT_EFFICIENCY_EXPONENT)
+            + HEAT_EFFICIENCY_COEFFICIENT) / HEAT_EFFICIENCY_COEFFICIENT;
 
         World w = this.getBaseMetaTileEntity()
             .getWorld();
@@ -586,10 +588,12 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
             if (aHeaters > 0 && w.isDaytime()) {
                 if (w.isRaining() && this.getBaseMetaTileEntity()
                     .getBiome().rainfall > 0.0F) {
-                    this.heatLevel += GTUtility..safeInt((long) ((aHeaters / 2) * aEfficiency * (HEAT_LOSS_PER_CYCLE + aTier)));
+                    this.heatLevel += GTUtility
+                        .safeInt((long) ((aHeaters / 2) * aEfficiency * (HEAT_LOSS_PER_CYCLE + aTier)));
 
                 } else {
-                    this.heatLevel += GTUtility.safeInt((long) (aHeaters * aEfficiency * (HEAT_LOSS_PER_CYCLE + aTier)));
+                    this.heatLevel += GTUtility
+                        .safeInt((long) (aHeaters * aEfficiency * (HEAT_LOSS_PER_CYCLE + aTier)));
                 }
             }
 
