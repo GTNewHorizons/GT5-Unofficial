@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -108,6 +109,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                     .put("exp", formatNumber(HEAT_EFFICIENCY_EXPONENT, new FormatOptions().setDecimalPlaces(1)))
                     .put("coefficient", formatNumber(HEAT_EFFICIENCY_COEFFICIENT))
                     .put("loss", formatNumber(HEAT_LOSS_PER_CYCLE))
+                    .put("unit", getFluidUnit())
                     .build())
             .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.top_center_28th_layer"))

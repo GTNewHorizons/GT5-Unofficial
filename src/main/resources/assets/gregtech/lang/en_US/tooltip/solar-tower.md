@@ -1,13 +1,12 @@
 Contributing Green Energy towards the future
-Surround with rings of {gold:Solar Reflectors}, which determine heat and tier
-{yellow:The first ring is required for the Tower to work}
+Surround with 1-5 rings of {gold:Solar Reflectors} to generate heat
+More {gold:Solar Reflectors} means more heat and more overall power output
 {gray:{hr}}
-Converts {gold:Cold Salt} into {gold:Hot Salt}
-Every {var:cycle}s heat rises, {gold:Cold Salt} converts to {gold:Hot Salt} at 1:1
-{yellow:Heat gain is halved in rain and disabled at night}
+Converts {gold:Cold Solar Salt} into {gold:Hot Solar Salt} at a 1:1 ratio every {var:cycle} seconds
+Every 1{var:unit} converted reduces the heat by 1 until it reaches zero
 Conversion only happens if heat >= {red:{var:threshold}} and efficiency is 100%
-Excess {gold:Cold Salt} drains all heat to 0
+Excess {gold:Cold Solar Salt} is not consumed
 {gray:{hr}}
-Heat efficiency: {aqua:1 - (heat - {var:center})^{var:exp} / {var:coefficient}}, peaks at {aqua:{var:center}}
-Heat/cycle: {aqua:heaters * efficiency * ({var:loss} + bonus) - {var:loss}}
-Rings 1-5: {gold:+1/+2/+4/+8/+16} bonus, {gold:36/88/156/240/340} reflectors
+Heat efficiency = {aqua:1 - (Heat - {var:center})^{var:exp} / {var:coefficient}}, peaks at {aqua:{var:center}}
+Heat/cycle = {aqua:Solar Reflectors * Heat Efficiency * ({var:loss} + 2^(Rings - 1)) - {var:loss}}
+{yellow:Heat gain is halved in rain and disabled at night}
