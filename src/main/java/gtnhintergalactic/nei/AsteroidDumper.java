@@ -31,6 +31,7 @@ public class AsteroidDumper extends DataDumper {
             StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.minDistance"),
             StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.maxDistance"),
             StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.computation"),
+            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.minModuleTier"),
             StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.duration"),
             StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.eut"),
             StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.minDroneTier"),

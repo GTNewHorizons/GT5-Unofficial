@@ -322,6 +322,7 @@ nei.options.tools.dump.ig.asteroids.headers.maxSize=Max Size
 nei.options.tools.dump.ig.asteroids.headers.minDistance=Min Distance
 nei.options.tools.dump.ig.asteroids.headers.maxDistance=Max Distance
 nei.options.tools.dump.ig.asteroids.headers.computation=Computation
+nei.options.tools.dump.ig.asteroids.headers.minModuleTier=Min Module Tier
 nei.options.tools.dump.ig.asteroids.headers.duration=Base Duration (ticks) 
 nei.options.tools.dump.ig.asteroids.headers.eut=EU/t
 nei.options.tools.dump.ig.asteroids.headers.minDroneTier=Min Drone Tier
