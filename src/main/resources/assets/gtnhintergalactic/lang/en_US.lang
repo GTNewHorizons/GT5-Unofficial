@@ -311,6 +311,22 @@ ig.nei.siphon.baserate=Rate
 ig.nei.siphon.name=Planetary Gas Siphon
 ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth
+nei.options.tools.dump.ig=GTNH Intergalactic
+nei.options.tools.dump.ig.asteroid=Space Miner Asteroids
+nei.options.tools.dump.ig.asteroids=Space Miner Asteroids
+nei.options.tools.dump.ig.asteroids.headers.asteroid=Asteroid
+nei.options.tools.dump.ig.asteroids.headers.outputs=Outputs
+nei.options.tools.dump.ig.asteroids.headers.outputWeights=Output Weights
+nei.options.tools.dump.ig.asteroids.headers.minSize=Min Size
+nei.options.tools.dump.ig.asteroids.headers.maxSize=Max Size
+nei.options.tools.dump.ig.asteroids.headers.minDistance=Min Distance
+nei.options.tools.dump.ig.asteroids.headers.maxDistance=Max Distance
+nei.options.tools.dump.ig.asteroids.headers.computation=Computation
+nei.options.tools.dump.ig.asteroids.headers.duration=Base Duration (ticks) 
+nei.options.tools.dump.ig.asteroids.headers.eut=EU/t
+nei.options.tools.dump.ig.asteroids.headers.minDroneTier=Min Drone Tier
+nei.options.tools.dump.ig.asteroids.headers.maxDroneTier=Max Drone Tier
+nei.options.tools.dump.ig.asteroids.headers.weight=Weight
 
 # Structure and Tooltip
 ig.siphon.structure.ControllerPos=Front center of the main body, 16th layer
