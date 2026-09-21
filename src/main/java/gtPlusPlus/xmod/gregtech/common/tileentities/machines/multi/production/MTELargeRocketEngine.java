@@ -150,7 +150,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     + EnumChatFormatting.GOLD
                     + mCoolantName
                     + EnumChatFormatting.GRAY
-                    + " per tick to boost (optional)")
+                    + " per second to boost (optional)")
             .addSeparator()
             .addInfo("If air ever runs out, the machine shuts down and must be manually restarted")
             .addInfo(
