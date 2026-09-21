@@ -1229,7 +1229,7 @@ item.gt.propolis.name=Прополис
 
 # GT Item Descriptions
 gt.item.desc.stored_heat=Накоплено тепла: %s
-gt.item.desc.durability=Прочность: §a%s/%s
+gt.item.desc.durability=Прочность: §a%s / %s
 gt.item.desc.tier=%s:§e Тир %s
 gt.item.desc.level=%s§e уровень %s
 gt.item.desc.damage=Урон: §9%s
