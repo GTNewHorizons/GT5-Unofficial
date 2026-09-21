@@ -20,7 +20,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
@@ -118,7 +117,7 @@ public class RecipeLoaderCoalTar {
     private static void recipeCoalToCoalTar() {
         // Charcoal
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 32))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Charcoal, Shapes.gem, 32))
             .circuit(8)
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
             .duration(18 * SECONDS)
@@ -167,7 +166,7 @@ public class RecipeLoaderCoalTar {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Lignite, Shapes.gem, 16))
             .circuit(8)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustSmall, 2))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
             .duration(54 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -175,9 +174,9 @@ public class RecipeLoaderCoalTar {
 
         // Coal
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Shapes.gem, 12))
             .circuit(8)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustSmall, 2))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 2_200))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_MV)

@@ -33,10 +33,10 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
         ItemStack stack) {
         OrePrefixes outer = material == Materials.Wood ? OrePrefixes.plank : OrePrefixes.plateDouble;
 
-        if (GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) == null
-            || GTOreDictUnificator.get(OrePrefixes.screw, material, 1L) == null
-            || GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L) == null
-            || GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L) == null
+        if (MaterialParts.stack(OrePrefixes.plate, material, 1L) == null
+            || MaterialParts.stack(OrePrefixes.screw, material, 1L) == null
+            || MaterialParts.stack(OrePrefixes.gearGtSmall, material, 1L) == null
+            || MaterialParts.stack(OrePrefixes.gearGt, material, 1L) == null
             || GTOreDictUnificator.get(outer, material, 1L) == null) {
             return;
         }
@@ -50,15 +50,15 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, material, 6L),
-                GTOreDictUnificator.get(OrePrefixes.screw, material, 2L),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L))
+                MaterialParts.stack(OrePrefixes.plate, material, 6L),
+                MaterialParts.stack(OrePrefixes.screw, material, 2L),
+                MaterialParts.stack(OrePrefixes.gearGtSmall, material, 1L))
             .itemOutputs(GTUtility.copyAmount(1, stack))
             .duration(10 * SECONDS)
             .eut(calculateRecipeEU(material, 16))
             .addTo(assemblerRecipes);
 
-        ItemStack advanced = GTOreDictUnificator.get(OrePrefixes.blockCasingAdvanced, material, 1L);
+        ItemStack advanced = MaterialParts.stack(OrePrefixes.blockCasingAdvanced, material, 1L);
         if (advanced == null) return;
 
         GTModHandler.addCraftingRecipe(
@@ -71,8 +71,8 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(outer, material, 6L),
-                GTOreDictUnificator.get(OrePrefixes.screw, material, 2L),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L))
+                MaterialParts.stack(OrePrefixes.screw, material, 2L),
+                MaterialParts.stack(OrePrefixes.gearGt, material, 1L))
             .itemOutputs(GTUtility.copyAmount(1, advanced))
             .duration(10 * SECONDS)
             .eut(calculateRecipeEU(material, 16))

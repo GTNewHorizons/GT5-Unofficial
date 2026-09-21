@@ -706,8 +706,8 @@ public class GTProxy implements IFuelHandler {
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
                     MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, 1_000),
-                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Milk, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
+                    GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketMilk", 1L, 0),
+                    GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0)));
         }
 
         if (!this.enableUndergroundGravelGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.GRAVEL);
@@ -1604,7 +1604,7 @@ public class GTProxy implements IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, (int) (hydrogenAmount)))
                 .circuit(i + 1)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, hydrogenAmount))
+                .itemOutputs(GTUtility.getEmptyCell(hydrogenAmount))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
@@ -1614,7 +1614,7 @@ public class GTProxy implements IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
                 .circuit(i + 1)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
+                .itemOutputs(GTUtility.getEmptyCell(1L))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (hydrogenAmount * 1000)))
@@ -1680,7 +1680,7 @@ public class GTProxy implements IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(MetaGeneratedItem98.FluidCell.STEAM.get(1))
                 .circuit(i + 1)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
+                .itemOutputs(GTUtility.getEmptyCell(1L))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
@@ -1690,7 +1690,7 @@ public class GTProxy implements IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
                 .circuit(i + 1)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
+                .itemOutputs(GTUtility.getEmptyCell(1L))
                 .fluidInputs(MaterialUtils.gas(Materials.Steam, 1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
@@ -1700,7 +1700,7 @@ public class GTProxy implements IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
                 .circuit(i + 1)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
+                .itemOutputs(GTUtility.getEmptyCell(1L))
                 .fluidInputs(getFluidStack("ic2steam", 1000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)

@@ -13,12 +13,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 
@@ -80,14 +79,11 @@ public final class NaquadahRecipePatches {
             || recipe.mInputs[0].getItem() != materialLeaf
             || recipe.mInputs[0].getItemDamage() != 18) return false;
         for (ItemStack input : recipe.mInputs) {
-            if (GTUtility
-                .areStacksEqual(input, GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Naquadah, 1), true)
-                || GTUtility.areStacksEqual(
-                    input,
-                    GTOreDictUnificator.get(OrePrefixes.crushed, Materials.NaquadahEnriched, 1),
-                    true)
+            if (GTUtility.areStacksEqual(input, MaterialLibAPI.getStack(Materials.Naquadah, Shapes.crushed, 1), true)
                 || GTUtility
-                    .areStacksEqual(input, GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Naquadria, 1), true))
+                    .areStacksEqual(input, MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.crushed, 1), true)
+                || GTUtility
+                    .areStacksEqual(input, MaterialLibAPI.getStack(Materials.Naquadria, Shapes.crushed, 1), true))
                 return true;
         }
         return false;

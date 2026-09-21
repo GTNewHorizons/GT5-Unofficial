@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -10,11 +11,9 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -26,7 +25,7 @@ public class ImplosionCompressorRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Compressed_Coal_Chunk.get(1L))
             .itemOutputs(
                 ItemList.IC2_Industrial_Diamond.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L))
+                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 4))
             .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -35,8 +34,8 @@ public class ImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Ingot_IridiumAlloy.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L))
+                getModItem(IndustrialCraft2.ID, "itemPartIridium", 1L, 0),
+                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 4))
             .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)

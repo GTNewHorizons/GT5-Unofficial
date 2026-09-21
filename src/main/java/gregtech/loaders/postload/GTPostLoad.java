@@ -42,6 +42,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
@@ -49,6 +50,7 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTForestryCompat;
@@ -261,7 +263,7 @@ public class GTPostLoad {
             addElementScannerAndReplicatorRecipes(
                 scannerResult,
                 material,
-                GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
+                MaterialParts.stack(OrePrefixes.dust, material, 1L),
                 GTOreDictUnificator.get(OrePrefixes.cell, material, 1L));
         }
 
@@ -276,7 +278,7 @@ public class GTPostLoad {
             addElementScannerAndReplicatorRecipes(
                 scannerResult,
                 material,
-                GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
+                MaterialParts.stack(OrePrefixes.dust, material, 1L),
                 GTOreDictUnificator.get(OrePrefixes.cell, material, 1L));
         }
 
@@ -387,7 +389,7 @@ public class GTPostLoad {
                     replicatorRecipeBuilder.fluidOutputs(fluidStack);
                 } else {
                     // if there is no fluid for some reason, add a cell recipe, with cell input.
-                    replicatorRecipeBuilder.itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
+                    replicatorRecipeBuilder.itemInputs(GTUtility.getEmptyCell(1))
                         .itemOutputs(cellItem);
                 }
                 replicatorRecipeBuilder.special(scannerResult.output)
@@ -445,10 +447,10 @@ public class GTPostLoad {
             .toString();
         boolean noSmash = !MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_SMASHING);
         if (MaterialUtils.generates(ml, GTMaterialGenerationFlag.METAL)) GTRecipeRegistrator
-            .registerUsagesForMaterials(plateName, noSmash, GTOreDictUnificator.get(OrePrefixes.ingot, ml, 1));
+            .registerUsagesForMaterials(plateName, noSmash, MaterialParts.stack(OrePrefixes.ingot, ml, 1));
         if (MaterialUtils.generates(ml, GTMaterialGenerationFlag.GEM)) GTRecipeRegistrator
-            .registerUsagesForMaterials(plateName, noSmash, GTOreDictUnificator.get(OrePrefixes.gem, ml, 1));
-        ItemStack blocks = GTOreDictUnificator.get(OrePrefixes.block, ml, 1);
+            .registerUsagesForMaterials(plateName, noSmash, MaterialParts.stack(OrePrefixes.gem, ml, 1));
+        ItemStack blocks = MaterialParts.stack(OrePrefixes.block, ml, 1);
         if (blocks != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, blocks);
     }
 
@@ -456,19 +458,19 @@ public class GTPostLoad {
         RecipeMaps.largeBoilerFakeFuels.getBackend()
             .addSolidRecipes(
                 MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 1),
+                MaterialLibAPI.getStack(Materials.Charcoal, Shapes.gem, 1),
+                MaterialLibAPI.getStack(Materials.Charcoal, BlockShapes.block, 1),
                 MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1),
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.gem, 1),
+                MaterialLibAPI.getStack(Materials.Coal, BlockShapes.block, 1),
                 MaterialLibAPI.getStack(Materials.Coal, Shapes.crushed, 1),
                 MaterialLibAPI.getStack(Materials.Lignite, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Lignite, Shapes.gem, 1),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1),
+                MaterialLibAPI.getStack(Materials.Lignite, BlockShapes.block, 1),
                 MaterialLibAPI.getStack(Materials.Lignite, Shapes.crushed, 1),
                 GTOreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1),
                 GTOreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                MaterialLibAPI.getStack(Materials.Wood, Shapes.stick, 1),
                 GTOreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1),
                 MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
@@ -477,7 +479,7 @@ public class GTPostLoad {
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
                 GTOreDictUnificator.get(ItemList.Block_SSFUEL.get(1)),
                 GTOreDictUnificator.get(ItemList.Block_MSSFUEL.get(1)),
-                GTOreDictUnificator.get(OrePrefixes.rod, Materials.Blaze, 1));
+                MaterialLibAPI.getStack(Materials.Blaze, Shapes.stick, 1));
         if (Thaumcraft.isModLoaded()) {
             RecipeMaps.largeBoilerFakeFuels.getBackend()
                 .addSolidRecipe(GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1));

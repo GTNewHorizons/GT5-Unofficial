@@ -16,7 +16,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
@@ -24,7 +23,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -56,7 +54,7 @@ public class RecipesRareEarthProcessing {
             .itemOutputs(
                 MaterialParts.requireCell(Materials.Chlorine, 1),
                 MaterialParts.requireCell(Materials.Hydrogen, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxideGT5U, 1L))
+                MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1))
             .fluidInputs(new FluidStack(mBrine, 2_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)

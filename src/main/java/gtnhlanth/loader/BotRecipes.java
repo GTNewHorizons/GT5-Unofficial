@@ -19,7 +19,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
@@ -27,7 +26,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 /*
@@ -40,9 +38,7 @@ public class BotRecipes {
 
         // CaCO3 + 2HCl = H2O + CO2 + CaCl2
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 5),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 5), GTUtility.getEmptyCell(1))
             .itemOutputs(
                 MaterialParts.requireCell(Materials.CarbonDioxide, 1),
                 MaterialLibAPI.getStack(Materials.CalciumChloride, Shapes.dust, 3))
@@ -162,9 +158,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
             .circuit(12)
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Phosgene, CellShapes.cell, 1),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Phosgene, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
@@ -173,16 +167,14 @@ public class BotRecipes {
             .itemInputs(
                 MaterialParts.requireCell(Materials.CarbonMonoxide, 1),
                 MaterialParts.requireCell(Materials.Chlorine, 2))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Phosgene, CellShapes.cell, 1),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Phosgene, CellShapes.cell, 1), GTUtility.getEmptyCell(2))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
             .circuit(2)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
+            .itemOutputs(GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Phosgene, FluidShapes.fluidLiquid, 1_000))
             .duration(2 * SECONDS + 10 * TICKS)

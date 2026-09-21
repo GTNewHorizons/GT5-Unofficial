@@ -188,7 +188,7 @@ public class AutoclaveRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.NetherStar, Shapes.dust, 1))
-            .itemOutputs(GTOreDictUnificator.get("gemNetherStar", 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.NetherStar, Shapes.gem, 1))
             .outputChances(3333)
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 4 * INGOTS))
             .duration(60 * MINUTES)
@@ -214,7 +214,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get("gemNetherStar", 64))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NetherStar, Shapes.gem, 64))
             .itemOutputs(ItemList.NuclearStar.get(1L))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidPlasma, 4 * INGOTS))
             .duration(20 * TICKS)
@@ -306,7 +306,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get("roundMagmatter", 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Magmatter, Shapes.round, 1))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(5))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhononCrystalSolution, FluidShapes.fluidLiquid, 250))
             .duration(2 * SECONDS + 10 * TICKS)

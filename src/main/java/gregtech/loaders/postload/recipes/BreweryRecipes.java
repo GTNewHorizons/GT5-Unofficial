@@ -24,7 +24,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class BreweryRecipes implements Runnable {
@@ -187,7 +186,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get("dustSugar", 1L))
+                    .itemInputs(MaterialLibAPI.getStack(Materials.Sugar, Shapes.dust, 1))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -195,7 +194,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get("dustBlaze", 1L))
+                    .itemInputs(MaterialLibAPI.getStack(Materials.Blaze, Shapes.dust, 1))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -352,7 +351,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("dustSugar", 1L))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Sugar, Shapes.dust, 1))
                 .fluidInputs(getFluidStack("potion.tea", 750))
                 .fluidOutputs(getFluidStack("potion.sweettea", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -360,7 +359,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("dustSugar", 1L))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Sugar, Shapes.dust, 1))
                 .fluidInputs(getFluidStack("potion.latte", 750))
                 .fluidOutputs(getFluidStack("potion.sweetlatte", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -368,7 +367,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("dustSugar", 1L))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Sugar, Shapes.dust, 1))
                 .fluidInputs(getFluidStack("potion.sweetlatte", 750))
                 .fluidOutputs(getFluidStack("potion.sweetjesuslatte", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -376,7 +375,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("dustSugar", 1L))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Sugar, Shapes.dust, 1))
                 .fluidInputs(getFluidStack("potion.lemonjuice", 750))
                 .fluidOutputs(getFluidStack("potion.lemonade", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -384,7 +383,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("dustSugar", 1L))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Sugar, Shapes.dust, 1))
                 .fluidInputs(getFluidStack("potion.coffee", 750))
                 .fluidOutputs(getFluidStack("potion.sweetcoffee", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -392,7 +391,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("dustSugar", 1L))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Sugar, Shapes.dust, 1))
                 .fluidInputs(getFluidStack("potion.darkchocolatemilk", 750))
                 .fluidOutputs(getFluidStack("potion.chocolatemilk", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -408,7 +407,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("dustGunpowder", 1L))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Gunpowder, Shapes.dust, 1))
                 .fluidInputs(getFluidStack("potion.lemonade", 750))
                 .fluidOutputs(getFluidStack("potion.cavejohnsonsgrenadejuice", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -416,7 +415,7 @@ public class BreweryRecipes implements Runnable {
                 .addTo(brewingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("dustSugar", 1L))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Sugar, Shapes.dust, 1))
                 .fluidInputs(getFluidStack("potion.mundane", 750))
                 .fluidOutputs(getFluidStack("potion.purpledrink", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
@@ -498,8 +497,8 @@ public class BreweryRecipes implements Runnable {
             this.addPotionRecipes("poison", new ItemStack(Items.spider_eye, 1, 0));
             this.addPotionRecipes("health", new ItemStack(Items.speckled_melon, 1, 0));
             this.addPotionRecipes("regen", new ItemStack(Items.ghast_tear, 1, 0));
-            this.addPotionRecipes("speed", GTOreDictUnificator.get("dustSugar", 1L));
-            this.addPotionRecipes("strength", GTOreDictUnificator.get("dustBlaze", 1L));
+            this.addPotionRecipes("speed", MaterialLibAPI.getStack(Materials.Sugar, Shapes.dust, 1));
+            this.addPotionRecipes("strength", MaterialLibAPI.getStack(Materials.Blaze, Shapes.dust, 1));
         }
 
         // From ProcessingCrop - cropLemon brewery

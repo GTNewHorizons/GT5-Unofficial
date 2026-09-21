@@ -259,17 +259,9 @@ public class ItemRegistry {
             "ElectricImplosionCompressor",
             "Electric Implosion Compressor").getStackForm(1L);
 
-        // EIC depend on neutronium block to pass on structure updates
-        int bitmask = GregTechAPI.sMachineIDs.getOrDefault(GregTechAPI.sBlockMetal5, 0) | 1 << 2;
-        GregTechAPI.registerMachineBlock(GregTechAPI.sBlockMetal5, bitmask);
-
-        // Also spacetime, transcendent metal, and universium
-        bitmask = GregTechAPI.sMachineIDs.getOrDefault(GregTechAPI.sBlockMetal9, 0) | 1 << 3 | 1 << 4 | 1 << 8;
-        GregTechAPI.registerMachineBlock(GregTechAPI.sBlockMetal9, bitmask);
-
         if (Mods.Avaritia.isModLoaded()) {
-            // Also infinity
-            bitmask = GregTechAPI.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | 1 << 1;
+            // EIC depends on the infinity block to pass on structure updates
+            int bitmask = GregTechAPI.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | 1 << 1;
             GregTechAPI.registerMachineBlock(LudicrousBlocks.resource_block, bitmask);
         }
 

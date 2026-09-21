@@ -65,9 +65,11 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -148,7 +150,7 @@ public class RecipesGeneral {
             GregtechItemList.MiningExplosives.get(3),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "ITI", "TFT", "STS", 'I', Ic2Items.industrialTnt.copy(), 'T', new ItemStack(Blocks.tnt), 'F',
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1), 'S', "dustSulfur" });
+                MaterialLibAPI.getStack(Materials.Iron, TEBlockShapes.frameGt, 1), 'S', "dustSulfur" });
 
         // Alkalus Disk
         GTModHandler.addCraftingRecipe(
@@ -172,8 +174,8 @@ public class RecipesGeneral {
                 new ItemStack(Items.feather, 64),
                 new ItemStack(Blocks.emerald_block, 32),
                 new ItemStack(Blocks.diamond_block, 32),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Ruby, 32),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Sapphire, 32),
+                MaterialLibAPI.getStack(Materials.Ruby, BlockShapes.block, 32),
+                MaterialLibAPI.getStack(Materials.Sapphire, BlockShapes.block, 32),
                 new ItemStack(Blocks.gold_block, 32))
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Silver, FluidShapes.fluidMolten, 32 * INGOTS))

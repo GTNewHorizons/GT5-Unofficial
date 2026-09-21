@@ -5,7 +5,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
-import static gregtech.api.GregTechAPI.sBlockMetal6;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -35,12 +34,15 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -125,7 +127,7 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
         if (block == Blocks.iron_block) {
             return 1;
         }
-        if (block == sBlockMetal6 && meta == 13) {
+        if (block == MaterialLibAPI.getBlock(BlockShapes.block) && meta == Materials.Steel.getIndex()) {
             return 2;
         }
         return null;
@@ -233,7 +235,9 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
                     'E',
                     ofBlocksTiered(
                         MTESteamCompressor::getTierBlock,
-                        ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(sBlockMetal6, 13)),
+                        ImmutableList.of(
+                            Pair.of(Blocks.iron_block, 0),
+                            Pair.of(MaterialLibAPI.getBlock(BlockShapes.block), Materials.Steel.getIndex())),
                         -1,
                         (t, m) -> t.tierBlock = m,
                         t -> t.tierBlock))

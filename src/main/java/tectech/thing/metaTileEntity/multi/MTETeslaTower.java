@@ -52,10 +52,10 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -72,7 +72,6 @@ import gregtech.api.objects.RingBuffer;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -571,7 +570,7 @@ public class MTETeslaTower extends TTMultiblockBase
             .addCasing("128", CustomItemList.tM_TeslaToroid.get(1L).getDisplayName(), false)
             .addCasing("17-33", CustomItemList.tM_TeslaBase.get(1L).getDisplayName(), false)
             .addCasing("20", TTCasingsContainer.sBlockCasingsBA0.getLocalizedName(), true)
-            .addCasing("16", GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1L).getDisplayName(), false)
+            .addCasing("16", MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.frameGt, 1).getDisplayName(), false)
             .addCasing("12", CustomItemList.tM_TeslaSecondary.get(1L).getDisplayName(), false)
             .addMiscHatch("1+", translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"), translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)

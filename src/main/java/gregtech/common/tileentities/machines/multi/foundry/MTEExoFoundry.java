@@ -23,6 +23,7 @@ import static gregtech.api.util.GTStructureUtility.ofBlockCasing;
 import static gregtech.api.util.GTStructureUtility.ofBlockCasingAdvanced;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
+import static gregtech.api.util.GTStructureUtility.ofStorageBlock;
 import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
@@ -369,9 +370,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('T', ofFrame(Materials.MagnetohydrodynamicallyConstrainedStarMatter))
         .addElement('U', ofFrame(Materials.WhiteDwarfMatter))
         .addElement('V', ofFrame(Materials.BlackDwarfMatter))
-        .addElement('W', ofBlock(GregTechAPI.sBlockMetal9, 6))
-        .addElement('X',ofBlock(GregTechAPI.sBlockMetal9, 7))
-        .addElement('Y',ofBlock(GregTechAPI.sBlockMetal9, 13))
+        .addElement('W', ofStorageBlock(Materials.WhiteDwarfMatter))
+        .addElement('X',ofStorageBlock(Materials.BlackDwarfMatter))
+        .addElement('Y',ofStorageBlock(Materials.MagnetohydrodynamicallyConstrainedStarMatter))
         .addElement('Z', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
         .addShape(
             FoundryModule.UNSET.structureID,

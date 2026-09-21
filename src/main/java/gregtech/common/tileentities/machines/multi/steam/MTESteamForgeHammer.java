@@ -33,13 +33,15 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -109,7 +111,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
     @Nullable
     public static Integer getTierSimpleBlock(Block block, int meta) {
         if (block == Blocks.iron_block && meta == 0) return 1;
-        if (block == GregTechAPI.sBlockMetal6 && meta == 13) return 2;
+        if (block == MaterialLibAPI.getBlock(BlockShapes.block) && meta == Materials.Steel.getIndex()) return 2;
         return null;
     }
 
@@ -194,7 +196,9 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
                     'C',
                     ofBlocksTiered(
                         MTESteamForgeHammer::getTierSimpleBlock,
-                        ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(GregTechAPI.sBlockMetal6, 13)),
+                        ImmutableList.of(
+                            Pair.of(Blocks.iron_block, 0),
+                            Pair.of(MaterialLibAPI.getBlock(BlockShapes.block), Materials.Steel.getIndex())),
                         -1,
                         (t, m) -> t.tierSimpleBlock = m,
                         t -> t.tierSimpleBlock))

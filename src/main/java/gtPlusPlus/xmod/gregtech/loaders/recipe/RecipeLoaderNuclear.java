@@ -28,7 +28,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
@@ -36,7 +35,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -300,7 +298,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.BerylliumHydroxide, Shapes.dust, 3),
                 ItemList.Cell_Empty.get(2))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 2))
             .fluidInputs(MaterialUtils.anyFluid(Materials.AmmoniumBifluoride, 8 * INGOTS))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.AmmoniumTetrafluoroberyllate, 1_000))
             .eut(TierEU.RECIPE_MV / 2)

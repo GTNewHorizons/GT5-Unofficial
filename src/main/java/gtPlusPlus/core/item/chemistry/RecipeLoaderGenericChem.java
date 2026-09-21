@@ -21,7 +21,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
@@ -136,7 +135,7 @@ public class RecipeLoaderGenericChem {
             .itemInputs(
                 GTOreDictUnificator.get("fuelCoke", 8),
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 16))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, 1))
             .fluidOutputs(new FluidStack(GTPPFluids.CarbonDisulfide, 4_000))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_LV)

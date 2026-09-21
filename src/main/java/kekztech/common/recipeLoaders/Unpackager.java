@@ -9,12 +9,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import kekztech.common.Blocks;
 
 public class Unpackager implements Runnable {
@@ -27,8 +26,8 @@ public class Unpackager implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 6))
+                    MaterialLibAPI.getStack(Materials.CrudeSteel, TEBlockShapes.frameGt, 1),
+                    MaterialLibAPI.getStack(Materials.CrudeSteel, Shapes.plate, 6))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);

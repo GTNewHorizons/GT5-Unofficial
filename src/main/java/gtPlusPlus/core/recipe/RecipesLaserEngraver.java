@@ -16,8 +16,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import toxiceverglades.dimension.DimensionEverglades;
@@ -57,14 +57,14 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
             ItemStack coilWire4 = GregtechItemList.DehydratorCoilWireZPM.get(1);
 
             // Wires to Laser
-            ItemStack wireT1a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Aluminium, 1);
-            ItemStack wireT1b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Nichrome, 1);
-            ItemStack wireT2a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Osmium, 1);
-            ItemStack wireT2b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Platinum, 1);
-            ItemStack wireT3a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 1);
-            ItemStack wireT3b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.YttriumBariumCuprate, 1);
-            ItemStack wireT3c = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 1);
-            ItemStack wireT4a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 1);
+            ItemStack wireT1a = MaterialLibAPI.getStack(Materials.Aluminium, TEBlockShapes.wireGt02, 1);
+            ItemStack wireT1b = MaterialLibAPI.getStack(Materials.Nichrome, TEBlockShapes.wireGt02, 1);
+            ItemStack wireT2a = MaterialLibAPI.getStack(Materials.Osmium, TEBlockShapes.wireGt02, 1);
+            ItemStack wireT2b = MaterialLibAPI.getStack(Materials.Platinum, TEBlockShapes.wireGt02, 1);
+            ItemStack wireT3a = MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt02, 1);
+            ItemStack wireT3b = MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.wireGt02, 1);
+            ItemStack wireT3c = MaterialLibAPI.getStack(Materials.NiobiumTitanium, TEBlockShapes.wireGt02, 1);
+            ItemStack wireT4a = MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.wireGt02, 1);
 
             // T1
             GTValues.RA.stdBuilder()

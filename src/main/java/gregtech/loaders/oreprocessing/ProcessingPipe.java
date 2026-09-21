@@ -86,7 +86,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case "pipeHuge" -> {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeHuge, material, 1L),
+                        MaterialParts.stack(OrePrefixes.pipeHuge, material, 1L),
                         bits,
                         new Object[] { "DhD", "D D", "DwD", 'D',
                             MaterialParts.craftIngredient(OrePrefixes.plateDouble, material) });
@@ -95,7 +95,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case "pipeLarge" -> {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeLarge, material, 1L),
+                        MaterialParts.stack(OrePrefixes.pipeLarge, material, 1L),
                         bits,
                         new Object[] { "PHP", "P P", "PWP", 'P',
                             material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
@@ -110,7 +110,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case "pipeMedium" -> {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 2L),
+                        MaterialParts.stack(OrePrefixes.pipeMedium, material, 2L),
                         bits,
                         new Object[] { "PPP", "W H", "PPP", 'P',
                             material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
@@ -125,7 +125,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case "pipeSmall" -> {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeSmall, material, 6L),
+                        MaterialParts.stack(OrePrefixes.pipeSmall, material, 6L),
                         bits,
                         new Object[] { "PWP", "P P", "PHP", 'P',
                             material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
@@ -140,7 +140,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case "pipeTiny" -> {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeTiny, material, 8L),
+                        MaterialParts.stack(OrePrefixes.pipeTiny, material, 8L),
                         bits,
                         new Object[] { "PPP", "h w", "PPP", 'P',
                             MaterialParts.craftIngredient(OrePrefixes.plate, material) });
@@ -165,15 +165,15 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, material, 1),
+                        MaterialParts.stack(OrePrefixes.pipeQuadruple, material, 1),
                         bits,
                         new Object[] { "MM ", "MM ", "   ", 'M',
-                            GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 1) });
+                            MaterialParts.stack(OrePrefixes.pipeMedium, material, 1) });
                 }
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 4))
+                    .itemInputs(MaterialParts.stack(OrePrefixes.pipeMedium, material, 4))
                     .circuit(9)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, material, 1))
+                    .itemOutputs(MaterialParts.stack(OrePrefixes.pipeQuadruple, material, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(assemblerRecipes);
@@ -188,9 +188,9 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             .get(oreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true) });
                 }
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeSmall, material, 9))
+                    .itemInputs(MaterialParts.stack(OrePrefixes.pipeSmall, material, 9))
                     .circuit(9)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeNonuple, material, 1))
+                    .itemOutputs(MaterialParts.stack(OrePrefixes.pipeNonuple, material, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(assemblerRecipes);

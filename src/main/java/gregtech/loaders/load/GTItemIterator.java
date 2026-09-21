@@ -73,13 +73,13 @@ public class GTItemIterator implements Runnable {
         }
 
         ItemStack tStack3 = new ItemStack(Blocks.glass, 1, 0);
-        tStack2 = GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L);
+        tStack2 = MaterialLibAPI.getStack(Materials.Iron, Shapes.ingot, 1);
         tStack = GTModHandler.getRecipeOutput(
             tStack2,
             tStack3,
             tStack2,
             tStack3,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
+            MaterialLibAPI.getStack(Materials.Gold, Shapes.ingot, 1),
             tStack3,
             tStack2,
             tStack3,
@@ -104,7 +104,7 @@ public class GTItemIterator implements Runnable {
             tStack3,
             tStack2,
             tStack3,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
+            MaterialLibAPI.getStack(Materials.Gold, Shapes.ingot, 1),
             tStack3,
             tStack2,
             tStack3,

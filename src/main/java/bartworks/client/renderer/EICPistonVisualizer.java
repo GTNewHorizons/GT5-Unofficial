@@ -10,9 +10,12 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
 
 @SideOnly(Side.CLIENT)
 public class EICPistonVisualizer extends EntityFX {
@@ -51,7 +54,7 @@ public class EICPistonVisualizer extends EntityFX {
             int neighborMeta = this.worldObj.getBlockMetadata(nX, nY, nZ);
             tieredBlock = Pair.of(neighborBlock, neighborMeta);
         } else {
-            tieredBlock = Pair.of(GregTechAPI.sBlockMetal5, 2);
+            tieredBlock = Pair.of(MaterialLibAPI.getBlock(BlockShapes.block), Materials.Neutronium.getIndex());
         }
 
         IIcon icon = tieredBlock.getKey()

@@ -35,7 +35,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMacerator;
 import gtPlusPlus.core.block.ModBlocks;
@@ -310,10 +309,10 @@ public class RecipesMachinesMulti {
                 GregtechItemList.Controller_SteamAlloySmelterMulti.get(1),
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "BTB", "FUF", "BLB", 'B', ItemList.Casing_BronzePlatedBricks.get(1L), 'T',
-                    GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bronze, 1L), 'F',
+                    MaterialLibAPI.getStack(Materials.Bronze, TEBlockShapes.pipeTiny, 1), 'F',
                     getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0), 'U',
                     MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1), 'L',
-                    GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Bronze, 1L) });
+                    MaterialLibAPI.getStack(Materials.Bronze, TEBlockShapes.pipeLarge, 1) });
 
             // Steam Hearth
             GTModHandler.addCraftingRecipe(
@@ -551,7 +550,7 @@ public class RecipesMachinesMulti {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.stick, 4),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueSteel, 1))
+                MaterialLibAPI.getStack(Materials.BlueSteel, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_WireFactory.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -626,8 +625,8 @@ public class RecipesMachinesMulti {
                 ItemList.Field_Generator_IV.get(32),
                 ItemList.Electric_Motor_EV.get(64),
                 ItemList.Energy_LapotronicOrb.get(32),
-                GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.YttriumBariumCuprate, 32),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Platinum, 64),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.cableGt12, 32),
+                MaterialLibAPI.getStack(Materials.Platinum, TEBlockShapes.wireGt16, 64),
                 MaterialLibAPI.getStack(Materials.Naquadria, Shapes.plate, 64),
                 MaterialLibAPI.getStack(Materials.Gadolinium, Shapes.dust, 32),
                 MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 16),
@@ -704,7 +703,7 @@ public class RecipesMachinesMulti {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.RedSteel, Shapes.plate, 6),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1))
+                MaterialLibAPI.getStack(Materials.BlackSteel, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_ThermalCentrifuge.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -969,7 +968,7 @@ public class RecipesMachinesMulti {
                 GregtechItemList.TransmissionComponent_MV.get(2),
                 ItemList.Electric_Piston_EV.get(2),
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.TungstenSteel, 1))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.pipeSmall, 1))
             .itemOutputs(GregtechItemList.Casing_Industrial_Arc_Furnace.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Arcanite, 8 * INGOTS))
             .duration(60 * SECONDS)
@@ -997,7 +996,7 @@ public class RecipesMachinesMulti {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Casing_Vacuum_Furnace.get(1),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.YttriumBariumCuprate, 4),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.wireGt16, 4),
                 ItemList.Robot_Arm_EV.get(4),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 8),
                 Circuits.LuV.get(8))
@@ -1078,7 +1077,7 @@ public class RecipesMachinesMulti {
             .itemInputs(
                 GregtechItemList.Casing_Refinery_Structural.get(4),
                 GregtechItemList.LFTRControlCircuit.get(1),
-                GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Platinum, 16),
+                MaterialLibAPI.getStack(Materials.Platinum, TEBlockShapes.cableGt08, 16),
                 GregtechItemList.TransmissionComponent_IV.get(2),
                 GregtechItemList.Gregtech_Computer_Cube.get(1))
             .itemOutputs(GregtechItemList.GT4_Multi_Crafter.get(1))

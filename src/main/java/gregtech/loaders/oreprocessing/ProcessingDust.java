@@ -45,6 +45,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeCategories;
@@ -78,7 +79,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     /// Whether a dust resolves for `material`. An ore material need not have one (ChargedCertusQuartz removes
     /// the dust shape).
     private static boolean hasDust(Material material) {
-        return GTOreDictUnificator.get(OrePrefixes.dust, material, 1L) != null;
+        return MaterialParts.stack(OrePrefixes.dust, material, 1L) != null;
     }
 
     /// A blast furnace recipe smelting one `stack` into `material`'s smelt-into ingot, keyed on `circuit`.
@@ -90,7 +91,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
             .circuit(circuit);
         if (MaterialUtils.blastFurnaceTemp(material) > 1750) {
             recipeBuilder.itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingotHot, MaterialUtils.smeltInto(material), ingotStack, 1L));
+                GTUtility.copyAmount(
+                    1L,
+                    MaterialParts.stack(OrePrefixes.ingotHot, MaterialUtils.smeltInto(material), 1),
+                    ingotStack));
         } else {
             recipeBuilder.itemOutputs(GTUtility.copyAmount(1, ingotStack));
         }
@@ -106,10 +110,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         ItemStack stack) {
         switch (prefix.getName()) {
             case "dust" -> {
-                if (GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 1L) != null) {
+                if (MaterialParts.stack(OrePrefixes.dustSmall, material, 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Schematic_Dust_Small.get(0L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 4L))
+                        .itemOutputs(MaterialParts.stack(OrePrefixes.dustSmall, material, 4L))
                         .duration(1 * SECONDS)
                         .eut(4)
                         .addTo(packagerRecipes);
@@ -145,7 +149,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
                 ItemStack tDustStack;
                 if ((null
-                    != (tDustStack = GTOreDictUnificator.get(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L)))
+                    != (tDustStack = MaterialParts.stack(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L)))
                     && (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING))) {
                     if (MaterialUtils.blastFurnaceRequired(material)) {
                         GTModHandler.removeFurnaceSmelting(stack);
@@ -183,7 +187,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 } else if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
                     if ((!OrePrefixes.block.isIgnored(material))
-                        && (null == GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
+                        && (null == MaterialParts.stack(OrePrefixes.gem, material, 1L))
                         && GTOreDictUnificator.get(OrePrefixes.block, material, 1L) != null
                         && (material != Materials.Clay)
                         && (material != Materials.Netherrack)) {
@@ -212,10 +216,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         && (material != Materials.Stone)) {
                         // compressor recipe
                         {
-                            if (GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
+                            if (MaterialParts.stack(OrePrefixes.plate, material, 1L) != null) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(GTUtility.copyAmount(1, stack))
-                                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
+                                    .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 1L))
                                     .duration(15 * SECONDS)
                                     .eut(2)
                                     .addTo(compressorRecipes);
@@ -253,7 +257,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         : 1L;
                     ArrayList<ItemStack> tList = new ArrayList<>();
                     for (MaterialStack tMat : tMaterialList) if (tMat.mAmount > 0L) {
-                        tDustStack = GTOreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);
+                        tDustStack = GTUtility
+                            .copyAmount(tMat.mAmount, MaterialParts.stack(OrePrefixes.dust, tMat.mMaterial, 1));
                         if (tDustStack == null)
                             tDustStack = GTOreDictUnificator.get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
                         if (tItemAmount + tMat.mAmount * 3628800L
@@ -348,11 +353,11 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 if (MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTALLISABLE)
-                    && GTOreDictUnificator.get(OrePrefixes.gem, material, 1L) != null) {
+                    && MaterialParts.stack(OrePrefixes.gem, material, 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(1)
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
+                        .itemOutputs(MaterialParts.stack(OrePrefixes.gem, material, 1L))
                         .outputChances(7000)
                         .fluidInputs(GTUtility.getWater(200L))
                         .duration(1 * MINUTES + 40 * SECONDS)
@@ -361,7 +366,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(2)
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
+                        .itemOutputs(MaterialParts.stack(OrePrefixes.gem, material, 1L))
                         .outputChances(9000)
                         .fluidInputs(GTModHandler.getDistilledWater(100L))
                         .duration(1 * MINUTES + 15 * SECONDS)
@@ -370,7 +375,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(3)
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
+                        .itemOutputs(MaterialParts.stack(OrePrefixes.gem, material, 1L))
                         .outputChances(10000)
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
@@ -415,7 +420,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(4, stack))
                             .itemOutputs(
                                 ItemList.IC2_Industrial_Diamond.get(3L),
-                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 16L))
+                                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 16))
                             .duration(1 * SECONDS)
                             .eut(TierEU.RECIPE_LV)
                             .metadata(ADDITIVE_AMOUNT, 32)
@@ -427,8 +432,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(4, stack))
                             .itemOutputs(
-                                GTOreDictUnificator.get(OrePrefixes.gem, material, 3L),
-                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 16L))
+                                MaterialParts.stack(OrePrefixes.gem, material, 3L),
+                                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 16))
                             .duration(1 * SECONDS)
                             .eut(TierEU.RECIPE_LV)
                             .metadata(ADDITIVE_AMOUNT, 32)
@@ -448,8 +453,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(4, stack))
                             .itemOutputs(
-                                GTOreDictUnificator.get(OrePrefixes.gem, material, 3L),
-                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L))
+                                MaterialParts.stack(OrePrefixes.gem, material, 3L),
+                                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 12))
                             .duration(1 * SECONDS)
                             .eut(TierEU.RECIPE_LV)
                             .metadata(ADDITIVE_AMOUNT, 24)
@@ -468,8 +473,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(4, stack))
                             .itemOutputs(
-                                GTOreDictUnificator.get(OrePrefixes.gem, material, 3L),
-                                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 8L))
+                                MaterialParts.stack(OrePrefixes.gem, material, 3L),
+                                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 8))
                             .duration(1 * SECONDS)
                             .eut(TierEU.RECIPE_LV)
                             .metadata(ADDITIVE_AMOUNT, 16)
@@ -477,13 +482,13 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                         break;
                     default: {
-                        if (GTOreDictUnificator.get(OrePrefixes.gem, material, 1L) != null
+                        if (MaterialParts.stack(OrePrefixes.gem, material, 1L) != null
                             && !MaterialUtils.hasSubTag(material, "NoBlast")) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(4, stack))
                                 .itemOutputs(
-                                    GTOreDictUnificator.get(OrePrefixes.gem, material, 3L),
-                                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 8L))
+                                    MaterialParts.stack(OrePrefixes.gem, material, 3L),
+                                    MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 8))
                                 .duration(20 * TICKS)
                                 .eut(TierEU.RECIPE_LV)
                                 .metadata(ADDITIVE_AMOUNT, 24)
@@ -512,9 +517,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(
                                 convert(
                                     material,
-                                    GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
+                                    MaterialParts.stack(OrePrefixes.dust, material, 1L),
                                     MaterialLibAPI.getStack(Materials.Gold, Shapes.dustSmall, 1),
-                                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 1L)))
+                                    MaterialLibAPI.getStack(Materials.Gold, Shapes.nugget, 1)))
                             .outputChances(10000, 4000, 2000)
                             .duration(20 * SECONDS)
                             .eut(24)
@@ -526,7 +531,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(
                                 convert(
                                     material,
-                                    GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
+                                    MaterialParts.stack(OrePrefixes.dust, material, 1L),
                                     MaterialLibAPI.getStack(Materials.Iron, Shapes.dustSmall, 1),
                                     MaterialLibAPI.getStack(Materials.Iron, Shapes.nugget, 1)))
                             .outputChances(10000, 4000, 2000)
@@ -540,7 +545,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(
                                 convert(
                                     material,
-                                    GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
+                                    MaterialParts.stack(OrePrefixes.dust, material, 1L),
                                     MaterialLibAPI.getStack(Materials.Neodymium, Shapes.dustSmall, 1),
                                     MaterialLibAPI.getStack(Materials.Neodymium, Shapes.nugget, 1)))
                             .outputChances(10000, 4000, 2000)
@@ -550,11 +555,11 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 if (MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTALLISABLE)
-                    && GTOreDictUnificator.get(OrePrefixes.gem, material, 1L) != null) {
+                    && MaterialParts.stack(OrePrefixes.gem, material, 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(1)
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
+                        .itemOutputs(MaterialParts.stack(OrePrefixes.gem, material, 1L))
                         .outputChances(prefix == OrePrefixes.dustPure ? 9500 : 9000)
                         .fluidInputs(GTUtility.getWater(200L))
                         .duration(1 * MINUTES + 40 * SECONDS)
@@ -563,7 +568,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(2)
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
+                        .itemOutputs(MaterialParts.stack(OrePrefixes.gem, material, 1L))
                         .outputChances(prefix == OrePrefixes.dustPure ? 10000 : 9500)
                         .fluidInputs(GTModHandler.getDistilledWater(100L))
                         .duration(1 * MINUTES + 15 * SECONDS)
@@ -572,7 +577,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(3)
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
+                        .itemOutputs(MaterialParts.stack(OrePrefixes.gem, material, 1L))
                         .outputChances(10000)
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
@@ -581,26 +586,24 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .addTo(autoclaveRecipes);
                 }
                 if (!hasDust) return;
-                ItemStack tImpureStack = GTOreDictUnificator.get(
-                    OrePrefixes.dustTiny,
-                    tByProduct,
-                    GTOreDictUnificator.get(OrePrefixes.nugget, tByProduct, 1L),
-                    1L);
+                ItemStack tImpureStack = GTUtility.copyAmount(
+                    1L,
+                    MaterialParts.stack(OrePrefixes.dustTiny, tByProduct, 1),
+                    MaterialParts.stack(OrePrefixes.nugget, tByProduct, 1L));
                 if (tImpureStack == null) {
-                    tImpureStack = GTOreDictUnificator.get(OrePrefixes.dustSmall, tByProduct, 1L);
+                    tImpureStack = MaterialParts.stack(OrePrefixes.dustSmall, tByProduct, 1L);
                     if (tImpureStack == null) {
-                        tImpureStack = GTOreDictUnificator.get(
-                            OrePrefixes.dust,
-                            tByProduct,
-                            GTOreDictUnificator.get(OrePrefixes.gem, tByProduct, 1L),
-                            1L);
+                        tImpureStack = GTUtility.copyAmount(
+                            1L,
+                            MaterialParts.stack(OrePrefixes.dust, tByProduct, 1),
+                            MaterialParts.stack(OrePrefixes.gem, tByProduct, 1L));
                         if (tImpureStack == null) {
                             tImpureStack = GTOreDictUnificator.get(OrePrefixes.cell, tByProduct, 1L);
                             if (tImpureStack == null) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(GTUtility.copyAmount(1, stack))
                                     .itemOutputs(
-                                        convertOre(material, GTOreDictUnificator.get(OrePrefixes.dust, material, 1L)))
+                                        convertOre(material, MaterialParts.stack(OrePrefixes.dust, material, 1L)))
                                     .duration(Math.max(1L, MaterialUtils.mass(material)))
                                     .eut(5)
                                     .addTo(centrifugeRecipes);
@@ -612,7 +615,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                         .itemOutputs(
                                             convertOre(
                                                 material,
-                                                GTOreDictUnificator.get(OrePrefixes.dust, material, 9L),
+                                                MaterialParts.stack(OrePrefixes.dust, material, 9L),
                                                 tImpureStack))
                                         .duration(Math.max(1L, MaterialUtils.mass(material) * 72L))
                                         .eut(5)
@@ -622,9 +625,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                     GTValues.RA.stdBuilder()
                                         .itemInputs(GTUtility.copyAmount(1, stack))
                                         .itemOutputs(
-                                            convertOre(
-                                                material,
-                                                GTOreDictUnificator.get(OrePrefixes.dust, material, 1L)))
+                                            convertOre(material, MaterialParts.stack(OrePrefixes.dust, material, 1L)))
                                         .fluidOutputs(tFluid)
                                         .duration(Math.max(1L, MaterialUtils.mass(material) * 8L))
                                         .eut(5)
@@ -637,7 +638,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 .itemOutputs(
                                     convertOre(
                                         material,
-                                        GTOreDictUnificator.get(OrePrefixes.dust, material, 9L),
+                                        MaterialParts.stack(OrePrefixes.dust, material, 9L),
                                         tImpureStack))
                                 .duration(Math.max(1L, MaterialUtils.mass(material) * 72L))
                                 .eut(5)
@@ -647,27 +648,23 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(2, stack))
                             .itemOutputs(
-                                convertOre(
-                                    material,
-                                    GTOreDictUnificator.get(OrePrefixes.dust, material, 2L),
-                                    tImpureStack))
+                                convertOre(material, MaterialParts.stack(OrePrefixes.dust, material, 2L), tImpureStack))
                             .duration(Math.max(1L, MaterialUtils.mass(material) * 16L))
                             .eut(5)
                             .addTo(centrifugeRecipes);
                     }
                 } else {
-                    ItemStack tByProductStack = GTOreDictUnificator.get(
-                        OrePrefixes.dust,
-                        tByProduct,
-                        GTOreDictUnificator.get(OrePrefixes.nugget, tByProduct, 1L),
-                        1L);
+                    ItemStack tByProductStack = GTUtility.copyAmount(
+                        1L,
+                        MaterialParts.stack(OrePrefixes.dust, tByProduct, 1),
+                        MaterialParts.stack(OrePrefixes.nugget, tByProduct, 1L));
                     if (tByProductStack != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
                                 convertOre(
                                     material,
-                                    GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
+                                    MaterialParts.stack(OrePrefixes.dust, material, 1L),
                                     tByProductStack))
                             .outputChances(10000, 1111)
                             .duration(Math.max(1L, MaterialUtils.mass(material) * 8L))
@@ -680,7 +677,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (hasDust(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(4, stack), ItemList.Schematic_Dust.get(0L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, material, 1L))
+                        .itemOutputs(MaterialParts.stack(OrePrefixes.dust, material, 1L))
                         .duration(1 * SECONDS)
                         .eut(4)
                         .addTo(packagerRecipes);
@@ -703,7 +700,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (hasDust(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Schematic_Dust.get(0L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, material, 1L))
+                        .itemOutputs(MaterialParts.stack(OrePrefixes.dust, material, 1L))
                         .duration(1 * SECONDS)
                         .eut(4)
                         .addTo(packagerRecipes);

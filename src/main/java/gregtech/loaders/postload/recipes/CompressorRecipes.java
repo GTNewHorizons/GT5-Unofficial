@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
@@ -50,7 +51,7 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Mixed_Metal_Ingot.get(1L))
-            .itemOutputs(GTOreDictUnificator.get("plateAlloyAdvanced", 1L))
+            .itemOutputs(getModItem(IndustrialCraft2.ID, "itemPartAlloy", 1L, 0))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
@@ -176,7 +177,7 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Compressed_Coal_Chunk.get(1))
-            .itemOutputs(GTOreDictUnificator.get("gemDiamond", 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Diamond, Shapes.gem, 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
@@ -288,7 +289,7 @@ public class CompressorRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateSuperdense, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 1 * STACKS))
-            .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, Shapes.plateSuperdense, 1))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)
             .duration(45 * SECONDS)
@@ -299,7 +300,7 @@ public class CompressorRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.Creon, Shapes.plateSuperdense, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 32 * INGOTS))
-            .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, Shapes.plateSuperdense, 1))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)
             .duration(45 * SECONDS / 4)
@@ -310,7 +311,7 @@ public class CompressorRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.Mellion, Shapes.plateSuperdense, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 32 * INGOTS))
-            .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, Shapes.plateSuperdense, 1))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)
             .duration(45 * SECONDS / 4)
@@ -328,8 +329,11 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get("plateMagnetohydrodynamicallyConstrainedStarMatter", 64))
-            .itemOutputs(GTOreDictUnificator.get("plateSuperdenseMagnetohydrodynamicallyConstrainedStarMatter", 1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, Shapes.plate, 64))
+            .itemOutputs(
+                MaterialLibAPI
+                    .getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, Shapes.plateSuperdense, 1))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)
             .duration(1 * HOURS + 15 * MINUTES)

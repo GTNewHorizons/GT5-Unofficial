@@ -321,7 +321,6 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverExternal;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverInternal;
@@ -1576,7 +1575,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                     7,
                     0.5F,
                     EnumAction.eat,
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 1L),
+                    MaterialLibAPI.getStack(Materials.Paper, Shapes.plate, 1),
                     false,
                     true,
                     false),

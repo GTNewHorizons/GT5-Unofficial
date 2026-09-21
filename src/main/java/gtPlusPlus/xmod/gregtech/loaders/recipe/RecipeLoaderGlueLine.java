@@ -26,16 +26,15 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -157,7 +156,7 @@ public class RecipeLoaderGlueLine {
     private static void chemicalReactorRecipes() {
         // NaOH + HCN = NaCN + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxideGT5U, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
             .circuit(17)
             .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumCyanide, Shapes.dust, 3))
             .fluidInputs(MaterialUtils.anyFluid(Materials.HydrogenCyanide, 1_000))
@@ -168,7 +167,7 @@ public class RecipeLoaderGlueLine {
 
         // #UniversalChemical recipemap won't generate LCR recipe if config >= 10
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxideGT5U, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
             .circuit(17)
             .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumCyanide, Shapes.dust, 3))
             .fluidInputs(MaterialUtils.anyFluid(Materials.HydrogenCyanide, 1_000))
@@ -364,7 +363,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.foil, 8),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 32))
+                MaterialLibAPI.getStack(Materials.Paper, Shapes.plate, 32))
             .itemOutputs(new ItemStack(Items.book, 64, 0))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 200))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -372,7 +371,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 2),
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt01, 2),
                 MaterialLibAPI.getStack(Materials.RedSteel, Shapes.plate, 18))
             .itemOutputs(ItemList.BatteryHull_LuV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 144))
@@ -381,7 +380,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 2),
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, TEBlockShapes.cableGt01, 2),
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.plate, 6))
             .itemOutputs(ItemList.BatteryHull_ZPM.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 288))
@@ -390,7 +389,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.ElectrumFlux, 2),
+                MaterialLibAPI.getStack(Materials.ElectrumFlux, TEBlockShapes.cableGt01, 2),
                 MaterialLibAPI.getStack(Materials.Americium, Shapes.plate, 18))
             .itemOutputs(ItemList.BatteryHull_UV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 576))
@@ -399,7 +398,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.ElectrumFlux, 2),
+                MaterialLibAPI.getStack(Materials.ElectrumFlux, TEBlockShapes.cableGt02, 2),
                 MaterialLibAPI.getStack(Materials.Naquadah, Shapes.plate, 24))
             .itemOutputs(ItemList.BatteryHull_UHV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 1152))
@@ -408,7 +407,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 2),
+                MaterialLibAPI.getStack(Materials.ElectrumFlux, TEBlockShapes.cableGt04, 2),
                 MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.plate, 36))
             .itemOutputs(ItemList.BatteryHull_UEV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 2304))
@@ -417,7 +416,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.ElectrumFlux, 2),
+                MaterialLibAPI.getStack(Materials.ElectrumFlux, TEBlockShapes.cableGt08, 2),
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, 48))
             .itemOutputs(ItemList.BatteryHull_UIV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 4608))
@@ -426,7 +425,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
+                MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt16, 2),
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 56))
             .itemOutputs(ItemList.BatteryHull_UMV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 9216))
@@ -435,7 +434,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
+                MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt16, 2),
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plate, 64))
             .itemOutputs(ItemList.BatteryHull_UxV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 18432))

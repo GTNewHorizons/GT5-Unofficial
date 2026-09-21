@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -17,7 +18,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class BenderRecipes implements Runnable {
 
@@ -234,7 +234,7 @@ public class BenderRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Mixed_Metal_Ingot.get(1L))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.get("plateAlloyAdvanced", 1L))
+            .itemOutputs(GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartAlloy", 1L, 0))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);

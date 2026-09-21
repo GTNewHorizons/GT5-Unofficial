@@ -17,7 +17,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 /// The `frameGt` recipe registrator: a hand-crafting recipe for two frames from sticks below IV processing
@@ -42,9 +41,9 @@ public class ProcessingFrame implements IOreRecipeRegistrator {
         }
 
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)
-            && GTOreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
+            && MaterialParts.stack(OrePrefixes.stick, material, 1) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, material, 4))
+                .itemInputs(MaterialParts.stack(OrePrefixes.stick, material, 4))
                 .circuit(4)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(3 * SECONDS + 4 * TICKS)

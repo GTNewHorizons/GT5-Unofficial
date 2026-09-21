@@ -14,8 +14,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -42,9 +42,7 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                convert(
-                    material,
-                    GTOreDictUnificator.get(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L)))
+                convert(material, MaterialParts.stack(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L)))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
@@ -54,12 +52,11 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
             .itemOutputs(
                 convertOre(
                     material,
-                    GTOreDictUnificator.get(
-                        OrePrefixes.dustPure,
-                        MaterialUtils.macerateInto(material),
-                        GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
-                        1L),
-                    GTOreDictUnificator.get(
+                    GTUtility.copyAmount(
+                        1L,
+                        MaterialParts.stack(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1),
+                        MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
+                    MaterialParts.stack(
                         OrePrefixes.dust,
                         GTUtility.selectItemInList(
                             1,

@@ -21,7 +21,6 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 
@@ -38,21 +37,21 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
-            && GTOreDictUnificator.get(OrePrefixes.gem, MaterialUtils.smeltInto(material), 1L) != null) {
+            && MaterialParts.stack(OrePrefixes.gem, MaterialUtils.smeltInto(material), 1L) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ball.get(0L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, MaterialUtils.smeltInto(material), 1L))
+                .itemOutputs(MaterialParts.stack(OrePrefixes.gem, MaterialUtils.smeltInto(material), 1L))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(material, 2))
                 .addTo(alloySmelterRecipes);
         }
 
         if ((!MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM))
-            && GTOreDictUnificator.get(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L) != null
+            && MaterialParts.stack(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L) != null
             && material != Materials.Aluminium) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ingot.get(0L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L))
+                .itemOutputs(MaterialParts.stack(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(material, 2))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
@@ -63,7 +62,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
             if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L))
+                    .itemOutputs(MaterialParts.stack(OrePrefixes.nugget, material, 1L))
                     .fluidInputs(MaterialUtils.molten(material, 1 * NUGGETS))
                     .duration(16 * TICKS)
                     .eut(calculateRecipeEU(material, 4))
@@ -75,11 +74,9 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         GTRecipeRegistrator
             .registerReverseMacerating(stack, material, prefix.getMaterialAmount(), null, null, null, false, true);
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)
-            && GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null) {
+            && MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L),
-                    ItemList.Shape_Mold_Nugget.get(0L))
+                .itemInputs(MaterialParts.stack(OrePrefixes.ingot, material, 1L), ItemList.Shape_Mold_Nugget.get(0L))
                 .itemOutputs(GTUtility.copyAmount(9, stack))
                 .duration(5 * SECONDS)
                 .eut(calculateRecipeEU(material, 1))
@@ -87,7 +84,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .addTo(alloySmelterRecipes);
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV && material != Materials.Unstable) {
                 GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.nugget, material, 8L),
+                    MaterialParts.stack(OrePrefixes.nugget, material, 8L),
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "sI ", 'I', MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
             }

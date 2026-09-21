@@ -14,7 +14,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class LatheRecipes implements Runnable {
 
@@ -38,7 +37,7 @@ public class LatheRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("plankWood", 1))
-            .itemOutputs(GTOreDictUnificator.get("stickWood", 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.stick, 2))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(latheRecipes);
@@ -56,7 +55,7 @@ public class LatheRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("treeSapling", 1))
             .itemOutputs(
-                GTOreDictUnificator.get("stickWood", 1L),
+                MaterialLibAPI.getStack(Materials.Wood, Shapes.stick, 1),
                 MaterialLibAPI.getStack(Materials.Wood, Shapes.dustTiny, 1))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_ULV)

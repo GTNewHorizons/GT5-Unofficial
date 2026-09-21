@@ -36,10 +36,12 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.util.GTModHandler;
@@ -1631,12 +1633,12 @@ public class MTERecipeLoader implements Runnable {
         // High Current Industrial Arc Furnace
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.blockCasing, Materials.Naquadah, 1),
+                MaterialLibAPI.getStack(Materials.Naquadah, BlockShapes.blockCasing, 1),
                 ItemList.Field_Generator_EV.get(2),
                 ItemList.Robot_Arm_IV.get(4),
                 GregtechItemList.Energy_Core_EV.get(2),
                 MaterialLibAPI.getStack(Materials.Tungsten, Shapes.plate, 8),
-                GTOreDictUnificator.get("circuitElite", 8))
+                Circuits.IV.get(8))
             .itemOutputs(ItemList.IndustrialArcFurnace.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_IV)
@@ -1650,7 +1652,7 @@ public class MTERecipeLoader implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get("frameGtRoseGold", 1),
+                MaterialLibAPI.getStack(Materials.RoseGold, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.RoseGold, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 2))
             .circuit(1)
@@ -1664,7 +1666,7 @@ public class MTERecipeLoader implements Runnable {
             .itemInputs(
                 ItemRefer.Radiation_Protection_Plate.get(2),
                 MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.plate, 2),
-                GTOreDictUnificator.get("frameGtNaquadah", 1))
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(ItemList.NaquadahReactorCasing.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NaquadahEnriched, FluidShapes.fluidMolten, 4 * INGOTS))
@@ -4170,21 +4172,27 @@ public class MTERecipeLoader implements Runnable {
 
         // high pressure fluid pipes
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get("pipeSmallTungstenSteel", 1L), ItemList.Electric_Pump_EV.get(1L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.pipeSmall, 1),
+                ItemList.Electric_Pump_EV.get(1L))
             .circuit(5)
             .itemOutputs(TieredItems.ZPM.getPipeSmall(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get("pipeMediumTungstenSteel", 1L), ItemList.Electric_Pump_IV.get(1L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.pipeMedium, 1),
+                ItemList.Electric_Pump_IV.get(1L))
             .circuit(5)
             .itemOutputs(TieredItems.ZPM.getPipeMedium(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV / 2)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get("pipeLargeTungstenSteel", 1L), ItemList.Electric_Pump_IV.get(2L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.pipeLarge, 1),
+                ItemList.Electric_Pump_IV.get(2L))
             .circuit(5)
             .itemOutputs(TieredItems.ZPM.getPipeLarge(1))
             .duration(30 * SECONDS)

@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import java.util.Locale;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
@@ -11,15 +12,30 @@ import net.minecraft.world.World;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.ShapeBlock;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.material.MaterialUtils;
 
 /// The `block` MaterialLib shape (compressed/storage blocks, e.g. "Block of Iron"), backing every cut-over
 /// material with metadata equal to the material's global index. Every storage block harvests pickaxe-only at
-/// level 1, counts as a beacon base, and takes vanilla's iron block hardness and resistance.
+/// level 1, counts as a beacon base, takes vanilla's iron block hardness and resistance, and causes a
+/// machine-structure update on placement and removal.
 public class GTStorageShapeBlock extends ShapeBlock {
 
     public GTStorageShapeBlock(String modid, String name, String displayNameFormat, String... oreDicts) {
         super(modid, name, displayNameFormat, oreDicts);
+        GregTechAPI.registerMachineBlock(this, -1);
+    }
+
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        GregTechAPI.causeMachineUpdate(world, x, y, z);
+        super.onBlockAdded(world, x, y, z);
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        GregTechAPI.causeMachineUpdate(world, x, y, z);
+        super.breakBlock(world, x, y, z, block, meta);
     }
 
     /// The per-material storage-block art, keyed by [MaterialUtils#internalName] rather than the material's

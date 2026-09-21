@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -16,8 +17,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingTransforming implements IOreRecipeRegistrator {
@@ -38,14 +39,17 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             prefix = OrePrefixes.plate;
         }
 
+        Shape shape = MaterialParts.shape(prefix);
+        if (shape == null) return;
+
         switch (MaterialUtils.internalName(material)) {
             case "Wood" ->
             // Chemical bath recipes
             {
-                if (GTOreDictUnificator.get(prefix, Materials.WoodSealed, 1L) != null) {
+                if (Materials.WoodSealed.hasShape(shape)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .itemOutputs(GTOreDictUnificator.get(prefix, Materials.WoodSealed, 1L))
+                        .itemOutputs(MaterialLibAPI.getStack(Materials.WoodSealed, shape, 1))
                         .fluidInputs(
                             MaterialUtils.fluid(
                                 Materials.SeedOil,
@@ -59,10 +63,10 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Iron" -> {
                 // Chemical bath recipes
                 {
-                    if (GTOreDictUnificator.get(prefix, Materials.FierySteel, 1L) != null) {
+                    if (Materials.FierySteel.hasShape(shape)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
-                            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.FierySteel, 1L))
+                            .itemOutputs(MaterialLibAPI.getStack(Materials.FierySteel, shape, 1))
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.FierySteel,
@@ -76,10 +80,10 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
 
                 // Polarizer recipes
                 {
-                    if (GTOreDictUnificator.get(prefix, Materials.IronMagnetic, 1L) != null) {
+                    if (Materials.IronMagnetic.hasShape(shape)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
-                            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.IronMagnetic, 1L))
+                            .itemOutputs(MaterialLibAPI.getStack(Materials.IronMagnetic, shape, 1))
                             .duration(((int) Math.max(16L, prefix.getMaterialAmount() * 128L / GTValues.M)) * TICKS)
                             .eut((int) TierEU.RECIPE_LV / 2)
                             .addTo(polarizerRecipes);
@@ -89,10 +93,10 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "CastIron" -> {
                 // Chemical bath recipes
                 {
-                    if (GTOreDictUnificator.get(prefix, Materials.FierySteel, 1L) != null) {
+                    if (Materials.FierySteel.hasShape(shape)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
-                            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.FierySteel, 1L))
+                            .itemOutputs(MaterialLibAPI.getStack(Materials.FierySteel, shape, 1))
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.FierySteel,
@@ -106,10 +110,10 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
 
                 // Polarizer recipes
                 {
-                    if (GTOreDictUnificator.get(prefix, Materials.IronMagnetic, 1L) != null) {
+                    if (Materials.IronMagnetic.hasShape(shape)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
-                            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.IronMagnetic, 1L))
+                            .itemOutputs(MaterialLibAPI.getStack(Materials.IronMagnetic, shape, 1))
                             .duration(((int) Math.max(16L, prefix.getMaterialAmount() * 128L / GTValues.M)) * TICKS)
                             .eut((int) TierEU.RECIPE_LV / 2)
                             .addTo(polarizerRecipes);
@@ -119,10 +123,10 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Steel" -> {
                 // Chemical Bath recipes
                 {
-                    if (GTOreDictUnificator.get(prefix, Materials.FierySteel, 1L) != null) {
+                    if (Materials.FierySteel.hasShape(shape)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
-                            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.FierySteel, 1L))
+                            .itemOutputs(MaterialLibAPI.getStack(Materials.FierySteel, shape, 1))
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.FierySteel,
@@ -136,10 +140,10 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
 
                 // Polarizer recipes
                 {
-                    if (GTOreDictUnificator.get(prefix, Materials.SteelMagnetic, 1L) != null) {
+                    if (Materials.SteelMagnetic.hasShape(shape)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
-                            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.SteelMagnetic, 1L))
+                            .itemOutputs(MaterialLibAPI.getStack(Materials.SteelMagnetic, shape, 1))
                             .duration(((int) Math.max(16L, prefix.getMaterialAmount() * 128L / GTValues.M)) * TICKS)
                             .eut((int) TierEU.RECIPE_LV / 2)
                             .addTo(polarizerRecipes);
@@ -149,10 +153,10 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Neodymium" ->
             // Polarizer recipes
             {
-                if (GTOreDictUnificator.get(prefix, Materials.NeodymiumMagnetic, 1L) != null) {
+                if (Materials.NeodymiumMagnetic.hasShape(shape)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .itemOutputs(GTOreDictUnificator.get(prefix, Materials.NeodymiumMagnetic, 1L))
+                        .itemOutputs(MaterialLibAPI.getStack(Materials.NeodymiumMagnetic, shape, 1))
                         .duration(((int) Math.max(16L, prefix.getMaterialAmount() * 128L / GTValues.M)) * TICKS)
                         .eut((int) TierEU.RECIPE_HV / 2)
                         .addTo(polarizerRecipes);
@@ -161,10 +165,10 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Samarium" ->
             // Polarizer recipes
             {
-                if (GTOreDictUnificator.get(prefix, Materials.SamariumMagnetic, 1L) != null) {
+                if (Materials.SamariumMagnetic.hasShape(shape)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .itemOutputs(GTOreDictUnificator.get(prefix, Materials.SamariumMagnetic, 1L))
+                        .itemOutputs(MaterialLibAPI.getStack(Materials.SamariumMagnetic, shape, 1))
                         .duration(((int) Math.max(16L, prefix.getMaterialAmount() * 128L / GTValues.M)) * TICKS)
                         .eut((int) TierEU.RECIPE_IV / 2)
                         .addTo(polarizerRecipes);
@@ -174,10 +178,10 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "TengamPurified" ->
             // Polarizer recipes
             {
-                if (GTOreDictUnificator.get(prefix, Materials.TengamAttuned, 1L) != null) {
+                if (Materials.TengamAttuned.hasShape(shape)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .itemOutputs(GTOreDictUnificator.get(prefix, Materials.TengamAttuned, 1L))
+                        .itemOutputs(MaterialLibAPI.getStack(Materials.TengamAttuned, shape, 1))
                         .duration(((int) Math.max(16L, prefix.getMaterialAmount() * 128L / GTValues.M)) * TICKS)
                         .eut((int) TierEU.RECIPE_UHV)
                         .addTo(polarizerRecipes);

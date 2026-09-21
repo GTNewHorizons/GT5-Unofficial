@@ -805,7 +805,7 @@ public class Godforge implements Runnable {
         // Godforge upgrade materials
         if (EternalSingularity.isModLoaded()) {
             ForgeOfGodsUpgrade.START.addExtraCost(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
+                MaterialLibAPI.getStack(Materials.SuperconductorUIVBase, TEBlockShapes.frameGt, 64),
                 ItemList.SuperconductorComposite.get(32),
                 MaterialLibAPI.getStack(Materials.MetastableOganesson, Shapes.gearGt, 16),
                 getModItem(EternalSingularity.ID, "eternal_singularity", 8L),
@@ -845,8 +845,8 @@ public class Godforge implements Runnable {
                 ItemList.Field_Generator_UEV.get(64L));
 
             ForgeOfGodsUpgrade.CD.addExtraCost(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 64),
+                MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.frameGt, 64),
+                MaterialLibAPI.getStack(Materials.SuperconductorUMVBase, TEBlockShapes.frameGt, 64),
                 MaterialLibAPI.getStack(Materials.Hypogen, TEBlockShapes.frameGt, 64),
                 MaterialLibAPI.getStack(Materials.Dragonblood, TEBlockShapes.frameGt, 64),
                 CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
@@ -855,10 +855,10 @@ public class Godforge implements Runnable {
                 ItemList.Field_Generator_UMV.get(32));
 
             ForgeOfGodsUpgrade.EE.addExtraCost(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.WhiteDwarfMatter, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackDwarfMatter, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Eternity, 16),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Universium, 2),
+                MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, TEBlockShapes.frameGt, 64),
+                MaterialLibAPI.getStack(Materials.BlackDwarfMatter, TEBlockShapes.frameGt, 64),
+                MaterialLibAPI.getStack(Materials.Eternity, TEBlockShapes.frameGt, 16),
+                MaterialLibAPI.getStack(Materials.Universium, TEBlockShapes.frameGt, 2),
                 CustomItemList.EOH_Infinite_Energy_Casing.get(64),
                 CustomItemList.StabilisationFieldGeneratorTier6.get(48),
                 ItemList.ZPM6.get(16),
@@ -869,10 +869,10 @@ public class Godforge implements Runnable {
                 ItemList.Robot_Arm_UMV.get(64));
 
             ForgeOfGodsUpgrade.END.addExtraCost(
-                GTOreDictUnificator
-                    .get(OrePrefixes.frameGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Eternity, 64),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Magmatter, 64),
+                MaterialLibAPI
+                    .getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, TEBlockShapes.frameGt, 64),
+                MaterialLibAPI.getStack(Materials.Eternity, TEBlockShapes.frameGt, 64),
+                MaterialLibAPI.getStack(Materials.Magmatter, TEBlockShapes.frameGt, 64),
                 CustomItemList.StabilisationFieldGeneratorTier8.get(64),
                 CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(64),
                 CustomItemList.astralArrayFabricator.get(4),

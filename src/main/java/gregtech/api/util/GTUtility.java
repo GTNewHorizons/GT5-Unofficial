@@ -1304,6 +1304,12 @@ public class GTUtility {
         return FluidRegistry.getFluidStack("ice", (int) aAmount);
     }
 
+    /// An [ItemStack] of the empty cell every cell shape drains to ([ItemList#Cell_Empty]), with the amount
+    /// clamped to 64. See [#getWater].
+    public static ItemStack getEmptyCell(long aAmount) {
+        return ItemList.Cell_Empty.get(aAmount);
+    }
+
     /**
      * Get empty fluid container from filled one.
      */

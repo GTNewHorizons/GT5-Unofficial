@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
@@ -20,7 +21,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.SubstituteFluidStack;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class CircuitAssemblerRecipes implements Runnable {
 
@@ -41,7 +41,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Coated_Basic.get(1),
-                GTOreDictUnificator.get("circuitBasic", 1),
+                Circuits.LV.get(1),
                 ItemList.Cover_Controller.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 0))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -50,10 +50,7 @@ public class CircuitAssemblerRecipes implements Runnable {
             .addTo(circuitAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Circuit_Board_Coated_Basic.get(1),
-                GTOreDictUnificator.get("circuitBasic", 1),
-                ItemList.Sensor_LV.get(1))
+            .itemInputs(ItemList.Circuit_Board_Coated_Basic.get(1), Circuits.LV.get(1), ItemList.Sensor_LV.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 1))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
             .duration(15 * SECONDS)
@@ -63,7 +60,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Coated_Basic.get(1),
-                GTOreDictUnificator.get("circuitBasic", 1),
+                Circuits.LV.get(1),
                 getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 2))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -74,7 +71,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Phenolic_Good.get(1),
-                GTOreDictUnificator.get("circuitGood", 1),
+                Circuits.MV.get(1),
                 ItemList.Cover_Controller.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 0))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -83,10 +80,7 @@ public class CircuitAssemblerRecipes implements Runnable {
             .addTo(circuitAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Circuit_Board_Phenolic_Good.get(1),
-                GTOreDictUnificator.get("circuitGood", 1),
-                ItemList.Sensor_LV.get(1))
+            .itemInputs(ItemList.Circuit_Board_Phenolic_Good.get(1), Circuits.MV.get(1), ItemList.Sensor_LV.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 1))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
             .duration(20 * SECONDS)
@@ -96,7 +90,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Phenolic_Good.get(1),
-                GTOreDictUnificator.get("circuitGood", 1),
+                Circuits.MV.get(1),
                 getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 2))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -107,7 +101,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Epoxy_Advanced.get(1),
-                GTOreDictUnificator.get("circuitAdvanced", 1),
+                Circuits.HV.get(1),
                 ItemList.Cover_Controller.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 0))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -116,10 +110,7 @@ public class CircuitAssemblerRecipes implements Runnable {
             .addTo(circuitAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Circuit_Board_Epoxy_Advanced.get(1),
-                GTOreDictUnificator.get("circuitAdvanced", 1),
-                ItemList.Sensor_LV.get(1))
+            .itemInputs(ItemList.Circuit_Board_Epoxy_Advanced.get(1), Circuits.HV.get(1), ItemList.Sensor_LV.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 1))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
             .duration(25 * SECONDS)
@@ -129,7 +120,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Epoxy_Advanced.get(1),
-                GTOreDictUnificator.get("circuitAdvanced", 1),
+                Circuits.HV.get(1),
                 getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 2))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -203,7 +194,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Coated_Basic.get(1),
-                GTOreDictUnificator.get("circuitPrimitive", 2),
+                Circuits.ULV.get(2),
                 MaterialLibAPI.getStack(Materials.Iron, Shapes.foil, 2),
                 MaterialLibAPI.getStack(Materials.Iron, Shapes.screw, 4),
                 MaterialLibAPI.getStack(Materials.Iron, Shapes.wireFine, 1))
@@ -217,7 +208,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Coated_Basic.get(1),
-                GTOreDictUnificator.get("circuitBasic", 2),
+                Circuits.LV.get(2),
                 MaterialLibAPI.getStack(Materials.Bronze, Shapes.foil, 2),
                 MaterialLibAPI.getStack(Materials.Bronze, Shapes.screw, 4),
                 MaterialLibAPI.getStack(Materials.Bronze, Shapes.wireFine, 1))
@@ -231,7 +222,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Phenolic_Good.get(1),
-                GTOreDictUnificator.get("circuitGood", 2),
+                Circuits.MV.get(2),
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.foil, 2),
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 4),
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.wireFine, 1))
@@ -245,7 +236,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Phenolic_Good.get(1),
-                GTOreDictUnificator.get("circuitAdvanced", 2),
+                Circuits.HV.get(2),
                 MaterialLibAPI.getStack(Materials.Electrum, Shapes.foil, 2),
                 MaterialLibAPI.getStack(Materials.Electrum, Shapes.screw, 4),
                 MaterialLibAPI.getStack(Materials.Electrum, Shapes.wireFine, 1))

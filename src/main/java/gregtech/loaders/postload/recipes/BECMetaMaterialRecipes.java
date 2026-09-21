@@ -9,17 +9,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import tectech.recipe.TecTechRecipeMaps;
 
 /// BEC Meta Material recipes
@@ -82,9 +83,9 @@ public class BECMetaMaterialRecipes implements Runnable {
             ItemStack[] inputs = {
                 GTModHandler
                     .getModItem(NewHorizonsCoreMod.ID, "IrradiantReinforcedBedrockiumPlate", baseAmounts[t + 1]),
-                GTOreDictUnificator.get(OrePrefixes.foil, other3Tier[t], 4), platePart(black3Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.screw, gray3Tier[t], 8),
-                GTOreDictUnificator.get(OrePrefixes.bolt, white3Tier[t], 8) };
+                MaterialLibAPI.getStack(other3Tier[t], Shapes.foil, 4), platePart(black3Tier[t], 1),
+                MaterialLibAPI.getStack(gray3Tier[t], Shapes.screw, 8),
+                MaterialLibAPI.getStack(white3Tier[t], Shapes.bolt, 8) };
             NaniteTier[] nanites = { nanite(4 + 2 * t), nanite(1 + 2 * t), nanite(1 + 2 * t), nanite(3 + 2 * t),
                 nanite(1 + 2 * t) };
 
@@ -105,8 +106,8 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 3; t++) {
             ItemStack[] inputs = { coils[t].get(1L), longRodPart(other3Tier[t], 1), fineWirePart(black3Tier[t], 8),
-                GTOreDictUnificator.get(OrePrefixes.foil, gray3Tier[t], 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, white3Tier[t], 8) };
+                MaterialLibAPI.getStack(gray3Tier[t], Shapes.foil, 4),
+                MaterialLibAPI.getStack(white3Tier[t], Shapes.screw, 8) };
             NaniteTier[] nanites = { nanite(4 + 2 * t), nanite(1 + 2 * t), nanite(1 + 2 * t), nanite(3 + 2 * t),
                 nanite(1 + 2 * t) };
             final CondensateType[] becCondensates;
@@ -127,16 +128,17 @@ public class BECMetaMaterialRecipes implements Runnable {
         // 3-tier UIV/UMV/UXV 300s. Nanites: T4 T1 T1 T3 T1, +2 per tier
         ItemList[] outputs = { ItemList.MetaMaterial_EnergyConduit1, ItemList.MetaMaterial_EnergyConduit2,
             ItemList.MetaMaterial_EnergyConduit3 };
-        ItemStack[] superconductors = { GTOreDictUnificator.get("wireGt04SuperconductorUIV", 1),
-            GTOreDictUnificator.get("wireGt04SuperconductorUMV", 1), ItemList.Thermal_Superconductor.get(1) };
+        ItemStack[] superconductors = { MaterialLibAPI.getStack(Materials.SuperconductorUIV, TEBlockShapes.wireGt04, 1),
+            MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt04, 1),
+            ItemList.Thermal_Superconductor.get(1) };
         int[] chromaticAmts = { 4, 8, 16 };
         int[] transcendentMetalAmts = { 0, 2, 4 };
         long[] euts = { TierEU.RECIPE_UIV, TierEU.RECIPE_UMV, TierEU.RECIPE_UXV };
 
         for (int t = 0; t < 3; t++) {
             ItemStack[] inputs = { superconductors[t], rodPart(other3Tier[t], 2), foilPart(black3Tier[t], 4),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, gray3Tier[t], 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, white3Tier[t], 8) };
+                MaterialLibAPI.getStack(gray3Tier[t], Shapes.itemCasing, 2),
+                MaterialLibAPI.getStack(white3Tier[t], Shapes.screw, 8) };
             NaniteTier[] nanites = { nanite(4 + 2 * t), nanite(1 + 2 * t), nanite(1 + 2 * t), nanite(3 + 2 * t),
                 nanite(1 + 2 * t) };
             final CondensateType[] becCondensates;
@@ -163,9 +165,9 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 3; t++) {
             ItemStack[] inputs = { GTModHandler.getModItem(Railcraft.ID, "machine.eta", baseAmounts[t + 1], 8),
-                GTOreDictUnificator.get(OrePrefixes.ring, other3Tier[t], 2), foilPart(black3Tier[t], 4),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, gray3Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.screw, white3Tier[t], 8) };
+                MaterialLibAPI.getStack(other3Tier[t], Shapes.ring, 2), foilPart(black3Tier[t], 4),
+                MaterialLibAPI.getStack(gray3Tier[t], Shapes.gearGtSmall, 1),
+                MaterialLibAPI.getStack(white3Tier[t], Shapes.screw, 8) };
             NaniteTier[] nanites = { nanite(4 + 2 * t), nanite(1 + 2 * t), nanite(1 + 2 * t), nanite(3 + 2 * t),
                 nanite(1 + 2 * t) };
 
@@ -201,8 +203,8 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 4; t++) {
             ItemStack[] inputs = { ItemList.Gravitational_Lens.get(1), ringPart(black4Tier[t], 2),
-                GTOreDictUnificator.get(OrePrefixes.ring, gray4Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.screw, white4Tier[t], 2) };
+                MaterialLibAPI.getStack(gray4Tier[t], Shapes.ring, 1),
+                MaterialLibAPI.getStack(white4Tier[t], Shapes.screw, 2) };
             reg4Tier(outputs, inputs, euts, t);
         }
     }
@@ -217,7 +219,7 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 4; t++) {
             ItemStack[] inputs = { emitters[t].get(2), rodPart(black4Tier[t], 2), foilPart(gray4Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, white4Tier[t], 1) };
+                MaterialLibAPI.getStack(white4Tier[t], Shapes.plate, 1) };
             reg4Tier(outputs, inputs, euts, t);
         }
     }
@@ -231,8 +233,8 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 4; t++) {
             ItemStack[] inputs = { sensors[t].get(2), platePart(black4Tier[t], 2),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, gray4Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.bolt, white4Tier[t], 16) };
+                MaterialLibAPI.getStack(gray4Tier[t], Shapes.itemCasing, 1),
+                MaterialLibAPI.getStack(white4Tier[t], Shapes.bolt, 16) };
             reg4Tier(outputs, inputs, euts, t);
         }
     }
@@ -247,8 +249,8 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 4; t++) {
             ItemStack[] inputs = { fieldGens[t].get(1), longRodPart(black4Tier[t], 2),
-                GTOreDictUnificator.get(OrePrefixes.ring, gray4Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, white4Tier[t], 2) };
+                MaterialLibAPI.getStack(gray4Tier[t], Shapes.ring, 1),
+                MaterialLibAPI.getStack(white4Tier[t], Shapes.plateDouble, 2) };
             reg4Tier(outputs, inputs, euts, t);
         }
     }
@@ -282,26 +284,26 @@ public class BECMetaMaterialRecipes implements Runnable {
     }
 
     private static ItemStack platePart(Material material, int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.plate, material, amount);
+        return MaterialLibAPI.getStack(material, Shapes.plate, amount);
     }
 
     private static ItemStack foilPart(Material material, int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.foil, material, amount);
+        return MaterialLibAPI.getStack(material, Shapes.foil, amount);
     }
 
     private static ItemStack fineWirePart(Material material, int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.wireFine, material, amount);
+        return MaterialLibAPI.getStack(material, Shapes.wireFine, amount);
     }
 
     private static ItemStack ringPart(Material material, int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.ring, material, amount);
+        return MaterialLibAPI.getStack(material, Shapes.ring, amount);
     }
 
     private static ItemStack rodPart(Material material, int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.stick, material, amount);
+        return MaterialLibAPI.getStack(material, Shapes.stick, amount);
     }
 
     private static ItemStack longRodPart(Material material, int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.stickLong, material, amount);
+        return MaterialLibAPI.getStack(material, Shapes.stickLong, amount);
     }
 }

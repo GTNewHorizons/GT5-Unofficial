@@ -16,7 +16,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
@@ -24,7 +23,7 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ArtificialMicaLine {
@@ -42,9 +41,7 @@ public class ArtificialMicaLine {
 
         // Si + 6HF = H2SiF6 + 4H
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1), GTUtility.getEmptyCell(4))
             .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 4))
             .fluidInputs(MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, 6_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HexafluorosilicicAcid, FluidShapes.fluidLiquid, 1_000))
@@ -79,7 +76,7 @@ public class ArtificialMicaLine {
                 MaterialParts.requireCell(Materials.CarbonDioxide, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 6),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -92,7 +89,7 @@ public class ArtificialMicaLine {
                 MaterialParts.requireCell(Materials.CarbonDioxide, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 6),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
+                GTUtility.getEmptyCell(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

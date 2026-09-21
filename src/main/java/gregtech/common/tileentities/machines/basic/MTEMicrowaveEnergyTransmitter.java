@@ -23,7 +23,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -172,8 +172,8 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
         for (byte i = -5; i <= 5; i = (byte) (i + 1)) {
             for (byte j = -5; j <= 5; j = (byte) (j + 1)) {
                 for (byte k = -5; k <= 5; k = (byte) (k + 1)) {
-                    if (getBaseMetaTileEntity().getBlockOffset(i, j, k) == GregTechAPI.sBlockMetal5
-                        && getBaseMetaTileEntity().getMetaIDOffset(i, j, k) == 8) { // require osmiridium block
+                    if (getBaseMetaTileEntity().getBlockOffset(i, j, k) == MaterialLibAPI.getBlock(BlockShapes.block)
+                        && getBaseMetaTileEntity().getMetaIDOffset(i, j, k) == Materials.Osmiridium.getIndex()) {
                         return true;
                     }
                 }

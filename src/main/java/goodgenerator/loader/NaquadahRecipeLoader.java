@@ -34,15 +34,14 @@ import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -421,7 +420,7 @@ public class NaquadahRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.LowQualityNaquadriaSulphate, Shapes.dust, 3),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 3))
+                MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 500))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.LowQualityNaquadriaSulphate, FluidShapes.fluidLiquid, 3_500))
@@ -519,7 +518,7 @@ public class NaquadahRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.SiliconSolarGrade, 16),
+                MaterialLibAPI.getStack(Materials.SiliconSolarGrade, BlockShapes.block, 16),
                 MaterialLibAPI.getStack(Materials.Naquadahine, Shapes.dust, 3),
                 ItemList.GalliumArsenideCrystal.get(1L))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot3.get(1))

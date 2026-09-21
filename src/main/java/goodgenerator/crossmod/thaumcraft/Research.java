@@ -19,12 +19,12 @@ import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import ic2.core.Ic2Items;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -123,13 +123,13 @@ public class Research {
                     'D',
                     new ItemStack(GregTechAPI.sBlockCasings3, 1, 11),
                     'E',
-                    GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.NetherStar, 1),
+                    MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.pipeSmall, 1),
                     'F',
                     thauminiteBlock),
                 GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     "ESSENTIA_SMELTERY",
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Thaumium, 1),
-                    new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 1),
+                    MaterialLibAPI.getStack(Materials.Thaumium, TEBlockShapes.frameGt, 1),
+                    new ItemStack[] { MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.pipeTiny, 1),
                         MaterialLibAPI.getStack(Materials.ElectricalSteel, Shapes.plate, 1),
                         MaterialLibAPI.getStack(Materials.ElectricalSteel, Shapes.plate, 1),
                         ItemList.Electric_Pump_EV.get(1L), new ItemStack(ConfigBlocks.blockTube, 1, 4),
@@ -209,7 +209,7 @@ public class Research {
                     new ItemStack[] { MaterialLibAPI.getStack(Materials.Europium, Shapes.ring, 1),
                         ItemList.Emitter_LuV.get(1L), new ItemStack(ItemRegistry.bw_realglas, 1, 4),
                         MaterialLibAPI.getStack(Materials.StellarAlloy, Shapes.plate, 1),
-                        GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Helium, 1),
+                        MaterialLibAPI.getStack(Materials.Helium, CellShapes.cellPlasmaLight, 1),
                         new ItemStack(ConfigItems.itemShard, 1, 6), },
                     ItemRefer.Essentia_Cell_T4.get(1),
                     10,

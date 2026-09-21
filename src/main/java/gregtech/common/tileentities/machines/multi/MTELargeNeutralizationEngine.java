@@ -49,7 +49,6 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
@@ -69,7 +68,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -114,12 +112,12 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private final static ItemStack FRANCIUM_HYDROXIDE_DUST = MaterialLibAPI
         .getStack(Materials.FranciumHydroxide, Shapes.dust, 1);
-    private final static ItemStack CAESIUM_HYDROXIDE_DUST = GTOreDictUnificator
-        .get(OrePrefixes.dust, Materials.CaesiumHydroxideGT5U, 1);
-    private final static ItemStack POTASSIUM_HYDROXIDE_DUST = GTOreDictUnificator
-        .get(OrePrefixes.dust, Materials.PotassiumHydroxideGT5U, 1);
-    private final static ItemStack SODIUM_HYDROXIDE_DUST = GTOreDictUnificator
-        .get(OrePrefixes.dust, Materials.SodiumHydroxideGT5U, 1);
+    private final static ItemStack CAESIUM_HYDROXIDE_DUST = MaterialLibAPI
+        .getStack(Materials.CaesiumHydroxideGT5U, Shapes.dust, 1);
+    private final static ItemStack POTASSIUM_HYDROXIDE_DUST = MaterialLibAPI
+        .getStack(Materials.PotassiumHydroxideGT5U, Shapes.dust, 1);
+    private final static ItemStack SODIUM_HYDROXIDE_DUST = MaterialLibAPI
+        .getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1);
 
     private final ArrayList<MTEToxicResidueSensor> sensorHatches = new ArrayList<>();
 

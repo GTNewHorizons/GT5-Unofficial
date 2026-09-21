@@ -13,13 +13,12 @@ import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -33,7 +32,7 @@ public class AssemblyLine implements Runnable {
             .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.OreDrill4.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 4L),
+                MaterialLibAPI.getStack(Materials.Netherite, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.plate, 3),
                 ItemList.Electric_Motor_LuV.get(9L),
                 ItemList.Sensor_LuV.get(9L),

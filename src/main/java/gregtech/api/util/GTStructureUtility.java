@@ -201,6 +201,12 @@ public class GTStructureUtility {
         return allFilled;
     }
 
+    /// The storage block structure element, matching the `block` [gregtech.common.blocks.GTStorageShapeBlock] at
+    /// the target material's index.
+    public static <T> IStructureElement<T> ofStorageBlock(Material material) {
+        return ofMaterialBlock(material, BlockShapes.block, OrePrefixes.block, "block");
+    }
+
     /// The sheetmetal structure element, matching the `sheetmetal` [gregtech.common.blocks.SheetmetalShapeBlock]
     /// at the target material's index.
     public static <T> IStructureElement<T> ofSheetMetal(Material material) {

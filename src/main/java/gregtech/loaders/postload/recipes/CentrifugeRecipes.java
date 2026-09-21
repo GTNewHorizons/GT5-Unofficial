@@ -25,7 +25,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
@@ -34,8 +34,8 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ores.GTOreAdapter;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -562,7 +562,7 @@ public class CentrifugeRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Magnesia, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 4),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.nugget, 4),
                 MaterialLibAPI.getStack(Materials.Sapphire, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Tantalite, Shapes.dust, 1))
             .outputChances(5000, 1000, 1000, 250, 1250, 500)
@@ -577,7 +577,7 @@ public class CentrifugeRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 5),
                 MaterialLibAPI.getStack(Materials.Magnesia, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.ingot, 1),
                 MaterialLibAPI.getStack(Materials.Sapphire, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.Tantalite, Shapes.dust, 1))
             .outputChances(9000, 9000, 9000, 1000, 3750, 4500)
@@ -879,7 +879,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.EnderEye, Shapes.dust, 1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
+                MaterialLibAPI.getStack(Materials.Blaze, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.EnderPearl, Shapes.dust, 1))
             .duration(32 * SECONDS + 4 * TICKS)
             .eut(10)
@@ -916,7 +916,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
+                MaterialLibAPI.getStack(Materials.Blaze, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1))
             .duration(43 * SECONDS + 16 * TICKS)
             .eut(20)
@@ -935,7 +935,10 @@ public class CentrifugeRecipes implements Runnable {
 
         // From ProcessingSand
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Oilsands, 2), ItemList.Cell_Empty.get(1))
+            .itemInputs(
+                GTUtility
+                    .copyAmount(2, GTOreAdapter.INSTANCE.getVariantStack(Materials.Oilsands, StoneType.Stone, false)),
+                ItemList.Cell_Empty.get(1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Oil, CellShapes.cell, 1), new ItemStack(Blocks.sand, 1, 0))
             .duration(50 * SECONDS)
             .eut(5)

@@ -11,10 +11,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class BookAndLootLoader implements Runnable {
 
@@ -84,7 +82,7 @@ public class BookAndLootLoader implements Runnable {
                 10));
         ChestGenHooks.addItem(
             "dungeonChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L), 1, 6, 20));
+            new WeightedRandomChestContent(MaterialLibAPI.getStack(Materials.Emerald, Shapes.gem, 1), 1, 6, 20));
         ChestGenHooks.addItem(
             "dungeonChest",
             new WeightedRandomChestContent(MaterialLibAPI.getStack(Materials.Ruby, Shapes.gem, 1), 1, 6, 20));
@@ -202,7 +200,7 @@ public class BookAndLootLoader implements Runnable {
             new WeightedRandomChestContent(MaterialLibAPI.getStack(Materials.Ruby, Shapes.gem, 1), 1, 4, 2));
         ChestGenHooks.addItem(
             "mineshaftCorridor",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L), 1, 4, 2));
+            new WeightedRandomChestContent(MaterialLibAPI.getStack(Materials.Emerald, Shapes.gem, 1), 1, 4, 2));
 
         ChestGenHooks
             .addItem("villageBlacksmith", new WeightedRandomChestContent(ItemList.McGuffium_239.get(1L), 1, 1, 1));

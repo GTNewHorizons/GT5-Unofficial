@@ -15,12 +15,14 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.ores.GTOreAdapter;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class TFGregtechRecipes {
@@ -33,7 +35,7 @@ public class TFGregtechRecipes {
 
         // Gelid Cryotheum
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L))
+            .itemInputs(GTOreAdapter.INSTANCE.getVariantStack(Materials.Cinnabar, StoneType.Stone, false))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Cinnabar, Shapes.dust, 3))
             .fluidInputs(new FluidStack(TFFluids.fluidCryotheum, 1 * INGOTS))
             .duration(20 * SECONDS)
@@ -62,7 +64,7 @@ public class TFGregtechRecipes {
                 MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1L))
+                MaterialLibAPI.getStack(Materials.Blaze, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, 1))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)

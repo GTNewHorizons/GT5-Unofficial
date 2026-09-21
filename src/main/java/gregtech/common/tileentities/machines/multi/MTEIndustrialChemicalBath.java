@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -14,6 +13,7 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofStorageBlock;
 
 import java.util.List;
 
@@ -30,7 +30,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -71,8 +70,8 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addElement('A', ofFrame(Materials.WatertightSteel))
         .addElement('B', Casings.ChemicallyInertMachineCasing.asElement())
-        .addElement('C', ofBlock(GregTechAPI.sBlockMetal2, 7))
-        .addElement('D', ofBlock(GregTechAPI.sBlockMetal8, 6))
+        .addElement('C', ofStorageBlock(Materials.Copper))
+        .addElement('D', ofStorageBlock(Materials.Zinc))
         .addElement(
             'E',
             buildHatchAdder(MTEIndustrialChemicalBath.class)

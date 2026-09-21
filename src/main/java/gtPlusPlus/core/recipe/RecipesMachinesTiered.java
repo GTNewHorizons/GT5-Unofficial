@@ -21,9 +21,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
 
@@ -183,7 +183,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 ItemList.Hull_LV.get(1),
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Tin, 2),
+                MaterialLibAPI.getStack(Materials.Tin, TEBlockShapes.cableGt04, 2),
                 Circuits.LV.get(2),
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.bolt, 12))
@@ -198,7 +198,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_ULV.get(1),
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Cobalt, 2),
+                MaterialLibAPI.getStack(Materials.Cobalt, TEBlockShapes.cableGt04, 2),
                 Circuits.MV.get(2),
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials.Aluminium, Shapes.bolt, 12))
@@ -213,7 +213,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_LV.get(1),
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.AnnealedCopper, 2),
+                MaterialLibAPI.getStack(Materials.AnnealedCopper, TEBlockShapes.cableGt04, 2),
                 Circuits.HV.get(2),
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials.BlackMetal, Shapes.bolt, 12))
@@ -228,7 +228,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_MV.get(1),
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Gold, 2),
+                MaterialLibAPI.getStack(Materials.Gold, TEBlockShapes.cableGt04, 2),
                 Circuits.EV.get(2),
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials.Titanium, Shapes.bolt, 12))
@@ -243,7 +243,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_HV.get(1),
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Titanium, 2),
+                MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.cableGt04, 2),
                 Circuits.IV.get(2),
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.bolt, 12))
@@ -258,7 +258,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_EV.get(1),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Nichrome, 2),
+                MaterialLibAPI.getStack(Materials.Nichrome, TEBlockShapes.cableGt04, 2),
                 Circuits.LuV.get(2),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials.EnergyCrystal, Shapes.bolt, 12))
@@ -273,7 +273,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_IV.get(1),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Platinum, 2),
+                MaterialLibAPI.getStack(Materials.Platinum, TEBlockShapes.cableGt04, 2),
                 Circuits.ZPM.get(2),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials.TriniumNaquadahCarbonite, Shapes.bolt, 12))
@@ -288,7 +288,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_LuV.get(1),
                 MaterialLibAPI.getStack(Materials.AdvancedNitinol, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.YttriumBariumCuprate, 2),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.cableGt04, 2),
                 Circuits.UV.get(2),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials.ArceusAlloy2B, Shapes.bolt, 12))
@@ -303,7 +303,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_ZPM.get(1),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Naquadah, 2),
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt04, 2),
                 Circuits.UHV.get(2),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.bolt, 12))
@@ -318,7 +318,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_UV.get(1),
                 MaterialLibAPI.getStack(Materials.Quantum, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Duranium, 2),
+                MaterialLibAPI.getStack(Materials.Duranium, TEBlockShapes.cableGt04, 2),
                 Circuits.UEV.get(2),
                 MaterialLibAPI.getStack(Materials.Quantum, Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials.AstralTitanium, Shapes.bolt, 12))
@@ -335,7 +335,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_ULV.get(4),
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Tin, 4),
+                MaterialLibAPI.getStack(Materials.Tin, TEBlockShapes.wireGt08, 4),
                 Circuits.ULV.get(4),
                 MaterialLibAPI.getStack(Materials.SiliconCarbide, Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials.Potin, Shapes.gearGt, 5))
@@ -350,7 +350,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_LV.get(4),
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Cobalt, 4),
+                MaterialLibAPI.getStack(Materials.Cobalt, TEBlockShapes.wireGt08, 4),
                 Circuits.LV.get(4),
                 MaterialLibAPI.getStack(Materials.BloodSteel, Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.gearGt, 5))
@@ -365,7 +365,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_MV.get(4),
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.AnnealedCopper, 4),
+                MaterialLibAPI.getStack(Materials.AnnealedCopper, TEBlockShapes.wireGt08, 4),
                 Circuits.MV.get(4),
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.gearGt, 5))
@@ -380,7 +380,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_HV.get(4),
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Gold, 4),
+                MaterialLibAPI.getStack(Materials.Gold, TEBlockShapes.wireGt08, 4),
                 Circuits.HV.get(4),
                 MaterialLibAPI.getStack(Materials.Inconel792, Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.gearGt, 5))
@@ -395,7 +395,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_EV.get(4),
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Titanium, 4),
+                MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.wireGt08, 4),
                 Circuits.EV.get(4),
                 MaterialLibAPI.getStack(Materials.Arcanite, Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.gearGt, 5))
@@ -410,7 +410,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_IV.get(4),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Nichrome, 4),
+                MaterialLibAPI.getStack(Materials.Nichrome, TEBlockShapes.wireGt08, 4),
                 Circuits.IV.get(4),
                 MaterialLibAPI.getStack(Materials.LafiumCompound, Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.gearGt, 5))
@@ -425,7 +425,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_LuV.get(4),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Platinum, 4),
+                MaterialLibAPI.getStack(Materials.Platinum, TEBlockShapes.wireGt08, 4),
                 Circuits.LuV.get(4),
                 MaterialLibAPI.getStack(Materials.CinobiteA243, Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.gearGt, 5))
@@ -440,7 +440,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_ZPM.get(4),
                 MaterialLibAPI.getStack(Materials.AdvancedNitinol, Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.YttriumBariumCuprate, 4),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.wireGt08, 4),
                 Circuits.ZPM.get(4),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.gearGt, 5))
@@ -455,7 +455,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_UV.get(4),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 4),
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.wireGt08, 4),
                 Circuits.UV.get(4),
                 MaterialLibAPI.getStack(Materials.Octiron, Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.gearGt, 5))
@@ -470,7 +470,7 @@ public class RecipesMachinesTiered {
             .itemInputs(
                 GregtechItemList.Energy_Core_UHV.get(4),
                 MaterialLibAPI.getStack(Materials.Quantum, Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Duranium, 4),
+                MaterialLibAPI.getStack(Materials.Duranium, TEBlockShapes.wireGt08, 4),
                 Circuits.UHV.get(4),
                 MaterialLibAPI.getStack(Materials.CelestialTungsten, Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.gearGt, 5))
@@ -488,7 +488,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_ULV.get(1),
                 MaterialLibAPI.getStack(Materials.Potin, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Potin, Shapes.gearGt, 2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Tin, 4),
+                MaterialLibAPI.getStack(Materials.Tin, TEBlockShapes.cableGt02, 4),
                 Circuits.ULV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_ULV.get(1))
@@ -503,7 +503,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_LV.get(1),
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.gearGt, 2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Cobalt, 4),
+                MaterialLibAPI.getStack(Materials.Cobalt, TEBlockShapes.cableGt02, 4),
                 Circuits.LV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_LV.get(1))
@@ -518,7 +518,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_MV.get(1),
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.gearGt, 2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.AnnealedCopper, 4),
+                MaterialLibAPI.getStack(Materials.AnnealedCopper, TEBlockShapes.cableGt02, 4),
                 Circuits.MV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_MV.get(1))
@@ -533,7 +533,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_HV.get(1),
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.gearGt, 2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 4),
+                MaterialLibAPI.getStack(Materials.Gold, TEBlockShapes.cableGt02, 4),
                 Circuits.HV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_HV.get(1))
@@ -548,7 +548,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_EV.get(1),
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.gearGt, 2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Titanium, 4),
+                MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.cableGt02, 4),
                 Circuits.EV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_EV.get(1))
@@ -563,7 +563,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_IV.get(1),
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.gearGt, 2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Nichrome, 4),
+                MaterialLibAPI.getStack(Materials.Nichrome, TEBlockShapes.cableGt02, 4),
                 Circuits.IV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_IV.get(1))
@@ -578,7 +578,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_LuV.get(1),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.gearGt, 2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Platinum, 4),
+                MaterialLibAPI.getStack(Materials.Platinum, TEBlockShapes.cableGt02, 4),
                 Circuits.LuV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_LuV.get(1))
@@ -593,7 +593,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_ZPM.get(1),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.gearGt, 2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.YttriumBariumCuprate, 4),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.cableGt02, 4),
                 Circuits.ZPM.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_ZPM.get(1))
@@ -608,7 +608,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_UV.get(1),
                 MaterialLibAPI.getStack(Materials.AdvancedNitinol, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.gearGt, 2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4),
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt02, 4),
                 Circuits.UV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_UV.get(1))
@@ -623,7 +623,7 @@ public class RecipesMachinesTiered {
                 ItemList.Casing_MAX.get(1),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.gearGt, 2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Duranium, 4),
+                MaterialLibAPI.getStack(Materials.Duranium, TEBlockShapes.cableGt02, 4),
                 Circuits.UHV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_UHV.get(1))
@@ -1070,7 +1070,7 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_LV.get(1),
                 ItemList.Electric_Motor_LV.get(2),
                 ItemList.Electric_Piston_LV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 1L),
+                MaterialLibAPI.getStack(Materials.Tin, TEBlockShapes.cableGt01, 1),
                 Circuits.LV.get(1),
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.gearGt, 2))
             .circuit(14)
@@ -1094,7 +1094,7 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_MV.get(1),
                 ItemList.Electric_Motor_MV.get(2),
                 ItemList.Electric_Piston_MV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.AnnealedCopper, 1L),
+                MaterialLibAPI.getStack(Materials.AnnealedCopper, TEBlockShapes.cableGt01, 1),
                 Circuits.MV.get(1),
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.gearGt, 2))
             .circuit(14)
@@ -1118,7 +1118,7 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_HV.get(1),
                 ItemList.Electric_Motor_HV.get(2),
                 ItemList.Electric_Piston_HV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 1L),
+                MaterialLibAPI.getStack(Materials.Gold, TEBlockShapes.cableGt01, 1),
                 Circuits.HV.get(1),
                 MaterialLibAPI.getStack(Materials.Chrome, Shapes.gearGt, 2))
             .circuit(14)
@@ -1142,7 +1142,7 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_EV.get(1),
                 ItemList.Electric_Motor_EV.get(2),
                 ItemList.Electric_Piston_EV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Titanium, 1L),
+                MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.cableGt01, 1),
                 Circuits.EV.get(1),
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.gearGt, 2))
             .circuit(14)
@@ -1166,7 +1166,7 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_IV.get(1),
                 ItemList.Electric_Motor_IV.get(2),
                 ItemList.Electric_Piston_IV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 1L),
+                MaterialLibAPI.getStack(Materials.Tungsten, TEBlockShapes.cableGt01, 1),
                 Circuits.IV.get(1),
                 MaterialLibAPI.getStack(Materials.Nitinol60, Shapes.gearGt, 2))
             .circuit(14)

@@ -12,8 +12,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import kekztech.common.Blocks;
 import kekztech.common.TileEntities;
 import kekztech.util.Util;
@@ -33,9 +33,9 @@ public class Crafting implements Runnable {
         // SOFC Controller mk1
         final Object[] mk1_recipe = { "CCC", "PHP", "FBL", 'C', Circuits.HV.getIngredient(), 'P',
             ItemList.Electric_Pump_HV.get(1L), 'H', ItemList.Hull_HV.get(1L), 'F',
-            GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.StainlessSteel, 1), 'B',
-            GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 1), 'L',
-            GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1) };
+            MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.pipeSmall, 1), 'B',
+            MaterialLibAPI.getStack(Materials.Gold, TEBlockShapes.cableGt02, 1), 'L',
+            MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.pipeLarge, 1) };
         GTModHandler.addCraftingRecipe(TileEntities.sofc1.getStackForm(1), mk1_recipe);
 
         // SOFC Controller mk2

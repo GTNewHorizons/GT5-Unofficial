@@ -2,6 +2,7 @@ package gregtech.loaders.postload;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.BuildCraftCore;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
@@ -23,6 +24,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -1072,28 +1074,28 @@ public class CraftingRecipeLoader implements Runnable {
             ItemList.Long_Distance_Pipeline_Fluid.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "GPG", "IwI", "GPG", 'G', GTOreDictUnificator.get("gearSteel", 1L), 'P',
+            new Object[] { "GPG", "IwI", "GPG", 'G', MaterialLibAPI.getStack(Materials.Steel, Shapes.gearGt, 1), 'P',
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 1), 'I',
-                GTOreDictUnificator.get("pipeHugeSteel", 1L) });
+                MaterialLibAPI.getStack(Materials.Steel, TEBlockShapes.pipeHuge, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Long_Distance_Pipeline_Item.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "GPG", "IwI", "GPG", 'G', GTOreDictUnificator.get("gearSteel", 1L), 'P',
+            new Object[] { "GPG", "IwI", "GPG", 'G', MaterialLibAPI.getStack(Materials.Steel, Shapes.gearGt, 1), 'P',
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 1), 'I',
-                GTOreDictUnificator.get("pipeHugeTin", 1L) });
+                MaterialLibAPI.getStack(Materials.Tin, TEBlockShapes.itemPipeHuge, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(32L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PPP", "IwI", "PPP", 'P', MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 1), 'I',
-                GTOreDictUnificator.get("pipeLargeSteel", 1L) });
+                MaterialLibAPI.getStack(Materials.Steel, TEBlockShapes.pipeLarge, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Long_Distance_Pipeline_Item_Pipe.get(32L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PPP", "IwI", "PPP", 'P', MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 1), 'I',
-                GTOreDictUnificator.get("pipeLargeTin", 1L) });
+                MaterialLibAPI.getStack(Materials.Tin, TEBlockShapes.itemPipeLarge, 1) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.IC2_Mixed_Metal_Ingot.get(22L),
@@ -1302,7 +1304,7 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "dustRedstone", "dustSilicon", "dustCoal" });
         GTModHandler.addShapelessCraftingRecipe(
-            GTOreDictUnificator.get("dustCrudeSteel", 2L),
+            MaterialLibAPI.getStack(Materials.CrudeSteel, Shapes.dust, 2),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "dustClay", "dustFlint", "dustStone" });
         GTModHandler.addShapelessCraftingRecipe(
@@ -1663,17 +1665,17 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { "dBS", "BTB", "SBw", 'B', GTModHandler.getIC2Item("woodrotorblade", 1), 'S', "screwCastIron",
                 'T', "stickLongCastIron" });
 
-        if (GTOreDictUnificator.get("gearDiamond", 1L) != null) {
+        if (BuildCraftCore.isModLoaded()) {
             tStack = GTModHandler.getRecipeOutput(
-                GTOreDictUnificator.get("gearIron", 1L),
+                getModItem(BuildCraftCore.ID, "ironGearItem", 1L),
                 new ItemStack(Items.redstone, 1),
-                GTOreDictUnificator.get("gearIron", 1L),
-                GTOreDictUnificator.get("gearGold", 1L),
-                GTOreDictUnificator.get("gearIron", 1L),
-                GTOreDictUnificator.get("gearGold", 1L),
-                GTOreDictUnificator.get("gearDiamond", 1L),
+                getModItem(BuildCraftCore.ID, "ironGearItem", 1L),
+                getModItem(BuildCraftCore.ID, "goldGearItem", 1L),
+                getModItem(BuildCraftCore.ID, "ironGearItem", 1L),
+                getModItem(BuildCraftCore.ID, "goldGearItem", 1L),
+                getModItem(BuildCraftCore.ID, "diamondGearItem", 1L),
                 new ItemStack(Items.diamond_pickaxe, 1),
-                GTOreDictUnificator.get("gearDiamond", 1L));
+                getModItem(BuildCraftCore.ID, "diamondGearItem", 1L));
             GTModHandler.removeRecipeByOutputDelayed(tStack);
             GTModHandler.addCraftingRecipe(
                 tStack,
@@ -1689,7 +1691,7 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "SSS", " m ", 'S', new ItemStack(Items.reeds) });
         GTModHandler.addCraftingRecipe(
-            GTOreDictUnificator.get("dustSugar", 1),
+            MaterialLibAPI.getStack(Materials.Sugar, Shapes.dust, 1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "Sm ", 'S', new ItemStack(Items.reeds) });
         GTModHandler.addCraftingRecipe(
@@ -1787,8 +1789,8 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.getIC2Item("electronicCircuit", 1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "RIR", "VBV", "CCC", 'R', ItemList.Circuit_Parts_Resistor.get(1), 'C',
-                GTOreDictUnificator.get("cableGt01RedAlloy", 1), 'V', ItemList.Circuit_Parts_Vacuum_Tube.get(1), 'B',
-                ItemList.Circuit_Board_Coated_Basic.get(1), 'I',
+                MaterialLibAPI.getStack(Materials.RedAlloy, TEBlockShapes.cableGt01, 1), 'V',
+                ItemList.Circuit_Parts_Vacuum_Tube.get(1), 'B', ItemList.Circuit_Board_Coated_Basic.get(1), 'I',
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.itemCasing, 1) });
         GTModHandler.addShapelessCraftingRecipe(
             GTModHandler.getIC2Item("electronicCircuit", 1L),

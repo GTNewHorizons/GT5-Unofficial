@@ -62,6 +62,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.WorldgenGTOreLayer;
+import gregtech.common.ores.GTOreAdapter;
 import gtneioreplugin.util.DimensionHelper;
 
 public enum OreMixes {
@@ -1571,7 +1572,7 @@ public enum OreMixes {
         Set<StoneType> stoneTypes = getStoneTypesFromMixes(material);
         for (StoneType stoneType : stoneTypes) {
             OrePrefixes prefix = stoneType.getPrefix();
-            ItemStack ore = GTOreDictUnificator.get(prefix, material, 1L);
+            ItemStack ore = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, false);
             if (!GTUtility.isStackValid(ore)) {
                 continue;
             }
@@ -1601,7 +1602,7 @@ public enum OreMixes {
         Set<StoneType> stoneTypes = getStoneTypesFromMixes(material);
         for (StoneType stoneType : stoneTypes) {
             OrePrefixes prefix = stoneType.getPrefix();
-            ItemStack ore = GTOreDictUnificator.get(prefix, material, 1L);
+            ItemStack ore = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, false);
             if (!GTUtility.isStackValid(ore)) {
                 continue;
             }

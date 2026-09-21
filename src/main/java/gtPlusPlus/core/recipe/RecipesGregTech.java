@@ -64,7 +64,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
@@ -75,7 +74,6 @@ import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
@@ -245,7 +243,7 @@ public class RecipesGregTech {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NetherStar, Shapes.gem, 2))
             .circuit(1)
             .fluidInputs(FluidRegistry.getFluidStack("mobessence", 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.GeneticMutagen, 8_000))
@@ -378,7 +376,7 @@ public class RecipesGregTech {
             .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 16),
-                GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.YttriumBariumCuprate, 32),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.cableGt08, 32),
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.gearGt, 4),
                 GregtechItemList.DehydratorCoilWireEV.get(64))
             .fluidInputs(
@@ -396,7 +394,7 @@ public class RecipesGregTech {
             .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 16),
-                GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Naquadah, 32),
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt08, 32),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.gearGt, 4),
                 GregtechItemList.DehydratorCoilWireIV.get(64))
             .fluidInputs(
@@ -414,7 +412,7 @@ public class RecipesGregTech {
             .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 16),
-                GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Duranium, 32),
+                MaterialLibAPI.getStack(Materials.Duranium, TEBlockShapes.cableGt08, 32),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.gearGt, 4),
                 GregtechItemList.DehydratorCoilWireLuV.get(64))
             .fluidInputs(
@@ -432,7 +430,7 @@ public class RecipesGregTech {
             .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.AdvancedNitinol, Shapes.plate, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.SuperconductorUHV, 32),
+                MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt12, 32),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.gearGt, 4),
                 GregtechItemList.DehydratorCoilWireZPM.get(64))
             .fluidInputs(
@@ -457,7 +455,7 @@ public class RecipesGregTech {
                 ItemList.StableBaryonContainmentUnit.get(16),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 16),
                 Circuits.LuV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.YttriumBariumCuprate, 32),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.wireGt16, 32),
                 MaterialLibAPI.getStack(Materials.TriniumNaquadahCarbonite, Shapes.bolt, 8),
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.screw, 8))
             .fluidInputs(
@@ -479,7 +477,7 @@ public class RecipesGregTech {
                 ItemList.StableLeptonContainmentUnit.get(16),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 16),
                 Circuits.ZPM.get(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 32),
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.wireGt16, 32),
                 MaterialLibAPI.getStack(Materials.ArceusAlloy2B, Shapes.bolt, 8),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.screw, 8))
             .fluidInputs(
@@ -501,7 +499,7 @@ public class RecipesGregTech {
                 ItemList.StableMesonContainmentUnit.get(16),
                 MaterialLibAPI.getStack(Materials.AdvancedNitinol, Shapes.plate, 16),
                 Circuits.UV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Duranium, 32),
+                MaterialLibAPI.getStack(Materials.Duranium, TEBlockShapes.wireGt16, 32),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.bolt, 8),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.screw, 8))
             .fluidInputs(
@@ -523,7 +521,7 @@ public class RecipesGregTech {
                 ItemList.StableBosonContainmentUnit.get(2),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.plate, 16),
                 Circuits.UHV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 32),
+                MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt16, 32),
                 MaterialLibAPI.getStack(Materials.AstralTitanium, Shapes.bolt, 8),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.screw, 8))
             .fluidInputs(
@@ -591,7 +589,7 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Casing_Gem_3.get(4),
                 MaterialLibAPI.getStack(Materials.AdvancedNitinol, Shapes.plate, 32),
                 new Object[] { Circuits.ZPM.getIngredient(), 16 },
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.YttriumBariumCuprate, 16),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.cableGt02, 16),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.gearGt, 6),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.screw, 16),
                 MaterialLibAPI.getStack(Materials.EnergyCrystal, Shapes.bolt, 24),
@@ -619,7 +617,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 8),
                 new Object[] { Circuits.LuV.getIngredient(), 4 },
                 new Object[] { Circuits.IV.getIngredient(), 8 },
-                GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.Nichrome, 16),
+                MaterialLibAPI.getStack(Materials.Nichrome, TEBlockShapes.cableGt12, 16),
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.screw, 16),
                 MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.bolt, 32),
                 ItemList.Field_Generator_IV.get(1))
@@ -643,7 +641,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 8),
                 new Object[] { Circuits.ZPM.getIngredient(), 4 },
                 new Object[] { Circuits.LuV.getIngredient(), 8 },
-                GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.Platinum, 16),
+                MaterialLibAPI.getStack(Materials.Platinum, TEBlockShapes.cableGt12, 16),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.screw, 16),
                 MaterialLibAPI.getStack(Materials.EnergyCrystal, Shapes.bolt, 32),
                 ItemList.Field_Generator_LuV.get(1))
@@ -667,7 +665,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.AdvancedNitinol, Shapes.plate, 8),
                 new Object[] { Circuits.UV.getIngredient(), 4 },
                 new Object[] { Circuits.ZPM.getIngredient(), 8 },
-                GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.YttriumBariumCuprate, 16),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.cableGt12, 16),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.screw, 16),
                 MaterialLibAPI.getStack(Materials.TriniumNaquadahCarbonite, Shapes.bolt, 32),
                 ItemList.Field_Generator_ZPM.get(1))
@@ -690,7 +688,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.plate, 8),
                 new Object[] { Circuits.UHV.getIngredient(), 4 },
                 new Object[] { Circuits.UV.getIngredient(), 8 },
-                GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.Naquadah, 16),
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt12, 16),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.screw, 16),
                 MaterialLibAPI.getStack(Materials.ArceusAlloy2B, Shapes.bolt, 32),
                 ItemList.Field_Generator_UV.get(1))
@@ -725,7 +723,7 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Casing_Gem_4.get(4),
                 MaterialLibAPI.getStack(Materials.AdvancedNitinol, Shapes.plate, 32),
                 new Object[] { Circuits.ZPM.getIngredient(), 16 },
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Naquadah, 16),
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt04, 16),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.gearGt, 6),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.screw, 16),
                 MaterialLibAPI.getStack(Materials.ArceusAlloy2B, Shapes.bolt, 24),
@@ -917,7 +915,7 @@ public class RecipesGregTech {
         // Osmium Credit
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Osmium, 1),
+                MaterialLibAPI.getStack(Materials.Osmium, BlockShapes.block, 1),
                 ItemList.Shape_Mold_Credit.get(0))
             .itemOutputs(ItemList.Credit_Greg_Osmium.get(1))
             .duration(6 * MINUTES + 20 * SECONDS)
@@ -1250,7 +1248,7 @@ public class RecipesGregTech {
         // Alternative Acetic Anhydride recipe for Kevlar Line
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Empty.get(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.AceticAnhydride, 1_000))
             .eut(TierEU.RECIPE_HV)
@@ -1277,7 +1275,7 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Vanadium, Shapes.plate, 32),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.VanadiumSteel, 8))
+                MaterialLibAPI.getStack(Materials.VanadiumSteel, TEBlockShapes.frameGt, 8))
             .itemOutputs(GregtechItemList.HalfCompleteCasing_I.get(4))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 8_000))
             .duration(16 * SECONDS)
@@ -1301,7 +1299,7 @@ public class RecipesGregTech {
                 GTUtility.copyAmount(2, Ic2Items.industrialTnt),
                 new ItemStack(Blocks.tnt, 4),
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 2),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1))
+                MaterialLibAPI.getStack(Materials.Iron, TEBlockShapes.frameGt, 1))
             .itemOutputs(GregtechItemList.MiningExplosives.get(3))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -1310,7 +1308,7 @@ public class RecipesGregTech {
         // Wither Cage
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1),
+                MaterialLibAPI.getStack(Materials.NetherStar, Shapes.gem, 1),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.BlackSteel, Shapes.stick, 8))
             .itemOutputs(GregtechItemList.WitherGuard.get(64))
@@ -1381,7 +1379,7 @@ public class RecipesGregTech {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Aluminium, Shapes.ring, 12),
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Cobalt, 6),
+                MaterialLibAPI.getStack(Materials.Cobalt, TEBlockShapes.wireGt02, 6),
                 Circuits.LV.get(4),
                 ItemList.Battery_RE_LV_Lithium.get(4),
                 ItemList.Sensor_LV.get(4))
@@ -1396,7 +1394,7 @@ public class RecipesGregTech {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.BlackMetal, Shapes.ring, 12),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.AnnealedCopper, 6),
+                MaterialLibAPI.getStack(Materials.AnnealedCopper, TEBlockShapes.wireGt04, 6),
                 Circuits.MV.get(4),
                 ItemList.Battery_RE_MV_Lithium.get(4),
                 ItemList.Sensor_MV.get(4))
@@ -1411,7 +1409,7 @@ public class RecipesGregTech {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Titanium, Shapes.ring, 12),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Gold, 6),
+                MaterialLibAPI.getStack(Materials.Gold, TEBlockShapes.wireGt08, 6),
                 Circuits.HV.get(4),
                 ItemList.Battery_RE_HV_Lithium.get(4),
                 ItemList.Sensor_HV.get(4))
@@ -1426,7 +1424,7 @@ public class RecipesGregTech {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.ring, 12),
-                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Titanium, 6),
+                MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.wireGt12, 6),
                 Circuits.EV.get(4),
                 GregtechItemList.Battery_RE_EV_Lithium.get(4),
                 ItemList.Sensor_EV.get(4))
@@ -1441,7 +1439,7 @@ public class RecipesGregTech {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.EnergyCrystal, Shapes.ring, 12),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Nichrome, 6),
+                MaterialLibAPI.getStack(Materials.Nichrome, TEBlockShapes.wireGt16, 6),
                 Circuits.IV.get(4),
                 ItemList.Energy_LapotronicOrb.get(4),
                 ItemList.Sensor_IV.get(4))
@@ -1519,7 +1517,7 @@ public class RecipesGregTech {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.ingot, 1),
                 MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.ingot, 1),
                 MaterialLibAPI.getStack(Materials.Silver, Shapes.ingot, 1),
                 MaterialLibAPI.getStack(Materials.Tantalum, Shapes.ingot, 1),
                 MaterialLibAPI.getStack(Materials.Tungstate, Shapes.dust, 1),

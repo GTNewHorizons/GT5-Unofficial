@@ -19,6 +19,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -100,7 +101,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Robot_Arm_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
                 new Object[] { Circuits.UV.getIngredient(), 1 },
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 2) },
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt02, 2) },
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Naquadah, Shapes.wireFine, 16) },
                 CustomItemList.DATApipe.get(2))
             .fluidInputs(
@@ -121,7 +122,7 @@ public class AssemblyLine implements Runnable {
                 new Object[] { Circuits.UV.getIngredient(), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8) },
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.SuperconductorUV, TEBlockShapes.wireGt04, 8) },
                 CustomItemList.DATApipe.get(8),
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.plateSuperdense, 2) })
             .fluidInputs(
@@ -144,7 +145,7 @@ public class AssemblyLine implements Runnable {
                 new Object[] { Circuits.UV.getIngredient(), 4 },
                 ItemList.Field_Generator_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4) },
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt02, 4) },
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Naquadah, Shapes.wireFine, 32) },
                 CustomItemList.DATApipe.get(16))
             .fluidInputs(

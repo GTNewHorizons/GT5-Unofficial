@@ -11,15 +11,14 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class BauxiteRefineChain {
@@ -123,13 +122,12 @@ public class BauxiteRefineChain {
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
 
-        OrePrefixes[] washable = new OrePrefixes[] { OrePrefixes.crushed, OrePrefixes.crushedPurified,
-            OrePrefixes.dustImpure, OrePrefixes.dustPure };
+        Shape[] washable = new Shape[] { Shapes.crushed, Shapes.crushedPurified, Shapes.dustImpure, Shapes.dustPure };
 
-        for (OrePrefixes ore : washable) {
+        for (Shape ore : washable) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.Sapphire, 1),
+                    MaterialLibAPI.getStack(Materials.Sapphire, ore, 1),
                     MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dustTiny, 1))
                 .circuit(1)
                 .fluidInputs(
@@ -141,7 +139,7 @@ public class BauxiteRefineChain {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.GreenSapphire, 1),
+                    MaterialLibAPI.getStack(Materials.GreenSapphire, ore, 1),
                     MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dustTiny, 1))
                 .circuit(1)
                 .fluidInputs(
@@ -154,7 +152,7 @@ public class BauxiteRefineChain {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.Ruby, 1),
+                    MaterialLibAPI.getStack(Materials.Ruby, ore, 1),
                     MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dustTiny, 1))
                 .circuit(1)
                 .fluidInputs(
@@ -166,7 +164,7 @@ public class BauxiteRefineChain {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.Sapphire, 9),
+                    MaterialLibAPI.getStack(Materials.Sapphire, ore, 9),
                     MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1))
                 .circuit(9)
                 .fluidInputs(
@@ -178,7 +176,7 @@ public class BauxiteRefineChain {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.GreenSapphire, 9),
+                    MaterialLibAPI.getStack(Materials.GreenSapphire, ore, 9),
                     MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1))
                 .circuit(9)
                 .fluidInputs(
@@ -191,7 +189,7 @@ public class BauxiteRefineChain {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(ore, Materials.Ruby, 9),
+                    MaterialLibAPI.getStack(Materials.Ruby, ore, 9),
                     MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1))
                 .circuit(9)
                 .fluidInputs(

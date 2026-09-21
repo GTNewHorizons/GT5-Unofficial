@@ -23,11 +23,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -370,8 +370,8 @@ public class HTGRLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L),
+                MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.pipeLarge, 1),
+                MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.pipeMedium, 1),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorFoil", 16),
                 MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 4),
                 ItemList.Alumina_Support_Ring.get(2L))
@@ -385,7 +385,7 @@ public class HTGRLoader {
                 ItemList.Beryllium_Shielding_Plate.get(1L),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 6),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.screw, 8),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.frameGt, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, 1152))
             .itemOutputs(ItemList.Casing_Beryllium_Integrated_Reactor.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 30)

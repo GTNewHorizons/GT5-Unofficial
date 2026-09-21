@@ -948,18 +948,24 @@ public final class RecipeMaps {
             GTRecipeTemplate coll = asTemplate(rr.get());
             for (Material coal : new Material[] { Materials.Coal, Materials.Charcoal }) {
                 coll.derive()
-                    .setInputs(aInput1, aInput2, GTOreDictUnificator.get(OrePrefixes.gem, coal, aCoalAmount))
+                    .setInputs(
+                        aInput1,
+                        aInput2,
+                        GTUtility.copyAmount(aCoalAmount, MaterialParts.stack(OrePrefixes.gem, coal, 1)))
                     .setOutputs(
                         aOutput1,
                         aOutput2,
-                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, aDustAmount))
+                        MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, Math.min(64, aDustAmount)))
                     .setOutputChances(coalChances);
                 coll.derive()
-                    .setInputs(aInput1, aInput2, GTOreDictUnificator.get(OrePrefixes.dust, coal, aCoalAmount))
+                    .setInputs(
+                        aInput1,
+                        aInput2,
+                        GTUtility.copyAmount(aCoalAmount, MaterialParts.stack(OrePrefixes.dust, coal, 1)))
                     .setOutputs(
                         aOutput1,
                         aOutput2,
-                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, aDustAmount))
+                        MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, Math.min(64, aDustAmount)))
                     .setOutputChances(coalChances);
             }
             int aDuration = builder.getDuration();
@@ -1021,11 +1027,14 @@ public final class RecipeMaps {
                 aOutput2 = multiplyStack(10, aOutput2);
                 for (Material coal : new Material[] { Materials.Coal, Materials.Charcoal }) {
                     coll.derive()
-                        .setInputs(aInput1, aInput2, GTOreDictUnificator.get(OrePrefixes.block, coal, aCoalAmount))
+                        .setInputs(
+                            aInput1,
+                            aInput2,
+                            GTUtility.copyAmount(aCoalAmount, MaterialParts.stack(OrePrefixes.block, coal, 1)))
                         .setOutputs(
                             aOutput1,
                             aOutput2,
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, aCoalAmount))
+                            MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, Math.min(64, aCoalAmount)))
                         .setDuration(aDuration * 10);
                 }
                 if (Railcraft.isModLoaded()) {

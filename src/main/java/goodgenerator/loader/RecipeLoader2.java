@@ -5,6 +5,7 @@ import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerR
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.GalacticraftMars;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
@@ -48,7 +49,6 @@ import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
@@ -59,7 +59,6 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
@@ -72,9 +71,9 @@ public class RecipeLoader2 {
     public static void RecipeLoad() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueAlloy, 1),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 32),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.pipeLarge, 1),
+                MaterialLibAPI.getStack(Materials.BlueAlloy, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.SuperconductorHV, TEBlockShapes.wireGt01, 32),
                 MaterialLibAPI.getStack(Materials.Beryllium, Shapes.plate, 32),
                 Circuits.IV.get(1))
             .itemOutputs(ItemRefer.Speeding_Pipe.get(1))
@@ -154,16 +153,16 @@ public class RecipeLoader2 {
             ItemRefer.YOTTank_Casing.get(1),
             GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "BPB", "FOF", "BPB", 'B', MaterialLibAPI.getStack(Materials.BlackSteel, Shapes.plate, 1),
-                'P', GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1), 'F',
+                'P', MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.pipeMedium, 1), 'F',
                 MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.plate, 1), 'O',
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1), });
+                MaterialLibAPI.getStack(Materials.BlackSteel, TEBlockShapes.frameGt, 1), });
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.YOTTank.get(1),
             GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SPS", "ECE", "SLS", 'S', MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.screw, 1), 'P',
                 ItemList.Cover_Screen.get(1), 'E', "circuitData", 'L',
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Enderium, 1), 'C',
+                MaterialLibAPI.getStack(Materials.Enderium, TEBlockShapes.pipeMedium, 1), 'C',
                 ItemRefer.YOTTank_Casing.get(1) });
 
         GTValues.RA.stdBuilder()
@@ -266,7 +265,7 @@ public class RecipeLoader2 {
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T2.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_EV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.StainlessSteel, 4),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.pipeNonuple, 4),
                 ItemList.Electric_Pump_HV.get(8),
                 ItemList.Quantum_Tank_LV.get(1),
                 MaterialLibAPI.getStack(Materials.Osmium, Shapes.plateDense, 8),
@@ -285,13 +284,13 @@ public class RecipeLoader2 {
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T3.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Titanium, 4),
+                MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.pipeNonuple, 4),
                 ItemList.Electric_Pump_EV.get(8),
                 ItemList.Quantum_Tank_LV.get(4),
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.plateDense, 8),
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 4L, 6),
                 MaterialLibAPI.getStack(Materials.StyreneButadieneRubber, Shapes.foil, 64),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 64))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.pipeLarge, 64))
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.Indalloy140, 2 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 16_000))
@@ -305,13 +304,13 @@ public class RecipeLoader2 {
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T4.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.MysteriousCrystal, 4),
+                MaterialLibAPI.getStack(Materials.MysteriousCrystal, TEBlockShapes.pipeNonuple, 4),
                 ItemList.Electric_Pump_IV.get(8),
                 ItemList.Quantum_Tank_HV.get(8),
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plateDense, 8),
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 16L, 6),
                 MaterialLibAPI.getStack(Materials.Polycaprolactam, Shapes.plateQuintuple, 24),
-                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Titanium, 64))
+                MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.pipeHuge, 64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Draconium, FluidShapes.fluidMolten, 16 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, 2 * INGOTS),
@@ -326,7 +325,7 @@ public class RecipeLoader2 {
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T5.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 4),
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.pipeNonuple, 4),
                 ItemList.Electric_Pump_LuV.get(8),
                 ItemList.Quantum_Tank_EV.get(16),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateDense, 16),
@@ -351,7 +350,7 @@ public class RecipeLoader2 {
                 ItemList.Electric_Pump_ZPM.get(8),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(1),
                 ItemList.Quantum_Tank_EV.get(32),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 8),
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.pipeNonuple, 8),
                 MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.plateQuintuple, 8),
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plateDense, 16))
             .fluidInputs(
@@ -372,7 +371,7 @@ public class RecipeLoader2 {
                 ItemList.Electric_Pump_UV.get(8),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(2),
                 ItemList.Quantum_Tank_EV.get(64),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 16),
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.pipeNonuple, 16),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateQuintuple, 24),
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plateDense, 16))
             .fluidInputs(
@@ -396,7 +395,7 @@ public class RecipeLoader2 {
                 ItemList.Electric_Pump_UHV.get(8),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(2),
                 ItemList.Quantum_Tank_IV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 32),
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.pipeNonuple, 32),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateQuintuple, 36),
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plateDense, 8))
             .fluidInputs(
@@ -421,7 +420,7 @@ public class RecipeLoader2 {
                 ItemList.Electric_Pump_UEV.get(8),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(4),
                 ItemList.Quantum_Tank_IV.get(16),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 32),
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.pipeNonuple, 32),
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plateQuintuple, 24),
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plateDouble, 4))
             .fluidInputs(
@@ -439,11 +438,11 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1),
+                MaterialLibAPI.getStack(Materials.BlackSteel, TEBlockShapes.frameGt, 1),
                 ItemRefer.Fluid_Storage_Core_T1.get(10),
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 4),
                 ItemList.Electric_Pump_HV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 4))
+                MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.pipeMedium, 4))
             .circuit(5)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .itemOutputs(ItemRefer.YOTTank_Cell_T1.get(1))
@@ -453,11 +452,11 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.frameGt, 1),
                 ItemRefer.Fluid_Storage_Core_T2.get(10),
                 MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, Shapes.plate, 4),
                 ItemList.Electric_Pump_EV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Enderium, 4))
+                MaterialLibAPI.getStack(Materials.Enderium, TEBlockShapes.pipeMedium, 4))
             .circuit(5)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * INGOTS))
@@ -471,11 +470,11 @@ public class RecipeLoader2 {
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T2.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_EV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1),
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.frameGt, 1),
                 ItemRefer.Fluid_Storage_Core_T3.get(10),
                 new Object[] { Circuits.LuV.getIngredient(), 8 },
                 ItemList.Electric_Pump_IV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NiobiumTitanium, 8),
+                MaterialLibAPI.getStack(Materials.NiobiumTitanium, TEBlockShapes.pipeMedium, 8),
                 MaterialLibAPI.getStack(Materials.AdamantiumAlloy, Shapes.plate, 32))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, 10 * INGOTS),
@@ -491,11 +490,11 @@ public class RecipeLoader2 {
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T3.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1),
+                MaterialLibAPI.getStack(Materials.Neutronium, TEBlockShapes.frameGt, 1),
                 ItemRefer.Fluid_Storage_Core_T4.get(10),
                 new Object[] { Circuits.ZPM.getIngredient(), 8 },
                 ItemList.Electric_Pump_LuV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.MysteriousCrystal, 8),
+                MaterialLibAPI.getStack(Materials.MysteriousCrystal, TEBlockShapes.pipeMedium, 8),
                 MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.plate, 32))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Draconium, FluidShapes.fluidMolten, 10 * INGOTS),
@@ -511,11 +510,11 @@ public class RecipeLoader2 {
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T4.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, TEBlockShapes.frameGt, 1),
                 ItemRefer.Fluid_Storage_Core_T5.get(10),
                 new Object[] { Circuits.UV.getIngredient(), 8 },
                 ItemList.Electric_Pump_ZPM.get(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.DraconiumAwakened, 8),
+                MaterialLibAPI.getStack(Materials.DraconiumAwakened, TEBlockShapes.pipeMedium, 8),
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Draconium, FluidShapes.fluidMolten, 10 * INGOTS),
@@ -531,11 +530,11 @@ public class RecipeLoader2 {
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T5.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 1),
                 ItemRefer.Fluid_Storage_Core_T6.get(2),
                 new Object[] { Circuits.UHV.getIngredient(), 8L },
                 ItemList.Electric_Pump_UV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NetherStar, 8),
+                MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.pipeMedium, 8),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 10 * INGOTS),
@@ -551,11 +550,11 @@ public class RecipeLoader2 {
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T6.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 1),
                 ItemRefer.Fluid_Storage_Core_T7.get(2),
                 new Object[] { Circuits.UEV.getIngredient(), 8L },
                 ItemList.Electric_Pump_UHV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NetherStar, 16),
+                MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.pipeMedium, 16),
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plate, 32),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 32))
             .fluidInputs(
@@ -573,11 +572,11 @@ public class RecipeLoader2 {
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T7.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 1),
                 ItemRefer.Fluid_Storage_Core_T8.get(2),
                 new Object[] { Circuits.UIV.getIngredient(), 8L },
                 ItemList.Electric_Pump_UEV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 12),
+                MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.pipeLarge, 12),
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plateDouble, 12),
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plateDouble, 12),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 64))
@@ -597,11 +596,11 @@ public class RecipeLoader2 {
                 .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T8.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UEV))
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 2),
+                    MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 2),
                     ItemRefer.Fluid_Storage_Core_T9.get(2),
                     new Object[] { Circuits.UMV.getIngredient(), 8L },
                     ItemList.Electric_Pump_UIV.get(8),
-                    GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 12),
+                    MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.pipeLarge, 12),
                     MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plateDouble, 12),
                     MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plateDouble, 12),
                     MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 64))
@@ -621,11 +620,11 @@ public class RecipeLoader2 {
                 .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T9.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UIV))
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 2),
+                    MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.frameGt, 2),
                     ItemRefer.Fluid_Storage_Core_T10.get(2),
                     new Object[] { Circuits.UXV.getIngredient(), 12L },
                     ItemList.Electric_Pump_UMV.get(8),
-                    GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 64),
+                    MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.pipeLarge, 64),
                     MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plateDouble, 12),
                     MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plateDouble, 12),
                     MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plate, 10))
@@ -675,7 +674,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.YOTTank_Cell_T1.get(1))
             .itemOutputs(
                 ItemRefer.Fluid_Storage_Core_T1.get(10),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1))
+                MaterialLibAPI.getStack(Materials.BlackSteel, TEBlockShapes.frameGt, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(unpackagerRecipes);
@@ -684,7 +683,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.YOTTank_Cell_T2.get(1))
             .itemOutputs(
                 ItemRefer.Fluid_Storage_Core_T2.get(10),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.frameGt, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(unpackagerRecipes);
@@ -693,7 +692,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.YOTTank_Cell_T3.get(1))
             .itemOutputs(
                 ItemRefer.Fluid_Storage_Core_T3.get(10),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1))
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.frameGt, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(unpackagerRecipes);
@@ -702,7 +701,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.YOTTank_Cell_T4.get(1))
             .itemOutputs(
                 ItemRefer.Fluid_Storage_Core_T4.get(10),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1))
+                MaterialLibAPI.getStack(Materials.Neutronium, TEBlockShapes.frameGt, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(unpackagerRecipes);
@@ -711,7 +710,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.YOTTank_Cell_T5.get(1))
             .itemOutputs(
                 ItemRefer.Fluid_Storage_Core_T5.get(10),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1))
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, TEBlockShapes.frameGt, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(unpackagerRecipes);
@@ -720,7 +719,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.YOTTank_Cell_T6.get(1))
             .itemOutputs(
                 ItemRefer.Fluid_Storage_Core_T6.get(2),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1))
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(unpackagerRecipes);
@@ -729,7 +728,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.YOTTank_Cell_T7.get(1))
             .itemOutputs(
                 ItemRefer.Fluid_Storage_Core_T7.get(2),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1))
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(unpackagerRecipes);
@@ -738,7 +737,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.YOTTank_Cell_T8.get(1))
             .itemOutputs(
                 ItemRefer.Fluid_Storage_Core_T8.get(2),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1))
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(unpackagerRecipes);
@@ -747,7 +746,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.YOTTank_Cell_T9.get(1))
             .itemOutputs(
                 ItemRefer.Fluid_Storage_Core_T9.get(2),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1))
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(unpackagerRecipes);
@@ -756,7 +755,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.YOTTank_Cell_T10.get(1))
             .itemOutputs(
                 ItemRefer.Fluid_Storage_Core_T10.get(2),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1))
+                MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.frameGt, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(unpackagerRecipes);
@@ -781,7 +780,7 @@ public class RecipeLoader2 {
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Diamond, Shapes.gem, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HeavyNaquadahFuel, FluidShapes.fluidLiquid, INGOTS))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Tiberium, Shapes.gem, 1))
             .duration(20 * SECONDS)
@@ -799,7 +798,7 @@ public class RecipeLoader2 {
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Shapes.gem, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 1))
             .outputChances(10)
             .fluidOutputs(FluidRegistry.getFluidStack("fluid.coaltar", 250))
@@ -938,14 +937,14 @@ public class RecipeLoader2 {
             ItemRefer.Combustion_Generator_EV.get(1),
             GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "PCP", "MHM", "GWG", 'G', MaterialLibAPI.getStack(Materials.Titanium, Shapes.gearGt, 1), 'C',
-                "circuitData", 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 1), 'P',
+                "circuitData", 'W', MaterialLibAPI.getStack(Materials.Aluminium, TEBlockShapes.cableGt01, 1), 'P',
                 ItemList.Electric_Piston_EV, 'H', ItemList.Hull_EV, 'M', ItemList.Electric_Motor_EV });
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Combustion_Generator_IV.get(1),
             GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "PCP", "MHM", "GWG", 'G', MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.gearGt, 1),
-                'C', "circuitElite", 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 1), 'P',
+                'C', "circuitElite", 'W', MaterialLibAPI.getStack(Materials.Tungsten, TEBlockShapes.cableGt01, 1), 'P',
                 ItemList.Electric_Piston_IV, 'H', ItemList.Hull_IV, 'M', ItemList.Electric_Motor_IV });
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
@@ -1044,7 +1043,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Incoloy903, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.MARCeM200Steel, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NiobiumTitanium, 1))
+                MaterialLibAPI.getStack(Materials.NiobiumTitanium, TEBlockShapes.frameGt, 1))
             .circuit(8)
             .itemOutputs(ItemRefer.Pressure_Resistant_Wall.get(1))
             .duration(50 * SECONDS)
@@ -1055,7 +1054,7 @@ public class RecipeLoader2 {
             ItemRefer.Extreme_Heat_Exchanger.get(1),
             GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "EPE", "PHP", "SPS", 'P',
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1), 'H',
+                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.pipeMedium, 1), 'H',
                 ItemList.Hull_IV.get(1), 'S', MaterialLibAPI.getStack(Materials.MARCeM200Steel, Shapes.plate, 1), 'E',
                 GTModHandler.getIC2Item("reactorHeatSwitchDiamond", 1L, 1) });
 
@@ -1065,10 +1064,10 @@ public class RecipeLoader2 {
                     ItemList.Robot_Arm_IV.get(4),
                     ItemRefer.HiC_T1.get(4),
                     ItemList.Tool_DataOrb.get(3),
-                    GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Titanium, 4),
+                    MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.cableGt08, 4),
                     MaterialLibAPI.getStack(Materials.Hikarium, Shapes.gearGt, 4),
                     MaterialLibAPI.getStack(Materials.MARM200Steel, Shapes.plateDouble, 2),
-                    GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 2),
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemPartIridium", 2, 0),
                     MaterialLibAPI.getStack(Materials.Lumiium, Shapes.bolt, 48))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Palladium, FluidShapes.fluidMolten, 8 * INGOTS))
                 .itemOutputs(ItemRefer.Precise_Assembler.get(1))
@@ -1209,7 +1208,7 @@ public class RecipeLoader2 {
                 .itemInputs(
                     ItemList.Casing_LuV.get(3),
                     ItemList.Robot_Arm_EV.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Osmiridium, 2),
+                    MaterialLibAPI.getStack(Materials.Osmiridium, TEBlockShapes.cableGt02, 2),
                     MaterialLibAPI.getStack(Materials.MARM200Steel, Shapes.plateDouble, 2),
                     Circuits.EV.get(1),
 
@@ -1225,7 +1224,7 @@ public class RecipeLoader2 {
                 .itemInputs(
                     ItemList.Casing_ZPM.get(3),
                     ItemList.Robot_Arm_IV.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Lumiium, 2),
+                    MaterialLibAPI.getStack(Materials.Lumiium, TEBlockShapes.cableGt04, 2),
                     MaterialLibAPI.getStack(Materials.MARCeM200Steel, Shapes.plateDouble, 2),
                     ItemRefer.HiC_T1.get(1),
                     MaterialLibAPI.getStack(Materials.Signalium, Shapes.bolt, 32),
@@ -1240,7 +1239,7 @@ public class RecipeLoader2 {
                 .itemInputs(
                     ItemList.Casing_UV.get(3),
                     ItemList.Robot_Arm_LuV.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 4),
+                    MaterialLibAPI.getStack(Materials.ElectrumFlux, TEBlockShapes.cableGt04, 4),
                     ItemRefer.HiC_T2.get(1),
                     ItemRefer.Precise_Electronic_Unit_T1.get(1),
                     MaterialLibAPI.getStack(Materials.MARCeM200Steel, Shapes.bolt, 32),
@@ -1256,7 +1255,7 @@ public class RecipeLoader2 {
                 .itemInputs(
                     ItemList.Casing_MAX.get(3),
                     ItemList.Field_Generator_ZPM.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 4),
+                    MaterialLibAPI.getStack(Materials.Bedrockium, TEBlockShapes.cableGt04, 4),
                     ItemRefer.HiC_T3.get(1),
                     ItemRefer.Precise_Electronic_Unit_T2.get(1),
                     MaterialLibAPI.getStack(Materials.TanmolyiumBetaC, Shapes.bolt, 32),
@@ -1271,7 +1270,7 @@ public class RecipeLoader2 {
                 .itemInputs(
                     ItemList.Casing_UEV.get(3),
                     ItemList.Field_Generator_UV.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 8),
+                    MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.cableGt04, 8),
                     ItemRefer.HiC_T4.get(1),
                     ItemRefer.Precise_Electronic_Unit_T3.get(1),
                     MaterialLibAPI.getStack(Materials.EnrichedNaquadahAlloy, Shapes.bolt, 32),
@@ -1496,8 +1495,8 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Plastic, 2),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
+                MaterialLibAPI.getStack(Materials.Plastic, TEBlockShapes.pipeHuge, 2),
+                MaterialLibAPI.getStack(Materials.Steel, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, 16 * INGOTS))
             .itemOutputs(ItemRefer.Coolant_Tower.get(1))

@@ -34,7 +34,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
@@ -268,13 +267,13 @@ public class BioRecipes {
                 GregtechItemList.WoodPellet.get(2),
                 true,
                 true,
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 3),
+                MaterialLibAPI.getStack(Materials.Charcoal, Shapes.gem, 3),
                 GTValues.NF,
                 1200);
         }
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.WoodPellet.get(2))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Shapes.gem, 3))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(6 * SECONDS)
             .addTo(industrialCokeOvenRecipes);

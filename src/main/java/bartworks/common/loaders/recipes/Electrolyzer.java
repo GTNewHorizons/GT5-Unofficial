@@ -8,13 +8,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class Electrolyzer implements Runnable {
 
@@ -76,7 +74,7 @@ public class Electrolyzer implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.GreenFuchsite, Shapes.dust, 21), ItemList.Cell_Empty.get(2))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Alumina, 3L),
+                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3),
                 MaterialParts.requireCell(Materials.Hydrogen, 2))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
@@ -133,7 +131,7 @@ public class Electrolyzer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Alumina, 6L),
+                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
                 MaterialParts.requireCell(Materials.Fluorine, 3))
@@ -146,7 +144,7 @@ public class Electrolyzer implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.Olenite, Shapes.dust, 51), ItemList.Cell_Empty.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Alumina, 9L),
+                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
                 MaterialParts.requireCell(Materials.Hydrogen, 1))

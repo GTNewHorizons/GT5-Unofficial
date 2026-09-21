@@ -15,12 +15,11 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 /// Fluid-extractor melting of a molten-cell material's solid shapes into its molten fluid, plus the molten-cell
@@ -53,26 +52,26 @@ public class ProcessingCellMolten implements IOreRecipeRegistrator {
         if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) return;
         if (MaterialUtils.molten(material, INGOTS) == null) return;
 
-        ItemStack ingot = GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L);
+        ItemStack ingot = MaterialParts.stack(OrePrefixes.ingot, material, 1L);
         if (ingot == null) {
-            ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, material, 1L);
+            ItemStack dust = MaterialParts.stack(OrePrefixes.dust, material, 1L);
             if (dust == null) return;
             extract(dust, material, INGOTS);
-            extract(GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 1L), material, QUARTER_INGOTS);
-            extract(GTOreDictUnificator.get(OrePrefixes.dustTiny, material, 1L), material, NUGGETS);
+            extract(MaterialParts.stack(OrePrefixes.dustSmall, material, 1L), material, QUARTER_INGOTS);
+            extract(MaterialParts.stack(OrePrefixes.dustTiny, material, 1L), material, NUGGETS);
         } else {
             extract(ingot, material, INGOTS);
-            extract(GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L), material, NUGGETS);
-            if (GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
-                extract(GTOreDictUnificator.get(OrePrefixes.stickLong, material, 1L), material, INGOTS);
-                extract(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L), material, INGOTS);
-                extract(GTOreDictUnificator.get(OrePrefixes.stick, material, 1L), material, HALF_INGOTS);
+            extract(MaterialParts.stack(OrePrefixes.nugget, material, 1L), material, NUGGETS);
+            if (MaterialParts.stack(OrePrefixes.plate, material, 1L) != null) {
+                extract(MaterialParts.stack(OrePrefixes.stickLong, material, 1L), material, INGOTS);
+                extract(MaterialParts.stack(OrePrefixes.plate, material, 1L), material, INGOTS);
+                extract(MaterialParts.stack(OrePrefixes.stick, material, 1L), material, HALF_INGOTS);
             }
         }
 
         FluidContainerRegistry.registerFluidContainer(
             MaterialUtils.molten(material, INGOTS),
             GTUtility.copyAmount(1, stack),
-            GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1));
+            GTUtility.getEmptyCell(1));
     }
 }

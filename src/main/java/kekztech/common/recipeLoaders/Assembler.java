@@ -15,16 +15,17 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import kekztech.Items;
 import kekztech.common.Blocks;
 import kekztech.common.TileEntities;
-import kekztech.common.items.ErrorItem;
 import kekztech.common.items.MetaItemCraftingComponent;
 
 public class Assembler implements Runnable {
@@ -35,7 +36,7 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.DarkSteel, Shapes.plate, 3),
                 MaterialLibAPI.getStack(Materials.EnderPearl, Shapes.plate, 3))
             .circuit(6)
@@ -52,7 +53,7 @@ public class Assembler implements Runnable {
                 ItemList.Hull_HV.get(1),
                 ItemList.Cover_FluidStorageMonitor.get(1),
                 ItemList.Field_Generator_LV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polytetrafluoroethylene, 25))
+                MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, TEBlockShapes.pipeTiny, 25))
             .itemOutputs(TileEntities.tfftHatch.getStackForm(1))
             .fluidInputs(MaterialUtils.molten(Materials.Plastic, 3 * INGOTS))
             .duration(20 * SECONDS)
@@ -62,9 +63,9 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Steel, 3),
+                MaterialLibAPI.getStack(Materials.CrudeSteel, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.CrudeSteel, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Steel, TEBlockShapes.pipeNonuple, 3),
                 ItemList.FluidRegulator_LV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
@@ -78,7 +79,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Casing_Tank_1.get(1),
                 MaterialLibAPI.getStack(Materials.EnergeticSilver, Shapes.plate, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Plastic, 3),
+                MaterialLibAPI.getStack(Materials.Plastic, TEBlockShapes.pipeNonuple, 3),
                 ItemList.FluidRegulator_MV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 2))
@@ -92,7 +93,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Casing_Tank_3.get(1),
                 MaterialLibAPI.getStack(Materials.VividAlloy, Shapes.plate, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.StainlessSteel, 3),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.pipeNonuple, 3),
                 ItemList.Field_Generator_LV.get(1),
                 ItemList.FluidRegulator_HV.get(1))
             .circuit(6)
@@ -107,7 +108,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Casing_Tank_5.get(1),
                 MaterialLibAPI.getStack(Materials.Enderium, Shapes.plate, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Polytetrafluoroethylene, 3),
+                MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, TEBlockShapes.pipeNonuple, 3),
                 ItemList.Field_Generator_MV.get(2),
                 ItemList.FluidRegulator_EV.get(1))
             .circuit(6)
@@ -122,7 +123,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Casing_Tank_7.get(1),
                 MaterialLibAPI.getStack(Materials.CrystallineAlloy, Shapes.plate, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Enderium, 3),
+                MaterialLibAPI.getStack(Materials.Enderium, TEBlockShapes.pipeNonuple, 3),
                 ItemList.Field_Generator_HV.get(4),
                 ItemList.FluidRegulator_IV.get(1))
             .circuit(6)
@@ -136,9 +137,9 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Tantalum, Shapes.plate, 4),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 2),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.frameGt, 2),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stickLong, 2),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Lapis, 1))
+                MaterialLibAPI.getStack(Materials.Lapis, BlockShapes.block, 1))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -168,7 +169,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Energy_LapotronicOrb2.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
+                MaterialLibAPI.getStack(Materials.Osmiridium, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
@@ -180,7 +181,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Energy_Module.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 4),
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
@@ -192,7 +193,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Energy_Cluster.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
+                MaterialLibAPI.getStack(Materials.Neutronium, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
@@ -204,7 +205,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM3.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5))
@@ -216,7 +217,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM4.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8))
@@ -228,7 +229,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM5.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9))
@@ -240,7 +241,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM6.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
+                MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10))
@@ -255,7 +256,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicPlate.getMetaID(), 4),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Yttrium, 1),
+                MaterialLibAPI.getStack(Materials.Yttrium, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.rotor, 1),
                 ItemList.Electric_Motor_HV.get(1L))
             .circuit(6)
@@ -269,10 +270,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 8),
-                GTOreDictUnificator
-                    .get(OrePrefixes.frameGt, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
-                GTOreDictUnificator
-                    .get(OrePrefixes.rotor, Materials.Desh, new ItemStack(ErrorItem.getInstance(), 1), 1),
+                MaterialLibAPI.getStack(Materials.Gadolinium, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.Desh, Shapes.rotor, 1),
                 ItemList.Electric_Motor_IV.get(1L))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.gdcUnit, 1))
@@ -285,7 +284,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.stone, Materials.Concrete, 1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+                MaterialLibAPI.getStack(Materials.Steel, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.DarkSteel, Shapes.foil, 2))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.largeHexPlate, 2))

@@ -48,16 +48,15 @@ import gregtech.api.enums.CircuitComponents;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
@@ -99,13 +98,13 @@ public class RecipeLoader {
                     .copy())
             .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Adamantium, 8),
+                MaterialLibAPI.getStack(Materials.Adamantium, TEBlockShapes.frameGt, 8),
                 ItemRefer.Radiation_Protection_Plate.get(16),
                 ItemList.Field_Generator_ZPM.get(2),
                 ItemList.Electric_Pump_ZPM.get(8),
                 new Object[] { Circuits.UV.getIngredient(), 4 },
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorLuV, 8),
-                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Naquadah, 4),
+                MaterialLibAPI.getStack(Materials.SuperconductorLuV, TEBlockShapes.wireGt08, 8),
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.pipeHuge, 4),
                 MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Osmium, Shapes.screw, 16))
             .fluidInputs(
@@ -122,7 +121,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Radiation_Protection_Plate.get(6),
                 ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(2),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Europium, 1),
+                MaterialLibAPI.getStack(Materials.Europium, TEBlockShapes.frameGt, 1),
                 ItemList.Field_Generator_MV.get(1))
             .circuit(1)
             .itemOutputs(ItemRefer.Field_Restriction_Casing.get(1))
@@ -134,7 +133,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.stickLong, 8),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 4))
+                MaterialLibAPI.getStack(Materials.HSSE, TEBlockShapes.frameGt, 4))
             .circuit(24)
             .itemOutputs(ItemRefer.Radiation_Proof_Steel_Frame_Box.get(1))
             .duration(16 * SECONDS)
@@ -299,7 +298,7 @@ public class RecipeLoader {
         // Th-232
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 24),
+                MaterialLibAPI.getStack(Materials.Sugar, Shapes.dust, 24),
                 MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Shapes.dust, 0))
             .circuit(1)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 6_000))
@@ -415,7 +414,7 @@ public class RecipeLoader {
             .addTo(blastFurnaceRecipes);
 
         // Atomic Separation Catalyst
-        ItemStack[] mat1 = new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 32),
+        ItemStack[] mat1 = new ItemStack[] { MaterialLibAPI.getStack(Materials.Blaze, Shapes.dust, 32),
             MaterialLibAPI.getStack(Materials.Firestone, Shapes.dust, 4) };
         ItemStack[] mat2 = new ItemStack[] { MaterialLibAPI.getStack(Materials.Draconium, Shapes.dust, 4),
             MaterialLibAPI.getStack(Materials.Quantium, Shapes.dust, 4), };
@@ -715,12 +714,12 @@ public class RecipeLoader {
                     .copy())
             .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 8),
+                MaterialLibAPI.getStack(Materials.Osmiridium, TEBlockShapes.frameGt, 8),
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(64),
                 ItemList.Field_Generator_UV.get(8),
                 ItemList.Electric_Pump_UHV.get(2),
                 new Object[] { Circuits.UEV.getIngredient(), 4 },
-                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.MysteriousCrystal, 8),
+                MaterialLibAPI.getStack(Materials.MysteriousCrystal, TEBlockShapes.pipeHuge, 8),
                 ItemList.Circuit_Wafer_NPIC.get(16),
                 ItemList.UHV_Coil.get(64),
                 new Object[] { "craftingLensYellow", 16 },
@@ -758,10 +757,10 @@ public class RecipeLoader {
             .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Casing.get(1))
             .metadata(SCANNING, new Scanning(30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Thulium, 1),
+                MaterialLibAPI.getStack(Materials.Thulium, TEBlockShapes.frameGt, 1),
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(6),
                 ItemList.Field_Generator_IV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 16),
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.pipeTiny, 16),
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.wireFine, 64),
                 MaterialLibAPI.getStack(Materials.Manyullyn, Shapes.wireFine, 64),
                 MaterialLibAPI.getStack(Materials.Orundum, Shapes.plate, 4))
@@ -780,13 +779,13 @@ public class RecipeLoader {
                 .metadata(RESEARCH_ITEM, MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Shapes.ingot, 1))
                 .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_ZPM))
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmium, 1),
+                    MaterialLibAPI.getStack(Materials.Osmium, TEBlockShapes.frameGt, 1),
                     ItemList.Field_Generator_UV.get(2),
                     ItemList.Electric_Pump_UV.get(8),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 64),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 64),
+                    MaterialLibAPI.getStack(Materials.SuperconductorZPM, TEBlockShapes.wireGt01, 64),
+                    MaterialLibAPI.getStack(Materials.SuperconductorZPM, TEBlockShapes.wireGt01, 64),
                     MaterialLibAPI.getStack(Materials.Americium, Shapes.plateDense, 8),
-                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.BlackPlutonium, 16),
+                    MaterialLibAPI.getStack(Materials.BlackPlutonium, TEBlockShapes.itemPipeMedium, 16),
                     ItemList.Circuit_Wafer_PPIC.get(32),
                     new Object[] { Circuits.UHV.getIngredient(), 1L })
                 .fluidInputs(
@@ -803,13 +802,13 @@ public class RecipeLoader {
                 .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T1.get(1))
                 .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_UV))
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1),
+                    MaterialLibAPI.getStack(Materials.CosmicNeutronium, TEBlockShapes.frameGt, 1),
                     ItemList.Field_Generator_UHV.get(2),
                     ItemList.Electric_Pump_UHV.get(8),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 64),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 64),
+                    MaterialLibAPI.getStack(Materials.SuperconductorUV, TEBlockShapes.wireGt02, 64),
+                    MaterialLibAPI.getStack(Materials.SuperconductorUV, TEBlockShapes.wireGt02, 64),
                     MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateDense, 8),
-                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 16),
+                    MaterialLibAPI.getStack(Materials.Neutronium, TEBlockShapes.pipeMedium, 16),
                     ItemList.Circuit_Wafer_PPIC.get(48),
                     new Object[] { Circuits.UEV.getIngredient(), 1L })
                 .fluidInputs(
@@ -826,13 +825,13 @@ public class RecipeLoader {
                 .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T2.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UHV))
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
+                    MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 1),
                     ItemList.Field_Generator_UEV.get(2),
                     ItemList.Electric_Pump_UEV.get(8),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 64),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 64),
+                    MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt04, 64),
+                    MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt04, 64),
                     MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateDense, 8),
-                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infinity, 16),
+                    MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.pipeMedium, 16),
                     ItemList.Circuit_Wafer_PPIC.get(64),
                     new Object[] { Circuits.UIV.getIngredient(), 1L })
                 .fluidInputs(
@@ -850,13 +849,13 @@ public class RecipeLoader {
                 .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T3.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES + 10 * SECONDS, TierEU.RECIPE_UEV))
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1),
+                    MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.frameGt, 1),
                     ItemList.Field_Generator_UIV.get(2),
                     ItemList.Electric_Pump_UIV.get(8),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
+                    MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt04, 64),
+                    MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt04, 64),
                     MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plateDense, 8),
-                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.SpaceTime, 16),
+                    MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.pipeMedium, 16),
                     ItemList.Circuit_Wafer_PPIC.get(64),
                     new Object[] { Circuits.UXV.getIngredient(), 1L })
                 .fluidInputs(
@@ -940,7 +939,7 @@ public class RecipeLoader {
             GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PPP", "PFP", "PPP", 'P', ItemRefer.Special_Ceramics_Plate.get(1), 'F',
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1) });
+                MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.frameGt, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1004,14 +1003,14 @@ public class RecipeLoader {
             new Object[] { "TZT", "ALB", "WGW", 'T', MaterialLibAPI.getStack(Materials.Titanium, Shapes.plateDense, 1),
                 'Z', "circuitUltimate", 'A', ItemList.LargeCombustionEngine.get(1), 'B',
                 ItemList.ExtremeCombustionEngine.get(1), 'L', ItemList.Hull_LuV, 'W',
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 1), 'G',
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt01, 1), 'G',
                 MaterialLibAPI.getStack(Materials.Osmium, Shapes.gearGt, 1), });
 
         // neutron activator
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.stick, 4),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4))
+                MaterialLibAPI.getStack(Materials.Plastic, Shapes.itemCasing, 4))
             .circuit(8)
             .fluidInputs(FluidRegistry.getFluidStack("dye.chemical.dyecyan", 1 * INGOTS))
             .itemOutputs(ItemRefer.Plastic_Case.get(1))
@@ -1022,7 +1021,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.stick, 4),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4))
+                MaterialLibAPI.getStack(Materials.Plastic, Shapes.itemCasing, 4))
             .circuit(8)
             .fluidInputs(FluidRegistry.getFluidStack("dye.watermixed.dyecyan", 1 * INGOTS))
             .itemOutputs(ItemRefer.Plastic_Case.get(1))
@@ -1035,7 +1034,7 @@ public class RecipeLoader {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "CDC", "PCP", 'P',
                 MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.stick, 1), 'C',
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 1), 'D', "dyeCyan" });
+                MaterialLibAPI.getStack(Materials.Plastic, Shapes.itemCasing, 1), 'D', "dyeCyan" });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1097,7 +1096,7 @@ public class RecipeLoader {
                 Circuits.MV.get(1),
                 ItemList.Cover_Screen.get(1),
                 CircuitComponents.DIODE.get(16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
+                MaterialLibAPI.getStack(Materials.Aluminium, TEBlockShapes.wireGt01, 8))
             .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .itemOutputs(ItemRefer.Inverter.get(1))
             .duration(12 * SECONDS)
@@ -1111,7 +1110,7 @@ public class RecipeLoader {
                 Circuits.MV.get(1),
                 ItemList.Cover_Screen.get(1),
                 ItemList.Circuit_Parts_DiodeASMD.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
+                MaterialLibAPI.getStack(Materials.Aluminium, TEBlockShapes.wireGt01, 8))
             .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .itemOutputs(ItemRefer.Inverter.get(1))
             .duration(12 * SECONDS)
@@ -1125,7 +1124,7 @@ public class RecipeLoader {
                     ItemList.Circuit_Chip_SoC2.get(8),
                     ItemList.Circuit_Chip_NOR.get(32),
                     MaterialLibAPI.getStack(Materials.Signalium, Shapes.bolt, 32),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
+                    MaterialLibAPI.getStack(Materials.Aluminium, TEBlockShapes.wireGt01, 8),
                     GTModHandler.getIC2Item("reactorVent", 1L, 1))
                 .fluidInputs(SubstituteFluidStack.soldering(2 * INGOTS))
                 .itemOutputs(ItemRefer.HiC_T1.get(1))
@@ -1140,7 +1139,7 @@ public class RecipeLoader {
                     ItemList.Circuit_Chip_SoC2.get(8),
                     ItemList.Circuit_Chip_NOR.get(32),
                     MaterialLibAPI.getStack(Materials.Signalium, Shapes.bolt, 32),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
+                    MaterialLibAPI.getStack(Materials.Aluminium, TEBlockShapes.wireGt01, 8),
                     MaterialLibAPI.getStack(Materials.TinAlloy, Shapes.rotor, 1))
                 .fluidInputs(SubstituteFluidStack.soldering(2 * INGOTS))
                 .itemOutputs(ItemRefer.HiC_T1.get(1))
@@ -1154,8 +1153,9 @@ public class RecipeLoader {
             Loaders.NeutronAccelerators[0].copy(),
             GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "WPM", "CHI", "WPM", 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead, 1),
-                'P', MaterialLibAPI.getStack(Materials.Lead, Shapes.plate, 1), 'M',
+            new Object[] { "WPM", "CHI", "WPM", 'W',
+                MaterialLibAPI.getStack(Materials.Lead, TEBlockShapes.cableGt01, 1), 'P',
+                MaterialLibAPI.getStack(Materials.Lead, Shapes.plate, 1), 'M',
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.rotor, 1), 'C',
                 MaterialLibAPI.getStack(Materials.Wood, Shapes.plate, 1), 'H', ItemList.Hull_ULV, 'I',
                 ItemRefer.Inverter.get(1), });
@@ -1166,7 +1166,7 @@ public class RecipeLoader {
             GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "WPM", "CHI", "WPM", 'W',
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 1), 'P',
+                MaterialLibAPI.getStack(Materials.RedAlloy, TEBlockShapes.cableGt01, 1), 'P',
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDouble, 1), 'M', ItemList.Electric_Motor_LV, 'C',
                 "plateAnyRubber", 'H', ItemList.Hull_LV, 'I', ItemRefer.Inverter.get(1), });
 
@@ -1175,7 +1175,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_MV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 2),
+                MaterialLibAPI.getStack(Materials.SuperconductorMV, TEBlockShapes.wireGt01, 2),
                 MaterialLibAPI.getStack(Materials.Plastic, Shapes.plate, 1),
                 MaterialLibAPI.getStack(Materials.Beryllium, Shapes.plate, 2),
                 ItemList.Electric_Motor_MV.get(2))
@@ -1189,7 +1189,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_HV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 2),
+                MaterialLibAPI.getStack(Materials.SuperconductorHV, TEBlockShapes.wireGt01, 2),
                 MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.plate, 1),
                 MaterialLibAPI.getStack(Materials.Beryllium, Shapes.plateDouble, 2),
                 ItemList.Electric_Motor_HV.get(2))
@@ -1203,7 +1203,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_EV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 2),
+                MaterialLibAPI.getStack(Materials.SuperconductorEV, TEBlockShapes.wireGt01, 2),
                 MaterialLibAPI.getStack(Materials.StyreneButadieneRubber, Shapes.plate, 1),
                 MaterialLibAPI.getStack(Materials.IronMagnetic, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.TungstenCarbide, Shapes.plate, 2),
@@ -1218,7 +1218,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_IV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 2),
+                MaterialLibAPI.getStack(Materials.SuperconductorIV, TEBlockShapes.wireGt01, 2),
                 MaterialLibAPI.getStack(Materials.Silicone, Shapes.plate, 1),
                 MaterialLibAPI.getStack(Materials.SteelMagnetic, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.TungstenCarbide, Shapes.plateDouble, 2),
@@ -1235,7 +1235,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(2),
                 ItemList.Hull_LuV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 4),
+                MaterialLibAPI.getStack(Materials.SuperconductorLuV, TEBlockShapes.wireGt04, 4),
                 MaterialLibAPI.getStack(Materials.NetherStar, Shapes.plate, 1),
                 MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.NeodymiumMagnetic, Shapes.plate, 8),
@@ -1253,7 +1253,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(2),
                 ItemList.Hull_ZPM.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 4),
+                MaterialLibAPI.getStack(Materials.SuperconductorZPM, TEBlockShapes.wireGt04, 4),
                 MaterialLibAPI.getStack(Materials.NetherStar, Shapes.plate, 1),
                 MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.plateDouble, 4),
                 MaterialLibAPI.getStack(Materials.SamariumMagnetic, Shapes.plate, 8),
@@ -1271,7 +1271,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(4),
                 ItemList.Hull_UV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 4),
+                MaterialLibAPI.getStack(Materials.SuperconductorUV, TEBlockShapes.wireGt04, 4),
                 MaterialLibAPI.getStack(Materials.NetherStar, Shapes.plate, 2),
                 MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.plateTriple, 4),
                 ItemList.ZPM_Coil.get(8),
@@ -1290,7 +1290,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(8),
                 ItemList.Hull_MAX.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 4),
+                MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt04, 4),
                 MaterialLibAPI.getStack(Materials.Orundum, Shapes.plate, 2),
                 MaterialLibAPI.getStack(Materials.Kevlar, Shapes.plateTriple, 8),
                 ItemList.UV_Coil.get(8),
@@ -1311,7 +1311,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(16),
                 ItemList.Hull_UEV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 4),
+                MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt04, 4),
                 MaterialLibAPI.getStack(Materials.Orundum, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Kevlar, Shapes.plateDense, 16),
                 ItemList.UHV_Coil.get(8),
@@ -1332,7 +1332,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(32),
                 ItemList.Hull_UIV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 4),
+                MaterialLibAPI.getStack(Materials.SuperconductorUIV, TEBlockShapes.wireGt04, 4),
                 MaterialLibAPI.getStack(Materials.ChromaticGlass, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.RadoxPoly, Shapes.plateDouble, 16),
                 ItemList.UEV_Coil.get(8),
@@ -1356,9 +1356,9 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(64),
                 ItemList.Hull_UMV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUMV, 4),
+                MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt04, 4),
                 MaterialLibAPI.getStack(Materials.ChromaticGlass, Shapes.plate, 32),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.RadoxPoly, 1),
+                MaterialLibAPI.getStack(Materials.RadoxPoly, Shapes.plateSuperdense, 1),
                 ItemList.UIV_Coil.get(8),
                 ItemList.EnergisedTesseract.get(12),
                 ItemList.Electromagnet_Tengam.get(1),

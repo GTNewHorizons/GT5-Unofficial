@@ -91,9 +91,7 @@ public class AdditionalRecipes {
             ItemStack EthanolCell = MaterialLibAPI.getStack(Materials.Ethanol, CellShapes.cell, 1);
             GTValues.RA.stdBuilder()
                 .itemInputs(BioCultureEnum.getPetriDish(culture.bioCulture), DNAFlask, Detergent, EthanolCell)
-                .itemOutputs(
-                    BioDataEnum.getDNASampleFlask(DNA),
-                    GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
+                .itemOutputs(BioDataEnum.getDNASampleFlask(DNA), GTUtility.getEmptyCell(1L))
                 .outputChances(DNA.getChance(), 100_00)
                 .fluidInputs(GTModHandler.getDistilledWater(1_000))
                 .special(BioItemList.mBioLabParts[0])
@@ -230,12 +228,10 @@ public class AdditionalRecipes {
                         .itemInputs(
                             ItemList.EmptyPetriDish.get(1),
                             fluidStack.equals(GTUtility.getWater(1_000))
-                                ? GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1)
+                                ? MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1)
                                 : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1_000))
                                     .get(0))
-                        .itemOutputs(
-                            BioCultureEnum.getPetriDish(bioCulture),
-                            GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
+                        .itemOutputs(BioCultureEnum.getPetriDish(bioCulture), GTUtility.getEmptyCell(1))
                         .outputChances(bioCulture.getChance(), 100_00)
                         .fluidInputs(new FluidStack(bioCulture.getFluid(), 1_000))
                         .duration(25 * SECONDS)
@@ -265,7 +261,7 @@ public class AdditionalRecipes {
         for (Pair<Material, Integer> fuel : liquidFuels) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, fuel.getLeft(), 1))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
+                .itemOutputs(GTUtility.getEmptyCell(1))
                 .metadata(FUEL_VALUE, fuel.getRight())
                 .addTo(BartWorksRecipeMaps.acidGenFuels);
         }
@@ -280,7 +276,7 @@ public class AdditionalRecipes {
                 .itemInputs(
                     FluidContainerRegistry
                         .fillFluidContainer(new FluidStack(otherFuel.getLeft(), 1000), ItemList.Cell_Empty.get(1L)))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
+                .itemOutputs(GTUtility.getEmptyCell(1))
                 .metadata(FUEL_VALUE, otherFuel.getRight())
                 .addTo(BartWorksRecipeMaps.acidGenFuels);
         }

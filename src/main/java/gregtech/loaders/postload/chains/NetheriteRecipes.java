@@ -49,10 +49,12 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
@@ -448,7 +450,7 @@ public class NetheriteRecipes {
         addNetheritePartRecipe(Shapes.gearGt, 1, 4);
         if (EtFuturumRequiem.isModLoaded()) {
             addNetheritePartRecipe(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.InfusedGold, 1),
+                MaterialLibAPI.getStack(Materials.InfusedGold, BlockShapes.block, 1),
                 getModItem(EtFuturumRequiem.ID, "netherite_block", 1, missing),
                 9);
         }
@@ -456,7 +458,7 @@ public class NetheriteRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Netherite, Shapes.stick, 4))
             .circuit(4)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Netherite, TEBlockShapes.frameGt, 1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);

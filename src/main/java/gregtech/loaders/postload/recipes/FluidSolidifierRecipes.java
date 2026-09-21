@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
@@ -27,6 +28,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
@@ -54,7 +56,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
-            .itemOutputs(GTOreDictUnificator.get("gemMercury", 1L))
+            .itemOutputs(getModItem(Thaumcraft.ID, "ItemResource", 1L, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, 1_000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
@@ -273,7 +275,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
-            .itemOutputs(GTOreDictUnificator.get("ingotIron", 1L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.ingot, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CastIron, FluidShapes.fluidMolten, INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_ULV)
@@ -281,7 +283,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(GTOreDictUnificator.get("blockIron", 1L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Iron, BlockShapes.block, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CastIron, FluidShapes.fluidMolten, 9 * INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_ULV)

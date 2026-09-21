@@ -9,9 +9,12 @@ import static gregtech.api.enums.OrePrefixes.dustTiny;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -44,20 +47,22 @@ public final class PlatinumSludgeOutputs {
         Material replacement = association.mMaterial.mMaterial == Materials.Platinum ? Materials.PlatinumMetallicPowder
             : association.mMaterial.mMaterial == Materials.Palladium ? Materials.PalladiumMetallicPowder : null;
         return replacement == null ? output
-            : GTOreDictUnificator
-                .get(association.mPrefix == OrePrefixes.nugget ? dustTiny : dust, replacement, output.stackSize * 2L);
+            : MaterialLibAPI.getStack(
+                replacement,
+                association.mPrefix == OrePrefixes.nugget ? Shapes.dustTiny : Shapes.dust,
+                Math.min(64, output.stackSize * 2));
     }
 
     public static ItemStack convertCrafting(Material material, ItemStack output) {
         if (!GTUtility.isStackValid(output)) return output;
-        if (material == Materials.Platinum)
-            return GTOreDictUnificator.get(dust, Materials.PlatinumMetallicPowder, output.stackSize * 2L);
-        if (material == Materials.Palladium)
-            return GTOreDictUnificator.get(dust, Materials.PalladiumMetallicPowder, output.stackSize * 2L);
+        if (material == Materials.Platinum) return MaterialLibAPI
+            .getStack(Materials.PlatinumMetallicPowder, Shapes.dust, Math.min(64, output.stackSize * 2));
+        if (material == Materials.Palladium) return MaterialLibAPI
+            .getStack(Materials.PalladiumMetallicPowder, Shapes.dust, Math.min(64, output.stackSize * 2));
         if (material == Materials.Iridium)
-            return GTOreDictUnificator.get(dust, Materials.IridiumMetalResidue, output.stackSize);
+            return MaterialLibAPI.getStack(Materials.IridiumMetalResidue, Shapes.dust, output.stackSize);
         if (material == Materials.Osmium)
-            return GTOreDictUnificator.get(dust, Materials.RarestMetalResidue, output.stackSize);
+            return MaterialLibAPI.getStack(Materials.RarestMetalResidue, Shapes.dust, output.stackSize);
         return output;
     }
 
@@ -65,9 +70,9 @@ public final class PlatinumSludgeOutputs {
         if (!GTUtility.isStackValid(output)) return output;
 
         if (matchesDust(Materials.Ruthenium, output))
-            return GTOreDictUnificator.get(dust, Materials.LeachResidue, output.stackSize * 2L);
-        if (matchesDust(Materials.Rhodium, output))
-            return GTOreDictUnificator.get(dust, Materials.CrudeRhodiumMetal, output.stackSize * 2L);
+            return MaterialLibAPI.getStack(Materials.LeachResidue, Shapes.dust, Math.min(64, output.stackSize * 2));
+        if (matchesDust(Materials.Rhodium, output)) return MaterialLibAPI
+            .getStack(Materials.CrudeRhodiumMetal, Shapes.dust, Math.min(64, output.stackSize * 2));
 
         ItemData association = GTOreDictUnificator.getAssociation(output);
         if (association == null || association.mPrefix == null || association.mMaterial == null) return output;
@@ -80,23 +85,25 @@ public final class PlatinumSludgeOutputs {
         else if (association.mMaterial.mMaterial == Materials.Osmium) replacement = Materials.RarestMetalResidue;
         else return output;
 
-        OrePrefixes prefix;
+        Shape shape;
         if (association.mPrefix == dust || association.mPrefix == dustImpure || association.mPrefix == dustPure) {
-            prefix = dust;
+            shape = Shapes.dust;
         } else if (association.mPrefix == dustSmall) {
-            prefix = dustSmall;
+            shape = Shapes.dustSmall;
         } else if (association.mPrefix == dustTiny) {
-            prefix = dustTiny;
+            shape = Shapes.dustTiny;
         } else {
             return output;
         }
-        return GTOreDictUnificator.get(prefix, replacement, output.stackSize * 2L);
+        return MaterialLibAPI.getStack(replacement, shape, Math.min(64, output.stackSize * 2));
     }
 
     private static boolean matchesDust(Material material, ItemStack stack) {
-        return GTUtility.areStacksEqual(GTOreDictUnificator.get(dust, material, 1L), stack)
-            || GTUtility.areStacksEqual(GTOreDictUnificator.get(dustImpure, material, 1L), stack)
-            || GTUtility.areStacksEqual(GTOreDictUnificator.get(dustPure, material, 1L), stack);
+        for (Shape shape : new Shape[] { Shapes.dust, Shapes.dustImpure, Shapes.dustPure }) {
+            if (material.hasShape(shape)
+                && GTUtility.areStacksEqual(MaterialLibAPI.getStack(material, shape, 1), stack)) return true;
+        }
+        return false;
     }
 
     private static boolean isMaterialBlacklisted(Material material) {

@@ -16,6 +16,7 @@ import static gregtech.api.structure.error.StructureErrorRegistry.UNKNOWN_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofStorageBlock;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
 
@@ -229,7 +230,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         .addElement('F', Casings.TurbineShaft.asElement()) // Turbine Central Casing
         .addElement('G', ofBlock(supercriticalFluidTurbineCasing, 0)) // Turbine External Casing
         .addElement('H', CentrifugeHatchElement.ROTOR_ASSEMBLY.newAny(1538, 2)) // turbine hatches
-        .addElement('a', ofBlock(GregTechAPI.sBlockMetal4, 13)) // t1 block, Naq Alloy
+        .addElement('a', ofStorageBlock(Materials.NaquadahAlloy)) // t1 block, Naq Alloy
         .addElement(
             'b',
             lazy(
@@ -242,15 +243,15 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             'c',
             lazy(
                 t -> Mods.Avaritia.isModLoaded() ? ofBlock(LudicrousBlocks.resource_block, 0)
-                    : ofBlock(GregTechAPI.sBlockMetal5, 2))) // t2 block, Cosmic Neutronium. fallback included for dev
+                    : ofStorageBlock(Materials.Neutronium))) // t2 block, Cosmic Neutronium. fallback included for dev
         .addElement('d', ofFrame(Materials.Neutronium)) // t2 frame, Neutronium
         .addElement(
             'e',
             lazy(
                 t -> Mods.Avaritia.isModLoaded() ? ofBlock(LudicrousBlocks.resource_block, 1)
-                    : ofBlock(GregTechAPI.sBlockMetal5, 3))) // t3 block, Infinity. fallback included for dev
+                    : ofStorageBlock(Materials.Nichrome))) // t3 block, Infinity. fallback included for dev
         .addElement('f', ofFrame(Materials.Infinity)) // t3 frame, Infinity
-        .addElement('g', ofBlock(GregTechAPI.sBlockMetal9, 6)) // t4 block, WDM.
+        .addElement('g', ofStorageBlock(Materials.WhiteDwarfMatter)) // t4 block, WDM.
         .addElement('h', lazy(t -> ofFrame(Materials.SpaceTime))) // t4 frame
         .build();
 

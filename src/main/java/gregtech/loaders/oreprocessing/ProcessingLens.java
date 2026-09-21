@@ -17,9 +17,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialTextures;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
@@ -45,55 +45,55 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
         switch (MaterialUtils.internalName(material)) {
             case "Diamond", "Glass" -> {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
+                    .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 1L))
                     .itemOutputs(
-                        GTOreDictUnificator.get(OrePrefixes.lens, material, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 1L))
+                        MaterialParts.stack(OrePrefixes.lens, material, 1L),
+                        MaterialParts.stack(OrePrefixes.dustSmall, material, 1L))
                     .duration(1 * MINUTES)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(latheRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.gemExquisite, material, 1L))
+                    .itemInputs(MaterialParts.stack(OrePrefixes.gemExquisite, material, 1L))
                     .itemOutputs(
-                        GTOreDictUnificator.get(OrePrefixes.lens, material, 3L),
-                        GTOreDictUnificator.get(OrePrefixes.dust, material, 1L))
+                        MaterialParts.stack(OrePrefixes.lens, material, 3L),
+                        MaterialParts.stack(OrePrefixes.dust, material, 1L))
                     .duration(2 * MINUTES)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(latheRecipes);
             }
             case "ChromaticGlass" -> {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, material, 16L))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.lens, material, 1L))
+                    .itemInputs(MaterialParts.stack(OrePrefixes.dust, material, 16L))
+                    .itemOutputs(MaterialParts.stack(OrePrefixes.lens, material, 1L))
                     .duration(10 * MINUTES)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(compressorRecipes);
             }
             default -> {
-                if (GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
+                if (MaterialParts.stack(OrePrefixes.plate, material, 1L) != null) {
                     GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                    recipeBuilder.itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L));
-                    if (GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 1L) == null) {
-                        recipeBuilder.itemOutputs(GTOreDictUnificator.get(OrePrefixes.lens, material, 1L));
+                    recipeBuilder.itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 1L));
+                    if (MaterialParts.stack(OrePrefixes.dustSmall, material, 1L) == null) {
+                        recipeBuilder.itemOutputs(MaterialParts.stack(OrePrefixes.lens, material, 1L));
                     } else {
                         recipeBuilder.itemOutputs(
-                            GTOreDictUnificator.get(OrePrefixes.lens, material, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 1L));
+                            MaterialParts.stack(OrePrefixes.lens, material, 1L),
+                            MaterialParts.stack(OrePrefixes.dustSmall, material, 1L));
                     }
                     recipeBuilder.duration(1 * MINUTES)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(latheRecipes);
                 }
-                if (GTOreDictUnificator.get(OrePrefixes.gemExquisite, material, 1L) != null) {
+                if (MaterialParts.stack(OrePrefixes.gemExquisite, material, 1L) != null) {
                     GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                    recipeBuilder.itemInputs(GTOreDictUnificator.get(OrePrefixes.gemExquisite, material, 1L));
-                    if (GTOreDictUnificator.get(OrePrefixes.dust, material, 1L) == null) {
-                        recipeBuilder.itemOutputs(GTOreDictUnificator.get(OrePrefixes.lens, material, 1L));
+                    recipeBuilder.itemInputs(MaterialParts.stack(OrePrefixes.gemExquisite, material, 1L));
+                    if (MaterialParts.stack(OrePrefixes.dust, material, 1L) == null) {
+                        recipeBuilder.itemOutputs(MaterialParts.stack(OrePrefixes.lens, material, 1L));
                     } else {
                         recipeBuilder.itemOutputs(
-                            GTOreDictUnificator.get(OrePrefixes.lens, material, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.dust, material, 2L));
+                            MaterialParts.stack(OrePrefixes.lens, material, 1L),
+                            MaterialParts.stack(OrePrefixes.dust, material, 2L));
                     }
                     recipeBuilder.duration(2 * MINUTES)
                         .eut(TierEU.RECIPE_LV)

@@ -15,7 +15,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
@@ -34,7 +33,7 @@ public class CokeAndPyrolyseOven {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("logWood", 20))
             .circuit(20)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Shapes.gem, 24))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 1440))
             .duration(72 * SECONDS)
@@ -43,7 +42,7 @@ public class CokeAndPyrolyseOven {
 
         // Coal to Coke
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Shapes.gem, 16))
             .circuit(22)
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 10))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 1_000))
@@ -65,9 +64,7 @@ public class CokeAndPyrolyseOven {
 
         // Coke & Coal
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12),
-                GTOreDictUnificator.get("fuelCoke", 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Shapes.gem, 12), GTOreDictUnificator.get("fuelCoke", 6))
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 14))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 5040))

@@ -32,7 +32,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
@@ -62,7 +61,7 @@ public class PurifiedWaterRecipes {
             .itemOutputs(
                 new ItemStack(Items.stick, 1),
                 MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 1))
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.nugget, 1))
             .outputChances(1000, 500, 100)
             .duration(duration)
             .eut(TierEU.RECIPE_LuV)

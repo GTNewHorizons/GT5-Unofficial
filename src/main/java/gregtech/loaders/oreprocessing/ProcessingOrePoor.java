@@ -12,6 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -55,7 +56,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, material, multiplier))
+            .itemOutputs(GTUtility.copyAmount(multiplier, MaterialParts.stack(OrePrefixes.dustTiny, material, 1)))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
@@ -63,8 +64,8 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, material, 2 * multiplier),
-                GTOreDictUnificator.get(
+                GTUtility.copyAmount(2 * multiplier, MaterialParts.stack(OrePrefixes.dustTiny, material, 1)),
+                MaterialParts.stack(
                     OrePrefixes.dustTiny,
                     GTUtility.selectItemInList(0, material, MaterialUtils.oreByProducts(material)),
                     1L),
@@ -76,6 +77,8 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
 
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)) GTModHandler.addSmeltingRecipe(
             GTUtility.copyAmount(1, stack),
-            GTOreDictUnificator.get(OrePrefixes.nugget, MaterialUtils.directSmelting(material), multiplier));
+            GTUtility.copyAmount(
+                multiplier,
+                MaterialParts.stack(OrePrefixes.nugget, MaterialUtils.directSmelting(material), 1)));
     }
 }

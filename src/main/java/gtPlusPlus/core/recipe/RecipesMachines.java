@@ -26,7 +26,6 @@ import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import toxiceverglades.dimension.DimensionEverglades;
@@ -99,7 +98,7 @@ public class RecipesMachines {
                 ItemList.Hull_MV.get(1),
                 new ItemStack(ModBlocks.blockCircuitProgrammer),
                 ItemList.VOLUMETRIC_FLASK.get(8),
-                GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.StainlessSteel, 2),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.pipeSmall, 2),
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 4))
             .circuit(17)
             .itemOutputs(new ItemStack(ModBlocks.blockVolumetricFlaskSetter, 1))
@@ -178,7 +177,7 @@ public class RecipesMachines {
                 ItemList.Emitter_HV.get(1),
                 ItemList.Sensor_HV.get(1),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 4))
+                MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.wireGt08, 4))
             .itemOutputs(new ItemStack(DimensionEverglades.blockPortalFrame, 2))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Zeron100, 8 * INGOTS))
             .duration(4 * MINUTES + 30 * SECONDS)

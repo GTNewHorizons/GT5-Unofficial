@@ -64,7 +64,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Shapes.dust, 4))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Shapes.gem, 3),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L))
+                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 12))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(electricImplosionCompressorRecipes);
@@ -127,7 +127,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .itemInputs(
                 GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1)),
                 MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemChipped, 3),
-                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.FoolsRuby, 64),
+                MaterialLibAPI.getStack(Materials.FoolsRuby, Shapes.gemFlawless, 64),
                 MaterialLibAPI.getStack(Materials.Amethyst, Shapes.gemFlawless, 64),
                 MaterialLibAPI.getStack(Materials.Fluorspar, Shapes.gemFlawless, 64),
                 MaterialLibAPI.getStack(Materials.Tanzanite, Shapes.gemFlawless, 64))

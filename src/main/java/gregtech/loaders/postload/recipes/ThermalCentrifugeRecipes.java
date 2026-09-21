@@ -10,11 +10,9 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class ThermalCentrifugeRecipes implements Runnable {
 
@@ -28,7 +26,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.gem, 2))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustTiny, 1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)

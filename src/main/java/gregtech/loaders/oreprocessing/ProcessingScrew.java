@@ -15,7 +15,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -31,9 +30,9 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
-            if (GTOreDictUnificator.get(OrePrefixes.bolt, material, 1L) != null) {
+            if (MaterialParts.stack(OrePrefixes.bolt, material, 1L) != null) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, material, 1L))
+                    .itemInputs(MaterialParts.stack(OrePrefixes.bolt, material, 1L))
                     .itemOutputs(GTUtility.copyAmount(1, stack))
                     .duration(((int) Math.max(MaterialUtils.mass(material) / 8L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 4))
@@ -42,7 +41,7 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
             if (MaterialUtils.unifiable(material)) {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.screw, material, 1L),
+                        MaterialParts.stack(OrePrefixes.screw, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "fX", "X ", 'X', MaterialParts.craftIngredient(OrePrefixes.bolt, material) });
                 }

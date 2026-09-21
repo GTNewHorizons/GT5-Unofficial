@@ -12,10 +12,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
@@ -28,7 +29,7 @@ public class CokeOvenRecipes implements Runnable {
         if (!Mods.Railcraft.isModLoaded()) return;
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get("gemCoal", 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Shapes.gem, 1))
             .itemOutputs(RailcraftToolItems.getCoalCoke(1))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 500))
             .duration(1 * MINUTES + 30 * SECONDS)
@@ -36,7 +37,7 @@ public class CokeOvenRecipes implements Runnable {
             .addTo(cokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get("blockCoal", 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, BlockShapes.block, 1))
             .itemOutputs(EnumCube.COKE_BLOCK.getItem(1))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 4_500))
             .duration(13 * MINUTES + 30 * SECONDS)
@@ -77,14 +78,14 @@ public class CokeOvenRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.WoodPellet.get(2))
-            .itemOutputs(GTOreDictUnificator.get("gemCharcoal", 3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Shapes.gem, 3))
             .duration(1 * MINUTES)
             .eut(0)
             .addTo(cokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("logWood", 1))
-            .itemOutputs(GTOreDictUnificator.get("gemCharcoal", 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Shapes.gem, 1))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 250))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(0)

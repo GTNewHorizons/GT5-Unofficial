@@ -1,17 +1,16 @@
 package gtnhlanth.util;
 
-import static gregtech.api.enums.OrePrefixes.dust;
-import static gregtech.api.enums.OrePrefixes.dustSmall;
-import static gregtech.api.enums.OrePrefixes.dustTiny;
-
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import bartworks.system.material.gtenhancement.PlatinumSludgeOutputs;
 import goodgenerator.util.NaquadahRecipeOutputs;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -46,10 +45,12 @@ public final class LanthanidesRecipeOutputs {
         output = NaquadahRecipeOutputs.convert(output);
         if (!GTUtility.isStackValid(output)) return output;
         if (material == Materials.Cerium) {
-            return GTOreDictUnificator.get(dust, Materials.CeriumRichMixture, output.stackSize * 2L);
+            return MaterialLibAPI
+                .getStack(Materials.CeriumRichMixture, Shapes.dust, Math.min(64, output.stackSize * 2));
         }
         if (material == Materials.Samarium) {
-            return GTOreDictUnificator.get(dust, Materials.SamariumOreConcentrate, output.stackSize * 2L);
+            return MaterialLibAPI
+                .getStack(Materials.SamariumOreConcentrate, Shapes.dust, Math.min(64, output.stackSize * 2));
         }
         return output;
     }
@@ -60,25 +61,25 @@ public final class LanthanidesRecipeOutputs {
             if (!GTUtility.isStackValid(output)) continue;
 
             Material replacement = null;
-            OrePrefixes prefix = null;
-            if (matches(output, dust, Materials.Cerium)) {
+            Shape shape = null;
+            if (matches(output, Shapes.dust, Materials.Cerium)) {
                 replacement = Materials.CeriumRichMixture;
-                prefix = dust;
-            } else if (matches(output, dustSmall, Materials.Cerium)) {
+                shape = Shapes.dust;
+            } else if (matches(output, Shapes.dustSmall, Materials.Cerium)) {
                 replacement = Materials.CeriumRichMixture;
-                prefix = dustSmall;
-            } else if (matches(output, dustTiny, Materials.Cerium)) {
+                shape = Shapes.dustSmall;
+            } else if (matches(output, Shapes.dustTiny, Materials.Cerium)) {
                 replacement = Materials.CeriumRichMixture;
-                prefix = dustTiny;
-            } else if (matches(output, dust, Materials.Samarium)) {
+                shape = Shapes.dustTiny;
+            } else if (matches(output, Shapes.dust, Materials.Samarium)) {
                 replacement = Materials.SamariumOreConcentrate;
-                prefix = dust;
-            } else if (matches(output, dustSmall, Materials.Samarium)) {
+                shape = Shapes.dust;
+            } else if (matches(output, Shapes.dustSmall, Materials.Samarium)) {
                 replacement = Materials.SamariumOreConcentrate;
-                prefix = dustSmall;
-            } else if (matches(output, dustTiny, Materials.Samarium)) {
+                shape = Shapes.dustSmall;
+            } else if (matches(output, Shapes.dustTiny, Materials.Samarium)) {
                 replacement = Materials.SamariumOreConcentrate;
-                prefix = dustTiny;
+                shape = Shapes.dustTiny;
             } else {
                 ItemData association = GTOreDictUnificator.getAssociation(output);
                 if (association == null || association.mPrefix == null || association.mMaterial == null) continue;
@@ -88,17 +89,17 @@ public final class LanthanidesRecipeOutputs {
                 } else if (material == Materials.Samarium) {
                     replacement = Materials.SamariumOreConcentrate;
                 }
-                prefix = association.mPrefix;
+                shape = MaterialParts.shape(association.mPrefix);
             }
 
             if (replacement == null) continue;
-            if (prefix != dust && prefix != dustSmall && prefix != dustTiny) continue;
-            outputs[i] = GTOreDictUnificator.get(prefix, replacement, output.stackSize * (long) multiplier);
+            if (shape != Shapes.dust && shape != Shapes.dustSmall && shape != Shapes.dustTiny) continue;
+            outputs[i] = MaterialLibAPI.getStack(replacement, shape, Math.min(64, output.stackSize * multiplier));
         }
         return outputs;
     }
 
-    private static boolean matches(ItemStack output, OrePrefixes prefix, Material material) {
-        return GTUtility.areStacksEqual(output, GTOreDictUnificator.get(prefix, material, 1L), true);
+    private static boolean matches(ItemStack output, Shape shape, Material material) {
+        return GTUtility.areStacksEqual(output, MaterialLibAPI.getStack(material, shape, 1), true);
     }
 }

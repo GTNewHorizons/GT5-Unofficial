@@ -22,12 +22,14 @@ import com.ruling_0.materiallib.api.Material;
 import akka.japi.Pair;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ores.GTOreAdapter;
 import gregtech.loaders.oreprocessing.ProcessingDustGeneration;
 import gtnhintergalactic.item.ItemMiningDrones;
 
@@ -775,10 +777,19 @@ public class SpaceMiningRecipes {
                 null,
                 null,
                 new int[] { 7400, 2000, 500, 98, 2 },
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.MysteriousCrystal, 64),
-                    GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Mytryl, 64),
-                    GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Oriharukon, 64),
-                    GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.HeeEndium, 64),
+                new ItemStack[] {
+                    GTUtility.copyAmount(
+                        64,
+                        GTOreAdapter.INSTANCE.getVariantStack(Materials.MysteriousCrystal, StoneType.Endstone, false)),
+                    GTUtility.copyAmount(
+                        64,
+                        GTOreAdapter.INSTANCE.getVariantStack(Materials.Mytryl, StoneType.Endstone, false)),
+                    GTUtility.copyAmount(
+                        64,
+                        GTOreAdapter.INSTANCE.getVariantStack(Materials.Oriharukon, StoneType.Endstone, false)),
+                    GTUtility.copyAmount(
+                        64,
+                        GTOreAdapter.INSTANCE.getVariantStack(Materials.HeeEndium, StoneType.Endstone, false)),
                     GTModHandler.getModItem(HardcoreEnderExpansion.ID, "end_powder_ore", 64) },
                 30,
                 60,
