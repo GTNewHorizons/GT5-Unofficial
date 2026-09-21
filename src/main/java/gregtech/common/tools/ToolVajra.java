@@ -22,6 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
+import appeng.api.parts.IPartItem;
+
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
@@ -248,10 +250,11 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
         if (Mods.Backhand.isModLoaded() && world.isAirBlock(x, y, z)) {
             BackhandUtils.useOffhandItem(player, () -> {
                 ItemStack offhand = player.getHeldItem();
-                if (offhand != null && offhand.getItem() instanceof ItemBlock itemBlock) {
+                Item offhandItem = offhand == null ? null : offhand.getItem();
+                if (offhandItem instanceof ItemBlock || offhandItem instanceof IPartItem) {
                     int damage = offhand.getItemDamage();
                     int stackSize = offhand.stackSize;
-                    itemBlock.onItemUse(offhand, player, world, x, y, z, side, hitX, hitY, hitZ);
+                    offhandItem.onItemUse(offhand, player, world, x, y, z, side, hitX, hitY, hitZ);
                     if (player.capabilities.isCreativeMode) {
                         offhand.setItemDamage(damage);
                         offhand.stackSize = stackSize;
