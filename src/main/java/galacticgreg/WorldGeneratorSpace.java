@@ -208,7 +208,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             int minZ = (cZ - size) >> 4;
             int maxZ = (cZ + size + 1) >> 4;
 
-            return minX <= chunkX && chunkX <= maxX || minZ <= chunkZ && chunkZ <= maxZ;
+            return minX <= chunkX && chunkX <= maxX && minZ <= chunkZ && chunkZ <= maxZ;
         }
 
         public void generateChunk(World world, int chunkX, int chunkZ) {
@@ -343,7 +343,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             LOGGER.trace("Random loot chest enabled, flipping the coin");
 
             // Loot chest is 1 in 100 (Was: 1:1000 which actually never happened)
-            if (asteroidConfig.LootChestChance < rng.nextInt(100)) return;
+            if (asteroidConfig.LootChestChance <= rng.nextInt(100)) return;
 
             LOGGER.debug("We got a match. Preparing to generate the loot chest");
 
@@ -419,7 +419,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
     }
 
     public static boolean generatesAsteroid(long worldSeed, int chunkX, int chunkZ, int dimId, int asteroidChance) {
-        return getRandom(worldSeed, chunkX, chunkZ, dimId).nextInt(100) <= asteroidChance;
+        return getRandom(worldSeed, chunkX, chunkZ, dimId).nextInt(100) < asteroidChance;
     }
 
     /**
