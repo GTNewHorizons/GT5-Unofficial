@@ -34,8 +34,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 // spotless:off
@@ -2074,7 +2074,7 @@ public class ComponentAssemblyLineLoader {
     // CoAL recipes regularly require overly large ItemStacks, this lets use cleanly and
     // conveniently get over-sized stacks of many different types of items with different storages.
     private static ItemStack get(OrePrefixes prefix, Material material, int amount) {
-        return GTUtility.copyAmountUnsafe(amount, GTOreDictUnificator.get(prefix, material, 1));
+        return GTUtility.copyAmountUnsafe(amount, MaterialParts.stack(prefix, material, 1));
     }
 
     private static ItemStack get(ItemList item, int amount) {

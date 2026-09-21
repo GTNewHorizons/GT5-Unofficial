@@ -5,8 +5,10 @@ import java.text.MessageFormat;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
@@ -61,7 +63,7 @@ public enum NaniteTier {
 
     public ItemStack getStack() {
         if (this.stack == null) {
-            stack = GTOreDictUnificator.get(OrePrefixes.nanite, getMaterial(), 1);
+            stack = MaterialLibAPI.getStack(getMaterial(), Shapes.nanite, 1);
         }
 
         return stack.copy();

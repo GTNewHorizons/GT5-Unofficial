@@ -1684,7 +1684,7 @@ public final class RecipeMaps {
             }
             List<ItemStack> inputs = new ArrayList<>();
             inputs.add(recipe.mInputs[0]);
-            ItemStack naniteStack = GTOreDictUnificator.get(OrePrefixes.nanite, naniteMaterial, 1);
+            ItemStack naniteStack = MaterialLibAPI.getStack(naniteMaterial, Shapes.nanite, 1);
             inputs.add(new ItemStack(naniteStack.getItem(), 0, naniteStack.getItemDamage()));
             inputs.addAll(Arrays.asList(Arrays.copyOfRange(recipe.mInputs, 1, recipe.mInputs.length)));
             return inputs.toArray(new ItemStack[0]);

@@ -5,6 +5,8 @@ import static gregtech.api.enums.materials.GTShapeStore.reg;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
+import gregtech.common.items.GTNaniteShapeItem;
+
 /// Basic item [Shape]s
 public class Shapes {
 
@@ -31,6 +33,7 @@ public class Shapes {
     public static Shape itemCasing;
     public static Shape lens;
     public static Shape milled;
+    public static Shape nanite;
     public static Shape nugget;
     public static Shape plate;
     public static Shape plateDense;
@@ -148,6 +151,8 @@ public class Shapes {
             MaterialLibAPI.newItemShape("gregtech", "milled")
                 .displayName("Milled %s")
                 .build());
+        nanite = reg(
+            MaterialLibAPI.registerItemShape(new GTNaniteShapeItem("gregtech", "nanite", "%s Nanites", "nanite")));
         nugget = reg(
             MaterialLibAPI.newItemShape("gregtech", "nugget")
                 .displayName("%s Nugget")

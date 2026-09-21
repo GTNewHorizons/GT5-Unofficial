@@ -52,7 +52,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
@@ -64,7 +63,6 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -2316,7 +2314,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Lanthanum, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.LanthanumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2329,7 +2327,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Praseodymium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.PraseodymiumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2342,7 +2340,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.CeriumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2355,7 +2353,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Neodymium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.NeodymiumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2368,7 +2366,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.SamariumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2381,7 +2379,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.EuropiumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2394,7 +2392,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Gadolinium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.GadoliniumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2407,7 +2405,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Terbium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.TerbiumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2420,7 +2418,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Dysprosium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.DysprosiumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2433,7 +2431,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Holmium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.HolmiumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2446,7 +2444,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Erbium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.ErbiumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2459,7 +2457,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Thulium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.ThuliumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2472,7 +2470,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Ytterbium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.YtterbiumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -2485,7 +2483,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.LutetiumExtractingNanoResin, FluidShapes.fluidLiquid, 1_000))
@@ -3686,7 +3684,7 @@ public class RecipeLoader {
         // Amalgatite Gems
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1)),
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.Magmatter, Shapes.nanite, 1)),
                 MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemFlawed, 3),
                 MaterialLibAPI.getStack(Materials.Amber, Shapes.gem, 64),
                 MaterialLibAPI.getStack(Materials.Topaz, Shapes.gem, 64),

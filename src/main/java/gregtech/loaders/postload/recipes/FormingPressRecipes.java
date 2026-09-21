@@ -16,7 +16,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
@@ -24,7 +23,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class FormingPressRecipes implements Runnable {
 
@@ -199,9 +197,9 @@ public class FormingPressRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Eternity, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Shapes.plate, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 16L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 4L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 4L),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.nanite, 16),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 4),
+                MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.nanite, 4),
                 MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.plate, 1))
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 4_096_000L))
             .itemOutputs(ItemList.NaniteFramework.get(1))

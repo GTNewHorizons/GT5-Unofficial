@@ -37,7 +37,6 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -273,7 +272,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             GTUtility.copyAmount(1, stack),
-                            GTOreDictUnificator.get(OrePrefixes.plate.oreDictName(Materials.Rubber), costMultiplier))
+                            MaterialLibAPI.getStack(Materials.Rubber, Shapes.plate, costMultiplier))
                         .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                         .duration(5 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)

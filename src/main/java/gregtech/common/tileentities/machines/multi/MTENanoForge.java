@@ -42,12 +42,14 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -602,7 +604,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             return;
         }
 
-        if (aStack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 1))) {
+        if (aStack.isItemEqual(MaterialLibAPI.getStack(Materials.Eternity, Shapes.nanite, 1))) {
             // tier 4
             casingAmount = 0;
             if (!checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 33, 0, errors)) return;
@@ -621,16 +623,16 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         } else {
             if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1, errors)) return;
 
-            if (aStack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))) {
+            if (aStack.isItemEqual(MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))) {
                 mSpecialTier = 1;
             }
 
-            if (aStack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 1))
+            if (aStack.isItemEqual(MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 1))
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4, errors)) {
                 mSpecialTier = 2;
             }
 
-            if (aStack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1))
+            if (aStack.isItemEqual(MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 1))
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4, errors)
                 && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4, errors)) {
                 mSpecialTier = 3;
@@ -718,10 +720,10 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     public void onPreviewConstruct(@NotNull ItemStack trigger) {
         mSpecialTier = (byte) trigger.stackSize;
         ItemStack nanite = switch (trigger.stackSize) {
-            case 1 -> GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1);
-            case 2 -> GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 1);
-            case 3 -> GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1);
-            default -> GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 1);
+            case 1 -> MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1);
+            case 2 -> MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 1);
+            case 3 -> MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 1);
+            default -> MaterialLibAPI.getStack(Materials.Eternity, Shapes.nanite, 1);
         };
         setInventorySlotContents(getControllerSlotIndex(), nanite);
     }

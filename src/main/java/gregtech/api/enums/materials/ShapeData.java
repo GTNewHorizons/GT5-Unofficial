@@ -426,6 +426,10 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Milled %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true);
+        Shapes.nanite.setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Nanites")
+            .setProperty(GTShapeProperties.UNIFIABLE, true)
+            .setProperty(GTShapeProperties.MATERIAL_BASED, true)
+            .setProperty(GTShapeProperties.SELF_REFERENCING, true);
         Shapes.nugget.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 9)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Nugget")

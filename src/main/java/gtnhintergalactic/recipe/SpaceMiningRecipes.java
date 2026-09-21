@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import akka.japi.Pair;
 import gregtech.api.enums.ItemList;
@@ -25,8 +26,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.GTOreAdapter;
@@ -60,8 +61,8 @@ public class SpaceMiningRecipes {
             DRONE_TIERS.put(GTUtility.ItemId.createWithoutNBT(drone), i);
         }
         for (ItemMiningDrones.DroneMaterials mat : ItemMiningDrones.DroneMaterials.values()) {
-            MINING_DRILLS[mat.ordinal()] = GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, mat.getMaterial(), 4);
-            MINING_RODS[mat.ordinal()] = GTOreDictUnificator.get(OrePrefixes.stick, mat.getMaterial(), 4);
+            MINING_DRILLS[mat.ordinal()] = MaterialLibAPI.getStack(mat.getMaterial(), Shapes.toolHeadDrill, 4);
+            MINING_RODS[mat.ordinal()] = MaterialLibAPI.getStack(mat.getMaterial(), Shapes.stick, 4);
         }
     }
 

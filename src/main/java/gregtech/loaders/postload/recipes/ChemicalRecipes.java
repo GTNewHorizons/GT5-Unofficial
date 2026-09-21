@@ -6618,7 +6618,7 @@ public class ChemicalRecipes implements Runnable {
         // Flawless Amalgatite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1)),
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.Magmatter, Shapes.nanite, 1)),
                 MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gem, 3),
                 MaterialLibAPI.getStack(Materials.Bismutite, Shapes.gemFlawed, 64),
                 MaterialLibAPI.getStack(Materials.GarnetYellow, Shapes.gemFlawed, 64),

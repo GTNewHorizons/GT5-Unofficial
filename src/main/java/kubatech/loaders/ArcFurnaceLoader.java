@@ -23,7 +23,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.util.GTOreDictUnificator;
 import kubatech.api.utils.ModUtils;
 import kubatech.loaders.item.arcfurnace.ElectrodeItem;
 
@@ -82,7 +81,7 @@ public class ArcFurnaceLoader {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 64))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 64))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 64 * 144))
             .itemOutputs(ArcFurnaceElectrode.NeutroniumNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UV)
@@ -90,7 +89,7 @@ public class ArcFurnaceLoader {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 16))
+            .itemInputs(MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 16))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 16 * 144))
             .itemOutputs(ArcFurnaceElectrode.TranscendentNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UIV)
@@ -99,7 +98,7 @@ public class ArcFurnaceLoader {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 4))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 4 * 144))
             .itemOutputs(ArcFurnaceElectrode.UniversiumNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UXV)

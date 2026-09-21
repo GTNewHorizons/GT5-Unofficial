@@ -45,7 +45,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class CraftingRecipes implements Runnable {
@@ -170,7 +169,7 @@ public class CraftingRecipes implements Runnable {
         for (int i = 0; i < 9; i++) {
             try {
                 Material cable = cables[i];
-                ItemStack hull = GTOreDictUnificator.get(OrePrefixes.plate, hulls[i], 1L);
+                ItemStack hull = MaterialParts.stack(OrePrefixes.plate, hulls[i], 1);
                 ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
 
                 GTModHandler.addCraftingRecipe(

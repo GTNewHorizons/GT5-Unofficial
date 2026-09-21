@@ -38,7 +38,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
@@ -55,7 +54,6 @@ import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -308,50 +306,46 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         if (!tInputList.isEmpty()) {
             if (isSuperheated()) {
                 for (ItemStack tInput : tInputList) {
-                    if (tInput != GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
-                        if (GTUtility.getFluidForFilledItem(tInput, true) == null
-                            && (this.mMaxProgresstime = GTModHandler.getFuelValue(tInput) / 80) > 0) {
-                            this.excessFuel += GTModHandler.getFuelValue(tInput) % 80;
-                            this.mMaxProgresstime += this.excessFuel / 80;
-                            this.excessFuel %= 80;
-                            this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
-                            this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
-                            this.mEUt = adjustEUtForConfig(getEUt());
-                            this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
-                            tInput.stackSize -= 1;
-                            updateSlots();
-                            if (this.mEfficiencyIncrease > 5000) {
-                                this.mEfficiencyIncrease = 0;
-                                this.mSuperEfficencyIncrease = 20;
-                            }
-                            return CheckRecipeResultRegistry.SUCCESSFUL;
+                    if (GTUtility.getFluidForFilledItem(tInput, true) == null
+                        && (this.mMaxProgresstime = GTModHandler.getFuelValue(tInput) / 80) > 0) {
+                        this.excessFuel += GTModHandler.getFuelValue(tInput) % 80;
+                        this.mMaxProgresstime += this.excessFuel / 80;
+                        this.excessFuel %= 80;
+                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
+                        this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
+                        this.mEUt = adjustEUtForConfig(getEUt());
+                        this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
+                        tInput.stackSize -= 1;
+                        updateSlots();
+                        if (this.mEfficiencyIncrease > 5000) {
+                            this.mEfficiencyIncrease = 0;
+                            this.mSuperEfficencyIncrease = 20;
                         }
+                        return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
             } else {
                 for (ItemStack tInput : tInputList) {
-                    if (tInput != GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
-                        // Solid fuels with burn values below getEUt are ignored (mostly items like sticks), and also
-                        // those with very high fuel values that would cause an overflow error.
-                        if (GTUtility.getFluidForFilledItem(tInput, true) == null
-                            && (this.mMaxProgresstime = GTModHandler.getFuelValue(tInput) / 80) > 0
-                            && (GTModHandler.getFuelValue(tInput) * 2L / this.getEUt()) > 1) {
-                            this.excessFuel += GTModHandler.getFuelValue(tInput) % 80;
-                            this.mMaxProgresstime += this.excessFuel / 80;
-                            this.excessFuel %= 80;
-                            this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
-                            int burnTime = (int) (this.mMaxProgresstime * getLongBurntimeRatio(tInput));
-                            this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(burnTime));
-                            this.mEUt = adjustEUtForConfig(getEUt());
-                            this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
-                            tInput.stackSize -= 1;
-                            updateSlots();
-                            if (this.mEfficiencyIncrease > 5000) {
-                                this.mEfficiencyIncrease = 0;
-                                this.mSuperEfficencyIncrease = 20;
-                            }
-                            return CheckRecipeResultRegistry.SUCCESSFUL;
+                    // Solid fuels with burn values below getEUt are ignored (mostly items like sticks), and also
+                    // those with very high fuel values that would cause an overflow error.
+                    if (GTUtility.getFluidForFilledItem(tInput, true) == null
+                        && (this.mMaxProgresstime = GTModHandler.getFuelValue(tInput) / 80) > 0
+                        && (GTModHandler.getFuelValue(tInput) * 2L / this.getEUt()) > 1) {
+                        this.excessFuel += GTModHandler.getFuelValue(tInput) % 80;
+                        this.mMaxProgresstime += this.excessFuel / 80;
+                        this.excessFuel %= 80;
+                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
+                        int burnTime = (int) (this.mMaxProgresstime * getLongBurntimeRatio(tInput));
+                        this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(burnTime));
+                        this.mEUt = adjustEUtForConfig(getEUt());
+                        this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
+                        tInput.stackSize -= 1;
+                        updateSlots();
+                        if (this.mEfficiencyIncrease > 5000) {
+                            this.mEfficiencyIncrease = 0;
+                            this.mSuperEfficencyIncrease = 20;
                         }
+                        return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
             }

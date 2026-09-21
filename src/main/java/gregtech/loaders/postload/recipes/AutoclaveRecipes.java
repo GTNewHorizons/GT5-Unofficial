@@ -297,7 +297,7 @@ public class AutoclaveRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get("naniteTranscendentMetal", 1L),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 1),
                 MaterialLibAPI.getStack(Materials.Mellion, Shapes.dust, 32))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(8L))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 32_000))
@@ -316,7 +316,7 @@ public class AutoclaveRecipes implements Runnable {
         // Exquisite Amalgatite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, GTOreDictUnificator.get("naniteMagmatter", 1)),
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.Magmatter, Shapes.nanite, 1)),
                 MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemFlawless, 3),
                 MaterialLibAPI.getStack(Materials.Olenite, Shapes.gemChipped, 64),
                 MaterialLibAPI.getStack(Materials.Salt, Shapes.gemChipped, 64),

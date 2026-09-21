@@ -46,9 +46,9 @@ import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.register.LanthItemList;
@@ -723,7 +723,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UHV,
             64,
             new Object[] { getModItem(ExtraUtilities.ID, "cobblestone_compressed", 1, 7),
-                getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0), GTOreDictUnificator.get("blockInfinity", 4L),
+                getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0),
+                MaterialParts.stack(OrePrefixes.block, Materials.Infinity, 4),
                 new Object[] { Circuits.UIV.getIngredient(), 4 }, ItemList.Circuit_Wafer_APIC.get(32),
                 ItemList.Robot_Arm_UIV.get(4), ItemList.Emitter_UIV.get(4), ItemList.Sensor_UIV.get(4), },
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 50_000),
@@ -2039,7 +2040,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Magmatter, Shapes.wireFine, 64),
 
                 MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.wireGt04, 4),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 4) },
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 4) },
             new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576,
                 dimensionallyShiftedSuperfluid8000 },
             ItemList.Electric_Motor_UXV.get(1L),
@@ -2065,7 +2066,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, Shapes.rotor, 4),
                 MaterialLibAPI.getStack(Materials.Magmatter, Shapes.rotor, 4),
                 MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.wireGt04, 4),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 4) },
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 4) },
             new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576,
                 dimensionallyShiftedSuperfluid8000 },
             ItemList.Electric_Pump_UXV.get(1),
@@ -2091,7 +2092,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Kevlar, Shapes.plate, 16),
                 MaterialLibAPI.getStack(Materials.RadoxPoly, Shapes.plate, 64),
                 MaterialLibAPI.getStack(Materials.RadoxPoly, Shapes.plate, 16),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 4) },
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 4) },
             new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576,
                 dimensionallyShiftedSuperfluid8000 },
             ItemList.Conveyor_Module_UXV.get(1),
@@ -2118,7 +2119,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { Circuits.UXV.getIngredient(), 2L }, new Object[] { Circuits.UMV.getIngredient(), 4L },
                 new Object[] { Circuits.UIV.getIngredient(), 8L },
                 MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.wireGt04, 12),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 8) },
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 8) },
             new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576,
                 dimensionallyShiftedSuperfluid8000 },
             ItemList.Robot_Arm_UXV.get(1L),
@@ -2145,7 +2146,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, Shapes.gearGtSmall, 4),
                 MaterialLibAPI.getStack(Materials.Magmatter, Shapes.gearGtSmall, 4),
                 MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.wireGt04, 8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 4) },
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 4) },
             new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576,
                 dimensionallyShiftedSuperfluid8000 },
             ItemList.Electric_Piston_UXV.get(1),
@@ -2173,7 +2174,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.foil, 64),
                 MaterialLibAPI.getStack(Materials.Universium, Shapes.foil, 64),
                 MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.wireGt04, 14),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 8)
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 8)
 
             },
             new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576, solderingAlloy_14_400 },
@@ -2202,7 +2203,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.foil, 64),
                 MaterialLibAPI.getStack(Materials.Universium, Shapes.foil, 64),
                 MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.wireGt04, 14),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 8) },
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 8) },
             new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576, solderingAlloy_14_400 },
             ItemList.Sensor_UXV.get(1L),
             craftingTimeInTicks,
@@ -2235,7 +2236,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Magmatter, Shapes.wireFine, 64),
 
                 MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.wireGt04, 16),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 12) },
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 12) },
             new FluidStack[] { moltenMHDCSM_576, moltenSpaceTime_576, moltenUniversium_576, solderingAlloy_14_400 },
             ItemList.Field_Generator_UXV.get(1L),
             craftingTimeInTicks,
@@ -2601,7 +2602,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Mellion, Shapes.gearGtSmall, 8),
                 GregtechItemList.Battery_Gem_4.get(2), GregtechItemList.Laser_Lens_Special.get(4),
                 ItemList.Emitter_UIV.get(4), new Object[] { Circuits.UEV.getIngredient(), 16L },
-                GTOreDictUnificator.get("naniteSilver", 2) },
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.nanite, 2) },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.SuperconductorUIVBase, FluidShapes.fluidMolten, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 32 * INGOTS) },
@@ -3066,7 +3067,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         if (EternalSingularity.isModLoaded()) {
             // Shielding Casing
             TTRecipeAdder.addResearchableAssemblylineRecipe(
-                GTOreDictUnificator.get("blockTranscendentMetal", 1),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, BlockShapes.block, 1),
                 48_000_000,
                 8_192,
                 (int) TierEU.RECIPE_UMV,

@@ -32,6 +32,7 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -259,7 +260,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(GTOreDictUnificator.get("blockCopper", 1L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Copper, BlockShapes.block, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AnnealedCopper, FluidShapes.fluidMolten, 9 * INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_ULV)
@@ -359,8 +360,8 @@ public class FluidSolidifierRecipes implements Runnable {
         final int partFraction = (int) (prefix.getMaterialAmount() * INGOTS / M);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(prefix, Materials.Netherite, multiplier))
-            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.Hexanite, multiplier))
+            .itemInputs(MaterialParts.stack(prefix, Materials.Netherite, multiplier))
+            .itemOutputs(MaterialParts.stack(prefix, Materials.Hexanite, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.UnformedHexanite,

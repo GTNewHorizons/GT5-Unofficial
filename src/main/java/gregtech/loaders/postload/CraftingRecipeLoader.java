@@ -21,6 +21,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
@@ -1638,7 +1639,7 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.getIC2Item("RTHeatGenerator", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "III", "IMB", "ICI", 'I', "itemCasingSteel", 'C', "circuitMaster", 'M', ItemList.Hull_IV,
-                'B', GTOreDictUnificator.get("blockCopper", 1) });
+                'B', MaterialLibAPI.getStack(Materials.Copper, BlockShapes.block, 1) });
 
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("carbonrotor", 1L));
         GTModHandler.addCraftingRecipe(

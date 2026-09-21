@@ -1691,6 +1691,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.FORMULA, "C")
             .generateShape(TEBlockShapes.frameGt)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.Nitrogen = MaterialLibAPI.newMaterial("gregtech", "Nitrogen", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xF00096C8)
@@ -2244,6 +2245,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Fe")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.Cobalt = MaterialLibAPI.newMaterial("gregtech", "Cobalt", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF5050FA)
@@ -2357,6 +2359,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Cu")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.Zinc = MaterialLibAPI.newMaterial("gregtech", "Zinc", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFFAF0F0)
@@ -2664,6 +2667,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ag")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.Cadmium = MaterialLibAPI.newMaterial("gregtech", "Cadmium", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF32323C)
@@ -3548,6 +3552,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Au")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.Mercury = MaterialLibAPI.newMaterial("gregtech", "Mercury", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFDCDC)
@@ -4214,6 +4219,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Nt")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.DimensionallyTranscendentStellarCatalyst = MaterialLibAPI.newMaterial("gregtech", "DimensionallyTranscendentStellarCatalyst", TextureSet.of("gregtech", "FLUID"))
             .setTint(17437716)
@@ -4384,6 +4390,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("AQUA", 1)))
             .setProperty(GTMaterialProperties.FORMULA, "\u03A3" + EnumChatFormatting.OBFUSCATED + "X")
             .generateShape(TEBlockShapes.frameGt)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.SuperCoolant = MaterialLibAPI.newMaterial("gregtech", "SuperCoolant", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF025B6F)
@@ -4425,6 +4432,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("AQUA", 1)))
             .setProperty(GTMaterialProperties.FORMULA, "En⦼")
             .generateShape(TEBlockShapes.frameGt)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.PrimordialMatter = MaterialLibAPI.newMaterial("gregtech", "PrimordialMatter", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
@@ -4465,6 +4473,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("AQUA", 1)))
             .setProperty(GTMaterialProperties.FORMULA, "M⎋")
             .generateShape(TEBlockShapes.frameGt)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.QuarkGluonPlasma = MaterialLibAPI.newMaterial("gregtech", "QuarkGluonPlasma", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
@@ -4537,6 +4546,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "✢")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.Mellion = MaterialLibAPI.newMaterial("gregtech", "Mellion", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF3C0505)
@@ -10658,6 +10668,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "TsЖ")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.EnrichedHolmium = MaterialLibAPI.newMaterial("gregtech", "EnrichedHolmium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF1264FF)
@@ -10750,6 +10761,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES, false)
             .setProperty(GTMaterialProperties.FORMULA, "∅")
             .generateShape(TEBlockShapes.frameGt)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.BlackDwarfMatter = MaterialLibAPI.newMaterial("gregtech", "BlackDwarfMatter", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF000000)
@@ -10778,6 +10790,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, ">>∅<<")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.nanite)
             .build();
         Materials.temporalFluid = MaterialLibAPI.newMaterial("gregtech", "temporalFluid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6401FF)
@@ -14482,6 +14495,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 51200)
             .setProperty(GTMaterialProperties.FORMULA, "??")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .generateShape(Shapes.nanite)
             .build();
         Materials.Electrotine = MaterialLibAPI.newMaterial("gregtech", "Electrotine", TextureSet.of("gregtech", "CUSTOM/electrotine"))
             .setTint(0xFF3CB4C8)

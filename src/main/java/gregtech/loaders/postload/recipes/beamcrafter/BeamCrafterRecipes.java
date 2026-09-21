@@ -27,13 +27,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.Particle;
@@ -391,11 +389,11 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.PseudoStar.get(64L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 2))
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.InactiveCosmicSolder, FluidShapes.fluidLiquid, 160_000),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 16 * INGOTS))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 2))
             .outputChances(8000)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.BoundlessCosmicSolder, FluidShapes.fluidLiquid, 160_000))

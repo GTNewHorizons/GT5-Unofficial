@@ -301,9 +301,6 @@ import static gregtech.common.items.IDMetaItem03.UXV_Coil;
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -318,7 +315,6 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
@@ -2239,9 +2235,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     public boolean doesShowInCreative(OrePrefixes aPrefix, Material aMaterial, boolean aDoShowAllItems) {
         String pref = aPrefix.toString()
             .toLowerCase();
-        return aDoShowAllItems || pref.contains("nanite")
-            || pref.contains("rawore")
-            || pref.contains("platesuperdense");
+        return aDoShowAllItems || pref.contains("rawore") || pref.contains("platesuperdense");
     }
 
     @Override
@@ -2252,20 +2246,5 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             return false;
         }
         return data.mMaterial.mMaterial == Materials.Firestone && data.mPrefix == OrePrefixes.rawOre;
-    }
-
-    @Override
-    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        super.addAdditionalToolTips(aList, aStack, aPlayer);
-
-        ItemData data = GTOreDictUnificator.getItemData(aStack);
-
-        if (data != null && data.mPrefix == OrePrefixes.nanite) {
-            NaniteTier tier = NaniteTier.fromStack(aStack);
-
-            if (tier != null) {
-                aList.add(StatCollector.translateToLocalFormatted("gt.tooltip.nanite-tier", tier.tier));
-            }
-        }
     }
 }

@@ -27,7 +27,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
@@ -487,7 +486,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.dust, 64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 64))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 64))
             .circuit(10)
             .itemOutputs(GregtechItemList.PlatinumGroupCatalyst.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 2 * INGOTS + 1 * HALF_INGOTS))
@@ -499,7 +498,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.dust, 64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 64))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 64))
             .circuit(10)
             .itemOutputs(GregtechItemList.PlasticPolymerCatalyst.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 2 * INGOTS + 1 * HALF_INGOTS))
@@ -511,7 +510,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.Silicone, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.StyreneButadieneRubber, Shapes.dust, 64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 64))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 64))
             .circuit(10)
             .itemOutputs(GregtechItemList.RubberPolymerCatalyst.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 2 * INGOTS + 1 * HALF_INGOTS))
@@ -523,7 +522,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.Indalloy140, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.EthylCyanoacrylateSuperGlue, CellShapes.cellMolten, 64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 64))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 64))
             .circuit(10)
             .itemOutputs(GregtechItemList.AdhesionPromoterCatalyst.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 2 * INGOTS + 1 * HALF_INGOTS))
@@ -535,7 +534,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Indium, Shapes.dust, 64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 64))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 64))
             .circuit(10)
             .itemOutputs(GregtechItemList.TitaTungstenIndiumCatalyst.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 2 * INGOTS + 1 * HALF_INGOTS))
@@ -547,7 +546,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 64))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 64))
             .circuit(10)
             .itemOutputs(GregtechItemList.RadioactivityCatalyst.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 2 * INGOTS + 1 * HALF_INGOTS))
@@ -559,7 +558,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Gadolinium, Shapes.dust, 64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1))
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.nanite, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.RareEarthGroupCatalyst.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 1 * STACKS))
@@ -571,7 +570,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Adamantium, Shapes.dust, 64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1))
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.nanite, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.SimpleNaquadahCatalyst.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 1 * STACKS))
@@ -585,7 +584,7 @@ public class RecipeLoaderChemicalSkips {
                     MaterialLibAPI.getStack(Materials.Netherite, Shapes.dust, 64),
                     MaterialLibAPI.getStack(Materials.InfusedGold, Shapes.dust, 64),
                     getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
-                    GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1))
+                    MaterialLibAPI.getStack(Materials.Silver, Shapes.nanite, 1))
                 .circuit(10)
                 .itemOutputs(GregtechItemList.HellishForceCatalyst.get(1))
                 .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 1 * STACKS))
@@ -598,7 +597,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.dust, 64),
                 getModItem(Botania.ID, "manaResource", 64, 10),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1))
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.nanite, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.CrystalColorizationCatalyst.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 1 * STACKS))
@@ -610,7 +609,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Trinium, Shapes.dust, 64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1))
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.nanite, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.AdvancedNaquadahCatalyst.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, STACKS))
@@ -621,7 +620,7 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 ItemList.Circuit_Chip_Stemcell.get(64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1))
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.nanite, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.RawIntelligenceCatalyst.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, STACKS))
@@ -632,7 +631,7 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.Kevlar, Shapes.dust, 64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1))
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.UltimatePlasticCatalyst.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 10 * STACKS))
@@ -643,7 +642,7 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 ItemList.Circuit_Chip_Biocell.get(64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1))
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.BiologicalIntelligenceCatalyst.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 10 * STACKS))
@@ -654,7 +653,7 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.Shirabon, BlockShapes.block, 16),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 1),
+                MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 1),
                 ItemList.Timepiece.get(1))
             .circuit(10)
             .itemOutputs(GregtechItemList.TemporalHarmonyCatalyst.get(1))
@@ -668,7 +667,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 getModItem(NewHorizonsCoreMod.ID, "TCetiESeaweedExtract", 64),
                 MaterialLibAPI.getStack(Materials.Iodine, Shapes.dust, 64),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1))
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 10 * STACKS))
@@ -685,7 +684,7 @@ public class RecipeLoaderChemicalSkips {
             (int) TierEU.RECIPE_ZPM,
             32,
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 4), ItemList.Emitter_UV.get(4),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 4), ItemList.Emitter_UV.get(4),
                 MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt16, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 2) },
             new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, 144 * 10),
@@ -703,7 +702,7 @@ public class RecipeLoaderChemicalSkips {
             (int) TierEU.RECIPE_UV,
             32,
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(2),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 8), ItemList.Emitter_UEV.get(4),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 8), ItemList.Emitter_UEV.get(4),
                 MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt16, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 4),
                 ItemList.StableAdhesive.get(4) },
@@ -722,7 +721,7 @@ public class RecipeLoaderChemicalSkips {
             (int) TierEU.RECIPE_ZPM,
             32,
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(4),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 16), ItemList.Emitter_UIV.get(4),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 16), ItemList.Emitter_UIV.get(4),
                 MaterialLibAPI.getStack(Materials.SuperconductorUIV, TEBlockShapes.wireGt16, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 8),
                 ItemList.SuperconductorComposite.get(4) },
@@ -740,7 +739,7 @@ public class RecipeLoaderChemicalSkips {
             (int) TierEU.RECIPE_ZPM,
             32,
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 32), ItemList.Emitter_UMV.get(4),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 32), ItemList.Emitter_UMV.get(4),
                 MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt16, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 16),
                 ItemList.NaquadriaSupersolid.get(4) },

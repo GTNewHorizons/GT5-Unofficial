@@ -20,14 +20,12 @@ import bartworks.common.loaders.ItemRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class BlastFurnaceRecipes implements Runnable {
@@ -798,7 +796,7 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Phononic_Seed_Crystal.get(1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 1),
+                MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.nanite, 1),
                 MaterialLibAPI.getStack(Materials.Dilithium, Shapes.dust, 16))
             .circuit(2)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Mellion, FluidShapes.fluidMolten, 48 * INGOTS))

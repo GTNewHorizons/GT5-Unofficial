@@ -35,13 +35,14 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -55,7 +56,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -365,7 +365,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "per piece of "
                     + EnumChatFormatting.WHITE
-                    + GTOreDictUnificator.get(OrePrefixes.dust, ALKALINE_MATERIAL, 1)
+                    + MaterialLibAPI.getStack(ALKALINE_MATERIAL, Shapes.dust, 1)
                         .getDisplayName())
             .addInfo(
                 EnumChatFormatting.RED + "Lowers "
@@ -444,8 +444,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             for (int i = alkalineInputBus.getSizeInventory() - 1; i >= 0; --i) {
                 ItemStack stack = alkalineInputBus.getStackInSlot(i);
                 // If this ItemStack is the alkaline material, drain it entirely and record the amount drained
-                if (stack != null
-                    && stack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.dust, ALKALINE_MATERIAL, 1))) {
+                if (stack != null && stack.isItemEqual(MaterialLibAPI.getStack(ALKALINE_MATERIAL, Shapes.dust, 1))) {
                     totalAlkalineDrained += stack.stackSize;
                     alkalineInputBus.decrStackSize(i, stack.stackSize);
                 }

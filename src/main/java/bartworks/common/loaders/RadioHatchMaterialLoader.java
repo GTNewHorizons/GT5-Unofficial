@@ -20,8 +20,8 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Sievert;
 
 public class RadioHatchMaterialLoader {
@@ -119,12 +119,13 @@ public class RadioHatchMaterialLoader {
                 && material != Materials.Naquadah;
             if (validProton) {
                 int level = (int) MaterialUtils.protons(material);
-                if (GTOreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
-                    radioHatchMaterialAdder(GTOreDictUnificator.get(OrePrefixes.stick, material, 1), level, 1);
-
+                ItemStack stick = MaterialParts.stack(OrePrefixes.stick, material, 1);
+                if (stick != null) {
+                    radioHatchMaterialAdder(stick, level, 1);
                 }
-                if (GTOreDictUnificator.get(OrePrefixes.stickLong, material, 1) != null) {
-                    radioHatchMaterialAdder(GTOreDictUnificator.get(OrePrefixes.stickLong, material, 1), level, 2);
+                ItemStack stickLong = MaterialParts.stack(OrePrefixes.stickLong, material, 1);
+                if (stickLong != null) {
+                    radioHatchMaterialAdder(stickLong, level, 2);
                 }
             }
         }
@@ -133,18 +134,14 @@ public class RadioHatchMaterialLoader {
         int[] specialValue = { 130, 140, 150 };
 
         for (int i = 0; i < specialMaterial.length; i++) {
-            if (GTOreDictUnificator.get(OrePrefixes.stick, specialMaterial[i], 1) != null) {
-                radioHatchMaterialAdder(
-                    GTOreDictUnificator.get(OrePrefixes.stick, specialMaterial[i], 1),
-                    specialValue[i],
-                    1);
+            ItemStack stick = MaterialParts.stack(OrePrefixes.stick, specialMaterial[i], 1);
+            if (stick != null) {
+                radioHatchMaterialAdder(stick, specialValue[i], 1);
             }
 
-            if (GTOreDictUnificator.get(OrePrefixes.stickLong, specialMaterial[i], 1) != null) {
-                radioHatchMaterialAdder(
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, specialMaterial[i], 1),
-                    specialValue[i],
-                    2);
+            ItemStack stickLong = MaterialParts.stack(OrePrefixes.stickLong, specialMaterial[i], 1);
+            if (stickLong != null) {
+                radioHatchMaterialAdder(stickLong, specialValue[i], 2);
             }
         }
 

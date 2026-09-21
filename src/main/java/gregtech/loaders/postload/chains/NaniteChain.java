@@ -45,11 +45,11 @@ public class NaniteChain {
 
         // Nano Forge
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
+            .metadata(RESEARCH_ITEM, MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))
             .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 ItemList.Hull_UV.get(16),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 16),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 16),
                 ItemList.Field_Generator_ZPM.get(16),
                 ItemList.Conveyor_Module_UV.get(16),
                 ItemList.Electric_Motor_UV.get(32),
@@ -79,7 +79,7 @@ public class NaniteChain {
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 10_000),
                 MaterialUtils.anyFluid(Materials.Indalloy140, 32 * INGOTS))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 2))
             .eut(TierEU.RECIPE_UV)
             .duration(50 * SECONDS)
             .addTo(AssemblyLine);
@@ -97,7 +97,7 @@ public class NaniteChain {
                 aUVTierLens,
                 MaterialLibAPI.getStack(Materials.Carbon, BlockShapes.blockCasingAdvanced, 8),
                 ItemList.Circuit_Chip_SoC.get(64))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 64))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 64))
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 200_000))
             .metadata(NANO_FORGE_TIER, 1)
             .duration(8 * MINUTES + 20 * SECONDS)
@@ -110,7 +110,7 @@ public class NaniteChain {
                 aUEVTierLens,
                 MaterialLibAPI.getStack(Materials.Silver, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_SoC.get(16))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Silver, Shapes.nanite, 1))
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 200_000))
             .metadata(NANO_FORGE_TIER, 2)
             .duration(12 * MINUTES + 30 * SECONDS)
@@ -124,7 +124,7 @@ public class NaniteChain {
                 MaterialLibAPI.getStack(Materials.Neutronium, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_SoC2.get(64),
                 ItemList.Circuit_Chip_SoC2.get(32))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 1))
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 200_000))
             .metadata(NANO_FORGE_TIER, 1)
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -137,7 +137,7 @@ public class NaniteChain {
                 aUEVTierLens,
                 GregtechItemList.DoubleCompressedGlowstone.get(8),
                 ItemList.Circuit_Chip_SoC2.get(64))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Glowstone, 64))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Glowstone, Shapes.nanite, 64))
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 50_000))
             .metadata(NANO_FORGE_TIER, 2)
             .duration(3 * MINUTES + 20 * SECONDS)
@@ -150,7 +150,7 @@ public class NaniteChain {
                 aUMVTierLens,
                 MaterialLibAPI.getStack(Materials.Gold, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_SoC.get(16))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Gold, Shapes.nanite, 1))
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 300_000))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(16 * MINUTES + 40 * SECONDS)
@@ -165,7 +165,7 @@ public class NaniteChain {
                 ItemList.Circuit_Chip_SoC2.get(64),
                 ItemList.Circuit_Chip_SoC2.get(64),
                 ItemList.Circuit_Chip_SoC2.get(64))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 1))
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 2_000_000))
             .metadata(NANO_FORGE_TIER, 2)
             .duration(12 * MINUTES + 30 * SECONDS)
@@ -180,7 +180,7 @@ public class NaniteChain {
                 ItemList.Circuit_Chip_SoC2.get(64),
                 ItemList.Circuit_Chip_SoC2.get(64),
                 ItemList.Circuit_Chip_SoC2.get(64))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 8))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.nanite, 8))
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 500_000),
                 MaterialUtils.fluid(Materials.DimensionallyTranscendentResidue, 50_000),
@@ -201,7 +201,7 @@ public class NaniteChain {
                 MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_APIC.get(64),
                 ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.WhiteDwarfMatter, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Shapes.nanite, 4))
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 500_000),
                 MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 50_000),
@@ -222,7 +222,7 @@ public class NaniteChain {
                 MaterialLibAPI.getStack(Materials.BlackDwarfMatter, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_APIC.get(64),
                 ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.BlackDwarfMatter, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.nanite, 4))
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 500_000),
                 MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 50_000),
@@ -243,7 +243,7 @@ public class NaniteChain {
                 MaterialLibAPI.getStack(Materials.Universium, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_APIC.get(64),
                 ItemList.Circuit_Parts_Chip_Bioware.get(64))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 4 * INGOTS),
@@ -259,11 +259,11 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
                 // Quantum Anomaly
                 GregtechItemList.Laser_Lens_Special.get(0),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 2),
+                MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 2),
                 MaterialLibAPI.getStack(Materials.Eternity, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_APIC.get(64),
                 ItemList.Timepiece.get(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Eternity, Shapes.nanite, 1))
             .fluidInputs(
                 MaterialUtils.molten(Materials.spatialFluid, 2 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 12_500),
@@ -278,11 +278,11 @@ public class NaniteChain {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcillium, 0, false),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 4),
+                MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 4),
                 MaterialLibAPI.getStack(Materials.Magmatter, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_YPIC.get(64),
                 Circuits.MAX.get(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Magmatter, Shapes.nanite, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, 100_000),
                 MaterialLibAPI.getFluidStack(Materials.PhononMedium, FluidShapes.fluidLiquid, 64_000),

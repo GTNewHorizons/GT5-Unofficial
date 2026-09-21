@@ -96,9 +96,9 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         // Magneto material recipe for base fluid.
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.WhiteDwarfMatter, 1L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.BlackDwarfMatter, 1L))
+                MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Shapes.nanite, 1),
+                MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 1),
+                MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, STACKS))
             .fluidOutputs(MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 16 * INGOTS))
             .duration(4 * SECONDS)
@@ -115,7 +115,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         // MHDCSM V2
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Eternity, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 4 * STACKS))
             .fluidOutputs(MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 72 * INGOTS))
             .duration(2 * SECONDS)
@@ -125,7 +125,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         // Flawed Amalgatite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1)),
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.Magmatter, Shapes.nanite, 1)),
                 MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemChipped, 3),
                 MaterialLibAPI.getStack(Materials.FoolsRuby, Shapes.gemFlawless, 64),
                 MaterialLibAPI.getStack(Materials.Amethyst, Shapes.gemFlawless, 64),
