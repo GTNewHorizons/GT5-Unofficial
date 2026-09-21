@@ -292,7 +292,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         list.add(
             EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
                 "tt.gui.tooltip.full_led_desc.value",
-                EnumChatFormatting.AQUA + numberFormat.format(parametrization.getIn(hatchNo, paramID))));
+                numberFormat.format(parametrization.getIn(hatchNo, paramID))));
         try {
             list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
@@ -312,7 +312,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         list.add(
             EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
                 "tt.gui.tooltip.full_led_desc.value",
-                EnumChatFormatting.AQUA + numberFormat.format(parametrization.getOut(hatchNo, paramID))));
+                numberFormat.format(parametrization.getOut(hatchNo, paramID))));
         try {
             list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
