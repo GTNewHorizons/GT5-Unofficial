@@ -20,6 +20,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -32,6 +33,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import appeng.api.parts.IPartItem;
+import appeng.parts.PartPlacement;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
@@ -253,7 +255,12 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
                 if (offhandItem instanceof ItemBlock || offhandItem instanceof IPartItem) {
                     int damage = offhand.getItemDamage();
                     int stackSize = offhand.stackSize;
-                    offhandItem.onItemUse(offhand, player, world, x, y, z, side, hitX, hitY, hitZ);
+                    if (offhandItem instanceof IPartItem) {
+                        PartPlacement
+                            .tryPlace(offhand, player, world, x, y, z, ForgeDirection.getOrientation(side), null);
+                    } else {
+                        offhandItem.onItemUse(offhand, player, world, x, y, z, side, hitX, hitY, hitZ);
+                    }
                     if (player.capabilities.isCreativeMode) {
                         offhand.setItemDamage(damage);
                         offhand.stackSize = stackSize;
