@@ -505,10 +505,10 @@ public class GTRecipeRegistrator {
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
             if (tMaterial.mMaterial.contains(SubTag.CRYSTAL) && !tMaterial.mMaterial.contains(SubTag.METAL)
                 && tMaterial.mMaterial != Materials.Glass
-                && GTOreDictUnificator.getDust(aData.mMaterial) != null) {
+                && GTOreDictUnificator.getDust(tMaterial) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(GTOreDictUnificator.getDust(aData.mMaterial))
+                    .itemOutputs(GTOreDictUnificator.getDust(tMaterial))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .recipeCategory(RecipeCategories.forgeHammerRecycling)

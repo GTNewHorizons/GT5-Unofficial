@@ -1,5 +1,6 @@
 package gtnhintergalactic.nei;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gtnhintergalactic.recipe.GasSiphonRecipes.calculateEUt;
 
@@ -62,6 +63,8 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
     private static final String VALUE_FORMAT_KEY = "ig.nei.space.custom.value";
     /** Default value format if VALUE_FORMAT_KEY is not present */
     private static final String DEFAULT_VALUE_FORMAT = "%s";
+    /** Change operation to per second */
+    private static final int BASE_RATE_MULTIPLIER = 2;
 
     /**
      * Initialize the handler for gas siphons recipes
@@ -135,7 +138,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
                             innerEntry.getKey(),
                             innerEntry.getValue()
                                 .getFluid(),
-                            innerEntry.getValue().amount,
+                            innerEntry.getValue().amount * BASE_RATE_MULTIPLIER,
                             calculateEUt(innerEntry.getKey(), entry.getValue().tier)));
                 }
             }
@@ -200,7 +203,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
                             entry.getKey(),
                             innerEntry.getKey(),
                             fluid,
-                            innerEntry.getValue().amount,
+                            innerEntry.getValue().amount * BASE_RATE_MULTIPLIER,
                             calculateEUt(innerEntry.getKey(), entry.getValue().tier)));
                 }
             }
@@ -218,7 +221,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
             .drawStringC(I18n.format("ig.nei.siphon.planet") + ":", CATEGORY_TITLE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(I18n.format("ig.nei.siphon.depth") + ":", CATEGORY_TITLE_X, GAS_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(
-            I18n.format("ig.nei.elevatorpump.amount") + ":",
+            I18n.format("ig.nei.siphon.baserate") + ":",
             CATEGORY_TITLE_X,
             OUT_AMOUNT_Y,
             TEXT_COLOR,
@@ -233,8 +236,12 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
             TEXT_COLOR,
             false);
         GuiDraw.drawStringC(formatValue(recipe.depth), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw
-            .drawStringC(formatValue(formatNumber(recipe.amount)), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(
+            formatValue(formatFluid(recipe.amount)) + "/s",
+            CATEGORY_VALUE_X,
+            OUT_AMOUNT_Y,
+            TEXT_COLOR,
+            false);
         GuiDraw.drawStringC(
             formatNumber(recipe.eut) + " " + GTUtility.getTierNameWithParentheses(recipe.eut),
             CATEGORY_VALUE_X,
@@ -287,7 +294,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
         private final String planet;
         /** Needed depth */
         private final int depth;
-        /** Amount that will be pumped per operation */
+        /** Amount that will be pumped per second */
         private final int amount;
         /** Eu/t the recipe runs at */
         private final int eut;

@@ -36,7 +36,7 @@ public class BlockMetal extends BlockStorage {
                 Materials materials = aMats[i];
                 DynamicLangManager.addStack(new ItemStack(this, 1, i));
                 if (aPrefix.isUnifiable()) {
-                    GTOreDictUnificator.set(aPrefix, materials, new ItemStack(this, 1, i));
+                    GTOreDictUnificator.add(aPrefix, materials, new ItemStack(this, 1, i));
                 } else {
                     GTOreDictUnificator.registerOre(aPrefix.get(materials), new ItemStack(this, 1, i));
                 }
