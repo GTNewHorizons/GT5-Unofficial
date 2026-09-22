@@ -99,7 +99,7 @@ kubatech.gui.text.mia.show_machine_status=Show Machine Status
 
 kubatech.gui.tooltip.contributors.added=Added by %s
 kubatech.gui.tooltip.contributors.design=Designed by %s
-kubatech.gui.tooltip.contributors.structure=Structure designed by %s
+kubatech.gui.tooltip.contributors.structure=Structure designed by §d%s
 
 kubatech.gui.tooltip.dynamic_inventory.identical_slots=There are %d identical slots
 kubatech.gui.tooltip.dynamic_inventory.empty_slot=Empty slot
@@ -341,7 +341,7 @@ KT.research.ultimatetea=You have found a way to convert all this Tea into pure p
 kubatech.tooltip.tea=Tea
 kubatech.tooltip.tea_acceptor.0=Accepts Tea items and adds them to your network
 kubatech.tooltip.tea_acceptor.1=Can accept up to 10 stacks per tick
-kubatech.tooltip.tea_storage.0=Extends Tea Storage by %s
+kubatech.tooltip.tea_storage.0=Extends Tea Storage by §c%s
 kubatech.tooltip.tea_ingredient.0=This is Tea ingredient
 
 kubatech.tooltip.structure.flowers=Flowers
