@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -163,8 +162,6 @@ public class CoverMetricsTransmitter extends Cover {
     @Override
     public List<String> getAdditionalTooltip() {
         return ImmutableList.of(
-            StatCollector.translateToLocalFormatted(
-                "gt.item.adv_sensor_card.tooltip.frequency",
-                EnumChatFormatting.UNDERLINE.toString() + EnumChatFormatting.YELLOW + frequency.toString()));
+            StatCollector.translateToLocalFormatted("gt.item.adv_sensor_card.tooltip.frequency", frequency.toString()));
     }
 }

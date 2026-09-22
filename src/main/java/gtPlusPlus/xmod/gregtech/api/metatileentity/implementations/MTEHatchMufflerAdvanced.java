@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -57,9 +56,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler {
     public String[] getDescription() {
         final String filter = mTier < 5
             ? StatCollector.translateToLocal("gt.blockmachines.muffler_advanced.filter.desc")
-            : StatCollector.translateToLocalFormatted(
-                "gt.blockmachines.muffler_advanced.filter_tier2.desc",
-                EnumChatFormatting.WHITE + "[T2]" + EnumChatFormatting.GRAY);
+            : StatCollector.translateToLocalFormatted("gt.blockmachines.muffler_advanced.filter_tier2.desc", "[T2]");
         final String[] localized = GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.muffler_advanced.desc",
             filter,

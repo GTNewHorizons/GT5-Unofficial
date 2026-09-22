@@ -382,7 +382,7 @@ gui.AntimatterGenerator.2.s=§fEfficiency: ⟨ §b%s §f%% ⟩₁₀
 batch_mode.cfgi.0=Batch Size
 gt.blockmachines.YottaFluidTank.cfgi.0=Tick rate (Update I/O every x ticks)
 
-gg.gui.text.large_essentia_smeltery.requires=Requires %s total §bAqua§f and §cIgnis §fcentivis to function.
+gg.gui.text.large_essentia_smeltery.requires=Requires §e%s§f total §bAqua§f and §cIgnis §fcentivis to function.
 
 
 # RecipeMaps
@@ -532,4 +532,4 @@ gt.blockmachines.neutronactivator.name=Neutron Activator
 gt.blockmachines.preciseassembler.name=Precise Auto-Assembler MT-3662
 gt.blockmachines.yottafluidtank.name=YOTTank
 gt.blockmachines.neutron_accelerator.name=Neutron Accelerator %s
-gt.blockmachines.neutron_accelerator.desc=Uses Energy to Accelerate the Neutrons!\nMax consumption: %s EU/t\nEvery EU gets converted into 10-20 eV Neutron Kinetic Energy.
+gt.blockmachines.neutron_accelerator.desc=Uses Energy to Accelerate the Neutrons!\nMax consumption: §e%s§f EU/t\nEvery EU gets converted into 10-20 eV Neutron Kinetic Energy.

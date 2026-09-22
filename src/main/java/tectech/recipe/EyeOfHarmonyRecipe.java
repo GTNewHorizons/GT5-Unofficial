@@ -27,7 +27,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
-import goodgenerator.util.NaquadahRecipeOutputs;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
@@ -611,8 +610,8 @@ public class EyeOfHarmonyRecipe {
         for (Pair<Object, Long> pair : planetList) {
             final Object mat = pair.getLeft();
             final ItemStack dust;
-            if (mat instanceof Material ml) dust = NaquadahRecipeOutputs
-                .convert(getUnificatedOreDictStack(MaterialParts.stack(OrePrefixes.dust, ml, 1L)));
+            if (mat instanceof Material ml)
+                dust = getUnificatedOreDictStack(MaterialParts.stack(OrePrefixes.dust, ml, 1L));
             else dust = null;
             if (dust != null) {
                 dustList.merge(dust, pair.getRight(), Long::sum);

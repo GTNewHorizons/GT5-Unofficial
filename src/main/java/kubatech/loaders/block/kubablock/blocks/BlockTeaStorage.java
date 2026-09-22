@@ -29,7 +29,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -58,9 +57,8 @@ public class BlockTeaStorage extends BlockProxy implements IProxyTileEntityProvi
     @Override
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
         tooltipList.add(
-            StatCollector.translateToLocalFormatted(
-                "kubatech.tooltip.tea_storage.0",
-                EnumChatFormatting.RED + numberFormat.format(Long.MAX_VALUE)));
+            StatCollector
+                .translateToLocalFormatted("kubatech.tooltip.tea_storage.0", numberFormat.format(Long.MAX_VALUE)));
     }
 
     @Override

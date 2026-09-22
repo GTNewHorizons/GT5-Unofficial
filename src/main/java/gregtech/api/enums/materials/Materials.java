@@ -4416,7 +4416,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAVOR_TEXT, "\u7121\u6975")
             .setProperty(GTMaterialProperties.MELTING_POINT, 0)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 14000)
-            .setProperty(GTMaterialProperties.BLAST_REQUIRED, true)
             .setProperty(GTMaterialProperties.DURABILITY, 20971520)
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 26)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 141)

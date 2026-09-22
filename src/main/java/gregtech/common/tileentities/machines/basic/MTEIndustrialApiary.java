@@ -1538,13 +1538,13 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             currenttip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.industrial_apiary.current_queen",
-                    EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen"))));
+                    StatCollector.translateToLocal(tag.getString("queen"))));
         }
         if (tag.hasKey("dummyProduction")) {
             currenttip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.industrial_apiary.effective_production",
-                    EnumChatFormatting.AQUA + String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction"))));
+                    String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction"))));
         }
         if (tag.hasKey("errors")) {
             NBTTagCompound errorNbt = tag.getCompoundTag("errors");
@@ -1552,7 +1552,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                 currenttip.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.waila.industrial_apiary.error",
-                        EnumChatFormatting.RED + StatCollector.translateToLocal("for." + errorNbt.getString("e" + i))));
+                        StatCollector.translateToLocal("for." + errorNbt.getString("e" + i))));
             }
         }
     }

@@ -31,6 +31,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import appeng.api.parts.IPartItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
@@ -248,10 +249,11 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
         if (Mods.Backhand.isModLoaded() && world.isAirBlock(x, y, z)) {
             BackhandUtils.useOffhandItem(player, () -> {
                 ItemStack offhand = player.getHeldItem();
-                if (offhand != null && offhand.getItem() instanceof ItemBlock itemBlock) {
+                Item offhandItem = offhand == null ? null : offhand.getItem();
+                if (offhandItem instanceof ItemBlock || offhandItem instanceof IPartItem) {
                     int damage = offhand.getItemDamage();
                     int stackSize = offhand.stackSize;
-                    itemBlock.onItemUse(offhand, player, world, x, y, z, side, hitX, hitY, hitZ);
+                    offhandItem.onItemUse(offhand, player, world, x, y, z, side, hitX, hitY, hitZ);
                     if (player.capabilities.isCreativeMode) {
                         offhand.setItemDamage(damage);
                         offhand.stackSize = stackSize;

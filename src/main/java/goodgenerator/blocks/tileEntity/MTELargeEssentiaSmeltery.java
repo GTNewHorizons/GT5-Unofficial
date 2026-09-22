@@ -319,8 +319,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
                     .setStringSupplier(
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
                             "gg.gui.text.large_essentia_smeltery.requires",
-                            EnumChatFormatting.YELLOW + numberFormat.format(nodePowerDisplay)
-                                + EnumChatFormatting.WHITE))
+                            numberFormat.format(nodePowerDisplay)))
                     .setTextAlignment((Alignment.CenterLeft)))
             .widget(new FakeSyncWidget.IntegerSyncer(this::expectedPower, val -> nodePowerDisplay = val));
     }
