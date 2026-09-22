@@ -384,13 +384,13 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         // spotless:on
     }
 
+    final MutableInt ruleIdx = new MutableInt(0);
+    final MutableInt slotIdx = new MutableInt(0);
+
     private Widget<?> createItemFilter(PanelSyncManager syncManager, GenericListSyncHandler<SplitterRule> rulesSyncer,
         int index) {
-        MutableInt ruleIdx = new MutableInt(0);
-        MutableInt slotIdx = new MutableInt(0);
-
         IPanelHandler renamePopup = syncManager
-            .syncedPanel("rename_popup", true, (m, h) -> createRenamePopup(syncManager, ruleIdx, slotIdx));
+            .syncedPanel("rename_popup", true, (_, _) -> createRenamePopup(syncManager));
 
         SplitterRule rule = multiblock.rules.get(index);
 
@@ -431,7 +431,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
             .setEnabledIf(f -> rule.enabledWidget == ITEM);
     }
 
-    private ModularPanel createRenamePopup(PanelSyncManager syncManager, MutableInt ruleIdx, MutableInt slotIdx) {
+    private ModularPanel createRenamePopup(PanelSyncManager syncManager) {
         ClientTextField textField = new ClientTextField() {
 
             @Override
