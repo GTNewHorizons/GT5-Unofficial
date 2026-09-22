@@ -21,10 +21,12 @@ import gregtech.common.items.tools.ToolItemBase;
  * fluid below.
  * <p/>
  * One instance of this class is registered per tier, LV through UHV. The electric tiers use
- * {@link DetravElectricProspectorItem}, which stores energy instead of durability. See {@link ToolItemBase} for
- * everything these have in common with the other standalone tools.
+ * {@link DetravElectricProspectorItem}, which stores energy instead of durability and so cannot extend this class
+ * (see {@code gregtech.common.items.tools.ToolElectricItemBase}); the tooltip lines the two share come from
+ * {@link DetravScannerBehavior} instead. See {@link ToolItemBase} for everything these have in common with the
+ * other standalone tools.
  */
-public class DetravProspectorItem extends ToolItemBase {
+public class DetravProspectorItem extends ToolItemBase implements DetravScannerBehavior {
 
     /**
      * The metadata this tier held on {@code detrav.metatool.01}. Range and success chance were read off it, and
@@ -59,7 +61,8 @@ public class DetravProspectorItem extends ToolItemBase {
      * How many chunks across this scanner reads, which depends on the material as well as the tier: a better material
      * raises the harvest level, and the harvest level is half of the range.
      */
-    protected int getScanRange(ItemStack stack) {
+    @Override
+    public int getScanRange(ItemStack stack) {
         int range = getHarvestLevel(stack, "") / 2 + (legacyMeta / 4);
         if ((range % 2) == 0) {
             range += 1;
@@ -101,19 +104,5 @@ public class DetravProspectorItem extends ToolItemBase {
                     EnumChatFormatting.RESET + formatNumber(getSuccessChance())));
         list.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.0"));
         list.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.1"));
-    }
-
-    /** The lines shared by both scanner families, after whatever each shows for its durability or charge. */
-    protected void addScannerToolTips(List<String> list, ItemStack stack) {
-        final int range = getScanRange(stack);
-        list.add(
-            EnumChatFormatting.WHITE + StatCollector
-                .translateToLocalFormatted("tooltip.detrav.scanner.range", formatNumber(range), formatNumber(range)));
-        list.add(
-            EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0")
-                + EnumChatFormatting.GRAY);
-        list.add(
-            EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.1")
-                + EnumChatFormatting.GRAY);
     }
 }

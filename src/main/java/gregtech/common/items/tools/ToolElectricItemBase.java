@@ -15,13 +15,18 @@ import gregtech.api.interfaces.IToolStats;
 import gregtech.api.objects.GTHashSet;
 
 /**
- * A standalone tool that exists only in electric tiers -- the drill, chainsaw, jackhammer and buzzsaw have no hand
- * version to inherit from, so they can take their energy handling by inheritance instead.
+ * A standalone electric tool's energy plumbing: durability reported as zero, charge delegated to
+ * {@link ToolElectricStorage}, and the tooltip and creative-tab lines an electric tool needs that a tool which wears
+ * out does not.
  * <p/>
- * Tool types that <em>do</em> have a hand version (wrench, screwdriver, wire cutter, file) cannot use this: their
- * electric class already has to extend the hand class to pick up its behaviour and cross-mod interfaces. Those repeat
- * the handful of members below, which is the price of Java's single inheritance; the logic they repeat is one line
- * each, delegating to {@link ToolElectricStorage} exactly as this does.
+ * Every electric tool type extends this directly now, including the ones with a hand version (wrench, screwdriver,
+ * wire cutter, file, and the Detrav prospector). It used to be that only the tool types with no hand version at all
+ * (drill, chainsaw, jackhammer, buzzsaw) could: a type with a hand version needed its electric class to extend the
+ * hand class to pick up its behaviour and cross-mod interfaces, and Java's single inheritance meant it could not
+ * also extend this, so it repeated this class's dozen members by hand instead. That behaviour and those interfaces
+ * now come from a small per-type {@code *Behavior} interface (see {@link WrenchBehavior} for the shape of it and why
+ * it works), composed into both the hand class and this one's subclass, which frees every electric tool to extend
+ * this class uniformly.
  * <p/>
  * These run on EU only. The old metadata-based versions carried a durability bar as well, but only lost a point of it
  * on one action in twenty-five, so it was noise on top of the energy cost; the energy cost per action is unchanged,

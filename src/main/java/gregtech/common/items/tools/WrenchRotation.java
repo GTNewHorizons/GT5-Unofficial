@@ -38,7 +38,7 @@ public final class WrenchRotation {
      *
      * @return whether the click was consumed.
      */
-    public static boolean rotate(ToolWrenchItem item, ItemStack stack, EntityPlayer player, World world, int x, int y,
+    public static boolean rotate(WrenchBehavior item, ItemStack stack, EntityPlayer player, World world, int x, int y,
         int z, ForgeDirection side, float hitX, float hitY, float hitZ) {
         final Block block = world.getBlock(x, y, z);
         if (block == null) return false;
@@ -192,10 +192,10 @@ public final class WrenchRotation {
         private final int x, y, z, meta;
         private final ItemStack stack;
 
-        private final ToolWrenchItem item;
+        private final WrenchBehavior item;
 
         Handler(Block block, int meta, short targetSideOrdinal, TileEntity tileEntity, EntityPlayer player, World world,
-            int x, int y, int z, ItemStack stack, ToolWrenchItem item) {
+            int x, int y, int z, ItemStack stack, WrenchBehavior item) {
             this.block = block;
             this.meta = meta;
             this.targetSideOrdinal = targetSideOrdinal;

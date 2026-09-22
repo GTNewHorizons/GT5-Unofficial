@@ -9,14 +9,17 @@ import ic2.api.item.ISpecialElectricItem;
 /**
  * Wires an electric tool's {@link ToolElectricStorage} up to the IC2 interfaces the rest of the game talks to.
  * <p/>
- * A standalone tool item extends its own tool type -- an electric screwdriver is a {@link ToolScrewdriverItem} first,
- * because that is where its behaviour and cross-mod interfaces live -- so the energy side cannot come in by
- * inheritance. Implementing this instead costs the class one field and its getter.
+ * Every electric tool implements this by extending {@link ToolElectricItemBase}, which implements it once. What
+ * used to justify a separate note here -- that a type with a hand version (an electric screwdriver being a
+ * {@link ToolScrewdriverItem} first) could not also extend this because Java only allows one superclass -- no longer
+ * applies: that behaviour now comes from composition (see {@link WrenchBehavior}), which frees every electric tool to
+ * extend {@link ToolElectricItemBase} directly.
  * <p/>
  * Note what is deliberately <em>not</em> here: {@code getStoredCharge}, {@code getMaxStoredDamage} and the rest of
  * {@link gregtech.api.interfaces.IGTTool}. {@link ToolItemBase} already declares those as concrete methods, and a
- * class method always beats an interface default, so defaults for them would be silently ignored. Each electric tool
- * overrides them itself.
+ * class method always beats an interface default, so defaults for them would be silently ignored.
+ * {@link ToolElectricItemBase} overrides them itself, which is why it -- not this interface -- is what every
+ * electric tool actually extends.
  */
 public interface IElectricToolItem extends ISpecialElectricItem, IElectricItemManager {
 

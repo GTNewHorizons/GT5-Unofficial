@@ -1,26 +1,26 @@
 package gregtech.common.items.tools;
 
-import java.util.List;
-
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IToolStats;
 
 /**
  * An electric wire cutter: LV, MV or HV.
  * <p/>
- * These run on EU only. The old metadata-based ones carried a durability bar as well, but only lost a point of it on
- * one action in twenty-five, so it was noise on top of the energy cost; the energy cost per action is unchanged, since
- * {@code GTModHandler.damageOrDechargeItem} always reached these through {@code IDamagableItem} and so spent 100 units
- * per use either way.
+ * These run on EU only, via {@link ToolElectricItemBase} -- the old metadata-based ones carried a durability bar as
+ * well, but only lost a point of it on one action in twenty-five, so it was noise on top of the energy cost; the
+ * energy cost per action is unchanged, since {@code GTModHandler.damageOrDechargeItem} always reached these through
+ * {@code IDamagableItem} and so spent 100 units per use either way.
+ * <p/>
+ * This cannot extend {@link ToolWireCutterItem}, because it already has to extend {@link ToolElectricItemBase} for
+ * its energy model. What a wire cutter actually does comes from {@link WireCutterBehavior} instead, shared with
+ * {@link ToolWireCutterItem} by composition rather than inheritance.
  */
-public class ToolWireCutterElectricItem extends ToolWireCutterItem implements IElectricToolItem {
+public class ToolWireCutterElectricItem extends ToolElectricItemBase implements WireCutterBehavior {
 
     /**
      * Energy one action costs. The tree farm drives this tool through the machine path, which cost 100 an operation,
@@ -33,79 +33,23 @@ public class ToolWireCutterElectricItem extends ToolWireCutterItem implements IE
         return EU_PER_USE;
     }
 
-    private final ToolElectricStorage electricStorage;
-
     public ToolWireCutterElectricItem(String unlocalizedName, IToolStats toolStats, String englishNameFormat,
         String englishTooltip, long maxCharge, long voltage, int tier) {
-        super(unlocalizedName, toolStats, englishNameFormat, englishTooltip);
-        this.electricStorage = new ToolElectricStorage(maxCharge, voltage, tier);
+        super(
+            unlocalizedName,
+            toolStats,
+            englishNameFormat,
+            englishTooltip,
+            maxCharge,
+            voltage,
+            tier,
+            GregTechAPI.sWireCutterList,
+            ToolDictNames.craftingToolWireCutter);
     }
 
     @Override
-    public ToolElectricStorage getElectricStorage() {
-        return electricStorage;
-    }
-
-    @Override
-    public Item getChargedItem(ItemStack stack) {
-        return this;
-    }
-
-    @Override
-    public Item getEmptyItem(ItemStack stack) {
-        return this;
-    }
-
-    @Override
-    public boolean getShareTag() {
-        // The charge has to reach the client, or the bar and the tooltip would always read empty there.
-        return true;
-    }
-
-    /* ---------- ENERGY INSTEAD OF DURABILITY ---------- */
-
-    @Override
-    public long getStoredDamage(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public long getMaxStoredDamage(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public long getStoredCharge(ItemStack stack) {
-        return electricStorage.getCharge(stack);
-    }
-
-    @Override
-    public long getMaxStoredCharge(ItemStack stack) {
-        return electricStorage.getMaxCharge(stack);
-    }
-
-    @Override
-    public boolean doDamage(ItemStack stack, long amount) {
-        return use(stack, amount, null);
-    }
-
-    /* ---------- DISPLAY ---------- */
-
-    @Override
-    protected void addAdditionalToolTips(List<String> list, ItemStack stack, EntityPlayer player) {
-        if (getToolMaterial(stack) != Materials._NULL) electricStorage.addChargeToolTip(list, stack);
-        super.addAdditionalToolTips(list, stack, player);
-    }
-
-    /**
-     * Hands out fully charged wire cutters, so that one spawned from NEI or the creative tab is usable straight away
-     * rather than being a flat battery.
-     */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs creativeTab, List list) {
-        final int firstAdded = list.size();
-        super.getSubItems(item, creativeTab, list);
-        for (int i = firstAdded; i < list.size(); i++) electricStorage.fillToFull((ItemStack) list.get(i));
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
+        int ordinalSide, float hitX, float hitY, float hitZ) {
+        return wireCutterOnItemUseFirst(stack, player, world, x, y, z, ordinalSide, hitX, hitY, hitZ);
     }
 }
