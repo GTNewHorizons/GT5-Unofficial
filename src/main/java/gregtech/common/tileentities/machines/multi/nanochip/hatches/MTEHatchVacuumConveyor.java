@@ -128,6 +128,8 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTick % 20 == VACUUM_MOVE_TICK) {
+                // in case the module its attached to ever gets destroyed or made invalid, set it to null to not leak
+                if (this.module != null && !this.module.isValid()) this.module = null;
                 if (contents == null) {
                     getBaseMetaTileEntity().setActive(false);
                 } else {
