@@ -221,6 +221,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         TextWidget<?> moduleBasicsBody3 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.3");
         TextWidget<?> moduleBasicsBody4 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.4");
         TextWidget<?> moduleBasicsBody5 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.5");
+        TextWidget<?> moduleBasicsBody6 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.6");
         TextWidget<?> calibrationHeader = createHeader("GT5U.gui.text.nac.info.calibration.header");
         ButtonWidget<?> calibrationToC = createToCEntry(
             textList,
@@ -333,6 +334,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         textList.child(moduleBasicsBody3);
         textList.child(moduleBasicsBody4);
         textList.child(moduleBasicsBody5);
+        textList.child(moduleBasicsBody6);
         textList.child(calibrationHeader);
         textList.child(calibrationBody1);
         textList.child(calibrationBody2);

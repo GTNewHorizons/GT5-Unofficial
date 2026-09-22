@@ -65,6 +65,7 @@ GT5U.gui.text.recipe_result.gtnhlanth.wrongparticle=Incorrect Particle!
 GT5U.gui.text.recipe_result.gtnhlanth.toolowenergy=Below Required Energy!
 GT5U.gui.text.recipe_result.gtnhlanth.toohighenergy=Above Required Energy!
 GT5U.gui.text.shutdown_reason.gtnhlanth.noparticle=Particle absent (rate is 0)!
+GT5U.gui.text.shutdown_reason.gtnhlanth.boostinterrupt=Not enough booster fluid supplied!
 
 # NEI
 value.disstank=Ratio: %s:1
