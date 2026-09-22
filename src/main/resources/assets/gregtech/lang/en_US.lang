@@ -7722,7 +7722,7 @@ fluidHotWater=Heated Water
 
 fluid.oil=Oil
 fluid.tile.fluidBlockSludge=fluidBlockSludge
-fluid.sludge=sludge
+fluid.sludge=Sludge
 fluid.oilgc=oilgc
 fluid.fuelgc=fuelgc
 
