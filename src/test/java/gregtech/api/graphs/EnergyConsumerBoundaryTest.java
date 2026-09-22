@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 
@@ -339,6 +340,27 @@ class EnergyConsumerBoundaryTest {
             .injectEnergyUnits(ForgeDirection.WEST, 32, 4);
         assertEquals(1, offer(upstream, 32, 4));
         verify(target, times(1)).injectEnergyUnits(any(), anyLong(), anyLong());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 100, 150 })
+    void gcRejectedVoltageJumpPreservesPaidRemainder(int remainder) {
+        IEnergyHandlerGC sink = (IEnergyHandlerGC) endpoint(IEnergyHandlerGC.class);
+        NodeGCEnergyHandler node = new NodeGCEnergyHandler(1, sink, ForgeDirection.WEST, new ArrayList<>());
+        float packet = 64 * EnergyConfigHandler.IC2_RATIO;
+        assertTrue(packet > remainder);
+        when(sink.getMaxEnergyStoredGC(any())).thenReturn(packet);
+        when(sink.receiveEnergyGC(any(), eq(packet), eq(false))).thenReturn(packet - remainder);
+        assertEquals(1, node.injectEnergy(64, 1));
+
+        clearInvocations(sink);
+        when(sink.getMaxEnergyStoredGC(any())).thenReturn(1000f);
+        when(sink.receiveEnergyGC(any(), anyFloat(), eq(false))).thenAnswer(call -> call.getArgument(1));
+        assertEquals(0, node.injectEnergy(536870912L, 1));
+        verify(sink).receiveEnergyGC(any(), eq((float) remainder), eq(false));
+        clearInvocations(sink);
+        assertEquals(0, node.injectEnergy(536870912L, 1));
+        verify(sink, never()).receiveEnergyGC(any(), anyFloat(), anyBoolean());
     }
 
     @Test

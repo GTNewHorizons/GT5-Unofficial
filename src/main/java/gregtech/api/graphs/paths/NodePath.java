@@ -59,7 +59,7 @@ public class NodePath {
         node = null;
         for (MetaPipeEntity mPipe : mPipes) {
             BaseMetaPipeEntity tBasePipe = (BaseMetaPipeEntity) mPipe.getBaseMetaTileEntity();
-            if (tBasePipe != null) {
+            if (tBasePipe != null && tBasePipe.getNodePath() == this) {
                 tBasePipe.setNodePath(null);
             }
         }

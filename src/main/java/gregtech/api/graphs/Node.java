@@ -57,6 +57,7 @@ public class Node {
     public Lock[] locks = new Lock[6];
     public ReturnPair returnValues = new ReturnPair();
     public NodePath mSelfPath;
+    public ArrayList<NodePath> mUnroutedPaths;
     public ArrayList<ConsumerNode> mConsumers;
     public int mCreationTime;
     public int mNodeValue;

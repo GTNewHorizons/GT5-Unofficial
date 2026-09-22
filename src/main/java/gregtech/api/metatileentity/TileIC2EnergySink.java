@@ -79,9 +79,9 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
     @Override
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
 
-        final long amps = (long) Math
-            .max(amount / (cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage() * 1.0), 1.0);
-        final long euPerAmp = (long) (amount / (amps * 1.0));
+        final long inputVoltage = cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage();
+        final long amps = (long) Math.max(amount / inputVoltage, 1.0);
+        final long euPerAmp = Math.min((long) (amount / amps), inputVoltage);
 
         final IMetaTileEntity metaTile = myMeta.getMetaTileEntity();
         if (metaTile == null) return amount;
@@ -90,13 +90,13 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
         if (cableMeta != null) {
             usedAmps = ((IMetaTileEntityCable) metaTile).transferElectricity(
                 directionFrom,
-                Math.min(euPerAmp, cableMeta.mVoltage),
+                euPerAmp,
                 amps,
                 // Only these exact implementations ignore the set; addon overrides still receive a mutable seed.
                 metaTile.getClass() == MTECable.class || metaTile.getClass() == GTPPMTECable.class ? null
                     : Sets.newHashSet((TileEntity) myMeta));
 
-        } else usedAmps = myMeta.injectEnergyUnits(directionFrom, Math.min(euPerAmp, myMeta.getInputVoltage()), amps);
+        } else usedAmps = myMeta.injectEnergyUnits(directionFrom, euPerAmp, amps);
         return amount - (usedAmps * euPerAmp);
 
         // transferElectricity for cables

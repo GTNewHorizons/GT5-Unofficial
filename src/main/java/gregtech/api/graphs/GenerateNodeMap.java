@@ -21,12 +21,15 @@ public abstract class GenerateNodeMap {
     public static void clearNodeMap(Node aNode, int aReturnNodeValue) {
         aNode.mInvalid = true;
         if (aNode.mTileEntity instanceof BaseMetaPipeEntity tPipe) {
-            tPipe.setNode(null);
-            tPipe.setNodePath(null);
+            if (tPipe.getNode() == aNode) tPipe.setNode(null);
             if (aNode.mSelfPath != null) {
                 aNode.mSelfPath.clearPath();
                 aNode.mSelfPath = null;
             }
+        }
+        if (aNode.mUnroutedPaths != null) {
+            for (NodePath path : aNode.mUnroutedPaths) path.clearPath();
+            aNode.mUnroutedPaths = null;
         }
         for (byte side : ALL_VALID_SIDES) {
             final NodePath tPath = aNode.mNodePaths[side];
@@ -63,8 +66,9 @@ public abstract class GenerateNodeMap {
             if (tNextTileEntity == null) continue;
             final ArrayList<MetaPipeEntity> tNewPipes = new ArrayList<>();
             final Pair nextTileEntity = getNextValidTileEntity(tNextTileEntity, tNewPipes, side, tNodeMap);
+            Node tNextNode = null;
             if (nextTileEntity != null) {
-                final Node tNextNode = generateNode(
+                tNextNode = generateNode(
                     nextTileEntity.mTileEntity,
                     aPipeNode,
                     aNextNodeValue + 1,
@@ -81,6 +85,13 @@ public abstract class GenerateNodeMap {
                     aPipeNode.locks[i] = aPipeNode.returnValues.returnLock;
                     aPipeNode.mNodePaths[i].reloadLocks();
                 }
+            }
+            if (tNextNode == null && !tNewPipes.isEmpty()) {
+                // Loop-closing runs still need an owner so edits invalidate the routing tree.
+                final NodePath path = getNewPath(tNewPipes.toArray(new MetaPipeEntity[0]));
+                path.setNodeMap(aPipeNode);
+                if (aPipeNode.mUnroutedPaths == null) aPipeNode.mUnroutedPaths = new ArrayList<>();
+                aPipeNode.mUnroutedPaths.add(path);
             }
         }
         aPipe.reloadLocks();
@@ -128,6 +139,7 @@ public abstract class GenerateNodeMap {
             final int oppositeSideOrdinal = oppositeSide.ordinal();
             final ConsumerNode tConsumeNode = aConsumers.get(aConsumers.size() - 1);
             tConsumeNode.joinNodeMap(aPreviousNode);
+            aNodeMap.add(tConsumeNode);
             tConsumeNode.mNeighbourNodes[oppositeSideOrdinal] = aPreviousNode;
             tConsumeNode.mNodePaths[oppositeSideOrdinal] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
             tConsumeNode.mNodePaths[oppositeSideOrdinal].setNodeMap(tConsumeNode);
@@ -153,6 +165,13 @@ public abstract class GenerateNodeMap {
 
             final ForgeDirection tSideOpposite = side.getOpposite();
             if (!tMetaPipe.isConnectedAtSide(tSideOpposite)) return null;
+
+            final Node owner = tPipe.getNodeMap();
+            if (owner != null) {
+                if (aNodeMap.contains(owner)) return null;
+                // Retire a separate grid before any of its cables acquire replacement bindings.
+                clearNodeMap(owner, -1);
+            }
 
             final int tConnections = getNumberOfConnections(tMetaPipe);
             // Keep known sources as nodes so alternating injections reuse the same paths and overload history.

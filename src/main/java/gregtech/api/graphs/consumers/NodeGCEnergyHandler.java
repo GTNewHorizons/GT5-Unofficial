@@ -24,19 +24,19 @@ public class NodeGCEnergyHandler extends ConsumerNode {
         IEnergyHandlerGC handler = (IEnergyHandlerGC) mTileEntity;
 
         float gjOut = voltage * EnergyConfigHandler.IC2_RATIO;
+        float offeredGJ = restGJ;
         int ampsUsed = 0;
         if (restGJ < gjOut) {
-            restGJ += gjOut;
+            offeredGJ += gjOut;
             ampsUsed = 1;
         }
 
         float capacity = handler.getMaxEnergyStoredGC(eSource) - handler.getEnergyStoredGC(eSource);
-        if (capacity >= restGJ) {
-            float received = handler.receiveEnergyGC(eSource, restGJ, false);
-            restGJ -= received;
+        if (capacity >= offeredGJ) {
+            float received = handler.receiveEnergyGC(eSource, offeredGJ, false);
+            restGJ = offeredGJ - received;
             return ampsUsed;
         }
-        restGJ -= ampsUsed * gjOut;
         // A rejected new packet must not prevent delivery of energy already paid for.
         if (restGJ > 0 && capacity > 0) {
             restGJ -= handler.receiveEnergyGC(eSource, Math.min(restGJ, capacity), false);

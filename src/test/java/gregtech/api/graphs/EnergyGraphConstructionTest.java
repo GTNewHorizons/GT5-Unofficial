@@ -11,6 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -23,6 +25,12 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 
 class EnergyGraphConstructionTest {
+
+    @BeforeEach
+    @AfterEach
+    void clearManagedCables() {
+        BaseMetaPipeEntity.clearManagedCables();
+    }
 
     @ParameterizedTest
     @ValueSource(ints = { 64, 16384 })

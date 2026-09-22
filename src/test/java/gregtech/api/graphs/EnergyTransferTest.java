@@ -243,7 +243,7 @@ class EnergyTransferTest {
                 when(consumer.injectEnergy(32, 3)).thenReturn(2);
                 when(consumer.injectEnergy(32, 42)).thenReturn(41);
                 TileIC2EnergySink sink = new TileIC2EnergySink(base);
-                assertEquals(33, sink.injectEnergy(ForgeDirection.UNKNOWN, 99, 128));
+                assertEquals(35, sink.injectEnergy(ForgeDirection.UNKNOWN, 99, 128));
                 assertEquals(32, sink.injectEnergy(ForgeDirection.UNKNOWN, 1344, 128));
                 verify(cable).transferElectricity(ForgeDirection.UNKNOWN, 32, 3, null);
                 verify(cable).transferElectricity(ForgeDirection.UNKNOWN, 32, 42, null);
@@ -265,6 +265,18 @@ class EnergyTransferTest {
             assertTrue(visited.isEmpty());
             return 1;
         }
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { 0, 1, 2, 3 })
+    void ic2MachineChargesOnlyAcceptedClampedPackets(long acceptedAmps) {
+        BaseMetaTileEntity base = mock(BaseMetaTileEntity.class);
+        when(base.getMetaTileEntity()).thenReturn(mock(MetaTileEntity.class));
+        when(base.getInputVoltage()).thenReturn(32L);
+        when(base.injectEnergyUnits(ForgeDirection.WEST, 32, 3)).thenReturn(acceptedAmps);
+        TileIC2EnergySink sink = new TileIC2EnergySink(base);
+        assertEquals(99 - acceptedAmps * 32, sink.injectEnergy(ForgeDirection.WEST, 99, 128));
+        verify(base).injectEnergyUnits(ForgeDirection.WEST, 32, 3);
     }
 
     @Test
