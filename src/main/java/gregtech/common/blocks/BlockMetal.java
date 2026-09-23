@@ -2,7 +2,6 @@ package gregtech.common.blocks;
 
 import static gregtech.api.enums.Mods.NotEnoughItems;
 
-import gregtech.common.render.MHDCSMBlockRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -16,6 +15,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.client.DynamicLangManager;
+import gregtech.common.render.MHDCSMBlockRenderer;
 
 public class BlockMetal extends BlockStorage {
 
