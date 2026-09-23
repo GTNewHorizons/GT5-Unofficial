@@ -345,7 +345,7 @@ public class BECRecipes implements Runnable {
         // Coherence-preserving Plasma Conduit
         addBec(
             ItemList.CoherencePreservingPlasmaConduit.get(12),
-            new ItemStack[] { Casings.ParticleBeamGuidancePipeCasing.toStack(1),
+            new ItemStack[] { ItemList.BlockQuarkPipe.get(1),
                 ItemList.PeaceEnforcementCasing.get(12),
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.TranscendentMetal, 4),
                 ItemList.Electromagnet_Tengam.get(1), ItemList.MetaMaterial_EnergyConduit1.get(4),

@@ -2271,7 +2271,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             8_192,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { Casings.ParticleBeamGuidancePipeCasing.toStack(2), ItemList.PeaceEnforcementCasing.get(18),
+            new Object[] { ItemList.BlockQuarkPipe.get(2), ItemList.PeaceEnforcementCasing.get(18),
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.TranscendentMetal, 6),
                 ItemList.Electromagnet_Tengam.get(1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 4),
