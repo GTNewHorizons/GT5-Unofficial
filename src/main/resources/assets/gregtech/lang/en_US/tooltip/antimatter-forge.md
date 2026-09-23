@@ -28,5 +28,5 @@ Each stabilization can only use one of the fluids at a time
 1. {fluid:molten.shirabon} = {gold:0.05}
 2. {fluid:molten.magnetohydrodynamicallyconstrainedstarmatter} = {gold:0.10}
 {aqua:{bold:{underline:A}}}{aqua:ctivation Stabilization} (Consumes {dark_aqua:Antimatter}^(1/3) L of fluid per cycle)
-1. {fluid:naquadah based liquid fuel mkv (depleted)} = {aqua:0.05}
-2. {fluid:naquadah based liquid fuel mkvi (depleted)} = {aqua:0.10}
+1. {fluid:naquadah based liquid fuel mk-v (depleted)} = {aqua:0.05}
+2. {fluid:naquadah based liquid fuel mk-vi (depleted)} = {aqua:0.10}
