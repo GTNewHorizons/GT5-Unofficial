@@ -3320,7 +3320,7 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_Foolish,
     Ice_Cream_LawnbaseSpecial,
     Ice_Cream_LunarLander,
-    Ice_Cream_NaquadaNutSwirl,
+    Ice_Cream_NaquadahNutSwirl,
     Ice_Cream_NaquadriaPlasmaParfait,
     Ice_Cream_NetherStarNutCrunch,
     Ice_Cream_NutsAndBolts,
