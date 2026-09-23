@@ -7251,7 +7251,7 @@ fluidHotWater=Горячая вода
 
 fluid.oil=Нефть
 fluid.tile.fluidBlockSludge=Осадок
-fluid.sludge=осадок
+fluid.sludge=Осадок
 fluid.oilgc=oilgc
 fluid.fuelgc=fuelgc
 
