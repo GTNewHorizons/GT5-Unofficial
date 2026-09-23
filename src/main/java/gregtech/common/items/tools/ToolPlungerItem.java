@@ -1,6 +1,8 @@
 package gregtech.common.items.tools;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -47,7 +49,7 @@ public class ToolPlungerItem extends ToolItemBase {
     @Override
     protected void addBehaviourToolTips(List<String> list, ItemStack stack) {
         list.add(translateToLocal("gt.behaviour.plunger.item"));
-        list.add(translateToLocal("gt.behaviour.plunger.fluid"));
+        list.add(translateToLocalFormatted("gt.behaviour.plunger.fluid", formatFluid(PlungerActions.PLUNGER_DRAIN_AMOUNT)));
         if (Mods.Thaumcraft.isModLoaded()) list.add(translateToLocal("gt.behaviour.plunger.essentia"));
     }
 }

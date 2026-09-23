@@ -27,6 +27,8 @@ import gregtech.api.util.GTUtility;
  */
 public final class PlungerActions {
 
+    public static final int PLUNGER_DRAIN_AMOUNT = 1_000;
+
     private PlungerActions() {}
 
     /** Dumps the contents of an item pipe network onto the ground. */
@@ -70,7 +72,7 @@ public final class PlungerActions {
     public static boolean pullFluid(EntityPlayer player, World world, int x, int y, int z, float hitX, float hitY,
         float hitZ, BooleanSupplier pay) {
         if (world.isRemote) return false;
-        final int drainAmount = player.isSneaking() ? Integer.MAX_VALUE : 1000;
+        final int drainAmount = player.isSneaking() ? Integer.MAX_VALUE : PLUNGER_DRAIN_AMOUNT;
         TileEntity tileEntity = world.getTileEntity(x, y, z);
 
         if (tileEntity instanceof IFluidHandler fluidHandler) {
