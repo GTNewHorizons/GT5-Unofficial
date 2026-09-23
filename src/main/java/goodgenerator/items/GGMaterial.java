@@ -490,7 +490,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff naquadahBasedFuelMkI = new Werkstoff(
         new short[] { 0x62, 0x5c, 0x5b },
-        "Naquadah Based Liquid Fuel Mk-I",
+        "Naquadah Based Liquid Fuel MkI",
         "THE FIRST STEP",
         new Werkstoff.Stats().setRadioactive(true),
         Werkstoff.Types.MIXTURE,
@@ -501,7 +501,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff naquadahBasedFuelMkIDepleted = new Werkstoff(
         new short[] { 0xcb, 0xc3, 0xc1 },
-        "Naquadah Based Liquid Fuel Mk-I (Depleted)",
+        "Naquadah Based Liquid Fuel MkI (Depleted)",
         "THE FIRST STEP (taken)",
         new Werkstoff.Stats().setToxic(true),
         Werkstoff.Types.MIXTURE,
@@ -512,7 +512,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff naquadahBasedFuelMkII = new Werkstoff(
         new short[] { 0x52, 0x4e, 0x4d },
-        "Naquadah Based Liquid Fuel Mk-II",
+        "Naquadah Based Liquid Fuel MkII",
         "SIXTY BILLION KILOWATT-HOURS",
         new Werkstoff.Stats().setRadioactive(true),
         Werkstoff.Types.MIXTURE,
@@ -523,7 +523,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff naquadahBasedFuelMkIIDepleted = new Werkstoff(
         new short[] { 0xb5, 0xb0, 0xae },
-        "Naquadah Based Liquid Fuel Mk-II (Depleted)",
+        "Naquadah Based Liquid Fuel MkII (Depleted)",
         "SIXTY BILLION KILOWATT-HOURS (spent)",
         new Werkstoff.Stats().setToxic(true),
         Werkstoff.Types.MIXTURE,
@@ -546,7 +546,7 @@ public class GGMaterial implements Runnable {
      */
     public static final Werkstoff naquadahBasedFuelMkIII = new Werkstoff(
         new short[] { 0x29, 0x22, 0x21 },
-        "Naquadah Based Liquid Fuel Mk-III",
+        "Naquadah Based Liquid Fuel MkIII",
         "POWER OVERWHELMING",
         new Werkstoff.Stats().setRadioactive(true),
         Werkstoff.Types.MIXTURE,
@@ -557,7 +557,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff naquadahBasedFuelMkIIIDepleted = new Werkstoff(
         new short[] { 0x66, 0x40, 0x38 },
-        "Naquadah Based Liquid Fuel Mk-III (Depleted)",
+        "Naquadah Based Liquid Fuel MkIII (Depleted)",
         "POWER OVERWHELMING (no longer)",
         new Werkstoff.Stats().setToxic(true),
         Werkstoff.Types.MIXTURE,
@@ -568,7 +568,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff naquadahBasedFuelMkIV = new Werkstoff(
         new short[] { 0x0e, 0x0c, 0x0c },
-        "Naquadah Based Liquid Fuel Mk-IV",
+        "Naquadah Based Liquid Fuel MkIV",
         "STRIKE DOWN THE SUN",
         new Werkstoff.Stats().setRadioactive(true),
         Werkstoff.Types.MIXTURE,
@@ -579,7 +579,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff naquadahBasedFuelMkIVDepleted = new Werkstoff(
         new short[] { 0x8e, 0x34, 0x22 },
-        "Naquadah Based Liquid Fuel Mk-IV (Depleted)",
+        "Naquadah Based Liquid Fuel MkIV (Depleted)",
         "STRIKE DOWN THE SUN (done)",
         new Werkstoff.Stats().setToxic(true),
         Werkstoff.Types.MIXTURE,
@@ -590,7 +590,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff naquadahBasedFuelMkV = new Werkstoff(
         new short[] { 0x00, 0x00, 0x00 },
-        "Naquadah Based Liquid Fuel Mk-V",
+        "Naquadah Based Liquid Fuel MkV",
         "THE END",
         new Werkstoff.Stats().setRadioactive(true),
         Werkstoff.Types.MIXTURE,
@@ -601,7 +601,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff naquadahBasedFuelMkVDepleted = new Werkstoff(
         new short[] { 0xff, 0xff, 0xff },
-        "Naquadah Based Liquid Fuel Mk-V (Depleted)",
+        "Naquadah Based Liquid Fuel MkV (Depleted)",
         "THE END (literally)",
         new Werkstoff.Stats().setToxic(true),
         Werkstoff.Types.MIXTURE,
@@ -612,7 +612,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff naquadahBasedFuelMkVI = new Werkstoff(
         new short[] { 0x30, 0x00, 0x00 },
-        "Naquadah Based Liquid Fuel Mk-VI",
+        "Naquadah Based Liquid Fuel MkVI",
         "THE FUTURE",
         new Werkstoff.Stats().setRadioactive(true),
         Werkstoff.Types.MIXTURE,
@@ -623,7 +623,7 @@ public class GGMaterial implements Runnable {
 
     public static final Werkstoff naquadahBasedFuelMkVIDepleted = new Werkstoff(
         new short[] { 0x99, 0x33, 0x33 },
-        "Naquadah Based Liquid Fuel Mk-VI (Depleted)",
+        "Naquadah Based Liquid Fuel MkVI (Depleted)",
         "THE FUTURE (achieved)",
         new Werkstoff.Stats().setToxic(true),
         Werkstoff.Types.MIXTURE,
