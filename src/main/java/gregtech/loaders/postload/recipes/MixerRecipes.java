@@ -42,7 +42,6 @@ import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 
@@ -285,7 +284,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 3))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Gunpowder, Shapes.dust, 6))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -296,7 +295,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dust, 3))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Gunpowder, Shapes.dust, 6))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -307,7 +306,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 3))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Gunpowder, 6L * OrePrefixes.dust.getMaterialAmount()))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Gunpowder, Shapes.dust, 6))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);

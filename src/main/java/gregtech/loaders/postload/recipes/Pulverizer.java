@@ -20,7 +20,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.Materials;
@@ -28,7 +27,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
-import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -700,9 +698,7 @@ public class Pulverizer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.item_frame, 1, 32767))
-            .itemOutputs(
-                new ItemStack(Items.leather, 1),
-                GTOreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.getMaterialAmount() * 4L))
+            .itemOutputs(new ItemStack(Items.leather, 1), MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 2))
             .outputChances(10000, 9500)
             .duration(20 * SECONDS)
             .eut(2)
@@ -711,9 +707,7 @@ public class Pulverizer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.bow, 1, 0))
-            .itemOutputs(
-                new ItemStack(Items.string, 3),
-                GTOreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.getMaterialAmount() * 3))
+            .itemOutputs(new ItemStack(Items.string, 3), MaterialLibAPI.getStack(Materials.Wood, Shapes.dustSmall, 6))
             .outputChances(10000, 9500)
             .duration(20 * SECONDS)
             .eut(2)
