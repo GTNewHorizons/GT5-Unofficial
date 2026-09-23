@@ -15,7 +15,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -69,7 +68,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                     OrePrefixes.dustTiny,
                     GTUtility.selectItemInList(0, material, MaterialUtils.oreByProducts(material)),
                     1L),
-                GTOreDictUnificator.getDust(prefix.mSecondaryMaterial))
+                MaterialParts.dustOf(prefix.mSecondaryMaterial))
             .outputChances(10000, 100 * 5 * multiplier, 10000)
             .duration(20 * SECONDS)
             .eut(2)

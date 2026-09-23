@@ -1,5 +1,7 @@
 package gregtech.api.material;
 
+import static gregtech.api.enums.GTValues.M;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,7 +26,9 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.GTShapeStore;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 /// The bridge between GregTech's legacy [OrePrefixes] domain and MaterialLib's [Shape] domain.
 ///
@@ -138,6 +142,72 @@ public class MaterialParts {
             if (material.hasShape(shape)) return shape;
         }
         return null;
+    }
+
+    /// A material amount (in [gregtech.api.enums.GTValues#M] units) of `material` as dust: whole dusts when the
+    /// amount divides evenly or reaches 16 dusts, else small dusts when it divides into quarters or reaches 8 dusts,
+    /// else tiny dusts. Null when the amount is not positive or the material carries none of the three.
+    public static @Nullable ItemStack dustOf(@Nullable Material material, long materialAmount) {
+        if (materialAmount <= 0) return null;
+        ItemStack stack = null;
+        if (materialAmount % M == 0 || materialAmount >= M * 16) {
+            stack = amountPart(OrePrefixes.dust, material, materialAmount / M);
+        }
+        if (stack == null && ((materialAmount * 4) % M == 0 || materialAmount >= M * 8)) {
+            stack = amountPart(OrePrefixes.dustSmall, material, (materialAmount * 4) / M);
+        }
+        if (stack == null && materialAmount * 9 >= M) {
+            stack = amountPart(OrePrefixes.dustTiny, material, (materialAmount * 9) / M);
+        }
+        return stack;
+    }
+
+    /// [#dustOf(Material, long)] of a [MaterialStack]'s material and amount.
+    public static @Nullable ItemStack dustOf(@Nullable MaterialStack materialStack) {
+        return materialStack == null ? null : dustOf(materialStack.mMaterial, materialStack.mAmount);
+    }
+
+    /// A material amount of `material` as metal: blocks when the amount is a multiple of more than one block or
+    /// reaches 8 blocks, else ingots when it divides evenly or reaches 8 ingots, else nuggets. Null when the
+    /// amount is not positive or the material carries none of the three.
+    public static @Nullable ItemStack ingotOf(@Nullable Material material, long materialAmount) {
+        if (materialAmount <= 0) return null;
+        ItemStack stack = null;
+        if ((materialAmount % (M * 9) == 0 && materialAmount / (M * 9) > 1) || materialAmount >= M * 72) {
+            stack = amountPart(OrePrefixes.block, material, materialAmount / (M * 9));
+        }
+        if (stack == null && (materialAmount % M == 0 || materialAmount >= M * 8)) {
+            stack = amountPart(OrePrefixes.ingot, material, materialAmount / M);
+        }
+        if (stack == null && materialAmount * 9 >= M) {
+            stack = amountPart(OrePrefixes.nugget, material, (materialAmount * 9) / M);
+        }
+        return stack;
+    }
+
+    /// [#ingotOf], falling back to [#dustOf].
+    public static @Nullable ItemStack ingotOrDustOf(@Nullable Material material, long materialAmount) {
+        ItemStack stack = ingotOf(material, materialAmount);
+        return stack != null ? stack : dustOf(material, materialAmount);
+    }
+
+    /// [#ingotOrDustOf(Material, long)] of a [MaterialStack]'s material and amount.
+    public static @Nullable ItemStack ingotOrDustOf(@Nullable MaterialStack materialStack) {
+        return materialStack == null ? null : ingotOrDustOf(materialStack.mMaterial, materialStack.mAmount);
+    }
+
+    /// [#dustOf], falling back to [#ingotOf].
+    public static @Nullable ItemStack dustOrIngotOf(@Nullable Material material, long materialAmount) {
+        ItemStack stack = dustOf(material, materialAmount);
+        return stack != null ? stack : ingotOf(material, materialAmount);
+    }
+
+    /// The pair's stack at `amount`, honouring the component-disabling config the prefix takes part in.
+    private static @Nullable ItemStack amountPart(OrePrefixes prefix, @Nullable Material material, long amount) {
+        if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material)) {
+            return null;
+        }
+        return GTUtility.copyAmount((int) amount, stack(prefix, material, 1));
     }
 
     /// Whether `stack`'s unification association ([GTOreDictUnificator#getAssociation]) names `material` as

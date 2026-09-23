@@ -29,7 +29,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
@@ -476,7 +475,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
                                 MaterialParts.stack(OrePrefixes.stickLong, material, 1L),
-                                GTOreDictUnificator.getDust(
+                                MaterialParts.dustOf(
                                     material,
                                     prefix.getMaterialAmount() - OrePrefixes.stickLong.getMaterialAmount()))
                             .duration(((int) Math.max(materialMass * 5L, 1L)) * TICKS)

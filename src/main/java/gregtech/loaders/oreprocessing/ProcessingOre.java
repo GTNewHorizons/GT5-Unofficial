@@ -30,7 +30,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
@@ -246,7 +245,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             }
 
             if (stoneDust == null) {
-                stoneDust = GTOreDictUnificator.getDust(prefix.mSecondaryMaterial);
+                stoneDust = MaterialParts.dustOf(prefix.mSecondaryMaterial);
             }
 
             int chanceOre2 = tPrimaryByProduct == null ? 0

@@ -5,7 +5,6 @@ import java.util.Arrays;
 import bartworks.common.net.PacketBWMetaBlock;
 import bartworks.common.net.PacketBioVatRenderer;
 import bartworks.common.net.PacketEIC;
-import bartworks.common.net.PacketOreDictCache;
 import bartworks.common.net.PacketServerJoined;
 import gregtech.api.net.cape.GTPacketBroadcastCapes;
 import gregtech.api.net.cape.GTPacketListCapes;
@@ -35,7 +34,7 @@ public enum GTPacketTypes {
     INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
     BIO_VAT_RENDERER(23, new PacketBioVatRenderer()),
     BW_META_BLOCK(24, new PacketBWMetaBlock()),
-    ORE_DICT_CACHE(25, new PacketOreDictCache()),
+    // ID 25 unused
     SERVER_JOINED(26, new PacketServerJoined()),
     EIC(27, new PacketEIC()),
     // ID 28 unused

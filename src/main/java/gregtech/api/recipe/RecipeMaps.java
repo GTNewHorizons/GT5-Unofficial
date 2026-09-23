@@ -701,7 +701,7 @@ public final class RecipeMaps {
                     ItemData tData = GTOreDictUnificator.getItemData(r.mOutputs[0]);
                     if (tData != null && (tData.mPrefix == OrePrefixes.dust
                         || OrePrefixes.dust.mFamiliarPrefixes.contains(tData.mPrefix))) {
-                        r.mOutputs[0] = GTOreDictUnificator.getDust(
+                        r.mOutputs[0] = MaterialParts.dustOf(
                             tData.mMaterial.mMaterial,
                             tData.mMaterial.mAmount * r.mOutputs[0].stackSize / tScale);
                     } else {

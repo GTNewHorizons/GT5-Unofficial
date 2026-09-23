@@ -27,7 +27,6 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -221,7 +220,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                             1L,
                             MaterialParts.stack(OrePrefixes.gem, tPrimaryByMaterial, 1),
                             GTUtility.copyAmount(1, tPrimaryByProduct)),
-                        GTOreDictUnificator.getDust(prefix.mSecondaryMaterial)))
+                        MaterialParts.dustOf(prefix.mSecondaryMaterial)))
                 .outputChances(10000, chanceOre2, 5000)
                 .duration(20 * SECONDS)
                 .eut(2)

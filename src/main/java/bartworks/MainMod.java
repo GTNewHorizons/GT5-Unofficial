@@ -50,7 +50,6 @@ import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
 import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import bartworks.system.material.gtenhancement.PlatinumSludgeRecipes;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
-import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.ResultWrongSievert;
 import bwcrossmod.galacticgreg.VoidMinerUtility;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -227,8 +226,6 @@ public final class MainMod {
     private static boolean recipesAdded;
 
     public static void runOnPlayerJoined(boolean classicMode, boolean disableExtraGasRecipes) {
-        OreDictHandler.adaptCacheForWorld();
-
         // Accept recipe map changes into Buffers
         RecipeMap.ALL_RECIPE_MAPS.values()
             .forEach(
