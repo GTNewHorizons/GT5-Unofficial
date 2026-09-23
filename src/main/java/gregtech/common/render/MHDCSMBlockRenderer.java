@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -14,13 +15,13 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.common.blocks.BlockMetal;
 
 public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
 
     public static float pixel = 1F / 16F;
     public static float middle = (1F - pixel) / 2F;
 
+    public static final int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
     public static IIcon textureInner;
     public static IIcon textureHalo;
     public static int mhdcsm_meta = 13;
@@ -109,7 +110,6 @@ public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
             }
         }
 
-        block.setBlockBoundsForItemRender();
         renderer.enableAO = true;
         return true;
     }
@@ -150,7 +150,6 @@ public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         GL11.glEnable(GL11.GL_LIGHTING);
-        block.setBlockBoundsForItemRender();
     }
 
     public void renderEmissiveBlock(Block block, int x, int y, int z, RenderBlocks renderer, IIcon texture) {
@@ -178,6 +177,6 @@ public class MHDCSMBlockRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return BlockMetal.RENDER_ID;
+        return RENDER_ID;
     }
 }

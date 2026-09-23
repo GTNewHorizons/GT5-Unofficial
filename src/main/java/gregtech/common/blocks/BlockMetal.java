@@ -2,15 +2,13 @@ package gregtech.common.blocks;
 
 import static gregtech.api.enums.Mods.NotEnoughItems;
 
-import java.util.Arrays;
-
+import gregtech.common.render.MHDCSMBlockRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -26,7 +24,7 @@ public class BlockMetal extends BlockStorage {
     public IIconContainer[] mBlockIcons;
     public boolean mHideBlocks;
     public static boolean mNEIisLoaded = NotEnoughItems.isModLoaded();
-    public static final int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
+    public boolean hasMHDCSM = false;
 
     public BlockMetal(String aName, Materials[] aMats, OrePrefixes aPrefix, IIconContainer[] aBlockIcons) {
         super(ItemStorage.class, aName, Material.iron);
@@ -45,6 +43,7 @@ public class BlockMetal extends BlockStorage {
                     GTOreDictUnificator.registerOre(aPrefix.get(materials), new ItemStack(this, 1, i));
                 }
             }
+            if (aMats[i] == Materials.MHDCSM) this.hasMHDCSM = true;
         }
         if (aMats.length < 16 && mNEIisLoaded) {
             for (int i = aMats.length; i < 16; i++) codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i));
@@ -84,8 +83,7 @@ public class BlockMetal extends BlockStorage {
 
     @Override
     public int getRenderType() {
-        if (Arrays.asList(mMats)
-            .contains(Materials.MHDCSM)) return RENDER_ID;
+        if (hasMHDCSM) return MHDCSMBlockRenderer.RENDER_ID;
         return super.getRenderType();
     }
 }
