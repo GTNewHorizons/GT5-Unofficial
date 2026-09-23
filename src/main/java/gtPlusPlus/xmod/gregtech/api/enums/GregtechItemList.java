@@ -851,9 +851,6 @@ public enum GregtechItemList implements IItemContainer {
 
     // Thermal Inspired Items
     BlizzRod,
-    BlizzPowder,
-    CryotheumDust,
-    PyrotheumDust,
     PyrotheumBucket,
     CryotheumBucket,
     EnderBucket,
@@ -885,10 +882,6 @@ public enum GregtechItemList implements IItemContainer {
     FormaldehydeCatalystDust,
     SmallFormaldehydeCatalystDust,
     TinyFormaldehydeCatalystDust,
-
-    AmmoniumNitrateDust,
-    SmallAmmoniumNitrateDust,
-    TinyAmmoniumNitrateDust,
 
     LithiumCarbonateDust,
     SmallLithiumCarbonateDust,
@@ -1069,7 +1062,7 @@ public enum GregtechItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(this.mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmount(aAmount, GTOreDictUnificator.get(this.mStack));
+        return GTUtility.copyAmount(aAmount, this.mStack);
     }
 
     @Override
@@ -1080,7 +1073,7 @@ public enum GregtechItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(this.mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(this.mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, this.mStack);
     }
 
     @Override
@@ -1091,7 +1084,7 @@ public enum GregtechItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(this.mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, 0, GTOreDictUnificator.get(this.mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, 0, this.mStack);
     }
 
     @Override
@@ -1102,8 +1095,7 @@ public enum GregtechItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(this.mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility
-            .copyAmountAndMetaData(aAmount, this.mStack.getMaxDamage() - 1, GTOreDictUnificator.get(this.mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, this.mStack.getMaxDamage() - 1, this.mStack);
     }
 
     @Override
@@ -1134,7 +1126,7 @@ public enum GregtechItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(this.mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, GTOreDictUnificator.get(this.mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, this.mStack);
     }
 
     @Override

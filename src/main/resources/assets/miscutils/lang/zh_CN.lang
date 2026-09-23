@@ -50,10 +50,7 @@ item.itemSandstoneHammer.name=圆石粉碎者
 item.MiscUtils.bucket.bucketPyrotheum.name=烈焰之炽焱桶
 item.MiscUtils.bucket.bucketCryotheum.name=极寒之凛冰桶
 item.MiscUtils.bucket.bucketEnder.name=谐振熔融末影珍珠桶
-item.MiscUtils.material.dustPyrotheum.name=炽焱之尘
-item.MiscUtils.material.dustCryotheum.name=凛冰之尘
 item.MiscUtils.material.rodBlizz.name=暴雪棒
-item.MiscUtils.material.dustBlizz.name=暴雪粉
 
 //------------- 'miscutils' is Case Sensitive Here, unsure why
 tile.miscutils.fluid.pyrotheum.name=烈焰之炽焱

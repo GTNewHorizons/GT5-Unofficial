@@ -1478,7 +1478,8 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.getIC2Item("remote", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " C ", "TLT", " F ", 'C', "cableGt01Copper", 'L', "dustLapis", 'T',
-                GTModHandler.getIC2Item("casingtin", 1L), 'F', GTModHandler.getIC2Item("frequencyTransmitter", 1L) });
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.itemCasing, 1), 'F',
+                GTModHandler.getIC2Item("frequencyTransmitter", 1L) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("odScanner", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,

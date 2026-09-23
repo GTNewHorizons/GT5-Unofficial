@@ -141,7 +141,7 @@ public class RecipeLoaderRocketFuels {
     private static void createAmmoniumNitrateDust() {
         GTValues.RA.stdBuilder()
             .circuit(8)
-            .itemOutputs(GregtechItemList.AmmoniumNitrateDust.get(8))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.AmmoniumNitrate, Shapes.dust, 8))
             .fluidInputs(new FluidStack(GTPPFluids.HydratedAmmoniumNitrateSlurry, 8 * INGOTS))
             .fluidOutputs(GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_HV)

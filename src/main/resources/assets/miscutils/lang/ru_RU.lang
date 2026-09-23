@@ -65,10 +65,7 @@ GTPP.core.GT_Tooltip_Radioactive=§7Внимание: §aРадиоактивн�
 item.MiscUtils.bucket.bucketPyrotheum.name=Ведро пылающего пиротеума
 item.MiscUtils.bucket.bucketCryotheum.name=Ведро ледяного криотеума
 item.MiscUtils.bucket.bucketEnder.name=Ведро резонирующего эндера
-item.MiscUtils.material.dustPyrotheum.name=Пыль пиротеума
-item.MiscUtils.material.dustCryotheum.name=Пыль криотеума
 item.MiscUtils.material.rodBlizz.name=Стержень бурана
-item.MiscUtils.material.dustBlizz.name=Бурановый порошок
 
 # ------------- 'miscutils' is Case Sensitive Here, unsure why
 tile.miscutils.fluid.pyrotheum.name=Пылающий пиротеум

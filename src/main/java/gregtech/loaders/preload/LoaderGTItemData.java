@@ -16,10 +16,12 @@ import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableMap;
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
@@ -123,16 +125,27 @@ public class LoaderGTItemData implements Runnable {
             .addItemData(ItemList.IC2_Uranium_235_Small.get(1), new ItemData(Materials.Uranium235, 403200L));
         GTOreDictUnificator
             .addItemData(ItemList.IC2_Plutonium_Small.get(1), new ItemData(Materials.Plutonium, 403200L));
-        GTOreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Iron.get(1L), new ItemData(Materials.Iron, 1814400L));
-        GTOreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Gold.get(1L), new ItemData(Materials.Gold, 1814400L));
-        GTOreDictUnificator
-            .addItemData(ItemList.IC2_Item_Casing_Bronze.get(1L), new ItemData(Materials.Bronze, 1814400L));
-        GTOreDictUnificator
-            .addItemData(ItemList.IC2_Item_Casing_Copper.get(1L), new ItemData(Materials.Copper, 1814400L));
-        GTOreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Tin.get(1L), new ItemData(Materials.Tin, 1814400L));
-        GTOreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Lead.get(1L), new ItemData(Materials.Lead, 1814400L));
-        GTOreDictUnificator
-            .addItemData(ItemList.IC2_Item_Casing_Steel.get(1L), new ItemData(Materials.Steel, 1814400L));
+        GTOreDictUnificator.addItemData(
+            MaterialLibAPI.getStack(Materials.Iron, Shapes.itemCasing, 1),
+            new ItemData(Materials.Iron, 1814400L));
+        GTOreDictUnificator.addItemData(
+            MaterialLibAPI.getStack(Materials.Gold, Shapes.itemCasing, 1),
+            new ItemData(Materials.Gold, 1814400L));
+        GTOreDictUnificator.addItemData(
+            MaterialLibAPI.getStack(Materials.Bronze, Shapes.itemCasing, 1),
+            new ItemData(Materials.Bronze, 1814400L));
+        GTOreDictUnificator.addItemData(
+            MaterialLibAPI.getStack(Materials.Copper, Shapes.itemCasing, 1),
+            new ItemData(Materials.Copper, 1814400L));
+        GTOreDictUnificator.addItemData(
+            MaterialLibAPI.getStack(Materials.Tin, Shapes.itemCasing, 1),
+            new ItemData(Materials.Tin, 1814400L));
+        GTOreDictUnificator.addItemData(
+            MaterialLibAPI.getStack(Materials.Lead, Shapes.itemCasing, 1),
+            new ItemData(Materials.Lead, 1814400L));
+        GTOreDictUnificator.addItemData(
+            MaterialLibAPI.getStack(Materials.Steel, Shapes.itemCasing, 1),
+            new ItemData(Materials.Steel, 1814400L));
         GTOreDictUnificator.addItemData(new ItemStack(Items.book, 1, 32767), new ItemData(Materials.Paper, 10886400L));
         GTOreDictUnificator
             .addItemData(new ItemStack(Items.written_book, 1, 32767), new ItemData(Materials.Paper, 10886400L));

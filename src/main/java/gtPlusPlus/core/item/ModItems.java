@@ -460,15 +460,6 @@ public final class ModItems {
         GregtechItemList.SmallFormaldehydeCatalystDust.set(formaldehydeCatalyst[1]);
         GregtechItemList.TinyFormaldehydeCatalystDust.set(formaldehydeCatalyst[2]);
 
-        Item[] ammoniumNitrate = ItemUtils.generateSpecialUseDusts(
-            "AmmoniumNitrate",
-            "Ammonium Nitrate",
-            "N2H4O3",
-            Utils.rgbtoHexValue(150, 75, 150));
-        GregtechItemList.AmmoniumNitrateDust.set(ammoniumNitrate[0]);
-        GregtechItemList.SmallAmmoniumNitrateDust.set(ammoniumNitrate[1]);
-        GregtechItemList.TinyAmmoniumNitrateDust.set(ammoniumNitrate[2]);
-
         // Zirconium
         // Cinter Pellet.
         GregtechItemList.ZirconiumPellet.set(

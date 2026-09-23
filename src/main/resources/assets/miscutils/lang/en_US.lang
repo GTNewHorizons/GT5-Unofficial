@@ -68,10 +68,7 @@ GTPP.core.GT_Tooltip_HazmatWarning=§6Avoid direct handling without hazmat prote
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
 item.MiscUtils.bucket.bucketCryotheum.name=Gelid Cryotheum Bucket
 item.MiscUtils.bucket.bucketEnder.name=Resonant Ender Bucket
-item.MiscUtils.material.dustPyrotheum.name=Pyrotheum Dust
-item.MiscUtils.material.dustCryotheum.name=Cryotheum Dust
 item.MiscUtils.material.rodBlizz.name=Blizz Rod
-item.MiscUtils.material.dustBlizz.name=Blizz Powder
 
 # ------------- 'miscutils' is Case Sensitive Here, unsure why
 tile.miscutils.fluid.pyrotheum.name=Blazing Pyrotheum

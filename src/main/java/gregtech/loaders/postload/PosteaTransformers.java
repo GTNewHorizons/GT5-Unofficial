@@ -185,6 +185,32 @@ public class PosteaTransformers implements Runnable {
         registerEmptyCellCutoverTransformer();
         registerIC2FilledCellCutoverTransformers();
         registerGtppIC2CellCutoverTransformers();
+        registerIC2ItemCasingCutoverTransformers();
+        registerGtppThermalDustCutoverTransformers();
+    }
+
+    /// Migrates saved IC2 item casings (`IC2:itemCasing`, metas 0-6) onto the MaterialLib casing of the same
+    /// material. The IC2 item stays registered, so the handlers run on its live id.
+    private static void registerIC2ItemCasingCutoverTransformers() {
+        Material[] materials = { Materials.Copper, Materials.Tin, Materials.Bronze, Materials.Gold, Materials.Iron,
+            Materials.Steel, Materials.Lead };
+        for (int meta = 0; meta < materials.length; meta++) {
+            ItemStack cutover = MaterialLibAPI.getStack(materials[meta], Shapes.itemCasing, 1);
+            addItemReplacement("IC2:itemCasing", meta, cutover.getItem(), cutover.getItemDamage());
+        }
+    }
+
+    /// Migrates the Blizz, Pyrotheum and Cryotheum dusts gtPlusPlus minted on its Thermal Foundation material item
+    /// (`miscutils:material`, metas 2-4) onto the MaterialLib dusts. Meta 1, the Blizz rod, keeps its item.
+    private static void registerGtppThermalDustCutoverTransformers() {
+        remapGtppThermalDust(2, Materials.Blizz);
+        remapGtppThermalDust(3, Materials.Pyrotheum);
+        remapGtppThermalDust(4, Materials.Cryotheum);
+    }
+
+    private static void remapGtppThermalDust(int meta, Material material) {
+        ItemStack cutover = MaterialLibAPI.getStack(material, Shapes.dust, 1);
+        addItemReplacement("miscutils:material", meta, cutover.getItem(), cutover.getItemDamage());
     }
 
     /// Migrates saved IC2 empty cells (`IC2:itemCellEmpty`) onto the gregtech-owned empty cell every cell shape

@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.GalacticraftMars;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
@@ -262,35 +261,6 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.registerOre(
             OrePrefixes.circuit.oreDictName(Circuits.HV.materialName()),
             GTModHandler.getIC2Item("advancedCircuit", 1L));
-
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Copper,
-            GTModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Tin,
-            GTModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 1));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Bronze,
-            GTModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 2));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Gold,
-            GTModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 3));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Iron,
-            GTModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 4));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Steel,
-            GTModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 5));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Lead,
-            GTModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 6));
 
         for (Circuits circuit : Circuits.values()) {
             GTOreDictUnificator.registerOre(OrePrefixes.circuit.oreDictName(circuit.materialName()), circuit.get(1));

@@ -74,7 +74,9 @@ public class ProcessingDustGeneration {
         Materials.PotassiumNitrate, Materials.SodiumNitrate, Materials.StrontiumOxide,
         Materials.StrontiumHydroxide, Materials.CyanoaceticAcid, Materials.SodiumCyanide,
         Materials.CopperIISulfate, Materials.CopperIISulfatePentahydrate, Materials.SeleniumDioxide,
-        Materials.WoodsGlass);
+        Materials.WoodsGlass,
+        // gtPlusPlus special-use dusts
+        Materials.AmmoniumNitrate);
     // spotless:on
 
     public static void run() {

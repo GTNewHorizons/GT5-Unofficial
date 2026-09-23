@@ -69,13 +69,6 @@ public enum ItemList implements IItemContainer {
     RC_Bed_Stone,
     RC_Rebar,
     TC_Thaumometer,
-    IC2_Item_Casing_Tin,
-    IC2_Item_Casing_Copper,
-    IC2_Item_Casing_Iron,
-    IC2_Item_Casing_Steel,
-    IC2_Item_Casing_Lead,
-    IC2_Item_Casing_Bronze,
-    IC2_Item_Casing_Gold,
     IC2_Scrap,
     IC2_Scrapbox,
     IC2_Mixed_Metal_Ingot,
@@ -3472,28 +3465,28 @@ public enum ItemList implements IItemContainer {
             GT_FML_LOGGER.debug(new NullPointerException());
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmount(aAmount, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmount(aAmount, mStack);
     }
 
     @Override
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, mStack);
     }
 
     @Override
     public ItemStack getUndamaged(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, 0, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, 0, mStack);
     }
 
     @Override
     public ItemStack getAlmostBroken(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, mStack);
     }
 
     @Override
@@ -3536,7 +3529,7 @@ public enum ItemList implements IItemContainer {
     public ItemStack getWithDamage(long aAmount, long aMetaValue, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, mStack);
     }
 
     @Override
