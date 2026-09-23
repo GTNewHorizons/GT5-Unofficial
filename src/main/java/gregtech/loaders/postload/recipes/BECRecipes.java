@@ -360,15 +360,17 @@ public class BECRecipes implements Runnable {
 
         // Fine-structure Constant Manipulator
         addBec(
-            ItemList.FineStructureConstantManipulator.get(4),
-            new ItemStack[] { ItemList.ConflictInducementCasing.get(4),
-                ItemList.ElectromagneticallyIsolatedCasing.get(1),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SixPhasedCopper, 2),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Shijima, 1),
-                MaterialsElements.STANDALONE.HYPOGEN.getGearSmall(2), ItemList.MetaMaterial_Waveguide1.get(4),
-                ItemList.MetaMaterial_ElectrograviticValve1.get(4), ItemList.Sensor_UIV.get(1),
+            ItemList.FineStructureConstantManipulator.get(8),
+            new ItemStack[] {
+                ItemList.ConflictInducementCasing.get(8),
+                ItemList.ElectromagneticallyIsolatedCasing.get(2),
+                ItemList.MetaMaterial_Waveguide1.get(4),
+                ItemList.MetaMaterial_ElectrograviticValve1.get(4),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SixPhasedCopper, 4),
+                MaterialsElements.STANDALONE.HYPOGEN.getGearSmall(4),
+                ItemList.Sensor_UIV.get(1),
                 ItemList.Emitter_UIV.get(1) },
-            nanites(3, 4, 1, 1, 1, 1, 1, 3, 2),
+            nanites(3, 4, 1, 1, 1, 1, 3, 2),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(256 * INGOTS),
                 CondensateType.Infinity.getEntangled(32 * INGOTS),
                 CondensateType.CelestialTungsten.getEntangled(32 * INGOTS) },
