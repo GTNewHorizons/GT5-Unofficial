@@ -1,12 +1,11 @@
-Stores one type of radioactive isotope and lets it decay over time
+Accelerates the natural decay of radioactive isotopes
 Decay speed scales with the isotope's half-life and the amount stored
 Isotopes decay whether or not the warehouse is enabled or powered
 {gray:{hr}}
-Capacity is {red:1/{var:capacity_divisor}} of the {gold:Super Chest}
-Insert through the input bus, one isotope type at a time
-Item input rate is {red:EU/{var:eu_per_io}} items per second
-Power is only consumed when inputting or outputting items
+Capacity is 1/400th of the {white:Super Chest}
+Only one isotope type can be stored at a time
+Insert isotopes through the input bus at a max rate of {aqua:EU/512} per second
+Power is only consumed when inputting or outputting isotopes
 {gray:{hr}}
-Right click the controller with a {gold:Screwdriver} to dump stored isotopes to the output bus
-Right click the controller with a {gold:Plunger} to empty the warehouse
-{yellow:Contents are {underline:voided} when the controller is broken}
+Right-click the controller with a {white:Screwdriver} to dump stored isotopes to the output bus
+Right-click the controller with a {white:Plunger} (or break it) to void the contents of the warehouse
