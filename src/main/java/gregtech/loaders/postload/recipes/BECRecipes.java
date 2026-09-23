@@ -406,8 +406,8 @@ public class BECRecipes implements Runnable {
 
         // Electromagnetic Waveguide
         addBec(
-            ItemList.ElectromagneticWaveguide.get(4),
-            new ItemStack[] { ItemRefer.AntimatterContainmentCasing.get(4), ItemList.MetaMaterial_Waveguide1.get(4),
+            ItemList.ElectromagneticWaveguide.get(8),
+            new ItemStack[] { ItemRefer.AntimatterContainmentCasing.get(4), ItemList.MetaMaterial_Waveguide1.get(2),
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 4),
                 ItemList.Field_Generator_UEV.get(1) },
             nanites(3, 4, 1, 1),

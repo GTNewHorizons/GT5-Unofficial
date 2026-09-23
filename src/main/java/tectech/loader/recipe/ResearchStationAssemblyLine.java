@@ -2370,8 +2370,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             8_192,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { ItemRefer.AntimatterContainmentCasing.get(6),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.ProtoHalkonite, 6),
+            new Object[] { ItemRefer.AntimatterContainmentCasing.get(6), ItemList.UIV_Coil.get(3),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.ProtoHalkonite, 3),
                 GGMaterial.tairitsu.get(OrePrefixes.wireFine, 24),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Churitsu, 12),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Shijima, 24),
@@ -2379,9 +2379,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Field_Generator_UEV.get(2) },
             new FluidStack[] { CHRONOMATIC_GLASS.getFluidStack(768 * INGOTS),
                 Materials.Infinity.getMolten(192 * INGOTS),
-                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(192 * INGOTS),
-                Materials.SpaceTime.getMolten(24 * INGOTS) },
-            ItemList.ElectromagneticWaveguide.get(4),
+                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(192 * INGOTS) },
+            ItemList.ElectromagneticWaveguide.get(8),
             120 * SECONDS,
             (int) TierEU.RECIPE_UIV);
     }
