@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.quantumForceTransformerRecipes;
@@ -35,7 +36,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -421,7 +421,7 @@ public class RecipeLoaderChemicalSkips {
                 .copyAmountUnsafe(64 * 32, getModItem(GalaxySpace.ID, "tcetiedandelions", 1, 4));
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get("cropSeaweed", 64),
+                    getModItem(PamsHarvestCraft.ID, "seaweedItem", 64),
                     MaterialLibAPI.getStack(Materials.Mytryl, Shapes.dust, 16))
                 .itemOutputs(seaweed, getModItem(NewHorizonsCoreMod.ID, "TCetiESeaweedExtract", 16))
                 .fluidInputs(FluidRegistry.getFluidStack("unknowwater", 25_000))

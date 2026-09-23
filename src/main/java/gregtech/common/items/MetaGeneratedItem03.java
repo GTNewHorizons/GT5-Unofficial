@@ -2123,26 +2123,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void initOreDictUnificatorEntries() {
-        GTOreDictUnificator.set(
-            OrePrefixes.componentCircuit,
-            CircuitComponents.RESISTOR.materialName(),
-            ItemList.Circuit_Parts_Resistor.get(1L));
-        GTOreDictUnificator.set(
-            OrePrefixes.componentCircuit,
-            CircuitComponents.DIODE.materialName(),
-            ItemList.Circuit_Parts_Diode.get(1L));
-        GTOreDictUnificator.set(
-            OrePrefixes.componentCircuit,
-            CircuitComponents.TRANSISTOR.materialName(),
-            ItemList.Circuit_Parts_Transistor.get(1L));
-        GTOreDictUnificator.set(
-            OrePrefixes.componentCircuit,
-            CircuitComponents.INDUCTOR.materialName(),
-            ItemList.Circuit_Parts_Coil.get(1L));
-        GTOreDictUnificator.set(
-            OrePrefixes.componentCircuit,
-            CircuitComponents.CAPACITOR.materialName(),
-            ItemList.Circuit_Parts_Capacitor.get(1L));
+        for (CircuitComponents component : CircuitComponents.values()) {
+            GTOreDictUnificator.set(OrePrefixes.componentCircuit, component.materialName(), component.get(1));
+        }
 
         GTOreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,

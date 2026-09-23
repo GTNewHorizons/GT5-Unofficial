@@ -27,7 +27,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -184,7 +184,7 @@ public class RecipeLoaderCoalTar {
 
         // Coke
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get("fuelCoke", 8))
+            .itemInputs(new OreDictItemStack("fuelCoke", 8))
             .circuit(8)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustSmall, 3))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 3_400))

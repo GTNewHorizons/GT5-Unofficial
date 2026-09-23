@@ -40,6 +40,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -426,7 +427,7 @@ public class BioRecipes {
             // Na2CO3 + Al2O3 =C= 2NaAlO2 + CO2
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get("fuelCoke", 1),
+                    new OreDictItemStack("fuelCoke", 1),
                     MaterialLibAPI.getStack(Materials.SodiumCarbonate, Shapes.dust, 6),
                     GregtechItemList.AluminiumPellet.get(5))
                 .circuit(18)

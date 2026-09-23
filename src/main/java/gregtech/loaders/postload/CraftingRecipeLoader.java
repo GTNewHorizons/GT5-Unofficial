@@ -29,7 +29,6 @@ import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import ic2.core.Ic2Items;
 
@@ -1696,7 +1695,7 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "Sm ", 'S', new ItemStack(Items.reeds) });
         GTModHandler.addCraftingRecipe(
-            GTOreDictUnificator.get("paperEmpty", 2),
+            new ItemStack(Items.paper, 2),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " C ", "SSS", " C ", 'S', MaterialLibAPI.getStack(Materials.Paper, Shapes.dust, 1), 'C',
                 new ItemStack(Blocks.stone_slab) });

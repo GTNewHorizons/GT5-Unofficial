@@ -20,7 +20,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
@@ -153,7 +152,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             Materials.Steel,
                             Shapes.ring,
                             (int) (prefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.getMaterialAmount())),
-                        GTOreDictUnificator.get(oreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true))
+                        MaterialParts.stack(unrestricted(prefix), material, 1))
                     .itemOutputs(GTUtility.copyAmount(1, stack))
                     .duration(
                         ((int) (prefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.getMaterialAmount()))
@@ -184,8 +183,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTModHandler.addCraftingRecipe(
                         GTUtility.copyAmount(1, stack),
                         bits,
-                        new Object[] { "PPP", "PPP", "PPP", 'P', GTOreDictUnificator
-                            .get(oreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true) });
+                        new Object[] { "PPP", "PPP", "PPP", 'P',
+                            MaterialParts.stack(OrePrefixes.pipeSmall, material, 1) });
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(MaterialParts.stack(OrePrefixes.pipeSmall, material, 9))
@@ -197,5 +196,17 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             default -> {}
         }
+    }
+
+    /// The plain pipe prefix a restrictive pipe prefix is assembled from.
+    private static OrePrefixes unrestricted(OrePrefixes restrictive) {
+        return switch (restrictive.getName()) {
+            case "pipeRestrictiveTiny" -> OrePrefixes.pipeTiny;
+            case "pipeRestrictiveSmall" -> OrePrefixes.pipeSmall;
+            case "pipeRestrictiveMedium" -> OrePrefixes.pipeMedium;
+            case "pipeRestrictiveLarge" -> OrePrefixes.pipeLarge;
+            case "pipeRestrictiveHuge" -> OrePrefixes.pipeHuge;
+            default -> throw new IllegalArgumentException(restrictive.getName() + " is not a restrictive pipe prefix");
+        };
     }
 }

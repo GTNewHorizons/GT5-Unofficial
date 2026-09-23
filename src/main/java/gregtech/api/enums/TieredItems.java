@@ -1,48 +1,65 @@
 package gregtech.api.enums;
 
+import static gregtech.api.enums.GTValues.W;
+
+import java.util.function.Supplier;
+
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-/// The non-circuit ore-dictionary entries that hang off a voltage tier -- batteries, high-pressure fluid pipes,
-/// quadruple wires and alloy plates -- keyed by voltage tier.
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.GTUtility;
+
+/// The non-circuit ore-dictionary entries that hang off a voltage tier -- batteries and high-pressure fluid
+/// pipes -- keyed by voltage tier.
 ///
 /// Each tier's ore-dictionary material name is unrelated to the tier abbreviation (`LV` is named `Basic`, `UHV`
 /// is named `Infinite`, and so on). Routing every call site through this enum keeps that mapping in one place.
 ///
-/// Every prefix is offered at every tier even though only some combinations are registered; asking for an
-/// unregistered one yields no stack.
-///
-/// Each prefix exposes two accessors. A `get...(int)` returns a unified [ItemStack] for recipe inputs and
-/// outputs that need a concrete stack. A `get...Ingredient()` returns the name-only [ItemData] form for
-/// crafting-grid recipes; see [gregtech.api.util.GTModHandler#addCraftingRecipe].
+/// A tier declares the concrete items it stands for: the IC2 battery registered under its `battery` name (`LV`
+/// to `EV`), and the material whose fluid pipes are registered under its pipe names (`ZPM`). A `get...(int)`
+/// returns that declared [ItemStack] and throws for a tier that declares none. A `get...Ingredient()` returns
+/// the name-only [ItemData] form for crafting-grid recipes, offered at every tier; see
+/// [gregtech.api.util.GTModHandler#addCraftingRecipe].
 public enum TieredItems {
 
-    ULV("Primitive"),
-    LV("Basic"),
-    MV("Good"),
-    HV("Advanced"),
-    EV("Data"),
-    IV("Elite"),
-    LuV("Master"),
-    ZPM("Ultimate"),
-    UV("Superconductor"),
-    UHV("Infinite"),
-    UEV("Bio"),
-    UIV("Optical"),
-    UMV("Exotic"),
-    UXV("Cosmic"),
-    MAX("Transcendent");
+    ULV("Primitive", null, null),
+    LV("Basic", () -> ItemList.IC2_ReBattery.get(1), null),
+    MV("Good", () -> ItemList.IC2_AdvBattery.getWithDamage(1, W), null),
+    HV("Advanced", () -> ItemList.IC2_EnergyCrystal.getWithDamage(1, W), null),
+    EV("Data", () -> ItemList.IC2_LapotronCrystal.getWithDamage(1, W), null),
+    IV("Elite", null, null),
+    LuV("Master", null, null),
+    ZPM("Ultimate", null, () -> Materials.Redstone),
+    UV("Superconductor", null, null),
+    UHV("Infinite", null, null),
+    UEV("Bio", null, null),
+    UIV("Optical", null, null),
+    UMV("Exotic", null, null),
+    UXV("Cosmic", null, null),
+    MAX("Transcendent", null, null);
 
     private final String materialName;
+    private final Supplier<ItemStack> battery;
+    private final Supplier<Material> pipeMaterial;
 
-    TieredItems(String materialName) {
+    TieredItems(String materialName, Supplier<ItemStack> battery, Supplier<Material> pipeMaterial) {
         this.materialName = materialName;
+        this.battery = battery;
+        this.pipeMaterial = pipeMaterial;
+    }
+
+    public boolean hasBattery() {
+        return battery != null;
     }
 
     public ItemStack getBattery(int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.battery.oreDictName(materialName), amount);
+        if (battery == null) throw new IllegalStateException("TieredItems." + name() + " declares no battery");
+        return GTUtility.copyAmount(amount, battery.get());
     }
 
     public ItemData getBatteryIngredient() {
@@ -50,7 +67,7 @@ public enum TieredItems {
     }
 
     public ItemStack getPipeSmall(int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.pipeSmall.oreDictName(materialName), amount);
+        return MaterialLibAPI.getStack(pipeMaterial(), TEBlockShapes.pipeSmall, amount);
     }
 
     public ItemData getPipeSmallIngredient() {
@@ -58,7 +75,7 @@ public enum TieredItems {
     }
 
     public ItemStack getPipeMedium(int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.pipeMedium.oreDictName(materialName), amount);
+        return MaterialLibAPI.getStack(pipeMaterial(), TEBlockShapes.pipeMedium, amount);
     }
 
     public ItemData getPipeMediumIngredient() {
@@ -66,35 +83,20 @@ public enum TieredItems {
     }
 
     public ItemStack getPipeLarge(int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.pipeLarge.oreDictName(materialName), amount);
+        return MaterialLibAPI.getStack(pipeMaterial(), TEBlockShapes.pipeLarge, amount);
     }
 
     public ItemData getPipeLargeIngredient() {
         return new ItemData(OrePrefixes.pipeLarge, materialName);
     }
 
-    public ItemStack getPipeHuge(int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.pipeHuge.oreDictName(materialName), amount);
-    }
-
     public ItemData getPipeHugeIngredient() {
         return new ItemData(OrePrefixes.pipeHuge, materialName);
     }
 
-    public ItemStack getWireGt04(int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.wireGt04.oreDictName(materialName), amount);
-    }
-
-    public ItemData getWireGt04Ingredient() {
-        return new ItemData(OrePrefixes.wireGt04, materialName);
-    }
-
-    public ItemStack getPlateAlloy(int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.plateAlloy.oreDictName(materialName), amount);
-    }
-
-    public ItemData getPlateAlloyIngredient() {
-        return new ItemData(OrePrefixes.plateAlloy, materialName);
+    private Material pipeMaterial() {
+        if (pipeMaterial == null) throw new IllegalStateException("TieredItems." + name() + " declares no pipes");
+        return pipeMaterial.get();
     }
 
     /// The ore-dictionary material name this constant stands for.

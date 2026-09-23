@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.industrialCokeOvenRecipes;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -21,7 +22,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -44,7 +45,7 @@ public class CokeAndPyrolyseOven {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Shapes.gem, 16))
             .circuit(22)
-            .itemOutputs(GTOreDictUnificator.get("fuelCoke", 10))
+            .itemOutputs(coke(10))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 20 * INGOTS))
             .duration(36 * SECONDS)
@@ -64,8 +65,8 @@ public class CokeAndPyrolyseOven {
 
         // Coke & Coal
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Shapes.gem, 12), GTOreDictUnificator.get("fuelCoke", 6))
-            .itemOutputs(GTOreDictUnificator.get("fuelCoke", 14))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Shapes.gem, 12), new OreDictItemStack("fuelCoke", 6))
+            .itemOutputs(coke(14))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 5040))
             .eut(TierEU.RECIPE_HV / 2)
@@ -134,5 +135,11 @@ public class CokeAndPyrolyseOven {
             .eut(TierEU.RECIPE_HV / 2)
             .duration(75 * SECONDS)
             .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
+    }
+
+    /// Coal coke: Railcraft's when Railcraft is loaded, gtPlusPlus's otherwise.
+    private static ItemStack coke(int amount) {
+        return Railcraft.isModLoaded() ? GTModHandler.getModItem(Railcraft.ID, "fuel.coke", amount)
+            : GregtechItemList.CustomCoalCoke.get(amount);
     }
 }

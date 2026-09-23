@@ -12,7 +12,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
@@ -38,9 +37,9 @@ import gregtech.api.util.GTOreDictUnificator;
 /// legacy-named entries get a pass of their own. [OrePrefixes#oreDictName] builds the legacy name, so that is
 /// the name every [GTOreDictUnificator] lookup asks for.
 ///
-/// The High Pressure (Redstone) fluid pipes additionally register under the tier-keyed
-/// `pipeSmallUltimate`..`pipeLargeUltimate` names ([TieredItems#ZPM]'s ingredient names), the identity every
-/// recipe referencing them uses.
+/// The High Pressure fluid pipes [TieredItems#ZPM] declares additionally register under its tier-keyed
+/// `pipeSmallUltimate`..`pipeLargeUltimate` ingredient names, the identity every crafting recipe referencing
+/// them uses.
 public class LoaderMaterialLibCutover implements Runnable {
 
     @Override
@@ -109,14 +108,8 @@ public class LoaderMaterialLibCutover implements Runnable {
     }
 
     private static void registerHighPressureNames() {
-        GTOreDictUnificator.registerOre(
-            TieredItems.ZPM.getPipeSmallIngredient(),
-            MaterialLibAPI.getStack(Materials.Redstone, TEBlockShapes.pipeSmall, 1));
-        GTOreDictUnificator.registerOre(
-            TieredItems.ZPM.getPipeMediumIngredient(),
-            MaterialLibAPI.getStack(Materials.Redstone, TEBlockShapes.pipeMedium, 1));
-        GTOreDictUnificator.registerOre(
-            TieredItems.ZPM.getPipeLargeIngredient(),
-            MaterialLibAPI.getStack(Materials.Redstone, TEBlockShapes.pipeLarge, 1));
+        GTOreDictUnificator.registerOre(TieredItems.ZPM.getPipeSmallIngredient(), TieredItems.ZPM.getPipeSmall(1));
+        GTOreDictUnificator.registerOre(TieredItems.ZPM.getPipeMediumIngredient(), TieredItems.ZPM.getPipeMedium(1));
+        GTOreDictUnificator.registerOre(TieredItems.ZPM.getPipeLargeIngredient(), TieredItems.ZPM.getPipeLarge(1));
     }
 }

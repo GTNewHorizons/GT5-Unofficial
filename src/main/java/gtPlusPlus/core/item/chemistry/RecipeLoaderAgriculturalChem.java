@@ -20,6 +20,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -178,7 +179,7 @@ public class RecipeLoaderAgriculturalChem {
             .isEmpty()) {
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("cropSugarbeet", 4))
+                .itemInputs(new OreDictItemStack("cropSugarbeet", 4))
                 .circuit(4)
                 .fluidInputs(GTModHandler.getDistilledWater(1_000))
                 .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1_000))
@@ -188,7 +189,7 @@ public class RecipeLoaderAgriculturalChem {
                 .addTo(chemicalPlantRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("cropSugarbeet", 4), GregtechItemList.CalciumCarbonateDust.get(2))
+                .itemInputs(new OreDictItemStack("cropSugarbeet", 4), GregtechItemList.CalciumCarbonateDust.get(2))
                 .circuit(5)
                 .fluidInputs(GTModHandler.getHotWater(2_000))
                 .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 2_000))

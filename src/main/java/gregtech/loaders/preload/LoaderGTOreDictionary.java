@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
@@ -160,21 +159,11 @@ public class LoaderGTOreDictionary implements Runnable {
             GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 11));
         GTOreDictUnificator.registerOre("cropLemon", ItemList.FR_Lemon.get(1L));
         GTOreDictUnificator.registerOre("cropPotato", ItemList.Food_Raw_Potato.get(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.battery.oreDictName(TieredItems.LV.materialName()),
-            ItemList.IC2_ReBattery.get(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.battery.oreDictName(TieredItems.LV.materialName()),
-            GTModHandler.getIC2Item("chargedReBattery", 1L, 32767));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.battery.oreDictName(TieredItems.MV.materialName()),
-            ItemList.IC2_AdvBattery.getWithDamage(1, 32767));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.battery.oreDictName(TieredItems.HV.materialName()),
-            ItemList.IC2_EnergyCrystal.getWithDamage(1L, 32767));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.battery.oreDictName(TieredItems.EV.materialName()),
-            ItemList.IC2_LapotronCrystal.getWithDamage(1L, 32767));
+        for (TieredItems tier : TieredItems.values()) {
+            if (tier.hasBattery()) GTOreDictUnificator.registerOre(tier.getBatteryIngredient(), tier.getBattery(1));
+        }
+        GTOreDictUnificator
+            .registerOre(TieredItems.LV.getBatteryIngredient(), GTModHandler.getIC2Item("chargedReBattery", 1L, 32767));
 
         GTOreDictUnificator
             .registerOre(OreDictNames.craftingWireCopper, GTModHandler.getIC2Item("insulatedCopperCableItem", 1L));
@@ -303,52 +292,9 @@ public class LoaderGTOreDictionary implements Runnable {
             Materials.Lead,
             GTModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 6));
 
-        // Fake Circuits
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.ULV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitULV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.LV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitLV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.MV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitMV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.HV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitHV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.EV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitEV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.IV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitIV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.LuV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitLuV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.ZPM.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitZPM", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.UV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitUV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.UHV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitUHV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.UEV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitUEV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.UIV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitUIV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.UMV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitUMV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.UXV.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitUXV", 1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.MAX.materialName()),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CircuitMAX", 1L));
+        for (Circuits circuit : Circuits.values()) {
+            GTOreDictUnificator.registerOre(OrePrefixes.circuit.oreDictName(circuit.materialName()), circuit.get(1));
+        }
 
         GTOreDictUnificator
             .registerOre(OrePrefixes.block, Materials.Manasteel, GTModHandler.getModItem(Botania.ID, "storage", 1L));

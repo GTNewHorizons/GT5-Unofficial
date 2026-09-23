@@ -26,8 +26,8 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -132,9 +132,7 @@ public class RecipeLoaderGenericChem {
 
     private static void recipeCarbonDisulfide() {
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get("fuelCoke", 8),
-                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 16))
+            .itemInputs(new OreDictItemStack("fuelCoke", 8), MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 16))
             .itemOutputs(MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, 1))
             .fluidOutputs(new FluidStack(GTPPFluids.CarbonDisulfide, 4_000))
             .duration(10 * MINUTES)
