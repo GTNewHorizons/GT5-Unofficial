@@ -100,6 +100,8 @@ public class LoaderMaterialLibCutover implements Runnable {
     }
 
     private static void unify(OrePrefixes prefix, Material material, ItemStack stack) {
+        // set, not registerOre: until GTOreDictUnificator#useMaterialLibTargets runs at GregTech's init, names
+        // resolve through the unificator's own table, and recipes registered before then must still get this stack
         if (prefix.isUnifiable()) {
             GTOreDictUnificator.set(prefix, material, stack);
         } else {

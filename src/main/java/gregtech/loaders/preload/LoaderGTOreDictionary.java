@@ -13,17 +13,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import com.ruling_0.materiallib.api.MaterialLibAPI;
-
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
-import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -43,20 +39,11 @@ public class LoaderGTOreDictionary implements Runnable {
                 "cell",
                 1L,
                 GTModHandler.getIC2Item("cellEmpty", 1L, GTModHandler.getIC2Item("emptyCell", 1L))));
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.Lava, ItemList.Cell_Lava.get(1L));
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.Water, ItemList.Cell_Water.get(1L));
-        GTOreDictUnificator.set(
+        GTOreDictUnificator.registerOre(
             OrePrefixes.cell,
             Materials.Creosote,
             GTModHandler.getModItem(Railcraft.ID, "fluid.creosote.cell", 1L));
 
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.Air, MaterialParts.requireCell(Materials.Air, 1));
-        GTOreDictUnificator
-            .set(OrePrefixes.cell, Materials.UUMatter, MaterialLibAPI.getStack(Materials.UUMatter, CellShapes.cell, 1));
-        GTOreDictUnificator.set(
-            OrePrefixes.cell,
-            Materials.ConstructionFoam,
-            MaterialLibAPI.getStack(Materials.ConstructionFoam, CellShapes.cell, 1));
         // registerOre, not set: IC2 keeps minting these filled cells, so they must keep matching cell recipes,
         // but the MaterialLib cells stay the unification targets.
         GTOreDictUnificator.registerOre(OrePrefixes.cell, Materials.Water, GTModHandler.getIC2Item("waterCell", 1L));
@@ -80,15 +67,15 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.set(OrePrefixes.plateAlloy, "Advanced", GTModHandler.getIC2Item("advancedAlloy", 1L));
         GTOreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Carbon, GTModHandler.getIC2Item("carbonPlate", 1L));
 
-        GTOreDictUnificator.set(OrePrefixes.ore, Materials.Coal, new ItemStack(Blocks.coal_ore, 1));
-        GTOreDictUnificator.set(OrePrefixes.ore, Materials.Iron, new ItemStack(Blocks.iron_ore, 1));
-        GTOreDictUnificator.set(OrePrefixes.ore, Materials.Lapis, new ItemStack(Blocks.lapis_ore, 1));
-        GTOreDictUnificator.set(OrePrefixes.ore, Materials.Redstone, new ItemStack(Blocks.redstone_ore, 1));
-        GTOreDictUnificator.set(OrePrefixes.ore, Materials.Redstone, new ItemStack(Blocks.lit_redstone_ore, 1));
-        GTOreDictUnificator.set(OrePrefixes.ore, Materials.Gold, new ItemStack(Blocks.gold_ore, 1));
-        GTOreDictUnificator.set(OrePrefixes.ore, Materials.Diamond, new ItemStack(Blocks.diamond_ore, 1));
-        GTOreDictUnificator.set(OrePrefixes.ore, Materials.Emerald, new ItemStack(Blocks.emerald_ore, 1));
-        GTOreDictUnificator.set(OrePrefixes.ore, Materials.NetherQuartz, new ItemStack(Blocks.quartz_ore, 1));
+        GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Coal, new ItemStack(Blocks.coal_ore, 1));
+        GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Iron, new ItemStack(Blocks.iron_ore, 1));
+        GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Lapis, new ItemStack(Blocks.lapis_ore, 1));
+        GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Redstone, new ItemStack(Blocks.redstone_ore, 1));
+        GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Redstone, new ItemStack(Blocks.lit_redstone_ore, 1));
+        GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Gold, new ItemStack(Blocks.gold_ore, 1));
+        GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Diamond, new ItemStack(Blocks.diamond_ore, 1));
+        GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Emerald, new ItemStack(Blocks.emerald_ore, 1));
+        GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.NetherQuartz, new ItemStack(Blocks.quartz_ore, 1));
 
         if (Blocks.ender_chest != null) {
             GTOreDictUnificator.registerOre(OreDictNames.enderChest, new ItemStack(Blocks.ender_chest, 1));

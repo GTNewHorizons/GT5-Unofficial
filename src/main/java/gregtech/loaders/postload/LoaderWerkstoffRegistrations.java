@@ -105,7 +105,6 @@ public class LoaderWerkstoffRegistrations {
             ItemStack stack = resolve(prefix, material);
             if (stack == null || stack.getItem() == null) continue;
             GTOreDictUnificator.addAssociation(prefix, material, stack);
-            GTOreDictUnificator.set(prefix, material, stack, true, true);
         }
     }
 

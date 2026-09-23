@@ -2562,51 +2562,54 @@ public class LoaderGTBlockFluid implements Runnable {
             .eut(2)
             .addTo(maceratorRecipes);
 
-        GTOreDictUnificator.set(
+        GTOreDictUnificator.registerOre(
             OrePrefixes.ingot,
             Materials.FierySteel,
             GTModHandler.getModItem(TwilightForest.ID, "item.fieryIngot", 1L, 0));
-        GTOreDictUnificator.set(
+        GTOreDictUnificator.registerOre(
             OrePrefixes.ingot,
             Materials.Knightmetal,
             GTModHandler.getModItem(TwilightForest.ID, "item.knightMetal", 1L, 0));
-        GTOreDictUnificator.set(
+        GTOreDictUnificator.registerOre(
             OrePrefixes.ingot,
             Materials.Steeleaf,
             GTModHandler.getModItem(TwilightForest.ID, "item.steeleafIngot", 1L, 0));
-        GTOreDictUnificator.set(
+        GTOreDictUnificator.registerOre(
             OrePrefixes.ingot,
             Materials.IronWood,
             GTModHandler.getModItem(TwilightForest.ID, "item.ironwoodIngot", 1L, 0));
-        GTOreDictUnificator
-            .set(OrePrefixes.gem, Materials.InfusedAir, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 0));
-        GTOreDictUnificator
-            .set(OrePrefixes.gem, Materials.InfusedFire, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 1));
-        GTOreDictUnificator
-            .set(OrePrefixes.gem, Materials.InfusedWater, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 2));
-        GTOreDictUnificator
-            .set(OrePrefixes.gem, Materials.InfusedEarth, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 3));
-        GTOreDictUnificator
-            .set(OrePrefixes.gem, Materials.InfusedOrder, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 4));
-        GTOreDictUnificator
-            .set(OrePrefixes.gem, Materials.InfusedEntropy, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 5));
-        GTOreDictUnificator
-            .set(OrePrefixes.nugget, Materials.Mercury, GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 5));
-        GTOreDictUnificator
-            .set(OrePrefixes.nugget, Materials.Thaumium, GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 6));
-        GTOreDictUnificator
-            .set(OrePrefixes.ingot, Materials.Thaumium, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 2));
-        GTOreDictUnificator
-            .set(OrePrefixes.gem, Materials.Mercury, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 3));
-        GTOreDictUnificator
-            .set(OrePrefixes.gem, Materials.Amber, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 6));
-        GTOreDictUnificator
-            .set(OrePrefixes.gem, Materials.Firestone, GTModHandler.getModItem(Railcraft.ID, "firestone.raw", 1L));
-
-        GTOreDictUnificator
-            .set(OrePrefixes.nugget, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
-        GTOreDictUnificator
-            .set(OrePrefixes.ingot, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.gem,
+            Materials.InfusedAir,
+            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 0));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.gem,
+            Materials.InfusedFire,
+            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 1));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.gem,
+            Materials.InfusedWater,
+            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 2));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.gem,
+            Materials.InfusedEarth,
+            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 3));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.gem,
+            Materials.InfusedOrder,
+            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 4));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.gem,
+            Materials.InfusedEntropy,
+            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 5));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.gem,
+            Materials.Amber,
+            GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 6));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.gem,
+            Materials.Firestone,
+            GTModHandler.getModItem(Railcraft.ID, "firestone.raw", 1L));
 
         // Special secondary oredict for Sodium Hydroxide
         GTOreDictUnificator
@@ -2618,7 +2621,7 @@ public class LoaderGTBlockFluid implements Runnable {
             "dustTinySodiumHydroxide",
             MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dustTiny, 1));
 
-        GTOreDictUnificator.set(
+        GTOreDictUnificator.registerOre(
             OrePrefixes.dust,
             Materials.Cocoa,
             GTModHandler.getModItem(PamsHarvestCraft.ID, "cocoapowderItem", 1L, 0));

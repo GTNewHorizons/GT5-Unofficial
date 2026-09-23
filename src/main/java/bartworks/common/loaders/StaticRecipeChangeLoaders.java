@@ -22,7 +22,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -34,27 +33,12 @@ public class StaticRecipeChangeLoaders {
         for (Material material : MaterialLibAPI.getMaterials()) {
             if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
             StaticRecipeChangeLoaders.runMaterialLinker(material);
-            if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION))) continue;
-            StaticRecipeChangeLoaders.runUnficationDeleter(material);
-        }
-    }
-
-    private static void runUnficationDeleter(Material material) {
-        String internalName = MaterialUtils.internalName(material);
-        for (OrePrefixes prefixes : OrePrefixes.VALUES) if (LegacyWerkstoffIndex.generatesPrefix(material, prefixes)) {
-            GTOreDictUnificator.set(prefixes, material, MaterialParts.stack(prefixes, material, 1), true, true);
-            for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
-                GTOreDictUnificator.addAssociation(prefixes, material, stack);
-                GTOreDictUnificator.getAssociation(stack).mUnificationTarget = MaterialParts
-                    .stack(prefixes, material, 1);
-            }
         }
     }
 
     private static void runMaterialLinker(Material material) {
         String internalName = MaterialUtils.internalName(material);
         for (OrePrefixes prefixes : OrePrefixes.VALUES) if (LegacyWerkstoffIndex.generatesPrefix(material, prefixes)) {
-            GTOreDictUnificator.set(prefixes, material, MaterialParts.stack(prefixes, material, 1), true, true);
             for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
                 GTOreDictUnificator.addAssociation(prefixes, material, stack);
             }
