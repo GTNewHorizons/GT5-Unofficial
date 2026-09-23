@@ -88,7 +88,7 @@ public class MTESuperBusOutput extends MTEHatchOutputBus implements IAddGregtech
             scrollable.setSize(18 * 4 + 4, 18 * 4)
                 .setPos(52, 7));
 
-        if (acceptsItemLock()) {
+        if (acceptsConfigCopy()) {
             builder.widget(
                 new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
                     .setBackground(PhantomItemButton.FILTER_BACKGROUND));
