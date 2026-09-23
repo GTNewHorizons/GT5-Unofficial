@@ -4,6 +4,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,17 +20,18 @@ import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiDraw;
 import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularContainer;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.CrossAxis;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.ItemSlotSH;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -40,7 +42,7 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+import com.cleanroommc.modularui.widgets.slot.PlayerSlotGroup;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
@@ -68,6 +70,36 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
 
     public MTEExtremeIndustrialGreenhouseGui(MTEExtremeIndustrialGreenhouse multiblock) {
         super(multiblock);
+    }
+
+    @Override
+    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        uiSettings.customContainer(() -> new SeedContainer(input -> {
+            if (multiblock.isValid() && multiblock.mMaxProgresstime <= 0) {
+                multiblock.addCrop(input);
+            }
+        }));
+        return super.build(guiData, syncManager, uiSettings);
+    }
+
+    static class SeedContainer extends ModularContainer {
+
+        private final Consumer<ItemStack> seedInserter;
+
+        SeedContainer(Consumer<ItemStack> seedInserter) {
+            this.seedInserter = seedInserter;
+        }
+
+        @Override
+        protected ItemStack transferItem(ModularSlot fromSlot, ItemStack fromStack) {
+            if (!(fromSlot.getSlotGroup() instanceof PlayerSlotGroup)) {
+                return super.transferItem(fromSlot, fromStack);
+            }
+            if (!isClient()) {
+                seedInserter.accept(fromStack);
+            }
+            return fromStack;
+        }
     }
 
     @Override
@@ -147,33 +179,6 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
             usedSeedTypesSyncer.setChangeListener(() -> notifySeedInventoryUpdate(buildSeedSlotList().size()));
             usedSeedCountSyncer.setChangeListener(() -> notifySeedInventoryUpdate(buildSeedSlotList().size()));
         }
-
-        registerSeedBufferSlot(syncManager);
-    }
-
-    private void registerSeedBufferSlot(PanelSyncManager syncManager) {
-        ItemStackHandler seedBufferInv = new ItemStackHandler(1);
-        ModularSlot seedBufferSlot = new ModularSlot(seedBufferInv, 0).filter(this::canAcceptSeed)
-            .singletonSlotGroup(SlotGroup.STORAGE_SLOT_PRIO)
-            .changeListener((newItem, onlyAmountChanged, client, init) -> {
-                if (client || init || newItem == null) return;
-                ItemStack toAdd = newItem.copy();
-                multiblock.addCrop(toAdd);
-                seedBufferInv.setStackInSlot(0, null);
-                if (toAdd.stackSize > 0) {
-                    EntityPlayer player = mainSyncManager.getPlayer();
-                    if (!player.inventory.addItemStackToInventory(toAdd)) {
-                        player.entityDropItem(toAdd, 0.f);
-                    }
-                    player.inventoryContainer.detectAndSendChanges();
-                }
-            });
-        syncManager.syncValue("seedBuffer", new ItemSlotSH(seedBufferSlot));
-    }
-
-    private boolean canAcceptSeed(ItemStack stack) {
-        if (multiblock.mMaxProgresstime > 0) return false;
-        return multiblock.getTotalSeedCount() < multiblock.getMaxSeedCount();
     }
 
     private List<GTHelper.StackableItemSlot> buildSeedSlotList() {
