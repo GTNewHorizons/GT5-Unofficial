@@ -50,7 +50,6 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
@@ -188,19 +187,19 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 } else if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
                     if ((!OrePrefixes.block.isIgnored(material))
                         && (null == MaterialParts.stack(OrePrefixes.gem, material, 1L))
-                        && GTOreDictUnificator.get(OrePrefixes.block, material, 1L) != null
+                        && MaterialParts.stack(OrePrefixes.block, material, 1L) != null
                         && (material != Materials.Clay)
                         && (material != Materials.Netherrack)) {
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(9, stack))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, material, 1L))
+                            .itemOutputs(MaterialParts.stack(OrePrefixes.block, material, 1L))
                             .duration(15 * SECONDS)
                             .eut(2)
                             .addTo(compressorRecipes);
                     }
                     if (((OrePrefixes.block.isIgnored(material))
-                        || (null == GTOreDictUnificator.get(OrePrefixes.block, material, 1L)))
+                        || (null == MaterialParts.stack(OrePrefixes.block, material, 1L)))
                         && (material != Materials.GraniteRed)
                         && (material != Materials.GraniteBlack)
                         && (material != Materials.Basalt)

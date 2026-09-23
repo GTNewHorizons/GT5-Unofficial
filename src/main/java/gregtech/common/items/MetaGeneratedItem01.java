@@ -4058,10 +4058,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             switch (oldPrefix.getName()) {
                 case "dustImpure":
                 case "dustPure":
-                    return GTOreDictUnificator
-                        .get(OrePrefixes.dust, cauldronRemap.getOrDefault(oldMaterial, oldMaterial), stackSize);
+                    return MaterialParts
+                        .stack(OrePrefixes.dust, cauldronRemap.getOrDefault(oldMaterial, oldMaterial), stackSize);
                 case "crushed":
-                    return GTOreDictUnificator.get(OrePrefixes.crushedPurified, oldMaterial, stackSize);
+                    return MaterialParts.stack(OrePrefixes.crushedPurified, oldMaterial, stackSize);
                 case "dust":
                     if (oldMaterial == Materials.Wheat) {
                         return ItemList.Food_Dough.get(stackSize);

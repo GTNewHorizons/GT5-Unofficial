@@ -30,7 +30,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -307,6 +306,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack ingot = MaterialParts.stack(OrePrefixes.ingot, material, 1L);
         ItemStack gem = MaterialParts.stack(OrePrefixes.gem, material, 1L);
         ItemStack dust = MaterialParts.stack(OrePrefixes.dust, material, 1L);
+        ItemStack block = MaterialParts.stack(OrePrefixes.block, material, 1L);
 
         if (BLOCK_RECIPE_REMOVALS.contains(itemStackKey(stack))) {
             GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, stack));
@@ -317,14 +317,14 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if ((packingRecipeRemovals & GEM_RECIPE_REMOVAL) != 0) removePackingRecipe(gem);
         if ((packingRecipeRemovals & DUST_RECIPE_REMOVAL) != 0) removePackingRecipe(dust);
 
-        if (MaterialUtils.hasMolten(material)) {
+        if (MaterialUtils.hasMolten(material) && block != null) {
             if (!(material == Materials.AnnealedCopper || material == Materials.CastIron
                 || material == Materials.Obsidian)) {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, material, 1L))
+                        .itemOutputs(block)
                         .fluidInputs(MaterialUtils.molten(material, 9 * INGOTS))
                         .duration(MaterialUtils.mass(material) * 9 * TICKS)
                         .eut(calculateRecipeEU(material, 8))
@@ -346,11 +346,13 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(hammerRecipes);
         }
 
-        if (ingot != null && !OrePrefixes.block.isIgnored(material) && material != Materials.Obsidian) {
+        if (ingot != null && block != null
+            && !OrePrefixes.block.isIgnored(material)
+            && material != Materials.Obsidian) {
             // 9 ingots -> 1 block
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialParts.stack(OrePrefixes.ingot, material, 9L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, material, 1L))
+                .itemOutputs(block)
                 .duration(MaterialUtils.mass(material) * 2 * TICKS)
                 .eut(calculateRecipeEU(material, 2))
                 .addTo(compressorRecipes);

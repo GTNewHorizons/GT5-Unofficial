@@ -45,6 +45,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
@@ -56,7 +57,6 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
@@ -492,8 +492,9 @@ public class GTPostLoad {
             OrePrefixes.dust };
 
         for (Material material : MaterialLibAPI.getMaterials()) {
+            if (MaterialFacades.isWildcard(material)) continue;
             for (OrePrefixes prefix : washablePrefixes) {
-                ItemStack input = GTOreDictUnificator.get(prefix, material, 1);
+                ItemStack input = MaterialParts.stack(prefix, material, 1);
                 ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, material, 1);
 
                 if (input == null || output == null) {

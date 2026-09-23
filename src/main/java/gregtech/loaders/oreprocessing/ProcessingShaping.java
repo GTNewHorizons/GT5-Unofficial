@@ -28,7 +28,6 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
@@ -61,13 +60,12 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     }
 
                 if (!OrePrefixes.block.isIgnored(MaterialUtils.smeltInto(material))
-                    && (GTOreDictUnificator.get(OrePrefixes.block, MaterialUtils.smeltInto(material), 1L) != null)
+                    && (MaterialParts.stack(OrePrefixes.block, MaterialUtils.smeltInto(material), 1L) != null)
                     && material != Materials.Ichorium
                     && material != Materials.Obsidian) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Extruder_Block.get(0L))
-                        .itemOutputs(
-                            GTOreDictUnificator.get(OrePrefixes.block, MaterialUtils.smeltInto(material), tAmount))
+                        .itemOutputs(MaterialParts.stack(OrePrefixes.block, MaterialUtils.smeltInto(material), tAmount))
                         .duration(materialMass * 9 * TICKS)
                         .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
@@ -77,7 +75,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Block.get(0L))
                             .itemOutputs(
-                                GTOreDictUnificator.get(OrePrefixes.block, MaterialUtils.smeltInto(material), tAmount))
+                                MaterialParts.stack(OrePrefixes.block, MaterialUtils.smeltInto(material), tAmount))
                             .duration(materialMass * 9 * TICKS)
                             .eut(calculateRecipeEU(material, 4 * tVoltageMultiplier))
                             .recipeCategory(RecipeCategories.alloySmelterMolding)

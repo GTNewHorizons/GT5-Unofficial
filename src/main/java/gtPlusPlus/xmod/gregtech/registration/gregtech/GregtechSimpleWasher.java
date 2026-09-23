@@ -30,7 +30,6 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -114,8 +113,8 @@ public class GregtechSimpleWasher {
     }
 
     /// Washes each impure and purified dust back to its clean dust, across three material domains: the
-    /// gregtech-named materials through the ore dictionary, the werkstoff part set through [#werkstoffStack],
-    /// and the gtPlusPlus materials through their MaterialLib shapes.
+    /// gregtech-named materials other than the [MaterialFacades] wildcards, the werkstoff part set through
+    /// [#werkstoffStack], and the gtPlusPlus materials through their MaterialLib shapes.
     private static boolean generateDirtyDustRecipes() {
         int mRecipeCount = 0;
         // Generate Recipe Map for the Dust Washer.
@@ -132,14 +131,13 @@ public class GregtechSimpleWasher {
             if (ml == Materials.Platinum || ml == Materials.Osmium
                 || ml == Materials.Iridium
                 || ml == Materials.Palladium
-                || ml == MaterialFacades.AnyCopper
-                || ml == MaterialFacades.AnyIron) {
+                || MaterialFacades.isWildcard(ml)) {
                 continue;
             }
 
-            dustClean = convertDecomposition(GTOreDictUnificator.get(OrePrefixes.dust, ml, 1L))[0];
-            dustDirty = GTOreDictUnificator.get(OrePrefixes.dustImpure, ml, 1L);
-            dustPure = GTOreDictUnificator.get(OrePrefixes.dustPure, ml, 1L);
+            dustClean = convertDecomposition(MaterialParts.stack(OrePrefixes.dust, ml, 1L))[0];
+            dustDirty = MaterialParts.stack(OrePrefixes.dustImpure, ml, 1L);
+            dustPure = MaterialParts.stack(OrePrefixes.dustPure, ml, 1L);
             addSimpleWashRecipe(dustDirty, dustClean);
             addSimpleWashRecipe(dustPure, dustClean);
         }
@@ -193,11 +191,11 @@ public class GregtechSimpleWasher {
             if (!LegacyNameDomain.contains(ml)) {
                 continue;
             }
-            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
+            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING) || MaterialFacades.isWildcard(ml)) {
                 continue;
             }
-            crushedClean = GTOreDictUnificator.get(OrePrefixes.crushedPurified, ml, 1L);
-            crushedDirty = GTOreDictUnificator.get(OrePrefixes.crushed, ml, 1L);
+            crushedClean = MaterialParts.stack(OrePrefixes.crushedPurified, ml, 1L);
+            crushedDirty = MaterialParts.stack(OrePrefixes.crushed, ml, 1L);
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 

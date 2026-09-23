@@ -73,13 +73,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 }
 
                 if (!OrePrefixes.block.isIgnored(material)
-                    && GTOreDictUnificator.get(OrePrefixes.block, material, 1L) != null) {
+                    && MaterialParts.stack(OrePrefixes.block, material, 1L) != null) {
                     // Compressor recipes
                     // need to avoid iridium exploit
                     if (material != Materials.Iridium) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(9, stack))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, material, 1L))
+                            .itemOutputs(MaterialParts.stack(OrePrefixes.block, material, 1L))
                             .duration(15 * SECONDS)
                             .eut(2)
                             .addTo(compressorRecipes);

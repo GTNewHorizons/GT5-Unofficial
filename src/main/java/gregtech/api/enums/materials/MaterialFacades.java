@@ -53,6 +53,11 @@ public class MaterialFacades {
         return wildcardResolutions.getOrDefault(material, material);
     }
 
+    /// Whether `material` is one of the five wildcard markers.
+    public static boolean isWildcard(@Nullable Material material) {
+        return material != null && resolveWildcard(material) != material;
+    }
+
     /// The wildcard markers an ore entry for `material` is additionally registered under. Empty for a material
     /// with no wildcard alias.
     public static List<Material> oreReRegistrationsOf(@Nullable Material material) {
