@@ -46,6 +46,8 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IGTTool;
+import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.MetaGeneratedTool;
@@ -54,6 +56,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.render.items.GeneratedMaterialRenderer;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 
 /**
@@ -69,7 +72,8 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
  * interfaces it honours, what right-clicking a block does, and the lines that say so in the tooltip. Every tool type
  * has made the move; see {@link GTToolItems}.
  */
-public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDamagableItem {
+public abstract class ToolItemBase extends GTGenericItem
+    implements IGTTool, IDamagableItem, IGT_ItemWithMaterialRenderer {
 
     /** Where the accumulated durability damage is kept, counted in whole durability points. */
     protected static final String DAMAGE_KEY = "GT.ToolDamage";
@@ -216,6 +220,77 @@ public abstract class ToolItemBase extends GTGenericItem implements IGTTool, IDa
     public Materials getToolHandleMaterial(ItemStack stack) {
         Materials material = getToolMaterial(stack);
         return material == Materials._NULL ? Materials._NULL : material.mHandleMaterial;
+    }
+
+    /* ---------- IGT_ItemWithMaterialRenderer ---------- */
+
+    /**
+     * Lets the tool inherit its crafting material's special renderer -- {@code Materials.Universium.renderer} and
+     * the handful like it -- the same field {@link gregtech.common.items.ItemComb} and
+     * {@link gregtech.api.items.MetaGeneratedItem} already read for their own per-material visuals.
+     * {@link gregtech.common.render.MetaGeneratedToolRenderer} is the actual caller.
+     * <p/>
+     * A tool draws as two icons -- head and handle -- so this reuses the same two-pass mechanism
+     * {@link gregtech.common.items.ItemComb} already relies on for its own two-layer icon: pass 0 is the handle,
+     * pass 1 the head, in the same order {@link gregtech.common.render.MetaGeneratedToolRenderer}'s ordinary path
+     * paints them, so the head still ends up on top. Both passes go through the one renderer and the one tint below
+     * -- there is only one material a metadata-encoded tool stack knows about -- so an electric tool's battery-pack
+     * icon shimmers along with the head instead of sitting next to it looking untouched.
+     */
+    @Override
+    public boolean shouldUseCustomRenderer(int aMetaData) {
+        return getMaterialRenderer(aMetaData) != null;
+    }
+
+    @Override
+    public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
+        return ToolMaterialIndex.getMaterial(aMetaData).renderer;
+    }
+
+    @Override
+    public boolean allowMaterialRenderer(int aMetaData) {
+        return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean requiresMultipleRenderPasses() {
+        return true;
+    }
+
+    @Override
+    public int getRenderPasses(int metadata) {
+        return 2;
+    }
+
+    /**
+     * Pass 0 is the handle, pass 1 the head -- see the class javadoc above. A throwaway stack is cheap here: this is
+     * only ever called for the handful of materials that declare a renderer.
+     */
+    @Override
+    public IIcon getIcon(int aMetaData, int pass) {
+        IIconContainer iconContainer = toolStats.getIcon(pass == 1, new ItemStack(this, 1, aMetaData));
+        return iconContainer != null ? iconContainer.getIcon() : null;
+    }
+
+    @Override
+    public IIcon getOverlayIcon(int aMetaData, int pass) {
+        IIconContainer iconContainer = toolStats.getIcon(pass == 1, new ItemStack(this, 1, aMetaData));
+        return iconContainer != null ? iconContainer.getOverlayIcon() : null;
+    }
+
+    /**
+     * Not pass-aware -- {@link IGT_ItemWithMaterialRenderer#getRGBa} takes no pass argument, and
+     * {@link gregtech.common.items.ItemComb} sets the precedent for sharing one tint across both of its passes --
+     * so both the head and the handle are modulated with the head material's colour rather than the handle's usual
+     * fixed grey. That is a visible change from the ordinary render path for a tool whose handle icon is not null
+     * (electric tools; most hand tools have none), but a uniformly-tinted, uniformly-shimmering tool reads far
+     * better than a shimmering head bolted to a flat, untouched handle.
+     */
+    @Override
+    public short[] getRGBa(ItemStack aStack) {
+        short[] modulation = toolStats.getRGBa(true, aStack);
+        return modulation != null ? modulation : Materials._NULL.getRGBA();
     }
 
     @Override

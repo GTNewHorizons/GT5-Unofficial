@@ -15,9 +15,11 @@ import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGTTool;
+import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.common.render.items.GeneratedMaterialRenderer;
 
 public class MetaGeneratedToolRenderer implements IItemRenderer {
 
@@ -43,8 +45,15 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
 
         IToolStats toolStats = item != null ? item.getToolStats(stack) : null;
         if (toolStats != null) {
-            renderToolPart(type, stack, toolStats, false);
-            renderToolPart(type, stack, toolStats, true);
+            GeneratedMaterialRenderer materialRenderer = getMaterialRenderer(stack);
+            if (materialRenderer != null) {
+                materialRenderer.renderItem(type, stack, data);
+                GL11.glEnable(GL11.GL_BLEND);
+                GL11.glColor3f(1.0F, 1.0F, 1.0F);
+            } else {
+                renderToolPart(type, stack, toolStats, false);
+                renderToolPart(type, stack, toolStats, true);
+            }
 
             if ((type == ItemRenderType.INVENTORY)
                 && (MetaGeneratedTool.getPrimaryMaterial(stack) != Materials._NULL)) {
@@ -122,5 +131,20 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                 ItemRenderUtil.renderItem(type, overlay);
             }
         }
+    }
+
+    /**
+     * The tool inherits its crafting material's special renderer -- the same {@code Materials.<name>.renderer} field
+     * {@link gregtech.common.items.ItemComb} and {@link gregtech.api.items.MetaGeneratedItem} read for their own
+     * per-material visuals -- rather than the plain textured-and-tinted icon draw below. Only tools whose metadata
+     * <em>is</em> their material ({@link gregtech.common.items.tools.ToolItemBase} and its subclasses) implement
+     * {@link IGT_ItemWithMaterialRenderer}; the old NBT-material {@link MetaGeneratedTool} family does not, so this
+     * returns null for them and they keep rendering exactly as before.
+     */
+    private static GeneratedMaterialRenderer getMaterialRenderer(ItemStack stack) {
+        if (!(stack.getItem() instanceof IGT_ItemWithMaterialRenderer materialItem)) return null;
+        int meta = stack.getItemDamage();
+        if (!materialItem.shouldUseCustomRenderer(meta) || !materialItem.allowMaterialRenderer(meta)) return null;
+        return materialItem.getMaterialRenderer(meta);
     }
 }
