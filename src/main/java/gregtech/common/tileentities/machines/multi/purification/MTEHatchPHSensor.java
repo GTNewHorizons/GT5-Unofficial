@@ -107,14 +107,9 @@ public class MTEHatchPHSensor extends MTEHatch {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (isOn) {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 15);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 0);
-            }
+        final ForgeDirection facing = aBaseMetaTileEntity.getFrontFacing();
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            aBaseMetaTileEntity.setOutputRedstoneSignal(side, side == facing && isOn ? (byte) 15 : (byte) 0);
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }

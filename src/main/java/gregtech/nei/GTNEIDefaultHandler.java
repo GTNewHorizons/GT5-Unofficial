@@ -65,6 +65,7 @@ import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeCategorySetting;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -246,8 +247,9 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         // Handle familiar prefixes for GT items
         ItemData tPrefixMaterial = GTOreDictUnificator.getAssociation(aResult);
-        if ((tPrefixMaterial != null) && (!tPrefixMaterial.mBlackListed)
-            && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
+        if (tPrefixMaterial != null && tPrefixMaterial.hasValidPrefixMaterialData()
+            && !GTOreDictUnificator.isBlacklisted(aResult)
+            && !tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty()) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                 tResults.add(GTOreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
@@ -264,6 +266,13 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                         tResults.add(stack);
                     }
                 }
+            }
+        }
+
+        if (aResult != null && ItemList.Tool_DataStick.isStackEqual(aResult, false, true)) {
+            ItemStack output = AssemblyLineUtils.getDataStickOutput(aResult);
+            if (output != null) {
+                tResults.add(output);
             }
         }
 
@@ -338,6 +347,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                 tInputs.add(GTOreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+            }
+        }
+        if (aInput != null && ItemList.Tool_DataStick.isStackEqual(aInput, false, true)) {
+            ItemStack output = AssemblyLineUtils.getDataStickOutput(aInput);
+            if (output != null) {
+                tInputs.add(output);
             }
         }
         if (aInput != null) {

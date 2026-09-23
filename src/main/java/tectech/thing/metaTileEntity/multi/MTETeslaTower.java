@@ -802,18 +802,20 @@ public class MTETeslaTower extends TTMultiblockBase
         }
         // TODO Encapsulate the spark sender
         sparkCount--;
-        if (sparkCount == 0 && ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
-            IGregTechTileEntity mte = getBaseMetaTileEntity();
+        if (sparkCount <= 0) {
             sparkCount = 20;
             if (!sparkList.isEmpty()) {
-                NetworkDispatcher.INSTANCE.sendToAllAround(
-                    new RendererMessage.RendererData(sparkList),
-                    new NetworkRegistry.TargetPoint(
-                        mte.getWorld().provider.dimensionId,
-                        mte.getXCoord(),
-                        mte.getYCoord(),
-                        mte.getZCoord(),
-                        256));
+                if (ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
+                    IGregTechTileEntity mte = getBaseMetaTileEntity();
+                    NetworkDispatcher.INSTANCE.sendToAllAround(
+                        new RendererMessage.RendererData(sparkList),
+                        new NetworkRegistry.TargetPoint(
+                            mte.getWorld().provider.dimensionId,
+                            mte.getXCoord(),
+                            mte.getYCoord(),
+                            mte.getZCoord(),
+                            256));
+                }
                 sparkList.clear();
             }
         }

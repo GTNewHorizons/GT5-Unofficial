@@ -39,7 +39,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -1061,9 +1060,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         return new String[] {
             translateToLocalFormatted("kubatech.gui.tooltip.contributors.added", GTAuthors.AuthorKuba),
             translateToLocalFormatted("kubatech.gui.tooltip.contributors.design", GTAuthors.AuthorPxx500),
-            translateToLocalFormatted(
-                "kubatech.gui.tooltip.contributors.structure",
-                EnumChatFormatting.LIGHT_PURPLE + "Sol_IX") };
+            translateToLocalFormatted("kubatech.gui.tooltip.contributors.structure", "Sol_IX") };
     }
 
 }
