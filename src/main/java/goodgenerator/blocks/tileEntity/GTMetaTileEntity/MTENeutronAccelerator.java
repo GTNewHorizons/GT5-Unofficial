@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -45,9 +44,8 @@ public class MTENeutronAccelerator extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedFormatted(
-            "gt.blockmachines.neutron_accelerator.desc",
-            EnumChatFormatting.YELLOW + formatNumber(getMaxEUConsume()) + EnumChatFormatting.WHITE);
+        return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.neutron_accelerator.desc", formatNumber(getMaxEUConsume()));
     }
 
     @Override
