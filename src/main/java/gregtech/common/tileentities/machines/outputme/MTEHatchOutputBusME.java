@@ -575,7 +575,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public boolean acceptsItemLock() {
+    public boolean acceptsConfigCopy() {
         return false;
     }
 
