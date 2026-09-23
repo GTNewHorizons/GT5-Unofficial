@@ -206,7 +206,7 @@ final class OreShowroom {
 
                 if (smallOre == null) missingSmallOres++;
 
-                ItemStack rawOre = MaterialParts.partOf(material, OrePrefixes.rawOre, 1);
+                ItemStack rawOre = MaterialParts.stack(OrePrefixes.rawOre, material, 1);
                 if (GTUtility.isStackValid(rawOre)) {
                     if (!placeFrame(world, sampleX, floorY + 3, wallZ, 2, rawOre)) failedFrames++;
                     if (!placeFrame(world, sampleX, floorY + 3, wallZ, 0, rawOre)) failedFrames++;

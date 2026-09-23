@@ -84,17 +84,8 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
         ItemStack tIngot = MaterialParts.stack(OrePrefixes.ingot, MaterialUtils.directSmelting(material), 1L);
         ItemStack tGem = MaterialParts.stack(OrePrefixes.gem, material, 1L);
         ItemStack tSmeltInto = tIngot == null ? null
-            : MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM) ? GTUtility.copyAmount(
-                1L,
-                MaterialParts.stack(OrePrefixes.gem, MaterialUtils.directSmelting(material), 1),
-                GTOreDictUnificator.get(
-                    OrePrefixes.crystal,
-                    MaterialUtils.directSmelting(material),
-                    GTUtility.copyAmount(
-                        1L,
-                        MaterialParts.stack(OrePrefixes.gem, material, 1),
-                        GTOreDictUnificator.get(OrePrefixes.crystal, material, 1L)),
-                    1L))
+            : MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM) ? GTUtility
+                .copyAmount(1L, MaterialParts.stack(OrePrefixes.gem, MaterialUtils.directSmelting(material), 1), tGem)
                 : tIngot;
         ItemStack tDust = GTUtility.copyAmount(1L, MaterialParts.stack(OrePrefixes.dust, material, 1), tGem);
         ItemStack tCleaned = GTUtility

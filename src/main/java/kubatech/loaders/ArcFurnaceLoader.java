@@ -71,7 +71,7 @@ public class ArcFurnaceLoader {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialParts.partOf(electrode.associatedMaterial, OrePrefixes.dust, 64),
+                    MaterialParts.stack(OrePrefixes.dust, electrode.associatedMaterial, 64),
                     ItemList.Shape_Mold_Rod_Long.get(0))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 1152))
                 .itemOutputs(electrode.getElectrodeItem(1))

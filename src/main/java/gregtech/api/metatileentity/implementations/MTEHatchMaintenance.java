@@ -320,8 +320,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
                 amt = tStack.stackSize;
                 boolean temp = true;
                 for (ItemStack aStack : mInventory) {
-                    if ((GTUtility.areUnificationsEqual(aStack, tStack, true)
-                        || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tStack, true))) {
+                    if (GTUtility.areUnificationsEqual(aStack, tStack, true)) {
                         amt -= aStack.stackSize;
                         if (amt < 1) {
                             temp = false;
@@ -338,8 +337,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
                 if (tStack != null) {
                     amt = tStack.stackSize;
                     for (ItemStack aStack : mInventory) {
-                        if ((GTUtility.areUnificationsEqual(aStack, tStack, true)
-                            || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tStack, true))) {
+                        if (GTUtility.areUnificationsEqual(aStack, tStack, true)) {
                             if (aStack.stackSize < amt) {
                                 amt -= aStack.stackSize;
                                 aStack.stackSize = 0;
@@ -457,8 +455,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
 
     public boolean IsAutoMaintenanceInput(ItemStack aStack) {
         for (ItemStack tInput : getAutoMaintenanceInputs()) {
-            if (GTUtility.areUnificationsEqual(tInput, aStack, true)
-                || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tInput, true)) return true;
+            if (GTUtility.areUnificationsEqual(tInput, aStack, true)) return true;
         }
         return false;
     }
@@ -473,9 +470,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (mAuto && GTMod.proxy.mAMHInteraction) {
-            for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
-                GTOreDictUnificator.get(false, aStack),
-                GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
+            for (int i = 0; i < getSizeInventory(); i++)
+                if (GTUtility.areStacksEqual(aStack, getStackInSlot(i))) return i == aIndex;
             return IsAutoMaintenanceInput(aStack);
         }
         return false;

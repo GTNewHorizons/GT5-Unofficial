@@ -171,12 +171,6 @@ public class MaterialParts {
         return prefix.doGenerateItem(material) || LegacyWerkstoffIndex.generatesPrefix(material, prefix);
     }
 
-    /// The ore-dictionary-unified [ItemStack] for a [Material] at `prefix` and `amount` (see
-    /// [GTOreDictUnificator#get]); null for a null material.
-    public static @Nullable ItemStack partOf(@Nullable Material material, OrePrefixes prefix, int amount) {
-        return material == null ? null : GTOreDictUnificator.get(prefix, material, amount);
-    }
-
     /// The shapes serving each ore-dictionary prefix, keyed by the prefix strings the shapes themselves
     /// declare. Where several shapes share a prefix (`cellPlasma` holds both plasma cell sizes, and a fluid
     /// pipe shares `pipeTiny`..`pipeHuge` with an item pipe), the shape whose own name is the prefix comes

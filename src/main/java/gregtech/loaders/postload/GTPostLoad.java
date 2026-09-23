@@ -478,8 +478,8 @@ public class GTPostLoad {
                 MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Caesium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
-                GTOreDictUnificator.get(ItemList.Block_SSFUEL.get(1)),
-                GTOreDictUnificator.get(ItemList.Block_MSSFUEL.get(1)),
+                ItemList.Block_SSFUEL.get(1),
+                ItemList.Block_MSSFUEL.get(1),
                 MaterialLibAPI.getStack(Materials.Blaze, Shapes.stick, 1));
         if (Thaumcraft.isModLoaded()) {
             RecipeMaps.largeBoilerFakeFuels.getBackend()

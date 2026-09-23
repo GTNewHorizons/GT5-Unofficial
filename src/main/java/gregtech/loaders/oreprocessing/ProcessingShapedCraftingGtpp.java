@@ -10,6 +10,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 
@@ -63,19 +64,19 @@ public class ProcessingShapedCraftingGtpp {
         if (MaterialUtils.voltageMultiplier(material) > TierEU.RECIPE_IV) return;
         boolean radioactive = isRadioactive(material);
 
-        ItemStack ingot = ProcessingDustGeneration.stackOf(OrePrefixes.ingot, material, 1L);
-        ItemStack plate = ProcessingDustGeneration.stackOf(OrePrefixes.plate, material, 1L);
-        ItemStack plateDouble = ProcessingDustGeneration.stackOf(OrePrefixes.plateDouble, material, 1L);
-        ItemStack rod = ProcessingDustGeneration.stackOf(OrePrefixes.stick, material, 1L);
-        ItemStack longRod = ProcessingDustGeneration.stackOf(OrePrefixes.stickLong, material, 1L);
-        ItemStack ring = ProcessingDustGeneration.stackOf(OrePrefixes.ring, material, 1L);
-        ItemStack frameBox = ProcessingDustGeneration.stackOf(OrePrefixes.frameGt, material, 1L);
-        ItemStack bolt = ProcessingDustGeneration.stackOf(OrePrefixes.bolt, material, 1L);
-        ItemStack screw = ProcessingDustGeneration.stackOf(OrePrefixes.screw, material, 1L);
-        ItemStack foil = ProcessingDustGeneration.stackOf(OrePrefixes.foil, material, 1L);
-        ItemStack fineWire = ProcessingDustGeneration.stackOf(OrePrefixes.wireFine, material, 1L);
-        ItemStack rotor = ProcessingDustGeneration.stackOf(OrePrefixes.rotor, material, 1L);
-        ItemStack gear = ProcessingDustGeneration.stackOf(OrePrefixes.gearGt, material, 1L);
+        ItemStack ingot = MaterialParts.stack(OrePrefixes.ingot, material, 1L);
+        ItemStack plate = MaterialParts.stack(OrePrefixes.plate, material, 1L);
+        ItemStack plateDouble = MaterialParts.stack(OrePrefixes.plateDouble, material, 1L);
+        ItemStack rod = MaterialParts.stack(OrePrefixes.stick, material, 1L);
+        ItemStack longRod = MaterialParts.stack(OrePrefixes.stickLong, material, 1L);
+        ItemStack ring = MaterialParts.stack(OrePrefixes.ring, material, 1L);
+        ItemStack frameBox = MaterialParts.stack(OrePrefixes.frameGt, material, 1L);
+        ItemStack bolt = MaterialParts.stack(OrePrefixes.bolt, material, 1L);
+        ItemStack screw = MaterialParts.stack(OrePrefixes.screw, material, 1L);
+        ItemStack foil = MaterialParts.stack(OrePrefixes.foil, material, 1L);
+        ItemStack fineWire = MaterialParts.stack(OrePrefixes.wireFine, material, 1L);
+        ItemStack rotor = MaterialParts.stack(OrePrefixes.rotor, material, 1L);
+        ItemStack gear = MaterialParts.stack(OrePrefixes.gearGt, material, 1L);
 
         if (plate != null && ingot != null) {
             craft(plate, new Object[] { "h", "B", "I", 'I', ingot, 'B', ingot });
@@ -88,27 +89,23 @@ public class ProcessingShapedCraftingGtpp {
         }
         if (!radioactive && frameBox != null && rod != null) {
             craft(
-                ProcessingDustGeneration.stackOf(OrePrefixes.frameGt, material, 2L),
+                MaterialParts.stack(OrePrefixes.frameGt, material, 2L),
                 new Object[] { "RRR", "RwR", "RRR", 'R', rod });
         }
         if (!radioactive && bolt != null && rod != null) {
-            craft(
-                ProcessingDustGeneration.stackOf(OrePrefixes.bolt, material, 2L),
-                new Object[] { "s ", " R", 'R', rod });
+            craft(MaterialParts.stack(OrePrefixes.bolt, material, 2L), new Object[] { "s ", " R", 'R', rod });
         }
         if (!radioactive && foil != null && fineWire != null) {
             craft(fineWire, new Object[] { "Fx", 'F', foil });
         }
         if (foil != null && plate != null) {
-            craft(ProcessingDustGeneration.stackOf(OrePrefixes.foil, material, 2L), new Object[] { "hP", 'P', plate });
+            craft(MaterialParts.stack(OrePrefixes.foil, material, 2L), new Object[] { "hP", 'P', plate });
         }
         if (rod != null && ingot != null) {
             craft(rod, new Object[] { "f ", " I", 'I', ingot });
         }
         if (rod != null && longRod != null) {
-            craft(
-                ProcessingDustGeneration.stackOf(OrePrefixes.stick, material, 2L),
-                new Object[] { "s", "L", 'L', longRod });
+            craft(MaterialParts.stack(OrePrefixes.stick, material, 2L), new Object[] { "s", "L", 'L', longRod });
         }
         if (longRod != null && rod != null) {
             craft(longRod, new Object[] { "RhR", 'R', rod });

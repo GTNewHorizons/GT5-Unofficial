@@ -89,7 +89,7 @@ public class ProcessingPlasmaGtpp {
     /// `cellMolten`/`cellPlasmaLight` shapes Bromine generates.
     private static void generateBromine() {
         Material bromine = Materials.Bromine;
-        ItemStack liquidCell = ProcessingDustGeneration.stackOf(OrePrefixes.cellMolten, bromine, 1L);
+        ItemStack liquidCell = MaterialParts.stack(OrePrefixes.cellMolten, bromine, 1L);
         FluidStack molten = MaterialUtils.molten(bromine, 1000);
         if (liquidCell == null || molten == null) return;
 
@@ -108,7 +108,7 @@ public class ProcessingPlasmaGtpp {
             .eut(1)
             .addTo(cannerRecipes);
 
-        ItemStack plasmaCell = ProcessingDustGeneration.stackOf(OrePrefixes.cellPlasma, bromine, 1L);
+        ItemStack plasmaCell = MaterialParts.stack(OrePrefixes.cellPlasma, bromine, 1L);
         FluidStack plasma = materialPlasma(bromine, 1000);
         int cooldownDuration = (int) Math.max(MaterialUtils.mass(bromine) * 2L, 1L);
         if (plasmaCell != null) {
@@ -132,7 +132,7 @@ public class ProcessingPlasmaGtpp {
     private static void generate(Material material) {
         if (materialPlasma(material, 1) == null) return;
 
-        ItemStack plasmaCell = ProcessingDustGeneration.stackOf(OrePrefixes.cellPlasma, material, 1L);
+        ItemStack plasmaCell = MaterialParts.stack(OrePrefixes.cellPlasma, material, 1L);
         ItemStack cell = MaterialParts.cell(material, 1L);
         if (plasmaCell == null) return;
 

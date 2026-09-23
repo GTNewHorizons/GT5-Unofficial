@@ -109,13 +109,10 @@ public class LoaderWerkstoffRegistrations {
         }
     }
 
-    /// The stack a part resolves to: the MaterialLib shape first, then whatever already holds the oredict
-    /// entry, and finally the ore adapters for the ore prefixes, whose blocks are placed and read through the
-    /// adapters rather than carried as an item shape.
+    /// The stack a part resolves to: the MaterialLib shape, or else the ore adapters for the ore prefixes,
+    /// whose blocks are placed and read through the adapters rather than carried as an item shape.
     private static ItemStack resolve(OrePrefixes prefix, Material material) {
         ItemStack stack = MaterialParts.stack(prefix, material, 1);
-        if (stack != null) return stack;
-        stack = GTOreDictUnificator.get(prefix, material, 1);
         if (stack != null) return stack;
         if (prefix != OrePrefixes.ore && prefix != OrePrefixes.oreSmall) return null;
         try (OreInfo info = OreInfo.getNewInfo()) {

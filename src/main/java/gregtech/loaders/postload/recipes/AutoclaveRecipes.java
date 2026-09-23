@@ -26,7 +26,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -198,7 +197,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(ItemList.QuantumStar.get(1L)))
+            .itemInputs(ItemList.QuantumStar.get(1L))
             .itemOutputs(ItemList.Gravistar.get(1L))
             .outputChances(10000)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 2 * INGOTS))
@@ -207,7 +206,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(ItemList.Gravistar.get(16L)))
+            .itemInputs(ItemList.Gravistar.get(16L))
             .itemOutputs(ItemList.NuclearStar.get(1L))
             .outputChances(10000)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 2 * INGOTS))

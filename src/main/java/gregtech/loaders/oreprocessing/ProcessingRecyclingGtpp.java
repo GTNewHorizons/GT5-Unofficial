@@ -20,6 +20,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTUtility;
@@ -105,7 +106,7 @@ public class ProcessingRecyclingGtpp {
         if (!"SOLID".equals(state) && !"LIQUID".equals(state)) return;
 
         for (OrePrefixes prefix : PREFIXES) {
-            ItemStack input = ProcessingDustGeneration.stackOf(prefix, material, 1L);
+            ItemStack input = MaterialParts.stack(prefix, material, 1L);
             if (input == null) continue;
             boolean isDustInput = prefix == OrePrefixes.dust;
             long materialAmount = prefix.getMaterialAmount();
@@ -137,12 +138,12 @@ public class ProcessingRecyclingGtpp {
         ItemStack arcOutput = null;
         long ingotAmount = materialAmount / M;
         if (ingotAmount > 0) {
-            arcOutput = ProcessingDustGeneration.stackOf(OrePrefixes.ingot, material, ingotAmount);
+            arcOutput = MaterialParts.stack(OrePrefixes.ingot, material, ingotAmount);
         }
         if (arcOutput == null) {
             long nuggetAmount = (materialAmount * 9) / M;
             if (nuggetAmount > 0) {
-                arcOutput = ProcessingDustGeneration.stackOf(OrePrefixes.nugget, material, nuggetAmount);
+                arcOutput = MaterialParts.stack(OrePrefixes.nugget, material, nuggetAmount);
             }
         }
         if (arcOutput == null) return;
@@ -184,13 +185,13 @@ public class ProcessingRecyclingGtpp {
         if (materialAmount <= 0) return null;
         ItemStack stack = null;
         if (materialAmount % M == 0 || materialAmount >= M * 16) {
-            stack = ProcessingDustGeneration.stackOf(OrePrefixes.dust, material, materialAmount / M);
+            stack = MaterialParts.stack(OrePrefixes.dust, material, materialAmount / M);
         }
         if (stack == null && ((materialAmount * 4) % M == 0 || materialAmount >= M * 8)) {
-            stack = ProcessingDustGeneration.stackOf(OrePrefixes.dustSmall, material, (materialAmount * 4) / M);
+            stack = MaterialParts.stack(OrePrefixes.dustSmall, material, (materialAmount * 4) / M);
         }
         if (stack == null && (materialAmount * 9) >= M) {
-            stack = ProcessingDustGeneration.stackOf(OrePrefixes.dustTiny, material, (materialAmount * 9) / M);
+            stack = MaterialParts.stack(OrePrefixes.dustTiny, material, (materialAmount * 9) / M);
         }
         return stack;
     }

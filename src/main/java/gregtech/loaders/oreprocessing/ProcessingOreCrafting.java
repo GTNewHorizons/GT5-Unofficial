@@ -15,6 +15,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 
 /// The crafting-table ore recipes for every material in [#ELIGIBLE]: the three hard-hammer shaped conversions
@@ -61,12 +62,12 @@ public class ProcessingOreCrafting {
     }
 
     private static void generate(Material material) {
-        ItemStack crushed = ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1L);
-        ItemStack crushedPurified = ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1L);
-        ItemStack crushedCentrifuged = ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1L);
-        ItemStack dustImpure = ProcessingDustGeneration.stackOf(OrePrefixes.dustImpure, material, 1L);
-        ItemStack dustPure = ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, material, 1L);
-        ItemStack dust = ProcessingDustGeneration.stackOf(OrePrefixes.dust, material, 1L);
+        ItemStack crushed = MaterialParts.stack(OrePrefixes.crushed, material, 1L);
+        ItemStack crushedPurified = MaterialParts.stack(OrePrefixes.crushedPurified, material, 1L);
+        ItemStack crushedCentrifuged = MaterialParts.stack(OrePrefixes.crushedCentrifuged, material, 1L);
+        ItemStack dustImpure = MaterialParts.stack(OrePrefixes.dustImpure, material, 1L);
+        ItemStack dustPure = MaterialParts.stack(OrePrefixes.dustPure, material, 1L);
+        ItemStack dust = MaterialParts.stack(OrePrefixes.dust, material, 1L);
 
         if (crushedPurified != null && dustPure != null) {
             GTModHandler.addCraftingRecipe(
@@ -89,26 +90,26 @@ public class ProcessingOreCrafting {
 
         if (dust == null) return;
 
-        ItemStack tinyDust = ProcessingDustGeneration.stackOf(OrePrefixes.dustTiny, material, 1L);
+        ItemStack tinyDust = MaterialParts.stack(OrePrefixes.dustTiny, material, 1L);
         if (tinyDust != null) {
             GTModHandler.addCraftingRecipe(
                 dust,
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
             GTModHandler.addCraftingRecipe(
-                ProcessingDustGeneration.stackOf(OrePrefixes.dustTiny, material, 9L),
+                MaterialParts.stack(OrePrefixes.dustTiny, material, 9L),
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "D  ", "   ", "   ", 'D', dust });
         }
 
-        ItemStack smallDust = ProcessingDustGeneration.stackOf(OrePrefixes.dustSmall, material, 1L);
+        ItemStack smallDust = MaterialParts.stack(OrePrefixes.dustSmall, material, 1L);
         if (smallDust != null) {
             GTModHandler.addCraftingRecipe(
                 dust,
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
             GTModHandler.addCraftingRecipe(
-                ProcessingDustGeneration.stackOf(OrePrefixes.dustSmall, material, 4L),
+                MaterialParts.stack(OrePrefixes.dustSmall, material, 4L),
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { " D ", "   ", "   ", 'D', dust });
         }
@@ -116,11 +117,11 @@ public class ProcessingOreCrafting {
 
     private static void generateFluoriteChemicalBath() {
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, Materials.FluoriteF, 1L))
+            .itemInputs(MaterialParts.stack(OrePrefixes.crushed, Materials.FluoriteF, 1L))
             .itemOutputs(
-                ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, Materials.FluoriteF, 4L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dustImpure, Materials.FluoriteF, 2L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, Materials.FluoriteF, 1L))
+                MaterialParts.stack(OrePrefixes.crushedPurified, Materials.FluoriteF, 4L),
+                MaterialParts.stack(OrePrefixes.dustImpure, Materials.FluoriteF, 2L),
+                MaterialParts.stack(OrePrefixes.dustPure, Materials.FluoriteF, 1L))
             .outputChances(10000, 5000, 1000)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1000))
             .duration(15 * SECONDS)

@@ -27,7 +27,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class CompressorRecipes implements Runnable {
@@ -37,14 +36,14 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Netherrack, Shapes.dust, 4))
-            .itemOutputs(GTOreDictUnificator.get(new ItemStack(Blocks.netherrack, 3)))
+            .itemOutputs(new ItemStack(Blocks.netherrack, 3))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Endstone, Shapes.dust, 4))
-            .itemOutputs(GTOreDictUnificator.get(new ItemStack(Blocks.end_stone, 3)))
+            .itemOutputs(new ItemStack(Blocks.end_stone, 3))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);

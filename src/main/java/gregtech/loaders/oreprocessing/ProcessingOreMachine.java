@@ -111,7 +111,7 @@ public class ProcessingOreMachine {
 
     private static void generate(final Material material, final boolean disableOptional) {
         int tVoltageMultiplier = voltageForTier(MaterialUtils.tier(material));
-        final ItemStack dustStone = ProcessingDustGeneration.stackOf(OrePrefixes.dust, mStone, 1);
+        final ItemStack dustStone = MaterialParts.stack(OrePrefixes.dust, mStone, 1);
 
         Material bonusA = null;
         Material bonusB = null;
@@ -178,41 +178,39 @@ public class ProcessingOreMachine {
         ItemStack matDustB = getDust(bonusB);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.ore, material, 1))
-            .itemOutputs(
-                convertOre(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 2), matDustA, dustStone))
+            .itemInputs(MaterialParts.stack(OrePrefixes.ore, material, 1))
+            .itemOutputs(convertOre(MaterialParts.stack(OrePrefixes.crushed, material, 2), matDustA, dustStone))
             .outputChances(100_00, 10_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.rawOre, material, 1))
-            .itemOutputs(
-                convertOre(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 2), matDustA, dustStone))
+            .itemInputs(MaterialParts.stack(OrePrefixes.rawOre, material, 1))
+            .itemOutputs(convertOre(MaterialParts.stack(OrePrefixes.crushed, material, 2), matDustA, dustStone))
             .outputChances(100_00, 5_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
-            .itemOutputs(convertOre(ProcessingDustGeneration.stackOf(OrePrefixes.dustImpure, material, 1), matDustA))
+            .itemInputs(MaterialParts.stack(OrePrefixes.crushed, material, 1))
+            .itemOutputs(convertOre(MaterialParts.stack(OrePrefixes.dustImpure, material, 1), matDustA))
             .outputChances(100_00, 10_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1))
-            .itemOutputs(convertOre(ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, material, 1), matDustA))
+            .itemInputs(MaterialParts.stack(OrePrefixes.crushedPurified, material, 1))
+            .itemOutputs(convertOre(MaterialParts.stack(OrePrefixes.dustPure, material, 1), matDustA))
             .outputChances(100_00, 10_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1))
+            .itemInputs(MaterialParts.stack(OrePrefixes.crushedCentrifuged, material, 1))
             .itemOutputs(convertOre(matDust, matDustA))
             .outputChances(100_00, 10_00)
             .duration(20 * SECONDS)
@@ -220,12 +218,8 @@ public class ProcessingOreMachine {
             .addTo(maceratorRecipes);
 
         RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
-            .itemOutputs(
-                convertOre(
-                    ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1),
-                    matDustA,
-                    dustStone))
+            .itemInputs(MaterialParts.stack(OrePrefixes.crushed, material, 1))
+            .itemOutputs(convertOre(MaterialParts.stack(OrePrefixes.crushedPurified, material, 1), matDustA, dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GTUtility.getWater(1_000))
             .duration(25 * SECONDS)
@@ -233,12 +227,8 @@ public class ProcessingOreMachine {
             .addTo(oreWasherRecipes);
 
         RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
-            .itemOutputs(
-                convertOre(
-                    ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1),
-                    matDustA,
-                    dustStone))
+            .itemInputs(MaterialParts.stack(OrePrefixes.crushed, material, 1))
+            .itemOutputs(convertOre(MaterialParts.stack(OrePrefixes.crushedPurified, material, 1), matDustA, dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GTModHandler.getDistilledWater(200))
             .duration(15 * SECONDS)
@@ -246,59 +236,53 @@ public class ProcessingOreMachine {
             .addTo(oreWasherRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
+            .itemInputs(MaterialParts.stack(OrePrefixes.crushed, material, 1))
             .itemOutputs(
-                convertOre(
-                    ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1),
-                    matDustB,
-                    dustStone))
+                convertOre(MaterialParts.stack(OrePrefixes.crushedCentrifuged, material, 1), matDustB, dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1))
+            .itemInputs(MaterialParts.stack(OrePrefixes.crushedPurified, material, 1))
             .itemOutputs(
-                convertOre(
-                    ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1),
-                    matDustA,
-                    dustStone))
+                convertOre(MaterialParts.stack(OrePrefixes.crushedCentrifuged, material, 1), matDustA, dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1))
+            .itemInputs(MaterialParts.stack(OrePrefixes.crushedCentrifuged, material, 1))
             .itemOutputs(matDust)
             .duration(10 * TICKS)
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
-            .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.dustImpure, material, 1))
+            .itemInputs(MaterialParts.stack(OrePrefixes.crushed, material, 1))
+            .itemOutputs(MaterialParts.stack(OrePrefixes.dustImpure, material, 1))
             .duration(10 * TICKS)
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1))
-            .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, material, 1))
+            .itemInputs(MaterialParts.stack(OrePrefixes.crushedPurified, material, 1))
+            .itemOutputs(MaterialParts.stack(OrePrefixes.dustPure, material, 1))
             .duration(10 * TICKS)
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.ore, material, 1))
-            .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
+            .itemInputs(MaterialParts.stack(OrePrefixes.ore, material, 1))
+            .itemOutputs(MaterialParts.stack(OrePrefixes.crushed, material, 1))
             .duration(10 * TICKS)
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, material, 1))
+            .itemInputs(MaterialParts.stack(OrePrefixes.dustPure, material, 1))
             .itemOutputs(convertOre(matDust, matDustA))
             .outputChances(100_00, 11_11)
             .eut(tVoltageMultiplier / 2)
@@ -306,7 +290,7 @@ public class ProcessingOreMachine {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.dustImpure, material, 1))
+            .itemInputs(MaterialParts.stack(OrePrefixes.dustImpure, material, 1))
             .itemOutputs(convertOre(matDust, matDustB))
             .outputChances(100_00, 11_11)
             .eut(tVoltageMultiplier / 2)
@@ -342,8 +326,7 @@ public class ProcessingOreMachine {
                 mCellCount += f.getKey();
                 mTotalCount += f.getKey();
             } else {
-                mInternalOutputs[mCounter++] = ProcessingDustGeneration
-                    .stackOf(OrePrefixes.dust, f.getValue(), f.getKey());
+                mInternalOutputs[mCounter++] = MaterialParts.stack(OrePrefixes.dust, f.getValue(), f.getKey());
                 mTotalCount += f.getKey();
             }
         }
@@ -357,10 +340,9 @@ public class ProcessingOreMachine {
             emptyCell = ItemList.Cell_Empty.get(mCellCount);
         }
 
-        ItemStack mainDust = ProcessingDustGeneration
-            .stackOf(OrePrefixes.dust, material, smallestStackSizeWhenProcessing(material));
+        ItemStack mainDust = MaterialParts.stack(OrePrefixes.dust, material, smallestStackSizeWhenProcessing(material));
         if (mainDust == null) {
-            mainDust = ProcessingDustGeneration.stackOf(OrePrefixes.dust, material, mTotalCount);
+            mainDust = MaterialParts.stack(OrePrefixes.dust, material, mTotalCount);
             if (mainDust == null) {
                 return;
             }
@@ -417,9 +399,9 @@ public class ProcessingOreMachine {
     }
 
     private static ItemStack getDust(Material m) {
-        ItemStack x = ProcessingDustGeneration.stackOf(OrePrefixes.dust, m, 1);
+        ItemStack x = MaterialParts.stack(OrePrefixes.dust, m, 1);
         if (x == null) {
-            x = ProcessingDustGeneration.stackOf(OrePrefixes.dust, mStone, 1);
+            x = MaterialParts.stack(OrePrefixes.dust, mStone, 1);
         }
         return x;
     }
@@ -494,10 +476,10 @@ public class ProcessingOreMachine {
     /// Whether a material counts as solid here: its `dust`, `block`, `dustTiny`, and `dustSmall` shapes must
     /// all resolve.
     private static boolean hasSolidForm(Material material) {
-        return ProcessingDustGeneration.stackOf(OrePrefixes.dust, material, 1) != null
-            && ProcessingDustGeneration.stackOf(OrePrefixes.block, material, 1) != null
-            && ProcessingDustGeneration.stackOf(OrePrefixes.dustTiny, material, 1) != null
-            && ProcessingDustGeneration.stackOf(OrePrefixes.dustSmall, material, 1) != null;
+        return MaterialParts.stack(OrePrefixes.dust, material, 1) != null
+            && MaterialParts.stack(OrePrefixes.block, material, 1) != null
+            && MaterialParts.stack(OrePrefixes.dustTiny, material, 1) != null
+            && MaterialParts.stack(OrePrefixes.dustSmall, material, 1) != null;
     }
 
     private static long partsPerOneHundred(long amount) {

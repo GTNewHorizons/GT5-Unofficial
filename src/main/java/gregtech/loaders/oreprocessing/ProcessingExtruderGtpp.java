@@ -12,6 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 
 /// The block-to-ingot extruder decompression recipe, for every material in [#ELIGIBLE]. Only that direction:
@@ -70,13 +71,13 @@ public class ProcessingExtruderGtpp {
     }
 
     private static void generate(Material material) {
-        ItemStack block = ProcessingDustGeneration.stackOf(OrePrefixes.block, material, 1L);
-        ItemStack ingot = ProcessingDustGeneration.stackOf(OrePrefixes.ingot, material, 1L);
+        ItemStack block = MaterialParts.stack(OrePrefixes.block, material, 1L);
+        ItemStack ingot = MaterialParts.stack(OrePrefixes.ingot, material, 1L);
         if (block == null || ingot == null) return;
 
         GTValues.RA.stdBuilder()
             .itemInputs(block, ItemList.Shape_Extruder_Ingot.get(0))
-            .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.ingot, material, 9L))
+            .itemOutputs(MaterialParts.stack(OrePrefixes.ingot, material, 9L))
             .duration((int) Math.max(MaterialUtils.mass(material) * 2L, 1L))
             .eut(MaterialUtils.voltageMultiplier(material))
             .addTo(extruderRecipes);

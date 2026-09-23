@@ -29,7 +29,7 @@ public class ProcessingSheetmetal implements IOreRecipeRegistrator {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.partOf(material, OrePrefixes.plate, 2), GTUtility.getIntegratedCircuit(11))
+            .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 2), GTUtility.getIntegratedCircuit(11))
             .itemOutputs(GTUtility.copyAmount(1, stack))
             .eut(TierEU.RECIPE_LV)
             .duration(10)

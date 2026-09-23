@@ -12,6 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 
 /// The ingot-to-nugget, ingot-to-gear, and nugget-to-ingot alloy smelter conversions, for every material in
@@ -63,14 +64,14 @@ public class ProcessingAlloySmelterGtpp {
         long duration = Math.max(MaterialUtils.mass(material) * 2L, 1L);
         long voltage = MaterialUtils.voltageMultiplier(material);
 
-        ItemStack ingot = ProcessingDustGeneration.stackOf(OrePrefixes.ingot, material, 1L);
-        ItemStack nugget = ProcessingDustGeneration.stackOf(OrePrefixes.nugget, material, 1L);
-        ItemStack gear = ProcessingDustGeneration.stackOf(OrePrefixes.gearGt, material, 1L);
+        ItemStack ingot = MaterialParts.stack(OrePrefixes.ingot, material, 1L);
+        ItemStack nugget = MaterialParts.stack(OrePrefixes.nugget, material, 1L);
+        ItemStack gear = MaterialParts.stack(OrePrefixes.gearGt, material, 1L);
 
         if (ingot != null && nugget != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingot, ItemList.Shape_Mold_Nugget.get(0))
-                .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.nugget, material, 9L))
+                .itemOutputs(MaterialParts.stack(OrePrefixes.nugget, material, 9L))
                 .duration(duration)
                 .eut(voltage)
                 .addTo(alloySmelterRecipes);
@@ -78,9 +79,7 @@ public class ProcessingAlloySmelterGtpp {
 
         if (ingot != null && gear != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ProcessingDustGeneration.stackOf(OrePrefixes.ingot, material, 8L),
-                    ItemList.Shape_Mold_Gear.get(0))
+                .itemInputs(MaterialParts.stack(OrePrefixes.ingot, material, 8L), ItemList.Shape_Mold_Gear.get(0))
                 .itemOutputs(gear)
                 .duration(duration)
                 .eut(voltage)
@@ -89,9 +88,7 @@ public class ProcessingAlloySmelterGtpp {
 
         if (ingot != null && nugget != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ProcessingDustGeneration.stackOf(OrePrefixes.nugget, material, 9L),
-                    ItemList.Shape_Mold_Ingot.get(0))
+                .itemInputs(MaterialParts.stack(OrePrefixes.nugget, material, 9L), ItemList.Shape_Mold_Ingot.get(0))
                 .itemOutputs(ingot)
                 .duration(duration)
                 .eut(voltage)

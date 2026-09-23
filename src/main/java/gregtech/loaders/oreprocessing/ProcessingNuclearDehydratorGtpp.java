@@ -17,6 +17,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 
 /// The chemical-dehydrator recipe turning a nuclear material's own fluid back into its dust, for every
@@ -49,7 +50,7 @@ public class ProcessingNuclearDehydratorGtpp {
     }
 
     private static void generate(Material material) {
-        ItemStack dust = ProcessingDustGeneration.stackOf(OrePrefixes.dust, material, 1L);
+        ItemStack dust = MaterialParts.stack(OrePrefixes.dust, material, 1L);
         if (dust == null) return;
         FluidStack fluid = MaterialUtils.anyFluid(material, INGOTS);
         if (fluid == null) return;
@@ -66,17 +67,17 @@ public class ProcessingNuclearDehydratorGtpp {
 
     /// `FluoriteF`'s acid-leach byproduct recipe, hand-listed rather than driven by [#ELIGIBLE].
     private static void generateFluorite() {
-        ItemStack input = ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.FluoriteF, 37L);
+        ItemStack input = MaterialParts.stack(OrePrefixes.dust, Materials.FluoriteF, 37L);
         if (input == null) return;
 
         GTValues.RA.stdBuilder()
             .itemInputs(input)
             .itemOutputs(
-                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.Gypsum, 15L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.Silver, 1L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.Gold, 2L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.Tin, 1L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.Copper, 2L))
+                MaterialParts.stack(OrePrefixes.dust, Materials.Gypsum, 15L),
+                MaterialParts.stack(OrePrefixes.dust, Materials.Silver, 1L),
+                MaterialParts.stack(OrePrefixes.dust, Materials.Gold, 2L),
+                MaterialParts.stack(OrePrefixes.dust, Materials.Tin, 1L),
+                MaterialParts.stack(OrePrefixes.dust, Materials.Copper, 2L))
             .outputChances(10000, 1000, 1000, 3000, 2000)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 8000))
             .fluidOutputs(MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, 16000))

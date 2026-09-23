@@ -14,6 +14,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 
 /// The mold-plus-fluid solidifier recipes for every shape a material in [#ELIGIBLE] carries (ingot, plate,
@@ -91,7 +92,7 @@ public class ProcessingFluidSolidifierGtpp {
 
     private static void solidify(Material material, OrePrefixes shapePrefix, ItemList mold, long shapeAmount,
         int fluidAmount, int duration) {
-        ItemStack output = ProcessingDustGeneration.stackOf(shapePrefix, material, shapeAmount);
+        ItemStack output = MaterialParts.stack(shapePrefix, material, shapeAmount);
         if (output == null) return;
         FluidStack fluid = MaterialUtils.anyFluid(material, fluidAmount);
         if (fluid == null) return;

@@ -18,14 +18,12 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 
 /// Crafting-table dust-size conversions, the four packager dust/dustSmall/dustTiny conversions, and the
 /// dust -> ingot furnace/alloy-smelter/blast-furnace recipe, for every material in [#ELIGIBLE].
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes`. The late dispatch is deliberate:
-/// several of these materials' stacks only resolve once the rest of gtPlusPlus's postInit has run. See
-/// [#stackOf] for how a stack resolves.
+/// several of these materials' stacks only resolve once the rest of gtPlusPlus's postInit has run.
 public class ProcessingDustGeneration {
 
     private ProcessingDustGeneration() {}
@@ -86,9 +84,9 @@ public class ProcessingDustGeneration {
     }
 
     private static void generate(Material material) {
-        ItemStack normalDust = stackOf(OrePrefixes.dust, material, 1L);
-        ItemStack smallDust = stackOf(OrePrefixes.dustSmall, material, 1L);
-        ItemStack tinyDust = stackOf(OrePrefixes.dustTiny, material, 1L);
+        ItemStack normalDust = MaterialParts.stack(OrePrefixes.dust, material, 1L);
+        ItemStack smallDust = MaterialParts.stack(OrePrefixes.dustSmall, material, 1L);
+        ItemStack tinyDust = MaterialParts.stack(OrePrefixes.dustTiny, material, 1L);
 
         if (tinyDust != null && normalDust != null) {
             GTModHandler.addCraftingRecipe(
@@ -96,7 +94,7 @@ public class ProcessingDustGeneration {
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
             GTModHandler.addCraftingRecipe(
-                stackOf(OrePrefixes.dustTiny, material, 9L),
+                MaterialParts.stack(OrePrefixes.dustTiny, material, 9L),
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "D  ", "   ", "   ", 'D', normalDust });
         }
@@ -107,7 +105,7 @@ public class ProcessingDustGeneration {
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
             GTModHandler.addCraftingRecipe(
-                stackOf(OrePrefixes.dustSmall, material, 4L),
+                MaterialParts.stack(OrePrefixes.dustSmall, material, 4L),
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { " D ", "   ", "   ", 'D', normalDust });
         }
@@ -116,7 +114,7 @@ public class ProcessingDustGeneration {
             generatePackagerRecipes(material);
         }
 
-        ItemStack ingot = stackOf(OrePrefixes.ingot, material, 1L);
+        ItemStack ingot = MaterialParts.stack(OrePrefixes.ingot, material, 1L);
         if (normalDust != null && ingot != null) {
             addFurnaceRecipe(material, normalDust, ingot);
         }
@@ -124,33 +122,33 @@ public class ProcessingDustGeneration {
 
     private static void generatePackagerRecipes(Material material) {
         GTValues.RA.stdBuilder()
-            .itemInputs(stackOf(OrePrefixes.dustSmall, material, 4L), ItemList.Schematic_Dust.get(0L))
-            .itemOutputs(stackOf(OrePrefixes.dust, material, 1L))
+            .itemInputs(MaterialParts.stack(OrePrefixes.dustSmall, material, 4L), ItemList.Schematic_Dust.get(0L))
+            .itemOutputs(MaterialParts.stack(OrePrefixes.dust, material, 1L))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
 
-        ItemStack tinyDust = stackOf(OrePrefixes.dustTiny, material, 1L);
+        ItemStack tinyDust = MaterialParts.stack(OrePrefixes.dustTiny, material, 1L);
         if (tinyDust != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(stackOf(OrePrefixes.dustTiny, material, 9L), ItemList.Schematic_Dust.get(0L))
-                .itemOutputs(stackOf(OrePrefixes.dust, material, 1L))
+                .itemInputs(MaterialParts.stack(OrePrefixes.dustTiny, material, 9L), ItemList.Schematic_Dust.get(0L))
+                .itemOutputs(MaterialParts.stack(OrePrefixes.dust, material, 1L))
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(packagerRecipes);
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(stackOf(OrePrefixes.dust, material, 1L), ItemList.Schematic_Dust_Small.get(0L))
-            .itemOutputs(stackOf(OrePrefixes.dustSmall, material, 4L))
+            .itemInputs(MaterialParts.stack(OrePrefixes.dust, material, 1L), ItemList.Schematic_Dust_Small.get(0L))
+            .itemOutputs(MaterialParts.stack(OrePrefixes.dustSmall, material, 4L))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
 
         if (tinyDust != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(stackOf(OrePrefixes.dust, material, 1L), ItemList.Schematic_Dust.get(0L))
-                .itemOutputs(stackOf(OrePrefixes.dustTiny, material, 9L))
+                .itemInputs(MaterialParts.stack(OrePrefixes.dust, material, 1L), ItemList.Schematic_Dust.get(0L))
+                .itemOutputs(MaterialParts.stack(OrePrefixes.dustTiny, material, 9L))
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(packagerRecipes);
@@ -159,7 +157,7 @@ public class ProcessingDustGeneration {
 
     private static void addFurnaceRecipe(Material material, ItemStack dust, ItemStack ingot) {
         if (MaterialUtils.blastFurnaceRequired(material)) {
-            ItemStack hotIngot = stackOf(OrePrefixes.ingotHot, material, 1L);
+            ItemStack hotIngot = MaterialParts.stack(OrePrefixes.ingotHot, material, 1L);
             if (hotIngot != null) {
                 addBlastFurnaceRecipe(material, dust, hotIngot);
             }
@@ -179,13 +177,5 @@ public class ProcessingDustGeneration {
             .eut(MaterialUtils.voltageMultiplier(material))
             .metadata(COIL_HEAT, MaterialUtils.meltingPoint(material))
             .addTo(blastFurnaceRecipes);
-    }
-
-    /// A material's stack for `prefix`: the MaterialLib-backed one when the material generates that shape,
-    /// falling back to the ore dictionary's unification target otherwise. A material with no legacy sub-id
-    /// never enters the unificator's generated-item pass.
-    public static ItemStack stackOf(OrePrefixes prefix, Material material, long amount) {
-        ItemStack cutover = MaterialParts.stack(prefix, material, amount);
-        return cutover != null ? cutover : GTOreDictUnificator.get(prefix, material, amount);
     }
 }

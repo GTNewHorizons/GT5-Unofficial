@@ -27,11 +27,11 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.GTOreAdapter;
-import gregtech.loaders.oreprocessing.ProcessingDustGeneration;
 import gtnhintergalactic.item.ItemMiningDrones;
 
 /**
@@ -566,17 +566,17 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 600, 400, 1500, 1500, 1000, 400, 1000, 600, 1000, 1000, 1000 },
-            new ItemStack[] { ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials.Koboldite, 64),
-                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials.Crocoite, 64),
-                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials.GadoliniteY, 64),
-                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials.Lepersonnite, 64),
-                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials.Zircon, 64),
-                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials.Lautarite, 64),
-                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials.Honeaite, 64),
-                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials.Alburnite, 64),
-                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials.RareEarthI, 64),
-                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials.RareEarthII, 64),
-                ProcessingDustGeneration.stackOf(OrePrefixes.ore, Materials.RareEarthIII, 64) },
+            new ItemStack[] { MaterialParts.stack(OrePrefixes.ore, Materials.Koboldite, 64),
+                MaterialParts.stack(OrePrefixes.ore, Materials.Crocoite, 64),
+                MaterialParts.stack(OrePrefixes.ore, Materials.GadoliniteY, 64),
+                MaterialParts.stack(OrePrefixes.ore, Materials.Lepersonnite, 64),
+                MaterialParts.stack(OrePrefixes.ore, Materials.Zircon, 64),
+                MaterialParts.stack(OrePrefixes.ore, Materials.Lautarite, 64),
+                MaterialParts.stack(OrePrefixes.ore, Materials.Honeaite, 64),
+                MaterialParts.stack(OrePrefixes.ore, Materials.Alburnite, 64),
+                MaterialParts.stack(OrePrefixes.ore, Materials.RareEarthI, 64),
+                MaterialParts.stack(OrePrefixes.ore, Materials.RareEarthII, 64),
+                MaterialParts.stack(OrePrefixes.ore, Materials.RareEarthIII, 64) },
             10,
             20,
             110,

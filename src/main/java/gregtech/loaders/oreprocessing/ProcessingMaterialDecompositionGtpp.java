@@ -22,6 +22,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.LegacyGTPPComposites;
 import gregtech.api.enums.materials.LegacyGTPPComposites.Component;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 
 /// Decomposition recipes for every material in [#ELIGIBLE] that carries a [LegacyGTPPComposites] entry: a
@@ -99,12 +100,10 @@ public class ProcessingMaterialDecompositionGtpp {
         for (int i = 0; i < composites.size(); i++) {
             Component component = composites.get(i);
             if (!"SOLID".equals(ProcessingOreMachine.gtppState(component.material()))) {
-                outputs[i] = ProcessingDustGeneration
-                    .stackOf(OrePrefixes.cell, component.material(), component.parts());
+                outputs[i] = MaterialParts.stack(OrePrefixes.cell, component.material(), component.parts());
                 cellCount += component.parts();
             } else {
-                outputs[i] = ProcessingDustGeneration
-                    .stackOf(OrePrefixes.dust, component.material(), component.parts());
+                outputs[i] = MaterialParts.stack(OrePrefixes.dust, component.material(), component.parts());
             }
             totalCount += component.parts();
         }
@@ -119,7 +118,7 @@ public class ProcessingMaterialDecompositionGtpp {
         int[] strippedChances = new int[internalOutputs.size()];
         System.arraycopy(chances, 0, strippedChances, 0, internalOutputs.size());
 
-        ItemStack mainDust = ProcessingDustGeneration.stackOf(OrePrefixes.dust, material, totalCount);
+        ItemStack mainDust = MaterialParts.stack(OrePrefixes.dust, material, totalCount);
         if (mainDust == null) return;
 
         ItemStack emptyCell = cellCount > 0 ? ItemList.Cell_Empty.get(cellCount) : null;

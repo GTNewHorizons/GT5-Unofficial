@@ -13,6 +13,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.SubstituteFluidStack;
 
@@ -63,11 +64,11 @@ public class ProcessingAssemblerGtpp {
     private static void generate(Material material) {
         long voltage = MaterialUtils.voltageMultiplier(material);
 
-        ItemStack rod = ProcessingDustGeneration.stackOf(OrePrefixes.stick, material, 1L);
-        ItemStack frameBox = ProcessingDustGeneration.stackOf(OrePrefixes.frameGt, material, 1L);
+        ItemStack rod = MaterialParts.stack(OrePrefixes.stick, material, 1L);
+        ItemStack frameBox = MaterialParts.stack(OrePrefixes.frameGt, material, 1L);
         if (rod != null && frameBox != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.stick, material, 4L))
+                .itemInputs(MaterialParts.stack(OrePrefixes.stick, material, 4L))
                 .circuit(4)
                 .itemOutputs(frameBox)
                 .duration(3 * SECONDS)
@@ -75,12 +76,12 @@ public class ProcessingAssemblerGtpp {
                 .addTo(assemblerRecipes);
         }
 
-        ItemStack plate = ProcessingDustGeneration.stackOf(OrePrefixes.plate, material, 1L);
-        ItemStack ring = ProcessingDustGeneration.stackOf(OrePrefixes.ring, material, 1L);
-        ItemStack rotor = ProcessingDustGeneration.stackOf(OrePrefixes.rotor, material, 1L);
+        ItemStack plate = MaterialParts.stack(OrePrefixes.plate, material, 1L);
+        ItemStack ring = MaterialParts.stack(OrePrefixes.ring, material, 1L);
+        ItemStack rotor = MaterialParts.stack(OrePrefixes.rotor, material, 1L);
         if (plate != null && ring != null && rotor != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.plate, material, 4L), ring)
+                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 4L), ring)
                 .itemOutputs(rotor)
                 .fluidInputs(SubstituteFluidStack.soldering(NUGGETS))
                 .duration(240)
