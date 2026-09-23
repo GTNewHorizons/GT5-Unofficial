@@ -2,14 +2,9 @@ package gtPlusPlus.xmod.thermalfoundation.item;
 
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
-import com.ruling_0.materiallib.api.MaterialLibAPI;
-
 import cofh.core.item.ItemBase;
 import cofh.core.item.ItemBucket;
-import cofh.core.util.energy.FurnaceFuelHandler;
 import cofh.core.util.fluid.BucketHandler;
-import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -30,8 +25,6 @@ public class TFItems {
             .setCreativeTab(AddToCreativeTab.tabMisc);
 
         GregtechItemList.BlizzRod.set(material.addOreDictItem(1, "rodBlizz"));
-
-        FurnaceFuelHandler.registerFuel(MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, 1), 2400);
 
         GTOreDictUnificator.registerOre("stickBlizz", GregtechItemList.BlizzRod.get(1));
     }

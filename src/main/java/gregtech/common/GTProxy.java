@@ -401,6 +401,7 @@ public class GTProxy implements IFuelHandler {
         oreDictBurnTimes.put("dustCharcoal", 1600);
         oreDictBurnTimes.put("dustSmallLithium", 2000);
         oreDictBurnTimes.put("dustSmallCaesium", 2000);
+        oreDictBurnTimes.put("dustPyrotheum", 2400);
         oreDictBurnTimes.put("gemSodium", 4000);
         oreDictBurnTimes.put("crushedSodium", 4000);
         oreDictBurnTimes.put("dustImpureSodium", 4000);
