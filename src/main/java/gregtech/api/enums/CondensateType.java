@@ -46,7 +46,7 @@ public enum CondensateType {
         "bedrockium",
         () -> Materials.Bedrockium,
         144,
-        () -> Materials.Bedrockium.getMolten(144), 20 * SECONDS, TierEU.RECIPE_UHV),
+        () -> Materials.Bedrockium.getMolten(144), 30 * SECONDS, TierEU.RECIPE_UEV),
     ChromaticGlass(
         "chromaticglass",
         () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS,
