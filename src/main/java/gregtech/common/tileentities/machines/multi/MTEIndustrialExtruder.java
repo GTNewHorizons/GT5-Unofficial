@@ -8,8 +8,13 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -17,23 +22,31 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEIndustrialExtruder>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 8;
@@ -52,7 +65,8 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
                 { "A ABBBBBA", "AAA     A", "A ABBBBBA", "DDDDDDDDA" } })
         .addElement(
             'A',
-            buildHatchAdder(MTEIndustrialExtruder.class).atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+            buildHatchAdder(MTEIndustrialExtruder.class)
+                .atLeast(InputBus.or(ExtruderHatchElement.ExtrusionBus), OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(Casings.PressureContainmentCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.PressureContainmentCasing.asElement())))
@@ -88,16 +102,17 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         tt.addMachineType("Extruder, IEM")
             .addBulkMachineInfo(6, 3.5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 4, 4, false)
+            .beginStructureBlock(4, 4, 9, false)
             .addController("Front right, 2nd layer")
-            .addCasingInfoMin("Pressure Containment Casing", 8, false)
-            .addCasingInfoMin("Clean Stainless Steel Casing", 3, false)
-            .addCasingInfoExactly("Chemically Inert Casing", 24, false)
-            .addInputBus("Any Pressure Containment Casing", 1)
-            .addOutputBus("Any Pressure Containment Casing", 1)
-            .addEnergyHatch("Any Pressure Containment or Clean Stainless Steel Casing", 1)
-            .addMaintenanceHatch("Any Pressure Containment or Clean Stainless Steel Casing", 1)
-            .addMufflerHatch("Any Pressure Containment or Clean Stainless Steel Casing", 1)
+            .addCasing("8-33", "Pressure Containment Casing", false)
+            .addCasing("24", "Chemically Inert Machine Casing", false)
+            .addCasing("20", "Forming Core", false)
+            .addCasing("3-7", "Clean Stainless Steel Machine Casing", false)
+            .addEnergyHatch("1+", "Any containment or stainless steel casing", 1)
+            .addMaintenanceHatch("1", "Any containment or stainless steel casing", 1)
+            .addMufflerHatch("1", "Any containment or stainless steel casing", 1)
+            .addMiscHatch("1+", "Input/Extrusion Bus", "Any containment casing", 1)
+            .addOutputBus("1+", "Any containment casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "cauchemard")
             .toolTipFinisher();
         return tt;
@@ -129,51 +144,41 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         casingAmountStainless = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmountStainless >= 3
-            && casingAmount >= 8
-            && checkHatch();
-    }
-
-    public boolean checkHatch() {
-        return mMufflerHatches.size() >= 1 && mInputBusses.size() >= 1
-            && mOutputBusses.size() >= 1
-            && mEnergyHatches.size() >= 1;
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { Casings.CleanStainlessSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialExtruderActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialExtruderActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.CleanStainlessSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialExtruder)
-
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialExtruderGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.CleanStainlessSteelMachineCasing.getCasingTexture() };
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmountStainless, 3);
+        checkCasingMin(errors, casingAmount, 8);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
-    protected SoundResource getProcessStartSound() {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDIndustrialExtruder,
+            TexturesGtBlock.oMCDIndustrialExtruderGlow,
+            TexturesGtBlock.oMCDIndustrialExtruderActive,
+            TexturesGtBlock.oMCDIndustrialExtruderActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.CleanStainlessSteelMachineCasing.getCasingTexture();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 
@@ -209,11 +214,6 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
@@ -221,5 +221,55 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    /**
+     * Can implement {@literal IHatchElement<MTEIndustrialExtruder>} & be private after the removal of
+     * {@link gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialExtruderLegacy}.
+     * Ugly until the big pretty cleanup :)
+     */
+    public enum ExtruderHatchElement implements IHatchElement<MTEMultiBlockBase> {
+
+        ExtrusionBus("GT5U.MBTT.ExtrusionBus", MTEMultiBlockBase::addInputBusToMachineList, MTEHatchExtrusion.class) {
+
+            @Override
+            public long count(MTEMultiBlockBase t) {
+                return t.mInputBusses.stream()
+                    .filter(it -> it instanceof MTEHatchExtrusion)
+                    .count();
+            }
+        };
+
+        private final String name;
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEMultiBlockBase> adder;
+
+        @SafeVarargs
+        ExtruderHatchElement(String name, IGTHatchAdder<MTEMultiBlockBase> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTEMultiBlockBase> adder() {
+            return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 }

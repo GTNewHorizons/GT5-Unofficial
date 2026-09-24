@@ -218,6 +218,16 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
         return this;
     }
 
+    public RecipeMapBuilder<B> slotOverlaysSteamMUI2(
+        BasicUIProperties.SlotOverlayGetter<gregtech.common.modularui2.util.SteamTexture> slotOverlaysSteamMUI2) {
+        uiPropertiesBuilder.slotOverlaysSteamMUI2((index, isFluid, isOutput, isSpecial) -> {
+            gregtech.common.modularui2.util.SteamTexture texture = slotOverlaysSteamMUI2
+                .apply(index, isFluid, isOutput, isSpecial);
+            return texture == null ? gregtech.common.modularui2.util.SteamTexture.NONE : texture;
+        });
+        return this;
+    }
+
     /**
      * Sets texture and animation direction of the progressbar.
      * <p>
@@ -241,6 +251,12 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      */
     public RecipeMapBuilder<B> progressBarMUI2(com.cleanroommc.modularui.drawable.UITexture progressBarTextureMUI2) {
         return progressBarMUI2(progressBarTextureMUI2, ProgressWidget.Direction.RIGHT);
+    }
+
+    public RecipeMapBuilder<B> progressBarTextureSteamMUI2(
+        gregtech.common.modularui2.util.SteamTexture progressBarTextureSteamMUI2) {
+        uiPropertiesBuilder.progressBarTextureSteamMUI2(progressBarTextureSteamMUI2);
+        return this;
     }
 
     public RecipeMapBuilder<B> progressBarSizeMUI2(int progressBarWidthMUI2, int progressBarHeightMUI2) {

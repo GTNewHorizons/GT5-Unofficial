@@ -39,16 +39,17 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.RenderOverlay;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
@@ -94,7 +95,7 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .addCasingInfoMin("Centrifuge Casings", 6, false)
+            .addCasingInfoMin("Centrifuge Casing", 6, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -138,9 +139,11 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 6 && checkHatch();
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 6);
+        checkHatch(errors);
     }
 
     @Override
@@ -202,7 +205,7 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.centrifugeNonCellRecipes;
+        return RecipeMaps.centrifugeNonCellRecipes;
     }
 
     @Override

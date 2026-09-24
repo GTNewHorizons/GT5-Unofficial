@@ -32,8 +32,8 @@ public class ResultNoValidOutputColor implements CheckRecipeResult {
     public @NotNull String getDisplayString() {
         String dyeName = Dyes.get(color)
             .getLocalizedDyeName();
-        return Objects
-            .requireNonNull(StatCollector.translateToLocalFormatted("GT5U.gui.text.nac.no_valid_hatch_color", dyeName));
+        return Objects.requireNonNull(
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.recipe_result.nac.no_valid_hatch_color", dyeName));
     }
 
     @Override

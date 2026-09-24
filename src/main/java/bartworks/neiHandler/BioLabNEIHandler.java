@@ -47,7 +47,7 @@ public class BioLabNEIHandler extends GTNEIDefaultHandler {
     @Override
     public void loadCraftingRecipes(ItemStack aResult) {
         if (aResult != null && aResult.getItem() instanceof ItemLabParts
-            && aResult.getItemDamage() < 3
+            && aResult.getItemDamage() < ItemLabParts.DETERGENT // PETRI_DISH, DNA_FLASK or PLASMID_CELL
             && aResult.getTagCompound() != null) {
             for (CachedDefaultRecipe recipe : this.getCache())
                 if (NEIBWConfig.checkRecipe(aResult, recipe.mOutputs)) this.arecipes.add(recipe);
@@ -59,7 +59,7 @@ public class BioLabNEIHandler extends GTNEIDefaultHandler {
     @Override
     public void loadUsageRecipes(ItemStack aResult) {
         if (aResult != null && aResult.getItem() instanceof ItemLabParts
-            && aResult.getItemDamage() < 3
+            && aResult.getItemDamage() < ItemLabParts.DETERGENT // PETRI_DISH, DNA_FLASK or PLASMID_CELL
             && aResult.getTagCompound() != null) {
             for (CachedDefaultRecipe recipe : this.getCache())
                 if (NEIBWConfig.checkRecipe(aResult, recipe.mInputs)) this.arecipes.add(recipe);

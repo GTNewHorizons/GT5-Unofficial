@@ -127,8 +127,7 @@ public class BlockCasingSpaceElevator extends BlockCasingsAbstract {
      * @param list List to which the sub blocks will be added
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item item, CreativeTabs tabs, @SuppressWarnings("rawtypes") List list) {
+    public void getSubBlocks(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (int i = 0; i < NUMBER_OF_CASINGS; i++) {
             list.add(new ItemStack(item, 1, i));
         }

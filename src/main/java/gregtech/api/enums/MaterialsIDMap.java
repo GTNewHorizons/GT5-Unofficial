@@ -1,6 +1,6 @@
 package gregtech.api.enums;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
@@ -94,6 +94,9 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(111, Materials.TengamPurified);
         r(112, Materials.TengamAttuned);
         r(113, Materials.ExcitedDTPC);
+        r(114, Materials.InactiveCosmicSolder);
+        r(115, Materials.BoundlessCosmicSolder);
+        r(116, Materials.ComputationBase);
         r(118, Materials.NetherAir);
         r(119, Materials.NetherSemiFluid);
         r(120, Materials.NefariousGas);
@@ -164,13 +167,17 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(186, Materials.StagnantWasteWater);
         r(187, Materials.ActivatedWasteWater);
         r(188, Materials.ChlorosulfonicAcid);
-        r(189, Materials.HydrogenPeroxide);
-        r(190, Materials.LithiumPeroxide);
-        r(191, Materials.HydrogenChloride);
-        r(192, Materials.SulfurousAcid);
-        r(193, Materials.SulfuricApatite);
-        r(194, Materials.SulfuricLithium);
-        r(195, Materials.LithiumHydroxide);
+        r(189, Materials.Shijima);
+        r(190, Materials.Churitsu);
+        r(191, Materials.PoisonousSlurry);
+        r(192, Materials.Amalgatite);
+        r(193, Materials.HydrogenPeroxide);
+        r(194, Materials.LithiumPeroxide);
+        r(195, Materials.HydrogenChloride);
+        r(196, Materials.SulfurousAcid);
+        r(197, Materials.SulfuricApatite);
+        r(198, Materials.SulfuricLithium);
+        r(199, Materials.LithiumHydroxide);
         r(201, Materials.Manasteel);
         r(202, Materials.Terrasteel);
         r(203, Materials.ElvenElementium);
@@ -192,7 +199,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(301, Materials.Brass);
         r(302, Materials.Invar);
         r(303, Materials.Electrum);
-        r(304, Materials.WroughtIron);
+        r(304, Materials.CastIron);
         r(305, Materials.Steel);
         r(306, Materials.StainlessSteel);
         r(307, Materials.PigIron);
@@ -795,6 +802,6 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
     private void r(int ID, Materials material) {
         final Materials prevMaterial = put(ID, material);
         if (prevMaterial == null) return;
-        GTMod.GT_FML_LOGGER.warn("Material '{}' with ID {} was replaced by '{}'.", prevMaterial, ID, material);
+        GTLoggers.GT_FML_LOGGER.warn("Material '{}' with ID {} was replaced by '{}'.", prevMaterial, ID, material);
     }
 }

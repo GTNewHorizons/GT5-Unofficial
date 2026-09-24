@@ -45,7 +45,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
             uiPropertiesBuilder.logoPos(new Pos2d(8, yOrigin)),
-            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 117 + (itemRows + fluidRows - 4) * 18))
+            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 115 + (itemRows + fluidRows - 4) * 18))
                 .neiSpecialInfoFormatter(new EyeOfHarmonySpecialValueFormatter()));
     }
 
@@ -159,8 +159,8 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
 
             // Energy Output
             switch (ConfigHandler.visual.EOH_NOTATION) {
-                case Numerical -> result.add(
-                    StatCollector.translateToLocalFormatted("EOH.Recipe.EU.Out", formatNumber(recipe.getEUOutput())));
+                case Numerical -> result
+                    .add(StatCollector.translateToLocalFormatted("EOH.Recipe.EU.Out", recipe.getEUOutput()));
                 case Scientific -> result.add(
                     StatCollector.translateToLocalFormatted("EOH.Recipe.EU.Out", toExponentForm(recipe.getEUOutput())));
                 case SI -> result.add(
@@ -171,8 +171,8 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
 
             // Energy Input
             switch (ConfigHandler.visual.EOH_NOTATION) {
-                case Numerical -> result.add(
-                    StatCollector.translateToLocalFormatted("EOH.Recipe.EU.In", formatNumber(recipe.getEUStartCost())));
+                case Numerical -> result
+                    .add(StatCollector.translateToLocalFormatted("EOH.Recipe.EU.In", recipe.getEUStartCost()));
                 case Scientific -> result.add(
                     StatCollector
                         .translateToLocalFormatted("EOH.Recipe.EU.In", toExponentForm(recipe.getEUStartCost())));

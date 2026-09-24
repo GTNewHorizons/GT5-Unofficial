@@ -35,7 +35,7 @@ public class CoverArmGui extends CoverBaseGui<CoverArm> {
     }
 
     private Flow createTransferModeRow(PanelSyncManager syncManager) {
-        BooleanSyncValue isExportSyncer = new BooleanSyncValue(cover::isExport, cover::setExport);
+        BooleanSyncValue isExportSyncer = new BooleanSyncValue(cover::isExport, cover::setExport).allowC2S();
         syncManager.syncValue("isExport", isExportSyncer);
         return Flow.row()
             .child(createExportButton(isExportSyncer))
@@ -72,9 +72,10 @@ public class CoverArmGui extends CoverBaseGui<CoverArm> {
                 // number field with 'Any' goes here
                 makeNumberField(50)
                     .value(
-                        new IntSyncValue(() -> cover.getInternalSlotId() - 1, val -> cover.setInternalSlotId(val + 1)))
-                    .setDefaultNumber(-1)
-                    .setNumbers(
+                        new IntSyncValue(() -> cover.getInternalSlotId() - 1, val -> cover.setInternalSlotId(val + 1))
+                            .allowC2S())
+                    .defaultNumber(-1)
+                    .numbersInt(
                         -1,
                         cover.getTile()
                             .getSizeInventory() - 1)
@@ -91,14 +92,16 @@ public class CoverArmGui extends CoverBaseGui<CoverArm> {
                 // number field with 'Any' goes here
                 makeNumberField(50)
                     .value(
-                        new IntSyncValue(() -> cover.getExternalSlotId() - 1, val -> cover.setExternalSlotId(val + 1)))
+                        new IntSyncValue(() -> cover.getExternalSlotId() - 1, val -> cover.setExternalSlotId(val + 1))
+                            .allowC2S())
                     .setDefaultNumber(-1)
                     .setValidator(this::validateExternalSlotId)
                     .marginRight(2))
             .child(
                 IKey.lang("gt.interact.desc.arm.Adjacent_Slot")
                     .asWidget()
-                    .tooltipBuilder(t -> t.addLine("-1 means 'Any' sorry for the inconvenience :(")));
+                    .tooltipBuilder(t -> t.addLine("-1 means 'Any' sorry for the inconvenience :(")))
+            .paddingRight(TICK_RATE_BUTTON_SIZE);
 
     }
 

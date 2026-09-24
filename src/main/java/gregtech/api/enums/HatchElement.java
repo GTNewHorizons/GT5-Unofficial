@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.util.StatCollector;
+
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.interfaces.IHatchElement;
@@ -18,11 +20,19 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.ExoticEnergyInputHelper;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
+import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
+import kubatech.tileentity.gregtech.hatch.MTEHatchElectrode;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
 
@@ -45,19 +55,37 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
 
         @Override
         public long count(MTEMultiBlockBase t) {
-            return t.mInputHatches.size();
+            return t.mInputHatches.size() + t.mDualInputHatches.stream()
+                .filter(hatch -> hatch.supportsFluids() || hatch instanceof MTEHatchCraftingInputSlave)
+                .count();
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return ImmutableList
+                .of(MTEHatchInput.class, MTEHatchCraftingInputME.class, MTEHatchCraftingInputSlave.class);
+        }
+
+        @Override
+        public List<Class<? extends IMetaTileEntity>> mteBlacklist() {
+            return ImmutableList.of(MTEHatchSolidifier.class);
         }
     },
     InputBus("GT5U.MBTT.InputBus", MTEMultiBlockBase::addInputBusToMachineList, MTEHatchInputBus.class) {
 
         @Override
         public long count(MTEMultiBlockBase t) {
-            return t.mInputBusses.size();
+            return t.mInputBusses.size() + t.mDualInputHatches.size();
         }
 
         @Override
         public List<Class<? extends IMetaTileEntity>> mteBlacklist() {
-            return ImmutableList.of(MTEHatchLensHousing.class, MTEHatchSteamBusInput.class);
+            return ImmutableList.of(
+                MTEHatchLensHousing.class,
+                MTEHatchSteamBusInput.class,
+                MTEHatchExtrusion.class,
+                MTEHatchPatternProvider.class,
+                MTEHatchElectrode.class);
         }
     },
     OutputHatch("GT5U.MBTT.OutputHatch", MTEMultiBlockBase::addOutputHatchToMachineList, MTEHatchOutput.class) {
@@ -93,7 +121,7 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
             return t.mDynamoHatches.size();
         }
     },
-    ExoticEnergy("GT5U.MBTT.MultiampEnergyHatch", MTEMultiBlockBase::addExoticEnergyInputToMachineList) {
+    ExoticEnergy("GT5U.MBTT.ExoticEnergyHatch", MTEMultiBlockBase::addExoticEnergyInputToMachineList) {
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -121,11 +149,61 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
             return t.getExoticDynamoHatches()
                 .size();
         }
+    },
+    CryotheumHatch("GT5U.MBTT.CryotheumHatch", MTEMultiBlockBase::addCryotheumHatchToMachineList,
+        MTEHatchCustomFluidBase.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.getCryotheumHatches()
+                .size();
+        }
+
+        @Override
+        public boolean matchesHatch(IMetaTileEntity mte) {
+            return mte instanceof MTEHatchCustomFluidBase f && f.mLockedFluid == TFFluids.fluidCryotheum;
+        }
+    },
+    PyrotheumHatch("GT5U.MBTT.PyrotheumHatch", MTEMultiBlockBase::addPyrotheumHatchToMachineList,
+        MTEHatchCustomFluidBase.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.getPyrotheumHatches()
+                .size();
+        }
+
+        @Override
+        public boolean matchesHatch(IMetaTileEntity mte) {
+            return mte instanceof MTEHatchCustomFluidBase f && f.mLockedFluid == TFFluids.fluidPyrotheum;
+        }
+    },
+    LaserSource("GT5U.MBTT.LaserSourceHatch", MTEMultiBlockBase::addLaserSourceToMachineList,
+        MTEHatchDynamoTunnel.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.getExoticDynamoHatches()
+                .stream()
+                .filter(MTEHatchDynamoTunnel.class::isInstance)
+                .count();
+        }
+    },
+    SolidifierHatch("GT5U.MBTT.SolidiferHatch", MTEMultiBlockBase::addInputHatchToMachineList,
+        MTEHatchSolidifier.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.mInputHatches.stream()
+                .filter(it -> it instanceof MTEHatchSolidifier)
+                .count();
+        }
     };
 
     private final String name;
     private final List<Class<? extends IMetaTileEntity>> mteClasses;
     private final IGTHatchAdder<MTEMultiBlockBase> adder;
+    private static final HatchElement[] elements = HatchElement.values();
 
     @SafeVarargs
     HatchElement(String name, IGTHatchAdder<MTEMultiBlockBase> adder, Class<? extends IMetaTileEntity>... mteClasses) {
@@ -141,11 +219,20 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
 
     @Override
     public String getDisplayName() {
-        return GTUtility.translate(name);
+        return StatCollector.translateToLocal(name);
+    }
+
+    @Override
+    public String getDescriptionLangKey() {
+        return name;
     }
 
     @Override
     public IGTHatchAdder<? super MTEMultiBlockBase> adder() {
         return adder;
+    }
+
+    public static HatchElement fromOrdinal(int ord) {
+        return elements[ord];
     }
 }

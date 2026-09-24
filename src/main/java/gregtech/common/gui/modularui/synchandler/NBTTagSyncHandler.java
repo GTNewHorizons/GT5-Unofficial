@@ -10,7 +10,7 @@ import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
 
-public class NBTTagSyncHandler extends ValueSyncHandler<NBTTagCompound> {
+public class NBTTagSyncHandler extends ValueSyncHandler<NBTTagCompound, NBTTagSyncHandler> {
 
     private final Supplier<NBTTagCompound> getter;
     private final Consumer<NBTTagCompound> setter;

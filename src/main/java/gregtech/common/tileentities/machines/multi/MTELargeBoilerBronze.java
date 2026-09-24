@@ -7,7 +7,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class MTELargeBoilerBronze extends MTELargeBoilerBase {
 
-    public static final int EUT_GENERATED = 400;
+    public static final int EUT_GENERATED = 480;
     public static final int EFFICIENCY_INCREASE = 16;
     public static final boolean SUPERHEATED = false;
 

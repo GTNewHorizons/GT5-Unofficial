@@ -38,7 +38,7 @@ public class ResultInsufficientVoltage implements CheckRecipeResult {
     public @NotNull String getDisplayString() {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.insufficient_voltage",
+                "GT5U.gui.text.recipe_result.insufficient_voltage",
                 formatNumber(required),
                 GTUtility.getColoredTierNameFromVoltage(required)));
     }

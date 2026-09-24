@@ -60,6 +60,10 @@ public enum IDMetaItem01 {
     NandChipArray(81),
     Component_Minecraft_Wheels_Iron(100),
     Component_Minecraft_Wheels_Steel(101),
+    T1Sawblade(102),
+    T2Sawblade(103),
+    T3Sawblade(104),
+    T4Sawblade(105),
     Compressed_Fireclay(110),
     Firebrick(111),
     ZPM5(145),
@@ -442,11 +446,14 @@ public enum IDMetaItem01 {
     Cover_SolarPanel_LuV(757),
     Cover_SolarPanel_ZPM(758),
     Cover_SolarPanel_UV(759),
+    Cover_AdvancedWirelessController(760),
     Tool_Cheat(761),
     Tool_Scanner(762),
     NC_SensorKit(763),
     Duct_Tape(764),
     McGuffium_239(765);
+
+    // Maximum Item ID is 765, if you want to add items, choose from the IDs not yet occupied.
 
     public final int ID;
 

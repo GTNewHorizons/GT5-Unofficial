@@ -1,11 +1,13 @@
 package gregtech.loaders.preload;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.FluidState.SLURRY;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -20,6 +22,7 @@ import java.util.Locale;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -46,7 +49,6 @@ import gregtech.api.items.ItemRadioactiveCellIC;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -55,6 +57,7 @@ import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.blocks.BlockCasings14;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings3;
 import gregtech.common.blocks.BlockCasings4;
@@ -62,10 +65,13 @@ import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCasings6;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.BlockCasings9;
+import gregtech.common.blocks.BlockCasingsBEC;
 import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
 import gregtech.common.blocks.BlockCyclotronCoils;
+import gregtech.common.blocks.BlockDecorativeFrame;
+import gregtech.common.blocks.BlockFenceMetal;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.blocks.BlockGranites;
@@ -73,6 +79,7 @@ import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.BlockOresLegacy;
+import gregtech.common.blocks.BlockPad;
 import gregtech.common.blocks.BlockReinforced;
 import gregtech.common.blocks.BlockRenderer;
 import gregtech.common.blocks.BlockSheetMetal;
@@ -95,9 +102,9 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.armor.MechArmorLoader;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
-import gregtech.common.tileentities.render.RenderingTileEntityDrone;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
@@ -115,7 +122,7 @@ public class LoaderGTBlockFluid implements Runnable {
         Materials.UUMatter.mFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
             .getFluid();
 
-        GTLog.out.println("GTMod: Register Books.");
+        GT_FML_LOGGER.debug("GTMod: Register Books.");
 
         GTUtility.getWrittenBook(
             "Manual_Printer",
@@ -161,9 +168,10 @@ public class LoaderGTBlockFluid implements Runnable {
             "gt.book.microwave_oven_manual.page06",
             "gt.book.microwave_oven_manual.page07");
 
-        GTLog.out.println("GTMod: Register Items.");
+        GT_FML_LOGGER.debug("GTMod: Register Items.");
 
         new ItemIntegratedCircuit();
+
         new MetaGeneratedItem01();
         new MetaGeneratedItem02();
         new MetaGeneratedItem03();
@@ -177,6 +185,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
         new ItemMagLevHarness();
+        MechArmorLoader.run();
         new CircuitComponentFakeItem();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
@@ -187,7 +196,7 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Rotor_EV.set(GTOreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L));
         ItemList.Rotor_IV.set(GTOreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1L));
 
-        ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", "Volumetric flask", 1_000));
+        ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", 1_000));
 
         if (Mods.IC2NuclearControl.isModLoaded()) {
             ItemList.NC_SensorCard.set(new ItemSensorCard("sensorcard", "GregTech Sensor Card"));
@@ -725,7 +734,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 false,
                 1F));
 
-        GTLog.out.println("GTMod: Adding Blocks.");
+        GT_FML_LOGGER.debug("GTMod: Adding Blocks.");
         GregTechAPI.sBlockMachines = new BlockMachines();
         GregTechAPI.sBlockCasings1 = new BlockCasings1();
         GregTechAPI.sBlockCasings2 = new BlockCasings2();
@@ -739,19 +748,22 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockCasings11 = new BlockCasings11();
         GregTechAPI.sBlockCasings12 = new BlockCasings12();
         GregTechAPI.sBlockCasings13 = new BlockCasings13();
+        GregTechAPI.sBlockCasings14 = new BlockCasings14();
         GregTechAPI.sBlockCasingsNH = new BlockCasingsNH();
         GregTechAPI.sBlockCasingsFoundry = new BlockCasingsFoundry();
+        GregTechAPI.sBlockCasingsBEC = new BlockCasingsBEC();
         GregTechAPI.sBlockGranites = new BlockGranites();
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
         GregTechAPI.sBlockStones = new BlockStones();
         GregTechAPI.sBlockOres1 = new BlockOresLegacy();
+        GregTechAPI.sBlockPad = new BlockPad();
+        GregTechAPI.sBlockFenceMetal = new BlockFenceMetal();
         GregTechAPI.sBlockFrames = new BlockFrameBox();
         GregTechAPI.sBlockGlass1 = new BlockGlass1();
         GregTechAPI.sBlockTintedGlass = new BlockTintedIndustrialGlass();
         GregTechAPI.sLaserRender = new BlockLaser();
-        GTLog.out.println("GTMod: Adding Renderer Blocks.");
-        GregTechAPI.sDroneRender = new BlockRenderer<>("dronerenderer", RenderingTileEntityDrone::new);
+        GT_FML_LOGGER.debug("GTMod: Adding Renderer Blocks.");
         GregTechAPI.sWormholeRender = new BlockRenderer<>("wormholerenderer", RenderingTileEntityWormhole::new);
         GregTechAPI.sBlackholeRender = new BlockRenderer<>("blackholerenderer", RenderingTileEntityBlackhole::new);
         GregTechAPI.nanoForgeRender = new BlockRenderer<>("nanoforgerenderer", RenderingTileEntityNanoForge::new);
@@ -826,7 +838,7 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockMetal8 = new BlockMetal(
             "gt.blockmetal8",
-            new Materials[] { Materials.Vanadium, Materials.VanadiumGallium, Materials.WroughtIron, Materials.Ytterbium,
+            new Materials[] { Materials.Vanadium, Materials.VanadiumGallium, Materials.CastIron, Materials.Ytterbium,
                 Materials.Yttrium, Materials.YttriumBariumCuprate, Materials.Zinc, Materials.TungstenCarbide,
                 Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE, Materials.HSSS, Materials.Steeleaf,
                 Materials.Ichorium, Materials.Firestone, Materials.Shadow },
@@ -863,9 +875,15 @@ public class LoaderGTBlockFluid implements Runnable {
             new Materials[] { Materials.Cryolite, Materials.SiliconSG, Materials.NickelAluminide, Materials.SpaceTime,
                 Materials.TranscendentMetal, Materials.Oriharukon, Materials.WhiteDwarfMatter,
                 Materials.BlackDwarfMatter, Materials.Universium, Materials.Eternity, Materials.MagMatter,
-                Materials.SixPhasedCopper, Materials.HellishMetal, Materials.MHDCSM },
+                Materials.SixPhasedCopper, Materials.HellishMetal, Materials.MHDCSM, Materials.Hexanite },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
+
+        GregTechAPI.sBlockMetal10 = new BlockMetal(
+            "gt.blockmetal10",
+            new Materials[] { Materials.Shijima, Materials.Churitsu },
+            OrePrefixes.block,
+            gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS13);
 
         GregTechAPI.sBlockReinforced = new BlockReinforced("gt.blockreinforced");
 
@@ -879,11 +897,16 @@ public class LoaderGTBlockFluid implements Runnable {
             meta -> Werkstoff.werkstoffHashMap.get((short) meta),
             Short.MAX_VALUE);
 
-        GTLog.out.println("GTMod: Register TileEntities.");
+        GregTechAPI.sBlockFramesBW = new BlockDecorativeFrame(
+            "bw.frames",
+            meta -> Werkstoff.werkstoffHashMap.get((short) meta),
+            Short.MAX_VALUE);
+
+        GT_FML_LOGGER.debug("GTMod: Register TileEntities.");
 
         BaseMetaTileEntity tBaseMetaTileEntity = GregTechAPI.constructBaseMetaTileEntity();
 
-        GTLog.out.println("GTMod: Registering the BaseMetaTileEntity.");
+        GT_FML_LOGGER.debug("GTMod: Registering the BaseMetaTileEntity.");
         GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity");
         FMLInterModComms.sendMessage(
             AppliedEnergistics2.ID,
@@ -891,30 +914,27 @@ public class LoaderGTBlockFluid implements Runnable {
             tBaseMetaTileEntity.getClass()
                 .getName());
 
-        GTLog.out.println("GTMod: Registering the DroneRender.");
-        GameRegistry.registerTileEntity(RenderingTileEntityDrone.class, "DroneRender");
-
-        GTLog.out.println("GTMod: Registering the LaserRender.");
+        GT_FML_LOGGER.debug("GTMod: Registering the LaserRender.");
         GameRegistry.registerTileEntity(RenderingTileEntityLaser.class, "LaserRenderer");
 
-        GTLog.out.println("GTMod: Registering the WormholeRender.");
+        GT_FML_LOGGER.debug("GTMod: Registering the WormholeRender.");
         GameRegistry.registerTileEntity(RenderingTileEntityWormhole.class, "WormholeRender");
 
-        GTLog.out.println("GTMod: Registering the BlackholeRender.");
+        GT_FML_LOGGER.debug("GTMod: Registering the BlackholeRender.");
         GameRegistry.registerTileEntity(RenderingTileEntityBlackhole.class, "BlackholeRender");
 
-        GTLog.out.println("GTMod: Registering the NanoForgeRender.");
+        GT_FML_LOGGER.debug("GTMod: Registering the NanoForgeRender.");
         GameRegistry.registerTileEntity(RenderingTileEntityNanoForge.class, "NanoForgeRender");
 
-        GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
+        GT_FML_LOGGER.debug("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
         FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", BaseMetaPipeEntity.class.getName());
 
-        GTLog.out.println("GTMod: Registering the Ore TileEntity.");
+        GT_FML_LOGGER.debug("GTMod: Registering the Ore TileEntity.");
         GameRegistry.registerTileEntity(TileEntityOres.class, "GT_TileEntity_Ores");
         FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", TileEntityOres.class.getName());
 
-        GTLog.out.println("GTMod: Registering Fluids.");
+        GT_FML_LOGGER.debug("GTMod: Registering Fluids.");
 
         GTFluidFactory.builder("Air")
             .withDefaultLocalName("Air")
@@ -1042,6 +1062,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium3, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Methane")
+            .withTextureName("methane")
             .withDefaultLocalName("Methane")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
@@ -1391,7 +1412,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Biomass, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("bioethanol")
-            .withDefaultLocalName("Bio Ethanol")
+            .withDefaultLocalName("Ethanol")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Ethanol)
@@ -1695,6 +1716,36 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Ichorium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder("InactiveCosmicSolder")
+            .withDefaultLocalName(Materials.InactiveCosmicSolder.mDefaultLocalName)
+            .withStateAndTemperature(LIQUID, 1_000_000)
+            .buildAndRegister()
+            .configureMaterials(Materials.InactiveCosmicSolder)
+            .addLocalizedName(Materials.InactiveCosmicSolder)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.InactiveCosmicSolder, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("BoundlessCosmicSolder")
+            .withDefaultLocalName(Materials.BoundlessCosmicSolder.mDefaultLocalName)
+            .withStateAndTemperature(LIQUID, 1_000_000)
+            .buildAndRegister()
+            .configureMaterials(Materials.BoundlessCosmicSolder)
+            .addLocalizedName(Materials.BoundlessCosmicSolder)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.BoundlessCosmicSolder, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("ComputationBase")
+            .withDefaultLocalName(Materials.ComputationBase.mDefaultLocalName)
+            .withStateAndTemperature(MOLTEN, 100_000_000)
+            .buildAndRegister()
+            .configureMaterials(Materials.ComputationBase)
+            .addLocalizedName(Materials.ComputationBase)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ComputationBase, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder("fieryblood")
             .withDefaultLocalName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
@@ -1702,7 +1753,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.FierySteel)
             .addLocalizedName(Materials.FierySteel)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.FierySteel, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("holywater")
@@ -1857,6 +1908,43 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.GraniteBlack, 1L),
                 ItemList.Cell_Empty.get(1L),
                 1 * INGOTS);
+
+        GTFluidFactory.builder("activatednetherite")
+            .withDefaultLocalName(Materials.ActivatedNetherite.mDefaultLocalName)
+            .withTextureName("molten.autogenerated")
+            .withColorRGBA(Materials.ActivatedNetherite.mRGBa)
+            .withStateAndTemperature(MOLTEN, 50_000_000)
+            .buildAndRegister()
+            .configureMaterials(Materials.ActivatedNetherite)
+            .addLocalizedName(Materials.ActivatedNetherite)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ActivatedNetherite, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder(Materials.CarbonDioxide.mName.toLowerCase(Locale.ENGLISH))
+            .withDefaultLocalName(Materials.CarbonDioxide.mDefaultLocalName)
+            .withTextureName("carbondioxide")
+            .withStateAndTemperature(GAS, Materials.CarbonDioxide.getGasTemperature())
+            .buildAndRegister()
+            .configureMaterials(Materials.CarbonDioxide)
+            .addLocalizedName(Materials.CarbonDioxide)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.CarbonDioxide, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        ResourceLocation stillTexture = new ResourceLocation(GregTech.ID, "fluids/fluid.ammonia.still");
+        ResourceLocation flowTexture = new ResourceLocation(GregTech.ID, "fluids/fluid.ammonia.flow");
+
+        GTFluidFactory.builder(Materials.Ammonia.mName.toLowerCase(Locale.ENGLISH))
+            .withDefaultLocalName(Materials.Ammonia.mDefaultLocalName)
+            .withTextures(stillTexture, flowTexture)
+            .withStateAndTemperature(GAS, Materials.Ammonia.getGasTemperature())
+            .buildAndRegister()
+            .configureMaterials(Materials.Ammonia)
+            .addLocalizedName(Materials.Ammonia)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ammonia, 1L),
+                ItemList.Cell_Empty.get(1L));
 
         for (Materials tMaterial : Materials.values()) {
             if ((tMaterial.mStandardMoltenFluid == null) && (tMaterial.contains(SubTag.SMELTING_TO_FLUID))
@@ -2528,7 +2616,7 @@ public class LoaderGTBlockFluid implements Runnable {
 
         if (!GTValues.D1) {
             if (Mods.NotEnoughItems.isModLoaded()) {
-                GTLog.out.println("GTMod: Hiding certain Items from NEI.");
+                GT_FML_LOGGER.debug("GTMod: Hiding certain Items from NEI.");
                 API.hideItem(ItemList.Display_Fluid.getWildcard(1L));
             }
         }
@@ -2596,8 +2684,6 @@ public class LoaderGTBlockFluid implements Runnable {
             OrePrefixes.dust,
             Materials.Cocoa,
             GTModHandler.getModItem(PamsHarvestCraft.ID, "cocoapowderItem", 1L, 0));
-
-        GregTechAPI.registerMachineBlock(GTUtility.getBlockFromStack(GTModHandler.getIC2Item("reinforcedGlass", 0)), 0);
 
         GregTechAPI.sSolenoidCoilCasings = new BlockCyclotronCoils();
         ItemList.TierdDrone0

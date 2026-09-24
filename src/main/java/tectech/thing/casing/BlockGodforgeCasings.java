@@ -103,11 +103,10 @@ public class BlockGodforgeCasings extends BlockCasingsAbstract {
         return getIcon(aSide, tMeta);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item item, CreativeTabs tabs, List<ItemStack> aList) {
         for (int i = 0; i <= 8; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            aList.add(new ItemStack(item, 1, i));
         }
     }
 }

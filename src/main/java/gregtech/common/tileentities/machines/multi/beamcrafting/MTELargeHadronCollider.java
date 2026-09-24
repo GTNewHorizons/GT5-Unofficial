@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_ACCELERATOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_ACCELERATOR_GLOW;
@@ -13,6 +14,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_COLLIDER_
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static java.lang.Math.max;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +27,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,18 +40,23 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -55,7 +65,6 @@ import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 
 public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronCollider> implements ISurvivalConstructable {
@@ -63,15 +72,25 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     private static final int MACHINEMODE_ACCELERATOR = 0;
     private static final int MACHINEMODE_COLLIDER = 1;
 
+    public static final int BOOST_NONE = 0;
+    public static final int BOOST_QGP = 1;
+    public static final int BOOST_MAGMATTER = 2;
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_EM = "EM";
     private static final String STRUCTURE_PIECE_WEAK = "Weak";
     private static final String STRUCTURE_PIECE_STRONG = "Strong";
     private static final String STRUCTURE_PIECE_GRAV = "Grav";
 
-    public static final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
+    public static final float MAXIMUM_PARTICLE_ENERGY_keV = 1_000_000_000; // 2TeV collision energy max
     public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
-    public static final float RATE_SCALE_FACTOR = 1.1F;
+    public static final float RATE_SCALE_FACTOR = 1.3F;
+    public static final int RATE_NERF_CUTOFF = 15000;
+    public static final float RATE_NERF_POWER = 0.5F;
+    public static final float RATE_NERF_POWER_QGP = 0.7F;
+    public static final float RATE_NERF_POWER_MAGMATTER = 0.9F;
+    public static final float MASSLESS_PARTICLE_THRESHOLD = 0.5F;
+    public static final float OVERALL_POWER_MULT_FACTOR = 1F; // reminder: update tooltip text if this is not set to 1
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
     private static final int ColliderCasingTextureID = Casings.ColliderCasing.getTextureId();
@@ -80,8 +99,20 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     private int outputRate;
     private int outputParticleID;
     private float outputFocus;
+
+    public int boostMode = BOOST_NONE;
+    public int boostActive = BOOST_NONE;
+
     public double playerTargetBeamEnergyeV = 1_000_000_000;
     public int playerTargetAccelerationCycles = 10;
+
+    public double calcInputBeamEnergyeV = 0;
+    public int calcInputBeamRate = 1;
+    public double calcTargetBeamEnergyeV = 0;
+    public int calcNumCycles = 1;
+    public int calcBoostMode = BOOST_NONE;
+
+    public double probTableCollisionEnergyeV = 0;
 
     public BeamInformation initialParticleInfo = null;
     public BeamInformation cachedOutputParticle = null;
@@ -96,6 +127,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("machineMode", machineMode);
+        aNBT.setInteger("boostMode", boostMode);
+        aNBT.setInteger("boostActive", boostActive);
         if (cachedOutputParticle != null) {
             aNBT.setFloat("energy", cachedOutputParticle.getEnergy());
             aNBT.setInteger("rate", cachedOutputParticle.getRate());
@@ -110,6 +143,12 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         }
         aNBT.setDouble("playerBeamEnergy", playerTargetBeamEnergyeV);
         aNBT.setInteger("playerAccelCycles", playerTargetAccelerationCycles);
+        aNBT.setDouble("calcInputBeamEnergyeV", calcInputBeamEnergyeV);
+        aNBT.setInteger("calcInputBeamRate", calcInputBeamRate);
+        aNBT.setDouble("calcTargetBeamEnergyeV", calcTargetBeamEnergyeV);
+        aNBT.setInteger("calcNumCycles", calcNumCycles);
+        aNBT.setInteger("calcBoostMode", calcBoostMode);
+        aNBT.setDouble("probTableCollisionEnergyeV", probTableCollisionEnergyeV);
         aNBT.setInteger("accelerationCycleCounter", accelerationCycleCounter);
     }
 
@@ -117,6 +156,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         machineMode = aNBT.getInteger("machineMode");
+        boostMode = aNBT.getInteger("boostMode");
+        boostActive = aNBT.getInteger("boostActive");
         if (aNBT.hasKey("energy") && aNBT.hasKey("rate") && aNBT.hasKey("particleId") && aNBT.hasKey("focus")) {
             cachedOutputParticle = new BeamInformation(
                 aNBT.getFloat("energy"),
@@ -135,6 +176,12 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         }
         playerTargetBeamEnergyeV = aNBT.getDouble("playerBeamEnergy");
         playerTargetAccelerationCycles = aNBT.getInteger("playerAccelCycles");
+        calcInputBeamEnergyeV = aNBT.getDouble("calcInputBeamEnergyeV");
+        calcInputBeamRate = aNBT.getInteger("calcInputBeamRate");
+        calcTargetBeamEnergyeV = aNBT.getDouble("calcTargetBeamEnergyeV");
+        calcNumCycles = aNBT.getInteger("calcNumCycles");
+        calcBoostMode = aNBT.getInteger("calcBoostMode");
+        probTableCollisionEnergyeV = aNBT.getDouble("probTableCollisionEnergyeV");
         accelerationCycleCounter = aNBT.getInteger("accelerationCycleCounter");
     }
 
@@ -176,7 +223,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         .addElement(
             'C', // collider casing
-            buildHatchAdder(MTELargeHadronCollider.class).atLeast(Energy, ExoticEnergy)
+            buildHatchAdder(MTELargeHadronCollider.class).atLeast(Energy, ExoticEnergy, InputHatch)
                 .casingIndex(Casings.ColliderCasing.getTextureId())
                 .hint(1)
                 .buildAndChain(Casings.ColliderCasing.asElement()))
@@ -190,49 +237,35 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 return ofBlockAnyMeta(Blocks.air);
             }
         }))
-        .addElement(
-            'F',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTELargeHadronCollider::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+        .addElement('F', buildBeamlineInputHatch(MTELargeHadronCollider.class, ShieldedAccCasingTextureID, 2))
         .addElement(
             '1',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(3)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.EM))
-                .build()) // EM beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                3,
+                FundamentalForce.EM))
         .addElement(
             '2',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(4)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Weak))
-                .build()) // Weak beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                4,
+                FundamentalForce.Weak))
         .addElement(
             '3',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(5)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Strong))
-                .build()) // Strong beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                5,
+                FundamentalForce.Strong))
         .addElement(
             '4',
-            buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(6)
-                .adder(
-                    (collider, te, casingIndex) -> collider
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.Gravity))
-                .build()) // Grav beam output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                6,
+                FundamentalForce.Gravity))
 
         .addElement('B', Casings.CMSCasing.asElement())
         .addElement('K', Casings.ATLASCasing.asElement())
@@ -321,11 +354,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13"))
-            .addSeparator()
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15"))
+            .addSeparator()
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16"))
             .addInfo(
@@ -342,11 +375,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23"))
+            .addSeparator()
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25"))
-            .addSeparator()
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26"))
             .addInfo(
@@ -357,35 +390,128 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip31"))
             .addSeparator()
-            .beginStructureBlock(109, 13, 122, false)
-            .addController(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                6034,
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip32"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip33"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip34"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip35"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip36"))
+            .addSeparator()
+            .addSupportAny()
+            .beginStructureBlock(109, 13, 122, true)
+            .addController("Front center of accelerator ring, 12th layer")
+            .addCasing(
+                "5664",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttehatch"),
-                1,
+            .addCasing(
+                "73",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
-                16,
+            .addCasing(
+                "20",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
-                20,
+            .addCasing(
+                "16",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                1,
+            .addMiscHatch(
+                "1",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"),
+                "Entrance to accelerator ring",
+                2)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addInputHatch("1", "Any casing", 7)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "CMS Module " + EnumChatFormatting.BLUE + "(E)")
+            .addCasing(
+                "523",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
-                73,
+            .addCasing("148", "Charged Matter Sensor Casing", false)
+            .addCasing(
+                "126",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
                 false)
-            .addTecTechHatchInfo()
+            .addCasing(
+                "11",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                false)
+            .addMiscHatch(
+                "2",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "Inner side of module",
+                3)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "ATLAS Module " + EnumChatFormatting.BLUE + "(W)")
+            .addCasing(
+                "515",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                false)
+            .addCasing("160", "Advanced Total Lepton Assimilation Snare Casing", false)
+            .addCasing(
+                "126",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                false)
+            .addCasing(
+                "13",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                false)
+            .addMiscHatch(
+                "2",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "Inner side of module",
+                4)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "ALICE Module " + EnumChatFormatting.BLUE + "(S)")
+            .addCasing(
+                "517",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                false)
+            .addCasing("158", "Absolute Lattice Integrated Chromodynamic Encapsulator Casing", false)
+            .addCasing(
+                "140",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                false)
+            .addCasing(
+                "11",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                false)
+            .addMiscHatch(
+                "2",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "Inner side of module",
+                5)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "LHCb Module " + EnumChatFormatting.BLUE + "(G)")
+            .addCasing(
+                "511",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                false)
+            .addCasing("144", "Localized Horizon Curvature Binder Casing", false)
+            .addCasing(
+                "126",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                false)
+            .addCasing(
+                "17",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                false)
+            .addMiscHatch(
+                "2",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "Inner side of module",
+                6)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.modules"))
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
@@ -426,33 +552,36 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
 
-        mInputBeamline.clear();
-        mAdvancedOutputBeamline.clear();
+        // Ignore the structure error during module checks
+        List<StructureError> tmp = new ArrayList<>();
 
-        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 7, -1, -113);
-        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 7, -1, -9);
-        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -59);
-        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -59);
+        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 7, -1, -113, tmp);
+        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 7, -1, -9, tmp);
+        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -59, tmp);
+        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -59, tmp);
 
-        return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1)
-            && ((mExoticEnergyHatches.size() == 1) ^ (mEnergyHatches.size() == 1));
-
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1, errors)) return;
+        int energyCount = mExoticEnergyHatches.size() + mEnergyHatches.size();
+        if (energyCount != 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Energy, energyCount, 1));
+        }
     }
 
     @Override
     public String[] getInfoData() {
 
+        if (cachedOutputParticle == null) {
+            return new String[] { EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.machineoff") };
+        }
+
         BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
 
         return new String[] {
-            StatCollector.translateToLocalFormatted("tt.keyword.Content") + ": "
-                + EnumChatFormatting.AQUA
-                + dataPacket.getContentString(),
-            StatCollector.translateToLocalFormatted("tt.keyword.PacketHistory") + ": "
-                + EnumChatFormatting.RED
-                + dataPacket.getTraceSize(), };
+            IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", dataPacket.getContentString()),
+            IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", dataPacket.getTraceSize()), };
     }
 
     public double getCachedBeamEnergy() {
@@ -471,12 +600,9 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         float outEnergy = inputEnergy;
         int outRate = inputRate;
 
-        long machineVoltage = getAverageInputVoltage();
         // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV so player can type '2G eV' instead of '2M keV'
         if (inputEnergy <= playerTargetBeamEnergyeV / 1000) {
-            outEnergy += (float) (Math.pow(accelerationCycleCounter + 1, 2) * this.mMaxProgresstime
-                * machineVoltage
-                * keV_EU_RATIO);
+            outEnergy += (float) perCycleEnergyGainKeV(accelerationCycleCounter, this.mMaxProgresstime);
             if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
                 return new BeamInformation(
                     MAXIMUM_PARTICLE_ENERGY_keV,
@@ -486,26 +612,112 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             }
 
         } else {
-            outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
+            if (outRate < RATE_NERF_CUTOFF) {
+                outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
+            } else {
+                outRate = outRate
+                    + (int) Math.ceil(Math.pow(outRate * (RATE_SCALE_FACTOR - 1), rateNerfPowerForBoost(boostActive)));
+            }
         }
 
         return new BeamInformation(outEnergy, outRate, particle.getParticleId(), particle.getFocus());
     }
 
     public long calculateEnergyCostAccelerator(BeamInformation particle) {
-        // counter starts at 0, so +1
-        // start at 1A UV power cost
-        return (long) -(GTValues.V[8] * Math.pow(accelerationCycleCounter + 1, 2) * particle.getRate());
-
+        return -perCyclePowerCost(particle.getRate(), accelerationCycleCounter);
     }
 
-    @Override
-    public void stopMachine(@NotNull ShutDownReason reason) {
+    public static long perCyclePowerCost(int rate, int cycleIndex) {
+        // counter starts at 0, so +1
+        // start at 1A UV power cost
+        return (long) (OVERALL_POWER_MULT_FACTOR * GTValues.V[8] * Math.pow(cycleIndex + 1, 2) * rate);
+    }
+
+    public static double perCycleEnergyGainKeV(int cycleIndex, int progressTime) {
+        // rate conceptually is parallels, so use rate 1 for this determination
+        return perCyclePowerCost(1, cycleIndex) * progressTime * keV_EU_RATIO;
+    }
+
+    public static float rateNerfPowerForBoost(int boostMode) {
+        return switch (boostMode) {
+            case BOOST_QGP -> RATE_NERF_POWER_QGP;
+            case BOOST_MAGMATTER -> RATE_NERF_POWER_MAGMATTER;
+            default -> RATE_NERF_POWER;
+        };
+    }
+
+    public static FluidStack boostFluidStack(int boostMode, int amount) {
+        return switch (boostMode) {
+            case BOOST_QGP -> Materials.QuarkGluonPlasma.getFluid(amount);
+            case BOOST_MAGMATTER -> Materials.MagMatter.getMolten(amount);
+            default -> null;
+        };
+    }
+
+    private static int boostFluidCost(int rate) {
+        // equation for how much booster fluid to demand per cycle
+        return (int) rate;
+    }
+
+    private boolean consumeBoostFluid(int rate) {
+        FluidStack needed = boostFluidStack(boostActive, boostFluidCost(rate));
+        if (needed == null) return false;
+        if (!depleteInput(needed, true)) return false; // simulate consumption and fail if not enough present
+        depleteInput(needed, false);
+        return true;
+    }
+
+    public static double[] simulateAccelerator(double inputEnergyKeV, int inputRate, double targetEnergyKeV,
+        int numCycles, int progressTime, int boostMode) {
+
+        if (numCycles < 0) numCycles = 0;
+        if (inputRate < 1) inputRate = 1;
+
+        float nerfPower = rateNerfPowerForBoost(boostMode);
+
+        // mirrors accelerateParticle
+
+        double outEnergy = (boostMode == BOOST_NONE) ? inputEnergyKeV : MAXIMUM_PARTICLE_ENERGY_keV;
+        int outRate = inputRate;
+        long EUtCost = 0;
+
+        for (int c = 0; c < numCycles; c++) {
+            if (outEnergy <= targetEnergyKeV) {
+                outEnergy += perCycleEnergyGainKeV(c, progressTime);
+                if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
+                    outEnergy = MAXIMUM_PARTICLE_ENERGY_keV;
+                }
+            } else {
+                if (outRate < RATE_NERF_CUTOFF) {
+                    outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
+                } else {
+                    outRate = outRate + (int) Math.ceil(Math.pow(outRate * (RATE_SCALE_FACTOR - 1), nerfPower));
+                }
+            }
+            EUtCost = perCyclePowerCost(outRate, c + 1);
+        }
+
+        return new double[] { outEnergy, (double) outRate, (double) EUtCost };
+    }
+
+    private void resetLHCState() {
         initialParticleInfo = null;
         cachedOutputParticle = null;
         accelerationCycleCounter = 0;
         machineMode = MACHINEMODE_ACCELERATOR;
+        boostActive = BOOST_NONE;
+    }
+
+    @Override
+    public void stopMachine(@NotNull ShutDownReason reason) {
+        resetLHCState();
         super.stopMachine(reason);
+    }
+
+    @Override
+    public void onDisableWorking() {
+        resetLHCState();
+        super.onDisableWorking();
     }
 
     @Override
@@ -544,9 +756,23 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             this.mMaxProgresstime = TickTime.SECOND;
 
             if (cachedOutputParticle == null) {
-                cachedOutputParticle = inputInfo.copy();
                 initialParticleInfo = inputInfo.copy();
                 accelerationCycleCounter = 0;
+                boostActive = boostMode; // locked for this run
+
+                if (boostActive == BOOST_NONE) {
+                    cachedOutputParticle = inputInfo.copy();
+                } else {
+                    if (!consumeBoostFluid(inputInfo.getRate())) {
+                        stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
+                        return CheckRecipeResultRegistry.NO_RECIPE;
+                    }
+                    cachedOutputParticle = new BeamInformation(
+                        MAXIMUM_PARTICLE_ENERGY_keV,
+                        inputInfo.getRate(),
+                        inputInfo.getParticleId(),
+                        inputInfo.getFocus());
+                }
                 lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
             } else {
                 if (!cachedOutputParticle.getParticle()
@@ -561,6 +787,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
                     lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
 
+                    if (checkIfNotEnoughBoosterFluid()) {
+                        stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
+                        return CheckRecipeResultRegistry.NO_RECIPE;
+                    }
+
                     if (accelerationCycleCounter < playerTargetAccelerationCycles) {
                         cachedOutputParticle = accelerateParticle(cachedOutputParticle);
                         accelerationCycleCounter += 1;
@@ -570,6 +801,13 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 }
             }
         } else {
+
+            if (initialParticleInfo != null) {
+                if (!initialParticleInfo.isEqual(inputInfo)) {
+                    stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inputinterrupt"));
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
+            }
 
             float inputEnergy = cachedOutputParticle.getEnergy();
             Particle inputParticle = Particle.getParticleFromId(cachedOutputParticle.getParticleId());
@@ -583,18 +821,17 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
 
+            if (checkIfNotEnoughBoosterFluid()) {
+                stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
+
             this.mEfficiency = 10000;
             this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = TickTime.SECOND;
 
             this.outputEnergy = (inputEnergy) * 2; // output energy = collision energy = input energy * 2
-
-            this.outputParticleID = generateOutputParticleID(this.outputEnergy);
-
-            Particle outputParticle = Particle.getParticleFromId(this.outputParticleID);
-            float outputMass = outputParticle.getMass();
-            this.outputRate = (int) max(0, (1 - (outputMass / this.outputEnergy)) * (inputRate));
-
+            this.outputRate = max(0, (inputRate));
             this.outputFocus = inputFocus;
 
             if (this.outputRate == 0) {
@@ -602,12 +839,12 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
 
-            outputPacketAfterRecipe();
+            outputPacketAfterRecipe(this.outputRate);
         }
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private int generateOutputParticleID(float collisionEnergy) {
+    private int generateOutputParticleID(float collisionEnergy, java.util.Map<Particle, Boolean> acceptedInputMap) {
 
         // restMass is in MeV
         // beamline energies are in keV
@@ -622,17 +859,25 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
         for (int i = 0; i < n; i++) {
             Particle p = Particle.getParticleFromId(i);
-            double thresholdMeV = max(p.getMass(), 0.5); // massless particles have a threshold of 0.5 (arbitrary).
+
+            // filter module-incompatible particles -- keep blacklisted particles in the pool but output nothing if
+            // rolled
+            if (acceptedInputMap == null || !acceptedInputMap.containsKey(p)) {
+                weights[i] = 0.0;
+                continue;
+            }
+
+            double thresholdMeV = max(p.getMass(), MASSLESS_PARTICLE_THRESHOLD);
             // massive particles have a threshold equal to their rest mass.
             double w = (collisionEnergyMeV < thresholdMeV) ? 0.0 : p.getLHCWeight();
 
-            if (w < 0 || Double.isNaN(w) || Double.isInfinite(w)) w = 0.0;
+            if (w < 0 || Double.isInfinite(w)) w = 0.0;
 
             weights[i] = w;
             totalWeight += w;
         }
         if (totalWeight <= 0.0) {
-            return 0; // default to photons
+            return -1; // nothing eligible, output nothing
         }
 
         double[] cumulative = new double[n];
@@ -650,28 +895,59 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     }
 
-    private void outputPacketAfterRecipe() {
-        if (!this.mAdvancedOutputBeamline.isEmpty()) {
-            BeamLinePacket packet = new BeamLinePacket(
-                new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
-            for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
-                if (!o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(this.outputParticleID), false)) {
-                    o.dataPacket = null;
-                    continue;
-                }
-                o.dataPacket = packet;
+    public static double particleProbability(Particle target, LHCModule module, double collisionEnergyKeV) {
+        if (!module.acceptedParticles.contains(target)) return 0.0;
 
+        double collisionEnergyMeV = collisionEnergyKeV / 1000.0; // restmass is in MeV
+
+        double targetThresholdMeV = Math.max(target.getMass(), MASSLESS_PARTICLE_THRESHOLD);
+        if (collisionEnergyMeV < targetThresholdMeV) return 0.0;
+
+        double targetWeight = target.getLHCWeight();
+        if (targetWeight <= 0 || Double.isInfinite(targetWeight)) return 0.0;
+
+        double totalWeight = 0.0;
+        for (Particle p : module.acceptedParticles) {
+            double thresholdMeV = Math.max(p.getMass(), MASSLESS_PARTICLE_THRESHOLD);
+            if (collisionEnergyMeV < thresholdMeV) continue;
+            double w = p.getLHCWeight();
+            if (w > 0 && !Double.isInfinite(w)) {
+                totalWeight += w;
             }
+        }
+
+        if (totalWeight <= 0.0) return 0.0;
+        return targetWeight / totalWeight;
+    }
+
+    private void outputPacketAfterRecipe(int rate) {
+        if (this.mAdvancedOutputBeamline.isEmpty()) return;
+
+        for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
+
+            if (rate == 0) {
+                o.dataPacket = null;
+                continue;
+            }
+            int rolledId = generateOutputParticleID(this.outputEnergy, o.acceptedInputMap);
+            if (rolledId < 0) { // energy too low for any valid particle
+                o.dataPacket = null;
+                continue;
+            }
+
+            // void blacklisted particles
+            Particle rolled = Particle.getParticleFromId(rolledId);
+            if (!o.acceptedInputMap.getOrDefault(rolled, false)) {
+                o.dataPacket = null;
+                continue;
+            }
+
+            o.dataPacket = new BeamLinePacket(new BeamInformation(this.outputEnergy, rate, rolledId, this.outputFocus));
         }
     }
 
-    @Override
-    public void onDisableWorking() {
-        initialParticleInfo = null;
-        cachedOutputParticle = null;
-        accelerationCycleCounter = 0;
-        machineMode = MACHINEMODE_ACCELERATOR;
-        super.onDisableWorking();
+    private boolean checkIfNotEnoughBoosterFluid() {
+        return (boostActive != BOOST_NONE) && !consumeBoostFluid(cachedOutputParticle.getRate());
     }
 
     @Override

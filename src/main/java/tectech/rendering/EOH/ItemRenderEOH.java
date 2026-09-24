@@ -22,6 +22,7 @@ public class ItemRenderEOH implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         renderEOHStar(
+            EOHRenderingUtils.IDENTITY,
             type,
             GTMod.clientProxy()
                 .getAnimationRenderTicks(),

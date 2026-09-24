@@ -6,16 +6,17 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_GLOW;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -29,7 +30,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -38,7 +38,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEBoardProcessorModuleGui;
@@ -82,33 +82,14 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_BOARD_PROCESSOR)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_BOARD_PROCESSOR_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_BOARD_PROCESSOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_BOARD_PROCESSOR)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_BOARD_PROCESSOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
+        return createNanochipModuleTextures(
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_BOARD_PROCESSOR,
+            OVERLAY_FRONT_BOARD_PROCESSOR_GLOW,
+            OVERLAY_FRONT_BOARD_PROCESSOR_ACTIVE,
+            OVERLAY_FRONT_BOARD_PROCESSOR_ACTIVE_GLOW);
     }
 
     public MTEBoardProcessorModule(int aID, String aName, String aNameRegional) {
@@ -154,6 +135,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.2"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.3"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.4"))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.board_processor.body.output_hatch"))
             .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.5"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.6"))
@@ -164,23 +146,42 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             .beginStructureBlock(7, 7, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 52, false)
+            .addCasing("52", translateToLocal("gt.blockglass1.8.name"), false)
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 27, false)
+            .addCasing("27", translateToLocal("gt.blockcasings12.2.name"), false)
             // Octiron Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name")
-                    .replace("%material", MaterialsAlloy.OCTIRON.getLocalizedName()),
-                19,
-                false)
+            .addCasing("19", "Octiron Frame Box", false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 10, false)
-            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("10", translateToLocal("gt.blockcasings12.1.name"), false)
+            .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addOutputHatch(
+                "1+",
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches") + " ("
+                    + translateToLocal("GT5U.tooltip.nac.module.board_processor.structure.output_hatch")
+                    + ")",
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        if (!errors.isEmpty()) return;
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -237,13 +238,12 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     }
 
     @Override
-    protected float getEUDiscountModifier() {
+    protected float getEUDiscountModifier(GTRecipe recipe) {
         return euMultiplier;
     }
 
     float euMultiplier = 1;
 
-    protected int fluidCapacity = 1000000;
     protected FluidStack storedFluidStack;
     protected int fluidAmount;
 
@@ -251,20 +251,19 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     protected FluidStack impurityFluidStack;
     protected int impurityFluidAmount;
-    protected double impurityPercentage;
 
     private static final int IMPURITY_THRESHOLD = 1000;
     private static final int IMPURITY_INCREASE = 100;
 
     private int autoFlushPercentage = 100;
-    private double fillPercentage = 0;
 
     protected static final HashSet<Fluid> LEGAL_FLUIDS = new HashSet<>(
         Arrays.asList(
             Materials.IronIIIChloride.mFluid,
             Materials.GrowthMediumSterilized.mFluid,
             Materials.BioMediumSterilized.mFluid,
-            Materials.PrismaticAcid.mFluid));
+            Materials.PrismaticAcid.mFluid,
+            Materials.UUMatter.mFluid));
 
     @NotNull
     @Override
@@ -275,11 +274,11 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
         }
 
-        if (fillPercentage < 0.5) {
+        if (getFillPercentage() < 0.5) {
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
         }
 
-        if (impurityPercentage == 1) {
+        if (getImpurityPercentage() == 1) {
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
         }
 
@@ -302,10 +301,15 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        if (impurityPercentage <= 0.15) {
-            euMultiplier = (float) (1 - 0.3 + impurityPercentage * 2);
-        } else if (impurityPercentage >= 0.65) {
-            euMultiplier = (float) (1 + 2 * (impurityPercentage - 0.65));
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 5
+            && !storedFluidStack.isFluidEqual(Materials.UUMatter.getFluid(0))) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (getImpurityPercentage() <= 0.15) {
+            euMultiplier = (float) (1 - 0.3 + getImpurityPercentage() * 2);
+        } else if (getImpurityPercentage() >= 0.65) {
+            euMultiplier = (float) (1 + 2 * (getImpurityPercentage() - 0.65));
         }
 
         return super.validateRecipe(recipe);
@@ -319,10 +323,9 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                 while (processedItems >= IMPURITY_THRESHOLD) {
                     processedItems -= IMPURITY_THRESHOLD;
                     impurityFluidAmount += (int) Math.min(
-                        IMPURITY_INCREASE * (1 / Math.pow(fillPercentage, 1.5)),
+                        IMPURITY_INCREASE * (1 / Math.pow(getFillPercentage(), 1.5)),
                         fluidAmount - impurityFluidAmount);
                     impurityFluidStack.amount = impurityFluidAmount;
-                    impurityPercentage = (double) impurityFluidAmount / fluidAmount;
                 }
             }
         }
@@ -334,7 +337,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
         if (aTick % 20 == 0) {
 
-            if (impurityPercentage >= ((double) autoFlushPercentage / 100)) {
+            if (getImpurityPercentage() >= ((double) autoFlushPercentage / 100)) {
                 flushTank();
             }
 
@@ -350,20 +353,18 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         for (FluidStack fluid : inputFluid) {
             if (LEGAL_FLUIDS.contains(fluid.getFluid())) {
                 if (storedFluidStack == null) {
-                    FluidStack toDeplete = new FluidStack(fluid.getFluid(), Math.min(fluidCapacity, fluid.amount));
-                    depleteInput(toDeplete);
-                    storedFluidStack = toDeplete;
+                    int depleted = depleteInputQuantity(new FluidStack(fluid, getCapacity()), false);
+                    storedFluidStack = new FluidStack(fluid, Math.min(getCapacity(), depleted));
                 } else if (storedFluidStack.isFluidEqual(fluid)) {
-                    FluidStack toDeplete = new FluidStack(
-                        fluid.getFluid(),
-                        Math.min(fluidCapacity - storedFluidStack.amount, fluid.amount));
-                    depleteInput(toDeplete);
-                    storedFluidStack.amount += toDeplete.amount;
+                    int max = getCapacity() - storedFluidStack.amount;
+                    // If we're already full don't cause a 0L drain.
+                    if (max == 0) return;
+                    int depleted = depleteInputQuantity(new FluidStack(fluid, max), false);
+                    storedFluidStack.amount += Math.min(max, depleted);
                 }
 
                 if (storedFluidStack != null) {
                     fluidAmount = storedFluidStack.amount;
-                    fillPercentage = (double) fluidAmount / fluidCapacity;
                     if (storedFluidStack.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
                         impurityFluidStack = GGMaterial.ferrousChloride.getFluidOrGas(0);
                     } else if (storedFluidStack.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
@@ -372,6 +373,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                         impurityFluidStack = Materials.BioMediumRaw.getFluid(0);
                     } else if (storedFluidStack.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
                         impurityFluidStack = Materials.PrismaticGas.getFluid(0);
+                    } else if (storedFluidStack.isFluidEqual(Materials.UUMatter.getFluid(0))) {
+                        impurityFluidStack = Materials.UUAmplifier.getFluid(0);
                     }
                 }
             }
@@ -385,13 +388,11 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                 impurityFluidStack.getFluid(),
                 impurityFluidStack.getFluid() == Materials.PrismaticGas.mFluid ? impurityFluidAmount / 4
                     : impurityFluidAmount);
-            addOutput(toFlush);
+            addOutputPartial(toFlush);
             storedFluidStack = null;
             impurityFluidStack = null;
             fluidAmount = 0;
             impurityFluidAmount = 0;
-            impurityPercentage = 0;
-            fillPercentage = 0;
         }
     }
 
@@ -404,8 +405,22 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     }
 
     @Override
+    public FluidStack getFluid() {
+        return storedFluidStack;
+    }
+
+    @Override
+    public int getFluidAmount() {
+        return storedFluidStack == null ? 0 : storedFluidStack.amount;
+    }
+
+    @Override
     public int getCapacity() {
-        return fluidCapacity;
+        return 1000000;
+    }
+
+    protected double getFillPercentage() {
+        return (double) fluidAmount / getCapacity();
     }
 
     public int getProcessedItems() {
@@ -421,7 +436,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     }
 
     public double getImpurityPercentage() {
-        return impurityPercentage;
+        return (double) impurityFluidAmount / fluidAmount;
     }
 
     public float getEuMultiplier() {

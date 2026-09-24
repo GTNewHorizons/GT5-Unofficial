@@ -28,7 +28,7 @@ public abstract class NonGTBackend extends RecipeMapBackend {
         @Nullable ItemStack specialSlot, @Nullable GTRecipe cachedRecipe);
 
     @Override
-    protected boolean doesOverwriteFindRecipe() {
+    public boolean doesOverwriteFindRecipe() {
         return true;
     }
 

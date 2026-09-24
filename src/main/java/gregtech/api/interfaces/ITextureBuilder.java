@@ -52,6 +52,12 @@ public interface ITextureBuilder {
      * Texture always render with full brightness to glow in the dark
      *
      * @return {@link ITextureBuilder} for chaining
+     *
+     * @implSpec Must be overridden to actually do something
      */
+    default ITextureBuilder glow(boolean glow) {
+        return this;
+    }
+
     ITextureBuilder glow();
 }

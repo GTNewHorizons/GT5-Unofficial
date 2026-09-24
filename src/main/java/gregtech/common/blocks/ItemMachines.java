@@ -1,7 +1,6 @@
 package gregtech.common.blocks;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.util.GTUtility.translate;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -20,11 +19,15 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -36,10 +39,12 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import appeng.me.helpers.AENetworkProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
@@ -47,14 +52,20 @@ import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
+import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.config.Client;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
+import gregtech.crossmod.backhand.Backhand;
 
 public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
@@ -92,27 +103,29 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     if (!(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
                         if (gtTileEntity.getInputVoltage() > 0L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.eup_in",
                                     TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
                         }
                         if (gtTileEntity.getOutputVoltage() > 0L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.eup_out",
                                     TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
                         }
                         if (gtTileEntity.getOutputAmperage() > 1L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.amperage",
                                     TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                         }
                     }
-                    aList.add(
-                        translateToLocalFormatted(
-                            "gt.tileentity.eup_store",
-                            TooltipHelper.euCapacityText(gtTileEntity.getEUCapacity())));
+                    if (Client.tooltip.showEnergyCapacity) {
+                        aList.add(
+                            translateToLocalFormatted(
+                                "gt.tileentity.eup_store",
+                                TooltipHelper.euCapacityText(gtTileEntity.getEUCapacity())));
+                    }
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
@@ -194,7 +207,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (tDescription.contains("%%%")) {
             tDescription = tDescription.replaceAll("%%%.*?%%%", "%s");
         }
-        if (StatCollector.canTranslate(key)) {
+        if (GTLanguageManager.hasGTLocalizationKey(key)) {
             GTLanguageManager.addStringLocalization(key + "." + damage, tDescription);
             return;
         }
@@ -215,15 +228,14 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        String aName = super.getItemStackDisplayName(aStack);
         final short aDamage = (short) getDamage(aStack);
-        final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
-        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length && metaTE != null) {
-            if (metaTE instanceof ILocalizedMetaPipeEntity localMetaTE) {
-                return localMetaTE.getLocalizedName();
+        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length) {
+            final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
+            if (metaTE != null) {
+                return metaTE.getLocalName();
             }
         }
-        return aName;
+        return super.getItemStackDisplayName(aStack);
     }
 
     @Override
@@ -257,24 +269,46 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 throw new GTItsNotMyFaultException(
                     "Failed to set the MetaValue of the Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
-            final IGregTechTileEntity tTileEntity = (IGregTechTileEntity) aWorld.getTileEntity(aX, aY, aZ);
+            final TileEntity tile = aWorld.getTileEntity(aX, aY, aZ);
+            final IGregTechTileEntity tTileEntity = (IGregTechTileEntity) tile;
             if (tTileEntity != null) {
                 tTileEntity.setInitialValuesAsNBT(tTileEntity.isServerSide() ? aStack.getTagCompound() : null, tDamage);
                 if (aPlayer != null) {
                     tTileEntity.setOwnerName(aPlayer.getDisplayName());
                     tTileEntity.setOwnerUuid(aPlayer.getUniqueID());
                 }
-                tTileEntity.getMetaTileEntity()
-                    .initDefaultModes(aStack.getTagCompound());
+                if (tTileEntity.getMetaTileEntity() instanceof MetaTileEntity mte) {
+                    AENetworkProxy proxy = mte.getProxy();
+                    if (proxy != null) {
+                        proxy.setOwner(aPlayer);
+                    }
+                }
+                tTileEntity.setFrontFacing(
+                    BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, tTileEntity.getValidFacings()));
                 final ForgeDirection oppositeSide = side.getOpposite();
                 if (tTileEntity.getMetaTileEntity() instanceof IConnectable connectable) {
                     // If we're connectable, try connecting to whatever we're up against
                     connectable.connect(oppositeSide);
+                    if (aPlayer != null && Mods.Backhand.isModLoaded() && connectable instanceof MTEFluidPipe pipe) {
+                        pipeDirectionOffhand(aPlayer, pipe, side);
+                    }
                 } else if (aPlayer != null && aPlayer.isSneaking()) {
                     // If we're being placed against something that is connectable, try telling it to connect to us
                     final IGregTechTileEntity aTileEntity = tTileEntity.getIGregTechTileEntityAtSide(oppositeSide);
                     if (aTileEntity != null && aTileEntity.getMetaTileEntity() instanceof IConnectable connectable) {
                         connectable.connect(side);
+                    }
+                }
+                tTileEntity.getMetaTileEntity()
+                    .initDefaultModes(aStack.getTagCompound());
+                // Backhand and fast swap fix:
+                // Due to markBlockForUpdate will delay a full tick (50ms), we need to send this packet earlier to
+                // prevent desync.
+                if (aPlayer instanceof EntityPlayerMP player && player.playerNetServerHandler != null) {
+                    player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(aX, aY, aZ, aWorld));
+                    Packet tePacket = tile.getDescriptionPacket();
+                    if (tePacket != null) {
+                        player.playerNetServerHandler.sendPacket(tePacket);
                     }
                 }
             }
@@ -286,6 +320,24 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);
         }
         return true;
+    }
+
+    private void pipeDirectionOffhand(EntityPlayer player, MTEFluidPipe pipe, ForgeDirection side) {
+        ItemStack offHand = Backhand.getOffhandItem(player);
+        if ((GTUtility.isStackInList(offHand, GregTechAPI.sWrenchList))) {
+            ForgeDirection oppositeSide = side.getOpposite();
+            if (player.isSneaking()) {
+                TileEntity adjTile = pipe.getBaseMetaTileEntity()
+                    .getTileEntityAtSide(oppositeSide);
+                if (adjTile instanceof IGregTechTileEntity adjGTile
+                    && adjGTile.getMetaTileEntity() instanceof MTEFluidPipe adjPipe) {
+                    adjPipe.mDisableInput |= (byte) side.flag;
+                }
+            } else {
+                (pipe).mDisableInput |= (byte) oppositeSide.flag;
+            }
+            GTModHandler.damageOrDechargeItem(offHand, 1, 1000, player);
+        }
     }
 
     @Override

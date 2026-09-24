@@ -525,7 +525,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             effectData[1] = secondary.validateStorage(effectData[1]);
             effectData[1] = ((IAlleleBeeAcceleratableEffect) secondary).doEffectAccelerated(
                 genome,
-                effectData[0],
+                effectData[1],
                 this,
                 usedBeeLife / (secondary instanceof AlleleEffectThrottled
                     ? (float) ((AlleleEffectThrottled) secondary).getThrottle()
@@ -534,17 +534,13 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide()) {
-            if (GTMod.clientProxy()
-                .changeDetected() == 4) {
-                /*
-                 * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next
-                 * client tick when reaching 4, with provision for 3 more update tasks, spreading client change
-                 * detection related work and network traffic on different ticks, until it reaches 0.
-                 */
-                aBaseMetaTileEntity.issueTextureUpdate();
-            }
             if (aBaseMetaTileEntity.isActive()) {
                 if (usedQueen != null) {
                     if (aTick % 2 == 0) {
@@ -559,8 +555,6 @@ public class MTEIndustrialApiary extends MTEBasicMachine
 
             mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
             mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
-
-            doDisplayThings();
 
             if (!aBaseMetaTileEntity.isActive()) {
                 if (aBaseMetaTileEntity.isAllowedToWork()
@@ -793,7 +787,11 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     @Override
     public EnumTemperature getTemperature() {
         if (BiomeHelper.isBiomeHellish(getBiome())) return EnumTemperature.HELLISH;
-        return EnumTemperature.getFromValue(getBiome().temperature + temperatureMod);
+        float biomeTemperature = getBiome().getFloatTemperature(
+            getBaseMetaTileEntity().getXCoord(),
+            getBaseMetaTileEntity().getYCoord(),
+            getBaseMetaTileEntity().getZCoord());
+        return EnumTemperature.getFromValue(biomeTemperature + temperatureMod);
     }
 
     @Override
@@ -1216,12 +1214,32 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         super.addUIWidgets(builder, buildContext);
 
         builder.widget(
-            new ButtonWidget().setOnClick((clickData, widget) -> cancelProcess())
-                .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CROSS)
-                .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
+            new CycleButtonWidget().setToggle(
+                () -> this.getBaseMetaTileEntity()
+                    .isAllowedToWork(),
+                x -> {
+                    final IGregTechTileEntity te = this.getBaseMetaTileEntity();
+                    if (x) te.enableWorking();
+                    else te.disableWorking();
+                })
+                .setTextureGetter(
+                    i -> i == 0 ? GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF
+                        : GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
+                .setVariableBackgroundGetter(
+                    i -> i == 0 ? new IDrawable[] { GTUITextures.BUTTON_STANDARD }
+                        : new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED })
+                .setGTTooltip(() -> mTooltipCache.getData("GT5U.gui.button.power_switch"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(7, 26)
+                .setPos(7, 8)
                 .setSize(18, 18))
+            .widget(
+                new ButtonWidget().setOnClick((clickData, widget) -> cancelProcess())
+                    .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CROSS)
+                    .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .setPos(7, 26)
+                    .setSize(18, 18))
+
             .widget(
                 new CycleButtonWidget().setToggle(() -> mAutoQueen, x -> mAutoQueen = x)
                     .setTextureGetter(
@@ -1273,6 +1291,26 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                     })
                     .attachSyncer(
                         new FakeSyncWidget.ItemStackSyncer(() -> usedQueen, val -> usedQueen = val),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
+                    .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(() -> mSpeed, val -> {}),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
+                    .attachSyncer(
+                        new FakeSyncWidget.ItemStackSyncer(() -> getStackInSlot(upgradeSlot), val -> {}),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
+                    .attachSyncer(
+                        new FakeSyncWidget.ItemStackSyncer(() -> getStackInSlot(upgradeSlot + 1), val -> {}),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
+                    .attachSyncer(
+                        new FakeSyncWidget.ItemStackSyncer(() -> getStackInSlot(upgradeSlot + 2), val -> {}),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
+                    .attachSyncer(
+                        new FakeSyncWidget.ItemStackSyncer(() -> getStackInSlot(upgradeSlot + 3), val -> {}),
                         builder,
                         (widget, val) -> widget.notifyTooltipChange())
                     .setPos(163, 19)
@@ -1500,13 +1538,13 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             currenttip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.industrial_apiary.current_queen",
-                    EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen"))));
+                    StatCollector.translateToLocal(tag.getString("queen"))));
         }
         if (tag.hasKey("dummyProduction")) {
             currenttip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.industrial_apiary.effective_production",
-                    EnumChatFormatting.AQUA + String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction"))));
+                    String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction"))));
         }
         if (tag.hasKey("errors")) {
             NBTTagCompound errorNbt = tag.getCompoundTag("errors");
@@ -1514,7 +1552,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                 currenttip.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.waila.industrial_apiary.error",
-                        EnumChatFormatting.RED + StatCollector.translateToLocal("for." + errorNbt.getString("e" + i))));
+                        StatCollector.translateToLocal("for." + errorNbt.getString("e" + i))));
             }
         }
     }

@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.drone;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -14,11 +13,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -29,8 +32,12 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -38,22 +45,24 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.gui.modularui.hatch.MTEHatchDroneDownLinkGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
+public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataCopyable {
 
     private Vec3Impl downlinkCoord;
     private MTEDroneCentre centre;
     private String key = "";
     private final List<DroneConnection> connections = new ArrayList<>();
     private final List<MTEMultiBlockBase> unlinkedMachines = new ArrayList<>();
-    private final HashMap<String, String> savedNameList = new HashMap<>();
-    private final HashMap<String, Integer> savedGroupList = new HashMap<>();
+
+    public static final String COPIED_DATA_IDENTIFIER = "droneDownLink";
 
     private static final IIconContainer moduleActive = Textures.BlockIcons
-        .custom("iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
 
     public MTEHatchDroneDownLink(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -80,12 +89,18 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(moduleActive) };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(moduleActive)
+            .extFacing()
+            .build() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(moduleActive) };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(moduleActive)
+            .extFacing()
+            .build() };
     }
 
     @Override
@@ -138,8 +153,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             boolean result = entry.isValid();
             if (!result) {
                 unlinkedMachines.add(entry.getLinkedMachine());
-                savedNameList.put(entry.uuid.toString(), entry.getCustomName());
-                savedGroupList.put(entry.uuid.toString(), entry.getGroup());
                 centre.getConnectionList()
                     .remove(entry);
             }
@@ -152,15 +165,36 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     @Override
+    public void onLeftclick(IGregTechTileEntity igte, EntityPlayer player) {
+        if (!(player instanceof EntityPlayerMP)) return;
+        ItemStack heldItem = player.getHeldItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) return;
+        heldItem.setTagCompound(getCopiedData(player));
+        heldItem.setStackDisplayName(StatCollector.translateToLocal("GT5U.gui.text.drone_key") + ": " + this.key);
+        player.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.controller_hatch.saved"));
+    }
+
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (side == aBaseMetaTileEntity.getFrontFacing()) {
-            if (aPlayer instanceof FakePlayer) return false;
-            openGui(aPlayer);
+        ItemStack heldItem = aPlayer.inventory.getCurrentItem();
+        ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
+
+        if (ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) {
+            if (!pasteCopiedData(aPlayer, heldItem.stackTagCompound)) return false;
+            aPlayer.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("GT5U.gui.text.drone_key") + ": " + this.key));
             return true;
         }
-        return false;
+
+        if (side != frontFacing || aPlayer instanceof FakePlayer
+            || GTUtility.isStackInList(heldItem, GregTechAPI.sWrenchList)) {
+            return false;
+        }
+
+        openGui(aPlayer);
+        return true;
     }
 
     @Override
@@ -170,6 +204,33 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         }
 
         super.onMaintenancePerformed(aMaintenanceTarget);
+
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null && !base.getWorld().isRemote) {
+            World world = base.getWorld();
+            int hX = base.getXCoord();
+            int hY = base.getYCoord();
+            int hZ = base.getZCoord();
+
+            ForgeDirection facing = base.getFrontFacing();
+            int spawnX = hX + facing.offsetX;
+            int spawnY = hY + facing.offsetY;
+            int spawnZ = hZ + facing.offsetZ;
+
+            IGregTechTileEntity targetBase = aMaintenanceTarget.getBaseMetaTileEntity();
+            if (targetBase != null) {
+                int cX = targetBase.getXCoord();
+                int cY = targetBase.getYCoord();
+                int cZ = targetBase.getZCoord();
+
+                int level = (centre != null) ? centre.getDroneLevel() : 1;
+                if (level <= 0) level = 1;
+
+                EntityDrone drone = new EntityDrone(world);
+                drone.initAutoFlight(spawnX, spawnY, spawnZ, cX, cY, cZ, level);
+                world.spawnEntityInWorld(drone);
+            }
+        }
     }
 
     @Override
@@ -247,7 +308,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             || centre.getBaseMetaTileEntity() == null) {
             return false;
         }
-        DroneConnection connection = new DroneConnection(machine, centre, savedNameList, savedGroupList);
+        DroneConnection connection = new DroneConnection(machine, centre);
         connections.add(connection);
         centre.getConnectionList()
             .add(connection);
@@ -255,11 +316,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private void clearConnections() {
-        // save data first
         connections.removeIf(conn -> {
             unlinkedMachines.add(conn.getLinkedMachine());
-            savedNameList.put(conn.uuid.toString(), conn.getCustomName());
-            savedGroupList.put(conn.uuid.toString(), conn.getGroup());
             centre.getConnectionList()
                 .remove(conn);
             return true;
@@ -317,28 +375,12 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         key = aNBT.getString("key");
-        NBTTagCompound nameList = aNBT.getCompoundTag("nameList");
-        NBTTagCompound groupList = aNBT.getCompoundTag("groupList");
-        for (String s : nameList.func_150296_c()) {
-            savedNameList.put(s, nameList.getString(s));
-        }
-        for (String s : groupList.func_150296_c()) {
-            savedGroupList.put(s, groupList.getInteger(s));
-        }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setString("key", key);
-        NBTTagCompound nameList = new NBTTagCompound();
-        NBTTagCompound groupList = new NBTTagCompound();
-        connections.forEach(conn -> {
-            nameList.setString(conn.uuid.toString(), conn.getCustomName());
-            groupList.setInteger(conn.uuid.toString(), conn.getGroup());
-        });
-        aNBT.setTag("nameList", nameList);
-        aNBT.setTag("groupList", groupList);
     }
 
     @Override
@@ -363,10 +405,14 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
             int i = 0;
             for (DroneConnection connection : connections) {
-                if (connection.getCustomName() != null) {
+                // Send the lang key for unnamed machines so the client localizes it
+                if (connection.hasCustomName()) {
                     tag.setString("name" + i, connection.getCustomName());
-                    i++;
+                } else {
+                    tag.setString("name" + i, connection.getUnlocalizedName());
+                    tag.setBoolean("localize" + i, true);
                 }
+                i++;
             }
         }
     }
@@ -386,7 +432,9 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             if (tag.hasKey("name0")) {
                 int i = 0;
                 while (tag.hasKey("name" + i)) {
-                    currenttip.add(EnumChatFormatting.YELLOW + tag.getString("name" + i));
+                    String name = tag.getString("name" + i);
+                    if (tag.getBoolean("localize" + i)) name = StatCollector.translateToLocal(name);
+                    currenttip.add(EnumChatFormatting.YELLOW + name);
                     i++;
                 }
             }
@@ -395,5 +443,25 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                 .add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection"));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    @Override
+    public @Nullable NBTTagCompound getCopiedData(EntityPlayer player) {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type", COPIED_DATA_IDENTIFIER);
+        nbt.setString("key", key);
+        return nbt;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
+        if (nbt == null || !nbt.hasKey("type") || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        if (nbt.hasKey("key")) this.key = nbt.getString("key");
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
     }
 }

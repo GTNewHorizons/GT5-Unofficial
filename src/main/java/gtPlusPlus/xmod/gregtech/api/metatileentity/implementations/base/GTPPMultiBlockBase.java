@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -50,6 +51,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -75,6 +77,7 @@ import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
@@ -89,7 +92,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 // GTPPMultiBlockBase without generic parameter
 
 public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
-    extends MTEExtendedPowerMultiBlockBase<T> {
+    extends MTEExtendedPowerMultiBlockBase<T> implements ICasingTextureProvider {
 
     public GTRecipe mLastRecipe;
 
@@ -204,25 +207,16 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         super.updateSlots();
     }
 
-    @Override
-    protected void validateStructure(Collection<StructureError> errors) {
-        super.validateStructure(errors);
-
-        if (shouldCheckMaintenance() && mMaintenanceHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MAINTENANCE);
+    public void checkHatch(List<StructureError> errors) {
+        if (shouldCheckMaintenance()) {
+            checkHasMaintenanceHatch(errors);
         }
 
-        if (requiresMuffler() && mMufflerHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.MISSING_MUFFLER);
-        }
-
-        if (!requiresMuffler() && !mMufflerHatches.isEmpty()) {
+        if (requiresMuffler()) {
+            checkHasMufflerHatch(errors);
+        } else if (!mMufflerHatches.isEmpty()) {
             errors.add(StructureErrorRegistry.UNNEEDED_MUFFLER);
         }
-    }
-
-    public boolean checkHatch() {
-        return true;
     }
 
     @Override
@@ -237,22 +231,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         this.mAllDynamoHatches.clear();
     }
 
-    public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IGregTechTileEntity aTileEntity,
-        final int aBaseCasingIndex) {
-        return addToMachineListInternal(aList, getMetaTileEntity(aTileEntity), aBaseCasingIndex);
-    }
-
-    public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
+    public <E extends IMetaTileEntity> boolean addToMachineListInternal(ArrayList<E> aList, final E aTileEntity,
         final int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
         }
-
-        // Check type
-        /*
-         * Class <?> aHatchType = ReflectionUtils.getTypeOfGenericObject(aList); if
-         * (!aHatchType.isInstance(aTileEntity)) { return false; }
-         */
 
         // Try setRecipeMap
 
@@ -264,7 +247,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 resetRecipeMapForHatch((MTEHatch) aTileEntity, getRecipeMap());
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
 
         if (!aList.isEmpty()) {
@@ -274,7 +257,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             }
             BlockPos aCurPos = new BlockPos(aCur);
             for (E m : aList) {
-                IGregTechTileEntity b = ((IMetaTileEntity) m).getBaseMetaTileEntity();
+                IGregTechTileEntity b = m.getBaseMetaTileEntity();
                 if (b != null) {
                     BlockPos aPos = new BlockPos(b);
                     if (aCurPos.equals(aPos)) {
@@ -285,7 +268,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         }
         if (aTileEntity instanceof MTEHatch) {
             updateTexture(aTileEntity, aBaseCasingIndex);
-            return aList.add((E) aTileEntity);
+            return aList.add(aTileEntity);
         }
         return false;
     }
@@ -308,63 +291,81 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
+        addIfSmartInput(aMetaTileEntity);
 
-        if (aMetaTileEntity instanceof MTEHatchInputBattery) {
-            return addToMachineListInternal(mChargeHatches, aMetaTileEntity, aBaseCasingIndex);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutputBattery) {
-            return addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
-        }
-        if (aMetaTileEntity instanceof MTEHatchAirIntake) {
-            boolean addedAir = addToMachineListInternal(mAirIntakes, aMetaTileEntity, aBaseCasingIndex);
-            boolean addedInput = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
-            return addedAir && addedInput;
-        }
-        if (isThisHatchMultiEnergy(aMetaTileEntity)) {
-            boolean added = addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
-            updateMasterEnergyHatchList(aMetaTileEntity);
-            return added;
-        }
-        if (isThisHatchMultiDynamo(aMetaTileEntity)) {
-            boolean added = addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
-            updateMasterDynamoHatchList(aMetaTileEntity);
-            return added;
-        }
-
-        // Handle Fluid Hatches using separate logic
-        if (aMetaTileEntity instanceof MTEHatchInput)
-            return addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
-        if (aMetaTileEntity instanceof MTEHatchOutput)
-            return addToMachineListInternal(mOutputHatches, aMetaTileEntity, aBaseCasingIndex);
-
-        // Process Remaining hatches using base GT Logic
-        if (aMetaTileEntity instanceof IDualInputHatch hatch) {
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return addToMachineListInternal(mDualInputHatches, aMetaTileEntity, aBaseCasingIndex);
-        }
-        if (aMetaTileEntity instanceof MTEHatchInputBus)
-            return addToMachineListInternal(mInputBusses, aMetaTileEntity, aBaseCasingIndex);
-        if (aMetaTileEntity instanceof MTEHatchOutputBus)
-            return addToMachineListInternal(mOutputBusses, aMetaTileEntity, aBaseCasingIndex);
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            boolean added = addToMachineListInternal(mEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
-            if (aMetaTileEntity instanceof MTEHatchEnergyDebug) debugEnergyPresent = true;
-            updateMasterEnergyHatchList(aMetaTileEntity);
-            return added;
-        }
-        if (aMetaTileEntity instanceof MTEHatchDynamo) {
-            boolean added = addToMachineListInternal(mDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
-            updateMasterDynamoHatchList(aMetaTileEntity);
-            return added;
-        }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
-            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
-                droneDownLink.registerMachineController(this);
+        switch (aMetaTileEntity) {
+            case MTEHatchInputBattery inputBattery -> {
+                return addToMachineListInternal(mChargeHatches, inputBattery, aBaseCasingIndex);
             }
-            return addToMachineListInternal(mMaintenanceHatches, aMetaTileEntity, aBaseCasingIndex);
+            case MTEHatchOutputBattery outputBattery -> {
+                return addToMachineListInternal(mDischargeHatches, outputBattery, aBaseCasingIndex);
+            }
+            case MTEHatchAirIntake airIntake -> {
+                boolean addedAir = addToMachineListInternal(mAirIntakes, airIntake, aBaseCasingIndex);
+                boolean addedInput = addToMachineListInternal(mInputHatches, airIntake, aBaseCasingIndex);
+                return addedAir && addedInput;
+            }
+            case MTEHatchEnergyMulti multiEnergyHatch -> {
+                boolean added = addToMachineListInternal(mTecTechEnergyHatches, multiEnergyHatch, aBaseCasingIndex);
+                updateMasterEnergyHatchList(aMetaTileEntity);
+                return added;
+            }
+
+            // HatchElement.Dynamo uses mDynamoHatches for the count, but I'm uncertain where GT++
+            // actually uses the TTDynamoHatch list, so I'm just excluding 4A hatches to be added here
+            // and be caught past the lower comment currently in line 340.
+            case MTEHatchDynamoMulti multiDynamoHatch when multiDynamoHatch.getAmperes() > 4 -> {
+                boolean added = addToMachineListInternal(mTecTechDynamoHatches, multiDynamoHatch, aBaseCasingIndex);
+                mExoticDynamoHatches.add(multiDynamoHatch);
+                updateMasterDynamoHatchList(aMetaTileEntity);
+                return added;
+            }
+
+
+            // Handle Fluid Hatches using separate logic
+            case MTEHatchInput inputHatch -> {
+                return addToMachineListInternal(mInputHatches, inputHatch, aBaseCasingIndex);
+            }
+            case MTEHatchOutput outputHatch -> {
+                return addToMachineListInternal(mOutputHatches, outputHatch, aBaseCasingIndex);
+            }
+
+            // Process Remaining hatches using base GT Logic
+            case IDualInputHatch hatch -> {
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                return addToMachineListInternal(mDualInputHatches, hatch, aBaseCasingIndex);
+            }
+            case MTEHatchInputBus inputBus -> {
+                return addToMachineListInternal(mInputBusses, inputBus, aBaseCasingIndex);
+            }
+            case MTEHatchOutputBus outputBus -> {
+                return addToMachineListInternal(mOutputBusses, outputBus, aBaseCasingIndex);
+            }
+            case MTEHatchEnergy energyHatch -> {
+                boolean added = addToMachineListInternal(mEnergyHatches, energyHatch, aBaseCasingIndex);
+                if (aMetaTileEntity instanceof MTEHatchEnergyDebug) debugEnergyPresent = true;
+                updateMasterEnergyHatchList(aMetaTileEntity);
+                return added;
+            }
+
+            // which is here, catches all other dynamo hatches here.
+            case MTEHatchDynamo dynamoHatch -> {
+                boolean added = addToMachineListInternal(mDynamoHatches, dynamoHatch, aBaseCasingIndex);
+                updateMasterDynamoHatchList(aMetaTileEntity);
+                return added;
+            }
+            case MTEHatchMaintenance hatch -> {
+                if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                    droneDownLink.registerMachineController(this);
+                }
+                return addToMachineListInternal(mMaintenanceHatches, hatch, aBaseCasingIndex);
+            }
+            case MTEHatchMuffler mufflerHatch -> {
+                return addToMachineListInternal(mMufflerHatches, mufflerHatch, aBaseCasingIndex);
+            }
+            default -> {
+            }
         }
-        if (aMetaTileEntity instanceof MTEHatchMuffler)
-            return addToMachineListInternal(mMufflerHatches, aMetaTileEntity, aBaseCasingIndex);
 
         return false;
     }
@@ -488,12 +489,18 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     /**
      * This is the array Used to Store the Tectech Multi-Amp Dynamo hatches.
+     *
+     * @deprecated use {@link #mExoticDynamoHatches}
      */
+    @Deprecated
     public ArrayList<MTEHatch> mTecTechDynamoHatches = new ArrayList<>();
 
     /**
      * This is the array Used to Store the Tectech Multi-Amp Energy hatches.
+     *
+     * @deprecated use {@link #mExoticEnergyHatches}
      */
+    @Deprecated
     public ArrayList<MTEHatch> mTecTechEnergyHatches = new ArrayList<>();
 
     /**
@@ -508,8 +515,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (isThisHatchMultiDynamo(aTileEntity)) {
-            return addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) {
+            return addToMachineListInternal(mTecTechDynamoHatches, hatch, aBaseCasingIndex);
         }
         return false;
     }
@@ -553,8 +560,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (isThisHatchMultiEnergy(aMetaTileEntity)) {
-            return addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) {
+            return addToMachineListInternal(mTecTechEnergyHatches, hatch, aBaseCasingIndex);
         }
         return false;
     }
@@ -648,10 +655,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (supportsVoidProtection() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             Set<VoidingMode> allowed = getAllowedVoidingModes();
             setVoidingMode(getVoidingMode().nextInCollection(allowed));
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.gui.button.voiding_mode") + " "
-                    + StatCollector.translateToLocal(getVoidingMode().getTransKey()));
+                "GT5U.chat.voiding_mode_set",
+                new ChatComponentTranslation(getVoidingMode().getTransKey()));
             return true;
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
@@ -823,7 +830,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         return null;
     }
 
-    protected ITexture getCasingTexture() {
+    @Override
+    public ITexture getCasingTexture() {
         return Textures.BlockIcons.getCasingTextureForId(getCasingTextureId());
     }
 
@@ -926,7 +934,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.multimachine.incomplete_structure"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val))
@@ -937,7 +946,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                             + StatCollector.translateToLocal("GTPP.machines.tier")
                             + ": "
                             + EnumChatFormatting.GREEN
-                            + GTValues.VOLTAGE_NAMES[(int) getInputTier()])
+                            + GTValues.getLocalizedLongVoltageName((int) getInputTier()))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getInputTier() > 0))
@@ -948,7 +957,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                             + StatCollector.translateToLocal("GTPP.machines.tier")
                             + ": "
                             + EnumChatFormatting.GREEN
-                            + GTValues.VOLTAGE_NAMES[(int) getOutputTier()])
+                            + GTValues.getLocalizedLongVoltageName((int) getOutputTier()))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getOutputTier() > 0))
@@ -1016,9 +1025,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "gtpp.gui.multiblock.duration.text",
-                            "" + EnumChatFormatting.RED + getLastRecipeDuration() + EnumChatFormatting.RESET))
+                        () -> StatCollector
+                            .translateToLocalFormatted("gtpp.gui.multiblock.duration.text", getLastRecipeDuration()))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getLastRecipeEU() != 0 && getLastRecipeDuration() > 0))
@@ -1063,11 +1071,9 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
-                TextWidget
-                    .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "gtpp.gui.multiblock.pollution.txt",
-                            "" + EnumChatFormatting.RED + getPollutionPerSecond(null) + EnumChatFormatting.RESET))
+                TextWidget.dynamicString(
+                    () -> StatCollector
+                        .translateToLocalFormatted("gtpp.gui.multiblock.pollution.txt", getPollutionPerSecond(null)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
@@ -1088,47 +1094,36 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
-                TextWidget
-                    .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "gtpp.gui.text.time.week",
-                            "" + EnumChatFormatting.DARK_GREEN + getRuntimeWeeksDisplay() + EnumChatFormatting.RESET))
+                TextWidget.dynamicString(
+                    () -> StatCollector.translateToLocalFormatted("gtpp.gui.text.time.week", getRuntimeWeeksDisplay()))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> mMachine))
+            .widget(
+                TextWidget.dynamicString(
+                    () -> StatCollector.translateToLocalFormatted("gtpp.gui.text.time.days", getRuntimeDaysDisplay()))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> mMachine))
+            .widget(
+                TextWidget.dynamicString(
+                    () -> StatCollector.translateToLocalFormatted("gtpp.gui.text.time.hours", getRuntimeHoursDisplay()))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "gtpp.gui.text.time.days",
-                            "" + EnumChatFormatting.DARK_GREEN + getRuntimeDaysDisplay() + EnumChatFormatting.RESET))
+                        () -> StatCollector
+                            .translateToLocalFormatted("gtpp.gui.text.time.minutes", getRuntimeMinutesDisplay()))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "gtpp.gui.text.time.hours",
-                            "" + EnumChatFormatting.DARK_GREEN + getRuntimeHoursDisplay() + EnumChatFormatting.RESET))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> mMachine))
-            .widget(
-                TextWidget
-                    .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "gtpp.gui.text.time.minutes",
-                            "" + EnumChatFormatting.DARK_GREEN + getRuntimeMinutesDisplay() + EnumChatFormatting.RESET))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> mMachine))
-            .widget(
-                TextWidget
-                    .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "gtpp.gui.text.time.seconds",
-                            "" + EnumChatFormatting.DARK_GREEN + getRuntimeSecondsDisplay() + EnumChatFormatting.RESET))
+                        () -> StatCollector
+                            .translateToLocalFormatted("gtpp.gui.text.time.seconds", getRuntimeSecondsDisplay()))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine));
@@ -1231,6 +1226,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 return t.mAirIntakes.size();
             }
         },
+        /**
+         * @deprecated use {@link gregtech.api.enums.HatchElement#ExoticDynamo}
+         */
+        @Deprecated
         TTDynamo(GTPPMultiBlockBase::addMultiAmpDynamoToMachineList, MTEHatchDynamoMulti.class) {
 
             @Override
@@ -1238,6 +1237,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 return t.mTecTechDynamoHatches.size();
             }
         },
+        /**
+         * @deprecated use {@link gregtech.api.enums.HatchElement#ExoticEnergy} or
+         *             {@link gregtech.api.enums.HatchElement#MultiAmpEnergy}
+         */
+        @Deprecated
         TTEnergy(GTPPMultiBlockBase::addMultiAmpEnergyToMachineList, MTEHatchEnergyMulti.class) {
 
             @Override

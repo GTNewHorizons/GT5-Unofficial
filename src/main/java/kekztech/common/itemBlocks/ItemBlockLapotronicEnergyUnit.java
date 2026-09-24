@@ -77,9 +77,8 @@ public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
     public static BigInteger UMV_cap_storage = BigInteger.valueOf(UIV_cap_storage)
         .pow(2);
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> lines, boolean advancedTooltips) {
         lines.add(StatCollector.translateToLocal("tile.kekztech_lapotronicenergyunit_block.desc"));
         switch (stack.getItemDamage()) {
             case 1:

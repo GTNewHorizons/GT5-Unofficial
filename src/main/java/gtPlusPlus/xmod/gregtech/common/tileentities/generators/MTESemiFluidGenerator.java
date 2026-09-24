@@ -5,21 +5,20 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.GTPPCore;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESemiFluidGenerator extends MTEBasicGenerator {
 
     public MTESemiFluidGenerator(int aID, String aName, String aNameRegional, int aTier) {
@@ -43,15 +42,16 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.semiFluidFuels;
+        return RecipeMaps.semiFluidFuels;
     }
 
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Produces " + addFormattedString(String.valueOf(this.getPollution())) + " pollution/sec",
-            "Fuel Efficiency: " + addFormattedString(String.valueOf(this.getEfficiency())) + "%%",
+            GTSplit.splitLocalizedFormatted(
+                "gt.blockmachines.basicgenerator.semifluid.desc",
+                this.getPollution(),
+                this.getEfficiency()),
             GTPPCore.GT_Tooltip.get());
     }
 
@@ -72,18 +72,6 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
             return true;
         }
         return super.allowCoverOnSide(side, coverItem);
-    }
-
-    @Override
-    public int getFuelValue(ItemStack aStack) {
-        if (GTUtility.isStackInvalid(aStack)) {
-            return 0;
-        }
-        int rValue = Math.max(GTModHandler.getFuelValue(aStack) * 6 / 5, super.getFuelValue(aStack));
-        if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
-            rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
-        }
-        return rValue;
     }
 
     @Override

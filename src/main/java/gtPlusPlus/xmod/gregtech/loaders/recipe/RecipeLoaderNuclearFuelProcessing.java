@@ -1,16 +1,16 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
+import static gregtech.api.recipe.RecipeMaps.coldTrapRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fissionFuelProcessingRecipes;
+import static gregtech.api.recipe.RecipeMaps.reactorProcessingUnitRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.coldTrapRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.fissionFuelProcessingRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.reactorProcessingUnitRecipes;
 
 import net.minecraftforge.fluids.FluidStack;
 

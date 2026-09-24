@@ -10,8 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -87,6 +89,9 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
     public static final ConcurrentHashMap<String, MetaGeneratedTool> sInstances = new ConcurrentHashMap<>();
+
+    private static final String EMPTY_NAME_KEY = "gt.metatool.empty.name";
+    private static final String EMPTY_TOOLTIP_KEY = "gt.metatool.empty.tooltip";
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
 
@@ -219,12 +224,12 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         Object... aOreDictNamesAndAspects) {
         if (aToolTip == null) aToolTip = "";
         if (aID >= 0 && aID < 32766 && aID % 2 == 0) {
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".name", aEnglish);
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
-            GTLanguageManager
-                .addStringLocalization(getUnlocalizedName() + "." + (aID + 1) + ".name", aEnglish + " (Empty)");
-            GTLanguageManager
-                .addStringLocalization(getUnlocalizedName() + "." + (aID + 1) + ".tooltip", "You need to recharge it");
+            if (!aEnglish.isEmpty()) {
+                GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".name", aEnglish);
+            }
+            if (!aToolTip.isEmpty()) {
+                GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
+            }
             mToolStats.put((short) aID, aToolStats);
             mToolStats.put((short) (aID + 1), aToolStats);
             aToolStats.onStatsAddedToTool(this, aID);
@@ -331,7 +336,17 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 onBlockDestroyed(aStack, aPlayer.worldObj, aBlock, aX, aY, aZ, aPlayer);
             }
             return false;
-        }
+        } else if (tStats.isSaw()
+            && ((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce))) {
+                int aMetaData = aPlayer.worldObj.getBlockMetadata(aX, aY, aZ);
+                GTUtility
+                    .dropItem(aPlayer.worldObj, aX + 0.5D, aY + 0.5D, aZ + 0.5D, new ItemStack(aBlock, 1, aMetaData));
+                aPlayer.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(aBlock)], 1);
+                onBlockDestroyed(aStack, aPlayer.worldObj, aBlock, aX, aY, aZ, aPlayer);
+                doDamage(aStack, tStats.getToolDamagePerDropConversion());
+                aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
+                return true;
+            }
         return super.onBlockStartBreak(aStack, aX, aY, aZ, aPlayer);
     }
 
@@ -466,25 +481,22 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.GRAY
                         + translateToLocalFormatted(
                             "gt.item.desc.durability",
-                            EnumChatFormatting.GREEN + formatNumber(turbine.getCurrentDurability()) + " ",
-                            " " + formatNumber(turbine.getMaxDurability()))
+                            formatNumber(turbine.getCurrentDurability()),
+                            formatNumber(turbine.getMaxDurability()))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.GRAY
                         + translateToLocalFormatted(
                             "gt.item.desc.tier",
-                            tMaterial.getLocalizedName() + ":" + EnumChatFormatting.YELLOW,
-                            "" + getHarvestLevel(aStack, ""))
+                            tMaterial.getLocalizedName(),
+                            getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE
-                        + translateToLocalFormatted(
-                            "gt.item.desc.base_eff",
-                            "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getBaseEfficiency() * 100))
-                        + "%"
-                        + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.WHITE + translateToLocalFormatted(
+                        "gt.item.desc.base_eff",
+                        (int) Math.ceil(turbine.getBaseEfficiency() * 100)) + "%" + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 3, EnumChatFormatting.GRAY + translateToLocal("gt.item.desc.fuel_eff"));
                 aList.add(
                     tOffset + 4,
@@ -599,42 +611,39 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 11,
-                    EnumChatFormatting.LIGHT_PURPLE + translateToLocalFormatted(
-                        "gt.item.desc.eff_tier",
-                        "" + EnumChatFormatting.GOLD + turbine.getOverflowEfficiency() + EnumChatFormatting.GRAY));
+                    EnumChatFormatting.LIGHT_PURPLE
+                        + translateToLocalFormatted("gt.item.desc.eff_tier", turbine.getOverflowEfficiency()));
             } else {
                 aList.add(
                     tOffset,
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.durability",
-                            EnumChatFormatting.GREEN + formatNumber(tMaxDamage - getToolDamage(aStack)) + " ",
-                            " " + formatNumber(tMaxDamage))
+                            formatNumber(tMaxDamage - getToolDamage(aStack)),
+                            formatNumber(tMaxDamage))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.level",
-                            tMaterial.getLocalizedName() + EnumChatFormatting.YELLOW,
-                            "" + getHarvestLevel(aStack, ""))
+                            tMaterial.getLocalizedName(),
+                            getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
                     EnumChatFormatting.WHITE
-                        + translateToLocalFormatted(
-                            "gt.item.desc.damage",
-                            "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack))
+                        + translateToLocalFormatted("gt.item.desc.damage", formatNumber(getToolCombatDamage(aStack)))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.mine_speed",
-                            "" + EnumChatFormatting.GOLD
-                                + Math.max(
+                            formatNumber(
+                                Math.max(
                                     Float.MIN_NORMAL,
-                                    tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed))
+                                    tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)))
                         + EnumChatFormatting.GRAY);
                 final NBTTagCompound nbt = aStack.getTagCompound();
                 if (nbt != null) {
@@ -965,9 +974,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     case weapon -> {
                         if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
                     }
-                    case all -> {
-                        tResult.put(tEntry.getKey(), tEntry.getValue());
-                    }
+                    case all -> tResult.put(tEntry.getKey(), tEntry.getValue());
                     case armor, armor_feet, armor_head, armor_legs, armor_torso, breakable, fishing_rod -> {}
                     case bow -> {
                         if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
@@ -982,9 +989,33 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return true;
     }
 
+    /**
+     * A discharged tool reads the name of its charged counterpart, so that a tool spells its name once instead of
+     * twice.
+     */
+    private boolean isDischarged(ItemStack aStack) {
+        return getDamage(aStack) % 2 == 1;
+    }
+
+    /**
+     * @param aMeta the Meta Value of the charged tool
+     * @return the name of the charged tool, without the discharged suffix
+     */
+    protected String getChargedName(int aMeta) {
+        return translateToLocal(getUnlocalizedName() + "." + aMeta + ".name");
+    }
+
+    @Override
+    protected Function<ItemStack, String> getToolTipLocalizationFunction(ItemStack aStack) {
+        if (isDischarged(aStack)) return tStack -> translateToLocal(EMPTY_TOOLTIP_KEY);
+        return super.getToolTipLocalizationFunction(aStack);
+    }
+
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        String result = super.getItemStackDisplayName(aStack);
+        String result = isDischarged(aStack)
+            ? translateToLocalFormatted(EMPTY_NAME_KEY, getChargedName(getDamage(aStack) - 1))
+            : getChargedName(getDamage(aStack));
         final String toolMode = getToolModeName(aStack);
 
         if (toolMode != null) {

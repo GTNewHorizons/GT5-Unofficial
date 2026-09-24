@@ -34,12 +34,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.implementation.items.GTItemSink;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,6 +57,8 @@ import gregtech.common.covers.Cover;
  * ({@link MetaPipeEntity}).
  */
 public abstract class CommonMetaTileEntity implements IMetaTileEntity {
+
+    private volatile ITexture[][] inventoryTextureCache;
 
     /**
      * Inventory of this block.
@@ -160,20 +161,18 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {}
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
+    public void onClientSoundStateChanged() {}
+
+    @Override
     public void onPreTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     @Override
-    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
-            /*
-             * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
-             * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related
-             * work and network traffic on different ticks, until it reaches 0.
-             */
-            baseMetaTileEntity.issueTextureUpdate();
-        }
-    }
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     public void onTickFail(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
@@ -404,7 +403,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public String getInventoryName() {
         if (GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null) {
-            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
+            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getLocalNameKey();
         }
         return "";
     }
@@ -487,8 +486,16 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluidStack, boolean doDrain) {
+        return drain(side, fluidStack, fluidStack == null ? 0 : fluidStack.amount, doDrain);
+    }
+
+    /**
+     * Type-aware drain with an overridden amount. Avoids allocating a new {@link FluidStack} per call when the caller
+     * needs to drain a different amount than {@code fluidStack.amount}.
+     */
+    public FluidStack drain(ForgeDirection side, FluidStack fluidStack, int amount, boolean doDrain) {
         if (getFluid() != null && fluidStack != null && getFluid().isFluidEqual(fluidStack)) {
-            return drain(fluidStack.amount, doDrain);
+            return drain(amount, doDrain);
         }
         return null;
     }
@@ -553,6 +560,26 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @SideOnly(Side.CLIENT)
     public boolean renderInInventory(ISBRInventoryContext ctx) {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected final ITexture[][] getOrCreateInventoryTextures() {
+        ITexture[][] textures = inventoryTextureCache;
+        if (textures == null) {
+            final IGregTechTileEntity base = getBaseMetaTileEntity();
+            textures = new ITexture[][] { getTexture(base, ForgeDirection.DOWN, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.UP, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.NORTH, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.SOUTH, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.WEST, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.EAST, ForgeDirection.WEST, -1, true, false) };
+            inventoryTextureCache = textures;
+        }
+        return textures;
+    }
+
+    public final void clearInventoryTextureCache() {
+        inventoryTextureCache = null;
     }
 
     @Override
@@ -632,6 +659,15 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return false;
     }
 
+    /**
+     * A public method to verify if this MTE has a Mui2 GUI. Returning false indicates that do not try to open a Mui2
+     * GUI
+     * of this.
+     */
+    public boolean hasMui2Gui() {
+        return useMui2() || forceUseMui2();
+    }
+
     @Override
     public final String getGuiId() {
         return mName;
@@ -640,7 +676,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     /**
      * Specifies theme of this GUI. {@link GTGuiThemes} lists all the themes you can use.
      */
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.STANDARD;
     }
 
@@ -661,15 +697,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @SideOnly(Side.CLIENT)
     @Override
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return new GTModularScreen(mainPanel, getColoredTheme());
-    }
-
-    private GTGuiTheme getColoredTheme() {
-        GTGuiTheme baseTheme = getGuiTheme();
-        if (baseTheme != GTGuiThemes.STANDARD) return baseTheme;
-        byte color = this.getBaseMetaTileEntity()
-            .getColorization();
-        Dyes dye = Dyes.get(color);
-        return dye.mui2Theme.get();
+        return new GTModularScreen(mainPanel, getGuiTheme());
     }
 }

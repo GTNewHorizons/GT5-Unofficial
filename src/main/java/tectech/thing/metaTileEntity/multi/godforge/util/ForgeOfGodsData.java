@@ -11,7 +11,9 @@ import net.minecraft.util.MathHelper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.google.common.math.LongMath;
 
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
+import tectech.loader.ConfigHandler;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
@@ -21,7 +23,7 @@ public class ForgeOfGodsData {
 
     // Field default values for non-zero value defaults for item NBT checks
     public static final int DEFAULT_FUEL_CONSUMPTION_FACTOR = 1;
-    public static final int DEFAULT_MAX_BATTERY_CHARGE = 100;
+    public static final long DEFAULT_MAX_BATTERY_CHARGE = 100;
     public static final int DEFAULT_RING_AMOUNT = 1;
     public static final int DEFAULT_ROTATION_SPEED = 5;
     public static final int DEFAULT_STAR_SIZE = 20;
@@ -49,8 +51,8 @@ public class ForgeOfGodsData {
 
     private int fuelConsumptionFactor = DEFAULT_FUEL_CONSUMPTION_FACTOR;
     private int selectedFuelType;
-    private int internalBattery;
-    private int maxBatteryCharge = DEFAULT_MAX_BATTERY_CHARGE;
+    private long internalBattery;
+    private long maxBatteryCharge = DEFAULT_MAX_BATTERY_CHARGE;
     private int gravitonShardsAvailable;
     private int gravitonShardsSpent;
     private int ringAmount = DEFAULT_RING_AMOUNT;
@@ -107,19 +109,19 @@ public class ForgeOfGodsData {
         this.selectedFuelType = selectedFuelType;
     }
 
-    public int getInternalBattery() {
+    public long getInternalBattery() {
         return internalBattery;
     }
 
-    public void setInternalBattery(int internalBattery) {
+    public void setInternalBattery(long internalBattery) {
         this.internalBattery = internalBattery;
     }
 
-    public int getMaxBatteryCharge() {
+    public long getMaxBatteryCharge() {
         return maxBatteryCharge;
     }
 
-    public void setMaxBatteryCharge(int maxBatteryCharge) {
+    public void setMaxBatteryCharge(long maxBatteryCharge) {
         this.maxBatteryCharge = maxBatteryCharge;
     }
 
@@ -129,6 +131,12 @@ public class ForgeOfGodsData {
 
     public void setGravitonShardsAvailable(int gravitonShardsAvailable) {
         this.gravitonShardsAvailable = gravitonShardsAvailable;
+    }
+
+    public void setGravitonShardsAvailableDebug(int gravitonShardsAvailable) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE)
+            this.gravitonShardsAvailable = gravitonShardsAvailable;
     }
 
     public int getGravitonShardsSpent() {
@@ -413,7 +421,7 @@ public class ForgeOfGodsData {
 
     public void serializeNBT(NBTTagCompound NBT, boolean force) {
         if (force || selectedFuelType != 0) NBT.setInteger("selectedFuelType", selectedFuelType);
-        if (force || internalBattery != 0) NBT.setInteger("internalBattery", internalBattery);
+        if (force || internalBattery != 0) NBT.setLong("internalBattery", internalBattery);
         if (force || batteryCharging) NBT.setBoolean("batteryCharging", batteryCharging);
         if (force || gravitonShardsAvailable != 0) NBT.setInteger("gravitonShardsAvailable", gravitonShardsAvailable);
         if (force || gravitonShardsSpent != 0) NBT.setInteger("gravitonShardsSpent", gravitonShardsSpent);
@@ -429,7 +437,7 @@ public class ForgeOfGodsData {
             NBT.setInteger("fuelConsumptionFactor", fuelConsumptionFactor);
         }
         if (force || maxBatteryCharge != DEFAULT_MAX_BATTERY_CHARGE) {
-            NBT.setInteger("batterySize", maxBatteryCharge);
+            NBT.setLong("batterySize", maxBatteryCharge);
         }
         if (force || !DEFAULT_TOTAL_POWER.equals(totalPowerConsumed)) {
             NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
@@ -468,7 +476,7 @@ public class ForgeOfGodsData {
 
     public void deserializeNBT(NBTTagCompound NBT) {
         selectedFuelType = NBT.getInteger("selectedFuelType");
-        internalBattery = NBT.getInteger("internalBattery");
+        internalBattery = NBT.getLong("internalBattery");
         batteryCharging = NBT.getBoolean("batteryCharging");
         gravitonShardsAvailable = NBT.getInteger("gravitonShardsAvailable");
         gravitonShardsSpent = NBT.getInteger("gravitonShardsSpent");
@@ -484,7 +492,7 @@ public class ForgeOfGodsData {
             fuelConsumptionFactor = NBT.getInteger("fuelConsumptionFactor");
         }
         if (NBT.hasKey("batterySize")) {
-            maxBatteryCharge = NBT.getInteger("batterySize");
+            maxBatteryCharge = NBT.getLong("batterySize");
         }
         if (NBT.hasKey("totalPowerConsumed")) {
             totalPowerConsumed = new BigInteger(NBT.getByteArray("totalPowerConsumed"));

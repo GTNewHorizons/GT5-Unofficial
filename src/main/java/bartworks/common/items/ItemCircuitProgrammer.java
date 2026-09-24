@@ -13,6 +13,8 @@
 
 package bartworks.common.items;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,36 +25,25 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.IItemWithModularUI;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.GuiFactories;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
-import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.modularui.GTUIInfos;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.item.CircuitProgrammerGui;
+import gregtech.crossmod.backhand.Backhand;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
-public class ItemCircuitProgrammer extends GTGenericItem implements IElectricItem, IItemWithModularUI {
+public class ItemCircuitProgrammer extends GTGenericItem implements IElectricItem, IGuiHolder<PlayerInventoryGuiData> {
 
     private static final int COST_PER_USE = 100;
 
@@ -64,8 +55,8 @@ public class ItemCircuitProgrammer extends GTGenericItem implements IElectricIte
         this.setCreativeTab(MainMod.BWT);
     }
 
-    public void useItem(ItemStack stack, EntityPlayer player) {
-        ElectricItem.manager.use(stack, COST_PER_USE, player);
+    public boolean useItem(ItemStack stack, EntityPlayer player) {
+        return ElectricItem.manager.use(stack, COST_PER_USE, player);
     }
 
     @Override
@@ -80,8 +71,14 @@ public class ItemCircuitProgrammer extends GTGenericItem implements IElectricIte
 
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-        if (ElectricItem.manager.use(aStack, COST_PER_USE, aPlayer)) {
-            GTUIInfos.openPlayerHeldItemUI(aPlayer);
+        if (useItem(aStack, aPlayer) && !aWorld.isRemote) {
+            if (aStack == Backhand.getOffhandItem(aPlayer)) {
+                GuiFactories.playerInventory()
+                    .openFromPlayerInventory(aPlayer, Backhand.getOffhandSlot(aPlayer));
+            } else {
+                GuiFactories.playerInventory()
+                    .openFromMainHand(aPlayer);
+            }
         }
         return aStack;
     }
@@ -136,91 +133,14 @@ public class ItemCircuitProgrammer extends GTGenericItem implements IElectricIte
         return GTValues.V[1];
     }
 
-    private static final String NBT_KEY_HAS_CHIP = "HasChip";
-    private static final String NBT_KEY_CHIP_CONFIG = "ChipConfig";
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PlayerInventoryGuiData data, ModularPanel mainPanel) {
+        return new ModularScreen(GregTech.ID, mainPanel);
+    }
 
     @Override
-    public ModularWindow createWindow(UIBuildContext buildContext, ItemStack heldStack) {
-        ModularWindow.Builder builder = ModularWindow.builder(256, 166);
-        builder.setBackground(BWUITextures.BACKGROUND_CIRCUIT_PROGRAMMER);
-        builder.bindPlayerInventory(buildContext.getPlayer(), new Pos2d(86, 83), ModularUITextures.ITEM_SLOT);
-
-        ItemStackHandler inventoryHandler = new ItemStackHandler(1) {
-
-            @Override
-            public int getSlotLimit(int slot) {
-                return 1;
-            }
-        };
-        SlotWidget circuitSlotWidget = new SlotWidget(new BaseSlot(inventoryHandler, 0) {
-
-            @Override
-            public void putStack(ItemStack stack) {
-                if (ItemCircuitProgrammer.this.isLVCircuit(stack)) {
-                    stack = ItemCircuitProgrammer.this.createRealCircuit(0);
-                }
-                ((IItemHandlerModifiable) this.getItemHandler()).setStackInSlot(this.getSlotIndex(), stack);
-                this.onSlotChanged();
-            }
-        });
-
-        ItemStack initialStack = null;
-        if (ItemStackNBT.getBoolean(heldStack, NBT_KEY_HAS_CHIP)) {
-            initialStack = this.createRealCircuit(ItemStackNBT.getByte(heldStack, NBT_KEY_CHIP_CONFIG));
-        }
-        circuitSlotWidget.getMcSlot()
-            .putStack(initialStack);
-
-        builder.widget(circuitSlotWidget.setChangeListener(widget -> {
-            ItemStack stack = widget.getMcSlot()
-                .getStack();
-            ItemStack heldItem = widget.getContext()
-                .getPlayer()
-                .getHeldItem();
-            if (stack != null) {
-                ItemStackNBT.setBoolean(heldItem, NBT_KEY_HAS_CHIP, true);
-                ItemStackNBT.setByte(heldItem, NBT_KEY_CHIP_CONFIG, (byte) stack.getItemDamage());
-            } else {
-                ItemStackNBT.setBoolean(heldItem, NBT_KEY_HAS_CHIP, false);
-            }
-        })
-            .setFilter(stack -> this.isProgrammedCircuit(stack) || this.isLVCircuit(stack))
-            .setBackground(ModularUITextures.ITEM_SLOT, GTUITextures.OVERLAY_SLOT_INT_CIRCUIT)
-            .setPos(122, 60));
-
-        for (int i = 0; i < 24; i++) {
-            final int index = i;
-            builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (circuitSlotWidget.getMcSlot()
-                    .getHasStack()
-                    && this.isProgrammedCircuit(
-                        circuitSlotWidget.getMcSlot()
-                            .getStack())) {
-                    circuitSlotWidget.getMcSlot()
-                        .putStack(this.createRealCircuit(index + 1));
-                }
-            })
-                .setPos(32 + i % 12 * 18, 21 + i / 12 * 18)
-                .setSize(18, 18));
-        }
-
-        return builder.build();
-    }
-
-    private ItemStack createRealCircuit(int config) {
-        return ItemList.Circuit_Integrated.getWithDamage(1, config);
-    }
-
-    private boolean isProgrammedCircuit(ItemStack stack) {
-        return stack.getItem()
-            .equals(
-                GTUtility.getIntegratedCircuit(0)
-                    .getItem());
-    }
-
-    private boolean isLVCircuit(ItemStack stack) {
-        return BWUtil.checkStackAndPrefix(stack)
-            && OrePrefixes.circuit.equals(GTOreDictUnificator.getAssociation(stack).mPrefix)
-            && GTOreDictUnificator.getAssociation(stack).mMaterial.mMaterial.equals(Materials.LV);
+    public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
+        return new CircuitProgrammerGui(data, syncManager).build();
     }
 }

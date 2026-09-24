@@ -76,7 +76,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
     }
 
     @Override
-    protected void onContentsChanged(int slot) {
+    public void onContentsChanged(int slot) {
         super.onContentsChanged(slot);
 
         // Make hasInventoryBeenModified return true
@@ -176,9 +176,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
         ItemStack aStack) {
         if (side != aBaseMetaTileEntity.getFrontFacing()) return false;
         if (aIndex >= getFirstUsageSlot()) return false;
-        if (!isItemValidForInputSlot(aStack)) return false;
-
-        return true;
+        return isItemValidForInputSlot(aStack);
     }
 
     /**

@@ -13,7 +13,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
 import gtnhintergalactic.GTNHIntergalactic;
 
-@Config(modid = Mods.ModIDs.G_T_N_H_INTERGALACTIC, filename = "gtnhintergalactic")
+@Config(modid = Mods.ModIDs.G_T_N_H_INTERGALACTIC, filename = Mods.ModIDs.G_T_N_H_INTERGALACTIC)
 public class IGConfig {
 
     public static SpaceElevator spaceElevator = new SpaceElevator();
@@ -156,8 +156,8 @@ public class IGConfig {
                     try {
                         cachedPowerFactors.put(parts[0], Double.parseDouble(parts[1]));
                     } catch (Exception e) {
-                        GTNHIntergalactic.LOG.error("Error while trying to parse \"" + s + "\"!");
-                        e.printStackTrace();
+                        GTNHIntergalactic.LOG.error("Error while trying to parse \"{}\"!", s);
+                        GTNHIntergalactic.LOG.error(e);
                     }
                 }
             }

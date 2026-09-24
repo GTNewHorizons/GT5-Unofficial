@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugBlockPump;
 
 import java.util.ArrayDeque;
@@ -14,31 +15,37 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
-import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gregtech.common.misc.DrillingLogicDelegate;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -73,7 +80,7 @@ public class MTEPump extends MTEBasicMachine {
 
     @Override
     public String[] getDescription() {
-        return GTUtility.translateMultiline(
+        return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.basicmachine.pump.tooltip",
             TooltipHelper.euText(getEuUsagePerTier(mTier)),
             NumberFormatUtil.formatNumber(Math.max(1, 160 >> mTier) / 20d),
@@ -92,51 +99,85 @@ public class MTEPump extends MTEBasicMachine {
             2,
             2,
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_SIDE_ACTIVE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_SIDE_ACTIVE_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/pump/OVERLAY_SIDE_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_SIDE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_SIDE")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_SIDE_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_SIDE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_FRONT_ACTIVE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_FRONT_ACTIVE_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/pump/OVERLAY_FRONT_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_FRONT")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_FRONT")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_FRONT_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_FRONT_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_TOP_ACTIVE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_TOP_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_TOP_ACTIVE_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_TOP_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_TOP")),
+                TextureFactory.of(
+                    Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_TOP")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_TOP_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_TOP_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_BOTTOM_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/pump/OVERLAY_BOTTOM_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_BOTTOM")),
+                TextureFactory.of(
+                    Textures.BlockIcons
+                        .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_BOTTOM")),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_BOTTOM_GLOW"))
+                    .addIcon(
+                        Textures.BlockIcons
+                            .customOptional(Mods.GregTech.resourceDomain, "basicmachines/pump/OVERLAY_BOTTOM_GLOW"))
                     .glow()
                     .build()));
 
@@ -153,24 +194,21 @@ public class MTEPump extends MTEBasicMachine {
         return new MTEPump(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    private static final FallbackableUITexture progressBarTexture = GTUITextures
-        .fallbackableProgressbar("pump", GTUITextures.PROGRESSBAR_CANNER);
-
     @Override
     protected BasicUIProperties getUIProperties() {
         return BasicUIProperties.builder()
             .maxItemInputs(2)
             .maxItemOutputs(2)
-            .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
+            .slotOverlaysMUI2((index, isFluid, isOutput, isSpecial) -> {
                 if (!isFluid && !isOutput && !isSpecial) {
-                    return GTUITextures.OVERLAY_SLOT_MINING_PIPE;
+                    return GTGuiTextures.OVERLAY_SLOT_MINING_PIPE;
                 } else {
                     return null;
                 }
             })
             .maxFluidInputs(0)
             .maxFluidOutputs(1)
-            .progressBarTexture(progressBarTexture)
+            .progressBarTextureMUI2(GTGuiTextures.PROGRESSBAR_CANNER)
             .build();
     }
 
@@ -190,13 +228,11 @@ public class MTEPump extends MTEBasicMachine {
     public void saveNBTData(NBTTagCompound aNBT) {
         boolean wasPumping = this.wasPumping || !this.mPumpList.isEmpty();
         if (debugBlockPump) {
-            GTLog.out.println(
-                "PUMP: NBT:Save - WasPumping - " + wasPumping
-                    + " blocks ("
-                    + this.mPrimaryPumpedBlock
-                    + ", "
-                    + this.mSecondaryPumpedBlock
-                    + ")");
+            GT_FML_LOGGER.debug(
+                "PUMP: NBT:Save - WasPumping - {} blocks ({}, {})",
+                wasPumping,
+                this.mPrimaryPumpedBlock,
+                this.mSecondaryPumpedBlock);
         }
         super.saveNBTData(aNBT);
         aNBT.setString(
@@ -248,12 +284,11 @@ public class MTEPump extends MTEBasicMachine {
         }
 
         if (debugBlockPump) {
-            GTLog.out.println(
-                "PUMP: NBT:Load - WasPumping - " + this.wasPumping
-                    + "("
-                    + aNBT.getString("mPumpedBlock1")
-                    + ") "
-                    + this.mPrimaryPumpedBlock);
+            GT_FML_LOGGER.debug(
+                "PUMP: NBT:Load - WasPumping - {}({}) {}",
+                this.wasPumping,
+                aNBT.getString("mPumpedBlock1"),
+                this.mPrimaryPumpedBlock);
         }
     }
 
@@ -322,11 +357,14 @@ public class MTEPump extends MTEBasicMachine {
                 getBaseMetaTileEntity().setActive(tTileEntity.isActive());
                 this.mPumpCountBelow += 1;
                 // The more pumps we have stacked, the faster the ones below go
-                ((MTEPump) tTileEntity.getMetaTileEntity()).mPumpTimer -= 1;
-                ((MTEPump) tTileEntity.getMetaTileEntity()).mProgresstime += 1;
+                MTEPump bottomPump = (MTEPump) tTileEntity.getMetaTileEntity();
+                bottomPump.mPumpTimer -= 1;
+                if (bottomPump.mProgresstime < bottomPump.mMaxProgresstime) {
+                    bottomPump.mProgresstime += 1;
+                }
             }
             if (debugBlockPump && (this.mPumpCountBelow != 0)) {
-                GTLog.out.println("PUMP: Detected " + this.mPumpCountBelow + " pumps below this pump.");
+                GT_FML_LOGGER.debug("PUMP: Detected {} pumps below this pump.", this.mPumpCountBelow);
             }
             if (this.mPumpCountBelow <= 0) {
                 // Only the bottom most pump does anything
@@ -344,20 +382,20 @@ public class MTEPump extends MTEBasicMachine {
                                         Math.max(getYOfPumpHead() - 1, 1),
                                         getBaseMetaTileEntity().getZCoord())) {
                                         if (debugBlockPump) {
-                                            GTLog.out.println("PUMP: No pipe left. Idle for a little longer.");
+                                            GT_FML_LOGGER.debug("PUMP: No pipe left. Idle for a little longer.");
                                         }
                                         this.mPumpTimer = 160;
                                     } else {
                                         getBaseMetaTileEntity().disableWorking();
                                         if (debugBlockPump) {
-                                            GTLog.out.println("PUMP: Can't move. Retracting in next few ticks");
+                                            GT_FML_LOGGER.debug("PUMP: Can't move. Retracting in next few ticks");
                                         }
                                     }
                                 } else if (debugBlockPump) {
-                                    GTLog.out.println("PUMP: Moved down");
+                                    GT_FML_LOGGER.debug("PUMP: Moved down");
                                 }
                             } else if (debugBlockPump) {
-                                GTLog.out.println("PUMP: Was pumping, didn't move down");
+                                GT_FML_LOGGER.debug("PUMP: Was pumping, didn't move down");
                             }
                         }
                         int x = getBaseMetaTileEntity().getXCoord(), z = getBaseMetaTileEntity().getZCoord();
@@ -367,12 +405,11 @@ public class MTEPump extends MTEBasicMachine {
                             int y = getYOfPumpHead();
 
                             if (debugBlockPump && this.mPrimaryPumpedBlock != null) {
-                                GTLog.out.println(
-                                    "PUMP: Had an invalid pump block. Trying to find a fluid at Y: " + y
-                                        + " Previous blocks 1: "
-                                        + this.mPrimaryPumpedBlock
-                                        + " 2: "
-                                        + this.mSecondaryPumpedBlock);
+                                GT_FML_LOGGER.debug(
+                                    "PUMP: Had an invalid pump block. Trying to find a fluid at Y: {} Previous blocks 1: {} 2: {}",
+                                    y,
+                                    this.mPrimaryPumpedBlock,
+                                    this.mSecondaryPumpedBlock);
                             }
                             // First look down
                             checkForFluidToPump(x, y - 1, z);
@@ -400,19 +437,18 @@ public class MTEPump extends MTEBasicMachine {
                                 // 3) We have an empty queue and enough time has passed
                                 // 4) A long while has passed
                                 if (debugBlockPump) {
-                                    GTLog.out.println(
-                                        "PUMP: Rebuilding pump list - Size " + this.mPumpList.size()
-                                            + " WasPumping: "
-                                            + this.wasPumping
-                                            + " Timer "
-                                            + getBaseMetaTileEntity().getTimer());
+                                    GT_FML_LOGGER.debug(
+                                        "PUMP: Rebuilding pump list - Size {} WasPumping: {} Timer {}",
+                                        this.mPumpList.size(),
+                                        this.wasPumping,
+                                        getBaseMetaTileEntity().getTimer());
                                 }
                                 int yPump = getBaseMetaTileEntity().getYCoord() - 1, yHead = getYOfPumpHead();
 
                                 this.rebuildPumpQueue(x, yPump, z, yHead);
 
                                 if (debugBlockPump) {
-                                    GTLog.out.println("PUMP: Rebuilt pump list - Size " + this.mPumpList.size());
+                                    GT_FML_LOGGER.debug("PUMP: Rebuilt pump list - Size {}", this.mPumpList.size());
                                 }
                             }
                             if ((!tMovedOneDown) && (this.mPumpTimer <= 0)) {
@@ -436,7 +472,7 @@ public class MTEPump extends MTEBasicMachine {
                             this.clearQueue(false);
                         }
                     } else if (debugBlockPump) {
-                        GTLog.out.println("PUMP: Not enough energy? Free space?");
+                        GT_FML_LOGGER.debug("PUMP: Not enough energy? Free space?");
                     }
                 } else {
                     mMaxProgresstime = 0;
@@ -469,12 +505,12 @@ public class MTEPump extends MTEBasicMachine {
                             }
 
                             if (debugBlockPump) {
-                                GTLog.out.println("PUMP: Retracted one pipe");
+                                GT_FML_LOGGER.debug("PUMP: Retracted one pipe");
                             }
                         } else {
                             mRetractDone = true;
                             if (debugBlockPump) {
-                                GTLog.out.println("PUMP: Retract done");
+                                GT_FML_LOGGER.debug("PUMP: Retract done");
                             }
                         }
                     }
@@ -510,7 +546,7 @@ public class MTEPump extends MTEBasicMachine {
         if (!foundPipe) {
             // No mining pipes
             if (debugBlockPump) {
-                GTLog.out.println("PUMP: No mining pipes");
+                GT_FML_LOGGER.debug("PUMP: No mining pipes");
             }
             return false;
         }
@@ -519,7 +555,7 @@ public class MTEPump extends MTEBasicMachine {
         if (yHead <= 1) {
             // Let's not punch through bedrock
             if (debugBlockPump) {
-                GTLog.out.println("PUMP: At bottom");
+                GT_FML_LOGGER.debug("PUMP: At bottom");
             }
             return false;
         }
@@ -534,7 +570,7 @@ public class MTEPump extends MTEBasicMachine {
         if (!canReplaceBlock || (isFluid(aBlock) && !consumeFluid(x, yHead - 1, z) && !isWater(aBlock))) {
             // Either we didn't consume a fluid, or it's a non-replaceable block, or it's water.
             if (debugBlockPump) {
-                GTLog.out.println("PUMP: Did not consume fluid, or non-replaceable block found");
+                GT_FML_LOGGER.debug("PUMP: Did not consume fluid, or non-replaceable block found");
             }
             return false;
         }
@@ -548,7 +584,7 @@ public class MTEPump extends MTEBasicMachine {
             0,
             false)) {
             if (debugBlockPump) {
-                GTLog.out.println("PUMP: Could not set block below to new tip");
+                GT_FML_LOGGER.debug("PUMP: Could not set block below to new tip");
             }
             return false;
         }
@@ -575,9 +611,9 @@ public class MTEPump extends MTEBasicMachine {
 
         if (debugBlockPump) {
             if (foundPipe) {
-                GTLog.out.println("PUMP: Using 1 pipe");
+                GT_FML_LOGGER.error("PUMP: Using 1 pipe");
             } else {
-                GTLog.err.println("PUMP: Lowered pipe but could not find pipe in input");
+                GT_FML_LOGGER.error("PUMP: Lowered pipe but could not find pipe in input");
             }
         }
 
@@ -603,7 +639,7 @@ public class MTEPump extends MTEBasicMachine {
                     getBaseMetaTileEntity().getWorld()
                         .setBlock(x, y, z, MINING_PIPE_BLOCK);
                     if (debugBlockPump) {
-                        GTLog.out.println("PUMP: Hit pipes already in place, trying to merge");
+                        GT_FML_LOGGER.debug("PUMP: Hit pipes already in place, trying to merge");
                     }
                 }
                 y--;
@@ -622,7 +658,7 @@ public class MTEPump extends MTEBasicMachine {
                 getBaseMetaTileEntity().getWorld()
                     .setBlock(x, y + 1, z, MINING_PIPE_TIP_BLOCK);
                 if (debugBlockPump) {
-                    GTLog.out.println("PUMP: Did not find a tip at bottom, setting last pipe as tip");
+                    GT_FML_LOGGER.debug("PUMP: Did not find a tip at bottom, setting last pipe as tip");
                 }
             }
             return y + 1;
@@ -747,7 +783,7 @@ public class MTEPump extends MTEBasicMachine {
                 // Water/Lava that isn't a source block - do nothing here, but set the block to air and consume energy
                 // below
                 if (debugBlockPump) {
-                    GTLog.out.println("PUMP: Water/Lava - Not a source block");
+                    GT_FML_LOGGER.debug("PUMP: Water/Lava - Not a source block");
                 }
 
             } else if (getDrainableStack() == null) {
@@ -773,7 +809,7 @@ public class MTEPump extends MTEBasicMachine {
 
                     } else {
                         if (debugBlockPump) {
-                            GTLog.out.println("PUMP: Couldn't consume " + aBlock);
+                            GT_FML_LOGGER.debug("PUMP: Couldn't consume {}", aBlock);
                         }
                         // We didn't do anything
                         return false;
@@ -804,13 +840,14 @@ public class MTEPump extends MTEBasicMachine {
         int aLogLevel, ArrayList<String> aList) {
         aList.addAll(
             Arrays.asList(
-                EnumChatFormatting.BLUE + GTUtility.translate("GT5U.machines.pump") + EnumChatFormatting.RESET,
-                GTUtility.translate("GT5U.machines.workarea") + ": "
+                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump")
+                    + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
                     + EnumChatFormatting.GREEN
                     + (radiusConfig * 2 + 1)
                     + EnumChatFormatting.RESET
                     + " "
-                    + GTUtility.translate("GT5U.machines.blocks"),
+                    + StatCollector.translateToLocal("GT5U.machines.blocks"),
                 "Primary pumping fluid:   "
                     + (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName() : "None"),
                 "Secondary pumping fluid: "
@@ -835,13 +872,13 @@ public class MTEPump extends MTEBasicMachine {
     @Override
     public String[] getInfoData() {
         return new String[] {
-            EnumChatFormatting.BLUE + GTUtility.translate("GT5U.machines.pump") + EnumChatFormatting.RESET,
-            GTUtility.translate("GT5U.machines.workarea") + ": "
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump") + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
                 + EnumChatFormatting.GREEN
                 + (radiusConfig * 2 + 1)
                 + EnumChatFormatting.RESET
                 + " "
-                + GTUtility.translate("GT5U.machines.blocks") };
+                + StatCollector.translateToLocal("GT5U.machines.blocks") };
     }
 
     @SideOnly(Side.CLIENT)
@@ -850,4 +887,14 @@ public class MTEPump extends MTEBasicMachine {
         return SoundResource.GTCEU_LOOP_PUMP;
     }
 
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineBaseGui<>(this, this.getUIProperties()).useGregTechLogo(true)
+            .build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
 }

@@ -1,9 +1,11 @@
 package gregtech.api.metatileentity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
-import java.util.IllegalFormatException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -12,6 +14,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
@@ -19,57 +23,125 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import appeng.api.interfaces.IInterfaceNameProvider;
+import appeng.api.util.WorldCoord;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
+import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTLog;
+import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.Gregtech;
+import gregtech.crossmod.ae2.ChatComponentGhostCircuitSuffix;
+import gregtech.crossmod.ae2.ChatComponentNonConsumedItemsSuffix;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, IInterfaceNameProvider {
 
-    protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
-        mInventoryChanged = false;
+    // mNeedsUpdate: Client only, mark the block for rerender
+    // mNeedsTileUpdate: Server only, mark the block for sync using `S35PacketUpdateTileEntity`
+    // mInventoryChanged: whether the inventory had changed in the previous tick, currently not all code set this
+    // mTickDisabled: whether this block is currently or pending to be unregistered from loaded tile entity list.
+    protected boolean mNeedsUpdate = true, mNeedsTileUpdate = false, mInventoryChanged = false, mTickDisabled = false;
 
-    protected NBTTagCompound pendingDescriptionPacket;
+    private boolean mIgnoreNextUnload = false;
+
+    protected int oldX = 0, oldY = 0, oldZ = 0;
+    // oldRedstoneData: bitmask of redstone output for all 6 sides, apparently used for client rendering
+    // oldUpdateData: One byte of data that is supplied by MTE and synced with client
+    protected byte oldRedstoneData = 63, oldUpdateData = 0;
+
+    private byte mColor = 0;
+
+    protected boolean mMetaTileEntityValid;
+
+    protected boolean mNeedsClientTick = true;
+
+    private long mClientLoadTime = Long.MIN_VALUE;
 
     // Profiling
-    private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
+    private int[] mTimeStatistics;
     private boolean hasTimeStatisticsStarted;
     private int mTimeStatisticsIndex = 0;
     private int mLagWarningCount = 0;
 
     protected boolean createNewMetatileEntity(short aID) {
         if (aID <= 0 || aID >= GregTechAPI.METATILEENTITIES.length || GregTechAPI.METATILEENTITIES[aID] == null) {
-            GTLog.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
+            GT_FML_LOGGER.error("MetaID {} not loadable => locking TileEntity!", aID);
         } else {
             if (hasValidMetaTileEntity()) getMetaTileEntity().setBaseMetaTileEntity(null);
             GregTechAPI.METATILEENTITIES[aID].newMetaEntity(this)
                 .setBaseMetaTileEntity(this);
             mTickTimer = 0;
             mID = aID;
-            // If we have a pending description packet that was received before the MTE was created, load it
-            if (pendingDescriptionPacket != null) {
-                getMetaTileEntity().onDescriptionPacket(pendingDescriptionPacket);
-                pendingDescriptionPacket = null;
-            }
             return true;
         }
         return false;
     }
 
-    protected abstract void updateEntityProfiled();
+    @Override
+    public final boolean isTickDisabled() {
+        return mTickDisabled;
+    }
+
+    // Re-enable ticking after disable.
+    @Override
+    public void enableTicking() {
+        if (!mTickDisabled) return;
+        getWorld().func_147448_a(Collections.singleton(this));
+        mTickDisabled = false;
+    }
+
+    // Effectively triggers unloading of the current tile entity, this does not invalidate the tile entity.
+    // After unloading, the tile entity will be in the same state as a non-tickable tile entity.
+    // This method may fail silently due to various reason, and calling enableTicking in the same tick will
+    // cause the disable tick call to be effectively ignored, as adding tile entity take precedence over unloading.
+    @Override
+    public void tryDisableTicking() {
+        if (mTickDisabled) return;
+        if (getValidCoversMask() != 0) return;
+        if (mIgnoreNextUnload) return;
+        getWorld().func_147457_a(this);
+        mIgnoreNextUnload = true;
+        hasTimeStatisticsStarted = false;
+        if (mTimeStatistics != null) Arrays.fill(mTimeStatistics, 0);
+        mTickDisabled = true;
+    }
+
+    // This method is called both when the ticking is disabled for this block and the block is unloaded.
+    @Override
+    public final void onChunkUnload() {
+        if (mIgnoreNextUnload) {
+            mIgnoreNextUnload = false;
+            return;
+        }
+        onUnload();
+    }
+
+    public void onUnload() {
+        super.onChunkUnload();
+    }
+
+    protected final void writeCommonNBT(NBTTagCompound nbt) {
+        nbt.setByte("mColor", mColor);
+    }
+
+    protected final void readCommonNBT(NBTTagCompound nbt) {
+        mColor = nbt.getByte("mColor");
+    }
 
     @Override
     public final void updateEntity() {
@@ -127,6 +199,117 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     }
 
+    protected abstract void updateEntityProfiled();
+
+    /**
+     * Handles setting data on the first tick
+     */
+    protected final void handleFirstTick(boolean isServerSide) {
+        oldX = xCoord;
+        oldY = yCoord;
+        oldZ = zCoord;
+        if (isServerSide) {
+            checkDropCover();
+        } else {
+            mClientLoadTime = worldObj.getTotalWorldTime();
+            requestCoverDataIfNeeded();
+        }
+        worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+        getMetaTileEntity().onFirstTick(this);
+    }
+
+    /** Whether this tile has been on the client long enough to act on sound events. */
+    protected final boolean isClientSettled() {
+        return mClientLoadTime != Long.MIN_VALUE && worldObj.getTotalWorldTime() - mClientLoadTime > 20;
+    }
+
+    @Override
+    public void validate() {
+        super.validate();
+        mClientLoadTime = Long.MIN_VALUE;
+    }
+
+    /**
+     * Colorless is 0 for this function. Prefer {@link #getColorization()} for usual cases
+     *
+     * @return color from 0 to 16, 0 means colorless.
+     */
+    protected final byte getColorRaw() {
+        return mColor;
+    }
+
+    /**
+     * Colorless is 0 for this function. Prefer {@link #setColorization(byte)} for usual cases
+     */
+    protected final void setColorRaw(byte color) {
+        if (mColor == color) return;
+        mColor = color;
+        if (isClientSide()) {
+            if (hasValidMetaTileEntity()) {
+                getMetaTileEntity().onColorChangeClient(mColor);
+            }
+            issueTextureUpdate();
+        } else {
+            getMetaTileEntity().onColorChangeServer(mColor);
+            sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, mColor);
+        }
+    }
+
+    /**
+     * Handles marking the tile entity's block for an update on the client side
+     */
+    protected final void handleBlockUpdateClient() {
+        if (!mNeedsUpdate) {
+            return;
+        }
+        if (GTMod.proxy.mUseBlockUpdateHandler) {
+            BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, new WorldCoord(this));
+        } else {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
+        final IMetaTileEntity mte = getMetaTileEntity();
+        if (mte != null) mte.onTextureUpdate();
+        mNeedsUpdate = false;
+    }
+
+    /**
+     * Handles the tile entity's position changing
+     */
+    protected final void handlePositionChange() {
+        if (xCoord == oldX && yCoord == oldY && zCoord == oldZ) {
+            return;
+        }
+        oldX = xCoord;
+        oldY = yCoord;
+        oldZ = zCoord;
+        issueTileUpdate();
+        clearTileEntityBuffer();
+    }
+
+    /**
+     * Handles the update data changing
+     */
+    protected final void handleUpdateDataChangeServer() {
+        byte updateData = getMetaTileEntity().getUpdateData();
+        if (updateData == oldUpdateData) {
+            return;
+        }
+        oldUpdateData = updateData;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oldUpdateData);
+    }
+
+    /**
+     * Handles sided Redstone changing
+     */
+    protected final void handleSidedRedstoneChangeServer() {
+        byte redstone = getSidedRedstoneMask();
+        if (redstone == oldRedstoneData) {
+            return;
+        }
+        oldRedstoneData = redstone;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
+    }
+
     protected abstract void onTickFail();
 
     protected void saveMetaTileNBT(NBTTagCompound aNBT) {
@@ -151,13 +334,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
                 try {
                     getMetaTileEntity().saveNBTData(aNBT);
                 } catch (Exception e) {
-                    GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
-                    GTMod.logStackTrace(e);
+                    GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
                 }
             }
         } catch (Exception e) {
-            GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
-            GTMod.logStackTrace(e);
+            GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
         }
     }
 
@@ -208,11 +389,16 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     @Override
     public void startTimeStatistics() {
+        if (mTimeStatistics == null) {
+            mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
+        }
         hasTimeStatisticsStarted = true;
     }
 
     protected void addProfilingInformation(List<String> tList) {
-        if (hasTimeStatisticsStarted) {
+        if (mTickDisabled) {
+            tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.tick_disabled"));
+        } else if (hasTimeStatisticsStarted) {
             double tAverageTime = 0;
             double tWorstTime = 0;
             int amountOfZero = 0;
@@ -231,29 +417,28 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
                 tList.add(
-                    "Average CPU load of ~" + formatNumber(tAverageTime / samples)
-                        + "ns over "
-                        + formatNumber(samples)
-                        + " ticks with worst time of "
-                        + formatNumber(tWorstTime)
-                        + "ns.");
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.scanner.debug.tick_stats",
+                        formatNumber(tAverageTime / samples),
+                        formatNumber(samples),
+                        formatNumber(tWorstTime)));
             }
         } else {
             startTimeStatistics();
-            tList.add("Just started tick time statistics.");
+            tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.tick_stats_started"));
         }
         if (mLagWarningCount > 0) {
             tList.add(
-                "Caused " + (mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount)
-                    + " Lag Spike Warnings (anything taking longer than "
-                    + GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING
-                    + "ms) on the Server.");
+                StatCollector.translateToLocalFormatted(
+                    mLagWarningCount >= 10 ? "GT5U.scanner.debug.lag_warnings_many" : "GT5U.scanner.debug.lag_warnings",
+                    mLagWarningCount >= 10 ? GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING : mLagWarningCount,
+                    GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING));
         }
     }
 
     @Override
     public int[] getTimeStatistics() {
-        return mTimeStatistics;
+        return mTimeStatistics == null ? GTValues.emptyIntArray : mTimeStatistics;
     }
 
     @Override
@@ -267,54 +452,101 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return false;
     }
 
-    @Override
-    public Packet getDescriptionPacket() {
-        issueClientUpdate();
+    /**
+     * Run on the server when the block is marked for a full resync, e.g. when loading a chunk.
+     */
+    public void tileWriteToStream(ByteBuf buffer) {
+        buffer.writeShort(mID);
+        byte coverMask = getValidCoversMask();
+        buffer.writeByte(coverMask);
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            if ((coverMask & direction.flag) != 0) {
+                buffer.writeInt(getCoverAtSide(direction).getCoverID());
+            }
+        }
+    }
 
+    /**
+     * Runs on the client to receive full resync data from the server.
+     */
+    public void tileReadFromStream(ByteBuf buffer) {
+        short aID = buffer.readShort();
+        if (mID != aID && aID > 0) {
+            mID = aID;
+            createNewMetatileEntity(mID);
+        }
+        byte coverMask = buffer.readByte();
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            if ((coverMask & direction.flag) != 0) {
+                int coverID = buffer.readInt();
+                CoverRegistry.cover(this, direction, coverID);
+            } else {
+                CoverRegistry.cover(this, direction, CoverRegistry.NO_COVER.getCoverID());
+            }
+        }
+    }
+
+    public final void writeDescriptionBuffer(ByteBuf buffer) {
+        tileWriteToStream(buffer);
         IMetaTileEntity imte = getMetaTileEntity();
+        if (imte != null) {
+            imte.writeToStream(buffer);
+        }
+    }
 
-        if (imte == null) return null;
-
-        NBTTagCompound data = imte.getDescriptionData();
-
-        if (data == null) return null;
-
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, blockMetadata, data);
+    public final void readDescriptionBuffer(ByteBuf buffer) {
+        // Receive and create the mte first if it doesn't exist
+        tileReadFromStream(buffer);
+        IMetaTileEntity mte = getMetaTileEntity();
+        if (mte != null) {
+            mte.readFromStream(buffer);
+            mte.onClientSoundStateChanged();
+        }
+        issueTextureUpdate();
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        IMetaTileEntity imte = getMetaTileEntity();
+    public final Packet getDescriptionPacket() {
+        ByteBuf buffer = PooledByteBufAllocator.DEFAULT.directBuffer();
+        try {
+            writeDescriptionBuffer(buffer);
+            byte[] result = new byte[buffer.readableBytes()];
+            buffer.readBytes(result);
 
-        if (imte == null) {
-            // If we don't have a meta tile yet, it's likely because it hasn't been created on the client yet
-            // Let's just store a reference to the data and process it once the meta tile has been created
-            // If this tile entity is about to be destroyed then we won't be causing a memory leak here so this is safe
-            pendingDescriptionPacket = pkt.func_148857_g();
-            return;
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setByteArray("X", result);
+            return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbt);
+        } finally {
+            buffer.release();
         }
+    }
 
-        imte.onDescriptionPacket(pkt.func_148857_g());
+    @Override
+    public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        NBTTagCompound nbt = pkt.func_148857_g();
+        ByteBuf buffer = Unpooled.wrappedBuffer(nbt.getByteArray("X"));
+        try {
+            readDescriptionBuffer(buffer);
+        } finally {
+            buffer.release();
+        }
     }
 
     @Override
     public void issueTextureUpdate() {
         mNeedsUpdate = true;
-    }
-
-    @Override
-    public void issueClientUpdate() {
-        mSendClientData = true;
-    }
-
-    @Override
-    public void issueBlockUpdate() {
-        mNeedsBlockUpdate = true;
+        if (mTickDisabled && isClientSide()) {
+            handleBlockUpdateClient();
+        }
     }
 
     @Override
     public void issueTileUpdate() {
         mNeedsTileUpdate = true;
+        if (mTickDisabled) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            mNeedsTileUpdate = false;
+        }
     }
 
     @Override
@@ -328,7 +560,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return !isDead && hasValidMetaTileEntity();
     }
 
-    protected abstract boolean hasValidMetaTileEntity();
+    protected final boolean hasValidMetaTileEntity() {
+        return mMetaTileEntityValid;
+    }
+
+    abstract void refreshMetaTileEntityValidity();
 
     @Override
     public String[] getDescription() {
@@ -344,12 +580,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return hasValidMetaTileEntity() && getMetaTileEntity().allowCoverOnSide(side, coverItem);
-    }
-
-    @Override
-    public void issueCoverUpdate(ForgeDirection side) {
-        super.issueCoverUpdate(side);
-        issueClientUpdate();
     }
 
     /*
@@ -392,16 +622,49 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public String getInterfaceNameSuffix() {
+    public IChatComponent getInterfaceNameSuffix() {
+        IChatComponent suffix = null;
+
+        // Ghost + physical circuit suffix
+        List<Integer> circuitNumbers = new ArrayList<>();
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
-        if (ccs == null || !ccs.allowSelectCircuit()) return null;
-        ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
-        if (stack == null || stack.getItemDamage() <= 0) return null;
-        try {
-            return String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage());
-        } catch (IllegalFormatException e) {
-            return "";
+        if (ccs != null && ccs.allowSelectCircuit()) {
+            ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
+            if (stack != null && stack.getItemDamage() > 0) {
+                circuitNumbers.add(stack.getItemDamage());
+            }
         }
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IPhysicalCircuitDisplay provider) {
+            circuitNumbers.addAll(provider.getPhysicalCircuitNumbers());
+        }
+        if (!circuitNumbers.isEmpty()) {
+            suffix = new ChatComponentGhostCircuitSuffix(circuitNumbers);
+        }
+
+        // Non-consumed items suffix (e.g. molds in Extruder)
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof INonConsumedItemDisplay provider) {
+            List<ItemStack> items = provider.getNonConsumedInputDisplayItems();
+            if (!items.isEmpty()) {
+                IChatComponent itemSuffix = new ChatComponentNonConsumedItemsSuffix(items);
+                suffix = suffix == null ? itemSuffix : suffix.appendSibling(itemSuffix);
+            }
+        }
+
+        return suffix;
+    }
+
+    /**
+     * Shortens item names like "Mold (Ingot)" to just "Ingot", so the interface name stays readable. Names without a
+     * trailing parenthesised part are returned unchanged.
+     */
+    public static String getShortItemDisplayName(ItemStack stack) {
+        String name = stack.getDisplayName();
+        if (!name.endsWith(")")) return name;
+        int open = name.lastIndexOf('(');
+        if (open < 0) return name;
+        String inner = name.substring(open + 1, name.length() - 1)
+            .trim();
+        return inner.isEmpty() ? name : inner;
     }
 
     @Override

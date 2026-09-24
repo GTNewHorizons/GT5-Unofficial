@@ -6,7 +6,6 @@ gtnop.gui.undergroundFluid.name=地下流体信息
 gtnop.gui.ieVeinStat.name=IE虚拟矿脉信息
 gtnop.gui.bedrockOreStat.name=基岩矿脉信息
 
-gtnop.gui.nei.veinName=矿脉名称
 gtnop.gui.nei.primaryOre=上层矿石
 gtnop.gui.nei.secondaryOre=下层矿石
 gtnop.gui.nei.betweenOre=中层矿石
@@ -18,6 +17,9 @@ gtnop.gui.nei.restrictBiome=生物群系限制
 gtnop.gui.nei.dimension=维度
 gtnop.gui.nei.chance=几率
 gtnop.gui.nei.fluidAmount=储量
+gtnop.gui.nei.lineKey=%s
+gtnop.gui.nei.lineValue=%s
+gtnop.gui.nei.title=%s
 
 gtnop.gui.nei.chance.value=%s%%
 gtnop.gui.nei.fluidAmount.value=%s-%s

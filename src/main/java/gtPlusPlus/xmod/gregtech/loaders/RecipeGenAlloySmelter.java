@@ -29,7 +29,7 @@ public class RecipeGenAlloySmelter extends RecipeGenBase {
     }
 
     private void generateRecipes(final Material material) {
-        final int tVoltageMultiplier = material.vVoltageMultiplier;
+        final int tVoltageMultiplier = material.voltageMultiplier;
         final long duration = Math.max(material.getMass() * 2L, 1L);
         // Nuggets
         if (material.getIngot(1) != null && material.getNugget(1) != null) {

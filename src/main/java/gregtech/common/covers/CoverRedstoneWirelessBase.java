@@ -147,6 +147,14 @@ public abstract class CoverRedstoneWirelessBase extends Cover {
         processCoverData(byteData.readInt(), byteData.readBoolean());
     }
 
+    public void processCoverData(int frequency) {
+        processCoverData(frequency, this.privateChannel);
+    }
+
+    public void processCoverData(boolean privateChannel) {
+        processCoverData(this.frequency, privateChannel);
+    }
+
     protected void processCoverData(int frequency, boolean privateChannel) {
         if (this.frequency != frequency || this.privateChannel != privateChannel) {
             GregTechAPI.sWirelessRedstone.remove(getMapFrequency());

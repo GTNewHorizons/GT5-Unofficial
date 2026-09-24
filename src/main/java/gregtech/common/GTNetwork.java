@@ -1,6 +1,6 @@
 package gregtech.common;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.util.EnumMap;
 import java.util.List;

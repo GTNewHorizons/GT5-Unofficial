@@ -1,7 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,14 +17,19 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchUncertaintyGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.util.CommonValues;
@@ -33,13 +37,15 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class MTEHatchUncertainty extends MTEHatch {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
 
     private static IIconContainer ScreenON;
     private static IIconContainer ScreenOFF;
     private final short[] matrix = new short[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
         500, 500 };
     public byte selection = -1, mode = 0, status = (byte) 0b11111111; // all 8 bits set
+    private boolean showValues = false;
     private boolean stopChecking = false;
     private String clientLocale = "en_US";
 
@@ -57,8 +63,9 @@ public class MTEHatchUncertainty extends MTEHatch {
         return matrix[index];
     }
 
-    public void setMatrixElemet(short matrixElement, int index) {
+    public void setMatrixElement(short matrixElement, int index) {
         matrix[index] = matrixElement;
+        compute();
     }
 
     public byte getSelection() {
@@ -85,12 +92,20 @@ public class MTEHatchUncertainty extends MTEHatch {
         this.status = status;
     }
 
+    public boolean isShowingValues() {
+        return showValues;
+    }
+
+    public void setShowValues(boolean showValues) {
+        this.showValues = showValues;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/UC");
-        ScreenON = Textures.BlockIcons.custom("iconsets/UC_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC_ACTIVE");
     }
 
     @Override
@@ -112,10 +127,15 @@ public class MTEHatchUncertainty extends MTEHatch {
                 status = (byte) 0b11111111;
             } else {
                 aBaseMetaTileEntity.setActive(true);
+
+                int oldStatus = status;
+
                 if (!stopChecking) { // No point in making calculations if the entire matrix has faded to 0
                     shift();
                     compute();
                 }
+
+                if (status == 0 && oldStatus != status) notifyWatchers();
             }
         }
     }
@@ -132,8 +152,7 @@ public class MTEHatchUncertainty extends MTEHatch {
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            translateToLocalFormatted("tt.keyword.Status", clientLocale) + ": " + EnumChatFormatting.GOLD + status };
+        return new String[] { IGregTechDeviceInformation.encode("tt.infodata.uncertainty.status", status) };
     }
 
     @Override
@@ -154,6 +173,7 @@ public class MTEHatchUncertainty extends MTEHatch {
         aNBT.setByte("mSel", selection);
         aNBT.setByte("mMode", mode);
         aNBT.setByte("mStatus", status);
+        aNBT.setBoolean("mShowValues", showValues);
         NBTTagCompound mat = new NBTTagCompound();
         for (int i = 0; i < 16; i++) {
             mat.setShort(Integer.toString(i), matrix[i]);
@@ -167,6 +187,7 @@ public class MTEHatchUncertainty extends MTEHatch {
         selection = aNBT.getByte("mSel");
         mode = aNBT.getByte("mMode");
         status = aNBT.getByte("mStatus");
+        showValues = aNBT.getBoolean("mShowValues");
         NBTTagCompound mat = aNBT.getCompoundTag("mMat");
         for (int i = 0; i < 16; i++) {
             matrix[i] = mat.getShort(Integer.toString(i));
@@ -207,7 +228,7 @@ public class MTEHatchUncertainty extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        String[] description = new String[4];
+        String[] description = new String[mTier < 6 ? 4 : 3];
         description[0] = CommonValues.TEC_MARK_EM;
         description[1] = translateToLocal("gt.blockmachines.hatch.certain.desc.0");
         description[2] = EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
@@ -351,5 +372,10 @@ public class MTEHatchUncertainty extends MTEHatch {
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchUncertaintyGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
     }
 }

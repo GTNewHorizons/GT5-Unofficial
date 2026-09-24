@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
@@ -240,26 +241,26 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
                 // Quantum Anomaly
                 GregtechItemList.Laser_Lens_Special.get(0),
-                Materials.TranscendentMetal.getNanite(1),
+                Materials.Universium.getNanite(2),
                 Materials.Eternity.getBlocks(8),
                 ItemList.Circuit_Chip_APIC.get(64),
-                ItemList.Timepiece.get(4))
-            .itemOutputs(Materials.Eternity.getNanite(4))
+                ItemList.Timepiece.get(1))
+            .itemOutputs(Materials.Eternity.getNanite(1))
             .fluidInputs(
-                Materials.Space.getMolten(8 * INGOTS),
-                Materials.ExcitedDTSC.getFluid(50_000),
+                Materials.Space.getMolten(2 * INGOTS),
+                Materials.ExcitedDTSC.getFluid(12_500),
                 Materials.PrimordialMatter.getFluid(64_000))
             .metadata(NANO_FORGE_TIER, 3)
-            .duration(12 * MINUTES + 30 * SECONDS)
+            .duration(3 * MINUTES + 7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(nanoForgeRecipes);
 
-        // MagMatter nanites, currently only used in the production of Stargates.
+        // MagMatter nanites
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcillium, 0, false),
-                Materials.Universium.getNanite(1),
+                Materials.Universium.getNanite(4),
                 Materials.MagMatter.getBlocks(8),
                 ItemList.Circuit_Chip_YPIC.get(64),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MAX, 1))

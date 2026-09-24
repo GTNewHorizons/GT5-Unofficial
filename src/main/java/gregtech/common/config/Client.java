@@ -207,38 +207,47 @@ public class Client {
 
         @Config.Comment("if true, enables ambient-occlusion smooth lighting on tiles.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Ambient Occlusion on Tiles")
         public boolean renderTileAmbientOcclusion;
 
         @Config.Comment("if true, enables glowing of the machine controllers.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Controller Glow")
         public boolean renderGlowTextures;
 
         @Config.Comment("if true, render flipped machine with flipped textures.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Flipped Machine Textures")
         public boolean renderFlippedMachinesFlipped;
 
         @Config.Comment("if true, render indicators on hatches.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Hatch Indicators")
         public boolean renderIndicatorsOnHatch;
 
         @Config.Comment("if true, enables dirt particles when pollution reaches the threshold.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Pollution Dirt")
         public boolean renderDirtParticles;
 
         @Config.Comment("if true, enables pollution fog when pollution reaches the threshold.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Pollution Fog")
         public boolean renderPollutionFog;
 
         @Config.Comment("if true, enables the green -> red durability for an item's damage value.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Item Durability")
         public boolean renderItemDurabilityBar;
 
         @Config.Comment("if true, enables the blue charge bar for an electric item's charge.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Item Charge Bar")
         public boolean renderItemChargeBar;
 
         @Config.Comment("enables BaseMetaTileEntity block updates handled by BlockUpdateHandler.")
         @Config.DefaultBoolean(false)
+        @Config.Name("Use BlockUpdateHandler")
         public boolean useBlockUpdateHandler;
 
         @Config.Comment("Disables coil lighting. Requires world reload (f3 + a or relog).")
@@ -265,21 +274,36 @@ public class Client {
         @Config.Name("Powerfail Notification Timeout")
         public int powerfailNotificationTimeout;
 
+        @Config.Comment("Detrav scanner ore markers (right-click an ore in the scan) disappear after this many seconds. 0 = never.")
+        @Config.DefaultInt(120)
+        @Config.Name("Detrav Ore Marker Timeout")
+        @Config.RangeInt(min = 0, max = 3600)
+        public int detravOreMarkerTimeout;
+
         @Config.Comment("Enables or disables Trans Metal rendering, also impacts motors, pistons etc with same rendering. Accessibility option.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Transcendent Metal Rendering")
         public boolean renderTransMetalFancy;
 
         @Config.Comment("Enables or disables Infinity rendering, also impacts all items using the same effect. Accessibility option.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Infinity Rendering")
         public boolean renderInfinityFancy;
 
         @Config.Comment("Enables or disables Cosmic Neutronium fuzz rendering, also impacts all items using the same effect. Accessibility option.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Cosmic Neutronium Rendering")
         public boolean renderCosmicNeutroniumFancy;
 
         @Config.Comment("Enables or disables Six-Phased Copper glitch rendering, also impacts all items using the same effect. Accessibility option.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Six-Phased Copper Rendering")
         public boolean renderGlitchFancy;
+
+        @Config.Comment("Enables or disables Universium rendering, also impacts all items using the same effect. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Universium Rendering")
+        public boolean renderUniversiumFancy;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")
@@ -319,6 +343,23 @@ public class Client {
         @Config.Comment({ "The color preset of the waila progress bar", "Set to Custom to specify your own color" })
         @Config.DefaultEnum("Green")
         public TTRenderGTProgressBar.ProgressBarColor ProgressBarColor = TTRenderGTProgressBar.ProgressBarColor.Green;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Facing")
+        public boolean showFacing;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Idle")
+        public boolean showIdle;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Working Disable")
+        public boolean showWorkingDisable;
+
+        @Config.Comment("if true, shows the live EU/t throughput of a cable in its Waila tooltip.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Cable Throughput")
+        public boolean showCableThroughput;
     }
 
     @Config.LangKey("GT5U.gui.config.client.nei")
@@ -378,7 +419,7 @@ public class Client {
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting ticBoltMolding = ENABLE;
 
-            @Config.LangKey("gtpp.recipe.category.abs_non_alloy_recipes")
+            @Config.LangKey("gt.recipe.category.abs_non_alloy_recipes")
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting absNonAlloyRecipes = ENABLE;
         }
@@ -400,6 +441,11 @@ public class Client {
 
     @Config.LangKey("GT5U.gui.config.client.tooltip")
     public static class Tooltip {
+
+        @Config.Comment("Enabled show energy capacity of machines")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Energy Capacity")
+        public boolean showEnergyCapacity;
 
         @Config.Comment("Enabled show Formula")
         @Config.DefaultBoolean(true)
@@ -426,15 +472,20 @@ public class Client {
         @Config.Name("Show Fluid State")
         public boolean showFluidState;
 
-        @Config.Comment("Enabled show GT++ Radioactive Text")
+        @Config.Comment("Enabled show Radioactive Text")
         @Config.DefaultBoolean(true)
-        @Config.Name("Show GT++ Radioactive Text")
+        @Config.Name("Show Radioactive Text")
         public boolean showRadioactiveText;
 
-        @Config.Comment("Enabled show GT++ Hot Ingot Text")
+        @Config.Comment("Enabled show Hot Ingot Text")
         @Config.DefaultBoolean(true)
-        @Config.Name("Show GT++ Hot Ingot Text")
+        @Config.Name("Show Hot Ingot Text")
         public boolean showHotIngotText;
+
+        @Config.Comment("Enabled show Toxic Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Toxic Text")
+        public boolean showToxicText;
 
         @Config.Comment("Enabled show GT++ Ctrl Text")
         @Config.DefaultBoolean(true)

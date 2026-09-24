@@ -49,8 +49,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_ZPM;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -99,7 +97,7 @@ public class GregtechCustomHatches {
                 128000, // Capacity
                 Hatch_Input_Pyrotheum.ID, // ID
                 "hatch.pyrotheum.input.tier.00", // unlocal name
-                "Pyrotheum Heating Vent", // Local name
+                "Pyrotheum Heating Hatch", // Local name
                 5 // Casing texture
             ).getStackForm(1L));
 
@@ -160,172 +158,90 @@ public class GregtechCustomHatches {
 
     private static void run2() {
         GregtechItemList.Hatch_Muffler_Adv_LV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_LV.ID,
-                "hatch.muffler.adv.tier.01",
-                "Advanced Muffler Hatch (LV)",
-                1)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_LV.ID, "hatch.muffler.adv.tier.01", "", 1))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_MV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_MV.ID,
-                "hatch.muffler.adv.tier.02",
-                "Advanced Muffler Hatch (MV)",
-                2)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_MV.ID, "hatch.muffler.adv.tier.02", "", 2))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_HV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_HV.ID,
-                "hatch.muffler.adv.tier.03",
-                "Advanced Muffler Hatch (HV)",
-                3)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_HV.ID, "hatch.muffler.adv.tier.03", "", 3))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_EV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_EV.ID,
-                "hatch.muffler.adv.tier.04",
-                "Advanced Muffler Hatch (EV)",
-                4)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_EV.ID, "hatch.muffler.adv.tier.04", "", 4))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_IV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_IV.ID,
-                "hatch.muffler.adv.tier.05",
-                "Advanced Muffler Hatch (IV)",
-                5)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_IV.ID, "hatch.muffler.adv.tier.05", "", 5))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_LuV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_LuV.ID,
-                "hatch.muffler.adv.tier.06",
-                "Advanced Muffler Hatch (LuV)",
-                6)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_LuV.ID, "hatch.muffler.adv.tier.06", "", 6))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_ZPM.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_ZPM.ID,
-                "hatch.muffler.adv.tier.07",
-                "Advanced Muffler Hatch (ZPM)",
-                7)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_ZPM.ID, "hatch.muffler.adv.tier.07", "", 7))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_UV.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_UV.ID,
-                "hatch.muffler.adv.tier.08",
-                "Advanced Muffler Hatch (UV)",
-                8)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_UV.ID, "hatch.muffler.adv.tier.08", "", 8))
+                .getStackForm(1L));
         GregtechItemList.Hatch_Muffler_Adv_MAX.set(
-            (new MTEHatchMufflerAdvanced(
-                Hatch_Muffler_Adv_MAX.ID,
-                "hatch.muffler.adv.tier.09",
-                "Advanced Muffler Hatch (UHV)",
-                9)).getStackForm(1L));
+            (new MTEHatchMufflerAdvanced(Hatch_Muffler_Adv_MAX.ID, "hatch.muffler.adv.tier.09", "", 9))
+                .getStackForm(1L));
     }
 
     private static void run3() {
-        String DEPRECATED = EnumChatFormatting.RED + "DEPRECATED! " + EnumChatFormatting.RESET;
         GregtechItemList.Hatch_SuperBus_Input_LV.set(
-            ((IMetaTileEntity) makeInputBus(
-                Hatch_SuperBus_Input_LV.ID,
-                "hatch.superbus.input.tier.01",
-                DEPRECATED + "Super Bus (I) (LV)",
-                1)).getStackForm(1L));
+            ((IMetaTileEntity) makeInputBus(Hatch_SuperBus_Input_LV.ID, "hatch.superbus.input.tier.01", "", 1))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Input_MV.set(
-            ((IMetaTileEntity) makeInputBus(
-                Hatch_SuperBus_Input_MV.ID,
-                "hatch.superbus.input.tier.02",
-                DEPRECATED + "Super Bus (I) (MV)",
-                2)).getStackForm(1L));
+            ((IMetaTileEntity) makeInputBus(Hatch_SuperBus_Input_MV.ID, "hatch.superbus.input.tier.02", "", 2))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Input_HV.set(
-            ((IMetaTileEntity) makeInputBus(
-                Hatch_SuperBus_Input_HV.ID,
-                "hatch.superbus.input.tier.03",
-                DEPRECATED + "Super Bus (I) (HV)",
-                3)).getStackForm(1L));
+            ((IMetaTileEntity) makeInputBus(Hatch_SuperBus_Input_HV.ID, "hatch.superbus.input.tier.03", "", 3))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Input_EV.set(
-            ((IMetaTileEntity) makeInputBus(
-                Hatch_SuperBus_Input_EV.ID,
-                "hatch.superbus.input.tier.04",
-                DEPRECATED + "Super Bus (I) (EV)",
-                4)).getStackForm(1L));
+            ((IMetaTileEntity) makeInputBus(Hatch_SuperBus_Input_EV.ID, "hatch.superbus.input.tier.04", "", 4))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Input_IV.set(
-            ((IMetaTileEntity) makeInputBus(
-                Hatch_SuperBus_Input_IV.ID,
-                "hatch.superbus.input.tier.05",
-                DEPRECATED + "Super Bus (I) (IV)",
-                5)).getStackForm(1L));
+            ((IMetaTileEntity) makeInputBus(Hatch_SuperBus_Input_IV.ID, "hatch.superbus.input.tier.05", "", 5))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Input_LuV.set(
-            ((IMetaTileEntity) makeInputBus(
-                Hatch_SuperBus_Input_LuV.ID,
-                "hatch.superbus.input.tier.06",
-                DEPRECATED + "Super Bus (I) (LuV)",
-                6)).getStackForm(1L));
+            ((IMetaTileEntity) makeInputBus(Hatch_SuperBus_Input_LuV.ID, "hatch.superbus.input.tier.06", "", 6))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Input_ZPM.set(
-            ((IMetaTileEntity) makeInputBus(
-                Hatch_SuperBus_Input_ZPM.ID,
-                "hatch.superbus.input.tier.07",
-                DEPRECATED + "Super Bus (I) (ZPM)",
-                7)).getStackForm(1L));
+            ((IMetaTileEntity) makeInputBus(Hatch_SuperBus_Input_ZPM.ID, "hatch.superbus.input.tier.07", "", 7))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Input_UV.set(
-            ((IMetaTileEntity) makeInputBus(
-                Hatch_SuperBus_Input_UV.ID,
-                "hatch.superbus.input.tier.08",
-                DEPRECATED + "Super Bus (I) (UV)",
-                8)).getStackForm(1L));
+            ((IMetaTileEntity) makeInputBus(Hatch_SuperBus_Input_UV.ID, "hatch.superbus.input.tier.08", "", 8))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Input_MAX.set(
-            ((IMetaTileEntity) makeInputBus(
-                Hatch_SuperBus_Input_UHV.ID,
-                "hatch.superbus.input.tier.09",
-                DEPRECATED + "Super Bus (I) (UHV)",
-                9)).getStackForm(1L));
+            ((IMetaTileEntity) makeInputBus(Hatch_SuperBus_Input_UHV.ID, "hatch.superbus.input.tier.09", "", 9))
+                .getStackForm(1L));
 
         GregtechItemList.Hatch_SuperBus_Output_LV.set(
-            ((IMetaTileEntity) makeOutputBus(
-                Hatch_SuperBus_Output_LV.ID,
-                "hatch.superbus.output.tier.01",
-                DEPRECATED + "Super Bus (O) (LV)",
-                1)).getStackForm(1L));
+            ((IMetaTileEntity) makeOutputBus(Hatch_SuperBus_Output_LV.ID, "hatch.superbus.output.tier.01", "", 1))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Output_MV.set(
-            ((IMetaTileEntity) makeOutputBus(
-                Hatch_SuperBus_Output_MV.ID,
-                "hatch.superbus.output.tier.02",
-                DEPRECATED + "Super Bus (O) (MV)",
-                2)).getStackForm(1L));
+            ((IMetaTileEntity) makeOutputBus(Hatch_SuperBus_Output_MV.ID, "hatch.superbus.output.tier.02", "", 2))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Output_HV.set(
-            ((IMetaTileEntity) makeOutputBus(
-                Hatch_SuperBus_Output_HV.ID,
-                "hatch.superbus.output.tier.03",
-                DEPRECATED + "Super Bus (O) (HV)",
-                3)).getStackForm(1L));
+            ((IMetaTileEntity) makeOutputBus(Hatch_SuperBus_Output_HV.ID, "hatch.superbus.output.tier.03", "", 3))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Output_EV.set(
-            ((IMetaTileEntity) makeOutputBus(
-                Hatch_SuperBus_Output_EV.ID,
-                "hatch.superbus.output.tier.04",
-                DEPRECATED + "Super Bus (O) (EV)",
-                4)).getStackForm(1L));
+            ((IMetaTileEntity) makeOutputBus(Hatch_SuperBus_Output_EV.ID, "hatch.superbus.output.tier.04", "", 4))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Output_IV.set(
-            ((IMetaTileEntity) makeOutputBus(
-                Hatch_SuperBus_Output_IV.ID,
-                "hatch.superbus.output.tier.05",
-                DEPRECATED + "Super Bus (O) (IV)",
-                5)).getStackForm(1L));
+            ((IMetaTileEntity) makeOutputBus(Hatch_SuperBus_Output_IV.ID, "hatch.superbus.output.tier.05", "", 5))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Output_LuV.set(
-            ((IMetaTileEntity) makeOutputBus(
-                Hatch_SuperBus_Output_LuV.ID,
-                "hatch.superbus.output.tier.06",
-                DEPRECATED + "Super Bus (O) (LuV)",
-                6)).getStackForm(1L));
+            ((IMetaTileEntity) makeOutputBus(Hatch_SuperBus_Output_LuV.ID, "hatch.superbus.output.tier.06", "", 6))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Output_ZPM.set(
-            ((IMetaTileEntity) makeOutputBus(
-                Hatch_SuperBus_Output_ZPM.ID,
-                "hatch.superbus.output.tier.07",
-                DEPRECATED + "Super Bus (O) (ZPM)",
-                7)).getStackForm(1L));
+            ((IMetaTileEntity) makeOutputBus(Hatch_SuperBus_Output_ZPM.ID, "hatch.superbus.output.tier.07", "", 7))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Output_UV.set(
-            ((IMetaTileEntity) makeOutputBus(
-                Hatch_SuperBus_Output_UV.ID,
-                "hatch.superbus.output.tier.08",
-                DEPRECATED + "Super Bus (O) (UV)",
-                8)).getStackForm(1L));
+            ((IMetaTileEntity) makeOutputBus(Hatch_SuperBus_Output_UV.ID, "hatch.superbus.output.tier.08", "", 8))
+                .getStackForm(1L));
         GregtechItemList.Hatch_SuperBus_Output_MAX.set(
-            ((IMetaTileEntity) makeOutputBus(
-                Hatch_SuperBus_Output_UHV.ID,
-                "hatch.superbus.output.tier.09",
-                DEPRECATED + "Super Bus (O) (UHV)",
-                9)).getStackForm(1L));
+            ((IMetaTileEntity) makeOutputBus(Hatch_SuperBus_Output_UHV.ID, "hatch.superbus.output.tier.09", "", 9))
+                .getStackForm(1L));
     }
 
     private static MTEHatchSuperBusInput makeInputBus(int id, String unlocalizedName, String localizedName, int tier) {
@@ -342,41 +258,33 @@ public class GregtechCustomHatches {
 
     private static void run4() {
         GregtechItemList.ChiselBus_LV
-            .set((makeChiselBus(ChiselBus_LV.ID, "hatch.chisel.tier.01", "Chisel Bus I", 1)).getStackForm(1L));
+            .set((makeChiselBus(ChiselBus_LV.ID, "hatch.chisel.tier.01", "", 1)).getStackForm(1L));
         GregtechItemList.ChiselBus_MV
-            .set((makeChiselBus(ChiselBus_MV.ID, "hatch.chisel.tier.02", "Chisel Bus II", 2)).getStackForm(1L));
+            .set((makeChiselBus(ChiselBus_MV.ID, "hatch.chisel.tier.02", "", 2)).getStackForm(1L));
         GregtechItemList.ChiselBus_HV
-            .set((makeChiselBus(ChiselBus_HV.ID, "hatch.chisel.tier.03", "Chisel Bus III", 3)).getStackForm(1L));
+            .set((makeChiselBus(ChiselBus_HV.ID, "hatch.chisel.tier.03", "", 3)).getStackForm(1L));
 
     }
 
     private static void run6() {
-        GregtechItemList.Hatch_Solidifier_I.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_I.ID, "hatch.solidifier.tier.05", "Solidifier Hatch I", 5)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Solidifier_II.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_II.ID, "hatch.solidifier.tier.06", "Solidifier Hatch II", 6)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Solidifier_III.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_III.ID, "hatch.solidifier.tier.07", "Solidifier Hatch III", 7)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Solidifier_IV.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_IV.ID, "hatch.solidifier.tier.08", "Solidifier Hatch IV", 8)
-                .getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_I
+            .set(new MTEHatchSolidifier(Hatch_Solidifier_I.ID, "hatch.solidifier.tier.05", "", 5).getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_II
+            .set(new MTEHatchSolidifier(Hatch_Solidifier_II.ID, "hatch.solidifier.tier.06", "", 6).getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_III
+            .set(new MTEHatchSolidifier(Hatch_Solidifier_III.ID, "hatch.solidifier.tier.07", "", 7).getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_IV
+            .set(new MTEHatchSolidifier(Hatch_Solidifier_IV.ID, "hatch.solidifier.tier.08", "", 8).getStackForm(1L));
     }
 
     private static void run7() {
-        GregtechItemList.Hatch_Extrusion_I.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_I.ID, "hatch.extrusion.tier.05", "Extrusion Bus I", 5)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Extrusion_II.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_II.ID, "hatch.extrusion.tier.06", "Extrusion Bus II", 6)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Extrusion_III.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_III.ID, "hatch.extrusion.tier.07", "Extrusion Bus III", 7)
-                .getStackForm(1L));
-        GregtechItemList.Hatch_Extrusion_IV.set(
-            new MTEHatchExtrusion(Hatch_Extrusion_IV.ID, "hatch.extrusion.tier.08", "Extrusion Bus IV", 8)
-                .getStackForm(1L));
+        GregtechItemList.Hatch_Extrusion_I
+            .set(new MTEHatchExtrusion(Hatch_Extrusion_I.ID, "hatch.extrusion.tier.05", "", 5).getStackForm(1L));
+        GregtechItemList.Hatch_Extrusion_II
+            .set(new MTEHatchExtrusion(Hatch_Extrusion_II.ID, "hatch.extrusion.tier.06", "", 6).getStackForm(1L));
+        GregtechItemList.Hatch_Extrusion_III
+            .set(new MTEHatchExtrusion(Hatch_Extrusion_III.ID, "hatch.extrusion.tier.07", "", 7).getStackForm(1L));
+        GregtechItemList.Hatch_Extrusion_IV
+            .set(new MTEHatchExtrusion(Hatch_Extrusion_IV.ID, "hatch.extrusion.tier.08", "", 8).getStackForm(1L));
     }
 }

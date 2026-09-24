@@ -10,7 +10,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 @SuppressWarnings("unused")
-public abstract class WorldSpawnedEventBuilder implements Runnable {
+public abstract class WorldSpawnedEventBuilder<This extends WorldSpawnedEventBuilder<This>> implements Runnable {
 
     private static final String ILLEGAL_STATE_STR1 = "Position, identifier and world must be set";
     /* Variables */
@@ -23,194 +23,135 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         return world;
     }
 
-    public WorldSpawnedEventBuilder setWorld(World world) {
+    public This setWorld(World world) {
         this.world = world;
-        return this;
+        return getThis();
     }
 
     /* Methods */
 
-    @SuppressWarnings("unchecked")
-    public <U extends WorldSpawnedEventBuilder> void times(int times, Consumer<U> action) {
+    protected abstract This getThis();
+
+    public void times(int times, Consumer<? super This> action) {
         Objects.requireNonNull(action);
         for (int i = 0; i < times; i++) {
-            action.accept((U) this);
+            action.accept(getThis());
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public <U extends WorldSpawnedEventBuilder> void times(int times, BiConsumer<U, Integer> action) {
+    public void times(int times, BiConsumer<? super This, Integer> action) {
         Objects.requireNonNull(action);
         for (int i = 0; i < times; i++) {
-            action.accept((U) this, i);
+            action.accept(getThis(), i);
         }
-    }
-
-    /* Interfaces */
-
-    private interface IPositionedWorldSpawnedEvent {
-
-        Vec3 getPosition();
-
-        IPositionedWorldSpawnedEvent setPosition(Vec3 position);
-
-        IPositionedWorldSpawnedEvent setPosition(double x, double y, double z);
-    }
-
-    private interface IEntityWorldSpawnedEvent {
-
-        Entity getEntity();
-
-        IEntityWorldSpawnedEvent setEntity(Entity entity);
-    }
-
-    private interface IEntityPlayerWorldSpawnedEvent {
-
-        EntityPlayer getEntityPlayer();
-
-        IEntityPlayerWorldSpawnedEvent setEntityPlayer(EntityPlayer entity);
-    }
-
-    private interface IStringIdentifierWorldSpawnedEvent {
-
-        String getIdentifier();
-
-        IStringIdentifierWorldSpawnedEvent setIdentifier(String identifier);
-
-        IStringIdentifierWorldSpawnedEvent setIdentifier(Enum<?> identifier);
-    }
-
-    private interface ISoundWorldSpawnedEvent {
-
-        float getPitch();
-
-        float getVolume();
-
-        ISoundWorldSpawnedEvent setPitch(float pitch);
-
-        ISoundWorldSpawnedEvent setVolume(float volume);
     }
 
     /* Abstract Classes */
 
-    private abstract static class EntityWorldSpawnedEventBuilder extends WorldSpawnedEventBuilder
-        implements IEntityWorldSpawnedEvent {
+    private abstract static class EntityWorldSpawnedEventBuilder<This extends EntityWorldSpawnedEventBuilder<This>>
+        extends WorldSpawnedEventBuilder<This> {
 
         private Entity entity;
 
-        @Override
         public Entity getEntity() {
             return entity;
         }
 
-        @Override
-        public EntityWorldSpawnedEventBuilder setEntity(Entity entity) {
+        public This setEntity(Entity entity) {
             this.entity = entity;
-            return this;
+            return getThis();
         }
     }
 
-    private abstract static class PositionedEntityWorldSpawnedEventBuilder extends EntityWorldSpawnedEventBuilder
-        implements IPositionedWorldSpawnedEvent {
+    private abstract static class PositionedEntityWorldSpawnedEventBuilder<This extends PositionedEntityWorldSpawnedEventBuilder<This>>
+        extends EntityWorldSpawnedEventBuilder<This> {
 
         private Vec3 position;
 
-        @Override
         public Vec3 getPosition() {
             return position;
         }
 
-        @Override
-        public PositionedEntityWorldSpawnedEventBuilder setPosition(Vec3 position) {
+        public This setPosition(Vec3 position) {
             this.position = position;
-            return this;
+            return getThis();
         }
 
-        @Override
-        public PositionedEntityWorldSpawnedEventBuilder setPosition(double x, double y, double z) {
+        public This setPosition(double x, double y, double z) {
             this.position = Vec3.createVectorHelper(x, y, z);
-            return this;
+            return getThis();
         }
     }
 
-    private abstract static class PositionedWorldSpawnedEventBuilder extends WorldSpawnedEventBuilder
-        implements IPositionedWorldSpawnedEvent {
+    private abstract static class PositionedWorldSpawnedEventBuilder<This extends PositionedWorldSpawnedEventBuilder<This>>
+        extends WorldSpawnedEventBuilder<This> {
 
         private Vec3 position;
 
-        @Override
         public Vec3 getPosition() {
             return position;
         }
 
-        @Override
-        public PositionedWorldSpawnedEventBuilder setPosition(Vec3 position) {
+        public This setPosition(Vec3 position) {
             this.position = position;
-            return this;
+            return getThis();
         }
 
-        @Override
-        public PositionedWorldSpawnedEventBuilder setPosition(double x, double y, double z) {
+        public This setPosition(double x, double y, double z) {
             this.position = Vec3.createVectorHelper(x, y, z);
-            return this;
+            return getThis();
         }
     }
 
-    private abstract static class StringIdentifierPositionedWorldSpawnedEventBuilder
-        extends PositionedWorldSpawnedEventBuilder implements IStringIdentifierWorldSpawnedEvent {
+    private abstract static class StringIdentifierPositionedWorldSpawnedEventBuilder<This extends StringIdentifierPositionedWorldSpawnedEventBuilder<This>>
+        extends PositionedWorldSpawnedEventBuilder<This> {
 
         private String identifier;
 
-        @Override
         public String getIdentifier() {
             return identifier;
         }
 
-        @Override
-        public StringIdentifierPositionedWorldSpawnedEventBuilder setIdentifier(String identifier) {
+        public This setIdentifier(String identifier) {
             this.identifier = identifier;
-            return this;
+            return getThis();
         }
 
-        @Override
-        public StringIdentifierPositionedWorldSpawnedEventBuilder setIdentifier(Enum<?> identifier) {
+        public This setIdentifier(Enum<?> identifier) {
             this.identifier = identifier.toString();
-            return this;
+            return getThis();
         }
     }
 
-    private abstract static class SoundStringIdentifierPositionedWorldSpawnedEventBuilder
-        extends StringIdentifierPositionedWorldSpawnedEventBuilder implements ISoundWorldSpawnedEvent {
+    private abstract static class SoundStringIdentifierPositionedWorldSpawnedEventBuilder<This extends SoundStringIdentifierPositionedWorldSpawnedEventBuilder<This>>
+        extends StringIdentifierPositionedWorldSpawnedEventBuilder<This> {
 
         private float pitch;
         private float volume;
 
-        @Override
         public float getPitch() {
             return pitch;
         }
 
-        @Override
         public float getVolume() {
             return volume;
         }
 
-        @Override
-        public SoundStringIdentifierPositionedWorldSpawnedEventBuilder setPitch(float pitch) {
+        public This setPitch(float pitch) {
             this.pitch = pitch;
-            return this;
+            return getThis();
         }
 
-        @Override
-        public SoundStringIdentifierPositionedWorldSpawnedEventBuilder setVolume(float volume) {
+        public This setVolume(float volume) {
             this.volume = volume;
-            return this;
+            return getThis();
         }
     }
 
     /* Implementations */
 
-    public static final class ParticleEventBuilder extends StringIdentifierPositionedWorldSpawnedEventBuilder {
+    public static final class ParticleEventBuilder
+        extends StringIdentifierPositionedWorldSpawnedEventBuilder<ParticleEventBuilder> {
 
         private Vec3 motion;
 
@@ -229,28 +170,8 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         }
 
         @Override
-        public ParticleEventBuilder setWorld(World world) {
-            return (ParticleEventBuilder) super.setWorld(world);
-        }
-
-        @Override
-        public ParticleEventBuilder setPosition(Vec3 position) {
-            return (ParticleEventBuilder) super.setPosition(position);
-        }
-
-        @Override
-        public ParticleEventBuilder setPosition(double x, double y, double z) {
-            return (ParticleEventBuilder) super.setPosition(x, y, z);
-        }
-
-        @Override
-        public ParticleEventBuilder setIdentifier(String identifier) {
-            return (ParticleEventBuilder) super.setIdentifier(identifier);
-        }
-
-        @Override
-        public ParticleEventBuilder setIdentifier(Enum<?> identifier) {
-            return (ParticleEventBuilder) super.setIdentifier(identifier);
+        protected ParticleEventBuilder getThis() {
+            return this;
         }
 
         @Override
@@ -269,41 +190,12 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         }
     }
 
-    public static final class SoundEffectEventBuilder extends SoundStringIdentifierPositionedWorldSpawnedEventBuilder {
+    public static final class SoundEffectEventBuilder
+        extends SoundStringIdentifierPositionedWorldSpawnedEventBuilder<SoundEffectEventBuilder> {
 
         @Override
-        public SoundEffectEventBuilder setWorld(World world) {
-            return (SoundEffectEventBuilder) super.setWorld(world);
-        }
-
-        @Override
-        public SoundEffectEventBuilder setPosition(Vec3 position) {
-            return (SoundEffectEventBuilder) super.setPosition(position);
-        }
-
-        @Override
-        public SoundEffectEventBuilder setPosition(double x, double y, double z) {
-            return (SoundEffectEventBuilder) super.setPosition(x, y, z);
-        }
-
-        @Override
-        public SoundEffectEventBuilder setIdentifier(String identifier) {
-            return (SoundEffectEventBuilder) super.setIdentifier(identifier);
-        }
-
-        @Override
-        public SoundEffectEventBuilder setIdentifier(Enum<?> identifier) {
-            return (SoundEffectEventBuilder) super.setIdentifier(identifier);
-        }
-
-        @Override
-        public SoundEffectEventBuilder setPitch(float pitch) {
-            return (SoundEffectEventBuilder) super.setPitch(pitch);
-        }
-
-        @Override
-        public SoundEffectEventBuilder setVolume(float volume) {
-            return (SoundEffectEventBuilder) super.setVolume(volume);
+        protected SoundEffectEventBuilder getThis() {
+            return this;
         }
 
         @Override
@@ -321,7 +213,8 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         }
     }
 
-    public static final class SoundEventBuilder extends SoundStringIdentifierPositionedWorldSpawnedEventBuilder {
+    public static final class SoundEventBuilder
+        extends SoundStringIdentifierPositionedWorldSpawnedEventBuilder<SoundEventBuilder> {
 
         private boolean proximity;
 
@@ -329,38 +222,13 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
             return proximity;
         }
 
-        @Override
-        public SoundEventBuilder setWorld(World world) {
-            return (SoundEventBuilder) super.setWorld(world);
-        }
-
-        @Override
-        public SoundEventBuilder setPosition(Vec3 position) {
-            return (SoundEventBuilder) super.setPosition(position);
-        }
-
-        @Override
-        public SoundEventBuilder setPosition(double x, double y, double z) {
-            return (SoundEventBuilder) super.setPosition(x, y, z);
-        }
-
-        @Override
-        public SoundEventBuilder setIdentifier(String identifier) {
-            return (SoundEventBuilder) super.setIdentifier(identifier);
-        }
-
-        @Override
-        public SoundEventBuilder setPitch(float pitch) {
-            return (SoundEventBuilder) super.setPitch(pitch);
-        }
-
-        @Override
-        public SoundEventBuilder setVolume(float volume) {
-            return (SoundEventBuilder) super.setVolume(volume);
-        }
-
         public SoundEventBuilder setProximity(boolean proximity) {
             this.proximity = proximity;
+            return this;
+        }
+
+        @Override
+        protected SoundEventBuilder getThis() {
             return this;
         }
 
@@ -383,26 +251,12 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
     /**
      * Positional Data is rounded down due to this targeting a block.
      */
-    public static final class RecordEffectEventBuilder extends StringIdentifierPositionedWorldSpawnedEventBuilder {
+    public static final class RecordEffectEventBuilder
+        extends StringIdentifierPositionedWorldSpawnedEventBuilder<RecordEffectEventBuilder> {
 
         @Override
-        public RecordEffectEventBuilder setWorld(World world) {
-            return (RecordEffectEventBuilder) super.setWorld(world);
-        }
-
-        @Override
-        public RecordEffectEventBuilder setPosition(Vec3 position) {
-            return (RecordEffectEventBuilder) super.setPosition(position);
-        }
-
-        @Override
-        public RecordEffectEventBuilder setPosition(double x, double y, double z) {
-            return (RecordEffectEventBuilder) super.setPosition(x, y, z);
-        }
-
-        @Override
-        public RecordEffectEventBuilder setIdentifier(String identifier) {
-            return (RecordEffectEventBuilder) super.setIdentifier(identifier);
+        protected RecordEffectEventBuilder getThis() {
+            return this;
         }
 
         @Override
@@ -418,7 +272,8 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         }
     }
 
-    public static final class ExplosionEffectEventBuilder extends PositionedEntityWorldSpawnedEventBuilder {
+    public static final class ExplosionEffectEventBuilder
+        extends PositionedEntityWorldSpawnedEventBuilder<ExplosionEffectEventBuilder> {
 
         private boolean isFlaming, isSmoking;
         private float strength;
@@ -451,18 +306,8 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         }
 
         @Override
-        public ExplosionEffectEventBuilder setWorld(World world) {
-            return (ExplosionEffectEventBuilder) super.setWorld(world);
-        }
-
-        @Override
-        public ExplosionEffectEventBuilder setEntity(Entity entity) {
-            return (ExplosionEffectEventBuilder) super.setEntity(entity);
-        }
-
-        @Override
-        public ExplosionEffectEventBuilder setPosition(double x, double y, double z) {
-            return (ExplosionEffectEventBuilder) super.setPosition(x, y, z);
+        protected ExplosionEffectEventBuilder getThis() {
+            return this;
         }
 
         @Override
@@ -484,8 +329,8 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
     /**
      * Positional Data is rounded down due to this targeting a block.
      */
-    public static final class ExtinguishFireEffectEventBuilder extends PositionedWorldSpawnedEventBuilder
-        implements IEntityPlayerWorldSpawnedEvent {
+    public static final class ExtinguishFireEffectEventBuilder
+        extends PositionedWorldSpawnedEventBuilder<ExtinguishFireEffectEventBuilder> {
 
         private int side;
         private EntityPlayer entityPlayer;
@@ -499,30 +344,18 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
             return this;
         }
 
-        @Override
         public EntityPlayer getEntityPlayer() {
             return entityPlayer;
         }
 
-        @Override
         public ExtinguishFireEffectEventBuilder setEntityPlayer(EntityPlayer entity) {
             this.entityPlayer = entity;
             return this;
         }
 
         @Override
-        public ExtinguishFireEffectEventBuilder setWorld(World world) {
-            return (ExtinguishFireEffectEventBuilder) super.setWorld(world);
-        }
-
-        @Override
-        public ExtinguishFireEffectEventBuilder setPosition(Vec3 position) {
-            return (ExtinguishFireEffectEventBuilder) super.setPosition(position);
-        }
-
-        @Override
-        public ExtinguishFireEffectEventBuilder setPosition(double x, double y, double z) {
-            return (ExtinguishFireEffectEventBuilder) super.setPosition(x, y, z);
+        protected ExtinguishFireEffectEventBuilder getThis() {
+            return this;
         }
 
         @Override
@@ -539,60 +372,48 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         }
     }
 
-    public static final class SoundAtEntityEventBuilder extends EntityWorldSpawnedEventBuilder
-        implements ISoundWorldSpawnedEvent, IStringIdentifierWorldSpawnedEvent {
+    public static final class SoundAtEntityEventBuilder
+        extends EntityWorldSpawnedEventBuilder<SoundAtEntityEventBuilder> {
 
         private float pitch;
         private float volume;
         private String identifier;
 
-        @Override
         public String getIdentifier() {
             return identifier;
         }
 
-        @Override
         public SoundAtEntityEventBuilder setIdentifier(String identifier) {
             this.identifier = identifier;
             return this;
         }
 
-        @Override
         public SoundAtEntityEventBuilder setIdentifier(Enum<?> identifier) {
             this.identifier = identifier.toString();
             return this;
         }
 
-        @Override
         public float getPitch() {
             return pitch;
         }
 
-        @Override
         public float getVolume() {
             return volume;
         }
 
-        @Override
         public SoundAtEntityEventBuilder setPitch(float pitch) {
             this.pitch = pitch;
             return this;
         }
 
-        @Override
         public SoundAtEntityEventBuilder setVolume(float volume) {
             this.volume = volume;
             return this;
         }
 
         @Override
-        public SoundAtEntityEventBuilder setWorld(World world) {
-            return (SoundAtEntityEventBuilder) super.setWorld(world);
-        }
-
-        @Override
-        public SoundAtEntityEventBuilder setEntity(Entity entity) {
-            return (SoundAtEntityEventBuilder) super.setEntity(entity);
+        protected SoundAtEntityEventBuilder getThis() {
+            return this;
         }
 
         @Override
@@ -604,56 +425,58 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         }
     }
 
-    public static final class SoundToNearExceptEventBuilder extends WorldSpawnedEventBuilder
-        implements ISoundWorldSpawnedEvent, IStringIdentifierWorldSpawnedEvent, IEntityPlayerWorldSpawnedEvent {
+    public static final class SoundToNearExceptEventBuilder
+        extends WorldSpawnedEventBuilder<SoundToNearExceptEventBuilder> {
 
         private float pitch;
         private float volume;
         private String identifier;
         private EntityPlayer entityPlayer;
 
-        @Override
         public String getIdentifier() {
             return identifier;
         }
 
-        @Override
         public SoundToNearExceptEventBuilder setIdentifier(String identifier) {
             this.identifier = identifier;
             return this;
         }
 
-        @Override
         public SoundToNearExceptEventBuilder setIdentifier(Enum<?> identifier) {
             this.identifier = identifier.toString();
             return this;
         }
 
-        @Override
         public float getPitch() {
             return pitch;
         }
 
-        @Override
         public float getVolume() {
             return volume;
         }
 
-        @Override
         public SoundToNearExceptEventBuilder setPitch(float pitch) {
             this.pitch = pitch;
             return this;
         }
 
-        @Override
         public SoundToNearExceptEventBuilder setVolume(float volume) {
             this.volume = volume;
             return this;
         }
 
+        public EntityPlayer getEntityPlayer() {
+            return entityPlayer;
+        }
+
+        public SoundToNearExceptEventBuilder setEntityPlayer(EntityPlayer entity) {
+            entityPlayer = entity;
+            return this;
+        }
+
         @Override
-        public SoundToNearExceptEventBuilder setWorld(World world) {
-            return (SoundToNearExceptEventBuilder) super.setWorld(world);
+        protected SoundToNearExceptEventBuilder getThis() {
+            return this;
         }
 
         @Override
@@ -662,17 +485,6 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
                 throw new IllegalStateException("World, Identifier and EntityPlayer must be set!");
 
             getWorld().playSoundAtEntity(getEntityPlayer(), getIdentifier(), volume, pitch);
-        }
-
-        @Override
-        public EntityPlayer getEntityPlayer() {
-            return entityPlayer;
-        }
-
-        @Override
-        public SoundToNearExceptEventBuilder setEntityPlayer(EntityPlayer entity) {
-            entityPlayer = entity;
-            return this;
         }
     }
 }

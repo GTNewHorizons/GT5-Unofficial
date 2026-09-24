@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyContainerItem;
@@ -32,6 +33,8 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItemManager;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirelessCharger {
 
     private enum ChargeMode {
@@ -76,21 +79,31 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.wificharger.name", GTUtility.getRomanNumeral(mTier));
+    }
+
+    @Override
     public String[] getDescription() {
-        return new String[] { GTUtility.translate("gtpp.tooltip.wireless_charger.0"),
-            GTUtility.translate("gtpp.tooltip.wireless_charger.1"),
-            GTUtility.translate("gtpp.tooltip.wireless_charger.2", this.getLongRange(false)),
-            GTUtility.translate("gtpp.tooltip.wireless_charger.3", this.getLocalRange(false)),
-            GTUtility.translate("gtpp.tooltip.wireless_charger.4", this.getLongRange(true), this.getLocalRange(true)),
+        return new String[] { StatCollector.translateToLocal("gtpp.tooltip.wireless_charger.0"),
+            StatCollector.translateToLocal("gtpp.tooltip.wireless_charger.1"),
+            StatCollector.translateToLocalFormatted("gtpp.tooltip.wireless_charger.2", this.getLongRange(false)),
+            StatCollector.translateToLocalFormatted("gtpp.tooltip.wireless_charger.3", this.getLocalRange(false)),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.tooltip.wireless_charger.4",
+                this.getLongRange(true),
+                this.getLocalRange(true)),
             GTPPCore.GT_Tooltip.get() };
     }
 
     private static String translateChat(String key) {
-        return GTUtility.translate("gtpp.chat.wireless_charger." + key);
+        return StatCollector.translateToLocal("gtpp.chat.wireless_charger." + key);
     }
 
     private static String translateChat(String key, Object... args) {
-        return GTUtility.translate("gtpp.chat.wireless_charger." + key, args);
+        return StatCollector.translateToLocalFormatted("gtpp.chat.wireless_charger." + key, args);
     }
 
     @Override
@@ -337,11 +350,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
     @Override
     public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {}
-
-    @Override
-    public String getInventoryName() {
-        return null;
-    }
 
     @Override
     public int getInventoryStackLimit() {
@@ -619,7 +627,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                         continue;
                     }
 
-                    final int charged = Math.max(0, (int)manager.charge(stack, chargeableEU, Integer.MAX_VALUE, true, false));
+                    final int charged = Math.max(0, (int)manager.charge(stack, chargeableEU, this.mTier, true, false));
                     chargedEU += charged;
                 }
             }

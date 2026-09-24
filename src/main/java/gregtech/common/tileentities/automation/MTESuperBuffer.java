@@ -3,30 +3,39 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_SUPERBUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_SUPERBUFFER_GLOW;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import net.minecraft.util.StatCollector;
 
-import gregtech.api.gui.modularui.GTUITextures;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.singleblock.MTESuperBufferGui;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTESuperBuffer extends MTEChestBuffer {
 
     public MTESuperBuffer(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            257,
-            new String[] { "Buffers up to 256 Item Stacks", "Use Screwdriver to regulate output stack size",
-                getTickRateDesc(aTier) });
+        super(aID, aName, aNameRegional, aTier, 257, GTValues.emptyStringArray);
     }
 
     public MTESuperBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.automation.superbuffer.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override
@@ -50,10 +59,7 @@ public class MTESuperBuffer extends MTEChestBuffer {
     }
 
     @Override
-    protected void addMainUI(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SUPER_BUFFER)
-                .setPos(61, 4)
-                .setSize(54, 54));
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTESuperBufferGui(this).build(guiData, syncManager, uiSettings);
     }
 }

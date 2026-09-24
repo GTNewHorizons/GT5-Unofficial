@@ -24,8 +24,8 @@ public class MaterialsOther {
     // Clay
     public static final Material CLAY = MaterialUtils.generateMaterialFromGtENUM(Materials.Clay);
 
-    // Wrought Iron
-    public static final Material WROUGHT_IRON = MaterialUtils.generateMaterialFromGtENUM(Materials.WroughtIron);
+    // Cast Iron
+    public static final Material CAST_IRON = MaterialUtils.generateMaterialFromGtENUM(Materials.CastIron);
 
     // PTFE
     public static final Material PTFE = MaterialUtils

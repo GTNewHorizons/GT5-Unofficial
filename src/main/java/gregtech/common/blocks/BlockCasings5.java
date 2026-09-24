@@ -1,6 +1,6 @@
 package gregtech.common.blocks;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HeatingCoilLevel.EV;
 import static gregtech.api.enums.HeatingCoilLevel.HV;
 import static gregtech.api.enums.HeatingCoilLevel.IV;
@@ -19,11 +19,12 @@ import static gregtech.api.enums.HeatingCoilLevel.ZPM;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
@@ -38,6 +39,8 @@ import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
+import gregtech.api.net.ClientMetaTrackerRegistry;
+import gregtech.api.net.GTCoilTrackerAccess;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.config.Client;
 import gregtech.common.data.GTCoilTracker;
@@ -55,8 +58,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class BlockCasings5 extends BlockCasingsAbstract
     implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta, IBlockWithActiveOffset, IGregtechWailaProvider {
 
-    public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
-    public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
+    private final AtomicReferenceArray<ITexture[][]> textureCache = new AtomicReferenceArray<>(ACTIVE_OFFSET * 4);
 
     public BlockCasings5() {
         super(ItemCasings.class, "gt.blockcasings5", MaterialCasings.INSTANCE, 16);
@@ -80,6 +82,8 @@ public class BlockCasings5 extends BlockCasingsAbstract
             GTStructureChannels.HEATING_COIL
                 .registerAsIndicator(new ItemStack(this, 1, i), getCoilHeat(i).ordinal() - 1);
         }
+
+        ClientMetaTrackerRegistry.register(this, new GTCoilTrackerAccess());
     }
 
     @Override
@@ -130,9 +134,15 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
     @Override
     public @Nullable ITexture[][] getTextures(int metadata) {
+        final boolean useOldCoils = Client.render.useOldCoils;
+        final int cacheIndex = Math.floorMod(metadata, ACTIVE_OFFSET) + (metadata >= ACTIVE_OFFSET ? ACTIVE_OFFSET : 0)
+            + (useOldCoils ? ACTIVE_OFFSET * 2 : 0);
+        ITexture[][] cached = textureCache.get(cacheIndex);
+        if (cached != null) return cached;
+
         List<ITexture> textures = new ArrayList<>();
 
-        if (Client.render.useOldCoils) {
+        if (useOldCoils) {
             IIconContainer icon = switch (metadata % ACTIVE_OFFSET) {
                 case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL;
                 case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME;
@@ -199,7 +209,9 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
         ITexture[] layers = textures.toArray(new ITexture[0]);
 
-        return new ITexture[][] { layers, layers, layers, layers, layers, layers };
+        cached = new ITexture[][] { layers, layers, layers, layers, layers, layers };
+        if (textureCache.compareAndSet(cacheIndex, null, cached)) return cached;
+        return textureCache.get(cacheIndex);
     }
 
     @Override
@@ -260,7 +272,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
         int metadata = stack.getItemDamage();
 
         HeatingCoilLevel coilLevel = BlockCasings5.getCoilHeatFromDamage(metadata);
-        tooltip.add(COIL_HEAT_TOOLTIP.get() + coilLevel.getHeat() + COIL_UNIT_TOOLTIP.get());
+        tooltip.add(StatCollector.translateToLocalFormatted("gt.coilheattooltip", formatNumber(coilLevel.getHeat())));
     }
 
     @Override

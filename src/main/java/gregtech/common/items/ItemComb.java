@@ -1,5 +1,8 @@
 package gregtech.common.items;
 
+import static bartworks.system.material.WerkstoffLoader.AcidicIridiumSolution;
+import static bartworks.system.material.WerkstoffLoader.AcidicOsmiumSolution;
+import static bartworks.system.material.WerkstoffLoader.PTConcentrate;
 import static gregtech.api.enums.GTValues.NF;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.enums.GTValues.V;
@@ -16,6 +19,7 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
@@ -25,7 +29,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.CLEANROOM;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.Arrays;
 import java.util.List;
@@ -95,7 +98,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
-        for (CombType type : CombType.values()) {
+        for (CombType type : CombType.VALUES) {
             if (type.showInList) {
                 list.add(this.getStackForType(type));
             }
@@ -580,7 +583,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             30 * 100);
 
         // Rare Metals Line
-        addProcessGT(CombType.BAUXITE, new Materials[] { Materials.Bauxite }, Voltage.LV);
+        addProcessGT(CombType.BAUXITE, new Materials[] { Materials.Bauxite }, Voltage.HV);
         addProcessGT(CombType.ALUMINIUM, new Materials[] { Materials.Aluminium }, Voltage.LV);
         addProcessGT(CombType.MANGANESE, new Materials[] { Materials.Manganese }, Voltage.LV);
         addProcessGT(CombType.TITANIUM, new Materials[] { Materials.Titanium }, Voltage.EV);
@@ -1016,7 +1019,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Osmium.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Osmium.getMolten(2 * INGOTS);
+                        fluidOutput = AcidicOsmiumSolution.getFluidOrGas(1_000);
                         durationTicks = volt.getComplexTime() * 17;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
@@ -1025,7 +1028,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Platinum.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Platinum.getMolten(2 * INGOTS);
+                        fluidOutput = PTConcentrate.getFluidOrGas(2_000);
                         durationTicks = volt.getComplexTime() * 10;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.HV) > 0;
@@ -1034,7 +1037,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Iridium.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Iridium.getMolten(2 * INGOTS);
+                        fluidOutput = AcidicIridiumSolution.getFluidOrGas(1_000);
                         durationTicks = volt.getComplexTime() * 14;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.EV) > 0;
@@ -1131,6 +1134,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             }
             Product.put(aItem[i], chance[i] / 10000.0f);
         }
+        GTOreDictUnificator.setStackArray(true, true, aItem);
 
         if (volt.compareTo(Voltage.MV) < 0) {
             RecipeManagers.centrifugeManager.addRecipe(40, tComb, Product.build());
@@ -1146,7 +1150,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     }
 
     public void registerOreDict() {
-        for (CombType comb : CombType.values()) {
+        for (CombType comb : CombType.VALUES) {
             ItemStack tComb = getStackForType(comb);
             GTOreDictUnificator.registerOre(OrePrefixes.beeComb.getName(), tComb);
             OrePrefixes.beeComb.add(tComb);

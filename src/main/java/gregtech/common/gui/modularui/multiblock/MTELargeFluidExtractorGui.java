@@ -60,7 +60,7 @@ public class MTELargeFluidExtractorGui extends MTEMultiBlockBaseGui<MTELargeFlui
                     () -> EnumChatFormatting.DARK_RED
                         + StatCollector
                             .translateToLocalFormatted(
-                                "GT5U.gui.text.large_fluid_extractor.not_enough_casings",
+                                "GT5U.gui.text.structure_error.large_fluid_extractor_not_enough_casings",
                                 BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
                                 casingCountSyncer.getIntValue())
                             .replace("\\n", "\n")

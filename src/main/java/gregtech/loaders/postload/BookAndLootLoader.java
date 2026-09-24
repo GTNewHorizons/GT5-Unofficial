@@ -1,5 +1,7 @@
 package gregtech.loaders.postload;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
@@ -9,14 +11,13 @@ import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class BookAndLootLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Adding worldgenerated Chest Content.");
+        GT_FML_LOGGER.debug("GTMod: Adding worldgenerated Chest Content.");
         if (GTMod.proxy.mIncreaseDungeonLoot) {
             ChestGenHooks tChest = ChestGenHooks.getInfo("bonusChest");
             tChest.setMax(tChest.getMax() + 8);

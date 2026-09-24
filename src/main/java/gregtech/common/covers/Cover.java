@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.Fluid;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -304,8 +305,8 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * @return UI panel to show
      */
     public final ModularPanel buildPopUpUI(CoverGuiData guiData, String panelName, PanelSyncManager syncManager,
-        UISettings uiSettings) {
-        return getCoverGui().createBasePanel(panelName, syncManager, uiSettings, guiData);
+        UISettings uiSettings, IWidget parent) {
+        return getCoverGui().createPopUpPanel(syncManager, uiSettings, guiData, parent);
     }
 
     /**

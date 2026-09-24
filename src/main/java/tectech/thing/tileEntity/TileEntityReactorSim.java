@@ -37,7 +37,7 @@ public class TileEntityReactorSim extends TileEntityNuclearReactorElectric {
 
     @Override
     public String getInventoryName() {
-        return "Nuclear Reactor Simulator";
+        return "tile.reactorSim.name";
     }
 
     @Override

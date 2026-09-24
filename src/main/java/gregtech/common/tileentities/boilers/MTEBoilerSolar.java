@@ -20,13 +20,13 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.common.config.MachineStats;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -211,26 +211,25 @@ public class MTEBoilerSolar extends MTEBoiler {
         }
         if (weatherClear) {
             if (world.isDaytime()) {
-                mProcessingEnergy += 8 * basicTemperatureMod;
+                addProcessingEnergy(8 * basicTemperatureMod);
             } else {
-                mProcessingEnergy += basicTemperatureMod;
+                addProcessingEnergy(basicTemperatureMod);
             }
         } else {
-            mProcessingEnergy += basicTemperatureMod;
+            addProcessingEnergy(basicTemperatureMod);
         }
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("RuntimeTicks", mRunTimeTicks);
-        return tag;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(mRunTimeTicks);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        mRunTimeTicks = data.getInteger("RuntimeTicks");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        mRunTimeTicks = buffer.readInt();
     }
 
     @Override
@@ -240,14 +239,14 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { StatCollector.translateToLocalFormatted(
+        return new String[] { IGregTechDeviceInformation.encode(
             "GT5U.infodata.boiler_solar.heat",
             String.format(
                 EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
                 formatNumber(getHeatCapacityPercent())),
             String
                 .format(EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET, formatNumber(getHotTimeSeconds()))),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.boiler_solar.output",
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
@@ -255,7 +254,7 @@ public class MTEBoilerSolar extends MTEBoiler {
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
                     formatNumber(getMaxOutputPerSecond()))),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.boiler_solar.current_output",
                 String.format(
                     EnumChatFormatting.YELLOW + LPS_FMT + EnumChatFormatting.RESET,
@@ -273,11 +272,6 @@ public class MTEBoilerSolar extends MTEBoiler {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEBoilerSolar(mName, mTier, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.BRONZE;
     }
 
     @Override
@@ -309,5 +303,6 @@ public class MTEBoilerSolar extends MTEBoiler {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("calcificationOutput", (getProductionPerSecond()));
         tag.setInteger("maxCalcificationOutput", (getMaxOutputPerSecond()));
+        tag.setInteger("fuel", -1);
     }
 }

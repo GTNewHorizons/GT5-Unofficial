@@ -64,9 +64,11 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -76,7 +78,6 @@ import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -136,13 +137,13 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoMin(mCasingName, 8, false)
-            .addInputBus("Any casing", 1)
+            .addInputBus("Any Casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.YELLOW + "Stocking Input Buses and Crafting Input Buses/Buffers are not allowed!")
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -163,9 +164,11 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 8 && checkHatch();
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 8);
+        checkHatch(errors);
     }
 
     @Override
@@ -259,7 +262,7 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
     @Override
     public RecipeMap<?> getRecipeMap() {
         // Only for NEI, not used in processing logic.
-        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes;
+        return RecipeMaps.treeGrowthSimulatorFakeRecipes;
     }
 
     /**
@@ -641,7 +644,7 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
                 .getYield() * 10;
 
             fruit = fruit.copy();
-            fruit.stackSize = (int) (fruit.stackSize * yield);
+            fruit.stackSize = Math.max(1, (int) (fruit.stackSize * yield));
             adjustedMap.put(Mode.FRUIT, fruit);
         }
 
@@ -686,7 +689,6 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
         if (leaves != null) map.put(Mode.LEAVES, leaves);
         if (fruit != null) map.put(Mode.FRUIT, fruit);
         treeProductsMap.put(key, map);
-        addFakeRecipeToNEI(saplingIn, log, saplingOut, leaves, fruit);
     }
 
     /**
@@ -703,19 +705,6 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
         map.put(Mode.LEAVES, leaves);
         map.put(Mode.FRUIT, fruit);
         treeProductsMap.put(key, map);
-
-        // In the NEI recipe we want to display outputs adjusted for the default genetics of this tree type.
-        // To do this we use the same method as when calculating real outputs.
-        map = getOutputsForForestrySapling(sapling);
-        if (map == null) {
-            return;
-        }
-        addFakeRecipeToNEI(
-            sapling,
-            map.get(Mode.LOG),
-            map.get(Mode.SAPLING),
-            map.get(Mode.LEAVES),
-            map.get(Mode.FRUIT));
     }
 
     /**
@@ -757,7 +746,7 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
      */
     public static boolean addFakeRecipeToNEI(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
         ItemStack fruit) {
-        int recipeCount = GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
+        int recipeCount = RecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
             .size();
 
         // Sapling goes into the "special" slot.
@@ -788,7 +777,7 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
             }
         }
 
-        GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
+        RecipeMaps.treeGrowthSimulatorFakeRecipes.addFakeRecipe(
             false,
             new GTRecipe.GTRecipe_WithAlt(
                 false,
@@ -804,9 +793,10 @@ public class MTETreeFarmLegacy extends GTPPMultiBlockBase<MTETreeFarmLegacy> imp
                 TICKS_PER_OPERATION,
                 0,
                 recipeCount, // special value, also sorts recipes correctly in order of addition.
-                inputStacks));
+                inputStacks,
+                null));
 
-        return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
+        return RecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
             .size() > recipeCount;
     }
 }

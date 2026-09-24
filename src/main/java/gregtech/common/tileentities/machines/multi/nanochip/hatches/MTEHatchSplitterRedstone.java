@@ -26,6 +26,7 @@ import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchSplitterRedstoneGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSplitterRedstone extends MTEHatch {
 
     private byte redstoneInput = 0;
@@ -78,6 +79,18 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
     }
 
     @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        channel = aNBT.getInteger("mChannel");
+        super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setInteger("mChannel", channel);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
     public String[] getDescription() {
         return new String[] { translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.1"),
             translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.2"),
@@ -110,7 +123,7 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.NANOCHIP;
     }
 

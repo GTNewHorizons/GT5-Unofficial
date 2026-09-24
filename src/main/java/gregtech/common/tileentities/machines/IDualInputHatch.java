@@ -7,13 +7,9 @@ import java.util.Optional;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public interface IDualInputHatch {
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 
-    /**
-     * @return {@code true} if there is new items and/or fluids inserted to the inventories, and it will trigger the
-     *         recipe check.
-     */
-    boolean justUpdated();
+public interface IDualInputHatch extends IMetaTileEntity, ISmartInputHatch {
 
     Iterator<? extends IDualInputInventory> inventories();
 
@@ -72,5 +68,5 @@ public interface IDualInputHatch {
         }
         return rList.toArray(new FluidStack[rList.size()]);
 
-    };
+    }
 }

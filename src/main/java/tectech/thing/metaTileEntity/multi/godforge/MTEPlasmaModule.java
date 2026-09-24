@@ -1,6 +1,11 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.casing.Casings.BoundlessGravitationallySeveredStructureCasing;
+import static gregtech.api.casing.Casings.CelestialMatterGuidanceCasing;
+import static gregtech.api.casing.Casings.HarmonicPhononTransmissionConduit;
+import static gregtech.api.casing.Casings.SingularityReinforcedStellarShieldingCasing;
+import static gregtech.api.casing.Casings.StellarEnergySiphonCasing;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -13,7 +18,7 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,10 +31,13 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEPlasmaModuleGui;
+import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 
 public class MTEPlasmaModule extends MTEBaseModule {
@@ -51,18 +59,16 @@ public class MTEPlasmaModule extends MTEBaseModule {
         return new MTEPlasmaModule(mName);
     }
 
-    long wirelessEUt = 0;
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GorgeModuleProcessingLogic() {
 
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                wirelessEUt = (long) recipe.mEUt * getActualParallel();
-                if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                BigInteger powerForRecipe = predictDrainedEnergy(recipe);
+                if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 if (recipe.getMetadataOrDefault(FOG_PLASMA_TIER, 0) > getPlasmaTier()
                     || (recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false) && !isMultiStepPlasmaCapable)) {
@@ -74,11 +80,11 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                wirelessEUt = (long) recipe.mEUt * maxParallel;
                 BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
                     .multiply(BigInteger.valueOf(duration));
                 if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                    stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 addToPowerTally(powerForRecipe);
                 addToRecipeTally(calculatedParallels);
@@ -112,8 +118,20 @@ public class MTEPlasmaModule extends MTEBaseModule {
         return inputMaxParallel;
     }
 
-    public void setInputMaxParallel(int val) {
-        inputMaxParallel = val;
+    public void setInputMaxParallelDebug(int val) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE) inputMaxParallel = val;
+    }
+
+    public void setPlasmaTierDebug(int tier) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE) setPlasmaTier(tier);
+    }
+
+    public void setMultiStepPlasmaDebug(boolean isCapable) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE)
+            setMultiStepPlasma(isCapable);
     }
 
     @Override
@@ -164,31 +182,21 @@ public class MTEPlasmaModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Fabricator")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for extreme temperature matter ionization")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
-            .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
-            .addInfo("right away, some of them require certain upgrades to be unlocked")
-            .addInfo("This module is specialized towards energy and overclock efficiency")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.plasma_fabricator"))
+            .addMarkdown(new ResourceLocation("gregtech", "godforge-plasma-module"))
             .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-20", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("20", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addCasing("5", CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("5", HarmonicPhononTransmissionConduit.getLocalizedName(), false)
+            .addCasing("1", StellarEnergySiphonCasing.getLocalizedName(), false)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

@@ -30,8 +30,9 @@ public class ExoticEnergyInputHelper {
         sExoticEnergyHatchType.add(clazz);
     }
 
-    public static boolean drainEnergy(long aEU, Collection<? extends MTEHatch> hatches) {
+    public static boolean drainEnergy(long aEU, Iterable<? extends MTEHatch> hatches) {
         for (MTEHatch tHatch : hatches) {
+            if (!tHatch.isValid()) continue;
             long tDrain = Math.min(
                 tHatch.getBaseMetaTileEntity()
                     .getStoredEU(),
@@ -53,8 +54,12 @@ public class ExoticEnergyInputHelper {
     public static long getTotalEuMulti(Collection<? extends MTEHatch> hatches) {
         long rEU = 0L;
         for (MTEHatch tHatch : validMTEList(hatches)) {
-            rEU += tHatch.getBaseMetaTileEntity()
-                .getInputVoltage() * tHatch.maxWorkingAmperesIn();
+            rEU = GTUtility.addSafe(
+                rEU,
+                GTUtility.mulSafe(
+                    tHatch.getBaseMetaTileEntity()
+                        .getInputVoltage(),
+                    tHatch.maxWorkingAmperesIn()));
         }
         return rEU;
     }

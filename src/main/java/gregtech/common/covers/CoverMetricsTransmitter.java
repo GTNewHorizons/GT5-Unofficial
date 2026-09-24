@@ -1,5 +1,6 @@
 package gregtech.common.covers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -43,9 +43,7 @@ public class CoverMetricsTransmitter extends Cover {
         return coverable instanceof final IGregTechDeviceInformation device && device.isGivingInformation();
     }
 
-    @SuppressWarnings("SpellCheckingInspection")
     public static final String FREQUENCY_MSB_KEY = "gt.metricscover.freq_msb";
-    @SuppressWarnings("SpellCheckingInspection")
     public static final String FREQUENCY_LSB_KEY = "gt.metricscover.freq_lsb";
     public static final String MACHINE_KEY = "machine_name";
     public static final String CARD_STATE_KEY = "card_state";
@@ -100,7 +98,16 @@ public class CoverMetricsTransmitter extends Cover {
             if (baseMTE.getMetaTileEntity() instanceof final IMetricsExporter metricsExporter) {
                 payload = metricsExporter.reportMetrics();
             } else {
-                payload = ImmutableList.copyOf(baseMTE.getInfoData());
+                final List<String> infoList = new ArrayList<>();
+                for (String info : baseMTE.getInfoData()) {
+                    infoList.add(info);
+                }
+                baseMTE.getExtraInfoData(infoList);
+                final ImmutableList.Builder<String> builder = ImmutableList.builder();
+                for (String info : infoList) {
+                    builder.add(IGregTechDeviceInformation.decode(info));
+                }
+                payload = builder.build();
             }
 
             MinecraftForge.EVENT_BUS.post(new MetricsCoverDataEvent(
@@ -155,8 +162,6 @@ public class CoverMetricsTransmitter extends Cover {
     @Override
     public List<String> getAdditionalTooltip() {
         return ImmutableList.of(
-            StatCollector.translateToLocalFormatted(
-                "gt.item.adv_sensor_card.tooltip.frequency",
-                EnumChatFormatting.UNDERLINE.toString() + EnumChatFormatting.YELLOW + frequency.toString()));
+            StatCollector.translateToLocalFormatted("gt.item.adv_sensor_card.tooltip.frequency", frequency.toString()));
     }
 }

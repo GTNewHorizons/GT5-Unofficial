@@ -28,6 +28,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -269,21 +270,16 @@ public class BaseItemMetaFood extends ItemFood {
     }
 
     @Override
-    public boolean shouldRotateAroundWhenRendering() {
-        return super.shouldRotateAroundWhenRendering();
-    }
-
-    @Override
-    public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean adv) {
         try {
-            String aTooltip = mTooltipMap.get(getMetaKey(aStack));
+            String aTooltip = mTooltipMap.get(getMetaKey(stack));
             if (aTooltip != null && !aTooltip.isEmpty()) {
-                aList.add(aTooltip);
+                tooltip.add(aTooltip);
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
-        super.addInformation(aStack, p_77624_2_, aList, p_77624_4_);
+        super.addInformation(stack, player, tooltip, adv);
     }
 
     @Override
@@ -297,9 +293,9 @@ public class BaseItemMetaFood extends ItemFood {
     }
 
     @Override
-    public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < mIconMap.size(); i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 

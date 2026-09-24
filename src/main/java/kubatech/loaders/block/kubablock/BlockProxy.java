@@ -36,7 +36,7 @@ import net.minecraft.world.World;
 
 import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 
-import kubatech.Tags;
+import gregtech.api.enums.Mods;
 
 public class BlockProxy {
 
@@ -48,13 +48,13 @@ public class BlockProxy {
 
     public BlockProxy(String unlocalizedName, String texture) {
         this.unlocalizedName = "kubablock." + unlocalizedName;
-        sideTexturePath = topBottomTexturePath = Tags.MODID + ":" + texture;
+        sideTexturePath = topBottomTexturePath = Mods.ModIDs.KUBA_TECH + ":" + texture;
     }
 
     public BlockProxy(String unlocalizedName, String sideTexture, String topBottomTexture) {
         this.unlocalizedName = "kubablock." + unlocalizedName;
-        sideTexturePath = Tags.MODID + ":" + sideTexture;
-        topBottomTexturePath = Tags.MODID + ":" + topBottomTexture;
+        sideTexturePath = Mods.ModIDs.KUBA_TECH + ":" + sideTexture;
+        topBottomTexturePath = Mods.ModIDs.KUBA_TECH + ":" + topBottomTexture;
     }
 
     public void itemInit(int ID) {}

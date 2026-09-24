@@ -1,6 +1,8 @@
 package gregtech.api.interfaces.modularui;
 
 import static gregtech.api.gui.modularui.GTUITextures.OVERLAY_BUTTON_POWER_PANEL;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -29,6 +31,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
 
 /**
@@ -293,8 +296,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             button,
             this::supportsInputSeparation,
             this::isInputSeparationEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.input_separation_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation"));
 
         return (ButtonWidget) button;
     }
@@ -386,8 +388,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             button,
             this::supportsBatchMode,
             this::isBatchModeEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.batch_mode_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode"));
 
         return (ButtonWidget) button;
     }
@@ -435,8 +436,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             button,
             this::supportsSingleRecipeLocking,
             this::isRecipeLockingEnabled,
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_on"),
-            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe_off"));
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"));
 
         return (ButtonWidget) button;
     }
@@ -455,32 +455,39 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
      * <strong>Important:</strong> When implementing this method, ensure that any action that changes the feature's
      * enabled state calls {@code widget.notifyTooltipChange()} to refresh the tooltip display.
      *
-     * @param widget                 the widget button to add the tooltip to
-     * @param supportsFeature        supplier that returns {@code true} if the multi-block feature is supported
-     * @param isFeatureEnabled       supplier that returns {@code true} if the feature is currently enabled
-     * @param tooltipFeatureEnabled  tooltip text to display when the feature is enabled
-     * @param tooltipFeatureDisabled tooltip text to display when the feature is disabled
+     * @param widget             the widget button to add the tooltip to
+     * @param supportsFeature    supplier that returns {@code true} if the multi-block feature is supported
+     * @param isFeatureEnabled   supplier that returns {@code true} if the feature is currently enabled
+     * @param tooltipFeatureName tooltip text to display as the name of the feature
      *
      *
      * @see gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui#addDynamicTooltipOfFeatureToButton(RichTooltip,
-     *      Supplier, Supplier, String, String) For equivalent method but made for non-ModularUI
+     *      Supplier, Supplier, String) For equivalent method but made for non-ModularUI
      */
     default void addDynamicTooltipOfFeatureToButton(Widget widget, Supplier<Boolean> supportsFeature,
-        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureEnabled, String tooltipFeatureDisabled) {
-
+        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureName) {
+        widget.addTooltip(tooltipFeatureName);
         if (supportsFeature.get()) {
             widget.dynamicTooltip(() -> {
                 if (isFeatureEnabled.get()) {
-                    return Collections.singletonList(tooltipFeatureEnabled);
+                    return Collections.singletonList(
+                        GTUtility.getColoredSecondaryTooltip(
+                            StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED_TOOLTIP)));
                 } else {
-                    return Collections.singletonList(tooltipFeatureDisabled);
+                    return Collections.singletonList(
+                        GTUtility.getColoredSecondaryTooltip(
+                            StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED_TOOLTIP)));
                 }
             });
         } else {
             if (isFeatureEnabled.get()) {
-                widget.addTooltip(tooltipFeatureEnabled);
+                widget.addTooltip(
+                    GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED_TOOLTIP)));
             } else {
-                widget.addTooltip(tooltipFeatureDisabled);
+                widget.addTooltip(
+                    GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED_TOOLTIP)));
             }
 
             widget.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));

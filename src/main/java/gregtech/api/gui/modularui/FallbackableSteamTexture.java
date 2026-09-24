@@ -11,13 +11,13 @@ import net.minecraft.client.Minecraft;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 
 public class FallbackableSteamTexture {
 
     private final SteamTexture candidate;
     private final Object fallback;
-    private final Map<SteamVariant, Boolean> useFallbackMap = new HashMap<>();
+    private final Map<TieredVariant, Boolean> useFallbackMap = new HashMap<>();
 
     private static final List<FallbackableSteamTexture> ALL_INSTANCES = new ArrayList<>();
 
@@ -39,17 +39,17 @@ public class FallbackableSteamTexture {
         ALL_INSTANCES.add(this);
     }
 
-    public UITexture get(SteamVariant steamVariant) {
-        verifyCandidate(steamVariant);
-        if (useFallbackMap.get(steamVariant)) {
-            return castFallback(steamVariant);
+    public UITexture get(TieredVariant tieredVariant) {
+        verifyCandidate(tieredVariant);
+        if (useFallbackMap.get(tieredVariant)) {
+            return castFallback(tieredVariant);
         } else {
-            return candidate.get(steamVariant);
+            return candidate.get(tieredVariant);
         }
     }
 
-    private void verifyCandidate(SteamVariant steamVariant) {
-        if (useFallbackMap.get(steamVariant) == null) {
+    private void verifyCandidate(TieredVariant tieredVariant) {
+        if (useFallbackMap.get(tieredVariant) == null) {
             boolean useFallback;
             if (NetworkUtils.isDedicatedClient()) {
                 if (candidate == null) {
@@ -58,7 +58,7 @@ public class FallbackableSteamTexture {
                     try {
                         Minecraft.getMinecraft()
                             .getResourceManager()
-                            .getResource(candidate.get(steamVariant).location);
+                            .getResource(candidate.get(tieredVariant).location);
                         useFallback = false;
                     } catch (IOException e) {
                         useFallback = true;
@@ -67,15 +67,15 @@ public class FallbackableSteamTexture {
             } else {
                 useFallback = true;
             }
-            useFallbackMap.put(steamVariant, useFallback);
+            useFallbackMap.put(tieredVariant, useFallback);
         }
     }
 
-    private UITexture castFallback(SteamVariant steamVariant) {
+    private UITexture castFallback(TieredVariant tieredVariant) {
         if (fallback instanceof SteamTexture) {
-            return ((SteamTexture) fallback).get(steamVariant);
+            return ((SteamTexture) fallback).get(tieredVariant);
         } else if (fallback instanceof FallbackableSteamTexture) {
-            return ((FallbackableSteamTexture) fallback).get(steamVariant);
+            return ((FallbackableSteamTexture) fallback).get(tieredVariant);
         } else {
             throw new RuntimeException("Unexpected type found for fallback: " + fallback.getClass());
         }

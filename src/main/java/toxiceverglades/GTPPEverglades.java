@@ -112,26 +112,26 @@ public class GTPPEverglades {
     public static synchronized void GenerateRareEarthOreMaterials() {
 
         // Set Material Tiers correctly
-        MaterialsOres.GREENOCKITE.vTier = 1;
-        RARE_EARTH_LOW.vTier = 1;
-        RARE_EARTH_MID.vTier = 3;
-        RARE_EARTH_HIGH.vTier = 5;
+        MaterialsOres.GREENOCKITE.tier = 1;
+        RARE_EARTH_LOW.tier = 1;
+        RARE_EARTH_MID.tier = 3;
+        RARE_EARTH_HIGH.tier = 5;
 
         // Set Material Voltages correctly
-        MaterialsOres.GREENOCKITE.vVoltageMultiplier = 30;
-        RARE_EARTH_LOW.vVoltageMultiplier = 30;
-        RARE_EARTH_MID.vVoltageMultiplier = 480;
-        RARE_EARTH_HIGH.vVoltageMultiplier = 7680;
+        MaterialsOres.GREENOCKITE.voltageMultiplier = 30;
+        RARE_EARTH_LOW.voltageMultiplier = 30;
+        RARE_EARTH_MID.voltageMultiplier = 480;
+        RARE_EARTH_HIGH.voltageMultiplier = 7680;
 
         // Set Material Tooltips to be shorter
-        RARE_EARTH_LOW.vChemicalFormula = "??????";
-        RARE_EARTH_MID.vChemicalFormula = "??????";
-        RARE_EARTH_HIGH.vChemicalFormula = "??????";
+        RARE_EARTH_LOW.chemicalFormula = "??????";
+        RARE_EARTH_MID.chemicalFormula = "??????";
+        RARE_EARTH_HIGH.chemicalFormula = "??????";
 
         // Set Material Tooltips to be shorter
-        RARE_EARTH_LOW.vChemicalSymbol = "??";
-        RARE_EARTH_MID.vChemicalSymbol = "??";
-        RARE_EARTH_HIGH.vChemicalSymbol = "??";
+        RARE_EARTH_LOW.chemicalSymbol = "??";
+        RARE_EARTH_MID.chemicalSymbol = "??";
+        RARE_EARTH_HIGH.chemicalSymbol = "??";
 
         // Generate Ore Materials
         MaterialGenerator.generateOreMaterial(RARE_EARTH_LOW);

@@ -47,9 +47,9 @@ public class CoreItem extends Item {
         GameRegistry.registerItem(this, unlocalizedName);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
+        final boolean adv) {
         for (int i = 0;; i++) {
             String tooltip = GTLanguageManager
                 .getTranslation("gtplusplus." + this.getUnlocalizedName() + ".tooltip" + "." + i);

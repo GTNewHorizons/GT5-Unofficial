@@ -19,12 +19,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
@@ -39,6 +42,7 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.util.WorldSpawnedEventBuilder;
@@ -55,11 +59,16 @@ import gregtech.common.covers.Cover;
  */
 public abstract class MetaPipeEntity extends CommonMetaTileEntity implements IConnectable {
 
+    private volatile ITexture[][] inventoryTextureCache;
+
     /**
      * This variable tells, which directions the Block is connected to. It is a Bitmask.
      */
     public byte mConnections = 0;
 
+    /**
+     * Used by cables to provide delayed reconstruction of neighbors
+     */
     protected boolean mCheckConnections = false;
     /**
      * accessibility to this Field is no longer given, see below
@@ -113,6 +122,31 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     @Override
+    public String getLocalNameKey() {
+        return "gt.blockmachines." + mName + ".name";
+    }
+
+    @Override
+    public String getLocalName() {
+        if (this instanceof ILocalizedMetaPipeEntity localizedPipe) {
+            return localizedPipe.getLocalizedName();
+        }
+        return StatCollector.translateToLocal("gt.blockmachines." + mName + ".name");
+    }
+
+    @Override
+    public String getInventoryName() {
+        // Pipes don't register a translation key for their name, and cloned instances
+        // may lack fields needed for dynamic name construction (e.g. mPrefixKey).
+        // Use the prototype from the registry which is always fully initialized.
+        IMetaTileEntity prototype = GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()];
+        if (prototype != null) {
+            return prototype.getLocalName();
+        }
+        return "";
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean renderInInventory(ISBRInventoryContext ctx) {
         final float tThickness = getThickness();
@@ -121,9 +155,15 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.setRenderBounds(BLOCK_MIN, pipeMin, pipeMin, BLOCK_MAX, pipeMax, pipeMax);
 
-        final IGregTechTileEntity mte = getBaseMetaTileEntity();
-        final ITexture[] sideTexture = getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false);
-        final ITexture[] endTexture = getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false);
+        ITexture[][] textures = inventoryTextureCache;
+        if (textures == null) {
+            final IGregTechTileEntity mte = getBaseMetaTileEntity();
+            textures = new ITexture[][] { getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false),
+                getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false) };
+            inventoryTextureCache = textures;
+        }
+        final ITexture[] sideTexture = textures[0];
+        final ITexture[] endTexture = textures[1];
         ctx.renderNegativeYFacing(sideTexture);
         ctx.renderPositiveYFacing(sideTexture);
         ctx.renderNegativeZFacing(sideTexture);
@@ -492,7 +532,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     @Override
-    public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
+    public final void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
+        final IGregTechTileEntity oldBase = mBaseMetaTileEntity;
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
             mBaseMetaTileEntity.getMetaTileEntity()
                 .inValidate();
@@ -502,11 +543,30 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         if (mBaseMetaTileEntity != null) {
             mBaseMetaTileEntity.setMetaTileEntity(this);
         }
+        if (oldBase != aBaseMetaTileEntity && oldBase instanceof CommonBaseMetaTileEntity oldMeta) {
+            oldMeta.refreshMetaTileEntityValidity();
+        }
+    }
+
+    @Override
+    public void receiveClientEvent(byte eventID, byte value) {
+        super.receiveClientEvent(eventID, value);
+        if (eventID == GregTechTileClientEvents.CHANGE_COMMON_DATA) {
+            mConnections = value;
+        }
     }
 
     @Override
     public ItemStack getStackForm(long aAmount) {
         return new ItemStack(GregTechAPI.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
+    }
+
+    @Override
+    public void initDefaultModes(NBTTagCompound nbt) {
+        super.initDefaultModes(nbt);
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe) {
+            pipe.updateConnections();
+        }
     }
 
     public boolean isCoverOnSide(BaseMetaPipeEntity aPipe, EntityLivingBase aEntity) {
@@ -602,13 +662,20 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         setCheckConnections();
     }
 
-    @Override
-    public void onColorChangeClient(byte aColor) {
-        // Do nothing apparently
+    public void setCheckConnections() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base.isServerSide()) {
+            if (base.isTickDisabled() || !deferCheckConnection()) {
+                checkConnections();
+            } else {
+                mCheckConnections = true;
+            }
+        }
     }
 
-    public void setCheckConnections() {
-        mCheckConnections = true;
+    @ApiStatus.OverrideOnly
+    protected boolean deferCheckConnection() {
+        return true;
     }
 
     public long injectEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
@@ -656,7 +723,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
         final ForgeDirection oppositeSide = side.getOpposite();
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
-        if (baseMetaTile == null || !baseMetaTile.isServerSide()) return 0;
+        if (baseMetaTile == null) return 0;
 
         final Cover cover = baseMetaTile.getCoverAtSide(side);
 
@@ -698,6 +765,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     protected void checkConnections() {
+        mCheckConnections = false;
         // Verify connections around us. If GT6 style cables are not enabled then revert to old behavior and try
         // connecting to everything around us
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -705,11 +773,13 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
                 disconnect(side);
             }
         }
-        mCheckConnections = false;
     }
 
     private void connectAtSide(ForgeDirection side) {
         mConnections |= side.flag;
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe && pipe.isClientSide()) {
+            pipe.mConnections = mConnections;
+        }
     }
 
     @Override
@@ -838,6 +908,11 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     public boolean getGT6StyleConnection() {
         return false;
+    }
+
+    // in case any factory network wants to update in the case this happened.
+    protected void onCoverChangedServer() {
+
     }
 
     @Override

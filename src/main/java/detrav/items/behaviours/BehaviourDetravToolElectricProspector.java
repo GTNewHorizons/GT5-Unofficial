@@ -123,7 +123,6 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                             if (data != MODE_ALL_ORES && info.isSmall) continue;
 
                                             packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, block, meta);
-                                            continue;
                                         }
                                     }
                                 }
@@ -182,12 +181,13 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
     void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
         if (value < 0) {
             aPlayer.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name));
+                new ChatComponentText(StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", name)));
         } else if (value < 1) {
-            aPlayer
-                .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6")));
+            aPlayer.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", "")));
         } else aPlayer.addChatMessage(
-            new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name + " " + value));
+            new ChatComponentText(
+                StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", name) + " " + value));
     }
 
     @Override

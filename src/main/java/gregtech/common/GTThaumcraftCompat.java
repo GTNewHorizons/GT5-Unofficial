@@ -144,7 +144,7 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             1);
     }
 
-    public class LocalizedCustomAspectName extends Aspect {
+    public static class LocalizedCustomAspectName extends Aspect {
 
         public LocalizedCustomAspectName(String tag, int color, Aspect[] components, ResourceLocation image,
             int blend) {
@@ -308,6 +308,12 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             ThaumcraftApi.registerComplexObjectTag(aStack, getAspectList(aAspects));
             return true;
         }
+
+        if (!ThaumcraftApi.exists(aStack.getItem(), aStack.getItemDamage())) {
+            ThaumcraftApi.registerObjectTag(aStack, getAspectList(aAspects));
+            return true;
+        }
+
         AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
         if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
             ThaumcraftApi.registerObjectTag(aStack, getAspectList(aAspects));

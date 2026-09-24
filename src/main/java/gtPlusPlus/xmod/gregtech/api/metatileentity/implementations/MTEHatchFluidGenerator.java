@@ -81,8 +81,12 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
         if (!aBaseMetaTileEntity.isAllowedToWork()) {
             aBaseMetaTileEntity.setActive(false);
             mProgresstime = 0;
@@ -97,6 +101,10 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
                 mProgresstime = 0;
             }
         }
+        // Generate BEFORE super's detectInventoryChange(): the self-fill marks the tank dirty within this same tick
+        // and the dirty flag is cleared at the end of it, so generating afterwards would never push a recipe check
+        // and a multi idling on the generated fluid (e.g. air) would never wake up.
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -182,7 +190,10 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
             }
             return aFluid.amount;
         }
-        if (doFill) getFillableStack().amount = getCapacity();
+        if (doFill && space > 0) {
+            getFillableStack().amount = getCapacity();
+            getBaseMetaTileEntity().markDirty();
+        }
         return space;
     }
 
@@ -208,5 +219,11 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
         mProgresstime = aNBT.getInteger("mProgresstime");
         mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return aFluid.getFluid()
+            .equals(getFluidToGenerate());
     }
 }

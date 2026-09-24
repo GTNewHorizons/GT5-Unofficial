@@ -1,5 +1,6 @@
 package detrav.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerLuV;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUHV;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUV;
@@ -43,12 +44,17 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
 
     public static DetravMetaGeneratedTool01 INSTANCE;
 
+    private static final String NAME_KEY = "gt.detrav.metatool.01.name";
+    private static final String ELECTRIC_NAME_KEY = "gt.detrav.metatool.01.electric.name";
+    private static final int ELECTRIC_OFFSET = 100;
+    private static final int ELECTRIC_FIRST_TIER = 6;
+
     public DetravMetaGeneratedTool01() {
         super("detrav.metatool.01");
         INSTANCE = this;
         addTool(
             ProspectorScannerLV.ID,
-            "Prospector's Scanner(LV)",
+            "",
             "",
             new DetravProspector(1),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -57,7 +63,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerMV.ID,
-            "Prospector's Scanner(MV)",
+            "",
             "",
             new DetravProspector(2),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -66,7 +72,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerHV.ID,
-            "Prospector's Scanner(HV)",
+            "",
             "",
             new DetravProspector(3),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -75,7 +81,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerEV.ID,
-            "Prospector's Scanner(EV)",
+            "",
             "",
             new DetravProspector(4),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -84,7 +90,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerIV.ID,
-            "Prospector's Scanner(IV)",
+            "",
             "",
             new DetravProspector(5),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -93,7 +99,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerLuV.ID,
-            "Prospector's Scanner(LuV)",
+            "",
             "",
             new DetravProspector(6),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -102,7 +108,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerZPM.ID,
-            "Prospector's Scanner(ZPM)",
+            "",
             "",
             new DetravProspector(7),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -111,7 +117,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerUV.ID,
-            "Prospector's Scanner(UV)",
+            "",
             "",
             new DetravProspector(8),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -120,7 +126,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerUHV.ID,
-            "Prospector's Scanner(UHV)",
+            "",
             "",
             new DetravProspector(9),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -130,7 +136,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
 
         addTool(
             ElectricProspectorScannerLuV.ID,
-            "Electric Prospector's Scanner (LuV)",
+            "",
             "",
             new DetravToolElectricProspector(6),
             DetravToolDictNames.craftingToolElectricProspector,
@@ -139,7 +145,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L));
         addTool(
             ElectricProspectorScannerZPM.ID,
-            "Electric Prospector's Scanner (ZPM)",
+            "",
             "",
             new DetravToolElectricProspector(7),
             DetravToolDictNames.craftingToolElectricProspector,
@@ -148,7 +154,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L));
         addTool(
             ElectricProspectorScannerUV.ID,
-            "Electric Prospector's Scanner (UV)",
+            "",
             "",
             new DetravToolElectricProspector(8),
             DetravToolDictNames.craftingToolElectricProspector,
@@ -157,7 +163,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L));
         addTool(
             ElectricProspectorScannerUHV.ID,
-            "Electric Prospector's Scanner (UHV)",
+            "",
             "",
             new DetravToolElectricProspector(9),
             DetravToolDictNames.craftingToolElectricProspector,
@@ -167,9 +173,20 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
     }
 
+    /**
+     * Both families run two Meta Values per tier, so the tier follows from the Meta Value. Electric scanners start at
+     * Meta Value 100 and at LuV, the same split the tooltips use.
+     */
     @Override
-    @SuppressWarnings("unchecked")
-    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+    protected String getChargedName(int aMeta) {
+        return aMeta < ELECTRIC_OFFSET ? StatCollector.translateToLocalFormatted(NAME_KEY, GTValues.VN[aMeta / 2])
+            : StatCollector.translateToLocalFormatted(
+                ELECTRIC_NAME_KEY,
+                GTValues.VN[(aMeta - ELECTRIC_OFFSET) / 2 + ELECTRIC_FIRST_TIER]);
+    }
+
+    @Override
+    public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         long tMaxDamage = getToolMaxDamage(aStack);
         Materials tMaterial = getPrimaryMaterial(aStack);
         IToolStats tStats = getToolStats(aStack);
@@ -187,19 +204,19 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         if (meta < 100) {
             aList.add(
                 tOffset,
-                EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.durability")
-                    + EnumChatFormatting.GREEN
-                    + (tMaxDamage - getToolDamage(aStack))
-                    + " / "
-                    + tMaxDamage
-                    + EnumChatFormatting.GRAY);
+                EnumChatFormatting.GREEN + StatCollector.translateToLocalFormatted(
+                    "tooltip.detrav.scanner.durability",
+                    formatNumber(tMaxDamage - getToolDamage(aStack)),
+                    formatNumber(tMaxDamage)));
             aList.add(
                 tOffset + 1,
                 EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 2,
-                EnumChatFormatting.WHITE + StatCollector
-                    .translateToLocal("tooltip.detrav.scanner.range") + range + "x" + range + EnumChatFormatting.GRAY);
+                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                    "tooltip.detrav.scanner.range",
+                    formatNumber(range),
+                    formatNumber(range)));
             aList.add(
                 tOffset + 3,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0")
@@ -210,11 +227,11 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                     + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 5,
-                EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.success.chance")
-                    + EnumChatFormatting.RESET
-                    + (Math.min(((1 + meta) * 8), 100))
-                    + EnumChatFormatting.GRAY
-                    + "%");
+                EnumChatFormatting.GRAY + ""
+                    + EnumChatFormatting.ITALIC
+                    + StatCollector.translateToLocalFormatted(
+                        "tooltip.detrav.scanner.success.chance",
+                        formatNumber(Math.min(((1 + meta) * 8), 100))));
             aList.add(
                 tOffset + 6,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.0"));
@@ -222,29 +239,22 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                 tOffset + 7,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.1"));
             return;
-
         }
 
         // from here, it's for the electric prospector scanners
         aList.add(
-            tOffset + 0,
-            EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.durability")
-                + EnumChatFormatting.GREEN
-                + (tMaxDamage - getToolDamage(aStack))
-                + " / "
-                + tMaxDamage
-                + EnumChatFormatting.GRAY);
+            tOffset,
+            EnumChatFormatting.GREEN + StatCollector.translateToLocalFormatted(
+                "tooltip.detrav.scanner.durability",
+                formatNumber(tMaxDamage - getToolDamage(aStack)),
+                formatNumber(tMaxDamage)));
         aList.add(
             tOffset + 1,
             EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
         aList.add(
             tOffset + 2,
-            EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range")
-                + EnumChatFormatting.YELLOW
-                + (getHarvestLevel(aStack, "") * 2 + 1)
-                + "x"
-                + (getHarvestLevel(aStack, "") * 2 + 1)
-                + EnumChatFormatting.GRAY);
+            EnumChatFormatting.WHITE + StatCollector
+                .translateToLocalFormatted("tooltip.detrav.scanner.range", formatNumber(range), formatNumber(range)));
         aList.add(
             tOffset + 3,
             EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0"));
@@ -288,8 +298,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
-    public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List list) {
+    public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List<ItemStack> list) {
 
         ItemStack dStack;
         if (NewHorizonsCoreMod.isModLoaded()) {

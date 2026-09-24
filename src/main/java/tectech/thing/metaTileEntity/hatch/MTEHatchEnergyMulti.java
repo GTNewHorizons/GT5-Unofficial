@@ -9,10 +9,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ITexture;
@@ -20,7 +21,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -28,6 +28,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Created by danie_000 on 16.12.2016.
  */
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyInfo {
 
     public final int maxAmperes;
@@ -55,10 +56,21 @@ public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyI
 
     public void setAmperes(int amperes) {
         Amperes = amperes;
+        // Raising the amperage raises available power, which can unblock a recipe that failed for insufficient power.
+        notifyWatchers();
     }
 
     public int getHatchType() {
         return 1;
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.hatch.energymulti.name",
+            GTValues.VN[mTier],
+            formatNumber(maxAmperes));
     }
 
     @Override
@@ -153,20 +165,17 @@ public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyI
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 "gt.tileentity.throughput",
-                EnumChatFormatting.YELLOW + formatNumber(
+                formatNumber(
                     accessor.getNBTData()
-                        .getLong("amperage") * V[mTier])
-                    + EnumChatFormatting.RESET
-                    + " EU/t"));
+                        .getLong("amperage") * V[mTier])));
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] { GTUtility.translate(
-            "gt.tileentity.throughput",
-            EnumChatFormatting.YELLOW + formatNumber(Amperes * V[mTier]) + EnumChatFormatting.RESET + " EU/t") };
+        return new String[] {
+            StatCollector.translateToLocalFormatted("gt.tileentity.throughput", formatNumber(Amperes * V[mTier])) };
     }
 
     @Override
