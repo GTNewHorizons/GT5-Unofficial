@@ -710,6 +710,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         if (!super.onRunningTick(aStack)) {
             return false;
         }
+        // might need a cleanup here
         if (ticker % 21 == 0) {
 
             FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amountToDrain)

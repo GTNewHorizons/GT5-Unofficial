@@ -1,6 +1,6 @@
 3 Modes: {light_purple:Light} | {blue:Standard} | {dark_green:Heavy}
 {gray:{hr}}
-{gold:{var:parallels} Parallels} per {white:Turbine Tier}
+{gold:{var:parallels} Parallels} per {white:Total Turbine Tier}
 {green:{var:speed}% Speed}
 {aqua:{var:eu_eff}% EU Usage}
 {white:Non-Huge Turbines} have reduced effectiveness...
