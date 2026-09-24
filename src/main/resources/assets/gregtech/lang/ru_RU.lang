@@ -3080,6 +3080,7 @@ GT5U.gui.text.structure_error.missing_data_hatch=Нет шлюза для вво
 GT5U.gui.text.structure_error.dt_missing_output_hatch=Missing Output Hatch on Layer %s
 GT5U.gui.text.structure_error.dt_missing_output_hatches=Нет выходных шлюзов на слоях %s
 GT5U.gui.text.structure_error.coil_level_not_enough=Уровень катушек недостаточен
+GT5U.gui.text.structure_error.exotic_hatch_insufficient_coil_level=Coil level too low for Multi-Amp Hatch
 GT5U.gui.text.structure_error.missing_top=Верхний слой неверен
 GT5U.gui.text.structure_error.dangote_missing_top=Верхний слой неверен или выхлопная система стоит не на верхнем слое
 GT5U.gui.text.structure_error.spelv_module_exceed=Превышен лимит модулей

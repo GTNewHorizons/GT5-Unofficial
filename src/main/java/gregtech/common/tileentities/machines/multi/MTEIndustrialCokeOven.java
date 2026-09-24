@@ -303,7 +303,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (getCoilTier() < HeatingCoilLevel.UMV.getTier() + 1) {
-                errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+                errors.add(StructureErrorRegistry.EXOTIC_HATCH_INSUFFICIENT_COIL_LEVEL);
             }
         } else {
             checkHasEnergyHatch(errors);
