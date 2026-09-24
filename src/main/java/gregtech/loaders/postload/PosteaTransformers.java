@@ -38,7 +38,7 @@ public class PosteaTransformers implements Runnable {
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
-        registerIC2Transformers();
+        registerIC2CellsTransformers();
         registerBartworksLabPartTransformer();
     }
 
@@ -111,9 +111,7 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
-    // TODO: Remove this after IC2 deprecation is complete. Or leave them here for the end of time
-    // (that's probably whats gonna happen)
-    private void registerIC2Transformers() {
+    private void registerIC2CellsTransformers() {
 
         // Cells
         ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 0, ItemList.Cell_Empty.get(1));
