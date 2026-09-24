@@ -2864,6 +2864,7 @@ GT5U.type_filter.representation_slot.tooltip.2=§7Click with an item to set filt
 channels.gregtech.manipulator=Decides the tier of QFT manipulator blocks. Starts at §6Neutron Pulse Manipulator§r at value 1 and ends at §6SpaceTime Continuum Ripper§r at value 4.
 channels.gregtech.shielding=Decides the tier of QFT shielding blocks. Starts at §6Neutron Shielding Core§r at value 1 and ends at §6SpaceTime Bending Core§r at value 4.
 channels.gregtech.coil=Decides the tier of heating coil. Starts at §6Cupronickel Coil§r at value 1 and ends at §6Eternal Coil§r at value 14.
+channels.gregtech.field_restriction_coil=Decides the tier of field restriction coils. Starts at §6Field Restriction Coil§r at value 1 and ends at §6Temporal Field Restriction Coil§r at value 4.
 channels.gregtech.glass=Decides the tier of glass. This has many tiers and many substitutes for various tiers. Please refer to the tooltip of individual glass blocks.
 channels.gregtech.casing=Decides the tier of metallic machine casing.
 channels.gregtech.unit_casing=Decides the tier of Electronic Unit Casing. Starts at §6Imprecise Electronic Unit Casing§r at value 1 and ends at §6Mk-IV§r at value 5.

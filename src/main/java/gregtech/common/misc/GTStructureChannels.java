@@ -25,6 +25,7 @@ public enum GTStructureChannels implements IStructureChannels {
     QFT_MANIPULATOR("manipulator", "Manipulator Tier"),
     QFT_SHIELDING("shielding", "Shielding Tier"),
     HEATING_COIL("coil", "Heating Coil Tier"),
+    FIELD_RESTRICTION_COIL("field_restriction_coil", "Field Restriction Coil Tier"),
     BOROGLASS("glass", "Glass Tier"),
     PRASS_UNIT_CASING("unit_casing", "Precise Electronic Unit Casing Tier"),
     METAL_MACHINE_CASING("casing", "Metal Machine Casing Tier"),
