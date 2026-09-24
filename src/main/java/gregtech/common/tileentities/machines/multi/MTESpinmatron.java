@@ -281,8 +281,9 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         final IGregTechTileEntity meta = getBaseMetaTileEntity();
         World w = getBaseMetaTileEntity().getWorld();
         final int aX = meta.getXCoord(), aY = meta.getYCoord(), aZ = meta.getZCoord();
-        for (int i = 0; i < turbineHolder.getSlots(); i++) {
-            if (turbineHolder.getStackInSlot(i) != null) {
+        for (int i = 0; i < tier * 2; i++) {
+            if (turbineHolder.getStackInSlot(i) != null) { // operate under the assumption the tool in the slot IS a
+                // rotor.
                 ItemStack currentItem = turbineHolder.extractItem(i, 1, false);
                 EntityItem entityItem = new EntityItem(w, aX, aY, aZ, currentItem);
                 w.spawnEntityInWorld(entityItem);
@@ -600,7 +601,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
             @NotNull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) { // implements Hatch+1 OC
                 return super.createOverclockCalculator(recipe).setMaxOverclocks(
                     (GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)) + 1);
             }
@@ -613,7 +614,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         super.stopMachine(reason);
     }
 
-    public boolean isTurbine(ItemStack aStack) {
+    public boolean isTurbine(ItemStack aStack) { // thank you airfilter!
         if (aStack == null) return false;
         if (!(aStack.getItem() instanceof MetaGeneratedTool01 tool)) return false;
         if (aStack.getItemDamage() < 170 || aStack.getItemDamage() > 179) return false;
@@ -657,6 +658,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 
     private boolean checkFluid(int amount) {
+        // checks for fluid in hatch, does not drain it.
         final FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amount)
             : new FluidStack(GTPPFluids.Kerosene, amount);
 
@@ -692,7 +694,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     @Override
     public int getMaxParallelRecipes() {
 
-        getRP();
+        getRP(); // updates RP
         int parallels = RP;
         if (tier2Fluid) {
             parallels = (int) Math.floor(parallels * TIER2_FLUID_PARALLEL_MULTIPLIER);
@@ -711,7 +713,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         if (ticker % 21 == 0) {
 
             FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amountToDrain)
-                : new FluidStack(GTPPFluids.Kerosene, amountToDrain);
+                : new FluidStack(GTPPFluids.Kerosene, amountToDrain); // gets fluid to drain
             for (MTEHatchInput mInputHatch : mInputHatches) {
                 if (drain(mInputHatch, tFluid, true)) {
                     ticker = 1;
@@ -839,6 +841,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 }
 
+// struct for packaging data for structure piece so i don't have to do String manipulation
 enum StructureData {
 
     tier1(1, "t1"),
