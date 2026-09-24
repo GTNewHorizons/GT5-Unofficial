@@ -7,12 +7,13 @@ import java.nio.charset.StandardCharsets;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.ChatMessage;
 import gregtech.api.enums.GTValues;
 import gregtech.api.net.GTPacketChat;
@@ -122,7 +123,9 @@ public class Localized {
         if (key instanceof ChatMessage message) {
             return "§s" + colour + message.localize(args) + "§t";
         } else {
-            return "§s" + colour + GTUtility.translate((String) key, argProcessor.process(args)) + "§t";
+            return "§s" + colour
+                + StatCollector.translateToLocalFormatted((String) key, argProcessor.process(args))
+                + "§t";
         }
     }
 
@@ -188,8 +191,8 @@ public class Localized {
 
         buffer.writeByte(TYPE_INVALID);
 
-        GTMod.GT_FML_LOGGER.error("Attempted to send illegal Localized argument over the network: {}", arg);
-        GTMod.GT_FML_LOGGER.error(new Exception());
+        GTLoggers.GT_FML_LOGGER.error("Attempted to send illegal Localized argument over the network: {}", arg);
+        GTLoggers.GT_FML_LOGGER.error(new Exception());
     }
 
     private static Object decodeArg(ByteArrayDataInput buffer) {

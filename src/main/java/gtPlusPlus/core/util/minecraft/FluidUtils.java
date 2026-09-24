@@ -4,6 +4,9 @@ import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -16,6 +19,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.minecraft.FluidGT6;
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -23,6 +27,8 @@ import gtPlusPlus.core.item.base.cell.BaseItemPlasmaCell;
 import gtPlusPlus.core.material.Material;
 
 public class FluidUtils {
+
+    public static final Map<String, ItemStack> FULL_CONTAINERS = new HashMap<>();
 
     public static Fluid addGtFluid(final String aName, final String aLocalized, final short[] rgba, final int aState,
         final long aTemperatureK, final ItemStack aFullContainer, final ItemStack aEmptyContainer,
@@ -150,10 +156,10 @@ public class FluidUtils {
                 .size() > 1)
             || aMaterial.getDefaultLocalName()
                 .toLowerCase()
-                .contains("wrought")) {
+                .contains("cast")) {
             return null;
         }
-        if (aMaterial.vComponentCount != 1) {
+        if (aMaterial.componentCount != 1) {
             return null;
         }
 
@@ -187,6 +193,13 @@ public class FluidUtils {
                 false);
         }
         return null;
+    }
+
+    /**
+     * This only works for fluids registered with helper methods from this class!!!
+     */
+    public static ItemStack getFilledCellFromFluidName(Fluid fluid, int stackSize) {
+        return GTUtility.copyAmount(stackSize, FULL_CONTAINERS.get(fluid.getName()));
     }
 
     public static Fluid addGTFluid(String aName, final String aTexture, final String aLocalized, short[] aRGBa,
@@ -288,6 +301,9 @@ public class FluidUtils {
                 .duration(4)
                 .eut(1)
                 .addTo(cannerRecipes);
+        }
+        if (aFullContainer != null) {
+            FULL_CONTAINERS.put(aName, aFullContainer);
         }
         return rFluid;
     }
@@ -391,41 +407,29 @@ public class FluidUtils {
 
     // Used in waila
     public static FluidStack getWildcardFluidStack(String aFluidName, int amount) {
-        FluidStack aFStack1 = (FluidRegistry.getFluidStack(aFluidName, amount));
-        FluidStack aFStack2 = (FluidRegistry.getFluidStack(aFluidName.toLowerCase(), amount));
-        FluidStack aFStack3 = (FluidRegistry.getFluidStack("molten" + "." + aFluidName.toLowerCase(), amount));
-        FluidStack aFStack4 = (FluidRegistry.getFluidStack("fluid" + "." + aFluidName.toLowerCase(), amount));
-        FluidStack aFStack5 = (FluidRegistry.getFluidStack("liquid_" + aFluidName.toLowerCase(), amount));
-        FluidStack aFStack6 = (FluidRegistry.getFluidStack("liquid" + "." + aFluidName.toLowerCase(), amount));
-        if (aFStack1 != null) {
-            return aFStack1;
-        }
-        if (aFStack2 != null) {
-            return aFStack2;
-        }
-        if (aFStack3 != null) {
-            return aFStack3;
-        }
-        if (aFStack4 != null) {
-            return aFStack4;
-        }
-        if (aFStack5 != null) {
-            return aFStack5;
-        }
-        return aFStack6;
+        FluidStack tFStack = FluidRegistry.getFluidStack(aFluidName, amount);
+        if (tFStack != null) return tFStack;
+        String tFNameLower = aFluidName.toLowerCase();
+        tFStack = FluidRegistry.getFluidStack(tFNameLower, amount);
+        if (tFStack != null) return tFStack;
+        tFStack = FluidRegistry.getFluidStack("molten." + tFNameLower, amount);
+        if (tFStack != null) return tFStack;
+        tFStack = FluidRegistry.getFluidStack("fluid." + tFNameLower, amount);
+        if (tFStack != null) return tFStack;
+        tFStack = FluidRegistry.getFluidStack("liquid_" + tFNameLower, amount);
+        if (tFStack != null) return tFStack;
+        tFStack = FluidRegistry.getFluidStack("liquid." + tFNameLower, amount);
+        return tFStack;
     }
 
     public static FluidStack getWildcardFluidStack(Materials aMaterial, int amount) {
-        FluidStack aFStack1 = aMaterial.getFluid(amount);
-        FluidStack aFStack2 = aMaterial.getGas(amount);
-        FluidStack aFStack3 = aMaterial.getMolten(amount);
-        FluidStack aFStack4 = aMaterial.getSolid(amount);
-        if (aFStack1 != null) {
-            return aFStack1;
-        } else if (aFStack2 != null) {
-            return aFStack2;
-        } else if (aFStack3 != null) {
-            return aFStack3;
-        } else return aFStack4;
+        FluidStack tFStack = aMaterial.getFluid(amount);
+        if (tFStack != null) return tFStack;
+        tFStack = aMaterial.getGas(amount);
+        if (tFStack != null) return tFStack;
+        tFStack = aMaterial.getMolten(amount);
+        if (tFStack != null) return tFStack;
+        tFStack = aMaterial.getSolid(amount);
+        return tFStack;
     }
 }

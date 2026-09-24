@@ -1,16 +1,16 @@
 {
   "soundDurationsMs": {
-    "minecraft:11": 71112,
-    "minecraft:13": 178086,
-    "minecraft:blocks": 345914,
-    "minecraft:cat": 185343,
-    "minecraft:chirp": 185584,
-    "minecraft:far": 174462,
-    "minecraft:mall": 197219,
-    "minecraft:mellohi": 96199,
-    "minecraft:stal": 150858,
-    "minecraft:strad": 188168,
-    "minecraft:wait": 237886,
-    "minecraft:ward": 251393
+    "minecraft:records.11": 71112,
+    "minecraft:records.13": 178086,
+    "minecraft:records.blocks": 345914,
+    "minecraft:records.cat": 185343,
+    "minecraft:records.chirp": 185584,
+    "minecraft:records.far": 174462,
+    "minecraft:records.mall": 197219,
+    "minecraft:records.mellohi": 96199,
+    "minecraft:records.stal": 150858,
+    "minecraft:records.strad": 188168,
+    "minecraft:records.wait": 237886,
+    "minecraft:records.ward": 251393
   }
 }

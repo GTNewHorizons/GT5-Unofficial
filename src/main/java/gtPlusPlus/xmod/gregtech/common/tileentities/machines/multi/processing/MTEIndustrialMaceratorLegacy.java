@@ -37,6 +37,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -47,6 +49,10 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -110,13 +116,13 @@ public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustri
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 3, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
-            .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
+            .addCasingInfoMin("Maceration Stack Casing (After upgrade)", 26, false)
+            .addCasingInfoMin("Stable Titanium Casing (Before upgrade)", 26, false)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -187,13 +193,21 @@ public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         structureTier = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (structureTier < 1 || mCasing < 26 || !checkHatch()) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET, errors)) return;
+        if (structureTier < 1) {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
+        }
+        checkCasingMin(errors, mCasing, 26);
+        checkHatch(errors);
+        if (structureTier < controllerTier) {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
+        }
         updateHatchTexture();
-        return structureTier >= controllerTier;
     }
 
     protected void updateHatchTexture() {
@@ -207,14 +221,17 @@ public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     @Override
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty() && !mMaintenanceHatches.isEmpty()
-            && !mOutputBusses.isEmpty()
-            && (!mInputBusses.isEmpty() || !mDualInputHatches.isEmpty());
+    public void checkHatch(List<StructureError> errors) {
+        super.checkHatch(errors);
+        checkHasOutputBus(errors);
+        if (mInputBusses.isEmpty() && mDualInputHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, InputBus, 0, 1));
+        }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_MACERATOR;
     }
 
@@ -252,6 +269,11 @@ public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustri
     @Override
     public int getRecipeCatalystPriority() {
         return -10;
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override
@@ -374,19 +396,16 @@ public class MTEIndustrialMaceratorLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tier", controllerTier);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         if (tag.hasKey("tier")) {
-            currentTip.add(
+            list.add(
                 StatCollector.translateToLocal("GT5U.machines.tier") + ": "
                     + EnumChatFormatting.YELLOW
                     + formatNumber(tag.getInteger("tier"))

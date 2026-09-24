@@ -70,9 +70,6 @@ public class FluidHeaterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Sodium.getDust(1))
-            .fluidInputs(
-
-            )
             .fluidOutputs(Materials.Sodium.getFluid(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)

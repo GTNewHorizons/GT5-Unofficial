@@ -29,7 +29,7 @@ public final class SubTag implements ICondition<ISubTagContainer> {
     public final String mName;
     /**
      * Add this to your Material if you want to have its Ore Calcite heated in a Blast Furnace for more output. Already
-     * listed are: Iron, Pyrite, PigIron, DeepIron, ShadowIron, WroughtIron and MeteoricIron.
+     * listed are: Iron, Pyrite, PigIron, DeepIron, ShadowIron, CastIron and MeteoricIron.
      */
     public static final SubTag BLASTFURNACE_CALCITE_DOUBLE = getNewSubTag("BLASTFURNACE_CALCITE_DOUBLE"),
         BLASTFURNACE_CALCITE_TRIPLE = getNewSubTag("BLASTFURNACE_CALCITE_TRIPLE");

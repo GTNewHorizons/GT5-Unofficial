@@ -98,7 +98,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(10))
             .fluidOutputs(GTModHandler.getDistilledWater(10))
             .duration(1 * SECONDS + 5 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -178,7 +178,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.AceticAcid.getFluid(25))
             .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -187,7 +187,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.Water.getFluid(375))
             .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -196,7 +196,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.Ethanol.getFluid(150))
             .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -205,7 +205,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.Methanol.getFluid(150))
             .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -214,7 +214,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.Ammonia.getGas(100))
             .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -223,7 +223,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(400))
             .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -232,7 +232,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.Methane.getGas(600))
             .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -241,7 +241,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.Biogas.getGas(1_800))
             .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -249,7 +249,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.Methane.getGas(100))
             .fluidOutputs(Materials.Biogas.getGas(300))
             .duration(16 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -375,6 +375,14 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.Water.getFluid(1_000))
             .fluidOutputs(GTModHandler.getDistilledWater(1_000))
             .duration(1 * SECONDS + 12 * TICKS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(distillationTowerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(2)
+            .fluidInputs(Materials.Oil.getFluid(1_000))
+            .fluidOutputs(Materials.Lubricant.getFluid(500))
+            .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
 

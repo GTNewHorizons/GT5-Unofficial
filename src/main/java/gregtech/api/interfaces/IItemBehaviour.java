@@ -15,8 +15,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.Nullable;
-
 import gregtech.api.enums.SubTag;
 import gregtech.api.items.MetaBaseItem;
 
@@ -96,9 +94,4 @@ public interface IItemBehaviour<E extends Item> {
 
     EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity,
         float aSpeed);
-
-    @Nullable
-    default String getNameOverride(String oldName, ItemStack stack) {
-        return null;
-    }
 }

@@ -13,8 +13,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IIconContainer;
-import kekztech.KekzCore;
 import kekztech.common.itemBlocks.ItemBlockTFFTStorageField;
 import kekztech.common.tileentities.MTETankTFFT;
 
@@ -61,16 +61,16 @@ public class BlockTFFTStorageField extends BaseGTUpdateableBlock {
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
-        textures[0] = ir.registerIcon(KekzCore.MODID + ":" + "TFFTCasing");
+        textures[0] = ir.registerIcon(Mods.ModIDs.KEKZ_TECH + ":" + "TFFTCasing");
         for (int i = 1; i < SUB_BLOCK_COUNT; i++) {
-            textures[i] = ir.registerIcon(KekzCore.MODID + ":" + "TFFTStorageFieldBlock" + i);
+            textures[i] = ir.registerIcon(Mods.ModIDs.KEKZ_TECH + ":" + "TFFTStorageFieldBlock" + i);
         }
     }
 
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < SUB_BLOCK_COUNT; i++) {
-            par3List.add(new ItemStack(par1, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 

@@ -57,10 +57,11 @@ public class GTPacketUpdateItem extends GTPacket {
     @Override
     public void process(IBlockAccess aWorld) {
         if (mPlayer == null) return;
-        ItemStack stack = Backhand.getOffhandItem(mPlayer);
-        if (stack == null) stack = mPlayer.inventory.getCurrentItem();
-        if (stack != null && stack.getItem() instanceof INetworkUpdatableItem) {
+        ItemStack stack = mPlayer.inventory.getCurrentItem();
+        if (stack == null || !(stack.getItem() instanceof INetworkUpdatableItem))
+            stack = Backhand.getOffhandItem(mPlayer);
+        if (stack != null && stack.getItem() instanceof INetworkUpdatableItem)
             ((INetworkUpdatableItem) stack.getItem()).receive(stack, mPlayer, tag);
-        }
+
     }
 }

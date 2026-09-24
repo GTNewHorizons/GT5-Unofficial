@@ -3,9 +3,12 @@ package gtPlusPlus.core.item;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
+import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.BOLT;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FINEWIRE;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FOIL;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.GEAR;
+import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.PLATESUPERDENSE;
+import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLGEAR;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLSPRING;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SPRING;
 
@@ -38,7 +41,6 @@ import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
-import gtPlusPlus.core.item.general.ItemBlueprint;
 import gtPlusPlus.core.item.general.ItemBufferCore;
 import gtPlusPlus.core.item.general.ItemCloakingDevice;
 import gtPlusPlus.core.item.general.ItemGenericToken;
@@ -99,8 +101,6 @@ public final class ModItems {
         GregtechItemList.AlkalusDisk.set(
             new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, "Unknown Use", EnumRarity.rare, false));
 
-        GregtechItemList.BlueprintBase.set(new ItemBlueprint("itemBlueprint"));
-
         // Half Complete Casings
         Item halfCompleteCasings = new ItemHalfCompleteCasings(
             "itemHalfCompleteCasings",
@@ -150,12 +150,11 @@ public final class ModItems {
         GregtechItemList.ExpandableHandPump.set(new ItemStack(toolHandPump, 1, 1004));
 
         // Volumetric Flasks
-        GregtechItemList.VOLUMETRIC_FLASK_8k
-            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 16000));
+        GregtechItemList.VOLUMETRIC_FLASK_8k.set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", 16000));
         GregtechItemList.VOLUMETRIC_FLASK_32k
-            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 256000));
-        GregtechItemList.KLEIN_BOTTLE.set(
-            VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_Infinite", "Klein Bottle", Integer.MAX_VALUE));
+            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_32k", 256000));
+        GregtechItemList.KLEIN_BOTTLE
+            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_Infinite", Integer.MAX_VALUE));
 
         Item boilerChassis = new ItemBoilerChassis();
         GregtechItemList.BoilerChassis_Tier0.set(new ItemStack(boilerChassis, 1, 0));
@@ -229,10 +228,6 @@ public final class ModItems {
         // Generic Chem Items
         Item genericChemItem = new ItemGenericChemBase();
 
-        GregtechItemList.RedMetalCatalyst.set(new ItemStack(genericChemItem))
-            .registerOre("catalystIronCopper");
-        GregtechItemList.YellowMetalCatalyst.set(new ItemStack(genericChemItem, 1, 1))
-            .registerOre("catalystTungstenNickel");
         GregtechItemList.BlueMetalCatalyst.set(new ItemStack(genericChemItem, 1, 2))
             .registerOre("catalystCobaltTitanium");
         GregtechItemList.OrangeMetalCatalyst.set(new ItemStack(genericChemItem, 1, 3))
@@ -346,16 +341,8 @@ public final class ModItems {
         // Custom Tokens
         ItemGenericToken genericToken = new ItemGenericToken();
         genericToken.register(0, "BitCoin", 16, "Can be used on the dark web");
-        genericToken.register(1, "Hand Pump Trade Token I", 1, "Craft into a Tier I Hand pump");
-        genericToken.register(2, "Hand Pump Trade Token II", 1, "Craft into a Tier II Hand pump");
-        genericToken.register(3, "Hand Pump Trade Token III", 1, "Craft into a Tier III Hand pump");
-        genericToken.register(4, "Hand Pump Trade Token IV", 1, "Craft into a Tier IV Hand pump");
 
         GregtechItemList.BitCoin.set(new ItemStack(genericToken, 1, 0));
-        GregtechItemList.HandPumpToken_I.set(new ItemStack(genericToken, 1, 1));
-        GregtechItemList.HandPumpToken_II.set(new ItemStack(genericToken, 1, 2));
-        GregtechItemList.HandPumpToken_III.set(new ItemStack(genericToken, 1, 3));
-        GregtechItemList.HandPumpToken_IV.set(new ItemStack(genericToken, 1, 4));
     }
 
     private static Item registerChargePack(int tier) {
@@ -365,13 +352,13 @@ public final class ModItems {
     }
 
     private static void runMaterialGenerator() {
+        Material.registerAllPending();
         // Just an unusual plate needed for some black magic.
         new BaseItemPlate(MaterialsOther.CLAY);
         new BaseItemPlateDouble(MaterialsOther.CLAY);
 
         // Springs
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsElements.STANDALONE.WHITE_METAL);
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.NITINOL_60);
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.AQUATIC_STEEL);
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.EGLIN_STEEL);
@@ -382,7 +369,6 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(SMALLSPRING, MaterialsAlloy.BLACK_TITANIUM);
 
         // Fine Wire
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.WHITE_METAL);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.getInstance().ZIRCONIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.LEAGRISIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.BABBIT_ALLOY);
@@ -406,7 +392,6 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.RHUGNOR);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.WHITE_METAL);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.ADVANCED_NITINOL);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.PIKYONIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.CINOBITE);
@@ -414,8 +399,31 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.TRINIUM_REINFORCED_STEEL);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
 
+        // Superdense Plate
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.BOTMIUM);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.QUANTUM);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.LAURENIUM);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.ABYSSAL);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.HYPOGEN);
+        MaterialUtils
+            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
+        MaterialUtils
+            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.RHUGNOR);
+        MaterialUtils
+            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.ADVANCED_NITINOL);
+        MaterialUtils
+            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.DRAGON_METAL);
+
         // Gear
         MaterialUtils.generateComponentAndAssignToAMaterial(GEAR, MaterialsElements.STANDALONE.RHUGNOR);
+
+        // Small Gear
+        MaterialUtils.generateComponentAndAssignToAMaterial(SMALLGEAR, MaterialsElements.STANDALONE.HYPOGEN);
+
+        // Bolt
+        MaterialUtils.generateComponentAndAssignToAMaterial(BOLT, MaterialsElements.STANDALONE.RHUGNOR);
 
         // Special Sillyness
         new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
@@ -436,6 +444,7 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsElements.getInstance().RHENIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().THALLIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().GERMANIUM);
+        MaterialGenerator.generate(MaterialsElements.getInstance().TECHNETIUM);
 
         // RADIOACTIVE ELEMENTS
         MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);
@@ -460,7 +469,6 @@ public final class ModItems {
 
         // Custom Materials that are from Runescape
         MaterialGenerator.generate(MaterialsElements.STANDALONE.BLACK_METAL);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.WHITE_METAL);
         MaterialGenerator.generateOreMaterialWithAllExcessComponents(MaterialsElements.STANDALONE.GRANITE);
         MaterialGenerator.generateOreMaterialWithAllExcessComponents(MaterialsElements.STANDALONE.RUNITE);
         MaterialGenerator.generate(MaterialsElements.STANDALONE.DRAGON_METAL);
@@ -579,7 +587,7 @@ public final class ModItems {
         GTPPEverglades.GenerateOreMaterials();
 
         // Formula overrides
-        MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.vChemicalFormula = StringUtils.subscript("(CW)7Ti3");
+        MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.chemicalFormula = StringUtils.subscript("(CW)7Ti3");
 
         // Werkstoff bridge
         MaterialsElements.getInstance().ZIRCONIUM.setWerkstoffID((short) 3);
@@ -736,8 +744,8 @@ public final class ModItems {
                 "dustNeptunium238",
                 0xAFF04B,
                 50000,
-                new String[] { StringUtils.superscript("238Np"),
-                    "Result: Plutonium 238 (" + StringUtils.superscript("238Pu") + ")" },
+                StringUtils.superscript("238Np"),
+                StringUtils.superscript("238Pu"),
                 MaterialsElements.getInstance().PLUTONIUM238.getDust(1),
                 5,
                 GTRecipeConstants.DecayType.BetaMinus));
@@ -747,8 +755,8 @@ public final class ModItems {
                 "dustNeptunium239",
                 0x71F045,
                 25000,
-                new String[] { StringUtils.superscript("238Np"),
-                    "Result: Plutonium 239 (" + StringUtils.superscript("239Pu") + ")" },
+                StringUtils.superscript("239Np"),
+                StringUtils.superscript("239Pu"),
                 Materials.Plutonium.getDust(1),
                 5,
                 GTRecipeConstants.DecayType.BetaMinus));
@@ -765,8 +773,8 @@ public final class ModItems {
                 "dustRadium226",
                 MaterialsElements.getInstance().RADIUM.getRgbAsHex(),
                 90000,
-                new String[] { StringUtils.superscript("226Ra"),
-                    "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
+                StringUtils.superscript("226Ra"),
+                StringUtils.superscript("222Rn"),
                 GregtechItemList.DecayedRadium226Dust.get(1),
                 5,
                 GTRecipeConstants.DecayType.Alpha));
@@ -776,8 +784,8 @@ public final class ModItems {
                 "dustProtactinium233",
                 MaterialsElements.getInstance().PROTACTINIUM.getRgbAsHex(),
                 32000,
-                new String[] { StringUtils.superscript("233Pa"),
-                    "Result: Uranium 233 (" + StringUtils.superscript("233U") + ")" },
+                StringUtils.superscript("233Pa"),
+                StringUtils.superscript("233U"),
                 MaterialsElements.getInstance().URANIUM233.getDust(1),
                 6,
                 GTRecipeConstants.DecayType.BetaMinus));

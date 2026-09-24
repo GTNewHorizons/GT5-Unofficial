@@ -1,11 +1,13 @@
 package gtnhlanth.loader;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.OrePrefixes.blockCasingAdvanced;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
@@ -15,15 +17,13 @@ import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFurnaceRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -37,9 +37,6 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.api.util.GTRecipeConstants.WaferEngravingRecipes;
 import static gregtech.common.items.MetaGeneratedItem01.registerCauldronCleaningFor;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.CeriumChlorideConcentrate;
@@ -84,7 +81,7 @@ import static gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumChlorideCon
 import static gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumExtractingNanoResin;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumOreConcentrate;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.ImpureLanthanumChloride;
-import static gtnhlanth.common.register.WerkstoffMaterialPool.LanthaniumChloride;
+import static gtnhlanth.common.register.WerkstoffMaterialPool.LanthanumChloride;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.LanthanumChlorideConcentrate;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.LanthanumExtractingNanoResin;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.LanthanumOreConcentrate;
@@ -120,38 +117,32 @@ import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumChlorideC
 import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumExtractingNanoResin;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumOreConcentrate;
 
-import java.util.HashSet;
-
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.system.material.BWGTMaterialReference;
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTLog;
+import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
-import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
+import gtPlusPlus.core.fluids.GTPPFluids;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtnhlanth.Tags;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import gtnhlanth.common.register.LanthItemList;
@@ -417,21 +408,6 @@ public class RecipeLoader {
             'H',
             ItemList.Hull_LuV.get(1));
 
-        // Focus Input Bus
-        GameRegistry.addShapedRecipe(
-            LanthItemList.BEAMLINE_FOCUS_INPUT_BUS,
-            "MCM",
-            "McM",
-            "RCR",
-            'M',
-            WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 1),
-            'C',
-            ItemList.Conveyor_Module_HV.get(1),
-            'R',
-            ItemList.Robot_Arm_HV.get(1),
-            'c',
-            new ItemStack(Blocks.chest, 1, 32767));
-
         // Target Receptacle, same thing as Focus Manipulator basically
         GTValues.RA.stdBuilder()
             .fluidInputs(
@@ -514,7 +490,7 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
-        // Beamline Input Hatch
+        // Beam Input Hatch
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 Materials.SolderingAlloy.getMolten(64 * INGOTS),
@@ -534,7 +510,7 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);
 
-        // Beamline Output Hatch
+        // Beam Output Hatch
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 Materials.SolderingAlloy.getMolten(64 * INGOTS),
@@ -681,7 +657,7 @@ public class RecipeLoader {
             .itemInputs(
                 new ItemStack(LanthItemList.MASKED_MASK),
                 GGMaterial.lithiumChloride.get(OrePrefixes.dust, 2),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 4))
+                Materials.PotassiumHydroxide.getDust(4))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2)))
             .duration(80 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -856,9 +832,9 @@ public class RecipeLoader {
                                 new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
                                 GTUtility.copyAmount(0, lens))
                             .fluidInputs(
-                                // damage * 4 (chips per recipe) * 50 (L per chip normally) * 3 / 4 (75% of the
+                                // max uses * 4 (chips per recipe) * 50 (L per chip normally) * 3 / 4 (75% of the
                                 // cost)
-                                Materials.BioMediumSterilized.getFluid((mask.getDamage() + 1) * 4L * 50 * 3 / 4))
+                                Materials.BioMediumSterilized.getFluid(mask.getMaxUses() * 4 * 1L * 50 * 3 / 4))
                             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
                             .requiresCleanRoom()
                             .duration(120 * SECONDS)
@@ -1049,11 +1025,11 @@ public class RecipeLoader {
         // SeaweedAsh
         GTModHandler.addSmeltingRecipe(
             GTModHandler.getModItem(PamsHarvestCraft.ID, "seaweedItem", 1),
-            WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dustSmall, 1));
+            WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 1));
 
         // SeaweedConcentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 2))
+            .itemInputs(WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 8))
             .itemOutputs(Materials.Calcite.getDust(1))
             .fluidInputs(Materials.DilutedSulfuricAcid.getFluid(1_200))
             .fluidOutputs(WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(1_200))
@@ -1063,21 +1039,37 @@ public class RecipeLoader {
 
         // Iodine
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Benzene.getCells(1))
             .itemOutputs(WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 1))
-            .fluidInputs(WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2_000))
+            .fluidInputs(
+                WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2_000),
+                Materials.Chlorobenzene.getFluid(2_000))
             .fluidOutputs(WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(200))
             .eut(TierEU.RECIPE_HV)
-            .duration(38 * SECONDS)
-            .addTo(centrifugeRecipes);
+            .duration(30 * SECONDS)
+            .addTo(centrifugeNonCellRecipes);
 
+        // SeaweedByproducts
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(6_000),
+                (new FluidStack(GTPPFluids.Nitrobenzene, 12_000)))
+            .itemOutputs(
+                WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 60),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Arsenic, 8),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 6),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 2))
+            .fluidOutputs(MaterialsElements.getInstance().BROMINE.getFluidStack(200))
+            .metadata(CentrifugeRecipeKey.INSTANCE, true)
+            .eut(TierEU.RECIPE_UEV)
+            .duration(3 * SECONDS)
+            .addTo(centrifugeNonCellRecipes);
         // IODINE-END
 
         // 2MnO2 + 2KOH + KClO3 = 2KMnO4 + H2O + KCl
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Materials.Pyrolusite.getDust(6),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 6),
+                Materials.PotassiumHydroxide.getDust(6),
                 WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5))
             .itemOutputs(
                 WerkstoffMaterialPool.PotassiumPermanganate.get(OrePrefixes.dust, 12),
@@ -1100,7 +1092,7 @@ public class RecipeLoader {
 
         // 6KOH + 6Cl = KClO3 + 5KCl + 3H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 18))
+            .itemInputs(Materials.PotassiumHydroxide.getDust(18))
             .circuit(3)
             .itemOutputs(
                 Materials.RockSalt.getDust(10),
@@ -1127,7 +1119,7 @@ public class RecipeLoader {
             .itemInputs(Materials.Lanthanum.getDust(1))
             .circuit(1)
             .fluidInputs(Materials.HydrochloricAcid.getFluid(3_000))
-            .itemOutputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 4))
+            .itemOutputs(WerkstoffMaterialPool.LanthanumChloride.get(OrePrefixes.dust, 4))
             .fluidOutputs(Materials.Hydrogen.getGas(3_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1137,7 +1129,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Water.getFluid(3_000))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(6_000))
-            .itemInputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 8))
+            .itemInputs(WerkstoffMaterialPool.LanthanumChloride.get(OrePrefixes.dust, 8))
             .itemOutputs(WerkstoffMaterialPool.LanthanumOxide.get(OrePrefixes.dust, 1))
             .duration(10 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1698,7 +1690,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 2))
             .itemOutputs(
-                WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 1),
+                WerkstoffMaterialPool.LanthanumChloride.get(OrePrefixes.dust, 1),
                 WerkstoffMaterialPool.NeodymiumOxide.get(OrePrefixes.dust, 1))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
             .duration(45 * SECONDS)
@@ -3208,67 +3200,13 @@ public class RecipeLoader {
         // Centrifuge ImpureLanthanumChlorideDust
         GTValues.RA.stdBuilder()
             .itemInputs(ImpureLanthanumChloride.get(OrePrefixes.dust, 36))
-            .itemOutputs(LanthaniumChloride.get(OrePrefixes.dust, 36), RarestEarthResidue.get(OrePrefixes.dust, 5))
+            .itemOutputs(LanthanumChloride.get(OrePrefixes.dust, 36), RarestEarthResidue.get(OrePrefixes.dust, 5))
             .eut(TierEU.RECIPE_EV)
             .duration(5 * SECONDS)
             .addTo(centrifugeRecipes);
     }
 
     public static void addRandomChemCrafting() {
-
-        // PTMEG Elastomer
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.Butanediol.get(OrePrefixes.cell, 1))
-            .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(WerkstoffMaterialPool.TolueneTetramethylDiisocyanate.getFluidOrGas(4_000))
-            .fluidOutputs(WerkstoffMaterialPool.PTMEGElastomer.getMolten(4_000))
-            .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        // Toluene Tetramethyl Diisocyanate
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                WerkstoffMaterialPool.TolueneDiisocyanate.get(OrePrefixes.cell, 3),
-                Materials.Hydrogen.getCells(2))
-            .itemOutputs(Materials.Empty.getCells(5))
-            .fluidInputs(WerkstoffMaterialPool.Polytetrahydrofuran.getFluidOrGas(1_000))
-            .fluidOutputs(WerkstoffMaterialPool.TolueneTetramethylDiisocyanate.getFluidOrGas(2_000))
-            .duration(1 * MINUTES)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        // PTHF
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                WerkstoffMaterialPool.TungstophosphoricAcid.get(OrePrefixes.cell, 1),
-                Materials.Oxygen.getCells(1))
-            .itemOutputs(Materials.Empty.getCells(2))
-            .fluidInputs(WerkstoffMaterialPool.Tetrahydrofuran.getFluidOrGas(1 * INGOTS))
-            .fluidOutputs(WerkstoffMaterialPool.Polytetrahydrofuran.getFluidOrGas(3 * INGOTS))
-            .duration(50 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(UniversalChemical);
-
-        // THF
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.AcidicButanediol.get(OrePrefixes.cell, 1))
-            .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(Materials.Ethanol.getFluid(1_000))
-            .fluidOutputs(WerkstoffMaterialPool.Tetrahydrofuran.getFluidOrGas(1_000))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        // Acidicised Butanediol
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SulfuricAcid.getCells(1))
-            .itemOutputs(Materials.Water.getCells(1))
-            .fluidInputs(WerkstoffMaterialPool.Butanediol.getFluidOrGas(1_000))
-            .fluidOutputs(WerkstoffMaterialPool.AcidicButanediol.getFluidOrGas(1_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(mixerRecipes);
 
         // Butanediol
         GTValues.RA.stdBuilder()
@@ -3297,26 +3235,6 @@ public class RecipeLoader {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
-
-        // Tungstophosphoric Acid
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.PhosphoricAcid.getCells(1), Materials.HydrochloricAcid.getCells(24))
-            .itemOutputs(Materials.Salt.getDust(24), Materials.Empty.getCells(25))
-            .fluidInputs(BotWerkstoffMaterialPool.SodiumTungstate.getFluidOrGas(12_000))
-            .fluidOutputs(WerkstoffMaterialPool.TungstophosphoricAcid.getFluidOrGas(1_000))
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_EV / 2)
-            .addTo(UniversalChemical);
-
-        // Toluene Diisocyanate
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.Diaminotoluene.get(OrePrefixes.cell, 1), Materials.Empty.getCells(3))
-            .itemOutputs()
-            .fluidInputs(BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(2_000))
-            .fluidOutputs(WerkstoffMaterialPool.TolueneDiisocyanate.getFluidOrGas(1_000))
-            .duration(45 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
 
         // Diaminotoluene
         GTValues.RA.stdBuilder()
@@ -3515,6 +3433,22 @@ public class RecipeLoader {
             .duration(5 * SECONDS)
             .addTo(vacuumFurnaceRecipes);
 
+        // Amalgatite Gems
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawed, Materials.Amalgatite, 3),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Amber, 64),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Topaz, 64),
+                CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gem, 64),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Jade, 64))
+            .fluidInputs(Materials.Protomatter.getFluid(250_000))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Amalgatite, 1))
+            .metadata(COIL_HEAT, 13500)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .addTo(vacuumFurnaceRecipes);
+
         // 16 Adv Crystal SoC
         for (ItemStack itemStack : OreDictionary.getOres("craftingLensBlue")) {
             GTValues.RA.stdBuilder()
@@ -3543,644 +3477,14 @@ public class RecipeLoader {
 
     }
 
-    public static void removeCeriumMacerator() {
-        HashSet<GTRecipe> remove = new HashSet<>(5000);
-        HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-
-        GTLog.out.print(Tags.MODID + ": processing macerator recipes");
-        for (GTRecipe recipe : maceratorRecipes.getAllRecipes()) {
-            ItemStack input = recipe.mInputs[0];
-            if (!GTUtility.isStackValid(input)) {
-                continue;
-            }
-
-            int[] oreDict = OreDictionary.getOreIDs(input);
-            for (int oreDictID : oreDict) {
-                final String oreName = OreDictionary.getOreName(oreDictID);
-                if (!(oreName.startsWith("ore") || oreName.startsWith("rawOre") || oreName.startsWith("crushed"))) {
-                    continue;
-                }
-
-                GTRecipe tRecipe = recipe.copy();
-                boolean modified = false;
-                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-
-                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
-                        modified = true;
-                        GTLog.out.println(
-                            "in the recipe of '" + recipe.mInputs[0].getDisplayName()
-                                + "', replacing Cerium dust by Cerium Rich Mixture dust");
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
-                        modified = true;
-                        GTLog.out.println(
-                            "in the recipe of '" + recipe.mInputs[0].getDisplayName()
-                                + "', replacing Samarium dust by Samarium Ore Concentrate dust");
-                    }
-                }
-                if (modified) {
-                    reAdd.add(tRecipe);
-                    remove.add(recipe);
-                }
-                break;
-
-            }
-
-        }
-        maceratorRecipes.getBackend()
-            .removeRecipes(remove);
-        reAdd.forEach(maceratorRecipes::add);
-        maceratorRecipes.getBackend()
-            .reInit();
-
-        remove.clear();
-        reAdd.clear();
-
-        GTLog.out.print(Tags.MODID + ": macerator recipes done!");
-    }
-
-    public static void removeCeriumWasher() {
-        HashSet<GTRecipe> remove = new HashSet<>(5000);
-        HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-
-        GTLog.out.println(Tags.MODID + ": processing orewasher recipes");
-        for (GTRecipe recipe : oreWasherRecipes.getAllRecipes()) {
-            ItemStack input = recipe.mInputs[0];
-            if (!GTUtility.isStackValid(input)) {
-                continue;
-            }
-            int[] oreDict = OreDictionary.getOreIDs(input);
-            for (int oreDictID : oreDict) {
-                if (!OreDictionary.getOreName(oreDictID)
-                    .startsWith("crushed")) {
-                    continue;
-                }
-
-                GTRecipe tRecipe = recipe.copy();
-                boolean modified = false;
-                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input: "
-                                + input.getDisplayName()
-                                + " get Cerium dust turned into Cerium Rich Mixture dust.");
-                        modified = true;
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input: "
-                                + input.getDisplayName()
-                                + " get Samarium dust turned into Samarium Ore Concentrate dust.");
-                        modified = true;
-                    }
-                }
-                if (modified) {
-                    reAdd.add(tRecipe);
-                    remove.add(recipe);
-                }
-                break;
-            }
-        }
-
-        GTLog.out.println(Tags.MODID + ": regenerating ore washer recipes");
-        oreWasherRecipes.getBackend()
-            .removeRecipes(remove);
-        reAdd.forEach(oreWasherRecipes::add);
-        oreWasherRecipes.getBackend()
-            .reInit();
-
-        remove.clear();
-        reAdd.clear();
-
-        GTLog.out.println(Tags.MODID + ": ore washer recipes done!");
-    }
-
-    public static void removeCeriumThermalCentrifuge() {
-
-        HashSet<GTRecipe> remove = new HashSet<>(5000);
-        HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-
-        GTLog.out.println(Tags.MODID + ": processing thermal centrifuge recipes");
-        for (GTRecipe recipe : thermalCentrifugeRecipes.getAllRecipes()) {
-            ItemStack input = recipe.mInputs[0];
-            if (!GTUtility.isStackValid(input)) {
-                continue;
-            }
-            int[] oreDict = OreDictionary.getOreIDs(input);
-            for (int oreDictID : oreDict) {
-                if (!(OreDictionary.getOreName(oreDictID)
-                    .startsWith("crushed")
-                    || OreDictionary.getOreName(oreDictID)
-                        .startsWith("purified"))) {
-                    continue;
-                }
-
-                GTRecipe tRecipe = recipe.copy();
-                boolean modified = false;
-                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input "
-                                + input.getDisplayName()
-                                + " get Cerium dust turned into Cerium Rich Mixture dust.");
-                        modified = true;
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input "
-                                + input.getDisplayName()
-                                + " get Samarium dust turned into Samarium Ore Concentrate dust.");
-                        modified = true;
-                    }
-                }
-                if (modified) {
-                    reAdd.add(tRecipe);
-                    remove.add(recipe);
-                }
-                break;
-            }
-        }
-
-        GTLog.out.println(Tags.MODID + ": regenerating thermal centrifuge recipes");
-        thermalCentrifugeRecipes.getBackend()
-            .removeRecipes(remove);
-        reAdd.forEach(thermalCentrifugeRecipes::add);
-        thermalCentrifugeRecipes.getBackend()
-            .reInit();
-
-        remove.clear();
-        reAdd.clear();
-
-        GTLog.out.println(Tags.MODID + ": thermal centrifuge recipes done!");
-    }
-
-    public static void removeCeriumCentrifuge() {
-
-        HashSet<GTRecipe> remove = new HashSet<>(5000);
-        HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-        GTLog.out.println(Tags.MODID + ": processing centrifuge recipes");
-        for (GTRecipe recipe : centrifugeRecipes.getAllRecipes()) {
-            ItemStack input = null;
-            if (recipe.mInputs.length > 0) input = recipe.mInputs[0];
-            if (!GTUtility.isStackValid(input)) {
-                continue;
-            }
-            int[] oreDict = OreDictionary.getOreIDs(input);
-            for (int oreDictID : oreDict) {
-                final String oreName = OreDictionary.getOreName(oreDictID);
-                if (!oreName.startsWith("dust") || oreName.contains("Dephosphated") || oreName.startsWith("dustMAR")) {
-                    break;
-                }
-                GTRecipe tRecipe = recipe.copy();
-                boolean modified = false;
-                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDustTiny(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dustTiny, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
-                                + oreName
-                                + " get Cerium tiny dust turned into Cerium Rich Mixture tiny dust.");
-                        modified = true;
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
-                                + oreName
-                                + " get Cerium dust turned into Cerium Rich Mixture dust.");
-                        modified = true;
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDustSmall(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dustSmall, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
-                                + oreName
-                                + " get Cerium small dust turned into Cerium Rich Mixture small dust.");
-                        modified = true;
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDustTiny(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dustTiny, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
-                                + oreName
-                                + " get Samarium dust turned into Samarium Ore Concentrate tiny dust.");
-                        modified = true;
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
-                                + oreName
-                                + " get Samarium dust turned into Samarium Ore Concentrate dust.");
-                        modified = true;
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDustSmall(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dustSmall, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
-                                + oreName
-                                + " get Samarium dust turned into Samarium Ore Concentrate small dust.");
-                        modified = true;
-                    }
-                }
-                if (modified) {
-                    reAdd.add(tRecipe);
-                    remove.add(recipe);
-                }
-                break;
-            }
-        }
-
-        GTLog.out.println(Tags.MODID + ": regenerating centrifuge recipes");
-        centrifugeRecipes.getBackend()
-            .removeRecipes(remove);
-        reAdd.forEach(centrifugeRecipes::add);
-        centrifugeRecipes.getBackend()
-            .reInit();
-
-        remove.clear();
-        reAdd.clear();
-
-        GTLog.out.println(Tags.MODID + ": centrifuge recipes done!");
-    }
-
-    public static void removeCeriumHammer() {
-
-        HashSet<GTRecipe> remove = new HashSet<>(5000);
-        HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-
-        GTLog.out.println(Tags.MODID + ": processing forge hammer recipes");
-
-        for (GTRecipe recipe : hammerRecipes.getAllRecipes()) {
-            ItemStack input = recipe.mInputs[0];
-            if (!GTUtility.isStackValid(input)) {
-                continue;
-            }
-            int[] oreDict = OreDictionary.getOreIDs(input);
-            for (int oreDictID : oreDict) {
-                final String oreName = OreDictionary.getOreName(oreDictID);
-                if (!oreName.startsWith("crushed")) {
-                    continue;
-                }
-
-                GTRecipe tRecipe = recipe.copy();
-                boolean modified = false;
-                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
-                                + oreName
-                                + " get Cerium dust turned into Cerium Rich Mixture dust.");
-                        modified = true;
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
-                                + oreName
-                                + " get Samarium dust turned into Samarium Ore Concentrate dust.");
-                        modified = true;
-                    }
-                }
-                if (modified) {
-                    reAdd.add(tRecipe);
-                    remove.add(recipe);
-                }
-                break;
-            }
-        }
-
-        GTLog.out.println(Tags.MODID + ": regenerating forge hammer recipes");
-        hammerRecipes.getBackend()
-            .removeRecipes(remove);
-        reAdd.forEach(hammerRecipes::add);
-        hammerRecipes.getBackend()
-            .reInit();
-
-        remove.clear();
-        reAdd.clear();
-
-        GTLog.out.println(Tags.MODID + ": forge hammer recipes done!");
-    }
-
-    public static void removeCeriumElectrolyzer() {
-        HashSet<GTRecipe> remove = new HashSet<>(5000);
-        HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-        GTLog.out.println(Tags.MODID + ": Processing electrolyzer recipes");
-        for (GTRecipe recipe : electrolyzerRecipes.getAllRecipes()) {
-            for (ItemStack input : recipe.mInputs) {
-                if (!GTUtility.isStackValid(input)) {
-                    continue;
-                }
-
-                int[] oreDict = OreDictionary.getOreIDs(input);
-                for (int oreDictID : oreDict) {
-                    final String oreName = OreDictionary.getOreName(oreDictID);
-                    if (!(oreName.startsWith("dust")
-                        && (oreName.equals("dustHibonite") || oreName.equals("dustLanthaniteCe")
-                            || oreName.equals("dustZirconolite")
-                            || oreName.equals("dustYttrocerite")
-                            || oreName.equals("dustXenotime")
-                            || oreName.equals("dustBastnasite")
-                            || oreName.equals("dustFlorencite")))) {
-                        continue;
-                    }
-
-                    GTRecipe tRecipe = recipe.copy();
-                    boolean modified = false;
-                    for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                        if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                        if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
-                            tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                tRecipe.mOutputs[i].stackSize,
-                                WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
-                            GTLog.out.println(
-                                Tags.MODID + ": recipe with input oredict: "
-                                    + oreName
-                                    + " get Cerium dust turned into Cerium Rich Mixture dust.");
-                            modified = true;
-                        } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
-                            tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                                tRecipe.mOutputs[i].stackSize,
-                                WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
-                            GTLog.out.println(
-                                Tags.MODID + ": recipe with input oredict: "
-                                    + oreName
-                                    + " get Samarium dust turned into Samarium Ore Concentrate dust.");
-                            modified = true;
-                        }
-                    }
-                    if (modified) {
-                        reAdd.add(tRecipe);
-                        remove.add(recipe);
-                    }
-                    break;
-                }
-            }
-        }
-
-        GTLog.out.println(Tags.MODID + ": regenerating electrolyzer recipes");
-        electrolyzerRecipes.getBackend()
-            .removeRecipes(remove);
-        reAdd.forEach(electrolyzerRecipes::add);
-        electrolyzerRecipes.getBackend()
-            .reInit();
-
-        remove.clear();
-        reAdd.clear();
-
-        GTLog.out.println(Tags.MODID + ": Electrolyzer recipe done!");
-    }
-
-    public static void removeCeriumSimpleWasher() {
-        HashSet<GTRecipe> remove = new HashSet<>(5000);
-        HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-        GTLog.out.println(Tags.MODID + ": processing simple washer recipes.");
-        for (GTRecipe recipe : simpleWasherRecipes.getAllRecipes()) {
-            ItemStack input = recipe.mInputs[0];
-            if (!GTUtility.isStackValid(input)) {
-                continue;
-            }
-
-            int[] oreDict = OreDictionary.getOreIDs(input);
-            for (int oreDictID : oreDict) {
-                final String oreName = OreDictionary.getOreName(oreDictID);
-
-                if (!(oreName.startsWith("dustImpureCerium") || oreName.startsWith("dustImpureSamarium")
-                    || oreName.startsWith("dustPureSamarium")
-                    || oreName.startsWith("dustPureCerium"))) {
-                    continue;
-                }
-
-                GTRecipe tRecipe = recipe.copy();
-                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize,
-                            WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
-                                + oreName
-                                + " get Cerium dust turned into Cerium Rich Mixture dust.");
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize,
-                            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
-                                + oreName
-                                + " get Samarium dust turned into Samarium Ore Concentrate dust.");
-                    }
-                }
-                if (!tRecipe.equals(recipe)) {
-                    reAdd.add(tRecipe);
-                    remove.add(recipe);
-                }
-                break;
-            }
-        }
-
-        GTLog.out.println(Tags.MODID + ": regenerating simple washer recipes");
-        simpleWasherRecipes.getBackend()
-            .removeRecipes(remove);
-        reAdd.forEach(simpleWasherRecipes::add);
-        simpleWasherRecipes.getBackend()
-            .reInit();
-
-        remove.clear();
-        reAdd.clear();
-
-        GTLog.out.println(Tags.MODID + ": Simple washer recipes done!");
-    }
-
-    public static void removeCeriumDehydrator() {
-        HashSet<GTRecipe> remove = new HashSet<>(5000);
-        HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-        GTLog.out.println(Tags.MODID + ": processing chemical dehydrator recipes.");
-
-        for (GTRecipe recipe : chemicalDehydratorRecipes.getAllRecipes()) {
-            if (recipe.mInputs.length == 0) {
-                continue;
-            }
-            ItemStack input = recipe.mInputs[0];
-
-            if (!GTUtility.isStackValid(input)) {
-                continue;
-            }
-            int[] oreDict = OreDictionary.getOreIDs(input);
-            for (int oreDictID : oreDict) {
-                final String oreName = OreDictionary.getOreName(oreDictID);
-                if (!oreName.startsWith("dust")) {
-                    continue;
-                }
-                if (!(oreName.equals("dustCerite") || oreName.equals("dustFluorcaphite")
-                    || oreName.equals("dustZirkelite")
-                    || oreName.equals("dustGadoliniteCe")
-                    || oreName.equals("dustGadoliniteY")
-                    || oreName.equals("dustPolycrase")
-                    || oreName.equals("dustBastnasite"))) {
-                    continue;
-                }
-
-                GTRecipe tRecipe = recipe.copy();
-                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                    if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-
-                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize,
-                            WerkstoffMaterialPool.CeriumRichMixture
-                                .get(OrePrefixes.dust, tRecipe.mOutputs[i].stackSize));
-                        GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
-                                + oreName
-                                + " get Cerium dust turned into Cerium Rich Mixture dust.");
-                    }
-                }
-                if (!tRecipe.equals(recipe)) {
-                    reAdd.add(tRecipe);
-                    remove.add(recipe);
-                }
-                break;
-
-            }
-
-        }
-
-        GTLog.out.println(Tags.MODID + ": regenerating chemical dehydrator recipes");
-        chemicalDehydratorRecipes.getBackend()
-            .removeRecipes(remove);
-        reAdd.forEach(chemicalDehydratorRecipes::add);
-        chemicalDehydratorRecipes.getBackend()
-            .reInit();
-
-        GTLog.out.print(Tags.MODID + ": Replace " + remove.size() + "! ");
-
-        remove.clear();
-        reAdd.clear();
-
-        GTLog.out.println(Tags.MODID + ": chemical dehydrator recipes done!");
-
-    }
-
-    public static void removeCeriumChemicalBath() {
-        HashSet<GTRecipe> remove = new HashSet<>(5000);
-
-        GTLog.out.println(Tags.MODID + ": marking recipes in chem bath for removal!");
-        for (GTRecipe recipe : chemicalBathRecipes.getAllRecipes()) {
-            for (ItemStack input : recipe.mInputs) {
-                if (!GTUtility.isStackValid(input)) {
-                    continue;
-                }
-                int[] oreDict = OreDictionary.getOreIDs(input);
-                for (int oreDictID : oreDict) {
-                    String oreName = OreDictionary.getOreName(oreDictID);
-                    if (oreName.equals("dustTin")) {
-                        GTLog.out.println(Tags.MODID + ": chem bath recipe with tin dust detected, removing it.");
-                        remove.add(recipe);
-                        break;
-                    }
-                    if (oreName.equals("dustRutile")) {
-                        GTLog.out.println(Tags.MODID + ": chem bath recipe with rutile dust detected, removing it.");
-                        remove.add(recipe);
-                        break;
-                    }
-                }
-            }
-        }
-
-        GTLog.out.println(Tags.MODID + ": regenerating chem bath recipes");
-        chemicalBathRecipes.getBackend()
-            .removeRecipes(remove);
-        chemicalBathRecipes.getBackend()
-            .reInit();
-
-        GTLog.out.println("Chemical Bath done!");
-    }
-
-    public static void removeCeriumSources() {
-
-        removeCeriumMacerator();
-        removeCeriumWasher();
-        removeCeriumThermalCentrifuge();
-        removeCeriumCentrifuge();
-        removeCeriumHammer();
-        removeCeriumElectrolyzer();
-        removeCeriumSimpleWasher();
-        removeCeriumDehydrator();
-        removeCeriumChemicalBath();
-
-        // For Cauldron Wash
-        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes to replace cerium sources");
+    public static void registerCauldronRemaps() {
+        GT_FML_LOGGER
+            .debug(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes to replace cerium sources");
         registerCauldronCleaningFor(Materials.Cerium, WerkstoffMaterialPool.CeriumRichMixture.getBridgeMaterial());
         registerCauldronCleaningFor(
             Materials.Samarium,
             WerkstoffMaterialPool.SamariumOreConcentrate.getBridgeMaterial());
-        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes done!");
-
-        // For Crafting Table
-        GTLog.out.println(Tags.MODID + ": processing crafting recipes to replace cerium sources");
-        CraftingManager.getInstance()
-            .getRecipeList()
-            .forEach(RecipeLoader::replaceInCraftTable);
-        GTLog.out.println(Tags.MODID + ": processing crafting recipes done!");
-    }
-
-    public static void replaceInCraftTable(Object obj) {
-        IRecipe recipe = (IRecipe) obj;
-        ItemStack result = recipe.getRecipeOutput();
-        if (!(recipe instanceof IRecipeMutableAccess mutableRecipe)) {
-            return;
-        }
-
-        Object input = mutableRecipe.gt5u$getRecipeInputs();
-
-        if (GTUtility.areStacksEqual(result, Materials.Cerium.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Cerium)) {
-                return;
-            }
-            GTLog.out.println("replacing crafting recipe of Cerium dust by Cerium Rich Mixture");
-            mutableRecipe.gt5u$setRecipeOutputItem(WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 2));
-        } else if (GTUtility.areStacksEqual(result, Materials.Samarium.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Samarium)) {
-                return;
-            }
-            mutableRecipe
-                .gt5u$setRecipeOutputItem(WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 2));
-            GTLog.out.println("replacing crafting recipe of Samarium dust by Samarium Ore Concentrate");
-        }
+        GT_FML_LOGGER.debug(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes done!");
     }
 
 }

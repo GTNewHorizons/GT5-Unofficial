@@ -156,7 +156,7 @@ public class Research {
                         'C',
                         GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Thaumium, 1),
                         'G',
-                        Ic2Items.reinforcedGlass,
+                        ItemList.ReinforcedGlass.get(1L),
                         'A',
                         Ic2Items.advancedMachine) });
 

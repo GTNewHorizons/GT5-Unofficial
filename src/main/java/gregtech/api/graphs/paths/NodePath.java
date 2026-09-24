@@ -15,6 +15,10 @@ public class NodePath {
         processPipes();
     }
 
+    public MetaPipeEntity[] getPipes() {
+        return mPipes;
+    }
+
     protected void processPipes() {
         for (MetaPipeEntity tPipe : mPipes) {
             BaseMetaPipeEntity basePipe = (BaseMetaPipeEntity) tPipe.getBaseMetaTileEntity();

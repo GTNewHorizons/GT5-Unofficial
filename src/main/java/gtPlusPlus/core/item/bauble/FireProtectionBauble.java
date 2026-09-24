@@ -2,8 +2,6 @@ package gtPlusPlus.core.item.bauble;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.List;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,16 +16,14 @@ public class FireProtectionBauble extends BaseBauble {
 
     public FireProtectionBauble() {
         super(BaubleType.RING);
-        String aUnlocalName = "GTPP.bauble.fireprotection.0" + ".name";
+        String aUnlocalName = "GTPP.bauble.fireprotection.0.name";
         this.setUnlocalizedName(aUnlocalName);
         this.setTextureName(GTPlusPlus.ID + ":" + getTextureNameForBauble());
         this.setMaxDamage(100);
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        if (GameRegistry.findItem(GTPlusPlus.ID, aUnlocalName) == null) {
-            GameRegistry.registerItem(this, aUnlocalName);
-        }
+        GameRegistry.registerItem(this, aUnlocalName);
     }
 
     @Override
@@ -38,11 +34,6 @@ public class FireProtectionBauble extends BaseBauble {
     @Override
     public boolean showDurabilityBar(final ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        super.addInformation(stack, aPlayer, list, bool);
     }
 
     @Override

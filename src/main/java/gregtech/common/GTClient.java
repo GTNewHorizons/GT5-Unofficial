@@ -8,34 +8,34 @@ package gregtech.common;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovementInput;
+import net.minecraft.util.MovementInputFromOptions;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -43,8 +43,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Keyboard;
 
-import com.glodblock.github.nei.recipes.FluidRecipe;
-import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
 import com.gtnewhorizons.navigator.api.NavigatorApi;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
@@ -61,28 +59,35 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.hazards.HazardProtectionTooltip;
-import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.interfaces.IUpdatePlayerMovement;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
+import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
+import gregtech.api.net.GTPacketRequestOregenPattern;
 import gregtech.api.net.cape.GTPacketSetCape;
-import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
@@ -91,25 +96,32 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.DynamicLangManager;
+import gregtech.api.util.client.ResourceUtils;
 import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
+import gregtech.client.GTWorkAreaRenderer;
 import gregtech.client.SeekingOggCodec;
+import gregtech.client.handler.CondensateAnimationTickHandler;
+import gregtech.client.renderer.entity.RenderDrone;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
+import gregtech.common.data.drone.CameraViewportClientManager;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.misc.GTCapeCommand;
 import gregtech.common.misc.GTPowerfailCommandClient;
+import gregtech.common.networkanalyzer.events.WorldOverlayRenderer;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.powergoggles.PowerGogglesCommand;
 import gregtech.common.render.BaseMetaTileEntityRenderer;
 import gregtech.common.render.BlackholeRenderer;
-import gregtech.common.render.DroneRender;
 import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
 import gregtech.common.render.GTRendererBlock;
@@ -117,15 +129,18 @@ import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.NanoForgeRenderer;
+import gregtech.common.render.RenderInit;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.CircuitComponentItemRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
+import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
+import gregtech.common.tileentities.machines.multi.nanochip.VacuumConveyorPipeClientStateManager;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
-import gregtech.common.tileentities.render.RenderingTileEntityDrone;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
@@ -138,6 +153,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 
 public class GTClient extends GTProxy {
 
@@ -146,138 +162,17 @@ public class GTClient extends GTProxy {
     public GTPowerfailRenderer powerfailRenderer;
     public KeyBinding shakeLockKey;
     public final boolean fixedBottomFaceUV;
-    private final List<Materials> mPosR;
-    private final List<Materials> mPosG;
-    private final List<Materials> mPosB;
-    private final List<Materials> mPosA = Collections.emptyList();
-    private final List<Materials> mNegR;
-    private final List<Materials> mNegG;
-    private final List<Materials> mNegB;
-    private final List<Materials> mNegA = Collections.emptyList();
-    private final List<Materials> mMoltenPosR;
-    private final List<Materials> mMoltenPosG;
-    private final List<Materials> mMoltenPosB;
-    private final List<Materials> mMoltenPosA = Collections.emptyList();
-    private final List<Materials> mMoltenNegR;
-    private final List<Materials> mMoltenNegG;
-    private final List<Materials> mMoltenNegB;
-    private final List<Materials> mMoltenNegA = Collections.emptyList();
     private long mAnimationTick;
-    /**
-     * This is the place to def the value used below
-     **/
-    private long afterSomeTime;
-
-    private boolean mAnimationDirection;
     private GTClientPreference mPreference;
     private boolean mFirstTick = false;
     private int mReloadCount;
     private float renderTickTime;
 
+    @SideOnly(Side.CLIENT)
+    private static MovementInput manualInputCheck;
+
     public GTClient() {
         mAnimationTick = 0L;
-        mAnimationDirection = false;
-        mPosR = Arrays.asList(
-            Materials.Enderium,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.Force,
-            Materials.Pyrotheum,
-            Materials.Sunnarium,
-            Materials.Glowstone,
-            Materials.Thaumium,
-            Materials.InfusedVis,
-            Materials.InfusedAir,
-            Materials.InfusedFire,
-            Materials.FierySteel,
-            Materials.Firestone);
-        mPosG = Arrays.asList(
-            Materials.Enderium,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.Force,
-            Materials.Pyrotheum,
-            Materials.Sunnarium,
-            Materials.Glowstone,
-            Materials.InfusedAir,
-            Materials.InfusedEarth);
-        mPosB = Arrays.asList(
-            Materials.Enderium,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.InfusedVis,
-            Materials.InfusedWater,
-            Materials.Thaumium);
-        mNegR = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
-        mNegG = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
-        mNegB = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
-        mMoltenPosR = Arrays.asList(
-            Materials.Enderium,
-            Materials.NetherStar,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.Force,
-            Materials.Pyrotheum,
-            Materials.Sunnarium,
-            Materials.Glowstone,
-            Materials.Thaumium,
-            Materials.InfusedVis,
-            Materials.InfusedAir,
-            Materials.InfusedFire,
-            Materials.FierySteel,
-            Materials.Firestone);
-        mMoltenPosG = Arrays.asList(
-            Materials.Enderium,
-            Materials.NetherStar,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.Force,
-            Materials.Pyrotheum,
-            Materials.Sunnarium,
-            Materials.Glowstone,
-            Materials.InfusedAir,
-            Materials.InfusedEarth);
-        mMoltenPosB = Arrays.asList(
-            Materials.Enderium,
-            Materials.NetherStar,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.InfusedVis,
-            Materials.InfusedWater,
-            Materials.Thaumium);
-        mMoltenNegR = Collections.singletonList(Materials.InfusedEntropy);
-        mMoltenNegG = Collections.singletonList(Materials.InfusedEntropy);
-        mMoltenNegB = Collections.singletonList(Materials.InfusedEntropy);
         fixedBottomFaceUV = (boolean) Launch.blackboard
             .getOrDefault("hodgepodge.FixesConfig.fixBottomFaceUV", Boolean.FALSE);
     }
@@ -297,10 +192,12 @@ public class GTClient extends GTProxy {
         super.onPreInitialization(event);
         SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
+        RenderInit.registerEarly();
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
         mPreference = new GTClientPreference();
+        cameraViewportManager = new CameraViewportClientManager();
         Materials.initClient();
 
         ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
@@ -324,7 +221,6 @@ public class GTClient extends GTProxy {
         RenderingRegistry.registerBlockHandler(new GTRendererBlock());
         RenderingRegistry.registerBlockHandler(new GTRendererCasing());
 
-        ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityDrone.class, new DroneRender());
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityLaser.class, new LaserRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityWormhole.class, new WormholeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityBlackhole.class, new BlackholeRenderer());
@@ -356,6 +252,17 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(ItemList.ToolBox.getItem(), new ToolboxRenderer());
 
         MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
+
+        MinecraftForgeClient.registerItemRenderer(
+            ItemList.Ice_Cream_Machine.getItem(),
+            (IItemRenderer) GregTechAPI.METATILEENTITIES[MetaTileEntityIDs.ICE_CREAM_MACHINE.ID]);
+
+        final MechanicalArmorRenderer mechanicalArmorRenderer = new MechanicalArmorRenderer();
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Helmet.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Chestplate.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Leggings.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Boots.getItem(), mechanicalArmorRenderer);
+
         metaItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, new DataStickRenderer());
         metaItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, new InfiniteSprayCanRenderer());
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
@@ -364,12 +271,18 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
         MinecraftForge.EVENT_BUS.register(new MTEDebugStructureWriter.EventHandler());
+        MinecraftForge.EVENT_BUS.register(new GTWorkAreaRenderer());
+        WorldOverlayRenderer.init();
         powerfailRenderer = new GTPowerfailRenderer();
         MinecraftForge.EVENT_BUS.register(powerfailRenderer);
         shakeLockKey = new KeyBinding("GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK", Keyboard.KEY_NONE, "Gregtech");
         ClientRegistry.registerKeyBinding(shakeLockKey);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new CondensateAnimationTickHandler());
 
         RenderManager.instance.entityRenderMap.put(EntityPowderBarrelPrimed.class, new RenderPowderBarrel());
+        RenderManager.instance.entityRenderMap.put(EntityDrone.class, new RenderDrone());
         // spotless:on
     }
 
@@ -387,8 +300,10 @@ public class GTClient extends GTProxy {
                     GUIColorOverride.onResourceManagerReload();
                     FallbackableSteamTexture.reload();
                     CoverRegistry.reloadCoverColorOverrides();
+                    DynamicLangManager.reload();
                 }
             });
+        RenderInit.register();
         Pollution.onPostInitClient();
 
         ModuleRegistrar.instance()
@@ -398,32 +313,26 @@ public class GTClient extends GTProxy {
     @Override
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         super.onLoadComplete(event);
-        for (RecipeCategory category : RecipeCategory.ALL_RECIPE_CATEGORIES.values()) {
-            if (category.recipeMap.getFrontend()
-                .getNEIProperties().registerNEI) {
-                FluidRecipe.addRecipeMap(
-                    category.unlocalizedName,
-                    new GregTech5RecipeExtractor(
-                        category.unlocalizedName.equals("gt.recipe.scanner")
-                            || category.unlocalizedName.equals("gt.recipe.fakeAssemblylineProcess")));
-            }
-        }
+
+        Textures.ItemIcons.cleanup();
+        Textures.BlockIcons.cleanup();
     }
 
-    @Override
-    @SubscribeEvent
-    public void applyBlockWalkOverEffects(LivingEvent.LivingUpdateEvent event) {
-        final EntityLivingBase entity = event.entityLiving;
-        // the player should handle its own movement, rest is handled by the server
-        if (entity instanceof EntityClientPlayerMP && entity.onGround) {
-            int tX = MathHelper.floor_double(entity.posX),
-                tY = MathHelper.floor_double(entity.boundingBox.minY - 0.001F),
-                tZ = MathHelper.floor_double(entity.posZ);
-            Block tBlock = entity.worldObj.getBlock(tX, tY, tZ);
-            if (tBlock instanceof IBlockOnWalkOver)
-                ((IBlockOnWalkOver) tBlock).onWalkOver(entity, entity.worldObj, tX, tY, tZ);
-        } else {
-            super.applyBlockWalkOverEffects(event);
+    @SideOnly(Side.CLIENT)
+    private static void speedupPlayer(TickEvent.PlayerTickEvent event) {
+        EntityPlayerSP player = (EntityPlayerSP) event.player;
+        Block below = player.worldObj.getBlock(
+            MathHelper.floor_double(player.posX),
+            MathHelper.floor_double(player.posY) - 2,
+            MathHelper.floor_double(player.posZ));
+        if (manualInputCheck == null) {
+            manualInputCheck = new MovementInputFromOptions(Minecraft.getMinecraft().gameSettings);
+        }
+        if (below instanceof IUpdatePlayerMovement walkedOverBlock) {
+            manualInputCheck.updatePlayerMoveState();
+            if (manualInputCheck.moveForward != 0 || manualInputCheck.moveStrafe != 0) {
+                walkedOverBlock.updatePlayerMovement(player);
+            }
         }
     }
 
@@ -455,32 +364,43 @@ public class GTClient extends GTProxy {
     }
 
     @SubscribeEvent
-    public void onPlayerTickEventClient(TickEvent.PlayerTickEvent aEvent) {
-        if ((aEvent.side.isClient()) && (aEvent.phase == TickEvent.Phase.END) && (!aEvent.player.isDead)) {
+    @SideOnly(Side.CLIENT)
+    public void onPlayerTickEventClient(TickEvent.PlayerTickEvent event) {
+        if (!event.side.isClient()) return;
+        if (event.phase == TickEvent.Phase.START && event.player.onGround && event.player instanceof EntityPlayerSP) {
+            speedupPlayer(event);
+        }
+        if ((event.phase == TickEvent.Phase.END) && (!event.player.isDead)) {
             if (mFirstTick) {
-                mFirstTick = false;
-                GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
-                GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
-
-                if (!Minecraft.getMinecraft()
-                    .isSingleplayer()) {
-                    GTModHandler.removeAllIC2Recipes();
-                }
+                onPlayerFirstTick();
             }
-            afterSomeTime++;
-            if (afterSomeTime >= 100L) {
-                afterSomeTime = 0;
-            }
-            for (Iterator<Map.Entry<GTPlayedSound, Integer>> iterator = GTUtility.sPlayedSoundMap.entrySet()
-                .iterator(); iterator.hasNext();) {
-                Map.Entry<GTPlayedSound, Integer> tEntry = iterator.next();
-                if (tEntry.getValue() < 0) {
-                    iterator.remove();
-                } else {
-                    tEntry.setValue(tEntry.getValue() - 1);
-                }
-            }
+            tickPlayedSounds();
             if (!GregTechAPI.mServerStarted) GregTechAPI.mServerStarted = true;
+        }
+    }
+
+    private void onPlayerFirstTick() {
+        mFirstTick = false;
+        GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
+        GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
+        // The server pushes this on login, ask again now that there is a world in case that push was missed
+        GTValues.NW.sendToServer(new GTPacketRequestOregenPattern());
+
+        if (!Minecraft.getMinecraft()
+            .isSingleplayer()) {
+            GTModHandler.removeAllIC2Recipes();
+        }
+    }
+
+    private static void tickPlayedSounds() {
+        for (Iterator<Map.Entry<GTPlayedSound, Integer>> iterator = GTUtility.sPlayedSoundMap.entrySet()
+            .iterator(); iterator.hasNext();) {
+            Map.Entry<GTPlayedSound, Integer> tEntry = iterator.next();
+            if (tEntry.getValue() < 0) {
+                iterator.remove();
+            } else {
+                tEntry.setValue(tEntry.getValue() - 1);
+            }
         }
     }
 
@@ -489,7 +409,16 @@ public class GTClient extends GTProxy {
         if (GregTech.ID.equals(e.modID)) {
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
             mPreference = new GTClientPreference();
+            final boolean renderIndicatorsOnHatch = GTMod.proxy.mRenderIndicatorsOnHatch;
             GTPreLoad.loadClientConfig();
+            GTRendererBlock.clearInventoryDisplayListCache();
+            if (renderIndicatorsOnHatch != GTMod.proxy.mRenderIndicatorsOnHatch) {
+                for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                    if (GregTechAPI.METATILEENTITIES[i] instanceof CommonMetaTileEntity metaTileEntity) {
+                        metaTileEntity.clearInventoryTextureCache();
+                    }
+                }
+            }
             if (e.isWorldRunning) {
                 GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
                 GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
@@ -516,81 +445,15 @@ public class GTClient extends GTProxy {
                 hideThings = newHideValue;
                 changeDetected = 5;
             }
+            if (changeDetected >= 1 && changeDetected <= 4) {
+                refreshTileEntityTextures(4 - changeDetected);
+            }
             heldItemForcesFullBlockBB = shouldHeldItemForceFullBlockBB();
 
             // Animation related bits need to cease when game is paused in singleplayer.
             if (!Minecraft.getMinecraft()
                 .isGamePaused()) {
                 mAnimationTick++;
-
-                if (mAnimationTick % 50L == 0L) {
-                    mAnimationDirection = !mAnimationDirection;
-                }
-
-                final int tDirection = mAnimationDirection ? 1 : -1;
-                for (Materials tMaterial : mPosR) {
-                    tMaterial.mRGBa[0] = getSafeRGBValue(tMaterial.mRGBa[0], tDirection);
-                }
-
-                for (Materials tMaterial : mPosG) {
-                    tMaterial.mRGBa[1] = getSafeRGBValue(tMaterial.mRGBa[1], tDirection);
-                }
-
-                for (Materials tMaterial : mPosB) {
-                    tMaterial.mRGBa[2] = getSafeRGBValue(tMaterial.mRGBa[2], tDirection);
-                }
-
-                for (Materials tMaterial : mPosA) {
-                    tMaterial.mRGBa[3] = getSafeRGBValue(tMaterial.mRGBa[3], tDirection);
-                }
-
-                for (Materials tMaterial : mNegR) {
-                    tMaterial.mRGBa[0] = getSafeRGBValue(tMaterial.mRGBa[0], -tDirection);
-                }
-
-                for (Materials tMaterial : mNegG) {
-                    tMaterial.mRGBa[1] = getSafeRGBValue(tMaterial.mRGBa[1], -tDirection);
-                }
-
-                for (Materials tMaterial : mNegB) {
-                    tMaterial.mRGBa[2] = getSafeRGBValue(tMaterial.mRGBa[2], -tDirection);
-                }
-
-                for (Materials tMaterial : mNegA) {
-                    tMaterial.mRGBa[3] = getSafeRGBValue(tMaterial.mRGBa[3], -tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenPosR) {
-                    tMaterial.mMoltenRGBa[0] = getSafeRGBValue(tMaterial.mMoltenRGBa[0], tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenPosG) {
-                    tMaterial.mMoltenRGBa[1] = getSafeRGBValue(tMaterial.mMoltenRGBa[1], tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenPosB) {
-                    tMaterial.mMoltenRGBa[2] = getSafeRGBValue(tMaterial.mMoltenRGBa[2], tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenPosA) {
-                    tMaterial.mMoltenRGBa[3] = getSafeRGBValue(tMaterial.mMoltenRGBa[3], tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenNegR) {
-                    tMaterial.mMoltenRGBa[0] = getSafeRGBValue(tMaterial.mMoltenRGBa[0], -tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenNegG) {
-                    tMaterial.mMoltenRGBa[1] = getSafeRGBValue(tMaterial.mMoltenRGBa[1], -tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenNegB) {
-                    tMaterial.mMoltenRGBa[2] = getSafeRGBValue(tMaterial.mMoltenRGBa[2], -tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenNegA) {
-                    tMaterial.mMoltenRGBa[3] = getSafeRGBValue(tMaterial.mMoltenRGBa[3], -tDirection);
-                }
             }
         }
     }
@@ -609,13 +472,13 @@ public class GTClient extends GTProxy {
                 protections.add(hazard);
             }
         }
-        if (protections.containsAll(HazardProtectionTooltip.CBRN_HAZARDS)) {
-            protections.removeAll(HazardProtectionTooltip.CBRN_HAZARDS);
+        if (protections.containsAll(Hazard.CBRN_HAZARDS)) {
+            protections.removeAll(Hazard.CBRN_HAZARDS);
             addHazmatTooltip(event, HazardProtectionTooltip.CBRN_TRANSLATION_KEY);
         }
 
-        if (protections.containsAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS)) {
-            protections.removeAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS);
+        if (protections.containsAll(Hazard.TEMPERATURE_HAZARDS)) {
+            protections.removeAll(Hazard.TEMPERATURE_HAZARDS);
             addHazmatTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
         }
         for (Hazard hazard : protections) {
@@ -623,6 +486,11 @@ public class GTClient extends GTProxy {
             if (hazard == Hazard.SPACE) continue;
             addHazmatTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
         }
+    }
+
+    @SubscribeEvent
+    public void onFinishTextureStitch(TextureStitchEvent.Post event) {
+        ResourceUtils.clearCache();
     }
 
     private void addHazmatTooltip(ItemTooltipEvent event, String translationKey) {
@@ -665,6 +533,32 @@ public class GTClient extends GTProxy {
 
     public boolean shouldHideThings() {
         return hideThings;
+    }
+
+    /** Re-issues a texture update on every loaded GT tile after the pipe/cover hiding state changes. */
+    private static void refreshTileEntityTextures(int quarter) {
+        final Minecraft mc = Minecraft.getMinecraft();
+        if (mc.theWorld == null || mc.thePlayer == null) return;
+
+        final int radius = mc.gameSettings.renderDistanceChunks;
+        final int centerX = MathHelper.floor_double(mc.thePlayer.posX) >> 4;
+        final int centerZ = MathHelper.floor_double(mc.thePlayer.posZ) >> 4;
+
+        final int span = 2 * radius + 1;
+        final int from = centerX - radius + (span * quarter) / 4;
+        final int to = centerX - radius + (span * (quarter + 1)) / 4;
+
+        for (int cx = from; cx < to; cx++) {
+            for (int cz = centerZ - radius; cz <= centerZ + radius; cz++) {
+                final Chunk chunk = mc.theWorld.getChunkFromChunkCoords(cx, cz);
+                if (chunk == null || !chunk.isChunkLoaded) continue;
+                for (Object tile : chunk.chunkTileEntityMap.values()) {
+                    if (tile instanceof CommonBaseMetaTileEntity gtTile) {
+                        gtTile.issueTextureUpdate();
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -713,6 +607,7 @@ public class GTClient extends GTProxy {
     @SubscribeEvent
     public void onRenderStart(TickEvent.RenderTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
+            RenderInit.runPendingReload();
             renderTickTime = event.renderTickTime;
             isRenderingWorld = true;
         } else if (event.phase == TickEvent.Phase.END) {
@@ -736,7 +631,6 @@ public class GTClient extends GTProxy {
             || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
             || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
             || CoverRegistry.isCover(stack)
-            || stack.getItem() instanceof ItemGTToolbox
             || (stack.getItem() instanceof ItemMachines
                 && GregTechAPI.METATILEENTITIES[stack.getItemDamage()] instanceof MetaPipeEntity
                 && player.isSneaking());
@@ -751,6 +645,15 @@ public class GTClient extends GTProxy {
     public void onWorldUnload(WorldEvent.Unload event) {
         super.onWorldUnload(event);
         RenderOverlay.onWorldUnload(event.world);
+        if (event.world.isRemote) {
+            VacuumConveyorPipeClientStateManager.INSTANCE.clear();
+        }
+    }
+
+    @SubscribeEvent
+    public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        VacuumFactoryGrid.clearAll();
+        BECFactoryGrid.clearAll();
     }
 
     @SubscribeEvent

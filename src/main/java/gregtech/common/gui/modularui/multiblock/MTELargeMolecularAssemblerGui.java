@@ -23,7 +23,7 @@ public class MTELargeMolecularAssemblerGui extends MTEMultiBlockBaseGui<MTELarge
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         BooleanSyncValue showCraftingEffect = new BooleanSyncValue(
             multiblock::isHiddenCraftingFX,
-            multiblock::setHiddenCraftingFX);
+            multiblock::setHiddenCraftingFX).allowC2S();
         syncManager.syncValue("iscrafing", showCraftingEffect);
         return super.createLeftPanelGapRow(parent, syncManager)
             .child(new ButtonWidget<>().overlay(new DynamicDrawable(() -> {

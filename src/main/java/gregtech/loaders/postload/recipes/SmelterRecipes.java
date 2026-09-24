@@ -59,7 +59,7 @@ public class SmelterRecipes implements Runnable {
 
         GTModHandler.addSmeltingRecipe(
             GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 1L),
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.WroughtIron, 1L));
+            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.CastIron, 1L));
 
         GTModHandler.addSmeltingRecipe(
             GTOreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L),

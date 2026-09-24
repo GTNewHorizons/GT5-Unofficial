@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.SolidifierHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
@@ -39,9 +40,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -52,7 +53,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -68,7 +70,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * DEPRECATED! Will be removed after 2.9 is released. see
  * {@link gregtech.common.tileentities.machines.multi.MTEMassSolidifier} instead
  */
-public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShaper> implements ISurvivalConstructable {
+public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShaper>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String MS_LEFT_MID = "leftmid";
     private static final String MS_RIGHT_MID = "rightmid";
@@ -113,7 +116,8 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
         .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'B',
-            buildHatchAdder(MTEFluidShaper.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
+            buildHatchAdder(MTEFluidShaper.class)
+                .atLeast(InputBus, InputHatch.or(SolidifierHatch), OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
                 .hint(1)
                 .buildAndChain(onElementPass(MTEFluidShaper::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
@@ -137,42 +141,23 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_CANNER,
+            OVERLAY_FRONT_MULTI_CANNER_GLOW,
+            OVERLAY_FRONT_MULTI_CANNER_ACTIVE,
+            OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13));
     }
 
     @Override
@@ -196,9 +181,9 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
-            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
+            .addGlassEnergyLimitInfo()
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
+            .beginVariableStructureBlock(5, 5, 5, 5, 9, 33, true)
             .addController("Front bottom center")
             .addCasingInfoRange("Solidifier Casing", 91, 211, false)
             .addCasingInfoRange("Solidifier Radiator", 13, 73, false)
@@ -210,7 +195,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addInputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
@@ -256,29 +241,35 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         width = 0;
         casingAmount = 0;
         glassTier = -1;
 
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
-            while (width < (6)) {
-                if (checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0) && checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0)) {
-                    width++;
-                } else break;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
+        while (width < 6) {
+            if (checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0, errors)
+                && checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0, errors)) {
+                width++;
+            } else {
+                errors.clear();
+                break;
             }
-        } else return false;
-        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0) || !checkPiece(MS_END, 4 + 2 * width, 4, 0)) {
-            return false;
+        }
+        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0, errors) || !checkPiece(MS_END, 4 + 2 * width, 4, 0, errors)) {
+            return;
         }
 
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (glassTier < VoltageIndex.UMV & mEnergyHatch.mTier > glassTier) {
-                return false;
+            if (mEnergyHatch.getTierForStructure() > glassTier) {
+                errors.add(StructureErrors.glassTierNotEnough(mEnergyHatch.mTier));
             }
         }
 
-        return casingAmount >= (91 + width * 20);
+        checkCasingMin(errors, casingAmount, 91 + width * 20);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
@@ -366,18 +357,15 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("speedup", speedup);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + String.format("%.1f%%", 100 * tag.getFloat("speedup")));

@@ -54,6 +54,11 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive()) {
@@ -96,7 +101,7 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
 
         if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        if (tRecipe.getOutput(0) != null) mOutputItems[0] = tRecipe.getOutput(0);
+        if (tRecipe.getOutput(0) != null) mOutputItems[0] = tRecipe.rollOutput(getBaseMetaTileEntity(), 0);
         calculateCustomOverclock(tRecipe);
         return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
     }

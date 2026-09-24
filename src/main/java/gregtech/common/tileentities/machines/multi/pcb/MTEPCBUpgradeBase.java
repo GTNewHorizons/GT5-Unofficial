@@ -32,6 +32,8 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.common.gui.modularui.multiblock.MTEPCBUpgradeBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -89,6 +91,11 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
     @Override
     public boolean supportsPowerPanel() {
         return false;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEPCBUpgradeBaseGui(this);
     }
 
     @Override
@@ -159,8 +166,8 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
     public void removeController(MTEPCBFactory factory) {
         IGregTechTileEntity BMTE = factory.getBaseMetaTileEntity();
         controllerCoords.removeIf(
-            controllerCoord -> controllerCoord.get(1) == BMTE.getXCoord() && controllerCoord.get(1) == BMTE.getYCoord()
-                && controllerCoord.get(1) == BMTE.getZCoord());
+            controllerCoord -> controllerCoord.get(0) == BMTE.getXCoord() && controllerCoord.get(1) == BMTE.getYCoord()
+                && controllerCoord.get(2) == BMTE.getZCoord());
     }
 
     private LinkResult trySetControllerFromCoord(int x, int y, int z) {
@@ -266,17 +273,16 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
                     StatCollector.translateToLocalFormatted(
                         "GT5U.infodata.pcb_upgrade_base.linked_at",
                         controllerCoord.get(0),
-                        controllerCoord.get(0),
-                        controllerCoord.get(0)));
+                        controllerCoord.get(1),
+                        controllerCoord.get(2)));
             }
         } else ret.add(StatCollector.translateToLocal("GT5U.infodata.pcb_upgrade_base.not_linked"));
         return ret.toArray(new String[0]);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         // Display linked controller in Waila.
         if (tag.hasKey("controllers")) {
@@ -284,7 +290,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
             // If not all coordinates got saved, just clear the list.
             if (coordinates.length % 3 != 0) return;
             for (int i = 0; i < coordinates.length; i += 3) {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                         "GT5U.waila.pcb.upgrade_base.linked_to",
                         coordinates[i],
@@ -292,24 +298,24 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
                         coordinates[i + 2]));
             }
         } else {
-            currentTip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
+            list.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
         }
 
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
             int progresstime = tag.getInteger("mProgressTime");
             int maxProgresstime = tag.getInteger("mMaxProgressTime");
-            currentTip.add(
+            list.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.machine.in_progress",
                     (double) progresstime / 20,
                     (double) maxProgresstime / 20,
                     (Math.round((double) progresstime / maxProgresstime * 1000) / 10.0)));
         } else {
-            currentTip.add(StatCollector.translateToLocalFormatted("GT5U.waila.machine.idle"));
+            list.add(StatCollector.translateToLocalFormatted("GT5U.waila.machine.idle"));
         }
 
-        currentTip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.facing",
                 getFacingNameLocalized(
@@ -320,7 +326,7 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         boolean isActive = this.getBaseMetaTileEntity()
             .isActive();
@@ -333,7 +339,6 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
         if (!controllerCoords.isEmpty()) {
             tag.setTag("controllers", saveLinkDataToNBT());
         } else tag.removeTag("controllers");
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
     @Override

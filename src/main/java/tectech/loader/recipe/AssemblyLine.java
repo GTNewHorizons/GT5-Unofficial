@@ -17,6 +17,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
+import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.CustomItemList;
 
 public class AssemblyLine implements Runnable {
@@ -166,6 +167,21 @@ public class AssemblyLine implements Runnable {
                 GTModHandler.getIC2Coolant(2_000))
             .itemOutputs(CustomItemList.Machine_Multi_Infuser.get(1))
             .eut(200_000)
+            .duration(60 * SECONDS)
+            .addTo(AssemblyLine);
+
+        // Beamcrafter controller
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, LanthItemList.TARGET_CHAMBER)
+            .metadata(SCANNING, new Scanning(5 * MINUTES, TierEU.RECIPE_ZPM))
+            .itemInputs(
+                LanthItemList.TARGET_CHAMBER,
+                ItemList.Field_Generator_ZPM.get(4),
+                new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 32),
+                ItemList.LargeMolecularAssembler.get(2))
+            .fluidInputs(Materials.UUMatter.getFluid(8000L))
+            .itemOutputs(ItemList.BeamCrafter.get(1))
+            .eut(TierEU.RECIPE_UV)
             .duration(60 * SECONDS)
             .addTo(AssemblyLine);
     }

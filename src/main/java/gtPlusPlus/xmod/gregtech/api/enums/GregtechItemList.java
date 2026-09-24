@@ -696,8 +696,6 @@ public enum GregtechItemList implements IItemContainer {
     // Catalyst Carriers
     EmptyCatalystCarrier,
     GreenMetalCatalyst,
-    RedMetalCatalyst,
-    YellowMetalCatalyst,
     BlueMetalCatalyst,
     OrangeMetalCatalyst,
     PurpleMetalCatalyst,
@@ -862,7 +860,6 @@ public enum GregtechItemList implements IItemContainer {
 
     // Misc
     CustomCoalCoke,
-    BlueprintBase,
     MiningExplosives,
     AlkalusDisk,
     WitherGuard,
@@ -976,10 +973,6 @@ public enum GregtechItemList implements IItemContainer {
     LavaFilter,
 
     BitCoin,
-    HandPumpToken_I,
-    HandPumpToken_II,
-    HandPumpToken_III,
-    HandPumpToken_IV,
 
     RawHumanMeat,
     CookedHumanMeat,

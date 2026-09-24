@@ -39,6 +39,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -125,16 +127,18 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
-            .addController("Front Bottom center")
-            .addCasingInfoMin("Inconel Reinforced Casings", 8, false)
-            .addOtherStructurePart("Integral Encasement V", "Middle Layer")
-            .addOtherStructurePart("Heating Coils", "Above and below Integral Encasements")
-            .addInputBus("Any Inconel Reinforced Casing", 1)
-            .addOutputBus("Any Inconel Reinforced Casing", 1)
-            .addEnergyHatch("Any Inconel Reinforced Casing", 1)
-            .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
-            .addMufflerHatch("Any Inconel Reinforced Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addController("Front bottom center")
+            .addCasing("16", "Heating Coil", true)
+            .addCasing("5-12", "Inconel Reinforced Casing", false)
+            .addCasing("8", "Integral Encasement V", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -178,14 +182,21 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mLevel = 0;
         setCoilLevel(HeatingCoilLevel.None);
-        return checkPiece(mName, 1, 4, 0) && mCasing >= 8
-            && getCoilLevel() != HeatingCoilLevel.None
-            && (mLevel = getCoilLevel().getTier() + 1) > 0
-            && checkHatch();
+        if (!checkPiece(mName, 1, 4, 0, errors)) return;
+        if (getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+        }
+        checkCasingMin(errors, mCasing, 5);
+        mLevel = getCoilLevel().getTier() + 1;
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -229,20 +240,17 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("speedBonus", getSpeedBonus());
     }
 
     private static final DecimalFormat dfNone = new DecimalFormat("#");
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + dfNone.format(Math.max(0, 100 / tag.getFloat("speedBonus")))

@@ -2,8 +2,6 @@ package gregtech.common.gui.modularui.cover;
 
 import java.util.Arrays;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -17,43 +15,15 @@ import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 
 public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
-    /**
-     * The side of the block this GUI is representing the cover for.
-     */
-    protected final ForgeDirection side;
+    private static final String SLOT_GROUP_NAME = "cover_chest_items";
 
     public CoverChestGui(CoverChest cover) {
         super(cover);
-        side = cover.getSide();
     }
 
     @Override
     protected String getGuiId() {
-        return "cover.chest." + side;
-    }
-
-    @Override
-    protected boolean doesBindPlayerInventory() {
-        return true;
-    }
-
-    @Override
-    protected int getGUIWidth() {
-        int widthPerSlot = 18;
-        int additionalSpace = 15;
-        return widthPerSlot * 9 + additionalSpace;
-    }
-
-    @Override
-    protected int getGUIHeight() {
-        int borderRadius = 4;
-        int panelMargin = 2;
-        int titleRowHeight = 16;
-        int titleMargin = 4;
-        int rows = cover.getSlotCount() / 3;
-        int heightPerSlot = 18;
-
-        return borderRadius * 2 + panelMargin * 2 + titleRowHeight + titleMargin + rows * heightPerSlot;
+        return "cover.chest";
     }
 
     @Override
@@ -64,16 +34,28 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
         IItemHandlerModifiable handler = cover.getItems();
 
-        column.child(
-            // A bit of a hack to force the flow to be the same width as the window so the slot group gets centered
-            Flow.row()
-                .width((getGUIWidth() - 10))
-                .height(0))
+        syncManager.registerSlotGroup(SLOT_GROUP_NAME, 3, 200);
+
+        column.horizontalCenter()
             .child(
                 SlotGroupWidget.builder()
                     .matrix(matrix)
-                    .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i)))
-                    .build()
-                    .alignX(0.5f));
+                    .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i).slotGroup(SLOT_GROUP_NAME)))
+                    .build());
+    }
+
+    @Override
+    protected boolean doesBindPlayerInventory() {
+        return true;
+    }
+
+    @Override
+    protected boolean positionRelativeToCoverButton() {
+        return true;
+    }
+
+    @Override
+    protected boolean shouldIncludeTitleInPopUp() {
+        return false;
     }
 }

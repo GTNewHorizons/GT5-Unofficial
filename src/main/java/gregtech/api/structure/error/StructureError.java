@@ -7,6 +7,7 @@ import net.minecraft.network.PacketBuffer;
 import com.cleanroommc.modularui.api.widget.IWidget;
 
 import gregtech.api.enums.StructureErrorId;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public interface StructureError {
 
@@ -16,7 +17,12 @@ public interface StructureError {
 
     StructureError deserialize(PacketBuffer buffer) throws IOException;
 
-    IWidget createWidget();
+    IWidget createWidget(MTEMultiBlockBaseGui<?> gui);
+
+    /**
+     * Returns a localized display string for this error. Must be called client-side.
+     */
+    String getDisplayString();
 
     StructureError copy();
 }

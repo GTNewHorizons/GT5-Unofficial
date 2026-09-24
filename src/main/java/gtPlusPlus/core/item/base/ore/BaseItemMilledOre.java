@@ -1,8 +1,8 @@
 package gtPlusPlus.core.item.base.ore;
 
+import static gregtech.api.recipe.RecipeMaps.millingRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.millingRecipes;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

@@ -48,9 +48,8 @@ public class ItemLavaFilter extends CoreItem {
         return this.mIcon[0];
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.itemLavaFilter.tooltip"));
 
         int maxDurability = stack.getMaxDamage() + 1;

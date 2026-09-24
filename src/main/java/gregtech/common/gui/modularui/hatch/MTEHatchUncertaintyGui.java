@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.hatch;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.stream.IntStream;
@@ -9,12 +10,15 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.ByteSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.ShortSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
@@ -32,8 +36,7 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow mainRow = Flow.row()
-            .coverChildren()
-            .paddingLeft(3);
+            .coverChildren();
 
         mainRow.child(createButtonColumn(syncManager, 0));
         mainRow.child(createButtonColumn(syncManager, 1));
@@ -65,9 +68,14 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
         // matrix widget
         screen.child(createMatrix(syncManager));
 
+        // value overlay toggle, sits right above the tectech logo
+        screen.child(
+            createValueAssistButton(syncManager).topRel(0)
+                .rightRel(0));
+
         // tt logo
         screen.child(
-            createLogo().bottomRel(0)
+            makeLogoWidget().bottomRel(0)
                 .rightRel(0));
 
         return screen;
@@ -119,27 +127,27 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
                 case 1: // ooo oxo ooo
                     if (index == 4) return status == 0 ? valid : invalid;
                     break;
-                case 2: // ooo xox ooo
-                    if (index == 3) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 5) return (status & 2) == 0 ? valid : invalid;
+                case 2: // oxo ooo oxo
+                    if (index == 1) return (status & 1) == 0 ? valid : invalid;
+                    if (index == 7) return (status & 2) == 0 ? valid : invalid;
                     break;
                 case 3: // oxo xox oxo
-                    if (index == 1) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 3) return (status & 2) == 0 ? valid : invalid;
-                    if (index == 5) return (status & 4) == 0 ? valid : invalid;
-                    if (index == 7) return (status & 8) == 0 ? valid : invalid;
+                    if (index == 3) return (status & 1) == 0 ? valid : invalid;
+                    if (index == 1) return (status & 2) == 0 ? valid : invalid;
+                    if (index == 7) return (status & 4) == 0 ? valid : invalid;
+                    if (index == 5) return (status & 8) == 0 ? valid : invalid;
                     break;
                 case 4: // xox ooo xox
                     if (index == 0) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 2) return (status & 2) == 0 ? valid : invalid;
-                    if (index == 6) return (status & 4) == 0 ? valid : invalid;
+                    if (index == 6) return (status & 2) == 0 ? valid : invalid;
+                    if (index == 2) return (status & 4) == 0 ? valid : invalid;
                     if (index == 8) return (status & 8) == 0 ? valid : invalid;
                     break;
                 case 5: // xox oxo xox
                     if (index == 0) return (status & 1) == 0 ? valid : invalid;
-                    if (index == 2) return (status & 2) == 0 ? valid : invalid;
+                    if (index == 6) return (status & 2) == 0 ? valid : invalid;
                     if (index == 4) return (status & 4) == 0 ? valid : invalid;
-                    if (index == 6) return (status & 8) == 0 ? valid : invalid;
+                    if (index == 2) return (status & 8) == 0 ? valid : invalid;
                     if (index == 8) return (status & 16) == 0 ? valid : invalid;
                     break;
             }
@@ -150,7 +158,43 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
             .minElementMargin(4)
             .coverChildren());
 
+        // values of the 16 cells, drawn on top of everything while the value assist is enabled
+        BooleanSyncValue valueAssistSyncer = syncManager.findSyncHandler("valueAssist", BooleanSyncValue.class);
+
+        matrixWidget.child(
+            new Grid()
+                .gridOfWidthHeight(
+                    4,
+                    4,
+                    (x, y, index) -> IKey
+                        .dynamic(
+                            () -> valueAssistSyncer.getBoolValue()
+                                ? Integer.toString(Math.round(matrixSyncer[index].getShortValue() / 10f))
+                                : "")
+                        .asWidget()
+                        .size(10)
+                        .textAlign(Alignment.Center)
+                        .scale(0.5f)
+                        .color(Color.WHITE.main)
+                        .shadow(true))
+                .center()
+                .minElementMargin(1)
+                .coverChildren());
+
         return matrixWidget;
+    }
+
+    private ToggleButton createValueAssistButton(PanelSyncManager syncManager) {
+        BooleanSyncValue valueAssistSyncer = syncManager.findSyncHandler("valueAssist", BooleanSyncValue.class);
+
+        return new ToggleButton().value(valueAssistSyncer)
+            .size(12)
+            .background(GTGuiTextures.BUTTON_STANDARD)
+            .overlay(false, GTGuiTextures.TT_PICTURE_UNCERTAINTY_ASSIST_OFF)
+            .overlay(true, GTGuiTextures.TT_PICTURE_UNCERTAINTY_ASSIST_ON)
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+            .tooltip(tooltip -> tooltip.add(IKey.lang("tt.gui.tooltip.uncertainty.value_assist")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     private Flow createButtonColumn(PanelSyncManager syncManager, int offset) {
@@ -165,26 +209,24 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
         for (int i = 0; i < 4; i++) {
             int index = offset + i * 4;
 
-            buttonColumn.child(
-                new ButtonWidget<>().size(18)
-                    .onMousePressed($ -> {
-                        byte selection = selectionSyncer.getByteValue();
+            buttonColumn.child(new ButtonWidget<>().onMousePressed($ -> {
+                byte selection = selectionSyncer.getByteValue();
 
-                        if (selection == -1) {
-                            selectionSyncer.setIntValue(index);
-                        } else {
-                            short indexValue = matrixSyncer[index].getShortValue();
-                            short selectionValue = matrixSyncer[selection].getShortValue();
+                if (selection == -1) {
+                    selectionSyncer.setIntValue(index);
+                } else {
+                    short indexValue = matrixSyncer[index].getShortValue();
+                    short selectionValue = matrixSyncer[selection].getShortValue();
 
-                            matrixSyncer[selection].setShortValue(indexValue);
-                            matrixSyncer[index].setShortValue(selectionValue);
+                    matrixSyncer[selection].setShortValue(indexValue);
+                    matrixSyncer[index].setShortValue(selectionValue);
 
-                            selectionSyncer.setIntValue(-1);
-                        }
-                        return true;
-                    })
-                    .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-                    .backgroundOverlay(GTGuiTextures.TT_OVERLAY_BUTTON_UNCERTAINTY[index]));
+                    selectionSyncer.setIntValue(-1);
+                }
+                return true;
+            })
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                .backgroundOverlay(GTGuiTextures.TT_OVERLAY_BUTTON_UNCERTAINTY[index]));
 
         }
 
@@ -200,20 +242,19 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
                 i -> syncManager.syncValue(
                     "matrix",
                     i,
-                    new ShortSyncValue(() -> hatch.getMatrixElement(i), val -> hatch.setMatrixElemet(val, i))));
+                    new ShortSyncValue(() -> machine.getMatrixElement(i), val -> machine.setMatrixElement(val, i))
+                        .allowC2S()));
 
-        syncManager.syncValue("selection", new ByteSyncValue(hatch::getSelection, hatch::setSelection));
-        syncManager.syncValue("mode", new ByteSyncValue(hatch::getMode, hatch::setMode));
-        syncManager.syncValue("status", new ByteSyncValue(hatch::getStatus, hatch::setStatus));
+        syncManager.syncValue("selection", new ByteSyncValue(machine::getSelection, machine::setSelection).allowC2S());
+        syncManager.syncValue("mode", new ByteSyncValue(machine::getMode, machine::setMode));
+        syncManager.syncValue("status", new ByteSyncValue(machine::getStatus, machine::setStatus));
+        syncManager.syncValue(
+            "valueAssist",
+            new BooleanSyncValue(machine::isShowingValues, machine::setShowValues).allowC2S());
     }
 
     @Override
-    protected boolean supportsRightCornerFlow() {
+    protected boolean doesAddGregTechLogo() {
         return false;
-    }
-
-    @Override
-    protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(GTGuiTextures.TT_PICTURE_TECTECH_LOGO_DARK).size(18);
     }
 }

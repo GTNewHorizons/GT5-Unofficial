@@ -9,9 +9,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import advsolar.common.AdvancedSolarPanel;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -27,6 +29,7 @@ public class RecipeRemover implements Runnable {
         removeCrafting();
         removeSmelting();
         removeIC2Recipes();
+        removeAdvSolarPanelRecipes();
     }
 
     public void removeCrafting() {
@@ -135,6 +138,12 @@ public class RecipeRemover implements Runnable {
             /* Do nothing */
         }
 
+    }
+
+    public void removeAdvSolarPanelRecipes() {
+        if (Mods.AdvancedSolarPanel.isModLoaded()) {
+            GTModHandler.removeRecipeByOutputDelayed(new ItemStack(AdvancedSolarPanel.blockMolecularTransformer));
+        }
     }
 
     public void removeSmelting() {

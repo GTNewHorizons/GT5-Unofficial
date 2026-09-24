@@ -1,8 +1,8 @@
 package gregtech.common.gui.modularui.singleblock.base;
 
-import gregtech.api.metatileentity.implementations.MTEBasicTank;
+import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 
-public class MTEBasicGeneratorBaseGui<T extends MTEBasicTank> extends MTEBasicTankBaseGui<T> {
+public class MTEBasicGeneratorBaseGui<T extends MTEBasicGenerator> extends MTEBasicTankBaseGui<T> {
 
     public MTEBasicGeneratorBaseGui(T machine) {
         super(machine);

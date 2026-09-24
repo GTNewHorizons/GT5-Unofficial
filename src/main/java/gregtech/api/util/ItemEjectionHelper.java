@@ -40,13 +40,23 @@ public class ItemEjectionHelper {
     }
 
     public ItemEjectionHelper(List<IOutputBus> busses, boolean protectItems) {
+        this(busses, protectItems, false);
+    }
+
+    public ItemEjectionHelper(List<IOutputBus> busses, boolean protectItems, boolean isRecipeCheck) {
         itemProtectionEnabled = protectItems;
 
         for (int i = 0, bussesSize = busses.size(); i < bussesSize; i++) {
             IOutputBus bus = busses.get(i);
-
+            IOutputBusTransaction transaction = bus.createTransaction();
+            if (transaction instanceof IOutputBusTransaction.IRecipeCheckAware tran) {
+                tran.setRecipeCheck(isRecipeCheck);
+            }
+            if (transaction instanceof IOutputBusTransaction.IProtectOutputAware tran) {
+                tran.setProtectOutput(protectItems);
+            }
             transactionsByType.computeIfAbsent(bus.getBusType(), x -> new ArrayList<>())
-                .add(bus.createTransaction());
+                .add(transaction);
         }
     }
 
@@ -108,7 +118,7 @@ public class ItemEjectionHelper {
                 if (ofType == null) continue;
 
                 if (busType.isFiltered()) {
-                    GTDataUtils.addAllFiltered(ofType, transactions, t -> t.isFilteredToItem(parallelData.id));
+                    GTDataUtils.addAllFiltered(ofType, transactions, t -> t.isFilteredTo(parallelData.id));
                 } else {
                     transactions.addAll(ofType);
                 }
@@ -133,13 +143,13 @@ public class ItemEjectionHelper {
 
                 // If this bus is completely full, don't bother checking it.
                 if (!transaction.hasAvailableSpace()) {
-                    transaction.completeItem(output.id);
+                    transaction.complete(output.id);
                     outputBusses.next();
                     continue;
                 }
 
                 // Fill at most one slot with the remaining items
-                if (transaction.storePartial(output.id, output.remaining)) {
+                if (output.storePartial(transaction, pendingOutputs)) {
                     break;
                 } else {
                     // If we couldn't insert anything into the bus, go to the next one
@@ -187,6 +197,18 @@ public class ItemEjectionHelper {
             this.remaining = id.getItemStack(amount);
             this.perParallel = perParallel;
             this.initialAmount = amount;
+        }
+
+        public boolean storePartial(IOutputBusTransaction transaction, Iterable<ItemParallelData> pendingOutputs) {
+            long totalPerParallel = perParallel;
+            if (transaction.needsTotalParallelData()) {
+                for (ItemParallelData other : pendingOutputs) {
+                    if (!transaction.isFiltered() || transaction.isFilteredTo(other.id)) {
+                        totalPerParallel += other.perParallel;
+                    }
+                }
+            }
+            return transaction.storePartial(id, remaining, totalPerParallel, perParallel);
         }
     }
 }

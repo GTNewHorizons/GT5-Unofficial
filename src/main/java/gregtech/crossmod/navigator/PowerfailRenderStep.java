@@ -34,9 +34,9 @@ public class PowerfailRenderStep extends UniversalInteractableStep<PowerfailLoca
 
     @Override
     public void preRender(double topX, double topY, float drawScale, double zoom) {
-        double iconSize = isXaero ? 10 * zoom : 32 * drawScale;
+        double iconSize = isXaero ? 10 * zoom : 32 * drawScale * getZoomScale(1, 2, 3, 5);
 
-        double blockWidth = Math.pow(2, zoom);
+        double blockWidth = isXaero ? zoom : Math.pow(2, zoom);
         double padding = -(iconSize - blockWidth) / 2;
 
         setSize(iconSize);
@@ -47,15 +47,18 @@ public class PowerfailRenderStep extends UniversalInteractableStep<PowerfailLoca
     public void draw(double topX, double topY, float drawScale, double zoom) {
         if (!location.highlighted) return;
 
-        DrawUtils.drawLabel(
-            location.powerfail.toSummary()
-                .toString(),
-            topX + width / 2,
-            topY - FONT_HEIGHT - 5 + height * 1.5,
-            0xFFFFFF,
-            0,
-            true,
-            getFontScale());
+        double labelScale = isXaero ? getFontScale() : getFontScale() * getZoomScale(1, 3, 3, 5);
+        if (isXaero || getZoomStep() >= 2) {
+            DrawUtils.drawLabel(
+                location.powerfail.toSummary()
+                    .toString(),
+                topX + width / 2,
+                isXaero ? (topY + height + (2 * getScaling(zoom))) : ((topY - FONT_HEIGHT - 5) + (height * 1.5)),
+                0xFFFFFF,
+                0,
+                true,
+                labelScale);
+        }
 
         DrawUtils
             .drawQuad(GTMod.clientProxy().powerfailRenderer.powerfailIcon, topX, topY, width, height, 0xFFFFFF, 255);

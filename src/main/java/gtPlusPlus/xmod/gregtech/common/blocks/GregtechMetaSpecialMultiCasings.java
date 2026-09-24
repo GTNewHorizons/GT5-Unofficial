@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,8 +28,8 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
         }
 
         @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+            super.addInformation(stack, player, tooltip, aF3_H);
         }
     }
 
@@ -89,5 +90,24 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
             case 15 -> TexturesGtBlock.Turbine_SC_Material_Casing.getIcon();
             default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
+        Block block = worldIn.getBlock(x, y, z);
+
+        if (worldIn.getBlockMetadata(x, y, z) != worldIn.getBlockMetadata(
+            x - Facing.offsetsXForSide[side],
+            y - Facing.offsetsYForSide[side],
+            z - Facing.offsetsZForSide[side])) {
+            return true;
+        }
+
+        if (block == this) {
+            return false;
+        }
+
+        return super.shouldSideBeRendered(worldIn, x, y, z, side);
     }
 }

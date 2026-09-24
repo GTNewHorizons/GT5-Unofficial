@@ -26,6 +26,7 @@ import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.power.IPowerContainer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,6 +42,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Machine
  */
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTETransformer extends MTETieredMachineBlock {
 
     public MTETransformer(int aID, String aName, String aNameRegional, int aTier) {
@@ -49,6 +51,15 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     public MTETransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.transformer.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override
@@ -161,6 +172,10 @@ public class MTETransformer extends MTETieredMachineBlock {
         return getBaseMetaTileEntity().isAllowedToWork() ? 2 : 5;
     }
 
+    public long displayedAmperesIn() {
+        return getBaseMetaTileEntity().isAllowedToWork() ? 1 : 4;
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && GregTechAPI.mInputRF) {
@@ -243,15 +258,13 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public String getAlternativeModeText() {
-        return (getBaseMetaTileEntity().isAllowedToWork() ? GTUtility.trans("145", "Step Down, In: ")
-            : GTUtility.trans("146", "Step Up, In: ")) + maxEUInput()
-            + GTUtility.trans("148", "V ")
-            + maxAmperesIn()
-            + GTUtility.trans("147", "A, Out: ")
-            + maxEUOutput()
-            + GTUtility.trans("148", "V ")
-            + maxAmperesOut()
-            + GTUtility.trans("149", "A");
+        return StatCollector.translateToLocalFormatted(
+            getBaseMetaTileEntity().isAllowedToWork() ? "GT5U.gui.transformer.step_down"
+                : "GT5U.gui.transformer.step_up",
+            maxEUInput(),
+            maxAmperesIn(),
+            maxEUOutput(),
+            maxAmperesOut());
     }
 
     @Override
@@ -270,17 +283,19 @@ public class MTETransformer extends MTETieredMachineBlock {
         final byte inputTier = GTUtility.getTier(tag.getLong("maxEUInput"));
         final byte outputTier = GTUtility.getTier(tag.getLong("maxEUOutput"));
 
-        currenttip.add(
-            String.format(
-                "%s %s(%dA) -> %s(%dA)",
-                (allowedToWork ? (GREEN + StatCollector.translateToLocal("GT5U.waila.transformer.step_down"))
-                    : (RED + StatCollector.translateToLocal("GT5U.waila.transformer.step_up"))) + RESET,
-                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
-                    : tag.getLong("maxEUInput"),
-                tag.getLong("maxAmperesIn"),
-                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
-                    : tag.getLong("maxEUOutput"),
-                tag.getLong("maxAmperesOut")));
+        if (maxEUInput() != maxEUOutput()) {
+            currenttip.add(
+                String.format(
+                    "%s %s(%dA) -> %s(%dA)",
+                    (allowedToWork ? (GREEN + StatCollector.translateToLocal("GT5U.waila.transformer.step_down"))
+                        : (RED + StatCollector.translateToLocal("GT5U.waila.transformer.step_up"))) + RESET,
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
+                        : tag.getLong("maxEUInput"),
+                    tag.getLong("displayedAmperesIn"),
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
+                        : tag.getLong("maxEUOutput"),
+                    tag.getLong("maxAmperesOut")));
+        }
 
         if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
             currenttip.add(
@@ -308,6 +323,7 @@ public class MTETransformer extends MTETieredMachineBlock {
         tag.setBoolean("isAllowedToWork", getBaseMetaTileEntity().isAllowedToWork());
         tag.setLong("maxEUInput", maxEUInput());
         tag.setLong("maxAmperesIn", maxAmperesIn());
+        tag.setLong("displayedAmperesIn", displayedAmperesIn());
         tag.setLong("maxEUOutput", maxEUOutput());
         tag.setLong("maxAmperesOut", maxAmperesOut());
     }

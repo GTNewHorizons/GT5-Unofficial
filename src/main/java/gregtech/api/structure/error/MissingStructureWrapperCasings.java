@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -17,7 +18,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
-import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
 public record MissingStructureWrapperCasings(NBTTagList list) implements StructureError {
@@ -40,8 +41,10 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
         return new MissingStructureWrapperCasings(compound.getTagList("structureWrapper", Constants.NBT.TAG_COMPOUND));
     }
 
+    private static final int TEXT_COLOR = 0xFFE0E0E0;
+
     @Override
-    public IWidget createWidget() {
+    public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
 
         Flow column = Flow.column()
             .coverChildrenHeight(0)
@@ -54,14 +57,36 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
                 tag.getInteger("casingMeta"));
             column.child(
                 IKey.str(
-                    GTUtility.translate(
-                        "GT5U.gui.missing_casings_specific",
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.structure_error.missing_casings_specific",
                         stack.getDisplayName(),
                         tag.getInteger("req"),
                         tag.getInteger("pres")))
+                    .color(TEXT_COLOR)
+                    .alignment(Alignment.CenterLeft)
                     .asWidget());
         }
         return column;
+    }
+
+    @Override
+    public String getDisplayString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound tag = list.getCompoundTagAt(i);
+            ItemStack stack = new ItemStack(
+                Item.getItemById(tag.getInteger("casingId")),
+                1,
+                tag.getInteger("casingMeta"));
+            if (!sb.isEmpty()) sb.append('\n');
+            sb.append(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.structure_error.missing_casings_specific",
+                    stack.getDisplayName(),
+                    tag.getInteger("req"),
+                    tag.getInteger("pres")));
+        }
+        return sb.toString();
     }
 
     @Override

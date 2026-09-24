@@ -36,10 +36,12 @@ public class RecipeGenExtruder extends RecipeGenBase {
         final ItemStack itemIngot = material.getIngot(1);
         final ItemStack itemPlate = material.getPlate(1);
         final ItemStack itemGear = material.getGear(1);
+        final ItemStack itemGearSmall = material.getGearSmall(1);
 
         final ItemStack shape_Plate = ItemList.Shape_Extruder_Plate.get(0);
         final ItemStack shape_Ring = ItemList.Shape_Extruder_Ring.get(0);
         final ItemStack shape_Gear = ItemList.Shape_Extruder_Gear.get(0);
+        final ItemStack shape_GearSmall = ItemList.Shape_Extruder_Small_Gear.get(0);
         final ItemStack shape_Rod = ItemList.Shape_Extruder_Rod.get(0);
         final ItemStack shape_Bolt = ItemList.Shape_Extruder_Bolt.get(0);
         final ItemStack shape_Block = ItemList.Shape_Extruder_Block.get(0);
@@ -51,7 +53,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .itemInputs(material.getBlock(1), shape_Ingot)
                 .itemOutputs(material.getIngot(9))
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(extruderRecipes);
 
             // Block Recipe
@@ -59,7 +61,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .itemInputs(material.getIngot(9), shape_Block)
                 .itemOutputs(material.getBlock(1))
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(extruderRecipes);
         }
 
@@ -69,7 +71,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .itemInputs(itemIngot, shape_Plate)
                 .itemOutputs(itemPlate)
                 .duration(10 * TICKS)
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(extruderRecipes);
         }
 
@@ -80,7 +82,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                     .itemInputs(itemIngot, shape_Ring)
                     .itemOutputs(material.getRing(4))
                     .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(extruderRecipes);
             }
         }
@@ -91,7 +93,17 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .itemInputs(material.getIngot(4), shape_Gear)
                 .itemOutputs(itemGear)
                 .duration((int) Math.max(material.getMass() * 5L, 1))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
+                .addTo(extruderRecipes);
+        }
+
+        // Small Gear Recipe
+        if (material.getIngot(1) != null && material.getGearSmall(1) != null && !material.isRadioactive) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getIngot(1), shape_GearSmall)
+                .itemOutputs(itemGearSmall)
+                .duration((int) Math.max(material.getMass() * 2L, 1))
+                .eut(material.voltageMultiplier)
                 .addTo(extruderRecipes);
         }
 
@@ -101,7 +113,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .itemInputs(itemIngot, shape_Rod)
                 .itemOutputs(material.getRod(2))
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(extruderRecipes);
         }
 
@@ -111,7 +123,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .itemInputs(itemIngot, shape_Bolt)
                 .itemOutputs(material.getBolt(8))
                 .duration((int) Math.max(material.getMass() * 2L, 1))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(extruderRecipes);
         }
 
@@ -122,7 +134,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .itemInputs(material.getIngot(5), ItemList.Shape_Extruder_Rotor.get(0))
                 .itemOutputs(material.getRotor(1))
                 .duration((int) Math.max(material.getMass() * 5L * 1, 1))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(extruderRecipes);
         }
 

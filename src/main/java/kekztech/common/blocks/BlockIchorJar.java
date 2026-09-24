@@ -63,9 +63,9 @@ public class BlockIchorJar extends BlockJar {
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "unchecked" })
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(par1, 1, 0)); // Normal jar
-        par3List.add(new ItemStack(par1, 1, 3)); // Void jar
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        list.add(new ItemStack(item, 1, 0)); // Normal jar
+        list.add(new ItemStack(item, 1, 3)); // Void jar
     }
 
     @Override
@@ -196,8 +196,8 @@ public class BlockIchorJar extends BlockJar {
             int created = 0;
             for (int i = 0; i < iterations; i++) {
                 final int xf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
-                final int yf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
-                final int zf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
+                final int yf = y + world.rand.nextInt(7) - world.rand.nextInt(7);
+                final int zf = z + world.rand.nextInt(7) - world.rand.nextInt(7);
                 if (world.isAirBlock(xf, yf, zf)) {
                     if (yf > y) {
                         world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGas, 8, 3);

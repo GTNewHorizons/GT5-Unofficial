@@ -845,7 +845,7 @@ public class SpaceMiningRecipes {
             25,
             200,
             360,
-            3,
+            2,
             500,
             (int) TierEU.RECIPE_ZPM,
             ItemMiningDrones.DroneTiers.ZPM.ordinal(),

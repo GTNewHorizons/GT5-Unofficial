@@ -39,7 +39,7 @@ public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
     private Flow createFrequencyRow(PanelSyncManager syncManager) {
         StringSyncValue frequencySyncer = new StringSyncValue(
             this::getFrequency,
-            val -> this.setFrequency(val, syncManager));
+            val -> this.setFrequency(val, syncManager)).allowC2S();
 
         return Flow.row()
             .marginBottom(4)
@@ -53,6 +53,8 @@ public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
     }
 
     private String getFrequency() {
+        if (cover.getTile()
+            .isClientSide()) return "";
         if (!(cover.getTile() instanceof IFluidHandler teTank)) {
             return "";
         }
@@ -62,6 +64,8 @@ public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
     }
 
     private void setFrequency(String val, PanelSyncManager syncManager) {
+        if (cover.getTile()
+            .isClientSide()) return;
         if (!(cover.getTile() instanceof IFluidHandler tank)) {
             return;
         }
@@ -77,7 +81,8 @@ public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
     }
 
     private Flow createChannelModeRow(PanelSyncManager syncManager) {
-        BooleanSyncValue privateChannelSyncer = new BooleanSyncValue(cover::isPrivateChannel, cover::setPrivateChannel);
+        BooleanSyncValue privateChannelSyncer = new BooleanSyncValue(cover::isPrivateChannel, cover::setPrivateChannel)
+            .allowC2S();
         syncManager.syncValue("privateChannel", privateChannelSyncer);
 
         return Flow.row()
@@ -100,7 +105,7 @@ public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
     }
 
     private Flow createTransferModeRow(PanelSyncManager syncManager) {
-        BooleanSyncValue exportSyncer = new BooleanSyncValue(cover::isExport, cover::setExport);
+        BooleanSyncValue exportSyncer = new BooleanSyncValue(cover::isExport, cover::setExport).allowC2S();
         syncManager.syncValue("export", exportSyncer);
 
         return Flow.row()

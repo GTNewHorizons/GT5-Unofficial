@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -381,10 +382,12 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings12, 13, gt(16, 5, 13)),
     FormingCore
         (() -> GregTechAPI.sBlockCasings12, 14, gt(16, 5, 14)),
+    AlgaeCasing
+        (() -> GregTechAPI.sBlockCasings12, 15, gt(16, 5, 15)),
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.AlchemyCasingAny");
+            return StatCollector.translateToLocal("GT5U.MBTT.AlchemyCasingAny");
         }
 
         @Override
@@ -436,7 +439,7 @@ public enum Casings implements ICasing {
     AlchemicalConstructTiered(() -> GameRegistry.findBlock(Mods.Thaumcraft.ID, "blockMetalDevice"), 9, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.AlchemicalConstructAny");
+            return StatCollector.translateToLocal("GT5U.MBTT.AlchemicalConstructAny");
         }
 
         @Override
@@ -512,8 +515,17 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings13,13,gt(16,6,13)),
     LHCbCasing
         (() -> GregTechAPI.sBlockCasings13,14,gt(16,6,14)),
+    NaquadahReactorCasing
+        (() -> GregTechAPI.sBlockCasings13,15,gt(16,6,15)),
 
+
+    // Block Casings 14
+    HearthCasing(() -> GregTechAPI.sBlockCasings14,3,gt(16,7,3)),
+    FridgeCasing(()->GregTechAPI.sBlockCasings14,4,gt(16,7,4)),
+    NaquadahReinforcedDistillationCasing(()->GregTechAPI.sBlockCasings14,5,gt(16,7,5)),
     // Block Reinforced
+    TungstenSteelReinforcedBlock
+        (() -> GregTechAPI.sBlockReinforced,3,211),
     NaquadahReinforcedBlock
         (() -> GregTechAPI.sBlockReinforced,10,218),
 
@@ -595,6 +607,22 @@ public enum Casings implements ICasing {
     UMVSolenoidSuperconductorCoil
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
 
+    // BEC
+    CoherencePreservingPlasmaConduit
+        (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(17, 0, 0)),
+    ElectromagneticallyIsolatedCasing
+        (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),
+    FineStructureConstantManipulator
+        (() -> GregTechAPI.sBlockCasingsBEC, 2, gt(17, 0, 2)),
+    ConflictInducementCasing
+        (() -> GregTechAPI.sBlockCasingsBEC, 3, gt(17, 0, 3)),
+    PeaceEnforcementCasing
+        (() -> GregTechAPI.sBlockCasingsBEC, 4, gt(17, 0, 4)),
+    CondensateTransformativeCoil
+        (() -> GregTechAPI.sBlockCasingsBEC, 5, gt(17, 0, 5)),
+    CondensateGuidanceCoil
+        (() -> GregTechAPI.sBlockCasingsBEC, 6, gt(17, 0, 6)),
+
     // Block Glass 1
     ChemicalGradeGlass
         (() -> GregTechAPI.sBlockGlass1, 0, gt(16, 0, 0)),
@@ -614,6 +642,15 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockGlass1, 7, gt(16, 0, 7)),
     NanochipComplexGlass
         (() -> GregTechAPI.sBlockGlass1, 8,  gt(16, 0, 8)),
+    ElectromagneticWaveguide
+        (() -> GregTechAPI.sBlockGlass1, 9, -1),
+    ReinforcedGlass
+        (() -> GregTechAPI.sBlockGlass1, 10, -1),
+
+    // Fences
+
+    IronFence
+        (()-> GregTechAPI.sBlockFenceMetal, 0, -1),
 
     // ------------------ Bartworks Casings -----------------
 
@@ -621,6 +658,10 @@ public enum Casings implements ICasing {
         (() -> WerkstoffLoader.BWBlockCasings, 32083,32083),
     ReboltedOsmiridiumCasing
         (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32083, 32083),
+    BoltedNaquadahCasing
+        (() -> WerkstoffLoader.BWBlockCasings, 32090,32090),
+    ReboltedNaquadahCasing
+        (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32090,32090),
     BoltedNaquadahAlloyCasing
         (() -> WerkstoffLoader.BWBlockCasings, 32091,32091),
     ReboltedNaquadahAlloyCasing
@@ -693,7 +734,7 @@ public enum Casings implements ICasing {
     CyclotronOuterCasing
         (() -> ModBlocks.blockCasings2Misc, 10, -1),
     ThermalContainmentCasing
-        (() -> ModBlocks.blockCasings2Misc, 11, -1),
+        (() -> ModBlocks.blockCasings2Misc, 11,  gtpp(0,1)),
     BulkProductionFrame
         (() -> ModBlocks.blockCasings2Misc, 12, -1),
     CuttingFactoryFrame
@@ -819,13 +860,13 @@ public enum Casings implements ICasing {
     TurbineShaft
         (() -> ModBlocks.blockSpecialMultiCasings, 0, gtpp(1, 0)),
     ReinforcedSteamTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 1, gtpp(1, 1)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 1, 57),
     ReinforcedHPSteamTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 2, gtpp(1, 2)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 2, 59),
     ReinforcedGasTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 3, gtpp(1, 3)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 3, 58),
     ReinforcedPlasmaTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 4, gtpp(1, 4)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 4, 60),
     TeslaContainmentCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 5, gtpp(1, 5)),
     StructuralSolarCasing
@@ -847,7 +888,7 @@ public enum Casings implements ICasing {
     ReinforcedHeatExchangerCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 14, gtpp(1, 14)),
     ReinforcedSCTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 15, gtpp(1, 15)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 15, 1538),
 
     // GregtechMetaSpecialMultiCasings2
     ResonanceChamber1
@@ -876,8 +917,6 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCustomMachineCasings, 2, gtpp(2,4)),
     RuggedBotmiumMachineCasing
         (() -> ModBlocks.blockCustomMachineCasings, 3, gtpp(3,4)),
-
-    // GregtechMetaCasingBlocksPipeGearbox - skipped, unused, uncraftable
 
     // ------------------ Tectech Casings -----------------
 
@@ -1004,23 +1043,23 @@ public enum Casings implements ICasing {
 
     // Godforge Casings
     SingularityReinforcedStellarShieldingCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 0, gt(7,64)),
+        (() -> TTCasingsContainer.GodforgeCasings, 0, gt(7,64)),
     CelestialMatterGuidanceCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 1, gt(7,65)),
+        (() -> TTCasingsContainer.GodforgeCasings, 1, gt(7,65)),
     BoundlessGravitationallySeveredStructureCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 2, gt(7,66)),
+        (() -> TTCasingsContainer.GodforgeCasings, 2, gt(7,66)),
     TranscendentallyAmplifiedMagneticConfinementCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 3, gt(7,67)),
+        (() -> TTCasingsContainer.GodforgeCasings, 3, gt(7,67)),
     StellarEnergySiphonCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 4, gt(7,68)),
+        (() -> TTCasingsContainer.GodforgeCasings, 4, gt(7,68)),
     RemoteGravitonFlowModulator
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 5, gt(7,69)),
+        (() -> TTCasingsContainer.GodforgeCasings, 5, gt(7,69)),
     MedialGravitonFlowModulator
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 6, gt(7,70)),
+        (() -> TTCasingsContainer.GodforgeCasings, 6, gt(7,70)),
     CentralGravitonFlowModulator
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 7, gt(7,71)),
+        (() -> TTCasingsContainer.GodforgeCasings, 7, gt(7,71)),
     HarmonicPhononTransmissionConduit
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 8, gt(7,72)),
+        (() -> TTCasingsContainer.GodforgeCasings, 8, gt(7,72)),
 
     QuantumGlass
         (() -> BlockQuantumGlass.INSTANCE, 0, -1),
@@ -1046,11 +1085,13 @@ public enum Casings implements ICasing {
         (() -> Loaders.MAR_Casing, 0, -1),
     FieldRestrictionGlass
         (() -> Loaders.fieldRestrictingGlass, 0, -1),
+    SCTurbineCasing
+        (() -> Loaders.supercriticalFluidTurbineCasing, 0, 1538),
 
     BorosilicateGlassAny(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.BoroGlassAny");
+            return StatCollector.translateToLocal("GT5U.MBTT.BoroGlassAny");
         }
 
         @Override
@@ -1062,7 +1103,7 @@ public enum Casings implements ICasing {
     BorosilicateGlassTiered(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.BoroGlassTiered");
+            return StatCollector.translateToLocal("GT5U.MBTT.BoroGlassTiered");
         }
 
         @Override
@@ -1085,7 +1126,7 @@ public enum Casings implements ICasing {
     SuperChest(() -> GregTechAPI.sBlockMachines, 0, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.SuperChest");
+            return StatCollector.translateToLocal("GT5U.MBTT.SuperChest");
         }
 
         @Override

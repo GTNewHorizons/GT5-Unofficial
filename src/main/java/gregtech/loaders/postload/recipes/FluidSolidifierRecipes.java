@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GTValues.M;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -141,7 +140,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Food_Cheese.get(1L))
             .fluidInputs(Materials.Cheese.getMolten(1 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -155,7 +154,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Anvil.get(0L))
             .itemOutputs(new ItemStack(Blocks.anvil, 1, 0))
-            .fluidInputs(Materials.WroughtIron.getMolten(4464L))
+            .fluidInputs(Materials.CastIron.getMolten(4464L))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
@@ -194,7 +193,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L))
+            .itemOutputs(ItemList.ReinforcedGlass.get(1L))
             .fluidInputs(Materials.ReinforcedGlass.getMolten(1 * INGOTS))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -245,7 +244,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L))
             .fluidInputs(Materials.AnnealedCopper.getMolten(1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -253,13 +252,13 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Copper, 1L))
             .fluidInputs(Materials.AnnealedCopper.getMolten(9 * INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 1L))
-            .fluidInputs(Materials.WroughtIron.getMolten(1 * NUGGETS))
+            .fluidInputs(Materials.CastIron.getMolten(1 * NUGGETS))
             .duration(16 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -267,17 +266,17 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L))
-            .fluidInputs(Materials.WroughtIron.getMolten(1 * INGOTS))
+            .fluidInputs(Materials.CastIron.getMolten(1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L))
-            .fluidInputs(Materials.WroughtIron.getMolten(9 * INGOTS))
+            .fluidInputs(Materials.CastIron.getMolten(9 * INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -342,6 +341,7 @@ public class FluidSolidifierRecipes implements Runnable {
         this.addHexanitePartRecipe(OrePrefixes.gearGt, 1);
         this.addHexanitePartRecipe(OrePrefixes.itemCasing, 1);
         this.addHexanitePartRecipe(OrePrefixes.plateSuperdense, 1);
+        this.addHexanitePartRecipe(OrePrefixes.block, 1);
     }
 
     private void addHexanitePartRecipe(OrePrefixes prefix, final int multiplier) {

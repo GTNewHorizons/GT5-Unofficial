@@ -17,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -51,6 +50,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     protected boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected Fluid lockedFluid = null;
     protected boolean mAllowInputFromOutputSide = false;
+    protected boolean mDisableFilter = true;
 
     public MTEDigitalTankBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -118,10 +118,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 Fluid fluid = FluidRegistry.getFluid(fluidName);
                 if (fluid == null) return;
                 // noinspection deprecation
-                tooltip.add(
-                    translateToLocalFormatted(
-                        "GT5U.item.tank.locked_to",
-                        EnumChatFormatting.YELLOW + fluid.getLocalizedName()));
+                tooltip.add(translateToLocalFormatted("GT5U.item.tank.locked_to", fluid.getLocalizedName()));
             }
         }
     }
@@ -151,6 +148,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         if (mLockFluid && lockedFluid != null) aNBT.setString("lockedFluidName", lockedFluid.getName());
         else aNBT.removeTag("lockedFluidName");
         aNBT.setBoolean("mAllowInputFromOutputSide", this.mAllowInputFromOutputSide);
+        aNBT.setBoolean("mDisableFilter", this.mDisableFilter);
     }
 
     @Override
@@ -166,6 +164,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             setLockedFluid(null);
         }
         mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
+        mDisableFilter = !aNBT.hasKey("mDisableFilter") || aNBT.getBoolean("mDisableFilter");
     }
 
     @Override
@@ -206,22 +205,22 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     }
 
     @Override
-    public void setLockedFluid(Fluid fluid) {
+    public void setLockedFluid(Fluid lockedFluid) {
         if (mVoidFluidFull) return;
 
-        Fluid temp = lockedFluid;
-        this.lockedFluid = fluid;
-        if (fluid != null) {
+        Fluid temp = this.lockedFluid;
+        this.lockedFluid = lockedFluid;
+        if (lockedFluid != null) {
             if (getFluidAmount() == 0) {
                 // create new FluidStack, otherwise existing 0-amount FluidStack will
                 // prevent new fluid from being locked
-                setFillableStack(new FluidStack(fluid, getFluidAmount()));
+                setFillableStack(new FluidStack(lockedFluid, getFluidAmount()));
             }
             mLockFluid = true;
         }
 
         // disable lock if the lock slot was cleared
-        if (temp != null && fluid == null) mLockFluid = false;
+        if (temp != null && lockedFluid == null) mLockFluid = false;
     }
 
     @Override
@@ -259,6 +258,12 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
         return mFluid != null && mFluid.getFluid()
             .equals(fluid);
+    }
+
+    public void resetFluidLockOnShiftBreak() {
+        if (mLockFluid && getFluidAmount() == 0) {
+            lockFluid(false);
+        }
     }
 
     public boolean isOutputFluid() {
@@ -325,7 +330,11 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        if (side == getBaseMetaTileEntity().getFrontFacing()) {
+        if (side != getBaseMetaTileEntity().getFrontFacing()) return;
+        if (aPlayer.isSneaking()) {
+            mDisableFilter = !mDisableFilter;
+            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + mDisableFilter);
+        } else {
             mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
             GTUtility.sendChatTrans(
                 aPlayer,
@@ -469,6 +478,15 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     @Override
     public boolean isLiquidInput(ForgeDirection side) {
         return mAllowInputFromOutputSide || side != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        if (!super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack)) return false;
+        if (mDisableFilter) return true;
+        FluidStack tFluid = GTUtility.getFluidForFilledItem(aStack, true);
+        return tFluid == null || isFluidInputAllowed(tFluid);
     }
 
     public boolean allowOverflow() {

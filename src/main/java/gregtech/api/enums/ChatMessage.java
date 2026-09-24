@@ -2,8 +2,9 @@ package gregtech.api.enums;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.StatCollector;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.net.GTPacketChat;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.Localized;
@@ -65,7 +66,7 @@ public enum ChatMessage {
     }
 
     private static Localizer localized(String key) {
-        return args -> GTUtility.translate(key, Localized.processArgs(args));
+        return args -> StatCollector.translateToLocalFormatted(key, Localized.processArgs(args));
     }
 
     private static Localizer plural(String singular, String plural, int pluralIndex) {
@@ -96,7 +97,7 @@ public enum ChatMessage {
                 try {
                     value = Integer.parseInt(sb.toString());
                 } catch (NumberFormatException e) {
-                    GTMod.GT_FML_LOGGER.warn(
+                    GTLoggers.GT_FML_LOGGER.warn(
                         "Could not parse ChatMessage value to check if the index is plural. Lang Key (Singular)={}, Index={}, Value={}",
                         singular,
                         pluralIndex,
@@ -108,7 +109,7 @@ public enum ChatMessage {
 
             String key = value == 1 ? singular : plural;
 
-            return GTUtility.translate(key, Localized.processArgs(args));
+            return StatCollector.translateToLocalFormatted(key, Localized.processArgs(args));
         };
     }
 }

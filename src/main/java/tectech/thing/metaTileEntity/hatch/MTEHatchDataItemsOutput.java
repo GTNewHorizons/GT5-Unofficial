@@ -1,7 +1,5 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +8,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
@@ -35,9 +35,10 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
             aName,
             aNameRegional,
             aTier,
-            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
+            new String[] { CommonValues.TEC_MARK_EM,
+                StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
+                StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
     }
 
     public MTEHatchDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -136,15 +137,16 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
 
         if (previousPacket != null) {
             for (RecipeAssemblyLine recipe : previousPacket.getContent()) {
-                lines.add(translate("tt.keyphrase.AL_Recipe_Desc", recipe.mOutput.getDisplayName()));
+                lines.add(
+                    IGregTechDeviceInformation.encode("tt.keyphrase.AL_Recipe_Desc", recipe.mOutput.getDisplayName()));
             }
         } else {
-            lines.add(translate("tt.keyphrase.AL_Recipe_None"));
+            lines.add("tt.keyphrase.AL_Recipe_None");
         }
 
         lines.sort(String::compareTo);
 
-        lines.add(0, translate("tt.keyphrase.AL_Recipe_Header"));
+        lines.add(0, "tt.keyphrase.AL_Recipe_Header");
 
         return lines.toArray(new String[0]);
     }

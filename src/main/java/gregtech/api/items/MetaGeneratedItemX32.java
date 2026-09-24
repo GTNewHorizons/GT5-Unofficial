@@ -62,7 +62,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 if (tPrefix.isUnifiable()) {
-                    GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
+                    GTOreDictUnificator.add(tPrefix, tMaterial, tStack);
                 } else {
                     GTOreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
                 }

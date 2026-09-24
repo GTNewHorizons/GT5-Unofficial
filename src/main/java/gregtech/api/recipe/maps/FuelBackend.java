@@ -41,6 +41,36 @@ public class FuelBackend extends RecipeMapBackend {
     @Override
     public GTRecipe compileRecipe(GTRecipe recipe) {
         super.compileRecipe(recipe);
+        addFuelToFluidInputIndex(recipe);
+        return recipe;
+    }
+
+    @Override
+    public void removeRecipes(Collection<? extends GTRecipe> recipesToRemove) {
+        super.removeRecipes(recipesToRemove);
+        rebuildFluidInputIndex();
+    }
+
+    @Override
+    public void clearRecipes() {
+        super.clearRecipes();
+        recipesByFluidInput.clear();
+    }
+
+    @Override
+    public void reInit() {
+        super.reInit();
+        rebuildFluidInputIndex();
+    }
+
+    private void rebuildFluidInputIndex() {
+        recipesByFluidInput.clear();
+        for (GTRecipe recipe : getAllRecipes()) {
+            addFuelToFluidInputIndex(recipe);
+        }
+    }
+
+    private void addFuelToFluidInputIndex(GTRecipe recipe) {
         if (recipe.mInputs != null && GTUtility.getNonnullElementCount(recipe.mInputs) == 1
             && (recipe.mFluidInputs == null || GTUtility.getNonnullElementCount(recipe.mFluidInputs) == 0)) {
             FluidStack fluidStack = GTUtility.getFluidForFilledItem(recipe.mInputs[0], true);
@@ -60,7 +90,6 @@ public class FuelBackend extends RecipeMapBackend {
                         .getName(),
                     recipe);
             }
-        return recipe;
     }
 
     @Nullable

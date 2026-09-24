@@ -2,10 +2,10 @@ package goodgenerator.blocks.tileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -21,24 +21,42 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     private static final FluidStack ANTIMATTER = Materials.Antimatter.getFluid(1);
 
+    private static final String DATA_STICK_DATA_TYPE = "AntimatterOutputHatch";
+
     public AntimatterOutputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 11);
     }
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        super.setLockedFluidName(
-            Materials.Antimatter.getFluid(1)
-                .getFluid()
-                .getName());
+        super.setLockedFluid(ANTIMATTER.getFluid());
     }
 
     @Override
-    public void setLockedFluidName(String lockedFluidName) {
-        this.lockedFluidName = Materials.Antimatter.getFluid(1)
-            .getFluid()
-            .getName();
+    public void setLockedFluid(Fluid lockedFluid) {
+        this.lockedFluid = ANTIMATTER.getFluid();
         markDirty();
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type", DATA_STICK_DATA_TYPE);
+        nbt.setByte(MODE_NBT_KEY, mMode);
+        return nbt;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
+        mMode = nbt.getByte(MODE_NBT_KEY);
+        markDirty();
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return DATA_STICK_DATA_TYPE;
     }
 
     @Override
@@ -90,7 +108,7 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     }
 
     @Override
-    protected FluidSlotWidget createFluidSlot() {
-        return super.createFluidSlot().setFilter(f -> f == Materials.Antimatter.mFluid);
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return aFluid.isFluidEqual(ANTIMATTER);
     }
 }

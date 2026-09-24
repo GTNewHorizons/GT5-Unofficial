@@ -6,19 +6,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import baubles.common.container.InventoryBaubles;
-import baubles.common.lib.PlayerHandler;
 import cpw.mods.fml.common.IFuelHandler;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galaxyspace.core.entity.mob.EntityEvolvedColdBlaze;
@@ -37,20 +32,15 @@ import gtPlusPlus.core.handler.CompatIntermodStaging;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
+import gtPlusPlus.core.handler.events.PlayerAttackEventHandler;
 import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.bauble.BaseBauble;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy implements IFuelHandler {
-
-    public CommonProxy() {
-        // Should Register Gregtech Materials I've Made
-        MinecraftForge.EVENT_BUS.register(this);
-    }
 
     public void preInit(final FMLPreInitializationEvent e) {
         AddToCreativeTab.initialiseTabs();
@@ -74,6 +64,9 @@ public class CommonProxy implements IFuelHandler {
 
         MinecraftForge.EVENT_BUS.register(new EnderDragonDeathHandler());
         MinecraftForge.EVENT_BUS.register(new EntityDeathHandler());
+        if (Mods.Baubles.isModLoaded()) {
+            MinecraftForge.EVENT_BUS.register(new PlayerAttackEventHandler());
+        }
 
         // Compat Handling
         CompatHandler.registerMyModsOreDictEntries();
@@ -166,28 +159,4 @@ public class CommonProxy implements IFuelHandler {
         return 0;
     }
 
-    @Optional.Method(modid = Mods.ModIDs.BAUBLES)
-    @SubscribeEvent
-    public void onPlayerAttacked(LivingAttackEvent event) {
-        if (!(event.entityLiving instanceof EntityPlayer player)) {
-            return;
-        }
-        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
-        if (baubles == null) {
-            return;
-        }
-        final ItemStack bauble1 = baubles.getStackInSlot(1);
-        if (bauble1 != null && bauble1.getItem() instanceof BaseBauble gtBauble
-            && gtBauble.getDamageNegations()
-                .contains(event.source.damageType)) {
-            event.setCanceled(true);
-            return;
-        }
-        final ItemStack bauble2 = baubles.getStackInSlot(2);
-        if (bauble2 != null && bauble2.getItem() instanceof BaseBauble gtBauble
-            && gtBauble.getDamageNegations()
-                .contains(event.source.damageType)) {
-            event.setCanceled(true);
-        }
-    }
 }

@@ -6,15 +6,19 @@ gtnhlanth.recipe.sc=Источник элементарных частиц
 
 gtnhlanth.tt.beaminfo=Используйте §bпортативный сканер §7для получения информации о входе/выходе этого мультиблока.
 gtnhlanth.tt.blueprint=Чтобы увидеть структуру, используйте §9 Structure§1Lib §r§fголограммный проектор на контроллере!
-gtnhlanth.tt.pc=§6Частично расходуется: §7Получает урон в процессе работы
 
 gtnhlanth.tt.hintNumber=Блок подсказка с точкой %s
 
-GT5U.gui.text.gtnhlanth.nocoolant=В механизме отсутствует хладагент!
-GT5U.gui.text.gtnhlanth.inscoolant=Недостаточно хладагента в механизме!
-GT5U.gui.text.gtnhlanth.noaccel=Тип частиц не может быть ускорен!
-GT5U.gui.text.gtnhlanth.low_input_eut=Входной EU/t слишком мал для создания фотонов!
-GT5U.gui.text.gtnhlanth.scerror=Математическая ошибка, неверный рецепт?
+# Digester
+gtnhlanth.tt.digester.machinetype=Дигестер
+gtnhlanth.tt.digester.structure.any_casing=Любой корпус из вольфрамовой стали
+gtnhlanth.tt.digester.structure.air=Внутри и над структурой
+
+GT5U.gui.text.shutdown_reason.gtnhlanth.nocoolant=В механизме отсутствует хладагент!
+GT5U.gui.text.shutdown_reason.gtnhlanth.inscoolant=Недостаточно хладагента в механизме!
+GT5U.gui.text.shutdown_reason.gtnhlanth.noaccel=Тип частиц не может быть ускорен!
+GT5U.gui.text.shutdown_reason.gtnhlanth.low_input_eut=Входной EU/t слишком мал для создания фотонов!
+GT5U.gui.text.shutdown_reason.gtnhlanth.scerror=Математическая ошибка, неверный рецепт?
 
 # NEI
 value.disstank=Соотношение: %s:1
@@ -138,18 +142,28 @@ item.masked_mask_substrate.name=Обработанная маска-субстр
 
 
 beamline.info=Информация о механизме
+beamline.info.hdr=§lИнформация о механизме: §r
 
 beamline.in_pre=Мультиблоковый вход установки для литографии
+beamline.in_pre.hdr=§lМультиблоковый вход: §r
 beamline.particle=Частица
+beamline.particle.fmt=Частица: §6%s§r
 beamline.energy=Энергия
+beamline.energy.eV.fmt=Энергия: §4%s§r эВ
+beamline.energy.keV.fmt=Энергия: §4%s§r кэВ
 beamline.focus=Фокус
+beamline.focus.fmt=Фокус: §9%s §r
 beamline.amount=Количество
+beamline.amount.fmt=Количество: §d%s
 beamline.rate=Скорость
 
 beamline.temperature=Температура
+beamline.temperature.fmt=Температура: §4%s§r К
 beamline.coolusage=Потребляется хладогента
+beamline.coolusage.fmt=Потребляется хладогента: §b%s§r кЛ/с
 
 beamline.out_pre=Мультиблоковый выход установки для литографии
+beamline.out_pre.hdr=§lМультиблоковый выход: §r
 
 beamline.particleinput=Входная информация о частицах:
 
@@ -165,9 +179,53 @@ particle.photon=Фотон
 particle.alpha=Альфа частица
 particle.neutron=Нейтрон
 particle.proton=Протон
-GT5U.gui.text.dissolution_ratio=§7Неверное соотношение исходных жидкостей
+GT5U.gui.text.recipe_result.dissolution_ratio=§7Неверное соотношение исходных жидкостей
 
 tooltip.gtnhlanth.particle.rest_mass=Масса покоя: %f MeV
 tooltip.gtnhlanth.particle.charge=Заряд: %s e
 tooltip.gtnhlanth.photomask.desc_spectrum=Подходит для %s-го сегмента электромагнитного спектра и ниже
 tooltip.gtnhlanth.photomask.max_uses=Макс. использований: %d
+
+# Multiblocks
+gt.blockmachines.digester.name=Дигестор
+gt.blockmachines.dissolution_tank.name=Реактор-разбавитель
+gt.blockmachines.linear_accelerator.name=Линейный ускоритель
+gt.blockmachines.source_chamber.name=Источник элементарных частиц
+gt.blockmachines.synchrotron.name=Синхротрон
+gt.blockmachines.target_chamber.name=Приёмник элементарных частиц
+
+# Photolithographic Masks
+item.photomask.acc.name=Маска (Улучшенный кристаллический чип)
+item.photomask.asoc.name=Маска (Продвинутая система на чипе)
+item.photomask.blank1.name=Маска (T1 Плита)
+item.photomask.blank2.name=Маска (T2 Плита)
+item.photomask.blank3.name=Маска (T3 Плита)
+item.photomask.cblank.name=Маска (Кристалл)
+item.photomask.ccpu.name=Маска (Кристаллическое процессорное устройство)
+item.photomask.cpu.name=Маска (Центральное процессорное устройство)
+item.photomask.csoc.name=Маска (Кристаллическая система на чипе)
+item.photomask.elc.name=Маска (Гравированный лазуротроновый чип)
+item.photomask.fpic.name=Маска (FPIC)
+item.photomask.hpic.name=Маска (Высокомощная интегральная электросхема)
+item.photomask.ilc.name=Маска (Логическая интегральная схема)
+item.photomask.lcc.name=Маска (Живой кристаллический чип)
+item.photomask.lpic.name=Маска (Малой мощности интегральная электросхема)
+item.photomask.nand.name=Маска (NAND)
+item.photomask.ncpu.name=Маска (Нанокомпонентный ЦП)
+item.photomask.nor.name=Маска (NOR)
+item.photomask.npic.name=Маска (Нано интегральная электросхема)
+item.photomask.pic.name=Маска (Мощная интегральная электросхема)
+item.photomask.ppic.name=Маска (PPIC)
+item.photomask.prcpu.name=Маска (Подготовленное центральное процессорное устройство)
+item.photomask.prhpic.name=Маска (Подготовленная высокомощная интегральная электросхема)
+item.photomask.prncpu.name=Маска (Подготовленный нанокомпонентный ЦП)
+item.photomask.prnpic.name=Маска (Подготовленная нано интегральная электросхема)
+item.photomask.prpic.name=Маска (Подготовленная мощная интегральная электросхема)
+item.photomask.prqpic.name=Маска (Подготовленная квантовая интегральная электросхема)
+item.photomask.qbit.name=Маска (QBit)
+item.photomask.qpic.name=Маска (QPIC)
+item.photomask.ram.name=Маска (Чип оперативной памяти)
+item.photomask.soc.name=Маска (Система на чипе)
+item.photomask.ssoc.name=Маска (Простая система на чипе)
+item.photomask.uhpic.name=Маска (Сверхвысокой мощности интегральная электросхема)
+item.photomask.ulpic.name=Маска (Сверхмалой мощности интегральная электросхема)

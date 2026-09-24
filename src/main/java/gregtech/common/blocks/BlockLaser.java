@@ -63,13 +63,11 @@ public class BlockLaser extends Block implements ITileEntityProvider {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister) {
-        blockIcon = Textures.BlockIcons.LASER_PLATE.getIcon();
-    }
+    public void registerBlockIcons(IIconRegister iconRegister) {}
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return blockIcon;
+        return Textures.BlockIcons.LASER_PLATE.getIcon();
     }
 
     @Override

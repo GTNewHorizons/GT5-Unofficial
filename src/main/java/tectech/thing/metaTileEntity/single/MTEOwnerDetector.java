@@ -1,7 +1,6 @@
 package tectech.thing.metaTileEntity.single;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -19,7 +19,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.util.CommonValues;
 
@@ -58,8 +57,10 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        OWNER_ONLINE = TextureFactory.of(Textures.BlockIcons.custom("iconsets/OWNER_ONLINE"));
-        OWNER_OFFLINE = TextureFactory.of(Textures.BlockIcons.custom("iconsets/OWNER_OFFLINE"));
+        OWNER_ONLINE = TextureFactory
+            .of(Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OWNER_ONLINE"));
+        OWNER_OFFLINE = TextureFactory
+            .of(Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OWNER_OFFLINE"));
     }
 
     @Override
@@ -127,17 +128,11 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        final String clientLocale;
-        if (aPlayer instanceof EntityPlayerMPAccessor) {
-            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
-        } else {
-            clientLocale = "en_US";
-        }
         interdimensional ^= true;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            interdimensional ? translateToLocalFormatted("tt.keyphrase.Running_interdimensional_scan", clientLocale)
-                : translateToLocalFormatted("tt.keyphrase.Running_local_dimension_scan", clientLocale));
+            interdimensional ? "tt.keyphrase.Running_interdimensional_scan"
+                : "tt.keyphrase.Running_local_dimension_scan");
     }
 
     @Override

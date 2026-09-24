@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
@@ -46,6 +47,7 @@ import com.mojang.realmsclient.util.Pair;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.gui.ItemDisplayKey;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeData;
@@ -84,7 +86,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     () -> " " + voltageSyncer.getValue()
                         .toString())
                     .asWidget()
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     // Minecraft &a equivalent
                     .color(0x55FF55));
     }
@@ -95,7 +97,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
         syncManager.syncValue("current", currentSyncer);
         syncManager.syncValue("maxCurrent", maxCurrentSyncer);
         return new ProgressWidget()
-            .progress(() -> (double) currentSyncer.getValue() / Math.max(1, maxCurrentSyncer.getValue()))
+            .value(
+                new DoubleSyncValue(() -> (double) currentSyncer.getValue() / Math.max(1, maxCurrentSyncer.getValue())))
             .texture(GTGuiTextures.PICTURE_TRANSPARENT, GTGuiTextures.PROGRESSBAR_TESLA_TOWER_CURRENT, 100)
             .widthRel(0.75f)
             .height(9)
@@ -109,6 +112,16 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return super.createLeftPanelGapRow(parent, syncManager).child(createChartButton(syncManager, parent))
             .child(createHeatMapButton(syncManager, parent));
+    }
+
+    @Override
+    protected IWidget createPowerPassButton() {
+        return new ButtonWidget<>()
+            .overlay(
+                new DynamicDrawable(
+                    () -> multiblock.ePowerPass ? GTGuiTextures.OVERLAY_BUTTON_POWER_PASS_ON
+                        : GTGuiTextures.OVERLAY_BUTTON_POWER_PASS_OFF))
+            .tooltip(t -> t.addLine(IKey.lang("gt.blockmachines.multimachine.tm.teslaCoil.powerPassAutomatic")));
     }
 
     @Override
@@ -149,19 +162,15 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private @NotNull ModularPanel openChartPanel(PanelSyncManager syncManager, ModularPanel parent) {
-        return new ModularPanel("chart") {
-
-            @Override
-            public boolean isDraggable() {
-                return false;
-            }
-        }.size(this.getBasePanelWidth(), this.getBasePanelHeight())
+        return GTGuis.createPopUpPanel("chart", false, true)
+            .size(this.getBasePanelWidth(), this.getBasePanelHeight())
             .relative(parent)
-            .leftRel(0, 0, 0)
+            .topRel(0)
+            .leftRel(1, 0, 0)
             .padding(4)
             .child(
                 Flow.column()
-                    .sizeRel(1)
+                    .full()
                     .child(createChartWidget())
                     .child(createChartEditColumn()));
     }
@@ -187,12 +196,12 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     .chartUnit("A")
                     .formatter(new DecimalFormat("0.0#"))
                     .marginBottom(2)
-                    .sizeRel(1));
+                    .full());
     }
 
     private IWidget createChartEditColumn() {
         return Flow.column()
-            .widthRel(1)
+            .fullWidth()
             .coverChildrenHeight()
             .child(createTickRateRow())
             .child(createDataLimitRow());
@@ -200,7 +209,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private IWidget createTickRateRow() {
         return Flow.row()
-            .widthRel(1)
+            .fullWidth()
             .coverChildrenHeight()
             .child(
                 IKey.str("Update chart every")
@@ -209,7 +218,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .child(
                 new TextFieldWidget()
                     .value(
-                        new IntSyncValue(multiblock::getTicksBetweenDataPoints, multiblock::setTicksBetweenDataPoints))
+                        new IntSyncValue(multiblock::getTicksBetweenDataPoints, multiblock::setTicksBetweenDataPoints)
+                            .allowC2S())
                     .size(25, 12)
                     .marginRight(4))
             .child(
@@ -219,14 +229,15 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private IWidget createDataLimitRow() {
         return Flow.row()
-            .widthRel(1)
+            .fullWidth()
             .coverChildrenHeight()
             .child(
                 IKey.str("Show last")
                     .asWidget()
                     .marginRight(4))
             .child(
-                new TextFieldWidget().value(new IntSyncValue(multiblock::getHistorySize, multiblock::setHistorySize))
+                new TextFieldWidget()
+                    .value(new IntSyncValue(multiblock::getHistorySize, multiblock::setHistorySize).allowC2S())
                     .size(25, 12)
                     .marginRight(4))
             .child(
@@ -253,13 +264,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private @NotNull ModularPanel openHeatMapPanel(PanelSyncManager syncManager, ModularPanel parent) {
         int borderRadius = 4;
-        return new ModularPanel("heatMap") {
-
-            @Override
-            public boolean isDraggable() {
-                return false;
-            }
-        }.relative(parent)
+        return GTGuis.createPopUpPanel("heatMap", false, true)
+            .relative(parent)
             .topRel(0)
             .rightRel(1, 0, 0)
             .size(gridSquareSize * gridChunkSize + borderRadius * 2)
@@ -267,17 +273,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private IWidget createNodeGrid(PanelSyncManager syncManager, int borderRadius) {
-        List<List<Widget<?>>> matrix = new ArrayList<>();
-
-        for (int i = 0; i < gridChunkSize; i++) {
-            matrix.add(new ArrayList<>());
-            for (int j = 0; j < gridChunkSize; j++) {
-                matrix.get(i)
-                    .add(createMapSlot(syncManager, i, j).size(gridSquareSize));
-            }
-        }
-
-        return new Grid().matrix(matrix)
+        return new Grid()
+            .gridOfWidthHeight(gridChunkSize, gridChunkSize, (x, y, $index) -> createMapSlot(syncManager, x, y))
             .size(gridSquareSize * gridChunkSize)
             .marginTop(borderRadius)
             .marginLeft(borderRadius);

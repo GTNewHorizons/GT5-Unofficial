@@ -4,17 +4,38 @@ import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompress
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
-import static gregtech.api.recipe.RecipeMaps.*;
+import static gregtech.api.recipe.RecipeMaps.alloyBlastSmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorNonCellRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerNonCellRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFurnaceRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.*;
+import static gregtech.api.util.GTRecipeBuilder.HOURS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorNonCellRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 
 import net.minecraft.init.Blocks;
@@ -27,7 +48,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -411,7 +431,7 @@ public class NetheriteRecipes {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Netherite, 1))
             .duration(500 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(CompressionTierKey.INSTANCE, 1)
+            .metadata(COMPRESSION_TIER, 1)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -462,8 +482,8 @@ public class NetheriteRecipes {
             .fluidInputs(Materials.Boron.getPlasma(2L * inverseMultiplier))
             .fluidOutputs(Materials.Boron.getMolten(2L * inverseMultiplier))
             .duration(4 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(plasmaArcFurnaceRecipes);
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(arcFurnaceRecipes);
 
     }
 
@@ -475,8 +495,8 @@ public class NetheriteRecipes {
             .fluidInputs(Materials.Boron.getPlasma(2L * inverseMultiplier))
             .fluidOutputs(Materials.Boron.getMolten(2L * inverseMultiplier))
             .duration(4 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(plasmaArcFurnaceRecipes);
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(arcFurnaceRecipes);
 
     }
 }

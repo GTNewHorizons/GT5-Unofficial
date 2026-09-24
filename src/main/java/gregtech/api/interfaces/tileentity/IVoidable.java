@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IOutputBus;
-import gregtech.api.interfaces.fluid.IFluidStore;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.util.GTUtility;
 
 /**
@@ -48,11 +48,15 @@ public interface IVoidable {
 
     List<IOutputBus> getOutputBusses();
 
+    List<IOutputHatch> getOutputHatches();
+
     /**
      * @param toOutput List of fluids this machine is going to output.
      * @return List of slots available for fluid outputs.
      */
-    List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput);
+    default List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+        return getOutputHatches();
+    }
 
     /**
      * @return How many slots of items this machine can output per recipe. Item outputs whose slot number exceeding this
@@ -73,14 +77,16 @@ public interface IVoidable {
     /**
      * Checks if this machine contains ME output busses that can accept the given items, in which case we can just
      * assume that we will never void outputs.
-     * 
+     *
      * @param outputs The outputs that will be ejected when the recipe finishes.
      */
     boolean canDumpItemToME(List<GTUtility.ItemId> outputs);
 
     /**
-     * @return If this machine has ability to dump fluid outputs to ME network. This doesn't need to check if it can
-     *         actually dump to ME, as this might be called every tick and cause lag.
+     * Checks if this machine contains ME output hatches that can accept the given items, in which case we can just
+     * assume that we will never void outputs.
+     *
+     * @param outputs The outputs that will be ejected when the recipe finishes.
      */
-    boolean canDumpFluidToME();
+    boolean canDumpFluidToME(List<GTUtility.FluidId> outputs);
 }

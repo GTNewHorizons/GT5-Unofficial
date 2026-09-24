@@ -24,7 +24,7 @@ public interface IOreMaterial extends ISubTagContainer {
 
     /**
      * Add tooltips(mainly chemical formula) for material items。
-     * 
+     *
      * @param list the list parameter in the {@link Item#addInformation} method (for tooltips).
      */
     void addTooltips(List<String> list);
@@ -32,6 +32,8 @@ public interface IOreMaterial extends ISubTagContainer {
     int getId();
 
     String getInternalName();
+
+    String getDefaultLocalName();
 
     default String getLocalizedNameKey() {
         return "Material." + getInternalName().toLowerCase();
@@ -58,11 +60,11 @@ public interface IOreMaterial extends ISubTagContainer {
         if (gt != null) {
             return GTOreDictUnificator.get(prefix, gt, amount);
         } else {
-            return GTOreDictUnificator.get(prefix.get(this.getInternalName()), 1);
+            return GTOreDictUnificator.get(prefix.get(this.getInternalName()), amount);
         }
     }
 
-    public static IOreMaterial findMaterial(String name) {
+    static IOreMaterial findMaterial(String name) {
         Werkstoff bw = Werkstoff.werkstoffVarNameHashMap.get(name);
 
         if (bw != null) return bw;

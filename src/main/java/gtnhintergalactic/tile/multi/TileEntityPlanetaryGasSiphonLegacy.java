@@ -5,6 +5,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gtnhintergalactic.recipe.GasSiphonRecipes.calculateEUt;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
@@ -13,6 +14,7 @@ import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -21,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -50,6 +53,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
@@ -83,7 +87,8 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
         .addElement('f', GTStructureUtility.ofFrame(Materials.TungstenSteel))
         .addElement(
             'c',
-            StructureUtility.ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, WerkstoffLoader.LuVTierMaterial.getmID()))
+            StructureUtility
+                .ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, WerkstoffLoader.RhodiumPlatedPalladium.getmID()))
         .addElement(
             'b',
             GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphonLegacy.class)
@@ -164,30 +169,30 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.type"));
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.type"));
         tt.addStructureDeprecatedLine();
         if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.siphonLoreText));
-        tt.addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc4"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc5"))
+        tt.addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc1"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc2"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc3"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc4"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc5"))
             .beginStructureBlock(3, 7, 3, false)
-            .addController(GTUtility.translate("ig.siphon.structure.ControllerPos2"))
+            .addController(StatCollector.translateToLocal("ig.siphon.structure.ControllerPos2"))
             .addOtherStructurePart(
-                GTUtility.translate("ig.siphon.structure.SiphonCasing"),
-                GTUtility.translate("ig.siphon.structure.Base"))
+                StatCollector.translateToLocal("ig.siphon.structure.SiphonCasing"),
+                StatCollector.translateToLocal("ig.siphon.structure.Base"))
             .addOtherStructurePart(
-                GTUtility.translate("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"),
-                GTUtility.translate("ig.siphon.structure.PillarMiddle"))
+                StatCollector.translateToLocal("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"),
+                StatCollector.translateToLocal("ig.siphon.structure.PillarMiddle"))
             .addOtherStructurePart(
-                GTUtility.translate("ig.siphon.structure.FrameTungstensteel"),
-                GTUtility.translate("ig.siphon.structure.Sides"))
-            .addEnergyHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addMaintenanceHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addInputBus(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addOutputHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addStructureInfo(GTUtility.translate("ig.siphon.structure.HatchRequirement"))
+                StatCollector.translateToLocal("ig.siphon.structure.FrameTungstensteel"),
+                StatCollector.translateToLocal("ig.siphon.structure.Sides"))
+            .addEnergyHatch(StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addMaintenanceHatch(StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addInputBus(StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addOutputHatch(StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addStructureInfo(StatCollector.translateToLocal("ig.siphon.structure.HatchRequirement"))
             .toolTipFinisher();
         return tt;
     }
@@ -272,7 +277,7 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
             return SimpleCheckRecipeResult.ofFailure("no_space_station");
         }
 
-        Map<Integer, FluidStack> planetRecipes = GasSiphonRecipes.RECIPES.get(provider.getPlanetToOrbit());
+        Map<Integer, FluidStack> planetRecipes = GasSiphonRecipes.RECIPES.get(provider.getPlanetToOrbit()).depths;
 
         // return early if there are no recipes for the planet the station is orbiting
         if (planetRecipes == null) {
@@ -344,8 +349,10 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
         }
 
         // calculate overclockedness
-        int recipeEUt = depth * (4 << (2 * provider.getCelestialBody()
-            .getTierRequirement() + 2));
+        int recipeEUt = calculateEUt(
+            depth,
+            provider.getCelestialBody()
+                .getTierRequirement());
         int ocLevel = MathHelper
             .floor_double(Math.log10((double) this.getMaxInputVoltage() / (double) recipeEUt) / LOG4);
 
@@ -382,13 +389,12 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
      * @return True if machine is valid, else false
      */
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack stack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0) && mMaintenanceHatches.size() == 1
-            && mInputBusses.size() == 1
-            && mOutputHatches.size() == 1
-            && mEnergyHatches.size() == 1
-            && mInputHatches.isEmpty()
-            && mOutputBusses.isEmpty();
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack stack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0, errors)) return;
+        checkOneMaintenanceHatch(errors);
+        checkHatchExact(errors, InputBus, 1);
+        checkHatchExact(errors, OutputHatch, 1);
+        checkHatchExact(errors, Energy, 1);
     }
 
     /**

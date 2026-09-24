@@ -163,8 +163,8 @@ public class Godforge implements Runnable {
                     GTValues.RA.stdBuilder()
                         .itemInputs(solids_t0_1step[i])
                         .fluidOutputs(solid_plasmas_t0_1step[i])
-                        .duration(10 * TICKS)
-                        .eut(TierEU.RECIPE_MAX)
+                        .duration(20 * TICKS)
+                        .eut(TierEU.RECIPE_UXV)
                         .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 0)
                         .addTo(godforgePlasmaRecipes);
@@ -173,8 +173,8 @@ public class Godforge implements Runnable {
                         GTValues.RA.stdBuilder()
                             .fluidInputs(molten_t0_1step[i])
                             .fluidOutputs(solid_plasmas_t0_1step[i])
-                            .duration(10 * TICKS)
-                            .eut(TierEU.RECIPE_MAX)
+                            .duration(20 * TICKS)
+                            .eut(TierEU.RECIPE_UXV)
                             .metadata(FOG_PLASMA_MULTISTEP, false)
                             .metadata(FOG_PLASMA_TIER, 0)
                             .addTo(godforgePlasmaRecipes);
@@ -209,8 +209,8 @@ public class Godforge implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(solids_t0_xstep[i])
                     .fluidOutputs(solid_plasmas_t0_xstep[i])
-                    .duration(2 * SECONDS)
-                    .eut(TierEU.RECIPE_MAX)
+                    .duration(4 * SECONDS)
+                    .eut(TierEU.RECIPE_UXV)
                     .metadata(FOG_PLASMA_MULTISTEP, true)
                     .metadata(FOG_PLASMA_TIER, 0)
                     .addTo(godforgePlasmaRecipes);
@@ -219,8 +219,8 @@ public class Godforge implements Runnable {
                     GTValues.RA.stdBuilder()
                         .fluidInputs(molten_t0_xstep[i])
                         .fluidOutputs(solid_plasmas_t0_xstep[i])
-                        .duration(2 * SECONDS)
-                        .eut(TierEU.RECIPE_MAX)
+                        .duration(4 * SECONDS)
+                        .eut(TierEU.RECIPE_UXV)
                         .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 0)
                         .addTo(godforgePlasmaRecipes);
@@ -231,20 +231,22 @@ public class Godforge implements Runnable {
         {
             // Single step
             ItemStack[] solids_t1_1step = { Materials.Lead.getDust(1), Materials.Plutonium241.getDust(1),
-                Materials.Thorium.getDust(1), Materials.Naquadria.getDust(1), Materials.Redstone.getDust(1) };
+                Materials.Thorium.getDust(1), Materials.Naquadria.getDust(1), Materials.Redstone.getDust(1),
+                Materials.CosmicNeutronium.getDust(1) };
 
             FluidStack[] molten_t1_1step = convertToFluid(solids_t1_1step);
 
             FluidStack[] solid_plasmas_t1_1step = { Materials.Lead.getPlasma(1 * INGOTS),
                 Materials.Plutonium241.getPlasma(1 * INGOTS), Materials.Thorium.getPlasma(1 * INGOTS),
-                Materials.Naquadria.getPlasma(1 * INGOTS), Materials.Redstone.getPlasma(1 * INGOTS) };
+                Materials.Naquadria.getPlasma(1 * INGOTS), Materials.Redstone.getPlasma(1 * INGOTS),
+                Materials.CosmicNeutronium.getPlasma(1 * INGOTS) };
 
             for (int i = 0; i < solids_t1_1step.length; i++) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(solids_t1_1step[i])
                     .fluidOutputs(solid_plasmas_t1_1step[i])
-                    .duration(5 * SECONDS)
-                    .eut(TierEU.RECIPE_MAX)
+                    .duration(10 * SECONDS)
+                    .eut(TierEU.RECIPE_UXV)
                     .metadata(FOG_PLASMA_MULTISTEP, false)
                     .metadata(FOG_PLASMA_TIER, 1)
                     .addTo(godforgePlasmaRecipes);
@@ -254,8 +256,8 @@ public class Godforge implements Runnable {
                     GTValues.RA.stdBuilder()
                         .fluidInputs(molten_t1_1step[i])
                         .fluidOutputs(solid_plasmas_t1_1step[i])
-                        .duration(5 * SECONDS)
-                        .eut(TierEU.RECIPE_MAX)
+                        .duration(10 * SECONDS)
+                        .eut(TierEU.RECIPE_UXV)
                         .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 1)
                         .addTo(godforgePlasmaRecipes);
@@ -276,8 +278,8 @@ public class Godforge implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(solids_t1_xstep[i])
                     .fluidOutputs(solid_plasmas_t1_xstep[i])
-                    .duration(7 * SECONDS)
-                    .eut(TierEU.RECIPE_MAX)
+                    .duration(14 * SECONDS)
+                    .eut(TierEU.RECIPE_UXV)
                     .metadata(FOG_PLASMA_MULTISTEP, true)
                     .metadata(FOG_PLASMA_TIER, 1)
                     .addTo(godforgePlasmaRecipes);
@@ -286,8 +288,8 @@ public class Godforge implements Runnable {
                     GTValues.RA.stdBuilder()
                         .fluidInputs(molten_t1_xstep[i])
                         .fluidOutputs(solid_plasmas_t1_xstep[i])
-                        .duration(7 * SECONDS)
-                        .eut(TierEU.RECIPE_MAX)
+                        .duration(14 * SECONDS)
+                        .eut(TierEU.RECIPE_UXV)
                         .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 1)
                         .addTo(godforgePlasmaRecipes);
@@ -300,8 +302,8 @@ public class Godforge implements Runnable {
             ItemStack[] solids_t2_1step = { MaterialsElements.STANDALONE.RHUGNOR.getDust(1),
                 MaterialsElements.STANDALONE.DRAGON_METAL.getDust(1),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getDust(1), Materials.Bedrockium.getDust(1),
-                Materials.CosmicNeutronium.getDust(1), Materials.Draconium.getDust(1),
-                Materials.DraconiumAwakened.getDust(1), Materials.Ichorium.getDust(1), Materials.Infinity.getDust(1) };
+                Materials.Draconium.getDust(1), Materials.DraconiumAwakened.getDust(1), Materials.Ichorium.getDust(1),
+                Materials.Infinity.getDust(1) };
 
             FluidStack[] molten_t2_1step = convertToFluid(solids_t2_1step);
 
@@ -309,16 +311,16 @@ public class Godforge implements Runnable {
                 new FluidStack(MaterialsElements.STANDALONE.RHUGNOR.getPlasma(), 1 * INGOTS),
                 new FluidStack(MaterialsElements.STANDALONE.DRAGON_METAL.getPlasma(), 1 * INGOTS),
                 new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 1 * INGOTS),
-                Materials.Bedrockium.getPlasma(1 * INGOTS), Materials.CosmicNeutronium.getPlasma(1 * INGOTS),
-                Materials.Draconium.getPlasma(1 * INGOTS), Materials.DraconiumAwakened.getPlasma(1 * INGOTS),
-                Materials.Ichorium.getPlasma(1 * INGOTS), Materials.Infinity.getPlasma(1 * INGOTS) };
+                Materials.Bedrockium.getPlasma(1 * INGOTS), Materials.Draconium.getPlasma(1 * INGOTS),
+                Materials.DraconiumAwakened.getPlasma(1 * INGOTS), Materials.Ichorium.getPlasma(1 * INGOTS),
+                Materials.Infinity.getPlasma(1 * INGOTS) };
 
             for (int i = 0; i < solids_t2_1step.length; i++) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(solids_t2_1step[i])
                     .fluidOutputs(solid_plasmas_t2_1step[i])
-                    .duration(15 * SECONDS)
-                    .eut(TierEU.RECIPE_MAX)
+                    .duration(30 * SECONDS)
+                    .eut(TierEU.RECIPE_UXV)
                     .metadata(FOG_PLASMA_MULTISTEP, false)
                     .metadata(FOG_PLASMA_TIER, 2)
                     .addTo(godforgePlasmaRecipes);
@@ -328,8 +330,8 @@ public class Godforge implements Runnable {
                     GTValues.RA.stdBuilder()
                         .fluidInputs(molten_t2_1step[i])
                         .fluidOutputs(solid_plasmas_t2_1step[i])
-                        .duration(15 * SECONDS)
-                        .eut(TierEU.RECIPE_MAX)
+                        .duration(30 * SECONDS)
+                        .eut(TierEU.RECIPE_UXV)
                         .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 2)
                         .addTo(godforgePlasmaRecipes);
@@ -352,8 +354,8 @@ public class Godforge implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(solids_t2_xstep[i])
                     .fluidOutputs(solid_plasmas_t2_xstep[i])
-                    .duration(25 * SECONDS)
-                    .eut(TierEU.RECIPE_MAX)
+                    .duration(50 * SECONDS)
+                    .eut(TierEU.RECIPE_UXV)
                     .metadata(FOG_PLASMA_MULTISTEP, true)
                     .metadata(FOG_PLASMA_TIER, 2)
                     .addTo(godforgePlasmaRecipes);
@@ -363,8 +365,8 @@ public class Godforge implements Runnable {
                     GTValues.RA.stdBuilder()
                         .fluidInputs(molten_t2_xstep[i])
                         .fluidOutputs(solid_plasmas_t2_xstep[i])
-                        .duration(25 * SECONDS)
-                        .eut(TierEU.RECIPE_MAX)
+                        .duration(50 * SECONDS)
+                        .eut(TierEU.RECIPE_UXV)
                         .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 2)
                         .addTo(godforgePlasmaRecipes);
@@ -394,8 +396,8 @@ public class Godforge implements Runnable {
                     GTValues.RA.stdBuilder()
                         .fluidInputs(fluids_t0_1step[i])
                         .fluidOutputs(fluid_plasmas_t0_1step[i])
-                        .duration(1 * SECONDS)
-                        .eut(TierEU.RECIPE_MAX)
+                        .duration(2 * SECONDS)
+                        .eut(TierEU.RECIPE_UXV)
                         .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 0)
                         .addTo(godforgePlasmaRecipes);
@@ -415,8 +417,8 @@ public class Godforge implements Runnable {
                     GTValues.RA.stdBuilder()
                         .fluidInputs(fluids_t0_xstep[i])
                         .fluidOutputs(fluid_plasmas_t0_xstep[i])
-                        .duration(3 * SECONDS)
-                        .eut(TierEU.RECIPE_MAX)
+                        .duration(6 * SECONDS)
+                        .eut(TierEU.RECIPE_UXV)
                         .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 0)
                         .addTo(godforgePlasmaRecipes);
@@ -428,8 +430,8 @@ public class Godforge implements Runnable {
                 GTValues.RA.stdBuilder()
                     .fluidInputs(MaterialsElements.getInstance().BROMINE.getFluidStack(500))
                     .fluidOutputs(new FluidStack(MaterialsElements.getInstance().BROMINE.getPlasma(), 500))
-                    .duration(5 * SECONDS)
-                    .eut(TierEU.RECIPE_MAX)
+                    .duration(10 * SECONDS)
+                    .eut(TierEU.RECIPE_UXV)
                     .metadata(FOG_PLASMA_MULTISTEP, false)
                     .metadata(FOG_PLASMA_TIER, 1)
                     .addTo(godforgePlasmaRecipes);
@@ -449,8 +451,8 @@ public class Godforge implements Runnable {
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1))
                 .fluidOutputs(Materials.QuarkGluonPlasma.getFluid(1_000))
-                .duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_MAX)
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UXV)
                 .metadata(FOG_EXOTIC_TIER, 1)
                 .ignoreCollision()
                 .fake()
@@ -460,8 +462,8 @@ public class Godforge implements Runnable {
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1), Materials.Bismuth.getMolten(1))
                 .fluidOutputs(Materials.MagMatter.getMolten(4 * INGOTS))
-                .duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_MAX)
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UXV)
                 .metadata(FOG_EXOTIC_TIER, 1)
                 .ignoreCollision()
                 .fake()
@@ -756,7 +758,7 @@ public class Godforge implements Runnable {
                 CustomItemList.StabilisationFieldGeneratorTier8.get(64),
                 CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(64),
                 CustomItemList.astralArrayFabricator.get(4),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 4),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1),
                 ItemList.ZPM6.get(32),
                 ItemList.Field_Generator_UXV.get(64),
                 ItemList.Robot_Arm_UXV.get(64));
@@ -884,6 +886,15 @@ public class Godforge implements Runnable {
 
             builder.addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
         }
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.InfusedGold.getDust(1), ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1L))
+            .fluidInputs(Materials.Boron.getPlasma(2L))
+            .fluidOutputs(Materials.ActivatedNetherite.getMolten(144L), Materials.Boron.getMolten(2L))
+            .duration(8 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .metadata(COIL_HEAT, 50000)
+            .addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
     }
 
     private static FluidStack convertToMolten(ItemStack stack) {

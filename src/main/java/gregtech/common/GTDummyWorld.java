@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.profiler.Profiler;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldSettings;
@@ -134,5 +135,10 @@ public class GTDummyWorld extends World {
     @Override
     protected int func_152379_p() {
         return 0;
+    }
+
+    @Override
+    public TileEntity getTileEntity(int x, int y, int z) {
+        return null;
     }
 }

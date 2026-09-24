@@ -19,9 +19,9 @@ public class ItemBlockBasicTile extends ItemBlock {
         this.mID = ((ITileTooltip) block).getTooltipID();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         if (this.mID == 1) { // Fish trap
             list.add(StatCollector.translateToLocal("GTPP.tooltip.fish_trap.0"));
             list.add(StatCollector.translateToLocal("GTPP.tooltip.fish_trap.1"));
@@ -41,6 +41,6 @@ public class ItemBlockBasicTile extends ItemBlock {
         } else {
             list.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.bad_tooltip_id", mID));
         }
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 }

@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -12,15 +12,17 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.hatch.MTEHatchMufflerAdvancedGui;
@@ -30,7 +32,9 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGregtechLogo {
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
+public class MTEHatchMufflerAdvanced extends MTEHatchMuffler {
 
     protected int SLOT_FILTER = 0;
 
@@ -42,16 +46,25 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
-    final String[] mDescription = new String[] { "Outputs pollution from a multiblock", "DO NOT OBSTRUCT THE OUTPUT!",
-        "Requires 3 Air Blocks in front of the exhaust face",
-        mTier < 5 ? "Requires an Air Filter"
-            : "Requires an Air Filter " + EnumChatFormatting.WHITE + "[Tier 2]" + EnumChatFormatting.GRAY,
-        "Can take Air Filters from an input bus of the multiblock",
-        "Reduces Pollution to " + calculatePollutionReduction(100, true) + "%", GTPPCore.GT_Tooltip.get() };
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.muffler.adv.name", GTValues.VN[mTier]);
+    }
 
     @Override
     public String[] getDescription() {
-        return TooltipHelper.pollutionDisabledTooltip(mDescription);
+        final String filter = mTier < 5
+            ? StatCollector.translateToLocal("gt.blockmachines.muffler_advanced.filter.desc")
+            : StatCollector.translateToLocalFormatted("gt.blockmachines.muffler_advanced.filter_tier2.desc", "[T2]");
+        final String[] localized = GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.muffler_advanced.desc",
+            filter,
+            calculatePollutionReduction(100, true));
+        final String[] description = new String[localized.length + 1];
+        System.arraycopy(localized, 0, description, 0, localized.length);
+        description[localized.length] = GTPPCore.GT_Tooltip.get();
+        return TooltipHelper.pollutionDisabledTooltip(description);
     }
 
     @Override
@@ -347,5 +360,10 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
     @Override
     protected boolean useMui2() {
         return true;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isAirFilter(itemStack) && super.isItemValidForSlot(index, itemStack);
     }
 }

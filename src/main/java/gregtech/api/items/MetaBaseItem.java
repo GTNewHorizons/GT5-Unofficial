@@ -1,6 +1,7 @@
 package gregtech.api.items;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -12,8 +13,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -33,15 +34,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
@@ -88,7 +89,7 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
 
-    protected Supplier<String> getToolTipLocalizationSupplier(ItemStack aStack) {
+    protected Function<ItemStack, String> getToolTipLocalizationFunction(ItemStack aStack) {
         return null;
     }
 
@@ -168,7 +169,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error left clicking entity", e);
+            GTLoggers.GT_FML_LOGGER.error("Error left clicking entity", e);
         }
         return false;
     }
@@ -190,7 +191,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error using item", e);
+            GTLoggers.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
     }
@@ -222,7 +223,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error using item", e);
+            GTLoggers.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
     }
@@ -236,7 +237,7 @@ public abstract class MetaBaseItem extends GTGenericItem
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer);
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error right clicking item", e);
+            GTLoggers.GT_FML_LOGGER.error("Error right clicking item", e);
         }
         return aStack;
     }
@@ -251,11 +252,11 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        final Supplier<String> tooltipSupplier = getToolTipLocalizationSupplier(aStack);
-        if (tooltipSupplier != null) {
+        final Function<ItemStack, String> tooltipFunction = getToolTipLocalizationFunction(aStack);
+        if (tooltipFunction != null) {
             Collections.addAll(
                 aList,
-                Arrays.stream(GTSplit.split(tooltipSupplier.get()))
+                Arrays.stream(GTSplit.split(tooltipFunction.apply(aStack)))
                     .filter(GTUtility::isStringValid)
                     .toArray(String[]::new));
         }
@@ -683,32 +684,39 @@ public abstract class MetaBaseItem extends GTGenericItem
                 }
             }
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
 
         return false;
     }
 
-    @Override
-    public String getItemStackDisplayName(final ItemStack itemStack) {
-        final String base = super.getItemStackDisplayName(itemStack);
-
+    /**
+     * Applies a function to each behavior, returning a value from each behavior.
+     *
+     * @param itemStack The item whose behaviors are to be checked
+     * @param func      A function that is passed the itemStack and behavior. Return a null for non-complying behaviors.
+     * @param <V>       The type of value to return
+     * @return A {@link List} containing each behavior that returned a value. Any null results are omitted from the
+     *         list.
+     */
+    public <V> ImmutableList<V> mapEachBehavior(ItemStack itemStack, Function<IItemBehaviour<MetaBaseItem>, V> func) {
         ArrayList<IItemBehaviour<MetaBaseItem>> behaviorList = mItemBehaviors.get((short) getDamage(itemStack));
         if (behaviorList == null) {
-            return base;
+            return ImmutableList.of();
         }
 
+        final ImmutableList.Builder<V> builder = ImmutableList.builder();
         try {
             for (IItemBehaviour<MetaBaseItem> behavior : behaviorList) {
-                final String newName = behavior.getNameOverride(base, itemStack);
-                if (newName != null) {
-                    return newName;
+                final V result = func.apply(behavior);
+                if (result != null) {
+                    builder.add(result);
                 }
             }
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
 
-        return base;
+        return builder.build();
     }
 }
