@@ -506,6 +506,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     private int getCasingTextureID() {
+        // Check the Tier Client Side
         int aTier = mSolidCasingTier;
         return getCasingTextureIdForTier(aTier);
     }
@@ -553,11 +554,17 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     public void receiveClientEvent(byte aEventID, byte aValue) {
         super.receiveClientEvent(aEventID, aValue);
         if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA && (aValue & 0x80) == 0) {
+            // received an update data from above method
+            // if no &0x80 clause it might catch the noop texture page event
             mSolidCasingTier = aValue;
         }
     }
 
+    /**
+     * @return if the catalyst item is fully destroyed as a result of the damage applied.
+     */
     private boolean damageCatalyst(@Nonnull ItemStack aStack, int minParallel) {
+        // Awakened Draconium Coils with Tungstensteel Pipe Casings (or above) no longer consume catalysts.
         if (!isCatalystDamageable()) return false;
         for (int i = 0; i < minParallel; i++) {
             if (MathUtils.randFloat(0, 10000000) / 10000000f
@@ -605,6 +612,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                         return SimpleCheckRecipeResult.ofFailure("no_catalyst");
                     }
                 } else {
+                    // remove reference to the catalyst if it is invalid, or if the damage destroys it
                     catalyst = null;
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -623,6 +631,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
                 if (!GTUtility.isStackValid(catalyst) || damageCatalyst(catalyst, getCurrentParallels())) {
+                    // remove reference to the catalyst if it is invalid, or if the damage destroys it
                     catalyst = null;
                 }
                 return super.onRecipeStart(recipe);
@@ -634,6 +643,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
+        // Same speed bonus as pyro oven
         logic.setSpeedBonus(2F / (1 + this.mCoilTier));
     }
 
