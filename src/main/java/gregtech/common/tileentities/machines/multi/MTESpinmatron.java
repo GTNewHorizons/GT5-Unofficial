@@ -282,8 +282,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         World w = getBaseMetaTileEntity().getWorld();
         final int aX = meta.getXCoord(), aY = meta.getYCoord(), aZ = meta.getZCoord();
         for (int i = 0; i < tier * 2; i++) {
-            if (turbineHolder.getStackInSlot(i) != null) { // operate under the assumption the tool in the slot IS a
-                // rotor.
+            if (turbineHolder.getStackInSlot(i) != null) {
                 ItemStack currentItem = turbineHolder.extractItem(i, 1, false);
                 EntityItem entityItem = new EntityItem(w, aX, aY, aZ, currentItem);
                 w.spawnEntityInWorld(entityItem);
@@ -629,8 +628,9 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     private int getSumRotorLevels() {
         int sumRotorLevels = 0;
 
-        for (int i = 0; i < tier * TURBINE_SLOTS_PER_TIER; i++) {
-            if (turbineHolder.getStackInSlot(i) != null) {
+        for (int i = 0; i < tier * 2; i++) {
+            if (turbineHolder.getStackInSlot(i) != null) { // operate under the assumption the tool in the slot IS a
+                // rotor.
                 ItemStack currentItem = turbineHolder.getStackInSlot(i);
                 IToolStats toolStats = ((MetaGeneratedTool) currentItem.getItem()).getToolStats(currentItem);
                 int harvestLevel = ((MetaGeneratedTool) currentItem.getItem()).getHarvestLevel(currentItem, "test");
@@ -702,7 +702,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         if (mode == 2.0) {
             parallels /= HEAVY_MODE_PARALLEL_DIVISOR;
         }
-        return parallels > 0 ? parallels : 1;
+        return parallels > 0 ? parallels : 1; // if its 1, something messed up lol, just a failsafe in case i mess up
     }
 
     @Override
