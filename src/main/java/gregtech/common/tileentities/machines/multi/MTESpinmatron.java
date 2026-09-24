@@ -105,14 +105,14 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     private static final int HEAVY_MODE_EU_MULTIPLIER = 16;
 
     public boolean tier2Fluid = false;
-    public double mode = 1.0;
+    public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
     public int RP = 0;
     public float speed = BASE_SPEED;
     public float euMultiplier = 1;
-    private final int horizontalOffset = 8;
-    private final int verticalOffset = 8;
+    private final int horizontalOffset = 8; // base offset for tier 1
+    private final int verticalOffset = 8; // base offset for tier 2
     private final int depthOffset = 2;
-    private int amountToDrain = 1;
+    private int amountToDrain = 1; // drain amount.
     private int tier;
     private int lastCheckedTierIndex = 0;
     private List<StructureData> tierCheckOrderList = Arrays.asList(StructureData.values());
@@ -131,7 +131,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         .customOptional(Mods.GregTech.resourceDomain, "iconsets/TFFT_ACTIVE_GLOW");
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
 
-    private int ticker = 1;
+    private int ticker = 1; // just increments and drains (amountToDrain) of the given
 
     private boolean staticAnimations = false;
     // spotless:off
@@ -230,14 +230,14 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                 .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(9))
                 .hint(1)
                 .buildAndChain(onElementPass(MTESpinmatron::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 9))))
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 0))
-        .addElement('C', ofBlock(GregTechAPI.sBlockGlass1, 6))
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 0)) // PBI Pipe Casing
+        .addElement('C', ofBlock(GregTechAPI.sBlockGlass1, 6)) // Central Grate Casing
         .addElement('D', chainAllGlasses())
-        .addElement('E', Casings.IsaMillGearboxCasing.asElement())
-        .addElement('F', Casings.TurbineShaft.asElement())
-        .addElement('G', ofBlock(supercriticalFluidTurbineCasing, 0))
-        .addElement('H', CentrifugeHatchElement.ROTOR_ASSEMBLY.newAny(1538, 2))
-        .addElement('a', ofBlock(GregTechAPI.sBlockMetal4, 13))
+        .addElement('E', Casings.IsaMillGearboxCasing.asElement()) // Isamill central casing
+        .addElement('F', Casings.TurbineShaft.asElement()) // Turbine Central Casing
+        .addElement('G', ofBlock(supercriticalFluidTurbineCasing, 0)) // Turbine External Casing
+        .addElement('H', CentrifugeHatchElement.ROTOR_ASSEMBLY.newAny(1538, 2)) // turbine hatches
+        .addElement('a', ofBlock(GregTechAPI.sBlockMetal4, 13)) // t1 block, Naq Alloy
         .addElement(
             'b',
             lazy(
@@ -245,21 +245,21 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                     Block.getBlockFromItem(
                         MaterialsAlloy.PIKYONIUM.getFrameBox(1)
                             .getItem()),
-                    0)))
+                    0))) // t1 frame, Pikyonium
         .addElement(
             'c',
             lazy(
                 t -> Mods.Avaritia.isModLoaded() ? ofBlock(LudicrousBlocks.resource_block, 0)
-                    : ofBlock(GregTechAPI.sBlockMetal5, 2)))
-        .addElement('d', ofFrame(Materials.Neutronium))
+                    : ofBlock(GregTechAPI.sBlockMetal5, 2))) // t2 block, Cosmic Neutronium. fallback included for dev
+        .addElement('d', ofFrame(Materials.Neutronium)) // t2 frame, Neutronium
         .addElement(
             'e',
             lazy(
                 t -> Mods.Avaritia.isModLoaded() ? ofBlock(LudicrousBlocks.resource_block, 1)
-                    : ofBlock(GregTechAPI.sBlockMetal5, 3)))
-        .addElement('f', ofFrame(Materials.Infinity))
-        .addElement('g', ofBlock(GregTechAPI.sBlockMetal9, 6))
-        .addElement('h', lazy(t -> ofFrame(Materials.SpaceTime)))
+                    : ofBlock(GregTechAPI.sBlockMetal5, 3))) // t3 block, Infinity. fallback included for dev
+        .addElement('f', ofFrame(Materials.Infinity)) // t3 frame, Infinity
+        .addElement('g', ofBlock(GregTechAPI.sBlockMetal9, 6)) // t4 block, WDM.
+        .addElement('h', lazy(t -> ofFrame(Materials.SpaceTime))) // t4 frame
         .build();
 
     public MTESpinmatron(final int aID, final String aName, final String aNameRegional) {
@@ -313,6 +313,10 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             MTEHatchTurbine turbine = turbineRotorHatchList.get(i);
             ExtendedFacing direction = getExtendedFacing();
             IGregTechTileEntity te = turbine.getBaseMetaTileEntity();
+            // 0, 1 = front top, front bottom
+            // 2, 4 = left top, left bottom
+            // 3, 5 = right top, right bottom
+            // 6, 7 = back top, back bottom (all in theory)
             switch (i) {
                 case 0, 1 -> te.setFrontFacing(direction.getRelativeForwardInWorld());
                 case 2, 4 -> te.setFrontFacing(direction.getRelativeRightInWorld());
