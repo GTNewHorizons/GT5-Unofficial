@@ -52,6 +52,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
@@ -303,7 +304,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (getCoilTier() < HeatingCoilLevel.UMV.getTier() + 1) {
-                errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.coke_oven_multiamp_coil"));
             }
         } else {
             checkHasEnergyHatch(errors);
