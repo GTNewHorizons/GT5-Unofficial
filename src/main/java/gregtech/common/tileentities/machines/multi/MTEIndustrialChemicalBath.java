@@ -214,7 +214,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 5F)
+            .setSpeedBonus(1.0D / 5.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

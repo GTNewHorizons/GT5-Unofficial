@@ -158,14 +158,20 @@ public class OverclockCalculator {
         return this;
     }
 
-    /** Sets an EUtDiscount. 0.9 is 10% less energy. 1.1 is 10% more energy */
+    /**
+     * Sets an EUtDiscount. 0.9 is 10% less energy. 1.1 is 10% more energy
+     * Only accept real double type for the parameter, else its behavior is undefined.
+     */
     @Nonnull
     public OverclockCalculator setEUtDiscount(double aEUtDiscount) {
         this.eutModifier = aEUtDiscount;
         return this;
     }
 
-    /** Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower */
+    /**
+     * Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower
+     * Only accept real double type for the parameter, else its behavior is undefined.
+     */
     @Nonnull
     public OverclockCalculator setDurationModifier(double aSpeedBoost) {
         this.durationModifier = aSpeedBoost;
@@ -375,7 +381,7 @@ public class OverclockCalculator {
         // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        int tiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) Math.ceil(recipePower), 32));
+        int tiersAbove = getTiersAbove(machinePower, recipePower);
 
         // If overclocking is disabled, use the base values and return.
         if (noOverclock) {
@@ -437,7 +443,7 @@ public class OverclockCalculator {
         final int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
         final int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
 
-        final int powerTiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) recipePower, 32));
+        final int powerTiersAbove = getTiersAbove(machinePower, recipePower);
         final int voltageTiersAbove = voltageTierMachine - voltageTierRecipe;
 
         // Special handling for laser overclocking.
@@ -494,5 +500,27 @@ public class OverclockCalculator {
         }
 
         return Math.ceil(heatMultiplier * regularMultiplier * correctionMultiplier);
+    }
+
+    /**
+     * Returns the number of tiers above compareBase that power is.
+     * If power is less than compareBase, returns -1.
+     *
+     * @param power
+     * @param compareBase
+     * @return tiers above the compareBase.
+     */
+    public static int getTiersAbove(double power, double compareBase) {
+        if (power < compareBase) {
+            return -1;
+        }
+        final long scale = 100L; // Scale to avoid floating point precision issues
+        if (power < Long.MAX_VALUE / scale) {
+            long scaledPower = Math.round(power * scale);
+            long scaledCompareBase = Math.round(compareBase * scale);
+            return (int) GTUtility.log4(scaledPower / Math.max(scaledCompareBase, 32L * scale));
+        } else {
+            return (int) GTUtility.log4((long) (power / Math.max(compareBase, 32.0)));
+        }
     }
 }

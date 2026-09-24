@@ -630,8 +630,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             }
         }.noRecipeCaching()
             .setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.7F)
-            .setSpeedBonus(0.2F);
+            .setEuModifier(0.7D)
+            .setSpeedBonus(0.2D);
     }
 
     @Override
