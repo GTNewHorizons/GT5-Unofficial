@@ -598,6 +598,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 if (recipe.mSpecialValue > mSolidCasingTier) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue + 1);
                 }
+                // checks if it has a catalyst
                 ItemStack catalystInRecipe = null;
                 for (ItemStack item : recipe.mInputs) {
                     if (MTEChemicalPlant.isCatalyst(item)) {
