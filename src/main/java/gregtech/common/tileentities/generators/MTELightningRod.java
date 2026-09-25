@@ -30,13 +30,7 @@ public class MTELightningRod extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        if (mTier == 3) {
-            return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.lightningrod.03.tooltip");
-        } else if (mTier == 4) {
-            return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.lightningrod.04.tooltip");
-        } else {
-            return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.lightningrod.05.tooltip");
-        }
+        return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.lightningrod.0" + mTier + ".tooltip");
     }
 
     public MTELightningRod(String aName, int aTier, int aInvSlotCount, String[] aDescription,
@@ -163,9 +157,7 @@ public class MTELightningRod extends MTETieredMachineBlock {
     @Override
     public long maxEUStore() {
         long maxEUStore = 25000000;
-        for (int i = 3; i < mTier; i++) {
-            maxEUStore *= 8;
-        }
+        maxEUStore *= Math.pow(8, mTier - 3);
         return maxEUStore;
     }
 
