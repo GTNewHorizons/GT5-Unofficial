@@ -119,12 +119,12 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
+            return false;
         }
         if (aPlayer instanceof EntityPlayerMPAccessor) {
             clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
-        return true;
+        return false;
     }
 
     @Override
