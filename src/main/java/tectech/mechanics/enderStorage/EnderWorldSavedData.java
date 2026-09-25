@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -75,21 +74,23 @@ public class EnderWorldSavedData extends WorldSavedData {
                 break;
             }
             case 1: {
-                List<NBTTagCompound> tags = ((NBTTagList) nbtTagCompound.getTag(ENDER_LIQUID_TAG_LINK)).tagList;
+                NBTTagList tags = (NBTTagList) nbtTagCompound.getTag(ENDER_LIQUID_TAG_LINK);
 
                 EnderLiquidTagLink = new HashMap<>();
 
-                for (NBTTagCompound tagLink : tags) {
+                for (int i = 0; i < tags.tagCount(); i++) {
+                    NBTTagCompound tagLink = tags.getCompoundTagAt(i);
                     EnderLinkTag tag = EnderLinkTag.load((NBTTagCompound) tagLink.getTag("k"));
                     EnderFluidContainer container = EnderFluidContainer.load((NBTTagCompound) tagLink.getTag("v"));
                     EnderLiquidTagLink.put(tag, container);
                 }
 
-                List<NBTTagCompound> tanks = ((NBTTagList) nbtTagCompound.getTag(ENDER_LIQUID_TANK_LINK)).tagList;
+                NBTTagList tanks = (NBTTagList) nbtTagCompound.getTag(ENDER_LIQUID_TANK_LINK);
 
                 EnderLiquidTankLink = new HashMap<>();
 
-                for (NBTTagCompound tankLink : tanks) {
+                for (int i = 0; i < tanks.tagCount(); i++) {
+                    NBTTagCompound tankLink = tanks.getCompoundTagAt(i);
                     EnderLinkTank tank = EnderLinkTank.load((NBTTagCompound) tankLink.getTag("k"));
                     EnderLinkTag tag = EnderLinkTag.load((NBTTagCompound) tankLink.getTag("v"));
                     EnderLiquidTankLink.put(tank, tag);

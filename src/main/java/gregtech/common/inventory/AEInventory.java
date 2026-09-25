@@ -7,8 +7,10 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +28,6 @@ import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.ItemList;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.IAEItemHandlerModifiable;
 
 /**
@@ -442,7 +443,8 @@ public abstract class AEInventory
     public void readFromNBT(NBTTagCompound tag) {
         Arrays.fill(inventory, null);
 
-        for (NBTTagCompound item : GTUtility.getCompoundTagList(tag, "inv")) {
+        for (NBTBase base : tag.getTagList("inv", Constants.NBT.TAG_COMPOUND).tagList) {
+            NBTTagCompound item = (NBTTagCompound) base;
             int index = item.getInteger("index");
 
             if (index < 0 || index >= slotCount) continue;

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.network.PacketBuffer;
@@ -41,16 +41,11 @@ public class CondensateList extends Object2LongOpenHashMap<Fluid> {
     public void loadFromNBT(NBTTagCompound tag) {
         clear();
 
-        // noinspection unchecked
-        for (Map.Entry<String, NBTTagLong> e : (Set<Map.Entry<String, NBTTagLong>>) tag.tagMap.entrySet()) {
+        for (Map.Entry<String, NBTBase> e : tag.tagMap.entrySet()) {
             Fluid fluid = FluidRegistry.getFluid(e.getKey());
-
             if (fluid == null) continue;
 
-            this.put(
-                fluid,
-                e.getValue()
-                    .func_150291_c());
+            this.put(fluid, ((NBTTagLong) e.getValue()).func_150291_c());
         }
     }
 
