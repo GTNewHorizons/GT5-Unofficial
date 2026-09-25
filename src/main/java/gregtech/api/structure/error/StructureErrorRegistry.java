@@ -41,7 +41,7 @@ public class StructureErrorRegistry {
         .of("GT5U.gui.text.structure_error.missing_data_hatch");
     public static final StructureError COIL_LEVEL_NOT_ENOUGH = StructureErrors
         .of("GT5U.gui.text.structure_error.coil_level_not_enough");
-    public static final StructureError EXOTIC_HATCH_INSUFFICIENT_COIL_LEVEL = StructureErrors
+    public static final StructureError EXOTIC_HATCH_INSUFFICIENT_COIL_TIER = StructureErrors
         .of("GT5U.gui.text.structure_error.exotic_hatch_insufficient_coil_level");
     public static final StructureError ENERGY_TIER_EXCEED_GLASS = StructureErrors
         .of("GT5U.gui.text.structure_error.energy_hatch_exceed_glass");
