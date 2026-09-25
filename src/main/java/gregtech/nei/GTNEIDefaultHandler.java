@@ -960,6 +960,11 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         }
 
         @Override
+        public List<PositionedStack> getResults() {
+            return this.mOutputs;
+        }
+
+        @Override
         public List<PositionedStack> getOtherStacks() {
             return this.mOutputs;
         }
