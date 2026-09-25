@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -30,6 +31,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.options.FormatOptions;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -156,36 +158,15 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Chemical Engine, UCFE")
-            .addInfo("BURNING BURNING BURNING")
-            .addInfo(
-                "Reacts combustion promoter with gas, diesel, or rocket fuel to generate power with up to 150% efficiency")
-            .addInfo("No soft caps or upper limits on power output, other than the dynamo hatch size")
-            .addInfo(
-                "No power is produced without " + EnumChatFormatting.GOLD
-                    + "Combustion Promoter"
-                    + EnumChatFormatting.GRAY)
-            .addInfo("Excess power is voided if the dynamo hatch is full or the output exceeds the dynamo throughput")
-            .addSeparator()
-            .addInfo("Efficiency is determined by the ratio (R) of combustion promoter to fuel")
-            .addInfo("The more combustion promoter, the higher the efficiency")
-            .addInfo(
-                "Follows an exponential curve " + EnumChatFormatting.AQUA
-                    + "exp(-C/R) * "
-                    + formatNumber(EFFICIENCY_CEILING, new FormatOptions().setDecimalPlaces(1))
-                    + EnumChatFormatting.GRAY
-                    + ", where C is a constant based on the fuel type")
-            .addInfo(
-                "Gas/Diesel Fuel: C="
-                    + formatNumber(GAS_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3))
-                    + " | Rocket Fuel: C="
-                    + formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
-            .addSeparator()
-            .addInfo(
-                "Produces " + EnumChatFormatting.DARK_PURPLE
-                    + "sqrt(EU/t)"
-                    + EnumChatFormatting.GRAY
-                    + " pollution per second")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "universal-chemical-fuel-engine"),
+                ImmutableMap.<String, Object>builder()
+                    .put("efficiency_ceiling", formatNumber(EFFICIENCY_CEILING, new FormatOptions().setDecimalPlaces(1)))
+                    .put("gas_coefficient", formatNumber(GAS_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+                    .put("rocket_coefficient", formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+                    .build())
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 13, true)
@@ -202,6 +183,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
             .addInputHatch("1+", "Any machine casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "TimTems")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
