@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -121,8 +121,8 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                 ImmutableMap.<String, Object>builder()
                     .put("cap1", formatNumber(SOFT_CAP_1))
                     .put("cap2", formatNumber(SOFT_CAP_2))
-                    .put("min_fuel", formatFluid(MIN_FUEL_INPUT_PER_SECOND))
-                    .put("lubricant_amount", formatFluid(LUBRICANT_CONSUMPTION_PER_HOUR))
+                    .put("min_fuel", formatNumber(MIN_FUEL_INPUT_PER_SECOND))
+                    .put("lubricant_amount", formatNumber(LUBRICANT_CONSUMPTION_PER_HOUR))
                     .put("lubricant", mLubricantName)
                     .put("boost", formatNumber(BOOST_MULTIPLIER))
                     .put("air_percent", formatNumber(AIR_PERCENT))
@@ -134,6 +134,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     .put("warmup_max", formatNumber(WARMUP_MAX_SECONDS))
                     .put("pollution", formatNumber(POLLUTION_PER_EUT))
                     .put("pollution_unit", formatNumber(POLLUTION_EUT_UNIT))
+                    .put("unit", getFluidUnit())
                     .build())
             .addSupportAny()
             .beginStructureBlock(3, 3, 10, false)
