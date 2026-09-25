@@ -10021,6 +10021,7 @@ gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning
 # NEI Aliases
 gt.alias.debug=Debug
 gt.alias.mechanical_armor=Mechanical Armor
+gt.alias.fibre=Fibre
 
 # Multiblocks
 gt.blockmachines.algaefarm.controller.tier.single.name=Algae Farm
