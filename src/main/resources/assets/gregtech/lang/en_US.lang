@@ -9950,7 +9950,9 @@ gt.blockmachines.basicgenerator.solarpanel.tooltip=Generates EU From Solar Power
 gt.blockmachines.basicgenerator.lightningrod.03.name=Lightning Rod
 gt.blockmachines.basicgenerator.lightningrod.04.name=Lightning Rod II
 gt.blockmachines.basicgenerator.lightningrod.05.name=Lightning Rod III
-gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning Bolts
+gt.blockmachines.basicgenerator.lightningrod.03.tooltip=Generates EU From Lightning Bolts\nRequires Stainless Steel Bars on Top
+gt.blockmachines.basicgenerator.lightningrod.04.tooltip=Generates EU From Lightning Bolts\nRequires Titanium Bars on Top
+gt.blockmachines.basicgenerator.lightningrod.05.tooltip=Generates EU From Lightning Bolts\nRequires Tungstensteel Bars on Top
 
 # NEI Aliases
 gt.alias.debug=Debug

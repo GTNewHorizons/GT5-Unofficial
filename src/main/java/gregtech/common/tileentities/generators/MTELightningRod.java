@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.generators;
 
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.block.Block;
@@ -10,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.casing.Casings;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -29,7 +30,13 @@ public class MTELightningRod extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.lightningrod.tooltip");
+        if (mTier == 3) {
+            return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.lightningrod.03.tooltip");
+        } else if (mTier == 4) {
+            return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.lightningrod.04.tooltip");
+        } else {
+            return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.lightningrod.05.tooltip");
+        }
     }
 
     public MTELightningRod(String aName, int aTier, int aInvSlotCount, String[] aDescription,
@@ -68,6 +75,19 @@ public class MTELightningRod extends MTETieredMachineBlock {
             this.mTextures);
     }
 
+    private static Block getRodBlock(int tier) {
+        switch (tier) {
+            case 3:
+                return GameRegistry.findBlock(NewHorizonsCoreMod.ID, "StainlessSteelBars");
+            case 4:
+                return GameRegistry.findBlock(NewHorizonsCoreMod.ID, "TitaniumBars");
+            case 5:
+                return GameRegistry.findBlock(NewHorizonsCoreMod.ID, "TungstenSteelBars");
+            default:
+                return null;
+        }
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         World aWorld = aBaseMetaTileEntity.getWorld();
@@ -86,9 +106,10 @@ public class MTELightningRod extends MTETieredMachineBlock {
                 int aY = aBaseMetaTileEntity.getYCoord();
                 int aZ = aBaseMetaTileEntity.getZCoord();
 
+                Block RodBlock = getRodBlock(mTier);
                 for (int i = aBaseMetaTileEntity.getYCoord() + 1; i < aWorld.getHeight() - 1; i++) {
                     Block block = aBaseMetaTileEntity.getBlock(aX, i, aZ);
-                    if (isRodValid && block == Casings.IronFence.getBlock()) {
+                    if (isRodValid && block == RodBlock) {
                         aRodValue++;
                     } else {
                         isRodValid = false;
@@ -141,7 +162,11 @@ public class MTELightningRod extends MTETieredMachineBlock {
 
     @Override
     public long maxEUStore() {
-        return 50000000;
+        long maxEUStore = 25000000;
+        for (int i = 3; i < mTier; i++) {
+            maxEUStore *= 8;
+        }
+        return maxEUStore;
     }
 
     @Override
@@ -151,7 +176,7 @@ public class MTELightningRod extends MTETieredMachineBlock {
 
     @Override
     public long maxAmperesOut() {
-        return 512;
+        return 256;
     }
 
     @Override
