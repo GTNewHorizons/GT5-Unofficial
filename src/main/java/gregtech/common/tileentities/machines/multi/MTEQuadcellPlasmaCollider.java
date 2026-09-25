@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PLASMA_COLLIDER_GLO
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PLASMA_COLLIDER_OFF;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PLASMA_COLLIDER_ON;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -55,6 +56,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -401,6 +403,60 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         recipesDone++;
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (lEUt > 0) {
+            addEnergyOutput((lEUt * mEfficiency) / 10000);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addEnergyOutput(long eu) {
+        if (eu <= 0) {
+            return true;
+        }
+        if (!mDynamoHatches.isEmpty() || !mExoticDynamoHatches.isEmpty()) {
+            return addEnergyOutputMultipleDynamos(eu, true);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addEnergyOutputMultipleDynamos(long eu, boolean aAllowMixedVoltageDynamos) {
+        long injected = 0;
+
+        for (MTEHatch aDynamo : validMTEList(mDynamoHatches)) {
+            injected = injectEnergyIntoDynamo(eu, injected, aDynamo);
+        }
+        for (MTEHatch aDynamo : validMTEList(mExoticDynamoHatches)) {
+            injected = injectEnergyIntoDynamo(eu, injected, aDynamo);
+        }
+        return injected > 0;
+    }
+
+    private long injectEnergyIntoDynamo(long eu, long injected, MTEHatch aDynamo) {
+        long leftToInject = eu - injected;
+        long aVoltage = aDynamo.maxEUOutput();
+        long aAmpsToInject = leftToInject / aVoltage;
+        long aRemainder = leftToInject - (aAmpsToInject * aVoltage);
+        long ampsOnCurrentHatch = Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+
+        // add full amps
+        aDynamo.getBaseMetaTileEntity()
+            .increaseStoredEnergyUnits(aVoltage * ampsOnCurrentHatch, false);
+        injected += aVoltage * ampsOnCurrentHatch;
+
+        // add reminder
+        if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
+            aDynamo.getBaseMetaTileEntity()
+                .increaseStoredEnergyUnits(aRemainder, false);
+            injected += aRemainder;
+        }
+        return injected;
     }
 
     public boolean processFluid(FluidStack stack, double nonDrainChance) {
