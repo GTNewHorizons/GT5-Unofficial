@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.SolidifierHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY;
@@ -210,7 +211,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement(
             'H',
-            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch.or(SolidifierHatch), OutputBus, InputBus, Energy.or(ExoticEnergy))
+            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch.or(SolidifierHatch), OutputBus, InputBus, Energy.or(ExoticEnergy), Maintenance)
                 .hint(1)
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
@@ -660,8 +661,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         foundryData.checkSolidifierModules();
         logic.setSpeedBonus(1F / foundryData.speedModifierAdj);
-        logic.setMaxParallel(
-            (int) (Math.floor(foundryData.parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage())));
+        logic.setMaxParallelSupplier(this::getTrueParallel);
         logic.setEuModifier(foundryData.euEffAdj);
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
@@ -809,7 +809,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     public void setModule(int index, int ordinal) {
-        foundryData.setModule(index, ordinal);
+        foundryData.setModule(index, ordinal, false);
         // structure check on module set, to prevent cheesing
         getBaseMetaTileEntity().issueTileUpdate(); // tile update to sync to client
         this.setStructureUpdateTime(1);

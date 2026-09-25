@@ -15,6 +15,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -62,6 +63,47 @@ public enum CircuitComponent {
         8,
         "gt.circuitcomponent.wiremagmatter",
         () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.MagMatter, 1)),
+    WireCopper(
+        9,
+        "gt.circuitcomponent.wirecopper",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 1)),
+    WireRedAlloy(
+        10,
+        "gt.circuitcomponent.wireredalloy",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.RedAlloy, 1)),
+    WireElectrum(
+        11,
+        "gt.circuitcomponent.wireelectrum",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 1)),
+    WirePlatinum(
+        12,
+        "gt.circuitcomponent.wireplatinum",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 1)),
+    WireShijima(
+        13,
+        "gt.circuitcomponent.wireshijima",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Shijima, 1)),
+    WireTairitsu(
+        14,
+        "gt.circuitcomponent.wiretairitsu",
+        () -> GGMaterial.tairitsu.get(OrePrefixes.wireFine,1)),
+    WireChuritsu(
+        15,
+        "gt.circuitcomponent.wirechuritsu",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Churitsu, 1)),
+    WireWhiteDwarfMatter(
+        16,
+        "gt.circuitcomponent.wirewhitedwarfmatter",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.WhiteDwarfMatter, 1)),
+    WireBlackDwarfMatter(
+        17,
+        "gt.circuitcomponent.wireblackdwarfmatter",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.BlackDwarfMatter, 1)),
+    WireUniversium(
+        18,
+        "gt.circuitcomponent.wireuniversium",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Universium, 1)),
+
 
     ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", () -> WireNiobiumTitanium, true),
     ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", () -> WireYttriumBariumCuprate, true),
@@ -72,6 +114,18 @@ public enum CircuitComponent {
     ProcessedWireInfinity(106, "gt.circuitcomponent.processed.wireinfinity", () -> WireInfinity, true),
     ProcessedWireHypogen(107, "gt.circuitcomponent.processed.wirehypogen", () -> WireHypogen, true),
     ProcessedWireMagMatter(108, "gt.circuitcomponent.processed.wiremagmatter", () -> WireMagMatter, true),
+    ProcessedWireCopper(109,"gt.circuitcomponent.processed.wirecopper", () -> WireCopper, true),
+    ProcessedWireRedAlloy(110,"gt.circuitcomponent.processed.wireredalloy", () -> WireRedAlloy, true),
+    ProcessedWireElectrum(111,"gt.circuitcomponent.processed.wireelectrum", () -> WireElectrum, true),
+    ProcessedWirePlatinum(112,"gt.circuitcomponent.processed.wireplatinum", () -> WirePlatinum, true),
+
+    ProcessedWireShijima(113, "gt.circuitcomponent.processed.wireshijima", () -> WireShijima, true),
+    ProcessedWireTairitsu(114, "gt.circuitcomponent.processed.wiretairitsu", () -> WireTairitsu, true),
+    ProcessedWireChuritsu(115, "gt.circuitcomponent.processed.wirechuritsu", () -> WireChuritsu, true),
+
+    ProcessedWireWhiteDwarfMatter(116, "gt.circuitcomponent.processed.wirewhitedwarfmatter", () -> WireWhiteDwarfMatter, true),
+    ProcessedWireBlackDwarfMatter(117, "gt.circuitcomponent.processed.wireblackdwarfmatter", () -> WireBlackDwarfMatter, true),
+    ProcessedWireUniversium(118, "gt.circuitcomponent.processed.wireuniversium", () -> WireUniversium, true),
 
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
@@ -147,10 +201,7 @@ public enum CircuitComponent {
         403,
         "gt.circuitcomponent.board.optical",
         () -> ItemList.Circuit_Board_Optical.get(1)),
-    NeuroProcessingUnit(
-        404,
-        "gt.circuitcomponent.neuroprocessingunit",
-        () -> ItemList.Circuit_Chip_NeuroCPU.get(1)),
+    // id 404 unused
     BioProcessingUnit(
         405,
         "gt.circuitcomponent.bioprocessingunit",
@@ -159,14 +210,21 @@ public enum CircuitComponent {
         406,
         "gt.circuitcomponent.livingbiochip",
         () -> ItemList.Circuit_Parts_Chip_Bioware.get(1)),
+    BoardPico(407, "gt.circuitcomponent.processed.board.pico",()->null,true),
+    BoardQuantum(408, "gt.circuitcomponent.processed.board.quantum",()->null,true),
+    BoardPlanck(409, "gt.circuitcomponent.processed.board.planck",()->null,true),
 
     ProcessedBoardMultifiberglassElite(500, "gt.circuitcomponent.processed.board.multifiberelite", () -> BoardMultifiberglassElite, true),
     ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", () -> BoardWetwareLifesupport, true),
     ProcessedBoardBioMutated(502, "gt.circuitcomponent.processed.board.biomutated", () -> BoardBioMutated, true),
     ProcessedBoardOptical(503, "gt.circuitcomponent.processed.board.optical", () -> BoardOptical, true),
-    ProcessedNeuroProcessingUnit(504, "gt.circuitcomponent.processed.neuroprocessingunit", () -> NeuroProcessingUnit, true),
+    // id 504 unused
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
     ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
+    UnattunedCircuitry(507,"gt.circuitcomponent.unattunedcircuitry",()->null,true),
+    CleansedBoardPico(508, "gt.circuitcomponent.processed.board.cleansedpico",()-> BoardPico,true),
+    CleansedBoardQuantum(509, "gt.circuitcomponent.processed.board.cleansedquantum",()-> BoardQuantum,true),
+    CleansedBoardPlanck(510, "gt.circuitcomponent.processed.board.cleansedplanck",()-> BoardPlanck,true),
 
     // Wafers and chips
     // IDs: 600-699 CC, 700-799 PC
@@ -190,14 +248,7 @@ public enum CircuitComponent {
         604,
         "gt.circuitcomponent.chipasoc",
         () -> ItemList.Circuit_Chip_SoC2.get(1)),
-    ChipPikoPIC(
-        605,
-        "gt.circuitcomponent.chippikopic",
-        () -> ItemList.Circuit_Chip_PPIC.get(1)),
-    ChipQuantumPIC(
-        606,
-        "gt.circuitcomponent.chipquantumpic",
-        () -> ItemList.Circuit_Chip_QPIC.get(1)),
+    // id 605, 606 unused
     ChipAttoPIC(
         607,
         "gt.circuitcomponent.chipattopic",
@@ -220,8 +271,7 @@ public enum CircuitComponent {
     ProcessedChipNOR(702, "gt.circuitcomponent.processed.chipnor", () -> ChipNOR, true),
     ProcessedChipNAND(703, "gt.circuitcomponent.processed.chipnand", () -> ChipNAND, true),
     ProcessedChipASOC(704, "gt.circuitcomponent.processed.chipasoc", () -> ChipASOC, true),
-    ProcessedChipPikoPIC(705, "gt.circuitcomponent.processed.chippikopic", () -> ChipPikoPIC, true),
-    ProcessedChipQuantumPIC(706, "gt.circuitcomponent.processed.chipquantumpic", () -> ChipQuantumPIC, true),
+    // id 705, 706 unused
     ProcessedChipAttoPIC(707, "gt.circuitcomponent.processed.chipattopic", () -> ChipAttoPIC, true),
     ProcessedChipZeptoPIC(708, "gt.circuitcomponent.processed.chipzeptopic", () -> ChipZeptoPIC, true),
     ProcessedChipYoctoPIC(709, "gt.circuitcomponent.processed.chipyoctopic", () -> ChipYoctoPIC, true),
@@ -229,10 +279,7 @@ public enum CircuitComponent {
 
     // Crystal components
     // IDs: 800-899 CC, 900-999 PC
-    ChipCrystalCPU(
-        800,
-        "gt.circuitcomponent.chipcrystalcpu",
-        () -> ItemList.Circuit_Chip_CrystalCPU.get(1)),
+    // id 800 unused
     ChipCrystalSoC(
         801,
         "gt.circuitcomponent.chipcrystalsoc",
@@ -246,7 +293,7 @@ public enum CircuitComponent {
         "gt.circuitcomponent.chiprawadvancedcrystal",
         () -> ItemList.Circuit_Chip_CrystalSoC2.get(1)),
 
-    ProcessedChipCrystalCPU(900, "gt.circuitcomponent.processed.chipcrystalcpu", () -> ChipCrystalCPU, true),
+    // id 900 unused
     ProcessedChipCrystalSoC(901, "gt.circuitcomponent.processed.chipcrystalsoc", () -> ChipCrystalSoC, true),
     ProcessedChipLivingCrystal(902, "gt.circuitcomponent.processed.chiplivingcrystal", () -> ChipLivingCrystal, true),
     ProcessedChipRawAdvancedCrystal(903, "gt.circuitcomponent.processed.chiprawadvancedcrystal", () -> ChipRawAdvancedCrystal, true),
@@ -366,14 +413,62 @@ public enum CircuitComponent {
     ProcessedFoilShirabon(1703, "gt.circuitcomponent.sheet.processed.shirabon", () -> FoilShirabon, true),
     ProcessedFoilStyreneRubber(1704, "gt.circuitcomponent.sheet.processed.styrenerubber", () -> FoilStyreneRubber, true),
     ProcessedFoilEternity(1705, "gt.circuitcomponent.sheet.processed.eternity", () -> FoilEternity, true),
-    // Circuit encasement and item combinations
+
+    // Circuit encasement, item combinations, and specialty items
     // IDs: 1800-1899
     ProcessedBasicMainframeCasing(1800, "gt.circuitcomponent.casing.processed.basicmainframe", null, true),
     ProcessedAdvancedMainframeCasing(1801, "gt.circuitcomponent.casing.processed.advancedmainframe", null, true),
     ProcessedPicoCircuitCasing(1802, "gt.circuitcomponent.casing.processed.pico", null, true),
     ProcessedQuantumCircuitCasing(1803, "gt.circuitcomponent.casing.processed.quantum", null, true),
     ProcessedPlanckCircuitCasing(1804, "gt.circuitcomponent.casing.processed.planck", null, true),
-    ProcessedCoiledThermalSuperconductor(1805, "gt.circuitcomponent.other.processed.coiledthermalsuperconductor", null, true),
+    ProcessedCoiledThermalSuperconductor(1805, "gt.circuitcomponent.planck.processed.coiledthermalsuperconductor", null, true),
+    ProcessedCircuitOpticalProcessor(1806,"gt.circuitcomponent.circuit.processed.opticalprocessor", null, true),
+    ProcessedCircuitOpticalAssembly(1807,"gt.circuitcomponent.circuit.processed.opticalassembly", null, true),
+    ProcessedCircuitOpticalComputer(1808,"gt.circuitcomponent.circuit.processed.opticalcomputer", null, true),
+    ProcessedCircuitOpticalMainframe(1809,"gt.circuitcomponent.circuit.processed.opticalmainframe", null, true),
+
+    // Pico Chain
+    OpticalMainframeRack(1810,"gt.circuitcomponent.pico.processed.opticalmainframerack",null,true),
+    PicoCPU(1811,"gt.circuitcomponent.pico.processed.picocpu",null,true),
+
+    //Quantum Chain
+    CompressionResidue(1812, "gt.circuitcomponent.quantum.processed.compressionresidue",null,true),
+    OrganizedPicoCircuit(1813,"gt.circuitcomponent.quantum.processed.organizedpicocircuit",null,true),
+    PicoCircuitRack(1814,"gt.circuitcomponent.quantum.processed.picocircuitrack",null,true),
+    QuantumCPU(1815,"gt.circuitcomponent.quantum.processed.quantumcpu",null,true),
+
+    DisorderlySpool(1816,"gt.circuitcomponent.quantum.processed.disorderlyspool",null,true),
+
+    EntangledSuppressionStrands(1817,"gt.circuitcomponent.quantum.processed.positivewirestrands", null,true),
+    EntangledAnnihilationStrands(1818,"gt.circuitcomponent.quantum.processed.negativewirestrands", null,true),
+    AlienatedStrands(1819,"gt.circuitcomponent.quantum.processed.neutralwirestrands", null,true),
+
+    SilencedStrands(1820,"gt.circuitcomponent.quantum.processed.silencedstrands",null,true),
+    SettledStrands(1821,"gt.circuitcomponent.quantum.processed.settledstrands",null,true),
+
+    BundledUnityWire(1822,"gt.circuitcomponent.quantum.processed.bundledunitywire",null,true),
+
+    //Planck Chain
+    CollapsingResidue(1823, "gt.circuitcomponent.planck.processed.collapsingresidue",null,true),
+    OrganizedQuantumCircuit(1824,"gt.circuitcomponent.planck.processed.organizedquantumcircuit",null,true),
+    LostQuantumCircuitRack(1825,"gt.circuitcomponent.planck.processed.lostquantumcircuitrack", () -> ItemList.LostQuantumCircuitRack.get(1)),
+    RealizedQuantumCircuitRack(1826,"gt.circuitcomponent.planck.processed.realizedquantumcircuitrack", () -> ItemList.RealizedQuantumCircuitRack.get(1)),
+    PlanckCPU(1827,"gt.circuitcomponent.planck.processed.planckcpu",null,true),
+
+    SupermassiveSpool(1828,"gt.circuitcomponent.planck.processed.supermassivespool", null,true),
+
+    MicrocosmicStrands(1829,"gt.circuitcomponent.planck.processed.microcosmstrands", null,true),
+    MacrocosmicStrands(1830,"gt.circuitcomponent.planck.processed.macrocosmstrands", () -> ItemList.MacrocosmicStrands.get(1)),
+    CosmologicalStrands(1831,"gt.circuitcomponent.planck.processed.cosmologicalstrands", null,true),
+
+    PulsatingWhiteDwarfMatterStrands(1832,"gt.circuitcomponent.planck.processed.pulsatingwdmstrands", () -> ItemList.PulsatingWDMStrands.get(1)),
+    UnboundWhiteDwarfMatterStrands(1833,"gt.circuitcomponent.planck.processed.unboundwdmstrands", () -> ItemList.UnboundWDMStrands.get(1)),
+    IsolatedBlackDwarfMatterStrands(1834,"gt.circuitcomponent.planck.processed.isolatedbdmstrands", () -> ItemList.IsolatedBDMStrands.get(1)),
+    ReboundBlackDwarfMatterStrands(1835,"gt.circuitcomponent.planck.processed.reboundbdmstrands", null,true),
+
+    BundledStellarHarmonyWire(1836,"gt.circuitcomponent.planck.processed.bundledharmony",null,true),
+
+    CalabiYauManifold(1837,"gt.circuitcomponent.planck.processed.calabiyaumanifold", ()->ItemList.CalabiYauManifold.get(1)),
 
     // Bolts and other small components
     // IDs: 1900-1999 CC, 2000-2099 PC
@@ -449,6 +544,18 @@ public enum CircuitComponent {
         1917,
         "gt.circuitcomponent.thermalsuperconductor",
         () -> ItemList.Thermal_Superconductor.get(1)),
+    BoltCopper(1918,"gt.circuitcomponent.bolt.copper",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Copper, 1)),
+    BoltRedAlloy(1919,"gt.circuitcomponent.bolt.redalloy",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.RedAlloy, 1)),
+    BoltPlatinum(1920,"gt.circuitcomponent.bolt.platinum",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Platinum, 1)),
+    BoltNiobiumTitanium(1921,"gt.circuitcomponent.bolt.niobiumtitanium",()->GTOreDictUnificator.get(OrePrefixes.bolt, Materials.NiobiumTitanium, 1)),
+    CasingKevlar(1922,"gt.circuitcomponent.casing.kevlar", ()->GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Kevlar,1)),
+    ScrewEnrichedNaquadahAlloy(1923, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()-> GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.screw,1)),
+    ScrewQuantum(1924, "gt.circuitcomponent.screw.quantum", ()-> MaterialsAlloy.QUANTUM.getScrew(1)),
+    ScrewEternity(1925, "gt.circuitcomponent.screw.eternity", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
+    BoltRhugnor(1926, "gt.circuitcomponent.bolt.rhugnor", ()-> MaterialsElements.STANDALONE.RHUGNOR.getBolt(1)),
+    BoltMetastableOganesson(1927, "gt.circuitcomponent.bolt.metastableoganesson", ()-> GGMaterial.metastableOganesson.get(OrePrefixes.bolt,1)),
+    BoltHexanite(1928, "gt.circuitcomponent.bolt.hexanite", ()-> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Hexanite, 1)),
+
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
@@ -460,7 +567,10 @@ public enum CircuitComponent {
     ProcessedPlateRhugnor(2007, "gt.circuitcomponent.plate.processed.rhugnor", () -> PlateRhugnor, true),
     ProcessedBoltWhiteDwarfMatter(2008, "gt.circuitcomponent.bolt.processed.whitedwarfmatter", () -> BoltWhiteDwarfMatter, true),
     ProcessedPlateHexanite(2009, "gt.circuitcomponent.plate.processed.hexanite", () -> PlateHexanite, true),
-
+    ProcessedBoltCopper(2010,"gt.circuitcomponent.bolt.processed.copper",()->BoltCopper,true),
+    ProcessedBoltRedAlloy(2011,"gt.circuitcomponent.bolt.processed.redalloy",()->BoltRedAlloy,true),
+    ProcessedBoltPlatinum(2012,"gt.circuitcomponent.bolt.processed.platinum",()->BoltPlatinum,true),
+    ProcessedBoltNiobiumTitanium(2013,"gt.circuitcomponent.bolt.processed.niobiumtitanium",()->BoltNiobiumTitanium,true),
     // Circuits
     // IDs: 2100-2199
     // The first three circuits in a line can be recursively used in the assembly matrix, and all of them can be turned
@@ -468,84 +578,104 @@ public enum CircuitComponent {
     CrystalProcessor(
         2100,
         "gt.circuitcomponent.crystalprocessor",
-        () -> ItemList.Circuit_Crystalprocessor.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Crystalprocessor.get(1), CircuitCalibration.CRYSTAL, 0.125f),
     CrystalAssembly(
         2101,
         "gt.circuitcomponent.crystalasssembly",
-        () -> ItemList.Circuit_Crystalcomputer.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Crystalcomputer.get(1), CircuitCalibration.CRYSTAL,0.25f),
     CrystalComputer(
         2102,
         "gt.circuitcomponent.crystalcomputer",
-        () -> ItemList.Circuit_Ultimatecrystalcomputer.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Ultimatecrystalcomputer.get(1), CircuitCalibration.CRYSTAL,0.5f),
     CrystalMainframe(
         2103,
         "gt.circuitcomponent.crystalmainframe",
-        () -> ItemList.Circuit_Crystalmainframe.get(1), CircuitCalibration.CRYSTAL),
+        () -> ItemList.Circuit_Crystalmainframe.get(1), CircuitCalibration.CRYSTAL,1),
     WetwareProcessor(
         2104,
         "gt.circuitcomponent.wetwareprocessor",
-        () -> ItemList.Circuit_Neuroprocessor.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Neuroprocessor.get(1), CircuitCalibration.WETWARE, 0.125f),
     WetwareAssembly(
         2105,
         "gt.circuitcomponent.wetwareassembly",
-        () -> ItemList.Circuit_Wetwarecomputer.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Wetwarecomputer.get(1), CircuitCalibration.WETWARE,0.25f),
     WetwareComputer(
         2106,
         "gt.circuitcomponent.wetwarecomputer",
-        () -> ItemList.Circuit_Wetwaresupercomputer.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Wetwaresupercomputer.get(1), CircuitCalibration.WETWARE,0.5f),
     WetwareMainframe(
         2107,
         "gt.circuitcomponent.wetwaremainframe",
-        () -> ItemList.Circuit_Wetwaremainframe.get(1), CircuitCalibration.WETWARE),
+        () -> ItemList.Circuit_Wetwaremainframe.get(1), CircuitCalibration.WETWARE,1),
     BiowareProcessor(
         2108,
         "gt.circuitcomponent.biowareprocessor",
-        () -> ItemList.Circuit_Bioprocessor.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Bioprocessor.get(1), CircuitCalibration.BIO,0.125f),
     BiowareAssembly(
         2109,
         "gt.circuitcomponent.biowareassembly",
-        () -> ItemList.Circuit_Biowarecomputer.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Biowarecomputer.get(1), CircuitCalibration.BIO,0.25f),
     BiowareComputer(
         2110,
         "gt.circuitcomponent.biowarecomputer",
-        () -> ItemList.Circuit_Biowaresupercomputer.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Biowaresupercomputer.get(1), CircuitCalibration.BIO,0.5f),
     BiowareMainframe(
         2111,
         "gt.circuitcomponent.biowaremainframe",
-        () -> ItemList.Circuit_Biomainframe.get(1), CircuitCalibration.BIO),
+        () -> ItemList.Circuit_Biomainframe.get(1), CircuitCalibration.BIO,1),
     OpticalProcessor(
         2112,
         "gt.circuitcomponent.opticalprocessor",
-        () -> ItemList.Circuit_OpticalProcessor.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalProcessor.get(1), CircuitCalibration.OPTICAL,0.125f),
     OpticalAssembly(
         2113,
         "gt.circuitcomponent.opticalassembly",
-        () -> ItemList.Circuit_OpticalAssembly.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalAssembly.get(1), CircuitCalibration.OPTICAL,0.25f),
     OpticalComputer(
         2114,
         "gt.circuitcomponent.opticalcomputer",
-        () -> ItemList.Circuit_OpticalComputer.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalComputer.get(1), CircuitCalibration.OPTICAL,0.5f),
     OpticalMainframe(
         2115,
         "gt.circuitcomponent.opticalmainframe",
-        () -> ItemList.Circuit_OpticalMainframe.get(1), CircuitCalibration.OPTICAL),
+        () -> ItemList.Circuit_OpticalMainframe.get(1), CircuitCalibration.OPTICAL,1),
     PicoCircuit(
         2116,
         "gt.circuitcomponent.picocircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+        () -> getModItem(NewHorizonsCoreMod.ID, "PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL,1),
     QuantumCircuit(
         2117,
         "gt.circuitcomponent.quantumcircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+        () -> getModItem(NewHorizonsCoreMod.ID, "QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL,1),
     PlanckCircuit(
         2118,
         "gt.circuitcomponent.planckcircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
-    PlanckManifold(
+
+   () -> getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL,1),
+    RawManifoldBud(
         2119,
-        "gt.circuitcomponent.planckmanifold",
-        () -> ItemList.Planck_Manifold.get(1), CircuitCalibration.NONE),
+        "gt.circuitcomponent.rawmanifoldbud",
+        () -> ItemList.RawManifoldBud.get(1), CircuitCalibration.SPECIAL,0),
+    PrimedUnattunedCircuitry(2120,"gt.circuitcomponent.primedunattunedcircuitry",CircuitCalibration.PRIMITIVE,0.1f),
+    NandChip(2121,"gt.circuitcomponent.nandchip",()->ItemList.NandChip.get(1),CircuitCalibration.PRIMITIVE,0),
+    Microprocessor(2122,"gt.circuitcomponent.microprocessor",()->ItemList.Circuit_Microprocessor.get(1),CircuitCalibration.PRIMITIVE,0),
+    IntegratedProcessor(2123,"gt.circuitcomponent.integratedprocessor",()->ItemList.Circuit_Processor.get(1),CircuitCalibration.PRIMITIVE,0),
+    NanoProcessor(2124,"gt.circuitcomponent.nanoprocessor",()->ItemList.Circuit_Nanoprocessor.get(1),CircuitCalibration.PRIMITIVE,0),
+    QuantumProcessor(2125,"gt.circuitcomponent.quantumprocessor", ()->ItemList.Circuit_Quantumprocessor.get(1), CircuitCalibration.PRIMITIVE,0)
+
     ;
+
+    static {
+        int opticalSuccessChance = 5000; // 50%
+        OpticalProcessor.xorSuccessChance = opticalSuccessChance;
+        OpticalProcessor.xorResult = ProcessedCircuitOpticalProcessor;
+        OpticalAssembly.xorSuccessChance = opticalSuccessChance;
+        OpticalAssembly.xorResult = ProcessedCircuitOpticalAssembly;
+        OpticalComputer.xorSuccessChance = opticalSuccessChance;
+        OpticalComputer.xorResult = ProcessedCircuitOpticalComputer;
+        OpticalMainframe.xorSuccessChance = opticalSuccessChance;
+        OpticalMainframe.xorResult = ProcessedCircuitOpticalMainframe;
+    }
 
     // spotless:on
 
@@ -570,6 +700,10 @@ public enum CircuitComponent {
 
     // Tier used for calibration
     public final CircuitCalibration circuitType;
+    public float weight = 0;
+
+    public CircuitComponent xorResult;
+    public int xorSuccessChance;
 
     // CC constructor
     CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent) {
@@ -589,8 +723,17 @@ public enum CircuitComponent {
     // 8 - Temporally Transcendent
     // 64 - Special Temporary circuits - Piko/Quantum
 
-    CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent, CircuitCalibration circuitType) {
+    CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent, CircuitCalibration circuitType,
+        float weight) {
         this(id, nameKey, realComponent, null, false, circuitType);
+        this.weight = weight;
+    }
+
+    // CC constructor for circuits not meant to be taken out of the NAC
+    // and instead further used, while counting for calibration
+    CircuitComponent(int id, String nameKey, CircuitCalibration circuitType, float weight) {
+        this(id, nameKey, null, null, true, circuitType);
+        this.weight = weight;
     }
 
     // PC constructor
@@ -615,7 +758,7 @@ public enum CircuitComponent {
         this.circuitType = circuitType;
 
         this.iconString = isProcessed ? PROCESSED_DIRECTORY + name().toLowerCase() : name().toLowerCase();
-        codechicken.nei.api.API.hideItem(getFakeStack(1));
+        if (!isProcessed) codechicken.nei.api.API.hideItem(getFakeStack(1));
     }
 
     public String getLocalizedName() {

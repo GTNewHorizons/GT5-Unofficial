@@ -221,9 +221,24 @@ nei.biovat.output.tooltip=Outputs up to 1,001x amount, depending on the amount o
 tile.diode.name=Cable Diode
 tile.energydistributor.name=Energy Distributor
 tile.acidgenerator.name=Acid Generator
+tile.acidgenerator.tier.1.name=Basic Acid Generator
+tile.acidgenerator.tier.2.name=Advanced Acid Generator
+tile.acidgenerator.tier.3.name=Turbo Acid Generator
+tile.acidgenerator.tier.4.name=Turbo Superacid Generator
+tile.acidgenerator.tier.5.name=Ultimate Corrosive Energy Releaser
 tile.bw.mbf.name=Mega Electric Blast Furnace
 tile.bw.mvf.name=Mega Vacuum Freezer
 tile.biolab.name=Bio Lab
+tile.biolab.tier.3.name=Basic Bio Lab
+tile.biolab.tier.4.name=Advanced Bio Lab
+tile.biolab.tier.5.name=Advanced Bio Lab II
+tile.biolab.tier.6.name=Elite Bio Lab
+tile.biolab.tier.7.name=Elite Bio Lab II
+tile.biolab.tier.8.name=Ultimate Genome Forge
+tile.biolab.tier.9.name=Epic Genome Forge
+tile.biolab.tier.10.name=Epic Genome Forge II
+tile.biolab.tier.11.name=Epic Genome Forge III
+tile.biolab.tier.12.name=Epic Genome Forge IV
 tile.biovat.name=Bacterial Vat
 tile.radiohatch.name=Radio Hatch
 tile.bw.windmill.name=Windmill
@@ -277,7 +292,7 @@ BW.NEI.display.radhatch.0=Sievert: %s Sv
 BW.NEI.display.radhatch.1=Mass: %s kg
 BW.NEI.display.radhatch.2=Time: %s s
 
-tooltip.cal.imprintedWith=Imprinted with: %s
+tooltip.cal.imprintedWith=Imprinted with: §e%s
 chat.cal.mode.0=Circuit Assembly Line Mode
 chat.cal.mode.1=Circuit Assembler Mode
 
@@ -302,7 +317,7 @@ BW.chat.thtr.running_in.normal=THTR is now running in normal Operation.
 BW.chat.diode.max_amps=Max Amps: %s
 
 # bio name
-bw.bioname.latin.format=%s (%s)
+bw.bioname.latin.format=%s (§o%s§r§7)
 bw.bioname.saccharomyces_cerevisiae.latin=Saccharomyces cerevisiae
 bw.bioname.saccharomyces_cerevisiae=Common Yeast
 bw.bioname.saccharomyces_cerevisiae_var_bayanus.latin=Saccharomyces cerevisiae var bayanus

@@ -274,7 +274,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingCh
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEncasementWrapperModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEOpticalOrganizerModule;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESMDProcessorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEPartProcessorModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESuperconductorSplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEWireTracerModule;
@@ -753,13 +753,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         addItemTooltip(
             ItemList.NanoChipModule_AssemblyMatrix.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
-        ItemList.NanoChipModule_SMDProcessor.set(
-            new MTESMDProcessorModule(
-                NANOCHIP_MODULE_SMD_PROCESSOR.ID,
+        ItemList.NanoChipModule_PartProcessor.set(
+            new MTEPartProcessorModule(
+                NANOCHIP_MODULE_PART_PROCESSOR.ID,
                 "multimachine.nanochipmodule.smdprocessor",
                 "Part Preparation Apparatus").getStackForm(1));
         addItemTooltip(
-            ItemList.NanoChipModule_SMDProcessor.get(1),
+            ItemList.NanoChipModule_PartProcessor.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_BoardProcessor.set(
             new MTEBoardProcessorModule(
@@ -9346,13 +9346,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 HATCH_VACUUM_CONVEYOR_INPUT.ID,
                 "vacuum.hatch.input",
                 "Vacuum Conveyor Input",
-                11).getStackForm(1L));
+                9).getStackForm(1L));
         ItemList.Hatch_VacuumConveyor_Output.set(
             new MTEHatchVacuumConveyorOutput(
                 HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
                 "vacuum.hatch.output",
                 "Vacuum Conveyor Output",
-                11).getStackForm(1L));
+                9).getStackForm(1L));
         ItemList.Hatch_Splitter_Level.set(
             new MTEHatchSplitterRedstone(
                 HATCH_SPLITTER_LEVEL.ID,
@@ -9499,6 +9499,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hatch_DroneDownLink.set(
             new MTEHatchDroneDownLink(DroneDownLink.ID, "hatch.dronedownlink", "Drone DownLink Module", 5)
                 .getStackForm(1));
+        API.setAliases(ItemList.Hatch_DroneDownLink.get(1L), "gt.blockmachines.hatch.maintenance.name");
         ItemList.Hatch_DataAccess_EV.set(
             new MTEHatchDataAccess(DATA_ACCESS_HATCH.ID, "hatch.dataaccess", "Data Access Hatch", 4).getStackForm(1L));
         ItemList.Hatch_DataAccess_LuV.set(
@@ -9535,14 +9536,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchLensIndicator(HATCH_LENS_INDICATOR.ID, "hatch.lensindicator", "Lens Indicator Hatch", 8)
                 .getStackForm(1L));
         ItemList.Hatch_Nanite.set(
-            new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Bus", 9, 2048).getStackForm(1));
-        ItemList.Hatch_Nanite_Singularity.set(
-            new MTEHatchNanite(
-                HATCH_NANITE_SINGULARITY.ID,
-                "hatch.nanite.singularity",
-                "Singularity Nanite Containment Bus",
-                11,
-                Integer.MAX_VALUE).getStackForm(1));
+            new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Bus", 9, Integer.MAX_VALUE)
+                .getStackForm(1));
         ItemList.Hatch_Catalyst_Bulk.set(
             new MTEHatchBulkCatalystHousing(
                 HATCH_CATALYST_BULK.ID,
