@@ -58,6 +58,6 @@ public class CircuitBatch {
         cosmics = history[6];
         temporals = history[7];
         specials = history[8];
-
+        total = primitives + crystals + wetwares + bios + opticals + exotics + cosmics + temporals + specials;
     }
 }
