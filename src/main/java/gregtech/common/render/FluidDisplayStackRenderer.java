@@ -1,5 +1,8 @@
 package gregtech.common.render;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumberCompact;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -12,7 +15,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.opengl.GL11;
 
-import appeng.util.ReadableNumberConverter;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.CompactOptions;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.CondensateType;
@@ -22,6 +26,8 @@ import gregtech.common.items.ItemFluidDisplay;
 
 @SideOnly(Side.CLIENT)
 public class FluidDisplayStackRenderer implements IItemRenderer {
+
+    private static final CompactOptions customFluidFormatter = new CompactOptions().setCompactThreshold(10_000);
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -103,22 +109,19 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             .getLong("mFluidDisplayAmount");
         if (fluidAmount > 0L && !item.getTagCompound()
             .getBoolean("mHideStackSize")) {
-            String amountString;
-
-            if (fluidAmount < 10_000) {
-                amountString = fluidAmount + "L";
-            } else {
-                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidAmount) + "L";
-            }
+            String amountString = formatNumberCompact(fluidAmount, customFluidFormatter) + getFluidUnit();
 
             FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
-            float smallTextScale = fontRender.getUnicodeFlag() ? 3F / 4F : 1F / 2F;
+            float maxTextScale = fontRender.getUnicodeFlag() ? 3F / 4F : 1F / 2F;
+            int stringWidth = fontRender.getStringWidth(amountString);
+
+            // Shrink below the usual scale for strings too wide to fit in the slot.
+            float textScale = stringWidth > 0 ? Math.min(maxTextScale, 16F / stringWidth) : maxTextScale;
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glPushMatrix();
-            GL11.glScalef(smallTextScale, smallTextScale, 1.0f);
+            GL11.glScalef(textScale, textScale, 1.0f);
 
-            fontRender
-                .drawString(amountString, 0, (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
+            fontRender.drawString(amountString, 0, (int) (16 / textScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
             GL11.glPopMatrix();
             GL11.glDisable(GL11.GL_ALPHA_TEST);
         }
