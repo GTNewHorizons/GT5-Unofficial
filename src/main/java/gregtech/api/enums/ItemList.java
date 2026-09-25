@@ -1541,7 +1541,7 @@ public enum ItemList implements IItemContainer {
     Hatch_VacuumConveyor_Output,
     VacuumConveyorPipe,
     NanoChipModule_AssemblyMatrix,
-    NanoChipModule_SMDProcessor,
+    NanoChipModule_PartProcessor,
     NanoChipModule_BoardProcessor,
     NanoChipModule_EtchingArray,
     NanoChipModule_CuttingChamber,
@@ -3129,7 +3129,18 @@ public enum ItemList implements IItemContainer {
     FirewallProjectionNanochipCasing,
     ComplexNanochipGlass,
     Gravitational_Lens,
-    Planck_Manifold,
+
+    CalabiYauManifold,
+    RawManifoldBud,
+    BlossomingManifoldBud,
+
+    PulsatingWDMStrands,
+    UnboundWDMStrands,
+    MacrocosmicStrands,
+    IsolatedBDMStrands,
+
+    LostQuantumCircuitRack,
+    RealizedQuantumCircuitRack,
 
     CultureNullBioCulture,
     CultureSaccharomycesCerevisiae,
@@ -3309,7 +3320,7 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_Foolish,
     Ice_Cream_LawnbaseSpecial,
     Ice_Cream_LunarLander,
-    Ice_Cream_NaquadaNutSwirl,
+    Ice_Cream_NaquadahNutSwirl,
     Ice_Cream_NaquadriaPlasmaParfait,
     Ice_Cream_NetherStarNutCrunch,
     Ice_Cream_NutsAndBolts,
