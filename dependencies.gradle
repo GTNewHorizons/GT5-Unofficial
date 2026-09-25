@@ -65,7 +65,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:EnderStorage:1.8.7:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.11.37:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.34-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.43-GTNH:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.44-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.17.31:dev") { transitive = false }
 
     // Required to use Blast Furnace and Smoker Recipe maps from EFR.
