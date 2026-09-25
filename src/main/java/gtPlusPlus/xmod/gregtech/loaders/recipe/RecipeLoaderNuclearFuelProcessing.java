@@ -22,7 +22,6 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeLoaderNuclearFuelProcessing {
 
@@ -217,7 +216,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsFluorides.URANIUM_HEXAFLUORIDE.getCell(1), MaterialsNuclides.LiFBeF2.getCell(1))
             .fluidInputs(Materials.Hydrogen.getGas(2_000))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2))
+            .itemOutputs(Materials.HydrofluoricAcid.getCells(2))
             .fluidOutputs(MaterialsNuclides.LiFBeF2UF4.getFluidStack(3000))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_IV)

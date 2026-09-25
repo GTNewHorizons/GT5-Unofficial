@@ -83,7 +83,7 @@ public class RecipeLoaderRocketFuels {
         // H2O2 + 2NH3 = N2H4 + 2H2O
         GTValues.RA.stdBuilder()
             .circuit(21)
-            .fluidInputs(new FluidStack(GTPPFluids.HydrogenPeroxide, 1_000), Materials.Ammonia.getGas(2_000))
+            .fluidInputs(Materials.HydrogenPeroxide.getFluid(1_000), Materials.Ammonia.getGas(2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.Hydrazine, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)

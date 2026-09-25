@@ -6,6 +6,7 @@ import cofh.core.item.ItemBase;
 import cofh.core.item.ItemBucket;
 import cofh.core.util.energy.FurnaceFuelHandler;
 import cofh.core.util.fluid.BucketHandler;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -31,6 +32,7 @@ public class TFItems {
         GregtechItemList.CryotheumDust.set(material.addOreDictItem(4, "dustCryotheum"));
 
         FurnaceFuelHandler.registerFuel(GregtechItemList.PyrotheumDust.get(1), 2400);
+        FurnaceFuelHandler.registerFuel(Materials.Lava.getCells(1), 20000);
 
         GTOreDictUnificator.registerOre("stickBlizz", GregtechItemList.BlizzRod.get(1));
     }
