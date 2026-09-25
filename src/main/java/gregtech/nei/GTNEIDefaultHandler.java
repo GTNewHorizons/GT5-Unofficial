@@ -2,6 +2,7 @@ package gregtech.nei;
 
 import static gregtech.api.enums.GTValues.V;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.Badge;
 import codechicken.nei.recipe.GuiRecipe;
@@ -75,6 +77,8 @@ import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
@@ -87,7 +91,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     private static final int RECIPE_NAME_WIDTH = 140;
 
     /**
-     * Basically {@link #cycleTicksStatic} but always updated even while holding shift
+     * Always updated, even while holding shift
      */
     private static int drawTicks;
     private static final int PROGRESSBAR_CYCLE_TICKS = 200;
@@ -106,10 +110,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
      * Localized name of this handler displayed on the top.
      */
     private String recipeNameDisplay;
-    /**
-     * Tooltip shown while hovering over header of this handler. Can be null if the full name fits in the screen.
-     */
-    private NEIHandlerAbsoluteTooltip recipeNameTooltip;
 
     /**
      * The recipe currently being displayed in the NEI. Updated each frame in {@link #drawBackground}.
@@ -120,6 +120,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     protected final GUIColorOverride colorOverride = GUIColorOverride
         .get(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.location);
     private int neiTextColorOverride = -1;
+
+    private final Int2ObjectMap<Rectangle> stacktraceHoverAreas = new Int2ObjectOpenHashMap<>();
 
     public GTNEIDefaultHandler(RecipeCategory recipeCategory) {
         this.recipeCategory = recipeCategory;
@@ -468,12 +470,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         do {
             recipeName = recipeName.substring(0, recipeName.length() - 1);
         } while (fontRenderer.getStringWidth(recipeName) + ellipsisWidth + suffixWidth > RECIPE_NAME_WIDTH);
-        setupRecipeNameTooltip(originalRecipeName + suffix);
         return recipeName + ellipsis + suffix;
-    }
-
-    private void setupRecipeNameTooltip(String tooltip) {
-        recipeNameTooltip = new NEIHandlerAbsoluteTooltip(tooltip, new Rectangle(13, -34, RECIPE_NAME_WIDTH - 1, 11));
     }
 
     @Override
@@ -488,31 +485,48 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     }
 
     @Override
-    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currentTip,
-        int aRecipeIndex) {
-        if (recipeNameTooltip != null) {
-            recipeNameTooltip.handleTooltip(currentTip, aRecipeIndex);
-        }
-        if (aStack == null) {
-            return currentTip;
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack stack, List<String> currentTip, int recipeIndex) {
+        if (stack != null && arecipes.get(recipeIndex) instanceof CachedDefaultRecipe cachedRecipe) {
+            return frontend.handleNEIItemTooltip(stack, currentTip, cachedRecipe);
         }
 
-        CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
-        if (tObject instanceof CachedDefaultRecipe) {
-            currentTip = frontend.handleNEIItemTooltip(aStack, currentTip, (CachedDefaultRecipe) tObject);
-        }
         return currentTip;
     }
 
     @Override
-    public void drawExtras(int aRecipeIndex) {
-        final CachedDefaultRecipe cachedRecipe = (CachedDefaultRecipe) this.arecipes.get(aRecipeIndex);
+    public List<String> handleTooltip(GuiRecipe<?> gui, List<String> currentTip, int recipeIndex) {
+        currentTip = super.handleTooltip(gui, currentTip, recipeIndex);
 
-        drawDescription(cachedRecipe);
+        if (!(arecipes.get(recipeIndex) instanceof CachedDefaultRecipe cachedRecipe)) {
+            return currentTip;
+        }
+
+        Rectangle stacktraceHoverArea = stacktraceHoverAreas.get(recipeIndex);
+        if (stacktraceHoverArea == null) {
+            return currentTip;
+        }
+
+        Point mousePos = GuiDraw.getMousePosition();
+        Point recipePos = gui.getRecipePosition(recipeIndex);
+        int recipeRelativeMouseX = mousePos.x - gui.guiLeft - recipePos.x;
+        int recipeRelativeMouseY = mousePos.y - gui.guiTop - recipePos.y;
+
+        if (stacktraceHoverArea.contains(recipeRelativeMouseX, recipeRelativeMouseY)) {
+            currentTip.addAll(cachedRecipe.mRecipe.stackTraces.getFirst());
+        }
+
+        return currentTip;
+    }
+
+    @Override
+    public void drawExtras(int recipeIndex) {
+        final CachedDefaultRecipe cachedRecipe = (CachedDefaultRecipe) this.arecipes.get(recipeIndex);
+
+        drawDescription(cachedRecipe, recipeIndex);
         frontend.drawNEIOverlays(cachedRecipe);
     }
 
-    private void drawDescription(CachedDefaultRecipe cachedRecipe) {
+    private void drawDescription(CachedDefaultRecipe cachedRecipe, int recipeIndex) {
         GTRecipe recipe = cachedRecipe.mRecipe;
         if (overclockDescriber == null) {
             // By default, assume generic LV EU with no overclocks
@@ -527,14 +541,34 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         cachedRecipe.calculator = calculator;
 
-        frontend.drawDescription(
-            new RecipeDisplayInfo(
-                recipe,
-                recipeMap,
-                overclockDescriber,
-                calculator,
-                getDescriptionYOffset(),
-                neiTextColorOverride));
+        RecipeDisplayInfo recipeInfo = new RecipeDisplayInfo(
+            recipe,
+            recipeMap,
+            overclockDescriber,
+            calculator,
+            getDescriptionYOffset(),
+            neiTextColorOverride);
+
+        frontend.drawDescription(recipeInfo);
+        drawStacktraceHoverLabel(recipeInfo, cachedRecipe, recipeIndex);
+    }
+
+    private void drawStacktraceHoverLabel(RecipeDisplayInfo recipeInfo, CachedDefaultRecipe cachedRecipe,
+        int recipeIndex) {
+
+        GTRecipe recipe = cachedRecipe.mRecipe;
+        if (recipe.stackTraces == null || recipe.stackTraces.isEmpty()) {
+            return;
+        }
+
+        String text = "Hover to see stack trace";
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+
+        stacktraceHoverAreas.put(
+            recipeIndex,
+            new Rectangle(5, recipeInfo.getYPos(), fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT));
+
+        recipeInfo.drawText(text);
     }
 
     protected int getDescriptionYOffset() {
