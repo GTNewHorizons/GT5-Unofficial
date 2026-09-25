@@ -33,7 +33,8 @@ public enum BehaviorName {
     HoloInventory(EnumRarity.uncommon),
     Terrasteel(EnumRarity.uncommon),
     Soulbound(EnumRarity.common),
-    Levitation(EnumRarity.epic)
+    Levitation(EnumRarity.epic),
+    AutoFeed(EnumRarity.uncommon)
     //
     ;
 

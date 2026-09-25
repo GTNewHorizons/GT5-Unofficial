@@ -10,7 +10,8 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.items.armor.ui.ArmorRadialMenu;
+import gregtech.api.items.armor.ui.autofeed.AutoFeedUI;
+import gregtech.api.items.armor.ui.radialmenu.ArmorRadialMenu;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.panel.GTPopUpPanel;
@@ -60,5 +61,6 @@ public final class GTGuis {
         GuiManager.registerFactory(ToolboxSelectGuiFactory.INSTANCE);
         GuiManager.registerFactory(ProxiedMteGui.GUI);
         GuiManager.registerFactory(ArmorRadialMenu.INSTANCE);
+        GuiManager.registerFactory(AutoFeedUI.INSTANCE);
     }
 }

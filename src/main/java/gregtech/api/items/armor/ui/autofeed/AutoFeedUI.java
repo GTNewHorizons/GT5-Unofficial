@@ -1,4 +1,4 @@
-package gregtech.api.items.armor.ui;
+package gregtech.api.items.armor.ui.autofeed;
 
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -14,10 +14,16 @@ import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-public class ArmorRadialMenu extends AbstractUIFactory<GuiData> {
+public class AutoFeedUI extends AbstractUIFactory<GuiData> implements IGuiHolder<GuiData> {
 
-    public static final ArmorRadialMenu INSTANCE = new ArmorRadialMenu();
+    public static final AutoFeedUI INSTANCE = new AutoFeedUI();
+
+    private AutoFeedUI() {
+        super("gregtech:armor_autofeedgui");
+    }
 
     public void open(EntityPlayer player) {
         if (!player.getEntityWorld().isRemote && player instanceof EntityPlayerMP playerMP) {
@@ -25,13 +31,9 @@ public class ArmorRadialMenu extends AbstractUIFactory<GuiData> {
         }
     }
 
-    private ArmorRadialMenu() {
-        super("gregtech:armor_settings_menu");
-    }
-
     @Override
     public @NotNull IGuiHolder<GuiData> getGuiHolder(final GuiData data) {
-        return SelectGuiHolder.INSTANCE;
+        return this;
     }
 
     @Override
@@ -45,5 +47,11 @@ public class ArmorRadialMenu extends AbstractUIFactory<GuiData> {
     @Override
     public ModularScreen createScreen(final GuiData data, final ModularPanel mainPanel) {
         return new ModularScreen(GregTech.ID, mainPanel);
+    }
+
+    @Override
+    public ModularPanel buildUI(final GuiData data, final PanelSyncManager syncManager, final UISettings settings) {
+        AutoFeedUIFactory gui = new AutoFeedUIFactory();
+        return gui.createMainPanel(data, syncManager, settings);
     }
 }

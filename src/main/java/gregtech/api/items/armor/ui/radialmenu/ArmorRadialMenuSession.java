@@ -1,4 +1,4 @@
-package gregtech.api.items.armor.ui;
+package gregtech.api.items.armor.ui.radialmenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;

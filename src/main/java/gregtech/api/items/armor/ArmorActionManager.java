@@ -134,6 +134,14 @@ public class ArmorActionManager {
                 SyncedKeybind.createConfigurable("key.gt.toggle_levitation_mode", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.Levitation));
 
+        register(
+            new ArmorAction(
+                "auto_feed_ui",
+                "Open AutoFeed UI",
+                false,
+                SyncedKeybind.createConfigurable("key.gt.open_autofeed_ui", "Gregtech Armor", Keyboard.KEY_NONE),
+                BehaviorName.AutoFeed));
+
         // Keybinds
 
         register(

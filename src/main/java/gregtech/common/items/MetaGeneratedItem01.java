@@ -266,6 +266,8 @@ import static gregtech.common.items.IDMetaItem01.FluidRegulator_UMV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_UV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_UXV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_ZPM;
+import static gregtech.common.items.IDMetaItem01.Food_Can_Empty;
+import static gregtech.common.items.IDMetaItem01.Food_Can_Filled;
 import static gregtech.common.items.IDMetaItem01.Fuel_Can_Plastic_Empty;
 import static gregtech.common.items.IDMetaItem01.Fuel_Can_Plastic_Filled;
 import static gregtech.common.items.IDMetaItem01.GigaChad;
@@ -473,6 +475,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.common.items.behaviors.BehaviourFoodCan;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -3557,6 +3560,28 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BehaviourScanner.INSTANCE,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 6L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 6L)));
+
+        ItemList.FoodCanFilled.set(
+            addItemWithLocalizationKeys(
+                Food_Can_Filled.ID,
+                "gt.item.food_can_filled.name",
+                "gt.item.food_can_filled.tooltip",
+                new BehaviourFoodCan(),
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1L),
+        new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L)
+            )
+        );
+
+            ItemList.FoodCanEmpty.set(
+                addItemWithLocalizationKeys(
+                    Food_Can_Empty.ID,
+                    "gt.item.food_can_empty.name",
+                    "gt.item.food_can_empty.tooltip",
+                    new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
+                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)
+                )
+            );
 
         ItemList.NC_SensorKit.set(
             addItemWithLocalizationKeys(NC_SensorKit.ID, "gt.item.tool.sensor_kit.name", "", new BehaviourSensorKit()));

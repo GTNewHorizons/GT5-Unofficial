@@ -1,4 +1,4 @@
-package gregtech.api.items.armor.ui;
+package gregtech.api.items.armor.ui.radialmenu;
 
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_WHITELIST;
 
