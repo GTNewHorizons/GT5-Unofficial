@@ -502,7 +502,26 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             // not output to normal busses
             // Then use addVCOutput to convert these back into CCs in the right hatch
             this.currentParallel = simulatedParallelHelper.getCurrentParallel();
-            this.mOutputItems = simulatedParallelHelper.getItemOutputs();
+
+            // Check for any XOR outputs to determine what to output
+            ItemStack[] originalOutputs = simulatedParallelHelper.getItemOutputs();
+            if (supportsXOROutput()) {
+                ItemStack[] newOutputs = new ItemStack[originalOutputs.length];
+                for (int i = 0; i < originalOutputs.length; i++) {
+                    ItemStack output = originalOutputs[i];
+                    CircuitComponent cc = CircuitComponent.tryGetFromFakeStack(output);
+                    if (cc != null && cc.xorResult != null && XSTR.XSTR_INSTANCE.nextInt(10000) > cc.xorSuccessChance) {
+                        // XOR result exists, failed the chance check, output the failure CC instead
+                        newOutputs[i] = cc.xorResult.getFakeStack(output.stackSize);
+                    } else {
+                        // No CC found or no XOR result, continue as normal
+                        newOutputs[i] = output;
+                    }
+                }
+                this.mOutputItems = newOutputs;
+            } else {
+                this.mOutputItems = originalOutputs;
+            }
 
             // apply 2/4 overclock with any excess power
             // this still keeps the >= 5 seconds rule so we don't have to think about sub-ticking
@@ -521,6 +540,10 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
 
         return result;
+    }
+
+    protected boolean supportsXOROutput() {
+        return false;
     }
 
     /**
