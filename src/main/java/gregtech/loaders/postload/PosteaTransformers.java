@@ -19,6 +19,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import vexatos.tgregworks.reference.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.common.blocks.BlockFrameBox;
 
@@ -32,6 +33,7 @@ public class PosteaTransformers implements Runnable {
     @Override
     public void run() {
         registerFrameboxTransformers();
+        registerIC2Transformers();
         registerProgrammedCircuitTransformers();
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
@@ -107,6 +109,18 @@ public class PosteaTransformers implements Runnable {
             tag.setInteger("Damage", indexInMaterialList);
             return true;
         });
+    }
+
+    // TODO: Remove this after IC2 deprecation is complete. Or leave them here for the end of time
+    // (that's probably whats gonna happen anyways)
+    private void registerIC2Transformers() {
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemFuelPlantBall", ItemList.IC2_Plantball.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemBiochaff", ItemList.Chaff.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemDynamite", ItemList.Dynamite.get(1));
+
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 6, Materials.Biomass.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 7, Materials.Biogas.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 12, Materials.DistilledWater.getCells(1));
     }
 
     // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
