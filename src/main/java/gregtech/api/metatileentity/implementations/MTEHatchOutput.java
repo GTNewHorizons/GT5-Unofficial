@@ -52,6 +52,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 
@@ -67,6 +68,13 @@ public class MTEHatchOutput extends MTEHatch
     protected Fluid lockedFluid = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
     protected byte mMode = 0;
+    /**
+     * Until this tick, auto-output is skipped as long as the stored amount still equals {@link #failedPushAmount}. Set
+     * after an attempt that moved nothing, see {@code MachineStats.machines.outputHatchPushFailCooldown}.
+     */
+    private long pushBackoffUntil = 0;
+    /** Stored amount at the last auto-output attempt that moved nothing; -1 when not backing off. */
+    private int failedPushAmount = -1;
 
     public MTEHatchOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 4, (String) null);
@@ -205,23 +213,39 @@ public class MTEHatchOutput extends MTEHatch
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && mFluid != null) {
-            IFluidHandler tTileEntity = aBaseMetaTileEntity
-                .getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
-            if (tTileEntity != null) {
-                GTUtility.moveFluid(
-                    aBaseMetaTileEntity,
-                    tTileEntity,
-                    aBaseMetaTileEntity.getFrontFacing(),
-                    Math.max(1, mFluid.amount),
-                    null);
-            }
+        if (aBaseMetaTileEntity.isServerSide()) {
+            tryAutoPush(aBaseMetaTileEntity, aTick);
         }
         // A drained output hatch frees up space, which can unblock a recipe that failed with FLUID_OUTPUT_FULL. This
         // must run AFTER the auto-eject above: that eject marks the tank dirty within this same tick, and the dirty
         // flag is cleared at the end of the tick, so a self-eject that frees space would otherwise never push a check.
         if (aBaseMetaTileEntity.isServerSide()) {
             detectInventoryChange();
+        }
+    }
+
+    private void tryAutoPush(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (!aBaseMetaTileEntity.isAllowedToWork() || mFluid == null) return;
+        if (aTick < pushBackoffUntil && mFluid.amount == failedPushAmount) return;
+
+        int amountBefore = mFluid.amount;
+        IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
+        if (tTileEntity != null) {
+            GTUtility.moveFluid(
+                aBaseMetaTileEntity,
+                tTileEntity,
+                aBaseMetaTileEntity.getFrontFacing(),
+                Math.max(1, mFluid.amount),
+                null);
+        }
+
+        int cooldown = MachineStats.machines.outputHatchPushFailCooldown;
+        if (cooldown > 0 && mFluid != null && mFluid.amount == amountBefore) {
+            pushBackoffUntil = aTick + cooldown;
+            failedPushAmount = amountBefore;
+        } else {
+            pushBackoffUntil = 0;
+            failedPushAmount = -1;
         }
     }
 

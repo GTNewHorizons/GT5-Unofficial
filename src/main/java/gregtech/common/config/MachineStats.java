@@ -116,6 +116,14 @@ public class MachineStats {
         @Config.DefaultInt(0)
         public int recipeCheckFailCooldown;
 
+        @Config.Comment({
+            "Ticks a fluid output hatch waits before retrying its auto-output after an attempt that moved nothing.",
+            "The hatch retries immediately whenever its stored amount changes.",
+            "0 (default) retries every tick. Raise this (e.g. 20) if many hatches face targets that stay full." })
+        @Config.DefaultInt(0)
+        @Config.RangeInt(min = 0)
+        public int outputHatchPushFailCooldown;
+
         @Config.Comment({ "Use StackWatcher for Stocking Inputs (ME).",
             "If this option is off, periodic recipe check will be enabled if stocking input is attached." })
         @Config.DefaultBoolean(false)
