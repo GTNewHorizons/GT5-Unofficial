@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 
@@ -490,10 +491,7 @@ public class ScannerHelper {
             final FluidStack fluid = undergroundOilReadInformation(currentChunk);
             if (fluid != null) {
                 list.add(
-                    transComp(
-                        "chunk_info_3",
-                        new ChatComponentTranslation(fluid.getUnlocalizedName()),
-                        goldComp(formatNumber(fluid.amount))));
+                    transComp("chunk_info_3", new ChatComponentFluidName(fluid), goldComp(formatNumber(fluid.amount))));
             } else {
                 list.add(transComp("chunk_info_4"));
             }
