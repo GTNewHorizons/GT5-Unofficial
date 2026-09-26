@@ -47,6 +47,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
@@ -174,6 +175,37 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
+    public GTRecipe transformRecipe(GTRecipe recipe) {
+        GTRecipe transformedRecipe = super.transformRecipe(recipe);
+        ItemStack output = transformedRecipe.mOutputs[0];
+        CircuitComponent cc = CircuitComponent.tryGetFromFakeStack(output);
+        if (cc == null || cc.circuitType != CircuitCalibration.PRIMITIVE || !baseMulti.primitiveT1Active) {
+            return transformedRecipe;
+
+        }
+        // 10% chance to set recipe duration to 10 ticks flat
+        if (random.nextFloat() <= 0.1) {
+            transformedRecipe.setDuration(10);
+        }
+
+        if (cc == CircuitComponent.PrimedUnattunedCircuitry) return transformedRecipe;
+
+        // 5% chance to double circuit output T2 calibration
+        // 10% chance instead at T3
+        if (baseMulti.primitiveT2Active) {
+            double chance = 0.05;
+            if (baseMulti.primitiveT3Active) {
+                chance += 0.05;
+            }
+            if (random.nextFloat() <= chance) {
+                transformedRecipe.setOutputs(output, output.copy());
+            }
+        }
+
+        return transformedRecipe;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
@@ -250,6 +282,11 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 1);
         int machineTier = getCasingTier();
         return (float) Math.pow(0.95, machineTier - recipeTier);
+    }
+
+    @Override
+    protected boolean supportsXOROutput() {
+        return true;
     }
 
     @Override

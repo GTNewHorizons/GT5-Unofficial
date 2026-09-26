@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
@@ -42,6 +43,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
@@ -68,6 +71,9 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.client.GTSoundLoop;
+import gregtech.client.volumetric.CircularSound;
+import gregtech.client.volumetric.ISoundPosition;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
@@ -98,6 +104,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final int BATCH_SIZE = 1000;
     public static final int HISTORY_BLOCKS = 100;
     public static final int CALIBRATION_MAX = BATCH_SIZE * HISTORY_BLOCKS;
+    private static final float SOUND_RADIUS = 32f;
     public final Queue<CircuitBatch> circuitHistory = new ArrayDeque<>();
     private CircuitBatch currentBlock;
 
@@ -559,6 +566,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     // duration only gets applied if the CircuitCalibration Metadata key is present on the recipe and is active on the
     // NAC
     public float globalDurationMultiplier = 1;
+    public boolean primitiveT1Active = false;
+    public boolean primitiveT2Active = false;
+    public boolean primitiveT3Active = false;
     public boolean crystalT3Active = false;
     public boolean wetwareT3Active = false;
     public boolean bioT3Active = false;
@@ -574,6 +584,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public void resetCalibrationValues() {
         globalEUMultiplier = 1;
         globalDurationMultiplier = 1;
+        primitiveT1Active = false;
+        primitiveT2Active = false;
+        primitiveT3Active = false;
         crystalT3Active = false;
         wetwareT3Active = false;
         bioT3Active = false;
@@ -913,5 +926,36 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_NANOCHIP;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected void doActivitySound(SoundResource activitySound) {
+        if (getBaseMetaTileEntity().isActive() && activitySound != null && !getBaseMetaTileEntity().isMuffled()) {
+            if (activitySoundLoop == null) {
+                activitySoundLoop = new GTSoundLoop(
+                    activitySound.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true,
+                    GTSoundLoop.VOLUME_RAMP * SOUND_RADIUS);
+
+                activitySoundLoop.setPosition(getSoundPosition());
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(activitySoundLoop);
+            }
+        } else {
+            if (activitySoundLoop != null) {
+                activitySoundLoop.setFadeMe(true);
+                activitySoundLoop = null;
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ISoundPosition getSoundPosition() {
+        return new CircularSound(this, 0, 0, 0, 0, 1, 0, 0, 0, SOUND_RADIUS);
     }
 }

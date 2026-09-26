@@ -195,6 +195,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     EntityPlayer lastClickedPlayer = null;
 
     @Override
+    public boolean acceptsConfigCopy() {
+        return false;
+    }
+
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         lastClickedPlayer = aPlayer;
 
@@ -211,6 +216,12 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     @Override
     public boolean isValidSlot(int aIndex) {
         return true;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return aIndex == 0 && side == aBaseMetaTileEntity.getFrontFacing() && isItemValidForSlot(aIndex, aStack);
     }
 
     @Override
