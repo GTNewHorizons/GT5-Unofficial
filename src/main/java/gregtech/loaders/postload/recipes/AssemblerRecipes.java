@@ -8,6 +8,7 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.IC2NuclearControl;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.IronChests;
 import static gregtech.api.enums.Mods.IronTanks;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -557,6 +558,18 @@ public class AssemblerRecipes implements Runnable {
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
             }
+
+            // Plasma Collider Casing
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Duranium, 1),
+                    MaterialsElements.STANDALONE.RUNITE.getPlateDouble(4),
+                    getModItem(IndustrialCraft2.ID, "reactorReflector", 1, 1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(576))
+                .itemOutputs(ItemList.CasingPlasmaCollider.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(assemblerRecipes);
 
         }
 
