@@ -354,7 +354,8 @@ public enum SmallOres {
         .heightRange(5, 15)
         .amount(2)
         .ore(Materials.Firestone)
-        .enableInDim(Io, Venus)),
+        .enableInDim(Io, Venus)
+        .enableInDim(NETHER)),
 
     Neutronium(new SmallOreBuilder().name("ore.small.neutronium")
         .heightRange(5, 15)
