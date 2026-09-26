@@ -4025,7 +4025,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             }
         }
 
-        return false;
+        return super.onItemUse(oldItemStack, player, world, x, y, z, ordinalSide, hitX, hitY, hitZ);
     }
 
     /**
