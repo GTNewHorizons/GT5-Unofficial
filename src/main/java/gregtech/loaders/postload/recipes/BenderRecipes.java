@@ -289,7 +289,17 @@ public class BenderRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L))
                 .circuit(1)
-                .itemOutputs(ItemList.IC2_Food_Can_Empty.get(1L))
+                .itemOutputs(ItemList.FoodCanEmpty.get(1L))
+                .duration(20 * TICKS)
+                .eut((int) TierEU.RECIPE_HV)
+                .addTo(benderRecipes);
+        }
+
+        if (GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 4L) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 4L))
+                .circuit(1)
+                .itemOutputs(ItemList.FoodCanEmpty.get(4L))
                 .duration(20 * TICKS)
                 .eut((int) TierEU.RECIPE_HV)
                 .addTo(benderRecipes);
