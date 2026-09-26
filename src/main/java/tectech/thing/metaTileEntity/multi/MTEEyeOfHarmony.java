@@ -979,13 +979,13 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             .addCasing("31", Casings.InfiniteSpacetimeEnergyBoundaryCasing.getLocalizedName(), false)
             .addInputBus("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.boundary-no-stocking-bus"), 1)
             .addInputHatch("2", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.boundary-no-stocking-hatch"), 1)
-            .addOutputBus("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.any-boundary-casing"), 1)
-            .addOutputHatch("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.any-boundary-casing"), 1)
+            .addOutputBus("1", "ME Output Bus", 1)
+            .addOutputHatch("1", "ME Output Hatch", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.EOH_STABILISATION)
             .addSubChannel(GTStructureChannels.EOH_DILATION)
             .addSubChannel(GTStructureChannels.EOH_COMPRESSION)
-            .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTAuthors.AuthorColen);
+            .toolTipFinisher(EnumChatFormatting.GRAY, 41, GTAuthors.AuthorColen);
         // spotless:on
         return tt;
     }
