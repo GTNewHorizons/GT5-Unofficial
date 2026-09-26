@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import codechicken.nei.config.DataDumper;
 import gregtech.api.enums.Materials;
@@ -23,20 +22,9 @@ public class AsteroidDumper extends DataDumper {
 
     @Override
     public String[] header() {
-        return new String[] { StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.asteroid"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.outputs"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.outputWeights"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.minSize"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.maxSize"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.minDistance"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.maxDistance"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.computation"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.minModuleTier"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.duration"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.eut"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.minDroneTier"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.maxDroneTier"),
-            StatCollector.translateToLocal("nei.options.tools.dump.ig.asteroids.headers.weight") };
+        return new String[] { "Asteroid", "Outputs", "Output Weights", "Min Size", "Max Size", "Min Distance",
+            "Max Distance", "Computation", "Min Module Tier", "Base Duration (ticks)", "EU/t", "Min Drone Tier",
+            "Max Drone Tier", "Weight" };
     }
 
     @Override
@@ -47,30 +35,29 @@ public class AsteroidDumper extends DataDumper {
                 (a, b) -> a.getAsteroidNameLocalized()
                     .compareToIgnoreCase(b.getAsteroidNameLocalized()))
             .toArray(AsteroidData[]::new)) {
-            ArrayList<String> line = new ArrayList<>(14);
-            line.add(asteroid.getAsteroidNameLocalized());
+            String[] line = new String[14];
+            line[0] = asteroid.getAsteroidNameLocalized();
             if (asteroid.output != null && asteroid.orePrefixes != null) {
-                line.add(dumpMaterials(asteroid.output, asteroid.orePrefixes));
+                line[1] = dumpMaterials(asteroid.output, asteroid.orePrefixes);
             } else if (asteroid.outputItems != null) {
-                line.add(dumpItems(asteroid.outputItems));
+                line[1] = dumpItems(asteroid.outputItems);
             }
-            line.add(
-                Arrays.stream(asteroid.chances)
-                    .mapToObj(Integer::toString)
-                    .collect(Collectors.joining(", ")));
-            line.add(Integer.toString(asteroid.minSize));
-            line.add(Integer.toString(asteroid.maxSize));
-            line.add(Integer.toString(asteroid.minDistance));
-            line.add(Integer.toString(asteroid.maxDistance));
-            line.add(Integer.toString(asteroid.computation));
-            line.add(Integer.toString(asteroid.requiredModuleTier));
-            line.add(Integer.toString(asteroid.duration));
-            line.add(Integer.toString(asteroid.eut));
-            line.add(Integer.toString(asteroid.minDroneTier));
-            line.add(Integer.toString(asteroid.maxDroneTier));
-            line.add(Integer.toString(asteroid.recipeWeight));
+            line[2] = Arrays.stream(asteroid.chances)
+                .mapToObj(Integer::toString)
+                .collect(Collectors.joining(", "));
+            line[3] = Integer.toString(asteroid.minSize);
+            line[4] = Integer.toString(asteroid.maxSize);
+            line[5] = Integer.toString(asteroid.minDistance);
+            line[6] = Integer.toString(asteroid.maxDistance);
+            line[7] = Integer.toString(asteroid.computation);
+            line[8] = Integer.toString(asteroid.requiredModuleTier);
+            line[9] = Integer.toString(asteroid.duration);
+            line[10] = Integer.toString(asteroid.eut);
+            line[11] = Integer.toString(asteroid.minDroneTier);
+            line[12] = Integer.toString(asteroid.maxDroneTier);
+            line[13] = Integer.toString(asteroid.recipeWeight);
 
-            list.add(line.toArray(String[]::new));
+            list.add(line);
         }
         return list;
     }
