@@ -17,7 +17,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static net.minecraft.util.EnumChatFormatting.BOLD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +29,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -38,6 +38,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -76,7 +77,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.gui.modularui.multiblock.MTESpinmatronGui;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -89,13 +89,25 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int TURBINE_SLOTS_PER_TIER = 2;
+    private static final int PARALLELS_PER_ROTOR_LEVEL = 4;
+    private static final float BASE_SPEED = 3F;
+    private static final float LIGHT_MODE_SPEED = 4.0F;
+    private static final double BASE_EU_MODIFIER = 0.7;
+    private static final int FLUID_PER_RECIPE_TIER = 10;
+    private static final double TIER2_FLUID_PARALLEL_MULTIPLIER = 1.25;
+    private static final int LIGHT_MODE_TIER_OFFSET = 3;
+    private static final int HEAVY_MODE_PARALLEL_DIVISOR = 32;
+    private static final int HEAVY_MODE_EU_MULTIPLIER = 16;
 
     public boolean tier2Fluid = false;
     public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
     public int RP = 0;
-    public float speed = 3F;
+    public float speed = BASE_SPEED;
     public float euMultiplier = 1;
     private final int horizontalOffset = 8; // base offset for tier 1
     private final int verticalOffset = 8; // base offset for tier 2
@@ -269,7 +281,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         final IGregTechTileEntity meta = getBaseMetaTileEntity();
         World w = getBaseMetaTileEntity().getWorld();
         final int aX = meta.getXCoord(), aY = meta.getYCoord(), aZ = meta.getZCoord();
-        for (int i = 0; i < turbineHolder.getSlots(); i++) {
+        for (int i = 0; i < tier * 2; i++) {
             if (turbineHolder.getStackInSlot(i) != null) {
                 ItemStack currentItem = turbineHolder.extractItem(i, 1, false);
                 EntityItem entityItem = new EntityItem(w, aX, aY, aZ, currentItem);
@@ -372,79 +384,29 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Centrifuge")
-            .addInfo(
-                "3 Modes: " + EnumChatFormatting.LIGHT_PURPLE
-                    + "Light"
-                    + EnumChatFormatting.GRAY
-                    + " | "
-                    + EnumChatFormatting.GOLD
-                    + "Standard"
-                    + EnumChatFormatting.GRAY
-                    + " | "
-                    + EnumChatFormatting.GREEN
-                    + "Heavy")
-
-            .addInfo("Overclocks limited to " + EnumChatFormatting.WHITE + "Hatch Tier + 1")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "spinmatron"),
+                ImmutableMap.<String, Object>builder()
+                    .put("slots_per_tier", TURBINE_SLOTS_PER_TIER)
+                    .put("parallels", PARALLELS_PER_ROTOR_LEVEL)
+                    .put("speed", Math.round(BASE_SPEED * 100))
+                    .put("eu_eff", Math.round(BASE_EU_MODIFIER * 100))
+                    .put("fluid_per_tier", FLUID_PER_RECIPE_TIER)
+                    .put("tier2_mult", TIER2_FLUID_PARALLEL_MULTIPLIER)
+                    .put("light_speed", 100)
+                    .put("light_offset", LIGHT_MODE_TIER_OFFSET)
+                    .put("heavy_div", HEAVY_MODE_PARALLEL_DIVISOR)
+                    .put("heavy_eu", HEAVY_MODE_EU_MULTIPLIER)
+                    .build())
+            .addSeparator()
             .addSupportAny()
             .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo(
-                "Gains " + EnumChatFormatting.WHITE
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " Turbine Slots per Structure Tier")
-            .addDynamicParallelInfo(4, TooltipTier.TURBINE)
-            .addInfo("Non-Huge Turbines have reduced effectiveness...")
-            .addStaticSpeedInfo(3f)
-            .addStaticEuEffInfo(0.7f)
-            .addInfo(
-                "Requires Recipe Tier * " + EnumChatFormatting.BLUE
-                    + "10L/s"
-                    + EnumChatFormatting.GRAY
-                    + " of "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Kerosene"
-                    + EnumChatFormatting.GRAY
-                    + " to operate by default")
-            .addInfo(
-                "Supply " + EnumChatFormatting.DARK_PURPLE
-                    + "Biocatalyzed Propulsion Fluid"
-                    + EnumChatFormatting.GRAY
-                    + " instead for a "
-                    + EnumChatFormatting.WHITE
-                    + "1.25x "
-                    + EnumChatFormatting.GRAY
-                    + "Parallel multiplier")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "Light Mode"
-                    + EnumChatFormatting.GRAY
-                    + ": +"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "100%"
-                    + EnumChatFormatting.GRAY
-                    + " Speed Bonus, "
-                    + "Maximum Recipe Tier is "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Voltage Tier - 3")
-            .addInfo(EnumChatFormatting.GOLD + "Standard Mode" + EnumChatFormatting.GRAY + ": No Changes")
-            .addInfo(
-                EnumChatFormatting.GREEN + "Heavy Mode"
-                    + EnumChatFormatting.GRAY
-                    + ": Divides Parallels by "
-                    + EnumChatFormatting.GREEN
-                    + "32"
-                    + EnumChatFormatting.GRAY
-                    + ", Requires T3+ Structure and "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Biocatalyzed Propulsion Fluid")
-            .addInfo("Multiplies EU Cost by " + EnumChatFormatting.RED + "16")
-            .addInfo(
-                "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GREEN + " Heavy Mode")
-
-            .addSeparator()
-            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
+                EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.ITALIC + "" + EnumChatFormatting.BOLD
+                    + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
             .addController("Front center, 9th layer")
             .addCasing("550-712", "Vibration Safe Casing", false)
@@ -480,6 +442,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -610,14 +573,14 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                amountToDrain = Math.max(1, GTUtility.getTier(recipe.mEUt)) * 10;
+                amountToDrain = Math.max(1, GTUtility.getTier(recipe.mEUt)) * FLUID_PER_RECIPE_TIER;
                 euMultiplier = 1;
                 if (!checkFluid(5 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
-                if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
-                    return CheckRecipeResultRegistry.NO_RECIPE;
+                if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)
+                    < LIGHT_MODE_TIER_OFFSET) return CheckRecipeResultRegistry.NO_RECIPE;
                 if (mode == 2.0) {
                     if (!tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
-                    euMultiplier = 16;
+                    euMultiplier = HEAVY_MODE_EU_MULTIPLIER;
                 }
 
                 if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE) && mode != 2.0)
@@ -625,7 +588,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
                 getSpeed();
                 setSpeedBonus(1F / speed);
-                setEuModifier(0.7 * euMultiplier);
+                setEuModifier(BASE_EU_MODIFIER * euMultiplier);
                 return super.validateRecipe(recipe);
             }
 
@@ -734,10 +697,10 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         getRP(); // updates RP
         int parallels = RP;
         if (tier2Fluid) {
-            parallels = (int) Math.floor(parallels * 1.25);
+            parallels = (int) Math.floor(parallels * TIER2_FLUID_PARALLEL_MULTIPLIER);
         }
         if (mode == 2.0) {
-            parallels /= 32;
+            parallels /= HEAVY_MODE_PARALLEL_DIVISOR;
         }
         return parallels > 0 ? parallels : 1; // if its 1, something messed up lol, just a failsafe in case i mess up
     }
@@ -772,14 +735,14 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 
     public int getRP() {
-        RP = 4 * getSumRotorLevels();
+        RP = PARALLELS_PER_ROTOR_LEVEL * getSumRotorLevels();
         return RP;
     }
 
     public float getSpeed() {
-        speed = 3F;
+        speed = BASE_SPEED;
         if (mode == 0.0) {
-            speed = 4.0F;
+            speed = LIGHT_MODE_SPEED;
         }
         return speed;
     }
