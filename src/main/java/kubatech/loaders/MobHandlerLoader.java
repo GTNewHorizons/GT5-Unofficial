@@ -27,7 +27,6 @@ import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.MO
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -199,13 +198,11 @@ public class MobHandlerLoader {
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onPreMobsRegistration(PreMobsRegistrationEvent event) {
         recipeMap.clear();
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onPostMobRegistration(PostMobRegistrationEvent event) {
         if (!event.drops.isEmpty() && event.recipe.isUsableInVial) {
             for (MobDrop drop : event.drops) {
@@ -213,28 +210,22 @@ public class MobHandlerLoader {
                     drop.additionalInfo.add(
                         StatCollector.translateToLocalFormatted(
                             "kubatech.mobhandler.eec_chance",
-                            (((double) drop.chance / 100d) * Config.MobHandler.playerOnlyDropsModifier)));
+                            formatNumber(drop.chance * Config.MobHandler.playerOnlyDropsModifier / 100d)));
                 }
             }
-            @SuppressWarnings("unchecked")
-            ArrayList<MobDrop> drops = (ArrayList<MobDrop>) event.drops.clone();
-            if (!drops.isEmpty()) {
-                recipeMap.put(event.currentMob, new MobEECRecipe(drops, event.recipe));
-            }
+            recipeMap.put(event.currentMob, new MobEECRecipe(new ArrayList<>(event.drops), event.recipe));
         }
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onMobNEIRegistration(MobNEIRegistrationEvent event) {
         MobEECRecipe recipe = recipeMap.get(event.mobName);
         if (recipe != null) {
-            event.additionalInformation.addAll(
-                Arrays.asList(
-                    StatCollector.translateToLocalFormatted("kubatech.gui.text.usage_line", formatNumber(recipe.mEUt)),
-                    StatCollector.translateToLocalFormatted(
-                        "kubatech.gui.text.time_line",
-                        formatNumber(recipe.mDuration / 20d))));
+            event.additionalInformation.add(
+                StatCollector.translateToLocalFormatted("kubatech.gui.text.usage_line", formatNumber(recipe.mEUt)));
+            event.additionalInformation.add(
+                StatCollector
+                    .translateToLocalFormatted("kubatech.gui.text.time_line", formatNumber(recipe.mDuration / 20d)));
         }
     }
 }
