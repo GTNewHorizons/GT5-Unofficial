@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -25,6 +26,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -37,8 +39,13 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclearSaltProcessingPlant>
     implements ISurvivalConstructable {
+
+    private static final int BASE_PARALLEL = 2;
+    private static final float DURATION_MULTIPLIER = 2.5f;
+    private static final float EU_MULTIPLIER = 1f;
 
     private int casing;
     private static IStructureDefinition<MTENuclearSaltProcessingPlant> STRUCTURE_DEFINITION = null;
@@ -69,14 +76,10 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(getMachineType())
-            .addBulkMachineInfo(2, 2.5f, 1f)
-            .addInfo("Processes depleted nuclear salts that come from the LFTR")
-            .addInfo("Handles the recipes of the Reactor Processor Unit and Cold Trap")
-            .addInfo("Only Thermally Insulated Casings can be replaced with hatches")
-            .addInfo("Mufflers on top, Energy Hatches on bottom, exactly 2 of each are required")
-            .addInfo("Maintenance Hatch goes on the back, opposite of the controller block")
-            .addInfo("Inputs go on the left side of the multi, outputs on the right side")
+            .addBulkMachineInfo(BASE_PARALLEL, DURATION_MULTIPLIER, EU_MULTIPLIER)
+            .addMarkdown(new ResourceLocation("gregtech", "nuclear-salt-processing-plant"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 3, true)
             .addController("Front center, 3rd layer")
@@ -90,6 +93,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
             .addOutputBus("0+", "Any right side insulated casing", 3)
             .addOutputHatch("0+", "Any right side insulated casing", 3)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -193,13 +197,13 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2.5F)
+        return new ProcessingLogic().setSpeedBonus(1F / DURATION_MULTIPLIER)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return 2 * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
+        return BASE_PARALLEL * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
     }
 
     @Override

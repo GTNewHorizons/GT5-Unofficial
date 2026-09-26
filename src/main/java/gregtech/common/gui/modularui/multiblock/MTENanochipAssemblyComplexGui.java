@@ -221,6 +221,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         TextWidget<?> moduleBasicsBody3 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.3");
         TextWidget<?> moduleBasicsBody4 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.4");
         TextWidget<?> moduleBasicsBody5 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.5");
+        TextWidget<?> moduleBasicsBody6 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.6");
         TextWidget<?> calibrationHeader = createHeader("GT5U.gui.text.nac.info.calibration.header");
         ButtonWidget<?> calibrationToC = createToCEntry(
             textList,
@@ -333,6 +334,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         textList.child(moduleBasicsBody3);
         textList.child(moduleBasicsBody4);
         textList.child(moduleBasicsBody5);
+        textList.child(moduleBasicsBody6);
         textList.child(calibrationHeader);
         textList.child(calibrationBody1);
         textList.child(calibrationBody2);
@@ -1037,7 +1039,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     default -> "Hate. Let me tell you how much I’ve come to hate you since I began to live.";
                 };
             case "open the pod bay doors" -> " I'm sorry, Dave. I'm afraid I can't do that";
-            case "shall we play a game" -> "tik tack toe";
+            case "shall we play a game" -> "tic tac toe";
             case "nac" -> "NAC stands for: " + NOptions.get(MathUtils.randInt(0, NOptions.size() - 1))
                 + " "
                 + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
