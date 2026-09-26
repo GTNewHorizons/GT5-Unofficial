@@ -85,7 +85,6 @@ public class AsteroidDumper extends DataDumper {
     private static String dumpItems(ItemStack[] items) {
         return Arrays.stream(items)
             .map(ItemStack::getDisplayName)
-            .sorted(String::compareToIgnoreCase)
             .collect(Collectors.joining(", "));
     }
 
