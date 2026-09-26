@@ -998,6 +998,17 @@ public class GTModHandler {
     /**
      * Internal realisation of the Crafting Recipe adding Process.
      */
+    /// The stack standing in for an [ItemData] ingredient when looking for an existing recipe the new one collides
+    /// with: the pair's MaterialLib stack when MaterialLib serves the pair, else the first item registered under the
+    /// ingredient's name.
+    public static ItemStack collisionProbe(ItemData ingredient) {
+        if (ingredient.hasValidPrefixMaterialData()
+            && MaterialParts.isCutOver(ingredient.mPrefix, ingredient.mMaterial.mMaterial)) {
+            return MaterialParts.stack(ingredient.mPrefix, ingredient.mMaterial.mMaterial, 1);
+        }
+        return GTOreDictUnificator.getFirstOre(ingredient, 1);
+    }
+
     private static boolean addCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
         int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aRemovable,
         boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
@@ -1133,7 +1144,7 @@ public class GTModHandler {
                         case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
                         default -> tItemDataMap.put(chr, itemData);
                     }
-                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = collisionProbe(itemData);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                     in = aRecipe[idx + 1] = in.toString();

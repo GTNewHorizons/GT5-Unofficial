@@ -56,6 +56,7 @@ import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.overclockdescriber.EUNoOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
@@ -249,7 +250,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             && !GTOreDictUnificator.isBlacklisted(aResult)
             && !tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty()) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
-                tResults.add(GTOreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+                tResults.add(MaterialParts.stack(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
         }
 
@@ -330,7 +331,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         tInputs.add(GTOreDictUnificator.get(false, aInput));
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
-                tInputs.add(GTOreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+                tInputs.add(MaterialParts.stack(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
         }
         if (aInput != null && ItemList.Tool_DataStick.isStackEqual(aInput, false, true)) {

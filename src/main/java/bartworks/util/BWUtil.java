@@ -436,7 +436,7 @@ public class BWUtil {
                             tItemDataMap.put(chr, itemData);
                             break;
                     }
-                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = GTModHandler.collisionProbe(itemData);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                     aRecipe[idx + 1] = in.toString();
