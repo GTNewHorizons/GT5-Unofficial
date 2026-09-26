@@ -399,7 +399,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
 
             if (slot == null) return 0;
 
-            return slot.extractedAmount;
+            return GTUtility.longToInt(slot.extractedAmount);
         }
 
         @Override

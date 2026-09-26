@@ -133,14 +133,23 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
+        return GTUtility.longToInt(fillLong(aFluid, doFill));
+    }
+
+    @Override
+    public long fillLong(FluidStack aFluid, boolean doFill) {
         IAEFluidStack input = AEFluidStack.create(aFluid);
+        long fluidAmount = GTUtility.getFluidAmount(aFluid);
+        input.setStackSize(fluidAmount);
         provider.storePartial(input, !doFill);
-        return aFluid.amount - (int) input.getStackSize();
+        return fluidAmount - input.getStackSize();
     }
 
     @Override
     public boolean canStoreFluid(@NotNull FluidStack fluidStack) {
-        return provider.canStore(AEFluidStack.create(fluidStack));
+        return provider.canStore(
+            AEFluidStack.create(fluidStack)
+                .setStackSize(GTUtility.getFluidAmount(fluidStack)));
     }
 
     @Override
@@ -613,30 +622,30 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     IAEFluidStack input = AEFluidStack.create(stack);
                     if (isDynamicCapacity) {
                         long cellAvailableSpace = provider.getCellAvailableSpace();
-                        int parallels = Math.clamp(cellAvailableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                        long parallels = cellAvailableSpace / totalPerParallel;
                         long amount = Math.min(parallels * perParallel, cellAvailableSpace - cache.getTotal());
-                        amount = Math.min(amount, stack.amount);
+                        amount = Math.min(amount, GTUtility.getFluidAmount(stack));
                         input.setStackSize(amount);
                     }
                     IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
-                    int inserted = (int) (input.getStackSize() - (rejected == null ? 0 : rejected.getStackSize()));
+                    long inserted = input.getStackSize() - (rejected == null ? 0 : rejected.getStackSize());
                     cache.insert(id, inserted);
-                    stack.amount -= inserted;
+                    GTUtility.decFluidAmount(stack, inserted);
                     return inserted > 0;
                 } else if (isDynamicCapacity) {
-                    int parallels = Math.clamp(availableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                    long parallels = availableSpace / totalPerParallel;
                     long amount = Math.min(parallels * perParallel, availableSpace - cache.getTotal());
-                    amount = Math.min(amount, stack.amount);
+                    amount = Math.min(amount, GTUtility.getFluidAmount(stack));
                     cache.insert(id, amount);
-                    stack.amount -= amount;
+                    GTUtility.decFluidAmount(stack, amount);
                     return amount > 0;
                 }
             }
             if (!hasAvailableSpace() || !isFilteredTo(id)) {
                 return false;
             }
-            cache.insert(id, stack.amount);
-            stack.amount = 0;
+            cache.insert(id, GTUtility.getFluidAmount(stack));
+            GTUtility.setFluidAmount(stack, 0);
             return true;
         }
 
