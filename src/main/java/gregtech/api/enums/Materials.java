@@ -932,6 +932,11 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials XenoxeneDiluted;
     // endregion
 
+    // region Growth Catalyst Line
+    public static Materials Glucose;
+    public static Materials BioGrowthMediumBase;
+    // endregion
+
     // region Netherite Line
     public static Materials NetherAir;
     public static Materials NetherSemiFluid;

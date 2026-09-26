@@ -107,8 +107,16 @@ public class Centrifuge implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(17)
-            .fluidInputs(new FluidStack(BioCultureLoader.CommonYeast.getFluid(), 1000))
+            .fluidInputs(new FluidStack(BioCultureLoader.Penicillium.getFluid(), 1000))
             .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[2], 10))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(centrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(17)
+            .fluidInputs(new FluidStack(BioCultureLoader.PenicilliumYeast.getFluid(), 1000))
+            .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[2], 100))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(centrifugeRecipes);

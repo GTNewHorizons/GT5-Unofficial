@@ -55,6 +55,7 @@ public class MaterialsInit {
         loadSuperconductors();
         loadWaterLineChemicals();
         loadRadoxLine();
+        loadGrowthMediumLine();
         loadNetheriteLine();
         loadPrismaticAcidLine();
         loadAcidRecipes();
@@ -14107,6 +14108,32 @@ public class MaterialsInit {
             .setDefaultLocalName("Diluted Xenoxene")
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x00cec8c4)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static void loadGrowthMediumLine() {
+        Materials.Glucose = loadGlucose();
+        Materials.BioGrowthMediumBase = loadBioGrowthMediumBase();
+    }
+
+    private static Materials loadGlucose() {
+        return new MaterialBuilder().setName("Glucose")
+            .setDefaultLocalName("Glucose")
+            .setIconSet(TextureSet.SET_DULL)
+            .setARGB(0x00ffffe0)
+            .addFluid()
+            .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadBioGrowthMediumBase() {
+        return new MaterialBuilder().setName("BioGrowthMediumBase")
+            .setDefaultLocalName("Bio Catalyst Medium Base")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeOrange)
+            .setARGB(0x00d99b6b)
+            .addCell()
             .addFluid()
             .constructMaterial();
     }

@@ -312,11 +312,9 @@ public class RecipeLoaderChemicalSkips {
             .addTo(quantumForceTransformerRecipes);
         // Stem Cells
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                Materials.Calcium.getDust(32),
-                Materials.MeatRaw.getDust(32),
-                getModItem(NewHorizonsCoreMod.ID, "GTNHBioItems", 32, 2))
+            .itemInputs(Materials.Calcium.getDust(32), Materials.MeatRaw.getDust(32), Materials.Salt.getDust(32))
             .itemOutputs(stemcells)
+            .fluidInputs(Materials.Glucose.getFluid(32_000))
             .fluidOutputs(
                 Materials.GrowthMediumRaw.getFluid(1_024_000),
                 Materials.GrowthMediumSterilized.getFluid(512_000))
@@ -390,7 +388,10 @@ public class RecipeLoaderChemicalSkips {
             ItemStack seaweed = GTUtility
                 .copyAmountUnsafe(64 * 32, getModItem(GalaxySpace.ID, "tcetiedandelions", 1, 4));
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("cropSeaweed", 64), Materials.Mytryl.getDust(16))
+                .itemInputs(
+                    GTOreDictUnificator.get("cropSeaweed", 64),
+                    Materials.Mytryl.getDust(16),
+                    getModItem(NewHorizonsCoreMod.ID, "GTNHBioItems", 16, 2))
                 .itemOutputs(seaweed, getModItem(NewHorizonsCoreMod.ID, "TCetiESeaweedExtract", 16))
                 .fluidInputs(FluidRegistry.getFluidStack("unknowwater", 25_000))
                 .fluidOutputs(
