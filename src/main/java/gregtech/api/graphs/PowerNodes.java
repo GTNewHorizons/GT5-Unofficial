@@ -19,8 +19,8 @@ public class PowerNodes {
         long aMaxAmps) {
         long tAmpsUsed = 0;
         ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
-        int tLoopProtection = 0;
-        while (tConsumer != null) {
+        while (tConsumer != null && !aCurrentNode.mInvalid) {
+            final int tConsumerPosition = aConsumers.getPosition();
             int tTargetNodeValue = tConsumer.mNodeValue;
             // if the target node has a value less then the current node
             if (tTargetNodeValue < aCurrentNode.mNodeValue || tTargetNodeValue > aCurrentNode.mHighestNodeValue) {
@@ -28,7 +28,13 @@ public class PowerNodes {
                     final Node tNextNode = aCurrentNode.mNeighbourNodes[j];
                     if (tNextNode != null && tNextNode.mNodeValue < aCurrentNode.mNodeValue) {
                         if (tNextNode.mNodeValue == tConsumer.mNodeValue) {
-                            tAmpsUsed += processNodeInject(aCurrentNode, tConsumer, j, aMaxAmps - tAmpsUsed, aVoltage);
+                            tAmpsUsed += processNodeInject(
+                                aCurrentNode,
+                                tConsumer,
+                                aConsumers,
+                                j,
+                                aMaxAmps - tAmpsUsed,
+                                aVoltage);
                             tConsumer = (ConsumerNode) aConsumers.getNextNode();
                         } else {
                             if (aPreviousNode == tNextNode) return tAmpsUsed;
@@ -61,7 +67,13 @@ public class PowerNodes {
                         tConsumer = (ConsumerNode) aConsumers.getNode();
                         break;
                     } else if (tNextNode.mNodeValue == tTargetNodeValue) {
-                        tAmpsUsed += processNodeInject(aCurrentNode, tConsumer, side, aMaxAmps - tAmpsUsed, aVoltage);
+                        tAmpsUsed += processNodeInject(
+                            aCurrentNode,
+                            tConsumer,
+                            aConsumers,
+                            side,
+                            aMaxAmps - tAmpsUsed,
+                            aVoltage);
                         tConsumer = (ConsumerNode) aConsumers.getNextNode();
                         break;
                     }
@@ -70,9 +82,9 @@ public class PowerNodes {
             if (aMaxAmps - tAmpsUsed <= 0) {
                 return tAmpsUsed;
             }
-            if (tLoopProtection++ > 20) {
-                throw new NullPointerException("infinite loop in powering nodes ");
-            }
+            if (aConsumers.isStale() || aCurrentNode.mInvalid) return tAmpsUsed;
+            if (tConsumerPosition == aConsumers.getPosition())
+                throw new IllegalStateException("Power-node traversal made no progress");
         }
         return tAmpsUsed;
     }
@@ -82,9 +94,9 @@ public class PowerNodes {
     protected static long powerNodeAbove(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, long aVoltage,
         long aMaxAmps) {
         long tAmpsUsed = 0;
-        int tLoopProtection = 0;
         ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
-        while (tConsumer != null) {
+        while (tConsumer != null && !aCurrentNode.mInvalid) {
+            final int tConsumerPosition = aConsumers.getPosition();
             int tTargetNodeValue = tConsumer.mNodeValue;
             if (tTargetNodeValue > aCurrentNode.mHighestNodeValue || tTargetNodeValue < aCurrentNode.mNodeValue) {
                 return tAmpsUsed;
@@ -104,7 +116,13 @@ public class PowerNodes {
                         tConsumer = (ConsumerNode) aConsumers.getNode();
                         break;
                     } else if (tNextNode.mNodeValue == tTargetNodeValue) {
-                        tAmpsUsed += processNodeInject(aCurrentNode, tConsumer, side, aMaxAmps - tAmpsUsed, aVoltage);
+                        tAmpsUsed += processNodeInject(
+                            aCurrentNode,
+                            tConsumer,
+                            aConsumers,
+                            side,
+                            aMaxAmps - tAmpsUsed,
+                            aVoltage);
                         tConsumer = (ConsumerNode) aConsumers.getNextNode();
                         break;
                     }
@@ -113,70 +131,90 @@ public class PowerNodes {
             if (aMaxAmps - tAmpsUsed <= 0) {
                 return tAmpsUsed;
             }
-            if (tLoopProtection++ > 20) {
-                throw new NullPointerException("infinite loop in powering nodes ");
-            }
+            if (aConsumers.isStale() || aCurrentNode.mInvalid) return tAmpsUsed;
+            if (tConsumerPosition == aConsumers.getPosition())
+                throw new IllegalStateException("Power-node traversal made no progress");
         }
         return tAmpsUsed;
     }
 
     protected static long processNextNode(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int ordinalSide,
         long aMaxAmps, long aVoltage) {
+        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[ordinalSide];
+        if (!tPath.isValid()) {
+            aConsumers.markStale();
+            return 0;
+        }
         if (aCurrentNode.locks[ordinalSide].isLocked()) {
             aConsumers.getNextNode();
             return 0;
         }
-        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[ordinalSide];
         final PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
         long tVoltLoss = 0;
         if (tSelfPath != null) {
             tVoltLoss += tSelfPath.getLoss();
             tSelfPath.applyVoltage(aVoltage, false);
         }
+        if (aCurrentNode.mInvalid) return 0;
         tPath.applyVoltage(aVoltage - tVoltLoss, true);
+        if (aCurrentNode.mInvalid) return 0;
         tVoltLoss += tPath.getLoss();
         long tAmps = powerNode(aNextNode, aCurrentNode, aConsumers, aVoltage - tVoltLoss, aMaxAmps);
-        tPath.addAmps(tAmps);
-        if (tSelfPath != null) tSelfPath.addAmps(tAmps);
+        tPath.addAmps(tAmps, aVoltage - tVoltLoss);
+        if (tSelfPath != null) tSelfPath.addAmps(tAmps, aVoltage - tSelfPath.getLoss());
         return tAmps;
     }
 
     protected static long processNextNodeAbove(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int ordinalSide,
         long aMaxAmps, long aVoltage) {
+        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[ordinalSide];
+        if (!tPath.isValid()) {
+            aConsumers.markStale();
+            return 0;
+        }
         if (aCurrentNode.locks[ordinalSide].isLocked()) {
             aConsumers.getNextNode();
             return 0;
         }
-        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[ordinalSide];
         final PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
         long tVoltLoss = 0;
         if (tSelfPath != null) {
             tVoltLoss += tSelfPath.getLoss();
             tSelfPath.applyVoltage(aVoltage, false);
         }
+        if (aCurrentNode.mInvalid) return 0;
         tPath.applyVoltage(aVoltage - tVoltLoss, true);
+        if (aCurrentNode.mInvalid) return 0;
         tVoltLoss += tPath.getLoss();
         long tAmps = powerNodeAbove(aNextNode, aCurrentNode, aConsumers, aVoltage - tVoltLoss, aMaxAmps);
-        tPath.addAmps(tAmps);
-        if (tSelfPath != null) tSelfPath.addAmps(tAmps);
+        tPath.addAmps(tAmps, aVoltage - tVoltLoss);
+        if (tSelfPath != null) tSelfPath.addAmps(tAmps, aVoltage - tSelfPath.getLoss());
         return tAmps;
     }
 
-    protected static long processNodeInject(Node aCurrentNode, ConsumerNode aConsumer, int ordinalSide, long aMaxAmps,
-        long aVoltage) {
-        if (aCurrentNode.locks[ordinalSide].isLocked()) return 0;
+    protected static long processNodeInject(Node aCurrentNode, ConsumerNode aConsumer, NodeList aConsumers,
+        int ordinalSide, long aMaxAmps, long aVoltage) {
         final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[ordinalSide];
+        if (!tPath.isValid()) {
+            aConsumers.markStale();
+            return 0;
+        }
+        if (aCurrentNode.locks[ordinalSide].isLocked()) return 0;
         final PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
         long tVoltLoss = 0;
         if (tSelfPath != null) {
             tVoltLoss += tSelfPath.getLoss();
             tSelfPath.applyVoltage(aVoltage, false);
         }
+        if (aCurrentNode.mInvalid) return 0;
         tPath.applyVoltage(aVoltage - tVoltLoss, true);
+        if (aCurrentNode.mInvalid) return 0;
         tVoltLoss += tPath.getLoss();
-        long tAmps = aConsumer.injectEnergy(aVoltage - tVoltLoss, aMaxAmps);
-        tPath.addAmps(tAmps);
-        if (tSelfPath != null) tSelfPath.addAmps(tAmps);
+        final long topologyVersion = aCurrentNode.getTopologyVersion();
+        long tAmps = aVoltage > tVoltLoss ? aConsumer.injectEnergy(aVoltage - tVoltLoss, aMaxAmps) : 0;
+        if (topologyVersion != aCurrentNode.getTopologyVersion()) aConsumers.markStale();
+        tPath.addAmps(tAmps, aVoltage - tVoltLoss);
+        if (tSelfPath != null) tSelfPath.addAmps(tAmps, aVoltage - tSelfPath.getLoss());
         return tAmps;
     }
 }
