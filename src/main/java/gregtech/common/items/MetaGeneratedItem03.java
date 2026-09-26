@@ -24,6 +24,7 @@ import static gregtech.client.GTTooltipHandler.Tier.UXV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
+import static gregtech.common.items.IDMetaItem03.AdvancedAlloyPlate;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
 import static gregtech.common.items.IDMetaItem03.Armor_Chip_T1;
@@ -31,6 +32,8 @@ import static gregtech.common.items.IDMetaItem03.Armor_Chip_T2;
 import static gregtech.common.items.IDMetaItem03.Armor_Chip_T3;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
+import static gregtech.common.items.IDMetaItem03.CarbonAlloyPlate;
+import static gregtech.common.items.IDMetaItem03.CarbonMesh;
 import static gregtech.common.items.IDMetaItem03.Circuit_AdvancedIntegrated;
 import static gregtech.common.items.IDMetaItem03.Circuit_BasicElectronic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
@@ -224,6 +227,7 @@ import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_TERRIT
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_UNLIGHT;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_WINTER;
 import static gregtech.common.items.IDMetaItem03.Intensely_Bonded_Netherite_Nanoparticles;
+import static gregtech.common.items.IDMetaItem03.IridiumAlloyPlate;
 import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
@@ -258,6 +262,7 @@ import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus4;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide1;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide2;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide3;
+import static gregtech.common.items.IDMetaItem03.MixedMetalIngot;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
@@ -280,6 +285,7 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
+import static gregtech.common.items.IDMetaItem03.RawCarbonFibre;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.StableBaryonContainmentUnit;
@@ -1965,6 +1971,35 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.planck_manifold.name",
                     "gt.item.planck_manifold.tooltip"))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.IridiumAlloyPlate.set(
+            addItemWithLocalizationKeys(
+                IridiumAlloyPlate.ID,
+                "gt.item.iridium_alloy_plate.name",
+                "",
+                "plateAlloyIridium"));
+        setBaseIconName(IridiumAlloyPlate.ID, "ic2:itemPartIridium");
+        ItemList.AdvancedAlloyPlate.set(
+            addItemWithLocalizationKeys(
+                AdvancedAlloyPlate.ID,
+                "gt.item.advanced_alloy_plate.name",
+                "",
+                "plateAlloyAdvanced"));
+        setBaseIconName(AdvancedAlloyPlate.ID, "ic2:itemPartAlloy");
+        ItemList.CarbonAlloyPlate.set(
+            addItemWithLocalizationKeys(
+                CarbonAlloyPlate.ID,
+                "gt.item.carbon_alloy_plate.name",
+                "",
+                "plateAlloyCarbon"));
+        setBaseIconName(CarbonAlloyPlate.ID, "ic2:itemPartCarbonPlate");
+        ItemList.MixedMetalIngot
+            .set(addItemWithLocalizationKeys(MixedMetalIngot.ID, "gt.item.mixed_metal_ingot.name", ""));
+        setBaseIconName(MixedMetalIngot.ID, "ic2:resources/itemIngotAlloy");
+        ItemList.RawCarbonFibre
+            .set(addItemWithLocalizationKeys(RawCarbonFibre.ID, "gt.item.raw_carbon_fibre.name", ""));
+        setBaseIconName(RawCarbonFibre.ID, "ic2:itemPartCarbonFibre");
+        ItemList.CarbonMesh.set(addItemWithLocalizationKeys(CarbonMesh.ID, "gt.item.carbon_mesh.name", ""));
+        setBaseIconName(CarbonMesh.ID, "ic2:itemPartCarbonMesh");
 
         registerMetaMaterials();
 

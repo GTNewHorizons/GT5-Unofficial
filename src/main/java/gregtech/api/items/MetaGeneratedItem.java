@@ -89,6 +89,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final BitSet mVisibleItems;
     public final IIcon[][] mIconList;
     private final BitSet mItemsWithoutBaseIcon = new BitSet();
+    private final ConcurrentHashMap<Short, String> mBaseIconNames = new ConcurrentHashMap<>();
 
     public final ConcurrentHashMap<Short, IFoodStat> mFoodStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
@@ -320,6 +321,12 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         if (itemId >= 0 && itemId < mItemAmount) mItemsWithoutBaseIcon.set(itemId);
     }
 
+    /// Draws item `itemId` with the `"<domain>:<path>"` item icon `iconName` instead of the texture under this
+    /// item's own resource path.
+    protected final void setBaseIconName(int itemId, String iconName) {
+        if (itemId >= 0 && itemId < mItemAmount) mBaseIconNames.put((short) itemId, iconName);
+    }
+
     /**
      *
      * @param aMetaValue the Meta Value of the Item you want to set it to. [0 - 32765]
@@ -474,8 +481,11 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                     GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
             }
             Long[] electricStats = mElectricStats.get((short) (i + mOffset));
+            String baseIconName = mBaseIconNames.get(i);
             if (mItemsWithoutBaseIcon.get(i)) {
                 mIconList[i][0] = Textures.InvisibleIcon.INVISIBLE_ICON;
+            } else if (baseIconName != null) {
+                mIconList[i][0] = aIconRegister.registerIcon(baseIconName);
             } else if (mIconList[i].length > 1 && electricStats != null && electricStats[3] < 0) {
                 mIconList[i][0] = mIconList[i][1];
             } else {

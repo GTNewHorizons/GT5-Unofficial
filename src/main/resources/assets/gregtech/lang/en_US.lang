@@ -9723,6 +9723,14 @@ gt.item.gravitational_lens.tooltip=Portable gravitational well
 gt.item.planck_manifold.name=Planck-Scale Manifold
 gt.item.planck_manifold.tooltip=The smallest there can be
 
+# IndustrialCraft 2 part replacements
+gt.item.advanced_alloy_plate.name=Advanced Alloy
+gt.item.carbon_alloy_plate.name=Carbon Plate
+gt.item.carbon_mesh.name=Carbon Mesh
+gt.item.iridium_alloy_plate.name=Iridium Reinforced Plate
+gt.item.mixed_metal_ingot.name=Mixed Metal Ingot
+gt.item.raw_carbon_fibre.name=Raw Carbon Fibre
+
 # BEC Meta Materials
 gt.item.meta_material.energy_conduit.perfected.name=Perfected Energy Conduit
 gt.item.meta_material.energy_conduit.primitive.name=Primitive Energy Conduit
