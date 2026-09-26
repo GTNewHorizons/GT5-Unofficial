@@ -28,11 +28,13 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -67,8 +69,14 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyLine>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int MIN_SLICES = 5;
+    private static final int MAX_SLICES = 16;
+    private static final int MAX_TIER_SKIPS = 1;
+    private static final int RECIPE_TIER_MULTIPLIER = 4;
 
     public ArrayList<MTEHatchDataAccess> mDataAccessHatches = new ArrayList<>();
     private static final String STRUCTURE_PIECE_FIRST = "first";
@@ -141,12 +149,14 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Assembly Line, Assline, AL")
-            .addInfo("Used to craft complex machine parts (LuV+)")
-            .addInfo("Items & Fluids are inserted in NEI order, one per slice")
-            .addInfo("Does not run Assembler recipes")
-            .addMaxTierSkips(1)
-            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "assembly-line"),
+                ImmutableMap.<String, Object>builder()
+                    .put("max_tier_skips", MAX_TIER_SKIPS)
+                    .build())
+            .beginVariableStructureBlock(MIN_SLICES, MAX_SLICES, 4, 4, 3, 3, false)
             .addController("First slice, 3rd layer")
             .addMiscHatch(
                 "1",
@@ -184,16 +194,17 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                     + EnumChatFormatting.GRAY
                     + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
             .addStructureInfo("")
-            .addStructureFooter("Up to 16 total slices, each one allows for 1 more item in recipes")
+            .addStructureFooter("Up to " + MAX_SLICES + " total slices, each one allows for 1 more item in recipes")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
         return Textures.BlockIcons.createTextureWithCasing(
             this,
             side,
@@ -331,7 +342,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             }
 
             // Recipe tier is limited to hatch tier + 1.
-            if (tRecipe.mEUt > averageVoltage * 4) {
+            if (tRecipe.mEUt > averageVoltage * RECIPE_TIER_MULTIPLIER) {
                 result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
                 continue;
             }
@@ -444,7 +455,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     }
 
     private int checkMachine(boolean leftToRight, List<StructureError> errors) {
-        for (int i = 1; i < 16; i++) {
+        for (int i = 1; i < MAX_SLICES; i++) {
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0, errors)) return i;
             if (!mOutputBusses.isEmpty()) {
                 // Output layer found, check machine conditions
@@ -457,7 +468,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             }
         }
         errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_missing_output_bus"));
-        return 16;
+        return MAX_SLICES;
     }
 
     public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -475,7 +486,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 1, 0);
-        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 5, 16);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, MIN_SLICES, MAX_SLICES);
         for (int i = 1; i < tLength; i++) {
             buildPiece(STRUCTURE_PIECE_LATER, stackSize, hintsOnly, -i, 1, 0);
         }
@@ -486,7 +497,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         if (mMachine) return -1;
         int build = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
-        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 5, 16);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, MIN_SLICES, MAX_SLICES);
         for (int i = 1; i < tLength; i++) {
             build = survivalBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
             if (build >= 0) return build;

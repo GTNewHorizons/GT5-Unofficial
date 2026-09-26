@@ -44,12 +44,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -93,12 +95,14 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuitAssemblyLine>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX = 16;
     private static final int MACHINEMODE_CAL = 0;
     private static final int MACHINEMODE_ASSEMBLER = 1;
+    private static final int MAX_SLICES = 7;
 
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_NEXT = "next";
@@ -168,23 +172,16 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Circuit Assembler, CAL")
-            .addInfo("Change Mode with Screwdriver")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "circuit-assembly-line"),
+                ImmutableMap.<String, Object>builder()
+                    .put("min_length", MINIMUM_CIRCUIT_ASSEMBLER_LENGTH)
+                    .put("max_slices", MAX_SLICES)
+                    .build())
             .addPerfectOCInfo()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.0") + ":")
-            .addInfo("Imprint this machine with a Circuit Imprint,")
-            .addInfo("by putting the imprint in the controller")
-            .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.1") + ":")
-            .addInfo(
-                "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
-                    + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
-                    + EnumChatFormatting.GRAY)
-            .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1")
-            .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
-            .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
+            .beginVariableStructureBlock(2, MAX_SLICES, 3, 3, 3, 3, false)
             .addController("First slice, 3rd layer")
             .addEnergyHatch("1", "Any layer 3 casing", 3)
             .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
@@ -212,10 +209,11 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                     + EnumChatFormatting.GRAY
                     + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
             .addStructureInfo("")
-            .addStructureFooter("Up to 7 total slices, each one allows for 1 more item in recipes")
+            .addStructureFooter("Up to " + MAX_SLICES + " total slices, each one allows for 1 more item in recipes")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -326,7 +324,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+                                              ItemStack aTool) {
         setMachineMode(nextMachineMode());
         // TODO: Replace with GT5U.MULTI_MACHINE_CHANGE. Requires changing translations
         GTUtility.sendChatTrans(aPlayer, "chat.cal.mode." + machineMode);
@@ -504,7 +502,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
         return Textures.BlockIcons.createTextureWithCasing(
             this,
             side,
@@ -550,7 +548,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     private int checkMachine(boolean leftToRight, List<StructureError> errors) {
-        for (int i = 1; i < 7; i++) {
+        for (int i = 1; i < MAX_SLICES; i++) {
             if (!checkPiece(STRUCTURE_PIECE_NEXT, leftToRight ? -i : i, 0, 0, errors)) return i;
             length = i + 1;
             if (!mOutputBusses.isEmpty()) {
@@ -562,13 +560,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             }
         }
         errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_missing_output_bus"));
-        return 16;
+        return MAX_SLICES;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 0, 0);
-        int tLength = Math.min(stackSize.stackSize + 1, 7);
+        int tLength = Math.min(stackSize.stackSize + 1, MAX_SLICES);
 
         for (int i = 1; i < tLength; ++i) {
             this.buildPiece(STRUCTURE_PIECE_NEXT, stackSize, hintsOnly, -i, 0, 0);
@@ -581,7 +579,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         int built;
         built = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tLength = Math.min(stackSize.stackSize + 1, 7);
+        int tLength = Math.min(stackSize.stackSize + 1, MAX_SLICES);
 
         for (int i = 1; i < tLength - 1; ++i) {
             built = survivalBuildPiece(STRUCTURE_PIECE_NEXT_HINT, stackSize, -i, 0, 0, elementBudget, env, false, true);
@@ -625,7 +623,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         builder.widget(
             new FakeSyncWidget.StringSyncer(
                 () -> this.circuitImprint != null ? this.circuitImprint.circuit.get(1)
-                    .getDisplayName() : "",
+                                                    .getDisplayName() : "",
                 val -> {}));
     }
 
@@ -646,7 +644,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+                                          float aX, float aY, float aZ, ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             if (machineMode == MACHINEMODE_CAL) return false;
             inputSeparation = !inputSeparation;
@@ -680,7 +678,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
-        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+                                  IWailaDataAccessor accessor, IWailaConfigHandler config) {
         list.add(
             StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
                 + EnumChatFormatting.WHITE
@@ -693,7 +691,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+                                 int z) {
         String imprintedWith = this.getTypeForDisplay();
         if (!imprintedWith.isEmpty()) tag.setString("ImprintedWith", imprintedWith);
         tag.setInteger("mode", machineMode);

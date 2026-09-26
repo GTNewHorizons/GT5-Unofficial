@@ -1,11 +1,9 @@
 Assembly Line with item pipelining
 All fluids are consumed at the start of the recipe
-Recipe tier is limited by the lowest Energy Hatch tier
-{gold:{hr:67}}
-Runs imperfect overclocks until Energy Hatch tier
-Additional overclocks are increasingly more expensive
-{aqua:Multiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)}
-{aqua:Power usage = Multiplier × (Active Slices) × (Recipe EU/t)}
-Overclocking assumes all recipe slices are active
-{gold:{hr:67}}
-Constructed identically to the Assembly Line
+Recipe tier is limited by the lowest {white:Energy Hatch} tier
+Runs imperfect overclocks up to the lowest {white:Energy Hatch} tier, then increasingly expensive laser overclocks
+{gray:{hr}}
+Regular OC cost = {aqua:4^(Regular Overclocks)}
+Laser OC cost = {aqua:(4 + 0.3 * n)}, where n is the number of OCs
+Power usage = {aqua:(Regular * Laser) * (Active Slices) * (Recipe EU/t)}
+{yellow:Overclocking assumes all recipe slices are active}
