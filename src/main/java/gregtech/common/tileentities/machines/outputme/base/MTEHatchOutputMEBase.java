@@ -74,6 +74,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTWaila;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
 import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -178,6 +179,14 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         env.dispatchMarkDirty();
     }
 
+    public int getRefreshTime() {
+        return refreshTime;
+    }
+
+    public void setRefreshTime(int ticks) {
+        refreshTime = Math.max(MIN_REFRESH_TIME, ticks);
+    }
+
     @Nullable
     OutputMonitorHandler<T> cell;
     @Nullable
@@ -186,6 +195,14 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     CellInventoryHandler<T> handler;
     private ItemStack oldCellStack = null;
     private int myPriority = 0;
+
+    /**
+     * Ticks between pushes of the cached contents into the ME network. Players set this in the GUI in seconds, the
+     * minimum is the interval these hatches used before the setting existed.
+     */
+    public static final int MIN_REFRESH_TIME = 40;
+    public static final int TICKS_PER_SECOND = 20;
+    private int refreshTime = MIN_REFRESH_TIME;
 
     boolean cacheMode = false;
     boolean isCached = false;
@@ -469,7 +486,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             tickCounter = aTick;
-            if (tickCounter > (lastOutputTick + 40)) flushCachedStack();
+            if (tickCounter > (lastOutputTick + refreshTime)) flushCachedStack();
             if (tickCounter % 20 == 0) {
                 updateCell();
                 aBaseMetaTileEntity.setActive(wasActive);
@@ -491,7 +508,17 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
 
     public void flushCachedStack() {
         var proxy = getProxy();
-        if (cache.isEmpty() || !proxy.isActive()) return;
+        final boolean empty = cache.isEmpty();
+        if (empty) {
+            // Nothing is waiting, so restart the interval here. If the clock only advanced on a real flush, idle time
+            // would bank up as an overdue flush and the first stack to arrive would go out immediately, so the setting
+            // would not actually space the flushes out.
+            lastOutputTick = tickCounter;
+        }
+        if (empty || !proxy.isActive()) {
+            // A pending cache on an offline grid keeps the clock untouched, so it flushes as soon as the grid is back.
+            return;
+        }
         try {
             final IEnergySource energy = proxy.getEnergy();
             IMEInventory<T> sg = (cacheMode && cell != null) ? cell : env.getNetworkInvtory();
@@ -631,6 +658,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         aNBT.setBoolean("cacheMode", cacheMode);
         aNBT.setBoolean("checkMode", checkMode);
         aNBT.setInteger("myPriority", myPriority);
+        aNBT.setInteger("refreshTime", refreshTime);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -651,6 +679,8 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         cacheMode = aNBT.getBoolean("cacheMode");
         checkMode = aNBT.getBoolean("checkMode");
         myPriority = aNBT.getInteger("myPriority");
+        // Saves without the key, and data sticks written before the setting existed, keep the old fixed interval.
+        refreshTime = Math.max(MIN_REFRESH_TIME, aNBT.getInteger("refreshTime"));
         this.isCached = false;
         if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         oldCellStack = env.getCellStack();
@@ -688,6 +718,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         tag.setBoolean("cacheMode", getCacheMode());
         tag.setBoolean("checkMode", getCheckMode());
         tag.setInteger("myPriority", getPriority());
+        tag.setInteger("refreshTime", refreshTime);
         return tag;
     }
 
@@ -701,6 +732,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         setCacheMode(nbt.getBoolean("cacheMode"));
         setCheckMode(nbt.getBoolean("checkMode"));
         setPriority(nbt.getInteger("myPriority"));
+        // Sticks created before the setting existed must not reset the interval.
+        if (nbt.hasKey("refreshTime")) {
+            setRefreshTime(nbt.getInteger("refreshTime"));
+        }
         return true;
     }
 
@@ -750,7 +785,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setLong("cacheCapacity", getCacheCapacity());
-        processWailaNBTData(tag, "stacks", "stackCount", getCacheList());
+        tag.setInteger("refreshTime", refreshTime);
+        List<T> cached = getCacheList();
+        tag.setInteger("ticksToFlush", (int) Math.max(0, lastOutputTick + refreshTime - tickCounter));
+        processWailaNBTData(tag, "stacks", "stackCount", cached);
 
         if (cacheMode && cell != null) {
             List<T> cacheList = new ArrayList<>();
@@ -822,20 +860,29 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             return stack == null ? null : stack.getDisplayName();
         }
 
-        private static void processWailaAdvancedBody(String prefix, List<String> ss, String listKey, String countKey,
-            NBTTagCompound tag) {
+        /**
+         * Renders one cache for the tooltip: one line per cached stack, plus a note when the sent list was cut short.
+         * The "N cached stacks" header is only used for the storage cell.
+         *
+         * @return how many stacks the cache holds, including the ones left out of the tooltip
+         */
+        private static int processWailaCache(String prefix, List<String> ss, String listKey, String countKey,
+            NBTTagCompound tag, boolean showStackCount) {
             NBTTagList stacks = tag.getTagList(listKey, 10);
             int stackCount = tag.getInteger(countKey);
 
             if (stackCount == 0) {
                 ss.add(StatCollector.translateToLocal("GT5U.waila.hatch.outputme." + prefix + "_cache_empty"));
-                return;
+                return 0;
             }
-            ss.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.hatch.outputme." + prefix + "_cache_detail",
-                    stackCount,
-                    stackCount > 1 ? "s" : ""));
+
+            if (showStackCount) {
+                ss.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.hatch.outputme." + prefix + "_cache_detail",
+                        stackCount,
+                        stackCount > 1 ? "s" : ""));
+            }
 
             for (int i = 0; i < stacks.tagCount(); i++) {
                 NBTTagCompound stackTag = stacks.getCompoundTagAt(i);
@@ -843,13 +890,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
                 String name = getLocalizedName(prefix, stackTag);
                 if (name == null) continue;
 
-                ss.add(
-                    String.format(
-                        "%s: %s%s%s",
-                        name,
-                        EnumChatFormatting.GOLD,
-                        formatNumber(stackTag.getLong("Amount")),
-                        EnumChatFormatting.RESET));
+                ss.add(GTWaila.getStackListLine(name, stackTag.getLong("Amount")));
             }
 
             if (stackCount > stacks.tagCount()) {
@@ -858,15 +899,44 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
                         "GT5U.waila.hatch.outputme." + prefix + "_cache_detail.more",
                         stackCount - stacks.tagCount()));
             }
+
+            return stackCount;
         }
 
+        /**
+         * The cache itself is listed by {@link #getWailaCacheBody}, so this only adds the storage cell contents while
+         * cache mode is on.
+         */
         public static void getWailaAdvancedBody(String prefix, List<String> ss, IWailaDataAccessor accessor) {
             NBTTagCompound tag = accessor.getNBTData();
-            processWailaAdvancedBody(prefix, ss, "stacks", "stackCount", tag);
             if (tag.hasKey("cacheCount")) {
                 ss.add(StatCollector.translateToLocal("GT5U.waila.hatch.outputme.storage_cache"));
-                processWailaAdvancedBody(prefix, ss, "cacheStacks", "cacheCount", tag);
+                processWailaCache(prefix, ss, "cacheStacks", "cacheCount", tag, true);
             }
+        }
+
+        /**
+         * Lists the stacks actually sitting in the cache, the way the crafting input hatch lists its contents,
+         * followed by how soon they are pushed to the network.
+         */
+        public static void getWailaCacheBody(String prefix, List<String> ss, IWailaDataAccessor accessor) {
+            NBTTagCompound tag = accessor.getNBTData();
+            final int stackCount = processWailaCache(prefix, ss, "stacks", "stackCount", tag, false);
+            final int intervalSeconds = tag.getInteger("refreshTime") / TICKS_PER_SECOND;
+
+            if (stackCount == 0) {
+                // Nothing is waiting, so there is no next flush to count down to.
+                ss.add(
+                    StatCollector
+                        .translateToLocalFormatted("GT5U.waila.hatch.outputme.flush_interval.idle", intervalSeconds));
+                return;
+            }
+
+            ss.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hatch.outputme.flush_interval",
+                    intervalSeconds,
+                    tag.getInteger("ticksToFlush") / TICKS_PER_SECOND));
         }
     }
 }
