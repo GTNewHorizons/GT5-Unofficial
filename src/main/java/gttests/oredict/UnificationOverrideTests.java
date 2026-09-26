@@ -34,9 +34,9 @@ import gregtech.api.util.GTOreDictUnificator;
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class UnificationOverrideTests {
 
-    private static final String[] GREGTECH_PREFERRED = { "dustAlumina", "blockAmber", "blockLead", "blockMagnesium",
-        "blockMithril", "blockPlatinum", "blockTungsten", "ingotBloodInfusedIron", "ingotIchorium", "nuggetIchorium",
-        "rawOreMeteoricIron", "stickDesh", "cellCreosote" };
+    private static final String[] GREGTECH_PREFERRED = { "dustAlumina", "blockLead", "blockMagnesium", "blockMithril",
+        "blockPlatinum", "blockTungsten", "ingotBloodInfusedIron", "ingotIchorium", "nuggetIchorium", "stickDesh",
+        "cellCreosote" };
 
     @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
     public static void gregTechPreferredNamesUnifyToGregTechItems(GameTestHelper helper) {
@@ -122,6 +122,26 @@ public class UnificationOverrideTests {
             "Botania",
             "manaResource",
             18);
+        expectForeign(mismatches, OrePrefixes.gem, Shapes.gem, Materials.InfusedAir, "Thaumcraft", "ItemShard", 0);
+        expectForeign(mismatches, OrePrefixes.gem, Shapes.gem, Materials.Amber, "Thaumcraft", "ItemResource", 6);
+        expectForeign(
+            mismatches,
+            OrePrefixes.block,
+            BlockShapes.block,
+            Materials.Amber,
+            "Thaumcraft",
+            "blockCosmeticOpaque",
+            0);
+        expectForeign(mismatches, OrePrefixes.nugget, Shapes.nugget, Materials.Iron, "Thaumcraft", "ItemNugget", 0);
+        expectForeign(mismatches, OrePrefixes.gem, Shapes.gem, Materials.Firestone, "Railcraft", "firestone.raw", 0);
+        expectForeign(
+            mismatches,
+            OrePrefixes.rawOre,
+            Shapes.rawOre,
+            Materials.MeteoricIron,
+            "GalacticraftCore",
+            "item.meteoricIronRaw",
+            0);
         helper.assertTrue(mismatches.isEmpty(), "Overridden pairs disagree: " + mismatches);
         helper.succeed();
     }

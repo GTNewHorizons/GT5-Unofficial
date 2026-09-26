@@ -2206,6 +2206,7 @@ public class Materials {
                 StandardProperties.FALLBACK_TEXTURE_SETS,
                 List.of(TextureSet.of("gregtech", "METALLIC"), TextureSet.of("gregtech", "NONE")))
             .setTint(0xFFC8C8C8)
+            .addShapeOverride(Shapes.nugget, Mods.Thaumcraft.ID, "ItemNugget", 0)
             .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
@@ -2329,6 +2330,7 @@ public class Materials {
                 StandardProperties.FALLBACK_TEXTURE_SETS,
                 List.of(TextureSet.of("gregtech", "DULL"), TextureSet.of("gregtech", "NONE")))
             .setTint(0xFFFF6400)
+            .addShapeOverride(Shapes.nugget, Mods.Thaumcraft.ID, "ItemNugget", 1)
             .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
@@ -2632,6 +2634,7 @@ public class Materials {
             .build();
         Materials.Silver = MaterialLibAPI.newMaterial("gregtech", "Silver", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFDCDCFF)
+            .addShapeOverride(Shapes.nugget, Mods.Thaumcraft.ID, "ItemNugget", 3)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.multiPlates)
@@ -2721,6 +2724,7 @@ public class Materials {
             .build();
         Materials.Tin = MaterialLibAPI.newMaterial("gregtech", "Tin", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFDCDCDC)
+            .addShapeOverride(Shapes.nugget, Mods.Thaumcraft.ID, "ItemNugget", 2)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.multiPlates)
@@ -3586,6 +3590,7 @@ public class Materials {
             .build();
         Materials.Lead = MaterialLibAPI.newMaterial("gregtech", "Lead", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF8C648C)
+            .addShapeOverride(Shapes.nugget, Mods.Thaumcraft.ID, "ItemNugget", 4)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.multiPlates)
@@ -6501,6 +6506,7 @@ public class Materials {
             .build();
         Materials.Thaumium = MaterialLibAPI.newMaterial("gregtech", "Thaumium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF9664C8)
+            .addShapeOverride(BlockShapes.block, Mods.Thaumcraft.ID, "blockCosmeticSolid", 4)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.multiPlates)
@@ -6788,6 +6794,7 @@ public class Materials {
             .build();
         Materials.MeteoricIron = MaterialLibAPI.newMaterial("gregtech", "MeteoricIron", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF643250)
+            .addShapeOverride(Shapes.rawOre, Mods.GalacticraftCore.ID, "item.meteoricIronRaw", 0)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.multiPlates)
@@ -6988,6 +6995,7 @@ public class Materials {
             .build();
         Materials.Firestone = MaterialLibAPI.newMaterial("gregtech", "Firestone", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFFC81400)
+            .addShapeOverride(Shapes.gem, Mods.Railcraft.ID, "firestone.raw", 0)
             .addToFamily(Families.all)
             .addToFamily(Families.gems)
             .addToFamily(Families.ores)
@@ -9472,6 +9480,8 @@ public class Materials {
             .build();
         Materials.Amber = MaterialLibAPI.newMaterial("gregtech", "Amber", TextureSet.of("gregtech", "RUBY"))
             .setTint(2147450880)
+            .addShapeOverride(BlockShapes.block, Mods.Thaumcraft.ID, "blockCosmeticOpaque", 0)
+            .addShapeOverride(Shapes.gem, Mods.Thaumcraft.ID, "ItemResource", 6)
             .addToFamily(Families.all)
             .addToFamily(Families.gems)
             .addToFamily(Families.gemQualities)
@@ -10081,6 +10091,7 @@ public class Materials {
             .build();
         Materials.InfusedAir = MaterialLibAPI.newMaterial("gregtech", "InfusedAir", TextureSet.of("gregtech", "SHARDS"))
             .setTint(0xFFFFFF7E)
+            .addShapeOverride(Shapes.gem, Mods.Thaumcraft.ID, "ItemShard", 0)
             .addToFamily(Families.all)
             .addToFamily(Families.gems)
             .addToFamily(Families.ores)
@@ -10114,6 +10125,7 @@ public class Materials {
             .build();
         Materials.InfusedFire = MaterialLibAPI.newMaterial("gregtech", "InfusedFire", TextureSet.of("gregtech", "SHARDS"))
             .setTint(0xFFFF3C01)
+            .addShapeOverride(Shapes.gem, Mods.Thaumcraft.ID, "ItemShard", 1)
             .addToFamily(Families.all)
             .addToFamily(Families.gems)
             .addToFamily(Families.ores)
@@ -10147,6 +10159,7 @@ public class Materials {
             .build();
         Materials.InfusedEarth = MaterialLibAPI.newMaterial("gregtech", "InfusedEarth", TextureSet.of("gregtech", "SHARDS"))
             .setTint(0xFF00A000)
+            .addShapeOverride(Shapes.gem, Mods.Thaumcraft.ID, "ItemShard", 3)
             .addToFamily(Families.all)
             .addToFamily(Families.gems)
             .addToFamily(Families.ores)
@@ -10180,6 +10193,7 @@ public class Materials {
             .build();
         Materials.InfusedWater = MaterialLibAPI.newMaterial("gregtech", "InfusedWater", TextureSet.of("gregtech", "SHARDS"))
             .setTint(0xFF0090FF)
+            .addShapeOverride(Shapes.gem, Mods.Thaumcraft.ID, "ItemShard", 2)
             .addToFamily(Families.all)
             .addToFamily(Families.gems)
             .addToFamily(Families.ores)
@@ -10213,6 +10227,7 @@ public class Materials {
             .build();
         Materials.InfusedEntropy = MaterialLibAPI.newMaterial("gregtech", "InfusedEntropy", TextureSet.of("gregtech", "SHARDS"))
             .setTint(0xFF555577)
+            .addShapeOverride(Shapes.gem, Mods.Thaumcraft.ID, "ItemShard", 5)
             .addToFamily(Families.all)
             .addToFamily(Families.gems)
             .addToFamily(Families.ores)
@@ -10246,6 +10261,7 @@ public class Materials {
             .build();
         Materials.InfusedOrder = MaterialLibAPI.newMaterial("gregtech", "InfusedOrder", TextureSet.of("gregtech", "SHARDS"))
             .setTint(0xFFEDCBFE)
+            .addShapeOverride(Shapes.gem, Mods.Thaumcraft.ID, "ItemShard", 4)
             .addToFamily(Families.all)
             .addToFamily(Families.gems)
             .addToFamily(Families.ores)

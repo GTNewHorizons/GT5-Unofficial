@@ -9,8 +9,6 @@ import static gregtech.api.enums.FluidState.SLURRY;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
-import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
@@ -2578,38 +2576,6 @@ public class LoaderGTBlockFluid implements Runnable {
             OrePrefixes.ingot,
             Materials.IronWood,
             GTModHandler.getModItem(TwilightForest.ID, "item.ironwoodIngot", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.gem,
-            Materials.InfusedAir,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.gem,
-            Materials.InfusedFire,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 1));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.gem,
-            Materials.InfusedWater,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 2));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.gem,
-            Materials.InfusedEarth,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 3));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.gem,
-            Materials.InfusedOrder,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 4));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.gem,
-            Materials.InfusedEntropy,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 5));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.gem,
-            Materials.Amber,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 6));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.gem,
-            Materials.Firestone,
-            GTModHandler.getModItem(Railcraft.ID, "firestone.raw", 1L));
 
         // Special secondary oredict for Sodium Hydroxide
         GTOreDictUnificator
