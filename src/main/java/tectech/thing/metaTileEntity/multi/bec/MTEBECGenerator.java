@@ -199,7 +199,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
                 GTValues.emptyItemStackArray);
             if (maxParallelsByInput <= 0) continue;
 
-            fluidCandidates.add(new FluidCandidate(recipe, maxParallelsByInput, fluid, totalAmount));
+            fluidCandidates.add(new FluidCandidate(recipe, maxParallelsByInput, fluid));
         }
         if (fluidCandidates.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -243,11 +243,13 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             int perParallel = candidate.recipe.mFluidInputs[0].amount;
             int plannedDrain = plannedParallels * perParallel;
 
-            int drained = depleteFluidAcrossInputs(candidate.fluid, plannedDrain, perParallel);
-            int actualParallels = drained / perParallel;
+            long drained = depleteInputQuantity(new FluidStack(candidate.fluid, plannedDrain), true);
+            int actualParallels = (int) (drained / perParallel);
             candidate.parallels = actualParallels;
 
             if (actualParallels <= 0) continue;
+            int actualDrain = actualParallels * perParallel;
+            depleteInputQuantity(new FluidStack(candidate.fluid, actualDrain), false);
 
             outputs.addTo(
                 candidate.recipe.mFluidOutputs[0].getFluid(),
@@ -275,38 +277,18 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         mEfficiency = 10_000;
         useLongPower = true;
 
-        long actualPower = 0;
+        double actualPowerDouble = 0;
         for (FluidCandidate candidate : fluidCandidates) {
             if (candidate.parallels <= 0) continue;
 
-            double actualAdjustedEUt = (double) candidate.recipe.mEUt * candidate.recipe.mDuration / actualMaxDuration;
-            actualPower += (long) Math.ceil(candidate.parallels * actualAdjustedEUt);
+            double actualAdjustedEUt = (double) candidate.recipe.mEUt * candidate.recipe.mDuration
+                / actualMaxDuration;
+            actualPowerDouble += candidate.parallels * actualAdjustedEUt;
         }
 
+        long actualPower = (long) Math.ceil(actualPowerDouble);
         lEUt = -actualPower;
         return CheckRecipeResultRegistry.SUCCESSFUL;
-    }
-
-    private int depleteFluidAcrossInputs(Fluid fluid, int amount, int perParallel) {
-        int remaining = amount;
-        int drained = 0;
-        for (FluidStack slot : getStoredFluids()) {
-            if (remaining < perParallel) break;
-
-            if (slot != null && slot.getFluid() == fluid && slot.amount > 0) {
-                int drain = Math.min(slot.amount, remaining);
-                drain = (drain / perParallel) * perParallel;
-                if (drain <= 0) continue;
-                FluidStack toDrain = new FluidStack(fluid, drain);
-                if (depleteInput(toDrain)) {
-                    remaining -= drain;
-                    drained += drain;
-                } else {
-                    break;
-                }
-            }
-        }
-        return drained;
     }
 
     private static class FluidCandidate {
@@ -314,15 +296,13 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         final GTRecipe recipe;
         final int maxParallelsByInput;
         final Fluid fluid;
-        final int totalAmount;
         double adjustedEUt;
         int parallels;
 
-        FluidCandidate(GTRecipe recipe, int maxParallelsByInput, Fluid fluid, int totalAmount) {
+        FluidCandidate(GTRecipe recipe, int maxParallelsByInput, Fluid fluid) {
             this.recipe = recipe;
             this.maxParallelsByInput = maxParallelsByInput;
             this.fluid = fluid;
-            this.totalAmount = totalAmount;
         }
     }
 }
