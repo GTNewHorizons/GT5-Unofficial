@@ -148,7 +148,7 @@ public final class MaterialsNuclides {
         new MaterialStack(MaterialsElements.getInstance().PROTACTINIUM, 1));
 
     public static final Material UF6F2FP = new Material(
-        "Phosphorous Uranium Hexafluoride (P-UF6)", // Material Name
+        "Phosphorus Uranium Hexafluoride (P-UF6)", // Material Name
         MaterialState.PURE_LIQUID, // State
         null, // Material Colour
         -1, // Melting Point in C
