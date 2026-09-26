@@ -96,6 +96,7 @@ import gregtech.common.tileentities.boilers.MTEBoilerSteel;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
 import gregtech.common.tileentities.generators.MTEDieselGenerator;
 import gregtech.common.tileentities.generators.MTEGasTurbine;
+import gregtech.common.tileentities.generators.MTEKineticGenerator;
 import gregtech.common.tileentities.generators.MTELightningRod;
 import gregtech.common.tileentities.generators.MTEMagicEnergyConverter;
 import gregtech.common.tileentities.generators.MTEMagicalEnergyAbsorber;
@@ -121,6 +122,8 @@ import gregtech.common.tileentities.machines.basic.MTECharger;
 import gregtech.common.tileentities.machines.basic.MTEDrawerFramer;
 import gregtech.common.tileentities.machines.basic.MTEIceCreamMachine;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
+import gregtech.common.tileentities.machines.basic.MTEKineticWaterGenerator;
+import gregtech.common.tileentities.machines.basic.MTEKineticWindGenerator;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTEMicrowaveEnergyTransmitter;
@@ -9357,6 +9360,83 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe").getStackForm(1L));
     }
 
+    private static void registerKineticMachines() {
+        // Generators
+        ItemList.KineticGeneratorHV.set(
+            new MTEKineticGenerator(KINETIC_GENERATOR_HV.ID, "kinetic.generator.03", "Basic Kinetic Generator", 3)
+                .getStackForm(1));
+        ItemList.KineticGeneratorEV.set(
+            new MTEKineticGenerator(KINETIC_GENERATOR_EV.ID, "kinetic.generator.04", "Advanced Kinetic Generator", 4)
+                .getStackForm(1));
+        ItemList.KineticGeneratorIV.set(
+            new MTEKineticGenerator(KINETIC_GENERATOR_IV.ID, "kinetic.generator.05", "Elite Kinetic Generator", 5)
+                .getStackForm(1));
+        ItemList.KineticGeneratorLuV.set(
+            new MTEKineticGenerator(KINETIC_GENERATOR_LuV.ID, "kinetic.generator.06", "Extreme Kinetic Generator", 6)
+                .getStackForm(1));
+        ItemList.KineticGeneratorZPM.set(
+            new MTEKineticGenerator(KINETIC_GENERATOR_ZPM.ID, "kinetic.generator.07", "Ultimate Kinetic Generator", 7)
+                .getStackForm(1));
+
+        // Wind
+        ItemList.KineticWindGeneratorHV.set(
+            new MTEKineticWindGenerator(KINETIC_WIND_GENERATOR_HV.ID, "kinetic.wind.03", "Basic Kinetic Wind Dynamo", 3)
+                .getStackForm(1));
+        ItemList.KineticWindGeneratorEV.set(
+            new MTEKineticWindGenerator(
+                KINETIC_WIND_GENERATOR_EV.ID,
+                "kinetic.wind.04",
+                "Advanced Kinetic Wind Dynamo",
+                4).getStackForm(1));
+        ItemList.KineticWindGeneratorIV.set(
+            new MTEKineticWindGenerator(KINETIC_WIND_GENERATOR_IV.ID, "kinetic.wind.05", "Elite Kinetic Wind Dynamo", 5)
+                .getStackForm(1));
+        ItemList.KineticWindGeneratorLuV.set(
+            new MTEKineticWindGenerator(
+                KINETIC_WIND_GENERATOR_LuV.ID,
+                "kinetic.wind.06",
+                "Extreme Kinetic Wind Dynamo",
+                6).getStackForm(1));
+        ItemList.KineticWindGeneratorZPM.set(
+            new MTEKineticWindGenerator(
+                KINETIC_WIND_GENERATOR_ZPM.ID,
+                "kinetic.wind.07",
+                "Ultimate Kinetic Wind Dynamo",
+                7).getStackForm(1));
+
+        // Water
+        ItemList.KineticWaterGeneratorHV.set(
+            new MTEKineticWaterGenerator(
+                KINETIC_WATER_GENERATOR_HV.ID,
+                "kinetic.water.03",
+                "Basic Kinetic Water Dynamo",
+                3).getStackForm(1));
+        ItemList.KineticWaterGeneratorEV.set(
+            new MTEKineticWaterGenerator(
+                KINETIC_WATER_GENERATOR_EV.ID,
+                "kinetic.water.04",
+                "Advanced Kinetic Water Dynamo",
+                4).getStackForm(1));
+        ItemList.KineticWaterGeneratorIV.set(
+            new MTEKineticWaterGenerator(
+                KINETIC_WATER_GENERATOR_IV.ID,
+                "kinetic.water.05",
+                "Elite Kinetic Water Dynamo",
+                5).getStackForm(1));
+        ItemList.KineticWaterGeneratorLuV.set(
+            new MTEKineticWaterGenerator(
+                KINETIC_WATER_GENERATOR_LuV.ID,
+                "kinetic.water.06",
+                "Extreme Kinetic Water Dynamo",
+                6).getStackForm(1));
+        ItemList.KineticWaterGeneratorZPM.set(
+            new MTEKineticWaterGenerator(
+                KINETIC_WATER_GENERATOR_ZPM.ID,
+                "kinetic.water.07",
+                "Extreme Kinetic Water Dynamo",
+                7).getStackForm(1));
+    }
+
     @Override
     public void run() {
         GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntities.");
@@ -9475,6 +9555,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerAirFilters();
         registerNacHatches();
         registerDrawerFramer();
+        registerKineticMachines();
 
         ItemList.DebugStructureWriter.set(
             new MTEDebugStructureWriter(DEBUG_STRUCTURE_WRITER.ID, "debugstructurewriter", "Debug Structure Writer", 5)
