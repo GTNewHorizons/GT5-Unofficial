@@ -324,7 +324,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-                                              ItemStack aTool) {
+        ItemStack aTool) {
         setMachineMode(nextMachineMode());
         // TODO: Replace with GT5U.MULTI_MACHINE_CHANGE. Requires changing translations
         GTUtility.sendChatTrans(aPlayer, "chat.cal.mode." + machineMode);
@@ -502,7 +502,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         return Textures.BlockIcons.createTextureWithCasing(
             this,
             side,
@@ -623,7 +623,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         builder.widget(
             new FakeSyncWidget.StringSyncer(
                 () -> this.circuitImprint != null ? this.circuitImprint.circuit.get(1)
-                                                    .getDisplayName() : "",
+                    .getDisplayName() : "",
                 val -> {}));
     }
 
@@ -644,7 +644,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-                                          float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             if (machineMode == MACHINEMODE_CAL) return false;
             inputSeparation = !inputSeparation;
@@ -678,7 +678,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
-                                  IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         list.add(
             StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
                 + EnumChatFormatting.WHITE
@@ -691,7 +691,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                 int z) {
+        int z) {
         String imprintedWith = this.getTypeForDisplay();
         if (!imprintedWith.isEmpty()) tag.setString("ImprintedWith", imprintedWith);
         tag.setInteger("mode", machineMode);
