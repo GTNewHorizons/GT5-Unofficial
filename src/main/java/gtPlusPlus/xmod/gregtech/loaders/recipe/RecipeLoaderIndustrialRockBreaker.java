@@ -11,8 +11,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
 
@@ -79,7 +81,11 @@ public class RecipeLoaderIndustrialRockBreaker {
                 .itemOutputs(
                     new ItemStack(Blocks.netherrack, 1),
                     new ItemStack(Blocks.soul_sand, 1),
-                    new ItemStack(Blocks.quartz_ore, 1))
+                    MaterialLibAPI.getStack(
+                        Materials.NetherQuartz,
+                        OreShapes.ore,
+                        OreShapes.variantOf(StoneType.Netherrack.name()),
+                        1))
                 .outputChances(6000, 3000, 1000)
                 .duration(SECONDS)
                 .eut(TierEU.RECIPE_LV)
