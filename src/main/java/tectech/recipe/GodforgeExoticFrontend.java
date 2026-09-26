@@ -49,11 +49,11 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
     public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (neiCachedRecipe.mRecipe.mFluidOutputs[0].equals(Materials.QuarkGluonPlasma.getFluid(1_000))) {
             neiCachedRecipe.mInputs.set(0, new PositionedStack(quarkGluonItemsForNEI, 48, 23, true));
-            neiCachedRecipe.mInputs.set(1, new PositionedStack(quarkGluonFluidItemsForNEI, 48, 52, true));
+            neiCachedRecipe.mInputs.set(1, new PositionedStack.Fluid(quarkGluonFluidItemsForNEI, 48, 52, true));
         } else {
             neiCachedRecipe.mInputs.set(0, new PositionedStack(magmatterItemsForNEI, 48, 23, true));
-            neiCachedRecipe.mInputs.set(1, new PositionedStack(magmatterSpaceFluidItemsForNEI, 30, 52, true));
-            neiCachedRecipe.mInputs.set(2, new PositionedStack(magmatterTimeFluidItemsForNEI, 48, 52, true));
+            neiCachedRecipe.mInputs.set(1, new PositionedStack.Fluid(magmatterSpaceFluidItemsForNEI, 30, 52, true));
+            neiCachedRecipe.mInputs.set(2, new PositionedStack.Fluid(magmatterTimeFluidItemsForNEI, 48, 52, true));
         }
     }
 

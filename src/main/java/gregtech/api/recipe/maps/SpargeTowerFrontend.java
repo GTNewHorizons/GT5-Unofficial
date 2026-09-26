@@ -10,10 +10,10 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.StackInfo;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.nei.GTNEIDefaultHandler;
 
 public class SpargeTowerFrontend extends FluidOnlyFrontend {
@@ -25,18 +25,24 @@ public class SpargeTowerFrontend extends FluidOnlyFrontend {
 
     protected List<String> handleNEIByproductTooltip(@NotNull ItemStack stack, @NotNull List<String> currentTip,
         @NotNull GTRecipe recipe) {
-        int maximumByproducts = recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0);
+
+        FluidStack hoveredFluid = StackInfo.getFluid(stack);
+        if (hoveredFluid == null) return currentTip;
+
         FluidStack spargeGas = recipe.mFluidInputs[0];
-        if (stack.isItemEqual(GTUtility.getFluidDisplayStack(spargeGas.getFluid()))) {
+        if (hoveredFluid.isFluidEqual(spargeGas)) {
             currentTip.add("The amount returned is the remainder after all other outputs.");
             currentTip.add("Maximum Output: " + spargeGas.amount + "L");
             return currentTip;
         }
+
+        int maximumByproducts = recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0);
         for (int i = 2; i < recipe.mFluidOutputs.length; i++) {
-            if (stack.isItemEqual(GTUtility.getFluidDisplayStack(recipe.mFluidOutputs[i].getFluid()))) {
+            if (hoveredFluid.isFluidEqual(recipe.mFluidOutputs[i])) {
                 currentTip.add("Maximum Output: " + maximumByproducts + "L");
             }
         }
+
         return currentTip;
     }
 

@@ -5,12 +5,15 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.opengl.GL11;
+
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
@@ -92,23 +95,22 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             }
         }
 
-        if (item.getTagCompound() == null) {
+        NBTTagCompound tagCompound = item.getTagCompound();
+        if (tagCompound == null) {
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             return;
         }
 
         // Render Fluid amount text
-        long fluidAmount = item.getTagCompound()
-            .getLong("mFluidDisplayAmount");
-        if (fluidAmount > 0L && !item.getTagCompound()
-            .getBoolean("mHideStackSize")) {
+        long fluidAmount = tagCompound.getLong("mFluidDisplayAmount");
+        if (fluidAmount > 0L && !tagCompound.getBoolean("mHideStackSize")) {
             String amountString;
-
+            String fluidUnit = NumberFormatUtil.getFluidUnit();
             if (fluidAmount < 10_000) {
-                amountString = fluidAmount + "L";
+                amountString = fluidAmount + fluidUnit;
             } else {
-                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidAmount) + "L";
+                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidAmount) + fluidUnit;
             }
 
             FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
