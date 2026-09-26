@@ -274,6 +274,10 @@ gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver X
 gt.blockmachines.hatch.certain.desc.0=Feeling certain, or not?
 gt.blockmachines.hatch.certain.desc.1=Schrödinger equation in a box
 gt.blockmachines.hatch.certain.desc.2=Deprecated! Use Uncertainty Resolver X
+gt.blockmachines.hatch.certain.desc.3=Install exactly one in a Quantum Computer.
+gt.blockmachines.hatch.certain.desc.4=Click two of the 16 buttons in turn to swap their cells.
+gt.blockmachines.hatch.certain.desc.5=Goal: cells symmetric about a check light should have similar brightness.
+gt.blockmachines.hatch.certain.desc.6=Brightness fades over time.
 
 gt.blockmachines.hatch.datain.tier.07.name=Optical Reception Connector
 gt.blockmachines.hatch.datain.desc.0=Quantum Data Input for Multiblocks
