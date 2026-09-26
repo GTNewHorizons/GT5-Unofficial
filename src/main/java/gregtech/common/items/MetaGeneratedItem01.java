@@ -149,6 +149,8 @@ import static gregtech.common.items.IDMetaItem01.Cover_FluidLimiter;
 import static gregtech.common.items.IDMetaItem01.Cover_ItemDetector;
 import static gregtech.common.items.IDMetaItem01.Cover_NeedsMaintenance;
 import static gregtech.common.items.IDMetaItem01.Cover_PlayerDetector;
+import static gregtech.common.items.IDMetaItem01.Scrap;
+import static gregtech.common.items.IDMetaItem01.Scrapbox;
 import static gregtech.common.items.IDMetaItem01.Cover_RedstoneReceiver;
 import static gregtech.common.items.IDMetaItem01.Cover_RedstoneTransmitter;
 import static gregtech.common.items.IDMetaItem01.Cover_RedstoneTransmitterInternal;
@@ -773,6 +775,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Firebrick
             .set(addItemWithLocalizationKeys(Firebrick.ID, "gt.item.firebrick.name", "gt.item.firebrick.tooltip"));
         GTOreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
+
+        ItemList.Scrap
+            .set(addItemWithLocalizationKeys(Scrap.ID, "gt.item.scrap.name", "gt.item.scrap.tooltip"));
+        ItemList.Scrapbox
+            .set(addItemWithLocalizationKeys(Scrapbox.ID, "gt.item.scrapbox.name", "gt.item.scrapbox.tooltip"));
 
         ItemList.Shape_Empty.set(
             addItemWithLocalizationKeys(
