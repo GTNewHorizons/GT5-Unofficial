@@ -1,10 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.UNDERLINE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.casing.Casings.RadiationProofMachineCasing;
@@ -23,6 +20,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,6 +28,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -72,6 +71,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWarehouse> implements
     ISurvivalConstructable, IStructureProvider<MTEDecayWarehouse>, ISuperChestAcceptor, ICasingTextureProvider {
 
@@ -206,23 +206,14 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Decay Warehouse")
-            .addInfo("Stores a single type of radioactive isotope and allows it to decay over time")
-            .addInfo("Decay speed is dependent on the isotopes' half-lives (lower is faster)")
-            .addInfo("Isotopes decay regardless of whether the warehouse is on or powered")
-            .addSeparator()
-            .addInfo(
-                "The warehouse's capacity equals the super chest's capacity divided by " + BLUE
-                    + CAPACITY_DIVISOR
-                    + GRAY
-                    + ".")
-            .addInfo("The warehouse will pull in up to " + BLUE + "N / " + EU_PER_IO + GRAY + " items per second,")
-            .addInfo("where " + BLUE + "N" + GRAY + " is the warehouse's EU input (standard energy hatch rules)")
-            .addSeparator()
-            .addInfo("Right click the controller with a screwdriver to dump stored isotopes into the output bus")
-            .addInfo("Right click the controller with a plunger to empty it")
-            .addInfo(
-                "The warehouse's contents are " + RED + UNDERLINE + "voided" + GRAY + " when the controller is broken")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "decay-warehouse"),
+                ImmutableMap.<String, Object>builder()
+                    .put("capacity_divisor", formatNumber(CAPACITY_DIVISOR))
+                    .put("eu_per_io", formatNumber(EU_PER_IO))
+                    .build())
             .beginStructureBlock(5, 3, 5, true)
             .addController("Front center, 2nd layer")
             .addCasing("48-52", "Radiation Proof Machine Casing", false)
@@ -237,6 +228,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
             .addStructureFooter("Do not insert isotopes into the super/quantum chest")
             .addSubChannel(GTStructureChannels.SUPER_CHEST)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
