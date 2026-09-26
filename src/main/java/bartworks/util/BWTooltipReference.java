@@ -20,7 +20,6 @@ import static net.minecraft.util.EnumChatFormatting.GRAY;
 import java.util.function.Supplier;
 
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 public class BWTooltipReference {
 
@@ -29,6 +28,5 @@ public class BWTooltipReference {
     public static final String BW = BW_NO_RESET + GRAY;
     public static final String TT = TT_NO_RESET + GRAY;
 
-    public static final Supplier<String> ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS = () -> StatCollector.translateToLocal(
-        "tooltip.bw.1.name") + " " + BW;
+    public static final Supplier<String> BARTWORKS_TOOLTIP = () -> BW;
 }

@@ -12,7 +12,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -97,7 +96,6 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
             .addMufflerHatch("1", "Any machine casing", 1)
             .addInputBus("1+", "Any machine casing", 1)
             .addOutputBus("1+", "Any machine casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "cauchemard")
             .toolTipFinisher();
         return tt;
     }

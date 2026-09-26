@@ -1,7 +1,5 @@
 package kubatech.api.implementations;
 
-import java.util.Arrays;
-
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -31,7 +29,6 @@ public class KubaTechGTMultiBlockBaseGUI<T extends KubaTechGTMultiBlockBase<?>> 
             .background(PICTURE_KUBATECH_LOGO)
             .tooltip(
                 t -> t.textColor(Color.GREY.main)
-                    .addLine("[" + Tags.MODNAME + "]")
-                    .addStringLines(Arrays.asList(multiblock.getCreditsText())));
+                    .addLine("[" + Tags.MODNAME + "]"));
     }
 }

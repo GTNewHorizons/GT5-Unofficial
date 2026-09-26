@@ -18,7 +18,6 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -108,8 +107,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addMufflerHatch("1", "Any casing", 1)
             .addInputAny("1+", "Any casing", 1)
             .addOutputAny("1+", "Any casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "REDR")
-            .toolTipFinisher();
+                        .toolTipFinisher();
         // spotless:on
         return tt;
     }

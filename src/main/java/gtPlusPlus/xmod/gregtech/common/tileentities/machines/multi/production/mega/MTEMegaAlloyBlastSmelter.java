@@ -303,7 +303,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
-            .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
+            .toolTipFinisher();
         return tt;
     }
 

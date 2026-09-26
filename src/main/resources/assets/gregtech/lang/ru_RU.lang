@@ -489,9 +489,9 @@ gt.blockmachines.solarreflector.simple.single.name=Солнечный отраж
 gt.blockmachines.solarreflector.simple.single.tooltip=Часть движения "Чистая зеленая энергия"\nУкажите мне на Солнечную башню\nДобавлено: §2Alkalus §7- §c[GT++]
 
 gt.blockmachines.tesseract.generator.name=Тессеракт генератор
-gt.blockmachines.tesseract.generator.tooltip=Generates a Tesseract for the attached Inventory\nConnect with pipes to insert items\nConsumes 512EU/t for same dimension transfers\nConsumes 2048EU/t for cross dimensional transfers\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.tesseract.generator.tooltip=Generates a Tesseract for the attached Inventory\nConnect with pipes to insert items\nConsumes 512EU/t for same dimension transfers\nConsumes 2048EU/t for cross dimensional transfers
 gt.blockmachines.tesseract.terminal.name=Терминал тессеракта
-gt.blockmachines.tesseract.terminal.tooltip=Accesses Tesseract Generators remotely\nConnect with pipes to extract items or fluids\nOutputs from the back face\nConsumes 512EU/t for same dimension transfers\nConsumes 2048EU/t for cross dimensional transfers\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.tesseract.terminal.tooltip=Accesses Tesseract Generators remotely\nConnect with pipes to extract items or fluids\nOutputs from the back face\nConsumes 512EU/t for same dimension transfers\nConsumes 2048EU/t for cross dimensional transfers
 
 gt.blockmachines.vacuum.hatch.input.name=Входной вакуумный конвейер
 gt.blockmachines.vacuum.hatch.output.name=Выходной вакуумный конвейер

@@ -272,7 +272,6 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors("GregTech Odyssey")
             .toolTipFinisher();
         return tt;
     }

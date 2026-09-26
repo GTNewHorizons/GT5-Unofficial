@@ -225,7 +225,6 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
             .addOutputHatch("1+", "Any refinery casing", 1)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.coiltier"))
-            .addStructureAuthors("GregTech Odyssey")
             .toolTipFinisher();
         return tt;
     }

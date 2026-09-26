@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -113,7 +112,6 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addMufflerHatch("1", "Any containment or stainless steel casing", 1)
             .addMiscHatch("1+", "Input/Extrusion Bus", "Any containment casing", 1)
             .addOutputBus("1+", "Any containment casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "cauchemard")
             .toolTipFinisher();
         return tt;
     }

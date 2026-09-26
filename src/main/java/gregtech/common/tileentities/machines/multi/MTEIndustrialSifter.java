@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -82,7 +81,6 @@ public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndus
             .addMufflerHatch("1", "Any casing", 1)
             .addInputAny("1+", "Any casing", 1)
             .addOutputAny("1+", "Any casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
     }
