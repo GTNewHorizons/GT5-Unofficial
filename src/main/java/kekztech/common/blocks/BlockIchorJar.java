@@ -196,8 +196,8 @@ public class BlockIchorJar extends BlockJar {
             int created = 0;
             for (int i = 0; i < iterations; i++) {
                 final int xf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
-                final int yf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
-                final int zf = x + world.rand.nextInt(7) - world.rand.nextInt(7);
+                final int yf = y + world.rand.nextInt(7) - world.rand.nextInt(7);
+                final int zf = z + world.rand.nextInt(7) - world.rand.nextInt(7);
                 if (world.isAirBlock(xf, yf, zf)) {
                     if (yf > y) {
                         world.setBlock(xf, yf, zf, ConfigBlocks.blockFluxGas, 8, 3);
