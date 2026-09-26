@@ -29,6 +29,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.GTShapeStore;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -52,7 +53,9 @@ import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 ///
 /// MaterialLib answers the first for every name of a (prefix, material) pair it serves: the pair's stack,
 /// MaterialLib's own item or the foreign item a shape override declares, is the unification target, whatever
-/// else registers under the name and in whatever order. Only names with no such pair (containers, name-only
+/// else registers under the name and in whatever order. A pair MaterialLib's own item serves answers from
+/// GregTech's preInit on; one a foreign item stands in for answers from GregTech's init, once that item is
+/// registered (see [#useMaterialLibTargets]). Only names with no such pair (containers, name-only
 /// circuits, ore blocks, other mods' parts of shapes GregTech does not generate) are decided here, by
 /// [#set(OrePrefixes, Material, ItemStack)] or else by the first registered stack that is not blacklisted.
 ///
@@ -160,8 +163,9 @@ public class GTOreDictUnificator {
         return pairs;
     }
 
-    /// Lets MaterialLib's pairs decide their names from here on and drops every target resolved before. Called
-    /// at the start of GregTech's init: during preInit another mod's overriding item may not be registered yet.
+    /// Lets every MaterialLib pair decide its names from here on, including those a foreign item stands in for,
+    /// and drops every target resolved before. Called at the start of GregTech's init: during preInit another
+    /// mod's overriding item may not be registered yet.
     /// A foreign item standing in for a pair is associated with it here, since the ore-dictionary event that
     /// would do so may never be processed for it (`stickObsidian` is an ignored name).
     public static void useMaterialLibTargets() {
@@ -174,14 +178,16 @@ public class GTOreDictUnificator {
         }
     }
 
-    /// The stack MaterialLib serves under `oreName`, or null when it serves none or [#useMaterialLibTargets] has
-    /// not run yet.
+    /// The stack MaterialLib serves under `oreName`, or null when it serves none, when GregTech's shapes are not
+    /// registered yet, or when a foreign item stands in for the pair and [#useMaterialLibTargets] has not run yet.
     private static ItemStack materialLibTarget(String oreName) {
-        if (!materialLibTargetsLive) return null;
         ItemStack target = materialLibTargets.get(oreName);
         if (target != null) return target;
+        if (GTShapeStore.all()
+            .isEmpty()) return null;
         MaterialLibPair pair = materialLibPairs().get(oreName);
         if (pair == null) return null;
+        if (!materialLibTargetsLive && !MaterialParts.isMinted(pair.prefix(), pair.material())) return null;
         target = MaterialParts.stack(pair.prefix(), pair.material(), 1);
         if (target != null) materialLibTargets.put(oreName, target);
         return target;
