@@ -508,7 +508,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 list.add(
                     EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
                         "GT5U.waila.black_hole_compressor.stability",
-                        "" + EnumChatFormatting.BOLD + Math.round(tag.getFloat("blackHoleStability"))));
+                        Math.round(tag.getFloat("blackHoleStability"))));
             } else {
                 list.add(
                     EnumChatFormatting.RED

@@ -136,6 +136,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.2"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.3"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.4"))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.board_processor.body.output_hatch"))
             .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.5"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.6"))
@@ -154,7 +155,12 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             // Nanochip Mesh Interface Casing
             .addCasing("10", translateToLocal("gt.blockcasings12.1.name"), false)
             .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
-            .addOutputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addOutputHatch(
+                "1+",
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches") + " ("
+                    + translateToLocal("GT5U.tooltip.nac.module.board_processor.structure.output_hatch")
+                    + ")",
+                3)
             .addMiscHatch(
                 "0+",
                 TOOLTIP_VCI_LONG,
@@ -233,7 +239,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     }
 
     @Override
-    protected float getEUDiscountModifier() {
+    protected float getEUDiscountModifier(GTRecipe recipe) {
         return euMultiplier;
     }
 
@@ -257,7 +263,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             Materials.IronIIIChloride.mFluid,
             Materials.GrowthMediumSterilized.mFluid,
             Materials.BioMediumSterilized.mFluid,
-            Materials.PrismaticAcid.mFluid));
+            Materials.PrismaticAcid.mFluid,
+            Materials.UUMatter.mFluid));
 
     @NotNull
     @Override
@@ -292,6 +299,11 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         }
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 4
             && !storedFluidStack.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 5
+            && !storedFluidStack.isFluidEqual(Materials.UUMatter.getFluid(0))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -364,6 +376,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                         impurityFluidStack = Materials.BioMediumRaw.getFluid(0);
                     } else if (storedFluidStack.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
                         impurityFluidStack = Materials.PrismaticGas.getFluid(0);
+                    } else if (storedFluidStack.isFluidEqual(Materials.UUMatter.getFluid(0))) {
+                        impurityFluidStack = Materials.UUAmplifier.getFluid(0);
                     }
                 }
             }

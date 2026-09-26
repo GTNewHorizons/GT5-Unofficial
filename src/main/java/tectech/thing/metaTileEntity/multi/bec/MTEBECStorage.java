@@ -100,7 +100,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public IStructureDefinition<MTEBECStorage> compile(String[][] definition) {
         structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 20, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
+            .withHatches(1, 21, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
@@ -156,7 +156,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
             .addCasing("568", PeaceEnforcementCasing.getLocalizedName(), false)
             .addCasing("508", CondensateGuidanceCoil.getLocalizedName(), false)
             .addCasing("439-442", FineStructureConstantManipulator.getLocalizedName(), false)
-            .addCasing("324-343", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("322-343", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("292", CondensateTransformativeCoil.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
             .addMiscHatch("1-4", "Bose-Einstein Condensate Hatch", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.bec-hatch-pos"), 2)
@@ -301,7 +301,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive()) {
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
             if (torus == null) {
                 torus = new GTSoundLoop(
                     SoundResource.GT_MACHINES_BEC_GENERATOR.resourceLocation,
@@ -347,9 +347,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     .playSound(pillar);
             }
         } else {
-            if (pillar != null) pillar.stop();
-            if (torus != null) torus.stop();
-            if (torusFar != null) torusFar.stop();
+            if (pillar != null) pillar.setFadeMe(true);
+            if (torus != null) torus.setFadeMe(true);
+            if (torusFar != null) torusFar.setFadeMe(true);
 
             pillar = null;
             torus = null;

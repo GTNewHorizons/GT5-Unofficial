@@ -14,6 +14,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,6 +48,19 @@ public abstract class GTMetaItem extends GTMetaItemBase {
     public final HashMap<Short, Long[]> mElectricStats = new HashMap<>();
     public final HashMap<Short, Long[]> mFluidContainerStats = new HashMap<>();
 
+    private final HashMap<Short, NameKey> mNames = new HashMap<>();
+
+    private static class NameKey {
+
+        private final String mKey;
+        private final Object[] mArgs;
+
+        private NameKey(final String aKey, final Object[] aArgs) {
+            this.mKey = aKey;
+            this.mArgs = aArgs;
+        }
+    }
+
     /**
      * Creates the Item using these Parameters.
      *
@@ -77,6 +91,33 @@ public abstract class GTMetaItem extends GTMetaItemBase {
      * @param aRandomData   The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
      * @return An ItemStack containing the newly created Item.
      */
+    /**
+     * Adds a Custom Item that formats its name from a localization key, so that a family of Items spells its name once
+     * instead of once per member. The Item registers no name of its own.
+     *
+     * @param aID       The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aNameKey  The localization key of the name
+     * @param aNameArgs The arguments the key is formatted with
+     * @return An ItemStack containing the newly created Item.
+     */
+    public final ItemStack addItemWithNameKey(final int aID, final String aNameKey, final Object[] aNameArgs,
+        final String aToolTip, final Object... aRandomData) {
+        final ItemStack rStack = this.addItem(aID, "", aToolTip, aRandomData);
+        if (rStack != null) {
+            this.mNames.put((short) (this.mOffset + aID), new NameKey(aNameKey, aNameArgs));
+        }
+        return rStack;
+    }
+
+    @Override
+    public String getItemStackDisplayName(final ItemStack aStack) {
+        final NameKey tName = this.mNames.get((short) this.getDamage(aStack));
+        if (tName != null) {
+            return StatCollector.translateToLocalFormatted(tName.mKey, tName.mArgs);
+        }
+        return super.getItemStackDisplayName(aStack);
+    }
+
     public final ItemStack addItem(final int aID, final String aEnglish, String aToolTip, final Object... aRandomData) {
         if (aToolTip == null) {
             aToolTip = "";
@@ -85,8 +126,12 @@ public abstract class GTMetaItem extends GTMetaItemBase {
             final ItemStack rStack = new ItemStack(this, 1, this.mOffset + aID);
             this.mEnabledItems.set(aID);
             this.mVisibleItems.set(aID);
-            GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
-            GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            if (!aEnglish.isEmpty()) {
+                GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
+            }
+            if (!aToolTip.isEmpty()) {
+                GTLanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+            }
             final List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (final Object tRandomData : aRandomData) {

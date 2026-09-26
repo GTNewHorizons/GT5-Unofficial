@@ -29,6 +29,7 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.common.gui.modularui.hatch.MTEHatchVacuumConveyorGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryElement;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
@@ -43,6 +44,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     public static final int VACUUM_MOVE_TICK = 17;
     public VacuumFactoryNetwork network;
     protected MTENanochipAssemblyComplex mainController;
+    protected MTENanochipAssemblyModuleBase<?> module;
     public CircuitComponentPacket contents;
 
     // Identifier used to identify this hatch uniquely inside a multiblock.
@@ -66,6 +68,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     public void onColorChangeServer(byte aColor) {
         super.onColorChangeServer(aColor);
         VacuumFactoryGrid.INSTANCE.updateElement(this);
+        if (module != null) module.setStructureUpdateTime(1); // update the structure when color is changed
     }
 
     @Override
@@ -106,9 +109,14 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
         this.mainController = main;
     }
 
+    public void setModule(MTENanochipAssemblyModuleBase<?> module) {
+        this.module = module;
+    }
+
     public void unifyPacket(CircuitComponentPacket packet) {
         if (contents == null) contents = packet;
         else contents.unifyWith(packet);
+        this.markDirty();
         // Components are fake items kept outside mInventory, so the inventory-dirty flag never fires for them. Push a
         // recipe check directly so a module waiting on these inputs restarts the moment a component arrives.
         if (packet != null && !packet.isEmpty()) {
@@ -120,6 +128,8 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTick % 20 == VACUUM_MOVE_TICK) {
+                // in case the module its attached to ever gets destroyed or made invalid, set it to null to not leak
+                if (this.module != null && !this.module.isValid()) this.module = null;
                 if (contents == null) {
                     getBaseMetaTileEntity().setActive(false);
                 } else {

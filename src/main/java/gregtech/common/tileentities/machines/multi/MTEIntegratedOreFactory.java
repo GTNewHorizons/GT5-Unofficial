@@ -4,7 +4,6 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY;
@@ -125,7 +124,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         .addElement(
             'D',
             buildHatchAdder(MTEIntegratedOreFactory.class)
-                .atLeast(Energy, ExoticEnergy, InputBus, InputHatch, Muffler, OutputBus, Maintenance)
+                .atLeast(Energy, ExoticEnergy, InputBus, InputHatch, Muffler, OutputBus)
                 .casingIndex(Casings.CleanStainlessSteelMachineCasing.textureId)
                 .hint(1)
                 .buildAndChain(Casings.CleanStainlessSteelMachineCasing.asElement()))
@@ -220,7 +219,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         // other order makes nei preview go crazy
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkHatchMax(errors, ExoticEnergy, 1);
-        checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
@@ -677,7 +675,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addCasing("7", "Grate Machine Casing", false)
             .addCasing("7", "Centrifuge Casing", false)
             .addEnergyHatch("1+", "Any stainless steel casing", 1)
-            .addMaintenanceHatch("1", "Any stainless steel casing", 1)
             .addMufflerHatch("1", "Any stainless steel casing", 1)
             .addInputBus("1+", "Any stainless steel casing", 1)
             .addInputHatch("1+", "Any stainless steel casing", 1)

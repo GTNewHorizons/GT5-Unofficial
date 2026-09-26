@@ -146,7 +146,7 @@ public class ItemEjectionHelper {
                 }
 
                 // Fill at most one slot with the remaining items
-                if (output.storePartial(transaction)) {
+                if (output.storePartial(transaction, pendingOutputs)) {
                     break;
                 } else {
                     // If we couldn't insert anything into the bus, go to the next one
@@ -198,16 +198,18 @@ public class ItemEjectionHelper {
             this.tmpStack = id.getItemStack();
         }
 
-        public boolean storePartial(IOutputBusTransaction transaction) {
-            boolean isSharedoutput = transaction instanceof IOutputBusTransaction.IDynamicCapacityOutputAware sharedOutput
-                && sharedOutput.isDynamicCapacity();
-            long targetAmount = remainingAmount;
-            if (isSharedoutput) {
-                targetAmount = Math.min(remainingAmount, perParallel);
+        public boolean storePartial(IOutputBusTransaction transaction, Iterable<ItemParallelData> pendingOutputs) {
+            long totalPerParallel = perParallel;
+            if (transaction.needsTotalParallelData()) {
+                for (ItemParallelData other : pendingOutputs) {
+                    if (!transaction.isFiltered() || transaction.isFilteredTo(other.id)) {
+                        totalPerParallel += other.perParallel;
+                    }
+                }
             }
-            int amount = GTUtility.longToInt(targetAmount);
+            int amount = (int) Math.min(remainingAmount, Integer.MAX_VALUE);
             tmpStack.stackSize = amount;
-            transaction.storePartial(id, tmpStack);
+            transaction.storePartial(id, tmpStack, totalPerParallel, perParallel);
             long actuallyInsert = amount - tmpStack.stackSize;
             remainingAmount -= actuallyInsert;
             return actuallyInsert > 0;

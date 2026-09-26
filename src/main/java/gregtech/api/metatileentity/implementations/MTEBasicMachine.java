@@ -1222,6 +1222,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         boolean isActive = tag.getBoolean("isActiveSingleBlock");
         String euText = StatCollector.translateToLocalFormatted(
             "GT5U.waila.machine.eu_bar",
+            formatNumber(eu),
             maxEu > 0 ? Math.clamp((int) ((double) eu / maxEu * 100), 0, 100) : 0);
 
         List<ItemStack> inputItems = new ArrayList<>();
@@ -1261,7 +1262,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         tag.getInteger("progressSingleBlock")));
             }
 
-            if (!isSteampowered()) {
+            if (isElectric() && !isSteampowered()) {
                 currenttip.add(
                     TTRenderBar.create(
                         euText,
@@ -1271,7 +1272,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             }
 
             if (isActive) {
-                if (!isSteampowered()) {
+                if (isElectric() && !isSteampowered()) {
                     if (euT > 0) {
                         double exactAmps = GTUtility.getExactAmperageForTier(euT, (byte) getInputTier());
 

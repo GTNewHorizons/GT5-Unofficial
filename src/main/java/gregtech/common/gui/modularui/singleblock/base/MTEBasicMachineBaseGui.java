@@ -311,7 +311,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private String createTooltipForProgressBar() {
+    protected String createTooltipForProgressBar() {
         final byte machineTier = machine.mTier;
         String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
         return StatCollector.translateToLocalFormatted("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
@@ -331,15 +331,12 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .widgetTheme(GTWidgetThemes.PICTURE_ERROR)
             .setEnabledIf(_ -> hasErrorSyncer.getBoolValue())
             .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .tooltipBuilder(t -> {
-                if (hasErrorSyncer.getBoolValue()) addTooltipDataToRichTooltip(
-                    () -> errorMap.get(
-                        errorMap.keySet()
-                            .stream()
-                            .filter(BooleanSyncValue::getBoolValue)
-                            .findFirst()
-                            .get())).accept(t);
-            });
+            .tooltipBuilder(
+                t -> errorMap.keySet()
+                    .stream()
+                    .filter(BooleanSyncValue::getBoolValue)
+                    .findFirst()
+                    .ifPresent(key -> addTooltipDataToRichTooltip(() -> errorMap.get(key)).accept(t)));
     }
 
     protected ParentWidget<?> createItemInputSlots(ModularPanel panel, PanelSyncManager syncManager) {

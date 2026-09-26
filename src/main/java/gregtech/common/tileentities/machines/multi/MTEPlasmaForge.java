@@ -1075,9 +1075,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             list.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.infodata.plasma_forge.fuel_discount",
-                    EnumChatFormatting.GOLD + formatNumber(100 * (1 - tag.getDouble("discount")))
-                        + EnumChatFormatting.RESET
-                        + "%"));
+                    formatNumber(100 * (1 - tag.getDouble("discount")))));
 
         }
     }

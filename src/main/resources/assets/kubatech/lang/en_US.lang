@@ -99,7 +99,7 @@ kubatech.gui.text.mia.show_machine_status=Show Machine Status
 
 kubatech.gui.tooltip.contributors.added=Added by %s
 kubatech.gui.tooltip.contributors.design=Designed by %s
-kubatech.gui.tooltip.contributors.structure=Structure designed by %s
+kubatech.gui.tooltip.contributors.structure=Structure designed by §d%s
 
 kubatech.gui.tooltip.dynamic_inventory.identical_slots=There are %d identical slots
 kubatech.gui.tooltip.dynamic_inventory.empty_slot=Empty slot
@@ -150,16 +150,16 @@ kubatech.infodata.eec.weapon_preservation.yes=Is preserving weapons: §eYes
 kubatech.infodata.eec.weapon_preservation.no=Is preserving weapons: §eNo
 kubatech.infodata.eec.inserted_weapon.yes=Inserted weapon: §eYes
 kubatech.infodata.eec.inserted_weapon.no=Inserted weapon: §eNo
-kubatech.infodata.eec.weapon.damage=Weapon attack damage: §e%f
-kubatech.infodata.eec.weapon.looting_level=Weapon looting level: §e%d
-kubatech.infodata.eec.total_damage=Total attack damage: §e%f
+kubatech.infodata.eec.weapon.damage=Weapon attack damage: §e%s
+kubatech.infodata.eec.weapon.looting_level=Weapon looting level: §e%s
+kubatech.infodata.eec.total_damage=Total attack damage: §e%s
 
 ## Extreme Industrial Greenhouse
 kubatech.infodata.eig.running_mode.setup_mode.input=Running in mode: §aSetup mode (input)§r
 kubatech.infodata.eig.running_mode.setup_mode.output=Running in mode: §aSetup mode (output)§r
-kubatech.infodata.eig.uses.water=Uses %dL/operation of water
-kubatech.infodata.eig.uses.weedex=Uses %dL/second of Weed-EX 9000
-kubatech.infodata.eig.max_slots=Max slots: §a%d§r
+kubatech.infodata.eig.uses.water=Uses %sL/operation of water
+kubatech.infodata.eig.uses.weedex=Uses %sL/second of Weed-EX 9000
+kubatech.infodata.eig.max_slots=Max slots: §a%s§r
 kubatech.infodata.eig.used_slots=Used slots: %s
 kubatech.infodata.bucket.humidity=Humidity:
 kubatech.infodata.bucket.humidity.on=On
@@ -341,7 +341,7 @@ KT.research.ultimatetea=You have found a way to convert all this Tea into pure p
 kubatech.tooltip.tea=Tea
 kubatech.tooltip.tea_acceptor.0=Accepts Tea items and adds them to your network
 kubatech.tooltip.tea_acceptor.1=Can accept up to 10 stacks per tick
-kubatech.tooltip.tea_storage.0=Extends Tea Storage by %s
+kubatech.tooltip.tea_storage.0=Extends Tea Storage by §c%s
 kubatech.tooltip.tea_ingredient.0=This is Tea ingredient
 
 kubatech.tooltip.structure.flowers=Flowers
@@ -391,3 +391,15 @@ gt.blockmachines.htgr.name=High Temperature Gas-cooled Reactor
 gt.blockmachines.industrialarcfurnace.controller.tier.single.name=Industrial Arc Furnace
 gt.blockmachines.multimachine.defusioncrafter.name=Draconic Evolution Fusion Crafter
 gt.blockmachines.multimachine.extremegreenhouse.name=Extreme Industrial Greenhouse
+
+# HTGR fuel items
+item.HTGR.fuel.Plutonium=Plutonium
+item.HTGR.fuel.Thorium=Thorium
+item.HTGR.fuel.Uranium=Uranium
+item.HTGRBISOPebbleCompound.name=BISO pebble compound (%s)
+item.HTGRBurnedOutTRISOBall.name=Burned out TRISO Ball (%s)
+item.HTGRBurnedOutTRISOPebble.name=Burned out TRISO Pebble (%s)
+item.HTGRHTGRFuelMixture.name=HTGR fuel mixture (%s)
+item.HTGRTRISOBall.name=TRISO ball (%s)
+item.HTGRTRISOPebble.name=TRISO pebble (%s)
+item.HTGRTRISOPebbleCompound.name=TRISO pebble compound (%s)
