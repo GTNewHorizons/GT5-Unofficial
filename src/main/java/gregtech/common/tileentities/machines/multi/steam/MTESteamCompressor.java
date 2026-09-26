@@ -376,6 +376,7 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
             .addCasing("6", "Block of Steel", false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
         return tt;
     }

@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -200,6 +201,7 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
             .addInputHatch("1+", "Any turbine casing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
     }

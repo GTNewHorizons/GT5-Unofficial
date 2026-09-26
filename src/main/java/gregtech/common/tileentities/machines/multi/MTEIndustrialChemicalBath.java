@@ -18,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -103,6 +104,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
             .addOutputAny("1+", "Any wash plant casing", 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterCost"))
+            .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
         return tt;
     }

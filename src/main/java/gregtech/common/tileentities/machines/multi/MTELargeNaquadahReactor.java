@@ -409,6 +409,7 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
             .addMaintenanceHatch("1", "Any reactor casing", 1)
             .addInputHatch("1+", "Any reactor casing", 1)
             .addOutputHatch("1+", "Any reactor casing", 1)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         return tt;
     }

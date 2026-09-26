@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -92,6 +93,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
             .addOutputHatch("0+", "Any base forge casing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.SOLENOID)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
         return tt;
     }

@@ -200,6 +200,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
             .addMaintenanceHatch("1", "Any machine casing", 1)
             .addMufflerHatch("1", "Any machine casing", 1)
             .addInputHatch("1+", "Any machine casing", 1)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "TimTems")
             .toolTipFinisher();
         return tt;
     }

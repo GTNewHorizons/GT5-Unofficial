@@ -25,6 +25,7 @@ import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeDetectorHatch;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeHatch;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1051,6 +1052,11 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         public IGTHatchAdder<? super MTEIndustrialArcFurnace> adder() {
             return adder;
         }
+    }
+
+    @Override
+    protected @NotNull String[] getCreditsText() {
+        return new String[] { translateToLocalFormatted("kubatech.gui.tooltip.contributors.structure", "Sol_IX") };
     }
 
 }

@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -123,6 +124,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .addInputBus("1+", "Any wash plant casing", 1)
             .addInputHatch("1+", "Any wash plant casing", 1)
             .addOutputBus("1+", "Any wash plant casing", 1)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "ya9yu")
             .toolTipFinisher();
         return tt;
     }

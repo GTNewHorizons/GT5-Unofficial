@@ -153,6 +153,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.EIC_PISTON)
             .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "Pix3lated")
             .toolTipFinisher();
         return tt;
     }

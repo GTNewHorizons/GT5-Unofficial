@@ -25,6 +25,7 @@ import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
@@ -95,6 +96,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_produces = StatCollector.translateToLocal("GT5U.MBTT.Produces");
     private static final String TT_hold = StatCollector.translateToLocal("GT5U.MBTT.Hold");
     private static final String TT_todisplay = StatCollector.translateToLocal("GT5U.MBTT.Display");
+    private static final String TT_StructureAuthor = StatCollector.translateToLocal("GT5U.MBTT.StructureBy");
     private static final String TT_structurehint = StatCollector.translateToLocal("GT5U.MBTT.StructureHint");
     private static final String TT_air = StatCollector.translateToLocal("GT5U.MBTT.Air");
     private static final String TT_projector = StatCollector.translateToLocal("GT5U.MBTT.Structure.Projector");
@@ -106,6 +108,7 @@ public class MultiblockTooltipBuilder {
     private List<String> iLines;
     private List<String> sLines;
     private List<String> hLines;
+    private List<String> structureAuthors;
     private SetMultimap<Integer, String> hBlocks;
 
     private String[] iArray;
@@ -116,6 +119,7 @@ public class MultiblockTooltipBuilder {
         iLines = new LinkedList<>();
         sLines = new LinkedList<>();
         hLines = new LinkedList<>();
+        structureAuthors = new LinkedList<>();
         hBlocks = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
         hBlocks.put(StructureLibAPI.HINT_BLOCK_META_AIR, TT_air);
     }
@@ -1612,6 +1616,17 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Adds structure designers to the end of the tooltip.
+     *
+     * @param structureAuthors Names of the structure designers
+     * @return This tooltip builder
+     */
+    public MultiblockTooltipBuilder addStructureAuthors(String... structureAuthors) {
+        Collections.addAll(this.structureAuthors, structureAuthors);
+        return this;
+    }
+
+    /**
      * Completes the tooltip with structure display instructions.
      */
     public MultiblockTooltipBuilder toolTipFinisher() {
@@ -1638,6 +1653,10 @@ public class MultiblockTooltipBuilder {
                 + " "
                 + TT_todisplay);
 
+        if (!structureAuthors.isEmpty()) {
+            iLines.add(TT_StructureAuthor + COLON + GTAuthors.formatAuthors(structureAuthors));
+        }
+
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);
         sLines.add(TT_projector);
@@ -1656,6 +1675,7 @@ public class MultiblockTooltipBuilder {
         iLines = null;
         sLines = null;
         hLines = null;
+        structureAuthors = null;
         hBlocks = null;
         return this;
     }

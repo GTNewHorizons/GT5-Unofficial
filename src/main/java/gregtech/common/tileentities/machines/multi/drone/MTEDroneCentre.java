@@ -258,6 +258,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addCasing("28", "Iron Frame Box", false)
             .addCasing(CASINGS_MIN + "-26", "Solid Steel Machine Casing", false)
             .addInputBus("1+", "Any machine casing", 1)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "omegacubed")
             .toolTipFinisher();
         return tt;
     }

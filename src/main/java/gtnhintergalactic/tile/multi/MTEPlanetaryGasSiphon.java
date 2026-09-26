@@ -240,6 +240,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             .addOutputHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
             .toolTipFinisher();
         return tt;
     }

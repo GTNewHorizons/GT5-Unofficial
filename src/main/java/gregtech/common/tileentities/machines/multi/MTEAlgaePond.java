@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -121,6 +122,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             .addOutputBus("1+", "Any casing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
             .toolTipFinisher();
         return tt;
     }

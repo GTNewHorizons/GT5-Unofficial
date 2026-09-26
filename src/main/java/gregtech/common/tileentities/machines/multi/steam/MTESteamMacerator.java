@@ -355,6 +355,7 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
             .addCasing("1", "Steel Gear Box Casing", false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addStructureAuthors(EnumChatFormatting.GOLD + "Citrusss")
             .toolTipFinisher();
         return tt;
     }

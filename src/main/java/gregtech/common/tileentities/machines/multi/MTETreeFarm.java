@@ -45,6 +45,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -157,6 +158,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             .addAir("Interior center column")
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "EvgenWarGold")
             .toolTipFinisher();
         return tt;
     }

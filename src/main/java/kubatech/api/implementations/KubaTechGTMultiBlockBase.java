@@ -177,6 +177,10 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
         return new KubaTechGTMultiBlockBaseGUI<>(this);
     }
 
+    protected @NotNull String[] getCreditsText() {
+        return new String[0];
+    }
+
     protected static @NotNull String voltageTooltipFormatted(int tier) {
         return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.GRAY;
     }

@@ -13,6 +13,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -81,6 +82,7 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
             .addOutputBus("1+", "Any containment casing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addStructureAuthors(EnumChatFormatting.GOLD + "Fox")
             .toolTipFinisher();
         return tt;
     }
