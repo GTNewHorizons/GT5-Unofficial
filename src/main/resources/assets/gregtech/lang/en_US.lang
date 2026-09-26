@@ -2854,6 +2854,9 @@ GT5U.machines.large_boiler.gui.consumption_fluid=Fluid consumption
 GT5U.machines.large_boiler.gui.consumption_solid=Item consumption
 GT5U.machines.large_boiler.gui.solid_burn=Solid fuel burns for: §9%s§rs/§9%s§rs
 GT5U.machines.large_boiler.gui.fluid_burn=Fluid fuel burns for: §9%s§rs/§9%s§rs
+GT5U.machines.hearth.mode.0=Pyrotheum §4Disabled
+GT5U.machines.hearth.mode.1=Pyrotheum §2Enabled
+GT5U.machines.hearth.mode.2=§cOverdrive §2Enabled
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -3278,8 +3281,7 @@ GT5U.gui.text.stack_capacity=Stack Capacity
 GT5U.gui.text.bus_settings=Bus Settings
 GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
-GT5U.gui.text.button.pyrotheum.enabled=Pyrotheum Heating: §2Enabled
-GT5U.gui.text.button.pyrotheum.disabled=Pyrotheum Heating: §4Disabled
+
 
 GT5U.gui.text.nil=None
 GT5U.gui.text.turbine_title=Turbines
@@ -6740,6 +6742,7 @@ GT5U.waila.digital_chest.empty=Chest Empty
 GT5U.waila.digital_tank.empty=Tank Empty
 GT5U.waila.mebf.parallel=Current Parallel Modifier: §6%s
 GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
+GT5U.waila.mebf.overdrive=Overdrive Enabled
 GT5U.waila.boiler.temperature=§aTemperature: §6%s
 GT5U.waila.boiler.fuel_empty=§cFuel empty
 GT5U.waila.boiler.steam_producing=§aSteam Production: §6%s§rL/s
