@@ -1,7 +1,5 @@
 package tectech.thing.casing;
 
-import static gregtech.api.enums.GTAuthors.AuthorColen;
-
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -9,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.enums.GTAuthors;
 import gregtech.common.blocks.ItemCasings;
 
 public class ItemCasingsStabilisation extends ItemCasings {
@@ -35,6 +32,5 @@ public class ItemCasingsStabilisation extends ItemCasings {
             default:
                 tooltip.add(StatCollector.translateToLocal("tt.eoh.time_dilation.error.tooltip"));
         }
-        tooltip.add(GTAuthors.buildAuthorsWithFormat(AuthorColen));
     }
 }

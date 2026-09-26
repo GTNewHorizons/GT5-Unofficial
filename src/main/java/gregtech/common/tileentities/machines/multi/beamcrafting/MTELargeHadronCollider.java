@@ -38,7 +38,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -512,7 +511,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 6)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.modules"))
-            .toolTipFinisher(GTAuthors.AuthorHamCorp);
+            .toolTipFinisher();
         return tt;
     }
 

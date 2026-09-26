@@ -87,7 +87,6 @@ import forestry.apiculture.genetics.Bee;
 import forestry.plugins.PluginApiculture;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -403,7 +402,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.footer"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.AuthorKuba, "Runakai");
+            .toolTipFinisher();
         return tt;
     }
 

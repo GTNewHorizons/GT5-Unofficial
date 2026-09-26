@@ -13,7 +13,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -301,9 +300,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
                 TooltipHelper.voltageText(GTValues.V[tier])));
         additionalTooltips
             .add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
-        if (author != null) {
-            additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
-        }
         final String[] suffixs = additionalTooltips.toArray(new String[0]);
         if (formatted.length == 0) {
             return GTSplit.splitLocalizedWithSuffix(key, suffixs);

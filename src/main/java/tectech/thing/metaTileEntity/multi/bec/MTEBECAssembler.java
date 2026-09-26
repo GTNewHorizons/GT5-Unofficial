@@ -28,7 +28,6 @@ import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
@@ -176,7 +175,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
                 "Bose-Einstein Condensate Hatch",
                 StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.bec-hatch-pos"),
                 2)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .toolTipFinisher();
         return tt;
     }
 

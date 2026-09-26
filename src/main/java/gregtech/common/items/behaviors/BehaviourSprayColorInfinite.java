@@ -1,6 +1,5 @@
 package gregtech.common.items.behaviors;
 
-import static gregtech.api.enums.GTAuthors.AuthorQuerns;
 import static net.minecraft.util.MovingObjectPosition.MovingObjectType.BLOCK;
 
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.MetaBaseItem;
@@ -138,7 +136,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
                 "gt.behaviour.paintspray.infinite.tooltip.prevent_shake",
                 GameSettings.getKeyDisplayString(GTMod.clientProxy().shakeLockKey.getKeyCode())));
         aList.add(" ");
-        aList.add(GTAuthors.buildAuthorsWithFormat(AuthorQuerns));
 
         return Optional.of(aList);
     }

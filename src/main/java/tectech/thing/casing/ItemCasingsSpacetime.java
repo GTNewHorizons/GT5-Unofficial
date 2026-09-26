@@ -2,7 +2,6 @@ package tectech.thing.casing;
 
 import static com.google.common.math.LongMath.pow;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.enums.GTAuthors.AuthorColen;
 
 import java.util.List;
 
@@ -11,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.enums.GTAuthors;
 import gregtech.common.blocks.ItemCasings;
 
 public class ItemCasingsSpacetime extends ItemCasings {
@@ -43,6 +41,5 @@ public class ItemCasingsSpacetime extends ItemCasings {
             default:
                 tooltip.add(StatCollector.translateToLocal("tt.eoh.time_dilation.error.tooltip"));
         }
-        tooltip.add(GTAuthors.buildAuthorsWithFormat(AuthorColen));
     }
 }

@@ -240,7 +240,7 @@ gt.blockmachines.input_bus_lens.desc=Holds a lens for UV laser focusing.
 gt.blockmachines.input_bus_steam.desc=Item Input for Steam Multiblocks\nShift + right click with screwdriver to toggle automatic item shuffling\nCapacity: 4 stacks\nDoes not work with non-steam multiblocks
 gt.blockmachines.input_bus_super.desc=Item Input for Multiblocks\n%s Slots
 gt.blockmachines.input_bus_turbine.desc=An automation port for Large Turbines\nWill attempt once per 1200 ticks to fill the turbine slot of its parent turbine\nYou may adjust this with a screwdriver\nHold shift to adjust in finer amounts\nHold control to adjust direction\nLeft Click with Screwdriver to reset\nThis module assumes the entire turbine is in the same Chunk
-gt.blockmachines.input_bus_linked.desc=%s slot input bus linked together wirelessly\nLink does not cross world boundary\nLeft/right click with data stick to copy/paste configuration\nAdded by §6GigaGram§rFab
+gt.blockmachines.input_bus_linked.desc=%s slot input bus linked together wirelessly\nLink does not cross world boundary\nLeft/right click with data stick to copy/paste configuration
 gt.blockmachines.input_bus_debug.desc=§7Stocks Items internally\n§7Configure Items in the UI\n§7Configured Items will not be consumed in processing\n§oWho knew it was this easy???
 gt.blockmachines.output_bus.desc=Item Output for Multiblocks\nCapacity: %s stacks\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
 gt.blockmachines.output_bus.singular.desc=Item Output for Multiblocks\nCapacity: %s stack\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
@@ -298,7 +298,7 @@ gt.blockmachines.antimatterhatch.name=Antimatter Hatch
 gt.blockmachines.basicgenerator.diesel.tier.04.name=Turbo Supercharging Combustion Generator
 gt.blockmachines.basicgenerator.diesel.tier.05.name=Ultimate Chemical Energy Releaser
 gt.blockmachines.basicgenerator.rtg.tier.01.name=Radioisotope Thermoelectric Generator
-gt.blockmachines.basicgenerator.rtg.tier.01.tooltip=Requires RTG Pellets\nFuel is measured in minecraft days (Check with Scanner)\nRTG changes output voltage depending on fuel\nGenerates power at %s%% Efficiency per tick\nOutput Voltage: %s EU/t\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.basicgenerator.rtg.tier.01.tooltip=Requires RTG Pellets\nFuel is measured in minecraft days (Check with Scanner)\nRTG changes output voltage depending on fuel\nGenerates power at %s%% Efficiency per tick\nOutput Voltage: %s EU/t
 
 gt.blockmachines.boiler.bronze.name=Small Coal Boiler
 gt.blockmachines.boiler.bronze.tooltip=An early way to get Steam Power\nProduces 120L of Steam per second\nCauses 20 Pollution per second
@@ -323,7 +323,7 @@ gt.blockmachines.bronzemachine.macerator.name=Steam Macerator
 gt.blockmachines.bronzemachine.macerator.tooltip=Macerating your Ores\nMachine Type: §eMacerator§r
 
 gt.blockmachines.bw.radiohatchhv.name=Radio Hatch
-gt.blockmachines.bw.radiohatchhv.tooltip=Radioactive Item Chamber for Multiblocks\nUse a screwdriver to set the containment level\nAdded by bartimaeusnek via §2BartWorks§7
+gt.blockmachines.bw.radiohatchhv.tooltip=Radioactive Item Chamber for Multiblocks\nUse a screwdriver to set the containment level
 
 gt.blockmachines.compressedfluidhatch.name=Liquid Air Fluid Hatch
 gt.blockmachines.creative_debug_scanner.name=Creative Debug Scanner
@@ -331,11 +331,11 @@ gt.blockmachines.debug.tt.certain.name=Uncertainty Resolution
 gt.blockmachines.debugstructurewriter.name=Debug Structure Writer
 
 gt.blockmachines.electricboiler.1.tier.single.name=Advanced Boiler [LV]
-gt.blockmachines.electricboiler.1.tier.single.tooltip=Produces 750L of Steam per second\nProduces 35 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.electricboiler.1.tier.single.tooltip=Produces 750L of Steam per second\nProduces 35 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
 gt.blockmachines.electricboiler.2.tier.single.name=Advanced Boiler [MV]
-gt.blockmachines.electricboiler.2.tier.single.tooltip=Produces 1500L of Steam per second\nProduces 50 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.electricboiler.2.tier.single.tooltip=Produces 1500L of Steam per second\nProduces 50 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
 gt.blockmachines.electricboiler.3.tier.single.name=Advanced Boiler [HV]
-gt.blockmachines.electricboiler.3.tier.single.tooltip=Produces 2250L of Steam per second\nProduces 65 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.electricboiler.3.tier.single.tooltip=Produces 2250L of Steam per second\nProduces 65 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
 
 gt.blockmachines.electrodedetectorhatch.name=Electrode Detector Hatch
 gt.blockmachines.electrodedetectorhatch.tooltip=Can be installed in Electric Arc Furnace.\nOutput Redstone Signal according to the damage of electrode used in the machine.\nRight click to open the GUI and setting.
@@ -356,7 +356,7 @@ gt.blockmachines.gt.icecreammachine.name=Ice Cream Machine
 gt.blockmachines.hatch.advancedbeamlineoutput.name=Filtered Beam Output Hatch
 gt.blockmachines.hatch.air.intake.tier.00.name=Air Intake Hatch
 gt.blockmachines.hatch.air.intake.tier.01.name=Extreme Air Intake Hatch
-gt.blockmachines.hatch.air.intake.tier.01.tooltip=Fluid Input for Multiblocks\nCapacity: 256,000 L\nHatch Tier: §bZPM§r\n§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCreates 40000 of Air every 20 ticks\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.air.intake.tier.01.tooltip=Fluid Input for Multiblocks\nCapacity: 256,000 L\nHatch Tier: §bZPM§r\n§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCreates 40000 of Air every 20 ticks
 gt.blockmachines.hatch.air.intake.tier.02.name=Atmospheric Intake Hatch
 gt.blockmachines.hatch.beamlineinput.name=Beam Input Hatch
 gt.blockmachines.hatch.beamlineoutput.name=Beam Output Hatch
@@ -365,7 +365,7 @@ gt.blockmachines.hatch.blackholeutility.tooltip=Optional hatch for Pseudostable 
 gt.blockmachines.hatch.catalystbulk.name=Bulk Catalyst Housing
 gt.blockmachines.hatch.catalystbulk.tooltip=Dedicated Catalyst Storage\nWill keep its contents when broken
 gt.blockmachines.hatch.catalysts.name=Catalyst Housing
-gt.blockmachines.hatch.catalysts.tooltip=Dedicated Catalyst Storage\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.catalysts.tooltip=Dedicated Catalyst Storage
 gt.blockmachines.hatch.cokeoven.name=Coke Oven Hatch
 gt.blockmachines.hatch.cokeoven.tooltip=Hatch for automating the Coke Oven\n§m------------------------------\n§aModes§7: Input, Output, Output (Fluids)\nCycle mode with a Screwdriver
 gt.blockmachines.hatch.crafting_input.me.name=Crafting Input Buffer (ME)
@@ -388,12 +388,12 @@ gt.blockmachines.hatch.input.debug.name=Debug Input Hatch
 gt.blockmachines.hatch.input.me.name=Advanced Stocking Input Hatch (ME)
 gt.blockmachines.hatch.input.me.basic.name=Stocking Input Hatch (ME)
 gt.blockmachines.hatch.input_battery.tier.00.name=Charging Bus (MV)
-gt.blockmachines.hatch.input_battery.tier.00.tooltip=Chargeable Item Bus for Multiblocks\nCapacity: 4 slots\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.input_battery.tier.00.tooltip=Chargeable Item Bus for Multiblocks\nCapacity: 4 slots
 gt.blockmachines.hatch.input_battery.tier.01.name=Charging Bus (EV)
-gt.blockmachines.hatch.input_battery.tier.01.tooltip=Chargeable Item Bus for Multiblocks\nCapacity: 16 slots\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.input_battery.tier.01.tooltip=Chargeable Item Bus for Multiblocks\nCapacity: 16 slots
 gt.blockmachines.hatch.input_bus.debug.name=Debug Input Bus
 gt.blockmachines.hatch.input_bus.elementalorbholder.name=Data Orb Repository
-gt.blockmachines.hatch.input_bus.elementalorbholder.tooltip=Holds Data Orbs for the Elemental Duplicator\nCan insert/extract the circuit slot\nA circuit must be used to select a slot (1-16)\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.input_bus.elementalorbholder.tooltip=Holds Data Orbs for the Elemental Duplicator\nCan insert/extract the circuit slot\nA circuit must be used to select a slot (1-16)
 gt.blockmachines.hatch.input_bus.me.name=Advanced Stocking Input Bus (ME)
 gt.blockmachines.hatch.input_bus.me.basic.name=Stocking Input Bus (ME)
 gt.blockmachines.hatch.input_bus.tier.steam.name=Input Bus (Steam)
@@ -407,7 +407,7 @@ gt.blockmachines.hatch.maintenance.tooltip=For maintaining multiblocks\nUse tool
 gt.blockmachines.hatch.maintenance.auto.name=Auto Maintenance Hatch
 gt.blockmachines.hatch.maintenance.auto.tooltip=For automatically maintaining multiblocks\nConsumes 4 Duct Tape, 2 Lubricant Cells,\n4 Steel Screws, and 2 HV Circuits\nfor each autorepair.
 gt.blockmachines.hatch.milling.name=Ball Housing
-gt.blockmachines.hatch.milling.tooltip=Dedicated Milling Ball Storage\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.milling.tooltip=Dedicated Milling Ball Storage
 gt.blockmachines.hatch.multi.input.tier.11.name=Humongous Quadruple Input Hatch
 gt.blockmachines.hatch.multi.input.tier.11.tooltip=Fluid Input for Multiblocks\nCapacity: 500,000,000 L\nCan hold 4 types of fluid.
 gt.blockmachines.hatch.nanite.name=Nanite Containment Bus
@@ -417,9 +417,9 @@ gt.blockmachines.hatch.nanite.singularity.tooltip=Holds nanites for use in multi
 gt.blockmachines.hatch.output.me.name=Output Hatch (ME)
 gt.blockmachines.hatch.output.me.tooltip=Fluid Output for Multiblocks\nCapacity: 0 L\nRight click with screwdriver to restrict output\nCan be restricted to put out Items and/or Steam/No Steam/1 specific Fluid\nRestricted Output Hatches are given priority for Multiblock Fluid output
 gt.blockmachines.hatch.output_battery.tier.00.name=Discharging Bus (MV)
-gt.blockmachines.hatch.output_battery.tier.00.tooltip=Dischargeable Item Bus for Multiblocks\nCapacity: 4 slots\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.output_battery.tier.00.tooltip=Dischargeable Item Bus for Multiblocks\nCapacity: 4 slots
 gt.blockmachines.hatch.output_battery.tier.01.name=Discharging Bus (EV)
-gt.blockmachines.hatch.output_battery.tier.01.tooltip=Dischargeable Item Bus for Multiblocks\nCapacity: 16 slots\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.output_battery.tier.01.tooltip=Dischargeable Item Bus for Multiblocks\nCapacity: 16 slots
 gt.blockmachines.hatch.output_bus.me.name=Output Bus (ME)
 gt.blockmachines.hatch.output_bus.me.tooltip=Item Output for Multiblocks\nCapacity: 25 stacks\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
 gt.blockmachines.hatch.output_bus.tier.steam.name=Output Bus (Steam)
@@ -429,7 +429,7 @@ gt.blockmachines.hatch.splitter.redstone.name=Splitter Redstone Input
 gt.blockmachines.hatch.toxicresiduesensor.name=Toxic Residue Sensor Hatch
 gt.blockmachines.hatch.toxicresiduesensor.tooltip=Reads Toxic Residue of the Large Neutralization Engine\nRight click to open the GUI and change settings.
 gt.blockmachines.hatch.turbine.name=Rotor Assembly
-gt.blockmachines.hatch.turbine.tooltip=Turbine Rotor holder for XL Turbines\nRight Click with a soldering iron to reset controller link\nRight Click with a wrench to remove turbine\nRight Click with a screwdriver for technical information\nSneak + Right Click with a wrench to rotate\nSneak + Right Click with a screwdriver to disable animations\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.hatch.turbine.tooltip=Turbine Rotor holder for XL Turbines\nRight Click with a soldering iron to reset controller link\nRight Click with a wrench to remove turbine\nRight Click with a screwdriver for technical information\nSneak + Right Click with a wrench to rotate\nSneak + Right Click with a screwdriver to disable animations
 gt.blockmachines.hatch.turbine.input.tier.00.name=Turbine Housing
 gt.blockmachines.hatch.void.tier.00.name=Void Hatch
 gt.blockmachines.hatch.void_bus.tier.00.name=Void Bus
@@ -457,7 +457,7 @@ gt.blockmachines.hull.steel_bricked.name=Bricked Cast Iron Hull
 gt.blockmachines.humongousinputhatch.name=Humongous Input Hatch
 
 gt.blockmachines.infinite.chest.tier.01.name=Infinite Item Chest
-gt.blockmachines.infinite.chest.tier.01.tooltip=This Chest stores 101250 Items\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.infinite.chest.tier.01.tooltip=This Chest stores 101250 Items
 
 gt.blockmachines.long.distance.pipeline.fluid.name=Long Distance Fluid Pipeline
 gt.blockmachines.long.distance.pipeline.item.name=Long Distance Item Pipeline
@@ -474,24 +474,24 @@ gt.blockmachines.neutron_sensor.name=Neutron Sensor
 gt.blockmachines.neutron_sensor.tooltip=Can be installed in Neutron Activator.\nOutput Redstone Signal according to the Neutron Kinetic Energy.\nRight click to open the GUI and setting.
 
 gt.blockmachines.pollutioncreator.01.tier.single.name=Smog Device
-gt.blockmachines.pollutioncreator.01.tier.single.tooltip=Polluting the skies.\nA useful debug machine to create pollution.\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.pollutioncreator.01.tier.single.tooltip=Polluting the skies.\nA useful debug machine to create pollution.
 
 gt.blockmachines.pollutiondetector.01.tier.single.name=Pollution Detection Device
-gt.blockmachines.pollutiondetector.01.tier.single.tooltip=Tells you if you're living in Gwalior yet.\nRight click to check pollution levels.\nConfigure with screwdriver to set redstone output amount.\nDoes not use power.\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.pollutiondetector.01.tier.single.tooltip=Tells you if you're living in Gwalior yet.\nRight click to check pollution levels.\nConfigure with screwdriver to set redstone output amount.\nDoes not use power.
 
 gt.blockmachines.quantum.tank.debug.name=Debug Fluid Tank
 gt.blockmachines.quantum.tank.debug.tooltip=Stores 2,147,483,640 L of fluid\nWill keep its contents when harvested
 
 gt.blockmachines.redstone.lamp.name=Redstone Controlled Lamp
-gt.blockmachines.redstone.lamp.tooltip=Redstone Controlled Lamp\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.redstone.lamp.tooltip=Redstone Controlled Lamp
 
 gt.blockmachines.solarreflector.simple.single.name=Solar Reflector
-gt.blockmachines.solarreflector.simple.single.tooltip=Part of the Clean Green energy movement\nPoint me at a Solar Tower\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.solarreflector.simple.single.tooltip=Part of the Clean Green energy movement\nPoint me at a Solar Tower
 
 gt.blockmachines.tesseract.generator.name=Tesseract Generator
-gt.blockmachines.tesseract.generator.tooltip=Generates a Tesseract for the attached Inventory\nConnect with pipes to insert items\nConsumes 512EU/t for same dimension transfers\nConsumes 2048EU/t for cross dimensional transfers\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.tesseract.generator.tooltip=Generates a Tesseract for the attached Inventory\nConnect with pipes to insert items\nConsumes 512EU/t for same dimension transfers\nConsumes 2048EU/t for cross dimensional transfers
 gt.blockmachines.tesseract.terminal.name=Tesseract Terminal
-gt.blockmachines.tesseract.terminal.tooltip=Accesses Tesseract Generators remotely\nConnect with pipes to extract items or fluids\nOutputs from the back face\nConsumes 512EU/t for same dimension transfers\nConsumes 2048EU/t for cross dimensional transfers\nAdded by: §2Alkalus §7- §c[GT++]
+gt.blockmachines.tesseract.terminal.tooltip=Accesses Tesseract Generators remotely\nConnect with pipes to extract items or fluids\nOutputs from the back face\nConsumes 512EU/t for same dimension transfers\nConsumes 2048EU/t for cross dimensional transfers
 
 gt.blockmachines.vacuum.hatch.input.name=Vacuum Conveyor Input
 gt.blockmachines.vacuum.hatch.output.name=Vacuum Conveyor Output
