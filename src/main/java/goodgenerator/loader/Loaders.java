@@ -450,6 +450,11 @@ public class Loaders {
         GameRegistry.registerItem(circuitWrap, "circuitWrap", Mods.ModIDs.GOOD_GENERATOR);
         GameRegistry.registerTileEntity(TileAntimatter.class, "AntimatterRender");
 
+        GTStructureChannels.FIELD_RESTRICTION_COIL.registerAsIndicator(new ItemStack(FRF_Coil_1), 1);
+        GTStructureChannels.FIELD_RESTRICTION_COIL.registerAsIndicator(new ItemStack(FRF_Coil_2), 2);
+        GTStructureChannels.FIELD_RESTRICTION_COIL.registerAsIndicator(new ItemStack(FRF_Coil_3), 3);
+        GTStructureChannels.FIELD_RESTRICTION_COIL.registerAsIndicator(new ItemStack(FRF_Coil_4), 4);
+
         GTStructureChannels.PRASS_UNIT_CASING.registerAsIndicator(new ItemStack(impreciseUnitCasing), 1);
         for (int i = 1; i < 6; i++) {
             GTStructureChannels.PRASS_UNIT_CASING
