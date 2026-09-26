@@ -67,6 +67,27 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     }
 
     @Override
+    public void updateCraftingIcon(ItemStack icon) {
+        super.updateCraftingIcon(icon);
+        // Share the icon with the rest of the channel, so that interfaces on busses standing outside of a structure
+        // show the multiblock fed by the channel instead of the bus itself. Last writer wins.
+        if (mRealInventory != null) mRealInventory.craftingIcon = icon;
+    }
+
+    @Override
+    public ItemStack getMachineCraftingIcon() {
+        final ItemStack own = super.getMachineCraftingIcon();
+        if (own != null) return own;
+        return mRealInventory == null ? null : mRealInventory.craftingIcon;
+    }
+
+    /** Hands our own icon, if any, to the channel this bus has just joined. */
+    private void shareCraftingIcon() {
+        final ItemStack own = super.getMachineCraftingIcon();
+        if (own != null) mRealInventory.craftingIcon = own;
+    }
+
+    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTELinkedInputBusGui(this).build(data, syncManager, uiSettings);
     }
@@ -418,6 +439,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         mRealInventory = getWorldSave().get(getRealChannel());
         this.handler.set(mRealInventory.stacks);
         mRealInventory.ref++;
+        shareCraftingIcon();
         getWorldSave().markDirty();
     }
 
@@ -454,6 +476,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             this.mRealInventory = getWorldSave().get(getRealChannel());
             this.handler.set(mRealInventory.stacks);
             mRealInventory.ref++;
+            shareCraftingIcon();
         }
         getWorldSave().markDirty();
     }
@@ -492,6 +515,11 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         public boolean disableSort;
         private boolean used;
         private int ref;
+        /**
+         * Crafting icon of the multiblock the channel is attached to, see {@link #updateCraftingIcon(ItemStack)}. Not
+         * persisted, the owning multiblock sets it again on its next structure check.
+         */
+        private ItemStack craftingIcon;
 
         public SharedInventory() {
             this.stacks = new ItemStack[SIZE_INVENTORY];
