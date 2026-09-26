@@ -3,6 +3,8 @@ package gregtech.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -11,6 +13,8 @@ import org.junit.jupiter.api.Test;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.ExpectedFluidOutput;
+import gregtech.api.util.ExpectedItemOutput;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ParallelHelper;
@@ -105,6 +109,22 @@ public class GTParallelHelperTest {
 
         assertEquals(100, rubberDustAmount);
         assertTrue(rubberDustTinyAmount >= 60 && rubberDustTinyAmount <= 70);
+
+        List<ExpectedItemOutput> expectedItemOutputs = helper.getExpectedItemOutputs();
+        assertEquals(2, expectedItemOutputs.size());
+        ExpectedItemOutput rubberDustTiny = expectedItemOutputs.get(1);
+        assertEquals(10, rubberDustTiny.amount());
+        assertEquals(66670, rubberDustTiny.chance());
+        assertEquals(66.67, rubberDustTiny.expected(), 0.01);
+
+        List<ExpectedFluidOutput> expectedFluidOutputs = helper.getExpectedFluidOutputs();
+        assertEquals(1, expectedFluidOutputs.size());
+        ExpectedFluidOutput moltenRubber = expectedFluidOutputs.get(0);
+        assertTrue(
+            moltenRubber.stack()
+                .isFluidEqual(Materials.Rubber.getMolten(1)));
+        assertEquals(10_000, moltenRubber.amount());
+        assertEquals(100_000, moltenRubber.chance());
     }
 
 }
