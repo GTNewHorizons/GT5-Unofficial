@@ -353,7 +353,6 @@ public class GTPreLoad {
         GTMod.proxy.mSurvivalIntoAdventure = Gregtech.general.survivalIntoAdventure;
         GTMod.proxy.mInventoryUnification = Gregtech.general.inventoryUnification;
         GTMod.proxy.mGTBees = Gregtech.general.GTBees;
-        GTMod.proxy.mCraftingUnification = Gregtech.general.craftingUnification;
         GTMod.proxy.mNerfedWoodPlank = Gregtech.general.nerfedWoodPlank;
         GTMod.proxy.mChangeWoodenVanillaTools = Gregtech.general.changedWoodenVanillaTools;
         GTMod.proxy.mAchievements = Gregtech.general.achievements;

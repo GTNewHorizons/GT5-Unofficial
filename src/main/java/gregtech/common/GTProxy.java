@@ -182,7 +182,6 @@ public class GTProxy implements IFuelHandler {
     public final GTBlockMap<Boolean> mCTMBlockCache = new GTBlockMap<>();
     public boolean mDisableVanillaOres = true;
     public boolean mAllowSmallBoilerAutomation = false;
-    public boolean mCraftingUnification = true;
     public boolean mInventoryUnification = true;
     public boolean mIncreaseDungeonLoot = true;
     public boolean mAxeWhenAdventure = true;

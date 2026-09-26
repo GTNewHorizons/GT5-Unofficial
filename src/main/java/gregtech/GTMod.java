@@ -12,7 +12,6 @@ import static gregtech.api.util.GTRecipe.setItemStacks;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
@@ -21,15 +20,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
-
-import org.apache.logging.log4j.Logger;
 
 import com.falsepattern.chunk.api.DataRegistry;
 import com.google.common.base.Stopwatch;
@@ -81,7 +73,6 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ItemData;
-import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeLookupValidator;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.registries.LHECoolantRegistry;
@@ -114,7 +105,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
-import gregtech.common.oredict.OreDictRegistrationHandler;
 import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
@@ -704,127 +694,6 @@ public class GTMod {
 
         proxy.onServerStarting(event);
         GTModHandler.removeAllIC2Recipes();
-        GT_FML_LOGGER.debug("GTMod: Unificating outputs of all known Recipe Types.");
-        ArrayList<ItemStack> tStacks = new ArrayList<>(10000);
-        GT_FML_LOGGER.debug("GTMod: IC2 Machines");
-
-        ic2.api.recipe.Recipes.cannerBottle.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.centrifuge.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.compressor.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.extractor.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.macerator.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.metalformerCutting.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.metalformerExtruding.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.metalformerRolling.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.matterAmplifier.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.oreWashing.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-
-        GT_FML_LOGGER.debug("GTMod: Dungeon Loot");
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("dungeonChest")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("bonusChest")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("villageBlacksmith")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdCrossing")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdLibrary")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdCorridor")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("pyramidJungleDispenser")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("pyramidJungleChest")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("pyramidDesertyChest")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("mineshaftCorridor")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        GT_FML_LOGGER.debug("GTMod: Smelting");
-
-        // Deal with legacy Minecraft raw types
-        tStacks.addAll(
-            FurnaceRecipes.smelting()
-                .getSmeltingList()
-                .values());
-
-        if (proxy.mCraftingUnification) {
-            GT_FML_LOGGER.debug("GTMod: Crafting Recipes");
-            for (IRecipe tRecipe : CraftingManager.getInstance()
-                .getRecipeList()) {
-                if ((tRecipe instanceof IRecipe)) {
-                    tStacks.add(tRecipe.getRecipeOutput());
-                }
-            }
-        }
-        for (ItemStack tOutput : tStacks) {
-            if (!OreDictRegistrationHandler.isRegisteredOre(tOutput)) {
-                GTOreDictUnificator.setStack(tOutput);
-            } else {
-                logMultilineError(GT_FML_LOGGER, generateGTErr01Message(tOutput));
-                tOutput.setStackDisplayName("ERROR! PLEASE CHECK YOUR LOG FOR 'GT-ERR-01'!");
-            }
-        }
         GregTechAPI.mServerStarted = true;
         GT_FML_LOGGER.debug("GTMod: ServerStarting-Phase finished!");
         GT_ORE_DICT_LOGGER.info("GTMod: ServerStarting-Phase finished!");
@@ -901,20 +770,5 @@ public class GTMod {
         final StringWriter sw = new StringWriter();
         t.printStackTrace(new PrintWriter(sw));
         GT_FML_LOGGER.error(sw);
-    }
-
-    private static String[] generateGTErr01Message(ItemStack stack) {
-        // The message is presented on a per-line basis to make possible formatting in the future easier.
-        return new String[] { "GT-ERR-01 at " + stack.getUnlocalizedName() + "   " + stack.getDisplayName(),
-            "A recipe used an OreDict item as output directly, without copying the item before that. This is a typical CallByReference/CallByValue error.",
-            "The said item will be renamed to make the invalid recipe visible.",
-            "Please check all recipes that output this item, and report them to the mod that introduced the recipes.", };
-    }
-
-    @SuppressWarnings("SameParameterValue") // The method is used with one logger, but that might change in the future.
-    private static void logMultilineError(Logger logger, String[] errorMessageLines) {
-        for (String errorMessage : errorMessageLines) {
-            logger.error(errorMessage);
-        }
     }
 }

@@ -249,11 +249,6 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean GTBees;
 
-        @Config.Comment("if true, enables crafting unification.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean craftingUnification;
-
         @Config.Comment("If true, nerfs planks recipes.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
