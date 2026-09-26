@@ -1162,32 +1162,43 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected CheckRecipeResult doCheckRecipe() {
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
-        // check crafting input hatches first
-        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-            ItemStack[] sharedItems = dualInputHatch.getSharedItems();
-            for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                IDualInputInventory slot = it.next();
+        // Use hatch colors if any; fallback to color 1 otherwise.
+        short hatchColors = getHatchColors();
+        boolean doColorChecking = hatchColors != 0;
+        if (!doColorChecking) hatchColors = 0b1;
 
-                if (!slot.isEmpty()) {
-                    // try to cache the possible recipes from pattern
-                    if (slot instanceof IDualInputInventoryWithPattern withPattern) {
-                        if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
-                            // move on to next slots if it returns false, which means there is no possible recipes with
-                            // given pattern.
-                            continue;
+        // check crafting input hatches first, in the same color order as the ordinary input buses and hatches
+        for (byte color = 0; color < (doColorChecking ? 16 : 1); color++) {
+            if (isColorAbsent(hatchColors, color)) continue;
+            for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                byte hatchColor = ((MetaTileEntity) dualInputHatch).getColor();
+                if (hatchColor != -1 && hatchColor != color) continue;
+
+                ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+                for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                    IDualInputInventory slot = it.next();
+
+                    if (!slot.isEmpty()) {
+                        // try to cache the possible recipes from pattern
+                        if (slot instanceof IDualInputInventoryWithPattern withPattern) {
+                            if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
+                                // move on to next slots if it returns false, which means there is no possible recipes
+                                // with given pattern.
+                                continue;
+                            }
                         }
-                    }
 
-                    processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
-                    processingLogic.setInputFluids(slot.getFluidInputs());
+                        processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
+                        processingLogic.setInputFluids(slot.getFluidInputs());
 
-                    CheckRecipeResult foundResult = processingLogic.process();
-                    if (foundResult.wasSuccessful()) {
-                        return foundResult;
-                    }
-                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                        // Recipe failed in interesting way, so remember that and continue searching
-                        result = foundResult;
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) {
+                            return foundResult;
+                        }
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                            // Recipe failed in interesting way, so remember that and continue searching
+                            result = foundResult;
+                        }
                     }
                 }
             }
@@ -1197,11 +1208,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (result.wasSuccessful()) {
             return result;
         }
-
-        // Use hatch colors if any; fallback to color 1 otherwise.
-        short hatchColors = getHatchColors();
-        boolean doColorChecking = hatchColors != 0;
-        if (!doColorChecking) hatchColors = 0b1;
 
         for (byte color = 0; color < (doColorChecking ? 16 : 1); color++) {
             if (isColorAbsent(hatchColors, color)) continue;
@@ -1273,6 +1279,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         for (var bus : mInputBusses) hatchColors |= (short) (1 << bus.getColor());
         for (var hatch : mInputHatches) hatchColors |= (short) (1 << hatch.getColor());
+        for (var hatch : mDualInputHatches) hatchColors |= (short) (1 << ((MetaTileEntity) hatch).getColor());
 
         if (this instanceof MTESteamMultiBlockBase<?>steamMultiBase) {
             for (var bus : steamMultiBase.mSteamInputs) hatchColors |= (short) (1 << bus.getColor());
