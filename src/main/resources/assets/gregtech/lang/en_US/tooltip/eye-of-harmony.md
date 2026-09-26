@@ -4,7 +4,8 @@ Constantly consumes {gold:Hydrogen} and {gold:Helium} when idle and stores them 
 Has 3 types of {blue:Field Generators}, each with {green:9} tiers and varying effects:
 {blue:Spacetime Compression}: Unlocks recipes based on tier. {green:-3%} processing time per tier above recipe requirement (multiplicative)
 {blue:Time Dilation}: {green:-50%} recipe time (multiplicative), {green:-9.25%} recipe success chance per tier (additive)
-{blue:Stabilisation}: {green:+5%} recipe success chance, {green:-5%} recipe yield per tier (additive)
+{blue:Stabilisation}: {green:+5%} recipe success chance, {green:-5%} recipe yield per tier (additive),
+{green:-40%} power output penalty at T1 Crude, decreasing by {green:5%} per tier
 {gray:{hr}}
 All stored {gold:Hydrogen} and {gold:Helium} are consumed during a craft. Going over the {gold:Hydrogen} or {gold:Helium} requirement has a penalty on yield and recipe chance
 Overflow Ratio = {aqua:(Stored fluid / Recipe requirement) - 1}
@@ -20,6 +21,7 @@ When running parallel recipes, power changes:
 EU input = {aqua:(Base EU input * 4^OC * 2.3^PE * 1.63) / 20.7}
 EU output = {aqua:(Base EU output * 2.3^PE) / 20.7}
 {white:OC} is the {white:Programmed Circuit} value and {white:PE} is the {white:Parallel Exponent}
-Running parallel consumes {gold:Condensed Raw Stellar Plasma Mixture} instead of {gold:Hydrogen} and {gold:Helium}. Required: {aqua:(12.4 / 10^6 * Helium amount * Parallel)}. Each parallel success is independent
+Running parallel consumes {gold:Condensed Raw Stellar Plasma Mixture} instead of {gold:Hydrogen} and {gold:Helium}. Required: {aqua:(12.4 / 10^6 * Helium amount * Parallel)}.
+Each parallel success is independent
 {gray:{hr}}
 {yellow:Consumes EU directly from your wireless network}
