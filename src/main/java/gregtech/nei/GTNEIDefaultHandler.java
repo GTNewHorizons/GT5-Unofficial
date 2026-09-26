@@ -28,9 +28,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.Range;
-import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -41,12 +41,15 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import appeng.util.ReadableNumberConverter;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.item.ItemFluidDisplay;
 import codechicken.nei.recipe.Badge;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.ICraftingHandler;
 import codechicken.nei.recipe.IUsageHandler;
 import codechicken.nei.recipe.RecipeCatalysts;
+import codechicken.nei.recipe.StackInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
@@ -295,20 +298,14 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         }
     }
 
-    private void addFluidStacks(ItemStack aStack, ArrayList<ItemStack> tResults) {
-        FluidStack tFluid = GTUtility.getFluidForFilledItem(aStack, true);
-        FluidStack tFluidStack;
+    private void addFluidStacks(ItemStack stack, ArrayList<ItemStack> results) {
+        FluidStack fluid = GTUtility.getFluidForFilledItem(stack, true);
+        if (fluid == null) fluid = StackInfo.getFluid(stack);
+        if (fluid == null) return;
 
-        if (tFluid != null) {
-            tFluidStack = tFluid;
-            tResults.add(GTUtility.getFluidDisplayStack(tFluid, FluidDisplayStackMode.HIDDEN));
-        } else {
-            tFluidStack = GTUtility.getFluidFromDisplayStack(aStack);
-        }
-
-        if (tFluidStack != null) {
-            tResults.addAll(GTUtility.getContainersFromFluid(tFluidStack));
-        }
+        ItemStack displayStack = ItemFluidDisplay.createStack(fluid);
+        if (displayStack != null) results.add(displayStack);
+        results.addAll(GTUtility.getContainersFromFluid(fluid));
     }
 
     private void loadTieredRecipesWithCustomFilter(OverclockDescriber overclockDescriber) {
@@ -577,56 +574,13 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         return drawTicks;
     }
 
-    /**
-     * Interface for NEI PositionedStack subclasses that contain fluid alternatives.
-     * <p>
-     * Example in {@link FixedPositionedStack}
-     * </p>
-     */
-    public interface IFluidAlternativeStack {
-
-        /**
-         * Get all fluid alternatives represented by this PositionedStack
-         *
-         * @return Unmodifiable list of fluid alternatives.
-         */
-        @Nonnull
-        List<FluidStack> getFluidAlternatives();
-
-        /**
-         * Get the currently selected fluid index for display purposes.
-         *
-         * @return Index for {@link #getFluidAlternatives()}, or -1 for primary fluid.
-         */
-        int getSelectedFluidIndex();
-
-        /**
-         * Sets fluid alternative to be used
-         *
-         * @param index Valid index of {@link #getFluidAlternatives()}
-         */
-        void setSelectedFluidIndex(int index);
-
-        /**
-         * Get default fluid for this slot.
-         *
-         * @return First fluid from list or null
-         */
-        default FluidStack getDefaultFluidAlternative() {
-            return getFluidAlternatives().isEmpty() ? null : getFluidAlternatives().get(0);
-        }
-    }
-
-    public static class FixedPositionedStack extends PositionedStack implements IFluidAlternativeStack {
+    public static class FixedPositionedStack extends PositionedStack.Fluid {
 
         public final CachedDefaultRecipe recipe;
         public final boolean mIsInput;
         public final int realStackSize;
         public final boolean renderRealStackSize;
         public List<Badge> customBadge;
-
-        private List<FluidStack> fluidAlternatives;
-        private int selectedFluidIndex = -1;
 
         public FixedPositionedStack(CachedDefaultRecipe recipe, Object object, boolean renderRealStackSizes, int x,
             int y) {
@@ -651,28 +605,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                     stack.stackSize = 1;
                 }
             }
-
-            initFluidAlternatives();
-        }
-
-        private void initFluidAlternatives() {
-            if (items == null || items.length == 0) {
-                fluidAlternatives = Collections.emptyList();
-                return;
-            }
-
-            List<FluidStack> fluids = new ArrayList<>();
-
-            for (ItemStack stack : items) {
-                if (ItemList.Display_Fluid.isStackEqual(stack, true, true)) {
-
-                    FluidStack fluidStack = GTUtility.getFluidFromDisplayStack(stack);
-                    if (fluidStack != null && fluidStack.getFluid() != null) fluids.add(fluidStack);
-
-                }
-            }
-
-            fluidAlternatives = Collections.unmodifiableList(fluids);
         }
 
         public boolean isInput() {
@@ -695,36 +627,41 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         public boolean isNotConsumed() {
             if (!mIsInput) return false;
             if (isFluid()) {
-                FluidStack fluidStack = GTUtility.getFluidFromDisplayStack(item);
-                if (fluidStack == null) return false;
-                return fluidStack.amount == 0;
+                FluidStack fluidStack = StackInfo.getFluid(item);
+                return fluidStack != null && fluidStack.amount == 0;
             }
             return item.stackSize == 0;
         }
 
         public boolean isFluid() {
-            return ItemList.Display_Fluid.isStackEqual(item, true, true);
+            return StackInfo.isFluidDisplayItem(item);
         }
 
         @Override
-        public @NotNull List<FluidStack> getFluidAlternatives() {
-            if (fluidAlternatives == null) return Collections.emptyList();
-            return fluidAlternatives;
-        }
+        public void draw(int mousex, int mousey) {
+            super.draw(mousex, mousey);
 
-        @Override
-        public int getSelectedFluidIndex() {
-            return selectedFluidIndex;
-        }
+            FluidStack fluidStack = getFluidStack();
+            if (fluidStack == null || fluidStack.amount <= 0) return;
 
-        @Override
-        public void setSelectedFluidIndex(int index) {
-            if (fluidAlternatives == null || fluidAlternatives.isEmpty()
-                || index < 0
-                || index >= fluidAlternatives.size()) throw new IndexOutOfBoundsException("No such fluid alternative");
+            String amountString;
+            String fluidUnit = NumberFormatUtil.getFluidUnit();
+            if (fluidStack.amount < 10_000) {
+                amountString = fluidStack.amount + fluidUnit;
+            } else {
+                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidStack.amount) + fluidUnit;
+            }
 
-            selectedFluidIndex = index;
-            item = GTUtility.getFluidDisplayStack(fluidAlternatives.get(index), FluidDisplayStackMode.SHOWN);
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            float scale = fontRenderer.getUnicodeFlag() ? 3F / 4F : 1F / 2F;
+
+            GL11.glPushMatrix();
+            GL11.glTranslatef(relx, rely, 0);
+            GL11.glScalef(scale, scale, 1F);
+
+            fontRenderer.drawString(amountString, 0, (int) (16 / scale) - fontRenderer.FONT_HEIGHT + 1, 0xFFFFFF, true);
+
+            GL11.glPopMatrix();
         }
     }
 
@@ -839,8 +776,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                         FluidStack[] fluids = GTNEIDefaultHandler.this.neiProperties.fluidInputsGetter
                                             .apply(aRecipe);
                                         if (i < fluids.length && fluids[i] != null && fluids[i].getFluid() != null) {
-                                            input = GTUtility
-                                                .getFluidDisplayStack(fluids[i], FluidDisplayStackMode.SHOWN);
+                                            input = fluids[i];
                                         } else {
                                             input = null;
                                         }
@@ -855,7 +791,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                                 widget.getPos().x + 1,
                                                 widget.getPos().y + 1,
                                                 aRecipe.getFluidInputChance(i),
-                                                true,
+                                                false,
                                                 true));
                                     }
 
@@ -869,13 +805,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                             mOutputs.add(
                                                 new FixedPositionedStack(
                                                     this,
-                                                    GTUtility
-                                                        .getFluidDisplayStack(outputs[i], FluidDisplayStackMode.SHOWN),
+                                                    outputs[i],
                                                     GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                                                     widget.getPos().x + 1,
                                                     widget.getPos().y + 1,
                                                     aRecipe.getFluidOutputChance(i),
-                                                    true,
+                                                    false,
                                                     false));
                                         }
                                     }
@@ -915,12 +850,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                     mInputs.add(
                         new FixedPositionedStack(
                             this,
-                            GTUtility.getFluidDisplayStack(aRecipe.mFluidInputs[i], FluidDisplayStackMode.SHOWN),
+                            aRecipe.mFluidInputs[i],
                             GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                             pos.x + 1,
                             pos.y + 1,
                             aRecipe.getFluidInputChance(i),
-                            true,
+                            false,
                             true));
                 }
             }, (i, backgrounds, pos) -> {
@@ -929,12 +864,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                     mOutputs.add(
                         new FixedPositionedStack(
                             this,
-                            GTUtility.getFluidDisplayStack(aRecipe.mFluidOutputs[i], FluidDisplayStackMode.SHOWN),
+                            aRecipe.mFluidOutputs[i],
                             GTNEIDefaultHandler.this.neiProperties.renderRealStackSizes,
                             pos.x + 1,
                             pos.y + 1,
                             aRecipe.getFluidOutputChance(i),
-                            true,
+                            false,
                             false));
                 }
             },
