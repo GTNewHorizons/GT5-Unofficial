@@ -213,24 +213,20 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        for (FluidCandidate candidate : fluidCandidates) {
-            candidate.adjustedEUt = (double) candidate.recipe.mEUt * candidate.recipe.mDuration / maxDuration;
-        }
-
         double remainingPower = maxPower;
-        fluidCandidates.sort(Comparator.comparingDouble(c -> c.maxParallelsByInput * c.adjustedEUt));
+        fluidCandidates.sort(Comparator.comparingDouble(c -> c.maxParallelsByInput * (double) c.recipe.mEUt));
 
         for (int i = 0; i < fluidCandidates.size(); i++) {
             FluidCandidate c = fluidCandidates.get(i);
             double share = remainingPower / (fluidCandidates.size() - i);
-            c.parallels = Math.min(c.maxParallelsByInput, (int) (share / c.adjustedEUt));
-            remainingPower -= c.parallels * c.adjustedEUt;
+            c.parallels = Math.min(c.maxParallelsByInput, (int) (share / c.recipe.mEUt));
+            remainingPower -= c.parallels * (double) c.recipe.mEUt;
         }
 
         for (FluidCandidate c : fluidCandidates) {
-            int added = Math.min(c.maxParallelsByInput - c.parallels, (int) (remainingPower / c.adjustedEUt));
+            int added = Math.min(c.maxParallelsByInput - c.parallels, (int) (remainingPower / c.recipe.mEUt));
             c.parallels += added;
-            remainingPower -= added * c.adjustedEUt;
+            remainingPower -= added * (double) c.recipe.mEUt;
         }
 
         CondensateList outputs = new CondensateList();
@@ -280,10 +276,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         double actualPowerDouble = 0;
         for (FluidCandidate candidate : fluidCandidates) {
             if (candidate.parallels <= 0) continue;
-
-            double actualAdjustedEUt = (double) candidate.recipe.mEUt * candidate.recipe.mDuration
-                / actualMaxDuration;
-            actualPowerDouble += candidate.parallels * actualAdjustedEUt;
+            actualPowerDouble += candidate.parallels * (double) candidate.recipe.mEUt;
         }
 
         long actualPower = (long) Math.ceil(actualPowerDouble);
@@ -296,7 +289,6 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         final GTRecipe recipe;
         final int maxParallelsByInput;
         final Fluid fluid;
-        double adjustedEUt;
         int parallels;
 
         FluidCandidate(GTRecipe recipe, int maxParallelsByInput, Fluid fluid) {
