@@ -9877,7 +9877,7 @@ GT5U.tooltip.bec-ionode.los-hatch-pos=Back center casing
 # Eye of Harmony Structure Hints
 GT5U.tooltip.eye-of-harmony.boundary-no-stocking-bus=Any boundary casing (no stocking bus)
 GT5U.tooltip.eye-of-harmony.boundary-no-stocking-hatch=Any boundary casing (no stocking hatch)
-GT5U.tooltip.eye-of-harmony.any-boundary-casing=ME Output Bus or Hatch, any boundary casing
+GT5U.tooltip.eye-of-harmony.any-boundary-casing=Any boundary casing
 
 # Research Station Structure Hints
 GT5U.tooltip.research-station.footer=§aData Sticks go in the controller
