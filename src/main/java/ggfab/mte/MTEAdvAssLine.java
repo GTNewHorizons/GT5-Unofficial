@@ -905,10 +905,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         int duration = tag.getInteger("mDuration");
         if (tag.hasKey(TAG_KEY_PROGRESS_TIMES, Constants.NBT.TAG_LIST)) {
             NBTTagList tl = tag.getTagList(TAG_KEY_PROGRESS_TIMES, Constants.NBT.TAG_INT);
-            @SuppressWarnings("unchecked")
-            List<NBTTagInt> list = tl.tagList;
-            for (int i = 0, listSize = list.size(); i < listSize; i++) {
-                NBTTagInt t = list.get(i);
+            for (int i = 0, listSize = tl.tagList.size(); i < listSize; i++) {
+                NBTTagInt t = (NBTTagInt) tl.tagList.get(i);
                 int progress = t.func_150287_d();
                 if (progress == 0) {
                     currentTip.add(I18n.format("ggfab.waila.advassline.slice.stuck", i + 1));

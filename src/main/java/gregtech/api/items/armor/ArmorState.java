@@ -280,8 +280,8 @@ public class ArmorState {
                 .forEach(addBehavior);
         }
 
-        // noinspection unchecked
-        for (NBTTagString str : (List<NBTTagString>) tag.getTagList("active", NBT.TAG_STRING).tagList) {
+        for (NBTBase base : tag.getTagList("active", NBT.TAG_STRING).tagList) {
+            NBTTagString str = (NBTTagString) base;
             try {
                 BehaviorName name = BehaviorName.valueOf(str.func_150285_a_());
                 if (state.behaviors.containsKey(name)) {

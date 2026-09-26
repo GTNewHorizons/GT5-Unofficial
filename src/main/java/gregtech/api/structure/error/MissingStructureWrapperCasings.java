@@ -1,7 +1,6 @@
 package gregtech.api.structure.error;
 
 import java.io.IOException;
-import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -50,7 +49,8 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
             .coverChildrenHeight(0)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
+        for (int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound tag = list.getCompoundTagAt(i);
             ItemStack stack = new ItemStack(
                 Item.getItemById(tag.getInteger("casingId")),
                 1,

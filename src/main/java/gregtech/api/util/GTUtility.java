@@ -1375,10 +1375,6 @@ public class GTUtility {
         return histogram;
     }
 
-    public static Iterable<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
-        return tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
-    }
-
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
         Map<ICannerBottleRecipeManager.Input, RecipeOutput> aRecipeList, ItemStack aOutput) {
         if ((isStackInvalid(aInput) && isStackInvalid(aOutput) && isStackInvalid(aContainer)) || aRecipeList == null)
@@ -2274,12 +2270,11 @@ public class GTUtility {
         return list;
     }
 
-    @SuppressWarnings("unchecked")
     public static ArrayList<ItemStack> loadItemList(NBTTagList list) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
 
-        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+        for (int i = 0; i < list.tagCount(); i++) {
+            ItemStack stack = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i));
 
             if (isStackInvalid(stack)) continue;
 
