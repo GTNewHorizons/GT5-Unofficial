@@ -45,7 +45,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -161,7 +160,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.IHasIndexedTexture;
@@ -172,7 +170,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemEnergyArmor;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -3219,139 +3216,6 @@ public class GTUtility {
         }
         sOreTable.put(tItem, false);
         return false;
-    }
-
-    public static Optional<GTRecipe> reverseShapelessRecipe(ItemStack output, Object... aRecipe) {
-        if (output == null) {
-            return Optional.empty();
-        }
-
-        List<ItemStack> inputs = new ArrayList<>();
-
-        for (Object o : aRecipe) {
-            switch (o) {
-                case ItemStack itemStack -> {
-                    ItemStack toAdd = itemStack.copy();
-                    inputs.add(toAdd);
-                }
-                case String s -> {
-                    ItemStack stack = GTOreDictUnificator.get(o, 1);
-                    if (stack == null) {
-                        Optional<ItemStack> oStack = OreDictionary.getOres(s)
-                            .stream()
-                            .findAny();
-                        if (oStack.isPresent()) {
-                            ItemStack copy = oStack.get()
-                                .copy();
-                            inputs.add(copy);
-                        }
-                    } else {
-                        ItemStack copy = stack.copy();
-                        inputs.add(copy);
-                    }
-                }
-                case Item item -> inputs.add(new ItemStack(item));
-                case Block block -> inputs.add(new ItemStack(block));
-                case null, default ->
-                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
-            }
-        }
-
-        inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
-
-        return Optional.of(
-            new GTRecipe(
-                new ItemStack[] { output },
-                inputs.toArray(new ItemStack[0]),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                300,
-                30,
-                0));
-    }
-
-    public static Optional<GTRecipe> reverseShapedRecipe(ItemStack output, Object... aRecipe) {
-        if (output == null) {
-            return Optional.empty();
-        }
-
-        Map<Object, Integer> recipeAsMap = new HashMap<>();
-        Map<Character, Object> ingridients = new HashMap<>();
-        Map<Character, Integer> amounts = new HashMap<>();
-        boolean startFound = false;
-        for (int i = 0, aRecipeLength = aRecipe.length; i < aRecipeLength; i++) {
-            Object o = aRecipe[i];
-            if (!startFound) {
-                if (o instanceof String) {
-                    for (Character c : ((String) o).toCharArray()) amounts.merge(c, 1, (a, b) -> ++a);
-                } else if (o instanceof Character) startFound = true;
-            } else if (!(o instanceof Character)) ingridients.put((Character) aRecipe[i - 1], o);
-        }
-        for (Map.Entry<Character, Object> characterObjectEntry : ingridients.entrySet()) {
-            for (Map.Entry<Character, Integer> characterIntegerEntry : amounts.entrySet()) {
-                if (characterObjectEntry.getKey() != characterIntegerEntry.getKey()) continue;
-                recipeAsMap.put(characterObjectEntry.getValue(), characterIntegerEntry.getValue());
-            }
-        }
-        List<ItemStack> inputs = new ArrayList<>();
-
-        for (Map.Entry<Object, Integer> o : recipeAsMap.entrySet()) {
-            final int amount = o.getValue();
-            switch (o.getKey()) {
-                case ItemStack itemStack -> {
-                    ItemStack toAdd = itemStack.copy();
-                    toAdd.stackSize = amount;
-                    inputs.add(toAdd);
-                }
-                case String dictName -> {
-                    // Do not register tools dictName in inputs
-                    if (ToolDictNames.contains(dictName)) continue;
-                    ItemStack stack = GTOreDictUnificator.get(dictName, null, amount, false, true);
-                    if (stack == null) {
-                        Optional<ItemStack> oStack = OreDictionary.getOres(dictName)
-                            .stream()
-                            .findAny();
-                        if (oStack.isPresent()) {
-                            ItemStack copy = oStack.get()
-                                .copy();
-                            copy.stackSize = amount;
-                            inputs.add(copy);
-                        }
-                    } else {
-                        ItemStack copy = stack.copy();
-                        copy.stackSize = amount;
-                        inputs.add(copy);
-                    }
-                }
-                case Item item -> inputs.add(new ItemStack(item, amount));
-                case Block block -> inputs.add(new ItemStack(block, amount));
-                case null, default ->
-                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
-            }
-        }
-
-        // Remove tools from inputs in case a recipe has one as a direct Item or ItemStack reference
-        inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
-
-        return Optional.of(
-            new GTRecipe(
-                new ItemStack[] { output },
-                inputs.toArray(new ItemStack[0]),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                300,
-                30,
-                0));
     }
 
     /**
