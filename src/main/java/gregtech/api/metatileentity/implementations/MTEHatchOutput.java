@@ -10,6 +10,7 @@ import java.lang.ref.WeakReference;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
@@ -34,10 +35,13 @@ import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputHatchType;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.IOutputHatchTransaction;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -54,7 +58,11 @@ import gregtech.common.tileentities.machines.ISmartInputHatch;
 @IMetaTileEntity.SkipGenerateDescription
 @IMetaTileEntity.SkipGenerateName
 public class MTEHatchOutput extends MTEHatch
-    implements IFluidStore, IFluidLockableMui2, IOutputHatch, ISmartInputHatch {
+    implements IFluidStore, IFluidLockableMui2, IOutputHatch, ISmartInputHatch, IDataCopyable {
+
+    private static final String DATA_STICK_DATA_TYPE = "outputHatchConfig";
+    protected static final String MODE_NBT_KEY = "mMode";
+    private static final String LOCKED_FLUID_NBT_KEY = "lockedFluidName";
 
     protected Fluid lockedFluid = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
@@ -121,10 +129,77 @@ public class MTEHatchOutput extends MTEHatch
         return new MTEHatchOutput(mName, mTier, mDescriptionArray, mTextures);
     }
 
+    public boolean acceptsConfigCopy() {
+        return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
+            return;
+        }
+
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return;
+        }
+
+        dataStick.stackTagCompound = getCopiedData(aPlayer);
+        setDataStickName(dataStick);
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_hatch.saved"));
+    }
+
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        openGui(aPlayer);
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) {
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_hatch.invalid"));
+            return false;
+        }
+
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_hatch.loaded"));
         return true;
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type", DATA_STICK_DATA_TYPE);
+        nbt.setByte(MODE_NBT_KEY, mMode);
+        if (lockedFluid != null) {
+            nbt.setString(LOCKED_FLUID_NBT_KEY, lockedFluid.getName());
+        }
+        return nbt;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
+        final Fluid copiedFluid = nbt.hasKey(LOCKED_FLUID_NBT_KEY)
+            ? FluidRegistry.getFluid(nbt.getString(LOCKED_FLUID_NBT_KEY))
+            : null;
+        setLockedFluid(copiedFluid);
+        setMode(nbt.getByte(MODE_NBT_KEY));
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return DATA_STICK_DATA_TYPE;
+    }
+
+    protected void setDataStickName(ItemStack dataStick) {
+        dataStick.setStackDisplayName("Output Hatch Configuration");
     }
 
     @Override
@@ -340,6 +415,26 @@ public class MTEHatchOutput extends MTEHatch
 
     @Override
     public boolean acceptsFluidLock(Fluid fluid) {
+        return true;
+    }
+
+    @OCMethod
+    public FluidStack getFilter() {
+        return lockedFluid == null ? null : new FluidStack(lockedFluid, 1);
+    }
+
+    @OCMethod
+    public boolean setFilter(FluidStack aStack) {
+        if (aStack == null || aStack.getFluid() == null) {
+            setLockedFluid(null);
+            lockFluid(false);
+            return true;
+        }
+
+        if (!acceptsFluidLock(aStack.getFluid())) return false;
+
+        setLockedFluid(aStack.getFluid());
+        lockFluid(true);
         return true;
     }
 

@@ -412,7 +412,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     + " Tier determines "
                     + TooltipHelper.parallelText("Parallels"))
             .addInfo(
-                "  " + tieredTextLine("Mk-I", "MK-II", "MK-III", "MK-IV")
+                "  " + tieredTextLine("Mk-I", "Mk-II", "Mk-III", "Mk-IV")
                     + "->"
                     + tieredTextLine("8", "16", "32", "64")
                     + " Parallels")

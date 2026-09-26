@@ -3080,6 +3080,7 @@ GT5U.gui.text.structure_error.missing_data_hatch=Нет шлюза для вво
 GT5U.gui.text.structure_error.dt_missing_output_hatch=Missing Output Hatch on Layer %s
 GT5U.gui.text.structure_error.dt_missing_output_hatches=Нет выходных шлюзов на слоях %s
 GT5U.gui.text.structure_error.coil_level_not_enough=Уровень катушек недостаточен
+GT5U.gui.text.structure_error.exotic_hatch_insufficient_coil_tier=Coil tier too low for Multi-Amp Hatch
 GT5U.gui.text.structure_error.missing_top=Верхний слой неверен
 GT5U.gui.text.structure_error.dangote_missing_top=Верхний слой неверен или выхлопная система стоит не на верхнем слое
 GT5U.gui.text.structure_error.spelv_module_exceed=Превышен лимит модулей
@@ -3707,7 +3708,7 @@ gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip7=проигн�
 gt.blockmachines.multimachine.beamcrafting.LHC.machinetype=Ускоритель частиц, Коллайдер частиц, LHC
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip1=Ускоряет заряженные частицы до более высоких энергий, пропуская их через электрическое поле
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip2=Поэтому электрически нейтральные частицы не подвержены влиянию
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3=Установите §9целевую энергию пучка§7 (до 2TeV) и §dмаксимальное количество циклов§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3=Установите §9целевую энергию пучка§7 (до 1TeV) и §dмаксимальное количество циклов§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip4=Циклы каждую секунду
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5=§f§nРежим ускорителя§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Ускоряет пучок в меньшем кольце LHC
@@ -7251,7 +7252,7 @@ fluidHotWater=Горячая вода
 
 fluid.oil=Нефть
 fluid.tile.fluidBlockSludge=Осадок
-fluid.sludge=осадок
+fluid.sludge=Осадок
 fluid.oilgc=oilgc
 fluid.fuelgc=fuelgc
 

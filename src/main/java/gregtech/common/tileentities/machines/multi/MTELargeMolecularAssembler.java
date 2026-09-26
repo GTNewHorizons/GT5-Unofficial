@@ -885,4 +885,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
 
     }
 
+    @Override
+    public boolean isCraftingPatternProvider() {
+        return true;
+    }
 }
