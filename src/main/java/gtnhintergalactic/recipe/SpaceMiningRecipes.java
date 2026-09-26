@@ -788,9 +788,7 @@ public class SpaceMiningRecipes {
                     GTUtility.copyAmount(
                         64,
                         GTOreAdapter.INSTANCE.getVariantStack(Materials.Oriharukon, StoneType.Endstone, false)),
-                    GTUtility.copyAmount(
-                        64,
-                        GTOreAdapter.INSTANCE.getVariantStack(Materials.HeeEndium, StoneType.Endstone, false)),
+                    GTModHandler.getModItem(HardcoreEnderExpansion.ID, "endium_ore", 64),
                     GTModHandler.getModItem(HardcoreEnderExpansion.ID, "end_powder_ore", 64) },
                 30,
                 60,

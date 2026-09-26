@@ -13765,6 +13765,8 @@ public class Materials {
             .build();
         Materials.HeeEndium = MaterialLibAPI.newMaterial("gregtech", "HeeEndium", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFA5DCFA)
+            .removeShape(OreShapes.ore)
+            .removeShape(OreShapes.oreSmall)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.ores)
