@@ -282,7 +282,7 @@ public class BlockOverlayRenderer {
         } else if (tTile instanceof IWrenchable wrenchable) {
             tConnections |= ForgeDirection.getOrientation(wrenchable.getFacing()).flag;
         } else if (ROTATABLE_VANILLA_BLOCKS.contains(block)) {
-            tConnections |= ForgeDirection.getOrientation(meta).flag;
+            tConnections |= ForgeDirection.getOrientation(meta & 0b111).flag;
         } else if (tTile instanceof TileInterface tileInterface) tConnections |= tileInterface.getUp()
             .getOpposite().flag;
 
