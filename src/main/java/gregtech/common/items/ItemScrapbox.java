@@ -3,8 +3,12 @@ package gregtech.common.items;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.ItemList;
@@ -17,6 +21,20 @@ public class ItemScrapbox extends GTGenericItem {
 
     public ItemScrapbox(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(this, new BehaviorDefaultDispenseItem() {
+
+            @Override
+            protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+                doDispense(
+                    source.getWorld(),
+                    ScrapDrop.getDrop(),
+                    6,
+                    EnumFacing.getFront(source.getBlockMetadata()),
+                    BlockDispenser.func_149939_a(source));
+                --stack.stackSize;
+                return stack;
+            }
+        });
     }
 
     @Override
