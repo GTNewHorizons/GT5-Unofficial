@@ -1,4 +1,4 @@
-Modes: {white:Circuit Assembly Line} | {white:Circuit Assembler}
+Modes: {gold:Circuit Assembly Line} | {gold:Circuit Assembler}
 {gray:{hr}}
 {white:Circuit Assembly Line}:
 - Imprint by placing a {white:Circuit Imprint} in the controller
