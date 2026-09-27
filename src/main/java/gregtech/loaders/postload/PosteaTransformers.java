@@ -5,6 +5,7 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +139,9 @@ public class PosteaTransformers implements Runnable {
         for (GtppOreCutoverTable.Entry entry : GtppOreCutoverTable.ENTRIES) {
             if (resolveGtppOreCutoverStack(entry) == null) unresolved.add(entry.registryName());
         }
+        for (ForeignPartTable.Entry entry : ForeignPartTable.ENTRIES) {
+            if (resolveForeignPartStack(entry) == null) unresolved.add(entry.registryName() + "@" + entry.meta());
+        }
         for (Map.Entry<Integer, LegacyPipeCutoverTable.Entry> row : LegacyPipeCutoverTable.entries()
             .entrySet()) {
             LegacyPipeCutoverTable.Entry entry = row.getValue();
@@ -180,6 +184,7 @@ public class PosteaTransformers implements Runnable {
         registerGtppItemCutoverTransformers();
         registerGtppCarryoverCellTransformers();
         registerGtppOreCutoverTransformers();
+        registerForeignPartTransformers();
         registerGtppFrameCutoverTransformers();
         registerPipeCutoverTransformers();
         registerEmptyCellCutoverTransformer();
@@ -390,6 +395,29 @@ public class PosteaTransformers implements Runnable {
         GT_FML_LOGGER.debug(
             "PosteaTransformers: registered gtpp item transformers for {} legacy items",
             GtppItemCutoverTable.ENTRIES.length);
+    }
+
+    /// Migrates saved stacks of other mods' parts that GregTech unifies onto a MaterialLib pair into that pair's
+    /// stack, resolved through [ForeignPartTable]'s pinned (registry name, damage, prefix, material) rows.
+    private static void registerForeignPartTransformers() {
+        Map<String, Map<Integer, ForeignPartTable.Entry>> rowsByItem = new HashMap<>();
+        for (ForeignPartTable.Entry entry : ForeignPartTable.ENTRIES) {
+            rowsByItem.computeIfAbsent(entry.registryName(), k -> new HashMap<>())
+                .put(entry.meta(), entry);
+        }
+        rowsByItem.forEach((registryName, rows) -> addItemTransformer(registryName, (originalId, tag) -> {
+            ForeignPartTable.Entry entry = rows.get(tag.getInteger("Damage"));
+            if (entry == null) return false;
+            ItemStack target = resolveForeignPartStack(entry);
+            if (target == null) return false;
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(target.getItem()));
+            tag.setShort("Damage", (short) target.getItemDamage());
+            return true;
+        }));
+    }
+
+    private static ItemStack resolveForeignPartStack(ForeignPartTable.Entry entry) {
+        return MaterialParts.stack(entry.prefix(), MaterialLibAPI.getMaterial("gregtech", entry.materialName()), 1);
     }
 
     private static ItemStack resolveGtppCutoverStack(Entry entry) {
