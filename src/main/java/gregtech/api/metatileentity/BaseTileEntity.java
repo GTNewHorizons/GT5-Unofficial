@@ -873,10 +873,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             }
 
             @Override
+            public boolean onMouseScroll(int direction) {
+                return super.onMouseScroll(GTMod.proxy.invertCircuitScrollDirection ? -direction : direction);
+            }
+
+            @Override
             protected void phantomScroll(int direction) {
-                if (GTMod.proxy.invertCircuitScrollDirection) {
-                    phantomClick(new ClickData(direction > 0 ? 0 : 1, false, false, false));
-                } else phantomClick(new ClickData(direction > 0 ? 1 : 0, false, false, false));
+                phantomClick(new ClickData(direction > 0 ? 1 : 0, false, false, false));
             }
 
             @Override
