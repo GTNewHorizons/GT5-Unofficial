@@ -30,7 +30,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.Range;
 import org.lwjgl.opengl.GL11;
 
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -574,7 +573,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         return drawTicks;
     }
 
-    public static class FixedPositionedStack extends PositionedStack.Fluid {
+    public static class FixedPositionedStack extends PositionedStack {
 
         public final CachedDefaultRecipe recipe;
         public final boolean mIsInput;
@@ -641,15 +640,17 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         public void draw(int mousex, int mousey) {
             super.draw(mousex, mousey);
 
-            FluidStack fluidStack = getFluidStack();
+            if (!isFluid()) return;
+
+            FluidStack fluidStack = StackInfo.getFluid(item);
             if (fluidStack == null || fluidStack.amount <= 0) return;
 
+            // L is used intentionally, because it takes less space than mB
             String amountString;
-            String fluidUnit = NumberFormatUtil.getFluidUnit();
             if (fluidStack.amount < 10_000) {
-                amountString = fluidStack.amount + fluidUnit;
+                amountString = fluidStack.amount + "L";
             } else {
-                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidStack.amount) + fluidUnit;
+                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidStack.amount) + "L";
             }
 
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;

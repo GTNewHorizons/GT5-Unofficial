@@ -13,8 +13,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.opengl.GL11;
 
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
-
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -105,12 +103,12 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
         // Render Fluid amount text
         long fluidAmount = tagCompound.getLong("mFluidDisplayAmount");
         if (fluidAmount > 0L && !tagCompound.getBoolean("mHideStackSize")) {
+            // L is used intentionally, because it takes less space than mB
             String amountString;
-            String fluidUnit = NumberFormatUtil.getFluidUnit();
             if (fluidAmount < 10_000) {
-                amountString = fluidAmount + fluidUnit;
+                amountString = fluidAmount + "L";
             } else {
-                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidAmount) + fluidUnit;
+                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidAmount) + "L";
             }
 
             FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
