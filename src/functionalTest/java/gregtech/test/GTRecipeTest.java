@@ -4,8 +4,6 @@ import static gregtech.api.GregTechAPI.sBlockOres1;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.ItemList.Circuit_Parts_Crystal_Chip_Master;
 import static gregtech.api.enums.ItemList.IC2_LapotronCrystal;
-import static gregtech.api.enums.OrePrefixes.lens;
-import static gregtech.api.util.GTOreDictUnificator.get;
 import static gregtech.api.util.GTUtility.copyAmount;
 import static net.minecraft.init.Blocks.chest;
 import static net.minecraft.init.Blocks.iron_ore;
@@ -40,9 +38,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.RecipeMap;
@@ -81,7 +82,9 @@ class GTRecipeTest {
             .addTo(recipeMap);
 
         lapotronChipRecipe = RA.stdBuilder()
-            .itemInputs(IC2_LapotronCrystal.getWildcard(1), copyAmount(0, get(lens, Materials.BlueTopaz, 1)))
+            .itemInputs(
+                IC2_LapotronCrystal.getWildcard(1),
+                copyAmount(0, MaterialLibAPI.getStack(Materials.BlueTopaz, Shapes.lens, 1)))
             .itemOutputs(Circuit_Parts_Crystal_Chip_Master.get(3))
             .duration(0)
             .eut(0)
@@ -167,7 +170,9 @@ class GTRecipeTest {
         assertNotNull(chestRecipe);
 
         GTRecipe lapotronChipRecipe = recipeMap.findRecipeQuery()
-            .items(IC2_LapotronCrystal.getWildcard(1), copyAmount(0, get(lens, Materials.BlueTopaz, 1)))
+            .items(
+                IC2_LapotronCrystal.getWildcard(1),
+                copyAmount(0, MaterialLibAPI.getStack(Materials.BlueTopaz, Shapes.lens, 1)))
             .find();
         assertNotNull(lapotronChipRecipe);
     }
@@ -254,10 +259,8 @@ class GTRecipeTest {
 
     @Test
     void findWithSpecificOreDictionary() {
-        // https://github.com/GTNewHorizons/GT5-Unofficial/pull/2379
-        // We cannot use circuit assembling recipe like the issue mentioned above,
-        // as mUnificationTarget is not set for circuits in GT5.
-        // But it works in the same way; specific circuit -> GT ore block, unificated circuit -> vanilla ore block
+        // A recipe for one item under an ore-dictionary name does not accept another item under the same name
+        // (https://github.com/GTNewHorizons/GT5-Unofficial/pull/2379).
         GTRecipe recipeCorrectOre = recipeMap.findRecipeQuery()
             .items(new ItemStack(sBlockOres1, 1, 32))
             .find();
