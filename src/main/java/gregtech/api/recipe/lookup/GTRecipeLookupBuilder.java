@@ -254,11 +254,6 @@ public final class GTRecipeLookupBuilder {
         }
         addIfAbsent(group, GTItemStackLookupIngredient.fromRecipe(stack, recipe.isNBTSensitive));
         addItemDataIngredient(stack, group);
-        ItemStack unified = GTOreDictUnificator.get_nocopy(true, stack);
-        if (unified != null) {
-            addIfAbsent(group, GTItemStackLookupIngredient.fromRecipe(unified, recipe.isNBTSensitive));
-            addItemDataIngredient(unified, group);
-        }
     }
 
     private static void addItemDataIngredient(ItemStack stack, List<GTRecipeLookupIngredient> group) {

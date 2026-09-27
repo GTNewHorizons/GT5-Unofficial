@@ -31,7 +31,6 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeLookupValidator;
 import gregtech.api.recipe.RecipeMap;
@@ -227,8 +226,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
         if (aFluidOutputs == null) aFluidOutputs = GTValues.emptyFluidStackArray;
         else aFluidOutputs = ArrayExt.removeNullFluids(aFluidOutputs);
 
-        GTOreDictUnificator.setStackArray(true, true, aInputs);
-        GTOreDictUnificator.setStackArray(true, true, aOutputs);
+        aInputs = GTUtility.copyItemArray(aInputs);
+        aOutputs = GTUtility.copyItemArray(aOutputs);
 
         for (final ItemStack s : aOutputs) GTUtility.updateItemStack(s);
 
@@ -618,10 +617,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
             return;
         }
 
-        final ItemData[] unifiedProvidedInputs = new ItemData[itemInputs.length];
-        for (int i = 0; i < itemInputs.length; i++) {
-            unifiedProvidedInputs[i] = GTOreDictUnificator.getItemData(itemInputs[i]);
-        }
         final @NotNull RecipeItemInput @NotNull [] combinedInputs = getCachedCombinedItemInputs();
 
         for (final RecipeItemInput recipeItemCost : combinedInputs) {
@@ -649,7 +644,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     continue;
                 }
 
-                if (!recipeItemCost.matchesRecipe(unifiedProvidedInputs[iProvided], providedItem)) {
+                if (!recipeItemCost.matchesRecipe(providedItem)) {
                     continue;
                 }
 
@@ -728,18 +723,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 return 0;
             }
 
-            final ItemData[] unifiedProvidedInputs = new ItemData[aInputs.length];
-            for (int i = 0; i < aInputs.length; i++) {
-                unifiedProvidedInputs[i] = GTOreDictUnificator.getItemData(aInputs[i]);
-            }
-
             recipeItemLoop: for (final RecipeItemInput combinedInput : combinedInputs) {
                 double remainingCost = combinedInput.inputAmount * currentParallel;
                 long providedAmount = 0;
 
                 for (int i = 0; i < aInputs.length; i++) {
                     final ItemStack providedItem = aInputs[i];
-                    if (!combinedInput.matchesRecipe(unifiedProvidedInputs[i], providedItem)) {
+                    if (!combinedInput.matchesRecipe(providedItem)) {
                         continue;
                     }
 
@@ -1008,7 +998,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             if (stackNeedsNBT) {
                 this.unifiedStack = stack;
             } else {
-                this.unifiedStack = GTOreDictUnificator.get_nocopy(true, stack);
+                this.unifiedStack = stack;
                 if (!this.usesNbtMatching) {
                     this.unifiedStack.setTagCompound(null);
                 }
@@ -1026,7 +1016,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         public RecipeItemInput(int oreDictId, ItemStack representative, long amount, boolean nbtSensitive,
             ItemStack[] alternativeStacks) {
             this.oreDictId = oreDictId;
-            this.unifiedStack = representative != null ? GTOreDictUnificator.get_nocopy(true, representative) : null;
+            this.unifiedStack = representative;
             this.inputAmount = amount;
             this.chanceWeightedAmount = amount;
             this.usesNbtMatching = nbtSensitive;
@@ -1049,15 +1039,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
          * @return True if the given item can be used as a valid recipe ingredient for this input slot. For oredict
          *         slots, checks the OreDict ID dynamically. For regular slots, uses GT unification matching.
          */
-        public boolean matchesRecipe(final ItemData oredictOther, final ItemStack other) {
+        public boolean matchesRecipe(final ItemStack other) {
             if (oreDictId >= 0) {
                 return hasOreDictId(other, oreDictId) || matchesAlternativeStack(other);
             }
-            if (usesNbtMatching) {
-                return GTUtility.areStacksEqual(this.unifiedStack, other, false);
-            } else {
-                return GTOreDictUnificator.isInputStackEqual(other, oredictOther, unifiedStack);
-            }
+            return GTUtility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching);
         }
 
         private boolean matchesAlternativeStack(final ItemStack other) {

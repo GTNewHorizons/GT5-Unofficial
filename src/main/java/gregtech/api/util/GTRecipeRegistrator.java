@@ -405,7 +405,7 @@ public class GTRecipeRegistrator {
     }
 
     private static boolean isNoOpReverseArcSmelting(ItemStack input, List<ItemStack> outputs) {
-        return outputs.size() == 1 && GTOreDictUnificator.isInputStackEqual(input, outputs.get(0))
+        return outputs.size() == 1 && GTUtility.areStacksEqual(input, outputs.get(0), true)
             && input.stackSize == outputs.get(0).stackSize;
     }
 

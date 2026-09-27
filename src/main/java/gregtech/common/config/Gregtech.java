@@ -239,11 +239,6 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean survivalIntoAdventure;
 
-        @Config.Comment("If true, enables the item oredification of the items in the inventory.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean inventoryUnification;
-
         @Config.Comment("if true, enables GT5U and GT++ bees.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart

@@ -440,7 +440,7 @@ public class GTModHandler {
      * Adds a Scrapbox Drop. Fails at April first for the "suddenly Hoes"-Feature of IC2
      */
     public static boolean addScrapboxDrop(float aChance, ItemStack aOutput) {
-        aOutput = GTOreDictUnificator.get(true, aOutput);
+        aOutput = GTUtility.copyOrNull(aOutput);
         if (aOutput == null || aChance <= 0) return false;
         aOutput.stackSize = 1;
         if (GTConfig.troll && !GTUtility.areStacksEqual(aOutput, new ItemStack(Items.wooden_hoe, 1, 0))) return false;
@@ -482,7 +482,6 @@ public class GTModHandler {
      * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
      */
     public static boolean addSmeltingRecipe(ItemStack input, ItemStack output, float xp) {
-        output = GTOreDictUnificator.get(true, output);
         if (input == null || output == null) return false;
         FurnaceRecipes.smelting()
             .func_151394_a(input, GTUtility.copyOrNull(output), xp);
@@ -610,7 +609,6 @@ public class GTModHandler {
             false,
             false,
             true,
-            true,
             aRecipe);
     }
 
@@ -669,7 +667,6 @@ public class GTModHandler {
             (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
             (aBitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0,
             (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0,
-            (aBitMask & RecipeBits.DONT_UNIFY_OUTPUT) == 0,
             aRecipe);
     }
 
@@ -1014,10 +1011,9 @@ public class GTModHandler {
         boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
-        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, boolean unifyOutput,
-        Object[] aRecipe) {
+        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
 
-        if (unifyOutput) aResult = GTOreDictUnificator.get(true, aResult);
+        aResult = GTUtility.copyOrNull(aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return false;
         if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
         if (aRecipe == null || aRecipe.length == 0) return false;
@@ -1218,7 +1214,7 @@ public class GTModHandler {
                     tRecipe.getClass()
                         .getName()))
                     continue;
-                if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
+                if (GTUtility.areStacksEqual(tRecipe.getRecipeOutput(), aResult, true)) {
                     tList.remove(i--);
                     tList_sS = tList.size();
                     tThereWasARecipe = true;
@@ -1283,7 +1279,6 @@ public class GTModHandler {
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
-            (aBitMask & RecipeBits.DONT_UNIFY_OUTPUT) == 0,
             inputValidator,
             aRecipe);
     }
@@ -1293,9 +1288,8 @@ public class GTModHandler {
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
         int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aCheckForCollisions, boolean aKeepNBT,
-        boolean aRemovable, boolean overwriteNBT, boolean unifyOutput, Predicate<InventoryCrafting> inputValidator,
-        Object[] aRecipe) {
-        if (unifyOutput) aResult = GTOreDictUnificator.get(true, aResult);
+        boolean aRemovable, boolean overwriteNBT, Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
+        aResult = GTUtility.copyOrNull(aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
@@ -1509,7 +1503,7 @@ public class GTModHandler {
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput) {
         if (sBufferCraftingRecipes) {
-            return delayedRemovalByOutput.add(GTOreDictUnificator.get_nocopy(aOutput));
+            return GTUtility.isStackValid(aOutput) && delayedRemovalByOutput.add(aOutput);
         }
 
         return removeRecipeByOutput(aOutput);
@@ -1519,17 +1513,16 @@ public class GTModHandler {
         boolean onlyRemoveNativeHandlers) {
         // Handling NBT-sensitive stacks would be a nightmare, because we wouldn't be able to use HashMaps anymore.
         // Luckily, ignoreNBT is almost never false, so we're not missing any performance gain by not handling it.
+        if (GTUtility.isStackInvalid(output)) return false;
         if (sBufferCraftingRecipes && ignoreNBT) {
-            ItemStack unifiedOutput = GTOreDictUnificator.get_nocopy(output);
-
             int removalFlags = 0;
             if (keepShapelessRecipes) removalFlags |= DELAYED_REMOVAL_KEEP_SHAPELESS;
             if (onlyRemoveNativeHandlers) removalFlags |= DELAYED_REMOVAL_ONLY_REMOVE_NATIVE;
 
             if (removalFlags != 0) {
-                delayedRemovalByOutputFlags.put(unifiedOutput, removalFlags);
+                delayedRemovalByOutputFlags.put(output, removalFlags);
             }
-            return delayedRemovalByOutput.add(unifiedOutput);
+            return delayedRemovalByOutput.add(output);
         }
 
         return removeRecipeByOutput(output, ignoreNBT, keepShapelessRecipes, onlyRemoveNativeHandlers);
@@ -1548,8 +1541,7 @@ public class GTModHandler {
     public static boolean removeRecipeByOutput(ItemStack output, boolean ignoreNBT, boolean keepShapelessRecipes,
         boolean onlyRemoveNativeHandlers) {
 
-        output = GTOreDictUnificator.get_nocopy(output);
-        if (output == null) return false;
+        if (GTUtility.isStackInvalid(output)) return false;
 
         final ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
@@ -1577,7 +1569,7 @@ public class GTModHandler {
                 if (sSpecialRecipeClasses.contains(recipeClassName)) continue;
             }
 
-            ItemStack recipeOutput = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
+            ItemStack recipeOutput = recipe.getRecipeOutput();
             if (GTUtility.areStacksEqual(recipeOutput, output, ignoreNBT)) {
                 allRecipes.remove(i--);
                 size = allRecipes.size();
@@ -1603,8 +1595,8 @@ public class GTModHandler {
                 return false;
             }
 
-            ItemStack output = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
-            if (output == null) return false;
+            ItemStack output = recipe.getRecipeOutput();
+            if (GTUtility.isStackInvalid(output)) return false;
 
             wildcardItem.func_150996_a(output.getItem());
             if (delayedRemovalByOutput.contains(wildcardItem)) {
@@ -1964,7 +1956,7 @@ public class GTModHandler {
      */
     public static ItemStack getSmeltingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
         if (aInput == null || aInput.stackSize < 1) return null;
-        ItemStack rStack = GTOreDictUnificator.get(
+        ItemStack rStack = GTUtility.copyOrNull(
             FurnaceRecipes.smelting()
                 .getSmeltingResult(aInput));
 
@@ -1978,7 +1970,7 @@ public class GTModHandler {
 
     public static ItemStack getEFRBlastingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
         if (aInput == null || aInput.stackSize < 1) return null;
-        ItemStack rStack = GTOreDictUnificator.get(
+        ItemStack rStack = GTUtility.copyOrNull(
             BlastFurnaceRecipes.smelting()
                 .getSmeltingResult(aInput));
 
@@ -1992,7 +1984,7 @@ public class GTModHandler {
 
     public static ItemStack getEFRSmokingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
         if (aInput == null || aInput.stackSize < 1) return null;
-        ItemStack rStack = GTOreDictUnificator.get(
+        ItemStack rStack = GTUtility.copyOrNull(
             SmokerRecipes.smelting()
                 .getSmeltingResult(aInput));
 
@@ -2444,10 +2436,6 @@ public class GTModHandler {
          * tags with output item's NBT tags if exists
          */
         public static final long OVERWRITE_NBT = B[14];
-        /**
-         * Keeps the supplied crafting recipe output instead of ore-dictionary-unifying it.
-         */
-        public static final long DONT_UNIFY_OUTPUT = B[15];
         /**
          * Combination of common bits. NOT_REMOVABLE, REVERSIBLE, and BUFFERED
          */

@@ -93,7 +93,6 @@ import gregtech.api.util.ColorUtils;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTItemTransfer;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
@@ -688,7 +687,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                             mOutputItems[i] = GTUtility.copyOrNull(mOutputItems[i]);
                             if (mOutputItems[i] != null && mOutputItems[i].stackSize > 64)
                                 mOutputItems[i].stackSize = 64;
-                            mOutputItems[i] = GTOreDictUnificator.get(true, mOutputItems[i]);
                         }
                         if (mFluid != null && mFluid.amount <= 0) mFluid = null;
                         mMaxProgresstime = Math.max(1, mMaxProgresstime);
@@ -999,7 +997,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (!mAllowInputFromOutputSide && side == aBaseMetaTileEntity.getFrontFacing()) return false;
 
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {
-            if (GTUtility.areStacksEqual(GTOreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack) {
+            if (GTUtility.areStacksEqual(aStack, mInventory[i]) && mDisableMultiStack) {
                 return i == aIndex;
             }
         }

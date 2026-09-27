@@ -50,7 +50,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
@@ -182,7 +181,6 @@ public class GTProxy implements IFuelHandler {
     public final GTBlockMap<Boolean> mCTMBlockCache = new GTBlockMap<>();
     public boolean mDisableVanillaOres = true;
     public boolean mAllowSmallBoilerAutomation = false;
-    public boolean mInventoryUnification = true;
     public boolean mIncreaseDungeonLoot = true;
     public boolean mAxeWhenAdventure = true;
     public boolean mSurvivalIntoAdventure = false;
@@ -772,19 +770,19 @@ public class GTProxy implements IFuelHandler {
                         convertCrafting(
                             MaterialUtils.macerateInto(material),
                             MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
-                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
                         convertCrafting(
                             MaterialUtils.macerateInto(material),
                             MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
-                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystalline.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
                         convertCrafting(
                             MaterialUtils.macerateInto(material),
                             MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
-                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
+                        GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystal.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L),
@@ -1055,22 +1053,6 @@ public class GTProxy implements IFuelHandler {
     }
 
     @SubscribeEvent
-    public void onEntitySpawningEvent(EntityJoinWorldEvent aEvent) {
-        if (aEvent.entity == null) {
-            return;
-        }
-
-        if (aEvent.entity.worldObj.isRemote) {
-            return;
-        }
-
-        if ((aEvent.entity instanceof EntityItem)) {
-            ((EntityItem) aEvent.entity)
-                .setEntityItemStack(GTOreDictUnificator.get(true, ((EntityItem) aEvent.entity).getEntityItem(), true));
-        }
-    }
-
-    @SubscribeEvent
     public void onPlayerJoinEvent(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent event) {
         if (event.player == null || event.player.isClientWorld()
             || !(event.player instanceof EntityPlayerMP mpPlayer)) {
@@ -1295,9 +1277,6 @@ public class GTProxy implements IFuelHandler {
         final ItemStack[] mainInventory = player.inventory.mainInventory;
         for (ItemStack stack : mainInventory) {
             applyItemEffects(player, stack);
-            if (this.mInventoryUnification) {
-                GTOreDictUnificator.setStack(true, stack);
-            }
         }
         final ItemStack[] armorInventory = player.inventory.armorInventory;
         for (final ItemStack stack : armorInventory) {

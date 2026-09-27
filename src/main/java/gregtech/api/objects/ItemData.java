@@ -3,8 +3,6 @@ package gregtech.api.objects;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.minecraft.item.ItemStack;
-
 import org.jetbrains.annotations.NotNull;
 
 import com.ruling_0.materiallib.api.Material;
@@ -39,7 +37,6 @@ public class ItemData {
     @NotNull
     public final MaterialStack[] mByProducts;
     public final boolean hasExplicitComposition;
-    public ItemStack mUnificationTarget = null;
     private final String oreDictName;
 
     public ItemData(OrePrefixes prefix, Material material) {

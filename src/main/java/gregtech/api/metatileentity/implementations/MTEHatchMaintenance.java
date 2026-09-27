@@ -320,7 +320,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
                 amt = tStack.stackSize;
                 boolean temp = true;
                 for (ItemStack aStack : mInventory) {
-                    if (GTUtility.areUnificationsEqual(aStack, tStack, true)) {
+                    if (GTUtility.areStacksEqual(aStack, tStack, true)) {
                         amt -= aStack.stackSize;
                         if (amt < 1) {
                             temp = false;
@@ -337,7 +337,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
                 if (tStack != null) {
                     amt = tStack.stackSize;
                     for (ItemStack aStack : mInventory) {
-                        if (GTUtility.areUnificationsEqual(aStack, tStack, true)) {
+                        if (GTUtility.areStacksEqual(aStack, tStack, true)) {
                             if (aStack.stackSize < amt) {
                                 amt -= aStack.stackSize;
                                 aStack.stackSize = 0;
@@ -455,7 +455,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
 
     public boolean IsAutoMaintenanceInput(ItemStack aStack) {
         for (ItemStack tInput : getAutoMaintenanceInputs()) {
-            if (GTUtility.areUnificationsEqual(tInput, aStack, true)) return true;
+            if (GTUtility.areStacksEqual(tInput, aStack, true)) return true;
         }
         return false;
     }

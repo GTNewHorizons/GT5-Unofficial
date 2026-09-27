@@ -40,24 +40,17 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 
-/// NEVER INCLUDE THIS FILE IN YOUR MOD!!!
+/// GregTech's index of the ore dictionary: which item stands for an ore-dictionary name, and what material any
+/// stack is made of ([ItemData]).
 ///
-/// This is the Core of my OreDict Unification Code
+/// MaterialLib decides the item for every name of a (prefix, material) pair it serves: the pair's stack, MaterialLib's
+/// own item or the foreign item a shape override declares, whatever else registers under the name and in whatever
+/// order. A pair MaterialLib's own item serves answers from GregTech's preInit on; one a foreign item stands in for
+/// answers from GregTech's init, once that item is registered (see [#useMaterialLibTargets]). Names with no such pair
+/// (containers, name-only circuits) are decided by [#set(OrePrefixes, Material, ItemStack)]; other names have none.
 ///
-/// If you just want to use this to unificate your Items, then use the Function in the GregTechAPI File
-///
-/// P.S. It is intended to be named "Unificator" and not "Unifier", because that sounds more awesome.
-///
-/// Two questions: which stack is canonical for an ore-dictionary name, and what material any stack is made of
-/// ([ItemData]).
-///
-/// MaterialLib answers the first for every name of a (prefix, material) pair it serves: the pair's stack,
-/// MaterialLib's own item or the foreign item a shape override declares, is the unification target, whatever
-/// else registers under the name and in whatever order. A pair MaterialLib's own item serves answers from
-/// GregTech's preInit on; one a foreign item stands in for answers from GregTech's init, once that item is
-/// registered (see [#useMaterialLibTargets]). Only names with no such pair (containers, name-only
-/// circuits, ore blocks, other mods' parts of shapes GregTech does not generate) are decided here, by
-/// [#set(OrePrefixes, Material, ItemStack)] or else by the first registered stack that is not blacklisted.
+/// Another mod's item registered under a name that stands for a different item is a unified copy
+/// ([#isUnifiedCopy]): GregTech generates no recipes for it, and `ForeignPartTable` migrates saved stacks of it.
 ///
 /// Keyed by [OrePrefixes] throughout: an association starts from an ore-dictionary name. See [OrePrefixes]'s
 /// class javadoc for why the prefix and shape spaces are not interchangeable.
@@ -118,7 +111,6 @@ public class GTOreDictUnificator {
         registerOre(oreName, stack);
         addAssociation(prefix, materialName, stack);
         sName2StackMap.put(oreName, stack);
-        updateUnificationTarget(oreName, stack);
         isAddingOre--;
     }
 
@@ -136,7 +128,6 @@ public class GTOreDictUnificator {
 
         if (overwrite || GTUtility.isStackInvalid(sName2StackMap.get(oreName))) {
             sName2StackMap.put(oreName, stack);
-            updateUnificationTarget(oreName, stack);
         }
         isAddingOre--;
     }
@@ -163,14 +154,13 @@ public class GTOreDictUnificator {
         return pairs;
     }
 
-    /// Lets every MaterialLib pair decide its names from here on, including those a foreign item stands in for,
-    /// and drops every target resolved before. Called at the start of GregTech's init: during preInit another
-    /// mod's overriding item may not be registered yet.
+    /// Lets every MaterialLib pair decide its names from here on, including those a foreign item stands in for.
+    /// Called at the start of GregTech's init: during preInit another mod's overriding item may not be registered
+    /// yet.
     /// A foreign item standing in for a pair is associated with it here, since the ore-dictionary event that
     /// would do so may never be processed for it (`stickObsidian` is an ignored name).
     public static void useMaterialLibTargets() {
         materialLibTargetsLive = true;
-        resetUnificationEntries();
         for (MaterialLibPair pair : materialLibPairs().values()) {
             if (!MaterialParts.isMinted(pair.prefix(), pair.material())) {
                 addAssociation(pair.prefix(), pair.material(), MaterialParts.stack(pair.prefix(), pair.material(), 1));
@@ -261,161 +251,22 @@ public class GTOreDictUnificator {
         return GTUtility.copyAmount(aAmount, aReplacement);
     }
 
-    /**
-     * Wrapper for setStackArray that assumes safe copying
-     */
-    public static ItemStack[] setStackArray(boolean useBlackList, ItemStack... stacks) {
-        return setStackArray(useBlackList, false, stacks);
-    }
-
-    public static ItemStack[] setStackArray(boolean useBlackList, boolean unsafe, ItemStack... stacks) {
-        for (int i = 0; i < stacks.length; i++) stacks[i] = get(useBlackList, GTUtility.copyOrNull(stacks[i]), unsafe);
-        return stacks;
-    }
-
-    public static ItemStack[] getStackArray(boolean useBlackList, Object... stacks) {
-        ItemStack[] rStacks = new ItemStack[stacks.length];
-        for (int i = 0; i < stacks.length; i++) {
-            rStacks[i] = get(useBlackList, GTUtility.copy(stacks[i]), true);
-        }
-        return rStacks;
-    }
-
-    public static ItemStack setStack(ItemStack stack) {
-        return setStack(true, stack);
-    }
-
-    public static ItemStack setStack(boolean useBlackList, ItemStack stack) {
-        if (GTUtility.isStackInvalid(stack)) return stack;
-        ItemStack tStack = get(useBlackList, stack);
-        if (GTUtility.areStacksEqual(stack, tStack)) return stack;
-        stack.func_150996_a(tStack.getItem());
-        Items.feather.setDamage(stack, Items.feather.getDamage(tStack));
-        return stack;
-    }
-
-    public static ItemStack get(ItemStack stack) {
-        return get(true, stack);
-    }
-
-    public static ItemStack get(boolean useBlackList, ItemStack stack) {
-        return get(useBlackList, stack, false);
-    }
-
-    /**
-     * @param unsafe If true, it does not limit stack size to 64.
-     */
-    public static ItemStack get(boolean useBlackList, ItemStack stack, boolean unsafe) {
-        if (GTUtility.isStackInvalid(stack)) return null;
-        ItemData itemData = getUnifiable(stack);
-        if (itemData == null || !itemData.hasUnificationName() || (useBlackList && isBlacklisted(stack))) {
-            return GTUtility.copyOrNull(stack);
-        }
-        if (itemData.mUnificationTarget == null) {
-            itemData.mUnificationTarget = unificationTarget(itemData.toString());
-        }
-        final ItemStack rStack = itemData.mUnificationTarget;
-        if (GTUtility.isStackInvalid(rStack)) {
-            return GTUtility.copyOrNull(stack);
-        }
-        final ItemStack newStack;
-        if (unsafe) {
-            newStack = GTUtility.copyAmountUnsafe(stack.stackSize, rStack);
-        } else {
-            newStack = GTUtility.copyAmount(stack.stackSize, rStack);
-        }
-        // NBT is assigned by reference here, so mutating it may have unexpected side effects.
-        if (newStack != null) {
-            newStack.setTagCompound(stack.getTagCompound());
-        }
-        return newStack;
-    }
-
-    /**
-     * Doesn't always copy the returned stack or set quantity. Be careful and do not mutate it
-     */
-    public static ItemStack get_nocopy(ItemStack stack) {
-        return get_nocopy(true, stack);
-    }
-
-    /**
-     * Doesn't always copy the returned stack or set quantity. Be careful and do not mutate it
-     */
-    public static ItemStack get_nocopy(boolean useBlackList, ItemStack stack) {
-        if (GTUtility.isStackInvalid(stack)) return null;
-        ItemData itemData = getUnifiable(stack);
-        if (itemData == null || !itemData.hasUnificationName() || (useBlackList && isBlacklisted(stack))) {
-            return stack;
-        }
-        if (itemData.mUnificationTarget == null) {
-            itemData.mUnificationTarget = unificationTarget(itemData.toString());
-        }
-        ItemStack rStack = itemData.mUnificationTarget;
-        if (GTUtility.isStackInvalid(rStack)) {
-            return stack;
-        }
-
-        // Yes, == and not .equals().
-        // This check is primarily intended to optimize for the case where both rStack and stack
-        // do not have NBT, and so we would be comparing null == null.
-        //
-        // Even if stack and rStack may have equal NBT, we prefer to do an inexpensive
-        // new ItemStack() over the potentially expensive NBTTagCompound.equals().
-        if (stack.getTagCompound() == rStack.getTagCompound()) {
-            // Warning: rStack's stack size may not be equal to stack's stack size.
-            return rStack;
-        }
-
-        // Okay, okay, I lied, we actually do need to make a copy.
-        // This is to fix a long-standing bug where we were mutating NBT directly on rStack,
-        // which had unexpected and unpredictable ripple effects.
-        //
-        // We will do some custom copying here, to avoid ItemStack.copy(),
-        // which calls the potentially expensive NBTTagCompound.copy()
-        // NBT is assigned by reference here, so mutating it may have unexpected side effects.
-        ItemStack newStack = new ItemStack(rStack.getItem(), stack.stackSize, Items.feather.getDamage(rStack));
-        newStack.setTagCompound(stack.getTagCompound());
-        return newStack;
-    }
-
     /// Whether `stack` is another mod's copy of a part that unifies onto a different item. Recipes generated for such
     /// a copy would only repeat those of the item it unifies onto.
     public static boolean isUnifiedCopy(ItemStack stack) {
-        ItemStack target = get_nocopy(true, stack);
-        return target != null
-            && (target.getItem() != stack.getItem() || target.getItemDamage() != stack.getItemDamage());
+        return !GTUtility.isStackInvalid(stack) && !isBlacklisted(stack) && unifiedTargetOf(stack) != null;
     }
 
-    /**
-     * Compares the first argument against an already-unificated second argument as if aUseBlackList was both true and
-     * false.
-     */
-    public static boolean isInputStackEqual(ItemStack stack, ItemStack unified_tStack) {
-        if (GTUtility.isStackInvalid(stack)) return false;
-        return isInputStackEqual(stack, getItemData(stack), unified_tStack);
-    }
-
-    /**
-     * Compares the first argument against an already-unificated second argument as if aUseBlackList was both true and
-     * false.
-     */
-    public static boolean isInputStackEqual(ItemStack stack, ItemData stackPrefixData, ItemStack unified_tStack) {
-        boolean alreadyCompared = false;
-        if (GTUtility.isStackInvalid(stack)) return false;
-        ItemStack rStack = null;
-        if (stackPrefixData == null || !stackPrefixData.hasUnificationName())
-            return GTUtility.areStacksEqual(stack, unified_tStack, true);
-        else if (isBlacklisted(stack)) {
-            if (GTUtility.areStacksEqual(stack, unified_tStack, true)) return true;
-            else alreadyCompared = true;
+    /// The item `stack` unifies onto, or null when it unifies onto nothing but itself.
+    @Nullable
+    private static ItemStack unifiedTargetOf(ItemStack stack) {
+        ItemData itemData = getUnifiable(stack);
+        if (itemData == null) return null;
+        ItemStack target = unificationTarget(itemData.toString());
+        if (target == null || target.getItem() == stack.getItem() && target.getItemDamage() == stack.getItemDamage()) {
+            return null;
         }
-        if (stackPrefixData.mUnificationTarget == null) {
-            stackPrefixData.mUnificationTarget = unificationTarget(stackPrefixData.toString());
-        }
-        rStack = stackPrefixData.mUnificationTarget;
-        if (GTUtility.isStackInvalid(rStack))
-            return !alreadyCompared && GTUtility.areStacksEqual(stack, unified_tStack, true);
-        return GTUtility.areStacksEqual(rStack, unified_tStack, true);
+        return target;
     }
 
     public static List<ItemStack> getNonUnifiedStacks(Object obj) {
@@ -426,8 +277,8 @@ public class GTOreDictUnificator {
                 if (sUnificationTable.isEmpty() && !sItemStack2DataMap.isEmpty()) {
                     for (ItemStack tGTStack0 : sItemStack2DataMap.keySet()) {
                         ItemStack tStack0 = GTItemStack.internalCopyStack(tGTStack0);
-                        ItemStack tStack1 = get_nocopy(false, tStack0);
-                        if (!GTUtility.areStacksEqual(tStack0, tStack1)) {
+                        ItemStack tStack1 = unifiedTargetOf(tStack0);
+                        if (tStack1 != null) {
                             List<ItemStack> list = sUnificationTable.computeIfAbsent(tStack1, k -> new ArrayList<>());
                             // greg's original code tries to dedupe the list using List#contains, which won't work
                             // on vanilla ItemStack. I removed it since it never worked and can be slow.
@@ -669,36 +520,6 @@ public class GTOreDictUnificator {
 
     public static boolean isAddingOres() {
         return isAddingOre > 0;
-    }
-
-    public static void resetUnificationEntries() {
-        for (ItemData tPrefixMaterial : sItemStack2DataMap.values()) tPrefixMaterial.mUnificationTarget = null;
-    }
-
-    private static void updateUnificationTarget(String oreName, ItemStack target) {
-        ItemStack served = materialLibTarget(oreName);
-        if (served != null) target = served;
-        for (ItemStack stack : getOresImmutable(oreName)) {
-            updateUnificationTarget(stack, target);
-        }
-    }
-
-    private static void updateUnificationTarget(ItemStack stack, ItemStack target) {
-        ItemData data = getUnifiable(stack);
-        if (data != null) {
-            data.mUnificationTarget = target;
-        }
-
-        if (Items.feather.getDamage(stack) == WILDCARD) {
-            ItemStack lookupStack = new ItemStack(stack.getItem(), 1, 0);
-            for (byte meta = 0; meta < 16; meta++) {
-                lookupStack.setItemDamage(meta);
-                data = getUnifiable(lookupStack);
-                if (data != null) {
-                    data.mUnificationTarget = target;
-                }
-            }
-        }
     }
 
     /**

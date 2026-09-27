@@ -1045,8 +1045,7 @@ public enum GregtechItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(aStack)) {
             return false;
         }
-        return GTUtility
-            .areUnificationsEqual((ItemStack) aStack, aWildcard ? this.getWildcard(1) : this.get(1), aIgnoreNBT);
+        return GTUtility.areStacksEqual((ItemStack) aStack, aWildcard ? this.getWildcard(1) : this.get(1), aIgnoreNBT);
     }
 
     public static Block getBlockFromStack(Object aStack) {

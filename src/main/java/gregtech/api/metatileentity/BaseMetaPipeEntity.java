@@ -45,7 +45,6 @@ import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.net.GTPacketFrameEntity;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.covers.Cover;
@@ -405,8 +404,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         markDirty();
         mInventoryChanged = true;
-        if (canAccessData()) mMetaTileEntity
-            .setInventorySlotContents(aIndex, worldObj.isRemote ? aStack : GTOreDictUnificator.setStack(true, aStack));
+        if (canAccessData()) mMetaTileEntity.setInventorySlotContents(aIndex, aStack);
     }
 
     @Override
@@ -1078,7 +1076,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             setInventorySlotContents(aIndex, aStack);
             return true;
         }
-        aStack = GTOreDictUnificator.get(aStack);
+        aStack = GTUtility.copyOrNull(aStack);
         if (GTUtility.areStacksEqual(tStack, aStack)
             && tStack.stackSize + aStack.stackSize <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
             markDirty();

@@ -40,7 +40,6 @@ import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.GTCreativeTab;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
@@ -217,34 +216,6 @@ public class GregTechAPI {
 
     public static boolean isDummyWorld(@Nonnull World w) {
         return dummyWorlds.contains(w.getClass());
-    }
-
-    /**
-     * You want OreDict-Unification for YOUR Mod/Addon, when GregTech is installed? This Function is especially for YOU.
-     * Call this Function after the load-Phase, as I register the most of the Unification at that Phase (Redpowers
-     * Storageblocks are registered at postload). A recommended use of this Function is inside your Recipe-System itself
-     * (if you have one), as the unification then makes 100% sure, that every added non-unificated Output gets
-     * automatically unificated.
-     * <p/>
-     * I will personally make sure, that only common prefixes of Ores get registered at the Unificator, as of now there
-     * are: pulp, dust, dustSmall, ingot, nugget, gem, ore and block If another Mod-Author messes these up, then it's
-     * not my fault, and it's especially not your fault. As these are commonly used prefixes.
-     * <p/>
-     * This Unificator-API-Function uses the same Functions I use, for unificating Items. So if there is something
-     * messed up (very unlikely), then everything is messed up.
-     * <p/>
-     * You shouldn't use this to unificate the Inputs of your Recipes, this is only meant for the Outputs.
-     *
-     * @param aOreStack the Stack you want to get unificated. It is stackSize Sensitive.
-     * @return Either an unificated Stack or the stack you toss in, but it should never be null, unless you throw a
-     *         Null-Pointer into it.
-     */
-    public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
-        if (!GregTechAPI.sPreloadFinished) GT_FML_LOGGER.error(
-            "GregTechAPI ERROR: {}.{} - OreDict Unification Entries are not registered now, please call it in the postload phase.",
-            aOreStack.getItem(),
-            aOreStack.getItemDamage());
-        return GTOreDictUnificator.get(true, aOreStack);
     }
 
     /**

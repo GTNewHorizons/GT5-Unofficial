@@ -130,7 +130,6 @@ import org.joml.Vector3i;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -1146,17 +1145,6 @@ public class GTUtility {
             && (ignoreStackSize || lhs.stackSize == rhs.stackSize);
     }
 
-    public static boolean areUnificationsEqual(ItemStack aStack1, ItemStack aStack2) {
-        return areUnificationsEqual(aStack1, aStack2, false);
-    }
-
-    public static boolean areUnificationsEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
-        return areStacksEqual(
-            GTOreDictUnificator.get_nocopy(aStack1),
-            GTOreDictUnificator.get_nocopy(aStack2),
-            aIgnoreNBT);
-    }
-
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
         if (aFluid == null) return E;
         if (!aLocalized) return aFluid.getUnlocalizedName();
@@ -1408,14 +1396,13 @@ public class GTUtility {
         boolean rReturn = false;
         Iterator<Map.Entry<ICannerBottleRecipeManager.Input, RecipeOutput>> tIterator = aRecipeList.entrySet()
             .iterator();
-        aOutput = GTOreDictUnificator.get(aOutput);
         while (tIterator.hasNext()) {
             Map.Entry<ICannerBottleRecipeManager.Input, RecipeOutput> tEntry = tIterator.next();
             if (aInput == null || tEntry.getKey()
                 .matches(aContainer, aInput)) {
                 List<ItemStack> tList = tEntry.getValue().items;
-                if (tList != null) for (ItemStack tOutput : tList)
-                    if (aOutput == null || areStacksEqual(GTOreDictUnificator.get(tOutput), aOutput)) {
+                if (tList != null)
+                    for (ItemStack tOutput : tList) if (aOutput == null || areStacksEqual(tOutput, aOutput)) {
                         tIterator.remove();
                         rReturn = true;
                         break;
@@ -1431,14 +1418,13 @@ public class GTUtility {
         boolean rReturn = false;
         Iterator<Map.Entry<IRecipeInput, RecipeOutput>> tIterator = aRecipeList.entrySet()
             .iterator();
-        aOutput = GTOreDictUnificator.get(aOutput);
         while (tIterator.hasNext()) {
             Map.Entry<IRecipeInput, RecipeOutput> tEntry = tIterator.next();
             if (aInput == null || tEntry.getKey()
                 .matches(aInput)) {
                 List<ItemStack> tList = tEntry.getValue().items;
-                if (tList != null) for (ItemStack tOutput : tList)
-                    if (aOutput == null || areStacksEqual(GTOreDictUnificator.get(tOutput), aOutput)) {
+                if (tList != null)
+                    for (ItemStack tOutput : tList) if (aOutput == null || areStacksEqual(tOutput, aOutput)) {
                         tIterator.remove();
                         rReturn = true;
                         break;
@@ -1453,11 +1439,9 @@ public class GTUtility {
         if (aRecipeList == null || aRecipeList.isEmpty()) return;
         toRemove.entrySet()
             .removeIf(aEntry -> (isStackInvalid(aEntry.getKey()) && isStackInvalid(aEntry.getValue())));
-        final Map<ItemStack, ItemStack> finalToRemove = Maps.transformValues(toRemove, GTOreDictUnificator::get_nocopy);
-
         aRecipeList.entrySet()
             .removeIf(
-                tEntry -> finalToRemove.entrySet()
+                tEntry -> toRemove.entrySet()
                     .stream()
                     .anyMatch(aEntry -> {
                         final ItemStack aInput = aEntry.getKey(), aOutput = aEntry.getValue();
@@ -1468,9 +1452,7 @@ public class GTUtility {
                             .matches(aInput)) return false;
 
                         return tList.stream()
-                            .anyMatch(
-                                tOutput -> (aOutput == null
-                                    || areStacksEqual(GTOreDictUnificator.get(tOutput), aOutput)));
+                            .anyMatch(tOutput -> (aOutput == null || areStacksEqual(tOutput, aOutput)));
                     }));
     }
 
@@ -1484,7 +1466,8 @@ public class GTUtility {
                 return false;
             }
         }
-        ItemStack[] tStack = GTOreDictUnificator.getStackArray(true, aOutput);
+        ItemStack[] tStack = new ItemStack[aOutput.length];
+        for (int i = 0; i < aOutput.length; i++) tStack[i] = copy(aOutput[i]);
         if (tStack.length > 0 && areStacksEqual(aInput, tStack[0])) return false;
         if (tOreName != null) {
             if (tOreName.toString()
@@ -2259,16 +2242,8 @@ public class GTUtility {
     public static ItemStack loadItem(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
         ItemStack tRawStack = ItemStack.loadItemStackFromNBT(aNBT);
-        int tRealStackSize = 0;
-        if (tRawStack != null && aNBT.hasKey("Count", NBT.TAG_INT)) {
-            tRealStackSize = aNBT.getInteger("Count");
-            tRawStack.stackSize = tRealStackSize;
-        } else if (tRawStack != null) {
-            tRealStackSize = tRawStack.stackSize;
-        }
-        ItemStack tRet = GTOreDictUnificator.get(true, tRawStack);
-        if (tRet != null) tRet.stackSize = tRealStackSize;
-        return tRet;
+        if (tRawStack != null && aNBT.hasKey("Count", NBT.TAG_INT)) tRawStack.stackSize = aNBT.getInteger("Count");
+        return tRawStack;
     }
 
     public static void saveItem(NBTTagCompound aParentTag, String aTagName, ItemStack aStack) {

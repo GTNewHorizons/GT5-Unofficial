@@ -37,7 +37,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTELinkedInputBusGui;
@@ -133,8 +132,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     @Override
     protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
         for (int i = 0; i < SIZE_INVENTORY; i++)
-            if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(aStack), mRealInventory.stacks[i]))
-                return i == aIndex - 1;
+            if (GTUtility.areStacksEqual(aStack, mRealInventory.stacks[i])) return i == aIndex - 1;
         return mRealInventory.stacks[aIndex - 1] == null;
     }
 

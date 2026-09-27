@@ -1,7 +1,6 @@
 package tectech.recipe;
 
 import static com.google.common.math.IntMath.pow;
-import static gregtech.api.GregTechAPI.getUnificatedOreDictStack;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTUtility.getPlasmaFuelValueInEUPerLiterFromFluid;
@@ -610,8 +609,7 @@ public class EyeOfHarmonyRecipe {
         for (Pair<Object, Long> pair : planetList) {
             final Object mat = pair.getLeft();
             final ItemStack dust;
-            if (mat instanceof Material ml)
-                dust = getUnificatedOreDictStack(MaterialParts.stack(OrePrefixes.dust, ml, 1L));
+            if (mat instanceof Material ml) dust = MaterialParts.stack(OrePrefixes.dust, ml, 1L);
             else dust = null;
             if (dust != null) {
                 dustList.merge(dust, pair.getRight(), Long::sum);

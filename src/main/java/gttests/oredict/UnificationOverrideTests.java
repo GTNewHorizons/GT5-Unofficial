@@ -193,10 +193,7 @@ public class UnificationOverrideTests {
         List<String> converted = new ArrayList<>();
         for (String oreName : new String[] { "nuggetDiamond", "nuggetEmerald" }) {
             for (ItemStack ore : OreDictionary.getOres(oreName)) {
-                ItemStack unified = GTOreDictUnificator.get(true, ore);
-                if (unified.getItem() != ore.getItem() || unified.getItemDamage() != ore.getItemDamage()) {
-                    converted.add(describe(ore) + " -> " + describe(unified));
-                }
+                if (GTOreDictUnificator.isUnifiedCopy(ore)) converted.add(describe(ore));
             }
         }
         helper.assertTrue(converted.isEmpty(), "Parts with no MaterialLib pair were unified: " + converted);

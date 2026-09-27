@@ -184,10 +184,6 @@ public class GTRecipeBuilder {
         }
     }
 
-    private static ItemStack[] fixItemArray(ItemStack[] inputs, boolean aUnsafe) {
-        return GTOreDictUnificator.setStackArray(true, aUnsafe, ArrayExt.removeTrailingNulls(inputs));
-    }
-
     public static GTRecipeBuilder builder() {
         return new GTRecipeBuilder();
     }
@@ -313,7 +309,7 @@ public class GTRecipeBuilder {
     }
 
     /**
-     * Non-OreDicted item inputs. Assumes input is unified.
+     * Non-OreDicted item inputs, stored as given.
      */
     public GTRecipeBuilder itemInputsUnified(ItemStack... inputs) {
         if (skip) return this;
@@ -338,13 +334,13 @@ public class GTRecipeBuilder {
     }
 
     /**
-     * Non-OreDicted item inputs. Assumes input is not unified.
+     * Non-OreDicted item inputs, stored as copies.
      */
     public GTRecipeBuilder itemInputs(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
 
-        ItemStack[] itemInputs = fixItemArray(inputs, false);
+        ItemStack[] itemInputs = GTUtility.copyItemArray(ArrayExt.removeTrailingNulls(inputs));
         inputsBasic = applyPendingCircuit(itemInputs);
 
         inputsOreDict = null;
@@ -363,13 +359,13 @@ public class GTRecipeBuilder {
     }
 
     /**
-     * Non-OreDicted item inputs, allowing stack sizes greater than 64. Assumes input is not unified
+     * Non-OreDicted item inputs, allowing stack sizes greater than 64.
      */
     public GTRecipeBuilder itemInputsUnsafe(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
 
-        ItemStack[] itemInputs = fixItemArray(inputs, true);
+        ItemStack[] itemInputs = GTUtility.copyItemArray(ArrayExt.removeTrailingNulls(inputs));
         inputsBasic = applyPendingCircuit(itemInputs);
 
         inputsOreDict = null;

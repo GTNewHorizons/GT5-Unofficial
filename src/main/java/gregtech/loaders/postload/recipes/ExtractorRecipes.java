@@ -16,7 +16,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class ExtractorRecipes implements Runnable {
 
@@ -202,7 +201,6 @@ public class ExtractorRecipes implements Runnable {
     }
 
     public void addExtractionRecipe(ItemStack input, ItemStack output) {
-        output = GTOreDictUnificator.get(true, output);
         GTValues.RA.stdBuilder()
             .itemInputs(input)
             .itemOutputs(output)

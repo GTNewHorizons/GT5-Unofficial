@@ -293,7 +293,7 @@ public class BWUtil {
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
-        aResult = GTOreDictUnificator.get(true, aResult);
+        aResult = GTUtility.copyOrNull(aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
         if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
         if (aRecipe == null || aRecipe.length == 0) return null;
@@ -507,7 +507,7 @@ public class BWUtil {
                     tRecipe.getClass()
                         .getName()))
                     continue;
-                if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
+                if (GTUtility.areStacksEqual(tRecipe.getRecipeOutput(), aResult, true)) {
                     tList.remove(i);
                     i--;
                     tList_sS = tList.size();

@@ -243,7 +243,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     public void loadCraftingRecipes(ItemStack aResult) {
         ArrayList<ItemStack> tResults = new ArrayList<>();
         tResults.add(aResult);
-        tResults.add(GTOreDictUnificator.get(true, aResult));
 
         ItemData tPrefixMaterial = GTOreDictUnificator.getAssociation(aResult);
         if (tPrefixMaterial != null && tPrefixMaterial.hasValidPrefixMaterialData()
@@ -328,7 +327,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         ItemData tPrefixMaterial = GTOreDictUnificator.getAssociation(aInput);
         ArrayList<ItemStack> tInputs = new ArrayList<>();
         tInputs.add(aInput);
-        tInputs.add(GTOreDictUnificator.get(false, aInput));
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                 tInputs.add(MaterialParts.stack(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));

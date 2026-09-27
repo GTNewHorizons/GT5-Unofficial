@@ -100,7 +100,7 @@ public enum GGItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(aStack)) {
             return false;
         }
-        return GTUtility.areUnificationsEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
+        return GTUtility.areStacksEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
     }
 
     @Override
