@@ -638,8 +638,9 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) { // implements Hatch+1 OC
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(
-                    (GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)) + 1);
+                int overclocks = (mode == 2.0) ? Integer.MAX_VALUE
+                    : GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) + 1;
+                return super.createOverclockCalculator(recipe).setMaxOverclocks(overclocks);
             }
         };
     }
