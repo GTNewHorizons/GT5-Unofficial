@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -17,12 +18,14 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -62,12 +65,16 @@ import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> implements ISurvivalConstructable {
 
     protected int mFuelRemaining = 0;
 
     private int mCasing;
     private static IStructureDefinition<MTENuclearReactor> STRUCTURE_DEFINITION = null;
+
+    private static final int U233_CHANCE_TICKS = 300;
+    private static final int WARMUP_SECONDS = 250;
 
     public MTENuclearReactor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -102,17 +109,20 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         return false;
     }
 
+    private int getWarmupSeconds() {
+        return getMaxEfficiency(null) / 2 / 20;
+    }
+
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Liquid Fluoride Thorium Reactor")
-            .addInfo("Produces energy and new elements from Radioactive Beta Decay!")
-            .addInfo("Input LFTB and a molten salt as fuel, and match the four 4A dynamo hatches:")
-            .addInfo("LFTR Fuel 1 (4 EV Hatches), LFTR Fuel 2 (4 IV Hatches), LFTR Fuel 3 (4 LuV Hatches)")
-            .addInfo("If using better hatches for a worse fuel, only 1 hatch outputs EU")
-            .addInfo("Outputs U-233 every 10 seconds, on average, while the reactor is running")
-            .addInfo("Check NEI to see the other 3 outputs - they differ between fuels")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "nuclear-reactor"),
+                ImmutableMap.<String, Object>builder()
+                    .put("warmup", formatNumber(WARMUP_SECONDS))
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 4, 7, true)
             .addController("Front bottom center")
@@ -128,6 +138,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureFooter("One ME output hatch can replace the four regular output hatches")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -508,7 +519,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         // See if we're warmed up.
         if (this.mEfficiency == this.getMaxEfficiency(null)) {
             // Try output some Uranium-233
-            if (MathUtils.randInt(1, 300) == 1) {
+            if (MathUtils.randInt(1, U233_CHANCE_TICKS) == 1) {
                 this.addOutputPartial(
                     MaterialsElements.getInstance().URANIUM233.getFluidStack(MathUtils.randInt(1, 10)));
             }
