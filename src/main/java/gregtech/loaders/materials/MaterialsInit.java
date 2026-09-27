@@ -8011,7 +8011,7 @@ public class MaterialsInit {
         Materials.NitricOxide = loadNitricOxide();
         Materials.Phenol = loadPhenol();
         Materials.PhosphoricAcid = loadPhosphoricAcid();
-        Materials.PhosphorousPentoxide = loadPhosphourusPentoxide();
+        Materials.PhosphorousPentoxide = loadPhosphorousPentoxide();
         Materials.PolyphenyleneSulfide = loadPolyphenyleneSulfide();
         Materials.Polystyrene = loadPolystyrene();
         Materials.PolyvinylAcetate = loadPolyvinylAcetate();

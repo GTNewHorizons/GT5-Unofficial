@@ -5273,7 +5273,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Phosphorus.getDust(4))
             .circuit(1)
-            .itemOutputs(Materials.PhosphorusPentoxide.getDust(14))
+            .itemOutputs(Materials.PhosphorousPentoxide.getDust(14))
             .fluidInputs(Materials.Oxygen.getGas(10_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
