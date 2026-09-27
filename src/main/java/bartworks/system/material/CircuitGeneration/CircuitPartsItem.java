@@ -47,7 +47,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTOreDictUnificator;
 
 /**
  * This class is used for all items to circuit generation. Such as: Circuit Imprints, Sliced Circuits and the wraps.
@@ -65,8 +64,6 @@ public class CircuitPartsItem extends Item {
     public static void init() {
         INSTANCE = new CircuitPartsItem();
 
-        GTOreDictUnificator.addToBlacklist(INSTANCE.getStack(0));
-        GTOreDictUnificator.addToBlacklist(INSTANCE.getStack(1));
         ItemList.RawImprintBoard.set(INSTANCE.getStack(2));
         ItemList.ImprintBoard.set(INSTANCE.getStack(3));
 

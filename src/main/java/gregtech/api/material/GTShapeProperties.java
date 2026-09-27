@@ -54,8 +54,6 @@ public class GTShapeProperties {
     public static final Property<Boolean> CONTAINER = Property.of("gregtech", "container", false);
     public static final Property<Boolean> RECYCLABLE = Property.of("gregtech", "recyclable", false);
     public static final Property<Boolean> ENCHANTABLE = Property.of("gregtech", "enchantable", false);
-    public static final Property<Boolean> SKIP_ACTIVE_UNIFICATION = Property
-        .of("gregtech", "skipActiveUnification", false);
 
     private GTShapeProperties() {}
 }

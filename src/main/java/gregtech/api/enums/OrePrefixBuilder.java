@@ -14,7 +14,6 @@ public class OrePrefixBuilder {
     private boolean isMaterialBased = false;
     private boolean isSelfReferencing = false;
     private boolean isContainer = false;
-    private boolean skipActiveUnification = false;
     private boolean isRecyclable = false;
     private boolean isEnchantable = false;
     private Set<GTMaterialGenerationFlag> generationFlags = Set.of();
@@ -36,7 +35,6 @@ public class OrePrefixBuilder {
             isMaterialBased,
             isSelfReferencing,
             isContainer,
-            skipActiveUnification,
             isRecyclable,
             isEnchantable,
             generationFlags,
@@ -81,11 +79,6 @@ public class OrePrefixBuilder {
     /** Marks this prefix as a container (e.g., cells, buckets). */
     public OrePrefixBuilder container() {
         this.isContainer = true;
-        return this;
-    }
-
-    public OrePrefixBuilder skipActiveUnification() {
-        this.skipActiveUnification = true;
         return this;
     }
 

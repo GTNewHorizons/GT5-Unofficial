@@ -523,7 +523,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
@@ -3946,7 +3945,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         removeRecipes();
         setBurnValues();
-        oredictBlacklistEntries();
         registerCovers();
         registerBehaviors();
         setAllFluidContainerStats();
@@ -4179,10 +4177,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         setFluidContainerStats(32000 + Electromagnet_Neodymium.ID, 0L, 1L);
         setFluidContainerStats(32000 + Electromagnet_Samarium.ID, 0L, 1L);
         setFluidContainerStats(32000 + Electromagnet_Tengam.ID, 0L, 1L);
-    }
-
-    private void oredictBlacklistEntries() {
-        GTOreDictUnificator.addToBlacklist(new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials.Wood)));
     }
 
     private void registerCovers() {

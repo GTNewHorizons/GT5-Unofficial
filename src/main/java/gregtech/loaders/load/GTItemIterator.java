@@ -14,7 +14,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -206,9 +205,6 @@ public class GTItemIterator implements Runnable {
                             .eut(1)
                             .addTo(cannerRecipes);
                     }
-                }
-                if ((tItem instanceof IFluidContainerItem)) {
-                    GTOreDictUnificator.addToBlacklist(new ItemStack(tItem, 1, WILDCARD));
                 }
 
                 switch (tName) {

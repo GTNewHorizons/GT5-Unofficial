@@ -260,7 +260,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.FABRICO, 1L)));
         Shapes.gearGt.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(GEAR))
@@ -345,7 +344,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeLarge // from prefix pipeLarge
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
@@ -353,7 +351,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeMedium // from prefix pipeMedium
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3)
@@ -361,7 +358,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeRestrictiveHuge // from prefix pipeRestrictiveHuge
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
@@ -369,7 +365,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 5))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeRestrictiveLarge // from prefix pipeRestrictiveLarge
@@ -378,7 +373,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 4))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeRestrictiveMedium // from prefix pipeRestrictiveMedium
@@ -387,7 +381,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 3))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeRestrictiveSmall // from prefix pipeRestrictiveSmall
@@ -396,7 +389,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeRestrictiveTiny // from prefix pipeRestrictiveTiny
@@ -405,7 +397,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeSmall // from prefix pipeSmall
@@ -414,7 +405,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeTiny // from prefix pipeTiny
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
@@ -422,7 +412,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         Shapes.lens.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3 / 4)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(GEM))
@@ -465,49 +454,42 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeLarge.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Large %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeMedium.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Medium %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeNonuple.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Nonuple %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeQuadruple.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Quadruple %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeSmall.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeTiny.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Tiny %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         Shapes.plate.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL, GEM))

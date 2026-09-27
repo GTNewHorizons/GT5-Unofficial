@@ -266,10 +266,6 @@ public final class OreDictRegistrationHandler {
             return;
         }
 
-        if (prefix.skipActiveUnification()) {
-            GTOreDictUnificator.addToBlacklist(stack);
-        }
-
         String materialName = oreName.substring(
             prefix.getName()
                 .length());
@@ -293,8 +289,7 @@ public final class OreDictRegistrationHandler {
             prefix.add(GTUtility.copyAmount(1, stack));
         }
 
-        if (prefix.isMaterialBased()
-            && processMaterialRegistration(oreName, stack, prefix, material, materialName, oreOriginPath)) {
+        if (prefix.isMaterialBased() && processMaterialRegistration(oreName, stack, prefix, material, materialName)) {
             return;
         }
 
@@ -342,11 +337,6 @@ public final class OreDictRegistrationHandler {
                 }
             }
 
-            case "plate" -> {
-                if (material == Materials.Wood) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                }
-            }
             case "plank" -> {
                 if (materialName.equals("Wood")) {
                     MaterialData.add(stack, new ItemData(Materials.Wood, GTValues.M));
@@ -358,11 +348,6 @@ public final class OreDictRegistrationHandler {
                 }
             }
 
-            case "cell" -> {
-                if (material == Materials.Empty) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                }
-            }
             case "stick" -> {
                 if (!GTRecipeRegistrator.sRodMaterialList.contains(material)) {
                     GTRecipeRegistrator.sRodMaterialList.add(material);
@@ -376,22 +361,10 @@ public final class OreDictRegistrationHandler {
     /// Returns true when the registration stops here: an unknown material name (unless it is a reconstructed
     /// MaterialLib material) or a material that never unifies.
     private static boolean processMaterialRegistration(String oreName, ItemStack stack, OrePrefixes prefix,
-        @Nullable Material material, String materialName, String oreOriginPath) {
+        @Nullable Material material, String materialName) {
 
         if (material == null) {
-            if (reconstructedMaterial(materialName) != null) {
-                return false;
-            }
-            for (Dyes dye : Dyes.VALUES) {
-                String dyeName = dye.name()
-                    .substring("dye".length());
-                if (oreName.endsWith(dyeName)) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                    GTLoggers.GT_ORE_DICT_LOGGER.info("{} is a colored ore and is being blacklisted", oreOriginPath);
-                    return true;
-                }
-            }
-            return true;
+            return reconstructedMaterial(materialName) == null;
         }
 
         for (Material reRegisteredMaterial : MaterialFacades.oreReRegistrationsOf(material)) {

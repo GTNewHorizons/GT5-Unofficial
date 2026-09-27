@@ -883,7 +883,6 @@ public class OrePrefixes {
         .withSuffix(" Bullet")
         .unifiable()
         .materialBased()
-        .skipActiveUnification()
         .recyclable()
         .enchantable()
         .generationFlags(TOOL_HEAD, EMPTY)
@@ -896,7 +895,6 @@ public class OrePrefixes {
         .withSuffix(" Bullet")
         .unifiable()
         .materialBased()
-        .skipActiveUnification()
         .recyclable()
         .enchantable()
         .generationFlags(TOOL_HEAD, EMPTY)
@@ -909,7 +907,6 @@ public class OrePrefixes {
         .withSuffix(" Bullet")
         .unifiable()
         .materialBased()
-        .skipActiveUnification()
         .recyclable()
         .enchantable()
         .generationFlags(TOOL_HEAD, EMPTY)
@@ -1068,7 +1065,6 @@ public class OrePrefixes {
 
     public static final OrePrefixes glass = new OrePrefixBuilder("glass").withDefaultLocalName("Glasses")
         .selfReferencing()
-        .skipActiveUnification()
         .build();
 
     public static final OrePrefixes paneGlass = new OrePrefixBuilder("paneGlass").withDefaultLocalName("Glass Panes")
@@ -1207,7 +1203,6 @@ public class OrePrefixes {
     public static final OrePrefixes stone = new OrePrefixBuilder("stone").withDefaultLocalName("Stones")
         .materialBased()
         .selfReferencing()
-        .skipActiveUnification()
         .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
@@ -1221,7 +1216,6 @@ public class OrePrefixes {
     public static final OrePrefixes rock = new OrePrefixBuilder("rock").withDefaultLocalName("Rocks")
         .materialBased()
         .selfReferencing()
-        .skipActiveUnification()
         .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
@@ -1435,7 +1429,6 @@ public class OrePrefixes {
     public static final OrePrefixes computer = new OrePrefixBuilder("computer").withDefaultLocalName("Computers")
         .unifiable()
         .materialBased()
-        .skipActiveUnification()
         .build();
 
     // random known prefixes without special abilities.
@@ -1516,7 +1509,6 @@ public class OrePrefixes {
         .build();
 
     public static final OrePrefixes wire = new OrePrefixBuilder("wire").withDefaultLocalName("Wires")
-        .skipActiveUnification()
         .build();
 
     public static final OrePrefixes seed = new OrePrefixBuilder("seed").withDefaultLocalName("Seeds")
@@ -1826,7 +1818,6 @@ public class OrePrefixes {
     private boolean isMaterialBased;
     private boolean isSelfReferencing;
     private boolean isContainer;
-    private boolean skipActiveUnification;
     private boolean isRecyclable;
     private boolean isEnchantable;
     private Set<GTMaterialGenerationFlag> generationFlags;
@@ -1843,7 +1834,6 @@ public class OrePrefixes {
         boolean isMaterialBased,
         boolean isSelfReferencing,
         boolean isContainer,
-        boolean skipActiveUnification,
         boolean isRecyclable,
         boolean isEnchantable,
         Set<GTMaterialGenerationFlag> generationFlags,
@@ -1859,7 +1849,6 @@ public class OrePrefixes {
         this.isMaterialBased = isMaterialBased;
         this.isSelfReferencing = isSelfReferencing;
         this.isContainer = isContainer;
-        this.skipActiveUnification = skipActiveUnification;
         this.isRecyclable = isRecyclable;
         this.isEnchantable = isEnchantable;
         this.generationFlags = generationFlags;
@@ -1896,7 +1885,6 @@ public class OrePrefixes {
             prefix.isContainer = shape.getProperty(GTShapeProperties.CONTAINER);
             prefix.isRecyclable = shape.getProperty(GTShapeProperties.RECYCLABLE);
             prefix.isEnchantable = shape.getProperty(GTShapeProperties.ENCHANTABLE);
-            prefix.skipActiveUnification = shape.getProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION);
             prefix.mHeatDamage = shape.getProperty(GTShapeProperties.HEAT_DAMAGE);
             prefix.mSecondaryMaterial = shape.getProperty(GTShapeProperties.SECONDARY_MATERIAL);
             List<TC_AspectStack> aspects = shape.getProperty(GTShapeProperties.ASPECTS);
@@ -1945,10 +1933,6 @@ public class OrePrefixes {
 
     public @NotNull String getMaterialPostfix() {
         return materialPostfix;
-    }
-
-    public boolean skipActiveUnification() {
-        return skipActiveUnification;
     }
 
     public boolean isUnifiable() {

@@ -2183,12 +2183,6 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             OrePrefixes.componentCircuit,
             CircuitComponents.INDUCTOR.materialName(),
             ItemList.Circuit_Parts_InductorSMD.get(1L));
-
-        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_ResistorSMD.get(1L));
-        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_DiodeSMD.get(1L));
-        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_TransistorSMD.get(1L));
-        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_CapacitorSMD.get(1L));
-        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_InductorSMD.get(1L));
     }
 
     private void initOrePrefixes() {
