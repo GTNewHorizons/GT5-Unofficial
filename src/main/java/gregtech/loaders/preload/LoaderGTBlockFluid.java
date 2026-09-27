@@ -9,7 +9,6 @@ import static gregtech.api.enums.FluidState.SLURRY;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
-import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -2559,23 +2558,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
-
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.ingot,
-            Materials.FierySteel,
-            GTModHandler.getModItem(TwilightForest.ID, "item.fieryIngot", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.ingot,
-            Materials.Knightmetal,
-            GTModHandler.getModItem(TwilightForest.ID, "item.knightMetal", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.ingot,
-            Materials.Steeleaf,
-            GTModHandler.getModItem(TwilightForest.ID, "item.steeleafIngot", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.ingot,
-            Materials.IronWood,
-            GTModHandler.getModItem(TwilightForest.ID, "item.ironwoodIngot", 1L, 0));
 
         // Special secondary oredict for Sodium Hydroxide
         GTOreDictUnificator

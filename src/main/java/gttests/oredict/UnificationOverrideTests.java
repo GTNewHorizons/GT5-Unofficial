@@ -35,8 +35,7 @@ import gregtech.api.util.GTOreDictUnificator;
 public class UnificationOverrideTests {
 
     private static final String[] GREGTECH_PREFERRED = { "dustAlumina", "blockLead", "blockMagnesium", "blockMithril",
-        "blockPlatinum", "blockTungsten", "ingotBloodInfusedIron", "ingotIchorium", "nuggetIchorium", "stickDesh",
-        "cellCreosote" };
+        "blockPlatinum", "blockTungsten", "ingotBloodInfusedIron", "stickDesh", "cellCreosote" };
 
     @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
     public static void gregTechPreferredNamesUnifyToGregTechItems(GameTestHelper helper) {
@@ -142,6 +141,22 @@ public class UnificationOverrideTests {
             "GalacticraftCore",
             "item.meteoricIronRaw",
             0);
+        expectForeign(
+            mismatches,
+            OrePrefixes.ingot,
+            Shapes.ingot,
+            Materials.IronWood,
+            "TwilightForest",
+            "item.ironwoodIngot",
+            0);
+        expectForeign(
+            mismatches,
+            OrePrefixes.ingot,
+            Shapes.ingot,
+            Materials.Ichorium,
+            "ThaumicTinkerer",
+            "kamiResource",
+            2);
         helper.assertTrue(mismatches.isEmpty(), "Overridden pairs disagree: " + mismatches);
         helper.succeed();
     }

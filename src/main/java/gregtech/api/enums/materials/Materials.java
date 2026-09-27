@@ -6730,6 +6730,7 @@ public class Materials {
             .build();
         Materials.IronWood = MaterialLibAPI.newMaterial("gregtech", "IronWood", TextureSet.of("gregtech", "WOOD"))
             .setTint(0xFF968C6E)
+            .addShapeOverride(Shapes.ingot, Mods.TwilightForest.ID, "item.ironwoodIngot", 0)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.toolParts)
@@ -6763,6 +6764,7 @@ public class Materials {
             .build();
         Materials.Steeleaf = MaterialLibAPI.newMaterial("gregtech", "Steeleaf", TextureSet.of("gregtech", "LEAF"))
             .setTint(0xFF327F32)
+            .addShapeOverride(Shapes.ingot, Mods.TwilightForest.ID, "item.steeleafIngot", 0)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.toolParts)
@@ -6961,6 +6963,7 @@ public class Materials {
         // spotless:off
         Materials.FierySteel = MaterialLibAPI.newMaterial("gregtech", "FierySteel", TextureSet.of("gregtech", "FIERY"))
             .setTint(0xFF400000)
+            .addShapeOverride(Shapes.ingot, Mods.TwilightForest.ID, "item.fieryIngot", 0)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.toolParts)
@@ -7396,6 +7399,7 @@ public class Materials {
             .build();
         Materials.Knightmetal = MaterialLibAPI.newMaterial("gregtech", "Knightmetal", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFD2F0C8)
+            .addShapeOverride(Shapes.ingot, Mods.TwilightForest.ID, "item.knightMetal", 0)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.toolParts)
@@ -17110,6 +17114,8 @@ public class Materials {
             .build();
         Materials.Ichorium = MaterialLibAPI.newMaterial("gregtech", "Ichorium", TextureSet.of("gregtech", "CUSTOM/ichorium"))
             .setTint(0xFFD37806)
+            .addShapeOverride(Shapes.ingot, Mods.ThaumicTinkerer.ID, "kamiResource", 2)
+            .addShapeOverride(Shapes.nugget, Mods.ThaumicTinkerer.ID, "kamiResource", 3)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.ores)
