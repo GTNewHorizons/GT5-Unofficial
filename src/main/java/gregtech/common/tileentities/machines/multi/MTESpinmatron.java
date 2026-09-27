@@ -436,13 +436,13 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                     + EnumChatFormatting.GREEN
                     + "32"
                     + EnumChatFormatting.GRAY
-                    + ", Requires T3+ Structure and "
+                    + ", requires "
                     + EnumChatFormatting.DARK_PURPLE
                     + "Biocatalyzed Propulsion Fluid")
             .addInfo("Multiplies EU Cost by " + EnumChatFormatting.RED + "16")
+            .addInfo("Maximum Overclocks become uncapped")
             .addInfo(
                 "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GREEN + " Heavy Mode")
-
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
