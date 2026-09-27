@@ -195,7 +195,7 @@ public class GTOreDictUnificator {
 
     /// The item every stack registered under `name` unifies to: the pair's MaterialLib stack, or the stack GregTech
     /// set for the name. Null when neither exists, so parts of shapes GregTech does not generate are never unified.
-    private static ItemStack unificationTarget(String name) {
+    static ItemStack unificationTarget(String name) {
         ItemStack served = materialLibTarget(name);
         if (served != null) return served;
         ItemStack stack = sName2StackMap.get(name);
@@ -378,6 +378,14 @@ public class GTOreDictUnificator {
         return newStack;
     }
 
+    /// Whether `stack` is another mod's copy of a part that unifies onto a different item. Recipes generated for such
+    /// a copy would only repeat those of the item it unifies onto.
+    public static boolean isUnifiedCopy(ItemStack stack) {
+        ItemStack target = get_nocopy(true, stack);
+        return target != null
+            && (target.getItem() != stack.getItem() || target.getItemDamage() != stack.getItemDamage());
+    }
+
     /**
      * Compares the first argument against an already-unificated second argument as if aUseBlackList was both true and
      * false.
@@ -531,13 +539,14 @@ public class GTOreDictUnificator {
                 ItemStack entryStack = entry.getKey();
                 ItemData entryData = entry.getValue();
 
-                if (shouldRegisterMaterialRecycling(entryData)) {
+                if (shouldRegisterMaterialRecycling(entryData) && !isUnifiedCopy(entryStack)) {
                     GTRecipeRegistrator.registerMaterialRecycling(entryStack, entryData);
                 }
             }
-        } else if (shouldRegisterMaterialRecycling(data) && !shouldRegisterMaterialRecycling(prevData)) {
-            GTRecipeRegistrator.registerMaterialRecycling(stack, data);
-        }
+        } else if (shouldRegisterMaterialRecycling(data) && !shouldRegisterMaterialRecycling(prevData)
+            && !isUnifiedCopy(stack)) {
+                GTRecipeRegistrator.registerMaterialRecycling(stack, data);
+            }
     }
 
     private static boolean shouldRegisterMaterialRecycling(ItemData data) {

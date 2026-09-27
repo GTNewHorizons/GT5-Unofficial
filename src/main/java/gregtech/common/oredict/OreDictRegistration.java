@@ -44,7 +44,7 @@ final class OreDictRegistration {
         if (stack.getItem() == null || prefix.isIgnored(material)
             || isMaterialLibItem(stack)
             || isShapeOverride()
-            || isUnifiedCopy()) {
+            || GTOreDictUnificator.isUnifiedCopy(stack)) {
             return;
         }
 
@@ -61,14 +61,6 @@ final class OreDictRegistration {
     private boolean isShapeOverride() {
         if (!MaterialParts.isCutOver(prefix, material) || MaterialParts.isMinted(prefix, material)) return false;
         return GTUtility.areStacksEqual(MaterialParts.stack(prefix, material, 1), stack);
-    }
-
-    /// Whether `stack` is another mod's copy of a part that GregTech unifies onto a different item. Its recipes would
-    /// only repeat those of that item, or carry an item no player can obtain.
-    private boolean isUnifiedCopy() {
-        ItemStack target = GTOreDictUnificator.get_nocopy(true, stack);
-        return target != null
-            && (target.getItem() != stack.getItem() || target.getItemDamage() != stack.getItemDamage());
     }
 
     /// Whether `stack`'s item belongs to MaterialLib. Such stacks are processed by
