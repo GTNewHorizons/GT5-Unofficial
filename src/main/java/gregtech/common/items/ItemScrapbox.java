@@ -13,6 +13,8 @@ import gregtech.api.objects.XSTR;
 
 public class ItemScrapbox extends GTGenericItem {
 
+    private static float weightTotal;
+
     public ItemScrapbox(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
     }
@@ -35,17 +37,13 @@ public class ItemScrapbox extends GTGenericItem {
 
         private static final List<ScrapDrop> possibleDrops = new ArrayList<>();
 
-        public static void addDrop(float chance, ItemStack drop) {
-            possibleDrops.add(new ScrapDrop(chance, drop));
+        public static void addDrop(float weight, ItemStack drop) {
+            possibleDrops.add(new ScrapDrop(weight, drop));
+            weightTotal += weight;
         }
 
         public static ItemStack getDrop() {
-            float total = 0f;
-            for (ScrapDrop drop : possibleDrops) {
-                total += drop.weight();
-            }
-
-            float roll = XSTR.XSTR_INSTANCE.nextFloat() * total;
+            float roll = XSTR.XSTR_INSTANCE.nextFloat() * weightTotal;
             float cumulative = 0f;
             for (ScrapDrop drop : possibleDrops) {
                 cumulative += drop.weight();
