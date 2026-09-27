@@ -285,9 +285,9 @@ public class BenderRecipes implements Runnable {
             .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
-        if (GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L) != null) {
+        if (GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 2L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 2L))
                 .circuit(1)
                 .itemOutputs(ItemList.FoodCanEmpty.get(1L))
                 .duration(20 * TICKS)
@@ -295,15 +295,46 @@ public class BenderRecipes implements Runnable {
                 .addTo(benderRecipes);
         }
 
-        if (GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 4L) != null) {
+        if (GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 2L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 4L))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 2L))
                 .circuit(1)
                 .itemOutputs(ItemList.FoodCanEmpty.get(4L))
                 .duration(20 * TICKS)
                 .eut((int) TierEU.RECIPE_HV)
                 .addTo(benderRecipes);
         }
+
+        if (GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.StainlessSteel, 2L) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.StainlessSteel, 2L))
+                .circuit(1)
+                .itemOutputs(ItemList.FoodCanEmpty.get(16L))
+                .duration(20 * TICKS)
+                .eut((int) TierEU.RECIPE_HV)
+                .addTo(benderRecipes);
+        }
+
+        if (GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Titanium, 2L) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Titanium, 2L))
+                .circuit(1)
+                .itemOutputs(ItemList.FoodCanEmpty.get(32L))
+                .duration(20 * TICKS)
+                .eut((int) TierEU.RECIPE_HV)
+                .addTo(benderRecipes);
+        }
+
+        if (GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.TungstenSteel, 1L) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.TungstenSteel, 1L))
+                .circuit(1)
+                .itemOutputs(ItemList.FoodCanEmpty.get(64L))
+                .duration(20 * TICKS)
+                .eut((int) TierEU.RECIPE_HV)
+                .addTo(benderRecipes);
+        }
+
 
         // From ProcessingFood - foodDough (remove furnace smelting)
         for (net.minecraft.item.ItemStack stack : OreDictionary.getOres("foodDough")) {
