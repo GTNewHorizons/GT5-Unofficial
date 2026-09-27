@@ -75,6 +75,10 @@ public class TextureSet {
     public TextureSet(String aSetName) {
         mSetName = aSetName;
         for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.VALUES) {
+            if ("/void".equals(type.suffix)) {
+                mTextures[type.ordinal()] = Textures.GlobalIcons.VOID;
+                continue;
+            }
             switch (type.texture) {
                 case BLOCK:
                     mTextures[type.ordinal()] = Textures.BlockIcons
@@ -116,6 +120,10 @@ public class TextureSet {
         }
 
         for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.VALUES) {
+            if ("/void".equals(type.suffix)) {
+                mTextures[type.ordinal()] = Textures.GlobalIcons.VOID;
+                continue;
+            }
             if (overrides.contains(type)) {
                 // Override this specific icon
                 switch (type.texture) {
