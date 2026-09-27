@@ -317,8 +317,8 @@ public class GTProxy implements IFuelHandler {
      */
     public int tooltipFinisherStyle = 1;
     /**
-     * Enables scrolling up while hovering the ghost circuit of a machine UI to increment the circuit number instead of
-     * decrement
+     * Enables scrolling up while hovering over the ghost circuit of a machine UI to decrement the circuit number
+     * instead of incrementing it.
      */
     public boolean invertCircuitScrollDirection = false;
     /** Whether to show seconds or ticks on NEI */
