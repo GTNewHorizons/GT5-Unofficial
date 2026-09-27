@@ -72,7 +72,6 @@ public enum IDMetaItem01 {
     ItemFilter_Import(271),
     Cover_FluidLimiter(272),
     Scrap(273),
-    Scrapbox(274),
     Shape_Empty(300),
     Shape_Mold_Plate(301),
     Shape_Mold_Casing(302),

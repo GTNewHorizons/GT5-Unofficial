@@ -4802,8 +4802,8 @@ gt.item.firebrick.tooltip=Heat resistant
 ## Scrap
 gt.item.scrap.name=Scrap
 gt.item.scrap.tooltip=A pile of... something
-gt.item.scrapbox.name=Scrapbox
-gt.item.scrapbox.tooltip=Recycled and boxed
+gt.Item_Scrapbox.name=Scrapbox
+gt.Item_Scrapboxtooltip=Recycled and boxed
 
 ## Shape
 gt.item.shape_empty.name=Empty Shape Plate
