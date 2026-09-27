@@ -73,7 +73,7 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     public boolean onMouseScroll(UpOrDown scrollDirection, int amount) {
         if (isSelectorPanelOpen()) return true;
         MouseData mouseData = MouseData
-            .create(GTMod.proxy.invertCircuitScrollDirection ? scrollDirection.modifier : -scrollDirection.modifier);
+            .create(GTMod.proxy.invertCircuitScrollDirection ? -scrollDirection.modifier : scrollDirection.modifier);
         getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_SCROLL, mouseData::writeToPacket);
         return true;
     }
