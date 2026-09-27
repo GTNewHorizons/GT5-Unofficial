@@ -436,7 +436,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                     + EnumChatFormatting.GREEN
                     + "32"
                     + EnumChatFormatting.GRAY
-                    + ", requires "
+                    + " and requires "
                     + EnumChatFormatting.DARK_PURPLE
                     + "Biocatalyzed Propulsion Fluid")
             .addInfo("Multiplies EU Cost by " + EnumChatFormatting.RED + "16")
