@@ -57,10 +57,6 @@ public final class NEIRecipeProperties {
     public final INEISpecialInfoFormatter neiSpecialInfoFormatter;
 
     /**
-     * Whether to show oredict equivalent item outputs.
-     */
-    public final boolean unificateOutput;
-    /**
      * If a custom filter method {@link OverclockDescriber#canHandle} should be used to limit the shown recipes when
      * searching recipes with recipe catalyst. Else, the voltage of the recipe is the only factor to filter recipes.
      */
@@ -94,16 +90,14 @@ public final class NEIRecipeProperties {
 
     NEIRecipeProperties(boolean registerNEI, @Nullable UnaryOperator<HandlerInfo.Builder> handlerInfoCreator,
         Size recipeBackgroundSize, Pos2d recipeBackgroundOffset, INEISpecialInfoFormatter neiSpecialInfoFormatter,
-        boolean unificateOutput, boolean useCustomFilter, boolean renderRealStackSizes,
-        Function<GTRecipe, ItemStack[]> itemInputsGetter, Function<GTRecipe, FluidStack[]> fluidInputsGetter,
-        Function<GTRecipe, ItemStack[]> itemOutputsGetter, Function<GTRecipe, FluidStack[]> fluidOutputsGetter,
-        Comparator<GTRecipe> comparator) {
+        boolean useCustomFilter, boolean renderRealStackSizes, Function<GTRecipe, ItemStack[]> itemInputsGetter,
+        Function<GTRecipe, FluidStack[]> fluidInputsGetter, Function<GTRecipe, ItemStack[]> itemOutputsGetter,
+        Function<GTRecipe, FluidStack[]> fluidOutputsGetter, Comparator<GTRecipe> comparator) {
         this.registerNEI = registerNEI;
         this.handlerInfoCreator = handlerInfoCreator;
         this.recipeBackgroundOffset = recipeBackgroundOffset;
         this.recipeBackgroundSize = recipeBackgroundSize;
         this.neiSpecialInfoFormatter = neiSpecialInfoFormatter;
-        this.unificateOutput = unificateOutput;
         this.useCustomFilter = useCustomFilter;
         this.renderRealStackSizes = renderRealStackSizes;
         this.itemInputsGetter = itemInputsGetter;

@@ -57,6 +57,8 @@ import com.ruling_0.materiallib.api.Material;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.material.MaterialData;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.OreMixBuilder;
@@ -1575,7 +1577,7 @@ public enum OreMixes {
             if (!GTUtility.isStackValid(ore)) {
                 continue;
             }
-            for (ItemStack variant : GTOreDictUnificator.getNonUnifiedStacks(ore)) {
+            for (ItemStack variant : withOreDictAlternatives(ore)) {
                 ItemStack sizedVariant = GTUtility.copyAmount(stackSize, variant);
                 if (!GTUtility.isStackValid(sizedVariant) || containsStack(variants, sizedVariant)) {
                     continue;
@@ -1605,7 +1607,7 @@ public enum OreMixes {
             if (!GTUtility.isStackValid(ore)) {
                 continue;
             }
-            for (ItemStack variant : GTOreDictUnificator.getNonUnifiedStacks(ore)) {
+            for (ItemStack variant : withOreDictAlternatives(ore)) {
                 ItemStack sizedVariant = GTUtility.copyAmount(stackSize, variant);
                 if (!GTUtility.isStackValid(sizedVariant) || containsStack(variants, sizedVariant)) {
                     continue;
@@ -1616,6 +1618,15 @@ public enum OreMixes {
         }
 
         return prefixes.toArray(new OrePrefixes[0]);
+    }
+
+    /// `ore` followed by every item registered under its ore-dictionary name.
+    public static List<ItemStack> withOreDictAlternatives(ItemStack ore) {
+        List<ItemStack> stacks = new ArrayList<>();
+        stacks.add(ore);
+        ItemData association = MaterialData.getAssociation(ore);
+        if (association != null) stacks.addAll(GTOreDictUnificator.getOresImmutable(association.toString()));
+        return stacks;
     }
 
     public static boolean containsStack(List<ItemStack> stacks, ItemStack candidate) {

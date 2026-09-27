@@ -21,14 +21,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.GTShapeStore;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 
@@ -52,8 +50,6 @@ public class GTOreDictUnificator {
     private static volatile Map<String, MaterialLibPair> materialLibPairs;
     private static final Map<String, ItemStack> materialLibTargets = new ConcurrentHashMap<>();
     private static volatile boolean materialLibTargetsLive;
-    private static final Map<ItemStack, List<ItemStack>> sUnificationTable = new Object2ObjectOpenCustomHashMap<>(
-        GTItemStack.ITEMSTACK_HASH_STRATEGY2);
 
     private static final Set<ItemStack> unificationBlacklist = new ObjectOpenCustomHashSet<>(
         GTItemStack.ITEMSTACK_HASH_STRATEGY2);
@@ -215,46 +211,6 @@ public class GTOreDictUnificator {
             return null;
         }
         return target;
-    }
-
-    public static List<ItemStack> getNonUnifiedStacks(Object obj) {
-        if (sUnificationTable.isEmpty() && !MaterialData.stacks()
-            .isEmpty()) {
-            // use something akin to double check lock. this synchronization overhead is causing lag whenever my
-            // 5900x tries to do NEI lookup
-            synchronized (sUnificationTable) {
-                if (sUnificationTable.isEmpty() && !MaterialData.stacks()
-                    .isEmpty()) {
-                    for (ItemStack tGTStack0 : MaterialData.stacks()) {
-                        ItemStack tStack0 = GTItemStack.internalCopyStack(tGTStack0);
-                        ItemStack tStack1 = unifiedTargetOf(tStack0);
-                        if (tStack1 != null) {
-                            List<ItemStack> list = sUnificationTable.computeIfAbsent(tStack1, k -> new ArrayList<>());
-                            // greg's original code tries to dedupe the list using List#contains, which won't work
-                            // on vanilla ItemStack. I removed it since it never worked and can be slow.
-                            list.add(tStack0);
-                        }
-                    }
-                }
-            }
-        }
-        ItemStack[] stacks = GTValues.emptyItemStackArray;
-        if (obj instanceof ItemStack) stacks = new ItemStack[] { (ItemStack) obj };
-        else if (obj instanceof ItemStack[]) stacks = (ItemStack[]) obj;
-        else if (obj instanceof List) stacks = ((List<?>) obj).toArray(new ItemStack[0]);
-        List<ItemStack> rList = new ArrayList<>();
-        for (ItemStack stack : stacks) {
-            if (stack == null) continue;
-            rList.add(stack);
-            List<ItemStack> tList = sUnificationTable.get(stack);
-            if (tList != null) {
-                for (ItemStack tStack : tList) {
-                    ItemStack tStack1 = GTUtility.copyAmountUnsafe(stack.stackSize, tStack);
-                    rList.add(tStack1);
-                }
-            }
-        }
-        return rList;
     }
 
     /// The stack's item data when it names a unification target: a prefix+material association or a

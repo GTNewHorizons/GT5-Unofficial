@@ -614,17 +614,12 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         public FixedPositionedStack(CachedDefaultRecipe recipe, Object object, boolean renderRealStackSizes, int x,
             int y) {
-            this(recipe, object, renderRealStackSizes, x, y, PositionedStack.CHANCE_FULL, true, false);
-        }
-
-        public FixedPositionedStack(CachedDefaultRecipe recipe, Object object, boolean renderRealStackSizes, int x,
-            int y, boolean aUnificate) {
-            this(recipe, object, renderRealStackSizes, x, y, PositionedStack.CHANCE_FULL, aUnificate, false);
+            this(recipe, object, renderRealStackSizes, x, y, PositionedStack.CHANCE_FULL, false);
         }
 
         public FixedPositionedStack(CachedDefaultRecipe recipe, Object object, boolean renderRealStackSize, int x,
-            int y, int aChance, boolean aUnificate, boolean aIsInput) {
-            super(aUnificate ? GTOreDictUnificator.getNonUnifiedStacks(object) : object, x, y, true);
+            int y, int aChance, boolean aIsInput) {
+            super(object, x, y, true);
             this.recipe = recipe;
             this.chance = aChance;
             this.mIsInput = aIsInput;
@@ -782,7 +777,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                     widget.getPos().x + 1,
                                     widget.getPos().y + 1,
                                     aRecipe.getInputChance(i),
-                                    true,
                                     true));
                         }
                     } else if (widget.getMcSlot()
@@ -800,7 +794,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                         widget.getPos().x + 1,
                                         widget.getPos().y + 1,
                                         aRecipe.getOutputChance(i),
-                                        GTNEIDefaultHandler.this.neiProperties.unificateOutput,
                                         false));
                             }
                         } else if (widget.getMcSlot()
@@ -844,7 +837,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                                 widget.getPos().x + 1,
                                                 widget.getPos().y + 1,
                                                 aRecipe.getFluidInputChance(i),
-                                                true,
                                                 true));
                                     }
 
@@ -864,7 +856,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                                                     widget.getPos().x + 1,
                                                     widget.getPos().y + 1,
                                                     aRecipe.getFluidOutputChance(i),
-                                                    true,
                                                     false));
                                         }
                                     }
@@ -882,7 +873,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                             pos.x + 1,
                             pos.y + 1,
                             aRecipe.getInputChance(i),
-                            true,
                             true));
                 }
             }, (i, backgrounds, pos) -> {
@@ -895,7 +885,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                             pos.x + 1,
                             pos.y + 1,
                             aRecipe.getOutputChance(i),
-                            GTNEIDefaultHandler.this.neiProperties.unificateOutput,
                             false));
                 }
             }, (i, backgrounds, pos) -> {}, (i, backgrounds, pos) -> {
@@ -909,7 +898,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                             pos.x + 1,
                             pos.y + 1,
                             aRecipe.getFluidInputChance(i),
-                            true,
                             true));
                 }
             }, (i, backgrounds, pos) -> {
@@ -923,7 +911,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                             pos.x + 1,
                             pos.y + 1,
                             aRecipe.getFluidOutputChance(i),
-                            true,
                             false));
                 }
             },
