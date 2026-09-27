@@ -229,7 +229,8 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
                     }
                     int tDistance = distanceCalculation();
                     if (tTile != null) {
-                        boolean isCrossDimensional = this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId;
+                        boolean isCrossDimensional = this.mTargetD
+                            != getBaseMetaTileEntity().getWorld().provider.dimensionId;
                         if (!isCrossDimensional || isDimensionalTeleportAvailable()) {
                             if (tTile instanceof IEnergyConnected) {
                                 long packetSize = V[mTier];
@@ -246,8 +247,8 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
                                 }
                                 energyUse = packetSize + ((V[mTier] * energyUse) / 100);
                                 if (getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) {
-                                    if (((IEnergyConnected) tTile).injectEnergyUnits(ForgeDirection.UNKNOWN, packetSize, 1)
-                                        > 0) {
+                                    if (((IEnergyConnected) tTile)
+                                        .injectEnergyUnits(ForgeDirection.UNKNOWN, packetSize, 1) > 0) {
                                         getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
                                     }
                                 }
