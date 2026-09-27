@@ -372,6 +372,12 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return aIndex == 0 && side == aBaseMetaTileEntity.getFrontFacing() && isItemValidForSlot(aIndex, aStack);
+    }
+
+    @Override
     public boolean pushOutputInventory() {
         return false;
     }
@@ -569,7 +575,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public boolean acceptsItemLock() {
+    public boolean acceptsConfigCopy() {
         return false;
     }
 

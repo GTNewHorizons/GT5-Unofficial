@@ -339,14 +339,8 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi.steam.tier",
-                "" + EnumChatFormatting.YELLOW + tierMachine));
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi.steam.parallel",
-                "" + EnumChatFormatting.YELLOW + getTrueParallel()));
+        info.add(StatCollector.translateToLocalFormatted("gtpp.infodata.multi.steam.tier", tierMachine));
+        info.add(StatCollector.translateToLocalFormatted("gtpp.infodata.multi.steam.parallel", getTrueParallel()));
         return info.toArray(new String[0]);
     }
 

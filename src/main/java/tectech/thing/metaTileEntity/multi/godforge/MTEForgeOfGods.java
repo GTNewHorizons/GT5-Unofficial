@@ -64,7 +64,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
@@ -80,10 +79,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -93,7 +90,6 @@ import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -307,17 +303,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
             }
         }
-        checkHatchExact(errors, InputBus, 1);
-        checkHatchExact(errors, InputHatch, 1);
-
-        // Check there is 1 me output bus
-        {
-            if (mOutputBusses.size() != 1) {
-                errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, OutputBus, mOutputBusses.size(), 1));
-            } else if (!(mOutputBusses.get(0) instanceof MTEHatchOutputBusME)) {
-                errors.add(StructureErrors.missingHatch(ItemList.Hatch_Output_Bus_ME.get(1)));
-            }
-        }
+        checkOneInputBus(errors);
+        checkOneInputHatch(errors);
+        checkOneOutputBus(errors);
 
         if (!errors.isEmpty()) return;
 
@@ -811,7 +799,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_15th_layer"))
             .addInputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
             .addInputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
-            .addOutputBus("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.output-bus-pos"), 1)
+            .addOutputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
             .addCasing("3949", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)

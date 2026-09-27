@@ -53,6 +53,8 @@ import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.oredict.OreDictRegistrationHandler;
+import gregtech.common.oredict.OreDictUnificationOverrides;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
 import ic2.api.recipe.IRecipeInput;
@@ -61,10 +63,12 @@ import ic2.api.recipe.RecipeOutput;
 @SuppressWarnings("deprecation")
 public class GTPostLoad {
 
-    public static void activateOreDictHandler() {
+    public static void processOreDictRegistrations() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GTMod.proxy.activateOreDictHandler();
+
+        OreDictRegistrationHandler.processBufferedRegistrations();
+        OreDictUnificationOverrides.finalizeUnification();
 
         // noinspection UnstableApiUsage// Stable enough for this project
         GT_FML_LOGGER.info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());

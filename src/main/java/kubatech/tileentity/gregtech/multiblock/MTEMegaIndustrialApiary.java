@@ -104,6 +104,8 @@ import gregtech.api.recipe.check.ResultMissingApiaryFlowers;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -136,6 +138,13 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     protected static final int MODE_SECONDARY_SWARMER = 1;
 
     protected static final ItemStack royalJelly = PluginApiculture.items.royalJelly.getItemStack(1);
+
+    // Only used to check and consume inputs; swarmer timing and outputs are handled in checkProcessing().
+    private static final GTRecipe SWARMER_JELLY_RECIPE = GTRecipeBuilder.empty()
+        .itemInputsUnsafe(GTUtility.copyAmountUnsafe(100, royalJelly))
+        .nbtSensitive()
+        .build()
+        .orElseThrow();
 
     protected static final int CASING_INDEX = 10;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
@@ -596,8 +605,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     this.mMaxProgresstime = 100;
                     this.mOutputItems = mergeOutputStacks(stacks);
                 } else { // SWARMER mode
-                    if (!depleteInput(PluginApiculture.items.royalJelly.getItemStack(64))
-                        || !depleteInput(PluginApiculture.items.royalJelly.getItemStack(36))) {
+                    boolean check_swarmer_jelly = SWARMER_JELLY_RECIPE
+                        .isRecipeInputEqual(true, null, getStoredInputs().toArray(new ItemStack[0]));
+                    if (!check_swarmer_jelly) {
                         this.updateSlots();
                         return CheckRecipeResultRegistry.NO_RECIPE;
                     }

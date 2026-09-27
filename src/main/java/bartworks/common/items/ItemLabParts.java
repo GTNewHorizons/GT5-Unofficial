@@ -21,7 +21,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import bartworks.API.enums.BioCultureEnum;
@@ -168,9 +167,7 @@ public class ItemLabParts extends SimpleSubItemClass {
             return StatCollector.translateToLocalFormatted(
                 "bw.bioname.latin.format",
                 StatCollector.translateToLocal(key),
-                EnumChatFormatting.ITALIC + StatCollector.translateToLocal(keyLatin)
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY);
+                StatCollector.translateToLocal(keyLatin));
         }
         return StatCollector.translateToLocal(key);
     }

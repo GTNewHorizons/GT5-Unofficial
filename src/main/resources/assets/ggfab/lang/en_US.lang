@@ -48,3 +48,21 @@ ggfab.tt.advassline.structure.footer=Up to 16 total slices, each one allows for 
 
 # Multiblocks
 gt.blockmachines.ggfab.machine.adv_assline.name=Advanced Assembly Line
+
+# Single use tools
+gt.ggfab.d1.0.name=Single Use File
+gt.ggfab.d1.1.name=Single Use Wrench
+gt.ggfab.d1.2.name=Single Use Crowbar
+gt.ggfab.d1.3.name=Single Use Wire Cutter
+gt.ggfab.d1.30.name=Mold (Single Use File)
+gt.ggfab.d1.31.name=Mold (Single Use Wrench)
+gt.ggfab.d1.32.name=Mold (Single Use Crowbar)
+gt.ggfab.d1.33.name=Mold (Single Use Wire Cutter)
+gt.ggfab.d1.34.name=Mold (Single Use Hard Hammer)
+gt.ggfab.d1.35.name=Mold (Single Use Soft Mallet)
+gt.ggfab.d1.36.name=Mold (Single Use Screwdriver)
+gt.ggfab.d1.37.name=Mold (Single Use Saw)
+gt.ggfab.d1.4.name=Single Use Hard Hammer
+gt.ggfab.d1.5.name=Single Use Soft Mallet
+gt.ggfab.d1.6.name=Single Use Screwdriver
+gt.ggfab.d1.7.name=Single Use Saw

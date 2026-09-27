@@ -45,3 +45,21 @@ ggfab.tt.advassline.structure.footer=Всего до 16 срезов, кажды
 
 # Multiblocks
 gt.blockmachines.ggfab.machine.adv_assline.name=Продвинутая сборочная линия
+
+# Single use tools
+gt.ggfab.d1.0.name=Одноразовый напильник
+gt.ggfab.d1.1.name=Одноразовый ключ
+gt.ggfab.d1.2.name=Одноразовая монтировка
+gt.ggfab.d1.3.name=Одноразовые кусачки
+gt.ggfab.d1.30.name=Форма (Одноразовый напильник)
+gt.ggfab.d1.31.name=Форма (Одноразовый ключ)
+gt.ggfab.d1.32.name=Форма (Одноразовая монтировка)
+gt.ggfab.d1.33.name=Форма (Одноразовые кусачки)
+gt.ggfab.d1.34.name=Форма (Одноразовый молоток)
+gt.ggfab.d1.35.name=Форма (Одноразовая киянка)
+gt.ggfab.d1.36.name=Форма (Одноразовая отвёртка)
+gt.ggfab.d1.37.name=Форма (Одноразовая пила)
+gt.ggfab.d1.4.name=Одноразовый молоток
+gt.ggfab.d1.5.name=Одноразовая киянка
+gt.ggfab.d1.6.name=Одноразовая отвёртка
+gt.ggfab.d1.7.name=Одноразовая пила
