@@ -193,6 +193,15 @@ public class GTOreDictUnificator {
         return target;
     }
 
+    /// The item every stack registered under `name` unifies to: the pair's MaterialLib stack, or the stack GregTech
+    /// set for the name. Null when neither exists, so parts of shapes GregTech does not generate are never unified.
+    private static ItemStack unificationTarget(String name) {
+        ItemStack served = materialLibTarget(name);
+        if (served != null) return served;
+        ItemStack stack = sName2StackMap.get(name);
+        return GTUtility.isStackValid(stack) ? stack : null;
+    }
+
     public static ItemStack getFirstOre(Object name, long amount) {
         if (GTUtility.isStringInvalid(name)) return null;
         return GTUtility.copyAmount(amount, getFirstOre_nocopy(name.toString()));
@@ -303,7 +312,7 @@ public class GTOreDictUnificator {
             return GTUtility.copyOrNull(stack);
         }
         if (itemData.mUnificationTarget == null) {
-            itemData.mUnificationTarget = getFirstOre_nocopy(itemData.toString());
+            itemData.mUnificationTarget = unificationTarget(itemData.toString());
         }
         final ItemStack rStack = itemData.mUnificationTarget;
         if (GTUtility.isStackInvalid(rStack)) {
@@ -339,7 +348,7 @@ public class GTOreDictUnificator {
             return stack;
         }
         if (itemData.mUnificationTarget == null) {
-            itemData.mUnificationTarget = getFirstOre_nocopy(itemData.toString());
+            itemData.mUnificationTarget = unificationTarget(itemData.toString());
         }
         ItemStack rStack = itemData.mUnificationTarget;
         if (GTUtility.isStackInvalid(rStack)) {
@@ -393,7 +402,7 @@ public class GTOreDictUnificator {
             else alreadyCompared = true;
         }
         if (stackPrefixData.mUnificationTarget == null) {
-            stackPrefixData.mUnificationTarget = getFirstOre_nocopy(stackPrefixData.toString());
+            stackPrefixData.mUnificationTarget = unificationTarget(stackPrefixData.toString());
         }
         rStack = stackPrefixData.mUnificationTarget;
         if (GTUtility.isStackInvalid(rStack))

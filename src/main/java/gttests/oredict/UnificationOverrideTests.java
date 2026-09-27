@@ -161,6 +161,23 @@ public class UnificationOverrideTests {
         helper.succeed();
     }
 
+    /// Only a MaterialLib pair or a target GregTech set turns one mod's item into another's: other mods' parts of
+    /// shapes GregTech does not generate stay as they are.
+    @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
+    public static void namesWithoutMaterialLibPartsDoNotUnify(GameTestHelper helper) {
+        List<String> converted = new ArrayList<>();
+        for (String oreName : new String[] { "nuggetDiamond", "nuggetEmerald" }) {
+            for (ItemStack ore : OreDictionary.getOres(oreName)) {
+                ItemStack unified = GTOreDictUnificator.get(true, ore);
+                if (unified.getItem() != ore.getItem() || unified.getItemDamage() != ore.getItemDamage()) {
+                    converted.add(describe(ore) + " -> " + describe(unified));
+                }
+            }
+        }
+        helper.assertTrue(converted.isEmpty(), "Parts with no MaterialLib pair were unified: " + converted);
+        helper.succeed();
+    }
+
     private static void expectForeign(List<String> mismatches, OrePrefixes prefix, Shape shape, Material material,
         String modid, String itemName, int meta) {
         Item item = GameRegistry.findItem(modid, itemName);

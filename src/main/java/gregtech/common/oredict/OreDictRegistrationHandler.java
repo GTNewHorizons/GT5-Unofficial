@@ -15,7 +15,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.ruling_0.materiallib.MaterialLib;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -154,13 +153,12 @@ public final class OreDictRegistrationHandler {
     }
 
     /// Replays a registration that happened before this handler was listening, credited to the mod owning
-    /// the stack's item. MaterialLib-owned stacks are GregTech's material items, so they count as GregTech's
-    /// for [OreDictUnificationOverrides].
+    /// the stack's item.
     public static void registerPreExistingOre(OreDictionary.OreRegisterEvent event) {
         GameRegistry.UniqueIdentifier id = event.Ore == null || event.Ore.getItem() == null ? null
             : GameRegistry.findUniqueIdentifierFor(event.Ore.getItem());
         String modId = id == null ? "UNKNOWN" : id.modId;
-        registerOre(event, MaterialLib.MODID.equals(modId) ? Mods.GregTech.ID : modId);
+        registerOre(event, modId);
     }
 
     private static void registerOre(OreDictionary.OreRegisterEvent event, String modId) {
@@ -315,7 +313,6 @@ public final class OreDictRegistrationHandler {
         }
 
         OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, censusMaterial, modId);
-        OreDictUnificationOverrides.handle(registration);
 
         if (bufferRegistrationProcessing) {
             registrations.add(registration);

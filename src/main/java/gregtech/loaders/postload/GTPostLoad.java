@@ -57,6 +57,7 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
@@ -65,7 +66,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.oredict.OreDictRegistrationHandler;
-import gregtech.common.oredict.OreDictUnificationOverrides;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
 import ic2.api.recipe.IRecipeInput;
@@ -79,7 +79,7 @@ public class GTPostLoad {
         Stopwatch stopwatch = Stopwatch.createStarted();
 
         OreDictRegistrationHandler.processBufferedRegistrations();
-        OreDictUnificationOverrides.finalizeUnification();
+        GTRecipe.reInit();
 
         // noinspection UnstableApiUsage// Stable enough for this project
         GT_FML_LOGGER.info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());
