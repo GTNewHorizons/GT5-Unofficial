@@ -2557,7 +2557,7 @@ GT5U.recipes.recipe_by.original=Original Recipe by: %s
 GT5U.recipes.recipe_by.modified=Modified by: %s
 GT5U.recipes.recipe_by=Original Recipe by: %s
 GT5U.recipes.not_consume=Does not get consumed in the process
-GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but not get consumed
+GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but does not get consumed
 GT5U.recipes.chance.consume=Consume Chance: %s
 GT5U.recipes.chance.output=Output Chance: %s
 GT5U.recipes.chance.unorganized=Has a %d%% chance to output an unorganized version instead
@@ -3215,6 +3215,7 @@ GT5U.gui.text.structure_error.missing_data_hatch=Missing hatch for Data Input
 GT5U.gui.text.structure_error.dt_missing_output_hatch=Missing Output Hatch on Layer %s
 GT5U.gui.text.structure_error.dt_missing_output_hatches=Missing Output Hatch on Layers %s
 GT5U.gui.text.structure_error.coil_level_not_enough=The coil level is not enough
+GT5U.gui.text.structure_error.exotic_hatch_insufficient_coil_tier=Coil tier too low for Multi-Amp Hatch
 GT5U.gui.text.structure_error.missing_top=Top layer is not valid
 GT5U.gui.text.structure_error.dangote_missing_top=Top layer is invalid or muffler hatch is not placed on the top layer
 GT5U.gui.text.structure_error.spelv_module_exceed=Module limit exceeded
@@ -9773,7 +9774,7 @@ gt.item.gravitational_lens.tooltip=Portable gravitational well
 
 # Planck Circuit Items
 gt.item.calabi_yau_manifold.name=Calabi-Yau Manifold
-gt.item.calabi_yau_manifold.tooltip=Mathmatical!
+gt.item.calabi_yau_manifold.tooltip=Mathematical!
 gt.item.raw_manifold_bud.name=Raw Manifold Bud
 gt.item.raw_manifold_bud.tooltip=Needs to be shown what to do
 gt.item.blossoming_manifold_bud.name=Blossoming Manifold Bud
@@ -10020,6 +10021,7 @@ gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning
 # NEI Aliases
 gt.alias.debug=Debug
 gt.alias.mechanical_armor=Mechanical Armor
+gt.alias.fibre=Fibre
 
 # Multiblocks
 gt.blockmachines.algaefarm.controller.tier.single.name=Algae Farm
