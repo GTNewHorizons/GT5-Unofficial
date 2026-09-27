@@ -2562,6 +2562,8 @@ public class LoaderGTBlockFluid implements Runnable {
         // Special secondary oredict for Sodium Hydroxide
         GTOreDictUnificator
             .registerOre("dustSodiumHydroxide", MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1));
+        GTOreDictUnificator
+            .registerOre("dustCalciumSulfate", MaterialLibAPI.getStack(Materials.Gypsum, Shapes.dust, 1));
         GTOreDictUnificator.registerOre(
             "dustSmallSodiumHydroxide",
             MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dustSmall, 1));

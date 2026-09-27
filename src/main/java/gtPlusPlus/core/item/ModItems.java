@@ -410,13 +410,6 @@ public final class ModItems {
         GregtechItemList.SmallCalciumCarbonateDust.set(calciumCarbonate[1]);
         GregtechItemList.TinyCalciumCarbonateDust.set(calciumCarbonate[2]);
 
-        Item calciumSulfate = ItemUtils.generateSpecialUseDusts(
-            "Gypsum",
-            "Calcium Sulfate (Gypsum)",
-            "CaSO4",
-            Utils.rgbtoHexValue(255, 255, 255))[0];
-        GTOreDictUnificator.registerOre("dustCalciumSulfate", new ItemStack(calciumSulfate));
-
         Item[] Li2CO3CaOH2 = ItemUtils.generateSpecialUseDusts(
             "Li2CO3CaOH2",
             "Li2CO3 + CaO2H2 Compound",
