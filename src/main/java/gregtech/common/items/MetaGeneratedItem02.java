@@ -156,7 +156,7 @@ import static gregtech.common.items.IDMetaItem02.Food_IceCream_MasterOfDreams;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_MatchaSnake;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Meat;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_MintChip;
-import static gregtech.common.items.IDMetaItem02.Food_IceCream_NaquadaNutSwirl;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_NaquadahNutSwirl;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_NaquadriaPlasmaParfait;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Neapolitan;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_NetherStarNutCrunch;
@@ -2780,11 +2780,11 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 "gt.item.food.icecream_lunarlander.tooltip",
                 new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.jump.id, 600, 2, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
-        ItemList.Ice_Cream_NaquadaNutSwirl.set(
+        ItemList.Ice_Cream_NaquadahNutSwirl.set(
             addItemWithLocalizationKeys(
-                Food_IceCream_NaquadaNutSwirl.ID,
-                "gt.item.food.icecream_naquadanutswirl.name",
-                "gt.item.food.icecream_naquadanutswirl.tooltip",
+                Food_IceCream_NaquadahNutSwirl.ID,
+                "gt.item.food.icecream_naquadahnutswirl.name",
+                "gt.item.food.icecream_naquadahnutswirl.tooltip",
                 new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.moveSpeed.id, 400, 1, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_NaquadriaPlasmaParfait.set(

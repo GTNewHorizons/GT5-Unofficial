@@ -85,6 +85,7 @@ import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.MillingFrontend;
+import gregtech.api.recipe.maps.NACMatrixFrontend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
@@ -1921,12 +1922,12 @@ public final class RecipeMaps {
             recipes.add(r);
             return recipes;
         })
-        .frontend(AssemblyLineFrontend::new)
+        .frontend(NACMatrixFrontend::new)
         .build();
 
-    public static final RecipeMap<RecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
-        .of("gt.recipe.nanochip.smdprocessor", RecipeMapBackend::new)
-        .maxIO(1, 1, 0, 0)
+    public static final RecipeMap<RecipeMapBackend> nanochipPartProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.partprocessor", RecipeMapBackend::new)
+        .maxIO(6, 4, 3, 0)
         .minInputs(1, 0)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
@@ -1936,7 +1937,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
         .of("gt.recipe.nanochip.etchingarray", RecipeMapBackend::new)
-        .maxIO(2, 1, 2, 0)
+        .maxIO(2, 2, 2, 0)
         .minInputs(0, 0)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
@@ -1946,7 +1947,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
         .of("gt.recipe.nanochip.wiretracer", RecipeMapBackend::new)
-        .maxIO(1, 1, 0, 0)
+        .maxIO(2, 4, 0, 0)
         .minInputs(1, 0)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
@@ -1961,7 +1962,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipEncasementWrapper = RecipeMapBuilder
         .of("gt.recipe.nanochip.encasementwrapper", RecipeMapBackend::new)
-        .maxIO(4, 1, 0, 0)
+        .maxIO(4, 1, 2, 0)
         .minInputs(1, 0)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder

@@ -92,8 +92,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
 
     @Override
-    protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        ColoredBlockContainer block = ColoredBlockContainer.getInstance(player, aX, aY, aZ, side);
+    protected boolean colorize(ColoredBlockContainer block) {
         if (mCurrentColor == REMOVE_COLOR) {
             return block.removeColor();
         }
