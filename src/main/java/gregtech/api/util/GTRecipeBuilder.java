@@ -166,6 +166,24 @@ public class GTRecipeBuilder {
 
     // region helper methods
 
+    /// Moves the item a recipe should store for an ore-dictionary input to the front of its alternatives, since a
+    /// recipe stores and shows the first alternative: the item the name unifies to, or for a name without one, such
+    /// as `plateAnyIron`, the first alternative that is not another mod's unified copy.
+    private static void putCanonicalFirst(ArrayList<ItemStack> alternatives, String oreName) {
+        ItemStack canonical = GTOreDictUnificator.unificationTarget(oreName);
+        for (int j = 0; j < alternatives.size(); j++) {
+            ItemStack alternative = alternatives.get(j);
+            boolean chosen = canonical != null
+                ? alternative.getItem() == canonical.getItem()
+                    && alternative.getItemDamage() == canonical.getItemDamage()
+                : !GTOreDictUnificator.isUnifiedCopy(alternative);
+            if (chosen) {
+                if (j > 0) alternatives.add(0, alternatives.remove(j));
+                return;
+            }
+        }
+    }
+
     private static ItemStack[] fixItemArray(ItemStack[] inputs, boolean aUnsafe) {
         return GTOreDictUnificator.setStackArray(true, aUnsafe, ArrayExt.removeTrailingNulls(inputs));
     }
@@ -402,6 +420,7 @@ public class GTRecipeBuilder {
                         if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
                     }
                     if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
+                    putCanonicalFirst(list, ods.mOreName);
                     alts[i] = list.toArray(new ItemStack[0]);
                 }
                 case Object[] arr -> {
@@ -422,6 +441,7 @@ public class GTRecipeBuilder {
                         if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
                     }
                     if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
+                    putCanonicalFirst(list, arr[0].toString());
                     alts[i] = list.toArray(new ItemStack[0]);
                 }
                 case null -> {
