@@ -1943,7 +1943,7 @@ public class ChemicalRecipes implements Runnable {
         // P4O10 + 6H2O = 4H3PO4
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.PhosphorusPentoxide.getDust(14))
+            .itemInputs(Materials.PhosphorousPentoxide.getDust(14))
             .fluidInputs(Materials.Water.getFluid(6_000))
             .fluidOutputs(Materials.PhosphoricAcid.getFluid(4_000))
             .duration(2 * SECONDS)
