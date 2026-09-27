@@ -44,7 +44,7 @@ public class UnificationOverrideTests {
         for (String oreName : GREGTECH_PREFERRED) {
             if (OreDictionary.getOres(oreName)
                 .isEmpty()) continue;
-            ItemStack target = GTOreDictUnificator.getFirstOre(oreName, 1);
+            ItemStack target = GTOreDictUnificator.unificationTarget(oreName);
             String owner = ownerOf(target);
             GT_FML_LOGGER.info("Item standing for {} is {} ({})", oreName, describe(target), owner);
             if (!"gregtech".equals(owner) && !"materiallib".equals(owner)) {
@@ -214,7 +214,7 @@ public class UnificationOverrideTests {
         if (fromMaterialLib.getItem() != item || fromMaterialLib.getItemDamage() != meta) {
             mismatches.add(pair + ": MaterialLib serves " + describe(fromMaterialLib));
         }
-        ItemStack named = GTOreDictUnificator.getFirstOre(prefix.oreDictName(material), 1);
+        ItemStack named = GTOreDictUnificator.unificationTarget(prefix.oreDictName(material));
         if (named == null || named.getItem() != item || named.getItemDamage() != meta) {
             mismatches.add(pair + ": the ore-dictionary name stands for " + describe(named));
         }

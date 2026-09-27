@@ -997,14 +997,31 @@ public class GTModHandler {
      * Internal realisation of the Crafting Recipe adding Process.
      */
     /// The stack standing in for an [ItemData] ingredient when looking for an existing recipe the new one collides
-    /// with: the pair's MaterialLib stack when MaterialLib serves the pair, else the first item registered under the
+    /// with: the pair's MaterialLib stack when MaterialLib serves the pair, else [#collisionProbe(String)] for the
     /// ingredient's name.
     public static ItemStack collisionProbe(ItemData ingredient) {
         if (ingredient.hasValidPrefixMaterialData()
             && MaterialParts.isCutOver(ingredient.mPrefix, ingredient.mMaterial.mMaterial)) {
             return MaterialParts.stack(ingredient.mPrefix, ingredient.mMaterial.mMaterial, 1);
         }
-        return GTOreDictUnificator.getFirstOre(ingredient, 1);
+        return collisionProbe(ingredient.toString());
+    }
+
+    /// The stack standing in for the ore-dictionary ingredient `oreName` when looking for an existing recipe the new
+    /// one collides with: the name's unification target, else the first item registered under it that is not
+    /// blacklisted, else the first item registered under it. Null when nothing is registered under the name.
+    @Nullable
+    public static ItemStack collisionProbe(String oreName) {
+        ItemStack target = GTOreDictUnificator.unificationTarget(oreName);
+        if (target != null) return GTUtility.copyAmount(1, target);
+
+        ItemStack first = null;
+        for (ItemStack ore : GTOreDictUnificator.getOresImmutable(oreName)) {
+            if (ore == null) continue;
+            if (!GTOreDictUnificator.isBlacklisted(ore)) return GTUtility.copyAmount(1, ore);
+            if (first == null) first = ore;
+        }
+        return GTUtility.copyAmount(1, first);
     }
 
     private static boolean addCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
@@ -1159,7 +1176,7 @@ public class GTModHandler {
                         tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
                     else if (in.equals(OreDictNames.craftingAnvil.toString()))
                         tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = collisionProbe(s);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                 }
@@ -1313,7 +1330,7 @@ public class GTModHandler {
                 }
                 case ItemStack itemStack -> tRecipe[i] = itemStack;
                 case String s -> {
-                    tRecipe[i] = GTOreDictUnificator.getFirstOre(tObject, 1);
+                    tRecipe[i] = collisionProbe(s);
                     if (tRecipe[i] == null) break label;
                 }
                 default -> {

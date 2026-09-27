@@ -670,19 +670,19 @@ public class GTProxy implements IFuelHandler {
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {
             OrePrefixes.bucketClay.mContainerItem = GTModHandler
                 .getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0);
-            GTOreDictUnificator.set(
+            GTOreDictUnificator.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Empty,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0));
-            GTOreDictUnificator.set(
+            GTOreDictUnificator.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Water,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketWater", 1L, 0));
-            GTOreDictUnificator.set(
+            GTOreDictUnificator.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Lava,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketLava", 1L, 0));
-            GTOreDictUnificator.set(
+            GTOreDictUnificator.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Milk,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketMilk", 1L, 0));

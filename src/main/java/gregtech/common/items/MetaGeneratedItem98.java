@@ -319,7 +319,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         // be registered.
 
         // Register the steam cell. There is no steam material, so we'll use Water.cellMolten instead.
-        GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
+        GTOreDictUnificator.registerAndAssociate(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 
     @Override

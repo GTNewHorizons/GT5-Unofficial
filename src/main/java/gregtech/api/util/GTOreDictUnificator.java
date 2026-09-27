@@ -36,8 +36,8 @@ import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 /// MaterialLib decides the item for every name of a (prefix, material) pair it serves: the pair's stack, MaterialLib's
 /// own item or the foreign item a shape override declares, whatever else registers under the name and in whatever
 /// order. A pair MaterialLib's own item serves answers from GregTech's preInit on; one a foreign item stands in for
-/// answers from GregTech's init, once that item is registered (see [#useMaterialLibTargets]). Names with no such pair
-/// (containers, name-only circuits) are decided by [#set(OrePrefixes, Material, ItemStack)]; other names have none.
+/// answers from GregTech's init, once that item is registered (see [#useMaterialLibTargets]). Other names stand for
+/// no item.
 ///
 /// Another mod's item registered under a name that stands for a different item is a unified copy
 /// ([#isUnifiedCopy]): GregTech generates no recipes for it, and `ForeignPartTable` migrates saved stacks of it.
@@ -46,7 +46,6 @@ import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 /// class javadoc for why the prefix and shape spaces are not interchangeable.
 public class GTOreDictUnificator {
 
-    private static final Map<String, ItemStack> sName2StackMap = new HashMap<>();
     private static volatile Map<String, MaterialLibPair> materialLibPairs;
     private static final Map<String, ItemStack> materialLibTargets = new ConcurrentHashMap<>();
     private static volatile boolean materialLibTargetsLive;
@@ -55,10 +54,9 @@ public class GTOreDictUnificator {
         GTItemStack.ITEMSTACK_HASH_STRATEGY2);
     private static final Set<Item> unificationWildcardBlacklist = new ReferenceOpenHashSet<>();
 
-    /**
-     * The Blacklist just prevents the Item from being unificated into something else. Useful if you have things like
-     * the Industrial Diamond, which is better than regular Diamond, but also usable in absolutely all Diamond Recipes.
-     */
+    /// Marks `stack` as never being a unified copy, for items that share an ore-dictionary name with a different item
+    /// but are their own thing (the Industrial Diamond under `gemDiamond`). [GTModHandler#collisionProbe(String)]
+    /// passes over blacklisted items.
     public static void addToBlacklist(ItemStack stack) {
         if (GTUtility.isStackInvalid(stack)) return;
 
@@ -74,41 +72,22 @@ public class GTOreDictUnificator {
         return unificationBlacklist.contains(stack) || unificationWildcardBlacklist.contains(stack.getItem());
     }
 
-    public static void add(OrePrefixes prefix, Material material, ItemStack stack) {
-        set(prefix, material, stack, false, false);
-    }
-
-    public static void set(OrePrefixes prefix, Material material, ItemStack stack) {
-        set(prefix, material, stack, true, false);
-    }
-
-    /// Registers `stack` under the ore-dictionary name for `prefix` and `materialName`, makes it that name's
-    /// unification target, and associates it with the composition-free ingredient for that name.
-    public static void set(OrePrefixes prefix, String materialName, ItemStack stack) {
-        if (materialName == null || prefix == null || GTUtility.isStackInvalid(stack)) return;
-        if (Items.feather.getDamage(stack) == WILDCARD) return;
-
+    /// Registers `stack` under the ore-dictionary name of `prefix` and `material` and associates it with the pair,
+    /// including for prefixes the ore-dictionary handler does not associate (buckets, bottles, molten cells).
+    public static void registerAndAssociate(OrePrefixes prefix, Material material, ItemStack stack) {
+        if (prefix == null || material == null || GTUtility.isStackInvalid(stack)) return;
         stack = GTUtility.copyAmount(1, stack);
-        String oreName = prefix.oreDictName(materialName);
-        registerOre(oreName, stack);
-        MaterialData.addAssociation(prefix, materialName, stack);
-        sName2StackMap.put(oreName, stack);
-    }
-
-    public static void set(OrePrefixes prefix, Material material, ItemStack stack, boolean overwrite,
-        boolean alreadyRegistered) {
-
-        if (material == null || prefix == null || GTUtility.isStackInvalid(stack)) return;
-        if (Items.feather.getDamage(stack) == WILDCARD) return;
-
-        stack = GTUtility.copyAmount(1, stack);
-        String oreName = prefix.oreDictName(material);
-        if (!alreadyRegistered) registerOre(oreName, stack);
+        registerOre(prefix.oreDictName(material), stack);
         MaterialData.addAssociation(prefix, material, stack);
+    }
 
-        if (overwrite || GTUtility.isStackInvalid(sName2StackMap.get(oreName))) {
-            sName2StackMap.put(oreName, stack);
-        }
+    /// Registers `stack` under the ore-dictionary name of `prefix` and `materialName` with a name-only association
+    /// (see [ItemData#ItemData(OrePrefixes, String)]).
+    public static void registerAndAssociate(OrePrefixes prefix, String materialName, ItemStack stack) {
+        if (prefix == null || materialName == null || GTUtility.isStackInvalid(stack)) return;
+        stack = GTUtility.copyAmount(1, stack);
+        registerOre(prefix.oreDictName(materialName), stack);
+        MaterialData.addAssociation(prefix, materialName, stack);
     }
 
     private record MaterialLibPair(OrePrefixes prefix, Material material) {}
@@ -150,9 +129,11 @@ public class GTOreDictUnificator {
         }
     }
 
-    /// The stack MaterialLib serves under `oreName`, or null when it serves none, when GregTech's shapes are not
-    /// registered yet, or when a foreign item stands in for the pair and [#useMaterialLibTargets] has not run yet.
-    private static ItemStack materialLibTarget(String oreName) {
+    /// The item every stack registered under `oreName` unifies to: the MaterialLib stack of the pair the name stands
+    /// for. Null when MaterialLib serves no pair under the name, when GregTech's shapes are not registered yet, or when
+    /// a foreign item stands in for the pair and [#useMaterialLibTargets] has not run yet.
+    @Nullable
+    public static ItemStack unificationTarget(String oreName) {
         ItemStack target = materialLibTargets.get(oreName);
         if (target != null) return target;
         if (GTShapeStore.all()
@@ -163,36 +144,6 @@ public class GTOreDictUnificator {
         target = MaterialParts.stack(pair.prefix(), pair.material(), 1);
         if (target != null) materialLibTargets.put(oreName, target);
         return target;
-    }
-
-    /// The item every stack registered under `name` unifies to: the pair's MaterialLib stack, or the stack GregTech
-    /// set for the name. Null when neither exists, so parts of shapes GregTech does not generate are never unified.
-    static ItemStack unificationTarget(String name) {
-        ItemStack served = materialLibTarget(name);
-        if (served != null) return served;
-        ItemStack stack = sName2StackMap.get(name);
-        return GTUtility.isStackValid(stack) ? stack : null;
-    }
-
-    public static ItemStack getFirstOre(Object name, long amount) {
-        if (GTUtility.isStringInvalid(name)) return null;
-        return GTUtility.copyAmount(amount, getFirstOre_nocopy(name.toString()));
-    }
-
-    private static ItemStack getFirstOre_nocopy(String name) {
-        ItemStack served = materialLibTarget(name);
-        if (served != null) return served;
-        ItemStack stack = sName2StackMap.get(name);
-        if (GTUtility.isStackValid(stack)) return stack;
-
-        ItemStack firstStack = null;
-        for (ItemStack ore : getOresImmutable(name)) {
-            if (ore != null) {
-                if (!isBlacklisted(ore)) return ore;
-                if (firstStack == null) firstStack = ore;
-            }
-        }
-        return firstStack;
     }
 
     /// Whether `stack` is another mod's copy of a part that unifies onto a different item. Recipes generated for such

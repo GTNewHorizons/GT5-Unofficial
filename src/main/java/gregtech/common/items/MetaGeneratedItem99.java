@@ -111,7 +111,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         enabled.set(i);
 
         if (cellMolten.isUnifiable()) {
-            GTOreDictUnificator.add(cellMolten, material, tStack);
+            GTOreDictUnificator.registerAndAssociate(cellMolten, material, tStack);
         } else {
             GTOreDictUnificator.registerOre(cellMolten.oreDictName(material), tStack);
         }
@@ -125,7 +125,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 enabled.set(offset + i);
 
                 if (prefix.isUnifiable()) {
-                    GTOreDictUnificator.add(prefix, material, tStack);
+                    GTOreDictUnificator.registerAndAssociate(prefix, material, tStack);
                 } else {
                     GTOreDictUnificator.registerOre(prefix.oreDictName(material), tStack);
                 }

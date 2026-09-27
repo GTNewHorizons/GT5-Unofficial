@@ -21,16 +21,15 @@ import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 public class LoaderGTOreDictionary implements Runnable {
 
     @Override
     public void run() {
         GT_FML_LOGGER.debug("GTMod: Register OreDict Entries of Non-GT-Items.");
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.Empty, ItemList.Cell_Empty.get(1L));
-        // registerOre, not set: IC2 keeps minting its own empty cells when its water and lava cells drain, so they
-        // must match cellEmpty recipes, but the MaterialLib cell stays the unification target.
+        GTOreDictUnificator.registerAndAssociate(OrePrefixes.cell, Materials.Empty, ItemList.Cell_Empty.get(1L));
+        // IC2 keeps minting its own empty cells when its water and lava cells drain, so they must match cellEmpty
+        // recipes.
         GTOreDictUnificator.registerOre(
             OrePrefixes.cell,
             Materials.Empty,
@@ -52,19 +51,30 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator
             .registerOre(OrePrefixes.cell, Materials.ConstructionFoam, GTModHandler.getIC2Item("CFCell", 1L));
 
-        GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Empty, new ItemStack(Items.bucket, 1, 0));
-        GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Water, new ItemStack(Items.water_bucket, 1, 0));
-        GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Lava, new ItemStack(Items.lava_bucket, 1, 0));
-        GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Milk, new ItemStack(Items.milk_bucket, 1, 0));
+        GTOreDictUnificator
+            .registerAndAssociate(OrePrefixes.bucket, Materials.Empty, new ItemStack(Items.bucket, 1, 0));
+        GTOreDictUnificator
+            .registerAndAssociate(OrePrefixes.bucket, Materials.Water, new ItemStack(Items.water_bucket, 1, 0));
+        GTOreDictUnificator
+            .registerAndAssociate(OrePrefixes.bucket, Materials.Lava, new ItemStack(Items.lava_bucket, 1, 0));
+        GTOreDictUnificator
+            .registerAndAssociate(OrePrefixes.bucket, Materials.Milk, new ItemStack(Items.milk_bucket, 1, 0));
         // Clay buckets handled in gregtech.common.GTProxy.onInitialization()
         // as they aren't registered until Iguana Tweaks pre-init.
 
-        GTOreDictUnificator.set(OrePrefixes.bottle, Materials.Empty, new ItemStack(Items.glass_bottle, 1, 0));
-        GTOreDictUnificator.set(OrePrefixes.bottle, Materials.Water, new ItemStack(Items.potionitem, 1, 0));
+        GTOreDictUnificator
+            .registerAndAssociate(OrePrefixes.bottle, Materials.Empty, new ItemStack(Items.glass_bottle, 1, 0));
+        GTOreDictUnificator
+            .registerAndAssociate(OrePrefixes.bottle, Materials.Water, new ItemStack(Items.potionitem, 1, 0));
 
-        GTOreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Iridium, GTModHandler.getIC2Item("iridiumPlate", 1L));
-        GTOreDictUnificator.set(OrePrefixes.plateAlloy, "Advanced", GTModHandler.getIC2Item("advancedAlloy", 1L));
-        GTOreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Carbon, GTModHandler.getIC2Item("carbonPlate", 1L));
+        GTOreDictUnificator.registerAndAssociate(
+            OrePrefixes.plateAlloy,
+            Materials.Iridium,
+            GTModHandler.getIC2Item("iridiumPlate", 1L));
+        GTOreDictUnificator
+            .registerAndAssociate(OrePrefixes.plateAlloy, "Advanced", GTModHandler.getIC2Item("advancedAlloy", 1L));
+        GTOreDictUnificator
+            .registerAndAssociate(OrePrefixes.plateAlloy, Materials.Carbon, GTModHandler.getIC2Item("carbonPlate", 1L));
 
         GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Coal, new ItemStack(Blocks.coal_ore, 1));
         GTOreDictUnificator.registerOre(OrePrefixes.ore, Materials.Iron, new ItemStack(Blocks.iron_ore, 1));
@@ -83,9 +93,7 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator
             .registerOre(OreDictNames.craftingAnvil, GTModHandler.getModItem(Railcraft.ID, "anvil", 1L, 0));
 
-        // We need to somehow blacklist the stack first, but .get() returns the unificated vanilla diamond instead
-        ItemStack industrialDiamond = GTUtility
-            .copyAmount(1, ItemList.IC2_Industrial_Diamond.getInternalStack_unsafe());
+        ItemStack industrialDiamond = ItemList.IC2_Industrial_Diamond.get(1);
         GTOreDictUnificator.addToBlacklist(industrialDiamond);
         GTOreDictUnificator.registerOre(OreDictNames.craftingIndustrialDiamond, industrialDiamond);
 

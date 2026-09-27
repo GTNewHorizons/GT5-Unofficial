@@ -2160,7 +2160,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
 
     private void initOreDictUnificatorEntries() {
         for (CircuitComponents component : CircuitComponents.values()) {
-            GTOreDictUnificator.set(OrePrefixes.componentCircuit, component.materialName(), component.get(1));
+            GTOreDictUnificator
+                .registerAndAssociate(OrePrefixes.componentCircuit, component.materialName(), component.get(1));
         }
 
         MaterialData.addAssociation(

@@ -97,8 +97,10 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
                 if (stoneType.getPrefix()
                     .isUnifiable()) {
-                    GTOreDictUnificator
-                        .set(stoneType.getPrefix(), info.material, GTOreAdapter.INSTANCE.getStack(info, 1));
+                    GTOreDictUnificator.registerAndAssociate(
+                        stoneType.getPrefix(),
+                        info.material,
+                        GTOreAdapter.INSTANCE.getStack(info, 1));
                 } else {
                     GTOreDictUnificator.registerOre(stoneType.getPrefix(), GTOreAdapter.INSTANCE.getStack(info, 1));
                 }
