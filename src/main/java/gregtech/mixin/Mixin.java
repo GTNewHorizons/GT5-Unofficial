@@ -112,6 +112,10 @@ public enum Mixin implements IMixins {
         .setPhase(Phase.EARLY)
         .addCommonMixins("minecraft.VanillaTradingMixin")),
 
+    PORTAL_PIGMAN_SPAWN(new MixinBuilder("Suppresses Mob spawning from portals via monster repellents")
+        .addCommonMixins("minecraft.PortalSpawnCheckMixin")
+        .setPhase(Phase.EARLY)),
+
     // Pollution
     POLLUTION_RENDER_BLOCKS(new MixinBuilder()
         .addClientMixins("minecraft.pollution.MixinRenderBlocks_PollutionWithoutOptifine")

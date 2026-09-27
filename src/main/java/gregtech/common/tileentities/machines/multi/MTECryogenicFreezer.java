@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.CryotheumHatch;
@@ -18,9 +19,11 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -49,6 +52,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatch
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryogenicFreezer>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -56,6 +60,12 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     private static final int OFFSET_Y = 2;
     private static final int OFFSET_Z = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    private static final int PARALLELS = 16;
+    private static final float SPEED_BONUS = 3F;
+    private static final float EU_MODIFIER = 0.9F;
+    private static final int CRYOTHEUM_PER_SECOND = 10;
+
     private static IStructureDefinition<MTECryogenicFreezer> STRUCTURE_DEFINITION = null;
 
     private int casingAmount;
@@ -76,12 +86,17 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Vacuum Freezer, VF")
-            .addInfo("Factory Grade Advanced Vacuum Freezer")
-            .addStaticParallelInfo(16)
-            .addStaticSpeedInfo(3f)
-            .addStaticEuEffInfo(0.9f)
-            .addInfo("Consumes 10L of Gelid Cryotheum per second during operation")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "cryogenic-freezer"),
+                ImmutableMap.<String, Object>builder()
+                    .put("parallels", PARALLELS)
+                    .put("speed", Math.round(SPEED_BONUS * 100))
+                    .put("eu_eff", Math.round(EU_MODIFIER * 100))
+                    .put("cryotheum", CRYOTHEUM_PER_SECOND)
+                    .put("unit", getFluidUnit())
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 7, true)
             .addController("Front center, 2nd layer")
@@ -95,6 +110,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addOutputAny("1+", "Any casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "REDR")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -191,14 +207,14 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 3F)
-            .setEuModifier(0.9F)
+            .setSpeedBonus(1F / SPEED_BONUS)
+            .setEuModifier(EU_MODIFIER)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return 16;
+        return PARALLELS;
     }
 
     @Override
@@ -217,10 +233,11 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
                 if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
                     .hasWorkJustBeenEnabled()) {
 
-                    if (!drainCryotheum(10)) {
+                    if (!drainCryotheum(CRYOTHEUM_PER_SECOND)) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(
-                            ShutDownReasonRegistry.outOfFluid(new FluidStack(TFFluids.fluidCryotheum, 10)));
+                            ShutDownReasonRegistry
+                                .outOfFluid(new FluidStack(TFFluids.fluidCryotheum, CRYOTHEUM_PER_SECOND)));
                     }
 
                 }
