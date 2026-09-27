@@ -8346,6 +8346,7 @@ public class Materials {
             .build();
         Materials.Bedrockium = MaterialLibAPI.newMaterial("gregtech", "Bedrockium", TextureSet.of("gregtech", "CUSTOM/bedrockium"))
             .setTint(0xFFFFFFFF)
+            .addShapeOverride(Shapes.ingot, Mods.ExtraUtilities.ID, "bedrockiumIngot", 0)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.ores)
@@ -15686,6 +15687,8 @@ public class Materials {
             .build();
         Materials.Desh = MaterialLibAPI.newMaterial("gregtech", "Desh", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF282828)
+            .addShapeOverride(Shapes.rawOre, Mods.GalacticraftMars.ID, "item.null", 0)
+            .addShapeOverride(Shapes.stick, Mods.GalacticraftMars.ID, "item.null", 1)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.multiPlates)
@@ -17088,6 +17091,7 @@ public class Materials {
             .build();
         Materials.BloodInfusedIron = MaterialLibAPI.newMaterial("gregtech", "BloodInfusedIron", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF45090A)
+            .addShapeOverride(Shapes.ingot, Mods.BloodArsenal.ID, "blood_infused_iron", 0)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.toolParts)

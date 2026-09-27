@@ -1,6 +1,5 @@
 package gtPlusPlus.core.handler;
 
-import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Witchery;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -8,7 +7,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.loaders.oreprocessing.ProcessingAlloySmelterGtpp;
@@ -191,10 +189,6 @@ public class CompatHandler {
 
     // InterMod
     public static void intermodOreDictionarySupport() {
-        if (ExtraUtilities.isModLoaded()) {
-            GTOreDictUnificator
-                .registerOre("ingotBedrockium", getModItem(Mods.ExtraUtilities.ID, "bedrockiumIngot", 1, 0));
-        }
         if (PamsHarvestCraft.isModLoaded()) {
             FishTrapHandler.pamsHarvestCraftCompat();
         }

@@ -4,7 +4,6 @@ import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
-import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
@@ -301,10 +300,5 @@ public class LoaderGTOreDictionary implements Runnable {
             OrePrefixes.block,
             Materials.BotaniaDragonstone,
             GTModHandler.getModItem(Botania.ID, "storage", 1L, 4));
-
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.ore,
-            Materials.Desh,
-            GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 1L, 0));
     }
 }

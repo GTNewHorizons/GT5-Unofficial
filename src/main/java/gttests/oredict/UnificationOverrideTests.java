@@ -35,7 +35,7 @@ import gregtech.api.util.GTOreDictUnificator;
 public class UnificationOverrideTests {
 
     private static final String[] GREGTECH_PREFERRED = { "dustAlumina", "blockLead", "blockMagnesium", "blockMithril",
-        "blockPlatinum", "blockTungsten", "ingotBloodInfusedIron", "stickDesh", "cellCreosote" };
+        "blockPlatinum", "blockTungsten", "cellCreosote" };
 
     @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
     public static void gregTechPreferredNamesUnifyToGregTechItems(GameTestHelper helper) {
@@ -149,6 +149,31 @@ public class UnificationOverrideTests {
             "TwilightForest",
             "item.ironwoodIngot",
             0);
+        expectForeign(
+            mismatches,
+            OrePrefixes.ingot,
+            Shapes.ingot,
+            Materials.Bedrockium,
+            "ExtraUtilities",
+            "bedrockiumIngot",
+            0);
+        expectForeign(
+            mismatches,
+            OrePrefixes.ingot,
+            Shapes.ingot,
+            Materials.BloodInfusedIron,
+            "BloodArsenal",
+            "blood_infused_iron",
+            0);
+        expectForeign(
+            mismatches,
+            OrePrefixes.rawOre,
+            Shapes.rawOre,
+            Materials.Desh,
+            "GalacticraftMars",
+            "item.null",
+            0);
+        expectForeign(mismatches, OrePrefixes.stick, Shapes.stick, Materials.Desh, "GalacticraftMars", "item.null", 1);
         expectForeign(
             mismatches,
             OrePrefixes.ingot,
