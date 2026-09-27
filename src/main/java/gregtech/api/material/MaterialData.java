@@ -78,10 +78,7 @@ public final class MaterialData {
         if (GTUtility.isStackInvalid(stack) || data == null) return;
 
         if (stack.stackSize > 1) {
-            if (data.mMaterial != null) data.mMaterial.mAmount /= stack.stackSize;
-            for (MaterialStack material : data.mByProducts) {
-                material.mAmount /= stack.stackSize;
-            }
+            data = data.dividedBy(stack.stackSize);
             stack = GTUtility.copyAmount(1, stack);
         }
 

@@ -121,6 +121,26 @@ public class ItemData {
         oreDictName = association.oreDictName;
     }
 
+    private ItemData(OrePrefixes prefix, MaterialStack material, @NotNull MaterialStack[] byProducts,
+        boolean hasExplicitComposition, String oreDictName) {
+        mPrefix = prefix;
+        mMaterial = material;
+        mByProducts = byProducts;
+        this.hasExplicitComposition = hasExplicitComposition;
+        this.oreDictName = oreDictName;
+    }
+
+    /// A copy with every material amount divided by `divisor`.
+    public ItemData dividedBy(long divisor) {
+        MaterialStack[] byProducts = mByProducts.length == 0 ? EMPTY_MATERIALSTACK_ARRAY
+            : new MaterialStack[mByProducts.length];
+        for (int i = 0; i < byProducts.length; i++) {
+            byProducts[i] = mByProducts[i].copy(mByProducts[i].mAmount / divisor);
+        }
+        MaterialStack material = mMaterial == null ? null : mMaterial.copy(mMaterial.mAmount / divisor);
+        return new ItemData(mPrefix, material, byProducts, hasExplicitComposition, oreDictName);
+    }
+
     private static ArrayList<@NotNull MaterialStack> mergeMaterials(ItemData... dataArray) {
         ArrayList<MaterialStack> materials = new ArrayList<>();
 
