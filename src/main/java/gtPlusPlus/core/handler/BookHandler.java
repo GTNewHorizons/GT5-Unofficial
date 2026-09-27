@@ -10,7 +10,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gtPlusPlus.core.item.ModItems;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -92,8 +92,8 @@ public class BookHandler {
 
         for (int meta : mBookMap.keySet()) {
             ItemStack bookstack = new ItemStack(ModItems.itemCustomBook, 1, meta);
-            GTOreDictUnificator.registerOre("bookWritten", bookstack);
-            GTOreDictUnificator.registerOre("craftingBook", bookstack);
+            OreDictUtils.registerOre("bookWritten", bookstack);
+            OreDictUtils.registerOre("craftingBook", bookstack);
         }
     }
 

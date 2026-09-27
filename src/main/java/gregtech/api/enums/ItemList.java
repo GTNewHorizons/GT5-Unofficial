@@ -20,8 +20,8 @@ import gregtech.GTMod;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -3541,14 +3541,14 @@ public enum ItemList implements IItemContainer {
     @Override
     public IItemContainer registerOre(Object... aOreNames) {
         sanityCheck();
-        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, get(1));
+        for (Object tOreName : aOreNames) OreDictUtils.registerOre(tOreName, get(1));
         return this;
     }
 
     @Override
     public IItemContainer registerWildcardAsOre(Object... aOreNames) {
         sanityCheck();
-        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, getWildcard(1));
+        for (Object tOreName : aOreNames) OreDictUtils.registerOre(tOreName, getWildcard(1));
         return this;
     }
 

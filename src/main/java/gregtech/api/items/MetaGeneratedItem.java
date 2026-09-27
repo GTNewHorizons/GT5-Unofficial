@@ -50,8 +50,8 @@ import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.food.IEdible;
@@ -166,7 +166,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                     continue;
                 }
                 if (tRandomData == SubTag.NO_UNIFICATION) {
-                    GTOreDictUnificator.addToBlacklist(rStack);
+                    OreDictUtils.addToBlacklist(rStack);
                 }
             }
             // now check for the rest
@@ -208,12 +208,12 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                     continue;
                 }
                 if (tRandomData instanceof ItemData) {
-                    if (GTUtility.isStringValid(tRandomData)) GTOreDictUnificator.registerOre(tRandomData, rStack);
+                    if (GTUtility.isStringValid(tRandomData)) OreDictUtils.registerOre(tRandomData, rStack);
                     else MaterialData.add(rStack, (ItemData) tRandomData);
                     continue;
                 }
                 if (tUseOreDict) {
-                    GTOreDictUnificator.registerOre(tRandomData, rStack);
+                    OreDictUtils.registerOre(tRandomData, rStack);
                 }
             }
             if (GregTechAPI.sThaumcraftCompat != null)

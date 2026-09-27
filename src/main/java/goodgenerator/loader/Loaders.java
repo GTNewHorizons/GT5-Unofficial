@@ -57,7 +57,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.generators.MTEDieselGenerator;
 import kekztech.common.blocks.BlockTFFTStorageField;
@@ -490,7 +490,7 @@ public class Loaders {
         OreDictionary.registerOre("dustAluminumNitride", aluminumNitride);
 
         for (Circuits circuit : Circuits.values()) {
-            GTOreDictUnificator.registerOre(
+            OreDictUtils.registerOre(
                 OrePrefixes.wrapCircuit.oreDictName(circuit.materialName()),
                 new ItemStack(circuitWrap, 1, circuit.ordinal()));
         }

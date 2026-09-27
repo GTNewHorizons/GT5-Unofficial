@@ -26,8 +26,8 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRenderers;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 
 /**
@@ -69,9 +69,9 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 if (tPrefix.isUnifiable()) {
-                    GTOreDictUnificator.registerAndAssociate(tPrefix, tMaterial, tStack);
+                    OreDictUtils.registerAndAssociate(tPrefix, tMaterial, tStack);
                 } else {
-                    GTOreDictUnificator.registerOre(tPrefix.oreDictName(tMaterial), tStack);
+                    OreDictUtils.registerOre(tPrefix.oreDictName(tMaterial), tStack);
                 }
                 if ((tPrefix == OrePrefixes.stick || tPrefix == OrePrefixes.wireFine || tPrefix == OrePrefixes.ingot)
                     && (tMaterial == Materials.Lead || tMaterial == Materials.Tin

@@ -40,9 +40,9 @@ import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.config.OPStuff;
 import gregtech.loaders.materials.DeclaredMaterialNameTable;
 
@@ -192,7 +192,7 @@ public final class OreDictRegistrationHandler {
             String oreOriginPath = modId + (bufferRegistrationProcessing ? " -> " : " --Late--> ") + oreName;
 
             if (GTUtility.getBlockFromStack(stack) != Blocks.air) {
-                GTOreDictUnificator.addToBlacklist(stack);
+                OreDictUtils.addToBlacklist(stack);
             }
 
             registeredOres.add(stack);
@@ -221,7 +221,7 @@ public final class OreDictRegistrationHandler {
         if (oreName.contains(" ")) {
             GTLoggers.GT_ORE_DICT_LOGGER
                 .info("{} is getting re-registered because the OreDict Name containing invalid spaces.", oreOriginPath);
-            GTOreDictUnificator.registerOre(oreName.replace(" ", ""), stack);
+            OreDictUtils.registerOre(oreName.replace(" ", ""), stack);
             stack.setStackDisplayName("Invalid OreDictionary Tag");
             return true;
         }
@@ -236,13 +236,12 @@ public final class OreDictRegistrationHandler {
         }
 
         switch (oreName) {
-            case "stone" -> GTOreDictUnificator.registerOre("stoneSmooth", stack);
-            case "cobblestone" -> GTOreDictUnificator.registerOre("stoneCobble", stack);
-            case "shardOrder" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedOrder, stack);
-            case "shardEntropy" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, stack);
-            case "itemRubber" -> GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Rubber, stack);
-            case "compressedAluminum" -> GTOreDictUnificator
-                .registerOre(OrePrefixes.compressed, Materials.Aluminium, stack);
+            case "stone" -> OreDictUtils.registerOre("stoneSmooth", stack);
+            case "cobblestone" -> OreDictUtils.registerOre("stoneCobble", stack);
+            case "shardOrder" -> OreDictUtils.registerOre(OrePrefixes.gem, Materials.InfusedOrder, stack);
+            case "shardEntropy" -> OreDictUtils.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, stack);
+            case "itemRubber" -> OreDictUtils.registerOre(OrePrefixes.ingot, Materials.Rubber, stack);
+            case "compressedAluminum" -> OreDictUtils.registerOre(OrePrefixes.compressed, Materials.Aluminium, stack);
             default -> {
                 return false;
             }
@@ -325,15 +324,15 @@ public final class OreDictRegistrationHandler {
         }
 
         switch (prefix.getName()) {
-            case "dye" -> GTOreDictUnificator.registerOre(OrePrefixes.dye, stack);
-            case "gearGt" -> GTOreDictUnificator.registerOre(OrePrefixes.gear, material, stack);
+            case "dye" -> OreDictUtils.registerOre(OrePrefixes.dye, stack);
+            case "gearGt" -> OreDictUtils.registerOre(OrePrefixes.gear, material, stack);
             case "lens" -> {
                 if (MaterialUtils.hasFlag(material, GTMaterialFlag.TRANSPARENT)
                     && MaterialUtils.dye(material) != Dyes._NULL) {
                     String color = MaterialUtils.dye(material)
                         .name();
                     if (color.startsWith("dye")) color = color.substring(3);
-                    GTOreDictUnificator.registerOre("craftingLens" + color, stack);
+                    OreDictUtils.registerOre("craftingLens" + color, stack);
                 }
             }
 
@@ -352,7 +351,7 @@ public final class OreDictRegistrationHandler {
                 if (!GTRecipeRegistrator.sRodMaterialList.contains(material)) {
                     GTRecipeRegistrator.sRodMaterialList.add(material);
                 } else if (material == Materials.Wood) {
-                    GTOreDictUnificator.addToBlacklist(stack);
+                    OreDictUtils.addToBlacklist(stack);
                 }
             }
         }
@@ -368,7 +367,7 @@ public final class OreDictRegistrationHandler {
         }
 
         for (Material reRegisteredMaterial : MaterialFacades.oreReRegistrationsOf(material)) {
-            GTOreDictUnificator.registerOre(prefix, reRegisteredMaterial, stack);
+            OreDictUtils.registerOre(prefix, reRegisteredMaterial, stack);
         }
 
         if (GregTechAPI.sThaumcraftCompat != null && prefix.doGenerateItem(material) && !prefix.isIgnored(material)) {

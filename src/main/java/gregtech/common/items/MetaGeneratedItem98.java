@@ -31,9 +31,9 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 /** This class holds cells for non-GT fluids. */
 public class MetaGeneratedItem98 extends MetaGeneratedItem {
@@ -319,7 +319,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         // be registered.
 
         // Register the steam cell. There is no steam material, so we'll use Water.cellMolten instead.
-        GTOreDictUnificator.registerAndAssociate(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
+        OreDictUtils.registerAndAssociate(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 
     @Override

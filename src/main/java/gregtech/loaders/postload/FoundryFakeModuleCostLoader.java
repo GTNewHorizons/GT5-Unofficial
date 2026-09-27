@@ -13,8 +13,8 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.tileentities.machines.multi.foundry.FoundryModule;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.thing.CustomItemList;
@@ -23,9 +23,9 @@ import tectech.thing.block.BlockGodforgeGlass;
 public class FoundryFakeModuleCostLoader {
 
     public static void load() {
-        GTOreDictUnificator.registerOre("exoFoundryCasingChassis", ItemList.Magnetic_Chassis_T1_ExoFoundry.get(1));
-        GTOreDictUnificator.registerOre("exoFoundryCasingChassis", ItemList.Magnetic_Chassis_T2_ExoFoundry.get(1));
-        GTOreDictUnificator.registerOre("exoFoundryCasingChassis", ItemList.Magnetic_Chassis_T3_ExoFoundry.get(1));
+        OreDictUtils.registerOre("exoFoundryCasingChassis", ItemList.Magnetic_Chassis_T1_ExoFoundry.get(1));
+        OreDictUtils.registerOre("exoFoundryCasingChassis", ItemList.Magnetic_Chassis_T2_ExoFoundry.get(1));
+        OreDictUtils.registerOre("exoFoundryCasingChassis", ItemList.Magnetic_Chassis_T3_ExoFoundry.get(1));
 
         // ECB
         GTValues.RA.stdBuilder()

@@ -13,8 +13,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
@@ -40,7 +40,7 @@ public class DustDecayable extends BaseItemTickable {
         this.decayResultKey = "gtplusplus.item." + unlocal + ".decay_result";
         this.decayProduct = decayProduct;
         this.maxStackSize = 64;
-        GTOreDictUnificator.registerOre(unlocal, new ItemStack(this));
+        OreDictUtils.registerOre(unlocal, new ItemStack(this));
         new DecayableRecipe(maxTicks, new ItemStack(this), turnsInto, decayType);
     }
 

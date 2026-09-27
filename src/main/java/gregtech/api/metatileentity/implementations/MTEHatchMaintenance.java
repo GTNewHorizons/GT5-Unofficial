@@ -50,8 +50,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.gui.modularui.hatch.MTEHatchMaintenanceGui;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxDelegateInventory;
@@ -194,7 +194,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
                     applyToolbox(tStack, aPlayer);
                 } else if (tStack.getItem() instanceof ItemGTToolbox) {
                     applyGTToolbox(tStack, aPlayer);
-                } else if (GTOreDictUnificator.isItemStackInstanceOf(tStack, "craftingDuctTape")) {
+                } else if (OreDictUtils.isItemStackInstanceOf(tStack, "craftingDuctTape")) {
                     applyDuctTape();
                     if (--tStack.stackSize == 0) {
                         aPlayer.inventory.mainInventory[aPlayer.inventory.currentItem] = null;
@@ -403,7 +403,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
             mSolderingTool = true;
             setMaintenanceSound(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1.0F);
         }
-        if (GTOreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
+        if (OreDictUtils.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
             applyDuctTape();
             aStack.stackSize--;
         }

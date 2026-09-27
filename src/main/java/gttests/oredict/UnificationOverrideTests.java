@@ -26,7 +26,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 
 /// Pins which item stands for a material part when several mods register one. GregTech-preferred names must
 /// keep a GregTech item although most competing registrations reach GregTech through
@@ -44,7 +44,7 @@ public class UnificationOverrideTests {
         for (String oreName : GREGTECH_PREFERRED) {
             if (OreDictionary.getOres(oreName)
                 .isEmpty()) continue;
-            ItemStack target = GTOreDictUnificator.unificationTarget(oreName);
+            ItemStack target = OreDictUtils.unificationTarget(oreName);
             String owner = ownerOf(target);
             GT_FML_LOGGER.info("Item standing for {} is {} ({})", oreName, describe(target), owner);
             if (!"gregtech".equals(owner) && !"materiallib".equals(owner)) {
@@ -194,7 +194,7 @@ public class UnificationOverrideTests {
         List<String> converted = new ArrayList<>();
         for (String oreName : new String[] { "nuggetDiamond", "nuggetEmerald" }) {
             for (ItemStack ore : OreDictionary.getOres(oreName)) {
-                if (GTOreDictUnificator.isUnifiedCopy(ore)) converted.add(describe(ore));
+                if (OreDictUtils.isUnifiedCopy(ore)) converted.add(describe(ore));
             }
         }
         helper.assertTrue(converted.isEmpty(), "Parts with no MaterialLib pair were unified: " + converted);
@@ -214,7 +214,7 @@ public class UnificationOverrideTests {
         if (fromMaterialLib.getItem() != item || fromMaterialLib.getItemDamage() != meta) {
             mismatches.add(pair + ": MaterialLib serves " + describe(fromMaterialLib));
         }
-        ItemStack named = GTOreDictUnificator.unificationTarget(prefix.oreDictName(material));
+        ItemStack named = OreDictUtils.unificationTarget(prefix.oreDictName(material));
         if (named == null || named.getItem() != item || named.getItemDamage() != meta) {
             mismatches.add(pair + ": the ore-dictionary name stands for " + describe(named));
         }

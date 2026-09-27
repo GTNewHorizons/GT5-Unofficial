@@ -23,7 +23,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.railcraft.utils.RailcraftUtils;
@@ -60,10 +60,10 @@ public class HandlerRailcraft {
             new BaseItemBurnable("itemSugarCoke", tabMisc, 64, 0, "Used for smelting.", "fuelSugarCoke", 800, 0)
                 .setTextureName(GTPlusPlus.ID + ":burnables/itemSugarCoke"));
 
-        GTOreDictUnificator.registerOre("itemCharcoalCactus", GregtechItemList.CactusCharcoal.get(1));
-        GTOreDictUnificator.registerOre("itemCokeCactus", GregtechItemList.CactusCoke.get(1));
-        GTOreDictUnificator.registerOre("itemCharcoalSugar", GregtechItemList.SugarCharcoal.get(1));
-        GTOreDictUnificator.registerOre("itemCokeSugar", GregtechItemList.SugarCoke.get(1));
+        OreDictUtils.registerOre("itemCharcoalCactus", GregtechItemList.CactusCharcoal.get(1));
+        OreDictUtils.registerOre("itemCokeCactus", GregtechItemList.CactusCoke.get(1));
+        OreDictUtils.registerOre("itemCharcoalSugar", GregtechItemList.SugarCharcoal.get(1));
+        OreDictUtils.registerOre("itemCokeSugar", GregtechItemList.SugarCoke.get(1));
     }
 
     public static void postInit() {

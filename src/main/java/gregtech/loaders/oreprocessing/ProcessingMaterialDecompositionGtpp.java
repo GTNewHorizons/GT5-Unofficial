@@ -125,7 +125,7 @@ public class ProcessingMaterialDecompositionGtpp {
         ItemStack[] inputs = emptyCell == null ? new ItemStack[] { mainDust } : new ItemStack[] { mainDust, emptyCell };
 
         // mainDust's amount is the composites' part sum, routinely above 64 (e.g. BlackTitanium's 100) --
-        // itemInputsUnsafe is required so GTOreDictUnificator's unification pass does not clamp it to 64.
+        // itemInputsUnsafe is required so OreDictUtils's unification pass does not clamp it to 64.
         if (composites.size() <= 6) {
             GTValues.RA.stdBuilder()
                 .itemInputsUnsafe(inputs)

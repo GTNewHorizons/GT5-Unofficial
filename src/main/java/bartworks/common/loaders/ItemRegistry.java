@@ -64,7 +64,7 @@ import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import ic2.api.item.IKineticRotor;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
@@ -272,7 +272,7 @@ public class ItemRegistry {
 
         // ID 12728 + 15 + 49 IS TAKEN !!! (12792)
 
-        GTOreDictUnificator
+        OreDictUtils
             .registerOre(OrePrefixes.block, Materials.NickelZincFerrite, new ItemStack(ItemRegistry.BW_BLOCKS[2]));
 
         int[] Diode2A = new int[] { Diode2A_ULV.ID, Diode2A_LV.ID, Diode2A_MV.ID, Diode2A_HV.ID, Diode2A_EV.ID,

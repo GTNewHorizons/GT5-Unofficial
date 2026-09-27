@@ -5,7 +5,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import cofh.core.item.ItemBase;
 import cofh.core.item.ItemBucket;
 import cofh.core.util.fluid.BucketHandler;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.thermalfoundation.block.TFBlocks;
@@ -26,7 +26,7 @@ public class TFItems {
 
         GregtechItemList.BlizzRod.set(material.addOreDictItem(1, "rodBlizz"));
 
-        GTOreDictUnificator.registerOre("stickBlizz", GregtechItemList.BlizzRod.get(1));
+        OreDictUtils.registerOre("stickBlizz", GregtechItemList.BlizzRod.get(1));
     }
 
     public static void init() {

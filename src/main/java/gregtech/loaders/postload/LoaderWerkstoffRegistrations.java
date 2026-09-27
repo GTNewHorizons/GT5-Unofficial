@@ -22,7 +22,7 @@ import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
@@ -45,7 +45,7 @@ public class LoaderWerkstoffRegistrations {
             registerAdditionalOreDict(material);
             MaterialUtils.recordBridgeRegistration(material);
         }
-        GTOreDictUnificator.registerOre(
+        OreDictUtils.registerOre(
             "craftingIndustrialDiamond",
             MaterialLibAPI.getStack(Materials.CubicZirconia, Shapes.gemExquisite, 1));
         BWOreAdapter.INSTANCE.registerOredict();
@@ -66,7 +66,7 @@ public class LoaderWerkstoffRegistrations {
         }
         if (material.hasShape(BlockShapes.block) && (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
             || LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot))) {
-            GTOreDictUnificator.registerOre(
+            OreDictUtils.registerOre(
                 OrePrefixes.block + MaterialUtils.internalName(material),
                 MaterialLibAPI.getStack(material, BlockShapes.block, 1));
         }

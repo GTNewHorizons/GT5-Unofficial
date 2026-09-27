@@ -29,10 +29,10 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.tools.ToolScoop;
 import mods.railcraft.api.core.items.IToolCrowbar;
 
@@ -60,7 +60,7 @@ public class GTItemIterator implements Runnable {
             .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
 
         if (null != tStack) {
-            GTOreDictUnificator.registerOre(OreDictNames.craftingRawMachineTier00, tStack);
+            OreDictUtils.registerOre(OreDictNames.craftingRawMachineTier00, tStack);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
@@ -184,7 +184,7 @@ public class GTItemIterator implements Runnable {
                         }
                     }
                     if (tName.equals("tile.tankBlock") && tBlock instanceof BlockTank) {
-                        GTOreDictUnificator.registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
+                        OreDictUtils.registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
                     }
                 }
                 if (((tItem instanceof ItemFood)) && (tItem != ItemList.IC2_Food_Can_Filled.getItem())
@@ -233,47 +233,41 @@ public class GTItemIterator implements Runnable {
                     }
 
                     // tinker construct
-                    case "item.tconstruct.manual" -> GTOreDictUnificator
+                    case "item.tconstruct.manual" -> OreDictUtils
                         .registerOre("bookTinkersManual", new ItemStack(tItem, 1, WILDCARD));
 
                     // buildcraft
-                    case "item.blueprintItem" -> GTOreDictUnificator
+                    case "item.blueprintItem" -> OreDictUtils
                         .registerOre("paperBlueprint", new ItemStack(tItem, 1, WILDCARD));
 
                     // Thaumcraft
-                    case "item.ItemThaumonomicon" -> GTOreDictUnificator
+                    case "item.ItemThaumonomicon" -> OreDictUtils
                         .registerOre("bookThaumonomicon", new ItemStack(tItem, 1, WILDCARD));
 
                     // BoP
                     case "tile.bop.redRocks" -> {
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 1));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 2));
+                        OreDictUtils.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
+                        OreDictUtils.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 1));
+                        OreDictUtils.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 2));
                     }
 
                     // Thaumcraft
                     case "tile.blockCosmeticSolid" -> {
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 0));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 1));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.block, Materials.Thaumium, new ItemStack(tItem, 1, 4));
+                        OreDictUtils.registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 0));
+                        OreDictUtils.registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 1));
+                        OreDictUtils.registerOre(OrePrefixes.block, Materials.Thaumium, new ItemStack(tItem, 1, 4));
                     }
 
                     // minecraft
-                    case "tile.enderchest" -> GTOreDictUnificator
+                    case "tile.enderchest" -> OreDictUtils
                         .registerOre(OreDictNames.enderChest, new ItemStack(tItem, 1, WILDCARD));
 
                     // buildcraft
-                    case "tile.autoWorkbenchBlock" -> GTOreDictUnificator
+                    case "tile.autoWorkbenchBlock" -> OreDictUtils
                         .registerOre(OreDictNames.craftingWorkBench, new ItemStack(tItem, 1, 0));
 
                     // buildcraft
-                    case "tile.pumpBlock" -> GTOreDictUnificator
+                    case "tile.pumpBlock" -> OreDictUtils
                         .registerOre(OreDictNames.craftingPump, new ItemStack(tItem, 1, 0));
 
                 }

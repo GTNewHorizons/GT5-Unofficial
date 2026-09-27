@@ -134,11 +134,11 @@ import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTShapelessRecipe;
 import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.config.OPStuff;
@@ -670,19 +670,19 @@ public class GTProxy implements IFuelHandler {
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {
             OrePrefixes.bucketClay.mContainerItem = GTModHandler
                 .getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0);
-            GTOreDictUnificator.registerAndAssociate(
+            OreDictUtils.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Empty,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0));
-            GTOreDictUnificator.registerAndAssociate(
+            OreDictUtils.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Water,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketWater", 1L, 0));
-            GTOreDictUnificator.registerAndAssociate(
+            OreDictUtils.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Lava,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketLava", 1L, 0));
-            GTOreDictUnificator.registerAndAssociate(
+            OreDictUtils.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Milk,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketMilk", 1L, 0));
@@ -1166,8 +1166,8 @@ public class GTProxy implements IFuelHandler {
             && (aFluidEvent.data.filledContainer.getItemDamage() == 0)) {
             aFluidEvent.data.fluid.amount = 0;
         }
-        GTOreDictUnificator.addToBlacklist(aFluidEvent.data.emptyContainer);
-        GTOreDictUnificator.addToBlacklist(aFluidEvent.data.filledContainer);
+        OreDictUtils.addToBlacklist(aFluidEvent.data.emptyContainer);
+        OreDictUtils.addToBlacklist(aFluidEvent.data.filledContainer);
         GTUtility.insertInFluidToContainersMap(aFluidEvent.data);
     }
 

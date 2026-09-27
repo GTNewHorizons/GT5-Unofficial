@@ -170,13 +170,13 @@ public class GTRecipeBuilder {
     /// recipe stores and shows the first alternative: the item the name unifies to, or for a name without one, such
     /// as `plateAnyIron`, the first alternative that is not another mod's unified copy.
     private static void putCanonicalFirst(ArrayList<ItemStack> alternatives, String oreName) {
-        ItemStack canonical = GTOreDictUnificator.unificationTarget(oreName);
+        ItemStack canonical = OreDictUtils.unificationTarget(oreName);
         for (int j = 0; j < alternatives.size(); j++) {
             ItemStack alternative = alternatives.get(j);
             boolean chosen = canonical != null
                 ? alternative.getItem() == canonical.getItem()
                     && alternative.getItemDamage() == canonical.getItemDamage()
-                : !GTOreDictUnificator.isUnifiedCopy(alternative);
+                : !OreDictUtils.isUnifiedCopy(alternative);
             if (chosen) {
                 if (j > 0) alternatives.add(0, alternatives.remove(j));
                 return;
@@ -402,7 +402,7 @@ public class GTRecipeBuilder {
                 }
                 case OreDictItemStack ods -> {
                     altOreIds[i] = OreDictionary.getOreID(ods.mOreName);
-                    ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
+                    ArrayList<ItemStack> ores = OreDictUtils.getOres(ods.mOreName);
                     if (ores.isEmpty()) {
                         alts[i] = GTValues.emptyItemStackArray;
                         GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", ods.mOreName);
@@ -422,7 +422,7 @@ public class GTRecipeBuilder {
                 case Object[] arr -> {
                     if (arr.length != 2) continue;
                     altOreIds[i] = OreDictionary.getOreID(arr[0].toString());
-                    ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
+                    ArrayList<ItemStack> ores = OreDictUtils.getOres(arr[0]);
                     if (ores.isEmpty()) {
                         alts[i] = GTValues.emptyItemStackArray;
                         GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", arr[0]);

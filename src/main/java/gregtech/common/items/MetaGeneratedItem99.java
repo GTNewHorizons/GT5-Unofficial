@@ -25,7 +25,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 
 public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
@@ -111,9 +111,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         enabled.set(i);
 
         if (cellMolten.isUnifiable()) {
-            GTOreDictUnificator.registerAndAssociate(cellMolten, material, tStack);
+            OreDictUtils.registerAndAssociate(cellMolten, material, tStack);
         } else {
-            GTOreDictUnificator.registerOre(cellMolten.oreDictName(material), tStack);
+            OreDictUtils.registerOre(cellMolten.oreDictName(material), tStack);
         }
     }
 
@@ -125,9 +125,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 enabled.set(offset + i);
 
                 if (prefix.isUnifiable()) {
-                    GTOreDictUnificator.registerAndAssociate(prefix, material, tStack);
+                    OreDictUtils.registerAndAssociate(prefix, material, tStack);
                 } else {
-                    GTOreDictUnificator.registerOre(prefix.oreDictName(material), tStack);
+                    OreDictUtils.registerOre(prefix.oreDictName(material), tStack);
                 }
             }
 

@@ -48,8 +48,8 @@ import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
@@ -96,7 +96,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
         ItemStack self = new ItemStack(this, 1, LegacyWerkstoffIndex.idOf(material));
 
-        GTOreDictUnificator.registerOre(getPrefix().oreDictName(material), self);
+        OreDictUtils.registerOre(getPrefix().oreDictName(material), self);
     }
 
     @Override

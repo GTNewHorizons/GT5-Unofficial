@@ -547,7 +547,7 @@ public class GTRecipeRegistrator {
 
             ItemData itemData = MaterialData.get(mat);
             if (itemData == null || itemData.mPrefix != OrePrefixes.ingot) plate = null;
-            if (plate != null && GTOreDictUnificator.getOresImmutable(plate)
+            if (plate != null && OreDictUtils.getOresImmutable(plate)
                 .isEmpty()) plate = null;
 
             sMt1.func_150996_a(mat.getItem());

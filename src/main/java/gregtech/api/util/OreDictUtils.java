@@ -30,8 +30,8 @@ import gregtech.api.objects.ItemData;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 
-/// GregTech's view of the ore dictionary: which item stands for an ore-dictionary name, and which items are other
-/// mods' copies of it. What an item is made of lives in [MaterialData].
+/// GregTech's ore-dictionary helpers: registration and lookup, which item stands for an ore-dictionary name, and
+/// which items are other mods' copies of it. What an item is made of lives in [MaterialData].
 ///
 /// MaterialLib decides the item for every name of a (prefix, material) pair it serves: the pair's stack, MaterialLib's
 /// own item or the foreign item a shape override declares, whatever else registers under the name and in whatever
@@ -44,7 +44,7 @@ import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 ///
 /// Keyed by [OrePrefixes] throughout: an association starts from an ore-dictionary name. See [OrePrefixes]'s
 /// class javadoc for why the prefix and shape spaces are not interchangeable.
-public class GTOreDictUnificator {
+public class OreDictUtils {
 
     private static volatile Map<String, MaterialLibPair> materialLibPairs;
     private static final Map<String, ItemStack> materialLibTargets = new ConcurrentHashMap<>();

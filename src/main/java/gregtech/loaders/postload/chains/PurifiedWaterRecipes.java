@@ -38,8 +38,8 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
@@ -101,7 +101,7 @@ public class PurifiedWaterRecipes {
             .addTo(assemblerRecipes);
 
         // Grade 2 - Ozonation
-        for (ItemStack lens : GTOreDictUnificator.getOres("craftingLensBlue")) {
+        for (ItemStack lens : OreDictUtils.getOres("craftingLensBlue")) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(0, lens))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Air, FluidShapes.fluidGas, 10_000))

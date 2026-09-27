@@ -16,7 +16,7 @@ import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 
 /// Centralizes OreDictionary alias registration.
 ///
@@ -110,7 +110,7 @@ final class OreDictAliases {
 
     private static void aliasToPrefix(OrePrefixes sourcePrefix, Material material, OrePrefixes targetPrefix) {
         String oreName = sourcePrefix.getName() + MaterialUtils.internalName(material);
-        addAlias(oreName, stack -> GTOreDictUnificator.registerOre(targetPrefix, material, stack));
+        addAlias(oreName, stack -> OreDictUtils.registerOre(targetPrefix, material, stack));
     }
 
     private static void aliasToOreDict(OrePrefixes sourcePrefix, Material material, String targetOreName) {
@@ -119,11 +119,11 @@ final class OreDictAliases {
     }
 
     private static void aliasToOreDict(String oreName, String targetOreName) {
-        addAlias(oreName, stack -> GTOreDictUnificator.registerOre(targetOreName, stack));
+        addAlias(oreName, stack -> OreDictUtils.registerOre(targetOreName, stack));
     }
 
     private static void aliasToMaterial(String oreName, OrePrefixes targetPrefix, Material targetMaterial) {
-        addAlias(oreName, stack -> GTOreDictUnificator.registerOre(targetPrefix, targetMaterial, stack));
+        addAlias(oreName, stack -> OreDictUtils.registerOre(targetPrefix, targetMaterial, stack));
     }
 
     private static void addAlias(String oreName, Consumer<ItemStack> action) {

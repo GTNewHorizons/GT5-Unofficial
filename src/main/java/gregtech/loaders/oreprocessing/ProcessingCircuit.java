@@ -9,7 +9,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 
 public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -20,10 +20,10 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (GTOreDictUnificator.isBlacklisted(stack) && GregTech.ID.equals(modName)) return;
+        if (OreDictUtils.isBlacklisted(stack) && GregTech.ID.equals(modName)) return;
         switch (MaterialUtils.internalName(material)) {
             case "Good", "Data", "Elite", "Master", "Ultimate", "Superconductor", "Infinite", "Bio" -> {
-                if (!GTOreDictUnificator.isBlacklisted(stack) && !GregTech.ID.equals(modName))
+                if (!OreDictUtils.isBlacklisted(stack) && !GregTech.ID.equals(modName))
                     GTModHandler.removeRecipeByOutputDelayed(stack);
             }
             case "Primitive", "Basic", "Advanced" -> GTModHandler.removeRecipeByOutputDelayed(stack);

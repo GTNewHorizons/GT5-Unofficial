@@ -56,8 +56,8 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
@@ -2560,18 +2560,17 @@ public class LoaderGTBlockFluid implements Runnable {
             .addTo(maceratorRecipes);
 
         // Special secondary oredict for Sodium Hydroxide
-        GTOreDictUnificator
+        OreDictUtils
             .registerOre("dustSodiumHydroxide", MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1));
-        GTOreDictUnificator
-            .registerOre("dustCalciumSulfate", MaterialLibAPI.getStack(Materials.Gypsum, Shapes.dust, 1));
-        GTOreDictUnificator.registerOre(
+        OreDictUtils.registerOre("dustCalciumSulfate", MaterialLibAPI.getStack(Materials.Gypsum, Shapes.dust, 1));
+        OreDictUtils.registerOre(
             "dustSmallSodiumHydroxide",
             MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dustSmall, 1));
-        GTOreDictUnificator.registerOre(
+        OreDictUtils.registerOre(
             "dustTinySodiumHydroxide",
             MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dustTiny, 1));
 
-        GTOreDictUnificator.registerOre(
+        OreDictUtils.registerOre(
             OrePrefixes.dust,
             Materials.Cocoa,
             GTModHandler.getModItem(PamsHarvestCraft.ID, "cocoapowderItem", 1L, 0));

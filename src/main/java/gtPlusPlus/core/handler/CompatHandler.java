@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gregtech.loaders.oreprocessing.ProcessingAlloySmelterGtpp;
 import gregtech.loaders.oreprocessing.ProcessingAssemblerGtpp;
 import gregtech.loaders.oreprocessing.ProcessingDustGeneration;
@@ -109,16 +109,16 @@ public class CompatHandler {
             GregtechItemList.Energy_Core_ZPM.get(1), GregtechItemList.Energy_Core_UV.get(1),
             GregtechItemList.Energy_Core_UHV.get(1), };
         for (int i = 1; i < 10; i++) {
-            GTOreDictUnificator.registerOre("bufferCore_" + GTValues.VN[i - 1], bufferCores[i]);
+            OreDictUtils.registerOre("bufferCore_" + GTValues.VN[i - 1], bufferCores[i]);
         }
 
         for (Particle i : Particle.aMap) {
-            GTOreDictUnificator
+            OreDictUtils
                 .registerOre(OrePrefixes.particle + i.mParticleName.replace(" ", ""), Particle.getBaseParticle(i));
         }
 
         for (String i : IonParticles.ions) {
-            GTOreDictUnificator.registerOre(OrePrefixes.particle + i, Particle.getIon(i, 0));
+            OreDictUtils.registerOre(OrePrefixes.particle + i, Particle.getIon(i, 0));
         }
     }
 
@@ -194,9 +194,9 @@ public class CompatHandler {
         }
         if (Witchery.isModLoaded()) {
             // Koboldite
-            GTOreDictUnificator.registerOre("dustKoboldite", getModItem(Witchery.ID, "ingredient", 1, 148));
-            GTOreDictUnificator.registerOre("nuggetKoboldite", getModItem(Witchery.ID, "ingredient", 1, 149));
-            GTOreDictUnificator.registerOre("ingotKoboldite", getModItem(Witchery.ID, "ingredient", 1, 150));
+            OreDictUtils.registerOre("dustKoboldite", getModItem(Witchery.ID, "ingredient", 1, 148));
+            OreDictUtils.registerOre("nuggetKoboldite", getModItem(Witchery.ID, "ingredient", 1, 149));
+            OreDictUtils.registerOre("ingotKoboldite", getModItem(Witchery.ID, "ingredient", 1, 150));
         }
     }
 

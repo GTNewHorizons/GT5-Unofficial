@@ -68,9 +68,9 @@ import gregtech.api.recipe.RecipeCategorySetting;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.AssemblyLineUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.gui.modularui.UIHelper;
@@ -247,7 +247,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         ItemData tPrefixMaterial = MaterialData.getAssociation(aResult);
         if (tPrefixMaterial != null && tPrefixMaterial.hasValidPrefixMaterialData()
-            && !GTOreDictUnificator.isBlacklisted(aResult)
+            && !OreDictUtils.isBlacklisted(aResult)
             && !tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty()) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                 tResults.add(MaterialParts.stack(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));

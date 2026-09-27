@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 public enum CustomItemList implements IItemContainer {
 
@@ -553,7 +553,7 @@ public enum CustomItemList implements IItemContainer {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
         for (Object tOreName : aOreNames) {
-            GTOreDictUnificator.registerOre(tOreName, get(1));
+            OreDictUtils.registerOre(tOreName, get(1));
         }
         return this;
     }
@@ -564,7 +564,7 @@ public enum CustomItemList implements IItemContainer {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
         for (Object tOreName : aOreNames) {
-            GTOreDictUnificator.registerOre(tOreName, getWildcard(1));
+            OreDictUtils.registerOre(tOreName, getWildcard(1));
         }
         return this;
     }

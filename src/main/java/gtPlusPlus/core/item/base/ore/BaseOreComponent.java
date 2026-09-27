@@ -21,7 +21,7 @@ import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -52,7 +52,7 @@ public class BaseOreComponent extends Item {
         // The item stays registered for save and item-ID stability, but MaterialLib owns the oredict name
         // once the prefix is cut over, so only the duplicate oredict association is skipped.
         if (!MaterialParts.isCutOver(componentType.getOrePrefixEnum(), material)) {
-            GTOreDictUnificator.registerOre(
+            OreDictUtils.registerOre(
                 componentType.getOrePrefix() + MaterialUtils.internalName(material),
                 new ItemStack(this, 1));
         }

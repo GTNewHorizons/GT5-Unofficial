@@ -16,14 +16,14 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.client.DynamicLangManager;
 
 /// One of 13 hand-curated batches of up to 16 [Material]s (metadata = array index). Every batch is instantiated
 /// and registers every slot, whether or not its materials cut over to the MaterialLib `block` shape (see
 /// [BlockShapes]), because multiblock casing matchers, a machine-block-update listener and a client-side icon
 /// fallback hold these instances by `Block` identity. For a cut-over material only the canonical
-/// [gregtech.api.util.GTOreDictUnificator] association moves to the MaterialLib stack, and that slot is hidden
+/// [gregtech.api.util.OreDictUtils] association moves to the MaterialLib stack, and that slot is hidden
 /// from NEI; the block and item stay functional at every slot.
 ///
 /// A null batch entry is a retired slot: the material it held is gone, but the index stays so the metadata of
@@ -54,9 +54,9 @@ public class BlockMetal extends BlockStorage {
                 ItemStack canonicalStack = cutover != null ? cutover : new ItemStack(this, 1, i);
                 DynamicLangManager.addStack(new ItemStack(this, 1, i));
                 if (aPrefix.isUnifiable() && cutover == null) {
-                    GTOreDictUnificator.registerAndAssociate(aPrefix, material, canonicalStack);
+                    OreDictUtils.registerAndAssociate(aPrefix, material, canonicalStack);
                 } else {
-                    GTOreDictUnificator.registerOre(aPrefix, material, canonicalStack);
+                    OreDictUtils.registerOre(aPrefix, material, canonicalStack);
                 }
                 if (cutover != null && mNEIisLoaded) {
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i));

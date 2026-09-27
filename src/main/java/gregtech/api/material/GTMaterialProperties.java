@@ -143,7 +143,7 @@ public class GTMaterialProperties {
     /// material's own toxicity flag.
     public static final Property<Boolean> TOXIC = Property.of("gregtech", "toxic");
     public static final Property<Boolean> UNIFIABLE = Property.of("gregtech", "unifiable", true);
-    /// Whether item resolution should skip [gregtech.api.util.GTOreDictUnificator]'s existing association and
+    /// Whether item resolution should skip [gregtech.api.util.OreDictUtils]'s existing association and
     /// forcibly re-`set` it to this material's own item for every prefix it carries. Not the inverse of
     /// [#UNIFIABLE]: that key opts a material out of unification, this one makes it win the ore-dict slot.
     public static final Property<Boolean> ENFORCE_ORE_DICT_UNIFICATION = Property

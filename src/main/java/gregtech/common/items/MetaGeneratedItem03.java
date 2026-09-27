@@ -330,7 +330,7 @@ import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.powergoggles.ItemPowerGoggles;
@@ -2160,8 +2160,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
 
     private void initOreDictUnificatorEntries() {
         for (CircuitComponents component : CircuitComponents.values()) {
-            GTOreDictUnificator
-                .registerAndAssociate(OrePrefixes.componentCircuit, component.materialName(), component.get(1));
+            OreDictUtils.registerAndAssociate(OrePrefixes.componentCircuit, component.materialName(), component.get(1));
         }
 
         MaterialData.addAssociation(

@@ -10,8 +10,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 public enum GregtechItemList implements IItemContainer {
 
@@ -1134,7 +1134,7 @@ public enum GregtechItemList implements IItemContainer {
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
         }
         for (final Object tOreName : aOreNames) {
-            GTOreDictUnificator.registerOre(tOreName, this.get(1));
+            OreDictUtils.registerOre(tOreName, this.get(1));
         }
         return this;
     }
@@ -1145,7 +1145,7 @@ public enum GregtechItemList implements IItemContainer {
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
         }
         for (final Object tOreName : aOreNames) {
-            GTOreDictUnificator.registerOre(tOreName, this.getWildcard(1));
+            OreDictUtils.registerOre(tOreName, this.getWildcard(1));
         }
         return this;
     }

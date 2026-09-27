@@ -66,10 +66,10 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRenderers;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.loaders.misc.GTBees;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
@@ -1184,9 +1184,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     public void registerOreDict() {
         for (CombType comb : CombType.VALUES) {
             ItemStack tComb = getStackForType(comb);
-            GTOreDictUnificator.registerOre(OrePrefixes.beeComb.getName(), tComb);
+            OreDictUtils.registerOre(OrePrefixes.beeComb.getName(), tComb);
             OrePrefixes.beeComb.add(tComb);
-            if (comb.voltage != null) GTOreDictUnificator.registerOre("comb" + comb.voltage.name(), tComb);
+            if (comb.voltage != null) OreDictUtils.registerOre("comb" + comb.voltage.name(), tComb);
         }
     }
 

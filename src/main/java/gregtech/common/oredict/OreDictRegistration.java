@@ -11,8 +11,8 @@ import com.ruling_0.materiallib.api.Material;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 /// One buffered ore-dictionary registration: the stack, the prefix its name resolved to, and the material the
 /// census resolved it to -- the `NULL` placeholder when the name carries none, which for a material-based
@@ -44,7 +44,7 @@ final class OreDictRegistration {
         if (stack.getItem() == null || prefix.isIgnored(material)
             || isMaterialLibItem(stack)
             || isShapeOverride()
-            || GTOreDictUnificator.isUnifiedCopy(stack)) {
+            || OreDictUtils.isUnifiedCopy(stack)) {
             return;
         }
 

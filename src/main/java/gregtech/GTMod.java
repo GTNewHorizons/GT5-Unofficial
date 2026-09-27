@@ -83,10 +83,10 @@ import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.GTCapesLoader;
 import gregtech.common.GTClient;
 import gregtech.common.GTDummyWorld;
@@ -423,7 +423,7 @@ public class GTMod {
             return;
         }
 
-        GTOreDictUnificator.useMaterialLibTargets();
+        OreDictUtils.useMaterialLibTargets();
 
         for (Runnable tRunnable : GregTechAPI.sBeforeGTLoad) {
             tRunnable.run();

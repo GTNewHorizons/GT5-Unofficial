@@ -781,7 +781,7 @@ public class GTRecipeConstants {
      */
     public static IRecipeMap AssemblerOD = IRecipeMap.newRecipeMap(builder -> {
         Collection<GTRecipe> ret = new ArrayList<>();
-        for (ItemStack input : GTOreDictUnificator.getOresImmutable(builder.getMetadata(OREDICT_INPUT))) {
+        for (ItemStack input : OreDictUtils.getOresImmutable(builder.getMetadata(OREDICT_INPUT))) {
             ret.addAll(
                 builder.copy()
                     .itemInputs(GTRecipeMapUtil.appendArray(builder.getItemInputsBasic(), input))

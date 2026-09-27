@@ -16,7 +16,7 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 
 /// Hands the ore-dictionary unificator MaterialLib stacks for the item cutover: every (prefix,
 /// material) pair [MaterialParts] maps to a MaterialLib shape gets unified the same way
@@ -36,7 +36,7 @@ import gregtech.api.util.GTOreDictUnificator;
 /// A material whose legacy name MaterialLib cannot accept as a registration name carries it as
 /// [GTMaterialProperties#LEGACY_NAME] and registers its stacks under the sanitized name instead, so its
 /// legacy-named entries get a pass of their own. [OrePrefixes#oreDictName] builds the legacy name, so that is
-/// the name every [GTOreDictUnificator] lookup asks for.
+/// the name every [OreDictUtils] lookup asks for.
 ///
 /// The High Pressure fluid pipes [TieredItems#ZPM] declares additionally register under its tier-keyed
 /// `pipeSmallUltimate`..`pipeLargeUltimate` ingredient names, the identity every crafting recipe referencing
@@ -102,17 +102,17 @@ public class LoaderMaterialLibCutover implements Runnable {
 
     private static void unify(OrePrefixes prefix, Material material, ItemStack stack) {
         if (prefix.isUnifiable()) {
-            GTOreDictUnificator.registerOre(prefix, material, stack);
+            OreDictUtils.registerOre(prefix, material, stack);
             // The ore-dictionary event cannot parse legacy names holding spaces or colons back to a material.
             MaterialData.addAssociation(prefix, material, stack);
         } else {
-            GTOreDictUnificator.registerOre(prefix.oreDictName(material), stack);
+            OreDictUtils.registerOre(prefix.oreDictName(material), stack);
         }
     }
 
     private static void registerHighPressureNames() {
-        GTOreDictUnificator.registerOre(TieredItems.ZPM.getPipeSmallIngredient(), TieredItems.ZPM.getPipeSmall(1));
-        GTOreDictUnificator.registerOre(TieredItems.ZPM.getPipeMediumIngredient(), TieredItems.ZPM.getPipeMedium(1));
-        GTOreDictUnificator.registerOre(TieredItems.ZPM.getPipeLargeIngredient(), TieredItems.ZPM.getPipeLarge(1));
+        OreDictUtils.registerOre(TieredItems.ZPM.getPipeSmallIngredient(), TieredItems.ZPM.getPipeSmall(1));
+        OreDictUtils.registerOre(TieredItems.ZPM.getPipeMediumIngredient(), TieredItems.ZPM.getPipeMedium(1));
+        OreDictUtils.registerOre(TieredItems.ZPM.getPipeLargeIngredient(), TieredItems.ZPM.getPipeLarge(1));
     }
 }

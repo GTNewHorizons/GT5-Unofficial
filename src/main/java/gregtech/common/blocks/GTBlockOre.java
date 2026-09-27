@@ -49,8 +49,8 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
@@ -97,12 +97,12 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
                 if (stoneType.getPrefix()
                     .isUnifiable()) {
-                    GTOreDictUnificator.registerAndAssociate(
+                    OreDictUtils.registerAndAssociate(
                         stoneType.getPrefix(),
                         info.material,
                         GTOreAdapter.INSTANCE.getStack(info, 1));
                 } else {
-                    GTOreDictUnificator.registerOre(stoneType.getPrefix(), GTOreAdapter.INSTANCE.getStack(info, 1));
+                    OreDictUtils.registerOre(stoneType.getPrefix(), GTOreAdapter.INSTANCE.getStack(info, 1));
                 }
             }
         }

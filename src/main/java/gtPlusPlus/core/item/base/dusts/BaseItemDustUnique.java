@@ -15,7 +15,7 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -70,7 +70,7 @@ public class BaseItemDustUnique extends Item {
         }
         temp = temp.replace("itemD", "d");
         if (!temp.isEmpty()) {
-            GTOreDictUnificator.registerOre(temp, new ItemStack(this));
+            OreDictUtils.registerOre(temp, new ItemStack(this));
         }
     }
 

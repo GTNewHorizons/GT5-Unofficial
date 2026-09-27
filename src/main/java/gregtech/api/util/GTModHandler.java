@@ -1012,13 +1012,13 @@ public class GTModHandler {
     /// blacklisted, else the first item registered under it. Null when nothing is registered under the name.
     @Nullable
     public static ItemStack collisionProbe(String oreName) {
-        ItemStack target = GTOreDictUnificator.unificationTarget(oreName);
+        ItemStack target = OreDictUtils.unificationTarget(oreName);
         if (target != null) return GTUtility.copyAmount(1, target);
 
         ItemStack first = null;
-        for (ItemStack ore : GTOreDictUnificator.getOresImmutable(oreName)) {
+        for (ItemStack ore : OreDictUtils.getOresImmutable(oreName)) {
             if (ore == null) continue;
-            if (!GTOreDictUnificator.isBlacklisted(ore)) return GTUtility.copyAmount(1, ore);
+            if (!OreDictUtils.isBlacklisted(ore)) return GTUtility.copyAmount(1, ore);
             if (first == null) first = ore;
         }
         return GTUtility.copyAmount(1, first);

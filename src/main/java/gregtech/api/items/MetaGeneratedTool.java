@@ -63,8 +63,8 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
@@ -283,7 +283,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             for (Object tOreDictNameOrAspect : aOreDictNamesAndAspects) {
                 if (tOreDictNameOrAspect instanceof TC_AspectStack)
                     ((TC_AspectStack) tOreDictNameOrAspect).addToAspectList(tAspects);
-                else GTOreDictUnificator.registerOre(tOreDictNameOrAspect, rStack);
+                else OreDictUtils.registerOre(tOreDictNameOrAspect, rStack);
             }
             if (GregTechAPI.sThaumcraftCompat != null)
                 GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);

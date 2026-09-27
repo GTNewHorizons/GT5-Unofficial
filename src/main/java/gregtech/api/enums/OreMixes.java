@@ -59,8 +59,8 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.ores.GTOreAdapter;
@@ -1625,7 +1625,7 @@ public enum OreMixes {
         List<ItemStack> stacks = new ArrayList<>();
         stacks.add(ore);
         ItemData association = MaterialData.getAssociation(ore);
-        if (association != null) stacks.addAll(GTOreDictUnificator.getOresImmutable(association.toString()));
+        if (association != null) stacks.addAll(OreDictUtils.getOresImmutable(association.toString()));
         return stacks;
     }
 

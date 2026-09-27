@@ -21,9 +21,9 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.StringUtils;
 import gregtech.client.GTTooltipHandler;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -458,7 +458,7 @@ public final class ModItems {
         GregtechItemList.ZirconiumPellet.set(
             new CoreItem("itemZirconiumPellet", AddToCreativeTab.tabMisc, 64, 0, GTValues.emptyStringArray)
                 .setTextureName(GTPlusPlus.ID + ":itemShard"));
-        GTOreDictUnificator.registerOre("pelletZirconium", GregtechItemList.ZirconiumPellet.get(1));
+        OreDictUtils.registerOre("pelletZirconium", GregtechItemList.ZirconiumPellet.get(1));
 
         // Zirconium Chloride
         Item[] ZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180));

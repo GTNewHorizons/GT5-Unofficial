@@ -43,7 +43,7 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.pollution.Pollution;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -226,7 +226,7 @@ public class MTEBoilerBronze extends MTEBoiler {
             || (Stream.of("^tile\\..+charcoal", "^tile\\..+coke", "^tile\\..+railcraft.cube")
                 .anyMatch(lowerCaseBlockName::matches))
             || Stream.of("fuelCoke", "fuelCactusCharcoal", "fuelCactusCoke", "fuelSugarCharcoal", "fuelSugarCoke")
-                .anyMatch(name -> GTOreDictUnificator.isItemStackInstanceOf(fuel, name))
+                .anyMatch(name -> OreDictUtils.isItemStackInstanceOf(fuel, name))
             || burnTime >= 2000;
     }
 

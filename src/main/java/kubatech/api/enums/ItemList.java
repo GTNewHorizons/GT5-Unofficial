@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 public enum ItemList implements IItemContainer {
 
@@ -217,7 +217,7 @@ public enum ItemList implements IItemContainer {
     public @NotNull IItemContainer registerOre(Object @NotNull... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, get(1));
+        for (Object tOreName : aOreNames) OreDictUtils.registerOre(tOreName, get(1));
         return this;
     }
 
@@ -225,7 +225,7 @@ public enum ItemList implements IItemContainer {
     public @NotNull IItemContainer registerWildcardAsOre(Object @NotNull... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, getWildcard(1));
+        for (Object tOreName : aOreNames) OreDictUtils.registerOre(tOreName, getWildcard(1));
         return this;
     }
 
